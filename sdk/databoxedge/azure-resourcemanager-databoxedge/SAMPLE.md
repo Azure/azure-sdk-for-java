@@ -1,10 +1,21 @@
 # Code snippets and samples
 
 
+## Addons
+
+- [CreateOrUpdate](#addons_createorupdate)
+- [Delete](#addons_delete)
+- [Get](#addons_get)
+- [ListByRole](#addons_listbyrole)
+
 ## Alerts
 
 - [Get](#alerts_get)
 - [ListByDataBoxEdgeDevice](#alerts_listbydataboxedgedevice)
+
+## AvailableSkus
+
+- [List](#availableskus_list)
 
 ## BandwidthSchedules
 
@@ -21,12 +32,21 @@
 - [ListByStorageAccount](#containers_listbystorageaccount)
 - [Refresh](#containers_refresh)
 
+## DeviceCapacityCheck
+
+- [CheckResourceCreationFeasibility](#devicecapacitycheck_checkresourcecreationfeasibility)
+
+## DeviceCapacityInfo
+
+- [GetDeviceCapacityInfo](#devicecapacityinfo_getdevicecapacityinfo)
+
 ## Devices
 
 - [CreateOrUpdate](#devices_createorupdate)
 - [CreateOrUpdateSecuritySettings](#devices_createorupdatesecuritysettings)
 - [Delete](#devices_delete)
 - [DownloadUpdates](#devices_downloadupdates)
+- [GenerateCertificate](#devices_generatecertificate)
 - [GetByResourceGroup](#devices_getbyresourcegroup)
 - [GetExtendedInformation](#devices_getextendedinformation)
 - [GetNetworkSettings](#devices_getnetworksettings)
@@ -36,11 +56,26 @@
 - [ListByResourceGroup](#devices_listbyresourcegroup)
 - [ScanForUpdates](#devices_scanforupdates)
 - [Update](#devices_update)
+- [UpdateExtendedInformation](#devices_updateextendedinformation)
 - [UploadCertificate](#devices_uploadcertificate)
+
+## DiagnosticSettings
+
+- [GetDiagnosticProactiveLogCollectionSettings](#diagnosticsettings_getdiagnosticproactivelogcollectionsettings)
+- [GetDiagnosticRemoteSupportSettings](#diagnosticsettings_getdiagnosticremotesupportsettings)
+- [UpdateDiagnosticProactiveLogCollectionSettings](#diagnosticsettings_updatediagnosticproactivelogcollectionsettings)
+- [UpdateDiagnosticRemoteSupportSettings](#diagnosticsettings_updatediagnosticremotesupportsettings)
 
 ## Jobs
 
 - [Get](#jobs_get)
+
+## MonitoringConfig
+
+- [CreateOrUpdate](#monitoringconfig_createorupdate)
+- [Delete](#monitoringconfig_delete)
+- [Get](#monitoringconfig_get)
+- [List](#monitoringconfig_list)
 
 ## Nodes
 
@@ -60,6 +95,7 @@
 - [Delete](#orders_delete)
 - [Get](#orders_get)
 - [ListByDataBoxEdgeDevice](#orders_listbydataboxedgedevice)
+- [ListDCAccessCode](#orders_listdcaccesscode)
 
 ## Roles
 
@@ -76,10 +112,6 @@
 - [ListByDataBoxEdgeDevice](#shares_listbydataboxedgedevice)
 - [Refresh](#shares_refresh)
 
-## Skus
-
-- [List](#skus_list)
-
 ## StorageAccountCredentials
 
 - [CreateOrUpdate](#storageaccountcredentials_createorupdate)
@@ -94,6 +126,10 @@
 - [Get](#storageaccounts_get)
 - [ListByDataBoxEdgeDevice](#storageaccounts_listbydataboxedgedevice)
 
+## SupportPackages
+
+- [TriggerSupportPackage](#supportpackages_triggersupportpackage)
+
 ## Triggers
 
 - [CreateOrUpdate](#triggers_createorupdate)
@@ -107,6 +143,103 @@
 - [Delete](#users_delete)
 - [Get](#users_get)
 - [ListByDataBoxEdgeDevice](#users_listbydataboxedgedevice)
+### Addons_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.databoxedge.models.ArcAddon;
+
+/**
+ * Samples for Addons CreateOrUpdate.
+ */
+public final class AddonsCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2023-12-01/PutAddons.json
+     */
+    /**
+     * Sample code: PutAddOns.
+     * 
+     * @param manager Entry point to DataBoxEdgeManager.
+     */
+    public static void putAddOns(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
+        manager.addons()
+            .createOrUpdate("GroupForEdgeAutomation", "testedgedevice", "KubernetesRole", "arcName",
+                new ArcAddon().withSubscriptionId("4385cf00-2d3a-425a-832f-f4285b1c9dce")
+                    .withResourceGroupName("GroupForEdgeAutomation")
+                    .withResourceName("testedgedevice")
+                    .withResourceLocation("EastUS"),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Addons_Delete
+
+```java
+/**
+ * Samples for Addons Delete.
+ */
+public final class AddonsDeleteSamples {
+    /*
+     * x-ms-original-file: 2023-12-01/DeleteAddons.json
+     */
+    /**
+     * Sample code: DeleteAddOns.
+     * 
+     * @param manager Entry point to DataBoxEdgeManager.
+     */
+    public static void deleteAddOns(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
+        manager.addons()
+            .delete("GroupForEdgeAutomation", "testedgedevice", "KubernetesRole", "arcName",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Addons_Get
+
+```java
+/**
+ * Samples for Addons Get.
+ */
+public final class AddonsGetSamples {
+    /*
+     * x-ms-original-file: 2023-12-01/GetAddons.json
+     */
+    /**
+     * Sample code: GetAddOns.
+     * 
+     * @param manager Entry point to DataBoxEdgeManager.
+     */
+    public static void getAddOns(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
+        manager.addons()
+            .getWithResponse("GroupForEdgeAutomation", "testedgedevice", "KubernetesRole", "arcName",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Addons_ListByRole
+
+```java
+/**
+ * Samples for Addons ListByRole.
+ */
+public final class AddonsListByRoleSamples {
+    /*
+     * x-ms-original-file: 2023-12-01/RoleListAddOns.json
+     */
+    /**
+     * Sample code: RoleListAddOns.
+     * 
+     * @param manager Entry point to DataBoxEdgeManager.
+     */
+    public static void roleListAddOns(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
+        manager.addons()
+            .listByRole("GroupForEdgeAutomation", "testedgedevice", "IoTRole1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### Alerts_Get
 
 ```java
@@ -115,8 +248,7 @@
  */
 public final class AlertsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/AlertGet.json
+     * x-ms-original-file: 2023-12-01/AlertGet.json
      */
     /**
      * Sample code: AlertGet.
@@ -125,7 +257,7 @@ public final class AlertsGetSamples {
      */
     public static void alertGet(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
         manager.alerts()
-            .getWithResponse("testedgedevice", "159a00c7-8543-4343-9435-263ac87df3bb", "GroupForEdgeAutomation",
+            .getWithResponse("GroupForEdgeAutomation", "testedgedevice", "159a00c7-8543-4343-9435-263ac87df3bb",
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -139,9 +271,7 @@ public final class AlertsGetSamples {
  */
 public final class AlertsListByDataBoxEdgeDeviceSamples {
     /*
-     * x-ms-original-file:
-     * specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/AlertGetAllInDevice.
-     * json
+     * x-ms-original-file: 2023-12-01/AlertGetAllInDevice.json
      */
     /**
      * Sample code: AlertGetAllInDevice.
@@ -150,7 +280,28 @@ public final class AlertsListByDataBoxEdgeDeviceSamples {
      */
     public static void alertGetAllInDevice(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
         manager.alerts()
-            .listByDataBoxEdgeDevice("testedgedevice", "GroupForEdgeAutomation", com.azure.core.util.Context.NONE);
+            .listByDataBoxEdgeDevice("GroupForEdgeAutomation", "testedgedevice", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### AvailableSkus_List
+
+```java
+/**
+ * Samples for AvailableSkus List.
+ */
+public final class AvailableSkusListSamples {
+    /*
+     * x-ms-original-file: 2023-12-01/AvailableSkusList.json
+     */
+    /**
+     * Sample code: AvailableSkus.
+     * 
+     * @param manager Entry point to DataBoxEdgeManager.
+     */
+    public static void availableSkus(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
+        manager.availableSkus().list(com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -166,9 +317,7 @@ import java.util.Arrays;
  */
 public final class BandwidthSchedulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/BandwidthSchedulePut.
-     * json
+     * x-ms-original-file: 2023-12-01/BandwidthSchedulePut.json
      */
     /**
      * Sample code: BandwidthSchedulePut.
@@ -178,7 +327,7 @@ public final class BandwidthSchedulesCreateOrUpdateSamples {
     public static void bandwidthSchedulePut(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
         manager.bandwidthSchedules()
             .define("bandwidth-1")
-            .withExistingDataBoxEdgeDevice("testedgedevice", "GroupForEdgeAutomation")
+            .withExistingDataBoxEdgeDevice("GroupForEdgeAutomation", "testedgedevice")
             .withStart("0:0:0")
             .withStop("13:59:0")
             .withRateInMbps(100)
@@ -196,8 +345,7 @@ public final class BandwidthSchedulesCreateOrUpdateSamples {
  */
 public final class BandwidthSchedulesDeleteSamples {
     /*
-     * x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/
-     * BandwidthScheduleDelete.json
+     * x-ms-original-file: 2023-12-01/BandwidthScheduleDelete.json
      */
     /**
      * Sample code: BandwidthScheduleDelete.
@@ -206,7 +354,7 @@ public final class BandwidthSchedulesDeleteSamples {
      */
     public static void bandwidthScheduleDelete(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
         manager.bandwidthSchedules()
-            .delete("testedgedevice", "bandwidth-1", "GroupForEdgeAutomation", com.azure.core.util.Context.NONE);
+            .delete("GroupForEdgeAutomation", "testedgedevice", "bandwidth-1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -219,9 +367,7 @@ public final class BandwidthSchedulesDeleteSamples {
  */
 public final class BandwidthSchedulesGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/BandwidthScheduleGet.
-     * json
+     * x-ms-original-file: 2023-12-01/BandwidthScheduleGet.json
      */
     /**
      * Sample code: BandwidthScheduleGet.
@@ -230,7 +376,7 @@ public final class BandwidthSchedulesGetSamples {
      */
     public static void bandwidthScheduleGet(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
         manager.bandwidthSchedules()
-            .getWithResponse("testedgedevice", "bandwidth-1", "GroupForEdgeAutomation",
+            .getWithResponse("GroupForEdgeAutomation", "testedgedevice", "bandwidth-1",
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -244,8 +390,7 @@ public final class BandwidthSchedulesGetSamples {
  */
 public final class BandwidthSchedulesListByDataBoxEdgeDeviceSamples {
     /*
-     * x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/
-     * BandwidthScheduleGetAllInDevice.json
+     * x-ms-original-file: 2023-12-01/BandwidthScheduleGetAllInDevice.json
      */
     /**
      * Sample code: BandwidthScheduleGetAllInDevice.
@@ -255,7 +400,7 @@ public final class BandwidthSchedulesListByDataBoxEdgeDeviceSamples {
     public static void
         bandwidthScheduleGetAllInDevice(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
         manager.bandwidthSchedules()
-            .listByDataBoxEdgeDevice("testedgedevice", "GroupForEdgeAutomation", com.azure.core.util.Context.NONE);
+            .listByDataBoxEdgeDevice("GroupForEdgeAutomation", "testedgedevice", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -270,8 +415,7 @@ import com.azure.resourcemanager.databoxedge.models.AzureContainerDataFormat;
  */
 public final class ContainersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/ContainerPut.json
+     * x-ms-original-file: 2023-12-01/ContainerPut.json
      */
     /**
      * Sample code: ContainerPut.
@@ -281,7 +425,7 @@ public final class ContainersCreateOrUpdateSamples {
     public static void containerPut(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
         manager.containers()
             .define("blobcontainer1")
-            .withExistingStorageAccount("testedgedevice", "storageaccount1", "GroupForEdgeAutomation")
+            .withExistingStorageAccount("GroupForEdgeAutomation", "testedgedevice", "storageaccount1")
             .withDataFormat(AzureContainerDataFormat.BLOCK_BLOB)
             .create();
     }
@@ -296,8 +440,7 @@ public final class ContainersCreateOrUpdateSamples {
  */
 public final class ContainersDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/ContainerDelete.json
+     * x-ms-original-file: 2023-12-01/ContainerDelete.json
      */
     /**
      * Sample code: ContainerDelete.
@@ -306,7 +449,7 @@ public final class ContainersDeleteSamples {
      */
     public static void containerDelete(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
         manager.containers()
-            .delete("testedgedevice", "storageaccount1", "blobcontainer1", "GroupForEdgeAutomation",
+            .delete("GroupForEdgeAutomation", "testedgedevice", "storageaccount1", "blobcontainer1",
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -320,8 +463,7 @@ public final class ContainersDeleteSamples {
  */
 public final class ContainersGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/ContainerGet.json
+     * x-ms-original-file: 2023-12-01/ContainerGet.json
      */
     /**
      * Sample code: ContainerGet.
@@ -330,7 +472,7 @@ public final class ContainersGetSamples {
      */
     public static void containerGet(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
         manager.containers()
-            .getWithResponse("testedgedevice", "storageaccount1", "blobcontainer1", "GroupForEdgeAutomation",
+            .getWithResponse("GroupForEdgeAutomation", "testedgedevice", "storageaccount1", "blobcontainer1",
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -344,8 +486,7 @@ public final class ContainersGetSamples {
  */
 public final class ContainersListByStorageAccountSamples {
     /*
-     * x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/
-     * ContainerListAllInDevice.json
+     * x-ms-original-file: 2023-12-01/ContainerListAllInDevice.json
      */
     /**
      * Sample code: ContainerListAllInDevice.
@@ -354,7 +495,7 @@ public final class ContainersListByStorageAccountSamples {
      */
     public static void containerListAllInDevice(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
         manager.containers()
-            .listByStorageAccount("testedgedevice", "storageaccount1", "GroupForEdgeAutomation",
+            .listByStorageAccount("GroupForEdgeAutomation", "testedgedevice", "storageaccount1",
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -368,8 +509,7 @@ public final class ContainersListByStorageAccountSamples {
  */
 public final class ContainersRefreshSamples {
     /*
-     * x-ms-original-file:
-     * specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/ContainerRefresh.json
+     * x-ms-original-file: 2023-12-01/ContainerRefresh.json
      */
     /**
      * Sample code: ContainerRefresh.
@@ -378,7 +518,57 @@ public final class ContainersRefreshSamples {
      */
     public static void containerRefresh(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
         manager.containers()
-            .refresh("testedgedevice", "storageaccount1", "blobcontainer1", "GroupForEdgeAutomation",
+            .refresh("GroupForEdgeAutomation", "testedgedevice", "storageaccount1", "blobcontainer1",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### DeviceCapacityCheck_CheckResourceCreationFeasibility
+
+```java
+import com.azure.resourcemanager.databoxedge.models.DeviceCapacityRequestInfo;
+import java.util.Arrays;
+
+/**
+ * Samples for DeviceCapacityCheck CheckResourceCreationFeasibility.
+ */
+public final class DeviceCapacityCheckCheckResourceCreationFeasibilitySamples {
+    /*
+     * x-ms-original-file: 2023-12-01/DeviceCapacityRequestPost.json
+     */
+    /**
+     * Sample code: DeviceCapacityRequestPost.
+     * 
+     * @param manager Entry point to DataBoxEdgeManager.
+     */
+    public static void deviceCapacityRequestPost(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
+        manager.deviceCapacityChecks()
+            .checkResourceCreationFeasibility("GroupForEdgeAutomation", "testedgedevice",
+                new DeviceCapacityRequestInfo().withVmPlacementQuery(Arrays.asList(Arrays.asList("Standard_D2_v2"))),
+                null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### DeviceCapacityInfo_GetDeviceCapacityInfo
+
+```java
+/**
+ * Samples for DeviceCapacityInfo GetDeviceCapacityInfo.
+ */
+public final class DeviceCapacityInfoGetDeviceCapacityInfoSamples {
+    /*
+     * x-ms-original-file: 2023-12-01/DeviceCapacityGet.json
+     */
+    /**
+     * Sample code: DeviceCapacityGet.
+     * 
+     * @param manager Entry point to DataBoxEdgeManager.
+     */
+    public static void deviceCapacityGet(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
+        manager.deviceCapacityInfoes()
+            .getDeviceCapacityInfoWithResponse("GroupForEdgeAutomation", "testedgedevice",
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -387,6 +577,8 @@ public final class ContainersRefreshSamples {
 ### Devices_CreateOrUpdate
 
 ```java
+import com.azure.resourcemanager.databoxedge.models.DataResidency;
+import com.azure.resourcemanager.databoxedge.models.DataResidencyType;
 import com.azure.resourcemanager.databoxedge.models.Sku;
 import com.azure.resourcemanager.databoxedge.models.SkuName;
 import com.azure.resourcemanager.databoxedge.models.SkuTier;
@@ -398,9 +590,27 @@ import java.util.Map;
  */
 public final class DevicesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/DataBoxEdgeDevicePut.
-     * json
+     * x-ms-original-file: 2023-12-01/DataBoxEdgeDevicePutWithDataResidency.json
+     */
+    /**
+     * Sample code: DataBoxEdgeDevicePutWithDataResidency.
+     * 
+     * @param manager Entry point to DataBoxEdgeManager.
+     */
+    public static void
+        dataBoxEdgeDevicePutWithDataResidency(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
+        manager.devices()
+            .define("testedgedevice")
+            .withRegion("WUS")
+            .withExistingResourceGroup("GroupForEdgeAutomation")
+            .withTags(mapOf())
+            .withSku(new Sku().withName(SkuName.EDGE).withTier(SkuTier.STANDARD))
+            .withDataResidency(new DataResidency().withType(DataResidencyType.ZONE_REPLICATION))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2023-12-01/DataBoxEdgeDevicePut.json
      */
     /**
      * Sample code: DataBoxEdgeDevicePut.
@@ -410,7 +620,7 @@ public final class DevicesCreateOrUpdateSamples {
     public static void dataBoxEdgeDevicePut(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
         manager.devices()
             .define("testedgedevice")
-            .withRegion("eastus")
+            .withRegion("WUS")
             .withExistingResourceGroup("GroupForEdgeAutomation")
             .withTags(mapOf())
             .withSku(new Sku().withName(SkuName.EDGE).withTier(SkuTier.STANDARD))
@@ -443,8 +653,7 @@ import com.azure.resourcemanager.databoxedge.models.SecuritySettings;
  */
 public final class DevicesCreateOrUpdateSecuritySettingsSamples {
     /*
-     * x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/
-     * SecuritySettingsUpdatePost.json
+     * x-ms-original-file: 2023-12-01/SecuritySettingsUpdatePost.json
      */
     /**
      * Sample code: CreateOrUpdateSecuritySettings.
@@ -454,10 +663,11 @@ public final class DevicesCreateOrUpdateSecuritySettingsSamples {
     public static void
         createOrUpdateSecuritySettings(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
         manager.devices()
-            .createOrUpdateSecuritySettings("testedgedevice", "AzureVM",
-                new SecuritySettings().withDeviceAdminPassword(new AsymmetricEncryptedSecret().withValue("<value>")
-                    .withEncryptionCertThumbprint("7DCBDFC44ED968D232C9A998FC105B5C70E84BE0")
-                    .withEncryptionAlgorithm(EncryptionAlgorithm.AES256)),
+            .createOrUpdateSecuritySettings("AzureVM", "testedgedevice",
+                new SecuritySettings()
+                    .withDeviceAdminPassword(new AsymmetricEncryptedSecret().withValue("<deviceAdminPassword>")
+                        .withEncryptionCertThumbprint("<encryptionThumprint>")
+                        .withEncryptionAlgorithm(EncryptionAlgorithm.AES256)),
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -471,8 +681,7 @@ public final class DevicesCreateOrUpdateSecuritySettingsSamples {
  */
 public final class DevicesDeleteSamples {
     /*
-     * x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/
-     * DataBoxEdgeDeviceDelete.json
+     * x-ms-original-file: 2023-12-01/DataBoxEdgeDeviceDelete.json
      */
     /**
      * Sample code: DataBoxEdgeDeviceDelete.
@@ -493,9 +702,7 @@ public final class DevicesDeleteSamples {
  */
 public final class DevicesDownloadUpdatesSamples {
     /*
-     * x-ms-original-file:
-     * specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/DownloadUpdatesPost.
-     * json
+     * x-ms-original-file: 2023-12-01/DownloadUpdatesPost.json
      */
     /**
      * Sample code: DownloadUpdatesPost.
@@ -503,7 +710,30 @@ public final class DevicesDownloadUpdatesSamples {
      * @param manager Entry point to DataBoxEdgeManager.
      */
     public static void downloadUpdatesPost(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
-        manager.devices().downloadUpdates("testedgedevice", "GroupForEdgeAutomation", com.azure.core.util.Context.NONE);
+        manager.devices().downloadUpdates("GroupForEdgeAutomation", "testedgedevice", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Devices_GenerateCertificate
+
+```java
+/**
+ * Samples for Devices GenerateCertificate.
+ */
+public final class DevicesGenerateCertificateSamples {
+    /*
+     * x-ms-original-file: 2023-12-01/GenerateCertificate.json
+     */
+    /**
+     * Sample code: GenerateCertificate.
+     * 
+     * @param manager Entry point to DataBoxEdgeManager.
+     */
+    public static void generateCertificate(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
+        manager.devices()
+            .generateCertificateWithResponse("GroupForEdgeAutomation", "testedgedevice",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -516,8 +746,7 @@ public final class DevicesDownloadUpdatesSamples {
  */
 public final class DevicesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/
-     * DataBoxEdgeDeviceGetByName.json
+     * x-ms-original-file: 2023-12-01/DataBoxEdgeDeviceGetByName.json
      */
     /**
      * Sample code: DataBoxEdgeDeviceGetByName.
@@ -525,6 +754,21 @@ public final class DevicesGetByResourceGroupSamples {
      * @param manager Entry point to DataBoxEdgeManager.
      */
     public static void dataBoxEdgeDeviceGetByName(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
+        manager.devices()
+            .getByResourceGroupWithResponse("GroupForEdgeAutomation", "testedgedevice",
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2023-12-01/DataBoxEdgeDeviceGetByNameWithDataResidency.json
+     */
+    /**
+     * Sample code: DataBoxEdgeDeviceGetByNameWithDataResidency.
+     * 
+     * @param manager Entry point to DataBoxEdgeManager.
+     */
+    public static void
+        dataBoxEdgeDeviceGetByNameWithDataResidency(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
         manager.devices()
             .getByResourceGroupWithResponse("GroupForEdgeAutomation", "testedgedevice",
                 com.azure.core.util.Context.NONE);
@@ -540,8 +784,7 @@ public final class DevicesGetByResourceGroupSamples {
  */
 public final class DevicesGetExtendedInformationSamples {
     /*
-     * x-ms-original-file:
-     * specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/ExtendedInfoPost.json
+     * x-ms-original-file: 2023-12-01/ExtendedInfoPost.json
      */
     /**
      * Sample code: ExtendedInfoPost.
@@ -550,7 +793,7 @@ public final class DevicesGetExtendedInformationSamples {
      */
     public static void extendedInfoPost(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
         manager.devices()
-            .getExtendedInformationWithResponse("testedgedevice", "GroupForEdgeAutomation",
+            .getExtendedInformationWithResponse("GroupForEdgeAutomation", "testedgedevice",
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -564,9 +807,7 @@ public final class DevicesGetExtendedInformationSamples {
  */
 public final class DevicesGetNetworkSettingsSamples {
     /*
-     * x-ms-original-file:
-     * specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/NetworkSettingsGet.
-     * json
+     * x-ms-original-file: 2023-12-01/NetworkSettingsGet.json
      */
     /**
      * Sample code: NetworkSettingsGet.
@@ -575,7 +816,7 @@ public final class DevicesGetNetworkSettingsSamples {
      */
     public static void networkSettingsGet(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
         manager.devices()
-            .getNetworkSettingsWithResponse("testedgedevice", "GroupForEdgeAutomation",
+            .getNetworkSettingsWithResponse("GroupForEdgeAutomation", "testedgedevice",
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -589,8 +830,7 @@ public final class DevicesGetNetworkSettingsSamples {
  */
 public final class DevicesGetUpdateSummarySamples {
     /*
-     * x-ms-original-file:
-     * specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/UpdateSummaryGet.json
+     * x-ms-original-file: 2023-12-01/UpdateSummaryGet.json
      */
     /**
      * Sample code: UpdateSummaryGet.
@@ -599,7 +839,7 @@ public final class DevicesGetUpdateSummarySamples {
      */
     public static void updateSummaryGet(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
         manager.devices()
-            .getUpdateSummaryWithResponse("testedgedevice", "GroupForEdgeAutomation", com.azure.core.util.Context.NONE);
+            .getUpdateSummaryWithResponse("GroupForEdgeAutomation", "testedgedevice", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -612,9 +852,7 @@ public final class DevicesGetUpdateSummarySamples {
  */
 public final class DevicesInstallUpdatesSamples {
     /*
-     * x-ms-original-file:
-     * specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/InstallUpdatesPost.
-     * json
+     * x-ms-original-file: 2023-12-01/InstallUpdatesPost.json
      */
     /**
      * Sample code: InstallUpdatesPost.
@@ -622,7 +860,7 @@ public final class DevicesInstallUpdatesSamples {
      * @param manager Entry point to DataBoxEdgeManager.
      */
     public static void installUpdatesPost(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
-        manager.devices().installUpdates("testedgedevice", "GroupForEdgeAutomation", com.azure.core.util.Context.NONE);
+        manager.devices().installUpdates("GroupForEdgeAutomation", "testedgedevice", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -635,8 +873,7 @@ public final class DevicesInstallUpdatesSamples {
  */
 public final class DevicesListSamples {
     /*
-     * x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/
-     * DataBoxEdgeDeviceGetBySubscription.json
+     * x-ms-original-file: 2023-12-01/DataBoxEdgeDeviceGetBySubscription.json
      */
     /**
      * Sample code: DataBoxEdgeDeviceGetBySubscription.
@@ -658,8 +895,7 @@ public final class DevicesListSamples {
  */
 public final class DevicesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/
-     * DataBoxEdgeDeviceGetByResourceGroup.json
+     * x-ms-original-file: 2023-12-01/DataBoxEdgeDeviceGetByResourceGroup.json
      */
     /**
      * Sample code: DataBoxEdgeDeviceGetByResourceGroup.
@@ -681,9 +917,7 @@ public final class DevicesListByResourceGroupSamples {
  */
 public final class DevicesScanForUpdatesSamples {
     /*
-     * x-ms-original-file:
-     * specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/ScanForUpdatesPost.
-     * json
+     * x-ms-original-file: 2023-12-01/ScanForUpdatesPost.json
      */
     /**
      * Sample code: ScanForUpdatesPost.
@@ -691,7 +925,7 @@ public final class DevicesScanForUpdatesSamples {
      * @param manager Entry point to DataBoxEdgeManager.
      */
     public static void scanForUpdatesPost(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
-        manager.devices().scanForUpdates("testedgedevice", "GroupForEdgeAutomation", com.azure.core.util.Context.NONE);
+        manager.devices().scanForUpdates("GroupForEdgeAutomation", "testedgedevice", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -700,16 +934,15 @@ public final class DevicesScanForUpdatesSamples {
 
 ```java
 import com.azure.resourcemanager.databoxedge.models.DataBoxEdgeDevice;
-import java.util.HashMap;
-import java.util.Map;
+import com.azure.resourcemanager.databoxedge.models.EdgeProfilePatch;
+import com.azure.resourcemanager.databoxedge.models.EdgeProfileSubscriptionPatch;
 
 /**
  * Samples for Devices Update.
  */
 public final class DevicesUpdateSamples {
     /*
-     * x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/
-     * DataBoxEdgeDevicePatch.json
+     * x-ms-original-file: 2023-12-01/DataBoxEdgeDevicePatch.json
      */
     /**
      * Sample code: DataBoxEdgeDevicePatch.
@@ -721,19 +954,35 @@ public final class DevicesUpdateSamples {
             .getByResourceGroupWithResponse("GroupForEdgeAutomation", "testedgedevice",
                 com.azure.core.util.Context.NONE)
             .getValue();
-        resource.update().withTags(mapOf("Key1", "fakeTokenPlaceholder", "Key2", "fakeTokenPlaceholder")).apply();
+        resource.update()
+            .withEdgeProfile(new EdgeProfilePatch().withSubscription(new EdgeProfileSubscriptionPatch().withId(
+                "/subscriptions/0d44739e-0563-474f-97e7-24a0cdb23b29/resourceGroups/rapvs-rg/providers/Microsoft.AzureStack/linkedSubscriptions/ca014ddc-5cf2-45f8-b390-e901e4a0ae87")))
+            .apply();
     }
+}
+```
 
-    // Use "Map.of" if available
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
-        }
-        return map;
+### Devices_UpdateExtendedInformation
+
+```java
+import com.azure.resourcemanager.databoxedge.models.DataBoxEdgeDeviceExtendedInfoPatch;
+
+/**
+ * Samples for Devices UpdateExtendedInformation.
+ */
+public final class DevicesUpdateExtendedInformationSamples {
+    /*
+     * x-ms-original-file: 2023-12-01/GetUpdateExtendedInfo.json
+     */
+    /**
+     * Sample code: GetUpdateExtendedInfo.
+     * 
+     * @param manager Entry point to DataBoxEdgeManager.
+     */
+    public static void getUpdateExtendedInfo(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
+        manager.devices()
+            .updateExtendedInformationWithResponse("GroupForEdgeAutomation", "testedgedevice",
+                new DataBoxEdgeDeviceExtendedInfoPatch(), com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -748,9 +997,7 @@ import com.azure.resourcemanager.databoxedge.models.UploadCertificateRequest;
  */
 public final class DevicesUploadCertificateSamples {
     /*
-     * x-ms-original-file:
-     * specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/UploadCertificatePost
-     * .json
+     * x-ms-original-file: 2023-12-01/UploadCertificatePost.json
      */
     /**
      * Sample code: UploadCertificatePost.
@@ -759,9 +1006,121 @@ public final class DevicesUploadCertificateSamples {
      */
     public static void uploadCertificatePost(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
         manager.devices()
-            .uploadCertificateWithResponse("testedgedevice", "GroupForEdgeAutomation",
+            .uploadCertificateWithResponse("GroupForEdgeAutomation", "testedgedevice",
                 new UploadCertificateRequest().withCertificate(
                     "MIIC9DCCAdygAwIBAgIQWJae7GNjiI9Mcv/gJyrOPTANBgkqhkiG9w0BAQUFADASMRAwDgYDVQQDDAdXaW5kb3dzMB4XDTE4MTEyNzAwMTA0NVoXDTIxMTEyODAwMTA0NVowEjEQMA4GA1UEAwwHV2luZG93czCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAKxkRExqxf0qH1avnyORptIbRC2yQwqe3EIbJ2FPKr5jtAppGeX/dGKrFSnX+7/0HFr77aJHafdpEAtOiLyJ4zCAVs0obZCCIq4qJdmjYUTU0UXH/w/YzXfQA0d9Zh9AN+NJBX9xj05NzgsT24fkgsK2v6mWJQXT7YcWAsl5sEYPnx1e+MrupNyVSL/RUJmrS+etJSysHtFeWRhsUhVAs1DD5ExJvBLU3WH0IsojEvpXcjrutB5/MDQNrd/StGI6WovoSSPH7FyT9tgERx+q+Yg3YUGzfaIPCctlrRGehcdtzdNoKd0rsX62yCq0U6POoSfwe22NJu41oAUMd7e6R8cCAwEAAaNGMEQwEwYDVR0lBAwwCgYIKwYBBQUHAwIwHQYDVR0OBBYEFDd0VxnS3LnMIfwc7xW4b4IZWG5GMA4GA1UdDwEB/wQEAwIFIDANBgkqhkiG9w0BAQUFAAOCAQEAPQRby2u9celvtvL/DLEb5Vt3/tPStRQC5MyTD62L5RT/q8E6EMCXVZNkXF5WlWucLJi/18tY+9PNgP9xWLJh7kpSWlWdi9KPtwMqKDlEH8L2TnQdjimt9XuiCrTnoFy/1X2BGLY/rCaUJNSd15QCkz2xeW+Z+YSk2GwAc/A/4YfNpqSIMfNuPrT76o02VdD9WmJUA3fS/HY0sU9qgQRS/3F5/0EPS+HYQ0SvXCK9tggcCd4O050ytNBMJC9qMOJ7yE0iOrFfOJSCfDAuPhn/rHFh79Kn1moF+/CE+nc0/2RPiLC8r54/rt5dYyyxJDfXg0a3VrrX39W69WZGW5OXiw=="),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### DiagnosticSettings_GetDiagnosticProactiveLogCollectionSettings
+
+```java
+/**
+ * Samples for DiagnosticSettings GetDiagnosticProactiveLogCollectionSettings.
+ */
+public final class DiagnosticSettingsGetDiagnosticProactiveLogCollectionSettingsSamples {
+    /*
+     * x-ms-original-file: 2023-12-01/GetDiagnosticProactiveLogCollectionSettings.json
+     */
+    /**
+     * Sample code: GetDiagnosticProactiveLogCollectionSettings.
+     * 
+     * @param manager Entry point to DataBoxEdgeManager.
+     */
+    public static void
+        getDiagnosticProactiveLogCollectionSettings(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
+        manager.diagnosticSettings()
+            .getDiagnosticProactiveLogCollectionSettingsWithResponse("GroupForEdgeAutomation", "testedgedevice",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### DiagnosticSettings_GetDiagnosticRemoteSupportSettings
+
+```java
+/**
+ * Samples for DiagnosticSettings GetDiagnosticRemoteSupportSettings.
+ */
+public final class DiagnosticSettingsGetDiagnosticRemoteSupportSettingsSamples {
+    /*
+     * x-ms-original-file: 2023-12-01/GetDiagnosticRemoteSupportSettings.json
+     */
+    /**
+     * Sample code: GetDiagnosticRemoteSupportSettings.
+     * 
+     * @param manager Entry point to DataBoxEdgeManager.
+     */
+    public static void
+        getDiagnosticRemoteSupportSettings(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
+        manager.diagnosticSettings()
+            .getDiagnosticRemoteSupportSettingsWithResponse("GroupForEdgeAutomation", "testedgedevice",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### DiagnosticSettings_UpdateDiagnosticProactiveLogCollectionSettings
+
+```java
+import com.azure.resourcemanager.databoxedge.fluent.models.DiagnosticProactiveLogCollectionSettingsInner;
+import com.azure.resourcemanager.databoxedge.models.ProactiveDiagnosticsConsent;
+
+/**
+ * Samples for DiagnosticSettings UpdateDiagnosticProactiveLogCollectionSettings.
+ */
+public final class DiagnosticSettingsUpdateDiagnosticProactiveLogCollectionSettingsSamples {
+    /*
+     * x-ms-original-file: 2023-12-01/UpdateDiagnosticProactiveLogCollectionSettings.json
+     */
+    /**
+     * Sample code: UpdateDiagnosticProactiveLogCollectionSettings.
+     * 
+     * @param manager Entry point to DataBoxEdgeManager.
+     */
+    public static void updateDiagnosticProactiveLogCollectionSettings(
+        com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
+        manager.diagnosticSettings()
+            .updateDiagnosticProactiveLogCollectionSettings("GroupForEdgeAutomation", "testedgedevice",
+                new DiagnosticProactiveLogCollectionSettingsInner()
+                    .withUserConsent(ProactiveDiagnosticsConsent.ENABLED),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### DiagnosticSettings_UpdateDiagnosticRemoteSupportSettings
+
+```java
+import com.azure.resourcemanager.databoxedge.fluent.models.DiagnosticRemoteSupportSettingsInner;
+import com.azure.resourcemanager.databoxedge.models.AccessLevel;
+import com.azure.resourcemanager.databoxedge.models.RemoteApplicationType;
+import com.azure.resourcemanager.databoxedge.models.RemoteSupportSettings;
+import java.time.OffsetDateTime;
+import java.util.Arrays;
+
+/**
+ * Samples for DiagnosticSettings UpdateDiagnosticRemoteSupportSettings.
+ */
+public final class DiagnosticSettingsUpdateDiagnosticRemoteSupportSettingsSamples {
+    /*
+     * x-ms-original-file: 2023-12-01/UpdateDiagnosticRemoteSupportSettings.json
+     */
+    /**
+     * Sample code: UpdateDiagnosticRemoteSupportSettings.
+     * 
+     * @param manager Entry point to DataBoxEdgeManager.
+     */
+    public static void
+        updateDiagnosticRemoteSupportSettings(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
+        manager.diagnosticSettings()
+            .updateDiagnosticRemoteSupportSettings("GroupForEdgeAutomation", "testedgedevice",
+                new DiagnosticRemoteSupportSettingsInner().withRemoteSupportSettingsList(Arrays
+                    .asList(new RemoteSupportSettings().withRemoteApplicationType(RemoteApplicationType.POWERSHELL)
+                        .withAccessLevel(AccessLevel.READ_WRITE)
+                        .withExpirationTimeStampInUTC(OffsetDateTime.parse("2021-07-07T00:00:00+00:00")))),
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -775,8 +1134,7 @@ public final class DevicesUploadCertificateSamples {
  */
 public final class JobsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/JobsGet.json
+     * x-ms-original-file: 2023-12-01/JobsGet.json
      */
     /**
      * Sample code: JobsGet.
@@ -785,8 +1143,109 @@ public final class JobsGetSamples {
      */
     public static void jobsGet(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
         manager.jobs()
-            .getWithResponse("testedgedevice", "159a00c7-8543-4343-9435-263ac87df3bb", "GroupForEdgeAutomation",
+            .getWithResponse("GroupForEdgeAutomation", "testedgedevice", "159a00c7-8543-4343-9435-263ac87df3bb",
                 com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### MonitoringConfig_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.databoxedge.fluent.models.MonitoringMetricConfigurationInner;
+import com.azure.resourcemanager.databoxedge.models.MetricConfiguration;
+import com.azure.resourcemanager.databoxedge.models.MetricCounter;
+import com.azure.resourcemanager.databoxedge.models.MetricCounterSet;
+import java.util.Arrays;
+
+/**
+ * Samples for MonitoringConfig CreateOrUpdate.
+ */
+public final class MonitoringConfigCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2023-12-01/PutMonitoringConfig.json
+     */
+    /**
+     * Sample code: PutMonitoringConfig.
+     * 
+     * @param manager Entry point to DataBoxEdgeManager.
+     */
+    public static void putMonitoringConfig(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
+        manager.monitoringConfigs()
+            .createOrUpdate("GroupForEdgeAutomation", "testedgedevice", "testrole",
+                new MonitoringMetricConfigurationInner()
+                    .withMetricConfigurations(Arrays.asList(new MetricConfiguration().withResourceId("test")
+                        .withMdmAccount("test")
+                        .withMetricNameSpace("test")
+                        .withCounterSets(Arrays.asList(new MetricCounterSet()
+                            .withCounters(Arrays.asList(new MetricCounter().withName("test"))))))),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### MonitoringConfig_Delete
+
+```java
+/**
+ * Samples for MonitoringConfig Delete.
+ */
+public final class MonitoringConfigDeleteSamples {
+    /*
+     * x-ms-original-file: 2023-12-01/DeleteMonitoringConfig.json
+     */
+    /**
+     * Sample code: DeleteMonitoringConfig.
+     * 
+     * @param manager Entry point to DataBoxEdgeManager.
+     */
+    public static void deleteMonitoringConfig(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
+        manager.monitoringConfigs()
+            .delete("GroupForEdgeAutomation", "testedgedevice", "testrole", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### MonitoringConfig_Get
+
+```java
+/**
+ * Samples for MonitoringConfig Get.
+ */
+public final class MonitoringConfigGetSamples {
+    /*
+     * x-ms-original-file: 2023-12-01/GetMonitoringConfig.json
+     */
+    /**
+     * Sample code: GetMonitoringConfig.
+     * 
+     * @param manager Entry point to DataBoxEdgeManager.
+     */
+    public static void getMonitoringConfig(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
+        manager.monitoringConfigs()
+            .getWithResponse("GroupForEdgeAutomation", "testedgedevice", "testrole", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### MonitoringConfig_List
+
+```java
+/**
+ * Samples for MonitoringConfig List.
+ */
+public final class MonitoringConfigListSamples {
+    /*
+     * x-ms-original-file: 2023-12-01/ListMonitoringConfig.json
+     */
+    /**
+     * Sample code: ListMonitoringConfig.
+     * 
+     * @param manager Entry point to DataBoxEdgeManager.
+     */
+    public static void listMonitoringConfig(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
+        manager.monitoringConfigs()
+            .list("GroupForEdgeAutomation", "testedgedevice", "testrole", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -799,9 +1258,7 @@ public final class JobsGetSamples {
  */
 public final class NodesListByDataBoxEdgeDeviceSamples {
     /*
-     * x-ms-original-file:
-     * specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/NodeGetAllInDevice.
-     * json
+     * x-ms-original-file: 2023-12-01/NodeGetAllInDevice.json
      */
     /**
      * Sample code: NodesGetAllInDevice.
@@ -810,7 +1267,7 @@ public final class NodesListByDataBoxEdgeDeviceSamples {
      */
     public static void nodesGetAllInDevice(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
         manager.nodes()
-            .listByDataBoxEdgeDevice("testedgedevice", "GroupForEdgeAutomation", com.azure.core.util.Context.NONE);
+            .listByDataBoxEdgeDevice("GroupForEdgeAutomation", "testedgedevice", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -823,8 +1280,7 @@ public final class NodesListByDataBoxEdgeDeviceSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/OperationsGet.json
+     * x-ms-original-file: 2023-12-01/OperationsGet.json
      */
     /**
      * Sample code: OperationsGet.
@@ -845,9 +1301,7 @@ public final class OperationsListSamples {
  */
 public final class OperationsStatusGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/OperationsStatusGet.
-     * json
+     * x-ms-original-file: 2023-12-01/OperationsStatusGet.json
      */
     /**
      * Sample code: OperationsStatusGet.
@@ -856,7 +1310,7 @@ public final class OperationsStatusGetSamples {
      */
     public static void operationsStatusGet(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
         manager.operationsStatus()
-            .getWithResponse("testedgedevice", "159a00c7-8543-4343-9435-263ac87df3bb", "GroupForEdgeAutomation",
+            .getWithResponse("GroupForEdgeAutomation", "testedgedevice", "159a00c7-8543-4343-9435-263ac87df3bb",
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -875,8 +1329,7 @@ import java.util.Arrays;
  */
 public final class OrdersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/OrderPut.json
+     * x-ms-original-file: 2023-12-01/OrderPut.json
      */
     /**
      * Sample code: OrderPut.
@@ -885,7 +1338,7 @@ public final class OrdersCreateOrUpdateSamples {
      */
     public static void orderPut(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
         manager.orders()
-            .createOrUpdate("testedgedevice", "GroupForEdgeAutomation",
+            .createOrUpdate("GroupForEdgeAutomation", "testedgedevice",
                 new OrderInner()
                     .withContactInformation(new ContactDetails().withContactPerson("John Mcclane")
                         .withCompanyName("Microsoft")
@@ -911,8 +1364,7 @@ public final class OrdersCreateOrUpdateSamples {
  */
 public final class OrdersDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/OrderDelete.json
+     * x-ms-original-file: 2023-12-01/OrderDelete.json
      */
     /**
      * Sample code: OrderDelete.
@@ -920,7 +1372,7 @@ public final class OrdersDeleteSamples {
      * @param manager Entry point to DataBoxEdgeManager.
      */
     public static void orderDelete(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
-        manager.orders().delete("testedgedevice", "GroupForEdgeAutomation", com.azure.core.util.Context.NONE);
+        manager.orders().delete("GroupForEdgeAutomation", "testedgedevice", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -933,8 +1385,7 @@ public final class OrdersDeleteSamples {
  */
 public final class OrdersGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/OrderGet.json
+     * x-ms-original-file: 2023-12-01/OrderGet.json
      */
     /**
      * Sample code: OrderGet.
@@ -942,7 +1393,7 @@ public final class OrdersGetSamples {
      * @param manager Entry point to DataBoxEdgeManager.
      */
     public static void orderGet(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
-        manager.orders().getWithResponse("testedgedevice", "GroupForEdgeAutomation", com.azure.core.util.Context.NONE);
+        manager.orders().getWithResponse("GroupForEdgeAutomation", "testedgedevice", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -955,9 +1406,7 @@ public final class OrdersGetSamples {
  */
 public final class OrdersListByDataBoxEdgeDeviceSamples {
     /*
-     * x-ms-original-file:
-     * specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/OrderGetAllInDevice.
-     * json
+     * x-ms-original-file: 2023-12-01/OrderGetAllInDevice.json
      */
     /**
      * Sample code: OrderGetAllInDevice.
@@ -966,7 +1415,29 @@ public final class OrdersListByDataBoxEdgeDeviceSamples {
      */
     public static void orderGetAllInDevice(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
         manager.orders()
-            .listByDataBoxEdgeDevice("testedgedevice", "GroupForEdgeAutomation", com.azure.core.util.Context.NONE);
+            .listByDataBoxEdgeDevice("GroupForEdgeAutomation", "testedgedevice", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Orders_ListDCAccessCode
+
+```java
+/**
+ * Samples for Orders ListDCAccessCode.
+ */
+public final class OrdersListDCAccessCodeSamples {
+    /*
+     * x-ms-original-file: 2023-12-01/GetDCAccessCode.json
+     */
+    /**
+     * Sample code: GetDCAccessCode.
+     * 
+     * @param manager Entry point to DataBoxEdgeManager.
+     */
+    public static void getDCAccessCode(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
+        manager.orders()
+            .listDCAccessCodeWithResponse("GroupForEdgeAutomation", "testedgedevice", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -989,8 +1460,7 @@ import java.util.Arrays;
  */
 public final class RolesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/RolePut.json
+     * x-ms-original-file: 2023-12-01/RolePut.json
      */
     /**
      * Sample code: RolePut.
@@ -999,7 +1469,7 @@ public final class RolesCreateOrUpdateSamples {
      */
     public static void rolePut(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
         manager.roles()
-            .createOrUpdate("testedgedevice", "IoTRole1", "GroupForEdgeAutomation", new IoTRole()
+            .createOrUpdate("GroupForEdgeAutomation", "testedgedevice", "IoTRole1", new IoTRole()
                 .withHostPlatform(PlatformType.LINUX)
                 .withIoTDeviceDetails(new IoTDeviceInfo().withDeviceId("iotdevice")
                     .withIoTHostHub("iothub.azure-devices.net")
@@ -1029,8 +1499,7 @@ public final class RolesCreateOrUpdateSamples {
  */
 public final class RolesDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/RoleDelete.json
+     * x-ms-original-file: 2023-12-01/RoleDelete.json
      */
     /**
      * Sample code: RoleDelete.
@@ -1039,7 +1508,7 @@ public final class RolesDeleteSamples {
      */
     public static void roleDelete(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
         manager.roles()
-            .delete("testedgedevice", "IoTRole1", "GroupForEdgeAutomation", com.azure.core.util.Context.NONE);
+            .delete("GroupForEdgeAutomation", "testedgedevice", "IoTRole1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1052,8 +1521,7 @@ public final class RolesDeleteSamples {
  */
 public final class RolesGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/RoleGet.json
+     * x-ms-original-file: 2023-12-01/RoleGet.json
      */
     /**
      * Sample code: RoleGet.
@@ -1062,7 +1530,7 @@ public final class RolesGetSamples {
      */
     public static void roleGet(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
         manager.roles()
-            .getWithResponse("testedgedevice", "IoTRole1", "GroupForEdgeAutomation", com.azure.core.util.Context.NONE);
+            .getWithResponse("GroupForEdgeAutomation", "testedgedevice", "IoTRole1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1075,9 +1543,7 @@ public final class RolesGetSamples {
  */
 public final class RolesListByDataBoxEdgeDeviceSamples {
     /*
-     * x-ms-original-file:
-     * specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/RoleGetAllInDevice.
-     * json
+     * x-ms-original-file: 2023-12-01/RoleGetAllInDevice.json
      */
     /**
      * Sample code: RoleGetAllInDevice.
@@ -1086,7 +1552,7 @@ public final class RolesListByDataBoxEdgeDeviceSamples {
      */
     public static void roleGetAllInDevice(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
         manager.roles()
-            .listByDataBoxEdgeDevice("testedgedevice", "GroupForEdgeAutomation", com.azure.core.util.Context.NONE);
+            .listByDataBoxEdgeDevice("GroupForEdgeAutomation", "testedgedevice", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1109,8 +1575,7 @@ import java.util.Arrays;
  */
 public final class SharesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/SharePut.json
+     * x-ms-original-file: 2023-12-01/SharePut.json
      */
     /**
      * Sample code: SharePut.
@@ -1120,7 +1585,7 @@ public final class SharesCreateOrUpdateSamples {
     public static void sharePut(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
         manager.shares()
             .define("smbshare")
-            .withExistingDataBoxEdgeDevice("testedgedevice", "GroupForEdgeAutomation")
+            .withExistingDataBoxEdgeDevice("GroupForEdgeAutomation", "testedgedevice")
             .withShareStatus(ShareStatus.fromString("Online"))
             .withMonitoringStatus(MonitoringStatus.ENABLED)
             .withAccessProtocol(ShareAccessProtocol.SMB)
@@ -1145,8 +1610,7 @@ public final class SharesCreateOrUpdateSamples {
  */
 public final class SharesDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/ShareDelete.json
+     * x-ms-original-file: 2023-12-01/ShareDelete.json
      */
     /**
      * Sample code: ShareDelete.
@@ -1155,7 +1619,7 @@ public final class SharesDeleteSamples {
      */
     public static void shareDelete(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
         manager.shares()
-            .delete("testedgedevice", "smbshare", "GroupForEdgeAutomation", com.azure.core.util.Context.NONE);
+            .delete("GroupForEdgeAutomation", "testedgedevice", "smbshare", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1168,8 +1632,7 @@ public final class SharesDeleteSamples {
  */
 public final class SharesGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/ShareGet.json
+     * x-ms-original-file: 2023-12-01/ShareGet.json
      */
     /**
      * Sample code: ShareGet.
@@ -1178,7 +1641,7 @@ public final class SharesGetSamples {
      */
     public static void shareGet(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
         manager.shares()
-            .getWithResponse("testedgedevice", "smbshare", "GroupForEdgeAutomation", com.azure.core.util.Context.NONE);
+            .getWithResponse("GroupForEdgeAutomation", "testedgedevice", "smbshare", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1191,9 +1654,7 @@ public final class SharesGetSamples {
  */
 public final class SharesListByDataBoxEdgeDeviceSamples {
     /*
-     * x-ms-original-file:
-     * specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/ShareGetAllInDevice.
-     * json
+     * x-ms-original-file: 2023-12-01/ShareGetAllInDevice.json
      */
     /**
      * Sample code: ShareGetAllInDevice.
@@ -1202,7 +1663,7 @@ public final class SharesListByDataBoxEdgeDeviceSamples {
      */
     public static void shareGetAllInDevice(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
         manager.shares()
-            .listByDataBoxEdgeDevice("testedgedevice", "GroupForEdgeAutomation", com.azure.core.util.Context.NONE);
+            .listByDataBoxEdgeDevice("GroupForEdgeAutomation", "testedgedevice", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1215,8 +1676,7 @@ public final class SharesListByDataBoxEdgeDeviceSamples {
  */
 public final class SharesRefreshSamples {
     /*
-     * x-ms-original-file:
-     * specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/ShareRefreshPost.json
+     * x-ms-original-file: 2023-12-01/ShareRefreshPost.json
      */
     /**
      * Sample code: ShareRefreshPost.
@@ -1225,29 +1685,7 @@ public final class SharesRefreshSamples {
      */
     public static void shareRefreshPost(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
         manager.shares()
-            .refresh("testedgedevice", "smbshare", "GroupForEdgeAutomation", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Skus_List
-
-```java
-/**
- * Samples for Skus List.
- */
-public final class SkusListSamples {
-    /*
-     * x-ms-original-file:
-     * specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/ListSkus.json
-     */
-    /**
-     * Sample code: ListSkus.
-     * 
-     * @param manager Entry point to DataBoxEdgeManager.
-     */
-    public static void listSkus(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
-        manager.skus().list(null, com.azure.core.util.Context.NONE);
+            .refresh("GroupForEdgeAutomation", "testedgedevice", "smbshare", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1265,8 +1703,7 @@ import com.azure.resourcemanager.databoxedge.models.SslStatus;
  */
 public final class StorageAccountCredentialsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/SACPut.json
+     * x-ms-original-file: 2023-12-01/SACPut.json
      */
     /**
      * Sample code: SACPut.
@@ -1276,7 +1713,7 @@ public final class StorageAccountCredentialsCreateOrUpdateSamples {
     public static void sACPut(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
         manager.storageAccountCredentials()
             .define("sac1")
-            .withExistingDataBoxEdgeDevice("testedgedevice", "GroupForEdgeAutomation")
+            .withExistingDataBoxEdgeDevice("GroupForEdgeAutomation", "testedgedevice")
             .withAlias("sac1")
             .withSslStatus(SslStatus.DISABLED)
             .withAccountType(AccountType.BLOB_STORAGE)
@@ -1298,8 +1735,7 @@ public final class StorageAccountCredentialsCreateOrUpdateSamples {
  */
 public final class StorageAccountCredentialsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/SACDelete.json
+     * x-ms-original-file: 2023-12-01/SACDelete.json
      */
     /**
      * Sample code: SACDelete.
@@ -1308,7 +1744,7 @@ public final class StorageAccountCredentialsDeleteSamples {
      */
     public static void sACDelete(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
         manager.storageAccountCredentials()
-            .delete("testedgedevice", "sac1", "GroupForEdgeAutomation", com.azure.core.util.Context.NONE);
+            .delete("GroupForEdgeAutomation", "testedgedevice", "sac1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1321,8 +1757,7 @@ public final class StorageAccountCredentialsDeleteSamples {
  */
 public final class StorageAccountCredentialsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/SACGet.json
+     * x-ms-original-file: 2023-12-01/SACGet.json
      */
     /**
      * Sample code: SACGet.
@@ -1331,7 +1766,7 @@ public final class StorageAccountCredentialsGetSamples {
      */
     public static void sACGet(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
         manager.storageAccountCredentials()
-            .getWithResponse("testedgedevice", "sac1", "GroupForEdgeAutomation", com.azure.core.util.Context.NONE);
+            .getWithResponse("GroupForEdgeAutomation", "testedgedevice", "sac1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1344,9 +1779,7 @@ public final class StorageAccountCredentialsGetSamples {
  */
 public final class StorageAccountCredentialsListByDataBoxEdgeDeviceSamples {
     /*
-     * x-ms-original-file:
-     * specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/SACGetAllInDevice.
-     * json
+     * x-ms-original-file: 2023-12-01/SACGetAllInDevice.json
      */
     /**
      * Sample code: SACGetAllInDevice.
@@ -1355,7 +1788,7 @@ public final class StorageAccountCredentialsListByDataBoxEdgeDeviceSamples {
      */
     public static void sACGetAllInDevice(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
         manager.storageAccountCredentials()
-            .listByDataBoxEdgeDevice("testedgedevice", "GroupForEdgeAutomation", com.azure.core.util.Context.NONE);
+            .listByDataBoxEdgeDevice("GroupForEdgeAutomation", "testedgedevice", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1371,9 +1804,7 @@ import com.azure.resourcemanager.databoxedge.models.StorageAccountStatus;
  */
 public final class StorageAccountsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/StorageAccountPut.
-     * json
+     * x-ms-original-file: 2023-12-01/StorageAccountPut.json
      */
     /**
      * Sample code: StorageAccountPut.
@@ -1383,10 +1814,10 @@ public final class StorageAccountsCreateOrUpdateSamples {
     public static void storageAccountPut(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
         manager.storageAccounts()
             .define("blobstorageaccount1")
-            .withExistingDataBoxEdgeDevice("testedgedevice", "GroupForEdgeAutomation")
+            .withExistingDataBoxEdgeDevice("GroupForEdgeAutomation", "testedgedevice")
+            .withDataPolicy(DataPolicy.CLOUD)
             .withDescription("It's an awesome storage account")
             .withStorageAccountStatus(StorageAccountStatus.OK)
-            .withDataPolicy(DataPolicy.CLOUD)
             .withStorageAccountCredentialId(
                 "/subscriptions/4385cf00-2d3a-425a-832f-f4285b1c9dce/resourceGroups/GroupForDataBoxEdgeAutomation/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/testedgedevice/storageAccountCredentials/cisbvt")
             .create();
@@ -1402,9 +1833,7 @@ public final class StorageAccountsCreateOrUpdateSamples {
  */
 public final class StorageAccountsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/StorageAccountDelete.
-     * json
+     * x-ms-original-file: 2023-12-01/StorageAccountDelete.json
      */
     /**
      * Sample code: StorageAccountDelete.
@@ -1413,7 +1842,7 @@ public final class StorageAccountsDeleteSamples {
      */
     public static void storageAccountDelete(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
         manager.storageAccounts()
-            .delete("testedgedevice", "storageaccount1", "GroupForEdgeAutomation", com.azure.core.util.Context.NONE);
+            .delete("GroupForEdgeAutomation", "testedgedevice", "storageaccount1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1426,9 +1855,7 @@ public final class StorageAccountsDeleteSamples {
  */
 public final class StorageAccountsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/StorageAccountGet.
-     * json
+     * x-ms-original-file: 2023-12-01/StorageAccountGet.json
      */
     /**
      * Sample code: StorageAccountGet.
@@ -1437,7 +1864,7 @@ public final class StorageAccountsGetSamples {
      */
     public static void storageAccountGet(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
         manager.storageAccounts()
-            .getWithResponse("testedgedevice", "blobstorageaccount1", "GroupForEdgeAutomation",
+            .getWithResponse("GroupForEdgeAutomation", "testedgedevice", "blobstorageaccount1",
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -1451,8 +1878,7 @@ public final class StorageAccountsGetSamples {
  */
 public final class StorageAccountsListByDataBoxEdgeDeviceSamples {
     /*
-     * x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/
-     * StorageAccountGetAllInDevice.json
+     * x-ms-original-file: 2023-12-01/StorageAccountGetAllInDevice.json
      */
     /**
      * Sample code: StorageAccountGetAllInDevice.
@@ -1461,7 +1887,37 @@ public final class StorageAccountsListByDataBoxEdgeDeviceSamples {
      */
     public static void storageAccountGetAllInDevice(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
         manager.storageAccounts()
-            .listByDataBoxEdgeDevice("testedgedevice", "GroupForEdgeAutomation", com.azure.core.util.Context.NONE);
+            .listByDataBoxEdgeDevice("GroupForEdgeAutomation", "testedgedevice", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### SupportPackages_TriggerSupportPackage
+
+```java
+import com.azure.resourcemanager.databoxedge.models.TriggerSupportPackageRequest;
+import java.time.OffsetDateTime;
+
+/**
+ * Samples for SupportPackages TriggerSupportPackage.
+ */
+public final class SupportPackagesTriggerSupportPackageSamples {
+    /*
+     * x-ms-original-file: 2023-12-01/TriggerSupportPackage.json
+     */
+    /**
+     * Sample code: TriggerSupportPackage.
+     * 
+     * @param manager Entry point to DataBoxEdgeManager.
+     */
+    public static void triggerSupportPackage(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
+        manager.supportPackages()
+            .triggerSupportPackage("GroupForEdgeAutomation", "testedgedevice",
+                new TriggerSupportPackageRequest()
+                    .withMinimumTimeStamp(OffsetDateTime.parse("2018-12-18T02:18:51.4270267Z"))
+                    .withMaximumTimeStamp(OffsetDateTime.parse("2018-12-18T02:19:51.4270267Z"))
+                    .withInclude("DefaultWithDumps"),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1478,8 +1934,7 @@ import com.azure.resourcemanager.databoxedge.models.RoleSinkInfo;
  */
 public final class TriggersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/TriggerPut.json
+     * x-ms-original-file: 2023-12-01/TriggerPut.json
      */
     /**
      * Sample code: TriggerPut.
@@ -1488,7 +1943,7 @@ public final class TriggersCreateOrUpdateSamples {
      */
     public static void triggerPut(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
         manager.triggers()
-            .createOrUpdate("testedgedevice", "trigger1", "GroupForEdgeAutomation", new FileEventTrigger()
+            .createOrUpdate("GroupForEdgeAutomation", "testedgedevice", "trigger1", new FileEventTrigger()
                 .withSourceInfo(new FileSourceInfo().withShareId(
                     "/subscriptions/4385cf00-2d3a-425a-832f-f4285b1c9dce/resourceGroups/GroupForEdgeAutomation/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/testedgedevice/shares/share1"))
                 .withSinkInfo(new RoleSinkInfo().withRoleId(
@@ -1506,8 +1961,7 @@ public final class TriggersCreateOrUpdateSamples {
  */
 public final class TriggersDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/TriggerDelete.json
+     * x-ms-original-file: 2023-12-01/TriggerDelete.json
      */
     /**
      * Sample code: TriggerDelete.
@@ -1516,7 +1970,7 @@ public final class TriggersDeleteSamples {
      */
     public static void triggerDelete(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
         manager.triggers()
-            .delete("testedgedevice", "trigger1", "GroupForEdgeAutomation", com.azure.core.util.Context.NONE);
+            .delete("GroupForEdgeAutomation", "testedgedevice", "trigger1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1529,8 +1983,7 @@ public final class TriggersDeleteSamples {
  */
 public final class TriggersGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/TriggerGet.json
+     * x-ms-original-file: 2023-12-01/TriggerGet.json
      */
     /**
      * Sample code: TriggerGet.
@@ -1539,7 +1992,7 @@ public final class TriggersGetSamples {
      */
     public static void triggerGet(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
         manager.triggers()
-            .getWithResponse("testedgedevice", "trigger1", "GroupForEdgeAutomation", com.azure.core.util.Context.NONE);
+            .getWithResponse("GroupForEdgeAutomation", "testedgedevice", "trigger1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1552,9 +2005,7 @@ public final class TriggersGetSamples {
  */
 public final class TriggersListByDataBoxEdgeDeviceSamples {
     /*
-     * x-ms-original-file:
-     * specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/TriggerGetAllInDevice
-     * .json
+     * x-ms-original-file: 2023-12-01/TriggerGetAllInDevice.json
      */
     /**
      * Sample code: TriggerGetAllInDevice.
@@ -1563,7 +2014,7 @@ public final class TriggersListByDataBoxEdgeDeviceSamples {
      */
     public static void triggerGetAllInDevice(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
         manager.triggers()
-            .listByDataBoxEdgeDevice("testedgedevice", "GroupForEdgeAutomation", null,
+            .listByDataBoxEdgeDevice("GroupForEdgeAutomation", "testedgedevice", null,
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -1575,15 +2026,13 @@ public final class TriggersListByDataBoxEdgeDeviceSamples {
 import com.azure.resourcemanager.databoxedge.models.AsymmetricEncryptedSecret;
 import com.azure.resourcemanager.databoxedge.models.EncryptionAlgorithm;
 import com.azure.resourcemanager.databoxedge.models.UserType;
-import java.util.Arrays;
 
 /**
  * Samples for Users CreateOrUpdate.
  */
 public final class UsersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/UserPut.json
+     * x-ms-original-file: 2023-12-01/UserPut.json
      */
     /**
      * Sample code: UserPut.
@@ -1593,12 +2042,11 @@ public final class UsersCreateOrUpdateSamples {
     public static void userPut(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
         manager.users()
             .define("user1")
-            .withExistingDataBoxEdgeDevice("testedgedevice", "GroupForEdgeAutomation")
+            .withExistingDataBoxEdgeDevice("GroupForEdgeAutomation", "testedgedevice")
             .withUserType(UserType.SHARE)
             .withEncryptedPassword(new AsymmetricEncryptedSecret().withValue("<value>")
                 .withEncryptionCertThumbprint("blah")
                 .withEncryptionAlgorithm(EncryptionAlgorithm.NONE))
-            .withShareAccessRights(Arrays.asList())
             .create();
     }
 }
@@ -1612,8 +2060,7 @@ public final class UsersCreateOrUpdateSamples {
  */
 public final class UsersDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/UserDelete.json
+     * x-ms-original-file: 2023-12-01/UserDelete.json
      */
     /**
      * Sample code: UserDelete.
@@ -1621,7 +2068,7 @@ public final class UsersDeleteSamples {
      * @param manager Entry point to DataBoxEdgeManager.
      */
     public static void userDelete(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
-        manager.users().delete("testedgedevice", "user1", "GroupForEdgeAutomation", com.azure.core.util.Context.NONE);
+        manager.users().delete("GroupForEdgeAutomation", "testedgedevice", "user1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1634,8 +2081,7 @@ public final class UsersDeleteSamples {
  */
 public final class UsersGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/UserGet.json
+     * x-ms-original-file: 2023-12-01/UserGet.json
      */
     /**
      * Sample code: UserGet.
@@ -1644,7 +2090,7 @@ public final class UsersGetSamples {
      */
     public static void userGet(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
         manager.users()
-            .getWithResponse("testedgedevice", "user1", "GroupForEdgeAutomation", com.azure.core.util.Context.NONE);
+            .getWithResponse("GroupForEdgeAutomation", "testedgedevice", "user1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1657,9 +2103,7 @@ public final class UsersGetSamples {
  */
 public final class UsersListByDataBoxEdgeDeviceSamples {
     /*
-     * x-ms-original-file:
-     * specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/UserGetAllInDevice.
-     * json
+     * x-ms-original-file: 2023-12-01/UserGetAllInDevice.json
      */
     /**
      * Sample code: UserGetAllInDevice.
@@ -1668,7 +2112,7 @@ public final class UsersListByDataBoxEdgeDeviceSamples {
      */
     public static void userGetAllInDevice(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
         manager.users()
-            .listByDataBoxEdgeDevice("testedgedevice", "GroupForEdgeAutomation", null,
+            .listByDataBoxEdgeDevice("GroupForEdgeAutomation", "testedgedevice", null,
                 com.azure.core.util.Context.NONE);
     }
 }
