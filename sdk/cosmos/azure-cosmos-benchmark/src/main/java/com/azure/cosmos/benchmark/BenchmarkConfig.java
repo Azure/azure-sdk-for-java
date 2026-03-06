@@ -198,8 +198,8 @@ public class BenchmarkConfig {
 
     /**
      * Metrics and reporting settings from the top-level "metrics" section.
-     * Reporter destination is implicit from which sub-section is present:
-     * "csvReporter", "cosmosReporter", or "applicationInsightsReporter".
+     * Reporter destination is determined by which key is present under "metrics.destination":
+     * "csv", "cosmos", or "applicationInsights". At most one should be configured.
      */
     private void loadMetricsConfig(JsonNode root) {
         JsonNode metrics = root.get("metrics");
@@ -217,16 +217,21 @@ public class BenchmarkConfig {
             printingInterval = Integer.parseInt(metrics.get("printingInterval").asText());
         }
 
-        // CSV reporter
-        JsonNode csv = metrics.get("csvReporter");
+        JsonNode destination = metrics.get("destination");
+        if (destination == null || !destination.isObject()) {
+            return;
+        }
+
+        // CSV
+        JsonNode csv = destination.get("csv");
         if (csv != null && csv.isObject()) {
             if (csv.has("reportingDirectory")) {
                 csvReportingDirectory = csv.get("reportingDirectory").asText();
             }
         }
 
-        // CosmosDB reporter
-        JsonNode cosmos = metrics.get("cosmosReporter");
+        // Cosmos DB
+        JsonNode cosmos = destination.get("cosmos");
         if (cosmos != null && cosmos.isObject()) {
             if (cosmos.has("serviceEndpoint")) {
                 cosmosReporterEndpoint = cosmos.get("serviceEndpoint").asText();
@@ -251,8 +256,8 @@ public class BenchmarkConfig {
             }
         }
 
-        // Application Insights reporter
-        JsonNode appInsights = metrics.get("applicationInsightsReporter");
+        // Application Insights
+        JsonNode appInsights = destination.get("applicationInsights");
         if (appInsights != null && appInsights.isObject()) {
             if (appInsights.has("connectionString")) {
                 appInsightsConnectionString = appInsights.get("connectionString").asText();
