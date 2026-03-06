@@ -76,7 +76,8 @@ public class BenchmarkOrchestrator {
         if (config.getReportingDestination() != null) {
             switch (config.getReportingDestination()) {
                 case CSV:
-                    csvReporter = new CsvMetricsReporter(dropwizardBridge, config.getCsvReportingDirectory());
+                    csvReporter = new CsvMetricsReporter(
+                        dropwizardBridge, config.getCsvReporterConfig().getReportingDirectory());
                     csvReporter.start(config.getPrintingInterval(), TimeUnit.SECONDS);
                     break;
 
@@ -88,12 +89,13 @@ public class BenchmarkOrchestrator {
                         totalConcurrency += t.getConcurrency();
                     }
                     cosmosReporter = CosmosMetricsReporter.create(
-                        compositeRegistry, config, String.join("+", ops), totalConcurrency);
+                        compositeRegistry, config.getCosmosReporterConfig(),
+                        String.join("+", ops), totalConcurrency);
                     cosmosReporter.start(config.getPrintingInterval(), TimeUnit.SECONDS);
                     break;
 
                 case APPLICATION_INSIGHTS:
-                    appInsightsRegistry = buildAppInsightsMeterRegistry(config);
+                    appInsightsRegistry = buildAppInsightsMeterRegistry(config.getAppInsightsReporterConfig());
                     if (appInsightsRegistry != null) {
                         compositeRegistry.add(appInsightsRegistry);
                         logger.info("Application Insights registry added");
@@ -360,15 +362,15 @@ public class BenchmarkOrchestrator {
 
     // ======== Application Insights registry ========
 
-    private MeterRegistry buildAppInsightsMeterRegistry(BenchmarkConfig config) {
-        String connStr = config.getAppInsightsConnectionString();
+    private MeterRegistry buildAppInsightsMeterRegistry(AppInsightsReporterConfig config) {
+        String connStr = config.getConnectionString();
 
         if (connStr == null) {
             return null;
         }
 
-        java.time.Duration step = java.time.Duration.ofSeconds(config.getAppInsightsStepSeconds());
-        String testCategoryTag = config.getAppInsightsTestCategory();
+        java.time.Duration step = java.time.Duration.ofSeconds(config.getStepSeconds());
+        String testCategoryTag = config.getTestCategory();
 
         final String finalConnStr = connStr;
         final io.micrometer.azuremonitor.AzureMonitorConfig amConfig = new io.micrometer.azuremonitor.AzureMonitorConfig() {

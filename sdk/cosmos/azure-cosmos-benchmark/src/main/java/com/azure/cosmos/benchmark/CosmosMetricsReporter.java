@@ -83,53 +83,41 @@ public class CosmosMetricsReporter {
 
     private CosmosMetricsReporter(
         MeterRegistry micrometerRegistry,
-        BenchmarkConfig config,
+        CosmosReporterConfig reporterConfig,
         String workloadId,
         int concurrency) {
 
         this.workloadId = workloadId;
-        this.testVariationName = config.getCosmosReporterTestVariationName() != null ? config.getCosmosReporterTestVariationName() : "";
-        this.branchName = config.getCosmosReporterBranchName() != null ? config.getCosmosReporterBranchName() : "";
-        this.commitId = config.getCosmosReporterCommitId() != null ? config.getCosmosReporterCommitId() : "";
+        this.testVariationName = reporterConfig.getTestVariationName();
+        this.branchName = reporterConfig.getBranchName();
+        this.commitId = reporterConfig.getCommitId();
         this.concurrency = concurrency;
         this.cpuReader = new CpuMemoryReader();
 
-        if (config.getCosmosReporterEndpoint() != null
-            && config.getCosmosReporterDatabase() != null
-            && config.getCosmosReporterContainer() != null) {
-
-            this.micrometerRegistry = micrometerRegistry;
-            this.cosmosClient = new CosmosClientBuilder()
-                .endpoint(config.getCosmosReporterEndpoint())
-                .key(config.getCosmosReporterKey())
-                .buildClient();
-            this.resultsContainer = cosmosClient
-                .getDatabase(config.getCosmosReporterDatabase())
-                .getContainer(config.getCosmosReporterContainer());
-            this.enabled = true;
-            this.scheduler = Executors.newSingleThreadScheduledExecutor(r -> {
-                Thread t = new Thread(r, "cosmos-result-reporter");
-                t.setDaemon(true);
-                return t;
-            });
-            LOGGER.info("CosmosMetricsReporter enabled -> {}/{}",
-                config.getCosmosReporterDatabase(), config.getCosmosReporterContainer());
-        } else {
-            this.micrometerRegistry = null;
-            this.cosmosClient = null;
-            this.resultsContainer = null;
-            this.enabled = false;
-            this.scheduler = null;
-            LOGGER.info("CosmosMetricsReporter disabled (no upload endpoint configured)");
-        }
+        this.micrometerRegistry = micrometerRegistry;
+        this.cosmosClient = new CosmosClientBuilder()
+            .endpoint(reporterConfig.getServiceEndpoint())
+            .key(reporterConfig.getMasterKey())
+            .buildClient();
+        this.resultsContainer = cosmosClient
+            .getDatabase(reporterConfig.getDatabase())
+            .getContainer(reporterConfig.getContainer());
+        this.enabled = true;
+        this.scheduler = Executors.newSingleThreadScheduledExecutor(r -> {
+            Thread t = new Thread(r, "cosmos-result-reporter");
+            t.setDaemon(true);
+            return t;
+        });
+        LOGGER.info("CosmosMetricsReporter enabled -> {}/{}",
+            reporterConfig.getDatabase(), reporterConfig.getContainer());
     }
 
     public static CosmosMetricsReporter create(
         MeterRegistry micrometerRegistry,
-        BenchmarkConfig config,
+        CosmosReporterConfig reporterConfig,
         String workloadId,
         int concurrency) {
-        return new CosmosMetricsReporter(micrometerRegistry, config, workloadId, concurrency);
+        return new CosmosMetricsReporter(micrometerRegistry, reporterConfig, workloadId, concurrency);
     }
 
     public void start(long interval, TimeUnit unit) {

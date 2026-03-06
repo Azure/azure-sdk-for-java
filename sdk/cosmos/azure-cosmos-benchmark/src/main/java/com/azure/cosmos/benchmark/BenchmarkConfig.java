@@ -39,22 +39,10 @@ public class BenchmarkConfig {
     // -- Reporting --
     private int printingInterval = 10;
 
-    // -- CSV reporter config (presence implies CSV destination) --
-    private String csvReportingDirectory;
-
-    // -- CosmosDB reporter config (presence implies CosmosDB destination) --
-    private String cosmosReporterEndpoint;
-    private String cosmosReporterKey;
-    private String cosmosReporterDatabase;
-    private String cosmosReporterContainer;
-    private String cosmosReporterTestVariationName = "";
-    private String cosmosReporterBranchName = "";
-    private String cosmosReporterCommitId = "";
-
-    // -- Application Insights reporter config (presence implies App Insights destination) --
-    private String appInsightsConnectionString;
-    private int appInsightsStepSeconds = 10;
-    private String appInsightsTestCategory;
+    // At most one destination is configured (null = console-only)
+    private CsvReporterConfig csvReporterConfig;
+    private CosmosReporterConfig cosmosReporterConfig;
+    private AppInsightsReporterConfig appInsightsReporterConfig;
 
     // -- JVM-global system properties (apply to all tenants, set once at startup) --
     private boolean isPartitionLevelCircuitBreakerEnabled = true;
@@ -115,32 +103,17 @@ public class BenchmarkConfig {
     public boolean isEnableNettyHttpMetrics() { return enableNettyHttpMetrics; }
 
     public int getPrintingInterval() { return printingInterval; }
-
-    // CSV reporter
-    public String getCsvReportingDirectory() { return csvReportingDirectory; }
-
-    // CosmosDB reporter
-    public String getCosmosReporterEndpoint() { return cosmosReporterEndpoint; }
-    public String getCosmosReporterKey() { return cosmosReporterKey; }
-    public String getCosmosReporterDatabase() { return cosmosReporterDatabase; }
-    public String getCosmosReporterContainer() { return cosmosReporterContainer; }
-    public String getCosmosReporterTestVariationName() { return cosmosReporterTestVariationName; }
-    public String getCosmosReporterBranchName() { return cosmosReporterBranchName; }
-    public String getCosmosReporterCommitId() { return cosmosReporterCommitId; }
-
-    // Application Insights reporter
-    public String getAppInsightsConnectionString() { return appInsightsConnectionString; }
-    public int getAppInsightsStepSeconds() { return appInsightsStepSeconds; }
-    public String getAppInsightsTestCategory() { return appInsightsTestCategory; }
+    public CsvReporterConfig getCsvReporterConfig() { return csvReporterConfig; }
+    public CosmosReporterConfig getCosmosReporterConfig() { return cosmosReporterConfig; }
+    public AppInsightsReporterConfig getAppInsightsReporterConfig() { return appInsightsReporterConfig; }
 
     /**
-     * Determine the reporting destination from which config section is present.
-     * At most one should be configured; if none, returns null (console-only).
+     * Determine the reporting destination from which config is present.
      */
     public ReportingDestination getReportingDestination() {
-        if (csvReportingDirectory != null) return ReportingDestination.CSV;
-        if (cosmosReporterEndpoint != null) return ReportingDestination.COSMOSDB;
-        if (appInsightsConnectionString != null) return ReportingDestination.APPLICATION_INSIGHTS;
+        if (csvReporterConfig != null) return ReportingDestination.CSV;
+        if (cosmosReporterConfig != null) return ReportingDestination.COSMOSDB;
+        if (appInsightsReporterConfig != null) return ReportingDestination.APPLICATION_INSIGHTS;
         return null;
     }
 
@@ -225,49 +198,30 @@ public class BenchmarkConfig {
         // CSV
         JsonNode csv = destination.get("csv");
         if (csv != null && csv.isObject()) {
-            if (csv.has("reportingDirectory")) {
-                csvReportingDirectory = csv.get("reportingDirectory").asText();
-            }
+            csvReporterConfig = new CsvReporterConfig(
+                csv.has("reportingDirectory") ? csv.get("reportingDirectory").asText() : null);
         }
 
         // Cosmos DB
         JsonNode cosmos = destination.get("cosmos");
         if (cosmos != null && cosmos.isObject()) {
-            if (cosmos.has("serviceEndpoint")) {
-                cosmosReporterEndpoint = cosmos.get("serviceEndpoint").asText();
-            }
-            if (cosmos.has("masterKey")) {
-                cosmosReporterKey = cosmos.get("masterKey").asText();
-            }
-            if (cosmos.has("database")) {
-                cosmosReporterDatabase = cosmos.get("database").asText();
-            }
-            if (cosmos.has("container")) {
-                cosmosReporterContainer = cosmos.get("container").asText();
-            }
-            if (cosmos.has("testVariationName")) {
-                cosmosReporterTestVariationName = cosmos.get("testVariationName").asText();
-            }
-            if (cosmos.has("branchName")) {
-                cosmosReporterBranchName = cosmos.get("branchName").asText();
-            }
-            if (cosmos.has("commitId")) {
-                cosmosReporterCommitId = cosmos.get("commitId").asText();
-            }
+            cosmosReporterConfig = new CosmosReporterConfig(
+                cosmos.has("serviceEndpoint") ? cosmos.get("serviceEndpoint").asText() : null,
+                cosmos.has("masterKey") ? cosmos.get("masterKey").asText() : null,
+                cosmos.has("database") ? cosmos.get("database").asText() : null,
+                cosmos.has("container") ? cosmos.get("container").asText() : null,
+                cosmos.has("testVariationName") ? cosmos.get("testVariationName").asText() : null,
+                cosmos.has("branchName") ? cosmos.get("branchName").asText() : null,
+                cosmos.has("commitId") ? cosmos.get("commitId").asText() : null);
         }
 
         // Application Insights
         JsonNode appInsights = destination.get("applicationInsights");
         if (appInsights != null && appInsights.isObject()) {
-            if (appInsights.has("connectionString")) {
-                appInsightsConnectionString = appInsights.get("connectionString").asText();
-            }
-            if (appInsights.has("stepSeconds")) {
-                appInsightsStepSeconds = Integer.parseInt(appInsights.get("stepSeconds").asText());
-            }
-            if (appInsights.has("testCategory")) {
-                appInsightsTestCategory = appInsights.get("testCategory").asText();
-            }
+            appInsightsReporterConfig = new AppInsightsReporterConfig(
+                appInsights.has("connectionString") ? appInsights.get("connectionString").asText() : null,
+                appInsights.has("stepSeconds") ? Integer.parseInt(appInsights.get("stepSeconds").asText()) : 10,
+                appInsights.has("testCategory") ? appInsights.get("testCategory").asText() : null);
         }
     }
 }
