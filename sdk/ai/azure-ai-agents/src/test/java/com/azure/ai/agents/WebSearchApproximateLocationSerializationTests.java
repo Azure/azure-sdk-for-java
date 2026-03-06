@@ -120,6 +120,34 @@ public class WebSearchApproximateLocationSerializationTests {
         }
     }
 
+    /**
+     * Tests that an unknown/invalid timezone ID deserializes as null instead of silently falling back to GMT.
+     */
+    @Test
+    public void testDeserializationWithUnknownTimezoneReturnsNull() throws IOException {
+        String json = "{\"type\":\"approximate\",\"country\":\"US\",\"timezone\":\"Not/AZone\"}";
+
+        WebSearchApproximateLocation location = deserializeFromJson(json);
+
+        assertNotNull(location);
+        assertEquals("US", location.getCountry());
+        assertNull(location.getTimezone(), "Unknown timezone ID should deserialize as null, not GMT");
+    }
+
+    /**
+     * Tests that the valid "GMT" timezone ID is correctly deserialized (not treated as unknown).
+     */
+    @Test
+    public void testDeserializationWithGmtTimezone() throws IOException {
+        String json = "{\"type\":\"approximate\",\"timezone\":\"GMT\"}";
+
+        WebSearchApproximateLocation location = deserializeFromJson(json);
+
+        assertNotNull(location);
+        assertNotNull(location.getTimezone());
+        assertEquals("GMT", location.getTimezone().getID());
+    }
+
     private String serializeToJson(WebSearchApproximateLocation location) throws IOException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         try (JsonWriter jsonWriter = JsonProviders.createWriter(outputStream)) {

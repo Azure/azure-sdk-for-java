@@ -180,8 +180,7 @@ public final class WebSearchApproximateLocation implements JsonSerializable<WebS
                     deserializedWebSearchApproximateLocation.city = reader.getString();
                 } else if ("timezone".equals(fieldName)) {
                     String timezoneId = reader.getString();
-                    deserializedWebSearchApproximateLocation.timezone
-                        = timezoneId != null ? TimeZone.getTimeZone(timezoneId) : null;
+                    deserializedWebSearchApproximateLocation.timezone = parseTimeZone(timezoneId);
                 } else {
                     reader.skipChildren();
                 }
@@ -200,5 +199,25 @@ public final class WebSearchApproximateLocation implements JsonSerializable<WebS
     public WebSearchApproximateLocation setTimezone(TimeZone timezone) {
         this.timezone = timezone;
         return this;
+    }
+
+    /**
+     * Parses a timezone ID string into a {@link TimeZone}, returning {@code null} for unknown IDs.
+     * <p>
+     * {@link TimeZone#getTimeZone(String)} silently falls back to GMT for unrecognized IDs.
+     * This method detects that fallback and returns {@code null} instead, to avoid silent data corruption.
+     *
+     * @param timezoneId the timezone ID to parse, or {@code null}.
+     * @return the corresponding {@link TimeZone}, or {@code null} if the ID is {@code null} or unrecognized.
+     */
+    private static TimeZone parseTimeZone(String timezoneId) {
+        if (timezoneId == null) {
+            return null;
+        }
+        TimeZone tz = TimeZone.getTimeZone(timezoneId);
+        if ("GMT".equals(tz.getID()) && !"GMT".equalsIgnoreCase(timezoneId)) {
+            return null;
+        }
+        return tz;
     }
 }

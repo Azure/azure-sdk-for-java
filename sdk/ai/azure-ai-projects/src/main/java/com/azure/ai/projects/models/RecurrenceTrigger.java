@@ -168,7 +168,7 @@ public final class RecurrenceTrigger extends Trigger {
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("timeZone".equals(fieldName)) {
                     String timeZoneId = reader.getString();
-                    timeZone = timeZoneId != null ? TimeZone.getTimeZone(timeZoneId) : null;
+                    timeZone = parseTimeZone(timeZoneId);
                 } else {
                     reader.skipChildren();
                 }
@@ -228,5 +228,25 @@ public final class RecurrenceTrigger extends Trigger {
     public RecurrenceTrigger setTimeZone(TimeZone timeZone) {
         this.timeZone = timeZone;
         return this;
+    }
+
+    /**
+     * Parses a timezone ID string into a {@link TimeZone}, returning {@code null} for unknown IDs.
+     * <p>
+     * {@link TimeZone#getTimeZone(String)} silently falls back to GMT for unrecognized IDs.
+     * This method detects that fallback and returns {@code null} instead, to avoid silent data corruption.
+     *
+     * @param timeZoneId the timezone ID to parse, or {@code null}.
+     * @return the corresponding {@link TimeZone}, or {@code null} if the ID is {@code null} or unrecognized.
+     */
+    private static TimeZone parseTimeZone(String timeZoneId) {
+        if (timeZoneId == null) {
+            return null;
+        }
+        TimeZone tz = TimeZone.getTimeZone(timeZoneId);
+        if ("GMT".equals(tz.getID()) && !"GMT".equalsIgnoreCase(timeZoneId)) {
+            return null;
+        }
+        return tz;
     }
 }

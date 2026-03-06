@@ -165,6 +165,41 @@ class RecurrenceTriggerSerializationTest {
         }
     }
 
+    /**
+     * Verify that an unknown/invalid timezone ID deserializes as null instead of silently falling back to GMT.
+     */
+    @Test
+    void deserializationWithUnknownTimezoneReturnsNull() throws IOException {
+        String json = "{\"interval\":1,\"schedule\":{\"daysOfWeek\":[\"Monday\"],\"type\":\"Weekly\"},"
+            + "\"type\":\"Recurrence\",\"timeZone\":\"Not/AZone\"}";
+
+        RecurrenceTrigger trigger;
+        try (JsonReader reader = JsonProviders.createReader(json)) {
+            trigger = RecurrenceTrigger.fromJson(reader);
+        }
+
+        assertNotNull(trigger);
+        assertNull(trigger.getTimeZone(), "Unknown timezone ID should deserialize as null, not GMT");
+    }
+
+    /**
+     * Verify that the valid "GMT" timezone ID is correctly deserialized (not treated as unknown).
+     */
+    @Test
+    void deserializationWithGmtTimezone() throws IOException {
+        String json = "{\"interval\":1,\"schedule\":{\"daysOfWeek\":[\"Monday\"],\"type\":\"Weekly\"},"
+            + "\"type\":\"Recurrence\",\"timeZone\":\"GMT\"}";
+
+        RecurrenceTrigger trigger;
+        try (JsonReader reader = JsonProviders.createReader(json)) {
+            trigger = RecurrenceTrigger.fromJson(reader);
+        }
+
+        assertNotNull(trigger);
+        assertNotNull(trigger.getTimeZone());
+        assertEquals("GMT", trigger.getTimeZone().getID());
+    }
+
     private static WeeklyRecurrenceSchedule weeklySchedule() {
         return new WeeklyRecurrenceSchedule(Arrays.asList(DayOfWeek.MONDAY));
     }
