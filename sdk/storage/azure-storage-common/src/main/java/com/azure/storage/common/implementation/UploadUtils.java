@@ -149,7 +149,7 @@ public class UploadUtils {
     }
 
     /**
-     *
+     * It computes the MD5 of the provided buffer
      * @param data The data.
      * @param logger Logger to log errors.
      * @return The md5 of the data.

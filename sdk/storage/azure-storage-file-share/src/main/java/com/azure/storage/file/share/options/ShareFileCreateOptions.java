@@ -208,7 +208,7 @@ public class ShareFileCreateOptions {
         return filePropertySemantics;
     }
 
-    /*
+    /**
      * Optional, only applicable to SMB files. Sets how attributes and permissions should be set on the file.
      * New: automatically adds the ARCHIVE file attribute flag to the file and uses Windows create file permissions
      * semantics (ex: inherit from parent).
@@ -233,7 +233,7 @@ public class ShareFileCreateOptions {
         return binaryData;
     }
 
-    /*
+    /**
      * Optional, valid for version 2026-02-06 and later.
      * Sets the content to upload to the file when it is created. Must be less than or equal to 4 MiB in size.
      *
