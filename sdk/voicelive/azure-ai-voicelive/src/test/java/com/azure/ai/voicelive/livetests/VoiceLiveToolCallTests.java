@@ -240,7 +240,7 @@ public class VoiceLiveToolCallTests extends VoiceLiveTestBase {
             //   in ['{"location":"北京"}', '{"location":"Beijing"}']
             String normalized = functionDone.get().getArguments().replace(" ", "").replace("\n", "");
             boolean matchesBeijing
-                = normalized.equals("{\"location\":\"北京\"}") || normalized.equals("{\"location\":\"Beijing\"}");
+                = "{\"location\":\"北京\"}".equals(normalized) || "{\"location\":\"Beijing\"}".equals(normalized);
             Assertions.assertTrue(matchesBeijing,
                 "Arguments should contain Beijing location, got: " + functionDone.get().getArguments());
         } finally {
@@ -355,7 +355,7 @@ public class VoiceLiveToolCallTests extends VoiceLiveTestBase {
             // Verify arguments contain Beijing
             String normalized = functionDone.get().getArguments().replace(" ", "").replace("\n", "");
             boolean matchesBeijing
-                = normalized.equals("{\"location\":\"北京\"}") || normalized.equals("{\"location\":\"Beijing\"}");
+                = "{\"location\":\"北京\"}".equals(normalized) || "{\"location\":\"Beijing\"}".equals(normalized);
             Assertions.assertTrue(matchesBeijing,
                 "Arguments should contain Beijing location, got: " + functionDone.get().getArguments());
 
@@ -526,13 +526,12 @@ public class VoiceLiveToolCallTests extends VoiceLiveTestBase {
             // Verify arguments contain Beijing
             String normalized = phase2FunctionDone.get().getArguments().replace(" ", "").replace("\n", "");
             boolean matchesBeijing
-                = normalized.equals("{\"location\":\"北京\"}") || normalized.equals("{\"location\":\"Beijing\"}");
+                = "{\"location\":\"北京\"}".equals(normalized) || "{\"location\":\"Beijing\"}".equals(normalized);
             Assertions.assertTrue(matchesBeijing,
                 "Phase 2: Arguments should contain Beijing, got: " + phase2FunctionDone.get().getArguments());
 
             // Wait for Phase 2 response to fully complete before transitioning
-            boolean phase2ResponseCompleted
-                = phase2ResponseDoneLatch.await(EVENT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+            boolean phase2ResponseCompleted = phase2ResponseDoneLatch.await(EVENT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
             Assertions.assertTrue(phase2ResponseCompleted,
                 "Phase 2: Response did not complete before timeout; cannot safely proceed to Phase 3");
 

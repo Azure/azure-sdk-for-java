@@ -286,8 +286,8 @@ public class VoiceLiveAudioFormatTests extends VoiceLiveTestBase {
             boolean received = responseLatch.await(EVENT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
 
             Assertions.assertTrue(received, "Should receive response within timeout");
-            Assertions.assertTrue(audioResponseBytes.get() > MIN_AUDIO_BYTES_LARGE,
-                "Output audio too short: " + audioResponseBytes.get() + " bytes (expected > " + MIN_AUDIO_BYTES_LARGE + ")");
+            Assertions.assertTrue(audioResponseBytes.get() > MIN_AUDIO_BYTES_LARGE, "Output audio too short: "
+                + audioResponseBytes.get() + " bytes (expected > " + MIN_AUDIO_BYTES_LARGE + ")");
 
             session.close();
         } catch (Exception e) {
