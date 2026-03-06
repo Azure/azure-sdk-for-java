@@ -531,7 +531,10 @@ public class VoiceLiveToolCallTests extends VoiceLiveTestBase {
                 "Phase 2: Arguments should contain Beijing, got: " + phase2FunctionDone.get().getArguments());
 
             // Wait for Phase 2 response to fully complete before transitioning
-            phase2ResponseDoneLatch.await(EVENT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+            boolean phase2ResponseCompleted
+                = phase2ResponseDoneLatch.await(EVENT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+            Assertions.assertTrue(phase2ResponseCompleted,
+                "Phase 2: Response did not complete before timeout; cannot safely proceed to Phase 3");
 
             // Phase 3: Create response after function call (matching Python)
             phase.set(3);
