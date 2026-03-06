@@ -1,0 +1,107 @@
+{
+  "_comment": "Sample workload configuration for azure-cosmos-benchmark.",
+  "_comment2": "Copy this file and fill in your account details to get started.",
+  "_comment3": "See README.md for full documentation of all configuration options.",
+
+  "metrics": {
+    "printingInterval": 10,
+    "enableJvmStats": true,
+    "enableNettyHttpMetrics": true,
+
+    "_comment_reporters": "Uncomment ONE of the reporter sections below. If none is present, console-only output is used.",
+
+    "_csvReporter": {
+      "_comment": "Writes per-metric CSV files to the specified directory.",
+      "reportingDirectory": "/tmp/benchmark-output"
+    },
+
+    "_cosmosReporter": {
+      "_comment": "Uploads all metrics with full dimensions to a Cosmos DB container.",
+      "serviceEndpoint": "https://results-account.documents.azure.com:443/",
+      "masterKey": "<result-upload-master-key>",
+      "database": "benchmarkResults",
+      "container": "metrics",
+      "testVariationName": "baseline-v2",
+      "branchName": "main",
+      "commitId": "abc123def"
+    },
+
+    "_applicationInsightsReporter": {
+      "_comment": "Sends all metrics to Azure Application Insights / Log Analytics.",
+      "connectionString": "InstrumentationKey=00000000-0000-0000-0000-000000000000;IngestionEndpoint=https://...",
+      "stepSeconds": 10,
+      "testCategory": "nightly-perf"
+    }
+  },
+
+  "tenantDefaults": {
+    "_comment": "Default values inherited by all tenants. Tenants can override any field.",
+    "serviceEndpoint": "https://myaccount.documents.azure.com:443/",
+    "masterKey": "<your-master-key>",
+    "databaseId": "benchdb",
+    "containerId": "benchcoll",
+    "consistencyLevel": "Session",
+    "connectionMode": "Direct",
+    "numberOfPreCreatedDocuments": 1000,
+    "documentDataFieldSize": 20,
+    "concurrency": 50
+  },
+
+  "tenants": [
+    {
+      "_comment": "Single-tenant read latency benchmark.",
+      "operation": "ReadLatency",
+      "numberOfOperations": 100000
+    }
+  ],
+
+  "_examples": {
+    "_comment": "Below are additional tenant configurations for reference (not active).",
+
+    "writeThroughput": {
+      "operation": "WriteThroughput",
+      "numberOfOperations": 50000,
+      "concurrency": 100,
+      "contentResponseOnWriteEnabled": false
+    },
+
+    "ctlWorkload": {
+      "operation": "CtlWorkload",
+      "readWriteQueryReadManyPct": "70,10,10,10",
+      "numberOfOperations": 200000,
+      "concurrency": 100
+    },
+
+    "multiTenantReadWrite": {
+      "_comment": "Example of multi-tenant: two tenants with different operations.",
+      "tenants": [
+        {
+          "operation": "ReadLatency",
+          "concurrency": 50,
+          "numberOfOperations": 100000
+        },
+        {
+          "operation": "WriteThroughput",
+          "concurrency": 25,
+          "numberOfOperations": 50000,
+          "containerId": "benchcoll2"
+        }
+      ]
+    },
+
+    "timeBasedRun": {
+      "_comment": "Run for 10 minutes instead of a fixed number of operations.",
+      "operation": "ReadLatency",
+      "maxRunningTimeDuration": "PT10M",
+      "concurrency": 50
+    },
+
+    "multiCycleBenchmark": {
+      "_comment": "Run 3 create-run-close cycles with 90s settle between cycles.",
+      "cycles": 3,
+      "settleTimeMs": 90000,
+      "suppressCleanup": true,
+      "gcBetweenCycles": true
+    }
+  }
+}
