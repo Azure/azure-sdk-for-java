@@ -14,6 +14,27 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
 - Fix `ClassNotFoundException: com.nimbusds.oauth2.sdk.util.StringUtils` in Active Directory starter. ([#47600](https://github.com/Azure/azure-sdk-for-java/issues/47600))
 
+#### Breaking Changes
+
+- Change sender's default JmsConnectionFactory from ServiceBusJmsConnectionFactory to CachingConnectionFactory. [#47923](https://github.com/Azure/azure-sdk-for-java/issues/47923)
+
+The ConnectionFactory type is determined by the following configuration properties:
+
+  | `spring.jms.servicebus.pool.enabled` | `spring.jms.cache.enabled` | Sender ConnectionFactory       | Listener Container ConnectionFactory     |
+  |--------------------------------------|----------------------------|--------------------------------|--------------------------------|
+  | not set                              | not set                    | CachingConnectionFactory       | ServiceBusJmsConnectionFactory |
+  | not set                              | true                       | CachingConnectionFactory       | CachingConnectionFactory       |
+  | not set                              | false                      | ServiceBusJmsConnectionFactory | ServiceBusJmsConnectionFactory |
+  | true                                 | not set                    | JmsPoolConnectionFactory       | JmsPoolConnectionFactory       |
+  | true                                 | true                       | CachingConnectionFactory       | CachingConnectionFactory       |
+  | true                                 | false                      | JmsPoolConnectionFactory       | JmsPoolConnectionFactory       |
+  | false                                | not set                    | CachingConnectionFactory       | ServiceBusJmsConnectionFactory |
+  | false                                | true                       | CachingConnectionFactory       | CachingConnectionFactory       |
+  | false                                | false                      | ServiceBusJmsConnectionFactory | ServiceBusJmsConnectionFactory |
+
+  **Note:** `CachingConnectionFactory` and `JmsPoolConnectionFactory` will be used only when they exist in classpath.
+
+
 ### Spring Cloud Azure Docker Compose
 This section includes changes in `spring-cloud-azure-docker-compose` module.
 
