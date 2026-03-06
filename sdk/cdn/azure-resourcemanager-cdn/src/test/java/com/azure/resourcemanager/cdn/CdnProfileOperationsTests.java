@@ -9,6 +9,7 @@ import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.appservice.models.AppServiceDomain;
 import com.azure.resourcemanager.cdn.models.AfdEndpoint;
+import com.azure.resourcemanager.cdn.models.AfdEndpointProtocols;
 import com.azure.resourcemanager.cdn.models.Origin;
 import com.azure.resourcemanager.cdn.models.OriginGroup;
 import com.azure.resourcemanager.cdn.models.CacheBehavior;
@@ -24,12 +25,19 @@ import com.azure.resourcemanager.cdn.models.DeliveryRuleRequestSchemeCondition;
 import com.azure.resourcemanager.cdn.models.DestinationProtocol;
 import com.azure.resourcemanager.cdn.models.EnabledState;
 import com.azure.resourcemanager.cdn.models.EnforceMtlsEnabledState;
+import com.azure.resourcemanager.cdn.models.ForwardingProtocol;
 import com.azure.resourcemanager.cdn.models.HttpVersionMatchConditionParameters;
 import com.azure.resourcemanager.cdn.models.HttpVersionOperator;
+import com.azure.resourcemanager.cdn.models.HttpsRedirect;
+import com.azure.resourcemanager.cdn.models.LinkToDefaultDomain;
 import com.azure.resourcemanager.cdn.models.LoadBalancingSettingsParameters;
+import com.azure.resourcemanager.cdn.models.MatchProcessingBehavior;
 import com.azure.resourcemanager.cdn.models.RedirectType;
 import com.azure.resourcemanager.cdn.models.RequestSchemeMatchConditionParameters;
 import com.azure.resourcemanager.cdn.models.RequestSchemeMatchConditionParametersMatchValuesItem;
+import com.azure.resourcemanager.cdn.models.Route;
+import com.azure.resourcemanager.cdn.models.Rule;
+import com.azure.resourcemanager.cdn.models.RuleSet;
 import com.azure.resourcemanager.cdn.models.SkuName;
 import com.azure.resourcemanager.cdn.models.UrlRedirectAction;
 import com.azure.resourcemanager.cdn.models.UrlRedirectActionParameters;
@@ -119,12 +127,18 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
             .withLoadBalancingSettings(
                 new LoadBalancingSettingsParameters().withSampleSize(5).withSuccessfulSamplesRequired(3))
             .withSessionAffinityState(EnabledState.ENABLED)
+            .attach()
+            .apply();
+
+        // add origin to origin group
+        cdnProfile.update()
+            .updateOriginGroup("originGroup1")
             .defineOrigin("origin1")
             .withHostname("www.somedomain.net")
             .withEnabledState(EnabledState.ENABLED)
             .withHttpPort(80)
             .attach()
-            .attach()
+            .parent()
             .apply();
 
         Map<String, AfdEndpoint> cdnEndpointMap = cdnProfile.afdEndpoints();
@@ -255,12 +269,18 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
             .defineOriginGroup("originGroup2")
             .withLoadBalancingSettings(
                 new LoadBalancingSettingsParameters().withSampleSize(3).withSuccessfulSamplesRequired(2))
+            .attach()
+            .apply();
+
+        // add origin to the new origin group
+        cdnProfile.update()
+            .updateOriginGroup("originGroup2")
             .defineOrigin("origin3")
             .withHostname("www.domain3.net")
             .withEnabledState(EnabledState.ENABLED)
             .withHttpPort(80)
             .attach()
-            .attach()
+            .parent()
             .apply();
 
         OriginGroup originGroup2 = cdnProfile.originGroups().get("originGroup2");
@@ -282,142 +302,180 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
         Assertions.assertTrue(cdnEndpointMap.isEmpty());
     }
 
-    @Disabled("Use rule set and rules")
     @Test
-    public void canCrudStandardRulesEngineRules() {
+    public void canCrudAfdResources() {
         String cdnProfileName = generateRandomResourceName("cdnp", 15);
         String cdnEndpointName = generateRandomResourceName("cdnendp", 15);
-        String cdnEndpointName2 = generateRandomResourceName("cdnendp", 15);
-        String ruleName1 = generateRandomResourceName("cdndr", 15);
-        String ruleName2 = generateRandomResourceName("cdndr", 15);
-        String ruleName3 = generateRandomResourceName("cdndr", 15);
-        String originName1 = generateRandomResourceName("origin", 15);
-        String originName2 = generateRandomResourceName("origin", 15);
 
         ResourceGroup resourceGroup = resourceManager.resourceGroups().define(rgName).withRegion(region).create();
 
-        CheckNameAvailabilityResult result = cdnManager.profiles().checkEndpointNameAvailability(cdnProfileName);
-        Assertions.assertTrue(result.nameAvailable());
-
-        // create cdnProfile with one cdnEndpoint, with 1 rule
+        // Step 1: Create AFD profile with origin group (+ origin) and rule set (+ 2 rules).
+        // Route is not included yet — it requires the origin group resource ID which is assigned after creation.
         CdnProfile cdnProfile = cdnManager.profiles()
             .define(cdnProfileName)
             .withGlobal()
             .withExistingResourceGroup(resourceGroup)
             .withSku(SkuName.STANDARD_AZURE_FRONT_DOOR)
-            .defineNewEndpoint(cdnEndpointName)
-            .withOrigin(originName1, "www.someDomain.net")
-            .withHttpAllowed(false)
-            .withHttpsAllowed(true)
-            // define Global rule
-            .defineNewStandardRulesEngineRule("Global")
-            .withOrder(0)
-            .withActions(new DeliveryRuleCacheExpirationAction()
+            .defineNewAfdEndpoint(cdnEndpointName)
+            .withEnabledState(EnabledState.ENABLED)
+            .attach()
+            .defineOriginGroup("originGroup1")
+            .withLoadBalancingSettings(
+                new LoadBalancingSettingsParameters().withSampleSize(4).withSuccessfulSamplesRequired(2))
+            .defineOrigin("origin1")
+            .withHostname("www.domain1.net")
+            .withEnabledState(EnabledState.ENABLED)
+            .withHttpPort(80)
+            .attach()
+            .attach()
+            .defineRuleSet("ruleSet1")
+            .defineRule("rule1")
+            .withOrder(1)
+            .withActions(Arrays.asList(new DeliveryRuleCacheExpirationAction()
                 .withParameters(new CacheExpirationActionParameters().withCacheBehavior(CacheBehavior.SET_IF_MISSING)
                     .withCacheDuration("00:05:00")
-                    .withCacheType(CacheType.ALL)))
-            .attach()
-            .defineNewStandardRulesEngineRule(ruleName1)
-            .withOrder(1)
-            .withMatchConditions(
+                    .withCacheType(CacheType.ALL))))
+            .withConditions(Arrays.asList(
                 new DeliveryRuleRequestSchemeCondition().withParameters(new RequestSchemeMatchConditionParameters()
-                    .withMatchValues(Arrays.asList(RequestSchemeMatchConditionParametersMatchValuesItem.HTTP))))
-            .withActions(new UrlRedirectAction()
+                    .withMatchValues(Arrays.asList(RequestSchemeMatchConditionParametersMatchValuesItem.HTTPS)))))
+            .withMatchProcessingBehavior(MatchProcessingBehavior.CONTINUE)
+            .attach()
+            .defineRule("rule2")
+            .withOrder(2)
+            .withActions(Arrays.asList(new UrlRedirectAction()
                 .withParameters(new UrlRedirectActionParameters().withRedirectType(RedirectType.FOUND)
-                    .withDestinationProtocol(DestinationProtocol.HTTPS)
-                    .withCustomHostname("")))
+                    .withDestinationProtocol(DestinationProtocol.HTTPS))))
+            .withConditions(Arrays.asList(new DeliveryRuleHttpVersionCondition()
+                .withParameters(new HttpVersionMatchConditionParameters().withOperator(HttpVersionOperator.EQUAL)
+                    .withMatchValues(Arrays.asList("2.0")))))
             .attach()
             .attach()
             .create();
 
-        cdnProfile.refresh();
+        Assertions.assertNotNull(cdnProfile);
+        Assertions.assertEquals(cdnProfileName, cdnProfile.name());
 
-        CdnEndpoint endpoint = cdnProfile.endpoints().get(cdnEndpointName);
+        // verify endpoint
+        Map<String, AfdEndpoint> endpointMap = cdnProfile.afdEndpoints();
+        Assertions.assertEquals(1, endpointMap.size());
+        AfdEndpoint endpoint = endpointMap.get(cdnEndpointName);
         Assertions.assertNotNull(endpoint);
-        Assertions.assertEquals(2, endpoint.standardRulesEngineRules().size());
+        Assertions.assertEquals(EnabledState.ENABLED, endpoint.enabledState());
 
-        DeliveryRule globalRule = endpoint.standardRulesEngineRules().get("Global");
-        Assertions.assertNotNull(globalRule);
+        // verify origin group and origin
+        OriginGroup originGroup1 = cdnProfile.originGroups().get("originGroup1");
+        Assertions.assertNotNull(originGroup1);
+        Assertions.assertEquals(4, originGroup1.loadBalancingSettings().sampleSize());
+        Assertions.assertEquals(2, originGroup1.loadBalancingSettings().successfulSamplesRequired());
 
-        DeliveryRule rule = endpoint.standardRulesEngineRules().get(ruleName1);
-        Assertions.assertNotNull(rule);
-        Assertions.assertEquals(1, rule.conditions().size());
-        Assertions.assertEquals(1, rule.actions().size());
-        Assertions.assertTrue(rule.conditions().iterator().next() instanceof DeliveryRuleRequestSchemeCondition);
-        Assertions.assertTrue(rule.actions().iterator().next() instanceof UrlRedirectAction);
-        Assertions.assertEquals(1, rule.order());
+        Origin origin1 = originGroup1.origins().get("origin1");
+        Assertions.assertNotNull(origin1);
+        Assertions.assertEquals("www.domain1.net", origin1.hostname());
 
-        // update cdnProfile, add 1 additional rule, update existing rule to existing endpoint
-        // and define a new endpoint with 1 rule
+        // verify rule set and rules
+        RuleSet ruleSet1 = cdnProfile.ruleSets().get("ruleSet1");
+        Assertions.assertNotNull(ruleSet1);
+        Assertions.assertEquals(2, ruleSet1.rules().size());
+
+        Rule rule1 = ruleSet1.rules().get("rule1");
+        Assertions.assertNotNull(rule1);
+        Assertions.assertEquals(1, rule1.order());
+        Assertions.assertEquals(1, rule1.actions().size());
+        Assertions.assertTrue(rule1.actions().get(0) instanceof DeliveryRuleCacheExpirationAction);
+        Assertions.assertEquals(1, rule1.conditions().size());
+        Assertions.assertTrue(rule1.conditions().get(0) instanceof DeliveryRuleRequestSchemeCondition);
+        Assertions.assertEquals(MatchProcessingBehavior.CONTINUE, rule1.matchProcessingBehavior());
+
+        Rule rule2 = ruleSet1.rules().get("rule2");
+        Assertions.assertNotNull(rule2);
+        Assertions.assertEquals(2, rule2.order());
+        Assertions.assertTrue(rule2.actions().get(0) instanceof UrlRedirectAction);
+        Assertions.assertTrue(rule2.conditions().get(0) instanceof DeliveryRuleHttpVersionCondition);
+
+        // Step 2: Add a route to the existing endpoint.
+        // The route references the origin group and rule set by their resource IDs.
+        String originGroup1Id = originGroup1.id();
+        String ruleSet1Id = ruleSet1.id();
+
         cdnProfile.update()
-            .updateEndpoint(cdnEndpointName)
-            // define new Standard rules engine rule
-            .defineNewStandardRulesEngineRule(ruleName2)
-            .withOrder(1)
-            .withMatchConditions(new DeliveryRuleHttpVersionCondition()
-                .withParameters(new HttpVersionMatchConditionParameters().withOperator(HttpVersionOperator.EQUAL)
-                    .withMatchValues(Arrays.asList("2.0"))))
-            .withActions(new DeliveryRuleCacheExpirationAction()
-                .withParameters(new CacheExpirationActionParameters().withCacheType(CacheType.ALL)
-                    .withCacheBehavior(CacheBehavior.BYPASS_CACHE)))
+            .updateAfdEndpoint(cdnEndpointName)
+            .defineRoute("route1")
+            .withOriginGroupResourceId(originGroup1Id)
+            .withPatternsToMatch(Arrays.asList("/*"))
+            .withSupportedProtocols(Arrays.asList(AfdEndpointProtocols.HTTPS))
+            .withHttpsRedirect(HttpsRedirect.ENABLED)
+            .withForwardingProtocol(ForwardingProtocol.HTTPS_ONLY)
+            .withLinkToDefaultDomain(LinkToDefaultDomain.ENABLED)
+            .withRuleSetResourceIds(Arrays.asList(ruleSet1Id))
+            .withEnabledState(EnabledState.ENABLED)
             .attach()
-            // update existing Standard rules engine rule
-            .updateStandardRulesEngineRule(ruleName1)
-            .withOrder(2)
             .parent()
-            .parent()
-            // define new endpoint with 1 rule
-            .defineNewEndpoint(cdnEndpointName2)
-            .withOrigin(originName2, "www.someDomain.net")
-            .withHttpAllowed(false)
-            .withHttpsAllowed(true)
-            .defineNewStandardRulesEngineRule(ruleName3)
-            .withOrder(1)
-            .withMatchConditions(new DeliveryRuleHttpVersionCondition()
-                .withParameters(new HttpVersionMatchConditionParameters().withOperator(HttpVersionOperator.EQUAL)
-                    .withMatchValues(Arrays.asList("1.1"))))
-            .withActions(new DeliveryRuleCacheExpirationAction()
-                .withParameters(new CacheExpirationActionParameters().withCacheType(CacheType.ALL)
-                    .withCacheDuration("00:05:00")
-                    .withCacheBehavior(CacheBehavior.OVERRIDE)))
-            .attach()
-            .attach()
             .apply();
 
-        cdnProfile.refresh();
+        // verify route on the endpoint
+        endpoint = cdnProfile.afdEndpoints().get(cdnEndpointName);
+        Map<String, Route> routeMap = endpoint.routes();
+        Assertions.assertEquals(1, routeMap.size());
 
-        // endpoint1
-        endpoint = cdnProfile.endpoints().get(cdnEndpointName);
-        Assertions.assertNotNull(endpoint);
-        Assertions.assertEquals(3, endpoint.standardRulesEngineRules().size());
+        Route route1 = routeMap.get("route1");
+        Assertions.assertNotNull(route1);
+        Assertions.assertEquals(originGroup1Id, route1.originGroupResourceId());
+        Assertions.assertEquals(Arrays.asList("/*"), route1.patternsToMatch());
+        Assertions.assertEquals(HttpsRedirect.ENABLED, route1.httpsRedirect());
+        Assertions.assertEquals(ForwardingProtocol.HTTPS_ONLY, route1.forwardingProtocol());
+        Assertions.assertEquals(LinkToDefaultDomain.ENABLED, route1.linkToDefaultDomain());
+        Assertions.assertEquals(1, route1.ruleSetResourceIds().size());
+        Assertions.assertEquals(ruleSet1Id, route1.ruleSetResourceIds().get(0));
+        Assertions.assertEquals(EnabledState.ENABLED, route1.enabledState());
 
-        // rule1
-        rule = endpoint.standardRulesEngineRules().get(ruleName1);
-        Assertions.assertNotNull(rule);
-        Assertions.assertEquals(2, rule.order());
+        // Step 3: Update the route — change forwarding protocol
+        cdnProfile.update()
+            .updateAfdEndpoint(cdnEndpointName)
+            .updateRoute("route1")
+            .withForwardingProtocol(ForwardingProtocol.MATCH_REQUEST)
+            .parent()
+            .parent()
+            .apply();
 
-        // rule2
-        DeliveryRule rule2 = endpoint.standardRulesEngineRules().get(ruleName2);
-        Assertions.assertNotNull(rule2);
-        Assertions.assertEquals(1, rule2.conditions().size());
-        Assertions.assertEquals(1, rule2.actions().size());
-        Assertions.assertTrue(rule2.conditions().iterator().next() instanceof DeliveryRuleHttpVersionCondition);
-        Assertions.assertTrue(rule2.actions().iterator().next() instanceof DeliveryRuleCacheExpirationAction);
-        Assertions.assertEquals(1, rule2.order());
+        route1 = cdnProfile.afdEndpoints().get(cdnEndpointName).routes().get("route1");
+        Assertions.assertEquals(ForwardingProtocol.MATCH_REQUEST, route1.forwardingProtocol());
 
-        // endpoint2
-        CdnEndpoint endpoint2 = cdnProfile.endpoints().get(cdnEndpointName2);
-        Assertions.assertNotNull(endpoint2);
+        // Step 4: Update an existing rule — change order and match processing behavior
+        cdnProfile.update()
+            .updateRuleSet("ruleSet1")
+            .updateRule("rule1")
+            .withOrder(3)
+            .withMatchProcessingBehavior(MatchProcessingBehavior.STOP)
+            .parent()
+            .parent()
+            .apply();
 
-        // rule3
-        DeliveryRule rule3 = endpoint2.standardRulesEngineRules().get(ruleName3);
-        Assertions.assertNotNull(rule3);
+        rule1 = cdnProfile.ruleSets().get("ruleSet1").rules().get("rule1");
+        Assertions.assertEquals(3, rule1.order());
+        Assertions.assertEquals(MatchProcessingBehavior.STOP, rule1.matchProcessingBehavior());
 
-        cdnProfile.update().updateEndpoint(cdnEndpointName).withoutStandardRulesEngineRule(ruleName1).parent().apply();
+        // Step 5: Remove rule2 from the rule set
+        cdnProfile.update().updateRuleSet("ruleSet1").withoutRule("rule2").parent().apply();
 
-        cdnProfile.refresh();
+        ruleSet1 = cdnProfile.ruleSets().get("ruleSet1");
+        Assertions.assertEquals(1, ruleSet1.rules().size());
+        Assertions.assertNotNull(ruleSet1.rules().get("rule1"));
+        Assertions.assertNull(ruleSet1.rules().get("rule2"));
 
-        Assertions.assertEquals(2, cdnProfile.endpoints().get(cdnEndpointName).standardRulesEngineRules().size());
+        // Step 6: Remove the route from the endpoint
+        cdnProfile.update().updateAfdEndpoint(cdnEndpointName).withoutRoute("route1").parent().apply();
+
+        Assertions.assertTrue(cdnProfile.afdEndpoints().get(cdnEndpointName).routes().isEmpty());
+
+        // Step 7: Remove rule set, origin group, and endpoints
+        cdnProfile.update().withoutRuleSet("ruleSet1").apply();
+        Assertions.assertNull(cdnProfile.ruleSets().get("ruleSet1"));
+
+        cdnProfile.update().withoutOriginGroup("originGroup1").apply();
+        Assertions.assertNull(cdnProfile.originGroups().get("originGroup1"));
+
+        cdnProfile.update().withoutAfdEndpoint(cdnEndpointName).apply();
+        Assertions.assertTrue(cdnProfile.afdEndpoints().isEmpty());
     }
 
     @Disabled("Domain registration is deprecated from appservice")
