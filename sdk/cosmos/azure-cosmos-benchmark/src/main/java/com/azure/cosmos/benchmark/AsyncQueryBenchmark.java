@@ -11,6 +11,7 @@ import com.azure.cosmos.models.SqlQuerySpec;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +21,8 @@ class AsyncQueryBenchmark extends AsyncBenchmark<FeedResponse<PojoizedJson>> {
 
     private int pageCount = 0;
 
-    AsyncQueryBenchmark(TenantWorkloadConfig cfg) {
-        super(cfg);
+    AsyncQueryBenchmark(TenantWorkloadConfig cfg, Scheduler scheduler) {
+        super(cfg, scheduler);
     }
 
     @Override

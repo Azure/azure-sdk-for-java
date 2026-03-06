@@ -7,6 +7,7 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
 
 
 class AsyncQuerySinglePartitionMultiple extends AsyncBenchmark<FeedResponse<PojoizedJson>> {
@@ -15,8 +16,8 @@ class AsyncQuerySinglePartitionMultiple extends AsyncBenchmark<FeedResponse<Pojo
     private CosmosQueryRequestOptions options;
     private int pageCount = 0;
 
-    AsyncQuerySinglePartitionMultiple(TenantWorkloadConfig cfg) {
-        super(cfg);
+    AsyncQuerySinglePartitionMultiple(TenantWorkloadConfig cfg, Scheduler scheduler) {
+        super(cfg, scheduler);
         options = new CosmosQueryRequestOptions();
         options.setPartitionKey(new PartitionKey("pk"));
     }

@@ -23,6 +23,7 @@ import com.azure.cosmos.models.SqlQuerySpec;
 import org.apache.commons.lang3.RandomUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
 import reactor.util.retry.Retry;
 
 import java.util.ArrayList;
@@ -52,8 +53,8 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
     private ConcurrentHashMap<Integer, Document> cache;
     private int cacheSize;
 
-    ReadMyWriteWorkflow(TenantWorkloadConfig cfg) {
-        super(cfg);
+    ReadMyWriteWorkflow(TenantWorkloadConfig cfg, Scheduler scheduler) {
+        super(cfg, scheduler);
     }
 
     @Override

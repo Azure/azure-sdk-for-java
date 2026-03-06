@@ -18,6 +18,8 @@ import io.micrometer.core.instrument.composite.CompositeMeterRegistry;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -170,6 +172,10 @@ public class BenchmarkOrchestrator {
         logger.info("Starting benchmark: {} cycles x {} tenants", totalCycles, tenants.size());
         long startTime = System.currentTimeMillis();
 
+        Scheduler benchmarkScheduler = Schedulers.newParallel(
+            "cosmos-bench",
+            Runtime.getRuntime().availableProcessors());
+
         AtomicInteger threadCounter = new AtomicInteger(0);
         ExecutorService executor = Executors.newFixedThreadPool(tenants.size(), r -> {
             Thread t = new Thread(r, "tenant-worker-" + threadCounter.getAndIncrement());
@@ -182,7 +188,7 @@ public class BenchmarkOrchestrator {
                 logger.info("[LIFECYCLE] CYCLE_START cycle={} timestamp={}", cycle, Instant.now());
 
                 // 1. Create clients
-                List<Benchmark> benchmarks = createBenchmarks(config);
+                List<Benchmark> benchmarks = createBenchmarks(config, benchmarkScheduler);
                 logger.info("[LIFECYCLE] POST_CREATE cycle={} clients={} timestamp={}",
                     cycle, benchmarks.size(), Instant.now());
 
@@ -210,6 +216,7 @@ public class BenchmarkOrchestrator {
                 logger.info("[LIFECYCLE] POST_SETTLE cycle={} timestamp={}", cycle, Instant.now());
             }
         } finally {
+            benchmarkScheduler.dispose();
             executor.shutdown();
             try {
                 if (!executor.awaitTermination(60, TimeUnit.SECONDS)) {
@@ -231,10 +238,10 @@ public class BenchmarkOrchestrator {
             totalCycles, durationSec, Instant.now());
     }
 
-    private List<Benchmark> createBenchmarks(BenchmarkConfig config) throws Exception {
+    private List<Benchmark> createBenchmarks(BenchmarkConfig config, Scheduler scheduler) throws Exception {
         List<Benchmark> benchmarks = new ArrayList<>();
         for (TenantWorkloadConfig tenant : config.getTenantWorkloads()) {
-            benchmarks.add(createBenchmarkForOperation(tenant));
+            benchmarks.add(createBenchmarkForOperation(tenant, scheduler));
         }
         return benchmarks;
     }
@@ -293,7 +300,7 @@ public class BenchmarkOrchestrator {
 
     // ======== Benchmark factory ========
 
-    private Benchmark createBenchmarkForOperation(TenantWorkloadConfig cfg) throws Exception {
+    private Benchmark createBenchmarkForOperation(TenantWorkloadConfig cfg, Scheduler scheduler) throws Exception {
         // Sync benchmarks
         if (cfg.isSync()) {
             switch (cfg.getOperationType()) {
@@ -311,7 +318,7 @@ public class BenchmarkOrchestrator {
 
         // CTL workloads
         if (cfg.getOperationType() == Operation.CtlWorkload) {
-            return new AsyncCtlWorkload(cfg);
+            return new AsyncCtlWorkload(cfg, scheduler);
         }
         if (cfg.getOperationType() == Operation.LinkedInCtlWorkload) {
             return new LICtlWorkload(cfg);
@@ -322,19 +329,19 @@ public class BenchmarkOrchestrator {
             switch (cfg.getOperationType()) {
                 case WriteThroughput:
                 case WriteLatency:
-                    return new AsyncEncryptionWriteBenchmark(cfg);
+                    return new AsyncEncryptionWriteBenchmark(cfg, scheduler);
                 case ReadThroughput:
                 case ReadLatency:
-                    return new AsyncEncryptionReadBenchmark(cfg);
+                    return new AsyncEncryptionReadBenchmark(cfg, scheduler);
                 case QueryCross:
                 case QuerySingle:
                 case QueryParallel:
                 case QueryOrderby:
                 case QueryTopOrderby:
                 case QueryInClauseParallel:
-                    return new AsyncEncryptionQueryBenchmark(cfg);
+                    return new AsyncEncryptionQueryBenchmark(cfg, scheduler);
                 case QuerySingleMany:
-                    return new AsyncEncryptionQuerySinglePartitionMultiple(cfg);
+                    return new AsyncEncryptionQuerySinglePartitionMultiple(cfg, scheduler);
                 default:
                     throw new IllegalArgumentException(
                         "Encryption is not supported for operation: " + cfg.getOperationType());
@@ -345,10 +352,10 @@ public class BenchmarkOrchestrator {
         switch (cfg.getOperationType()) {
             case ReadThroughput:
             case ReadLatency:
-                return new AsyncReadBenchmark(cfg);
+                return new AsyncReadBenchmark(cfg, scheduler);
             case WriteThroughput:
             case WriteLatency:
-                return new AsyncWriteBenchmark(cfg);
+                return new AsyncWriteBenchmark(cfg, scheduler);
             case QueryCross:
             case QuerySingle:
             case QueryParallel:
@@ -358,16 +365,16 @@ public class BenchmarkOrchestrator {
             case QueryAggregateTopOrderby:
             case QueryInClauseParallel:
             case ReadAllItemsOfLogicalPartition:
-                return new AsyncQueryBenchmark(cfg);
+                return new AsyncQueryBenchmark(cfg, scheduler);
             case ReadManyLatency:
             case ReadManyThroughput:
-                return new AsyncReadManyBenchmark(cfg);
+                return new AsyncReadManyBenchmark(cfg, scheduler);
             case Mixed:
-                return new AsyncMixedBenchmark(cfg);
+                return new AsyncMixedBenchmark(cfg, scheduler);
             case QuerySingleMany:
-                return new AsyncQuerySinglePartitionMultiple(cfg);
+                return new AsyncQuerySinglePartitionMultiple(cfg, scheduler);
             case ReadMyWrites:
-                return new ReadMyWriteWorkflow(cfg);
+                return new ReadMyWriteWorkflow(cfg, scheduler);
             default:
                 throw new IllegalArgumentException("Unsupported operation: " + cfg.getOperationType());
         }

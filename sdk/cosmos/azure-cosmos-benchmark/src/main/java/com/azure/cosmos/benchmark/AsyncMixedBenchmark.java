@@ -7,6 +7,7 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
 import org.apache.commons.lang3.RandomStringUtils;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
 
 import java.util.Random;
 import java.util.UUID;
@@ -18,8 +19,8 @@ class AsyncMixedBenchmark extends AsyncBenchmark<Object> {
     private final String dataFieldValue;
     private final Random r;
 
-    AsyncMixedBenchmark(TenantWorkloadConfig cfg) {
-        super(cfg);
+    AsyncMixedBenchmark(TenantWorkloadConfig cfg, Scheduler scheduler) {
+        super(cfg, scheduler);
         uuid = UUID.randomUUID().toString();
         dataFieldValue = RandomStringUtils.randomAlphabetic(workloadConfig.getDocumentDataFieldSize());
         r = new Random();

@@ -12,6 +12,7 @@ import com.azure.cosmos.models.PartitionKey;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -21,8 +22,8 @@ public class AsyncEncryptionWriteBenchmark extends AsyncEncryptionBenchmark<Cosm
     private final String uuid;
     private final String dataFieldValue;
 
-    public AsyncEncryptionWriteBenchmark(TenantWorkloadConfig workloadCfg) throws IOException {
-        super(workloadCfg);
+    public AsyncEncryptionWriteBenchmark(TenantWorkloadConfig workloadCfg, Scheduler scheduler) throws IOException {
+        super(workloadCfg, scheduler);
         uuid = UUID.randomUUID().toString();
         dataFieldValue = RandomStringUtils.randomAlphabetic(workloadConfig.getDocumentDataFieldSize());
     }

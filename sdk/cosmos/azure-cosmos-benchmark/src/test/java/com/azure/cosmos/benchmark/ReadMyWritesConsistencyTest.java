@@ -113,7 +113,7 @@ public class ReadMyWritesConsistencyTest {
         AtomicInteger success = new AtomicInteger();
         AtomicInteger error = new AtomicInteger();
 
-        ReadMyWriteWorkflow wf = new ReadMyWriteWorkflow(cfg) {
+        ReadMyWriteWorkflow wf = new ReadMyWriteWorkflow(cfg, Schedulers.parallel()) {
             @Override
             protected void onError(Throwable throwable) {
                 logger.error("Error occurred in ReadMyWriteWorkflow", throwable);

@@ -28,7 +28,6 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
-import reactor.core.scheduler.Schedulers;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,10 +42,8 @@ import java.util.concurrent.atomic.AtomicLong;
 public class AsyncCtlWorkload implements Benchmark {
 
     // Dedicated scheduler for CTL benchmark workload dispatch.
-    // Instance field so each benchmark gets its own scheduler that is disposed after run() completes.
-    private final Scheduler BENCHMARK_SCHEDULER = Schedulers.newParallel(
-        "cosmos-bench-ctl",
-        Runtime.getRuntime().availableProcessors());
+    // Owned and disposed by the orchestrator (or test harness) that creates the benchmark.
+    private final Scheduler BENCHMARK_SCHEDULER;
 
     private final String PERCENT_PARSING_ERROR = "Unable to parse user provided readWriteQueryReadManyPct ";
     private final String prefixUuidForCreate;
@@ -68,7 +65,9 @@ public class AsyncCtlWorkload implements Benchmark {
     private int queryPct;
     private int readManyPct;
 
-    public AsyncCtlWorkload(TenantWorkloadConfig workloadCfg) {
+    public AsyncCtlWorkload(TenantWorkloadConfig workloadCfg, Scheduler scheduler) {
+        this.BENCHMARK_SCHEDULER = scheduler;
+
         final TokenCredential credential = workloadCfg.isManagedIdentityRequired()
             ? workloadCfg.buildTokenCredential()
             : null;
@@ -217,8 +216,6 @@ public class AsyncCtlWorkload implements Benchmark {
                     .onErrorResume(e -> Mono.empty()),
                 concurrency)
             .blockLast();
-
-        BENCHMARK_SCHEDULER.dispose();
 
         long endTime = System.currentTimeMillis();
         logger.info("[{}] operations performed in [{}] seconds.",

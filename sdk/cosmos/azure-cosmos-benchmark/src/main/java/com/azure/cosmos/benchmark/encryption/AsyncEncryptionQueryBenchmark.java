@@ -11,6 +11,7 @@ import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
 
 import java.io.IOException;
 import java.util.Random;
@@ -19,8 +20,8 @@ public class AsyncEncryptionQueryBenchmark extends AsyncEncryptionBenchmark<Feed
 
     private int pageCount = 0;
 
-    public AsyncEncryptionQueryBenchmark(TenantWorkloadConfig workloadCfg) throws IOException {
-        super(workloadCfg);
+    public AsyncEncryptionQueryBenchmark(TenantWorkloadConfig workloadCfg, Scheduler scheduler) throws IOException {
+        super(workloadCfg, scheduler);
     }
 
     @Override

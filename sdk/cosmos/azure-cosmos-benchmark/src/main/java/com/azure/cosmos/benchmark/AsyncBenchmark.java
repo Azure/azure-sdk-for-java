@@ -29,7 +29,6 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
-import reactor.core.scheduler.Schedulers;
 import reactor.util.retry.Retry;
 
 import java.time.Duration;
@@ -44,10 +43,8 @@ abstract class AsyncBenchmark<T> implements Benchmark {
         = ImplementationBridgeHelpers.CosmosClientBuilderHelper.getCosmosClientBuilderAccessor();
 
     // Dedicated scheduler for benchmark workload dispatch — avoids contention with global Schedulers.parallel().
-    // Instance field so each benchmark gets its own scheduler that is disposed after run() completes.
-    final Scheduler BENCHMARK_SCHEDULER = Schedulers.newParallel(
-        "cosmos-bench",
-        Runtime.getRuntime().availableProcessors());
+    // Owned and disposed by the orchestrator (or test harness) that creates the benchmark.
+    final Scheduler BENCHMARK_SCHEDULER;
 
     private boolean databaseCreated;
     private boolean collectionCreated;
@@ -60,10 +57,11 @@ abstract class AsyncBenchmark<T> implements Benchmark {
     final TenantWorkloadConfig workloadConfig;
     final List<PojoizedJson> docsToRead;
 
-    AsyncBenchmark(TenantWorkloadConfig cfg) {
+    AsyncBenchmark(TenantWorkloadConfig cfg, Scheduler scheduler) {
 
         logger = LoggerFactory.getLogger(this.getClass());
         workloadConfig = cfg;
+        this.BENCHMARK_SCHEDULER = scheduler;
 
         final TokenCredential credential = cfg.isManagedIdentityRequired()
             ? cfg.buildTokenCredential()
@@ -414,8 +412,6 @@ abstract class AsyncBenchmark<T> implements Benchmark {
                     .onErrorResume(e -> Mono.empty());
             }, concurrency)
             .blockLast();
-
-        BENCHMARK_SCHEDULER.dispose();
 
         long endTime = System.currentTimeMillis();
         logger.info("[{}] operations performed in [{}] seconds.",

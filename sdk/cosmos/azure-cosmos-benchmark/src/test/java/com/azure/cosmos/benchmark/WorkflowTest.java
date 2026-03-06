@@ -16,6 +16,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import reactor.core.scheduler.Schedulers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +64,7 @@ public class WorkflowTest {
         AtomicInteger success = new AtomicInteger();
         AtomicInteger error = new AtomicInteger();
 
-        ReadMyWriteWorkflow wf = new ReadMyWriteWorkflow(cfg) {
+        ReadMyWriteWorkflow wf = new ReadMyWriteWorkflow(cfg, Schedulers.parallel()) {
             @Override
             protected void onError(Throwable throwable) {
                 error.incrementAndGet();
@@ -115,7 +116,7 @@ public class WorkflowTest {
         AtomicInteger success = new AtomicInteger();
         AtomicInteger error = new AtomicInteger();
 
-        AsyncWriteBenchmark wf = new AsyncWriteBenchmark(cfg) {
+        AsyncWriteBenchmark wf = new AsyncWriteBenchmark(cfg, Schedulers.parallel()) {
             @Override
             protected void onError(Throwable throwable) {
                 error.incrementAndGet();
@@ -152,7 +153,7 @@ public class WorkflowTest {
         AtomicInteger success = new AtomicInteger();
         AtomicInteger error = new AtomicInteger();
 
-        AsyncWriteBenchmark wf = new AsyncWriteBenchmark(cfg) {
+        AsyncWriteBenchmark wf = new AsyncWriteBenchmark(cfg, Schedulers.parallel()) {
             @Override
             protected void onError(Throwable throwable) {
                 error.incrementAndGet();
@@ -189,7 +190,7 @@ public class WorkflowTest {
         AtomicInteger success = new AtomicInteger();
         AtomicInteger error = new AtomicInteger();
 
-        AsyncReadBenchmark wf = new AsyncReadBenchmark(cfg) {
+        AsyncReadBenchmark wf = new AsyncReadBenchmark(cfg, Schedulers.parallel()) {
             @Override
             protected void onError(Throwable throwable) {
                 error.incrementAndGet();
@@ -226,7 +227,7 @@ public class WorkflowTest {
         AtomicInteger success = new AtomicInteger();
         AtomicInteger error = new AtomicInteger();
 
-        AsyncReadBenchmark wf = new AsyncReadBenchmark(cfg) {
+        AsyncReadBenchmark wf = new AsyncReadBenchmark(cfg, Schedulers.parallel()) {
             @Override
             protected void onError(Throwable throwable) {
                 error.incrementAndGet();
