@@ -210,6 +210,226 @@ AgentReference agentReference = new AgentReference(agent.getName()).setVersion(a
 Response response = responsesClient.createWithAgentConversation(agentReference, conversation.id());
 ```
 
+### Using Agent tools
+
+Agents can be enhanced with specialized tools for various capabilities. For complete working examples, see the `tools/` folder under [samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools).
+
+In the description below, tools are organized by their Foundry connection requirements: "Built-in Tools" (which do not require a Foundry connection) and "Connection-based Tools" (which require a Foundry connection).
+
+#### Built-in Tools
+
+These tools work immediately without requiring external connections.
+
+---
+
+##### **Code Interpreter** ([documentation](https://learn.microsoft.com/azure/foundry/agents/how-to/tools/code-interpreter?pivots=java))
+
+Write and run Python code in a sandboxed environment, process files and work with diverse data formats.
+
+```java
+CodeInterpreterTool tool = new CodeInterpreterTool();
+```
+
+See the full sample in [CodeInterpreterSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/CodeInterpreterSample.java).
+
+---
+
+##### **File Search** ([documentation](https://learn.microsoft.com/azure/foundry/agents/how-to/tools/file-search?pivots=java))
+
+Search through files in a vector store for knowledge retrieval:
+
+```java
+FileSearchTool tool = new FileSearchTool(Arrays.asList(vectorStoreId));
+```
+
+See the full sample in [FileSearchSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/FileSearchSample.java).
+
+---
+
+##### **Image Generation** ([documentation](https://learn.microsoft.com/azure/foundry/agents/how-to/tools/image-generation?pivots=java))
+
+Generate images from text descriptions:
+
+```java
+ImageGenTool tool = new ImageGenTool()
+    .setModel(ImageGenToolModel.fromString(imageModel))
+    .setQuality(ImageGenToolQuality.LOW)
+    .setSize(ImageGenToolSize.fromString("1024x1024"));
+```
+
+See the full sample in [ImageGenerationSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/ImageGenerationSample.java).
+
+---
+
+##### **Web Search (Preview)** ([documentation](https://learn.microsoft.com/azure/foundry/agents/how-to/tools/web-search?pivots=java))
+
+Search the web for current information:
+
+```java
+WebSearchPreviewTool tool = new WebSearchPreviewTool();
+```
+
+See the full sample in [WebSearchSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/WebSearchSample.java).
+
+---
+
+##### **Computer Use (Preview)** ([documentation](https://learn.microsoft.com/azure/foundry/agents/how-to/tools/computer-use?pivots=java))
+
+Interact with computer interfaces through simulated actions and screenshots:
+
+```java
+ComputerUsePreviewTool tool = new ComputerUsePreviewTool(
+    ComputerEnvironment.WINDOWS, 1026, 769);
+```
+
+See the full sample in [ComputerUseSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/ComputerUseSync.java).
+
+---
+
+##### **Model Context Protocol (MCP)** ([documentation](https://learn.microsoft.com/azure/foundry/agents/how-to/tools/model-context-protocol?pivots=java))
+
+Connect agents to external MCP servers:
+
+```java
+McpTool tool = new McpTool("api-specs")
+    .setServerUrl("https://gitmcp.io/Azure/azure-rest-api-specs")
+    .setProjectConnectionId(mcpConnectionId)
+    .setRequireApproval(BinaryData.fromObject("always"));
+```
+
+See the full sample in [McpToolSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/McpToolSample.java).
+
+---
+
+##### **OpenAPI** ([documentation](https://learn.microsoft.com/azure/foundry/agents/how-to/tools/openapi?pivots=java))
+
+Call external APIs defined by OpenAPI specifications without additional client-side code:
+
+```java
+Map<String, BinaryData> spec = OpenApiFunctionDefinition.readSpecFromFile(
+    Paths.get("path/to/openapi_spec.json"));
+
+OpenApiTool tool = new OpenApiTool(
+    new OpenApiFunctionDefinition("get_weather", spec, new OpenApiAnonymousAuthDetails())
+        .setDescription("Retrieve weather information for a location."));
+```
+
+See the full sample in [OpenApiSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/OpenApiSample.java).
+
+---
+
+##### **Function Tool** ([documentation](https://learn.microsoft.com/azure/foundry/agents/how-to/tools/function-calling?pivots=java))
+
+Define custom functions that allow agents to interact with external APIs, databases, or application logic:
+
+```java
+Map<String, BinaryData> parameters = new HashMap<>();
+parameters.put("type", BinaryData.fromString("\"object\""));
+parameters.put("properties", BinaryData.fromString(
+    "{\"location\":{\"type\":\"string\",\"description\":\"The city and state\"}}"));
+parameters.put("required", BinaryData.fromString("[\"location\"]"));
+
+FunctionTool tool = new FunctionTool("get_weather", parameters, true);
+```
+
+See the full sample in [FunctionCallingSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/FunctionCallingSample.java).
+
+---
+
+#### Connection-Based Tools
+
+These tools require configuring connections in your Microsoft Foundry project and use a `projectConnectionId`.
+
+---
+
+##### **Azure AI Search** ([documentation](https://learn.microsoft.com/azure/foundry/agents/how-to/tools/ai-search?pivots=java))
+
+Integrate with Azure AI Search indexes for powerful knowledge retrieval and semantic search capabilities:
+
+```java
+AzureAISearchTool tool = new AzureAISearchTool(
+    new AzureAISearchToolResource(Arrays.asList(
+        new AISearchIndexResource()
+            .setProjectConnectionId(connectionId)
+            .setIndexName(indexName)
+            .setQueryType(AzureAISearchQueryType.SIMPLE))));
+```
+
+See the full sample in [AzureAISearchSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/AzureAISearchSample.java).
+
+---
+
+##### **Bing Grounding** ([documentation](https://learn.microsoft.com/azure/foundry/agents/how-to/tools/bing-tools?pivots=java))
+
+Ground agent responses with real-time web search results from Bing to provide up-to-date information:
+
+```java
+BingGroundingTool tool = new BingGroundingTool(
+    new BingGroundingSearchToolParameters(Arrays.asList(
+        new BingGroundingSearchConfiguration(bingConnectionId))));
+```
+
+See the full sample in [BingGroundingSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/BingGroundingSample.java).
+
+---
+
+##### **Microsoft Fabric (Preview)** ([documentation](https://learn.microsoft.com/azure/foundry/agents/how-to/tools/fabric?pivots=java))
+
+Query data from Microsoft Fabric data sources:
+
+```java
+MicrosoftFabricPreviewTool tool = new MicrosoftFabricPreviewTool(
+    new FabricDataAgentToolParameters()
+        .setProjectConnections(Arrays.asList(
+            new ToolProjectConnection(fabricConnectionId))));
+```
+
+See the full sample in [FabricSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/FabricSample.java).
+
+---
+
+##### **Microsoft SharePoint (Preview)** ([documentation](https://learn.microsoft.com/azure/foundry/agents/how-to/tools/sharepoint?pivots=java))
+
+Search through SharePoint documents for grounding:
+
+```java
+SharepointPreviewTool tool = new SharepointPreviewTool(
+    new SharepointGroundingToolParameters()
+        .setProjectConnections(Arrays.asList(
+            new ToolProjectConnection(sharepointConnectionId))));
+```
+
+See the full sample in [SharePointGroundingSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/SharePointGroundingSample.java).
+
+---
+
+##### **Browser Automation (Preview)** ([documentation](https://learn.microsoft.com/azure/foundry/agents/how-to/tools/browser-automation?pivots=java))
+
+Interact with web pages through browser automation:
+
+```java
+BrowserAutomationPreviewTool tool = new BrowserAutomationPreviewTool(
+    new BrowserAutomationToolParameters(
+        new BrowserAutomationToolConnectionParameters(connectionId)));
+```
+
+See the full sample in [BrowserAutomationSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/BrowserAutomationSample.java).
+
+---
+
+##### **Agent-to-Agent (A2A) (Preview)** ([documentation](https://learn.microsoft.com/azure/foundry/agents/how-to/tools/agent-to-agent?pivots=java))
+
+Enable agent-to-agent communication with remote A2A endpoints:
+
+```java
+A2APreviewTool tool = new A2APreviewTool()
+    .setProjectConnectionId(a2aConnectionId);
+```
+
+See the full sample in [AgentToAgentSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/AgentToAgentSample.java).
+
+---
+
 ### Service API versions
 
 The client library targets the latest service API version by default.
