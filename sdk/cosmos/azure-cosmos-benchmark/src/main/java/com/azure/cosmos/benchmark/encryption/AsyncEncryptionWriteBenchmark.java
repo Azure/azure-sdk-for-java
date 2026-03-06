@@ -16,7 +16,7 @@ import reactor.core.publisher.Mono;
 import java.io.IOException;
 import java.util.UUID;
 
-public class AsyncEncryptionWriteBenchmark extends AsyncEncryptionBenchmark<CosmosItemResponse> {
+public class AsyncEncryptionWriteBenchmark extends AsyncEncryptionBenchmark<CosmosItemResponse<PojoizedJson>> {
 
     private final String uuid;
     private final String dataFieldValue;
@@ -28,8 +28,7 @@ public class AsyncEncryptionWriteBenchmark extends AsyncEncryptionBenchmark<Cosm
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    protected Mono<CosmosItemResponse> performWorkload(long i) {
+    protected Mono<CosmosItemResponse<PojoizedJson>> performWorkload(long i) {
         String id = uuid + i;
         PojoizedJson newDoc = BenchmarkHelper.generateDocument(id,
             dataFieldValue,
@@ -55,6 +54,6 @@ public class AsyncEncryptionWriteBenchmark extends AsyncEncryptionBenchmark<Cosm
                 null);
         }
 
-        return (Mono) obs;
+        return obs;
     }
 }

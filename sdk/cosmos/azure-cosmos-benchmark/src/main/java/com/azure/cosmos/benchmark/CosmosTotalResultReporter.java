@@ -195,7 +195,13 @@ public class CosmosTotalResultReporter {
             if (statusCode == null) {
                 continue;
             }
-            boolean isSuccess = statusCode.startsWith("2");
+            boolean isSuccess;
+            try {
+                int code = Integer.parseInt(statusCode);
+                isSuccess = code >= 200 && code < 300;
+            } catch (NumberFormatException e) {
+                isSuccess = false;
+            }
             if (successOnly == isSuccess) {
                 total += counter.count();
             }

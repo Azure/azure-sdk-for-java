@@ -62,10 +62,12 @@ public class BenchmarkOrchestrator {
 
         setGlobalSystemProperties(config);
 
-        // Set up shared Micrometer registry (composite: DropwizardBridge + optional AzureMonitor)
+        // Set up shared Micrometer registry (composite: Dropwizard bridge + optional AzureMonitor)
         CompositeMeterRegistry compositeRegistry = new CompositeMeterRegistry();
 
-        // Benchmark metrics reporter — DropwizardMeterRegistry bridge to CsvReporter/ConsoleReporter
+        // DropwizardMeterRegistry bridges Micrometer meters to a Dropwizard MetricRegistry,
+        // which feeds CsvReporter/ConsoleReporter for periodic output. It is a MeterRegistry
+        // and is added to the composite so SDK-emitted meters flow through to Dropwizard reporting.
         Path metricsDir = null;
         if (config.getReportingDirectory() != null) {
             metricsDir = Paths.get(config.getReportingDirectory(), "metrics");
@@ -84,7 +86,7 @@ public class BenchmarkOrchestrator {
             new JvmGcMetrics().bindTo(compositeRegistry);
             new JvmMemoryMetrics().bindTo(compositeRegistry);
             new JvmThreadMetrics().bindTo(compositeRegistry);
-            new ThreadPrefixGaugeSet().bindTo(compositeRegistry);
+            new ThreadPrefixGaugeSet(config.getPrintingInterval()).bindTo(compositeRegistry);
             logger.info("JVM stats enabled (gc, memory, threads, threadPrefix)");
         }
 
@@ -124,10 +126,12 @@ public class BenchmarkOrchestrator {
                 config.getResultUploadDatabase(), config.getResultUploadContainer());
         }
 
-        // Netty HTTP connection pool metrics reporter (only when enabled)
+        // Netty HTTP connection pool metrics reporter (only when enabled).
+        // Reactor Netty publishes pool gauges to Metrics.globalRegistry, so we add
+        // a SimpleMeterRegistry there to capture them (separate from the composite registry
+        // used for SDK operation metrics).
         NettyHttpMetricsReporter nettyMetricsReporter = null;
         SimpleMeterRegistry nettyHttpMeterRegistry = null;
-        // Add a SimpleMeterRegistry to globalRegistry when netty metrics are enabled,
         if (config.isEnableNettyHttpMetrics() && config.getReportingDirectory() != null) {
             nettyHttpMeterRegistry = new SimpleMeterRegistry();
             Metrics.addRegistry(nettyHttpMeterRegistry);

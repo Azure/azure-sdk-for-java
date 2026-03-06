@@ -32,6 +32,17 @@ import java.util.stream.Collectors;
 public class ThreadPrefixGaugeSet implements MeterBinder {
 
     private static final String METRIC_NAME = "jvm.threads.prefix";
+    private static final int DEFAULT_REFRESH_INTERVAL_SECONDS = 10;
+
+    private final int refreshIntervalSeconds;
+
+    public ThreadPrefixGaugeSet() {
+        this(DEFAULT_REFRESH_INTERVAL_SECONDS);
+    }
+
+    public ThreadPrefixGaugeSet(int refreshIntervalSeconds) {
+        this.refreshIntervalSeconds = refreshIntervalSeconds;
+    }
 
     @Override
     public void bindTo(MeterRegistry registry) {
@@ -39,8 +50,6 @@ public class ThreadPrefixGaugeSet implements MeterBinder {
             .description("Thread count grouped by name prefix")
             .register(registry);
 
-        // Use a scheduled executor to periodically update the multi-gauge rows,
-        // since thread prefixes are dynamic (new pools may appear).
         ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor(r -> {
             Thread t = new Thread(r, "thread-prefix-gauge-updater");
             t.setDaemon(true);
@@ -55,7 +64,7 @@ public class ThreadPrefixGaugeSet implements MeterBinder {
                     .collect(Collectors.toList()),
                 true // overwrite previous rows
             );
-        }, 0, 10, TimeUnit.SECONDS);
+        }, 0, refreshIntervalSeconds, TimeUnit.SECONDS);
     }
 
     private Map<String, Integer> computePrefixCounts() {
