@@ -4,6 +4,8 @@
 package com.azure.cosmos.benchmark;
 
 import com.azure.cosmos.implementation.cpu.CpuMemoryReader;
+// Note: CpuMemoryReader is an SDK internal API. Acceptable for benchmark tooling
+// which already depends on SDK internals (e.g., ImplementationBridgeHelpers).
 import com.codahale.metrics.Meter;
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.Snapshot;

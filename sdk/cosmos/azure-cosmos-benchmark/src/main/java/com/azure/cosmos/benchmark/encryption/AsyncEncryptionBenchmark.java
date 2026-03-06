@@ -58,7 +58,8 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public abstract class AsyncEncryptionBenchmark<T> implements Benchmark {
 
-    // Dedicated scheduler for encryption benchmark workload dispatch
+    // Dedicated scheduler for encryption benchmark workload dispatch.
+    // Uses daemon threads; no explicit dispose needed (cleaned up on JVM exit).
     static final Scheduler BENCHMARK_SCHEDULER = Schedulers.newBoundedElastic(
         Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE,
         Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE,

@@ -42,7 +42,8 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class AsyncCtlWorkload implements Benchmark {
 
-    // Dedicated scheduler for CTL benchmark workload dispatch
+    // Dedicated scheduler for CTL benchmark workload dispatch.
+    // Uses daemon threads; no explicit dispose needed (cleaned up on JVM exit).
     private static final Scheduler BENCHMARK_SCHEDULER = Schedulers.newBoundedElastic(
         Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE,
         Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE,

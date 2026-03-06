@@ -6,6 +6,8 @@ import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosContainer;
 import com.azure.cosmos.implementation.cpu.CpuMemoryReader;
+// Note: CpuMemoryReader is an SDK internal API. Acceptable for benchmark tooling
+// which already depends on SDK internals (e.g., ImplementationBridgeHelpers).
 import com.azure.cosmos.models.PartitionKey;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;

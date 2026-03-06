@@ -43,7 +43,8 @@ abstract class AsyncBenchmark<T> implements Benchmark {
     private static final ImplementationBridgeHelpers.CosmosClientBuilderHelper.CosmosClientBuilderAccessor clientBuilderAccessor
         = ImplementationBridgeHelpers.CosmosClientBuilderHelper.getCosmosClientBuilderAccessor();
 
-    // Dedicated scheduler for benchmark workload dispatch — avoids contention with global Schedulers.parallel()
+    // Dedicated scheduler for benchmark workload dispatch — avoids contention with global Schedulers.parallel().
+    // Uses daemon threads; no explicit dispose needed (cleaned up on JVM exit).
     static final Scheduler BENCHMARK_SCHEDULER = Schedulers.newBoundedElastic(
         Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE,
         Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE,
