@@ -257,6 +257,7 @@
     <module>sdk/storagediscovery</module>
     <module>sdk/storagemover</module>
     <module>sdk/storagepool</module>
+    <module>sdk/storagesync</module>
     <module>sdk/streamanalytics</module>
     <module>sdk/subscription</module>
     <module>sdk/support</module>
