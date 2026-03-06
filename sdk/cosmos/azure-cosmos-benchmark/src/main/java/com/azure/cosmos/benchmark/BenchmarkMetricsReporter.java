@@ -7,10 +7,6 @@ import com.codahale.metrics.ConsoleReporter;
 import com.codahale.metrics.CsvReporter;
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.ScheduledReporter;
-import io.micrometer.core.instrument.Clock;
-import io.micrometer.core.instrument.dropwizard.DropwizardConfig;
-import io.micrometer.core.instrument.dropwizard.DropwizardMeterRegistry;
-import io.micrometer.core.instrument.util.HierarchicalNameMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,14 +15,15 @@ import java.nio.file.Path;
 import java.util.concurrent.TimeUnit;
 
 /**
- * A Micrometer {@link io.micrometer.core.instrument.MeterRegistry} backed by a Dropwizard
- * {@link MetricRegistry} with a {@link CsvReporter} or {@link ConsoleReporter}.
+ * Periodically reports metrics from a {@link DropwizardBridgeMeterRegistry} using
+ * Dropwizard's {@link CsvReporter} or {@link ConsoleReporter}.
  *
- * <p>SDK-emitted Micrometer meters are automatically bridged to the Dropwizard registry,
- * which then leverages the battle-tested CSV/Console reporter for periodic output.
- * This gives us per-metric CSV files (one file per meter) with no custom reporting code.</p>
+ * <p>This class is a thin wrapper that creates the appropriate Dropwizard reporter
+ * for the underlying {@link MetricRegistry} of a {@link DropwizardBridgeMeterRegistry}.
+ * SDK-emitted Micrometer meters are bridged to Dropwizard by the registry; this reporter
+ * simply handles the periodic output.</p>
  */
-public class BenchmarkMetricsReporter extends DropwizardMeterRegistry {
+public class BenchmarkMetricsReporter {
 
     private static final Logger logger = LoggerFactory.getLogger(BenchmarkMetricsReporter.class);
 
@@ -35,12 +32,11 @@ public class BenchmarkMetricsReporter extends DropwizardMeterRegistry {
     /**
      * Create a benchmark metrics reporter.
      *
-     * @param csvOutputDir directory for CSV output; if null, uses console reporter
+     * @param meterRegistry the Dropwizard bridge registry whose metrics to report
+     * @param csvOutputDir  directory for CSV output; if null, uses console reporter
      */
-    public BenchmarkMetricsReporter(Path csvOutputDir) {
-        super(createConfig(), new MetricRegistry(), HierarchicalNameMapper.DEFAULT, Clock.SYSTEM);
-
-        MetricRegistry dropwizardRegistry = getDropwizardRegistry();
+    public BenchmarkMetricsReporter(DropwizardBridgeMeterRegistry meterRegistry, Path csvOutputDir) {
+        MetricRegistry dropwizardRegistry = meterRegistry.getDropwizardRegistry();
 
         if (csvOutputDir != null) {
             File dir = csvOutputDir.toFile();
@@ -80,30 +76,5 @@ public class BenchmarkMetricsReporter extends DropwizardMeterRegistry {
         reporter.report();
         reporter.stop();
         reporter.close();
-    }
-
-    @Override
-    protected Double nullGaugeValue() {
-        return Double.NaN;
-    }
-
-    @Override
-    public void close() {
-        stop();
-        super.close();
-    }
-
-    private static DropwizardConfig createConfig() {
-        return new DropwizardConfig() {
-            @Override
-            public String get(String key) {
-                return null;
-            }
-
-            @Override
-            public String prefix() {
-                return "benchmark";
-            }
-        };
     }
 }

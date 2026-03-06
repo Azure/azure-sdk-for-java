@@ -64,15 +64,17 @@ public class BenchmarkOrchestrator {
         // Set up shared Micrometer registry (composite: Dropwizard bridge + optional AzureMonitor)
         CompositeMeterRegistry compositeRegistry = new CompositeMeterRegistry();
 
-        // DropwizardMeterRegistry bridges Micrometer meters to a Dropwizard MetricRegistry,
-        // which feeds CsvReporter/ConsoleReporter for periodic output. It is a MeterRegistry
-        // and is added to the composite so SDK-emitted meters flow through to Dropwizard reporting.
+        // DropwizardBridgeMeterRegistry bridges Micrometer meters to a Dropwizard MetricRegistry.
+        // Added to the composite so SDK-emitted meters flow through to Dropwizard for reporting.
+        DropwizardBridgeMeterRegistry dropwizardBridge = new DropwizardBridgeMeterRegistry();
+        compositeRegistry.add(dropwizardBridge);
+
+        // Reporter reads from the Dropwizard bridge and writes to CSV or console.
         Path metricsDir = null;
         if (config.getReportingDirectory() != null) {
             metricsDir = Paths.get(config.getReportingDirectory(), "metrics");
         }
-        BenchmarkMetricsReporter reporter = new BenchmarkMetricsReporter(metricsDir);
-        compositeRegistry.add(reporter);
+        BenchmarkMetricsReporter reporter = new BenchmarkMetricsReporter(dropwizardBridge, metricsDir);
         reporter.start(config.getPrintingInterval(), TimeUnit.SECONDS);
 
         MeterRegistry cosmosMicrometerRegistry = buildCosmosMicrometerRegistry();
