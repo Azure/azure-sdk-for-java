@@ -87,7 +87,6 @@ class SparkE2EConfigResolutionITest extends IntegrationSpec with CosmosClient wi
     val cosmosEndpoint = TestConfigurations.HOST
     val cosmosMasterKey = TestConfigurations.MASTER_KEY
 
-
     val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
     val objectNode = Utils.getSimpleObjectMapper.createObjectNode()
     objectNode.put("word", "Cobalt atomic number")
@@ -125,6 +124,16 @@ class SparkE2EConfigResolutionITest extends IntegrationSpec with CosmosClient wi
   }
 
   it should "validate config names with 'spark.cosmos.' prefix" in {
+    val sparkConfig = new SparkConf()
+
+    val spark = SparkSession.builder()
+      .appName("spark connector sample")
+      .master("local")
+      .config(sparkConfig)
+      .getOrCreate()
+
+    LocalJavaFileSystem.applyToSparkSession(spark)
+
     val userConfig = Map(
       "spark.cosmos.accountEndpoint" -> "https://boson-test.documents.azure.com:443/",
       "spark.cosmos.accountKey" -> "xyz",
@@ -138,9 +147,21 @@ class SparkE2EConfigResolutionITest extends IntegrationSpec with CosmosClient wi
       case e: Exception => e.getMessage shouldEqual
         "The config property 'spark.cosmos.someTypo' is invalid. No config setting with this name exists."
     }
+
+    spark.close()
   }
 
   it should "not validate config names without 'spark.cosmos.' prefix" in {
+    val sparkConfig = new SparkConf()
+
+    val spark = SparkSession.builder()
+      .appName("spark connector sample")
+      .master("local")
+      .config(sparkConfig)
+      .getOrCreate()
+
+    LocalJavaFileSystem.applyToSparkSession(spark)
+
     val userConfig = Map(
       "spark.cosmos.accountEndpoint" -> "https://boson-test.documents.azure.com:443/",
       "spark.cosmos.accountKey" -> "xyz",
@@ -148,6 +169,8 @@ class SparkE2EConfigResolutionITest extends IntegrationSpec with CosmosClient wi
     )
 
     CosmosConfig.getEffectiveConfig(None, None, userConfig)
+
+    spark.close()
   }
 
   //scalastyle:on magic.number

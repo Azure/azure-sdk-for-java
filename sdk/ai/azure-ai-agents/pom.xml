@@ -14,7 +14,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-ai-agents</artifactId>
-  <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-ai-agents;current} -->
+  <version>2.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-ai-agents;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Agents</name>
@@ -46,42 +46,46 @@
     <!-- TODO: remove on Public Preview release -->
     <jacoco.min.linecoverage>0.0</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.0</jacoco.min.branchcoverage>
+    <javaModulesSurefireArgLine>
+      --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
+      --add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
+    </javaModulesSurefireArgLine>
   </properties>
   <dependencies>
     <!-- compile scope -->
     <dependency>
       <groupId>com.openai</groupId>
       <artifactId>openai-java</artifactId>
-      <version>4.6.1</version> <!-- {x-version-update;com.openai:openai-java;external_dependency} -->
+      <version>4.14.0</version> <!-- {x-version-update;com.openai:openai-java;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.57.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.57.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.16.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.16.3</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
 
     <!-- test scope -->
     <dependency>
       <groupId>com.azure</groupId>
+      <artifactId>azure-core-http-okhttp</artifactId>
+      <version>1.13.3</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.18.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.18.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.27.0-beta.14</version> <!-- {x-version-update;unreleased_com.azure:azure-core-test;dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core-http-okhttp</artifactId>
-      <version>1.13.2</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
+      <version>1.27.0-beta.14</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -97,7 +101,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.openai:openai-java:[4.6.1]</include> <!-- {x-include-update;com.openai:openai-java;external_dependency} -->
+                <include>com.openai:openai-java:[4.14.0]</include> <!-- {x-include-update;com.openai:openai-java;external_dependency} -->
               </includes>
             </bannedDependencies>
             <requireReleaseDeps>

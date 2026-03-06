@@ -19,7 +19,7 @@ public final class NetworkSecurityProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkSecurityProfile model = BinaryData.fromString(
-            "{\"name\":\"ugeyzihgrkyuiza\",\"accessRulesVersion\":1192399452,\"accessRules\":[{\"name\":\"phojeevyhy\",\"properties\":{\"direction\":\"Inbound\",\"addressPrefixes\":[\"zbgomfgbeg\",\"qgleohibetnluank\",\"rfxeeebtij\"],\"subscriptions\":[{\"id\":\"bmqzbqqxlajrnwx\"},{\"id\":\"evehjkuyxoaf\"}],\"networkSecurityPerimeters\":[{\"id\":\"lt\",\"perimeterGuid\":\"cc01bf33-ad8d-4b13-8050-cf28e1d0b1d6\",\"location\":\"yl\"},{\"id\":\"mfgvxirpghriypo\",\"perimeterGuid\":\"01e0c3e3-1aee-4326-9024-494e3ab2d43f\",\"location\":\"hlqhykprlpy\"}],\"fullyQualifiedDomainNames\":[\"ciqdsme\",\"iitdfuxt\"],\"emailAddresses\":[\"iibmi\",\"bnn\",\"stgnl\",\"hnmgixhcm\"],\"phoneNumbers\":[\"qfoudorhcgyy\",\"rotwypundmbxhugc\",\"jkavl\"]}},{\"name\":\"rb\",\"properties\":{\"direction\":\"Inbound\",\"addressPrefixes\":[\"tzfjltf\",\"nzcyjtotp\",\"opv\",\"bdb\"],\"subscriptions\":[{\"id\":\"q\"},{\"id\":\"edsvqwthmk\"},{\"id\":\"bcysih\"}],\"networkSecurityPerimeters\":[{\"id\":\"wdhohsdtmcdzsu\",\"perimeterGuid\":\"cc5e625e-91c2-4e53-bd0f-2d47b117e538\",\"location\":\"hdxbzlm\"},{\"id\":\"uapcvhdbevwqqxe\",\"perimeterGuid\":\"6d6bf008-2b16-44a8-84c3-808f6ee860cf\",\"location\":\"onqzinkfkbgbzbow\"}],\"fullyQualifiedDomainNames\":[\"o\"],\"emailAddresses\":[\"mygvkzqkj\",\"eokbze\"],\"phoneNumbers\":[\"rx\",\"czurtlei\",\"q\"]}}],\"diagnosticSettingsVersion\":796775151,\"enabledLogCategories\":[\"zgnzv\"]}")
+            "{\"name\":\"ugeyzihgrkyuiza\",\"accessRulesVersion\":1192399452,\"accessRules\":[{\"name\":\"phojeevyhy\",\"properties\":{\"direction\":\"Inbound\",\"addressPrefixes\":[\"zbgomfgbeg\",\"qgleohibetnluank\",\"rfxeeebtij\"],\"subscriptions\":[{\"id\":\"bmqzbqqxlajrnwx\"},{\"id\":\"evehjkuyxoaf\"}],\"networkSecurityPerimeters\":[{\"id\":\"lt\",\"perimeterGuid\":\"5eee6773-30c2-41ee-8777-049b1ca9b5ca\",\"location\":\"yl\"},{\"id\":\"mfgvxirpghriypo\",\"perimeterGuid\":\"cf775843-639b-4af3-9d9d-173c1d94e988\",\"location\":\"hlqhykprlpy\"}],\"fullyQualifiedDomainNames\":[\"ciqdsme\",\"iitdfuxt\"],\"emailAddresses\":[\"iibmi\",\"bnn\",\"stgnl\",\"hnmgixhcm\"],\"phoneNumbers\":[\"qfoudorhcgyy\",\"rotwypundmbxhugc\",\"jkavl\"]}},{\"name\":\"rb\",\"properties\":{\"direction\":\"Inbound\",\"addressPrefixes\":[\"tzfjltf\",\"nzcyjtotp\",\"opv\",\"bdb\"],\"subscriptions\":[{\"id\":\"q\"},{\"id\":\"edsvqwthmk\"},{\"id\":\"bcysih\"}],\"networkSecurityPerimeters\":[{\"id\":\"wdhohsdtmcdzsu\",\"perimeterGuid\":\"b8ed1dac-0f55-475e-b9a4-dc4a83a5ba76\",\"location\":\"hdxbzlm\"},{\"id\":\"uapcvhdbevwqqxe\",\"perimeterGuid\":\"693cdddf-6e03-4e37-84ce-6d575fe9460f\",\"location\":\"onqzinkfkbgbzbow\"}],\"fullyQualifiedDomainNames\":[\"o\"],\"emailAddresses\":[\"mygvkzqkj\",\"eokbze\"],\"phoneNumbers\":[\"rx\",\"czurtlei\",\"q\"]}}],\"diagnosticSettingsVersion\":796775151,\"enabledLogCategories\":[\"zgnzv\"]}")
             .toObject(NetworkSecurityProfile.class);
         Assertions.assertEquals("ugeyzihgrkyuiza", model.name());
         Assertions.assertEquals(1192399452, model.accessRulesVersion());
@@ -28,7 +28,7 @@ public final class NetworkSecurityProfileTests {
         Assertions.assertEquals("zbgomfgbeg", model.accessRules().get(0).properties().addressPrefixes().get(0));
         Assertions.assertEquals("bmqzbqqxlajrnwx", model.accessRules().get(0).properties().subscriptions().get(0).id());
         Assertions.assertEquals("lt", model.accessRules().get(0).properties().networkSecurityPerimeters().get(0).id());
-        Assertions.assertEquals(UUID.fromString("cc01bf33-ad8d-4b13-8050-cf28e1d0b1d6"),
+        Assertions.assertEquals(UUID.fromString("5eee6773-30c2-41ee-8777-049b1ca9b5ca"),
             model.accessRules().get(0).properties().networkSecurityPerimeters().get(0).perimeterGuid());
         Assertions.assertEquals("yl",
             model.accessRules().get(0).properties().networkSecurityPerimeters().get(0).location());
@@ -57,11 +57,11 @@ public final class NetworkSecurityProfileTests {
                                         Arrays.asList(
                                             new NetworkSecurityPerimeter().withId("lt")
                                                 .withPerimeterGuid(
-                                                    UUID.fromString("cc01bf33-ad8d-4b13-8050-cf28e1d0b1d6"))
+                                                    UUID.fromString("5eee6773-30c2-41ee-8777-049b1ca9b5ca"))
                                                 .withLocation("yl"),
                                             new NetworkSecurityPerimeter().withId("mfgvxirpghriypo")
                                                 .withPerimeterGuid(
-                                                    UUID.fromString("01e0c3e3-1aee-4326-9024-494e3ab2d43f"))
+                                                    UUID.fromString("cf775843-639b-4af3-9d9d-173c1d94e988"))
                                                 .withLocation("hlqhykprlpy")))
                                     .withFullyQualifiedDomainNames(Arrays.asList("ciqdsme", "iitdfuxt"))
                                     .withEmailAddresses(Arrays.asList("iibmi", "bnn", "stgnl", "hnmgixhcm"))
@@ -77,11 +77,11 @@ public final class NetworkSecurityProfileTests {
                                         .withNetworkSecurityPerimeters(Arrays.asList(
                                             new NetworkSecurityPerimeter().withId("wdhohsdtmcdzsu")
                                                 .withPerimeterGuid(
-                                                    UUID.fromString("cc5e625e-91c2-4e53-bd0f-2d47b117e538"))
+                                                    UUID.fromString("b8ed1dac-0f55-475e-b9a4-dc4a83a5ba76"))
                                                 .withLocation("hdxbzlm"),
                                             new NetworkSecurityPerimeter().withId("uapcvhdbevwqqxe")
                                                 .withPerimeterGuid(
-                                                    UUID.fromString("6d6bf008-2b16-44a8-84c3-808f6ee860cf"))
+                                                    UUID.fromString("693cdddf-6e03-4e37-84ce-6d575fe9460f"))
                                                 .withLocation("onqzinkfkbgbzbow")))
                                         .withFullyQualifiedDomainNames(Arrays.asList("o"))
                                         .withEmailAddresses(Arrays.asList("mygvkzqkj", "eokbze"))
@@ -96,7 +96,7 @@ public final class NetworkSecurityProfileTests {
         Assertions.assertEquals("zbgomfgbeg", model.accessRules().get(0).properties().addressPrefixes().get(0));
         Assertions.assertEquals("bmqzbqqxlajrnwx", model.accessRules().get(0).properties().subscriptions().get(0).id());
         Assertions.assertEquals("lt", model.accessRules().get(0).properties().networkSecurityPerimeters().get(0).id());
-        Assertions.assertEquals(UUID.fromString("cc01bf33-ad8d-4b13-8050-cf28e1d0b1d6"),
+        Assertions.assertEquals(UUID.fromString("5eee6773-30c2-41ee-8777-049b1ca9b5ca"),
             model.accessRules().get(0).properties().networkSecurityPerimeters().get(0).perimeterGuid());
         Assertions.assertEquals("yl",
             model.accessRules().get(0).properties().networkSecurityPerimeters().get(0).location());

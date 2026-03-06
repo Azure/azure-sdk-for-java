@@ -58,7 +58,6 @@ import com.azure.resourcemanager.compute.models.SecurityEncryptionTypes;
 import com.azure.resourcemanager.compute.models.SecurityPostureReference;
 import com.azure.resourcemanager.compute.models.SecurityProfile;
 import com.azure.resourcemanager.compute.models.SecurityTypes;
-import com.azure.resourcemanager.compute.models.ServiceArtifactReference;
 import com.azure.resourcemanager.compute.models.Sku;
 import com.azure.resourcemanager.compute.models.SkuProfile;
 import com.azure.resourcemanager.compute.models.SkuProfileVMSize;
@@ -1540,52 +1539,6 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
      * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
-     * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithServiceArtifactReference.json
-     */
-    /**
-     * Sample code: Create a scale set with Service Artifact Reference.
-     * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void
-        createAScaleSetWithServiceArtifactReference(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines()
-            .manager()
-            .serviceClient()
-            .getVirtualMachineScaleSets()
-            .createOrUpdate("myResourceGroup", "{vmss-name}", new VirtualMachineScaleSetInner()
-                .withLocation("eastus2euap")
-                .withSku(new Sku().withName("Standard_A1").withTier("Standard").withCapacity(3L))
-                .withUpgradePolicy(new UpgradePolicy().withMode(UpgradeMode.AUTOMATIC)
-                    .withAutomaticOSUpgradePolicy(new AutomaticOSUpgradePolicy().withEnableAutomaticOSUpgrade(true)))
-                .withVirtualMachineProfile(new VirtualMachineScaleSetVMProfile()
-                    .withOsProfile(new VirtualMachineScaleSetOSProfile().withComputerNamePrefix("{vmss-name}")
-                        .withAdminUsername("{your-username}")
-                        .withAdminPassword("fakeTokenPlaceholder"))
-                    .withStorageProfile(new VirtualMachineScaleSetStorageProfile()
-                        .withImageReference(new ImageReference().withPublisher("MicrosoftWindowsServer")
-                            .withOffer("WindowsServer")
-                            .withSku("2022-Datacenter")
-                            .withVersion("latest"))
-                        .withOsDisk(new VirtualMachineScaleSetOSDisk().withName("osDisk")
-                            .withCaching(CachingTypes.READ_WRITE)
-                            .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE)))
-                    .withNetworkProfile(new VirtualMachineScaleSetNetworkProfile().withNetworkInterfaceConfigurations(
-                        Arrays.asList(new VirtualMachineScaleSetNetworkConfiguration().withName("{vmss-name}")
-                            .withPrimary(true)
-                            .withIpConfigurations(Arrays.asList(new VirtualMachineScaleSetIpConfiguration()
-                                .withName("{vmss-name}")
-                                .withSubnet(new ApiEntityReference().withId(
-                                    "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/{existing-virtual-network-name}/subnets/{existing-subnet-name}"))))
-                            .withEnableIpForwarding(true))))
-                    .withServiceArtifactReference(new ServiceArtifactReference().withId(
-                        "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/galleries/myGalleryName/serviceArtifacts/serviceArtifactName/vmArtifactsProfiles/vmArtifactsProfilesName")))
-                .withOverprovision(true), null, null, com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
      * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithEncryptionAtHost.json
      */
     /**
@@ -2627,61 +2580,6 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
                         .withBillingProfile(new BillingProfile().withMaxPrice(-1.0D)))
                     .withOverprovision(true)
                     .withSpotRestorePolicy(new SpotRestorePolicy().withEnabled(true).withRestoreTimeout("PT1H")),
-                null, null, com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/
-     * virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithSecurityTypeConfidentialVMWithNonPersistedTPM.
-     * json
-     */
-    /**
-     * Sample code: Create a scale set with SecurityType as ConfidentialVM and NonPersistedTPM securityEncryptionType.
-     * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void createAScaleSetWithSecurityTypeAsConfidentialVMAndNonPersistedTPMSecurityEncryptionType(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines()
-            .manager()
-            .serviceClient()
-            .getVirtualMachineScaleSets()
-            .createOrUpdate("myResourceGroup", "{vmss-name}",
-                new VirtualMachineScaleSetInner().withLocation("westus")
-                    .withSku(new Sku().withName("Standard_DC2es_v5").withTier("Standard").withCapacity(3L))
-                    .withUpgradePolicy(new UpgradePolicy().withMode(UpgradeMode.MANUAL))
-                    .withVirtualMachineProfile(new VirtualMachineScaleSetVMProfile()
-                        .withOsProfile(new VirtualMachineScaleSetOSProfile().withComputerNamePrefix("{vmss-name}")
-                            .withAdminUsername("{your-username}")
-                            .withAdminPassword("fakeTokenPlaceholder"))
-                        .withStorageProfile(new VirtualMachineScaleSetStorageProfile()
-                            .withImageReference(new ImageReference().withPublisher("UbuntuServer")
-                                .withOffer("2022-datacenter-cvm")
-                                .withSku("linux-cvm")
-                                .withVersion("17763.2183.2109130127"))
-                            .withOsDisk(
-                                new VirtualMachineScaleSetOSDisk().withCaching(CachingTypes.READ_ONLY)
-                                    .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE)
-                                    .withManagedDisk(
-                                        new VirtualMachineScaleSetManagedDiskParameters()
-                                            .withStorageAccountType(StorageAccountTypes.STANDARD_SSD_LRS)
-                                            .withSecurityProfile(
-                                                new VMDiskSecurityProfile().withSecurityEncryptionType(
-                                                    SecurityEncryptionTypes.NON_PERSISTED_TPM)))))
-                        .withNetworkProfile(
-                            new VirtualMachineScaleSetNetworkProfile().withNetworkInterfaceConfigurations(
-                                Arrays.asList(new VirtualMachineScaleSetNetworkConfiguration().withName("{vmss-name}")
-                                    .withPrimary(true)
-                                    .withIpConfigurations(Arrays.asList(new VirtualMachineScaleSetIpConfiguration()
-                                        .withName("{vmss-name}")
-                                        .withSubnet(new ApiEntityReference().withId(
-                                            "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/{existing-virtual-network-name}/subnets/{existing-subnet-name}"))))
-                                    .withEnableIpForwarding(true))))
-                        .withSecurityProfile(new SecurityProfile()
-                            .withUefiSettings(new UefiSettings().withSecureBootEnabled(false).withVTpmEnabled(true))
-                            .withSecurityType(SecurityTypes.CONFIDENTIAL_VM)))
-                    .withOverprovision(true),
                 null, null, com.azure.core.util.Context.NONE);
     }
 

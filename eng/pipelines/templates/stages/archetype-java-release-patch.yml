@@ -11,7 +11,7 @@ parameters:
     # live tests enabled for release and ReleaseDependsOnLiveTests is false
   - name: Environment
     type: string
-    default: 'maven'
+    default: 'package-publish'
 
 stages:
   # The signing stage is responsible for submitting binaries to ESRP for our official signing
@@ -76,7 +76,7 @@ stages:
   # the Validation step below publishes a package to a "burner" feed which is cleaned up after the
   # pipeline completes.
   - ${{if and(in(variables['Build.Reason'], 'Manual', ''), eq(variables['System.TeamProject'], 'internal'))}}:
-    - stage:
+    - stage: Release
       displayName: 'Releasing: ${{ length(parameters.Artifacts) }} libraries'
       dependsOn: Signing
       variables:
@@ -232,7 +232,7 @@ stages:
 
         - job: PublishDocsMs
           displayName: Docs.MS Release
-          condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'))
+          condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'), ne(variables['Build.Repository.Name'], 'Azure/azure-sdk-for-java-pr'))
           timeoutInMinutes: 180
           dependsOn: PublishDevFeedPackage
 
@@ -274,7 +274,7 @@ stages:
 
         - job: PublishDocs
           displayName: Publish Docs to GitHubIO Blob Storage
-          condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'))
+          condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'), ne(variables['Build.Repository.Name'], 'Azure/azure-sdk-for-java-pr'))
           timeoutInMinutes: 120
           dependsOn: PublishESRPPackage
           variables:

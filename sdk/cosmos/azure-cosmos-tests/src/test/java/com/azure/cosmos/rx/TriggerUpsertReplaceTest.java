@@ -69,11 +69,11 @@ public class TriggerUpsertReplaceTest extends TestSuiteBase {
         validateSuccess(updateObservable, validatorForUpdate);
     }
 
-    @BeforeClass(groups = { "fast" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "fast" }, timeOut = 2 * SETUP_TIMEOUT)
     public void before_TriggerUpsertReplaceTest() {
         client = getClientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
-        truncateCollection(createdCollection);
+        cleanUpContainer(createdCollection);
     }
 
     @AfterClass(groups = { "fast" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)

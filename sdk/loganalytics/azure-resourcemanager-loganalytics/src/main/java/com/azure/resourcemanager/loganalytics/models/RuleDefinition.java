@@ -165,6 +165,17 @@ public final class RuleDefinition implements JsonSerializable<RuleDefinition> {
     }
 
     /**
+     * Set the destinationTable property: The destination table used for the Summary rule results.
+     * 
+     * @param destinationTable the destinationTable value to set.
+     * @return the RuleDefinition object itself.
+     */
+    public RuleDefinition withDestinationTable(String destinationTable) {
+        this.destinationTable = destinationTable;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -184,6 +195,7 @@ public final class RuleDefinition implements JsonSerializable<RuleDefinition> {
         jsonWriter.writeStringField("binStartTime",
             this.binStartTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.binStartTime));
         jsonWriter.writeStringField("timeSelector", this.timeSelector == null ? null : this.timeSelector.toString());
+        jsonWriter.writeStringField("destinationTable", this.destinationTable);
         return jsonWriter.writeEndObject();
     }
 

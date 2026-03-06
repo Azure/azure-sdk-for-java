@@ -611,7 +611,7 @@ public final class RegistryArtifact {
 
     private PagedIterable<ArtifactTagProperties> listTagPropertiesSync(ArtifactTagOrder order, Context context) {
         return new PagedIterable<>((pageSize) -> listTagPropertiesSinglePageSync(pageSize, order, context),
-            (token, pageSize) -> listTagPropertiesNextSinglePageSync(token, context));
+            (token, ignored) -> listTagPropertiesNextSinglePageSync(token, context));
     }
 
     private PagedResponse<ArtifactTagProperties> listTagPropertiesSinglePageSync(Integer pageSize,

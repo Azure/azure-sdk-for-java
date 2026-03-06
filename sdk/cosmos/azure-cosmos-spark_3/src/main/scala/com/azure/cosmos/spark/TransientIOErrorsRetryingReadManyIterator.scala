@@ -59,7 +59,7 @@ private[spark] class TransientIOErrorsRetryingReadManyIterator[TSparkRow]
     while (returnValue.isEmpty) {
       if (readManyFilterBatchIterator.hasNext) {
         // fetch items for the next readMany filter batch
-        val readManyFilterBatch = readManyFilterBatchIterator.next()
+        val readManyFilterBatch = readManyFilterBatchIterator.next().toList
         returnValue =
           TransientErrorsRetryPolicy.executeWithRetry(
             () => hasNextInternalCore(readManyFilterBatch),

@@ -2130,6 +2130,8 @@ public final class DocumentTranslationsImpl {
     }
 
     /**
+     * Returns a list of batch requests submitted and the status for each request
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -2185,6 +2187,8 @@ public final class DocumentTranslationsImpl {
     }
 
     /**
+     * Returns a list of batch requests submitted and the status for each request
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -2238,6 +2242,8 @@ public final class DocumentTranslationsImpl {
     }
 
     /**
+     * Returns the status for all documents in a batch document translation request
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -2288,6 +2294,8 @@ public final class DocumentTranslationsImpl {
     }
 
     /**
+     * Returns the status for all documents in a batch document translation request
+     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 

@@ -23,7 +23,7 @@ public final class WorkspacesGetNspWithResponseMockTests {
     @Test
     public void testGetNspWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Canceled\",\"provisioningIssues\":[{\"name\":\"qkaye\",\"properties\":{\"issueType\":\"MissingPerimeterConfiguration\",\"severity\":\"Error\",\"description\":\"lwfgziiu\",\"suggestedResourceIds\":[\"jceatlijjjrtva\",\"caszk\",\"xk\"],\"suggestedAccessRules\":[{},{},{},{}]}},{\"name\":\"etyvkunmignohi\",\"properties\":{\"issueType\":\"Unknown\",\"severity\":\"Warning\",\"description\":\"wpin\",\"suggestedResourceIds\":[\"vabbx\",\"hmedeilbjywfcfxz\",\"rzzihvwypus\",\"vjslczwcii\"],\"suggestedAccessRules\":[{},{},{},{}]}}],\"networkSecurityPerimeter\":{\"id\":\"fryvdmvxadqac\",\"perimeterGuid\":\"b2ab9a7a-0b15-4a2c-a582-6bbd6ffa49bb\",\"location\":\"naw\"},\"resourceAssociation\":{\"name\":\"gfbktyjmf\",\"accessMode\":\"Learning\"},\"profile\":{\"name\":\"yq\",\"accessRulesVersion\":988633110,\"accessRules\":[{\"name\":\"owoxqmj\",\"properties\":{}},{\"name\":\"cxn\",\"properties\":{}}],\"diagnosticSettingsVersion\":473965533,\"enabledLogCategories\":[\"usrvx\",\"simjceagbjqvlsu\"]}},\"id\":\"wzas\",\"name\":\"xgo\",\"type\":\"oyjfqipu\"}";
+            = "{\"properties\":{\"provisioningState\":\"Canceled\",\"provisioningIssues\":[{\"name\":\"qkaye\",\"properties\":{\"issueType\":\"MissingPerimeterConfiguration\",\"severity\":\"Error\",\"description\":\"lwfgziiu\",\"suggestedResourceIds\":[\"jceatlijjjrtva\",\"caszk\",\"xk\"],\"suggestedAccessRules\":[{},{},{},{}]}},{\"name\":\"etyvkunmignohi\",\"properties\":{\"issueType\":\"Unknown\",\"severity\":\"Warning\",\"description\":\"wpin\",\"suggestedResourceIds\":[\"vabbx\",\"hmedeilbjywfcfxz\",\"rzzihvwypus\",\"vjslczwcii\"],\"suggestedAccessRules\":[{},{},{},{}]}}],\"networkSecurityPerimeter\":{\"id\":\"fryvdmvxadqac\",\"perimeterGuid\":\"9bde5da3-3ba4-4215-8b61-6e214c73bc9f\",\"location\":\"naw\"},\"resourceAssociation\":{\"name\":\"gfbktyjmf\",\"accessMode\":\"Learning\"},\"profile\":{\"name\":\"yq\",\"accessRulesVersion\":988633110,\"accessRules\":[{\"name\":\"owoxqmj\",\"properties\":{}},{\"name\":\"cxn\",\"properties\":{}}],\"diagnosticSettingsVersion\":473965533,\"enabledLogCategories\":[\"usrvx\",\"simjceagbjqvlsu\"]}},\"id\":\"wzas\",\"name\":\"xgo\",\"type\":\"oyjfqipu\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -37,7 +37,7 @@ public final class WorkspacesGetNspWithResponseMockTests {
             .getValue();
 
         Assertions.assertEquals("fryvdmvxadqac", response.properties().networkSecurityPerimeter().id());
-        Assertions.assertEquals(UUID.fromString("b2ab9a7a-0b15-4a2c-a582-6bbd6ffa49bb"),
+        Assertions.assertEquals(UUID.fromString("9bde5da3-3ba4-4215-8b61-6e214c73bc9f"),
             response.properties().networkSecurityPerimeter().perimeterGuid());
         Assertions.assertEquals("naw", response.properties().networkSecurityPerimeter().location());
         Assertions.assertEquals("gfbktyjmf", response.properties().resourceAssociation().name());

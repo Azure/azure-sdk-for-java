@@ -6,19 +6,30 @@ package com.azure.ai.speech.transcription;
 import com.azure.ai.speech.transcription.models.ProfanityFilterMode;
 import com.azure.ai.speech.transcription.models.TranscriptionDiarizationOptions;
 import com.azure.ai.speech.transcription.models.TranscriptionOptions;
+import com.azure.ai.speech.transcription.models.TranscriptionResult;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.util.BinaryData;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import reactor.test.StepVerifier;
 
 import java.util.Arrays;
+import java.util.Collections;
+
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Tests for TranscriptionAsyncClient (asynchronous client).
  */
 class TranscriptionAsyncClientTest extends TranscriptionClientTestBase {
+    private TranscriptionAsyncClient client;
 
-    private final Boolean sync = false; // All tests in this file use the async client
+    @BeforeEach
+    public void setupTest() {
+        this.client = configureBuilder(true, true).buildAsyncClient();
+    }
 
     /***********************************************************************************
      *
@@ -28,184 +39,95 @@ class TranscriptionAsyncClientTest extends TranscriptionClientTestBase {
 
     @Test
     public void testTranscribeAsyncBasicFromFile() {
-        createClient(true, true, sync);
-
-        String methodName = new Object() {
-        }.getClass().getEnclosingMethod().getName();
-
-        TranscriptionOptions options = new TranscriptionOptions((String) null);
-
-        doTranscription(methodName, sync, false, audioFile, options, null);
+        transcribeAndVerifyResult("testTranscribeAsyncBasicFromFile", fromAudioFile());
     }
 
     @Test
     public void testTranscribeAsyncWithLanguageFromFile() {
-        createClient(true, true, sync);
-
-        String methodName = new Object() {
-        }.getClass().getEnclosingMethod().getName();
-
-        TranscriptionOptions options = new TranscriptionOptions((String) null).setLocales(Arrays.asList("en-US"));
-
-        doTranscription(methodName, sync, false, audioFile, options, null);
+        transcribeAndVerifyResult("testTranscribeAsyncWithLanguageFromFile",
+            fromAudioFile().setLocales(Collections.singletonList("en-US")));
     }
 
     @Test
     public void testTranscribeAsyncWithMultipleLanguagesFromFile() {
-        createClient(true, true, sync);
-
-        String methodName = new Object() {
-        }.getClass().getEnclosingMethod().getName();
-
-        TranscriptionOptions options
-            = new TranscriptionOptions((String) null).setLocales(Arrays.asList("en-US", "es-ES", "fr-FR"));
-
-        doTranscription(methodName, sync, false, audioFile, options, null);
+        transcribeAndVerifyResult("testTranscribeAsyncWithMultipleLanguagesFromFile",
+            fromAudioFile().setLocales(Arrays.asList("en-US", "es-ES", "fr-FR")));
     }
 
     @Test
     public void testTranscribeAsyncWithDiarizationFromFile() {
-        createClient(true, true, sync);
-
-        String methodName = new Object() {
-        }.getClass().getEnclosingMethod().getName();
-
-        TranscriptionDiarizationOptions diarizationOptions = new TranscriptionDiarizationOptions().setMaxSpeakers(5);
-
-        TranscriptionOptions options
-            = new TranscriptionOptions((String) null).setDiarizationOptions(diarizationOptions);
-
-        doTranscription(methodName, sync, false, audioFile, options, null);
+        transcribeAndVerifyResult("testTranscribeAsyncWithDiarizationFromFile",
+            fromAudioFile().setDiarizationOptions(new TranscriptionDiarizationOptions().setMaxSpeakers(5)));
     }
 
     @Test
     public void testTranscribeAsyncWithProfanityFilterFromFile() {
-        createClient(true, true, sync);
-
-        String methodName = new Object() {
-        }.getClass().getEnclosingMethod().getName();
-
-        TranscriptionOptions options
-            = new TranscriptionOptions((String) null).setProfanityFilterMode(ProfanityFilterMode.MASKED);
-
-        doTranscription(methodName, sync, false, audioFile, options, null);
+        transcribeAndVerifyResult("testTranscribeAsyncWithProfanityFilterFromFile",
+            fromAudioFile().setProfanityFilterMode(ProfanityFilterMode.MASKED));
     }
 
     @Test
     public void testTranscribeAsyncWithChannelsFromFile() {
-        createClient(true, true, sync);
-
-        String methodName = new Object() {
-        }.getClass().getEnclosingMethod().getName();
-
-        TranscriptionOptions options = new TranscriptionOptions((String) null).setActiveChannels(Arrays.asList(0));
-
-        doTranscription(methodName, sync, false, audioFile, options, null);
+        transcribeAndVerifyResult("testTranscribeAsyncWithChannelsFromFile",
+            fromAudioFile().setActiveChannels(Collections.singletonList(0)));
     }
 
     @Test
     public void testTranscribeAsyncAllOptionsFromFile() {
-        createClient(true, true, sync);
-
-        String methodName = new Object() {
-        }.getClass().getEnclosingMethod().getName();
-
-        TranscriptionDiarizationOptions diarizationOptions = new TranscriptionDiarizationOptions().setMaxSpeakers(5);
-
-        TranscriptionOptions options = new TranscriptionOptions((String) null).setLocales(Arrays.asList("en-US"))
-            .setDiarizationOptions(diarizationOptions)
+        TranscriptionOptions options = fromAudioFile().setLocales(Collections.singletonList("en-US"))
+            .setDiarizationOptions(new TranscriptionDiarizationOptions().setMaxSpeakers(5))
             .setProfanityFilterMode(ProfanityFilterMode.MASKED)
-            .setActiveChannels(Arrays.asList(0));
+            .setActiveChannels(Collections.singletonList(0));
 
-        doTranscription(methodName, sync, false, audioFile, options, null);
+        transcribeAndVerifyResult("testTranscribeAsyncAllOptionsFromFile", options);
     }
 
     @Test
     public void testTranscribeAsyncBasicFromFileWithResponse() {
-        createClient(true, true, sync);
-
-        String methodName = new Object() {
-        }.getClass().getEnclosingMethod().getName();
-
-        TranscriptionOptions options = new TranscriptionOptions((String) null);
-        RequestOptions requestOptions
-            = new RequestOptions().addHeader(HttpHeaderName.fromString("x-custom-header"), "custom-value");
-
-        doTranscription(methodName, sync, true, audioFile, options, requestOptions);
+        transcribeAndVerifyResponse("testTranscribeAsyncBasicFromFileWithResponse", fromAudioFile(),
+            new RequestOptions().addHeader(HttpHeaderName.fromString("x-custom-header"), "custom-value"));
     }
 
     @Test
     public void testTranscribeAsyncWithAllOptionsFromFileWithResponse() {
-        createClient(true, true, sync);
-
-        String methodName = new Object() {
-        }.getClass().getEnclosingMethod().getName();
-
-        TranscriptionDiarizationOptions diarizationOptions = new TranscriptionDiarizationOptions().setMaxSpeakers(5);
-
-        TranscriptionOptions options
-            = new TranscriptionOptions((String) null).setLocales(Arrays.asList("en-US", "es-ES"))
-                .setDiarizationOptions(diarizationOptions)
-                .setProfanityFilterMode(ProfanityFilterMode.REMOVED)
-                .setActiveChannels(Arrays.asList(0, 1));
+        TranscriptionOptions options = fromAudioFile().setLocales(Arrays.asList("en-US", "es-ES"))
+            .setDiarizationOptions(new TranscriptionDiarizationOptions().setMaxSpeakers(5))
+            .setProfanityFilterMode(ProfanityFilterMode.REMOVED)
+            .setActiveChannels(Arrays.asList(0, 1));
 
         RequestOptions requestOptions
             = new RequestOptions().addHeader(HttpHeaderName.fromString("x-custom-header"), "custom-value")
                 .addQueryParam("test-param", "test-value");
 
-        doTranscription(methodName, sync, true, audioFile, options, requestOptions);
+        transcribeAndVerifyResponse("testTranscribeAsyncWithAllOptionsFromFileWithResponse", options, requestOptions);
     }
 
     @Test
     public void testTranscribeAsyncWithAudioUrl() {
-        createClient(true, true, sync);
-
-        String methodName = new Object() {
-        }.getClass().getEnclosingMethod().getName();
-
         // Using a publicly accessible sample audio file from Azure samples
         String audioUrl
             = "https://raw.githubusercontent.com/Azure-Samples/cognitive-services-speech-sdk/master/sampledata/audiofiles/aboutSpeechSdk.wav";
-        TranscriptionOptions options = new TranscriptionOptions(audioUrl).setLocales(Arrays.asList("en-US"));
 
-        // For URL-based transcription, we don't pass the local audio file path
-        doTranscriptionWithUrl(methodName, sync, options);
+        transcribeAndVerifyResult("testTranscribeAsyncWithAudioUrl",
+            new TranscriptionOptions(audioUrl).setLocales(Collections.singletonList("en-US")));
     }
 
     @Test
     public void testTranscribeAsyncWithProfanityModeMasked() {
-        createClient(true, true, sync);
-
-        String methodName = new Object() {
-        }.getClass().getEnclosingMethod().getName();
-
-        TranscriptionOptions options
-            = new TranscriptionOptions((String) null).setProfanityFilterMode(ProfanityFilterMode.MASKED);
-        doTranscription(methodName, sync, false, audioFile, options, null);
+        transcribeAndVerifyResult("testTranscribeAsyncWithProfanityModeMasked",
+            fromAudioFile().setProfanityFilterMode(ProfanityFilterMode.MASKED));
     }
 
     @Test
     public void testTranscribeAsyncWithProfanityModeRemoved() {
-        createClient(true, true, sync);
-
-        String methodName = new Object() {
-        }.getClass().getEnclosingMethod().getName();
-
-        TranscriptionOptions options
-            = new TranscriptionOptions((String) null).setProfanityFilterMode(ProfanityFilterMode.REMOVED);
-        doTranscription(methodName, sync, false, audioFile, options, null);
+        transcribeAndVerifyResult("testTranscribeAsyncWithProfanityModeTags",
+            fromAudioFile().setProfanityFilterMode(ProfanityFilterMode.REMOVED));
     }
 
     @Test
     public void testTranscribeAsyncWithProfanityModeTags() {
-        createClient(true, true, sync);
-
-        String methodName = new Object() {
-        }.getClass().getEnclosingMethod().getName();
-
-        TranscriptionOptions options
-            = new TranscriptionOptions((String) null).setProfanityFilterMode(ProfanityFilterMode.TAGS);
-        doTranscription(methodName, sync, false, audioFile, options, null);
+        transcribeAndVerifyResult("testTranscribeAsyncWithProfanityModeTags",
+            fromAudioFile().setProfanityFilterMode(ProfanityFilterMode.TAGS));
     }
 
     /***********************************************************************************
@@ -216,58 +138,47 @@ class TranscriptionAsyncClientTest extends TranscriptionClientTestBase {
 
     @Test
     public void testTranscribeAsyncWithEmptyAudioData() {
-        createClient(true, true, sync);
-
-        String methodName = new Object() {
-        }.getClass().getEnclosingMethod().getName();
-
         // Test with minimal audio data - service should handle gracefully
-        TranscriptionOptions options = new TranscriptionOptions((String) null);
-
-        doTranscription(methodName, sync, false, audioFile, options, null);
+        transcribeAndVerifyResult("testTranscribeAsyncWithEmptyAudioData", fromAudioFile());
     }
 
     @Test
     public void testTranscribeAsyncWithInvalidLanguageCode() {
-        createClient(true, true, sync);
-
-        String methodName = new Object() {
-        }.getClass().getEnclosingMethod().getName();
-
         // Use invalid language code to trigger service error
-        TranscriptionOptions options
-            = new TranscriptionOptions((String) null).setLocales(Arrays.asList("invalid-locale-code"));
+        TranscriptionOptions options = fromAudioFile().setLocales(Collections.singletonList("invalid-locale-code"));
 
         // The service should return a 400 error for invalid locale
         // doTranscription wraps exceptions in RuntimeException, so we catch that
-        try {
-            doTranscription(methodName, sync, false, audioFile, options, null);
-            // Should not reach here - the above should throw an exception
-            throw new AssertionError("Expected RuntimeException with HttpResponseException cause but none was thrown");
-        } catch (RuntimeException e) {
+        StepVerifier.create(client.transcribe(options)).verifyErrorSatisfies(e -> {
             // Expected behavior - verify the cause is HttpResponseException with 400 status
-            if (!(e.getCause() instanceof HttpResponseException)) {
-                throw new AssertionError(
-                    "Expected RuntimeException cause to be HttpResponseException but got: " + e.getCause().getClass());
+            if (!(e instanceof HttpResponseException)) {
+                fail("Expected RuntimeException cause to be HttpResponseException but got: " + e.getClass());
             }
-            HttpResponseException httpException = (HttpResponseException) e.getCause();
+            HttpResponseException httpException = (HttpResponseException) e;
             if (httpException.getResponse().getStatusCode() != 400) {
-                throw new AssertionError(
-                    "Expected 400 status code but got: " + httpException.getResponse().getStatusCode());
+                fail("Expected 400 status code but got: " + httpException.getResponse().getStatusCode());
             }
-        }
+        });
     }
 
     @Test
     public void testTranscribeAsyncCancellation() {
-        createClient(true, true, sync);
-
-        String methodName = new Object() {
-        }.getClass().getEnclosingMethod().getName();
-
         // Test cancellation behavior with a normal transcription request
-        TranscriptionOptions options = new TranscriptionOptions((String) null);
+        transcribeAndVerifyResult("testTranscribeAsyncCancellation", fromAudioFile());
+    }
 
-        doTranscription(methodName, sync, false, audioFile, options, null);
+    private void transcribeAndVerifyResult(String testName, TranscriptionOptions options) {
+        StepVerifier.create(client.transcribe(options))
+            .assertNext(result -> validateTranscriptionResult(testName, result))
+            .verifyComplete();
+    }
+
+    private void transcribeAndVerifyResponse(String testName, TranscriptionOptions options,
+        RequestOptions requestOptions) {
+        BinaryData multipartBody = createMultipartBody(options, requestOptions);
+        StepVerifier.create(client.transcribeWithResponse(multipartBody, requestOptions)).assertNext(response -> {
+            printHttpRequestAndResponse(response);
+            validateTranscriptionResult(testName, response.getValue().toObject(TranscriptionResult.class));
+        }).verifyComplete();
     }
 }

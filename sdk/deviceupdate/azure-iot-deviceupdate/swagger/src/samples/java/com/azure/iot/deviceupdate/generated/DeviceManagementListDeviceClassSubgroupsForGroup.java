@@ -18,10 +18,10 @@ public class DeviceManagementListDeviceClassSubgroupsForGroup {
                 .endpoint("contoso.api.adu.microsoft.com")
                 .instanceId("blue")
                 .buildClient();
-        // BEGIN:com.azure.iot.deviceupdate.generated.devicemanagementlistdeviceclasssubgroupsforgroup.devicemanagementlistdeviceclasssubgroupsforgroup
+        // BEGIN:com.azure.iot.deviceupdate.generated.device-management-list-device-class-subgroups-for-group.device-management-list-device-class-subgroups-for-group
         RequestOptions requestOptions = new RequestOptions();
         PagedIterable<BinaryData> response
             = deviceManagementClient.listDeviceClassSubgroupsForGroup("group1", requestOptions);
-        // END:com.azure.iot.deviceupdate.generated.devicemanagementlistdeviceclasssubgroupsforgroup.devicemanagementlistdeviceclasssubgroupsforgroup
+        // END:com.azure.iot.deviceupdate.generated.device-management-list-device-class-subgroups-for-group.device-management-list-device-class-subgroups-for-group
     }
 }

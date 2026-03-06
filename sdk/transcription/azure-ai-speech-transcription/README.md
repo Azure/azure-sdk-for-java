@@ -2,13 +2,16 @@
 
 The Azure AI Speech Transcription client library provides a simple and efficient way to convert audio to text using Azure Cognitive Services. This library enables you to transcribe audio with features like speaker diarization, profanity filtering, and phrase hints for improved accuracy.
 
-## Documentation
+Use the client library to:
 
-Various documentation is available to help you get started:
+* Transcribe audio files to text
+* Support multiple languages and locales
+* Enable speaker diarization to identify different speakers
+* Apply profanity filtering
+* Use custom speech models
+* Process both local files and remote URLs
 
-- [API reference documentation][docs]
-- [Product documentation][product_documentation]
-- [Azure Speech Service documentation](https://learn.microsoft.com/azure/ai-services/speech-service/)
+[Source code](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/transcription/azure-ai-speech-transcription/src) | [Package (Maven)](https://central.sonatype.com/artifact/com.azure/azure-ai-speech-transcription) | [API reference documentation](https://azure.github.io/azure-sdk-for-java/) | [Product documentation](https://learn.microsoft.com/azure/ai-services/speech-service/)
 
 ## Getting started
 
@@ -25,7 +28,7 @@ Various documentation is available to help you get started:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-speech-transcription</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>1.0.0-beta.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -226,8 +229,7 @@ byte[] audioData = Files.readAllBytes(Paths.get("path/to/audio.wav"));
 AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData));
 
 PhraseListOptions phraseListOptions = new PhraseListOptions()
-    .setPhrases(java.util.Arrays.asList("Azure", "Cognitive Services"))
-    .setBiasingWeight(5.0);
+    .setPhrases(java.util.Arrays.asList("Azure", "Cognitive Services"));
 
 TranscriptionOptions options = new TranscriptionOptions(audioFileDetails)
     .setPhraseListOptions(phraseListOptions);

@@ -12,10 +12,10 @@ public final class BackupVaultsListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BackupVaultsList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"zh\"},\"location\":\"wesgogczh\",\"tags\":{\"gnyhmossxkkg\":\"xkr\",\"rghxjb\":\"h\",\"rnsvbuswd\":\"hqxvcxgfrpdsofbs\",\"ybycnunvj\":\"z\"},\"id\":\"rtkfawnopq\",\"name\":\"ikyzirtxdy\",\"type\":\"x\"}],\"nextLink\":\"jntpsewgioilqu\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"ejzanlfz\"},\"location\":\"av\",\"tags\":{\"gzpfrla\":\"zonokixrjqci\",\"indfpwpjyl\":\"szrnwo\"},\"id\":\"bt\",\"name\":\"h\",\"type\":\"lsj\"},{\"properties\":{\"provisioningState\":\"szfjvfbgofelja\"},\"location\":\"qmqhldvriii\",\"tags\":{\"hfkvtvsexsowuel\":\"al\",\"wws\":\"qhhahhxvrhmzkwpj\",\"qxujxukndxd\":\"ughftqsx\",\"syqtfi\":\"grjguufzd\"},\"id\":\"whbotzingamv\",\"name\":\"phoszqz\",\"type\":\"dphqamv\"},{\"properties\":{\"provisioningState\":\"wynwcvtbvkayhm\"},\"location\":\"vyqia\",\"tags\":{\"npwzcjaes\":\"wp\",\"hwyg\":\"vvsccyajguq\",\"semdwzrmu\":\"lvdnkfx\",\"qvpsvuoymg\":\"apfcqdpsq\"},\"id\":\"celve\",\"name\":\"rypqlmfeo\",\"type\":\"erqwkyhkobopg\"}],\"nextLink\":\"dkow\"}")
             .toObject(BackupVaultsList.class);
-        Assertions.assertEquals("wesgogczh", model.value().get(0).location());
-        Assertions.assertEquals("xkr", model.value().get(0).tags().get("gnyhmossxkkg"));
-        Assertions.assertEquals("jntpsewgioilqu", model.nextLink());
+        Assertions.assertEquals("av", model.value().get(0).location());
+        Assertions.assertEquals("zonokixrjqci", model.value().get(0).tags().get("gzpfrla"));
+        Assertions.assertEquals("dkow", model.nextLink());
     }
 }

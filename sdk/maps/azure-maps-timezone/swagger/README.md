@@ -55,10 +55,10 @@ directive:
       $["security"] = [];
 
 title: TimezoneClient
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/maps/data-plane/Timezone/preview/1.0/timezone.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/maps/data-plane/Timezone/stable/1.0/timezone.json
 namespace: com.azure.maps.timezone
 java: true
-use: '@autorest/java@4.1.52'
+use: '@autorest/java@4.1.62'
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
 payload-flattening-threshold: 0

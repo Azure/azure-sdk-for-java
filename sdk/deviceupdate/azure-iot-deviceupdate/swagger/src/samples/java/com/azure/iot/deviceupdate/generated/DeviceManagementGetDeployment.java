@@ -18,10 +18,10 @@ public class DeviceManagementGetDeployment {
                 .endpoint("contoso.api.adu.microsoft.com")
                 .instanceId("blue")
                 .buildClient();
-        // BEGIN:com.azure.iot.deviceupdate.generated.devicemanagementgetdeployment.devicemanagementgetdeployment
+        // BEGIN:com.azure.iot.deviceupdate.generated.device-management-get-deployment.device-management-get-deployment
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response
             = deviceManagementClient.getDeploymentWithResponse("TestGroup", "deploymentId", requestOptions);
-        // END:com.azure.iot.deviceupdate.generated.devicemanagementgetdeployment.devicemanagementgetdeployment
+        // END:com.azure.iot.deviceupdate.generated.device-management-get-deployment.device-management-get-deployment
     }
 }

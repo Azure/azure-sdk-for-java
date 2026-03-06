@@ -3,14 +3,11 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.CosmosAsyncClient;
-import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.apachecommons.lang.RandomStringUtils;
-import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
-import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -23,11 +20,11 @@ import java.util.Collections;
 import java.util.List;
 
 public class DatabaseForTest {
-    private static Logger logger = LoggerFactory.getLogger(DatabaseForTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(DatabaseForTest.class);
     public static final String SHARED_DB_ID_PREFIX = "RxJava.SDKTest.SharedDatabase";
     private static final Duration CLEANUP_THRESHOLD_DURATION = Duration.ofHours(2);
     private static final String DELIMITER = "_";
-    private static DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmmss");
+    private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmmss");
 
     public LocalDateTime createdTime;
     public Database createdDatabase;

@@ -123,6 +123,7 @@ public final class EnhancedModeOptions implements JsonSerializable<EnhancedModeO
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enabled", this.enabled);
         jsonWriter.writeStringField("task", this.task);
         jsonWriter.writeStringField("targetLanguage", this.targetLanguage);
         jsonWriter.writeArrayField("prompt", this.prompts, (writer, element) -> writer.writeString(element));

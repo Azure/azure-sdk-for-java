@@ -100,7 +100,7 @@ If you are using Maven, add the following dependency.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-spring-data-cosmos</artifactId>
-    <version>6.1.0</version>
+    <version>7.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -131,6 +131,7 @@ Set `pointOperationLatencyThresholdInMS`, `nonPointOperationLatencyThresholdInMS
 ```java readme-sample-AppConfiguration
 @Configuration
 @EnableCosmosRepositories
+@SuppressWarnings("deprecation")
 public class AppConfiguration extends AbstractCosmosConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfiguration.class);
@@ -288,7 +289,7 @@ to share throughput between containers, you can enable database provisioned thro
 ```java
 @Override
 public CosmosConfig cosmosConfig() {
-    int autoscale = false; 
+    boolean autoscale = false; 
     int initialRequestUnits = 400;
     return CosmosConfig.builder()
                        .enableDatabaseThroughput(autoscale, initialRequestUnits) 
@@ -1148,8 +1149,8 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 [coc_contact]: mailto:opencode@microsoft.com
 [azure_subscription]: https://azure.microsoft.com/free/
 [samples]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-data-cosmos/src/samples/java/com/azure/spring/data/cosmos
-[sample-for-multi-database]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_v4.3.0/cosmos/azure-spring-data-cosmos/cosmos-multi-database-multi-account
-[sample-for-multi-database-single-account]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_v4.3.0/cosmos/azure-spring-data-cosmos/cosmos-multi-database-single-account
+[sample-for-multi-database]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/cosmos/azure-spring-data-cosmos/cosmos-multi-database-multi-account
+[sample-for-multi-database-single-account]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/cosmos/azure-spring-data-cosmos/cosmos-multi-database-single-account
 [sql_api_query]: https://learn.microsoft.com/azure/cosmos-db/sql-api-sql-query
 [local_emulator]: https://learn.microsoft.com/azure/cosmos-db/local-emulator
 [local_emulator_export_ssl_certificates]: https://learn.microsoft.com/azure/cosmos-db/local-emulator-export-ssl-certificates

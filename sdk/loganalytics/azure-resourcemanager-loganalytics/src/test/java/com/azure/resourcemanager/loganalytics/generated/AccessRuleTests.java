@@ -18,14 +18,14 @@ public final class AccessRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AccessRule model = BinaryData.fromString(
-            "{\"name\":\"yrxpdlcgqls\",\"properties\":{\"direction\":\"Outbound\",\"addressPrefixes\":[\"rddga\",\"quhiosrsjuivf\",\"disyirnxz\",\"czexrxzbujrtrhqv\"],\"subscriptions\":[{\"id\":\"khgn\"}],\"networkSecurityPerimeters\":[{\"id\":\"nzlrpiqywncvjt\",\"perimeterGuid\":\"da835f74-0b91-40ea-b2cb-eb01d99bf24d\",\"location\":\"ofizehtdhgbj\"},{\"id\":\"reljeamur\",\"perimeterGuid\":\"214214b7-277e-49e9-9256-f50f7ae9cacc\",\"location\":\"lovuana\"},{\"id\":\"cxlpmjerb\",\"perimeterGuid\":\"3dbe07f2-7712-4b46-8c7a-50c7f90f2469\",\"location\":\"lvidizozs\"},{\"id\":\"ccxjm\",\"perimeterGuid\":\"86b2dc0b-6721-48cf-9996-5475b5828c29\",\"location\":\"dgnwncypuuwwlt\"}],\"fullyQualifiedDomainNames\":[\"jctzenkei\",\"zzhmkd\",\"svflyhbxcudch\"],\"emailAddresses\":[\"rb\",\"ldforobwj\",\"vizbfhfo\"],\"phoneNumbers\":[\"cqpbtuo\",\"xesz\",\"bbelawumuaslzk\",\"rrwoycqucwyhahn\"]}}")
+            "{\"name\":\"yrxpdlcgqls\",\"properties\":{\"direction\":\"Outbound\",\"addressPrefixes\":[\"rddga\",\"quhiosrsjuivf\",\"disyirnxz\",\"czexrxzbujrtrhqv\"],\"subscriptions\":[{\"id\":\"khgn\"}],\"networkSecurityPerimeters\":[{\"id\":\"nzlrpiqywncvjt\",\"perimeterGuid\":\"bbdc99ed-04bf-44a9-bcce-e0e5e32f2675\",\"location\":\"ofizehtdhgbj\"},{\"id\":\"reljeamur\",\"perimeterGuid\":\"35ed2012-51db-4e82-9308-ff8bd4f8b868\",\"location\":\"lovuana\"},{\"id\":\"cxlpmjerb\",\"perimeterGuid\":\"8a369177-ebd3-4583-b465-eafb572e3f34\",\"location\":\"lvidizozs\"},{\"id\":\"ccxjm\",\"perimeterGuid\":\"6b1215e4-8788-4ec0-9135-19bbe112ee85\",\"location\":\"dgnwncypuuwwlt\"}],\"fullyQualifiedDomainNames\":[\"jctzenkei\",\"zzhmkd\",\"svflyhbxcudch\"],\"emailAddresses\":[\"rb\",\"ldforobwj\",\"vizbfhfo\"],\"phoneNumbers\":[\"cqpbtuo\",\"xesz\",\"bbelawumuaslzk\",\"rrwoycqucwyhahn\"]}}")
             .toObject(AccessRule.class);
         Assertions.assertEquals("yrxpdlcgqls", model.name());
         Assertions.assertEquals(AccessRuleDirection.OUTBOUND, model.properties().direction());
         Assertions.assertEquals("rddga", model.properties().addressPrefixes().get(0));
         Assertions.assertEquals("khgn", model.properties().subscriptions().get(0).id());
         Assertions.assertEquals("nzlrpiqywncvjt", model.properties().networkSecurityPerimeters().get(0).id());
-        Assertions.assertEquals(UUID.fromString("da835f74-0b91-40ea-b2cb-eb01d99bf24d"),
+        Assertions.assertEquals(UUID.fromString("bbdc99ed-04bf-44a9-bcce-e0e5e32f2675"),
             model.properties().networkSecurityPerimeters().get(0).perimeterGuid());
         Assertions.assertEquals("ofizehtdhgbj", model.properties().networkSecurityPerimeters().get(0).location());
         Assertions.assertEquals("jctzenkei", model.properties().fullyQualifiedDomainNames().get(0));
@@ -41,16 +41,16 @@ public final class AccessRuleTests {
                 .withSubscriptions(Arrays.asList(new AccessRulePropertiesSubscriptionsItem().withId("khgn")))
                 .withNetworkSecurityPerimeters(Arrays.asList(
                     new NetworkSecurityPerimeter().withId("nzlrpiqywncvjt")
-                        .withPerimeterGuid(UUID.fromString("da835f74-0b91-40ea-b2cb-eb01d99bf24d"))
+                        .withPerimeterGuid(UUID.fromString("bbdc99ed-04bf-44a9-bcce-e0e5e32f2675"))
                         .withLocation("ofizehtdhgbj"),
                     new NetworkSecurityPerimeter().withId("reljeamur")
-                        .withPerimeterGuid(UUID.fromString("214214b7-277e-49e9-9256-f50f7ae9cacc"))
+                        .withPerimeterGuid(UUID.fromString("35ed2012-51db-4e82-9308-ff8bd4f8b868"))
                         .withLocation("lovuana"),
                     new NetworkSecurityPerimeter().withId("cxlpmjerb")
-                        .withPerimeterGuid(UUID.fromString("3dbe07f2-7712-4b46-8c7a-50c7f90f2469"))
+                        .withPerimeterGuid(UUID.fromString("8a369177-ebd3-4583-b465-eafb572e3f34"))
                         .withLocation("lvidizozs"),
                     new NetworkSecurityPerimeter().withId("ccxjm")
-                        .withPerimeterGuid(UUID.fromString("86b2dc0b-6721-48cf-9996-5475b5828c29"))
+                        .withPerimeterGuid(UUID.fromString("6b1215e4-8788-4ec0-9135-19bbe112ee85"))
                         .withLocation("dgnwncypuuwwlt")))
                 .withFullyQualifiedDomainNames(Arrays.asList("jctzenkei", "zzhmkd", "svflyhbxcudch"))
                 .withEmailAddresses(Arrays.asList("rb", "ldforobwj", "vizbfhfo"))
@@ -61,7 +61,7 @@ public final class AccessRuleTests {
         Assertions.assertEquals("rddga", model.properties().addressPrefixes().get(0));
         Assertions.assertEquals("khgn", model.properties().subscriptions().get(0).id());
         Assertions.assertEquals("nzlrpiqywncvjt", model.properties().networkSecurityPerimeters().get(0).id());
-        Assertions.assertEquals(UUID.fromString("da835f74-0b91-40ea-b2cb-eb01d99bf24d"),
+        Assertions.assertEquals(UUID.fromString("bbdc99ed-04bf-44a9-bcce-e0e5e32f2675"),
             model.properties().networkSecurityPerimeters().get(0).perimeterGuid());
         Assertions.assertEquals("ofizehtdhgbj", model.properties().networkSecurityPerimeters().get(0).location());
         Assertions.assertEquals("jctzenkei", model.properties().fullyQualifiedDomainNames().get(0));

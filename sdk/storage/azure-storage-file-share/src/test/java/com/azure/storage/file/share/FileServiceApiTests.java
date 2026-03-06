@@ -32,7 +32,6 @@ import com.azure.storage.file.share.models.SmbMultichannel;
 import com.azure.storage.file.share.models.UserDelegationKey;
 import com.azure.storage.file.share.options.ShareCreateOptions;
 import com.azure.storage.file.share.options.ShareSetPropertiesOptions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIf;
@@ -44,6 +43,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -66,7 +66,9 @@ public class FileServiceApiTests extends FileShareTestBase {
     private static final Map<String, String> TEST_METADATA = Collections.singletonMap("testmetadata", "value");
     private static final String REALLY_LONG_STRING
         = "thisisareallylongstringthatexceedsthe64characterlimitallowedoncertainproperties";
-    private static List<ShareCorsRule> tooManyRules = new ArrayList<>();
+    private static final List<ShareCorsRule> TOO_MANY_RULES
+        = Collections.unmodifiableList(Arrays.asList(new ShareCorsRule(), new ShareCorsRule(), new ShareCorsRule(),
+            new ShareCorsRule(), new ShareCorsRule(), new ShareCorsRule()));
     private static final List<ShareCorsRule> INVALID_ALLOWED_HEADER
         = Collections.singletonList(new ShareCorsRule().setAllowedHeaders(REALLY_LONG_STRING));
     private static final List<ShareCorsRule> INVALID_EXPOSED_HEADER
@@ -75,14 +77,6 @@ public class FileServiceApiTests extends FileShareTestBase {
         = Collections.singletonList(new ShareCorsRule().setAllowedOrigins(REALLY_LONG_STRING));
     private static final List<ShareCorsRule> INVALID_ALLOWED_METHOD
         = Collections.singletonList(new ShareCorsRule().setAllowedMethods("NOTAREALHTTPMETHOD"));
-
-    @BeforeAll
-    public static void setupSpec() {
-        for (int i = 0; i < 6; i++) {
-            tooManyRules.add(new ShareCorsRule());
-        }
-        tooManyRules = Collections.unmodifiableList(tooManyRules);
-    }
 
     @BeforeEach
     public void setup() {
@@ -400,7 +394,7 @@ public class FileServiceApiTests extends FileShareTestBase {
     }
 
     private static Stream<Arguments> setAndGetPropertiesWithInvalidArgsSupplier() {
-        return Stream.of(Arguments.of(tooManyRules, 400, ShareErrorCode.INVALID_XML_DOCUMENT),
+        return Stream.of(Arguments.of(TOO_MANY_RULES, 400, ShareErrorCode.INVALID_XML_DOCUMENT),
             Arguments.of(INVALID_ALLOWED_HEADER, 400, ShareErrorCode.INVALID_XML_DOCUMENT),
             Arguments.of(INVALID_EXPOSED_HEADER, 400, ShareErrorCode.INVALID_XML_DOCUMENT),
             Arguments.of(INVALID_ALLOWED_ORIGIN, 400, ShareErrorCode.INVALID_XML_DOCUMENT),

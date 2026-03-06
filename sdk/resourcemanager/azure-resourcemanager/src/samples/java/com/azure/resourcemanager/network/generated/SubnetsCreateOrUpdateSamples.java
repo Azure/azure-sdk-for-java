@@ -15,7 +15,7 @@ import java.util.Arrays;
 public final class SubnetsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/SubnetCreate.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2025-05-01/examples/SubnetCreate.json
      */
     /**
      * Sample code: Create subnet.
@@ -32,7 +32,7 @@ public final class SubnetsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2025-05-01/examples/
      * SubnetCreateServiceEndpointNetworkIdentifier.json
      */
     /**
@@ -56,7 +56,7 @@ public final class SubnetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/SubnetCreateServiceEndpoint.
+     * specification/network/resource-manager/Microsoft.Network/stable/2025-05-01/examples/SubnetCreateServiceEndpoint.
      * json
      */
     /**
@@ -78,7 +78,7 @@ public final class SubnetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/SubnetCreateWithDelegation.
+     * specification/network/resource-manager/Microsoft.Network/stable/2025-05-01/examples/SubnetCreateWithDelegation.
      * json
      */
     /**
@@ -96,8 +96,29 @@ public final class SubnetsCreateOrUpdateSamples {
     }
 
     /*
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2025-05-01/examples/
+     * SubnetCreateWithServiceGateway.json
+     */
+    /**
+     * Sample code: Create Subnet with service gateway.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createSubnetWithServiceGateway(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getSubnets()
+            .createOrUpdate("subnet-test", "vnetname", "subnet1",
+                new SubnetInner().withAddressPrefix("10.0.0.0/16")
+                    .withServiceGateway(new SubResource().withId(
+                        "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/serviceGateways/SG1")),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/SubnetCreateWithSharingScope.
+     * specification/network/resource-manager/Microsoft.Network/stable/2025-05-01/examples/SubnetCreateWithSharingScope.
      * json
      */
     /**

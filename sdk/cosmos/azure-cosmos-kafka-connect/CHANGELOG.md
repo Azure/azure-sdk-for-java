@@ -1,14 +1,20 @@
 ## Release History
 
-### 2.8.0-beta.1 (Unreleased)
+### 2.9.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added support for throughput bucket. - See [PR 48009](https://github.com/Azure/azure-sdk-for-java/pull/48009)
 
 #### Breaking Changes
 
 #### Bugs Fixed
 
 #### Other Changes
+
+### 2.8.0 (2026-01-26)
+
+#### Bugs Fixed
+* Added filtering to deserialization of `"azure.cosmos.client.metadata.caches.snapshot"` - See [PR 47594](https://github.com/Azure/azure-sdk-for-java/pull/47594)
 
 ### 2.7.0 (2025-12-09)
 
@@ -21,6 +27,7 @@
 * Fixed duplicate processing in `CosmosSourceConnector` when task rebalance(pause/resume) happens - See [PR 47308](https://github.com/Azure/azure-sdk-for-java/pull/47308)
 
 ### 2.6.0 (2025-10-21)
+
 #### Other Changes
 * Updated `azure-cosmos` to version `4.75.0`.
 

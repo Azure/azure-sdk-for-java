@@ -708,7 +708,7 @@ public final class CertificateClient {
                     .getValue()
                     .toObject(DeletedCertificateBundle.class)));
         } catch (HttpResponseException e) {
-            if (e.getResponse().getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
+            if (e.getResponse() != null && e.getResponse().getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
                 return new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
                     pollingContext.getLatestResponse().getValue());
             } else {
@@ -896,7 +896,7 @@ public final class CertificateClient {
                     .getValue()
                     .toObject(CertificateBundle.class)));
         } catch (HttpResponseException e) {
-            if (e.getResponse().getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
+            if (e.getResponse() != null && e.getResponse().getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
                 return new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
                     pollingContext.getLatestResponse().getValue());
             } else {

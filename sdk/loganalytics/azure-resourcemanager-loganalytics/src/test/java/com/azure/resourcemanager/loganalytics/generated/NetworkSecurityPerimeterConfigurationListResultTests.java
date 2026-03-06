@@ -21,10 +21,10 @@ public final class NetworkSecurityPerimeterConfigurationListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkSecurityPerimeterConfigurationListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Creating\",\"provisioningIssues\":[{\"name\":\"tcyohpfkyrk\",\"properties\":{}},{\"name\":\"giogsjkmnwqjno\",\"properties\":{}},{\"name\":\"yhddvia\",\"properties\":{}}],\"networkSecurityPerimeter\":{\"id\":\"n\",\"perimeterGuid\":\"e47dd61c-072b-4ddc-bb17-201fe9f3719e\",\"location\":\"fpmvmemfnczd\"},\"resourceAssociation\":{\"name\":\"b\",\"accessMode\":\"Learning\"},\"profile\":{\"name\":\"lchpodbzevwrdn\",\"accessRulesVersion\":1073149595,\"accessRules\":[{}],\"diagnosticSettingsVersion\":1934709471,\"enabledLogCategories\":[\"swsmys\",\"uluqypfc\",\"lerchpq\"]}},\"id\":\"f\",\"name\":\"jbabwidf\",\"type\":\"xsspuunnoxyhk\"},{\"properties\":{\"provisioningState\":\"Updating\",\"provisioningIssues\":[{\"name\":\"hp\",\"properties\":{}},{\"name\":\"qcaaewdaomdjvl\",\"properties\":{}}],\"networkSecurityPerimeter\":{\"id\":\"kzbrmsgeivsiy\",\"perimeterGuid\":\"2bb25110-24ce-4c40-b14b-d1550a07934e\",\"location\":\"dncj\"},\"resourceAssociation\":{\"name\":\"nbzoggcu\",\"accessMode\":\"Audit\"},\"profile\":{\"name\":\"y\",\"accessRulesVersion\":1152319383,\"accessRules\":[{},{}],\"diagnosticSettingsVersion\":902332511,\"enabledLogCategories\":[\"pnylb\",\"uajlyj\"]}},\"id\":\"vofqzhvfc\",\"name\":\"byfmowuxr\",\"type\":\"jpvd\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"provisioningIssues\":[{\"name\":\"vwzjbhyz\",\"properties\":{}},{\"name\":\"rkambt\",\"properties\":{}},{\"name\":\"gvmnvuqeq\",\"properties\":{}},{\"name\":\"spastjbkkdmf\",\"properties\":{}}],\"networkSecurityPerimeter\":{\"id\":\"tmjlx\",\"perimeterGuid\":\"3d5425f3-7ad7-44f9-97df-905f3d3bc5fc\",\"location\":\"lozapeewchpxlk\"},\"resourceAssociation\":{\"name\":\"uziycsl\",\"accessMode\":\"Audit\"},\"profile\":{\"name\":\"ztcktyh\",\"accessRulesVersion\":400720959,\"accessRules\":[{},{}],\"diagnosticSettingsVersion\":1002446412,\"enabledLogCategories\":[\"lwmmrqzzrrjv\"]}},\"id\":\"lydzgk\",\"name\":\"vqeevtoep\",\"type\":\"yutnwytpzdmov\"}],\"nextLink\":\"fvaawzqa\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Creating\",\"provisioningIssues\":[{\"name\":\"tcyohpfkyrk\",\"properties\":{}},{\"name\":\"giogsjkmnwqjno\",\"properties\":{}},{\"name\":\"yhddvia\",\"properties\":{}}],\"networkSecurityPerimeter\":{\"id\":\"n\",\"perimeterGuid\":\"2b8bcab4-d52c-4c6c-8613-5d5653a5376c\",\"location\":\"fpmvmemfnczd\"},\"resourceAssociation\":{\"name\":\"b\",\"accessMode\":\"Learning\"},\"profile\":{\"name\":\"lchpodbzevwrdn\",\"accessRulesVersion\":1073149595,\"accessRules\":[{}],\"diagnosticSettingsVersion\":1934709471,\"enabledLogCategories\":[\"swsmys\",\"uluqypfc\",\"lerchpq\"]}},\"id\":\"f\",\"name\":\"jbabwidf\",\"type\":\"xsspuunnoxyhk\"},{\"properties\":{\"provisioningState\":\"Updating\",\"provisioningIssues\":[{\"name\":\"hp\",\"properties\":{}},{\"name\":\"qcaaewdaomdjvl\",\"properties\":{}}],\"networkSecurityPerimeter\":{\"id\":\"kzbrmsgeivsiy\",\"perimeterGuid\":\"642c3ce5-05d9-4877-a0e0-b37d8749fb12\",\"location\":\"dncj\"},\"resourceAssociation\":{\"name\":\"nbzoggcu\",\"accessMode\":\"Audit\"},\"profile\":{\"name\":\"y\",\"accessRulesVersion\":1152319383,\"accessRules\":[{},{}],\"diagnosticSettingsVersion\":902332511,\"enabledLogCategories\":[\"pnylb\",\"uajlyj\"]}},\"id\":\"vofqzhvfc\",\"name\":\"byfmowuxr\",\"type\":\"jpvd\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"provisioningIssues\":[{\"name\":\"vwzjbhyz\",\"properties\":{}},{\"name\":\"rkambt\",\"properties\":{}},{\"name\":\"gvmnvuqeq\",\"properties\":{}},{\"name\":\"spastjbkkdmf\",\"properties\":{}}],\"networkSecurityPerimeter\":{\"id\":\"tmjlx\",\"perimeterGuid\":\"4aab6725-cbdf-4862-9d2c-0eb6e5ba1978\",\"location\":\"lozapeewchpxlk\"},\"resourceAssociation\":{\"name\":\"uziycsl\",\"accessMode\":\"Audit\"},\"profile\":{\"name\":\"ztcktyh\",\"accessRulesVersion\":400720959,\"accessRules\":[{},{}],\"diagnosticSettingsVersion\":1002446412,\"enabledLogCategories\":[\"lwmmrqzzrrjv\"]}},\"id\":\"lydzgk\",\"name\":\"vqeevtoep\",\"type\":\"yutnwytpzdmov\"}],\"nextLink\":\"fvaawzqa\"}")
             .toObject(NetworkSecurityPerimeterConfigurationListResult.class);
         Assertions.assertEquals("n", model.value().get(0).properties().networkSecurityPerimeter().id());
-        Assertions.assertEquals(UUID.fromString("e47dd61c-072b-4ddc-bb17-201fe9f3719e"),
+        Assertions.assertEquals(UUID.fromString("2b8bcab4-d52c-4c6c-8613-5d5653a5376c"),
             model.value().get(0).properties().networkSecurityPerimeter().perimeterGuid());
         Assertions.assertEquals("fpmvmemfnczd",
             model.value().get(0).properties().networkSecurityPerimeter().location());
@@ -49,7 +49,7 @@ public final class NetworkSecurityPerimeterConfigurationListResultTests {
                                 .withProperties(
                                     new NetworkSecurityPerimeterConfigurationProperties()
                                         .withNetworkSecurityPerimeter(new NetworkSecurityPerimeter().withId("n")
-                                            .withPerimeterGuid(UUID.fromString("e47dd61c-072b-4ddc-bb17-201fe9f3719e"))
+                                            .withPerimeterGuid(UUID.fromString("2b8bcab4-d52c-4c6c-8613-5d5653a5376c"))
                                             .withLocation("fpmvmemfnczd"))
                                         .withResourceAssociation(new ResourceAssociation().withName("b")
                                             .withAccessMode(ResourceAssociationAccessMode.LEARNING))
@@ -63,7 +63,7 @@ public final class NetworkSecurityPerimeterConfigurationListResultTests {
                             new NetworkSecurityPerimeterConfigurationInner()
                                 .withProperties(new NetworkSecurityPerimeterConfigurationProperties()
                                     .withNetworkSecurityPerimeter(new NetworkSecurityPerimeter().withId("kzbrmsgeivsiy")
-                                        .withPerimeterGuid(UUID.fromString("2bb25110-24ce-4c40-b14b-d1550a07934e"))
+                                        .withPerimeterGuid(UUID.fromString("642c3ce5-05d9-4877-a0e0-b37d8749fb12"))
                                         .withLocation("dncj"))
                                     .withResourceAssociation(new ResourceAssociation().withName("nbzoggcu")
                                         .withAccessMode(ResourceAssociationAccessMode.AUDIT))
@@ -75,7 +75,7 @@ public final class NetworkSecurityPerimeterConfigurationListResultTests {
                             new NetworkSecurityPerimeterConfigurationInner()
                                 .withProperties(new NetworkSecurityPerimeterConfigurationProperties()
                                     .withNetworkSecurityPerimeter(new NetworkSecurityPerimeter().withId("tmjlx")
-                                        .withPerimeterGuid(UUID.fromString("3d5425f3-7ad7-44f9-97df-905f3d3bc5fc"))
+                                        .withPerimeterGuid(UUID.fromString("4aab6725-cbdf-4862-9d2c-0eb6e5ba1978"))
                                         .withLocation("lozapeewchpxlk"))
                                     .withResourceAssociation(new ResourceAssociation().withName("uziycsl")
                                         .withAccessMode(ResourceAssociationAccessMode.AUDIT))
@@ -87,7 +87,7 @@ public final class NetworkSecurityPerimeterConfigurationListResultTests {
                 .withNextLink("fvaawzqa");
         model = BinaryData.fromObject(model).toObject(NetworkSecurityPerimeterConfigurationListResult.class);
         Assertions.assertEquals("n", model.value().get(0).properties().networkSecurityPerimeter().id());
-        Assertions.assertEquals(UUID.fromString("e47dd61c-072b-4ddc-bb17-201fe9f3719e"),
+        Assertions.assertEquals(UUID.fromString("2b8bcab4-d52c-4c6c-8613-5d5653a5376c"),
             model.value().get(0).properties().networkSecurityPerimeter().perimeterGuid());
         Assertions.assertEquals("fpmvmemfnczd",
             model.value().get(0).properties().networkSecurityPerimeter().location());

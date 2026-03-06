@@ -94,6 +94,92 @@ class TransientIOErrorsRetryingIteratorSpec extends UnitSpec with BasicLoggingTr
     transientErrorCount.get > 0 shouldEqual true
   }
 
+  "CosmosPagedFluxFactory" should "only be called once per retry when transient errors happen" in {
+    val pageCount = 30
+    val producerCount = 2
+    val factoryCallCount = new AtomicLong(0)
+    val transientErrorCount = new AtomicLong(0)
+    val iterator = new TransientIOErrorsRetryingIterator(
+      continuationToken => {
+        factoryCallCount.incrementAndGet()
+        generateMockedCosmosPagedFlux(
+          continuationToken, pageCount, transientErrorCount, injectEmptyPages = false, injectedDelayOfFirstPage = None)
+      },
+      pageSize,
+      1,
+      None,
+      None
+    )
+    iterator.maxRetryIntervalInMs = 5
+
+    iterator.count(_ => true) shouldEqual (pageCount * pageSize * producerCount)
+
+    transientErrorCount.get > 0 shouldEqual true
+
+    // Each factory call should correspond to the initial call plus one per retry.
+    // The factory call count should equal 1 (initial) + number of transient errors (retries).
+    // The key assertion: no extra subscription beyond what is needed.
+    factoryCallCount.get shouldEqual (1 + transientErrorCount.get)
+  }
+
+  "Iterator close" should "clear iterator references without creating extra subscriptions" in {
+    val pageCount = 30
+    val factoryCallCount = new AtomicLong(0)
+    val iterator = new TransientIOErrorsRetryingIterator(
+      continuationToken => {
+        factoryCallCount.incrementAndGet()
+        generateMockedCosmosPagedFluxWithoutErrors(continuationToken, pageCount)
+      },
+      pageSize,
+      1,
+      None,
+      None
+    )
+
+    // Read some records to initialize the iterator
+    iterator.hasNext shouldEqual true
+    iterator.next()
+
+    factoryCallCount.get shouldEqual 1
+
+    // Verify internal state is populated before close
+    iterator.currentFeedResponseIterator.isDefined shouldEqual true
+
+    // Close should clear references without calling the factory again
+    iterator.close()
+
+    iterator.currentFeedResponseIterator shouldEqual None
+    iterator.currentItemIterator shouldEqual None
+
+    // Factory should not have been called again by close
+    factoryCallCount.get shouldEqual 1
+  }
+
+  "Iterator close" should "be safe to call multiple times" in {
+    val factoryCallCount = new AtomicLong(0)
+    val iterator = new TransientIOErrorsRetryingIterator(
+      continuationToken => {
+        factoryCallCount.incrementAndGet()
+        generateMockedCosmosPagedFluxWithoutErrors(continuationToken, 30)
+      },
+      pageSize,
+      1,
+      None,
+      None
+    )
+
+    // Read some records
+    iterator.hasNext shouldEqual true
+    iterator.next()
+
+    // Close multiple times - should not throw or create extra subscriptions
+    iterator.close()
+    iterator.close()
+    iterator.close()
+
+    factoryCallCount.get shouldEqual 1
+  }
+
   private val objectMapper = new ObjectMapper
 
   @throws[JsonProcessingException]
@@ -138,6 +224,35 @@ class TransientIOErrorsRetryingIteratorSpec extends UnitSpec with BasicLoggingTr
       injectedDelayOfFirstPage)
     val toBeMerged = Array(leftProducer, rightProducer).toIterable.asJava
     val mergedFlux = Flux.mergeSequential(toBeMerged , 1, 2)
+    UtilBridgeInternal.createCosmosPagedFlux(_ => mergedFlux)
+  }
+
+  private def generateMockedCosmosPagedFluxWithoutErrors
+  (
+    continuationToken: String,
+    initialPageCount: Int
+  ) = {
+
+    require(initialPageCount > 20)
+
+    val leftProducer = generateFeedResponseFlux(
+      "Left",
+      initialPageCount,
+      0.0,
+      Option.apply(continuationToken),
+      new AtomicLong(0),
+      false,
+      None)
+    val rightProducer = generateFeedResponseFlux(
+      "Right",
+      initialPageCount,
+      0.0,
+      Option.apply(continuationToken),
+      new AtomicLong(0),
+      false,
+      None)
+    val toBeMerged = Array(leftProducer, rightProducer).toIterable.asJava
+    val mergedFlux = Flux.mergeSequential(toBeMerged, 1, 2)
     UtilBridgeInternal.createCosmosPagedFlux(_ => mergedFlux)
   }
 

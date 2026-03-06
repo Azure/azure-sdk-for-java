@@ -17,13 +17,13 @@ public final class AccessRulePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AccessRuleProperties model = BinaryData.fromString(
-            "{\"direction\":\"Outbound\",\"addressPrefixes\":[\"ywuhpsvfuur\",\"tlwexxwlalniexz\",\"rzpgep\"],\"subscriptions\":[{\"id\":\"bwwpgdakchzy\"}],\"networkSecurityPerimeters\":[{\"id\":\"q\",\"perimeterGuid\":\"93bc26fc-f9fb-4e69-9852-158903792b58\",\"location\":\"cxkjibnxmysuxswq\"},{\"id\":\"tvlwijpsttexoq\",\"perimeterGuid\":\"4eded75f-0555-44c1-944a-0d0074ddf66e\",\"location\":\"cyyufmh\"},{\"id\":\"nc\",\"perimeterGuid\":\"344e5ead-a6e5-4329-9351-1a3ed62f4f98\",\"location\":\"qspkcdqzhlctd\"},{\"id\":\"nqndyfpchrqbn\",\"perimeterGuid\":\"de737e0c-b524-425d-b66b-095fab635f9c\",\"location\":\"cgegydcwbo\"}],\"fullyQualifiedDomainNames\":[\"mvqqolih\"],\"emailAddresses\":[\"iouaubrjt\",\"oq\",\"fuojrngif\"],\"phoneNumbers\":[\"pasccbi\"]}")
+            "{\"direction\":\"Outbound\",\"addressPrefixes\":[\"ywuhpsvfuur\",\"tlwexxwlalniexz\",\"rzpgep\"],\"subscriptions\":[{\"id\":\"bwwpgdakchzy\"}],\"networkSecurityPerimeters\":[{\"id\":\"q\",\"perimeterGuid\":\"fcdf021f-cddf-4ed2-9e35-35a95af5df26\",\"location\":\"cxkjibnxmysuxswq\"},{\"id\":\"tvlwijpsttexoq\",\"perimeterGuid\":\"8237a725-6bb9-4eb9-986a-ba9c33d7a075\",\"location\":\"cyyufmh\"},{\"id\":\"nc\",\"perimeterGuid\":\"4afd3e24-43f2-4eb4-95b1-9cda16e7448c\",\"location\":\"qspkcdqzhlctd\"},{\"id\":\"nqndyfpchrqbn\",\"perimeterGuid\":\"c5688b78-39bc-4c74-bbff-74cd364f3c29\",\"location\":\"cgegydcwbo\"}],\"fullyQualifiedDomainNames\":[\"mvqqolih\"],\"emailAddresses\":[\"iouaubrjt\",\"oq\",\"fuojrngif\"],\"phoneNumbers\":[\"pasccbi\"]}")
             .toObject(AccessRuleProperties.class);
         Assertions.assertEquals(AccessRuleDirection.OUTBOUND, model.direction());
         Assertions.assertEquals("ywuhpsvfuur", model.addressPrefixes().get(0));
         Assertions.assertEquals("bwwpgdakchzy", model.subscriptions().get(0).id());
         Assertions.assertEquals("q", model.networkSecurityPerimeters().get(0).id());
-        Assertions.assertEquals(UUID.fromString("93bc26fc-f9fb-4e69-9852-158903792b58"),
+        Assertions.assertEquals(UUID.fromString("fcdf021f-cddf-4ed2-9e35-35a95af5df26"),
             model.networkSecurityPerimeters().get(0).perimeterGuid());
         Assertions.assertEquals("cxkjibnxmysuxswq", model.networkSecurityPerimeters().get(0).location());
         Assertions.assertEquals("mvqqolih", model.fullyQualifiedDomainNames().get(0));
@@ -38,16 +38,16 @@ public final class AccessRulePropertiesTests {
             .withSubscriptions(Arrays.asList(new AccessRulePropertiesSubscriptionsItem().withId("bwwpgdakchzy")))
             .withNetworkSecurityPerimeters(Arrays.asList(
                 new NetworkSecurityPerimeter().withId("q")
-                    .withPerimeterGuid(UUID.fromString("93bc26fc-f9fb-4e69-9852-158903792b58"))
+                    .withPerimeterGuid(UUID.fromString("fcdf021f-cddf-4ed2-9e35-35a95af5df26"))
                     .withLocation("cxkjibnxmysuxswq"),
                 new NetworkSecurityPerimeter().withId("tvlwijpsttexoq")
-                    .withPerimeterGuid(UUID.fromString("4eded75f-0555-44c1-944a-0d0074ddf66e"))
+                    .withPerimeterGuid(UUID.fromString("8237a725-6bb9-4eb9-986a-ba9c33d7a075"))
                     .withLocation("cyyufmh"),
                 new NetworkSecurityPerimeter().withId("nc")
-                    .withPerimeterGuid(UUID.fromString("344e5ead-a6e5-4329-9351-1a3ed62f4f98"))
+                    .withPerimeterGuid(UUID.fromString("4afd3e24-43f2-4eb4-95b1-9cda16e7448c"))
                     .withLocation("qspkcdqzhlctd"),
                 new NetworkSecurityPerimeter().withId("nqndyfpchrqbn")
-                    .withPerimeterGuid(UUID.fromString("de737e0c-b524-425d-b66b-095fab635f9c"))
+                    .withPerimeterGuid(UUID.fromString("c5688b78-39bc-4c74-bbff-74cd364f3c29"))
                     .withLocation("cgegydcwbo")))
             .withFullyQualifiedDomainNames(Arrays.asList("mvqqolih"))
             .withEmailAddresses(Arrays.asList("iouaubrjt", "oq", "fuojrngif"))
@@ -57,7 +57,7 @@ public final class AccessRulePropertiesTests {
         Assertions.assertEquals("ywuhpsvfuur", model.addressPrefixes().get(0));
         Assertions.assertEquals("bwwpgdakchzy", model.subscriptions().get(0).id());
         Assertions.assertEquals("q", model.networkSecurityPerimeters().get(0).id());
-        Assertions.assertEquals(UUID.fromString("93bc26fc-f9fb-4e69-9852-158903792b58"),
+        Assertions.assertEquals(UUID.fromString("fcdf021f-cddf-4ed2-9e35-35a95af5df26"),
             model.networkSecurityPerimeters().get(0).perimeterGuid());
         Assertions.assertEquals("cxkjibnxmysuxswq", model.networkSecurityPerimeters().get(0).location());
         Assertions.assertEquals("mvqqolih", model.fullyQualifiedDomainNames().get(0));

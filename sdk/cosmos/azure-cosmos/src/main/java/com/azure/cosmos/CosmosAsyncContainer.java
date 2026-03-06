@@ -119,6 +119,8 @@ public class CosmosAsyncContainer {
         ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper.getCosmosBulkExecutionOptionsAccessor();
     private static final ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.CosmosClientTelemetryConfigAccessor clientTelemetryConfigAccessor =
         ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.getCosmosClientTelemetryConfigAccessor();
+    private static final ImplementationBridgeHelpers.CosmosBatchRequestOptionsHelper.CosmosBatchRequestOptionsAccessor batchRequestOptionsAccessor =
+        ImplementationBridgeHelpers.CosmosBatchRequestOptionsHelper.getCosmosBatchRequestOptionsAccessor();
 
     private final CosmosAsyncDatabase database;
     private final String id;
@@ -1266,8 +1268,14 @@ public class CosmosAsyncContainer {
         RequestOptions requestOptionsInternal = ModelBridgeInternal.toRequestOptions(requestOptions);
         applyPolicies(OperationType.Batch, ResourceType.Document, requestOptionsInternal, this.batchSpanName);
 
+        boolean disableRetryForThrottledBatchRequest = batchRequestOptionsAccessor.shouldDisableRetryForThrottledBatchRequest(requestOptions);
         return withContext(context -> {
-            final BatchExecutor executor = new BatchExecutor(this, cosmosBatch, requestOptionsInternal);
+            final BatchExecutor executor =
+                new BatchExecutor(
+                    this,
+                    cosmosBatch,
+                    requestOptionsInternal,
+                    disableRetryForThrottledBatchRequest);
             final Mono<CosmosBatchResponse> responseMono = executor.executeAsync();
 
             CosmosAsyncClient client = database

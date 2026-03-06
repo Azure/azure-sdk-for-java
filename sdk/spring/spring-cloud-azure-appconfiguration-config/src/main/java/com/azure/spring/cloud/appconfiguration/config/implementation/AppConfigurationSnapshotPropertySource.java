@@ -10,7 +10,7 @@ import org.springframework.boot.context.properties.source.InvalidConfigurationPr
 import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
-import com.azure.spring.cloud.appconfiguration.config.implementation.feature.FeatureFlags;
+import com.azure.spring.cloud.appconfiguration.config.implementation.configuration.WatchedConfigurationSettings;
 
 /**
  * Azure App Configuration PropertySource unique per Store Label(Profile) combo.
@@ -32,7 +32,7 @@ final class AppConfigurationSnapshotPropertySource extends AppConfigurationAppli
         FeatureFlagClient featureFlagClient) {
         // The context alone does not uniquely define a PropertySource, append storeName
         // and label to uniquely define a PropertySource
-        super(name, replicaClient, keyVaultClientFactory, null, null);
+        super(name, replicaClient, keyVaultClientFactory, null, null, null);
         this.snapshotName = snapshotName;
         this.featureFlagClient = featureFlagClient;
     }
@@ -49,7 +49,7 @@ final class AppConfigurationSnapshotPropertySource extends AppConfigurationAppli
     public void initProperties(List<String> trim, Context context) throws InvalidConfigurationPropertyValueException {
         processConfigurationSettings(replicaClient.listSettingSnapshot(snapshotName, context), null, trim);
 
-        FeatureFlags featureFlags = new FeatureFlags(null, featureFlagsList);
+        WatchedConfigurationSettings featureFlags = new WatchedConfigurationSettings(null, featureFlagsList);
         featureFlagClient.proccessFeatureFlags(featureFlags, replicaClient.getEndpoint());
     }
 
