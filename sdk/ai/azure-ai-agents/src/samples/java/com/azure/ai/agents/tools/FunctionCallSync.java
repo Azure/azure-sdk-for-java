@@ -19,8 +19,10 @@ import com.openai.models.responses.ResponseFunctionToolCall;
 import com.openai.models.responses.ResponseOutputItem;
 import com.openai.models.responses.ResponseOutputMessage;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -49,13 +51,24 @@ public class FunctionCallSync {
 
         try {
             // Create a FunctionTool with parameters schema
+            // Use BinaryData.fromObject() to produce correct JSON types (not double-encoded strings)
+            Map<String, Object> locationProp = new LinkedHashMap<String, Object>();
+            locationProp.put("type", "string");
+            locationProp.put("description", "The city and state, e.g. Seattle, WA");
+
+            Map<String, Object> unitProp = new LinkedHashMap<String, Object>();
+            unitProp.put("type", "string");
+            unitProp.put("enum", Arrays.asList("celsius", "fahrenheit"));
+
+            Map<String, Object> properties = new LinkedHashMap<String, Object>();
+            properties.put("location", locationProp);
+            properties.put("unit", unitProp);
+
             Map<String, BinaryData> parameters = new HashMap<String, BinaryData>();
-            parameters.put("type", BinaryData.fromString("\"object\""));
-            parameters.put("properties", BinaryData.fromString(
-                "{\"location\":{\"type\":\"string\",\"description\":\"The city and state, e.g. Seattle, WA\"},"
-                + "\"unit\":{\"type\":\"string\",\"enum\":[\"celsius\",\"fahrenheit\"]}}"));
-            parameters.put("required", BinaryData.fromString("[\"location\", \"unit\"]"));
-            parameters.put("additionalProperties", BinaryData.fromString("false"));
+            parameters.put("type", BinaryData.fromObject("object"));
+            parameters.put("properties", BinaryData.fromObject(properties));
+            parameters.put("required", BinaryData.fromObject(Arrays.asList("location", "unit")));
+            parameters.put("additionalProperties", BinaryData.fromObject(false));
 
             FunctionTool tool = new FunctionTool("get_weather", parameters, true)
                 .setDescription("Get the current weather in a given location");

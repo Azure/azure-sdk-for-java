@@ -24,6 +24,7 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -57,10 +58,16 @@ public class AzureFunctionAsync {
 
         AtomicReference<AgentVersionDetails> agentRef = new AtomicReference<>();
 
-        Map<String, BinaryData> parameters = new HashMap<>();
-        parameters.put("type", BinaryData.fromString("\"object\""));
-        parameters.put("properties", BinaryData.fromString(
-            "{\"location\":{\"type\":\"string\",\"description\":\"location to determine weather for\"}}"));
+        Map<String, Object> locationProp = new LinkedHashMap<String, Object>();
+        locationProp.put("type", "string");
+        locationProp.put("description", "location to determine weather for");
+
+        Map<String, Object> props = new LinkedHashMap<String, Object>();
+        props.put("location", locationProp);
+
+        Map<String, BinaryData> parameters = new HashMap<String, BinaryData>();
+        parameters.put("type", BinaryData.fromObject("object"));
+        parameters.put("properties", BinaryData.fromObject(props));
 
         AzureFunctionTool azureFunctionTool = new AzureFunctionTool(
             new AzureFunctionDefinition(
