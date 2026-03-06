@@ -82,7 +82,10 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh {
         this.refreshInterval = refreshInterval;
         this.clientFactory = clientFactory;
         this.replicaLookUp = replicaLookUp;
-        Objects.requireNonNull(stateHolder, "stateHolder must not be null");
+        if (Objects.isNull(stateHolder)) {
+            // StateHolder is null if all stores are disabled.
+            stateHolder = new StateHolder();
+        }
         this.stateHolder = stateHolder;
         this.refreshUtils = refreshUtils;
     }

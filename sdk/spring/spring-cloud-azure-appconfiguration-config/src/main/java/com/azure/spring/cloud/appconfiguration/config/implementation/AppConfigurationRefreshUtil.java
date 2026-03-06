@@ -8,7 +8,6 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.Objects;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,7 +40,10 @@ public class AppConfigurationRefreshUtil {
      * @param stateHolder the state holder for managing configuration and feature flag states
      */
     public AppConfigurationRefreshUtil(StateHolder stateHolder) {
-        Objects.requireNonNull(stateHolder, "stateHolder must not be null");
+        if (stateHolder == null) {
+            // This is a fallback if all stores are disabled.
+            stateHolder = new StateHolder();
+        }
         this.stateHolder = stateHolder;
     }
 
