@@ -1,14 +1,300 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.1.0-beta.1 (2026-03-06)
 
-### Features Added
+- Azure Resource Manager SignalR client library for Java. This package contains Microsoft Azure SDK for SignalR Management SDK. REST API for Azure SignalR Service. Package api-version 2025-01-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.PrivateLinkResourceList` was removed
 
-### Other Changes
+#### `models.CustomCertificateList` was removed
+
+#### `models.SignalRUsageList` was removed
+
+#### `models.CustomDomainList` was removed
+
+#### `models.PrivateEndpointConnectionList` was removed
+
+#### `models.SignalRResourceList` was removed
+
+#### `models.SharedPrivateLinkResourceList` was removed
+
+#### `models.OperationList` was removed
+
+#### `models.ManagedIdentitySettings` was modified
+
+* `validate()` was removed
+
+#### `models.SignalRCorsSettings` was modified
+
+* `validate()` was removed
+
+#### `models.NameAvailabilityParameters` was modified
+
+* `validate()` was removed
+
+#### `models.ResourceLogConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.ResourceReference` was modified
+
+* `validate()` was removed
+
+#### `models.ServerlessSettings` was modified
+
+* `validate()` was removed
+
+#### `models.SignalRUsageName` was modified
+
+* `SignalRUsageName()` was changed to private access
+* `withValue(java.lang.String)` was removed
+* `validate()` was removed
+* `withLocalizedValue(java.lang.String)` was removed
+
+#### `models.RegenerateKeyParameters` was modified
+
+* `validate()` was removed
+
+#### `models.SignalRFeature` was modified
+
+* `validate()` was removed
+
+#### `models.ServiceSpecification` was modified
+
+* `ServiceSpecification()` was changed to private access
+* `withMetricSpecifications(java.util.List)` was removed
+* `withLogSpecifications(java.util.List)` was removed
+* `validate()` was removed
+
+#### `models.UpstreamAuthSettings` was modified
+
+* `validate()` was removed
+
+#### `models.MetricSpecification` was modified
+
+* `MetricSpecification()` was changed to private access
+* `withAggregationType(java.lang.String)` was removed
+* `withCategory(java.lang.String)` was removed
+* `withFillGapWithZero(java.lang.String)` was removed
+* `withDisplayDescription(java.lang.String)` was removed
+* `withDimensions(java.util.List)` was removed
+* `withUnit(java.lang.String)` was removed
+* `validate()` was removed
+* `withName(java.lang.String)` was removed
+* `withDisplayName(java.lang.String)` was removed
+
+#### `models.LiveTraceConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.Sku` was modified
+
+* `Sku()` was changed to private access
+* `validate()` was removed
+
+#### `models.SkuCapacity` was modified
+
+* `SkuCapacity()` was changed to private access
+* `validate()` was removed
+
+#### `models.PrivateEndpoint` was modified
+
+* `validate()` was removed
+
+#### `models.UpstreamTemplate` was modified
+
+* `validate()` was removed
+
+#### `models.PrivateLinkServiceConnectionState` was modified
+
+* `validate()` was removed
+
+#### `models.Dimension` was modified
+
+* `Dimension()` was changed to private access
+* `validate()` was removed
+* `withName(java.lang.String)` was removed
+* `withToBeExportedForShoebox(java.lang.Boolean)` was removed
+* `withInternalName(java.lang.String)` was removed
+* `withDisplayName(java.lang.String)` was removed
+
+#### `models.ResourceLogCategory` was modified
+
+* `validate()` was removed
+
+#### `models.LiveTraceCategory` was modified
+
+* `validate()` was removed
+
+#### `models.ResourceSku` was modified
+
+* `validate()` was removed
+
+#### `models.NetworkAcl` was modified
+
+* `validate()` was removed
+
+#### `models.ManagedIdentity` was modified
+
+* `validate()` was removed
+
+#### `models.PrivateEndpointAcl` was modified
+
+* `validate()` was removed
+
+#### `models.LogSpecification` was modified
+
+* `LogSpecification()` was changed to private access
+* `withDisplayName(java.lang.String)` was removed
+* `validate()` was removed
+* `withName(java.lang.String)` was removed
+
+#### `models.SignalRNetworkACLs` was modified
+
+* `validate()` was removed
+
+#### `models.UserAssignedIdentityProperty` was modified
+
+* `validate()` was removed
+
+#### `models.ShareablePrivateLinkResourceType` was modified
+
+* `ShareablePrivateLinkResourceType()` was changed to private access
+* `withName(java.lang.String)` was removed
+* `validate()` was removed
+* `withProperties(models.ShareablePrivateLinkResourceProperties)` was removed
+
+#### `models.OperationProperties` was modified
+
+* `OperationProperties()` was changed to private access
+* `validate()` was removed
+* `withServiceSpecification(models.ServiceSpecification)` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `OperationDisplay()` was changed to private access
+* `withProvider(java.lang.String)` was removed
+* `withResource(java.lang.String)` was removed
+* `withDescription(java.lang.String)` was removed
+* `validate()` was removed
+* `withOperation(java.lang.String)` was removed
+
+#### `models.ServerlessUpstreamSettings` was modified
+
+* `validate()` was removed
+
+#### `models.ShareablePrivateLinkResourceProperties` was modified
+
+* `ShareablePrivateLinkResourceProperties()` was changed to private access
+* `validate()` was removed
+* `withGroupId(java.lang.String)` was removed
+* `withDescription(java.lang.String)` was removed
+* `withType(java.lang.String)` was removed
+
+#### `models.SignalRTlsSettings` was modified
+
+* `validate()` was removed
+
+### Features Added
+
+* `models.IPRule` was added
+
+* `models.ClientConnectionCountRuleDiscriminator` was added
+
+* `models.ClientTrafficControlRuleDiscriminator` was added
+
+* `models.SignalRReplicas` was added
+
+* `models.SignalRReplicaSharedPrivateLinkResources` was added
+
+* `models.TrafficThrottleByJwtCustomClaimRule` was added
+
+* `models.TrafficThrottleByJwtSignatureRule` was added
+
+* `models.ThrottleByUserIdRule` was added
+
+* `models.Replica` was added
+
+* `models.Replica$Update` was added
+
+* `models.ClientTrafficControlRule` was added
+
+* `models.ThrottleByJwtSignatureRule` was added
+
+* `models.TrafficThrottleByUserIdRule` was added
+
+* `models.ApplicationFirewallSettings` was added
+
+* `models.Replica$DefinitionStages` was added
+
+* `models.Replica$UpdateStages` was added
+
+* `models.ThrottleByJwtCustomClaimRule` was added
+
+* `models.Replica$Definition` was added
+
+* `models.ClientConnectionCountRule` was added
+
+* `models.RouteSettings` was added
+
+#### `models.ServerlessSettings` was modified
+
+* `withKeepAliveIntervalInSeconds(java.lang.Integer)` was added
+* `keepAliveIntervalInSeconds()` was added
+
+#### `models.SignalRs` was modified
+
+* `listReplicaSkus(java.lang.String,java.lang.String,java.lang.String)` was added
+* `listReplicaSkusWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.SharedPrivateLinkResource` was modified
+
+* `fqdns()` was added
+
+#### `models.PrivateLinkResource` was modified
+
+* `systemData()` was added
+
+#### `models.SharedPrivateLinkResource$Definition` was modified
+
+* `withFqdns(java.util.List)` was added
+
+#### `models.SignalRNetworkACLs` was modified
+
+* `ipRules()` was added
+* `withIpRules(java.util.List)` was added
+
+#### `models.SignalRResource$Definition` was modified
+
+* `withResourceStopped(java.lang.String)` was added
+* `withRouteSettings(models.RouteSettings)` was added
+* `withApplicationFirewall(models.ApplicationFirewallSettings)` was added
+* `withRegionEndpointEnabled(java.lang.String)` was added
+
+#### `models.SignalRResource` was modified
+
+* `applicationFirewall()` was added
+* `resourceStopped()` was added
+* `regionEndpointEnabled()` was added
+* `routeSettings()` was added
+
+#### `models.SignalRResource$Update` was modified
+
+* `withApplicationFirewall(models.ApplicationFirewallSettings)` was added
+* `withResourceStopped(java.lang.String)` was added
+* `withRegionEndpointEnabled(java.lang.String)` was added
+* `withRouteSettings(models.RouteSettings)` was added
+
+#### `models.SharedPrivateLinkResource$Update` was modified
+
+* `withFqdns(java.util.List)` was added
+
+#### `SignalRManager` was modified
+
+* `signalRReplicaSharedPrivateLinkResources()` was added
+* `signalRReplicas()` was added
 
 ## 1.0.0 (2024-12-24)
 
