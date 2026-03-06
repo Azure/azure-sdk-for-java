@@ -1,14 +1,182 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.2.0-beta.1 (2026-03-06)
 
-### Features Added
+- Azure Resource Manager Support client library for Java. This package contains Microsoft Azure SDK for Support Management SDK. Microsoft Azure Support Resource Provider. Package api-version 2025-06-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.ChatTranscriptsListResult` was removed
 
-### Other Changes
+#### `models.OperationsListResult` was removed
+
+#### `models.SupportTicketsListResult` was removed
+
+#### `models.FilesListResult` was removed
+
+#### `models.CommunicationsListResult` was removed
+
+#### `models.TranscriptContentType` was removed
+
+#### `models.ServicesListResult` was removed
+
+#### `models.ProblemClassificationsListResult` was removed
+
+#### `models.CheckNameAvailabilityInput` was modified
+
+* `validate()` was removed
+
+#### `models.TechnicalTicketDetails` was modified
+
+* `validate()` was removed
+
+#### `models.QuotaChangeRequest` was modified
+
+* `validate()` was removed
+
+#### `models.UpdateContactProfile` was modified
+
+* `validate()` was removed
+
+#### `models.UpdateSupportTicket` was modified
+
+* `validate()` was removed
+
+#### `models.ContactProfile` was modified
+
+* `validate()` was removed
+
+#### `models.QuotaTicketDetails` was modified
+
+* `validate()` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `OperationDisplay()` was changed to private access
+* `validate()` was removed
+
+#### `models.MessageProperties` was modified
+
+* `MessageProperties()` was changed to private access
+* `withSender(java.lang.String)` was removed
+* `models.TranscriptContentType contentType()` -> `java.lang.String contentType()`
+* `validate()` was removed
+* `withBody(java.lang.String)` was removed
+
+#### `models.SecondaryConsent` was modified
+
+* `validate()` was removed
+
+#### `SupportManager` was modified
+
+* `fluent.MicrosoftSupport serviceClient()` -> `fluent.SupportManagementClient serviceClient()`
+
+#### `models.SecondaryConsentEnabled` was modified
+
+* `SecondaryConsentEnabled()` was changed to private access
+* `validate()` was removed
+* `withDescription(java.lang.String)` was removed
+* `withType(java.lang.String)` was removed
+
+#### `models.UploadFile` was modified
+
+* `validate()` was removed
+
+#### `models.ServiceLevelAgreement` was modified
+
+* `validate()` was removed
+
+#### `models.SupportEngineer` was modified
+
+* `validate()` was removed
+
+### Features Added
+
+* `models.EscalationStatus` was added
+
+* `models.ActionType` was added
+
+* `models.ClassifyProblemsNoSubscriptions` was added
+
+* `models.ClassifyServicesNoSubscriptions` was added
+
+* `models.LookUpResourceIdRequest` was added
+
+* `models.ClassificationService` was added
+
+* `models.LookUpResourceIdRequestType` was added
+
+* `models.ClassifyServices` was added
+
+* `models.ServiceClassificationRequest` was added
+
+* `models.ProblemClassificationsClassificationOutput` was added
+
+* `models.Origin` was added
+
+* `models.DirectConnectEscalation` was added
+
+* `models.ServiceClassificationOutput` was added
+
+* `models.ProblemClassificationsClassificationResult` was added
+
+* `models.LookUpResourceIdResponse` was added
+
+* `models.ServiceClassificationAnswer` was added
+
+* `models.ClassifyProblems` was added
+
+* `models.ProblemClassificationsClassificationInput` was added
+
+#### `models.ProblemClassification` was modified
+
+* `systemData()` was added
+
+#### `models.Service` was modified
+
+* `systemData()` was added
+
+#### `models.UpdateSupportTicket` was modified
+
+* `directConnectEscalation()` was added
+* `withDirectConnectEscalation(models.DirectConnectEscalation)` was added
+
+#### `models.Operation` was modified
+
+* `isDataAction()` was added
+* `origin()` was added
+* `actionType()` was added
+
+#### `models.SupportTickets` was modified
+
+* `lookUpResourceId(models.LookUpResourceIdRequest)` was added
+* `lookUpResourceIdWithResponse(models.LookUpResourceIdRequest,com.azure.core.util.Context)` was added
+
+#### `SupportManager` was modified
+
+* `classifyProblemsNoSubscriptions()` was added
+* `classifyServices()` was added
+* `classifyServicesNoSubscriptions()` was added
+* `classifyProblems()` was added
+
+#### `models.CommunicationDetails` was modified
+
+* `systemData()` was added
+
+#### `models.SupportTicketDetails` was modified
+
+* `directConnectEscalation()` was added
+* `communityForumPost()` was added
+* `systemData()` was added
+
+#### `models.SupportTicketDetails$Definition` was modified
+
+* `withCommunityForumPost(java.lang.String)` was added
+* `withDirectConnectEscalation(models.DirectConnectEscalation)` was added
+
+#### `models.SupportTicketDetails$Update` was modified
+
+* `withDirectConnectEscalation(models.DirectConnectEscalation)` was added
 
 ## 1.1.0 (2024-12-19)
 
