@@ -4,33 +4,33 @@
 package com.azure.resourcemanager.cdn.implementation;
 
 import com.azure.resourcemanager.cdn.fluent.models.AfdOriginInner;
-import com.azure.resourcemanager.cdn.models.AfdOrigin;
-import com.azure.resourcemanager.cdn.models.AfdOriginGroup;
 import com.azure.resourcemanager.cdn.models.AfdOriginUpdateParameters;
 import com.azure.resourcemanager.cdn.models.AfdProvisioningState;
 import com.azure.resourcemanager.cdn.models.CdnProfile;
 import com.azure.resourcemanager.cdn.models.DeploymentStatus;
 import com.azure.resourcemanager.cdn.models.EnabledState;
+import com.azure.resourcemanager.cdn.models.Origin;
 import com.azure.resourcemanager.cdn.models.OriginCapacityResourceProperties;
+import com.azure.resourcemanager.cdn.models.OriginGroup;
 import com.azure.resourcemanager.cdn.models.ResourceReference;
 import com.azure.resourcemanager.cdn.models.SharedPrivateLinkResourceProperties;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
 import reactor.core.publisher.Mono;
 
 /**
- * Implementation for {@link AfdOrigin}.
+ * Implementation for {@link Origin}.
  */
-class AfdOriginImpl extends ExternalChildResourceImpl<AfdOrigin, AfdOriginInner, AfdOriginGroupImpl, AfdOriginGroup>
-    implements AfdOrigin,
-    AfdOrigin.DefinitionStages.Blank<AfdOriginGroup.DefinitionStages.WithAttach<CdnProfile.DefinitionStages.WithStandardCreate>>,
-    AfdOrigin.DefinitionStages.WithHostname<AfdOriginGroup.DefinitionStages.WithAttach<CdnProfile.DefinitionStages.WithStandardCreate>>,
-    AfdOrigin.DefinitionStages.WithAttach<AfdOriginGroup.DefinitionStages.WithAttach<CdnProfile.DefinitionStages.WithStandardCreate>>,
-    AfdOrigin.UpdateDefinitionStages.Blank<AfdOriginGroup.UpdateDefinitionStages.WithAttach<CdnProfile.Update>>,
-    AfdOrigin.UpdateDefinitionStages.WithHostname<AfdOriginGroup.UpdateDefinitionStages.WithAttach<CdnProfile.Update>>,
-    AfdOrigin.UpdateDefinitionStages.WithAttach<AfdOriginGroup.UpdateDefinitionStages.WithAttach<CdnProfile.Update>>,
-    AfdOrigin.Update {
+class OriginImpl extends ExternalChildResourceImpl<Origin, AfdOriginInner, OriginGroupImpl, OriginGroup>
+    implements Origin,
+    Origin.DefinitionStages.Blank<OriginGroup.DefinitionStages.WithAttach<CdnProfile.DefinitionStages.WithStandardCreate>>,
+    Origin.DefinitionStages.WithHostname<OriginGroup.DefinitionStages.WithAttach<CdnProfile.DefinitionStages.WithStandardCreate>>,
+    Origin.DefinitionStages.WithAttach<OriginGroup.DefinitionStages.WithAttach<CdnProfile.DefinitionStages.WithStandardCreate>>,
+    Origin.UpdateDefinitionStages.Blank<OriginGroup.UpdateDefinitionStages.WithAttach<CdnProfile.Update>>,
+    Origin.UpdateDefinitionStages.WithHostname<OriginGroup.UpdateDefinitionStages.WithAttach<CdnProfile.Update>>,
+    Origin.UpdateDefinitionStages.WithAttach<OriginGroup.UpdateDefinitionStages.WithAttach<CdnProfile.Update>>,
+    Origin.Update {
 
-    AfdOriginImpl(String name, AfdOriginGroupImpl parent, AfdOriginInner inner) {
+    OriginImpl(String name, OriginGroupImpl parent, AfdOriginInner inner) {
         super(name, parent, inner);
     }
 
@@ -110,8 +110,8 @@ class AfdOriginImpl extends ExternalChildResourceImpl<AfdOrigin, AfdOriginInner,
     }
 
     @Override
-    public Mono<AfdOrigin> createResourceAsync() {
-        final AfdOriginImpl self = this;
+    public Mono<Origin> createResourceAsync() {
+        final OriginImpl self = this;
         return this.parent()
             .parent()
             .manager()
@@ -126,8 +126,8 @@ class AfdOriginImpl extends ExternalChildResourceImpl<AfdOrigin, AfdOriginInner,
     }
 
     @Override
-    public Mono<AfdOrigin> updateResourceAsync() {
-        final AfdOriginImpl self = this;
+    public Mono<Origin> updateResourceAsync() {
+        final OriginImpl self = this;
         AfdOriginUpdateParameters parameters
             = new AfdOriginUpdateParameters().withHostname(this.innerModel().hostname())
                 .withAzureOrigin(this.innerModel().azureOrigin())
@@ -176,74 +176,74 @@ class AfdOriginImpl extends ExternalChildResourceImpl<AfdOrigin, AfdOriginInner,
     }
 
     @Override
-    public AfdOriginGroupImpl attach() {
-        return this.parent().withAfdOrigin(this);
+    public OriginGroupImpl attach() {
+        return this.parent().withOrigin(this);
     }
 
     // ---- Fluent setters (shared by DefinitionStages, UpdateDefinitionStages, and Update) ----
 
     @Override
-    public AfdOriginImpl withHostname(String hostname) {
+    public OriginImpl withHostname(String hostname) {
         this.innerModel().withHostname(hostname);
         return this;
     }
 
     @Override
-    public AfdOriginImpl withAzureOrigin(ResourceReference azureOrigin) {
+    public OriginImpl withAzureOrigin(ResourceReference azureOrigin) {
         this.innerModel().withAzureOrigin(azureOrigin);
         return this;
     }
 
     @Override
-    public AfdOriginImpl withHttpPort(Integer httpPort) {
+    public OriginImpl withHttpPort(Integer httpPort) {
         this.innerModel().withHttpPort(httpPort);
         return this;
     }
 
     @Override
-    public AfdOriginImpl withHttpsPort(Integer httpsPort) {
+    public OriginImpl withHttpsPort(Integer httpsPort) {
         this.innerModel().withHttpsPort(httpsPort);
         return this;
     }
 
     @Override
-    public AfdOriginImpl withOriginHostHeader(String originHostHeader) {
+    public OriginImpl withOriginHostHeader(String originHostHeader) {
         this.innerModel().withOriginHostHeader(originHostHeader);
         return this;
     }
 
     @Override
-    public AfdOriginImpl withPriority(Integer priority) {
+    public OriginImpl withPriority(Integer priority) {
         this.innerModel().withPriority(priority);
         return this;
     }
 
     @Override
-    public AfdOriginImpl withWeight(Integer weight) {
+    public OriginImpl withWeight(Integer weight) {
         this.innerModel().withWeight(weight);
         return this;
     }
 
     @Override
-    public AfdOriginImpl withSharedPrivateLinkResource(SharedPrivateLinkResourceProperties sharedPrivateLinkResource) {
+    public OriginImpl withSharedPrivateLinkResource(SharedPrivateLinkResourceProperties sharedPrivateLinkResource) {
         this.innerModel().withSharedPrivateLinkResource(sharedPrivateLinkResource);
         return this;
     }
 
     @Override
-    public AfdOriginImpl withOriginCapacityResource(OriginCapacityResourceProperties originCapacityResource) {
+    public OriginImpl withOriginCapacityResource(OriginCapacityResourceProperties originCapacityResource) {
         this.innerModel().withOriginCapacityResource(originCapacityResource);
         return this;
     }
 
     @Override
-    public AfdOriginImpl withEnabledState(EnabledState enabledState) {
+    public OriginImpl withEnabledState(EnabledState enabledState) {
         this.innerModel().withEnabledState(enabledState);
         return this;
     }
 
     @Override
-    public AfdOriginImpl withEnforceCertificateNameCheck(Boolean enforce) {
+    public OriginImpl withEnforceCertificateNameCheck(Boolean enforce) {
         this.innerModel().withEnforceCertificateNameCheck(enforce);
         return this;
     }

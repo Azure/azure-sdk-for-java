@@ -4,8 +4,8 @@
 package com.azure.resourcemanager.cdn.implementation;
 
 import com.azure.resourcemanager.cdn.fluent.models.AfdOriginInner;
-import com.azure.resourcemanager.cdn.models.AfdOrigin;
-import com.azure.resourcemanager.cdn.models.AfdOriginGroup;
+import com.azure.resourcemanager.cdn.models.Origin;
+import com.azure.resourcemanager.cdn.models.OriginGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesNonCachedImpl;
 
 import java.util.Collections;
@@ -13,17 +13,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Represents a collection of AFD origins associated with an AFD origin group.
+ * Represents a collection of origins associated with an origin group.
  */
-class AfdOriginsImpl extends
-    ExternalChildResourcesNonCachedImpl<AfdOriginImpl, AfdOrigin, AfdOriginInner, AfdOriginGroupImpl, AfdOriginGroup> {
+class OriginsImpl
+    extends ExternalChildResourcesNonCachedImpl<OriginImpl, Origin, AfdOriginInner, OriginGroupImpl, OriginGroup> {
 
-    AfdOriginsImpl(AfdOriginGroupImpl parent) {
-        super(parent, parent.taskGroup(), "AfdOrigin");
+    OriginsImpl(OriginGroupImpl parent) {
+        super(parent, parent.taskGroup(), "Origin");
     }
 
-    Map<String, AfdOrigin> originsAsMap() {
-        Map<String, AfdOrigin> result = new HashMap<>();
+    Map<String, Origin> originsAsMap() {
+        Map<String, Origin> result = new HashMap<>();
         for (AfdOriginInner originInner : this.getParent()
             .parent()
             .manager()
@@ -31,25 +31,25 @@ class AfdOriginsImpl extends
             .getAfdOrigins()
             .listByOriginGroup(this.getParent().parent().resourceGroupName(), this.getParent().parent().name(),
                 this.getParent().name())) {
-            AfdOriginImpl origin = new AfdOriginImpl(originInner.name(), this.getParent(), originInner);
+            OriginImpl origin = new OriginImpl(originInner.name(), this.getParent(), originInner);
             result.put(origin.name(), origin);
         }
         return Collections.unmodifiableMap(result);
     }
 
     void remove(String name) {
-        this.prepareInlineRemove(new AfdOriginImpl(name, getParent(), new AfdOriginInner()));
+        this.prepareInlineRemove(new OriginImpl(name, getParent(), new AfdOriginInner()));
     }
 
-    void addOrigin(AfdOriginImpl origin) {
+    void addOrigin(OriginImpl origin) {
         this.childCollection.put(origin.name(), origin);
     }
 
-    AfdOriginImpl defineNewOrigin(String name) {
-        return this.prepareInlineDefine(new AfdOriginImpl(name, this.getParent(), new AfdOriginInner()));
+    OriginImpl defineNewOrigin(String name) {
+        return this.prepareInlineDefine(new OriginImpl(name, this.getParent(), new AfdOriginInner()));
     }
 
-    AfdOriginImpl updateOrigin(String name) {
+    OriginImpl updateOrigin(String name) {
         AfdOriginInner originInner = this.getParent()
             .parent()
             .manager()
@@ -57,6 +57,6 @@ class AfdOriginsImpl extends
             .getAfdOrigins()
             .get(this.getParent().parent().resourceGroupName(), this.getParent().parent().name(),
                 this.getParent().name(), name);
-        return this.prepareInlineUpdate(new AfdOriginImpl(name, this.getParent(), originInner));
+        return this.prepareInlineUpdate(new OriginImpl(name, this.getParent(), originInner));
     }
 }

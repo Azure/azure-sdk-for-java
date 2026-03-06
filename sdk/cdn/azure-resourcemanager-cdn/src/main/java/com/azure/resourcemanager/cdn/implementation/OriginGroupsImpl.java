@@ -4,8 +4,8 @@
 package com.azure.resourcemanager.cdn.implementation;
 
 import com.azure.resourcemanager.cdn.fluent.models.AfdOriginGroupInner;
-import com.azure.resourcemanager.cdn.models.AfdOriginGroup;
 import com.azure.resourcemanager.cdn.models.CdnProfile;
+import com.azure.resourcemanager.cdn.models.OriginGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesNonCachedImpl;
 
 import java.util.Collections;
@@ -13,46 +13,46 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Represents a collection of AFD origin groups associated with a CDN profile.
+ * Represents a collection of origin groups associated with a CDN profile.
  */
-class AfdOriginGroupsImpl extends
-    ExternalChildResourcesNonCachedImpl<AfdOriginGroupImpl, AfdOriginGroup, AfdOriginGroupInner, CdnProfileImpl, CdnProfile> {
+class OriginGroupsImpl extends
+    ExternalChildResourcesNonCachedImpl<OriginGroupImpl, OriginGroup, AfdOriginGroupInner, CdnProfileImpl, CdnProfile> {
 
-    AfdOriginGroupsImpl(CdnProfileImpl parent) {
-        super(parent, parent.taskGroup(), "AfdOriginGroup");
+    OriginGroupsImpl(CdnProfileImpl parent) {
+        super(parent, parent.taskGroup(), "OriginGroup");
     }
 
-    Map<String, AfdOriginGroup> originGroupsAsMap() {
-        Map<String, AfdOriginGroup> result = new HashMap<>();
+    Map<String, OriginGroup> originGroupsAsMap() {
+        Map<String, OriginGroup> result = new HashMap<>();
         for (AfdOriginGroupInner inner : this.getParent()
             .manager()
             .serviceClient()
             .getAfdOriginGroups()
             .listByProfile(this.getParent().resourceGroupName(), this.getParent().name())) {
-            AfdOriginGroupImpl originGroup = new AfdOriginGroupImpl(inner.name(), this.getParent(), inner);
+            OriginGroupImpl originGroup = new OriginGroupImpl(inner.name(), this.getParent(), inner);
             result.put(originGroup.name(), originGroup);
         }
         return Collections.unmodifiableMap(result);
     }
 
     void remove(String name) {
-        this.prepareInlineRemove(new AfdOriginGroupImpl(name, getParent(), new AfdOriginGroupInner()));
+        this.prepareInlineRemove(new OriginGroupImpl(name, getParent(), new AfdOriginGroupInner()));
     }
 
-    void addOriginGroup(AfdOriginGroupImpl originGroup) {
+    void addOriginGroup(OriginGroupImpl originGroup) {
         this.childCollection.put(originGroup.name(), originGroup);
     }
 
-    AfdOriginGroupImpl defineNewOriginGroup(String name) {
-        return this.prepareInlineDefine(new AfdOriginGroupImpl(name, this.getParent(), new AfdOriginGroupInner()));
+    OriginGroupImpl defineNewOriginGroup(String name) {
+        return this.prepareInlineDefine(new OriginGroupImpl(name, this.getParent(), new AfdOriginGroupInner()));
     }
 
-    AfdOriginGroupImpl updateOriginGroup(String name) {
+    OriginGroupImpl updateOriginGroup(String name) {
         AfdOriginGroupInner inner = this.getParent()
             .manager()
             .serviceClient()
             .getAfdOriginGroups()
             .get(this.getParent().resourceGroupName(), this.getParent().name(), name);
-        return this.prepareInlineUpdate(new AfdOriginGroupImpl(name, this.getParent(), inner));
+        return this.prepareInlineUpdate(new OriginGroupImpl(name, this.getParent(), inner));
     }
 }

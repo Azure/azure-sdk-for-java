@@ -60,8 +60,8 @@ public interface CdnProfile
      *
      * @return AFD origin groups in the CDN manager profile, indexed by name
      */
-    default Map<String, AfdOriginGroup> afdOriginGroups() {
-        throw new UnsupportedOperationException("[afdOriginGroups] is not supported in " + getClass());
+    default Map<String, OriginGroup> originGroups() {
+        throw new UnsupportedOperationException("[originGroups] is not supported in " + getClass());
     }
 
     /**
@@ -348,8 +348,8 @@ public interface CdnProfile
              * @param name a new origin group name
              * @return the first stage of a new AFD origin group definition
              */
-            default AfdOriginGroup.DefinitionStages.Blank<WithStandardCreate> defineAfdOriginGroup(String name) {
-                throw new UnsupportedOperationException("[defineAfdOriginGroup] is not supported in " + getClass());
+            default OriginGroup.DefinitionStages.Blank<WithStandardCreate> defineOriginGroup(String name) {
+                throw new UnsupportedOperationException("[defineOriginGroup] is not supported in " + getClass());
             }
 
             /**
@@ -472,8 +472,8 @@ public interface CdnProfile
              * @param name the name for the origin group
              * @return the first stage of an origin group definition
              */
-            default AfdOriginGroup.UpdateDefinitionStages.Blank<Update> defineAfdOriginGroup(String name) {
-                throw new UnsupportedOperationException("[defineAfdOriginGroup] is not supported in " + getClass());
+            default OriginGroup.UpdateDefinitionStages.Blank<Update> defineOriginGroup(String name) {
+                throw new UnsupportedOperationException("[defineOriginGroup] is not supported in " + getClass());
             }
 
             /**
@@ -545,8 +545,8 @@ public interface CdnProfile
              * @param name the name of an existing origin group
              * @return the first stage of the update of the origin group
              */
-            default AfdOriginGroup.Update updateAfdOriginGroup(String name) {
-                throw new UnsupportedOperationException("[updateAfdOriginGroup] is not supported in " + getClass());
+            default OriginGroup.Update updateOriginGroup(String name) {
+                throw new UnsupportedOperationException("[updateOriginGroup] is not supported in " + getClass());
             }
 
             /**
@@ -591,8 +591,8 @@ public interface CdnProfile
              * @param name the name of an existing origin group
              * @return the next stage of the CDN profile update
              */
-            default Update withoutAfdOriginGroup(String name) {
-                throw new UnsupportedOperationException("[withoutAfdOriginGroup] is not supported in " + getClass());
+            default Update withoutOriginGroup(String name) {
+                throw new UnsupportedOperationException("[withoutOriginGroup] is not supported in " + getClass());
             }
 
             /**

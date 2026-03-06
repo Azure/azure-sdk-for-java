@@ -4,8 +4,6 @@
 package com.azure.resourcemanager.cdn.implementation;
 
 import com.azure.resourcemanager.cdn.fluent.models.AfdOriginGroupInner;
-import com.azure.resourcemanager.cdn.models.AfdOrigin;
-import com.azure.resourcemanager.cdn.models.AfdOriginGroup;
 import com.azure.resourcemanager.cdn.models.AfdOriginGroupUpdateParameters;
 import com.azure.resourcemanager.cdn.models.AfdProvisioningState;
 import com.azure.resourcemanager.cdn.models.CdnProfile;
@@ -13,27 +11,28 @@ import com.azure.resourcemanager.cdn.models.DeploymentStatus;
 import com.azure.resourcemanager.cdn.models.EnabledState;
 import com.azure.resourcemanager.cdn.models.HealthProbeParameters;
 import com.azure.resourcemanager.cdn.models.LoadBalancingSettingsParameters;
+import com.azure.resourcemanager.cdn.models.Origin;
 import com.azure.resourcemanager.cdn.models.OriginAuthenticationProperties;
+import com.azure.resourcemanager.cdn.models.OriginGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
 import reactor.core.publisher.Mono;
 
 import java.util.Map;
 
 /**
- * Implementation for {@link AfdOriginGroup}.
+ * Implementation for {@link OriginGroup}.
  */
-class AfdOriginGroupImpl
-    extends ExternalChildResourceImpl<AfdOriginGroup, AfdOriginGroupInner, CdnProfileImpl, CdnProfile>
-    implements AfdOriginGroup, AfdOriginGroup.DefinitionStages.Blank<CdnProfile.DefinitionStages.WithStandardCreate>,
-    AfdOriginGroup.DefinitionStages.WithAttach<CdnProfile.DefinitionStages.WithStandardCreate>,
-    AfdOriginGroup.UpdateDefinitionStages.Blank<CdnProfile.Update>,
-    AfdOriginGroup.UpdateDefinitionStages.WithAttach<CdnProfile.Update>, AfdOriginGroup.Update {
+class OriginGroupImpl extends ExternalChildResourceImpl<OriginGroup, AfdOriginGroupInner, CdnProfileImpl, CdnProfile>
+    implements OriginGroup, OriginGroup.DefinitionStages.Blank<CdnProfile.DefinitionStages.WithStandardCreate>,
+    OriginGroup.DefinitionStages.WithAttach<CdnProfile.DefinitionStages.WithStandardCreate>,
+    OriginGroup.UpdateDefinitionStages.Blank<CdnProfile.Update>,
+    OriginGroup.UpdateDefinitionStages.WithAttach<CdnProfile.Update>, OriginGroup.Update {
 
-    private final AfdOriginsImpl afdOrigins;
+    private final OriginsImpl origins;
 
-    AfdOriginGroupImpl(String name, CdnProfileImpl parent, AfdOriginGroupInner inner) {
+    OriginGroupImpl(String name, CdnProfileImpl parent, AfdOriginGroupInner inner) {
         super(name, parent, inner);
-        this.afdOrigins = new AfdOriginsImpl(this);
+        this.origins = new OriginsImpl(this);
     }
 
     @Override
@@ -82,13 +81,13 @@ class AfdOriginGroupImpl
     }
 
     @Override
-    public Map<String, AfdOrigin> origins() {
-        return this.afdOrigins.originsAsMap();
+    public Map<String, Origin> origins() {
+        return this.origins.originsAsMap();
     }
 
     @Override
-    public Mono<AfdOriginGroup> createResourceAsync() {
-        final AfdOriginGroupImpl self = this;
+    public Mono<OriginGroup> createResourceAsync() {
+        final OriginGroupImpl self = this;
         return this.parent()
             .manager()
             .serviceClient()
@@ -101,8 +100,8 @@ class AfdOriginGroupImpl
     }
 
     @Override
-    public Mono<AfdOriginGroup> updateResourceAsync() {
-        final AfdOriginGroupImpl self = this;
+    public Mono<OriginGroup> updateResourceAsync() {
+        final OriginGroupImpl self = this;
         AfdOriginGroupUpdateParameters parameters
             = new AfdOriginGroupUpdateParameters().withLoadBalancingSettings(this.innerModel().loadBalancingSettings())
                 .withHealthProbeSettings(this.innerModel().healthProbeSettings())
@@ -140,37 +139,37 @@ class AfdOriginGroupImpl
 
     @Override
     protected Mono<Void> afterPostRunAsync(boolean isGroupFaulted) {
-        this.afdOrigins.clear();
+        this.origins.clear();
         return Mono.empty();
     }
 
     @Override
     public CdnProfileImpl attach() {
-        return this.parent().withAfdOriginGroup(this);
+        return this.parent().withOriginGroup(this);
     }
 
     // ---- Fluent setters (shared by DefinitionStages, UpdateDefinitionStages, and Update) ----
 
     @Override
-    public AfdOriginGroupImpl withLoadBalancingSettings(LoadBalancingSettingsParameters loadBalancingSettings) {
+    public OriginGroupImpl withLoadBalancingSettings(LoadBalancingSettingsParameters loadBalancingSettings) {
         this.innerModel().withLoadBalancingSettings(loadBalancingSettings);
         return this;
     }
 
     @Override
-    public AfdOriginGroupImpl withHealthProbeSettings(HealthProbeParameters healthProbeSettings) {
+    public OriginGroupImpl withHealthProbeSettings(HealthProbeParameters healthProbeSettings) {
         this.innerModel().withHealthProbeSettings(healthProbeSettings);
         return this;
     }
 
     @Override
-    public AfdOriginGroupImpl withTrafficRestorationTimeToHealedOrNewEndpointsInMinutes(Integer minutes) {
+    public OriginGroupImpl withTrafficRestorationTimeToHealedOrNewEndpointsInMinutes(Integer minutes) {
         this.innerModel().withTrafficRestorationTimeToHealedOrNewEndpointsInMinutes(minutes);
         return this;
     }
 
     @Override
-    public AfdOriginGroupImpl withSessionAffinityState(EnabledState sessionAffinityState) {
+    public OriginGroupImpl withSessionAffinityState(EnabledState sessionAffinityState) {
         this.innerModel().withSessionAffinityState(sessionAffinityState);
         return this;
     }
@@ -178,23 +177,23 @@ class AfdOriginGroupImpl
     // ---- Nested origin CRUD ----
 
     @Override
-    public AfdOriginImpl defineAfdOrigin(String name) {
-        return this.afdOrigins.defineNewOrigin(name);
+    public OriginImpl defineOrigin(String name) {
+        return this.origins.defineNewOrigin(name);
     }
 
     @Override
-    public AfdOriginImpl updateAfdOrigin(String name) {
-        return this.afdOrigins.updateOrigin(name);
+    public OriginImpl updateOrigin(String name) {
+        return this.origins.updateOrigin(name);
     }
 
     @Override
-    public AfdOriginGroupImpl withoutAfdOrigin(String name) {
-        this.afdOrigins.remove(name);
+    public OriginGroupImpl withoutOrigin(String name) {
+        this.origins.remove(name);
         return this;
     }
 
-    AfdOriginGroupImpl withAfdOrigin(AfdOriginImpl origin) {
-        this.afdOrigins.addOrigin(origin);
+    OriginGroupImpl withOrigin(OriginImpl origin) {
+        this.origins.addOrigin(origin);
         return this;
     }
 }

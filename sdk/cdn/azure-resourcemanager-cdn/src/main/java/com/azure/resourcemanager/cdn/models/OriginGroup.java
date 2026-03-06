@@ -16,8 +16,8 @@ import java.util.Map;
  * {@link CdnProfile}.
  */
 @Fluent
-public interface AfdOriginGroup
-    extends ExternalChildResource<AfdOriginGroup, CdnProfile>, HasInnerModel<AfdOriginGroupInner> {
+public interface OriginGroup
+    extends ExternalChildResource<OriginGroup, CdnProfile>, HasInnerModel<AfdOriginGroupInner> {
 
     /**
      * Gets the name of the profile which holds the origin group.
@@ -81,14 +81,14 @@ public interface AfdOriginGroup
      *
      * @return origins in this origin group, indexed by name
      */
-    Map<String, AfdOrigin> origins();
+    Map<String, Origin> origins();
 
     /**
-     * Grouping of AFD origin group definition stages as part of a parent {@link CdnProfile} definition.
+     * Grouping of origin group definition stages as part of a parent {@link CdnProfile} definition.
      */
     interface DefinitionStages {
         /**
-         * The first stage of an AFD origin group definition.
+         * The first stage of an origin group definition.
          * Load balancing settings must be specified before any other configuration.
          *
          * @param <ParentT> the stage of the parent CDN profile definition to return to after attaching this definition
@@ -137,16 +137,16 @@ public interface AfdOriginGroup
             WithAttach<ParentT> withSessionAffinityState(EnabledState sessionAffinityState);
 
             /**
-             * Starts the definition of a new AFD origin to be attached to this origin group.
+             * Starts the definition of a new origin to be attached to this origin group.
              *
              * @param name a new origin name
-             * @return the first stage of a new AFD origin definition
+             * @return the first stage of a new origin definition
              */
-            AfdOrigin.DefinitionStages.Blank<WithAttach<ParentT>> defineAfdOrigin(String name);
+            Origin.DefinitionStages.Blank<WithAttach<ParentT>> defineOrigin(String name);
         }
 
         /**
-         * The final stage of an AFD origin group definition.
+         * The final stage of an origin group definition.
          *
          * @param <ParentT> the stage of the parent CDN profile definition to return to after attaching this definition
          */
@@ -161,7 +161,7 @@ public interface AfdOriginGroup
     }
 
     /**
-     * The entirety of an AFD origin group definition.
+     * The entirety of an origin group definition.
      *
      * @param <ParentT> the stage of the parent CDN profile definition to return to after attaching this definition
      */
@@ -169,11 +169,11 @@ public interface AfdOriginGroup
     }
 
     /**
-     * Grouping of AFD origin group definition stages that run as part of a {@link CdnProfile#update()} flow.
+     * Grouping of origin group definition stages that run as part of a {@link CdnProfile#update()} flow.
      */
     interface UpdateDefinitionStages {
         /**
-         * The first stage of an AFD origin group definition inside a profile update.
+         * The first stage of an origin group definition inside a profile update.
          * Load balancing settings must be specified before any other configuration.
          *
          * @param <ParentT> the stage of the parent CDN profile update to return to after attaching this definition
@@ -222,16 +222,16 @@ public interface AfdOriginGroup
             WithAttach<ParentT> withSessionAffinityState(EnabledState sessionAffinityState);
 
             /**
-             * Starts the definition of a new AFD origin to be attached to this origin group.
+             * Starts the definition of a new origin to be attached to this origin group.
              *
              * @param name a new origin name
-             * @return the first stage of a new AFD origin definition
+             * @return the first stage of a new origin definition
              */
-            AfdOrigin.UpdateDefinitionStages.Blank<WithAttach<ParentT>> defineAfdOrigin(String name);
+            Origin.UpdateDefinitionStages.Blank<WithAttach<ParentT>> defineOrigin(String name);
         }
 
         /**
-         * The final stage of an AFD origin group definition inside a profile update.
+         * The final stage of an origin group definition inside a profile update.
          *
          * @param <ParentT> the stage of the parent CDN profile update to return to after attaching this definition
          */
@@ -246,7 +246,7 @@ public interface AfdOriginGroup
     }
 
     /**
-     * The entirety of an AFD origin group update inside a {@link CdnProfile#update()} flow.
+     * The entirety of an origin group update inside a {@link CdnProfile#update()} flow.
      */
     interface Update extends Settable<CdnProfile.Update> {
         /**
@@ -282,19 +282,19 @@ public interface AfdOriginGroup
         Update withSessionAffinityState(EnabledState sessionAffinityState);
 
         /**
-         * Begins the update of an existing AFD origin in this origin group.
+         * Begins the update of an existing origin in this origin group.
          *
          * @param name the name of an existing origin
          * @return the first stage of the origin update
          */
-        AfdOrigin.Update updateAfdOrigin(String name);
+        Origin.Update updateOrigin(String name);
 
         /**
-         * Removes an AFD origin from this origin group.
+         * Removes an origin from this origin group.
          *
          * @param name the name of an existing origin
          * @return the next stage of the origin group update
          */
-        Update withoutAfdOrigin(String name);
+        Update withoutOrigin(String name);
     }
 }

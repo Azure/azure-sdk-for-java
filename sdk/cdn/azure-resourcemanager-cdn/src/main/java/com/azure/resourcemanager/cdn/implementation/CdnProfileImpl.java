@@ -8,7 +8,7 @@ import com.azure.resourcemanager.cdn.CdnManager;
 import com.azure.resourcemanager.cdn.fluent.models.ProfileInner;
 import com.azure.resourcemanager.cdn.fluent.models.SsoUriInner;
 import com.azure.resourcemanager.cdn.models.AfdEndpoint;
-import com.azure.resourcemanager.cdn.models.AfdOriginGroup;
+import com.azure.resourcemanager.cdn.models.OriginGroup;
 import com.azure.resourcemanager.cdn.models.RuleSet;
 import com.azure.resourcemanager.cdn.models.LoadParameters;
 import com.azure.resourcemanager.cdn.models.ProfileUpdateParameters;
@@ -37,14 +37,14 @@ class CdnProfileImpl extends GroupableResourceImpl<CdnProfile, ProfileInner, Cdn
 
     private final CdnEndpointsImpl endpoints;
     private final AfdEndpointsImpl afdEndpoints;
-    private final AfdOriginGroupsImpl afdOriginGroups;
+    private final OriginGroupsImpl originGroups;
     private final RuleSetsImpl ruleSets;
 
     CdnProfileImpl(String name, final ProfileInner innerModel, final CdnManager cdnManager) {
         super(name, innerModel, cdnManager);
         this.endpoints = new CdnEndpointsImpl(this);
         this.afdEndpoints = new AfdEndpointsImpl(this);
-        this.afdOriginGroups = new AfdOriginGroupsImpl(this);
+        this.originGroups = new OriginGroupsImpl(this);
         this.ruleSets = new RuleSetsImpl(this);
     }
 
@@ -59,8 +59,8 @@ class CdnProfileImpl extends GroupableResourceImpl<CdnProfile, ProfileInner, Cdn
     }
 
     @Override
-    public Map<String, AfdOriginGroup> afdOriginGroups() {
-        return this.afdOriginGroups.originGroupsAsMap();
+    public Map<String, OriginGroup> originGroups() {
+        return this.originGroups.originGroupsAsMap();
     }
 
     @Override
@@ -232,7 +232,7 @@ class CdnProfileImpl extends GroupableResourceImpl<CdnProfile, ProfileInner, Cdn
         if (isGroupFaulted) {
             endpoints.clear();
             afdEndpoints.clear();
-            afdOriginGroups.clear();
+            originGroups.clear();
             ruleSets.clear();
             return Mono.empty();
         } else {
@@ -245,7 +245,7 @@ class CdnProfileImpl extends GroupableResourceImpl<CdnProfile, ProfileInner, Cdn
         return super.refreshAsync().map(cdnProfile -> {
             endpoints.clear();
             afdEndpoints.clear();
-            afdOriginGroups.clear();
+            originGroups.clear();
             ruleSets.clear();
             return cdnProfile;
         });
@@ -309,8 +309,8 @@ class CdnProfileImpl extends GroupableResourceImpl<CdnProfile, ProfileInner, Cdn
     }
 
     @Override
-    public AfdOriginGroupImpl defineAfdOriginGroup(String name) {
-        return this.afdOriginGroups.defineNewOriginGroup(name);
+    public OriginGroupImpl defineOriginGroup(String name) {
+        return this.originGroups.defineNewOriginGroup(name);
     }
 
     @Override
@@ -354,8 +354,8 @@ class CdnProfileImpl extends GroupableResourceImpl<CdnProfile, ProfileInner, Cdn
     }
 
     @Override
-    public AfdOriginGroupImpl updateAfdOriginGroup(String name) {
-        return this.afdOriginGroups.updateOriginGroup(name);
+    public OriginGroupImpl updateOriginGroup(String name) {
+        return this.originGroups.updateOriginGroup(name);
     }
 
     @Override
@@ -376,8 +376,8 @@ class CdnProfileImpl extends GroupableResourceImpl<CdnProfile, ProfileInner, Cdn
     }
 
     @Override
-    public Update withoutAfdOriginGroup(String name) {
-        this.afdOriginGroups.remove(name);
+    public Update withoutOriginGroup(String name) {
+        this.originGroups.remove(name);
         return this;
     }
 
@@ -397,8 +397,8 @@ class CdnProfileImpl extends GroupableResourceImpl<CdnProfile, ProfileInner, Cdn
         return this;
     }
 
-    CdnProfileImpl withAfdOriginGroup(AfdOriginGroupImpl originGroup) {
-        this.afdOriginGroups.addOriginGroup(originGroup);
+    CdnProfileImpl withOriginGroup(OriginGroupImpl originGroup) {
+        this.originGroups.addOriginGroup(originGroup);
         return this;
     }
 

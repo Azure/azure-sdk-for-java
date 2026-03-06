@@ -9,8 +9,8 @@ import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.appservice.models.AppServiceDomain;
 import com.azure.resourcemanager.cdn.models.AfdEndpoint;
-import com.azure.resourcemanager.cdn.models.AfdOrigin;
-import com.azure.resourcemanager.cdn.models.AfdOriginGroup;
+import com.azure.resourcemanager.cdn.models.Origin;
+import com.azure.resourcemanager.cdn.models.OriginGroup;
 import com.azure.resourcemanager.cdn.models.CacheBehavior;
 import com.azure.resourcemanager.cdn.models.CacheExpirationActionParameters;
 import com.azure.resourcemanager.cdn.models.CacheType;
@@ -115,11 +115,11 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
             .withEnabledState(EnabledState.ENABLED)
             .withEnforceMtls(EnforceMtlsEnabledState.ENABLED)
             .attach()
-            .defineAfdOriginGroup("originGroup1")
+            .defineOriginGroup("originGroup1")
             .withLoadBalancingSettings(
                 new LoadBalancingSettingsParameters().withSampleSize(5).withSuccessfulSamplesRequired(3))
             .withSessionAffinityState(EnabledState.ENABLED)
-            .defineAfdOrigin("origin1")
+            .defineOrigin("origin1")
             .withHostname("www.somedomain.net")
             .withEnabledState(EnabledState.ENABLED)
             .withHttpPort(80)
@@ -134,12 +134,12 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
         Assertions.assertEquals(EnabledState.ENABLED, cdnEndpoint.enabledState());
         Assertions.assertEquals(EnforceMtlsEnabledState.ENABLED, cdnEndpoint.enforceMtls());
 
-        AfdOriginGroup originGroup = cdnProfile.afdOriginGroups().get("originGroup1");
+        OriginGroup originGroup = cdnProfile.originGroups().get("originGroup1");
         Assertions.assertNotNull(originGroup);
         Assertions.assertEquals(EnabledState.ENABLED, originGroup.sessionAffinityState());
         Assertions.assertEquals(3, originGroup.loadBalancingSettings().successfulSamplesRequired());
 
-        AfdOrigin origin = originGroup.origins().get("origin1");
+        Origin origin = originGroup.origins().get("origin1");
         Assertions.assertNotNull(origin);
         Assertions.assertEquals("www.somedomain.net", origin.hostname());
         Assertions.assertEquals(EnabledState.ENABLED, origin.enabledState());
@@ -166,16 +166,16 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
             .withEnabledState(EnabledState.ENABLED)
             .withEnforceMtls(EnforceMtlsEnabledState.ENABLED)
             .attach()
-            .defineAfdOriginGroup("originGroup1")
+            .defineOriginGroup("originGroup1")
             .withLoadBalancingSettings(
                 new LoadBalancingSettingsParameters().withSampleSize(4).withSuccessfulSamplesRequired(2))
             .withSessionAffinityState(EnabledState.ENABLED)
-            .defineAfdOrigin("origin1")
+            .defineOrigin("origin1")
             .withHostname("www.domain1.net")
             .withEnabledState(EnabledState.ENABLED)
             .withHttpPort(80)
             .attach()
-            .defineAfdOrigin("origin2")
+            .defineOrigin("origin2")
             .withHostname("www.domain2.net")
             .withEnabledState(EnabledState.ENABLED)
             .withHttpPort(8080)
@@ -196,19 +196,19 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
         Assertions.assertEquals(EnforceMtlsEnabledState.ENABLED, cdnEndpoint.enforceMtls());
 
         // verify origin group
-        AfdOriginGroup originGroup1 = cdnProfile.afdOriginGroups().get("originGroup1");
+        OriginGroup originGroup1 = cdnProfile.originGroups().get("originGroup1");
         Assertions.assertNotNull(originGroup1);
         Assertions.assertEquals(EnabledState.ENABLED, originGroup1.sessionAffinityState());
         Assertions.assertEquals(4, originGroup1.loadBalancingSettings().sampleSize());
         Assertions.assertEquals(2, originGroup1.loadBalancingSettings().successfulSamplesRequired());
 
         // verify origins
-        AfdOrigin origin1 = originGroup1.origins().get("origin1");
+        Origin origin1 = originGroup1.origins().get("origin1");
         Assertions.assertNotNull(origin1);
         Assertions.assertEquals("www.domain1.net", origin1.hostname());
         Assertions.assertEquals(80, origin1.httpPort());
 
-        AfdOrigin origin2 = originGroup1.origins().get("origin2");
+        Origin origin2 = originGroup1.origins().get("origin2");
         Assertions.assertNotNull(origin2);
         Assertions.assertEquals("www.domain2.net", origin2.hostname());
         Assertions.assertEquals(8080, origin2.httpPort());
@@ -219,11 +219,11 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
             .withEnabledState(EnabledState.DISABLED)
             .withEnforceMtls(EnforceMtlsEnabledState.DISABLED)
             .parent()
-            .updateAfdOriginGroup("originGroup1")
+            .updateOriginGroup("originGroup1")
             .withSessionAffinityState(EnabledState.DISABLED)
             .withLoadBalancingSettings(
                 new LoadBalancingSettingsParameters().withSampleSize(6).withSuccessfulSamplesRequired(4))
-            .updateAfdOrigin("origin1")
+            .updateOrigin("origin1")
             .withHostname("www.updated-domain1.net")
             .withHttpPort(8081)
             .parent()
@@ -244,7 +244,7 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
         Assertions.assertEquals(8081, origin1.httpPort());
 
         // remove origin from origin group
-        cdnProfile.update().updateAfdOriginGroup("originGroup1").withoutAfdOrigin("origin2").parent().apply();
+        cdnProfile.update().updateOriginGroup("originGroup1").withoutOrigin("origin2").parent().apply();
 
         originGroup1.refresh();
         Assertions.assertNull(originGroup1.origins().get("origin2"));
@@ -252,10 +252,10 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
 
         // add a new origin group
         cdnProfile.update()
-            .defineAfdOriginGroup("originGroup2")
+            .defineOriginGroup("originGroup2")
             .withLoadBalancingSettings(
                 new LoadBalancingSettingsParameters().withSampleSize(3).withSuccessfulSamplesRequired(2))
-            .defineAfdOrigin("origin3")
+            .defineOrigin("origin3")
             .withHostname("www.domain3.net")
             .withEnabledState(EnabledState.ENABLED)
             .withHttpPort(80)
@@ -263,17 +263,17 @@ public class CdnProfileOperationsTests extends CdnManagementTest {
             .attach()
             .apply();
 
-        AfdOriginGroup originGroup2 = cdnProfile.afdOriginGroups().get("originGroup2");
+        OriginGroup originGroup2 = cdnProfile.originGroups().get("originGroup2");
         Assertions.assertNotNull(originGroup2);
         Assertions.assertEquals(3, originGroup2.loadBalancingSettings().sampleSize());
-        AfdOrigin origin3 = originGroup2.origins().get("origin3");
+        Origin origin3 = originGroup2.origins().get("origin3");
         Assertions.assertNotNull(origin3);
         Assertions.assertEquals("www.domain3.net", origin3.hostname());
 
         // remove origin group
-        cdnProfile.update().withoutAfdOriginGroup("originGroup2").apply();
+        cdnProfile.update().withoutOriginGroup("originGroup2").apply();
 
-        Assertions.assertNull(cdnProfile.afdOriginGroups().get("originGroup2"));
+        Assertions.assertNull(cdnProfile.originGroups().get("originGroup2"));
 
         // remove endpoint
         cdnProfile.update().withoutAfdEndpoint(cdnEndpointName).apply();

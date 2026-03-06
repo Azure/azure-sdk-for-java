@@ -11,10 +11,10 @@ import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 
 /**
  * An immutable client-side representation of an Azure Front Door (AFD) origin that lives under an
- * {@link AfdOriginGroup}.
+ * {@link OriginGroup}.
  */
 @Fluent
-public interface AfdOrigin extends ExternalChildResource<AfdOrigin, AfdOriginGroup>, HasInnerModel<AfdOriginInner> {
+public interface Origin extends ExternalChildResource<Origin, OriginGroup>, HasInnerModel<AfdOriginInner> {
 
     /**
      * Gets the name of the origin group which contains this origin.
@@ -115,21 +115,21 @@ public interface AfdOrigin extends ExternalChildResource<AfdOrigin, AfdOriginGro
     DeploymentStatus deploymentStatus();
 
     /**
-     * Grouping of AFD origin definition stages as part of a parent {@link AfdOriginGroup} definition.
+     * Grouping of origin definition stages as part of a parent {@link OriginGroup} definition.
      */
     interface DefinitionStages {
         /**
-         * The first stage of an AFD origin definition.
+         * The first stage of an origin definition.
          *
-         * @param <ParentT> the stage of the parent AFD origin group definition to return to after attaching
+         * @param <ParentT> the stage of the parent origin group definition to return to after attaching
          */
         interface Blank<ParentT> extends WithHostname<ParentT> {
         }
 
         /**
-         * The stage of an AFD origin definition requiring the hostname to be specified.
+         * The stage of an origin definition requiring the hostname to be specified.
          *
-         * @param <ParentT> the stage of the parent AFD origin group definition to return to after attaching
+         * @param <ParentT> the stage of the parent origin group definition to return to after attaching
          */
         interface WithHostname<ParentT> {
             /**
@@ -144,7 +144,7 @@ public interface AfdOrigin extends ExternalChildResource<AfdOrigin, AfdOriginGro
         /**
          * The stage of the definition containing optional settings prior to attachment.
          *
-         * @param <ParentT> the stage of the parent AFD origin group definition to return to after attaching
+         * @param <ParentT> the stage of the parent origin group definition to return to after attaching
          */
         interface WithAttach<ParentT> extends Attachable<ParentT> {
             /**
@@ -230,13 +230,13 @@ public interface AfdOrigin extends ExternalChildResource<AfdOrigin, AfdOriginGro
         }
 
         /**
-         * The final stage of an AFD origin definition.
+         * The final stage of an origin definition.
          *
-         * @param <ParentT> the stage of the parent AFD origin group definition to return to after attaching
+         * @param <ParentT> the stage of the parent origin group definition to return to after attaching
          */
         interface Attachable<ParentT> {
             /**
-             * Attaches the defined origin to the parent AFD origin group.
+             * Attaches the defined origin to the parent origin group.
              *
              * @return the next stage of the parent definition
              */
@@ -245,30 +245,30 @@ public interface AfdOrigin extends ExternalChildResource<AfdOrigin, AfdOriginGro
     }
 
     /**
-     * The entirety of an AFD origin definition.
+     * The entirety of an origin definition.
      *
-     * @param <ParentT> the stage of the parent AFD origin group definition to return to after attaching
+     * @param <ParentT> the stage of the parent origin group definition to return to after attaching
      */
     interface Definition<ParentT> extends DefinitionStages.Blank<ParentT>, DefinitionStages.WithHostname<ParentT>,
         DefinitionStages.WithAttach<ParentT> {
     }
 
     /**
-     * Grouping of AFD origin definition stages that run as part of an {@link AfdOriginGroup.Update} flow.
+     * Grouping of origin definition stages that run as part of an {@link OriginGroup.Update} flow.
      */
     interface UpdateDefinitionStages {
         /**
-         * The first stage of an AFD origin definition inside an origin group update.
+         * The first stage of an origin definition inside an origin group update.
          *
-         * @param <ParentT> the stage of the parent AFD origin group update to return to after attaching
+         * @param <ParentT> the stage of the parent origin group update to return to after attaching
          */
         interface Blank<ParentT> extends WithHostname<ParentT> {
         }
 
         /**
-         * The stage of an AFD origin update-definition requiring the hostname to be specified.
+         * The stage of an origin update-definition requiring the hostname to be specified.
          *
-         * @param <ParentT> the stage of the parent AFD origin group update to return to after attaching
+         * @param <ParentT> the stage of the parent origin group update to return to after attaching
          */
         interface WithHostname<ParentT> {
             /**
@@ -283,7 +283,7 @@ public interface AfdOrigin extends ExternalChildResource<AfdOrigin, AfdOriginGro
         /**
          * The stage of the definition containing optional settings prior to attachment.
          *
-         * @param <ParentT> the stage of the parent AFD origin group update to return to after attaching
+         * @param <ParentT> the stage of the parent origin group update to return to after attaching
          */
         interface WithAttach<ParentT> extends Attachable<ParentT> {
             /**
@@ -369,13 +369,13 @@ public interface AfdOrigin extends ExternalChildResource<AfdOrigin, AfdOriginGro
         }
 
         /**
-         * The final stage of an AFD origin definition inside an origin group update.
+         * The final stage of an origin definition inside an origin group update.
          *
-         * @param <ParentT> the stage of the parent AFD origin group update to return to after attaching
+         * @param <ParentT> the stage of the parent origin group update to return to after attaching
          */
         interface Attachable<ParentT> {
             /**
-             * Attaches the defined origin to the parent AFD origin group update.
+             * Attaches the defined origin to the parent origin group update.
              *
              * @return the next stage of the parent update
              */
@@ -384,9 +384,9 @@ public interface AfdOrigin extends ExternalChildResource<AfdOrigin, AfdOriginGro
     }
 
     /**
-     * The entirety of an AFD origin update inside an {@link AfdOriginGroup.Update} flow.
+     * The entirety of an origin update inside an {@link OriginGroup.Update} flow.
      */
-    interface Update extends Settable<AfdOriginGroup.Update> {
+    interface Update extends Settable<OriginGroup.Update> {
         /**
          * Specifies the hostname (address) of the origin.
          *
