@@ -32,7 +32,6 @@ import java.util.function.Consumer;
 public class InvokeEventTests {
 
     private static final Duration SMALL_DELAY = Duration.ofMillis(10);
-    private static final Duration INVOKE_RESPONSE_DELAY = Duration.ofMillis(50);
 
     @Test
     public void testInvokeEventSuccess() throws InterruptedException {
@@ -61,11 +60,6 @@ public class InvokeEventTests {
 
         // Wait for connected event to be processed
         Thread.sleep(100);
-
-        // Start invoke event in background, then deliver the response
-        Mono<InvokeEventResult> invokeTask
-            = Mono.defer(() -> Mono.just(client.invokeEvent("echo", BinaryData.fromString("ping"),
-                WebPubSubDataFormat.TEXT, new InvokeEventOptions().setInvocationId("inv-test-1"))));
 
         // We need a separate thread to send the response because invokeEvent blocks
         CountDownLatch latch = new CountDownLatch(1);

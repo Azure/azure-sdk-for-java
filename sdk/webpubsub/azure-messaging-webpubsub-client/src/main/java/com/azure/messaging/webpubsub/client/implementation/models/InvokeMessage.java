@@ -157,7 +157,11 @@ public final class InvokeMessage extends WebPubSubMessage {
         }
         if (dataType != null && data != null) {
             jsonWriter.writeStringField("dataType", dataType);
-            jsonWriter.writeStringField("data", Objects.toString(data, null));
+            if ("json".equals(dataType)) {
+                jsonWriter.writeRawField("data", Objects.toString(data, null));
+            } else {
+                jsonWriter.writeStringField("data", Objects.toString(data, null));
+            }
         }
 
         return jsonWriter.writeEndObject();

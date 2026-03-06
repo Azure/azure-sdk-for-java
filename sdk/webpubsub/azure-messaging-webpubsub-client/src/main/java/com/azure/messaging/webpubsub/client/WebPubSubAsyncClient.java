@@ -512,20 +512,23 @@ final class WebPubSubAsyncClient implements Closeable {
     }
 
     private Mono<InvokeEventResult> invokeEventAttempt(String invocationId, InvokeMessage invokeMessage) {
-        Mono<InvokeResponseMessage> responsePromise = waitForInvokeResponse(invocationId);
+        return Mono.defer(() -> {
+            Mono<InvokeResponseMessage> responsePromise = waitForInvokeResponse(invocationId).cache();
+            responsePromise.subscribe(v -> { }, e -> { });
 
-        return sendMessage(invokeMessage).then(responsePromise)
-            .map(this::mapInvokeResponse)
-            .onErrorResume(throwable -> {
-                // If InvocationException, do not retry
-                if (throwable instanceof InvocationException) {
-                    return Mono.error(throwable);
-                }
-                // Attempt to send cancelInvocation on failure
-                return sendCancelInvocation(invocationId).onErrorResume(cancelError -> Mono.empty())
-                    .then(Mono
-                        .error(logSendMessageFailedException("Failed to invoke event.", throwable, true, (Long) null)));
-            });
+            return sendMessage(invokeMessage).then(responsePromise)
+                .map(this::mapInvokeResponse)
+                .onErrorResume(throwable -> {
+                    // If InvocationException, do not retry
+                    if (throwable instanceof InvocationException) {
+                        return Mono.error(throwable);
+                    }
+                    // Attempt to send cancelInvocation on failure
+                    return sendCancelInvocation(invocationId).onErrorResume(cancelError -> Mono.empty())
+                        .then(Mono.error(
+                            logSendMessageFailedException("Failed to invoke event.", throwable, true, (Long) null)));
+                });
+        });
     }
 
     private Mono<InvokeResponseMessage> waitForInvokeResponse(String invocationId) {
