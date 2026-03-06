@@ -65,6 +65,15 @@ public interface CdnProfile
     }
 
     /**
+     * Gets latest Azure Front Door rule sets by sending http request.
+     *
+     * @return rule sets in the CDN manager profile, indexed by name
+     */
+    default Map<String, RuleSet> ruleSets() {
+        throw new UnsupportedOperationException("[ruleSets] is not supported in " + getClass());
+    }
+
+    /**
      * Generates a dynamic SSO URI used to sign in to the CDN supplemental portal used for advanced management tasks.
      *
      * @return URI used to login to the third party web portal
@@ -342,6 +351,16 @@ public interface CdnProfile
             default AfdOriginGroup.DefinitionStages.Blank<WithStandardCreate> defineAfdOriginGroup(String name) {
                 throw new UnsupportedOperationException("[defineAfdOriginGroup] is not supported in " + getClass());
             }
+
+            /**
+             * Starts the definition of a new Azure Front Door rule set to be attached to the CDN profile.
+             *
+             * @param name a new rule set name
+             * @return the first stage of a new rule set definition
+             */
+            default RuleSet.DefinitionStages.Blank<WithStandardCreate> defineRuleSet(String name) {
+                throw new UnsupportedOperationException("[defineRuleSet] is not supported in " + getClass());
+            }
         }
 
         /**
@@ -458,6 +477,16 @@ public interface CdnProfile
             }
 
             /**
+             * Starts the definition of a new Azure Front Door rule set to be attached to the CDN profile.
+             *
+             * @param name the name for the rule set
+             * @return the first stage of a rule set definition
+             */
+            default RuleSet.UpdateDefinitionStages.Blank<Update> defineRuleSet(String name) {
+                throw new UnsupportedOperationException("[defineRuleSet] is not supported in " + getClass());
+            }
+
+            /**
              * Adds new endpoint to current Premium Verizon CDN profile.
              *
              * @param endpointOriginHostname the endpoint origin hostname
@@ -521,6 +550,16 @@ public interface CdnProfile
             }
 
             /**
+             * Begins the description of an update of an existing Azure Front Door rule set in current profile.
+             *
+             * @param name the name of an existing rule set
+             * @return the first stage of the update of the rule set
+             */
+            default RuleSet.Update updateRuleSet(String name) {
+                throw new UnsupportedOperationException("[updateRuleSet] is not supported in " + getClass());
+            }
+
+            /**
              * Begins the description of an update of an existing endpoint in current Premium Verizon profile.
              *
              * @param name the name of the endpoint
@@ -554,6 +593,16 @@ public interface CdnProfile
              */
             default Update withoutAfdOriginGroup(String name) {
                 throw new UnsupportedOperationException("[withoutAfdOriginGroup] is not supported in " + getClass());
+            }
+
+            /**
+             * Removes an Azure Front Door rule set from the profile.
+             *
+             * @param name the name of an existing rule set
+             * @return the next stage of the CDN profile update
+             */
+            default Update withoutRuleSet(String name) {
+                throw new UnsupportedOperationException("[withoutRuleSet] is not supported in " + getClass());
             }
         }
     }
