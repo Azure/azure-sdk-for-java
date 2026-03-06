@@ -8,6 +8,12 @@ import com.codahale.metrics.CsvReporter;
 import com.codahale.metrics.ScheduledReporter;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.benchmark.ctl.AsyncCtlWorkload;
+import com.azure.cosmos.benchmark.encryption.AsyncEncryptionQueryBenchmark;
+import com.azure.cosmos.benchmark.encryption.AsyncEncryptionQuerySinglePartitionMultiple;
+import com.azure.cosmos.benchmark.encryption.AsyncEncryptionReadBenchmark;
+import com.azure.cosmos.benchmark.encryption.AsyncEncryptionWriteBenchmark;
+import com.azure.cosmos.benchmark.linkedin.LICtlWorkload;
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.jvm.CachedThreadStatesGaugeSet;
 import com.codahale.metrics.jvm.GarbageCollectorMetricSet;
@@ -191,7 +197,7 @@ public class BenchmarkOrchestrator {
                 logger.info("[LIFECYCLE] CYCLE_START cycle={} timestamp={}", cycle, Instant.now());
 
                 // 1. Create clients
-                List<AsyncBenchmark<?>> benchmarks = createBenchmarks(config, registry);
+                List<Benchmark> benchmarks = createBenchmarks(config, registry);
                 reporter.report();
                 logger.info("[LIFECYCLE] POST_CREATE cycle={} clients={} timestamp={}",
                     cycle, benchmarks.size(), Instant.now());
@@ -244,18 +250,18 @@ public class BenchmarkOrchestrator {
             totalCycles, durationSec, Instant.now());
     }
 
-    private List<AsyncBenchmark<?>> createBenchmarks(BenchmarkConfig config, MetricRegistry registry) {
-        List<AsyncBenchmark<?>> benchmarks = new ArrayList<>();
+    private List<Benchmark> createBenchmarks(BenchmarkConfig config, MetricRegistry registry) throws Exception {
+        List<Benchmark> benchmarks = new ArrayList<>();
         for (TenantWorkloadConfig tenant : config.getTenantWorkloads()) {
             benchmarks.add(createBenchmarkForOperation(tenant, registry));
         }
         return benchmarks;
     }
 
-    private void runWorkload(List<AsyncBenchmark<?>> benchmarks, int cycle, ExecutorService executor) throws Exception {
+    private void runWorkload(List<Benchmark> benchmarks, int cycle, ExecutorService executor) throws Exception {
         List<Future<?>> futures = new ArrayList<>();
         final int currentCycle = cycle;
-        for (AsyncBenchmark<?> benchmark : benchmarks) {
+        for (Benchmark benchmark : benchmarks) {
             futures.add(executor.submit(() -> {
                 try {
                     benchmark.run();
@@ -269,8 +275,8 @@ public class BenchmarkOrchestrator {
         }
     }
 
-    private void shutdownBenchmarks(List<AsyncBenchmark<?>> benchmarks, int cycle) {
-        for (AsyncBenchmark<?> benchmark : benchmarks) {
+    private void shutdownBenchmarks(List<Benchmark> benchmarks, int cycle) {
+        for (Benchmark benchmark : benchmarks) {
             try {
                 benchmark.shutdown();
             } catch (Exception e) {
@@ -311,7 +317,55 @@ public class BenchmarkOrchestrator {
 
     // ======== Benchmark factory ========
 
-    private AsyncBenchmark<?> createBenchmarkForOperation(TenantWorkloadConfig cfg, MetricRegistry registry) {
+    private Benchmark createBenchmarkForOperation(TenantWorkloadConfig cfg, MetricRegistry registry) throws Exception {
+        // Sync benchmarks
+        if (cfg.isSync()) {
+            switch (cfg.getOperationType()) {
+                case ReadThroughput:
+                case ReadLatency:
+                    return new SyncReadBenchmark(cfg, registry);
+                case WriteThroughput:
+                case WriteLatency:
+                    return new SyncWriteBenchmark(cfg, registry);
+                default:
+                    throw new IllegalArgumentException(
+                        "Sync mode is not supported for operation: " + cfg.getOperationType());
+            }
+        }
+
+        // CTL workloads
+        if (cfg.getOperationType() == Operation.CtlWorkload) {
+            return new AsyncCtlWorkload(cfg, registry);
+        }
+        if (cfg.getOperationType() == Operation.LinkedInCtlWorkload) {
+            return new LICtlWorkload(cfg, registry);
+        }
+
+        // Encryption benchmarks
+        if (cfg.isEncryptionEnabled()) {
+            switch (cfg.getOperationType()) {
+                case WriteThroughput:
+                case WriteLatency:
+                    return new AsyncEncryptionWriteBenchmark(cfg, registry);
+                case ReadThroughput:
+                case ReadLatency:
+                    return new AsyncEncryptionReadBenchmark(cfg, registry);
+                case QueryCross:
+                case QuerySingle:
+                case QueryParallel:
+                case QueryOrderby:
+                case QueryTopOrderby:
+                case QueryInClauseParallel:
+                    return new AsyncEncryptionQueryBenchmark(cfg, registry);
+                case QuerySingleMany:
+                    return new AsyncEncryptionQuerySinglePartitionMultiple(cfg, registry);
+                default:
+                    throw new IllegalArgumentException(
+                        "Encryption is not supported for operation: " + cfg.getOperationType());
+            }
+        }
+
+        // Default: async benchmarks
         switch (cfg.getOperationType()) {
             case ReadThroughput:
             case ReadLatency:
@@ -354,12 +408,55 @@ public class BenchmarkOrchestrator {
             StringUtils.defaultString(
                 com.google.common.base.Strings.emptyToNull(
                     System.getenv("APPLICATIONINSIGHTS_CONNECTION_STRING")), null));
-        if (instrumentationKey != null || appInsightsConnStr != null) {
-            Configuration tempCfg = new Configuration();
-            return tempCfg.getAzureMonitorMeterRegistry();
+        if (instrumentationKey == null && appInsightsConnStr == null) {
+            return null;
         }
 
-        return null;
+        java.time.Duration step = java.time.Duration.ofSeconds(
+            Integer.getInteger("azure.cosmos.monitoring.azureMonitor.step", 10));
+        String testCategoryTag = System.getProperty("azure.cosmos.monitoring.azureMonitor.testCategory");
+        boolean enabled = !Boolean.getBoolean("azure.cosmos.monitoring.azureMonitor.disabled");
+
+        final String connStr = appInsightsConnStr;
+        final String instrKey = instrumentationKey;
+        final io.micrometer.azuremonitor.AzureMonitorConfig amConfig = new io.micrometer.azuremonitor.AzureMonitorConfig() {
+            @Override
+            public String get(String key) { return null; }
+
+            @Override
+            public String instrumentationKey() {
+                return connStr != null ? null : instrKey;
+            }
+
+            @Override
+            public String connectionString() { return connStr; }
+
+            @Override
+            public java.time.Duration step() { return step; }
+
+            @Override
+            public boolean enabled() { return enabled; }
+        };
+
+        String roleName = System.getenv("APPLICATIONINSIGHTS_ROLE_NAME");
+        if (roleName != null) {
+            com.microsoft.applicationinsights.TelemetryConfiguration.getActive().setRoleName(roleName);
+        }
+
+        MeterRegistry registry = new io.micrometer.azuremonitor.AzureMonitorMeterRegistry(
+            amConfig, io.micrometer.core.instrument.Clock.SYSTEM);
+        java.util.List<io.micrometer.core.instrument.Tag> globalTags = new java.util.ArrayList<>();
+        if (!com.google.common.base.Strings.isNullOrEmpty(testCategoryTag)) {
+            globalTags.add(io.micrometer.core.instrument.Tag.of("TestCategory", testCategoryTag));
+        }
+
+        String roleInstance = System.getenv("APPLICATIONINSIGHTS_ROLE_INSTANCE");
+        if (roleInstance != null) {
+            globalTags.add(io.micrometer.core.instrument.Tag.of("cloud_RoleInstance", roleInstance));
+        }
+
+        registry.config().commonTags(globalTags);
+        return registry;
     }
 
     // ======== Global system properties ========
