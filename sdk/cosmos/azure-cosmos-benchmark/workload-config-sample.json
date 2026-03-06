@@ -1,37 +1,11 @@
 {
-  "_comment": "Sample workload configuration for azure-cosmos-benchmark.",
-  "_comment2": "Copy this file and fill in your account details to get started.",
-
   "metrics": {
     "printingInterval": 10,
     "enableJvmStats": true,
     "enableNettyHttpMetrics": true,
-
-    "_comment": "Uncomment ONE destination below. If 'destination' is omitted, console-only output is used.",
-
-    "_destination_csv": {
+    "destination": {
       "csv": {
         "reportingDirectory": "/tmp/benchmark-output"
-      }
-    },
-
-    "_destination_cosmos": {
-      "cosmos": {
-        "serviceEndpoint": "https://results-account.documents.azure.com:443/",
-        "masterKey": "<result-upload-master-key>",
-        "database": "benchmarkResults",
-        "container": "metrics",
-        "testVariationName": "baseline-v2",
-        "branchName": "main",
-        "commitId": "abc123def"
-      }
-    },
-
-    "_destination_appinsights": {
-      "applicationInsights": {
-        "connectionString": "InstrumentationKey=00000000-0000-0000-0000-000000000000;IngestionEndpoint=https://...",
-        "stepSeconds": 10,
-        "testCategory": "nightly-perf"
       }
     }
   },
@@ -53,37 +27,5 @@
       "operation": "ReadLatency",
       "numberOfOperations": 100000
     }
-  ],
-
-  "_examples": {
-    "_comment": "Additional tenant configurations for reference (not active).",
-
-    "writeThroughput": {
-      "operation": "WriteThroughput",
-      "numberOfOperations": 50000,
-      "concurrency": 100,
-      "contentResponseOnWriteEnabled": false
-    },
-
-    "ctlWorkload": {
-      "operation": "CtlWorkload",
-      "readWriteQueryReadManyPct": "70,10,10,10",
-      "numberOfOperations": 200000,
-      "concurrency": 100
-    },
-
-    "timeBasedRun": {
-      "operation": "ReadLatency",
-      "maxRunningTimeDuration": "PT10M",
-      "concurrency": 50
-    },
-
-    "multiCycle": {
-      "_comment": "Top-level lifecycle settings for multi-cycle runs.",
-      "cycles": 3,
-      "settleTimeMs": 90000,
-      "suppressCleanup": true,
-      "gcBetweenCycles": true
-    }
-  }
+  ]
 }
