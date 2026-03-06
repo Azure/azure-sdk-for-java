@@ -107,6 +107,9 @@ public class BenchmarkOrchestrator {
         }
 
         if (config.isEnableJvmStats()) {
+            // JVM metric binders are benchmark-scoped and implement AutoCloseable,
+            // but they are intentionally not closed here — they live for the duration
+            // of the JVM process and are cleaned up on exit.
             new JvmGcMetrics().bindTo(compositeRegistry);
             new JvmMemoryMetrics().bindTo(compositeRegistry);
             new JvmThreadMetrics().bindTo(compositeRegistry);

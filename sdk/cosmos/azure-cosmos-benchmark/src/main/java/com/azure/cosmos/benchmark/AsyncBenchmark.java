@@ -377,9 +377,19 @@ abstract class AsyncBenchmark<T> implements Benchmark {
                     return state;
                 });
         } else {
-            // Count-based termination
+            // Count-based termination using Flux.generate to avoid long-to-int truncation
             long numberOfOps = workloadConfig.getNumberOfOperations();
-            source = Flux.range(0, (int) numberOfOps).map(Long::valueOf);
+            source = Flux.generate(
+                AtomicLong::new,
+                (state, sink) -> {
+                    long current = state.getAndIncrement();
+                    if (current < numberOfOps) {
+                        sink.next(current);
+                    } else {
+                        sink.complete();
+                    }
+                    return state;
+                });
         }
 
         AtomicLong completedCount = new AtomicLong(0);

@@ -12,7 +12,7 @@
 
   "tenantDefaults": {
     "serviceEndpoint": "https://myaccount.documents.azure.com:443/",
-    "masterKey": "<your-master-key>",
+    "masterKey": "<your-master-key -- use environment variables or managed identity in production>",
     "databaseId": "benchdb",
     "containerId": "benchcoll",
     "consistencyLevel": "Session",

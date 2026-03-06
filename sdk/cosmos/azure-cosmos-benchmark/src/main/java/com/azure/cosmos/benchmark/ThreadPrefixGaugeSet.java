@@ -50,6 +50,8 @@ public class ThreadPrefixGaugeSet implements MeterBinder {
             .description("Thread count grouped by name prefix")
             .register(registry);
 
+        // Daemon threads are used so the scheduler is automatically cleaned up on JVM exit.
+        // No explicit shutdown is needed for benchmark-scoped usage.
         ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor(r -> {
             Thread t = new Thread(r, "thread-prefix-gauge-updater");
             t.setDaemon(true);

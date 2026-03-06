@@ -171,7 +171,6 @@ public class CosmosMetricsReporter {
 
         ObjectNode doc = createBaseDoc(timestamp, timer, "timer", cpuPercent);
         doc.put("Count", timer.count());
-        doc.put("MeanRate", round(timer.count() / Math.max(1, timer.totalTime(TimeUnit.SECONDS))));
 
         HistogramSnapshot snapshot = timer.takeSnapshot();
         doc.put("MeanMs", round(timer.mean(TimeUnit.MILLISECONDS)));

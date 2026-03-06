@@ -41,6 +41,9 @@ class AsyncWriteBenchmark extends AsyncBenchmark<CosmosItemResponse> {
                 new PartitionKey(id),
                 null);
         }
+        // Raw type cast is required because CosmosItemResponse uses wildcard generics
+        // that cannot be expressed in the class type parameter without propagating
+        // the wildcard throughout the benchmark hierarchy.
         return (Mono) result;
     }
 }

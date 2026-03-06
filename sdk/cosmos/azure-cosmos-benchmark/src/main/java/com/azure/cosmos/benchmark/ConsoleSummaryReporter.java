@@ -68,16 +68,16 @@ public class ConsoleSummaryReporter {
 
         double medianMs = 0;
         double p99Ms = 0;
-        int timerCount = 0;
         for (Map.Entry<String, Timer> entry : dropwizardRegistry.getTimers().entrySet()) {
             if (!entry.getKey().contains(OP_LATENCY_PREFIX)) {
                 continue;
             }
             Snapshot snapshot = entry.getValue().getSnapshot();
-            // Dropwizard Timer reports in nanoseconds
-            medianMs += snapshot.getMedian() / 1_000_000.0;
-            p99Ms += snapshot.get99thPercentile() / 1_000_000.0;
-            timerCount++;
+            // Use the first matching timer's percentiles directly — summing percentiles
+            // across timers is statistically invalid.
+            medianMs = snapshot.getMedian() / 1_000_000.0;
+            p99Ms = snapshot.get99thPercentile() / 1_000_000.0;
+            break;
         }
 
         if (totalCount == 0) {
@@ -86,9 +86,14 @@ public class ConsoleSummaryReporter {
 
         float cpuUsage = cpuReader.getSystemWideCpuUsage();
 
-        logger.info("[METRICS] successRate={:.1f}/s  failureRate={:.1f}/s  "
-                + "medianMs={:.2f}  p99Ms={:.2f}  cpu={:.1f}%  totalOps={}",
-            successRate, failureRate, medianMs, p99Ms, cpuUsage * 100, totalCount);
+        logger.info("[METRICS] successRate={}/s  failureRate={}/s  "
+                + "medianMs={}  p99Ms={}  cpu={}%  totalOps={}",
+            String.format("%.1f", successRate),
+            String.format("%.1f", failureRate),
+            String.format("%.2f", medianMs),
+            String.format("%.2f", p99Ms),
+            String.format("%.1f", cpuUsage * 100),
+            totalCount);
     }
 
     public void stop() {
