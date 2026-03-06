@@ -1,5 +1,23 @@
 # Release History
 
+## 12.19.0-beta.2 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 12.18.2 (2026-03-02)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-common` from `12.32.1` to version `12.32.2`.
+
 ## 12.19.0-beta.1 (2026-02-19)
 
 ### Features Added

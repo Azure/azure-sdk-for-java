@@ -25,7 +25,7 @@ public final class MemoryStoreDetails implements JsonSerializable<MemoryStoreDet
      * The object type, which is always 'memory_store'.
      */
     @Generated
-    private final String object = "memory_store";
+    private final MemoryStoreObjectType object = MemoryStoreObjectType.MEMORY_STORE;
 
     /*
      * The unique identifier of the memory store.
@@ -102,7 +102,7 @@ public final class MemoryStoreDetails implements JsonSerializable<MemoryStoreDet
      * @return the object value.
      */
     @Generated
-    public String getObject() {
+    public MemoryStoreObjectType getObject() {
         return this.object;
     }
 
@@ -183,7 +183,7 @@ public final class MemoryStoreDetails implements JsonSerializable<MemoryStoreDet
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("object", this.object);
+        jsonWriter.writeStringField("object", this.object == null ? null : this.object.toString());
         jsonWriter.writeStringField("id", this.id);
         jsonWriter.writeLongField("created_at", this.createdAt);
         jsonWriter.writeLongField("updated_at", this.updatedAt);

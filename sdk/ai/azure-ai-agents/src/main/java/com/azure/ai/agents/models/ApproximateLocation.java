@@ -6,6 +6,7 @@ package com.azure.ai.agents.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
@@ -14,13 +15,13 @@ import java.io.IOException;
  * The ApproximateLocation model.
  */
 @Fluent
-public final class ApproximateLocation extends Location {
+public final class ApproximateLocation implements JsonSerializable<ApproximateLocation> {
 
     /*
-     * The type property.
+     * The type of location approximation. Always `approximate`.
      */
     @Generated
-    private LocationType type = LocationType.APPROXIMATE;
+    private final String type = "approximate";
 
     /*
      * The country property.
@@ -54,13 +55,12 @@ public final class ApproximateLocation extends Location {
     }
 
     /**
-     * Get the type property: The type property.
+     * Get the type property: The type of location approximation. Always `approximate`.
      *
      * @return the type value.
      */
     @Generated
-    @Override
-    public LocationType getType() {
+    public String getType() {
         return this.type;
     }
 
@@ -159,7 +159,7 @@ public final class ApproximateLocation extends Location {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeStringField("country", this.country);
         jsonWriter.writeStringField("region", this.region);
         jsonWriter.writeStringField("city", this.city);
@@ -173,6 +173,7 @@ public final class ApproximateLocation extends Location {
      * @param jsonReader The JsonReader being read.
      * @return An instance of ApproximateLocation if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ApproximateLocation.
      */
     @Generated
@@ -182,9 +183,7 @@ public final class ApproximateLocation extends Location {
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("type".equals(fieldName)) {
-                    deserializedApproximateLocation.type = LocationType.fromString(reader.getString());
-                } else if ("country".equals(fieldName)) {
+                if ("country".equals(fieldName)) {
                     deserializedApproximateLocation.country = reader.getString();
                 } else if ("region".equals(fieldName)) {
                     deserializedApproximateLocation.region = reader.getString();

@@ -1,0 +1,6 @@
+# Local-only files and temporary scripts (not committed to git)
+.local_only/
+
+# Environment variable files (contain secrets)
+.env
+**/.env

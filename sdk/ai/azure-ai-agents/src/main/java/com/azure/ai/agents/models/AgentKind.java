@@ -25,12 +25,6 @@ public final class AgentKind extends ExpandableStringEnum<AgentKind> {
     public static final AgentKind HOSTED = fromString("hosted");
 
     /**
-     * Static value container_app for AgentKind.
-     */
-    @Generated
-    public static final AgentKind CONTAINER_APP = fromString("container_app");
-
-    /**
      * Static value workflow for AgentKind.
      */
     @Generated
