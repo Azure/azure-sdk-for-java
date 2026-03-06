@@ -31,12 +31,12 @@ public final class StorageContainersImpl implements StorageContainers {
         String storageContainerName, Context context) {
         Response<StorageContainerInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, storageContainerName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new StorageContainerImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
+        if (inner == null) {
+            throw LOGGER.logExceptionAsError(new IllegalStateException(
+                "Received null Response from service client for getByResourceGroupWithResponse."));
         }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new StorageContainerImpl(inner.getValue(), this.manager()));
     }
 
     public StorageContainer getByResourceGroup(String resourceGroupName, String storageContainerName) {
@@ -88,7 +88,13 @@ public final class StorageContainersImpl implements StorageContainers {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'storageContainers'.", id)));
         }
-        return this.getByResourceGroupWithResponse(resourceGroupName, storageContainerName, Context.NONE).getValue();
+        Response<StorageContainer> response
+            = this.getByResourceGroupWithResponse(resourceGroupName, storageContainerName, Context.NONE);
+        if (response == null) {
+            throw LOGGER.logExceptionAsError(new IllegalStateException(
+                String.format("getByResourceGroupWithResponse returned null Response for id '%s'.", id)));
+        }
+        return response.getValue();
     }
 
     public Response<StorageContainer> getByIdWithResponse(String id, Context context) {

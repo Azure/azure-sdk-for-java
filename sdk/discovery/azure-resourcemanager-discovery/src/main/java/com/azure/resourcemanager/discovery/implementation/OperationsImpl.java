@@ -6,15 +6,12 @@ package com.azure.resourcemanager.discovery.implementation;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.discovery.fluent.OperationsClient;
 import com.azure.resourcemanager.discovery.fluent.models.OperationInner;
 import com.azure.resourcemanager.discovery.models.Operation;
 import com.azure.resourcemanager.discovery.models.Operations;
 
 public final class OperationsImpl implements Operations {
-    private static final ClientLogger LOGGER = new ClientLogger(OperationsImpl.class);
-
     private final OperationsClient innerClient;
 
     private final com.azure.resourcemanager.discovery.DiscoveryManager serviceManager;

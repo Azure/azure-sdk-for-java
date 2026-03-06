@@ -89,7 +89,20 @@ public interface BookshelfPrivateEndpointConnection {
              * @param bookshelfName The name of the Bookshelf.
              * @return the next definition stage.
              */
-            WithCreate withExistingBookshelve(String resourceGroupName, String bookshelfName);
+            WithCreate withExistingBookshelf(String resourceGroupName, String bookshelfName);
+
+            /**
+             * Specifies resourceGroupName, bookshelfName.
+             * 
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
+             * @param bookshelfName The name of the Bookshelf.
+             * @return the next definition stage.
+             * @deprecated Use {@link #withExistingBookshelf(String, String)} instead.
+             */
+            @Deprecated
+            default WithCreate withExistingBookshelve(String resourceGroupName, String bookshelfName) {
+                return withExistingBookshelf(resourceGroupName, bookshelfName);
+            }
         }
 
         /**

@@ -8,15 +8,12 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.discovery.fluent.BookshelfPrivateLinkResourcesClient;
 import com.azure.resourcemanager.discovery.fluent.models.BookshelfPrivateLinkResourceInner;
 import com.azure.resourcemanager.discovery.models.BookshelfPrivateLinkResource;
 import com.azure.resourcemanager.discovery.models.BookshelfPrivateLinkResources;
 
 public final class BookshelfPrivateLinkResourcesImpl implements BookshelfPrivateLinkResources {
-    private static final ClientLogger LOGGER = new ClientLogger(BookshelfPrivateLinkResourcesImpl.class);
-
     private final BookshelfPrivateLinkResourcesClient innerClient;
 
     private final com.azure.resourcemanager.discovery.DiscoveryManager serviceManager;
