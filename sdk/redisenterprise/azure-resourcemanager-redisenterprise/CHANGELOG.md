@@ -1,14 +1,232 @@
 # Release History
 
-## 2.2.0-beta.1 (Unreleased)
+## 2.2.0-beta.1 (2026-03-06)
 
-### Features Added
+- Azure Resource Manager redisenterprise client library for Java. This package contains Microsoft Azure SDK for redisenterprise Management SDK. REST API for managing Redis Enterprise resources in Azure. Package api-version 2025-08-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.PrivateLinkResourceListResult` was removed
 
-### Other Changes
+#### `RedisEnterpriseManager` was removed
+
+#### `models.PrivateEndpointConnectionListResult` was removed
+
+#### `models.OperationListResult` was removed
+
+#### `RedisEnterpriseManager$Configurable` was removed
+
+#### `models.AccessPolicyAssignmentList` was removed
+
+#### `models.ClusterCommonProperties` was removed
+
+#### `models.DatabaseCommonProperties` was removed
+
+#### `models.ClusterList` was removed
+
+#### `models.DatabaseList` was removed
+
+#### `models.ManagedServiceIdentity` was modified
+
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
+* `validate()` was removed
+* `java.util.UUID tenantId()` -> `java.lang.String tenantId()`
+
+#### `models.ClusterUpdate` was modified
+
+* `hostname()` was removed
+* `validate()` was removed
+
+#### `models.ForceLinkParametersGeoReplication` was modified
+
+* `validate()` was removed
+
+#### `models.ForceUnlinkParameters` was modified
+
+* `validate()` was removed
+
+#### `models.UserAssignedIdentity` was modified
+
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
+* `java.util.UUID clientId()` -> `java.lang.String clientId()`
+* `validate()` was removed
+
+#### `models.PrivateLinkResource` was modified
+
+* `requiredZoneNames()` was removed
+* `groupId()` was removed
+* `requiredMembers()` was removed
+
+#### `models.DatabaseUpdate` was modified
+
+* `validate()` was removed
+
+#### `models.Module` was modified
+
+* `validate()` was removed
+
+#### `models.RdbFrequency` was modified
+
+* `ONE_TWOH` was removed
+
+#### `models.PrivateEndpoint` was modified
+
+* `validate()` was removed
+
+#### `models.Sku` was modified
+
+* `validate()` was removed
+
+#### `models.ClusterPropertiesEncryption` was modified
+
+* `validate()` was removed
+
+#### `models.AccessPolicyAssignmentPropertiesUser` was modified
+
+* `validate()` was removed
+
+#### `models.DatabasePropertiesGeoReplication` was modified
+
+* `validate()` was removed
+
+#### `models.RegenerateKeyParameters` was modified
+
+* `validate()` was removed
+
+#### `models.LinkedDatabase` was modified
+
+* `validate()` was removed
+
+#### `models.PrivateLinkServiceConnectionState` was modified
+
+* `validate()` was removed
+
+#### `models.ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity` was modified
+
+* `validate()` was removed
+
+#### `models.ImportClusterParameters` was modified
+
+* `validate()` was removed
+
+#### `models.ForceLinkParameters` was modified
+
+* `validate()` was removed
+
+#### `models.FlushParameters` was modified
+
+* `validate()` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `OperationDisplay()` was changed to private access
+* `validate()` was removed
+
+#### `models.TlsVersion` was modified
+
+* `ONE_ONE` was removed
+* `ONE_ZERO` was removed
+* `ONE_TWO` was removed
+
+#### `models.ExportClusterParameters` was modified
+
+* `validate()` was removed
+
+#### `models.Persistence` was modified
+
+* `validate()` was removed
+
+#### `models.ClusterPropertiesEncryptionCustomerManagedKeyEncryption` was modified
+
+* `validate()` was removed
+
+#### `models.Cluster` was modified
+
+* `hostname()` was removed
+
+#### `models.SkuDetails` was modified
+
+* `SkuDetails()` was changed to private access
+* `validate()` was removed
+* `java.lang.Float sizeInGB()` -> `java.lang.Double sizeInGB()`
+
+### Features Added
+
+* `models.MaintenanceWindowSchedule` was added
+
+* `models.SourceType` was added
+
+* `models.MaintenanceWindowType` was added
+
+* `models.MaintenanceDayOfWeek` was added
+
+* `RedisenterpriseManager$Configurable` was added
+
+* `models.MigrationProvisioningState` was added
+
+* `models.MaintenanceConfiguration` was added
+
+* `models.DatabaseProperties` was added
+
+* `models.MaintenanceWindow` was added
+
+* `models.AzureCacheForRedisMigrationProperties` was added
+
+* `models.MigrationProperties` was added
+
+* `models.PrivateLinkResourceProperties` was added
+
+* `models.ClusterProperties` was added
+
+* `models.Migration` was added
+
+* `RedisenterpriseManager` was added
+
+* `models.Migrations` was added
+
+#### `models.ClusterUpdate` was modified
+
+* `hostName()` was added
+* `withMaintenanceConfiguration(models.MaintenanceConfiguration)` was added
+* `maintenanceConfiguration()` was added
+
+#### `models.PrivateLinkResource` was modified
+
+* `properties()` was added
+* `systemData()` was added
+
+#### `models.Cluster$Update` was modified
+
+* `withMaintenanceConfiguration(models.MaintenanceConfiguration)` was added
+
+#### `models.RdbFrequency` was modified
+
+* `TWELVEH` was added
+
+#### `models.Cluster$Definition` was modified
+
+* `withMaintenanceConfiguration(models.MaintenanceConfiguration)` was added
+
+#### `models.AccessPolicyAssignment` was modified
+
+* `systemData()` was added
+
+#### `models.TlsVersion` was modified
+
+* `ONE2` was added
+* `ONE1` was added
+* `ONE0` was added
+
+#### `models.PrivateEndpointConnection` was modified
+
+* `systemData()` was added
+* `groupIds()` was added
+
+#### `models.Cluster` was modified
+
+* `systemData()` was added
+* `hostName()` was added
+* `maintenanceConfiguration()` was added
 
 ## 2.1.0 (2025-10-15)
 
