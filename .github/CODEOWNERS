@@ -308,7 +308,7 @@
 /sdk/discovery/                                                    @olawal @alchocro @anmaga
 
 # ServiceLabel: %Discovery
-# ServiceOwners:                                                   @oylawal @alchocro
+# ServiceOwners:                                                   @oylawal @achocron
 
 # PRLabel: %Document Intelligence
 /sdk/documentintelligence/                                         @Azure/azure-java-sdk @samvaity
