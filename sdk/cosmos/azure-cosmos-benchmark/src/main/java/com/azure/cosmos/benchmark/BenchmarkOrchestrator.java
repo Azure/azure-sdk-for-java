@@ -67,7 +67,7 @@ public class BenchmarkOrchestrator {
         compositeRegistry.add(dropwizardBridge);
 
         // Console summary — always on
-        ConsoleSummaryReporter consoleSummary = new ConsoleSummaryReporter(dropwizardBridge);
+        ConsoleSummaryReporter consoleSummary = new ConsoleSummaryReporter(compositeRegistry);
         consoleSummary.start(config.getPrintingInterval(), TimeUnit.SECONDS);
 
         // Detailed reporter — based on reportingDestination (mutually exclusive, optional)
