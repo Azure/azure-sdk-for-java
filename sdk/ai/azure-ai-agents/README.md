@@ -314,7 +314,7 @@ OpenApiTool tool = new OpenApiTool(
         .setDescription("Retrieve weather information for a location."));
 ```
 
-See the full sample in [OpenApiSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/OpenApiSample.java).
+<!-- TODO: Add link to OpenApiSample.java once checked into main -->
 
 ---
 

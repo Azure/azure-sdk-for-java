@@ -6,6 +6,7 @@
 
 - Added `readSpecFromFile(Path)` static convenience method to `OpenApiFunctionDefinition` for loading OpenAPI specification JSON files as the `Map<String, BinaryData>` required by the constructor, eliminating the need for manual `JsonReader`/`BinaryData` wiring.
 - Added new `OpenApiSample` demonstrating end-to-end OpenAPI tool integration: loading a spec file, creating an agent with an `OpenApiTool`, and invoking an external API via conversation.
+- Added new tool samples for parity with the Python SDK: `AzureFunctionSample`, `BingCustomSearchSample`, `MemorySearchSample`, `McpWithConnectionSample`, and `OpenApiWithConnectionSample`.
 
 ### Breaking Changes
 
