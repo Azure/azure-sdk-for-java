@@ -3,8 +3,6 @@
 
 package com.azure.cosmos.benchmark;
 
-import com.azure.cosmos.CosmosClient;
-import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.benchmark.ctl.AsyncCtlWorkload;
 import com.azure.cosmos.benchmark.encryption.AsyncEncryptionQueryBenchmark;
 import com.azure.cosmos.benchmark.encryption.AsyncEncryptionQuerySinglePartitionMultiple;
@@ -90,41 +88,17 @@ public class BenchmarkOrchestrator {
         // Prepare all tenants (inject shared state, set defaults)
         prepareTenants(config, compositeRegistry);
 
-        // Optional: Result uploader
-        CosmosClient resultUploaderClient = null;
-        CosmosTotalResultReporter resultReporter = null;
-        if (config.getResultUploadDatabase() != null
-            && config.getResultUploadContainer() != null
-            && config.getResultUploadEndpoint() != null) {
-            resultUploaderClient = new CosmosClientBuilder()
-                .endpoint(config.getResultUploadEndpoint())
-                .key(config.getResultUploadKey())
-                .buildClient();
-            Set<String> ops = new LinkedHashSet<>();
-            int totalConcurrency = 0;
-            for (TenantWorkloadConfig t : config.getTenantWorkloads()) {
-                ops.add(t.getOperation() != null ? t.getOperation() : "Unknown");
-                totalConcurrency += t.getConcurrency();
-            }
-            String operationSummary = String.join("+", ops);
-            // CosmosTotalResultReporter reads SDK metrics and uploads aggregated results to Cosmos DB.
-            // Intentionally separate from BenchmarkMetricsReporter (which handles CSV/console output) —
-            // different concerns and lifecycles.
-            resultReporter = CosmosTotalResultReporter
-                .forRegistry(dropwizardBridge,
-                    resultUploaderClient
-                        .getDatabase(config.getResultUploadDatabase())
-                        .getContainer(config.getResultUploadContainer()),
-                    operationSummary,
-                    config.getTestVariationName(),
-                    config.getBranchName(),
-                    config.getCommitId(),
-                    totalConcurrency)
-                .build();
-            resultReporter.start(config.getPrintingInterval(), TimeUnit.SECONDS);
-            logger.info("Result reporter started -> {}/{}",
-                config.getResultUploadDatabase(), config.getResultUploadContainer());
+        // Result uploader — self-contained, no-op if no upload endpoint configured
+        Set<String> ops = new LinkedHashSet<>();
+        int totalConcurrency = 0;
+        for (TenantWorkloadConfig t : config.getTenantWorkloads()) {
+            ops.add(t.getOperation() != null ? t.getOperation() : "Unknown");
+            totalConcurrency += t.getConcurrency();
         }
+        String operationSummary = String.join("+", ops);
+        CosmosTotalResultReporter resultReporter = CosmosTotalResultReporter.create(
+            dropwizardBridge, config, operationSummary, totalConcurrency);
+        resultReporter.start(config.getPrintingInterval(), TimeUnit.SECONDS);
 
         // Netty HTTP connection pool metrics reporter (only when enabled).
         // Reactor Netty publishes pool gauges to Metrics.globalRegistry, so we add
@@ -156,13 +130,7 @@ public class BenchmarkOrchestrator {
             // Cleanup reporters
             reporter.report();
             reporter.stop();
-            if (resultReporter != null) {
-                resultReporter.report();
-                resultReporter.stop();
-            }
-            if (resultUploaderClient != null) {
-                resultUploaderClient.close();
-            }
+            resultReporter.stop();
             if (nettyMetricsReporter != null) {
                 nettyMetricsReporter.stop();
             }

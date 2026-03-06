@@ -2,11 +2,18 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.benchmark;
 
+import com.azure.cosmos.CosmosClient;
+import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosContainer;
 import com.azure.cosmos.implementation.cpu.CpuMemoryReader;
 import com.azure.cosmos.models.PartitionKey;
+import com.codahale.metrics.Counter;
+import com.codahale.metrics.Gauge;
+import com.codahale.metrics.Histogram;
+import com.codahale.metrics.Meter;
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.Snapshot;
+import com.codahale.metrics.Timer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
@@ -25,23 +32,44 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Periodically samples SDK metrics from the Dropwizard bridge registry and on shutdown
- * uploads aggregated benchmark results to a Cosmos DB container.
+ * Periodically uploads all metrics from the Dropwizard bridge registry to a Cosmos DB container.
  *
- * <p>Uses native Dropwizard {@link com.codahale.metrics.Meter} rates and
- * {@link com.codahale.metrics.Timer} percentiles — no manual rate/percentile
- * computation needed.</p>
+ * <p>Each report interval, one document is uploaded per meter (Timer, Meter, Counter, Gauge),
+ * preserving the full hierarchical name (which encodes all Micrometer tag dimensions).
+ * This makes the data directly queryable in Kusto with full dimension support.</p>
+ *
+ * <p>If no upload endpoint is configured, this reporter is a no-op.</p>
+ *
+ * <p>Uploaded document schema:</p>
+ * <pre>
+ * {
+ *   "id": "uuid",
+ *   "Timestamp": "2026-03-06 12:00:00.0000000",
+ *   "MetricName": "cosmos.client.op.latency.Container.db/coll.Operation.ReadItem...",
+ *   "MetricType": "timer",
+ *   "Count": 1234,
+ *   "MeanRate": 45.6,
+ *   "OneMinuteRate": 50.2,
+ *   "MedianMs": 2.34,
+ *   "P75Ms": 3.45,
+ *   "P95Ms": 5.67,
+ *   "P99Ms": 12.34,
+ *   "MaxMs": 45.67,
+ *   "Value": null,
+ *   "RunMetadata": { "Operation", "TestVariationName", "BranchName", "CommitId", "Concurrency", "CpuUsage" }
+ * }
+ * </pre>
  */
 public class CosmosTotalResultReporter {
     private static final Logger LOGGER = LoggerFactory.getLogger(CosmosTotalResultReporter.class);
-    static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-
-    // SDK metric name prefix (bridged via HierarchicalNameMapper)
-    private static final String OP_CALLS_PREFIX = "cosmos.client.op.calls";
-    private static final String OP_LATENCY_PREFIX = "cosmos.client.op.latency";
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private static final DateTimeFormatter TIMESTAMP_FORMATTER = DateTimeFormatter
+        .ofPattern("yyyy-MM-dd HH:mm:ss.nnnnnnn")
+        .withZone(ZoneId.from(ZoneOffset.UTC));
 
     private final MetricRegistry dropwizardRegistry;
-    private final CosmosContainer results;
+    private final CosmosClient cosmosClient;
+    private final CosmosContainer resultsContainer;
     private final String operation;
     private final String testVariationName;
     private final String branchName;
@@ -49,56 +77,152 @@ public class CosmosTotalResultReporter {
     private final int concurrency;
     private final CpuMemoryReader cpuReader;
     private final ScheduledExecutorService scheduler;
+    private final boolean enabled;
 
     private CosmosTotalResultReporter(
         DropwizardBridgeMeterRegistry bridgeRegistry,
-        CosmosContainer results,
+        BenchmarkConfig config,
         String operation,
-        String testVariationName,
-        String branchName,
-        String commitId,
         int concurrency) {
 
-        this.dropwizardRegistry = bridgeRegistry.getDropwizardRegistry();
-        this.results = results;
         this.operation = operation;
-        this.testVariationName = testVariationName != null ? testVariationName : "";
-        this.branchName = branchName != null ? branchName : "";
-        this.commitId = commitId != null ? commitId : "";
+        this.testVariationName = config.getTestVariationName() != null ? config.getTestVariationName() : "";
+        this.branchName = config.getBranchName() != null ? config.getBranchName() : "";
+        this.commitId = config.getCommitId() != null ? config.getCommitId() : "";
         this.concurrency = concurrency;
         this.cpuReader = new CpuMemoryReader();
-        this.scheduler = Executors.newSingleThreadScheduledExecutor(r -> {
-            Thread t = new Thread(r, "cosmos-result-reporter");
-            t.setDaemon(true);
-            return t;
-        });
+
+        // Self-contained: create Cosmos client if upload is configured, else no-op
+        if (config.getResultUploadEndpoint() != null
+            && config.getResultUploadDatabase() != null
+            && config.getResultUploadContainer() != null) {
+
+            this.dropwizardRegistry = bridgeRegistry.getDropwizardRegistry();
+            this.cosmosClient = new CosmosClientBuilder()
+                .endpoint(config.getResultUploadEndpoint())
+                .key(config.getResultUploadKey())
+                .buildClient();
+            this.resultsContainer = cosmosClient
+                .getDatabase(config.getResultUploadDatabase())
+                .getContainer(config.getResultUploadContainer());
+            this.enabled = true;
+            this.scheduler = Executors.newSingleThreadScheduledExecutor(r -> {
+                Thread t = new Thread(r, "cosmos-result-reporter");
+                t.setDaemon(true);
+                return t;
+            });
+
+            LOGGER.info("CosmosTotalResultReporter enabled -> {}/{}",
+                config.getResultUploadDatabase(), config.getResultUploadContainer());
+        } else {
+            this.dropwizardRegistry = null;
+            this.cosmosClient = null;
+            this.resultsContainer = null;
+            this.enabled = false;
+            this.scheduler = null;
+
+            LOGGER.info("CosmosTotalResultReporter disabled (no upload endpoint configured)");
+        }
+    }
+
+    /**
+     * Create a CosmosTotalResultReporter. If no upload endpoint is configured in
+     * {@link BenchmarkConfig}, the reporter is a no-op.
+     */
+    public static CosmosTotalResultReporter create(
+        DropwizardBridgeMeterRegistry bridgeRegistry,
+        BenchmarkConfig config,
+        String operation,
+        int concurrency) {
+        return new CosmosTotalResultReporter(bridgeRegistry, config, operation, concurrency);
     }
 
     /**
      * Start periodic reporting.
      */
     public void start(long interval, TimeUnit unit) {
+        if (!enabled) {
+            return;
+        }
         scheduler.scheduleAtFixedRate(this::report, interval, interval, unit);
     }
 
     /**
-     * Log a periodic summary (for debugging). The real upload happens in {@link #stop()}.
+     * Upload one snapshot of all metrics to Cosmos DB.
      */
     public void report() {
-        double successRate = sumMeterRates(true);
-        double failureRate = sumMeterRates(false);
-        if (successRate > 0 || failureRate > 0) {
-            LOGGER.debug("Periodic: successRate={}/s failureRate={}/s cpu={}",
-                String.format("%.1f", successRate),
-                String.format("%.1f", failureRate),
-                String.format("%.1f%%", cpuReader.getSystemWideCpuUsage() * 100));
+        if (!enabled) {
+            return;
+        }
+
+        String timestamp = TIMESTAMP_FORMATTER.format(Instant.now());
+        if (timestamp.length() > 27) {
+            timestamp = timestamp.substring(0, 27);
+        }
+        double cpuUsage = cpuReader.getSystemWideCpuUsage();
+
+        // Upload Timers (latency metrics — SDK ops, Netty, etc.)
+        for (Map.Entry<String, Timer> entry : dropwizardRegistry.getTimers().entrySet()) {
+            Timer timer = entry.getValue();
+            if (timer.getCount() == 0) {
+                continue;
+            }
+            Snapshot snapshot = timer.getSnapshot();
+            ObjectNode doc = createBaseDoc(timestamp, entry.getKey(), "timer", cpuUsage);
+            doc.put("Count", timer.getCount());
+            doc.put("MeanRate", round(timer.getMeanRate()));
+            doc.put("OneMinuteRate", round(timer.getOneMinuteRate()));
+            // Dropwizard Timer reports in nanoseconds
+            doc.put("MedianMs", round(snapshot.getMedian() / 1_000_000.0));
+            doc.put("P75Ms", round(snapshot.get75thPercentile() / 1_000_000.0));
+            doc.put("P95Ms", round(snapshot.get95thPercentile() / 1_000_000.0));
+            doc.put("P99Ms", round(snapshot.get99thPercentile() / 1_000_000.0));
+            doc.put("MaxMs", round(snapshot.getMax() / 1_000_000.0));
+            uploadDoc(doc);
+        }
+
+        // Upload Meters (rate metrics — success/failure counts)
+        for (Map.Entry<String, Meter> entry : dropwizardRegistry.getMeters().entrySet()) {
+            Meter meter = entry.getValue();
+            if (meter.getCount() == 0) {
+                continue;
+            }
+            ObjectNode doc = createBaseDoc(timestamp, entry.getKey(), "meter", cpuUsage);
+            doc.put("Count", meter.getCount());
+            doc.put("MeanRate", round(meter.getMeanRate()));
+            doc.put("OneMinuteRate", round(meter.getOneMinuteRate()));
+            uploadDoc(doc);
+        }
+
+        // Upload Gauges (connection pools, JVM stats, Netty pool metrics)
+        for (Map.Entry<String, Gauge> entry : dropwizardRegistry.getGauges().entrySet()) {
+            Object value = entry.getValue().getValue();
+            if (value instanceof Number) {
+                ObjectNode doc = createBaseDoc(timestamp, entry.getKey(), "gauge", cpuUsage);
+                doc.put("Value", ((Number) value).doubleValue());
+                uploadDoc(doc);
+            }
+        }
+
+        // Upload Counters
+        for (Map.Entry<String, Counter> entry : dropwizardRegistry.getCounters().entrySet()) {
+            if (entry.getValue().getCount() == 0) {
+                continue;
+            }
+            ObjectNode doc = createBaseDoc(timestamp, entry.getKey(), "counter", cpuUsage);
+            doc.put("Count", entry.getValue().getCount());
+            uploadDoc(doc);
         }
     }
 
     /**
-     * Stop reporting and upload final aggregated results.
+     * Stop reporting and clean up resources.
      */
     public void stop() {
+        if (!enabled) {
+            return;
+        }
+
         scheduler.shutdown();
         try {
             scheduler.awaitTermination(5, TimeUnit.SECONDS);
@@ -106,134 +230,43 @@ public class CosmosTotalResultReporter {
             Thread.currentThread().interrupt();
         }
 
-        uploadFinalResults();
-    }
+        // Final upload
+        report();
 
-    private void uploadFinalResults() {
-        DateTimeFormatter formatter = DateTimeFormatter
-            .ofPattern("yyyy-MM-dd HH:mm:ss.nnnnnnn")
-            .withZone(ZoneId.from(ZoneOffset.UTC));
-
-        // Read rates from Dropwizard Meters (native 1-minute EWMA rates)
-        double successRate = sumMeterRates(true);
-        double failureRate = sumMeterRates(false);
-
-        // Read latency percentiles from Dropwizard Timers
-        double medianMs = 0;
-        double p99Ms = 0;
-        for (Map.Entry<String, com.codahale.metrics.Timer> entry : dropwizardRegistry.getTimers().entrySet()) {
-            if (entry.getKey().contains(OP_LATENCY_PREFIX)) {
-                Snapshot snapshot = entry.getValue().getSnapshot();
-                medianMs += snapshot.getMedian();
-                p99Ms += snapshot.get99thPercentile();
-            }
+        if (cosmosClient != null) {
+            cosmosClient.close();
         }
 
-        // Dropwizard Timer reports in nanoseconds by default
-        medianMs = medianMs / 1_000_000.0;
-        p99Ms = p99Ms / 1_000_000.0;
+        LOGGER.info("CosmosTotalResultReporter stopped");
+    }
 
+    private ObjectNode createBaseDoc(String timestamp, String metricName, String metricType, double cpuUsage) {
         ObjectNode doc = OBJECT_MAPPER.createObjectNode();
         String id = UUID.randomUUID().toString();
         doc.put("id", id);
-        doc.put("TIMESTAMP", formatter.format(Instant.now()).substring(0, 27));
+        doc.put("Timestamp", timestamp);
+        doc.put("MetricName", metricName);
+        doc.put("MetricType", metricType);
+        // Run metadata for Kusto pivoting
         doc.put("Operation", this.operation);
         doc.put("TestVariationName", this.testVariationName);
         doc.put("BranchName", this.branchName);
         doc.put("CommitId", this.commitId);
         doc.put("Concurrency", this.concurrency);
-        doc.put("CpuUsage", cpuReader.getSystemWideCpuUsage());
-        doc.put("SuccessRate", new BigDecimal(successRate).setScale(2, RoundingMode.HALF_UP).doubleValue());
-        doc.put("FailureRate", new BigDecimal(failureRate).setScale(2, RoundingMode.HALF_UP).doubleValue());
-        doc.put("P99LatencyInMs", new BigDecimal(p99Ms).setScale(2, RoundingMode.HALF_UP).doubleValue());
-        doc.put("MedianLatencyInMs", new BigDecimal(medianMs).setScale(2, RoundingMode.HALF_UP).doubleValue());
-
-        results.createItem(doc, new PartitionKey(id), null);
-        LOGGER.info("Final results uploaded to {} - {}", results.getId(), doc.toPrettyString());
+        doc.put("CpuUsage", round(cpuUsage));
+        return doc;
     }
 
-    /**
-     * Sum the 1-minute rates of all Dropwizard Meters matching the operation calls prefix,
-     * filtered by success or failure (based on status code in the hierarchical name).
-     */
-    private double sumMeterRates(boolean successOnly) {
-        double total = 0;
-        for (Map.Entry<String, com.codahale.metrics.Meter> entry : dropwizardRegistry.getMeters().entrySet()) {
-            String name = entry.getKey();
-            if (!name.contains(OP_CALLS_PREFIX)) {
-                continue;
-            }
-            // The hierarchical name includes tags like ".OperationStatusCode.200."
-            // Extract status code to determine success/failure
-            boolean isSuccess = isSuccessStatusInName(name);
-            if (successOnly == isSuccess) {
-                total += entry.getValue().getOneMinuteRate();
-            }
-        }
-        return total;
-    }
-
-    private boolean isSuccessStatusInName(String hierarchicalName) {
-        // HierarchicalNameMapper.DEFAULT encodes tags as ".tagKey.tagValue."
-        // Look for ".OperationStatusCode.NNN." pattern
-        String marker = ".OperationStatusCode.";
-        int idx = hierarchicalName.indexOf(marker);
-        if (idx < 0) {
-            return false;
-        }
-        String rest = hierarchicalName.substring(idx + marker.length());
-        // Extract the status code value (next segment before '.')
-        int dotIdx = rest.indexOf('.');
-        String statusCodeStr = dotIdx > 0 ? rest.substring(0, dotIdx) : rest;
+    private void uploadDoc(ObjectNode doc) {
         try {
-            int code = Integer.parseInt(statusCodeStr);
-            return code >= 200 && code < 300;
-        } catch (NumberFormatException e) {
-            return false;
+            String id = doc.get("id").asText();
+            resultsContainer.createItem(doc, new PartitionKey(id), null);
+        } catch (Exception e) {
+            LOGGER.warn("Failed to upload metric: {}", doc.get("MetricName"), e);
         }
     }
 
-    /**
-     * Returns a new {@link Builder} for {@link CosmosTotalResultReporter}.
-     */
-    public static Builder forRegistry(DropwizardBridgeMeterRegistry registry, CosmosContainer resultsContainer,
-                                      String operation, String testVariationName,
-                                      String branchName, String commitId, int concurrency) {
-        return new Builder(registry, resultsContainer, operation, testVariationName,
-            branchName, commitId, concurrency);
-    }
-
-    /**
-     * A builder for {@link CosmosTotalResultReporter} instances.
-     */
-    public static class Builder {
-        private final DropwizardBridgeMeterRegistry registry;
-        private final CosmosContainer resultsContainer;
-        private final String operation;
-        private final String testVariationName;
-        private final String branchName;
-        private final String commitId;
-        private final int concurrency;
-
-        private Builder(DropwizardBridgeMeterRegistry registry, CosmosContainer resultsContainer,
-                        String operation, String testVariationName,
-                        String branchName, String commitId, int concurrency) {
-            this.registry = registry;
-            this.resultsContainer = resultsContainer;
-            this.operation = operation;
-            this.testVariationName = testVariationName;
-            this.branchName = branchName;
-            this.commitId = commitId;
-            this.concurrency = concurrency;
-        }
-
-        /**
-         * Builds a {@link CosmosTotalResultReporter} with the given properties.
-         */
-        public CosmosTotalResultReporter build() {
-            return new CosmosTotalResultReporter(
-                registry, resultsContainer, operation, testVariationName,
-                branchName, commitId, concurrency);
-        }
+    private static double round(double value) {
+        return new BigDecimal(value).setScale(2, RoundingMode.HALF_UP).doubleValue();
     }
 }
