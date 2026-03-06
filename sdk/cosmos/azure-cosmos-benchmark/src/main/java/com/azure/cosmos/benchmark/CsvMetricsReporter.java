@@ -3,8 +3,10 @@
 
 package com.azure.cosmos.benchmark;
 
+import com.codahale.metrics.ConsoleReporter;
 import com.codahale.metrics.CsvReporter;
 import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.ScheduledReporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,24 +15,19 @@ import java.nio.file.Paths;
 import java.util.concurrent.TimeUnit;
 
 /**
- * CSV metrics reporter that writes per-metric CSV files using the Dropwizard {@link CsvReporter}.
+ * Metrics reporter using Dropwizard's native {@link ConsoleReporter} or {@link CsvReporter}.
  *
  * <p>Reads from a {@link DropwizardBridgeMeterRegistry} which bridges Micrometer meters
- * (including SDK-emitted {@code cosmos.client.op.*} meters) to a Dropwizard {@link MetricRegistry}.
- * The CsvReporter creates one CSV file per metric in the output directory.</p>
+ * (including SDK-emitted {@code cosmos.client.op.*} meters) to a Dropwizard {@link MetricRegistry}.</p>
  */
 public class CsvMetricsReporter {
 
     private static final Logger logger = LoggerFactory.getLogger(CsvMetricsReporter.class);
 
-    private final CsvReporter reporter;
+    private final ScheduledReporter reporter;
 
     /**
-     * Create a CSV metrics reporter.
-     *
-     * @param meterRegistry      the Dropwizard bridge registry whose metrics to report
-     * @param reportingDirectory base reporting directory; CSV files are written
-     *                           to a {@code metrics/} subdirectory.
+     * Create a CSV metrics reporter that writes per-metric CSV files.
      */
     public CsvMetricsReporter(DropwizardBridgeMeterRegistry meterRegistry, String reportingDirectory) {
         MetricRegistry dropwizardRegistry = meterRegistry.getDropwizardRegistry();
@@ -40,7 +37,19 @@ public class CsvMetricsReporter {
             .convertDurationsTo(TimeUnit.MILLISECONDS)
             .convertRatesTo(TimeUnit.SECONDS)
             .build(dir);
-        logger.info("CsvMetricsReporter started (CSV) -> {}", dir);
+        logger.info("CsvMetricsReporter started -> {}", dir);
+    }
+
+    /**
+     * Create a console metrics reporter using Dropwizard's native ConsoleReporter.
+     */
+    public CsvMetricsReporter(DropwizardBridgeMeterRegistry meterRegistry) {
+        MetricRegistry dropwizardRegistry = meterRegistry.getDropwizardRegistry();
+        reporter = ConsoleReporter.forRegistry(dropwizardRegistry)
+            .convertDurationsTo(TimeUnit.MILLISECONDS)
+            .convertRatesTo(TimeUnit.SECONDS)
+            .build();
+        logger.info("ConsoleReporter started");
     }
 
     public void start(long interval, TimeUnit unit) {

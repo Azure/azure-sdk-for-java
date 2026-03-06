@@ -66,21 +66,22 @@ public class BenchmarkOrchestrator {
         CompositeMeterRegistry compositeRegistry = new CompositeMeterRegistry();
         compositeRegistry.add(dropwizardBridge);
 
-        // Console summary — always on
-        ConsoleSummaryReporter consoleSummary = new ConsoleSummaryReporter(compositeRegistry);
-        consoleSummary.start(config.getPrintingInterval(), TimeUnit.SECONDS);
-
-        // Detailed reporter — based on reportingDestination (mutually exclusive, optional)
-        CsvMetricsReporter csvReporter = null;
+        // Reporter destination — mutually exclusive. Default: console.
+        CsvMetricsReporter localReporter = null;
         CosmosMetricsReporter cosmosReporter = null;
         MeterRegistry appInsightsRegistry = null;
 
-        if (config.getReportingDestination() != null) {
-            switch (config.getReportingDestination()) {
+        ReportingDestination destination = config.getReportingDestination();
+        if (destination == null) {
+            // Default: Dropwizard ConsoleReporter
+            localReporter = new CsvMetricsReporter(dropwizardBridge);
+            localReporter.start(config.getPrintingInterval(), TimeUnit.SECONDS);
+        } else {
+            switch (destination) {
                 case CSV:
-                    csvReporter = new CsvMetricsReporter(
+                    localReporter = new CsvMetricsReporter(
                         dropwizardBridge, config.getCsvReporterConfig().getReportingDirectory());
-                    csvReporter.start(config.getPrintingInterval(), TimeUnit.SECONDS);
+                    localReporter.start(config.getPrintingInterval(), TimeUnit.SECONDS);
                     break;
 
                 case COSMOSDB:
@@ -141,9 +142,8 @@ public class BenchmarkOrchestrator {
         try {
             runLifecycleLoop(config);
         } finally {
-            consoleSummary.stop();
-            if (csvReporter != null) {
-                csvReporter.stop();
+            if (localReporter != null) {
+                localReporter.stop();
             }
             if (cosmosReporter != null) {
                 cosmosReporter.stop();
