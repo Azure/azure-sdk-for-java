@@ -106,14 +106,16 @@ public class BenchmarkOrchestrator {
             }
         }
 
+        JvmGcMetrics gcMetrics = null;
+        ThreadPrefixGaugeSet threadPrefixGaugeSet = null;
+
         if (config.isEnableJvmStats()) {
-            // JVM metric binders are benchmark-scoped and implement AutoCloseable,
-            // but they are intentionally not closed here — they live for the duration
-            // of the JVM process and are cleaned up on exit.
-            new JvmGcMetrics().bindTo(compositeRegistry);
+            gcMetrics = new JvmGcMetrics();
+            gcMetrics.bindTo(compositeRegistry);
             new JvmMemoryMetrics().bindTo(compositeRegistry);
             new JvmThreadMetrics().bindTo(compositeRegistry);
-            new ThreadPrefixGaugeSet(config.getPrintingInterval()).bindTo(compositeRegistry);
+            threadPrefixGaugeSet = new ThreadPrefixGaugeSet(config.getPrintingInterval());
+            threadPrefixGaugeSet.bindTo(compositeRegistry);
             logger.info("JVM stats enabled (gc, memory, threads, threadPrefix)");
         }
 
@@ -147,6 +149,14 @@ public class BenchmarkOrchestrator {
             if (addedToGlobalRegistry) {
                 Metrics.removeRegistry(compositeRegistry);
             }
+            if (gcMetrics != null) {
+                gcMetrics.close();
+            }
+            if (threadPrefixGaugeSet != null) {
+                threadPrefixGaugeSet.close();
+            }
+            compositeRegistry.close();
+            dropwizardBridge.close();
             clearGlobalSystemProperties();
         }
     }

@@ -35,6 +35,7 @@ public class ThreadPrefixGaugeSet implements MeterBinder {
     private static final int DEFAULT_REFRESH_INTERVAL_SECONDS = 10;
 
     private final int refreshIntervalSeconds;
+    private ScheduledExecutorService scheduler;
 
     public ThreadPrefixGaugeSet() {
         this(DEFAULT_REFRESH_INTERVAL_SECONDS);
@@ -50,9 +51,7 @@ public class ThreadPrefixGaugeSet implements MeterBinder {
             .description("Thread count grouped by name prefix")
             .register(registry);
 
-        // Daemon threads are used so the scheduler is automatically cleaned up on JVM exit.
-        // No explicit shutdown is needed for benchmark-scoped usage.
-        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor(r -> {
+        scheduler = Executors.newSingleThreadScheduledExecutor(r -> {
             Thread t = new Thread(r, "thread-prefix-gauge-updater");
             t.setDaemon(true);
             return t;
@@ -67,6 +66,12 @@ public class ThreadPrefixGaugeSet implements MeterBinder {
                 true // overwrite previous rows
             );
         }, 0, refreshIntervalSeconds, TimeUnit.SECONDS);
+    }
+
+    public void close() {
+        if (scheduler != null) {
+            scheduler.shutdown();
+        }
     }
 
     private Map<String, Integer> computePrefixCounts() {

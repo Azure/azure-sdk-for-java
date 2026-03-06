@@ -43,13 +43,10 @@ import java.util.concurrent.atomic.AtomicLong;
 public class AsyncCtlWorkload implements Benchmark {
 
     // Dedicated scheduler for CTL benchmark workload dispatch.
-    // Uses daemon threads; no explicit dispose needed (cleaned up on JVM exit).
-    private static final Scheduler BENCHMARK_SCHEDULER = Schedulers.newBoundedElastic(
-        Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE,
-        Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE,
+    // Instance field so each benchmark gets its own scheduler that is disposed after run() completes.
+    private final Scheduler BENCHMARK_SCHEDULER = Schedulers.newParallel(
         "cosmos-bench-ctl",
-        60,
-        true);
+        Runtime.getRuntime().availableProcessors());
 
     private final String PERCENT_PARSING_ERROR = "Unable to parse user provided readWriteQueryReadManyPct ";
     private final String prefixUuidForCreate;
@@ -220,6 +217,8 @@ public class AsyncCtlWorkload implements Benchmark {
                     .onErrorResume(e -> Mono.empty()),
                 concurrency)
             .blockLast();
+
+        BENCHMARK_SCHEDULER.dispose();
 
         long endTime = System.currentTimeMillis();
         logger.info("[{}] operations performed in [{}] seconds.",
