@@ -42,6 +42,7 @@ public class VoiceLiveAudioTests extends VoiceLiveTestBase {
     @MethodSource("audioParams")
     @LiveOnly
     public void testRealtimeServiceWithAudio(String model, String apiVersion) throws InterruptedException, IOException {
+        assumeRealtimeModelSupported(model);
         VoiceLiveAsyncClient client = createClient(apiVersion);
 
         byte[] audioData = loadAudioFile("4-1.wav");
@@ -112,6 +113,7 @@ public class VoiceLiveAudioTests extends VoiceLiveTestBase {
     @LiveOnly
     public void testRealtimeServiceWithAudioEnhancements(String model, String apiVersion)
         throws InterruptedException, IOException {
+        assumeRealtimeModelSupported(model);
         VoiceLiveAsyncClient client = createClient(apiVersion);
 
         byte[] audioData = loadAudioFile("4-1.wav");
@@ -184,6 +186,7 @@ public class VoiceLiveAudioTests extends VoiceLiveTestBase {
     @LiveOnly
     public void testRealtimeServiceWithEchoCancellation(String model, String apiVersion)
         throws InterruptedException, IOException {
+        assumeRealtimeModelSupported(model);
         VoiceLiveAsyncClient client = createClient(apiVersion);
 
         byte[] audioData = loadAudioFile("4-1.wav");

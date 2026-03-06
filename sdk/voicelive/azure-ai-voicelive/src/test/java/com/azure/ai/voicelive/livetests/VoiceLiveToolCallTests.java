@@ -62,6 +62,7 @@ public class VoiceLiveToolCallTests extends VoiceLiveTestBase {
     @MethodSource("toolCallParams")
     @LiveOnly
     public void testRealtimeServiceToolCall(String model, String apiVersion) throws InterruptedException, IOException {
+        assumeRealtimeModelSupported(model);
         // Python uses @pytest.mark.flaky(reruns=3, reruns_delay=2) because the model
         // sometimes responds with audio instead of calling the tool.
         int maxAttempts = 3;
@@ -177,6 +178,7 @@ public class VoiceLiveToolCallTests extends VoiceLiveTestBase {
     @LiveOnly
     public void testRealtimeServiceToolChoice(String model, String apiVersion)
         throws InterruptedException, IOException {
+        assumeRealtimeModelSupported(model);
 
         VoiceLiveAsyncClient client = createClient(apiVersion);
         byte[] audioData = loadAudioFile("ask_weather.wav");
@@ -267,6 +269,7 @@ public class VoiceLiveToolCallTests extends VoiceLiveTestBase {
     @LiveOnly
     public void testRealtimeServiceToolCallParameter(String model, String apiVersion)
         throws InterruptedException, IOException {
+        assumeRealtimeModelSupported(model);
 
         VoiceLiveAsyncClient client = createClient(apiVersion);
         byte[] audioData = loadAudioFile("ask_weather.wav");
@@ -403,6 +406,7 @@ public class VoiceLiveToolCallTests extends VoiceLiveTestBase {
     @LiveOnly
     public void testRealtimeServiceLiveSessionUpdate(String model, String apiVersion)
         throws InterruptedException, IOException {
+        assumeRealtimeModelSupported(model);
 
         VoiceLiveAsyncClient client = createClient(apiVersion);
         byte[] audioData = loadAudioFile("ask_weather.wav");

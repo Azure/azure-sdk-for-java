@@ -18,6 +18,7 @@ import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.params.provider.Arguments;
 
 import java.io.ByteArrayOutputStream;
@@ -216,6 +217,28 @@ public abstract class VoiceLiveTestBase extends TestProxyTestBase {
 
     protected void waitForSetup() throws InterruptedException {
         Thread.sleep(SETUP_DELAY_MS);
+    }
+
+    /**
+     * Skips the current test (via JUnit 5 Assumptions) when {@code model} belongs to the
+     * gpt-4o-realtime family and the configured endpoint is not in a supported region.
+     * <p>
+     * Supported regions: East US 2 (eastus2), Sweden Central (swedencentral).
+     */
+    protected void assumeRealtimeModelSupported(String model) {
+        if (isRealtimeModel(model)) {
+            String endpoint = getEndpoint().toLowerCase(java.util.Locale.ROOT);
+            boolean supported = endpoint.contains("eastus2") || endpoint.contains("swedencentral");
+            Assumptions.assumeTrue(supported, "Skipping test: model '" + model
+                + "' is only supported in East US 2 and Sweden Central, " + "but endpoint is: " + getEndpoint());
+        }
+    }
+
+    /**
+     * Returns true if the model name belongs to the gpt-4o-realtime family.
+     */
+    protected static boolean isRealtimeModel(String model) {
+        return model != null && (model.startsWith("gpt-4o-realtime") || model.equals("gpt-4o-realtime"));
     }
 
     protected BinaryData createFunctionParameters(String... requiredFields) {

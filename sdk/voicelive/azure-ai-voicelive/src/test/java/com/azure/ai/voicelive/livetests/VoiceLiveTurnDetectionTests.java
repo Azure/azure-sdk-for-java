@@ -52,6 +52,7 @@ public class VoiceLiveTurnDetectionTests extends VoiceLiveTestBase {
     @LiveOnly
     public void testRealtimeServiceWithTurnDetectionLongTtsVadDuration(String model, String apiVersion)
         throws InterruptedException, IOException {
+        assumeRealtimeModelSupported(model);
         // Python uses @pytest.mark.flaky(reruns=3, reruns_delay=2)
         int maxAttempts = 3;
         AssertionError lastFailure = null;
@@ -144,6 +145,7 @@ public class VoiceLiveTurnDetectionTests extends VoiceLiveTestBase {
     @LiveOnly
     public void testRealtimeServiceWithTurnDetectionMultilingual(String description, String model,
         TurnDetection turnDetection, String apiVersion) throws InterruptedException, IOException {
+        assumeRealtimeModelSupported(model);
         // Python uses @pytest.mark.flaky(reruns=3, reruns_delay=2)
         int maxAttempts = 3;
         AssertionError lastFailure = null;
