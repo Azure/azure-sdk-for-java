@@ -2,7 +2,7 @@
 
 Azure Resource Manager ApiManagement client library for Java.
 
-This package contains Microsoft Azure SDK for ApiManagement Management SDK. ApiManagement Client. Package tag package-2024-05. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+This package contains Microsoft Azure SDK for ApiManagement Management SDK. Resource provider operation status. Package api-version 2025-03-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ## We'd love to hear your feedback
 
@@ -32,7 +32,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-apimanagement</artifactId>
-    <version>2.0.0</version>
+    <version>2.1.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
