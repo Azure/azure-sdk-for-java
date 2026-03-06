@@ -54,7 +54,7 @@ public class VoiceLiveToolCallTests extends VoiceLiveTestBase {
     // Voice: AzureStandardVoice("en-US-AriaNeural")
 
     static Stream<Arguments> toolCallParams() {
-        return crossProduct(new String[] { MODEL_GPT_4O_REALTIME_PREVIEW, MODEL_GPT_4O },
+        return crossProduct(new String[] { MODEL_GPT_4O_REALTIME, MODEL_GPT_4O },
             new String[] { API_VERSION_GA, API_VERSION_PREVIEW });
     }
 
@@ -394,7 +394,7 @@ public class VoiceLiveToolCallTests extends VoiceLiveTestBase {
     // Uses azure-speech + ServerVad, audio=ask_weather.wav
 
     static Stream<Arguments> liveSessionUpdateParams() {
-        return crossProduct(new String[] { MODEL_GPT_4O_REALTIME_PREVIEW },
+        return crossProduct(new String[] { MODEL_GPT_4O_REALTIME },
             new String[] { API_VERSION_2025_05_01_PREVIEW, API_VERSION_PREVIEW });
     }
 
@@ -551,7 +551,7 @@ public class VoiceLiveToolCallTests extends VoiceLiveTestBase {
     // Python: @pytest.mark.skip() - skipped in Python tests
 
     static Stream<Arguments> toolCallNoAudioOverlapParams() {
-        return crossProduct(new String[] { MODEL_GPT_4O_REALTIME_PREVIEW },
+        return crossProduct(new String[] { MODEL_GPT_4O_REALTIME },
             new String[] { API_VERSION_GA, API_VERSION_PREVIEW });
     }
 }

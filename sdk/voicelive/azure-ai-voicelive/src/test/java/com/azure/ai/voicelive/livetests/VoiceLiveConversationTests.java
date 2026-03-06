@@ -36,8 +36,7 @@ import java.util.stream.Stream;
 public class VoiceLiveConversationTests extends VoiceLiveTestBase {
 
     static Stream<Arguments> retrieveItemParams() {
-        return crossProduct(new String[] { "gpt-4o-realtime-preview" },
-            new String[] { API_VERSION_GA, API_VERSION_PREVIEW });
+        return crossProduct(new String[] { "gpt-4o-realtime" }, new String[] { API_VERSION_GA, API_VERSION_PREVIEW });
     }
 
     @ParameterizedTest
@@ -129,8 +128,7 @@ public class VoiceLiveConversationTests extends VoiceLiveTestBase {
     }
 
     static Stream<Arguments> truncateItemParams() {
-        return crossProduct(new String[] { "gpt-4o-realtime-preview" },
-            new String[] { API_VERSION_GA, API_VERSION_PREVIEW });
+        return crossProduct(new String[] { "gpt-4o-realtime" }, new String[] { API_VERSION_GA, API_VERSION_PREVIEW });
     }
 
     @ParameterizedTest
