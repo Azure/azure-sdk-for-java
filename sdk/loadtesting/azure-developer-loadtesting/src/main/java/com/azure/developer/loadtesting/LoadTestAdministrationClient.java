@@ -15,8 +15,8 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.developer.loadtesting.implementation.JsonMergePatchHelper;
 import com.azure.developer.loadtesting.implementation.LoadTestAdministrationClientImpl;
 import com.azure.developer.loadtesting.implementation.models.CloneTestRequest1;
@@ -30,8 +30,8 @@ import com.azure.developer.loadtesting.models.TestProfile;
 import com.azure.developer.loadtesting.models.TestServerMetricsConfiguration;
 import com.azure.developer.loadtesting.models.Trigger;
 import com.azure.developer.loadtesting.models.TriggerState;
-import java.time.OffsetDateTime;
 import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -534,16 +534,16 @@ public final class LoadTestAdministrationClient {
     }
 
     /**
-    * Uploads file and polls the validation status of the uploaded file.
-    *
-    * @param testId Unique name for load test, must be a valid URL character ^[a-z0-9_-]*$.
-    * @param fileName Unique name for test file with file extension like : App.jmx.
-    * @param body The file content as application/octet-stream.
-    * @param fileUploadRequestOptions The options to configure the file upload HTTP request before HTTP client sends
-    * it.
-    * @throws ResourceNotFoundException when a test with {@code testId} doesn't exist.
-    * @return A {@link SyncPoller} to poll on and retrieve the file info with validation status.
-    */
+     * Uploads file and polls the validation status of the uploaded file.
+     *
+     * @param testId Unique name for load test, must be a valid URL character ^[a-z0-9_-]*$.
+     * @param fileName Unique name for test file with file extension like : App.jmx.
+     * @param body The file content as application/octet-stream.
+     * @param fileUploadRequestOptions The options to configure the file upload HTTP request before HTTP client sends
+     * it.
+     * @throws ResourceNotFoundException when a test with {@code testId} doesn't exist.
+     * @return A {@link SyncPoller} to poll on and retrieve the file info with validation status.
+     */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginUploadTestFile(String testId, String fileName, BinaryData body,
         RequestOptions fileUploadRequestOptions) {
