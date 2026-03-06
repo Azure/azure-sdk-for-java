@@ -43,31 +43,40 @@ public class CrcInputStream extends InputStream {
     @Override
     public synchronized int read() throws IOException {
         int b = inputStream.read();
-        if (b >= 0) {
-            crc.update(b);
-            if (head.hasRemaining()) {
-                head.put((byte) b);
-            }
-            length++;
-        } else {
-            sink.emitValue(new ContentInfo(crc.getValue(), length, head), Sinks.EmitFailureHandler.FAIL_FAST);
+        if (b < 0) {
+            emitContentInfo();
+            return b;
         }
+
+        crc.update(b);
+        if (head.hasRemaining()) {
+            head.put((byte) b);
+        }
+        length++;
         return b;
     }
 
     @Override
     public synchronized int read(byte buf[], int off, int len) throws IOException {
         int read = inputStream.read(buf, off, len);
-        if (read >= 0) {
-            length += read;
-            crc.update(buf, off, read);
-            if (head.hasRemaining()) {
-                head.put(buf, off, Math.min(read, head.remaining()));
-            }
-        } else {
-            sink.emitValue(new ContentInfo(crc.getValue(), length, head), Sinks.EmitFailureHandler.FAIL_FAST);
+        if (read < 0) {
+            emitContentInfo();
+            return read;
         }
+
+        crc.update(buf, off, read);
+        if (head.hasRemaining()) {
+            head.put(buf, off, Math.min(read, head.remaining()));
+        }
+        length += read;
         return read;
+    }
+
+    // Uses tryEmitValue instead of emitValue(FAIL_FAST) so that resubscriptions
+    // (SDK retries, verification passes) don't throw on the second EOF.
+    private void emitContentInfo() {
+        //old was sink.emitValue(new ContentInfo(crc.getValue(), length, head), Sinks.EmitFailureHandler.FAIL_FAST);
+        sink.tryEmitValue(new ContentInfo(crc.getValue(), length, head));
     }
 
     @Override
@@ -135,6 +144,12 @@ public class CrcInputStream extends InputStream {
             } catch (IOException e) {
                 return FluxUtil.fluxError(LOGGER, new UncheckedIOException(e));
             }
+
+            // Reset CRC tracking state so resubscriptions (SDK retries or verification)
+            // compute the correct checksum from scratch.
+            crc.reset();
+            length = 0;
+            head.clear();
 
             final long[] currentTotalLength = new long[1];
             return Flux.generate(() -> inputStream, (is, sink) -> {
