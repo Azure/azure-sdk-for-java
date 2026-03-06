@@ -3,10 +3,7 @@
 
 package com.azure.ai.agents.tools;
 
-import com.azure.ai.agents.AgentsClient;
-import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.ConversationsClient;
-import com.azure.ai.agents.ResponsesClient;
+import com.azure.ai.agents.*;
 import com.azure.ai.agents.models.AgentReference;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.OpenApiAnonymousAuthDetails;
@@ -22,7 +19,6 @@ import com.openai.models.responses.EasyInputMessage;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
 
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -51,9 +47,10 @@ public class OpenApiSample {
         ResponsesClient responsesClient = builder.buildResponsesClient();
         ConversationsClient conversationsClient = builder.buildConversationsClient();
 
+
         // Load the OpenAPI spec from a JSON file
         Map<String, BinaryData> spec = OpenApiFunctionDefinition.readSpecFromFile(
-            Paths.get("src/samples/resources/assets/httpbin_openapi.json"));
+           SampleUtils.getResourcePath("assets/httpbin_openapi.json"));
 
         OpenApiFunctionDefinition toolDefinition = new OpenApiFunctionDefinition(
             "httpbin_get",
