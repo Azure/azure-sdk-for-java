@@ -19,6 +19,21 @@
 - [ListBySavingsPlanId](#benefitutilizationsummaries_listbysavingsplanid)
 - [ListBySavingsPlanOrder](#benefitutilizationsummaries_listbysavingsplanorder)
 
+## Budgets
+
+- [CreateOrUpdate](#budgets_createorupdate)
+- [Delete](#budgets_delete)
+- [Get](#budgets_get)
+- [List](#budgets_list)
+
+## CostAllocationRules
+
+- [CheckNameAvailability](#costallocationrules_checknameavailability)
+- [CreateOrUpdate](#costallocationrules_createorupdate)
+- [Delete](#costallocationrules_delete)
+- [Get](#costallocationrules_get)
+- [List](#costallocationrules_list)
+
 ## Dimensions
 
 - [ByExternalCloudProviderType](#dimensions_byexternalcloudprovidertype)
@@ -37,6 +52,15 @@
 
 - [ExternalCloudProviderUsage](#forecast_externalcloudproviderusage)
 - [Usage](#forecast_usage)
+
+## GenerateBenefitUtilizationSummariesReport
+
+- [GenerateByBillingAccount](#generatebenefitutilizationsummariesreport_generatebybillingaccount)
+- [GenerateByBillingProfile](#generatebenefitutilizationsummariesreport_generatebybillingprofile)
+- [GenerateByReservationId](#generatebenefitutilizationsummariesreport_generatebyreservationid)
+- [GenerateByReservationOrderId](#generatebenefitutilizationsummariesreport_generatebyreservationorderid)
+- [GenerateBySavingsPlanId](#generatebenefitutilizationsummariesreport_generatebysavingsplanid)
+- [GenerateBySavingsPlanOrderId](#generatebenefitutilizationsummariesreport_generatebysavingsplanorderid)
 
 ## GenerateCostDetailsReport
 
@@ -66,8 +90,9 @@
 
 ## PriceSheet
 
-- [Download](#pricesheet_download)
+- [DownloadByBillingAccount](#pricesheet_downloadbybillingaccount)
 - [DownloadByBillingProfile](#pricesheet_downloadbybillingprofile)
+- [DownloadByInvoice](#pricesheet_downloadbyinvoice)
 
 ## Query
 
@@ -88,6 +113,13 @@
 - [ListByScope](#scheduledactions_listbyscope)
 - [Run](#scheduledactions_run)
 - [RunByScope](#scheduledactions_runbyscope)
+
+## Settings
+
+- [CreateOrUpdateByScope](#settings_createorupdatebyscope)
+- [DeleteByScope](#settings_deletebyscope)
+- [GetByScope](#settings_getbyscope)
+- [List](#settings_list)
 
 ## Views
 
@@ -110,9 +142,7 @@ import com.azure.resourcemanager.costmanagement.models.DismissAlertPayload;
  */
 public final class AlertsDismissSamples {
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * DismissResourceGroupAlerts.json
+     * x-ms-original-file: 2025-03-01/DismissResourceGroupAlerts.json
      */
     /**
      * Sample code: PatchResourceGroupAlerts.
@@ -129,9 +159,7 @@ public final class AlertsDismissSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * DismissSubscriptionAlerts.json
+     * x-ms-original-file: 2025-03-01/DismissSubscriptionAlerts.json
      */
     /**
      * Sample code: PatchSubscriptionAlerts.
@@ -155,9 +183,7 @@ public final class AlertsDismissSamples {
  */
 public final class AlertsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * SingleSubscriptionAlert.json
+     * x-ms-original-file: 2025-03-01/SingleSubscriptionAlert.json
      */
     /**
      * Sample code: SingleSubscriptionAlerts.
@@ -172,9 +198,7 @@ public final class AlertsGetSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * SingleResourceGroupAlert.json
+     * x-ms-original-file: 2025-03-01/SingleResourceGroupAlert.json
      */
     /**
      * Sample code: SingleResourceGroupAlerts.
@@ -198,9 +222,7 @@ public final class AlertsGetSamples {
  */
 public final class AlertsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * SubscriptionAlerts.json
+     * x-ms-original-file: 2025-03-01/SubscriptionAlerts.json
      */
     /**
      * Sample code: SubscriptionAlerts.
@@ -213,9 +235,7 @@ public final class AlertsListSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * BillingProfileAlerts.json
+     * x-ms-original-file: 2025-03-01/BillingProfileAlerts.json
      */
     /**
      * Sample code: BillingProfileAlerts.
@@ -224,14 +244,12 @@ public final class AlertsListSamples {
      */
     public static void billingProfileAlerts(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
         manager.alerts()
-            .listWithResponse("providers/Microsoft.Billing/billingAccounts/12345:6789/billingProfiles/13579",
+            .listWithResponse("providers/Microsoft.Billing/billingAccounts/12345-6789/billingProfiles/13579",
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * ResourceGroupAlerts.json
+     * x-ms-original-file: 2025-03-01/ResourceGroupAlerts.json
      */
     /**
      * Sample code: ResourceGroupAlerts.
@@ -246,9 +264,7 @@ public final class AlertsListSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * DepartmentAlerts.json
+     * x-ms-original-file: 2025-03-01/DepartmentAlerts.json
      */
     /**
      * Sample code: DepartmentAlerts.
@@ -262,9 +278,7 @@ public final class AlertsListSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * InvoiceSectionAlerts.json
+     * x-ms-original-file: 2025-03-01/InvoiceSectionAlerts.json
      */
     /**
      * Sample code: InvoiceSectionAlerts.
@@ -279,9 +293,7 @@ public final class AlertsListSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * BillingAccountAlerts.json
+     * x-ms-original-file: 2025-03-01/BillingAccountAlerts.json
      */
     /**
      * Sample code: BillingAccountAlerts.
@@ -290,14 +302,12 @@ public final class AlertsListSamples {
      */
     public static void billingAccountAlerts(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
         manager.alerts()
-            .listWithResponse("providers/Microsoft.Billing/billingAccounts/12345:6789",
+            .listWithResponse("providers/Microsoft.Billing/billingAccounts/12345-6789",
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * EnrollmentAccountAlerts.json
+     * x-ms-original-file: 2025-03-01/EnrollmentAccountAlerts.json
      */
     /**
      * Sample code: EnrollmentAccountAlerts.
@@ -322,9 +332,7 @@ import com.azure.resourcemanager.costmanagement.models.ExternalCloudProviderType
  */
 public final class AlertsListExternalSamples {
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * ExternalBillingAccountAlerts.json
+     * x-ms-original-file: 2025-03-01/ExternalBillingAccountAlerts.json
      */
     /**
      * Sample code: ExternalBillingAccountAlerts.
@@ -339,9 +347,7 @@ public final class AlertsListExternalSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * ExternalSubscriptionAlerts.json
+     * x-ms-original-file: 2025-03-01/ExternalSubscriptionAlerts.json
      */
     /**
      * Sample code: ExternalSubscriptionAlerts.
@@ -365,9 +371,7 @@ public final class AlertsListExternalSamples {
  */
 public final class BenefitRecommendationsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * BenefitRecommendationsByBillingAccount.json
+     * x-ms-original-file: 2025-03-01/BenefitRecommendationsByBillingAccount.json
      */
     /**
      * Sample code: BenefitRecommendationsBillingAccountList.
@@ -393,9 +397,7 @@ public final class BenefitRecommendationsListSamples {
  */
 public final class BenefitUtilizationSummariesListByBillingAccountIdSamples {
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * BenefitUtilizationSummaries/SavingsPlan-BillingAccount.json
+     * x-ms-original-file: 2025-03-01/BenefitUtilizationSummaries/SavingsPlan-BillingAccount.json
      */
     /**
      * Sample code: SavingsPlanUtilizationSummaries-BillingAccount.
@@ -421,9 +423,7 @@ public final class BenefitUtilizationSummariesListByBillingAccountIdSamples {
  */
 public final class BenefitUtilizationSummariesListByBillingProfileIdSamples {
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * BenefitUtilizationSummaries/SavingsPlan-BillingProfile.json
+     * x-ms-original-file: 2025-03-01/BenefitUtilizationSummaries/SavingsPlan-BillingProfile.json
      */
     /**
      * Sample code: SavingsPlanUtilizationSummaries-BillingProfile.
@@ -450,9 +450,7 @@ public final class BenefitUtilizationSummariesListByBillingProfileIdSamples {
  */
 public final class BenefitUtilizationSummariesListBySavingsPlanIdSamples {
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * BenefitUtilizationSummaries/SavingsPlan-SavingsPlanId-Monthly.json
+     * x-ms-original-file: 2025-03-01/BenefitUtilizationSummaries/SavingsPlan-SavingsPlanId-Monthly.json
      */
     /**
      * Sample code: SavingsPlanUtilizationSummariesMonthlyWithSavingsPlanId.
@@ -477,9 +475,7 @@ public final class BenefitUtilizationSummariesListBySavingsPlanIdSamples {
  */
 public final class BenefitUtilizationSummariesListBySavingsPlanOrderSamples {
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * BenefitUtilizationSummaries/SavingsPlan-SavingsPlanOrderId-Daily.json
+     * x-ms-original-file: 2025-03-01/BenefitUtilizationSummaries/SavingsPlan-SavingsPlanOrderId-Daily.json
      */
     /**
      * Sample code: SavingsPlanUtilizationSummariesDaily.
@@ -495,6 +491,837 @@ public final class BenefitUtilizationSummariesListBySavingsPlanOrderSamples {
 }
 ```
 
+### Budgets_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.costmanagement.models.BudgetComparisonExpression;
+import com.azure.resourcemanager.costmanagement.models.BudgetFilter;
+import com.azure.resourcemanager.costmanagement.models.BudgetFilterProperties;
+import com.azure.resourcemanager.costmanagement.models.BudgetNotificationOperatorType;
+import com.azure.resourcemanager.costmanagement.models.BudgetOperatorType;
+import com.azure.resourcemanager.costmanagement.models.BudgetTimePeriod;
+import com.azure.resourcemanager.costmanagement.models.CategoryType;
+import com.azure.resourcemanager.costmanagement.models.CultureCode;
+import com.azure.resourcemanager.costmanagement.models.Frequency;
+import com.azure.resourcemanager.costmanagement.models.Notification;
+import com.azure.resourcemanager.costmanagement.models.ThresholdType;
+import com.azure.resourcemanager.costmanagement.models.TimeGrainType;
+import java.time.OffsetDateTime;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for Budgets CreateOrUpdate.
+ */
+public final class BudgetsCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * 2025-03-01/Budgets/CreateOrUpdate/ReservationUtilization/EA/BillingAccountEA-AlertRule-ReservationIdFilter.json
+     */
+    /**
+     * Sample code: CreateOrUpdate-ReservationUtilization-BillingAccountEA-AlertRule-ReservationIdFilter.
+     * 
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void createOrUpdateReservationUtilizationBillingAccountEAAlertRuleReservationIdFilter(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.budgets()
+            .define("TestAlertRule")
+            .withExistingScope("providers/Microsoft.Billing/billingAccounts/123456")
+            .withETag("\"1d34d016a593709\"")
+            .withCategory(CategoryType.RESERVATION_UTILIZATION)
+            .withTimeGrain(TimeGrainType.LAST7DAYS)
+            .withTimePeriod(new BudgetTimePeriod().withStartDate(OffsetDateTime.parse("2023-04-01T00:00:00Z"))
+                .withEndDate(OffsetDateTime.parse("2025-04-01T00:00:00Z")))
+            .withFilter(new BudgetFilter().withDimensions(new BudgetComparisonExpression().withName("ReservationId")
+                .withOperator(BudgetOperatorType.IN)
+                .withValues(Arrays.asList("00000000-0000-0000-0000-000000000000",
+                    "00000000-0000-0000-0000-000000000001", "00000000-0000-0000-0000-000000000002"))))
+            .withNotifications(mapOf("Actual_LessThan_99_Percent",
+                new Notification().withEnabled(true)
+                    .withOperator(BudgetNotificationOperatorType.LESS_THAN)
+                    .withThreshold(99.0)
+                    .withFrequency(Frequency.WEEKLY)
+                    .withContactEmails(Arrays.asList("johndoe@contoso.com", "janesmith@contoso.com"))
+                    .withLocale(CultureCode.EN_US)))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2025-03-01/Budgets/CreateOrUpdate/Cost/CreateOrUpdate-Cost-Subscription-Budget.json
+     */
+    /**
+     * Sample code: CreateOrUpdate-Cost-Subscription-Budget.
+     * 
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void
+        createOrUpdateCostSubscriptionBudget(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.budgets()
+            .define("TestBudget")
+            .withExistingScope("subscriptions/00000000-0000-0000-0000-000000000000")
+            .withETag("\"1d34d016a593709\"")
+            .withCategory(CategoryType.COST)
+            .withAmount(100.65D)
+            .withTimeGrain(TimeGrainType.MONTHLY)
+            .withTimePeriod(new BudgetTimePeriod().withStartDate(OffsetDateTime.parse("2023-04-01T00:00:00Z"))
+                .withEndDate(OffsetDateTime.parse("2024-10-31T00:00:00Z")))
+            .withFilter(new BudgetFilter().withAnd(Arrays.asList(
+                new BudgetFilterProperties().withDimensions(new BudgetComparisonExpression().withName("ResourceId")
+                    .withOperator(BudgetOperatorType.IN)
+                    .withValues(Arrays.asList(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/MYDEVTESTRG/providers/Microsoft.Compute/virtualMachines/MSVM2",
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/MYDEVTESTRG/providers/Microsoft.Compute/virtualMachines/platformcloudplatformGeneric1"))),
+                new BudgetFilterProperties().withTags(new BudgetComparisonExpression().withName("category")
+                    .withOperator(BudgetOperatorType.IN)
+                    .withValues(Arrays.asList("Dev", "Prod"))),
+                new BudgetFilterProperties().withTags(new BudgetComparisonExpression().withName("department")
+                    .withOperator(BudgetOperatorType.IN)
+                    .withValues(Arrays.asList("engineering", "sales"))))))
+            .withNotifications(mapOf("Actual_GreaterThan_80_Percent", new Notification().withEnabled(true)
+                .withOperator(BudgetNotificationOperatorType.GREATER_THAN)
+                .withThreshold(80.0)
+                .withContactEmails(Arrays.asList("johndoe@contoso.com", "janesmith@contoso.com"))
+                .withContactRoles(Arrays.asList("Contributor", "Reader"))
+                .withContactGroups(Arrays.asList(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/MYDEVTESTRG/providers/microsoft.insights/actionGroups/SampleActionGroup"))
+                .withThresholdType(ThresholdType.ACTUAL)
+                .withLocale(CultureCode.EN_US)))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file:
+     * 2025-03-01/Budgets/CreateOrUpdate/ReservationUtilization/MCA/Customer-AlertRule-ReservedResourceTypeFilter.json
+     */
+    /**
+     * Sample code: CreateOrUpdate-ReservationUtilization-CustomerCSP-AlertRule-ReservedResourceTypeFilter.
+     * 
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void createOrUpdateReservationUtilizationCustomerCSPAlertRuleReservedResourceTypeFilter(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.budgets()
+            .define("TestAlertRule")
+            .withExistingScope(
+                "providers/Microsoft.Billing/billingAccounts/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee:ffffffff-gggg-hhhh-iiii-jjjjjjjjjjjj_2023-04-01/customers/000000-1111-2222-3333-444444444444")
+            .withETag("\"1d34d016a593709\"")
+            .withCategory(CategoryType.RESERVATION_UTILIZATION)
+            .withTimeGrain(TimeGrainType.LAST30DAYS)
+            .withTimePeriod(new BudgetTimePeriod().withStartDate(OffsetDateTime.parse("2023-04-01T00:00:00Z"))
+                .withEndDate(OffsetDateTime.parse("2025-04-01T00:00:00Z")))
+            .withFilter(
+                new BudgetFilter().withDimensions(new BudgetComparisonExpression().withName("ReservedResourceType")
+                    .withOperator(BudgetOperatorType.IN)
+                    .withValues(Arrays.asList("VirtualMachines", "SqlDatabases", "CosmosDb"))))
+            .withNotifications(mapOf("Actual_LessThan_99_Percent",
+                new Notification().withEnabled(true)
+                    .withOperator(BudgetNotificationOperatorType.LESS_THAN)
+                    .withThreshold(99.0)
+                    .withFrequency(Frequency.DAILY)
+                    .withContactEmails(Arrays.asList("johndoe@contoso.com", "janesmith@contoso.com"))
+                    .withLocale(CultureCode.EN_US)))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2025-03-01/Budgets/CreateOrUpdate/ReservationUtilization/MCA/Customer-AlertRule.json
+     */
+    /**
+     * Sample code: CreateOrUpdate-ReservationUtilization-CustomerCSP-AlertRule.json.
+     * 
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void createOrUpdateReservationUtilizationCustomerCSPAlertRuleJson(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.budgets()
+            .define("TestAlertRule")
+            .withExistingScope(
+                "providers/Microsoft.Billing/billingAccounts/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee:ffffffff-gggg-hhhh-iiii-jjjjjjjjjjjj_2023-04-01/customers/000000-1111-2222-3333-444444444444")
+            .withETag("\"1d34d016a593709\"")
+            .withCategory(CategoryType.RESERVATION_UTILIZATION)
+            .withTimeGrain(TimeGrainType.LAST30DAYS)
+            .withTimePeriod(new BudgetTimePeriod().withStartDate(OffsetDateTime.parse("2023-04-01T00:00:00Z"))
+                .withEndDate(OffsetDateTime.parse("2025-04-01T00:00:00Z")))
+            .withFilter(new BudgetFilter())
+            .withNotifications(mapOf("Actual_LessThan_99_Percent",
+                new Notification().withEnabled(true)
+                    .withOperator(BudgetNotificationOperatorType.LESS_THAN)
+                    .withThreshold(99.0)
+                    .withFrequency(Frequency.DAILY)
+                    .withContactEmails(Arrays.asList("johndoe@contoso.com", "janesmith@contoso.com"))
+                    .withLocale(CultureCode.EN_US)))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file:
+     * 2025-03-01/Budgets/CreateOrUpdate/ReservationUtilization/MCA/BillingProfile-AlertRule-ReservationIdFilter.json
+     */
+    /**
+     * Sample code: CreateOrUpdate-ReservationUtilization-BillingProfileMCA-AlertRule-ReservationIdFilter.
+     * 
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void createOrUpdateReservationUtilizationBillingProfileMCAAlertRuleReservationIdFilter(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.budgets()
+            .define("TestAlertRule")
+            .withExistingScope(
+                "providers/Microsoft.Billing/billingAccounts/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee:ffffffff-gggg-hhhh-iiii-jjjjjjjjjjjj_2023-04-01/billingProfiles/KKKK-LLLL-MMM-NNN")
+            .withETag("\"1d34d016a593709\"")
+            .withCategory(CategoryType.RESERVATION_UTILIZATION)
+            .withTimeGrain(TimeGrainType.LAST30DAYS)
+            .withTimePeriod(new BudgetTimePeriod().withStartDate(OffsetDateTime.parse("2023-04-01T00:00:00Z"))
+                .withEndDate(OffsetDateTime.parse("2025-04-01T00:00:00Z")))
+            .withFilter(new BudgetFilter().withDimensions(new BudgetComparisonExpression().withName("ReservationId")
+                .withOperator(BudgetOperatorType.IN)
+                .withValues(Arrays.asList("00000000-0000-0000-0000-000000000000",
+                    "00000000-0000-0000-0000-000000000001", "00000000-0000-0000-0000-000000000002"))))
+            .withNotifications(mapOf("Actual_LessThan_99_Percent",
+                new Notification().withEnabled(true)
+                    .withOperator(BudgetNotificationOperatorType.LESS_THAN)
+                    .withThreshold(99.0)
+                    .withFrequency(Frequency.DAILY)
+                    .withContactEmails(Arrays.asList("johndoe@contoso.com", "janesmith@contoso.com"))
+                    .withLocale(CultureCode.EN_US)))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2025-03-01/Budgets/CreateOrUpdate/ReservationUtilization/MCA/BillingProfile-AlertRule.json
+     */
+    /**
+     * Sample code: CreateOrUpdate-ReservationUtilization-BillingProfileMCA-AlertRule.json.
+     * 
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void createOrUpdateReservationUtilizationBillingProfileMCAAlertRuleJson(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.budgets()
+            .define("TestAlertRule")
+            .withExistingScope(
+                "providers/Microsoft.Billing/billingAccounts/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee:ffffffff-gggg-hhhh-iiii-jjjjjjjjjjjj_2023-04-01/billingProfiles/KKKK-LLLL-MMM-NNN")
+            .withETag("\"1d34d016a593709\"")
+            .withCategory(CategoryType.RESERVATION_UTILIZATION)
+            .withTimeGrain(TimeGrainType.LAST30DAYS)
+            .withTimePeriod(new BudgetTimePeriod().withStartDate(OffsetDateTime.parse("2023-04-01T00:00:00Z"))
+                .withEndDate(OffsetDateTime.parse("2025-04-01T00:00:00Z")))
+            .withFilter(new BudgetFilter())
+            .withNotifications(mapOf("Actual_LessThan_99_Percent",
+                new Notification().withEnabled(true)
+                    .withOperator(BudgetNotificationOperatorType.LESS_THAN)
+                    .withThreshold(99.0)
+                    .withFrequency(Frequency.DAILY)
+                    .withContactEmails(Arrays.asList("johndoe@contoso.com", "janesmith@contoso.com"))
+                    .withLocale(CultureCode.EN_US)))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2025-03-01/Budgets/CreateOrUpdate/ReservationUtilization/EA/BillingAccountEA-AlertRule.json
+     */
+    /**
+     * Sample code: CreateOrUpdate-ReservationUtilization-BillingAccountEA-AlertRule.
+     * 
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void createOrUpdateReservationUtilizationBillingAccountEAAlertRule(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.budgets()
+            .define("TestAlertRule")
+            .withExistingScope("providers/Microsoft.Billing/billingAccounts/123456")
+            .withETag("\"1d34d016a593709\"")
+            .withCategory(CategoryType.RESERVATION_UTILIZATION)
+            .withTimeGrain(TimeGrainType.LAST7DAYS)
+            .withTimePeriod(new BudgetTimePeriod().withStartDate(OffsetDateTime.parse("2023-04-01T00:00:00Z"))
+                .withEndDate(OffsetDateTime.parse("2025-04-01T00:00:00Z")))
+            .withFilter(new BudgetFilter())
+            .withNotifications(mapOf("Actual_LessThan_99_Percent",
+                new Notification().withEnabled(true)
+                    .withOperator(BudgetNotificationOperatorType.LESS_THAN)
+                    .withThreshold(99.0)
+                    .withFrequency(Frequency.WEEKLY)
+                    .withContactEmails(Arrays.asList("johndoe@contoso.com", "janesmith@contoso.com"))
+                    .withLocale(CultureCode.EN_US)))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file:
+     * 2025-03-01/Budgets/CreateOrUpdate/ReservationUtilization/EA/BillingAccountEA-AlertRule-ReservedResourceTypeFilter
+     * .json
+     */
+    /**
+     * Sample code: CreateOrUpdate-ReservationUtilization-BillingAccountEA-AlertRule-ReservedResourceTypeFilter.
+     * 
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void createOrUpdateReservationUtilizationBillingAccountEAAlertRuleReservedResourceTypeFilter(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.budgets()
+            .define("TestAlertRule")
+            .withExistingScope("providers/Microsoft.Billing/billingAccounts/123456")
+            .withETag("\"1d34d016a593709\"")
+            .withCategory(CategoryType.RESERVATION_UTILIZATION)
+            .withTimeGrain(TimeGrainType.LAST7DAYS)
+            .withTimePeriod(new BudgetTimePeriod().withStartDate(OffsetDateTime.parse("2023-04-01T00:00:00Z"))
+                .withEndDate(OffsetDateTime.parse("2025-04-01T00:00:00Z")))
+            .withFilter(
+                new BudgetFilter().withDimensions(new BudgetComparisonExpression().withName("ReservedResourceType")
+                    .withOperator(BudgetOperatorType.IN)
+                    .withValues(Arrays.asList("VirtualMachines", "SqlDatabases", "CosmosDb"))))
+            .withNotifications(mapOf("Actual_LessThan_99_Percent",
+                new Notification().withEnabled(true)
+                    .withOperator(BudgetNotificationOperatorType.LESS_THAN)
+                    .withThreshold(99.0)
+                    .withFrequency(Frequency.WEEKLY)
+                    .withContactEmails(Arrays.asList("johndoe@contoso.com", "janesmith@contoso.com"))
+                    .withLocale(CultureCode.EN_US)))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file:
+     * 2025-03-01/Budgets/CreateOrUpdate/ReservationUtilization/MCA/BillingProfile-AlertRule-ReservedResourceTypeFilter.
+     * json
+     */
+    /**
+     * Sample code: CreateOrUpdate-ReservationUtilization-BillingProfileMCA-AlertRule-ReservedResourceTypeFilter.
+     * 
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void createOrUpdateReservationUtilizationBillingProfileMCAAlertRuleReservedResourceTypeFilter(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.budgets()
+            .define("TestAlertRule")
+            .withExistingScope(
+                "providers/Microsoft.Billing/billingAccounts/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee:ffffffff-gggg-hhhh-iiii-jjjjjjjjjjjj_2023-04-01/billingProfiles/KKKK-LLLL-MMM-NNN")
+            .withETag("\"1d34d016a593709\"")
+            .withCategory(CategoryType.RESERVATION_UTILIZATION)
+            .withTimeGrain(TimeGrainType.LAST30DAYS)
+            .withTimePeriod(new BudgetTimePeriod().withStartDate(OffsetDateTime.parse("2023-04-01T00:00:00Z"))
+                .withEndDate(OffsetDateTime.parse("2025-04-01T00:00:00Z")))
+            .withFilter(
+                new BudgetFilter().withDimensions(new BudgetComparisonExpression().withName("ReservedResourceType")
+                    .withOperator(BudgetOperatorType.IN)
+                    .withValues(Arrays.asList("VirtualMachines", "SqlDatabases", "CosmosDb"))))
+            .withNotifications(mapOf("Actual_LessThan_99_Percent",
+                new Notification().withEnabled(true)
+                    .withOperator(BudgetNotificationOperatorType.LESS_THAN)
+                    .withThreshold(99.0)
+                    .withFrequency(Frequency.DAILY)
+                    .withContactEmails(Arrays.asList("johndoe@contoso.com", "janesmith@contoso.com"))
+                    .withLocale(CultureCode.EN_US)))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file:
+     * 2025-03-01/Budgets/CreateOrUpdate/ReservationUtilization/MCA/Customer-AlertRule-ReservationIdFilter.json
+     */
+    /**
+     * Sample code: CreateOrUpdate-ReservationUtilization-CustomerCSP-AlertRule-ReservationIdFilter.
+     * 
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void createOrUpdateReservationUtilizationCustomerCSPAlertRuleReservationIdFilter(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.budgets()
+            .define("TestAlertRule")
+            .withExistingScope(
+                "providers/Microsoft.Billing/billingAccounts/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee:ffffffff-gggg-hhhh-iiii-jjjjjjjjjjjj_2023-04-01/customers/000000-1111-2222-3333-444444444444")
+            .withETag("\"1d34d016a593709\"")
+            .withCategory(CategoryType.RESERVATION_UTILIZATION)
+            .withTimeGrain(TimeGrainType.LAST30DAYS)
+            .withTimePeriod(new BudgetTimePeriod().withStartDate(OffsetDateTime.parse("2023-04-01T00:00:00Z"))
+                .withEndDate(OffsetDateTime.parse("2025-04-01T00:00:00Z")))
+            .withFilter(new BudgetFilter().withDimensions(new BudgetComparisonExpression().withName("ReservationId")
+                .withOperator(BudgetOperatorType.IN)
+                .withValues(Arrays.asList("00000000-0000-0000-0000-000000000000",
+                    "00000000-0000-0000-0000-000000000001", "00000000-0000-0000-0000-000000000002"))))
+            .withNotifications(mapOf("Actual_LessThan_99_Percent",
+                new Notification().withEnabled(true)
+                    .withOperator(BudgetNotificationOperatorType.LESS_THAN)
+                    .withThreshold(99.0)
+                    .withFrequency(Frequency.DAILY)
+                    .withContactEmails(Arrays.asList("johndoe@contoso.com", "janesmith@contoso.com"))
+                    .withLocale(CultureCode.EN_US)))
+            .create();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
+### Budgets_Delete
+
+```java
+/**
+ * Samples for Budgets Delete.
+ */
+public final class BudgetsDeleteSamples {
+    /*
+     * x-ms-original-file: 2025-03-01/Budgets/Delete/DeleteBudget.json
+     */
+    /**
+     * Sample code: DeleteBudget.
+     * 
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void deleteBudget(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.budgets()
+            .deleteByResourceGroupWithResponse("subscriptions/00000000-0000-0000-0000-000000000000", "TestBudget",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Budgets_Get
+
+```java
+/**
+ * Samples for Budgets Get.
+ */
+public final class BudgetsGetSamples {
+    /*
+     * x-ms-original-file: 2025-03-01/Budgets/Get/ReservationUtilization/Get-ReservationUtilization-AlertRule.json
+     */
+    /**
+     * Sample code: Get-ReservationUtilization-AlertRule.
+     * 
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void
+        getReservationUtilizationAlertRule(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.budgets()
+            .getWithResponse(
+                "providers/Microsoft.Billing/billingAccounts/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee:ffffffff-gggg-hhhh-iiii-jjjjjjjjjjjj_2023-04-01/billingProfiles/KKKK-LLLL-MMM-NNN",
+                "TestAlertRule", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2025-03-01/Budgets/Get/Cost/Get-Cost-Budget.json
+     */
+    /**
+     * Sample code: Get-Cost-Budget.
+     * 
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void getCostBudget(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.budgets()
+            .getWithResponse("subscriptions/00000000-0000-0000-0000-000000000000", "TestBudget",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Budgets_List
+
+```java
+/**
+ * Samples for Budgets List.
+ */
+public final class BudgetsListSamples {
+    /*
+     * x-ms-original-file: 2025-03-01/Budgets/List/MCA/BillingProfileBudgetsList.json
+     */
+    /**
+     * Sample code: BillingProfileBudgetsList-MCA.
+     * 
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void
+        billingProfileBudgetsListMCA(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.budgets()
+            .list(
+                "providers/Microsoft.Billing/billingAccounts/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee:ffffffff-gggg-hhhh-iiii-jjjjjjjjjjjj_2023-04-01/billingProfiles/MYDEVTESTBP",
+                null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2025-03-01/Budgets/List/MCA/CustomerBudgetsList-CategoryTypeFilter.json
+     */
+    /**
+     * Sample code: CustomerBudgetsList-MCA-CSP-CategoryTypeFilter.
+     * 
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void customerBudgetsListMCACSPCategoryTypeFilter(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.budgets()
+            .list(
+                "providers/Microsoft.Billing/billingAccounts/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee:ffffffff-gggg-hhhh-iiii-jjjjjjjjjjjj_2023-04-01/customers/000000-1111-2222-3333-444444444444",
+                "properties/category eq 'ReservationUtilization'", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2025-03-01/Budgets/List/EA/BillingAccountBudgetsList-EA.json
+     */
+    /**
+     * Sample code: BillingAccountBudgetsList-EA.
+     * 
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void
+        billingAccountBudgetsListEA(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.budgets()
+            .list("providers/Microsoft.Billing/billingAccounts/123456", null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2025-03-01/Budgets/List/MCA/CustomerBudgetsList.json
+     */
+    /**
+     * Sample code: CustomerBudgetsList-MCA-CSP.
+     * 
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void
+        customerBudgetsListMCACSP(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.budgets()
+            .list(
+                "providers/Microsoft.Billing/billingAccounts/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee:ffffffff-gggg-hhhh-iiii-jjjjjjjjjjjj_2023-04-01/customers/000000-1111-2222-3333-444444444444",
+                null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2025-03-01/Budgets/List/EA/BillingAccountBudgetsList-EA-CategoryTypeFilter.json
+     */
+    /**
+     * Sample code: BillingAccountBudgetsList-EA-CategoryTypeFilter.
+     * 
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void billingAccountBudgetsListEACategoryTypeFilter(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.budgets()
+            .list("providers/Microsoft.Billing/billingAccounts/123456",
+                "properties/category eq 'ReservationUtilization'", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2025-03-01/Budgets/List/RBAC/ManagementGroupBudgetsList.json
+     */
+    /**
+     * Sample code: ManagementGroupBudgetsList.
+     * 
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void
+        managementGroupBudgetsList(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.budgets()
+            .list("Microsoft.Management/managementGroups/MYDEVTESTMG", null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2025-03-01/Budgets/List/EA/DepartmentBudgetsList.json
+     */
+    /**
+     * Sample code: DepartmentBudgetsList-EA.
+     * 
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void departmentBudgetsListEA(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.budgets()
+            .list("providers/Microsoft.Billing/billingAccounts/123456/departments/789101", null,
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2025-03-01/Budgets/List/EA/EnrollmentAccountBudgetsList.json
+     */
+    /**
+     * Sample code: EnrollmentAccountBudgetsList-EA.
+     * 
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void
+        enrollmentAccountBudgetsListEA(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.budgets()
+            .list("providers/Microsoft.Billing/billingAccounts/123456/enrollmentAccounts/473845", null,
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2025-03-01/Budgets/List/MCA/BillingProfileBudgetsList-CategoryTypeFilter.json
+     */
+    /**
+     * Sample code: BillingProfileBudgetsList-MCA-CategoryTypeFilter.
+     * 
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void billingProfileBudgetsListMCACategoryTypeFilter(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.budgets()
+            .list(
+                "providers/Microsoft.Billing/billingAccounts/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee:ffffffff-gggg-hhhh-iiii-jjjjjjjjjjjj_2023-04-01/billingProfiles/MYDEVTESTBP",
+                "properties/category eq 'ReservationUtilization'", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2025-03-01/Budgets/List/MCA/BillingAccountBudgetsList-MCA.json
+     */
+    /**
+     * Sample code: BillingAccountBudgetsList-MCA.
+     * 
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void
+        billingAccountBudgetsListMCA(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.budgets()
+            .list(
+                "providers/Microsoft.Billing/billingAccounts/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee:ffffffff-gggg-hhhh-iiii-jjjjjjjjjjjj_2023-04-01",
+                null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2025-03-01/Budgets/List/MCA/BillingAccountBudgetsList-MCA-CategoryTypeFilter.json
+     */
+    /**
+     * Sample code: BillingAccountBudgetsList-MCA-CategoryTypeFilter.
+     * 
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void billingAccountBudgetsListMCACategoryTypeFilter(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.budgets()
+            .list(
+                "providers/Microsoft.Billing/billingAccounts/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee:ffffffff-gggg-hhhh-iiii-jjjjjjjjjjjj_2023-04-01",
+                "properties/category eq 'ReservationUtilization'", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2025-03-01/Budgets/List/MCA/InvoiceSectionBudgetsList.json
+     */
+    /**
+     * Sample code: InvoiceSectionBudgetsList-MCA.
+     * 
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void
+        invoiceSectionBudgetsListMCA(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.budgets()
+            .list(
+                "providers/Microsoft.Billing/billingAccounts/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee:ffffffff-gggg-hhhh-iiii-jjjjjjjjjjjj_2023-04-01/billingProfiles/MYDEVTESTBP/invoiceSections/AAAA-BBBB-CCC-DDD",
+                null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2025-03-01/Budgets/List/RBAC/ResourceGroupBudgetsList.json
+     */
+    /**
+     * Sample code: ResourceGroupBudgetsList.
+     * 
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void
+        resourceGroupBudgetsList(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.budgets()
+            .list("subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/MYDEVTESTRG", null,
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2025-03-01/Budgets/List/RBAC/SubscriptionBudgetsList.json
+     */
+    /**
+     * Sample code: SubscriptionBudgetsList.
+     * 
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void subscriptionBudgetsList(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.budgets()
+            .list("subscriptions/00000000-0000-0000-0000-000000000000", null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### CostAllocationRules_CheckNameAvailability
+
+```java
+import com.azure.resourcemanager.costmanagement.models.CostAllocationRuleCheckNameAvailabilityRequest;
+
+/**
+ * Samples for CostAllocationRules CheckNameAvailability.
+ */
+public final class CostAllocationRulesCheckNameAvailabilitySamples {
+    /*
+     * x-ms-original-file: 2025-03-01/CostAllocationRuleCheckNameAvailability.json
+     */
+    /**
+     * Sample code: CostAllocationRuleCheckNameAvailability.
+     * 
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void costAllocationRuleCheckNameAvailability(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.costAllocationRules()
+            .checkNameAvailabilityWithResponse("100",
+                new CostAllocationRuleCheckNameAvailabilityRequest().withName("testRule")
+                    .withType("Microsoft.CostManagement/costAllocationRules"),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### CostAllocationRules_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.costmanagement.fluent.models.CostAllocationRuleDefinitionInner;
+import com.azure.resourcemanager.costmanagement.models.CostAllocationPolicyType;
+import com.azure.resourcemanager.costmanagement.models.CostAllocationProportion;
+import com.azure.resourcemanager.costmanagement.models.CostAllocationResourceType;
+import com.azure.resourcemanager.costmanagement.models.CostAllocationRuleDetails;
+import com.azure.resourcemanager.costmanagement.models.CostAllocationRuleProperties;
+import com.azure.resourcemanager.costmanagement.models.RuleStatus;
+import com.azure.resourcemanager.costmanagement.models.SourceCostAllocationResource;
+import com.azure.resourcemanager.costmanagement.models.TargetCostAllocationResource;
+import java.util.Arrays;
+
+/**
+ * Samples for CostAllocationRules CreateOrUpdate.
+ */
+public final class CostAllocationRulesCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2025-03-01/CostAllocationRuleCreateTag.json
+     */
+    /**
+     * Sample code: CostAllocationRulesCreateTag.
+     * 
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void
+        costAllocationRulesCreateTag(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.costAllocationRules()
+            .createOrUpdateWithResponse("100", "testRule",
+                new CostAllocationRuleDefinitionInner().withProperties(new CostAllocationRuleProperties()
+                    .withDescription("This is a testRule")
+                    .withDetails(new CostAllocationRuleDetails()
+                        .withSourceResources(Arrays
+                            .asList(new SourceCostAllocationResource().withResourceType(CostAllocationResourceType.TAG)
+                                .withName("category")
+                                .withValues(Arrays.asList("devops"))))
+                        .withTargetResources(Arrays.asList(
+                            new TargetCostAllocationResource().withResourceType(CostAllocationResourceType.DIMENSION)
+                                .withName("ResourceGroupName")
+                                .withValues(Arrays.asList(
+                                    new CostAllocationProportion().withName("destinationRG").withPercentage(33.33),
+                                    new CostAllocationProportion().withName("destinationRG2").withPercentage(33.33),
+                                    new CostAllocationProportion().withName("destinationRG3").withPercentage(33.34)))
+                                .withPolicyType(CostAllocationPolicyType.FIXED_PROPORTION))))
+                    .withStatus(RuleStatus.ACTIVE)),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2025-03-01/CostAllocationRuleCreate.json
+     */
+    /**
+     * Sample code: CostAllocationRulesCreateResourceGroup.
+     * 
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void
+        costAllocationRulesCreateResourceGroup(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.costAllocationRules()
+            .createOrUpdateWithResponse("100", "testRule",
+                new CostAllocationRuleDefinitionInner().withProperties(new CostAllocationRuleProperties()
+                    .withDescription("This is a testRule")
+                    .withDetails(new CostAllocationRuleDetails()
+                        .withSourceResources(Arrays.asList(
+                            new SourceCostAllocationResource().withResourceType(CostAllocationResourceType.DIMENSION)
+                                .withName("ResourceGroupName")
+                                .withValues(Arrays.asList("sampleRG", "secondRG"))))
+                        .withTargetResources(Arrays.asList(
+                            new TargetCostAllocationResource().withResourceType(CostAllocationResourceType.DIMENSION)
+                                .withName("ResourceGroupName")
+                                .withValues(Arrays.asList(
+                                    new CostAllocationProportion().withName("destinationRG").withPercentage(45.0),
+                                    new CostAllocationProportion().withName("destinationRG2").withPercentage(54.0)))
+                                .withPolicyType(CostAllocationPolicyType.FIXED_PROPORTION))))
+                    .withStatus(RuleStatus.ACTIVE)),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### CostAllocationRules_Delete
+
+```java
+/**
+ * Samples for CostAllocationRules Delete.
+ */
+public final class CostAllocationRulesDeleteSamples {
+    /*
+     * x-ms-original-file: 2025-03-01/CostAllocationRuleDelete.json
+     */
+    /**
+     * Sample code: DeleteCostAllocationRule.
+     * 
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void
+        deleteCostAllocationRule(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.costAllocationRules()
+            .deleteByResourceGroupWithResponse("100", "testRule", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### CostAllocationRules_Get
+
+```java
+/**
+ * Samples for CostAllocationRules Get.
+ */
+public final class CostAllocationRulesGetSamples {
+    /*
+     * x-ms-original-file: 2025-03-01/CostAllocationRuleGet.json
+     */
+    /**
+     * Sample code: CostAllocationRules.
+     * 
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void costAllocationRules(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.costAllocationRules().getWithResponse("100", "testRule", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### CostAllocationRules_List
+
+```java
+/**
+ * Samples for CostAllocationRules List.
+ */
+public final class CostAllocationRulesListSamples {
+    /*
+     * x-ms-original-file: 2025-03-01/CostAllocationRulesList.json
+     */
+    /**
+     * Sample code: CostAllocationRulesList.
+     * 
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void costAllocationRulesList(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.costAllocationRules().list("100", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### Dimensions_ByExternalCloudProviderType
 
 ```java
@@ -505,9 +1332,7 @@ import com.azure.resourcemanager.costmanagement.models.ExternalCloudProviderType
  */
 public final class DimensionsByExternalCloudProviderTypeSamples {
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * ExternalSubscriptionsDimensions.json
+     * x-ms-original-file: 2025-03-01/ExternalSubscriptionsDimensions.json
      */
     /**
      * Sample code: ExternalSubscriptionDimensionList.
@@ -522,9 +1347,7 @@ public final class DimensionsByExternalCloudProviderTypeSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * ExternalBillingAccountsDimensions.json
+     * x-ms-original-file: 2025-03-01/ExternalBillingAccountsDimensions.json
      */
     /**
      * Sample code: ExternalBillingAccountDimensionList.
@@ -548,9 +1371,7 @@ public final class DimensionsByExternalCloudProviderTypeSamples {
  */
 public final class DimensionsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * MCACustomerDimensionsList.json
+     * x-ms-original-file: 2025-03-01/MCACustomerDimensionsList.json
      */
     /**
      * Sample code: CustomerDimensionsList-MCA.
@@ -565,9 +1386,7 @@ public final class DimensionsListSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * DepartmentDimensionsList.json
+     * x-ms-original-file: 2025-03-01/DepartmentDimensionsList.json
      */
     /**
      * Sample code: DepartmentDimensionsList-Legacy.
@@ -582,9 +1401,7 @@ public final class DimensionsListSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * MCAInvoiceSectionDimensionsListWithFilter.json
+     * x-ms-original-file: 2025-03-01/MCAInvoiceSectionDimensionsListWithFilter.json
      */
     /**
      * Sample code: InvoiceSectionDimensionsListWithFilter-MCA.
@@ -599,9 +1416,7 @@ public final class DimensionsListSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * MCACustomerDimensionsListWithFilter.json
+     * x-ms-original-file: 2025-03-01/MCACustomerDimensionsListWithFilter.json
      */
     /**
      * Sample code: CustomerDimensionsListWithFilter-MCA.
@@ -616,9 +1431,7 @@ public final class DimensionsListSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * ManagementGroupDimensionsListWithFilter.json
+     * x-ms-original-file: 2025-03-01/ManagementGroupDimensionsListWithFilter.json
      */
     /**
      * Sample code: ManagementGroupDimensionsListWithFilter-Legacy.
@@ -633,9 +1446,7 @@ public final class DimensionsListSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * BillingAccountDimensionsList.json
+     * x-ms-original-file: 2025-03-01/BillingAccountDimensionsList.json
      */
     /**
      * Sample code: BillingAccountDimensionsList-Legacy.
@@ -650,9 +1461,7 @@ public final class DimensionsListSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * ManagementGroupDimensionsListExpandAndTop.json
+     * x-ms-original-file: 2025-03-01/ManagementGroupDimensionsListExpandAndTop.json
      */
     /**
      * Sample code: ManagementGroupDimensionsListExpandAndTop-Legacy.
@@ -667,9 +1476,7 @@ public final class DimensionsListSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * MCABillingProfileDimensionsList.json
+     * x-ms-original-file: 2025-03-01/MCABillingProfileDimensionsList.json
      */
     /**
      * Sample code: BillingProfileDimensionsList-MCA.
@@ -684,9 +1491,7 @@ public final class DimensionsListSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * DepartmentDimensionsListExpandAndTop.json
+     * x-ms-original-file: 2025-03-01/DepartmentDimensionsListExpandAndTop.json
      */
     /**
      * Sample code: DepartmentDimensionsListExpandAndTop-Legacy.
@@ -701,9 +1506,7 @@ public final class DimensionsListSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * EnrollmentAccountDimensionsList.json
+     * x-ms-original-file: 2025-03-01/EnrollmentAccountDimensionsList.json
      */
     /**
      * Sample code: EnrollmentAccountDimensionsList-Legacy.
@@ -718,9 +1521,7 @@ public final class DimensionsListSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * MCABillingAccountDimensionsListExpandAndTop.json
+     * x-ms-original-file: 2025-03-01/MCABillingAccountDimensionsListExpandAndTop.json
      */
     /**
      * Sample code: BillingAccountDimensionsListExpandAndTop-MCA.
@@ -735,9 +1536,7 @@ public final class DimensionsListSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * BillingAccountDimensionsListWithFilter.json
+     * x-ms-original-file: 2025-03-01/BillingAccountDimensionsListWithFilter.json
      */
     /**
      * Sample code: BillingAccountDimensionsListWithFilter-Legacy.
@@ -752,9 +1551,7 @@ public final class DimensionsListSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * ResourceGroupDimensionsList.json
+     * x-ms-original-file: 2025-03-01/ResourceGroupDimensionsList.json
      */
     /**
      * Sample code: ResourceGroupDimensionsList-Legacy.
@@ -769,9 +1566,7 @@ public final class DimensionsListSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * SubscriptionDimensionsList.json
+     * x-ms-original-file: 2025-03-01/SubscriptionDimensionsList.json
      */
     /**
      * Sample code: SubscriptionDimensionsList-Legacy.
@@ -786,9 +1581,7 @@ public final class DimensionsListSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * BillingAccountDimensionsListExpandAndTop.json
+     * x-ms-original-file: 2025-03-01/BillingAccountDimensionsListExpandAndTop.json
      */
     /**
      * Sample code: BillingAccountDimensionsListExpandAndTop-Legacy.
@@ -803,9 +1596,7 @@ public final class DimensionsListSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * MCABillingAccountDimensionsList.json
+     * x-ms-original-file: 2025-03-01/MCABillingAccountDimensionsList.json
      */
     /**
      * Sample code: BillingAccountDimensionsList-MCA.
@@ -820,9 +1611,7 @@ public final class DimensionsListSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * EnrollmentAccountDimensionsListExpandAndTop.json
+     * x-ms-original-file: 2025-03-01/EnrollmentAccountDimensionsListExpandAndTop.json
      */
     /**
      * Sample code: EnrollmentAccountDimensionsListExpandAndTop-Legacy.
@@ -837,26 +1626,7 @@ public final class DimensionsListSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * MCACustomerDimensionsListExpandAndTop.json
-     */
-    /**
-     * Sample code: CustomerDimensionsListExpandAndTop-MCA.
-     * 
-     * @param manager Entry point to CostManagementManager.
-     */
-    public static void
-        customerDimensionsListExpandAndTopMCA(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager.dimensions()
-            .list("providers/Microsoft.Billing/billingAccounts/12345:6789/customers/5678", null, "properties/data",
-                null, 5, com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * DepartmentDimensionsListWithFilter.json
+     * x-ms-original-file: 2025-03-01/DepartmentDimensionsListWithFilter.json
      */
     /**
      * Sample code: DepartmentDimensionsListWithFilter-Legacy.
@@ -871,9 +1641,22 @@ public final class DimensionsListSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * MCAInvoiceSectionDimensionsList.json
+     * x-ms-original-file: 2025-03-01/MCACustomerDimensionsListExpandAndTop.json
+     */
+    /**
+     * Sample code: CustomerDimensionsListExpandAndTop-MCA.
+     * 
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void
+        customerDimensionsListExpandAndTopMCA(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.dimensions()
+            .list("providers/Microsoft.Billing/billingAccounts/12345:6789/customers/5678", null, "properties/data",
+                null, 5, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2025-03-01/MCAInvoiceSectionDimensionsList.json
      */
     /**
      * Sample code: InvoiceSectionDimensionsList-MCA.
@@ -888,9 +1671,7 @@ public final class DimensionsListSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * MCAInvoiceSectionDimensionsListExpandAndTop.json
+     * x-ms-original-file: 2025-03-01/MCAInvoiceSectionDimensionsListExpandAndTop.json
      */
     /**
      * Sample code: InvoiceSectionDimensionsListExpandAndTop-MCA.
@@ -905,9 +1686,7 @@ public final class DimensionsListSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * ManagementGroupDimensionsList.json
+     * x-ms-original-file: 2025-03-01/ManagementGroupDimensionsList.json
      */
     /**
      * Sample code: ManagementGroupDimensionsList-Legacy.
@@ -922,9 +1701,7 @@ public final class DimensionsListSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * MCABillingProfileDimensionsListExpandAndTop.json
+     * x-ms-original-file: 2025-03-01/MCABillingProfileDimensionsListExpandAndTop.json
      */
     /**
      * Sample code: BillingProfileDimensionsListExpandAndTop-MCA.
@@ -939,9 +1716,7 @@ public final class DimensionsListSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * MCABillingProfileDimensionsListWithFilter.json
+     * x-ms-original-file: 2025-03-01/MCABillingProfileDimensionsListWithFilter.json
      */
     /**
      * Sample code: BillingProfileDimensionsListWithFilter-MCA.
@@ -956,9 +1731,7 @@ public final class DimensionsListSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * EnrollmentAccountDimensionsListWithFilter.json
+     * x-ms-original-file: 2025-03-01/EnrollmentAccountDimensionsListWithFilter.json
      */
     /**
      * Sample code: EnrollmentAccountDimensionsListWithFilter-Legacy.
@@ -973,9 +1746,7 @@ public final class DimensionsListSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * MCABillingAccountDimensionsListWithFilter.json
+     * x-ms-original-file: 2025-03-01/MCABillingAccountDimensionsListWithFilter.json
      */
     /**
      * Sample code: BillingAccountDimensionsListWithFilter-MCA.
@@ -994,6 +1765,9 @@ public final class DimensionsListSamples {
 ### Exports_CreateOrUpdate
 
 ```java
+import com.azure.resourcemanager.costmanagement.models.CompressionModeType;
+import com.azure.resourcemanager.costmanagement.models.DataOverwriteBehaviorType;
+import com.azure.resourcemanager.costmanagement.models.DestinationType;
 import com.azure.resourcemanager.costmanagement.models.ExportDataset;
 import com.azure.resourcemanager.costmanagement.models.ExportDatasetConfiguration;
 import com.azure.resourcemanager.costmanagement.models.ExportDefinition;
@@ -1001,11 +1775,16 @@ import com.azure.resourcemanager.costmanagement.models.ExportDeliveryDestination
 import com.azure.resourcemanager.costmanagement.models.ExportDeliveryInfo;
 import com.azure.resourcemanager.costmanagement.models.ExportRecurrencePeriod;
 import com.azure.resourcemanager.costmanagement.models.ExportSchedule;
+import com.azure.resourcemanager.costmanagement.models.ExportTimePeriod;
 import com.azure.resourcemanager.costmanagement.models.ExportType;
+import com.azure.resourcemanager.costmanagement.models.FilterItemNames;
+import com.azure.resourcemanager.costmanagement.models.FilterItems;
 import com.azure.resourcemanager.costmanagement.models.FormatType;
 import com.azure.resourcemanager.costmanagement.models.GranularityType;
 import com.azure.resourcemanager.costmanagement.models.RecurrenceType;
 import com.azure.resourcemanager.costmanagement.models.StatusType;
+import com.azure.resourcemanager.costmanagement.models.SystemAssignedServiceIdentity;
+import com.azure.resourcemanager.costmanagement.models.SystemAssignedServiceIdentityType;
 import com.azure.resourcemanager.costmanagement.models.TimeframeType;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -1015,9 +1794,7 @@ import java.util.Arrays;
  */
 public final class ExportsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * ExportCreateOrUpdateByManagementGroup.json
+     * x-ms-original-file: 2025-03-01/ExportCreateOrUpdateByManagementGroup.json
      */
     /**
      * Sample code: ExportCreateOrUpdateByManagementGroup.
@@ -1029,28 +1806,73 @@ public final class ExportsCreateOrUpdateSamples {
         manager.exports()
             .define("TestExport")
             .withExistingScope("providers/Microsoft.Management/managementGroups/TestMG")
+            .withRegion("centralus")
+            .withIdentity(
+                new SystemAssignedServiceIdentity().withType(SystemAssignedServiceIdentityType.SYSTEM_ASSIGNED))
             .withSchedule(new ExportSchedule().withStatus(StatusType.ACTIVE)
-                .withRecurrence(RecurrenceType.WEEKLY)
+                .withRecurrence(RecurrenceType.DAILY)
                 .withRecurrencePeriod(
                     new ExportRecurrencePeriod().withFrom(OffsetDateTime.parse("2020-06-01T00:00:00Z"))
-                        .withTo(OffsetDateTime.parse("2020-10-31T00:00:00Z"))))
+                        .withTo(OffsetDateTime.parse("2020-06-30T00:00:00Z"))))
             .withFormat(FormatType.CSV)
-            .withDeliveryInfo(new ExportDeliveryInfo().withDestination(new ExportDeliveryDestination().withResourceId(
-                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/MYDEVTESTRG/providers/Microsoft.Storage/storageAccounts/ccmeastusdiag182")
+            .withDeliveryInfo(new ExportDeliveryInfo().withDestination(new ExportDeliveryDestination()
+                .withType(DestinationType.AZURE_BLOB)
+                .withResourceId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/MYDEVTESTRG/providers/Microsoft.Storage/storageAccounts/ccmeastusdiag182")
                 .withContainer("exports")
                 .withRootFolderPath("ad-hoc")))
             .withDefinition(new ExportDefinition().withType(ExportType.ACTUAL_COST)
                 .withTimeframe(TimeframeType.MONTH_TO_DATE)
                 .withDataSet(new ExportDataset().withGranularity(GranularityType.DAILY)
-                    .withConfiguration(new ExportDatasetConfiguration()
-                        .withColumns(Arrays.asList("Date", "MeterId", "ResourceId", "ResourceLocation", "Quantity")))))
+                    .withConfiguration(new ExportDatasetConfiguration().withDataVersion("2023-05-01"))))
+            .withPartitionData(true)
+            .withDataOverwriteBehavior(DataOverwriteBehaviorType.OVERWRITE_PREVIOUS_REPORT)
+            .withCompressionMode(CompressionModeType.GZIP)
+            .withExportDescription("This is a test export.")
             .create();
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * ExportCreateOrUpdateByBillingAccount.json
+     * x-ms-original-file: 2025-03-01/ExportCreateOrUpdateByBillingAccountReservationDetails.json
+     */
+    /**
+     * Sample code: ExportCreateOrUpdateByBillingAccountReservationDetails.
+     * 
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void exportCreateOrUpdateByBillingAccountReservationDetails(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.exports()
+            .define("TestExport")
+            .withExistingScope("providers/Microsoft.Billing/billingAccounts/123456")
+            .withRegion("centralus")
+            .withIdentity(
+                new SystemAssignedServiceIdentity().withType(SystemAssignedServiceIdentityType.SYSTEM_ASSIGNED))
+            .withSchedule(new ExportSchedule().withStatus(StatusType.ACTIVE)
+                .withRecurrence(RecurrenceType.DAILY)
+                .withRecurrencePeriod(
+                    new ExportRecurrencePeriod().withFrom(OffsetDateTime.parse("2023-06-01T00:00:00Z"))
+                        .withTo(OffsetDateTime.parse("2023-06-30T00:00:00Z"))))
+            .withFormat(FormatType.CSV)
+            .withDeliveryInfo(new ExportDeliveryInfo().withDestination(new ExportDeliveryDestination()
+                .withType(DestinationType.AZURE_BLOB)
+                .withResourceId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/MYDEVTESTRG/providers/Microsoft.Storage/storageAccounts/ccmeastusdiag182")
+                .withContainer("exports")
+                .withRootFolderPath("ad-hoc")))
+            .withDefinition(new ExportDefinition().withType(ExportType.RESERVATION_DETAILS)
+                .withTimeframe(TimeframeType.MONTH_TO_DATE)
+                .withDataSet(new ExportDataset().withGranularity(GranularityType.DAILY)
+                    .withConfiguration(new ExportDatasetConfiguration().withDataVersion("2023-03-01"))))
+            .withPartitionData(true)
+            .withDataOverwriteBehavior(DataOverwriteBehaviorType.OVERWRITE_PREVIOUS_REPORT)
+            .withCompressionMode(CompressionModeType.GZIP)
+            .withExportDescription("This is a test export.")
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2025-03-01/ExportCreateOrUpdateByBillingAccount.json
      */
     /**
      * Sample code: ExportCreateOrUpdateByBillingAccount.
@@ -1062,28 +1884,34 @@ public final class ExportsCreateOrUpdateSamples {
         manager.exports()
             .define("TestExport")
             .withExistingScope("providers/Microsoft.Billing/billingAccounts/123456")
+            .withRegion("centralus")
+            .withIdentity(
+                new SystemAssignedServiceIdentity().withType(SystemAssignedServiceIdentityType.SYSTEM_ASSIGNED))
             .withSchedule(new ExportSchedule().withStatus(StatusType.ACTIVE)
-                .withRecurrence(RecurrenceType.WEEKLY)
+                .withRecurrence(RecurrenceType.DAILY)
                 .withRecurrencePeriod(
                     new ExportRecurrencePeriod().withFrom(OffsetDateTime.parse("2020-06-01T00:00:00Z"))
-                        .withTo(OffsetDateTime.parse("2020-10-31T00:00:00Z"))))
+                        .withTo(OffsetDateTime.parse("2020-06-30T00:00:00Z"))))
             .withFormat(FormatType.CSV)
-            .withDeliveryInfo(new ExportDeliveryInfo().withDestination(new ExportDeliveryDestination().withResourceId(
-                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/MYDEVTESTRG/providers/Microsoft.Storage/storageAccounts/ccmeastusdiag182")
+            .withDeliveryInfo(new ExportDeliveryInfo().withDestination(new ExportDeliveryDestination()
+                .withType(DestinationType.AZURE_BLOB)
+                .withResourceId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/MYDEVTESTRG/providers/Microsoft.Storage/storageAccounts/ccmeastusdiag182")
                 .withContainer("exports")
                 .withRootFolderPath("ad-hoc")))
             .withDefinition(new ExportDefinition().withType(ExportType.ACTUAL_COST)
                 .withTimeframe(TimeframeType.MONTH_TO_DATE)
                 .withDataSet(new ExportDataset().withGranularity(GranularityType.DAILY)
-                    .withConfiguration(new ExportDatasetConfiguration()
-                        .withColumns(Arrays.asList("Date", "MeterId", "ResourceId", "ResourceLocation", "Quantity")))))
+                    .withConfiguration(new ExportDatasetConfiguration().withDataVersion("2023-05-01"))))
+            .withPartitionData(true)
+            .withDataOverwriteBehavior(DataOverwriteBehaviorType.OVERWRITE_PREVIOUS_REPORT)
+            .withCompressionMode(CompressionModeType.GZIP)
+            .withExportDescription("This is a test export.")
             .create();
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * ExportCreateOrUpdateByDepartment.json
+     * x-ms-original-file: 2025-03-01/ExportCreateOrUpdateByDepartment.json
      */
     /**
      * Sample code: ExportCreateOrUpdateByDepartment.
@@ -1095,28 +1923,34 @@ public final class ExportsCreateOrUpdateSamples {
         manager.exports()
             .define("TestExport")
             .withExistingScope("providers/Microsoft.Billing/billingAccounts/12/departments/1234")
+            .withRegion("centralus")
+            .withIdentity(
+                new SystemAssignedServiceIdentity().withType(SystemAssignedServiceIdentityType.SYSTEM_ASSIGNED))
             .withSchedule(new ExportSchedule().withStatus(StatusType.ACTIVE)
-                .withRecurrence(RecurrenceType.WEEKLY)
+                .withRecurrence(RecurrenceType.DAILY)
                 .withRecurrencePeriod(
                     new ExportRecurrencePeriod().withFrom(OffsetDateTime.parse("2020-06-01T00:00:00Z"))
-                        .withTo(OffsetDateTime.parse("2020-10-31T00:00:00Z"))))
-            .withFormat(FormatType.CSV)
-            .withDeliveryInfo(new ExportDeliveryInfo().withDestination(new ExportDeliveryDestination().withResourceId(
-                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/MYDEVTESTRG/providers/Microsoft.Storage/storageAccounts/ccmeastusdiag182")
+                        .withTo(OffsetDateTime.parse("2020-06-30T00:00:00Z"))))
+            .withFormat(FormatType.PARQUET)
+            .withDeliveryInfo(new ExportDeliveryInfo().withDestination(new ExportDeliveryDestination()
+                .withType(DestinationType.AZURE_BLOB)
+                .withResourceId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/MYDEVTESTRG/providers/Microsoft.Storage/storageAccounts/ccmeastusdiag182")
                 .withContainer("exports")
                 .withRootFolderPath("ad-hoc")))
             .withDefinition(new ExportDefinition().withType(ExportType.ACTUAL_COST)
                 .withTimeframe(TimeframeType.MONTH_TO_DATE)
                 .withDataSet(new ExportDataset().withGranularity(GranularityType.DAILY)
-                    .withConfiguration(new ExportDatasetConfiguration()
-                        .withColumns(Arrays.asList("Date", "MeterId", "ResourceId", "ResourceLocation", "Quantity")))))
+                    .withConfiguration(new ExportDatasetConfiguration().withDataVersion("2023-05-01"))))
+            .withPartitionData(true)
+            .withDataOverwriteBehavior(DataOverwriteBehaviorType.OVERWRITE_PREVIOUS_REPORT)
+            .withCompressionMode(CompressionModeType.SNAPPY)
+            .withExportDescription("This is a test export.")
             .create();
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * ExportCreateOrUpdateByResourceGroup.json
+     * x-ms-original-file: 2025-03-01/ExportCreateOrUpdateByResourceGroup.json
      */
     /**
      * Sample code: ExportCreateOrUpdateByResourceGroup.
@@ -1128,28 +1962,117 @@ public final class ExportsCreateOrUpdateSamples {
         manager.exports()
             .define("TestExport")
             .withExistingScope("subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/MYDEVTESTRG")
+            .withRegion("centralus")
+            .withIdentity(
+                new SystemAssignedServiceIdentity().withType(SystemAssignedServiceIdentityType.SYSTEM_ASSIGNED))
             .withSchedule(new ExportSchedule().withStatus(StatusType.ACTIVE)
-                .withRecurrence(RecurrenceType.WEEKLY)
+                .withRecurrence(RecurrenceType.DAILY)
                 .withRecurrencePeriod(
                     new ExportRecurrencePeriod().withFrom(OffsetDateTime.parse("2020-06-01T00:00:00Z"))
-                        .withTo(OffsetDateTime.parse("2020-10-31T00:00:00Z"))))
+                        .withTo(OffsetDateTime.parse("2020-06-30T00:00:00Z"))))
             .withFormat(FormatType.CSV)
-            .withDeliveryInfo(new ExportDeliveryInfo().withDestination(new ExportDeliveryDestination().withResourceId(
-                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/MYDEVTESTRG/providers/Microsoft.Storage/storageAccounts/ccmeastusdiag182")
+            .withDeliveryInfo(new ExportDeliveryInfo().withDestination(new ExportDeliveryDestination()
+                .withType(DestinationType.AZURE_BLOB)
+                .withResourceId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/MYDEVTESTRG/providers/Microsoft.Storage/storageAccounts/ccmeastusdiag182")
                 .withContainer("exports")
                 .withRootFolderPath("ad-hoc")))
             .withDefinition(new ExportDefinition().withType(ExportType.ACTUAL_COST)
                 .withTimeframe(TimeframeType.MONTH_TO_DATE)
                 .withDataSet(new ExportDataset().withGranularity(GranularityType.DAILY)
-                    .withConfiguration(new ExportDatasetConfiguration()
-                        .withColumns(Arrays.asList("Date", "MeterId", "ResourceId", "ResourceLocation", "Quantity")))))
+                    .withConfiguration(new ExportDatasetConfiguration().withDataVersion("2023-05-01"))))
+            .withPartitionData(true)
+            .withDataOverwriteBehavior(DataOverwriteBehaviorType.OVERWRITE_PREVIOUS_REPORT)
+            .withCompressionMode(CompressionModeType.GZIP)
+            .withExportDescription("This is a test export.")
             .create();
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * ExportCreateOrUpdateBySubscription.json
+     * x-ms-original-file: 2025-03-01/ExportCreateOrUpdateByBillingAccountReservationTransactions.json
+     */
+    /**
+     * Sample code: ExportCreateOrUpdateExportCreateOrUpdateByBillingAccountReservationTransactionsByBillingAccount.
+     * 
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void exportCreateOrUpdateExportCreateOrUpdateByBillingAccountReservationTransactionsByBillingAccount(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.exports()
+            .define("TestExport")
+            .withExistingScope("providers/Microsoft.Billing/billingAccounts/123456")
+            .withRegion("centralus")
+            .withIdentity(
+                new SystemAssignedServiceIdentity().withType(SystemAssignedServiceIdentityType.SYSTEM_ASSIGNED))
+            .withSchedule(new ExportSchedule().withStatus(StatusType.ACTIVE)
+                .withRecurrence(RecurrenceType.DAILY)
+                .withRecurrencePeriod(
+                    new ExportRecurrencePeriod().withFrom(OffsetDateTime.parse("2023-06-01T00:00:00Z"))
+                        .withTo(OffsetDateTime.parse("2023-06-30T00:00:00Z"))))
+            .withFormat(FormatType.CSV)
+            .withDeliveryInfo(new ExportDeliveryInfo().withDestination(new ExportDeliveryDestination()
+                .withType(DestinationType.AZURE_BLOB)
+                .withResourceId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/MYDEVTESTRG/providers/Microsoft.Storage/storageAccounts/ccmeastusdiag182")
+                .withContainer("exports")
+                .withRootFolderPath("ad-hoc")))
+            .withDefinition(new ExportDefinition().withType(ExportType.RESERVATION_TRANSACTIONS)
+                .withTimeframe(TimeframeType.MONTH_TO_DATE)
+                .withDataSet(new ExportDataset()
+                    .withConfiguration(new ExportDatasetConfiguration().withDataVersion("2023-05-01"))))
+            .withPartitionData(true)
+            .withDataOverwriteBehavior(DataOverwriteBehaviorType.OVERWRITE_PREVIOUS_REPORT)
+            .withCompressionMode(CompressionModeType.GZIP)
+            .withExportDescription("This is a test export.")
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2025-03-01/ExportCreateOrUpdateByBillingAccountReservationRecommendation.json
+     */
+    /**
+     * Sample code: ExportCreateOrUpdateByBillingAccountReservationRecommendation.
+     * 
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void exportCreateOrUpdateByBillingAccountReservationRecommendation(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.exports()
+            .define("TestExport")
+            .withExistingScope("providers/Microsoft.Billing/billingAccounts/123456")
+            .withRegion("centralus")
+            .withIdentity(
+                new SystemAssignedServiceIdentity().withType(SystemAssignedServiceIdentityType.SYSTEM_ASSIGNED))
+            .withSchedule(new ExportSchedule().withStatus(StatusType.ACTIVE)
+                .withRecurrence(RecurrenceType.DAILY)
+                .withRecurrencePeriod(
+                    new ExportRecurrencePeriod().withFrom(OffsetDateTime.parse("2023-06-01T00:00:00Z"))
+                        .withTo(OffsetDateTime.parse("2023-06-30T00:00:00Z"))))
+            .withFormat(FormatType.CSV)
+            .withDeliveryInfo(new ExportDeliveryInfo().withDestination(new ExportDeliveryDestination()
+                .withType(DestinationType.AZURE_BLOB)
+                .withResourceId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/MYDEVTESTRG/providers/Microsoft.Storage/storageAccounts/ccmeastusdiag182")
+                .withContainer("exports")
+                .withRootFolderPath("ad-hoc")))
+            .withDefinition(
+                new ExportDefinition().withType(ExportType.RESERVATION_RECOMMENDATIONS)
+                    .withTimeframe(TimeframeType.MONTH_TO_DATE)
+                    .withDataSet(new ExportDataset()
+                        .withConfiguration(new ExportDatasetConfiguration().withDataVersion("2023-05-01")
+                            .withFilters(Arrays.asList(
+                                new FilterItems().withName(FilterItemNames.RESERVATION_SCOPE).withValue("Single"),
+                                new FilterItems().withName(FilterItemNames.RESOURCE_TYPE).withValue("VirtualMachines"),
+                                new FilterItems().withName(FilterItemNames.LOOK_BACK_PERIOD).withValue("Last7Days"))))))
+            .withPartitionData(true)
+            .withDataOverwriteBehavior(DataOverwriteBehaviorType.OVERWRITE_PREVIOUS_REPORT)
+            .withCompressionMode(CompressionModeType.GZIP)
+            .withExportDescription("This is a test export.")
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2025-03-01/ExportCreateOrUpdateBySubscription.json
      */
     /**
      * Sample code: ExportCreateOrUpdateBySubscription.
@@ -1161,28 +2084,149 @@ public final class ExportsCreateOrUpdateSamples {
         manager.exports()
             .define("TestExport")
             .withExistingScope("subscriptions/00000000-0000-0000-0000-000000000000")
+            .withRegion("centralus")
+            .withIdentity(
+                new SystemAssignedServiceIdentity().withType(SystemAssignedServiceIdentityType.SYSTEM_ASSIGNED))
             .withSchedule(new ExportSchedule().withStatus(StatusType.ACTIVE)
-                .withRecurrence(RecurrenceType.WEEKLY)
+                .withRecurrence(RecurrenceType.DAILY)
                 .withRecurrencePeriod(
                     new ExportRecurrencePeriod().withFrom(OffsetDateTime.parse("2020-06-01T00:00:00Z"))
-                        .withTo(OffsetDateTime.parse("2020-10-31T00:00:00Z"))))
+                        .withTo(OffsetDateTime.parse("2020-06-30T00:00:00Z"))))
             .withFormat(FormatType.CSV)
-            .withDeliveryInfo(new ExportDeliveryInfo().withDestination(new ExportDeliveryDestination().withResourceId(
-                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/MYDEVTESTRG/providers/Microsoft.Storage/storageAccounts/ccmeastusdiag182")
+            .withDeliveryInfo(new ExportDeliveryInfo().withDestination(new ExportDeliveryDestination()
+                .withType(DestinationType.AZURE_BLOB)
+                .withResourceId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/MYDEVTESTRG/providers/Microsoft.Storage/storageAccounts/ccmeastusdiag182")
                 .withContainer("exports")
                 .withRootFolderPath("ad-hoc")))
             .withDefinition(new ExportDefinition().withType(ExportType.ACTUAL_COST)
                 .withTimeframe(TimeframeType.MONTH_TO_DATE)
                 .withDataSet(new ExportDataset().withGranularity(GranularityType.DAILY)
-                    .withConfiguration(new ExportDatasetConfiguration()
-                        .withColumns(Arrays.asList("Date", "MeterId", "ResourceId", "ResourceLocation", "Quantity")))))
+                    .withConfiguration(new ExportDatasetConfiguration().withDataVersion("2023-05-01"))))
+            .withPartitionData(true)
+            .withDataOverwriteBehavior(DataOverwriteBehaviorType.OVERWRITE_PREVIOUS_REPORT)
+            .withCompressionMode(CompressionModeType.GZIP)
+            .withExportDescription("This is a test export.")
             .create();
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * ExportCreateOrUpdateByEnrollmentAccount.json
+     * x-ms-original-file: 2025-03-01/ExportCreateOrUpdateByBillingAccountCustom.json
+     */
+    /**
+     * Sample code: ExportCreateOrUpdateByBillingAccountCustom.
+     * 
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void exportCreateOrUpdateByBillingAccountCustom(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.exports()
+            .define("TestExport")
+            .withExistingScope("providers/Microsoft.Billing/billingAccounts/123456")
+            .withRegion("centralus")
+            .withIdentity(
+                new SystemAssignedServiceIdentity().withType(SystemAssignedServiceIdentityType.SYSTEM_ASSIGNED))
+            .withSchedule(new ExportSchedule().withStatus(StatusType.INACTIVE))
+            .withFormat(FormatType.CSV)
+            .withDeliveryInfo(new ExportDeliveryInfo().withDestination(new ExportDeliveryDestination()
+                .withType(DestinationType.AZURE_BLOB)
+                .withResourceId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/MYDEVTESTRG/providers/Microsoft.Storage/storageAccounts/ccmeastusdiag182")
+                .withContainer("exports")
+                .withRootFolderPath("ad-hoc")))
+            .withDefinition(new ExportDefinition().withType(ExportType.ACTUAL_COST)
+                .withTimeframe(TimeframeType.CUSTOM)
+                .withTimePeriod(new ExportTimePeriod().withFrom(OffsetDateTime.parse("2025-04-03T00:00:00.000Z"))
+                    .withTo(OffsetDateTime.parse("2025-04-03T00:00:00.000Z")))
+                .withDataSet(new ExportDataset().withGranularity(GranularityType.DAILY)
+                    .withConfiguration(new ExportDatasetConfiguration().withDataVersion("2023-05-01"))))
+            .withPartitionData(true)
+            .withDataOverwriteBehavior(DataOverwriteBehaviorType.OVERWRITE_PREVIOUS_REPORT)
+            .withCompressionMode(CompressionModeType.GZIP)
+            .withExportDescription("This is a test export.")
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2025-03-01/ExportCreateOrUpdateByBillingAccountMonthly.json
+     */
+    /**
+     * Sample code: ExportCreateOrUpdateByBillingAccountMonthly.
+     * 
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void exportCreateOrUpdateByBillingAccountMonthly(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.exports()
+            .define("TestExport")
+            .withExistingScope("providers/Microsoft.Billing/billingAccounts/123456")
+            .withRegion("centralus")
+            .withIdentity(
+                new SystemAssignedServiceIdentity().withType(SystemAssignedServiceIdentityType.SYSTEM_ASSIGNED))
+            .withSchedule(new ExportSchedule().withStatus(StatusType.ACTIVE)
+                .withRecurrence(RecurrenceType.MONTHLY)
+                .withRecurrencePeriod(
+                    new ExportRecurrencePeriod().withFrom(OffsetDateTime.parse("2020-06-05T00:00:00Z"))
+                        .withTo(OffsetDateTime.parse("2030-06-30T00:00:00Z"))))
+            .withFormat(FormatType.CSV)
+            .withDeliveryInfo(new ExportDeliveryInfo().withDestination(new ExportDeliveryDestination()
+                .withType(DestinationType.AZURE_BLOB)
+                .withResourceId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/MYDEVTESTRG/providers/Microsoft.Storage/storageAccounts/ccmeastusdiag182")
+                .withContainer("exports")
+                .withRootFolderPath("ad-hoc")))
+            .withDefinition(new ExportDefinition().withType(ExportType.ACTUAL_COST)
+                .withTimeframe(TimeframeType.THE_LAST_MONTH)
+                .withDataSet(new ExportDataset().withGranularity(GranularityType.DAILY)
+                    .withConfiguration(new ExportDatasetConfiguration().withDataVersion("2023-05-01"))))
+            .withPartitionData(true)
+            .withDataOverwriteBehavior(DataOverwriteBehaviorType.OVERWRITE_PREVIOUS_REPORT)
+            .withCompressionMode(CompressionModeType.GZIP)
+            .withExportDescription("This is a test export.")
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2025-03-01/ExportCreateOrUpdateByBillingAccountPricesheet.json
+     */
+    /**
+     * Sample code: ExportCreateOrUpdateByBillingAccountPricesheet.
+     * 
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void exportCreateOrUpdateByBillingAccountPricesheet(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.exports()
+            .define("TestExport")
+            .withExistingScope("providers/Microsoft.Billing/billingAccounts/123456")
+            .withRegion("centralus")
+            .withIdentity(
+                new SystemAssignedServiceIdentity().withType(SystemAssignedServiceIdentityType.SYSTEM_ASSIGNED))
+            .withSchedule(new ExportSchedule().withStatus(StatusType.ACTIVE)
+                .withRecurrence(RecurrenceType.DAILY)
+                .withRecurrencePeriod(
+                    new ExportRecurrencePeriod().withFrom(OffsetDateTime.parse("2023-06-01T00:00:00Z"))
+                        .withTo(OffsetDateTime.parse("2023-06-30T00:00:00Z"))))
+            .withFormat(FormatType.CSV)
+            .withDeliveryInfo(new ExportDeliveryInfo().withDestination(new ExportDeliveryDestination()
+                .withType(DestinationType.AZURE_BLOB)
+                .withResourceId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/MYDEVTESTRG/providers/Microsoft.Storage/storageAccounts/ccmeastusdiag182")
+                .withContainer("exports")
+                .withRootFolderPath("ad-hoc")))
+            .withDefinition(new ExportDefinition().withType(ExportType.PRICE_SHEET)
+                .withTimeframe(TimeframeType.THE_CURRENT_MONTH)
+                .withDataSet(new ExportDataset().withGranularity(GranularityType.DAILY)
+                    .withConfiguration(new ExportDatasetConfiguration().withDataVersion("2023-05-01"))))
+            .withPartitionData(true)
+            .withDataOverwriteBehavior(DataOverwriteBehaviorType.OVERWRITE_PREVIOUS_REPORT)
+            .withCompressionMode(CompressionModeType.GZIP)
+            .withExportDescription("This is a test export.")
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2025-03-01/ExportCreateOrUpdateByEnrollmentAccount.json
      */
     /**
      * Sample code: ExportCreateOrUpdateByEnrollmentAccount.
@@ -1194,21 +2238,29 @@ public final class ExportsCreateOrUpdateSamples {
         manager.exports()
             .define("TestExport")
             .withExistingScope("providers/Microsoft.Billing/billingAccounts/100/enrollmentAccounts/456")
+            .withRegion("centralus")
+            .withIdentity(
+                new SystemAssignedServiceIdentity().withType(SystemAssignedServiceIdentityType.SYSTEM_ASSIGNED))
             .withSchedule(new ExportSchedule().withStatus(StatusType.ACTIVE)
-                .withRecurrence(RecurrenceType.WEEKLY)
+                .withRecurrence(RecurrenceType.DAILY)
                 .withRecurrencePeriod(
                     new ExportRecurrencePeriod().withFrom(OffsetDateTime.parse("2020-06-01T00:00:00Z"))
-                        .withTo(OffsetDateTime.parse("2020-10-31T00:00:00Z"))))
+                        .withTo(OffsetDateTime.parse("2020-06-30T00:00:00Z"))))
             .withFormat(FormatType.CSV)
-            .withDeliveryInfo(new ExportDeliveryInfo().withDestination(new ExportDeliveryDestination().withResourceId(
-                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/MYDEVTESTRG/providers/Microsoft.Storage/storageAccounts/ccmeastusdiag182")
+            .withDeliveryInfo(new ExportDeliveryInfo().withDestination(new ExportDeliveryDestination()
+                .withType(DestinationType.AZURE_BLOB)
+                .withResourceId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/MYDEVTESTRG/providers/Microsoft.Storage/storageAccounts/ccmeastusdiag182")
                 .withContainer("exports")
                 .withRootFolderPath("ad-hoc")))
             .withDefinition(new ExportDefinition().withType(ExportType.ACTUAL_COST)
                 .withTimeframe(TimeframeType.MONTH_TO_DATE)
                 .withDataSet(new ExportDataset().withGranularity(GranularityType.DAILY)
-                    .withConfiguration(new ExportDatasetConfiguration()
-                        .withColumns(Arrays.asList("Date", "MeterId", "ResourceId", "ResourceLocation", "Quantity")))))
+                    .withConfiguration(new ExportDatasetConfiguration().withDataVersion("2023-05-01"))))
+            .withPartitionData(true)
+            .withDataOverwriteBehavior(DataOverwriteBehaviorType.OVERWRITE_PREVIOUS_REPORT)
+            .withCompressionMode(CompressionModeType.GZIP)
+            .withExportDescription("This is a test export.")
             .create();
     }
 }
@@ -1222,9 +2274,7 @@ public final class ExportsCreateOrUpdateSamples {
  */
 public final class ExportsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * ExportDeleteByBillingAccount.json
+     * x-ms-original-file: 2025-03-01/ExportDeleteByBillingAccount.json
      */
     /**
      * Sample code: ExportDeleteByBillingAccount.
@@ -1239,9 +2289,7 @@ public final class ExportsDeleteSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * ExportDeleteByManagementGroup.json
+     * x-ms-original-file: 2025-03-01/ExportDeleteByManagementGroup.json
      */
     /**
      * Sample code: ExportDeleteByManagementGroup.
@@ -1256,9 +2304,7 @@ public final class ExportsDeleteSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * ExportDeleteByResourceGroup.json
+     * x-ms-original-file: 2025-03-01/ExportDeleteByResourceGroup.json
      */
     /**
      * Sample code: ExportDeleteByResourceGroup.
@@ -1274,9 +2320,7 @@ public final class ExportsDeleteSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * ExportDeleteByDepartment.json
+     * x-ms-original-file: 2025-03-01/ExportDeleteByDepartment.json
      */
     /**
      * Sample code: ExportDeleteByDepartment.
@@ -1291,9 +2335,7 @@ public final class ExportsDeleteSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * ExportDeleteBySubscription.json
+     * x-ms-original-file: 2025-03-01/ExportDeleteBySubscription.json
      */
     /**
      * Sample code: ExportDeleteBySubscription.
@@ -1308,9 +2350,7 @@ public final class ExportsDeleteSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * ExportDeleteByEnrollmentAccount.json
+     * x-ms-original-file: 2025-03-01/ExportDeleteByEnrollmentAccount.json
      */
     /**
      * Sample code: ExportDeleteByEnrollmentAccount.
@@ -1329,14 +2369,13 @@ public final class ExportsDeleteSamples {
 ### Exports_Execute
 
 ```java
+
 /**
  * Samples for Exports Execute.
  */
 public final class ExportsExecuteSamples {
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * ExportRunByManagementGroup.json
+     * x-ms-original-file: 2025-03-01/ExportRunByManagementGroup.json
      */
     /**
      * Sample code: ExportRunByManagementGroup.
@@ -1346,14 +2385,12 @@ public final class ExportsExecuteSamples {
     public static void
         exportRunByManagementGroup(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
         manager.exports()
-            .executeWithResponse("providers/Microsoft.Management/managementGroups/TestMG", "TestExport",
+            .executeWithResponse("providers/Microsoft.Management/managementGroups/TestMG", "TestExport", null,
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * ExportRunByBillingAccount.json
+     * x-ms-original-file: 2025-03-01/ExportRunByBillingAccount.json
      */
     /**
      * Sample code: ExportRunByBillingAccount.
@@ -1363,14 +2400,12 @@ public final class ExportsExecuteSamples {
     public static void
         exportRunByBillingAccount(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
         manager.exports()
-            .executeWithResponse("providers/Microsoft.Billing/billingAccounts/123456", "TestExport",
+            .executeWithResponse("providers/Microsoft.Billing/billingAccounts/123456", "TestExport", null,
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * ExportRunBySubscription.json
+     * x-ms-original-file: 2025-03-01/ExportRunBySubscription.json
      */
     /**
      * Sample code: ExportRunBySubscription.
@@ -1379,14 +2414,27 @@ public final class ExportsExecuteSamples {
      */
     public static void exportRunBySubscription(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
         manager.exports()
-            .executeWithResponse("subscriptions/00000000-0000-0000-0000-000000000000", "TestExport",
+            .executeWithResponse("subscriptions/00000000-0000-0000-0000-000000000000", "TestExport", null,
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * ExportRunByDepartment.json
+     * x-ms-original-file: 2025-03-01/ExportRunByBillingAccountWithOptionalRequestBody.json
+     */
+    /**
+     * Sample code: ExportRunByBillingAccountWithOptionalRequestBody.
+     * 
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void exportRunByBillingAccountWithOptionalRequestBody(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.exports()
+            .executeWithResponse("providers/Microsoft.Billing/billingAccounts/123456", "TestExport", null,
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2025-03-01/ExportRunByDepartment.json
      */
     /**
      * Sample code: ExportRunByDepartment.
@@ -1395,14 +2443,12 @@ public final class ExportsExecuteSamples {
      */
     public static void exportRunByDepartment(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
         manager.exports()
-            .executeWithResponse("providers/Microsoft.Billing/billingAccounts/12/departments/1234", "TestExport",
+            .executeWithResponse("providers/Microsoft.Billing/billingAccounts/12/departments/1234", "TestExport", null,
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * ExportRunByResourceGroup.json
+     * x-ms-original-file: 2025-03-01/ExportRunByResourceGroup.json
      */
     /**
      * Sample code: ExportRunByResourceGroup.
@@ -1413,13 +2459,11 @@ public final class ExportsExecuteSamples {
         exportRunByResourceGroup(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
         manager.exports()
             .executeWithResponse("subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/MYDEVTESTRG",
-                "TestExport", com.azure.core.util.Context.NONE);
+                "TestExport", null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * ExportRunByEnrollmentAccount.json
+     * x-ms-original-file: 2025-03-01/ExportRunByEnrollmentAccount.json
      */
     /**
      * Sample code: ExportRunByEnrollmentAccount.
@@ -1430,7 +2474,7 @@ public final class ExportsExecuteSamples {
         exportRunByEnrollmentAccount(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
         manager.exports()
             .executeWithResponse("providers/Microsoft.Billing/billingAccounts/100/enrollmentAccounts/456", "TestExport",
-                com.azure.core.util.Context.NONE);
+                null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1443,9 +2487,7 @@ public final class ExportsExecuteSamples {
  */
 public final class ExportsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * ExportGetByEnrollmentAccount.json
+     * x-ms-original-file: 2025-03-01/ExportGetByEnrollmentAccount.json
      */
     /**
      * Sample code: ExportGetByEnrollmentAccount.
@@ -1460,9 +2502,7 @@ public final class ExportsGetSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * ExportGetByManagementGroup.json
+     * x-ms-original-file: 2025-03-01/ExportGetByManagementGroup.json
      */
     /**
      * Sample code: ExportGetByManagementGroup.
@@ -1477,9 +2517,7 @@ public final class ExportsGetSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * ExportGetByDepartment.json
+     * x-ms-original-file: 2025-03-01/ExportGetByDepartment.json
      */
     /**
      * Sample code: ExportGetByDepartment.
@@ -1493,9 +2531,7 @@ public final class ExportsGetSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * ExportGetBySubscription.json
+     * x-ms-original-file: 2025-03-01/ExportGetBySubscription.json
      */
     /**
      * Sample code: ExportGetBySubscription.
@@ -1509,9 +2545,7 @@ public final class ExportsGetSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * ExportGetByBillingAccount.json
+     * x-ms-original-file: 2025-03-01/ExportGetByBillingAccount.json
      */
     /**
      * Sample code: ExportGetByBillingAccount.
@@ -1526,9 +2560,7 @@ public final class ExportsGetSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * ExportGetByResourceGroup.json
+     * x-ms-original-file: 2025-03-01/ExportGetByResourceGroup.json
      */
     /**
      * Sample code: ExportGetByResourceGroup.
@@ -1552,9 +2584,7 @@ public final class ExportsGetSamples {
  */
 public final class ExportsGetExecutionHistorySamples {
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * ExportRunHistoryGetByManagementGroup.json
+     * x-ms-original-file: 2025-03-01/ExportRunHistoryGetByManagementGroup.json
      */
     /**
      * Sample code: ExportRunHistoryGetByManagementGroup.
@@ -1569,9 +2599,7 @@ public final class ExportsGetExecutionHistorySamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * ExportRunHistoryGetBySubscription.json
+     * x-ms-original-file: 2025-03-01/ExportRunHistoryGetBySubscription.json
      */
     /**
      * Sample code: ExportRunHistoryGetBySubscription.
@@ -1586,9 +2614,7 @@ public final class ExportsGetExecutionHistorySamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * ExportRunHistoryGetByResourceGroup.json
+     * x-ms-original-file: 2025-03-01/ExportRunHistoryGetByResourceGroup.json
      */
     /**
      * Sample code: ExportRunHistoryGetByResourceGroup.
@@ -1604,9 +2630,7 @@ public final class ExportsGetExecutionHistorySamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * ExportRunHistoryGetByEnrollmentAccount.json
+     * x-ms-original-file: 2025-03-01/ExportRunHistoryGetByEnrollmentAccount.json
      */
     /**
      * Sample code: ExportRunHistoryGetByEnrollmentAccount.
@@ -1621,9 +2645,7 @@ public final class ExportsGetExecutionHistorySamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * ExportRunHistoryGetByBillingAccount.json
+     * x-ms-original-file: 2025-03-01/ExportRunHistoryGetByBillingAccount.json
      */
     /**
      * Sample code: ExportRunHistoryGetByBillingAccount.
@@ -1638,9 +2660,7 @@ public final class ExportsGetExecutionHistorySamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * ExportRunHistoryGetByDepartment.json
+     * x-ms-original-file: 2025-03-01/ExportRunHistoryGetByDepartment.json
      */
     /**
      * Sample code: ExportRunHistoryGetByDepartment.
@@ -1664,9 +2684,7 @@ public final class ExportsGetExecutionHistorySamples {
  */
 public final class ExportsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * ExportsGetByResourceGroup.json
+     * x-ms-original-file: 2025-03-01/ExportsGetByResourceGroup.json
      */
     /**
      * Sample code: ExportsGetByResourceGroup.
@@ -1681,9 +2699,7 @@ public final class ExportsListSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * ExportsGetByDepartment.json
+     * x-ms-original-file: 2025-03-01/ExportsGetByDepartment.json
      */
     /**
      * Sample code: ExportsGetByDepartment.
@@ -1697,9 +2713,7 @@ public final class ExportsListSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * ExportsGetByBillingAccount.json
+     * x-ms-original-file: 2025-03-01/ExportsGetByBillingAccount.json
      */
     /**
      * Sample code: ExportsGetByBillingAccount.
@@ -1714,9 +2728,7 @@ public final class ExportsListSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * ExportsGetByEnrollmentAccount.json
+     * x-ms-original-file: 2025-03-01/ExportsGetByEnrollmentAccount.json
      */
     /**
      * Sample code: ExportsGetByEnrollmentAccount.
@@ -1731,9 +2743,7 @@ public final class ExportsListSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * ExportsGetByManagementGroup.json
+     * x-ms-original-file: 2025-03-01/ExportsGetByManagementGroup.json
      */
     /**
      * Sample code: ExportsGetByManagementGroup.
@@ -1748,9 +2758,7 @@ public final class ExportsListSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * ExportsGetBySubscription.json
+     * x-ms-original-file: 2025-03-01/ExportsGetBySubscription.json
      */
     /**
      * Sample code: ExportsGetBySubscription.
@@ -1792,9 +2800,7 @@ import java.util.Map;
  */
 public final class ForecastExternalCloudProviderUsageSamples {
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * ExternalSubscriptionForecast.json
+     * x-ms-original-file: 2025-03-01/ExternalSubscriptionForecast.json
      */
     /**
      * Sample code: ExternalSubscriptionForecast.
@@ -1829,9 +2835,7 @@ public final class ForecastExternalCloudProviderUsageSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * ExternalBillingAccountForecast.json
+     * x-ms-original-file: 2025-03-01/ExternalBillingAccountForecast.json
      */
     /**
      * Sample code: ExternalBillingAccountForecast.
@@ -1904,9 +2908,7 @@ import java.util.Map;
  */
 public final class ForecastUsageSamples {
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * ResourceGroupForecast.json
+     * x-ms-original-file: 2025-03-01/ResourceGroupForecast.json
      */
     /**
      * Sample code: ResourceGroupForecast.
@@ -1943,9 +2945,7 @@ public final class ForecastUsageSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * EnrollmentAccountForecast.json
+     * x-ms-original-file: 2025-03-01/EnrollmentAccountForecast.json
      */
     /**
      * Sample code: EnrollmentAccountForecast.
@@ -1982,9 +2982,7 @@ public final class ForecastUsageSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * SubscriptionForecast.json
+     * x-ms-original-file: 2025-03-01/SubscriptionForecast.json
      */
     /**
      * Sample code: SubscriptionForecast.
@@ -2020,9 +3018,7 @@ public final class ForecastUsageSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * BillingProfileForecast.json
+     * x-ms-original-file: 2025-03-01/BillingProfileForecast.json
      */
     /**
      * Sample code: BillingProfileForecast.
@@ -2058,9 +3054,7 @@ public final class ForecastUsageSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * DepartmentForecast.json
+     * x-ms-original-file: 2025-03-01/DepartmentForecast.json
      */
     /**
      * Sample code: DepartmentForecast.
@@ -2096,9 +3090,7 @@ public final class ForecastUsageSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * BillingAccountForecast.json
+     * x-ms-original-file: 2025-03-01/BillingAccountForecast.json
      */
     /**
      * Sample code: BillingAccountForecast.
@@ -2134,9 +3126,7 @@ public final class ForecastUsageSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * InvoiceSectionForecast.json
+     * x-ms-original-file: 2025-03-01/InvoiceSectionForecast.json
      */
     /**
      * Sample code: InvoiceSectionForecast.
@@ -2186,6 +3176,202 @@ public final class ForecastUsageSamples {
 }
 ```
 
+### GenerateBenefitUtilizationSummariesReport_GenerateByBillingAccount
+
+```java
+import com.azure.resourcemanager.costmanagement.models.BenefitKind;
+import com.azure.resourcemanager.costmanagement.models.BenefitUtilizationSummariesRequest;
+import com.azure.resourcemanager.costmanagement.models.Grain;
+import java.time.OffsetDateTime;
+
+/**
+ * Samples for GenerateBenefitUtilizationSummariesReport GenerateByBillingAccount.
+ */
+public final class GenerateBenefitUtilizationSummariesReportGenerateByBillingAccountSamples {
+    /*
+     * x-ms-original-file:
+     * 2025-03-01/BenefitUtilizationSummaries/Async/GenerateBenefitUtilizationSummariesReportByBillingAccount.json
+     */
+    /**
+     * Sample code: GenerateUtilizationSummariesReportByBillingAccount.
+     * 
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void generateUtilizationSummariesReportByBillingAccount(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.generateBenefitUtilizationSummariesReports()
+            .generateByBillingAccount("8099099",
+                new BenefitUtilizationSummariesRequest().withGrain(Grain.DAILY)
+                    .withStartDate(OffsetDateTime.parse("2022-06-01T00:00:00Z"))
+                    .withEndDate(OffsetDateTime.parse("2022-08-31T00:00:00Z"))
+                    .withKind(BenefitKind.RESERVATION),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### GenerateBenefitUtilizationSummariesReport_GenerateByBillingProfile
+
+```java
+import com.azure.resourcemanager.costmanagement.models.BenefitKind;
+import com.azure.resourcemanager.costmanagement.models.BenefitUtilizationSummariesRequest;
+import com.azure.resourcemanager.costmanagement.models.Grain;
+import java.time.OffsetDateTime;
+
+/**
+ * Samples for GenerateBenefitUtilizationSummariesReport GenerateByBillingProfile.
+ */
+public final class GenerateBenefitUtilizationSummariesReportGenerateByBillingProfileSamples {
+    /*
+     * x-ms-original-file:
+     * 2025-03-01/BenefitUtilizationSummaries/Async/GenerateBenefitUtilizationSummariesReportByBillingProfile.json
+     */
+    /**
+     * Sample code: GenerateUtilizationSummariesReportByBillingProfile.
+     * 
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void generateUtilizationSummariesReportByBillingProfile(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.generateBenefitUtilizationSummariesReports()
+            .generateByBillingProfile("00000000-0000-0000-0000-000000000000", "CZSFR-SDFXC-DSDF",
+                new BenefitUtilizationSummariesRequest().withGrain(Grain.DAILY)
+                    .withStartDate(OffsetDateTime.parse("2022-06-01T00:00:00Z"))
+                    .withEndDate(OffsetDateTime.parse("2022-08-31T00:00:00Z"))
+                    .withKind(BenefitKind.RESERVATION),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### GenerateBenefitUtilizationSummariesReport_GenerateByReservationId
+
+```java
+import com.azure.resourcemanager.costmanagement.models.BenefitUtilizationSummariesRequest;
+import com.azure.resourcemanager.costmanagement.models.Grain;
+import java.time.OffsetDateTime;
+
+/**
+ * Samples for GenerateBenefitUtilizationSummariesReport GenerateByReservationId.
+ */
+public final class GenerateBenefitUtilizationSummariesReportGenerateByReservationIdSamples {
+    /*
+     * x-ms-original-file:
+     * 2025-03-01/BenefitUtilizationSummaries/Async/GenerateBenefitUtilizationSummariesReportByReservation.json
+     */
+    /**
+     * Sample code: GenerateUtilizationSummariesReportByReservation.
+     * 
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void generateUtilizationSummariesReportByReservation(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.generateBenefitUtilizationSummariesReports()
+            .generateByReservationId("00000000-0000-0000-0000-000000000000", "00000000-0000-0000-0000-000000000000",
+                new BenefitUtilizationSummariesRequest().withGrain(Grain.DAILY)
+                    .withStartDate(OffsetDateTime.parse("2022-06-01T00:00:00Z"))
+                    .withEndDate(OffsetDateTime.parse("2022-08-31T00:00:00Z")),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### GenerateBenefitUtilizationSummariesReport_GenerateByReservationOrderId
+
+```java
+import com.azure.resourcemanager.costmanagement.models.BenefitUtilizationSummariesRequest;
+import com.azure.resourcemanager.costmanagement.models.Grain;
+import java.time.OffsetDateTime;
+
+/**
+ * Samples for GenerateBenefitUtilizationSummariesReport GenerateByReservationOrderId.
+ */
+public final class GenerateBenefitUtilizationSummariesReportGenerateByReservationOrderIdSamples {
+    /*
+     * x-ms-original-file:
+     * 2025-03-01/BenefitUtilizationSummaries/Async/GenerateBenefitUtilizationSummariesReportByReservationOrder.json
+     */
+    /**
+     * Sample code: GenerateUtilizationSummariesReportByReservationOrder.
+     * 
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void generateUtilizationSummariesReportByReservationOrder(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.generateBenefitUtilizationSummariesReports()
+            .generateByReservationOrderId("00000000-0000-0000-0000-000000000000",
+                new BenefitUtilizationSummariesRequest().withGrain(Grain.DAILY)
+                    .withStartDate(OffsetDateTime.parse("2022-06-01T00:00:00Z"))
+                    .withEndDate(OffsetDateTime.parse("2022-08-31T00:00:00Z")),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### GenerateBenefitUtilizationSummariesReport_GenerateBySavingsPlanId
+
+```java
+import com.azure.resourcemanager.costmanagement.models.BenefitUtilizationSummariesRequest;
+import com.azure.resourcemanager.costmanagement.models.Grain;
+import java.time.OffsetDateTime;
+
+/**
+ * Samples for GenerateBenefitUtilizationSummariesReport GenerateBySavingsPlanId.
+ */
+public final class GenerateBenefitUtilizationSummariesReportGenerateBySavingsPlanIdSamples {
+    /*
+     * x-ms-original-file:
+     * 2025-03-01/BenefitUtilizationSummaries/Async/GenerateBenefitUtilizationSummariesReportBySavingsPlan.json
+     */
+    /**
+     * Sample code: GenerateUtilizationSummariesReportBySavingsPlan.
+     * 
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void generateUtilizationSummariesReportBySavingsPlan(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.generateBenefitUtilizationSummariesReports()
+            .generateBySavingsPlanId("00000000-0000-0000-0000-000000000000", "00000000-0000-0000-0000-000000000000",
+                new BenefitUtilizationSummariesRequest().withGrain(Grain.DAILY)
+                    .withStartDate(OffsetDateTime.parse("2022-06-01T00:00:00Z"))
+                    .withEndDate(OffsetDateTime.parse("2022-08-31T00:00:00Z")),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### GenerateBenefitUtilizationSummariesReport_GenerateBySavingsPlanOrderId
+
+```java
+import com.azure.resourcemanager.costmanagement.models.BenefitUtilizationSummariesRequest;
+import com.azure.resourcemanager.costmanagement.models.Grain;
+import java.time.OffsetDateTime;
+
+/**
+ * Samples for GenerateBenefitUtilizationSummariesReport GenerateBySavingsPlanOrderId.
+ */
+public final class GenerateBenefitUtilizationSummariesReportGenerateBySavingsPlanOrderIdSamples {
+    /*
+     * x-ms-original-file:
+     * 2025-03-01/BenefitUtilizationSummaries/Async/GenerateBenefitUtilizationSummariesReportBySavingsPlanOrder.json
+     */
+    /**
+     * Sample code: GenerateUtilizationSummariesReportBySavingsPlanOrder.
+     * 
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void generateUtilizationSummariesReportBySavingsPlanOrder(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.generateBenefitUtilizationSummariesReports()
+            .generateBySavingsPlanOrderId("00000000-0000-0000-0000-000000000000",
+                new BenefitUtilizationSummariesRequest().withGrain(Grain.DAILY)
+                    .withStartDate(OffsetDateTime.parse("2022-06-01T00:00:00Z"))
+                    .withEndDate(OffsetDateTime.parse("2022-08-31T00:00:00Z")),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### GenerateCostDetailsReport_CreateOperation
 
 ```java
@@ -2198,9 +3384,7 @@ import com.azure.resourcemanager.costmanagement.models.GenerateCostDetailsReport
  */
 public final class GenerateCostDetailsReportCreateOperationSamples {
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * GenerateCostDetailsReportBySubscriptionAndTimePeriod.json
+     * x-ms-original-file: 2025-03-01/GenerateCostDetailsReportBySubscriptionAndTimePeriod.json
      */
     /**
      * Sample code: GenerateCostDetailsReportBySubscriptionAndTimePeriod.
@@ -2211,15 +3395,14 @@ public final class GenerateCostDetailsReportCreateOperationSamples {
         com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
         manager.generateCostDetailsReports()
             .createOperation("subscriptions/00000000-0000-0000-0000-000000000000",
-                new GenerateCostDetailsReportRequestDefinition().withMetric(CostDetailsMetricType.ACTUAL_COST)
+                new GenerateCostDetailsReportRequestDefinition()
+                    .withMetric(CostDetailsMetricType.ACTUAL_COST_COST_DETAILS_METRIC_TYPE)
                     .withTimePeriod(new CostDetailsTimePeriod().withStart("2020-03-01").withEnd("2020-03-15")),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * GenerateCostDetailsReportByEnrollmentAccountsAndTimePeriod.json
+     * x-ms-original-file: 2025-03-01/GenerateCostDetailsReportByEnrollmentAccountsAndTimePeriod.json
      */
     /**
      * Sample code: GenerateCostDetailsReportByEnrollmentAccountsAndTimePeriod.
@@ -2230,15 +3413,14 @@ public final class GenerateCostDetailsReportCreateOperationSamples {
         com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
         manager.generateCostDetailsReports()
             .createOperation("providers/Microsoft.Billing/enrollmentAccounts/1234",
-                new GenerateCostDetailsReportRequestDefinition().withMetric(CostDetailsMetricType.ACTUAL_COST)
+                new GenerateCostDetailsReportRequestDefinition()
+                    .withMetric(CostDetailsMetricType.ACTUAL_COST_COST_DETAILS_METRIC_TYPE)
                     .withTimePeriod(new CostDetailsTimePeriod().withStart("2020-03-01").withEnd("2020-03-15")),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * GenerateCostDetailsReportByBillingProfileAndInvoiceId.json
+     * x-ms-original-file: 2025-03-01/GenerateCostDetailsReportByBillingProfileAndInvoiceId.json
      */
     /**
      * Sample code: GenerateCostDetailsReportByBillingProfileAndInvoiceId.
@@ -2249,15 +3431,15 @@ public final class GenerateCostDetailsReportCreateOperationSamples {
         com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
         manager.generateCostDetailsReports()
             .createOperation("providers/Microsoft.Billing/billingAccounts/12345:6789/billingProfiles/13579",
-                new GenerateCostDetailsReportRequestDefinition().withMetric(CostDetailsMetricType.ACTUAL_COST)
+                new GenerateCostDetailsReportRequestDefinition()
+                    .withMetric(CostDetailsMetricType.ACTUAL_COST_COST_DETAILS_METRIC_TYPE)
                     .withInvoiceId("M1234567"),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * GenerateCostDetailsReportByBillingAccountEnterpriseAgreementCustomerAndBillingPeriod.json
+     * 2025-03-01/GenerateCostDetailsReportByBillingAccountEnterpriseAgreementCustomerAndBillingPeriod.json
      */
     /**
      * Sample code: GenerateCostDetailsReportByBillingAccountEnterpriseAgreementCustomerAndBillingPeriod.
@@ -2268,15 +3450,14 @@ public final class GenerateCostDetailsReportCreateOperationSamples {
         com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
         manager.generateCostDetailsReports()
             .createOperation("providers/Microsoft.Billing/billingAccounts/12345",
-                new GenerateCostDetailsReportRequestDefinition().withMetric(CostDetailsMetricType.ACTUAL_COST)
+                new GenerateCostDetailsReportRequestDefinition()
+                    .withMetric(CostDetailsMetricType.ACTUAL_COST_COST_DETAILS_METRIC_TYPE)
                     .withBillingPeriod("202205"),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * GenerateCostDetailsReportByBillingProfileAndInvoiceIdAndCustomerId.json
+     * x-ms-original-file: 2025-03-01/GenerateCostDetailsReportByBillingProfileAndInvoiceIdAndCustomerId.json
      */
     /**
      * Sample code: GenerateCostDetailsReportByBillingProfileAndInvoiceIdAndCustomerId.
@@ -2287,15 +3468,14 @@ public final class GenerateCostDetailsReportCreateOperationSamples {
         com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
         manager.generateCostDetailsReports()
             .createOperation("providers/Microsoft.Billing/billingAccounts/12345:6789/customers/13579",
-                new GenerateCostDetailsReportRequestDefinition().withMetric(CostDetailsMetricType.ACTUAL_COST)
+                new GenerateCostDetailsReportRequestDefinition()
+                    .withMetric(CostDetailsMetricType.ACTUAL_COST_COST_DETAILS_METRIC_TYPE)
                     .withInvoiceId("M1234567"),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * GenerateCostDetailsReportByCustomerAndTimePeriod.json
+     * x-ms-original-file: 2025-03-01/GenerateCostDetailsReportByCustomerAndTimePeriod.json
      */
     /**
      * Sample code: GenerateCostDetailsReportByCustomerAndTimePeriod.
@@ -2306,15 +3486,14 @@ public final class GenerateCostDetailsReportCreateOperationSamples {
         com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
         manager.generateCostDetailsReports()
             .createOperation("providers/Microsoft.Billing/billingAccounts/12345:6789/customers/13579",
-                new GenerateCostDetailsReportRequestDefinition().withMetric(CostDetailsMetricType.ACTUAL_COST)
+                new GenerateCostDetailsReportRequestDefinition()
+                    .withMetric(CostDetailsMetricType.ACTUAL_COST_COST_DETAILS_METRIC_TYPE)
                     .withTimePeriod(new CostDetailsTimePeriod().withStart("2020-03-01").withEnd("2020-03-15")),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * GenerateCostDetailsReportByDepartmentsAndTimePeriod.json
+     * x-ms-original-file: 2025-03-01/GenerateCostDetailsReportByDepartmentsAndTimePeriod.json
      */
     /**
      * Sample code: GenerateCostDetailsReportByDepartmentsAndTimePeriod.
@@ -2325,7 +3504,8 @@ public final class GenerateCostDetailsReportCreateOperationSamples {
         com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
         manager.generateCostDetailsReports()
             .createOperation("providers/Microsoft.Billing/departments/12345",
-                new GenerateCostDetailsReportRequestDefinition().withMetric(CostDetailsMetricType.ACTUAL_COST)
+                new GenerateCostDetailsReportRequestDefinition()
+                    .withMetric(CostDetailsMetricType.ACTUAL_COST_COST_DETAILS_METRIC_TYPE)
                     .withTimePeriod(new CostDetailsTimePeriod().withStart("2020-03-01").withEnd("2020-03-15")),
                 com.azure.core.util.Context.NONE);
     }
@@ -2340,9 +3520,7 @@ public final class GenerateCostDetailsReportCreateOperationSamples {
  */
 public final class GenerateCostDetailsReportGetOperationResultsSamples {
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * CostDetailsOperationResultsBySubscriptionScope.json
+     * x-ms-original-file: 2025-03-01/CostDetailsOperationResultsBySubscriptionScope.json
      */
     /**
      * Sample code: Get details of the operation result.
@@ -2370,9 +3548,7 @@ import com.azure.resourcemanager.costmanagement.models.GenerateDetailedCostRepor
  */
 public final class GenerateDetailedCostReportCreateOperationSamples {
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * GenerateDetailedCostReportByBillingProfileAndInvoiceId.json
+     * x-ms-original-file: 2025-03-01/GenerateDetailedCostReportByBillingProfileAndInvoiceId.json
      */
     /**
      * Sample code: GenerateDetailedCostReportByBillingProfileAndInvoiceId.
@@ -2389,9 +3565,7 @@ public final class GenerateDetailedCostReportCreateOperationSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * GenerateDetailedCostReportByBillingAccountLegacyAndBillingPeriod.json
+     * x-ms-original-file: 2025-03-01/GenerateDetailedCostReportByBillingAccountLegacyAndBillingPeriod.json
      */
     /**
      * Sample code: GenerateDetailedCostReportByBillingAccountLegacyAndBillingPeriod.
@@ -2408,9 +3582,7 @@ public final class GenerateDetailedCostReportCreateOperationSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * GenerateDetailedCostReportByBillingProfileAndInvoiceIdAndCustomerId.json
+     * x-ms-original-file: 2025-03-01/GenerateDetailedCostReportByBillingProfileAndInvoiceIdAndCustomerId.json
      */
     /**
      * Sample code: GenerateDetailedCostReportByBillingProfileAndInvoiceIdAndCustomerId.
@@ -2428,9 +3600,7 @@ public final class GenerateDetailedCostReportCreateOperationSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * GenerateDetailedCostReportBySubscriptionAndTimePeriod.json
+     * x-ms-original-file: 2025-03-01/GenerateDetailedCostReportBySubscriptionAndTimePeriod.json
      */
     /**
      * Sample code: GenerateDetailedCostReportBySubscriptionAndTimePeriod.
@@ -2448,9 +3618,7 @@ public final class GenerateDetailedCostReportCreateOperationSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * GenerateDetailedCostReportByCustomerAndTimePeriod.json
+     * x-ms-original-file: 2025-03-01/GenerateDetailedCostReportByCustomerAndTimePeriod.json
      */
     /**
      * Sample code: GenerateDetailedCostReportByCustomerAndTimePeriod.
@@ -2477,9 +3645,7 @@ public final class GenerateDetailedCostReportCreateOperationSamples {
  */
 public final class GenerateDetailedCostReportOperationResultsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * GenerateDetailedCostReportOperationResultsBySubscriptionScope.json
+     * x-ms-original-file: 2025-03-01/GenerateDetailedCostReportOperationResultsBySubscriptionScope.json
      */
     /**
      * Sample code: Get details of the operation result.
@@ -2503,9 +3669,7 @@ public final class GenerateDetailedCostReportOperationResultsGetSamples {
  */
 public final class GenerateDetailedCostReportOperationStatusGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * GenerateDetailedCostReportOperationStatusBySubscriptionScope.json
+     * x-ms-original-file: 2025-03-01/GenerateDetailedCostReportOperationStatusBySubscriptionScope.json
      */
     /**
      * Sample code: Get details of the operation status.
@@ -2529,9 +3693,7 @@ public final class GenerateDetailedCostReportOperationStatusGetSamples {
  */
 public final class GenerateReservationDetailsReportByBillingAccountIdSamples {
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * GenerateReservationDetailsReportByBillingAccount.json
+     * x-ms-original-file: 2025-03-01/GenerateReservationDetailsReportByBillingAccount.json
      */
     /**
      * Sample code: ReservationDetails.
@@ -2553,9 +3715,7 @@ public final class GenerateReservationDetailsReportByBillingAccountIdSamples {
  */
 public final class GenerateReservationDetailsReportByBillingProfileIdSamples {
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * GenerateReservationDetailsReportByBillingProfile.json
+     * x-ms-original-file: 2025-03-01/GenerateReservationDetailsReportByBillingProfile.json
      */
     /**
      * Sample code: ReservationDetails.
@@ -2578,9 +3738,7 @@ public final class GenerateReservationDetailsReportByBillingProfileIdSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/OperationList.
-     * json
+     * x-ms-original-file: 2025-03-01/OperationList.json
      */
     /**
      * Sample code: OperationList.
@@ -2593,27 +3751,24 @@ public final class OperationsListSamples {
 }
 ```
 
-### PriceSheet_Download
+### PriceSheet_DownloadByBillingAccount
 
 ```java
 /**
- * Samples for PriceSheet Download.
+ * Samples for PriceSheet DownloadByBillingAccount.
  */
-public final class PriceSheetDownloadSamples {
+public final class PriceSheetDownloadByBillingAccountSamples {
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * PricesheetDownload.json
+     * x-ms-original-file: 2025-03-01/EAPriceSheetForBillingPeriod.json
      */
     /**
-     * Sample code: PricesheetDownload.
+     * Sample code: EAPriceSheetForBillingPeriod.
      * 
      * @param manager Entry point to CostManagementManager.
      */
-    public static void pricesheetDownload(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager.priceSheets()
-            .download("7c05a543-80ff-571e-9f98-1063b3b53cf2:99ad03ad-2d1b-4889-a452-090ad407d25f_2019-05-31",
-                "2USN-TPCD-BG7-TGB", "T000940677", com.azure.core.util.Context.NONE);
+    public static void
+        eAPriceSheetForBillingPeriod(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.priceSheets().downloadByBillingAccount("0000000", "202311", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2626,9 +3781,7 @@ public final class PriceSheetDownloadSamples {
  */
 public final class PriceSheetDownloadByBillingProfileSamples {
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * PricesheetDownloadByBillingProfile.json
+     * x-ms-original-file: 2025-03-01/PricesheetDownloadByBillingProfile.json
      */
     /**
      * Sample code: PricesheetDownloadByBillingProfile.
@@ -2641,6 +3794,29 @@ public final class PriceSheetDownloadByBillingProfileSamples {
             .downloadByBillingProfile(
                 "7c05a543-80ff-571e-9f98-1063b3b53cf2:99ad03ad-2d1b-4889-a452-090ad407d25f_2019-05-31",
                 "2USN-TPCD-BG7-TGB", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### PriceSheet_DownloadByInvoice
+
+```java
+/**
+ * Samples for PriceSheet DownloadByInvoice.
+ */
+public final class PriceSheetDownloadByInvoiceSamples {
+    /*
+     * x-ms-original-file: 2025-03-01/PricesheetDownload.json
+     */
+    /**
+     * Sample code: PricesheetDownload.
+     * 
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void pricesheetDownload(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.priceSheets()
+            .downloadByInvoice("7c05a543-80ff-571e-9f98-1063b3b53cf2:99ad03ad-2d1b-4889-a452-090ad407d25f_2019-05-31",
+                "2USN-TPCD-BG7-TGB", "T000940677", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2669,9 +3845,7 @@ import java.util.Map;
  */
 public final class QueryUsageSamples {
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * SubscriptionQueryGrouping.json
+     * x-ms-original-file: 2025-03-01/SubscriptionQueryGrouping.json
      */
     /**
      * Sample code: SubscriptionQueryGrouping-Legacy.
@@ -2693,9 +3867,7 @@ public final class QueryUsageSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * EnrollmentAccountQueryGrouping.json
+     * x-ms-original-file: 2025-03-01/EnrollmentAccountQueryGrouping.json
      */
     /**
      * Sample code: EnrollmentAccountQueryGrouping-Legacy.
@@ -2717,9 +3889,7 @@ public final class QueryUsageSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * DepartmentQuery.json
+     * x-ms-original-file: 2025-03-01/DepartmentQuery.json
      */
     /**
      * Sample code: DepartmentQuery-Legacy.
@@ -2749,9 +3919,29 @@ public final class QueryUsageSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * MCABillingAccountQuery.json
+     * x-ms-original-file: 2025-03-01/BillingAccountQueryGrouping.json
+     */
+    /**
+     * Sample code: BillingAccountQueryGrouping-Legacy.
+     * 
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void
+        billingAccountQueryGroupingLegacy(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.queries()
+            .usageWithResponse("providers/Microsoft.Billing/billingAccounts/70664866",
+                new QueryDefinition().withType(ExportType.USAGE)
+                    .withTimeframe(TimeframeType.THE_LAST_MONTH)
+                    .withDataset(new QueryDataset().withGranularity(GranularityType.fromString("None"))
+                        .withAggregation(mapOf("totalCost",
+                            new QueryAggregation().withName("PreTaxCost").withFunction(FunctionType.SUM)))
+                        .withGrouping(Arrays.asList(
+                            new QueryGrouping().withType(QueryColumnType.DIMENSION).withName("ResourceGroup")))),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2025-03-01/MCABillingAccountQuery.json
      */
     /**
      * Sample code: BillingAccountQuery-MCA.
@@ -2781,33 +3971,7 @@ public final class QueryUsageSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * BillingAccountQueryGrouping.json
-     */
-    /**
-     * Sample code: BillingAccountQueryGrouping-Legacy.
-     * 
-     * @param manager Entry point to CostManagementManager.
-     */
-    public static void
-        billingAccountQueryGroupingLegacy(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager.queries()
-            .usageWithResponse("providers/Microsoft.Billing/billingAccounts/70664866",
-                new QueryDefinition().withType(ExportType.USAGE)
-                    .withTimeframe(TimeframeType.THE_LAST_MONTH)
-                    .withDataset(new QueryDataset().withGranularity(GranularityType.fromString("None"))
-                        .withAggregation(mapOf("totalCost",
-                            new QueryAggregation().withName("PreTaxCost").withFunction(FunctionType.SUM)))
-                        .withGrouping(Arrays.asList(
-                            new QueryGrouping().withType(QueryColumnType.DIMENSION).withName("ResourceGroup")))),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * SubscriptionQuery.json
+     * x-ms-original-file: 2025-03-01/SubscriptionQuery.json
      */
     /**
      * Sample code: SubscriptionQuery-Legacy.
@@ -2837,9 +4001,7 @@ public final class QueryUsageSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * MCABillingAccountQueryGrouping.json
+     * x-ms-original-file: 2025-03-01/MCABillingAccountQueryGrouping.json
      */
     /**
      * Sample code: BillingAccountQueryGrouping-MCA.
@@ -2861,9 +4023,7 @@ public final class QueryUsageSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * MCAInvoiceSectionQueryGrouping.json
+     * x-ms-original-file: 2025-03-01/MCAInvoiceSectionQueryGrouping.json
      */
     /**
      * Sample code: InvoiceSectionQueryGrouping-MCA.
@@ -2886,9 +4046,7 @@ public final class QueryUsageSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * EnrollmentAccountQuery.json
+     * x-ms-original-file: 2025-03-01/EnrollmentAccountQuery.json
      */
     /**
      * Sample code: EnrollmentAccountQuery-Legacy.
@@ -2919,9 +4077,7 @@ public final class QueryUsageSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * ResourceGroupQueryGrouping.json
+     * x-ms-original-file: 2025-03-01/ResourceGroupQueryGrouping.json
      */
     /**
      * Sample code: ResourceGroupQueryGrouping-Legacy.
@@ -2944,9 +4100,7 @@ public final class QueryUsageSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * BillingAccountQuery.json
+     * x-ms-original-file: 2025-03-01/BillingAccountQuery.json
      */
     /**
      * Sample code: BillingAccountQuery-Legacy.
@@ -2977,9 +4131,7 @@ public final class QueryUsageSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * MCABillingProfileQueryGrouping.json
+     * x-ms-original-file: 2025-03-01/MCABillingProfileQueryGrouping.json
      */
     /**
      * Sample code: BillingProfileQueryGrouping-MCA.
@@ -3001,9 +4153,7 @@ public final class QueryUsageSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * ResourceGroupQuery.json
+     * x-ms-original-file: 2025-03-01/ResourceGroupQuery.json
      */
     /**
      * Sample code: ResourceGroupQuery-Legacy.
@@ -3035,9 +4185,7 @@ public final class QueryUsageSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * MCAInvoiceSectionQuery.json
+     * x-ms-original-file: 2025-03-01/MCAInvoiceSectionQuery.json
      */
     /**
      * Sample code: InvoiceSectionQuery-MCA.
@@ -3068,9 +4216,7 @@ public final class QueryUsageSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * MCACustomerQuery.json
+     * x-ms-original-file: 2025-03-01/MCACustomerQuery.json
      */
     /**
      * Sample code: CustomerQuery-MCA.
@@ -3100,9 +4246,7 @@ public final class QueryUsageSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * ManagementGroupQuery.json
+     * x-ms-original-file: 2025-03-01/ManagementGroupQuery.json
      */
     /**
      * Sample code: ManagementGroupQuery-Legacy.
@@ -3133,9 +4277,7 @@ public final class QueryUsageSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * DepartmentQueryGrouping.json
+     * x-ms-original-file: 2025-03-01/DepartmentQueryGrouping.json
      */
     /**
      * Sample code: DepartmentQueryGrouping-Legacy.
@@ -3157,9 +4299,7 @@ public final class QueryUsageSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * MCABillingProfileQuery.json
+     * x-ms-original-file: 2025-03-01/MCABillingProfileQuery.json
      */
     /**
      * Sample code: BillingProfileQuery-MCA.
@@ -3189,9 +4329,7 @@ public final class QueryUsageSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * ManagementGroupQueryGrouping.json
+     * x-ms-original-file: 2025-03-01/ManagementGroupQueryGrouping.json
      */
     /**
      * Sample code: ManagementGroupQueryGrouping-Legacy.
@@ -3213,9 +4351,7 @@ public final class QueryUsageSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * MCACustomerQueryGrouping.json
+     * x-ms-original-file: 2025-03-01/MCACustomerQueryGrouping.json
      */
     /**
      * Sample code: CustomerQueryGrouping-MCA.
@@ -3269,9 +4405,7 @@ import java.util.Arrays;
  */
 public final class QueryUsageByExternalCloudProviderTypeSamples {
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * ExternalSubscriptionsQuery.json
+     * x-ms-original-file: 2025-03-01/ExternalSubscriptionsQuery.json
      */
     /**
      * Sample code: ExternalSubscriptionsQuery.
@@ -3302,9 +4436,7 @@ public final class QueryUsageByExternalCloudProviderTypeSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * ExternalBillingAccountsQuery.json
+     * x-ms-original-file: 2025-03-01/ExternalBillingAccountsQuery.json
      */
     /**
      * Sample code: ExternalBillingAccountQueryList.
@@ -3346,9 +4478,7 @@ import com.azure.resourcemanager.costmanagement.models.CheckNameAvailabilityRequ
  */
 public final class ScheduledActionsCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * scheduledActions/checkNameAvailability-private-scheduledAction.json
+     * x-ms-original-file: 2025-03-01/scheduledActions/checkNameAvailability-private-scheduledAction.json
      */
     /**
      * Sample code: ScheduledActionCheckNameAvailability.
@@ -3374,9 +4504,7 @@ import com.azure.resourcemanager.costmanagement.models.CheckNameAvailabilityRequ
  */
 public final class ScheduledActionsCheckNameAvailabilityByScopeSamples {
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * scheduledActions/checkNameAvailability-shared-scheduledAction.json
+     * x-ms-original-file: 2025-03-01/scheduledActions/checkNameAvailability-shared-scheduledAction.json
      */
     /**
      * Sample code: ScheduledActionCheckNameAvailabilityByScope.
@@ -3413,9 +4541,7 @@ import java.util.Arrays;
  */
 public final class ScheduledActionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * scheduledActions/scheduledAction-createOrUpdate-private.json
+     * x-ms-original-file: 2025-03-01/scheduledActions/scheduledAction-createOrUpdate-private.json
      */
     /**
      * Sample code: CreateOrUpdatePrivateScheduledAction.
@@ -3463,9 +4589,7 @@ import java.util.Arrays;
  */
 public final class ScheduledActionsCreateOrUpdateByScopeSamples {
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * scheduledActions/scheduledAction-createOrUpdate-shared.json
+     * x-ms-original-file: 2025-03-01/scheduledActions/scheduledAction-createOrUpdate-shared.json
      */
     /**
      * Sample code: CreateOrUpdateScheduledActionByScope.
@@ -3495,9 +4619,7 @@ public final class ScheduledActionsCreateOrUpdateByScopeSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * scheduledActions/scheduledAction-insightAlert-createOrUpdate-shared.json
+     * x-ms-original-file: 2025-03-01/scheduledActions/scheduledAction-insightAlert-createOrUpdate-shared.json
      */
     /**
      * Sample code: CreateOrUpdateInsightAlertScheduledActionByScope.
@@ -3532,9 +4654,7 @@ public final class ScheduledActionsCreateOrUpdateByScopeSamples {
  */
 public final class ScheduledActionsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * scheduledActions/scheduledAction-delete-private.json
+     * x-ms-original-file: 2025-03-01/scheduledActions/scheduledAction-delete-private.json
      */
     /**
      * Sample code: PrivateScheduledActionDelete.
@@ -3556,9 +4676,7 @@ public final class ScheduledActionsDeleteSamples {
  */
 public final class ScheduledActionsDeleteByScopeSamples {
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * scheduledActions/scheduledAction-delete-shared.json
+     * x-ms-original-file: 2025-03-01/scheduledActions/scheduledAction-delete-shared.json
      */
     /**
      * Sample code: ScheduledActionDeleteByScope.
@@ -3582,9 +4700,7 @@ public final class ScheduledActionsDeleteByScopeSamples {
  */
 public final class ScheduledActionsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * scheduledActions/scheduledAction-get-private.json
+     * x-ms-original-file: 2025-03-01/scheduledActions/scheduledAction-get-private.json
      */
     /**
      * Sample code: PrivateScheduledAction.
@@ -3605,9 +4721,7 @@ public final class ScheduledActionsGetSamples {
  */
 public final class ScheduledActionsGetByScopeSamples {
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * scheduledActions/scheduledAction-get-shared.json
+     * x-ms-original-file: 2025-03-01/scheduledActions/scheduledAction-get-shared.json
      */
     /**
      * Sample code: ScheduledActionByScope.
@@ -3630,9 +4744,7 @@ public final class ScheduledActionsGetByScopeSamples {
  */
 public final class ScheduledActionsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * scheduledActions/scheduledActions-listWithFilter-private.json
+     * x-ms-original-file: 2025-03-01/scheduledActions/scheduledActions-listWithFilter-private.json
      */
     /**
      * Sample code: PrivateScheduledActionsListFilterByViewId.
@@ -3647,9 +4759,7 @@ public final class ScheduledActionsListSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * scheduledActions/scheduledActions-list-private.json
+     * x-ms-original-file: 2025-03-01/scheduledActions/scheduledActions-list-private.json
      */
     /**
      * Sample code: PrivateScheduledActionsList.
@@ -3671,9 +4781,7 @@ public final class ScheduledActionsListSamples {
  */
 public final class ScheduledActionsListByScopeSamples {
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * scheduledActions/scheduledActions-listWithFilter-shared.json
+     * x-ms-original-file: 2025-03-01/scheduledActions/scheduledActions-listWithFilter-shared.json
      */
     /**
      * Sample code: ScheduledActionsListByScopeFilterByViewId.
@@ -3689,9 +4797,7 @@ public final class ScheduledActionsListByScopeSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * scheduledActions/scheduledActions-list-shared.json
+     * x-ms-original-file: 2025-03-01/scheduledActions/scheduledActions-list-shared.json
      */
     /**
      * Sample code: ScheduledActionsListByScope.
@@ -3714,9 +4820,7 @@ public final class ScheduledActionsListByScopeSamples {
  */
 public final class ScheduledActionsRunSamples {
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * scheduledActions/scheduledAction-sendNow-private.json
+     * x-ms-original-file: 2025-03-01/scheduledActions/scheduledAction-sendNow-private.json
      */
     /**
      * Sample code: ScheduledActionSendNow.
@@ -3737,9 +4841,7 @@ public final class ScheduledActionsRunSamples {
  */
 public final class ScheduledActionsRunByScopeSamples {
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * scheduledActions/scheduledAction-sendNow-shared.json
+     * x-ms-original-file: 2025-03-01/scheduledActions/scheduledAction-sendNow-shared.json
      */
     /**
      * Sample code: ScheduledActionRunByScope.
@@ -3751,6 +4853,107 @@ public final class ScheduledActionsRunByScopeSamples {
         manager.scheduledActions()
             .runByScopeWithResponse("subscriptions/00000000-0000-0000-0000-000000000000", "monthlyCostByResource",
                 com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Settings_CreateOrUpdateByScope
+
+```java
+import com.azure.resourcemanager.costmanagement.models.SettingType;
+import com.azure.resourcemanager.costmanagement.models.TagInheritanceProperties;
+import com.azure.resourcemanager.costmanagement.models.TagInheritanceSetting;
+
+/**
+ * Samples for Settings CreateOrUpdateByScope.
+ */
+public final class SettingsCreateOrUpdateByScopeSamples {
+    /*
+     * x-ms-original-file: 2025-03-01/settings-createOrUpdate.json
+     */
+    /**
+     * Sample code: CreateOrUpdateSettingByScope.
+     * 
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void
+        createOrUpdateSettingByScope(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.settings()
+            .createOrUpdateByScopeWithResponse("subscriptions/00000000-0000-0000-0000-000000000000",
+                SettingType.TAGINHERITANCE, new TagInheritanceSetting().withProperties(
+                    new TagInheritanceProperties().withPreferContainerTags(false)),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Settings_DeleteByScope
+
+```java
+import com.azure.resourcemanager.costmanagement.models.SettingType;
+
+/**
+ * Samples for Settings DeleteByScope.
+ */
+public final class SettingsDeleteByScopeSamples {
+    /*
+     * x-ms-original-file: 2025-03-01/setting-delete.json
+     */
+    /**
+     * Sample code: SettingDeleteByScope.
+     * 
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void settingDeleteByScope(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.settings()
+            .deleteByScopeWithResponse("subscriptions/00000000-0000-0000-0000-000000000000", SettingType.TAGINHERITANCE,
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Settings_GetByScope
+
+```java
+import com.azure.resourcemanager.costmanagement.models.SettingType;
+
+/**
+ * Samples for Settings GetByScope.
+ */
+public final class SettingsGetByScopeSamples {
+    /*
+     * x-ms-original-file: 2025-03-01/setting-get.json
+     */
+    /**
+     * Sample code: SettingByScope.
+     * 
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void settingByScope(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.settings()
+            .getByScopeWithResponse("subscriptions/00000000-0000-0000-0000-000000000000", SettingType.TAGINHERITANCE,
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Settings_List
+
+```java
+/**
+ * Samples for Settings List.
+ */
+public final class SettingsListSamples {
+    /*
+     * x-ms-original-file: 2025-03-01/settingsList.json
+     */
+    /**
+     * Sample code: SettingsList.
+     * 
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void settingsList(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.settings().list("subscriptions/00000000-0000-0000-0000-000000000000", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3783,9 +4986,7 @@ import java.util.Map;
  */
 public final class ViewsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * PrivateViewCreateOrUpdate.json
+     * x-ms-original-file: 2025-03-01/PrivateViewCreateOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdatePrivateView.
@@ -3861,9 +5062,7 @@ import java.util.Map;
  */
 public final class ViewsCreateOrUpdateByScopeSamples {
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * ViewCreateOrUpdateByResourceGroup.json
+     * x-ms-original-file: 2025-03-01/ViewCreateOrUpdateByResourceGroup.json
      */
     /**
      * Sample code: ResourceGroupCreateOrUpdateView.
@@ -3921,9 +5120,7 @@ public final class ViewsCreateOrUpdateByScopeSamples {
  */
 public final class ViewsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * PrivateViewDelete.json
+     * x-ms-original-file: 2025-03-01/PrivateViewDelete.json
      */
     /**
      * Sample code: DeletePrivateView.
@@ -3944,9 +5141,7 @@ public final class ViewsDeleteSamples {
  */
 public final class ViewsDeleteByScopeSamples {
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * ViewDeleteByResourceGroup.json
+     * x-ms-original-file: 2025-03-01/ViewDeleteByResourceGroup.json
      */
     /**
      * Sample code: ResourceGroupDeleteView.
@@ -3969,9 +5164,7 @@ public final class ViewsDeleteByScopeSamples {
  */
 public final class ViewsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/PrivateView.
-     * json
+     * x-ms-original-file: 2025-03-01/PrivateView.json
      */
     /**
      * Sample code: PrivateView.
@@ -3992,9 +5185,7 @@ public final class ViewsGetSamples {
  */
 public final class ViewsGetByScopeSamples {
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * ViewByResourceGroup.json
+     * x-ms-original-file: 2025-03-01/ViewByResourceGroup.json
      */
     /**
      * Sample code: ResourceGroupView.
@@ -4017,9 +5208,7 @@ public final class ViewsGetByScopeSamples {
  */
 public final class ViewsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * PrivateViewList.json
+     * x-ms-original-file: 2025-03-01/PrivateViewList.json
      */
     /**
      * Sample code: PrivateViewList.
@@ -4040,9 +5229,7 @@ public final class ViewsListSamples {
  */
 public final class ViewsListByScopeSamples {
     /*
-     * x-ms-original-file:
-     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
-     * ViewListByResourceGroup.json
+     * x-ms-original-file: 2025-03-01/ViewListByResourceGroup.json
      */
     /**
      * Sample code: ResourceGroupViewList.
