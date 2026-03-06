@@ -1,14 +1,14 @@
 import:
-  - ../../../vscode.json
+  - ../../../vscode/cspell.json
 overrides:
   - filename: "**/sdk/ai/.skills/**/SKILL.md"
     words:
-    - java
-    - FQCN
-    - dpkg
-    - Dcodesnippet
-    - Dcheckstyle
-    - Dspotless
-    - Drevapi
-    - Djacoco
     - Danimal
+    - Dcheckstyle
+    - Dcodesnippet
+    - Djacoco
+    - dpkg
+    - Drevapi
+    - Dspotless
+    - FQCN
+    - java
