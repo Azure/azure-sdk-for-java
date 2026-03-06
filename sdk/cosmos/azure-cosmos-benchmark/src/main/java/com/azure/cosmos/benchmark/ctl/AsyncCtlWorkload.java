@@ -138,7 +138,7 @@ public class AsyncCtlWorkload implements Benchmark {
         } else if (type.equals(OperationType.Query) && !isReadMany) {
             CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
             String sqlQuery = "Select top 100 * from c order by c._ts";
-            return container.queryItems(sqlQuery, options, PojoizedJson.class).byPage(10).next().map(r -> (Object) r);
+            return container.queryItems(sqlQuery, options, PojoizedJson.class).byPage(10).last().map(r -> (Object) r);
         } else if (type.equals(OperationType.Read)){
             int index = random.nextInt(docsToRead.get(container.getId()).size());
             String partitionKeyValue = docsToRead.get(container.getId()).get(index).getId();
@@ -196,16 +196,17 @@ public class AsyncCtlWorkload implements Benchmark {
         AtomicLong completedCount = new AtomicLong(0);
 
         source
-            .flatMap(i -> selectAndPerformWorkload(i)
-                .subscribeOn(BENCHMARK_SCHEDULER)
-                .doOnSuccess(v -> completedCount.incrementAndGet())
-                .doOnError(e -> {
-                    completedCount.incrementAndGet();
-                    logger.error("Encountered failure {} on thread {}",
-                        e.getMessage(), Thread.currentThread().getName(), e);
-                })
-                .onErrorResume(e -> Mono.empty()),
-            concurrency)
+            .flatMap(
+                i -> selectAndPerformWorkload(i)
+                    .subscribeOn(BENCHMARK_SCHEDULER)
+                    .doOnSuccess(v -> completedCount.incrementAndGet())
+                    .doOnError(e -> {
+                        completedCount.incrementAndGet();
+                        logger.error("Encountered failure {} on thread {}",
+                            e.getMessage(), Thread.currentThread().getName(), e);
+                    })
+                    .onErrorResume(e -> Mono.empty()),
+                concurrency)
             .blockLast();
 
         long endTime = System.currentTimeMillis();

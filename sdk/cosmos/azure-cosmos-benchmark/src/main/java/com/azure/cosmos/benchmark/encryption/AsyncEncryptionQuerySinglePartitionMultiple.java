@@ -39,6 +39,6 @@ public class AsyncEncryptionQuerySinglePartitionMultiple extends AsyncEncryption
     @Override
     protected Mono<FeedResponse<PojoizedJson>> performWorkload(long i) {
         return cosmosEncryptionAsyncContainer.queryItems(SQL_QUERY, options, PojoizedJson.class)
-            .byPage(10).next();
+            .byPage(10).last();
     }
 }

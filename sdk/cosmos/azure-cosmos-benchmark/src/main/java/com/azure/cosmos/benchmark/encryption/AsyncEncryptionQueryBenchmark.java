@@ -44,26 +44,26 @@ public class AsyncEncryptionQueryBenchmark extends AsyncEncryptionBenchmark<Feed
 
             int index = r.nextInt(this.workloadConfig.getNumberOfPreCreatedDocuments());
             String sqlQuery = "Select * from c where c.id = \"" + docsToRead.get(index).getId() + "\"";
-            return cosmosEncryptionAsyncContainer.queryItems(sqlQuery, options, PojoizedJson.class).byPage().next();
+            return cosmosEncryptionAsyncContainer.queryItems(sqlQuery, options, PojoizedJson.class).byPage().last();
         } else if (workloadConfig.getOperationType() == Operation.QuerySingle) {
 
             int index = r.nextInt(this.workloadConfig.getNumberOfPreCreatedDocuments());
             String pk = (String) docsToRead.get(index).getProperty(partitionKey);
             options.setPartitionKey(new PartitionKey(pk));
             String sqlQuery = "Select * from c where c." + partitionKey + " = \"" + pk + "\"";
-            return cosmosEncryptionAsyncContainer.queryItems(sqlQuery, options, PojoizedJson.class).byPage().next();
+            return cosmosEncryptionAsyncContainer.queryItems(sqlQuery, options, PojoizedJson.class).byPage().last();
         } else if (workloadConfig.getOperationType() == Operation.QueryParallel) {
 
             String sqlQuery = "Select * from c";
-            return cosmosEncryptionAsyncContainer.queryItems(sqlQuery, options, PojoizedJson.class).byPage(10).next();
+            return cosmosEncryptionAsyncContainer.queryItems(sqlQuery, options, PojoizedJson.class).byPage(10).last();
         } else if (workloadConfig.getOperationType() == Operation.QueryOrderby) {
 
             String sqlQuery = "Select * from c order by c._ts";
-            return cosmosEncryptionAsyncContainer.queryItems(sqlQuery, options, PojoizedJson.class).byPage(10).next();
+            return cosmosEncryptionAsyncContainer.queryItems(sqlQuery, options, PojoizedJson.class).byPage(10).last();
         } else if (workloadConfig.getOperationType() == Operation.QueryTopOrderby) {
 
             String sqlQuery = "Select top 1000 * from c order by c._ts";
-            return cosmosEncryptionAsyncContainer.queryItems(sqlQuery, options, PojoizedJson.class).byPage().next();
+            return cosmosEncryptionAsyncContainer.queryItems(sqlQuery, options, PojoizedJson.class).byPage().last();
         } else if (workloadConfig.getOperationType() == Operation.ReadAllItemsOfLogicalPartition) {
             throw new IllegalArgumentException("Unsupported Operation on encryption: " + workloadConfig.getOperationType());
         } else {
