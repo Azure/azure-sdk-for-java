@@ -15,7 +15,6 @@ import com.azure.resourcemanager.cdn.models.OriginGroup;
 import com.azure.resourcemanager.cdn.models.CdnEndpoint;
 import com.azure.resourcemanager.cdn.models.CdnProfile;
 import com.azure.resourcemanager.cdn.models.CheckNameAvailabilityResult;
-import com.azure.resourcemanager.cdn.models.DeliveryRule;
 import com.azure.resourcemanager.cdn.models.DeliveryRuleHttpVersionCondition;
 import com.azure.resourcemanager.cdn.models.DeliveryRuleRequestHeaderAction;
 import com.azure.resourcemanager.cdn.models.DeliveryRuleRequestSchemeCondition;
