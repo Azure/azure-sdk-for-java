@@ -3,12 +3,10 @@
 
 package com.azure.cosmos.benchmark;
 
-import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
-import reactor.core.publisher.BaseSubscriber;
-import reactor.core.scheduler.Schedulers;
+import reactor.core.publisher.Mono;
 
 
 class AsyncQuerySinglePartitionMultiple extends AsyncBenchmark<FeedResponse<PojoizedJson>> {
@@ -35,11 +33,9 @@ class AsyncQuerySinglePartitionMultiple extends AsyncBenchmark<FeedResponse<Pojo
     }
 
     @Override
-    protected void performWorkload(BaseSubscriber<FeedResponse<PojoizedJson>> baseSubscriber, long i) throws InterruptedException {
-        CosmosPagedFlux<PojoizedJson> obs = cosmosAsyncContainer.queryItems(SQL_QUERY, options, PojoizedJson.class);
-
-        concurrencyControlSemaphore.acquire();
-
-        obs.byPage(10).subscribeOn(Schedulers.parallel()).subscribe(baseSubscriber);
+    protected Mono<FeedResponse<PojoizedJson>> performWorkload(long i) {
+        return cosmosAsyncContainer.queryItems(SQL_QUERY, options, PojoizedJson.class)
+            .byPage(10)
+            .last();
     }
 }

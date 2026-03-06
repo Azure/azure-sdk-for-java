@@ -24,26 +24,28 @@ import com.azure.cosmos.models.ThroughputProperties;
 
 import io.micrometer.core.instrument.MeterRegistry;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.reactivestreams.Subscription;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
 import reactor.util.retry.Retry;
 
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.CancellationException;
-import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicLong;
 
 abstract class AsyncBenchmark<T> implements Benchmark {
 
     private static final ImplementationBridgeHelpers.CosmosClientBuilderHelper.CosmosClientBuilderAccessor clientBuilderAccessor
         = ImplementationBridgeHelpers.CosmosClientBuilderHelper.getCosmosClientBuilderAccessor();
+
+    // Dedicated scheduler for benchmark workload dispatch — avoids contention with global Schedulers.parallel()
+    static final Scheduler BENCHMARK_SCHEDULER =
+        Schedulers.newParallel("cosmos-bench", Runtime.getRuntime().availableProcessors());
 
     private boolean databaseCreated;
     private boolean collectionCreated;
@@ -55,7 +57,6 @@ abstract class AsyncBenchmark<T> implements Benchmark {
     final String partitionKey;
     final TenantWorkloadConfig workloadConfig;
     final List<PojoizedJson> docsToRead;
-    final Semaphore concurrencyControlSemaphore;
 
     AsyncBenchmark(TenantWorkloadConfig cfg) {
 
@@ -182,8 +183,6 @@ abstract class AsyncBenchmark<T> implements Benchmark {
 
         partitionKey = cosmosAsyncContainer.read().block().getProperties().getPartitionKeyDefinition()
             .getPaths().iterator().next().split("/")[1];
-
-        concurrencyControlSemaphore = new Semaphore(cfg.getConcurrency());
 
         ArrayList<Flux<PojoizedJson>> createDocumentObservables = new ArrayList<>();
 
@@ -350,82 +349,63 @@ abstract class AsyncBenchmark<T> implements Benchmark {
     protected void onError(Throwable throwable) {
     }
 
-    protected abstract void performWorkload(BaseSubscriber<T> baseSubscriber, long i) throws Exception;
+    protected abstract Mono<T> performWorkload(long i);
 
+    @SuppressWarnings("unchecked")
     public void run() throws Exception {
 
         long startTime = System.currentTimeMillis();
+        int concurrency = workloadConfig.getConcurrency();
 
-        AtomicLong count = new AtomicLong(0);
-        long i;
-
-        for (i = 0; shouldContinue(startTime, i); i++) {
-
-            BaseSubscriber<T> baseSubscriber = new BaseSubscriber<T>() {
-                @Override
-                protected void hookOnSubscribe(Subscription subscription) {
-                    super.hookOnSubscribe(subscription);
-                }
-
-                @Override
-                protected void hookOnNext(T value) {
-                    logger.debug("hookOnNext: {}, count:{}", value, count.get());
-                }
-
-                @Override
-                protected void hookOnCancel() {
-                    this.hookOnError(new CancellationException());
-                }
-
-                @Override
-                protected void hookOnComplete() {
-                    concurrencyControlSemaphore.release();
-                    AsyncBenchmark.this.onSuccess();
-
-                    synchronized (count) {
-                        count.incrementAndGet();
-                        count.notify();
+        Flux<Long> source;
+        Duration maxDuration = workloadConfig.getMaxRunningTimeDuration();
+        if (maxDuration != null) {
+            // Time-based termination
+            final long deadline = startTime + maxDuration.toMillis();
+            source = Flux.generate(
+                AtomicLong::new,
+                (state, sink) -> {
+                    if (System.currentTimeMillis() < deadline) {
+                        sink.next(state.getAndIncrement());
+                    } else {
+                        sink.complete();
                     }
-                }
-
-                @Override
-                protected void hookOnError(Throwable throwable) {
-                    logger.error("Encountered failure {} on thread {}" ,
-                        throwable.getMessage(), Thread.currentThread().getName(), throwable);
-                    concurrencyControlSemaphore.release();
-                    AsyncBenchmark.this.onError(throwable);
-
-                    synchronized (count) {
-                        count.incrementAndGet();
-                        count.notify();
-                    }
-                }
-            };
-
-            performWorkload(baseSubscriber, i);
+                    return state;
+                });
+        } else {
+            // Count-based termination
+            long numberOfOps = workloadConfig.getNumberOfOperations();
+            source = Flux.range(0, (int) numberOfOps).map(Long::valueOf);
         }
 
-        synchronized (count) {
-            while (count.get() < i) {
-                count.wait();
-            }
-        }
+        AtomicLong completedCount = new AtomicLong(0);
+
+        source
+            .flatMap(i -> {
+                Mono<T> workload = performWorkload(i);
+                Mono<T> delayed = sparsityMono(i);
+                if (delayed != null) {
+                    workload = delayed.then(workload);
+                }
+                return workload
+                    .subscribeOn(BENCHMARK_SCHEDULER)
+                    .doOnSuccess(v -> {
+                        completedCount.incrementAndGet();
+                        AsyncBenchmark.this.onSuccess();
+                    })
+                    .doOnError(e -> {
+                        completedCount.incrementAndGet();
+                        logger.error("Encountered failure {} on thread {}",
+                            e.getMessage(), Thread.currentThread().getName(), e);
+                        AsyncBenchmark.this.onError(e);
+                    })
+                    .onErrorResume(e -> Mono.empty());
+            }, concurrency)
+            .blockLast();
 
         long endTime = System.currentTimeMillis();
         logger.info("[{}] operations performed in [{}] seconds.",
-            workloadConfig.getNumberOfOperations(), (int) ((endTime - startTime) / 1000));
-    }
-
-    /**
-     * Check if the benchmark should continue running.
-     * Supports both count-based (numberOfOperations) and time-based (maxRunningTimeDuration) termination.
-     */
-    private boolean shouldContinue(long startTimeMillis, long iterationCount) {
-        Duration maxDuration = workloadConfig.getMaxRunningTimeDuration();
-        if (maxDuration == null) {
-            return iterationCount < workloadConfig.getNumberOfOperations();
-        }
-        return startTimeMillis + maxDuration.toMillis() > System.currentTimeMillis();
+            completedCount.get(), (int) ((endTime - startTime) / 1000));
     }
 
     protected Mono sparsityMono(long i) {
