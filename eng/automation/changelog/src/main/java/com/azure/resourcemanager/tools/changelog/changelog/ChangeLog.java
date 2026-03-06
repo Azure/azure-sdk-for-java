@@ -201,12 +201,12 @@ public class ChangeLog {
                 break;
             case REMOVED:
                 if (wasPublicStatic) {
-                    breakingChange.addMethodLevelChange(String.format("`%s` was removed", field.getName()));
+                    breakingChange.addFieldLevelChange(String.format("`%s` was removed", field.getName()));
                 }
                 break;
             case MODIFIED:
                 if (wasPublicStatic && !isPublicStatic) {
-                    breakingChange.addMethodLevelChange(String.format("`%s` is no longer public", field.getName()));
+                    breakingChange.addFieldLevelChange(String.format("`%s` is no longer public static", field.getName()));
                 }
                 break;
         }

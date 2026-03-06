@@ -33,6 +33,15 @@ public class BreakingChangeTests {
 
         Assertions.assertEquals(3, breakingChange.getItems().size());
         Assertions.assertEquals("Required stage 3 was removed in class `MyClass`.", breakingChange.getItems().iterator().next());
+
+        String fieldLevelContent = "`SWAGGER_LINK_JSON` was removed";
+        breakingChange.addFieldLevelChange(fieldLevelContent);
+
+        Assertions.assertEquals(4, breakingChange.getItems().size());
+        // stage first, then field, then method
+        java.util.Iterator<String> it = breakingChange.getItems().iterator();
+        Assertions.assertEquals("Required stage 3 was removed in class `MyClass`.", it.next());
+        Assertions.assertEquals("Field `SWAGGER_LINK_JSON` was removed in class `MyClass`.", it.next());
     }
 
     @Test
@@ -63,9 +72,9 @@ public class BreakingChangeTests {
         JSONArray breakingChanges = (JSONArray) jsonObject.get("breakingChanges");
         Assertions.assertFalse(breakingChanges.isEmpty());
         // Old fields SWAGGER_LINK_JSON, WADL_LINK_JSON, WSDL_LINK_XML, OPENAPI_LINK were removed
-        Assertions.assertTrue(breakingChanges.toList().contains("Method `SWAGGER_LINK_JSON` was removed in class `com.azure.test.ExportResultFormat`."));
-        Assertions.assertTrue(breakingChanges.toList().contains("Method `WADL_LINK_JSON` was removed in class `com.azure.test.ExportResultFormat`."));
-        Assertions.assertTrue(breakingChanges.toList().contains("Method `WSDL_LINK_XML` was removed in class `com.azure.test.ExportResultFormat`."));
-        Assertions.assertTrue(breakingChanges.toList().contains("Method `OPENAPI_LINK` was removed in class `com.azure.test.ExportResultFormat`."));
+        Assertions.assertTrue(breakingChanges.toList().contains("Field `SWAGGER_LINK_JSON` was removed in class `com.azure.test.ExportResultFormat`."));
+        Assertions.assertTrue(breakingChanges.toList().contains("Field `WADL_LINK_JSON` was removed in class `com.azure.test.ExportResultFormat`."));
+        Assertions.assertTrue(breakingChanges.toList().contains("Field `WSDL_LINK_XML` was removed in class `com.azure.test.ExportResultFormat`."));
+        Assertions.assertTrue(breakingChanges.toList().contains("Field `OPENAPI_LINK` was removed in class `com.azure.test.ExportResultFormat`."));
     }
 }
