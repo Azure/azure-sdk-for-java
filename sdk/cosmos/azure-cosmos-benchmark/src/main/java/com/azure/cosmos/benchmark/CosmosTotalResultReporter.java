@@ -107,7 +107,7 @@ public class CosmosTotalResultReporter {
         double intervalInSeconds = Duration.between(lastRecorded, now).toMillis() / 1000.0;
 
         if (intervalInSeconds > 0) {
-            cpuUsageSamples.add(cpuReader.getSystemWideCpuUsage());
+            cpuUsageSamples.add((double) cpuReader.getSystemWideCpuUsage());
 
             if (successCount == 0 && failureCount == 0) {
                 lastRecorded = now;
