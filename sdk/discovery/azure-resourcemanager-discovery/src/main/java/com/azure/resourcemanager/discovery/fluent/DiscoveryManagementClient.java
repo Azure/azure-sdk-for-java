@@ -26,7 +26,7 @@ public interface DiscoveryManagementClient {
     String getApiVersion();
 
     /**
-     * Gets The ID of the target subscription. The value must be an UUID.
+     * Gets The ID of the target subscription. The value must be a UUID.
      * 
      * @return the subscriptionId value.
      */

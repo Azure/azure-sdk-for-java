@@ -35,7 +35,7 @@ public final class StorageContainersImpl implements StorageContainers {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new StorageContainerImpl(inner.getValue(), this.manager()));
         } else {
-            return null;
+            throw LOGGER.logExceptionAsError(new IllegalStateException("Expected a valid response but received null."));
         }
     }
 
@@ -88,7 +88,13 @@ public final class StorageContainersImpl implements StorageContainers {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'storageContainers'.", id)));
         }
-        return this.getByResourceGroupWithResponse(resourceGroupName, storageContainerName, Context.NONE).getValue();
+        Response<StorageContainer> response
+            = this.getByResourceGroupWithResponse(resourceGroupName, storageContainerName, Context.NONE);
+        if (response != null) {
+            return response.getValue();
+        } else {
+            throw LOGGER.logExceptionAsError(new IllegalStateException("Expected a valid response but received null."));
+        }
     }
 
     public Response<StorageContainer> getByIdWithResponse(String id, Context context) {

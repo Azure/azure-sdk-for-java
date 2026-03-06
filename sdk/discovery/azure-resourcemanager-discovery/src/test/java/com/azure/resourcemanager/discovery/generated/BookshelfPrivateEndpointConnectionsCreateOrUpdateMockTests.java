@@ -37,7 +37,7 @@ public final class BookshelfPrivateEndpointConnectionsCreateOrUpdateMockTests {
         BookshelfPrivateEndpointConnection response
             = manager.bookshelfPrivateEndpointConnections()
                 .define("djrkvfgbvfvpd")
-                .withExistingBookshelve("y", "unyowxwl")
+                .withExistingBookshelf("y", "unyowxwl")
                 .withProperties(new PrivateEndpointConnectionProperties().withPrivateEndpoint(new PrivateEndpoint())
                     .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
                         .withStatus(PrivateEndpointServiceConnectionStatus.PENDING)

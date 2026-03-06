@@ -84,12 +84,12 @@ public final class DiscoveryManagementClientImpl implements DiscoveryManagementC
     }
 
     /**
-     * The ID of the target subscription. The value must be an UUID.
+     * The ID of the target subscription. The value must be a UUID.
      */
     private final String subscriptionId;
 
     /**
-     * Gets The ID of the target subscription. The value must be an UUID.
+     * Gets The ID of the target subscription. The value must be a UUID.
      * 
      * @return the subscriptionId value.
      */
@@ -343,7 +343,7 @@ public final class DiscoveryManagementClientImpl implements DiscoveryManagementC
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
      * @param endpoint Service host.
-     * @param subscriptionId The ID of the target subscription. The value must be an UUID.
+     * @param subscriptionId The ID of the target subscription. The value must be a UUID.
      */
     DiscoveryManagementClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
         Duration defaultPollInterval, AzureEnvironment environment, String endpoint, String subscriptionId) {
