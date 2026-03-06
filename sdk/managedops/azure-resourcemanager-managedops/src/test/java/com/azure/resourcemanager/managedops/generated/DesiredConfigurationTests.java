@@ -8,7 +8,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.managedops.models.AzureMonitorConfiguration;
 import com.azure.resourcemanager.managedops.models.ChangeTrackingConfiguration;
 import com.azure.resourcemanager.managedops.models.DesiredConfiguration;
-import com.azure.resourcemanager.managedops.models.DesiredConfigurationDefenderForServers;
+import com.azure.resourcemanager.managedops.models.DesiredEnablementState;
 import org.junit.jupiter.api.Assertions;
 
 public final class DesiredConfigurationTests {
@@ -20,8 +20,8 @@ public final class DesiredConfigurationTests {
         Assertions.assertEquals("cctazakljlahbc", model.changeTrackingAndInventory().logAnalyticsWorkspaceId());
         Assertions.assertEquals("yffdfdos", model.azureMonitorInsights().azureMonitorWorkspaceId());
         Assertions.assertEquals("gexpaojakhmsbz", model.userAssignedManagedIdentityId());
-        Assertions.assertEquals(DesiredConfigurationDefenderForServers.DISABLE, model.defenderForServers());
-        Assertions.assertEquals(DesiredConfigurationDefenderForServers.ENABLE, model.defenderCspm());
+        Assertions.assertEquals(DesiredEnablementState.DISABLE, model.defenderForServers());
+        Assertions.assertEquals(DesiredEnablementState.ENABLE, model.defenderCspm());
     }
 
     @org.junit.jupiter.api.Test
@@ -31,13 +31,13 @@ public final class DesiredConfigurationTests {
                 new ChangeTrackingConfiguration().withLogAnalyticsWorkspaceId("cctazakljlahbc"))
             .withAzureMonitorInsights(new AzureMonitorConfiguration().withAzureMonitorWorkspaceId("yffdfdos"))
             .withUserAssignedManagedIdentityId("gexpaojakhmsbz")
-            .withDefenderForServers(DesiredConfigurationDefenderForServers.DISABLE)
-            .withDefenderCspm(DesiredConfigurationDefenderForServers.ENABLE);
+            .withDefenderForServers(DesiredEnablementState.DISABLE)
+            .withDefenderCspm(DesiredEnablementState.ENABLE);
         model = BinaryData.fromObject(model).toObject(DesiredConfiguration.class);
         Assertions.assertEquals("cctazakljlahbc", model.changeTrackingAndInventory().logAnalyticsWorkspaceId());
         Assertions.assertEquals("yffdfdos", model.azureMonitorInsights().azureMonitorWorkspaceId());
         Assertions.assertEquals("gexpaojakhmsbz", model.userAssignedManagedIdentityId());
-        Assertions.assertEquals(DesiredConfigurationDefenderForServers.DISABLE, model.defenderForServers());
-        Assertions.assertEquals(DesiredConfigurationDefenderForServers.ENABLE, model.defenderCspm());
+        Assertions.assertEquals(DesiredEnablementState.DISABLE, model.defenderForServers());
+        Assertions.assertEquals(DesiredEnablementState.ENABLE, model.defenderCspm());
     }
 }
