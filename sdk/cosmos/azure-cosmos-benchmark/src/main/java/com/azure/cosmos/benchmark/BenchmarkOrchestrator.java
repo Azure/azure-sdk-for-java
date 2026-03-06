@@ -18,7 +18,6 @@ import io.micrometer.core.instrument.binder.jvm.JvmMemoryMetrics;
 import io.micrometer.core.instrument.binder.jvm.JvmThreadMetrics;
 import io.micrometer.core.instrument.composite.CompositeMeterRegistry;
 
-import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -128,23 +127,20 @@ public class BenchmarkOrchestrator {
 
         // Netty HTTP connection pool metrics reporter (only when enabled).
         // Reactor Netty publishes pool gauges to Metrics.globalRegistry, so we add
-        // registries there to capture them.
+        // the compositeRegistry there. This means Netty gauges flow through to
+        // Dropwizard CSV/Console reporting and App Insights automatically.
         NettyHttpMetricsReporter nettyMetricsReporter = null;
-        SimpleMeterRegistry nettyHttpMeterRegistry = null;
-        if (config.isEnableNettyHttpMetrics() && config.getReportingDirectory() != null) {
-            nettyHttpMeterRegistry = new SimpleMeterRegistry();
-            Metrics.addRegistry(nettyHttpMeterRegistry);
-            logger.info("SimpleMeterRegistry added to globalRegistry for Reactor Netty pool gauge backing");
+        boolean addedCompositeToGlobalRegistry = false;
+        if (config.isEnableNettyHttpMetrics()) {
+            Metrics.addRegistry(compositeRegistry);
+            addedCompositeToGlobalRegistry = true;
+            logger.info("CompositeRegistry added to globalRegistry for Reactor Netty pool metrics");
 
-            // Also send Netty metrics to Application Insights if configured
-            if (cosmosMicrometerRegistry != null) {
-                Metrics.addRegistry(cosmosMicrometerRegistry);
-                logger.info("AzureMonitor registry also added to globalRegistry for Netty metrics");
+            if (config.getReportingDirectory() != null) {
+                Path nettyMetricsDir = Paths.get(config.getReportingDirectory());
+                nettyMetricsReporter = new NettyHttpMetricsReporter(compositeRegistry, nettyMetricsDir);
+                nettyMetricsReporter.start(config.getPrintingInterval(), TimeUnit.SECONDS);
             }
-
-            Path nettyMetricsDir = Paths.get(config.getReportingDirectory());
-            nettyMetricsReporter = new NettyHttpMetricsReporter(nettyHttpMeterRegistry, nettyMetricsDir);
-            nettyMetricsReporter.start(config.getPrintingInterval(), TimeUnit.SECONDS);
         }
 
         reporter.report();
@@ -168,11 +164,8 @@ public class BenchmarkOrchestrator {
             if (nettyMetricsReporter != null) {
                 nettyMetricsReporter.stop();
             }
-            if (nettyHttpMeterRegistry != null) {
-                Metrics.removeRegistry(nettyHttpMeterRegistry);
-            }
-            if (nettyMetricsReporter != null && cosmosMicrometerRegistry != null) {
-                Metrics.removeRegistry(cosmosMicrometerRegistry);
+            if (addedCompositeToGlobalRegistry) {
+                Metrics.removeRegistry(compositeRegistry);
             }
             clearGlobalSystemProperties();
         }
