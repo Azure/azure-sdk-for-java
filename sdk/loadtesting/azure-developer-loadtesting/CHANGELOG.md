@@ -8,15 +8,15 @@ Updated the client library to use API Version 2025-11-01-preview. This adds all 
 
 - This release adds models and enums for all the APIs supported by Azure Load Testing
 - Support for Notification Rules
-    - Added methods `create_or_update_notification_rule`, `get_notification_rule`, `delete_notification_rule` and `list_notification_rules` in `LoadTestAdministrationClient` to work with Notification rules.
+    - Added methods `createOrUpdateNotificationRule`, `getNotificationRule`, `deleteNotificationRule` and `listNotificationRules` in `LoadTestAdministrationClient` to work with Notification rules.
 - Support for Trigger
-    - Added methods `create_or_update_trigger`, `get_trigger`, `delete_trigger` and `list_triggers` in `LoadTestAdministrationClient` to work with Scheduling test triggers.
+    - Added methods `createOrUpdateTrigger`, `getTrigger`, `deleteTrigger` and `listTriggers` in `LoadTestAdministrationClient` to work with Scheduling test triggers.
 - Support for Actionable Insights
-    - Added methods `begin_generate_test_run_insights`, `update_latest_test_run_insights` and `get_latest_test_run_insights` in `LoadTestRunClient` to work with actionable insights.
+    - Added methods `beginGenerateTestRunInsights`, `updateLatestTestRunInsights` and `getLatestTestRunInsights` in `LoadTestRunClient` to work with actionable insights.
 - Support for generating test plan recommendations
-    - Added method `begin_generate_test_plan_recommendations` in `LoadTestAdministrationClient` which generates test plan recommendations.
+    - Added method `beginGenerateTestPlanRecommendations` in `LoadTestAdministrationClient` which generates test plan recommendations.
 - Support for Cloning load test
-    - Added method `begin_clone_test` in `LoadTestAdministrationClient` to Clone a load test.
+    - Added method `beginCloneTest` in `LoadTestAdministrationClient` to Clone a load test.
 
 ## 1.0.28 (2026-01-29)
 
