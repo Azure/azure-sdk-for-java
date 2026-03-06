@@ -1,21 +1,33 @@
 # Release History
 
-## 2.0.0-beta.2 (Unreleased)
+## 2.0.0-beta.3 (Unreleased)
 
 ### Features Added
 
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 2.0.0-beta.2 (2026-03-04)
+
+### Features Added
+
+- Added `buildOpenAIClient()` and `buildOpenAIAsyncClient()` methods to `AgentsClientBuilder` for simplified creation of OpenAI clients with default Azure setup
+- Added new agent tool samples: `CodeInterpreterAgent`, `FileSearchAgent`, `FunctionCallAgent`, `McpAgent`, and `WebSearchAgent` (sync and async variants)
 - Added `action` property to `ImageGenTool` with new `ImageGenActionEnum` (values: `GENERATE`, `EDIT`, `AUTO`).
 - Added `GPT_IMAGE_1_5` to `ImageGenToolModel`.
 - Added container skill types: `ContainerSkill`, `ContainerSkillType`, `ContainerAutoParam`, `ContainerNetworkPolicyParam`, and related network policy types (`ContainerNetworkPolicyAllowlistParam`, `ContainerNetworkPolicyDisabledParam`, `ContainerNetworkPolicyDomainSecretParam`, `ContainerNetworkPolicyParamType`).
-- Added environment configuration for `FunctionShellToolParam` and `InputItemFunctionShellCallItemParam` via new `FunctionShellToolParamEnvironment`, `FunctionShellCallItemParamEnvironment`, and related container/local environment parameter types.
-- Added `MessageContent` and `MessageContentType` model types.
+- Added environment configuration for `FunctionShellToolParameter` and `InputItemFunctionShellCallItemParam` via new `FunctionShellToolParamEnvironment`, `FunctionShellCallItemParamEnvironment`, and related container/local environment parameter types. `InputItemFunctionShellCallItemParam`, `FunctionShellCallItemParamEnvironment`, and related types moved to `implementation/models` (internal).
+- Added `MessageContent` and `MessageContentType` model types; subsequently moved to `implementation/models` (internal).
 - Added skill parameter types: `InlineSkillParam`, `InlineSkillSourceParam`, `LocalSkillParam`, `SkillReferenceParam`.
 
 ### Breaking Changes
 
 - Removed `ContainerAppAgentDefinition` class and `AgentKind.CONTAINER_APP` enum value. The `container_app` agent kind is no longer supported.
-- Removed `CONTAINER_AGENTS_V1_PREVIEW` from `AgentDefinitionFeatureKeys` and `FoundryFeaturesOptInKeys`. The `ContainerAgents=V1Preview` feature flag is no longer valid.
-- Renamed computer action classes to use `Param` suffix:
+- Removed `CONTAINER_AGENTS_V1_PREVIEW` from `AgentDefinitionOptInKeys` and `FoundryFeaturesOptInKeys`. The `ContainerAgents=V1Preview` feature flag is no longer valid.
+- Renamed computer action classes to use `Param` suffix and moved to `implementation/models` (internal):
   - `Drag` → `DragParam`
   - `DragPoint` → `CoordParam`
   - `Move` → `MoveParam`
@@ -24,11 +36,29 @@
   - `Type` → `TypeParam`
   - `Wait` → `WaitParam`
 - `CodeInterpreterContainerAuto` renamed to `AutoCodeInterpreterToolParam`.
-- `Summary` renamed to `SummaryTextContent`.
+- `Summary` renamed to `SummaryTextContent` and moved to `implementation/models` (internal).
+- Moved ~100 model classes from `com.azure.ai.agents.models` to `com.azure.ai.agents.implementation.models`, removing them from the public API surface. This includes `InputItem` and all subtypes, `Annotation`, output content types, and related types.
+- Removed public methods from `MemoryStoresClient`/`MemoryStoresAsyncClient`: `searchMemoriesWithResponse` and `beginUpdateMemories` (protocol methods accepting `BinaryData`), `searchMemories(name, scope)` (minimal convenience overload), and `searchMemories`/`beginUpdateMemories` overloads accepting `List<ResponseInputItem>`.
+- Renamed model classes for naming consistency:
+  - `AgentObjectVersions` renamed to `AgentDetailsVersions`
+  - `OpenAIError` renamed to `ApiError`
+  - `AzureFunctionDefinitionFunction` renamed to `AzureFunctionDefinitionDetails`
+- Renamed tool classes from `*Param` suffix to `*Parameter`:
+  - `ApplyPatchToolParam` renamed to `ApplyPatchToolParameter`
+  - `CustomGrammarFormatParam` renamed to `CustomGrammarFormatParameter`
+  - `CustomToolParam` renamed to `CustomToolParameter`
+  - `FunctionShellToolParam` renamed to `FunctionShellToolParameter`
+  - `LocalShellToolParam` renamed to `LocalShellToolParameter`
+- `OpenApiFunctionDefinition`: `getDefaultParams()` and `setDefaultParams()` renamed to `getDefaultParameters()` and `setDefaultParameters()`
 
 ### Bugs Fixed
 
+- Fixed Memory Stores long-running operations (e.g. `beginUpdateMemories`) failing because the required `Foundry-Features` header was not included in poll requests, and custom LRO terminal states (`"completed"`, `"superseded"`) were not mapped to standard `LongRunningOperationStatus` values, causing pollers to hang indefinitely.
+- Fixed request parameter name from `"agent"` to `"agent_reference"` in `ResponsesClient` and `ResponsesAsyncClient` methods `createWithAgent` and `createWithAgentConversation`
+
 ### Other Changes
+
+- Enabled and stabilised `MemoryStoresTests` and `MemoryStoresAsyncTests` (previously `@Disabled`), with timeout guards to prevent hanging.
 
 ## 2.0.0-beta.1 (2026-02-25)
 

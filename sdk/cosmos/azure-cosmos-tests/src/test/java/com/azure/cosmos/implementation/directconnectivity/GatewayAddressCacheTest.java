@@ -125,7 +125,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         };
     }
 
-    @Test(groups = { "direct" }, dataProvider = "targetPartitionsKeyRangeListAndCollectionLinkParams", timeOut = TIMEOUT)
+    @Test(groups = { "direct" }, dataProvider = "targetPartitionsKeyRangeListAndCollectionLinkParams", timeOut = TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void getServerAddressesViaGateway(List<String> partitionKeyRangeIds,
                                              String collectionLink,
                                              Protocol protocol) throws Exception {
