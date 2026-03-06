@@ -172,9 +172,12 @@ public class BenchmarkOrchestrator {
         logger.info("Starting benchmark: {} cycles x {} tenants", totalCycles, tenants.size());
         long startTime = System.currentTimeMillis();
 
-        Scheduler benchmarkScheduler = Schedulers.newParallel(
+        Scheduler benchmarkScheduler = Schedulers.newBoundedElastic(
+            Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE,
+            Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE,
             "cosmos-bench",
-            Runtime.getRuntime().availableProcessors());
+            60,
+            true);
 
         AtomicInteger threadCounter = new AtomicInteger(0);
         ExecutorService executor = Executors.newFixedThreadPool(tenants.size(), r -> {
@@ -202,7 +205,7 @@ public class BenchmarkOrchestrator {
 
                 // 4. Settle
                 if (config.getSettleTimeMs() > 0) {
-                    logger.info("  Settling for {}ms...", config.getSettleTimeMs());
+                    logger.info(" Settling for {}ms...", config.getSettleTimeMs());
                     long halfSettle = config.getSettleTimeMs() / 2;
                     Thread.sleep(halfSettle);
                     if (config.isGcBetweenCycles()) {
