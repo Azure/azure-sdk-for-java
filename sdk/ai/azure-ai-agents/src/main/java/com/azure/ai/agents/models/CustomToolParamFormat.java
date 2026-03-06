@@ -80,7 +80,7 @@ public class CustomToolParamFormat implements JsonSerializable<CustomToolParamFo
                 if ("text".equals(discriminatorValue)) {
                     return CustomTextFormatParam.fromJson(readerToUse.reset());
                 } else if ("grammar".equals(discriminatorValue)) {
-                    return CustomGrammarFormatParam.fromJson(readerToUse.reset());
+                    return CustomGrammarFormatParameter.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

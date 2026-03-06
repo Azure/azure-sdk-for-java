@@ -19,7 +19,7 @@ public final class DefenderCspmInformation implements JsonSerializable<DefenderC
     /*
      * Indicates whether the service is enabled.
      */
-    private ChangeTrackingInformationEnablementStatus enablementStatus;
+    private EnablementState enablementStatus;
 
     /**
      * Creates an instance of DefenderCspmInformation class.
@@ -32,7 +32,7 @@ public final class DefenderCspmInformation implements JsonSerializable<DefenderC
      * 
      * @return the enablementStatus value.
      */
-    public ChangeTrackingInformationEnablementStatus enablementStatus() {
+    public EnablementState enablementStatus() {
         return this.enablementStatus;
     }
 
@@ -65,7 +65,7 @@ public final class DefenderCspmInformation implements JsonSerializable<DefenderC
 
                 if ("enablementStatus".equals(fieldName)) {
                     deserializedDefenderCspmInformation.enablementStatus
-                        = ChangeTrackingInformationEnablementStatus.fromString(reader.getString());
+                        = EnablementState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
