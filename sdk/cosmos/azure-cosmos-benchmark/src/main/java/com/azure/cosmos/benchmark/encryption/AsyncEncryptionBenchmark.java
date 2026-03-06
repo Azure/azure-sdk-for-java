@@ -59,8 +59,12 @@ import java.util.concurrent.atomic.AtomicLong;
 public abstract class AsyncEncryptionBenchmark<T> implements Benchmark {
 
     // Dedicated scheduler for encryption benchmark workload dispatch
-    static final Scheduler BENCHMARK_SCHEDULER =
-        Schedulers.newParallel("cosmos-bench-enc", Runtime.getRuntime().availableProcessors());
+    static final Scheduler BENCHMARK_SCHEDULER = Schedulers.newBoundedElastic(
+        Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE,
+        Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE,
+        "cosmos-bench-enc",
+        60,
+        true);
 
     private boolean databaseCreated;
     private boolean collectionCreated;

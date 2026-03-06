@@ -43,8 +43,12 @@ import java.util.concurrent.atomic.AtomicLong;
 public class AsyncCtlWorkload implements Benchmark {
 
     // Dedicated scheduler for CTL benchmark workload dispatch
-    private static final Scheduler BENCHMARK_SCHEDULER =
-        Schedulers.newParallel("cosmos-bench-ctl", Runtime.getRuntime().availableProcessors());
+    private static final Scheduler BENCHMARK_SCHEDULER = Schedulers.newBoundedElastic(
+        Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE,
+        Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE,
+        "cosmos-bench-ctl",
+        60,
+        true);
 
     private final String PERCENT_PARSING_ERROR = "Unable to parse user provided readWriteQueryReadManyPct ";
     private final String prefixUuidForCreate;
