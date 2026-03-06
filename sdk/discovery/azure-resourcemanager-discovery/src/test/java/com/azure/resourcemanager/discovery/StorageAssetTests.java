@@ -5,27 +5,30 @@ package com.azure.resourcemanager.discovery;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.discovery.models.StorageAsset;
-import org.junit.jupiter.api.Disabled;
+import com.azure.resourcemanager.discovery.models.StorageAssetProperties;
+import com.azure.resourcemanager.discovery.fluent.models.StorageAssetInner;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Live tests for StorageAsset operations against EUAP endpoint.
- * 
+ *
  * StorageAssets are child resources of StorageContainers.
+ * Java-specific names: test-sa-java01 under test-stc-java01.
  */
 public class StorageAssetTests extends DiscoveryManagementTest {
 
-    private static final String STORAGE_CONTAINER_RESOURCE_GROUP = "newapiversiontest";
-    private static final String STORAGE_CONTAINER_NAME = "test-storage-container";
-    private static final String STORAGE_ASSET_NAME = "test-storage-asset";
+    private static final String STORAGE_CONTAINER_RESOURCE_GROUP = "olawal";
+    private static final String STORAGE_CONTAINER_NAME = "test-stc-java01";
+    private static final String STORAGE_ASSET_NAME = "test-sa-java01";
 
     @Test
-    @Disabled("Requires existing storage container with assets")
     public void testListStorageAssetsByStorageContainer() {
         PagedIterable<StorageAsset> storageAssets = discoveryManager.storageAssets()
             .listByStorageContainer(STORAGE_CONTAINER_RESOURCE_GROUP, STORAGE_CONTAINER_NAME);
@@ -42,7 +45,6 @@ public class StorageAssetTests extends DiscoveryManagementTest {
     }
 
     @Test
-    @Disabled("Requires existing storage container with asset")
     public void testGetStorageAsset() {
         StorageAsset storageAsset = discoveryManager.storageAssets()
             .get(STORAGE_CONTAINER_RESOURCE_GROUP, STORAGE_CONTAINER_NAME, STORAGE_ASSET_NAME);
@@ -52,23 +54,43 @@ public class StorageAssetTests extends DiscoveryManagementTest {
     }
 
     @Test
-    @Disabled("Create is a mutating operation - requires storage container setup")
     public void testCreateStorageAsset() {
-        // StorageAsset creation requires a valid storage container and configuration
-        // This test is a placeholder for integration testing
+        StorageAssetProperties properties
+            = new StorageAssetProperties().withDescription("Test storage asset for Java SDK validation")
+                .withPath("data/test-assets");
+
+        StorageAsset asset = discoveryManager.storageAssets()
+            .define(STORAGE_ASSET_NAME)
+            .withRegion("uksouth")
+            .withExistingStorageContainer(STORAGE_CONTAINER_RESOURCE_GROUP, STORAGE_CONTAINER_NAME)
+            .withProperties(properties)
+            .create();
+
+        assertNotNull(asset);
+        assertNotNull(asset.id());
+        assertNotNull(asset.name());
     }
 
     @Test
-    @Disabled("Update is a mutating operation - requires existing storage asset")
     public void testUpdateStorageAsset() {
-        // StorageAsset update requires an existing asset
-        // This test is a placeholder for integration testing
+        // Use service client directly with a fresh inner model to avoid sending
+        // read-only fields (location, path) in the PATCH body
+        Map<String, String> tags = new HashMap<>();
+        tags.put("SkipAutoDeleteTill", "2026-12-31");
+
+        StorageAssetInner patchBody = new StorageAssetInner().withTags(tags);
+
+        StorageAssetInner updated = discoveryManager.serviceClient()
+            .getStorageAssets()
+            .update(STORAGE_CONTAINER_RESOURCE_GROUP, STORAGE_CONTAINER_NAME, STORAGE_ASSET_NAME, patchBody);
+
+        assertNotNull(updated);
+        assertNotNull(updated.id());
     }
 
     @Test
-    @Disabled("Delete is a mutating operation - requires existing storage asset")
     public void testDeleteStorageAsset() {
-        // StorageAsset deletion requires an existing asset
-        // This test is a placeholder for integration testing
+        discoveryManager.storageAssets()
+            .delete(STORAGE_CONTAINER_RESOURCE_GROUP, STORAGE_CONTAINER_NAME, STORAGE_ASSET_NAME);
     }
 }

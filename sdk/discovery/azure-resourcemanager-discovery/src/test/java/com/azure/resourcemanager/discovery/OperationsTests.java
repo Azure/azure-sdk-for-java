@@ -5,7 +5,6 @@ package com.azure.resourcemanager.discovery;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.discovery.models.Operation;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -22,7 +21,6 @@ import static org.junit.jupiter.api.Assertions.*;
 public class OperationsTests extends DiscoveryManagementTest {
 
     @Test
-    @Disabled("operations.list() endpoint doesn't support 2026-02-01-preview API yet")
     public void testListOperations() {
         // Test listing available API operations
         // (matching Python test_list_operations)

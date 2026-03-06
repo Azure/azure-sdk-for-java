@@ -15,17 +15,18 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Live tests for NodePool operations against EUAP endpoint.
- * 
+ *
  * NodePools are child resources of Supercomputers.
+ * Tests are disabled - matching Python SDK which skips node pool create tests.
  */
 public class NodePoolTests extends DiscoveryManagementTest {
 
     private static final String SUPERCOMPUTER_RESOURCE_GROUP = "olawal";
-    private static final String SUPERCOMPUTER_NAME = "test-supercomputer";
-    private static final String NODE_POOL_NAME = "test-nodepool";
+    private static final String SUPERCOMPUTER_NAME = "test-sc-java01";
+    private static final String NODE_POOL_NAME = "test-np-java01";
 
     @Test
-    @Disabled("Requires existing supercomputer with node pools")
+    @Disabled("Requires existing supercomputer with node pools - skipped like Python SDK")
     public void testListNodePoolsBySupercomputer() {
         PagedIterable<NodePool> nodePools
             = discoveryManager.nodePools().listBySupercomputer(SUPERCOMPUTER_RESOURCE_GROUP, SUPERCOMPUTER_NAME);
@@ -42,7 +43,7 @@ public class NodePoolTests extends DiscoveryManagementTest {
     }
 
     @Test
-    @Disabled("Requires existing supercomputer with node pool")
+    @Disabled("Requires existing supercomputer with node pool - skipped like Python SDK")
     public void testGetNodePool() {
         NodePool nodePool
             = discoveryManager.nodePools().get(SUPERCOMPUTER_RESOURCE_GROUP, SUPERCOMPUTER_NAME, NODE_POOL_NAME);
@@ -52,23 +53,15 @@ public class NodePoolTests extends DiscoveryManagementTest {
     }
 
     @Test
-    @Disabled("Create is a mutating operation - requires supercomputer setup")
+    @Disabled("Node pool create fails server-side (400) - skipped like Python SDK")
     public void testCreateNodePool() {
         // NodePool creation requires a valid supercomputer and proper configuration
-        // This test is a placeholder for integration testing
+        // Skipped due to known server-side issues
     }
 
     @Test
-    @Disabled("Update is a mutating operation - requires existing node pool")
-    public void testUpdateNodePool() {
-        // NodePool update requires an existing node pool
-        // This test is a placeholder for integration testing
-    }
-
-    @Test
-    @Disabled("Delete is a mutating operation - requires existing node pool")
+    @Disabled("Requires existing node pool - skipped like Python SDK")
     public void testDeleteNodePool() {
         // NodePool deletion requires an existing node pool
-        // This test is a placeholder for integration testing
     }
 }

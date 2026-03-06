@@ -5,6 +5,7 @@ package com.azure.resourcemanager.discovery;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.discovery.models.ChatModelDeployment;
+import com.azure.resourcemanager.discovery.models.ChatModelDeploymentProperties;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -14,25 +15,23 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Live tests for ChatModelDeployment operations against EUAP endpoint.
- * 
- * Tests match the comprehensive coverage in Python SDK:
- * - test_list_chat_model_deployments_by_workspace
+ *
+ * Tests match the comprehensive coverage in Python SDK.
+ * Java-specific names: test-cmd-java01 under test-wrksp-java01.
  */
 public class ChatModelDeploymentTests extends DiscoveryManagementTest {
 
-    // Resource group and workspace that exist in the test environment
-    private static final String WORKSPACE_RESOURCE_GROUP = "newapiversiontest";
-    private static final String WORKSPACE_NAME = "wrksptest44";
+    // Use the workspace created by WorkspaceTests
+    private static final String WORKSPACE_RESOURCE_GROUP = "olawal";
+    private static final String WORKSPACE_NAME = "test-wrksp-java01";
+    private static final String DEPLOYMENT_NAME = "test-cmd-java01";
 
     @Test
     public void testListChatModelDeploymentsByWorkspace() {
-        // Test listing chat model deployments in a workspace 
-        // (matching Python test_list_chat_model_deployments_by_workspace)
         PagedIterable<ChatModelDeployment> deployments
             = discoveryManager.chatModelDeployments().listByWorkspace(WORKSPACE_RESOURCE_GROUP, WORKSPACE_NAME);
         assertNotNull(deployments);
 
-        // Collect all deployments
         List<ChatModelDeployment> deploymentList = new ArrayList<>();
         for (ChatModelDeployment deployment : deployments) {
             assertNotNull(deployment.name());
@@ -41,34 +40,38 @@ public class ChatModelDeploymentTests extends DiscoveryManagementTest {
             deploymentList.add(deployment);
         }
 
-        // Deployments list should be a valid list (may be empty)
         assertNotNull(deploymentList);
     }
 
     @Test
-    public void testGetChatModelDeploymentIfExists() {
-        // First list deployments to find one to get
-        PagedIterable<ChatModelDeployment> deployments
-            = discoveryManager.chatModelDeployments().listByWorkspace(WORKSPACE_RESOURCE_GROUP, WORKSPACE_NAME);
+    public void testGetChatModelDeployment() {
+        ChatModelDeployment deployment
+            = discoveryManager.chatModelDeployments().get(WORKSPACE_RESOURCE_GROUP, WORKSPACE_NAME, DEPLOYMENT_NAME);
 
-        ChatModelDeployment firstDeployment = null;
-        for (ChatModelDeployment deployment : deployments) {
-            firstDeployment = deployment;
-            break;
-        }
+        assertNotNull(deployment);
+        assertNotNull(deployment.name());
+        assertTrue(deployment.type().equalsIgnoreCase("Microsoft.Discovery/workspaces/chatModelDeployments"));
+    }
 
-        if (firstDeployment != null) {
-            String deploymentName = firstDeployment.name();
+    @Test
+    public void testCreateChatModelDeployment() {
+        ChatModelDeploymentProperties properties
+            = new ChatModelDeploymentProperties().withModelFormat("OpenAI").withModelName("gpt-4o");
 
-            // Get the deployment by name
-            ChatModelDeployment retrieved
-                = discoveryManager.chatModelDeployments().get(WORKSPACE_RESOURCE_GROUP, WORKSPACE_NAME, deploymentName);
+        ChatModelDeployment deployment = discoveryManager.chatModelDeployments()
+            .define(DEPLOYMENT_NAME)
+            .withRegion("uksouth")
+            .withExistingWorkspace(WORKSPACE_RESOURCE_GROUP, WORKSPACE_NAME)
+            .withProperties(properties)
+            .create();
 
-            assertNotNull(retrieved);
-            assertNotNull(retrieved.name());
-            // Type may be lowercase or PascalCase
-            assertTrue(retrieved.type().equalsIgnoreCase("Microsoft.Discovery/workspaces/chatModelDeployments"));
-        }
-        // If no deployments exist, test passes (nothing to get)
+        assertNotNull(deployment);
+        assertNotNull(deployment.id());
+        assertNotNull(deployment.name());
+    }
+
+    @Test
+    public void testDeleteChatModelDeployment() {
+        discoveryManager.chatModelDeployments().delete(WORKSPACE_RESOURCE_GROUP, WORKSPACE_NAME, DEPLOYMENT_NAME);
     }
 }

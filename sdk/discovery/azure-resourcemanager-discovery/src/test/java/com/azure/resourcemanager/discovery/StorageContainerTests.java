@@ -4,27 +4,32 @@
 package com.azure.resourcemanager.discovery;
 
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.resourcemanager.discovery.models.AzureStorageBlobStore;
 import com.azure.resourcemanager.discovery.models.StorageContainer;
-import org.junit.jupiter.api.Disabled;
+import com.azure.resourcemanager.discovery.models.StorageContainerProperties;
+import com.azure.resourcemanager.discovery.fluent.models.StorageContainerInner;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Live tests for StorageContainer operations against EUAP endpoint.
- * 
- * StorageContainers are top-level resources under ResourceGroup.
+ *
+ * Tests match the comprehensive coverage in Python SDK.
+ * Java-specific resource name: test-stc-java01 (different from Python's test-sc-8bef0d1a).
  */
 public class StorageContainerTests extends DiscoveryManagementTest {
 
-    private static final String STORAGE_CONTAINER_RESOURCE_GROUP = "newapiversiontest";
-    private static final String STORAGE_CONTAINER_NAME = "test-storage-container";
+    private static final String STORAGE_CONTAINER_RESOURCE_GROUP = "olawal";
+    private static final String STORAGE_CONTAINER_NAME = "test-stc-java01";
+    private static final String SUBSCRIPTION_ID = "31b0b6a5-2647-47eb-8a38-7d12047ee8ec";
 
     @Test
-    @Disabled("Backend may not have storage containers in test subscription")
     public void testListStorageContainersBySubscription() {
         PagedIterable<StorageContainer> storageContainers = discoveryManager.storageContainers().list();
         assertNotNull(storageContainers);
@@ -40,7 +45,6 @@ public class StorageContainerTests extends DiscoveryManagementTest {
     }
 
     @Test
-    @Disabled("Backend may not have storage containers in test resource group")
     public void testListStorageContainersByResourceGroup() {
         PagedIterable<StorageContainer> storageContainers
             = discoveryManager.storageContainers().listByResourceGroup(STORAGE_CONTAINER_RESOURCE_GROUP);
@@ -57,7 +61,6 @@ public class StorageContainerTests extends DiscoveryManagementTest {
     }
 
     @Test
-    @Disabled("Requires existing storage container")
     public void testGetStorageContainer() {
         StorageContainer storageContainer = discoveryManager.storageContainers()
             .getByResourceGroup(STORAGE_CONTAINER_RESOURCE_GROUP, STORAGE_CONTAINER_NAME);
@@ -67,23 +70,43 @@ public class StorageContainerTests extends DiscoveryManagementTest {
     }
 
     @Test
-    @Disabled("Create is a mutating operation - requires proper storage setup")
     public void testCreateStorageContainer() {
-        // StorageContainer creation requires proper storage configuration
-        // This test is a placeholder for integration testing
+        StorageContainerProperties properties = new StorageContainerProperties()
+            .withStorageStore(new AzureStorageBlobStore().withStorageAccountId("/subscriptions/" + SUBSCRIPTION_ID
+                + "/resourceGroups/olawal/providers/Microsoft.Storage/storageAccounts/mytststr"));
+
+        StorageContainer container = discoveryManager.storageContainers()
+            .define(STORAGE_CONTAINER_NAME)
+            .withRegion("uksouth")
+            .withExistingResourceGroup(STORAGE_CONTAINER_RESOURCE_GROUP)
+            .withProperties(properties)
+            .create();
+
+        assertNotNull(container);
+        assertNotNull(container.id());
+        assertNotNull(container.name());
     }
 
     @Test
-    @Disabled("Update is a mutating operation - requires existing storage container")
     public void testUpdateStorageContainer() {
-        // StorageContainer update requires an existing container
-        // This test is a placeholder for integration testing
+        // Use service client directly with a fresh inner model to avoid sending
+        // read-only fields (location) in the PATCH body
+        Map<String, String> tags = new HashMap<>();
+        tags.put("SkipAutoDeleteTill", "2026-12-31");
+
+        StorageContainerInner patchBody = new StorageContainerInner().withTags(tags);
+
+        StorageContainerInner updated = discoveryManager.serviceClient()
+            .getStorageContainers()
+            .update(STORAGE_CONTAINER_RESOURCE_GROUP, STORAGE_CONTAINER_NAME, patchBody);
+
+        assertNotNull(updated);
+        assertNotNull(updated.id());
     }
 
     @Test
-    @Disabled("Delete is a mutating operation - requires existing storage container")
     public void testDeleteStorageContainer() {
-        // StorageContainer deletion requires an existing container
-        // This test is a placeholder for integration testing
+        discoveryManager.storageContainers()
+            .deleteByResourceGroup(STORAGE_CONTAINER_RESOURCE_GROUP, STORAGE_CONTAINER_NAME);
     }
 }

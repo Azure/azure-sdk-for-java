@@ -4,38 +4,38 @@
 package com.azure.resourcemanager.discovery;
 
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.resourcemanager.discovery.models.Identity;
 import com.azure.resourcemanager.discovery.models.Supercomputer;
-import org.junit.jupiter.api.Disabled;
+import com.azure.resourcemanager.discovery.models.SupercomputerIdentities;
+import com.azure.resourcemanager.discovery.models.SupercomputerProperties;
+import com.azure.resourcemanager.discovery.models.UserAssignedIdentity;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Live tests for Supercomputer operations against EUAP endpoint.
- * 
- * Tests match the comprehensive coverage in Python SDK:
- * - test_list_supercomputers_by_subscription
- * - test_list_supercomputers_by_resource_group
- * 
- * NOTE: Tests are disabled because backend is unstable for supercomputers
- * endpoint in some regions.
+ *
+ * Tests match the comprehensive coverage in Python SDK.
+ * Java-specific resource name: test-sc-java01 (different from Python's test-sc-2bbb25b8).
  */
 public class SupercomputerTests extends DiscoveryManagementTest {
 
     private static final String SUPERCOMPUTER_RESOURCE_GROUP = "olawal";
+    private static final String SUPERCOMPUTER_NAME = "test-sc-java01";
+    private static final String SUBSCRIPTION_ID = "31b0b6a5-2647-47eb-8a38-7d12047ee8ec";
+    private static final String MI_ID = "/subscriptions/" + SUBSCRIPTION_ID
+        + "/resourcegroups/olawal/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity";
 
     @Test
-    @Disabled("Backend unstable - centraluseuap region doesn't consistently support 2026-02-01-preview for supercomputers")
     public void testListSupercomputersBySubscription() {
-        // Test listing supercomputers in the subscription
-        // (matching Python test_list_supercomputers_by_subscription)
         PagedIterable<Supercomputer> supercomputers = discoveryManager.supercomputers().list();
         assertNotNull(supercomputers);
 
-        // Collect all supercomputers
         List<Supercomputer> supercomputerList = new ArrayList<>();
         for (Supercomputer supercomputer : supercomputers) {
             assertNotNull(supercomputer.name());
@@ -44,20 +44,15 @@ public class SupercomputerTests extends DiscoveryManagementTest {
             supercomputerList.add(supercomputer);
         }
 
-        // Supercomputers list should be a valid list (may be empty)
         assertNotNull(supercomputerList);
     }
 
     @Test
-    @Disabled("Backend unstable - centraluseuap region doesn't consistently support 2026-02-01-preview for supercomputers")
     public void testListSupercomputersByResourceGroup() {
-        // Test listing supercomputers in a specific resource group
-        // (matching Python test_list_supercomputers_by_resource_group)
         PagedIterable<Supercomputer> supercomputers
             = discoveryManager.supercomputers().listByResourceGroup(SUPERCOMPUTER_RESOURCE_GROUP);
         assertNotNull(supercomputers);
 
-        // Collect all supercomputers
         List<Supercomputer> supercomputerList = new ArrayList<>();
         for (Supercomputer supercomputer : supercomputers) {
             assertNotNull(supercomputer.name());
@@ -65,7 +60,41 @@ public class SupercomputerTests extends DiscoveryManagementTest {
             supercomputerList.add(supercomputer);
         }
 
-        // Supercomputers list should be a valid list (may be empty)
         assertNotNull(supercomputerList);
+    }
+
+    @Test
+    public void testGetSupercomputer() {
+        Supercomputer supercomputer
+            = discoveryManager.supercomputers().getByResourceGroup(SUPERCOMPUTER_RESOURCE_GROUP, SUPERCOMPUTER_NAME);
+        assertNotNull(supercomputer);
+        assertNotNull(supercomputer.name());
+        assertNotNull(supercomputer.location());
+    }
+
+    @Test
+    public void testCreateSupercomputer() {
+        SupercomputerProperties properties = new SupercomputerProperties()
+            .withSubnetId("/subscriptions/" + SUBSCRIPTION_ID
+                + "/resourceGroups/olawal/providers/Microsoft.Network/virtualNetworks/newapiv/subnets/default")
+            .withIdentities(new SupercomputerIdentities().withClusterIdentity(new Identity().withId(MI_ID))
+                .withKubeletIdentity(new Identity().withId(MI_ID))
+                .withWorkloadIdentities(Collections.singletonMap(MI_ID, new UserAssignedIdentity())));
+
+        Supercomputer supercomputer = discoveryManager.supercomputers()
+            .define(SUPERCOMPUTER_NAME)
+            .withRegion("uksouth")
+            .withExistingResourceGroup(SUPERCOMPUTER_RESOURCE_GROUP)
+            .withProperties(properties)
+            .create();
+
+        assertNotNull(supercomputer);
+        assertNotNull(supercomputer.id());
+        assertNotNull(supercomputer.name());
+    }
+
+    @Test
+    public void testDeleteSupercomputer() {
+        discoveryManager.supercomputers().deleteByResourceGroup(SUPERCOMPUTER_RESOURCE_GROUP, SUPERCOMPUTER_NAME);
     }
 }
