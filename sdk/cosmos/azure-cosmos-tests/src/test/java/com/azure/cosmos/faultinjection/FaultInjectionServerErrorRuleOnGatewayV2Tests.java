@@ -11,7 +11,6 @@ import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosDiagnosticsRequestInfo;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.FlakyTestRetryAnalyzer;
 import com.azure.cosmos.TestObject;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
@@ -145,6 +144,16 @@ public class FaultInjectionServerErrorRuleOnGatewayV2Tests extends FaultInjectio
     public static Object[] preferredRegionsConfigProvider() {
         // shouldInjectPreferredRegionsOnClient
         return new Object[] {true, false};
+    }
+
+    @DataProvider(name = "responseDelayOperationTypeProvider")
+    public static Object[][] responseDelayOperationTypeProvider() {
+        return new Object[][]{
+            // operationType, faultInjectionOperationType
+            { OperationType.Read, FaultInjectionOperationType.READ_ITEM },
+            { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM },
+            { OperationType.ReadFeed, FaultInjectionOperationType.READ_FEED_ITEM }
+        };
     }
 
     @Test(groups = {"fi-thinclient-multi-master"}, dataProvider = "faultInjectionServerErrorResponseProvider", timeOut = TIMEOUT)
@@ -481,8 +490,11 @@ public class FaultInjectionServerErrorRuleOnGatewayV2Tests extends FaultInjectio
 
     }
 
-    @Test(groups = {"fi-thinclient-multi-master"}, timeOut = 4 * TIMEOUT)
-    public void faultInjectionServerErrorRuleTests_ServerResponseDelay() throws JsonProcessingException {
+    @Test(groups = {"fi-thinclient-multi-master"}, dataProvider = "responseDelayOperationTypeProvider", timeOut = 4 * TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    public void faultInjectionServerErrorRuleTests_ServerResponseDelay(
+        OperationType operationType,
+        FaultInjectionOperationType faultInjectionOperationType) throws JsonProcessingException {
+
         // define another rule which can simulate timeout
         String timeoutRuleId = "serverErrorRule-responseDelay-" + UUID.randomUUID();
         FaultInjectionRule timeoutRule =
@@ -490,43 +502,53 @@ public class FaultInjectionServerErrorRuleOnGatewayV2Tests extends FaultInjectio
                 .condition(
                     new FaultInjectionConditionBuilder()
                         .connectionType(FaultInjectionConnectionType.GATEWAY)
-                        .operationType(FaultInjectionOperationType.READ_ITEM)
+                        .operationType(faultInjectionOperationType)
                         .build()
                 )
                 .result(
                     FaultInjectionResultBuilders
                         .getResultBuilder(FaultInjectionServerErrorType.RESPONSE_DELAY)
                         .times(1)
-                        .delay(Duration.ofSeconds(61)) // the default time out is 60s
+                        .delay(Duration.ofSeconds(61)) // the default time out is 60s, but Gateway V2 uses 6s
                         .build()
                 )
                 .duration(Duration.ofMinutes(5))
                 .build();
         try {
-            DirectConnectionConfig directConnectionConfig = DirectConnectionConfig.getDefaultConfig();
-            directConnectionConfig.setConnectTimeout(Duration.ofSeconds(1));
-
-            // create a new item to be used by read operations
-            TestItem createdItem = TestItem.createNewItem();
+            // create a new item to be used by operations
+            TestObject createdItem = TestObject.create();
             this.cosmosAsyncContainer.createItem(createdItem).block();
 
             CosmosFaultInjectionHelper.configureFaultInjectionRules(this.cosmosAsyncContainer, Arrays.asList(timeoutRule)).block();
-            CosmosItemResponse<TestItem> itemResponse =
-                this.cosmosAsyncContainer.readItem(createdItem.getId(), new PartitionKey(createdItem.getId()), TestItem.class).block();
+
+            // With HttpTimeoutPolicyForGatewayV2, the first attempt times out at 6s,
+            // but since delay is only injected once (times=1), the retry succeeds
+            CosmosDiagnostics cosmosDiagnostics = this.performDocumentOperation(
+                this.cosmosAsyncContainer,
+                operationType,
+                createdItem,
+                false);
 
             AssertionsForClassTypes.assertThat(timeoutRule.getHitCount()).isEqualTo(1);
-            this.validateHitCount(timeoutRule, 1, OperationType.Read, ResourceType.Document);
+            this.validateHitCount(timeoutRule, 1, operationType, ResourceType.Document);
 
             this.validateFaultInjectionRuleApplied(
-                itemResponse.getDiagnostics(),
-                OperationType.Read,
+                cosmosDiagnostics,
+                operationType,
                 HttpConstants.StatusCodes.REQUEST_TIMEOUT,
                 HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT,
                 timeoutRuleId,
                 true
             );
 
-            assertThinClientEndpointUsed(itemResponse.getDiagnostics());
+            assertThinClientEndpointUsed(cosmosDiagnostics);
+
+            // Validate end-to-end latency and final status code from CosmosDiagnosticsContext
+            CosmosDiagnosticsContext diagnosticsContext = cosmosDiagnostics.getDiagnosticsContext();
+            AssertionsForClassTypes.assertThat(diagnosticsContext).isNotNull();
+            AssertionsForClassTypes.assertThat(diagnosticsContext.getDuration()).isNotNull();
+            AssertionsForClassTypes.assertThat(diagnosticsContext.getDuration()).isLessThan(Duration.ofSeconds(8));
+            AssertionsForClassTypes.assertThat(diagnosticsContext.getStatusCode()).isBetween(HttpConstants.StatusCodes.OK, HttpConstants.StatusCodes.NOT_MODIFIED);
 
         } finally {
             timeoutRule.disable();

@@ -3,11 +3,12 @@
 
 package com.azure.cosmos.benchmark.encryption;
 
-import com.azure.cosmos.benchmark.Configuration;
 import com.azure.cosmos.benchmark.PojoizedJson;
+import com.azure.cosmos.benchmark.TenantWorkloadConfig;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
+import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.Timer;
 import org.reactivestreams.Subscription;
 import reactor.core.publisher.BaseSubscriber;
@@ -49,8 +50,8 @@ public class AsyncEncryptionReadBenchmark extends AsyncEncryptionBenchmark<Pojoi
         }
     }
 
-    public AsyncEncryptionReadBenchmark(Configuration cfg) throws IOException {
-        super(cfg);
+    public AsyncEncryptionReadBenchmark(TenantWorkloadConfig workloadCfg, MetricRegistry sharedRegistry) throws IOException {
+        super(workloadCfg, sharedRegistry);
     }
 
     @Override
@@ -66,7 +67,7 @@ public class AsyncEncryptionReadBenchmark extends AsyncEncryptionBenchmark<Pojoi
 
         concurrencyControlSemaphore.acquire();
 
-        switch (configuration.getOperationType()) {
+        switch (workloadConfig.getOperationType()) {
             case ReadThroughput:
                 readThroughput(result, baseSubscriber, i);
                 break;
@@ -74,7 +75,7 @@ public class AsyncEncryptionReadBenchmark extends AsyncEncryptionBenchmark<Pojoi
                 readLatency(result, baseSubscriber, i);
                 break;
             default:
-                throw new IllegalArgumentException("invalid workload type " + configuration.getOperationType());
+                throw new IllegalArgumentException("invalid workload type " + workloadConfig.getOperationType());
         }
     }
 
