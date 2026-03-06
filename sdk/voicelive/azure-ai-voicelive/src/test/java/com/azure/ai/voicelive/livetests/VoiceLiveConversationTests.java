@@ -44,7 +44,6 @@ public class VoiceLiveConversationTests extends VoiceLiveTestBase {
     @LiveOnly
     public void testRealtimeServiceRetrieveItem(String model, String apiVersion)
         throws InterruptedException, IOException {
-        assumeRealtimeModelSupported(model);
         VoiceLiveAsyncClient client = createClient(apiVersion);
 
         byte[] audioData = loadAudioFile("largest_lake.wav");
@@ -137,7 +136,6 @@ public class VoiceLiveConversationTests extends VoiceLiveTestBase {
     @LiveOnly
     public void testRealtimeServiceTruncateItem(String model, String apiVersion)
         throws InterruptedException, IOException {
-        assumeRealtimeModelSupported(model);
         VoiceLiveAsyncClient client = createClient(apiVersion);
 
         byte[] audioData = loadAudioFile("largest_lake.wav");

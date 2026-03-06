@@ -84,7 +84,6 @@ public class VoiceLiveAudioFormatTests extends VoiceLiveTestBase {
     @LiveOnly
     public void testRealtimeServiceWithInputAudioFormat(String model, String audioFormat, String turnDetectionType,
         String apiVersion) throws InterruptedException, IOException {
-        assumeRealtimeModelSupported(model);
         VoiceLiveAsyncClient client = createClient(apiVersion);
 
         String audioFile = "g711_ulaw".equals(audioFormat) ? "largest_lake.ulaw" : "largest_lake.alaw";
@@ -182,7 +181,6 @@ public class VoiceLiveAudioFormatTests extends VoiceLiveTestBase {
     @LiveOnly
     public void testRealtimeServiceWithInputAudioSamplingRate(String model, int samplingRate, String apiVersion)
         throws InterruptedException, IOException {
-        assumeRealtimeModelSupported(model);
         VoiceLiveAsyncClient client = createClient(apiVersion);
 
         String audioFile = getAudioFileForSamplingRate(samplingRate);
@@ -303,7 +301,6 @@ public class VoiceLiveAudioFormatTests extends VoiceLiveTestBase {
     @LiveOnly
     public void testOutputFormatsWithAzureVoice(String model, String outputFormat, String apiVersion)
         throws InterruptedException, IOException {
-        assumeRealtimeModelSupported(model);
         VoiceLiveAsyncClient client = createClient(apiVersion);
 
         byte[] audioData = loadAudioFile("largest_lake.wav");
@@ -376,7 +373,6 @@ public class VoiceLiveAudioFormatTests extends VoiceLiveTestBase {
     @LiveOnly
     public void testOutputFormatsWithOpenAIVoice(String model, String outputFormat, String apiVersion)
         throws InterruptedException, IOException {
-        assumeRealtimeModelSupported(model);
         VoiceLiveAsyncClient client = createClient(apiVersion);
 
         byte[] audioData = loadAudioFile("largest_lake.wav");

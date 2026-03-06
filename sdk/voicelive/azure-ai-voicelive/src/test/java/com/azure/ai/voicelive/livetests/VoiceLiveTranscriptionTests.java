@@ -42,7 +42,6 @@ public class VoiceLiveTranscriptionTests extends VoiceLiveTestBase {
     @LiveOnly
     public void testInputAudioTranscriptionWithWhisper(String model, String apiVersion)
         throws InterruptedException, IOException {
-        assumeRealtimeModelSupported(model);
         VoiceLiveAsyncClient client = createClient(apiVersion);
 
         byte[] audioData = loadAudioFile("4-1.wav");
@@ -115,7 +114,6 @@ public class VoiceLiveTranscriptionTests extends VoiceLiveTestBase {
     public void testInputAudioTranscriptionWithGpt4oTranscribe(String transcriptionModel, String apiVersion)
         throws InterruptedException, IOException {
         String model = "gpt-4o-realtime-preview";
-        assumeRealtimeModelSupported(model);
         VoiceLiveAsyncClient client = createClient(apiVersion);
 
         byte[] audioData = loadAudioFile("largest_lake.wav");
