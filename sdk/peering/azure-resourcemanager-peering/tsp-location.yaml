@@ -1,0 +1,4 @@
+directory: specification/peering/resource-manager/Microsoft.Peering/Peering
+commit: 6d86791ed38dc861a3d74175aa4e24b3c5d40f4e
+repo: Azure/azure-rest-api-specs
+additionalDirectories: 
