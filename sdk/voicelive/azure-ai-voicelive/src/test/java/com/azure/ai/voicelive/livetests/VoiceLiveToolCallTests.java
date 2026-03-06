@@ -23,7 +23,6 @@ import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
