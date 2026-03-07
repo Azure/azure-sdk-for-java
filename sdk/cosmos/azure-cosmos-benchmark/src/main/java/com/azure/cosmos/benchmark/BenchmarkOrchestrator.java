@@ -172,17 +172,7 @@ public class BenchmarkOrchestrator {
         logger.info("Starting benchmark: {} cycles x {} tenants", totalCycles, tenants.size());
         long startTime = System.currentTimeMillis();
 
-        java.util.concurrent.ScheduledThreadPoolExecutor benchExecutor =
-            new java.util.concurrent.ScheduledThreadPoolExecutor(
-                Runtime.getRuntime().availableProcessors(),
-                r -> {
-                    Thread t = new Thread(r, "cosmos-bench");
-                    t.setDaemon(true);
-                    return t;
-                });
-        benchExecutor.setKeepAliveTime(60, TimeUnit.SECONDS);
-        benchExecutor.allowCoreThreadTimeOut(true);
-        Scheduler benchmarkScheduler = Schedulers.fromExecutorService(benchExecutor, "cosmos-bench");
+        Scheduler benchmarkScheduler = Schedulers.parallel();
 
         AtomicInteger threadCounter = new AtomicInteger(0);
         ExecutorService executor = Executors.newFixedThreadPool(tenants.size(), r -> {
@@ -224,9 +214,7 @@ public class BenchmarkOrchestrator {
                 logger.info("[LIFECYCLE] POST_SETTLE cycle={} timestamp={}", cycle, Instant.now());
             }
         } finally {
-            logger.info("[LIFECYCLE] Disposing benchmark scheduler...");
-            benchmarkScheduler.dispose();
-            logger.info("[LIFECYCLE] Benchmark scheduler disposed");
+            logger.info("[LIFECYCLE] Shutting down executor...");
             executor.shutdown();
             try {
                 if (!executor.awaitTermination(60, TimeUnit.SECONDS)) {
