@@ -25,6 +25,7 @@
     <module>sdk/appplatform</module>
     <module>sdk/appservice</module>
     <module>sdk/arizeaiobservabilityeval</module>
+    <module>sdk/artifactsigning</module>
     <module>sdk/astro</module>
     <module>sdk/attestation</module>
     <module>sdk/authorization</module>
@@ -51,7 +52,9 @@
     <module>sdk/commerce</module>
     <module>sdk/communication</module>
     <module>sdk/compute</module>
+    <module>sdk/computebulkactions</module>
     <module>sdk/computefleet</module>
+    <module>sdk/computelimit</module>
     <module>sdk/computeschedule</module>
     <module>sdk/confidentialledger</module>
     <module>sdk/confluent</module>
@@ -65,6 +68,7 @@
     <module>sdk/containerservicefleet</module>
     <module>sdk/containerservicesafeguards</module>
     <module>sdk/contentsafety</module>
+    <module>sdk/contentunderstanding</module>
     <module>sdk/core</module>
     <module>sdk/core-v2</module>
     <module>sdk/cosmos</module>
@@ -104,6 +108,7 @@
     <module>sdk/durabletask</module>
     <module>sdk/dynatrace</module>
     <module>sdk/easm</module>
+    <module>sdk/edgeactions</module>
     <module>sdk/edgeorder</module>
     <module>sdk/edgezones</module>
     <module>sdk/education</module>
@@ -154,6 +159,7 @@
     <module>sdk/maintenance</module>
     <module>sdk/managedapplications</module>
     <module>sdk/managednetworkfabric</module>
+    <module>sdk/managedops</module>
     <module>sdk/managementgroups</module>
     <module>sdk/maps</module>
     <module>sdk/mariadb</module>
@@ -162,7 +168,6 @@
     <module>sdk/metricsadvisor</module>
     <module>sdk/migration</module>
     <module>sdk/migrationdiscoverysap</module>
-    <module>sdk/mixedreality</module>
     <module>sdk/mobilenetwork</module>
     <module>sdk/modelsrepository</module>
     <module>sdk/mongocluster</module>
@@ -215,7 +220,6 @@
     <module>sdk/redis</module>
     <module>sdk/redisenterprise</module>
     <module>sdk/relay</module>
-    <module>sdk/remoterendering</module>
     <module>sdk/reservations</module>
     <module>sdk/resourceconnector</module>
     <module>sdk/resourcegraph</module>
@@ -265,10 +269,13 @@
     <module>sdk/timeseriesinsights</module>
     <module>sdk/tools</module>
     <module>sdk/trafficmanager</module>
+    <module>sdk/transcription</module>
     <module>sdk/translation</module>
     <module>sdk/trustedsigning</module>
+    <module>sdk/virtualenclaves</module>
     <module>sdk/vision</module>
     <module>sdk/vmwarecloudsimple</module>
+    <module>sdk/voicelive</module>
     <module>sdk/voiceservices</module>
     <module>sdk/webpubsub</module>
     <module>sdk/weightsandbiases</module>

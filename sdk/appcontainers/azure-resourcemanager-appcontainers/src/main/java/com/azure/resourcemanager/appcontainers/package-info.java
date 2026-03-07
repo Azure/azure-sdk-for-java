@@ -4,8 +4,7 @@
 
 /**
  * Package containing the classes for ContainerAppsApiClient.
- * Functions is an extension resource to revisions and the api listed is used to proxy the call from Web RP to the
- * function app's host process, this api is not exposed to users and only Web RP is allowed to invoke functions
- * extension resource.
+ * Logic app is an extension resource on container app and the extension resource enables logic specific operations on
+ * the container app through the APIs listed.
  */
 package com.azure.resourcemanager.appcontainers;

@@ -28,7 +28,7 @@ public class CertificateOrdersTests extends AppServiceTest {
             .withHostName("*.graph-webapp-319.com")
             .withWildcardSku()
             .withDomainVerification(appServiceManager.domains().getByResourceGroup(rgName, "graph-webapp-319.com"))
-            .withNewKeyVault("graphvault", Region.US_WEST)
+            .withNewKeyVault("graphvault", Region.US_WEST3)
             .withValidYears(1)
             .create();
         Assertions.assertNotNull(certificateOrder);

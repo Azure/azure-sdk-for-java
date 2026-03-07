@@ -17,6 +17,7 @@ import org.springframework.util.Assert;
  * Azure message headers using a configurable {@link com.azure.spring.messaging.converter.AzureMessageConverter}.
  *
  */
+@SuppressWarnings("deprecation")
 public abstract class MessagingMessageListenerAdapter {
 
     @Nullable

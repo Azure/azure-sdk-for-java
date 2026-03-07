@@ -43,7 +43,6 @@ public final class DataCollectionEndpointConfigurationAccess extends Configurati
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

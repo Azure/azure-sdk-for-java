@@ -19,8 +19,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
-import org.springframework.boot.actuate.health.Health;
-import org.springframework.boot.actuate.health.Status;
+import org.springframework.boot.health.contributor.Health;
+import org.springframework.boot.health.contributor.Status;
 import org.springframework.cloud.stream.binder.BinderHeaders;
 import org.springframework.cloud.stream.binder.ExtendedConsumerProperties;
 import org.springframework.cloud.stream.binder.ExtendedProducerProperties;
@@ -28,6 +28,8 @@ import org.springframework.cloud.stream.binder.HeaderMode;
 import org.springframework.cloud.stream.provisioning.ConsumerDestination;
 import org.springframework.cloud.stream.provisioning.ProducerDestination;
 import org.springframework.context.support.GenericApplicationContext;
+import org.springframework.expression.spel.support.StandardEvaluationContext;
+import org.springframework.integration.context.IntegrationContextUtils;
 import org.springframework.integration.support.MessageBuilder;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -74,6 +76,10 @@ class ServiceBusHealthIndicatorTests {
     void init() {
         MockitoAnnotations.openMocks(this);
         GenericApplicationContext context = new GenericApplicationContext();
+        StandardEvaluationContext sec = new StandardEvaluationContext();
+        when(beanFactory.containsBean(IntegrationContextUtils.INTEGRATION_EVALUATION_CONTEXT_BEAN_NAME)).thenReturn(true);
+        when(beanFactory.getBean(IntegrationContextUtils.INTEGRATION_EVALUATION_CONTEXT_BEAN_NAME, StandardEvaluationContext.class)).thenReturn(sec);
+        context.refresh();
         binder.setApplicationContext(context);
         serviceBusHealthIndicator = new ServiceBusHealthIndicator(binder);
     }

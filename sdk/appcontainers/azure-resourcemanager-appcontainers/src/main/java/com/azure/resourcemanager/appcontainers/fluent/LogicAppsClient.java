@@ -11,8 +11,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.appcontainers.fluent.models.LogicAppInner;
 import com.azure.resourcemanager.appcontainers.fluent.models.WorkflowEnvelopeInner;
-import com.azure.resourcemanager.appcontainers.models.LogicAppsProxyMethod;
-import com.azure.resourcemanager.appcontainers.models.WorkflowArtifacts;
 
 /**
  * An instance of this class provides access to all the operations defined in LogicAppsClient.
@@ -23,7 +21,7 @@ public interface LogicAppsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the Logic App, the extension resource.
+     * @param logicAppName Name of the Logic App.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
@@ -40,7 +38,7 @@ public interface LogicAppsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the Logic App, the extension resource.
+     * @param logicAppName Name of the Logic App.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      * is rejected by server.
@@ -55,7 +53,7 @@ public interface LogicAppsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the Logic App, the extension resource.
+     * @param logicAppName Name of the Logic App.
      * @param resource Logic app resource properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -73,8 +71,7 @@ public interface LogicAppsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the Logic App, the extension resource.
-     * @param resource Logic app resource properties.
+     * @param logicAppName Name of the Logic App.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      * is rejected by server.
@@ -82,15 +79,14 @@ public interface LogicAppsClient {
      * @return a logic app extension resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LogicAppInner createOrUpdate(String resourceGroupName, String containerAppName, String logicAppName,
-        LogicAppInner resource);
+    LogicAppInner createOrUpdate(String resourceGroupName, String containerAppName, String logicAppName);
 
     /**
      * Deletes a Logic App extension resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the Logic App, the extension resource.
+     * @param logicAppName Name of the Logic App.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
@@ -107,7 +103,7 @@ public interface LogicAppsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the Logic App, the extension resource.
+     * @param logicAppName Name of the Logic App.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      * is rejected by server.
@@ -121,7 +117,7 @@ public interface LogicAppsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the Logic App, the extension resource.
+     * @param logicAppName Name of the Logic App.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      * is rejected by server.
@@ -137,7 +133,7 @@ public interface LogicAppsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the Logic App, the extension resource.
+     * @param logicAppName Name of the Logic App.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
@@ -154,7 +150,7 @@ public interface LogicAppsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the Logic App, the extension resource.
+     * @param logicAppName Name of the Logic App.
      * @param workflowName Workflow name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -172,7 +168,7 @@ public interface LogicAppsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the Logic App, the extension resource.
+     * @param logicAppName Name of the Logic App.
      * @param workflowName Workflow name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
@@ -185,43 +181,11 @@ public interface LogicAppsClient {
         String workflowName);
 
     /**
-     * Creates or updates the artifacts for the logic app.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the Logic App, the extension resource.
-     * @param workflowArtifacts Application settings and files of the workflow.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     * is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deployWorkflowArtifactsWithResponse(String resourceGroupName, String containerAppName,
-        String logicAppName, WorkflowArtifacts workflowArtifacts, Context context);
-
-    /**
-     * Creates or updates the artifacts for the logic app.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the Logic App, the extension resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     * is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void deployWorkflowArtifacts(String resourceGroupName, String containerAppName, String logicAppName);
-
-    /**
      * Gets logic app's connections.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the Logic App, the extension resource.
+     * @param logicAppName Name of the Logic App.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
@@ -238,7 +202,7 @@ public interface LogicAppsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the Logic App, the extension resource.
+     * @param logicAppName Name of the Logic App.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      * is rejected by server.
@@ -248,41 +212,4 @@ public interface LogicAppsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     WorkflowEnvelopeInner listWorkflowsConnections(String resourceGroupName, String containerAppName,
         String logicAppName);
-
-    /**
-     * Proxies a the API call to the logic app backed by the container app.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the LogicApp App, the extension resource.
-     * @param xMsLogicAppsProxyPath The proxy path for the API call.
-     * @param xMsLogicAppsProxyMethod The proxy method for the API call.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     * is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Object> invokeWithResponse(String resourceGroupName, String containerAppName, String logicAppName,
-        String xMsLogicAppsProxyPath, LogicAppsProxyMethod xMsLogicAppsProxyMethod, Context context);
-
-    /**
-     * Proxies a the API call to the logic app backed by the container app.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param logicAppName Name of the LogicApp App, the extension resource.
-     * @param xMsLogicAppsProxyPath The proxy path for the API call.
-     * @param xMsLogicAppsProxyMethod The proxy method for the API call.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     * is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Object invoke(String resourceGroupName, String containerAppName, String logicAppName, String xMsLogicAppsProxyPath,
-        LogicAppsProxyMethod xMsLogicAppsProxyMethod);
 }

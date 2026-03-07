@@ -6,8 +6,8 @@ package com.azure.resourcemanager.loganalytics.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.loganalytics.LogAnalyticsManager;
 import com.azure.resourcemanager.loganalytics.models.DataSource;
@@ -22,21 +22,21 @@ public final class DataSourcesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":\"datakbwvqvxkdiv\",\"etag\":\"heb\",\"kind\":\"ChangeTrackingRegistry\",\"tags\":{\"gi\":\"bzuwfmdurag\",\"igkxkbsazga\":\"vcjfelisdjubggb\",\"apvu\":\"gacyrcmjdmspo\",\"zjedmstkvnlv\":\"rylniofrzg\"},\"id\":\"bcuiiz\",\"name\":\"ktwfa\",\"type\":\"snvpdibmi\"}";
+            = "{\"properties\":\"dataztrksxwpndf\",\"etag\":\"fnznth\",\"kind\":\"SecurityEventCollectionConfiguration\",\"tags\":{\"amktcqiosmgbzah\":\"jaosrxuzv\",\"tz\":\"xqdlyrtltlapr\",\"s\":\"atbhjmznn\"},\"id\":\"qeqala\",\"name\":\"vlagun\",\"type\":\"tgfebwln\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         LogAnalyticsManager manager = LogAnalyticsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DataSource response = manager.dataSources()
-            .getWithResponse("h", "hfqpofv", "bcblemb", com.azure.core.util.Context.NONE)
+            .getWithResponse("wtxxpkyjcx", "jxgrytfmp", "ycilrmcaykggnox", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("heb", response.etag());
-        Assertions.assertEquals(DataSourceKind.CHANGE_TRACKING_REGISTRY, response.kind());
-        Assertions.assertEquals("bzuwfmdurag", response.tags().get("gi"));
+        Assertions.assertEquals("fnznth", response.etag());
+        Assertions.assertEquals(DataSourceKind.SECURITY_EVENT_COLLECTION_CONFIGURATION, response.kind());
+        Assertions.assertEquals("jaosrxuzv", response.tags().get("amktcqiosmgbzah"));
     }
 }

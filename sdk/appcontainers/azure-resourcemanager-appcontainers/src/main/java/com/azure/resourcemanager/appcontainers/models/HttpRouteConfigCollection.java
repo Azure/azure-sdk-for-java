@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Collection of Advanced Ingress Routing Config resources.
+ * Collection of rule based Http Route Config resources.
  */
 @Fluent
 public final class HttpRouteConfigCollection implements JsonSerializable<HttpRouteConfigCollection> {

@@ -693,6 +693,13 @@ public interface NetworkManagementClient {
     NetworkSecurityPerimeterOperationStatusesClient getNetworkSecurityPerimeterOperationStatuses();
 
     /**
+     * Gets the NetworkSecurityPerimeterServiceTagsClient object to access its operations.
+     * 
+     * @return the NetworkSecurityPerimeterServiceTagsClient object.
+     */
+    NetworkSecurityPerimeterServiceTagsClient getNetworkSecurityPerimeterServiceTags();
+
+    /**
      * Gets the ReachabilityAnalysisIntentsClient object to access its operations.
      * 
      * @return the ReachabilityAnalysisIntentsClient object.
@@ -868,6 +875,13 @@ public interface NetworkManagementClient {
     ServiceEndpointPolicyDefinitionsClient getServiceEndpointPolicyDefinitions();
 
     /**
+     * Gets the ServiceGatewaysClient object to access its operations.
+     * 
+     * @return the ServiceGatewaysClient object.
+     */
+    ServiceGatewaysClient getServiceGateways();
+
+    /**
      * Gets the ServiceTagsClient object to access its operations.
      * 
      * @return the ServiceTagsClient object.
@@ -922,6 +936,13 @@ public interface NetworkManagementClient {
      * @return the VirtualNetworkPeeringsClient object.
      */
     VirtualNetworkPeeringsClient getVirtualNetworkPeerings();
+
+    /**
+     * Gets the VirtualNetworkAppliancesClient object to access its operations.
+     * 
+     * @return the VirtualNetworkAppliancesClient object.
+     */
+    VirtualNetworkAppliancesClient getVirtualNetworkAppliances();
 
     /**
      * Gets the VirtualNetworkGatewaysClient object to access its operations.

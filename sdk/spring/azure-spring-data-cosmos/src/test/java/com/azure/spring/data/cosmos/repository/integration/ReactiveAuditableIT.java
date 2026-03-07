@@ -12,13 +12,12 @@ import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.ReactiveAuditableIdGeneratedRepository;
 import com.azure.spring.data.cosmos.repository.repository.ReactiveAuditableRepository;
 import org.assertj.core.util.Lists;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -30,11 +29,11 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class ReactiveAuditableIT {
 
-    @ClassRule
+
     public static final ReactiveIntegrationTestCollectionManager collectionManager = new ReactiveIntegrationTestCollectionManager();
 
     @Autowired
@@ -48,7 +47,7 @@ public class ReactiveAuditableIT {
     @Autowired
     private StubAuditorProvider stubAuditorProvider;
 
-    @Before
+    @BeforeEach
     public void setup() {
         collectionManager.ensureContainersCreatedAndEmpty(template, AuditableEntity.class, AuditableIdGeneratedEntity.class);
     }

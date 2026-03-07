@@ -14,6 +14,7 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.logging.Warn
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.ContextTagKeys;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryItem;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.ClientAttributes;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.DbAttributes;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.incubating.EnduserIncubatingAttributes;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.ExceptionAttributes;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.HttpAttributes;
@@ -61,12 +62,14 @@ public final class SpanDataMapper {
     // visible for testing
     public static final String MS_PROCESSED_BY_METRIC_EXTRACTORS = "_MS.ProcessedByMetricExtractors";
 
-    private static final Set<String> SQL_DB_SYSTEMS = new HashSet<>(asList(DbIncubatingAttributes.DbSystemValues.DB2,
-        DbIncubatingAttributes.DbSystemValues.DERBY, DbIncubatingAttributes.DbSystemValues.MARIADB,
-        DbIncubatingAttributes.DbSystemValues.MSSQL, DbIncubatingAttributes.DbSystemValues.MYSQL,
-        DbIncubatingAttributes.DbSystemValues.ORACLE, DbIncubatingAttributes.DbSystemValues.POSTGRESQL,
-        DbIncubatingAttributes.DbSystemValues.SQLITE, DbIncubatingAttributes.DbSystemValues.OTHER_SQL,
-        DbIncubatingAttributes.DbSystemValues.HSQLDB, DbIncubatingAttributes.DbSystemValues.H2));
+    // the deprecated incubating constants for mariadb, mysql, postgresql had the same values as the stable ones
+    private static final Set<String> SQL_DB_SYSTEMS
+        = new HashSet<>(asList(DbAttributes.DbSystemNameValues.MARIADB, DbAttributes.DbSystemNameValues.MYSQL,
+            DbAttributes.DbSystemNameValues.POSTGRESQL, DbAttributes.DbSystemNameValues.MICROSOFT_SQL_SERVER,
+            DbIncubatingAttributes.DbSystemValues.DB2, DbIncubatingAttributes.DbSystemValues.DERBY,
+            DbIncubatingAttributes.DbSystemValues.MSSQL, DbIncubatingAttributes.DbSystemValues.ORACLE,
+            DbIncubatingAttributes.DbSystemValues.SQLITE, DbIncubatingAttributes.DbSystemValues.OTHER_SQL,
+            DbIncubatingAttributes.DbSystemValues.HSQLDB, DbIncubatingAttributes.DbSystemValues.H2));
 
     // this is needed until Azure SDK moves to latest OTel semantic conventions
     private static final String COSMOS = "Cosmos";
@@ -99,6 +102,11 @@ public final class SpanDataMapper {
             .prefix("http.response.header.", (telemetryBuilder, key, value) -> {
                 if (value instanceof List) {
                     telemetryBuilder.addProperty(key, Mappings.join((List<?>) value));
+                }
+            })
+            .prefix("db.query.parameter.", (telemetryBuilder, key, value) -> {
+                if (value instanceof String) {
+                    telemetryBuilder.addProperty(key, (String) value);
                 }
             });
 
@@ -227,7 +235,8 @@ public final class SpanDataMapper {
             applyRpcClientSpan(telemetryBuilder, rpcSystem, attributes);
             return;
         }
-        String dbSystem = attributes.get(DbIncubatingAttributes.DB_SYSTEM);
+        String dbSystem
+            = getStableOrOldAttribute(attributes, DbAttributes.DB_SYSTEM_NAME, DbIncubatingAttributes.DB_SYSTEM);
         if (dbSystem == null) {
             // special case needed until Azure SDK moves to latest OTel semantic conventions
             dbSystem = attributes.get(AiSemanticAttributes.AZURE_SDK_DB_TYPE);
@@ -402,15 +411,17 @@ public final class SpanDataMapper {
 
     private static void applyDatabaseClientSpan(RemoteDependencyTelemetryBuilder telemetryBuilder, String dbSystem,
         Attributes attributes) {
-        String dbStatement = attributes.get(DbIncubatingAttributes.DB_STATEMENT);
+        String dbStatement
+            = getStableOrOldAttribute(attributes, DbAttributes.DB_QUERY_TEXT, DbIncubatingAttributes.DB_STATEMENT);
         if (dbStatement == null) {
-            dbStatement = attributes.get(DbIncubatingAttributes.DB_OPERATION);
+            dbStatement = getStableOrOldAttribute(attributes, DbAttributes.DB_OPERATION_NAME,
+                DbIncubatingAttributes.DB_OPERATION);
         }
         String type;
         if (SQL_DB_SYSTEMS.contains(dbSystem)) {
-            if (dbSystem.equals(DbIncubatingAttributes.DbSystemValues.MYSQL)) {
+            if (dbSystem.equals(DbAttributes.DbSystemNameValues.MYSQL)) { // stable and incubating constants have the same value
                 type = "mysql"; // this has special icon in portal
-            } else if (dbSystem.equals(DbIncubatingAttributes.DbSystemValues.POSTGRESQL)) {
+            } else if (dbSystem.equals(DbAttributes.DbSystemNameValues.POSTGRESQL)) { // stable and incubating constants have the same value
                 type = "postgresql"; // this has special icon in portal
             } else {
                 type = "SQL";
@@ -437,7 +448,7 @@ public final class SpanDataMapper {
             dbName = attributes.get(AiSemanticAttributes.AZURE_SDK_DB_INSTANCE);
         } else {
             target = getTargetOrDefault(attributes, getDefaultPortForDbSystem(dbSystem), dbSystem);
-            dbName = attributes.get(DbIncubatingAttributes.DB_NAME);
+            dbName = getStableOrOldAttribute(attributes, DbAttributes.DB_NAMESPACE, DbIncubatingAttributes.DB_NAME);
         }
         target = nullAwareConcat(target, dbName, " | ");
         if (target == null) {
@@ -472,10 +483,11 @@ public final class SpanDataMapper {
             case DbIncubatingAttributes.DbSystemValues.REDIS:
                 return 6379;
 
-            case DbIncubatingAttributes.DbSystemValues.MARIADB:
-            case DbIncubatingAttributes.DbSystemValues.MYSQL:
+            case DbAttributes.DbSystemNameValues.MARIADB: // deprecated incubating constant had the same value
+            case DbAttributes.DbSystemNameValues.MYSQL: // deprecated incubating constant had the same value
                 return 3306;
 
+            case DbAttributes.DbSystemNameValues.MICROSOFT_SQL_SERVER:
             case DbIncubatingAttributes.DbSystemValues.MSSQL:
                 return 1433;
 
@@ -491,7 +503,7 @@ public final class SpanDataMapper {
             case DbIncubatingAttributes.DbSystemValues.DERBY:
                 return 1527;
 
-            case DbIncubatingAttributes.DbSystemValues.POSTGRESQL:
+            case DbAttributes.DbSystemNameValues.POSTGRESQL: // deprecated incubating constant had the same value
                 return 5432;
 
             default:

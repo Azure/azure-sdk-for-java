@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * calendarPermission.
+ * Represents a calendar permission.
  */
 @Fluent
 public final class MicrosoftGraphCalendarPermission extends MicrosoftGraphEntity {

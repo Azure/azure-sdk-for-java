@@ -12,8 +12,8 @@ import com.azure.resourcemanager.appservice.models.RenewCertificateOrderRequest;
 public final class AppServiceCertificateOrdersRenewSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2024-11-01/examples/
-     * RenewAppServiceCertificateOrder.json
+     * specification/certificateregistration/resource-manager/Microsoft.CertificateRegistration/CertificateRegistration/
+     * stable/2024-11-01/examples/RenewAppServiceCertificateOrder.json
      */
     /**
      * Sample code: Renew App Service Certificate Order.

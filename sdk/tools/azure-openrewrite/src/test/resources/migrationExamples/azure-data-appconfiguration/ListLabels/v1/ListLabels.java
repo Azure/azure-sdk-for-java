@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.data.appconfiguration;
-
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingLabelSelector;
+import com.azure.data.appconfiguration.ConfigurationClient;
+import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 
 /**
  * A sample demonstrate how to list labels.

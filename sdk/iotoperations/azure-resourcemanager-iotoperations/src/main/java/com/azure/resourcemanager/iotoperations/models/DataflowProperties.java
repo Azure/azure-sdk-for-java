@@ -37,6 +37,11 @@ public final class DataflowProperties implements JsonSerializable<DataflowProper
      */
     private ProvisioningState provisioningState;
 
+    /*
+     * The health state of the resource.
+     */
+    private ResourceHealthState healthState;
+
     /**
      * Creates an instance of DataflowProperties class.
      */
@@ -115,6 +120,15 @@ public final class DataflowProperties implements JsonSerializable<DataflowProper
     }
 
     /**
+     * Get the healthState property: The health state of the resource.
+     * 
+     * @return the healthState value.
+     */
+    public ResourceHealthState healthState() {
+        return this.healthState;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -154,6 +168,8 @@ public final class DataflowProperties implements JsonSerializable<DataflowProper
                         = OperationalMode.fromString(reader.getString());
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedDataflowProperties.provisioningState = ProvisioningState.fromString(reader.getString());
+                } else if ("healthState".equals(fieldName)) {
+                    deserializedDataflowProperties.healthState = ResourceHealthState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

@@ -6,8 +6,8 @@ package com.azure.resourcemanager.iothub.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.iothub.IotHubManager;
 import com.azure.resourcemanager.iothub.models.CertificateDescription;
@@ -22,21 +22,23 @@ public final class CertificatesVerifyWithResponseMockTests {
     @Test
     public void testVerifyWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"subject\":\"gufhyaomtbg\",\"expiry\":\"Sat, 24 Apr 2021 04:26:41 GMT\",\"thumbprint\":\"grvk\",\"isVerified\":true,\"created\":\"Wed, 20 Jan 2021 03:53:05 GMT\",\"updated\":\"Tue, 28 Sep 2021 04:32:09 GMT\",\"certificate\":\"jbibg\"},\"etag\":\"fxumv\",\"id\":\"cluyovwxnbkf\",\"name\":\"zzxscyhwzdgiruj\",\"type\":\"zbomvzzbtdcqvpni\"}";
+            = "{\"properties\":{\"subject\":\"mvzzbtdcqvp\",\"expiry\":\"Thu, 01 Apr 2021 22:39:22 GMT\",\"thumbprint\":\"jviylwdshfs\",\"isVerified\":false,\"created\":\"Fri, 15 Oct 2021 12:19:25 GMT\",\"updated\":\"Mon, 09 Aug 2021 21:16:26 GMT\",\"certificate\":\"rymsgaojfmw\",\"policyResourceId\":\"otmrfhir\"},\"etag\":\"ymoxoftpipiwyczu\",\"id\":\"xacpqjli\",\"name\":\"hyus\",\"type\":\"skasdvlmfwdgzxu\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         IotHubManager manager = IotHubManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CertificateDescription response = manager.certificates()
-            .verifyWithResponse("nopqgikyzirtx", "yuxzejntpsewgi", "ilqu", "rydxtqm",
-                new CertificateVerificationDescription().withCertificate("ox"), com.azure.core.util.Context.NONE)
+            .verifyWithResponse("ghhavgrvkffo", "jzhpjbibgjmfx", "mv", "cluyovwxnbkf",
+                new CertificateVerificationDescription().withCertificate("zxscyhwzdgirujb"),
+                com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(true, response.properties().isVerified());
-        Assertions.assertEquals("jbibg", response.properties().certificate());
+        Assertions.assertFalse(response.properties().isVerified());
+        Assertions.assertEquals("rymsgaojfmw", response.properties().certificate());
+        Assertions.assertEquals("otmrfhir", response.properties().policyResourceId());
     }
 }

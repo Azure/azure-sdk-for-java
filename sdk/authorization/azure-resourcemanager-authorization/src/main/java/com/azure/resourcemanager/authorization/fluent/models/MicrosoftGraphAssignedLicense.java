@@ -17,7 +17,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 /**
- * assignedLicense.
+ * Represents an assigned license.
  */
 @Fluent
 public final class MicrosoftGraphAssignedLicense implements JsonSerializable<MicrosoftGraphAssignedLicense> {

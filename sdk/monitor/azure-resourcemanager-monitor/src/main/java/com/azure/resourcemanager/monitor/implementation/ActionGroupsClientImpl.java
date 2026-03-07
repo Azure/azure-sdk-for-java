@@ -78,7 +78,7 @@ public final class ActionGroupsClientImpl implements InnerSupportsGet<ActionGrou
      * REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "MonitorClientActionG")
+    @ServiceInterface(name = "MonitorClientActionGroups")
     public interface ActionGroupsService {
         @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/actionGroups/{actionGroupName}")

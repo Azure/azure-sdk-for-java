@@ -36,7 +36,6 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.deviceregistry.fluent.NamespacesClient;
 import com.azure.resourcemanager.deviceregistry.fluent.models.NamespaceInner;
-import com.azure.resourcemanager.deviceregistry.fluent.models.NamespaceMigrateResponseInner;
 import com.azure.resourcemanager.deviceregistry.implementation.models.NamespaceListResult;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceMigrateRequest;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceUpdate;
@@ -1074,11 +1073,10 @@ public final class NamespacesClientImpl implements NamespacesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<NamespaceMigrateResponseInner>, NamespaceMigrateResponseInner>
-        beginMigrateAsync(String resourceGroupName, String namespaceName, NamespaceMigrateRequest body) {
+    private PollerFlux<PollResult<Void>, Void> beginMigrateAsync(String resourceGroupName, String namespaceName,
+        NamespaceMigrateRequest body) {
         Mono<Response<Flux<ByteBuffer>>> mono = migrateWithResponseAsync(resourceGroupName, namespaceName, body);
-        return this.client.<NamespaceMigrateResponseInner, NamespaceMigrateResponseInner>getLroResult(mono,
-            this.client.getHttpPipeline(), NamespaceMigrateResponseInner.class, NamespaceMigrateResponseInner.class,
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
             this.client.getContext());
     }
 
@@ -1094,11 +1092,10 @@ public final class NamespacesClientImpl implements NamespacesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<NamespaceMigrateResponseInner>, NamespaceMigrateResponseInner>
-        beginMigrate(String resourceGroupName, String namespaceName, NamespaceMigrateRequest body) {
+    public SyncPoller<PollResult<Void>, Void> beginMigrate(String resourceGroupName, String namespaceName,
+        NamespaceMigrateRequest body) {
         Response<BinaryData> response = migrateWithResponse(resourceGroupName, namespaceName, body);
-        return this.client.<NamespaceMigrateResponseInner, NamespaceMigrateResponseInner>getLroResult(response,
-            NamespaceMigrateResponseInner.class, NamespaceMigrateResponseInner.class, Context.NONE);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -1114,11 +1111,10 @@ public final class NamespacesClientImpl implements NamespacesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<NamespaceMigrateResponseInner>, NamespaceMigrateResponseInner>
-        beginMigrate(String resourceGroupName, String namespaceName, NamespaceMigrateRequest body, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginMigrate(String resourceGroupName, String namespaceName,
+        NamespaceMigrateRequest body, Context context) {
         Response<BinaryData> response = migrateWithResponse(resourceGroupName, namespaceName, body, context);
-        return this.client.<NamespaceMigrateResponseInner, NamespaceMigrateResponseInner>getLroResult(response,
-            NamespaceMigrateResponseInner.class, NamespaceMigrateResponseInner.class, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -1130,11 +1126,10 @@ public final class NamespacesClientImpl implements NamespacesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NamespaceMigrateResponseInner> migrateAsync(String resourceGroupName, String namespaceName,
-        NamespaceMigrateRequest body) {
+    private Mono<Void> migrateAsync(String resourceGroupName, String namespaceName, NamespaceMigrateRequest body) {
         return beginMigrateAsync(resourceGroupName, namespaceName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1148,12 +1143,10 @@ public final class NamespacesClientImpl implements NamespacesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NamespaceMigrateResponseInner migrate(String resourceGroupName, String namespaceName,
-        NamespaceMigrateRequest body) {
-        return beginMigrate(resourceGroupName, namespaceName, body).getFinalResult();
+    public void migrate(String resourceGroupName, String namespaceName, NamespaceMigrateRequest body) {
+        beginMigrate(resourceGroupName, namespaceName, body).getFinalResult();
     }
 
     /**
@@ -1166,12 +1159,10 @@ public final class NamespacesClientImpl implements NamespacesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NamespaceMigrateResponseInner migrate(String resourceGroupName, String namespaceName,
-        NamespaceMigrateRequest body, Context context) {
-        return beginMigrate(resourceGroupName, namespaceName, body, context).getFinalResult();
+    public void migrate(String resourceGroupName, String namespaceName, NamespaceMigrateRequest body, Context context) {
+        beginMigrate(resourceGroupName, namespaceName, body, context).getFinalResult();
     }
 
     /**

@@ -172,7 +172,7 @@ public final class DellStorageMgmtClientImpl implements DellStorageMgmtClient {
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-03-21-preview";
+        this.apiVersion = "2025-03-21";
         this.operations = new OperationsClientImpl(this);
         this.fileSystems = new FileSystemsClientImpl(this);
     }

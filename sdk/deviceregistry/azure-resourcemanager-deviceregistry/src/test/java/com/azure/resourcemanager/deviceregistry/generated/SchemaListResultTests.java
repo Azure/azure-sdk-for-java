@@ -14,13 +14,13 @@ public final class SchemaListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SchemaListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"uuid\":\"moy\",\"displayName\":\"dyuib\",\"description\":\"fdn\",\"format\":\"JsonSchema/draft-07\",\"schemaType\":\"MessageSchema\",\"provisioningState\":\"Accepted\",\"tags\":{\"fukiscvwmzhw\":\"fcjnaeoisrvhmgor\",\"nzeyqxtjj\":\"lefaxvxilcbtgn\",\"vodggxdbee\":\"zqlqhyc\",\"wiuagydwqf\":\"mieknlraria\"}},\"id\":\"lyr\",\"name\":\"giagtcojo\",\"type\":\"qwogfnzjvus\"}],\"nextLink\":\"ld\"}")
+            "{\"value\":[{\"properties\":{\"uuid\":\"guufuzboyjathwtz\",\"displayName\":\"b\",\"description\":\"mwmdxmebwjscjpa\",\"format\":\"Delta/1.0\",\"schemaType\":\"MessageSchema\",\"provisioningState\":\"Accepted\",\"tags\":{\"xnmwmqtibxyijddt\":\"f\",\"ekpndzaapmudq\":\"qcttadijaeukmrsi\",\"gp\":\"eqw\",\"qwyxebeybpm\":\"bu\"}},\"id\":\"nrtffyaqi\",\"name\":\"mhh\",\"type\":\"ioqaqhvs\"},{\"properties\":{\"uuid\":\"uqyrxpdl\",\"displayName\":\"qlsismjqfrddg\",\"description\":\"quhiosrsjuivf\",\"format\":\"Delta/1.0\",\"schemaType\":\"MessageSchema\",\"provisioningState\":\"Failed\",\"tags\":{\"rxzbujr\":\"nxzhcze\",\"nlnzonzlrpi\":\"rhqvwrevkh\"}},\"id\":\"wncvjtszcofiz\",\"name\":\"htd\",\"type\":\"gbjkvreljeamur\"}],\"nextLink\":\"mlovuanashcxl\"}")
             .toObject(SchemaListResult.class);
-        Assertions.assertEquals("dyuib", model.value().get(0).properties().displayName());
-        Assertions.assertEquals("fdn", model.value().get(0).properties().description());
-        Assertions.assertEquals(Format.JSON_SCHEMA_DRAFT7, model.value().get(0).properties().format());
+        Assertions.assertEquals("b", model.value().get(0).properties().displayName());
+        Assertions.assertEquals("mwmdxmebwjscjpa", model.value().get(0).properties().description());
+        Assertions.assertEquals(Format.DELTA_1_0, model.value().get(0).properties().format());
         Assertions.assertEquals(SchemaType.MESSAGE_SCHEMA, model.value().get(0).properties().schemaType());
-        Assertions.assertEquals("fcjnaeoisrvhmgor", model.value().get(0).properties().tags().get("fukiscvwmzhw"));
-        Assertions.assertEquals("ld", model.nextLink());
+        Assertions.assertEquals("f", model.value().get(0).properties().tags().get("xnmwmqtibxyijddt"));
+        Assertions.assertEquals("mlovuanashcxl", model.nextLink());
     }
 }

@@ -27,7 +27,11 @@ public final class PutAliasRequestProperties implements JsonSerializable<PutAlia
     private Workload workload;
 
     /*
-     * Determines whether subscription is fieldLed, partnerLed or LegacyEA
+     * Billing scope of the subscription.
+     * For CustomerLed and FieldLed -
+     * /billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}
+     * For PartnerLed - /billingAccounts/{billingAccountName}/customers/{customerName}
+     * For Legacy EA - /billingAccounts/{billingAccountName}/enrollmentAccounts/{enrollmentAccountName}
      */
     private String billingScope;
 
@@ -37,9 +41,14 @@ public final class PutAliasRequestProperties implements JsonSerializable<PutAlia
     private String subscriptionId;
 
     /*
-     * Reseller ID, basically MPN Id
+     * Reseller Id
      */
     private String resellerId;
+
+    /*
+     * Put alias request additional properties.
+     */
+    private PutAliasRequestAdditionalProperties additionalProperties;
 
     /**
      * Creates an instance of PutAliasRequestProperties class.
@@ -88,7 +97,11 @@ public final class PutAliasRequestProperties implements JsonSerializable<PutAlia
     }
 
     /**
-     * Get the billingScope property: Determines whether subscription is fieldLed, partnerLed or LegacyEA.
+     * Get the billingScope property: Billing scope of the subscription.
+     * For CustomerLed and FieldLed -
+     * /billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}
+     * For PartnerLed - /billingAccounts/{billingAccountName}/customers/{customerName}
+     * For Legacy EA - /billingAccounts/{billingAccountName}/enrollmentAccounts/{enrollmentAccountName}.
      * 
      * @return the billingScope value.
      */
@@ -97,7 +110,11 @@ public final class PutAliasRequestProperties implements JsonSerializable<PutAlia
     }
 
     /**
-     * Set the billingScope property: Determines whether subscription is fieldLed, partnerLed or LegacyEA.
+     * Set the billingScope property: Billing scope of the subscription.
+     * For CustomerLed and FieldLed -
+     * /billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}
+     * For PartnerLed - /billingAccounts/{billingAccountName}/customers/{customerName}
+     * For Legacy EA - /billingAccounts/{billingAccountName}/enrollmentAccounts/{enrollmentAccountName}.
      * 
      * @param billingScope the billingScope value to set.
      * @return the PutAliasRequestProperties object itself.
@@ -128,7 +145,7 @@ public final class PutAliasRequestProperties implements JsonSerializable<PutAlia
     }
 
     /**
-     * Get the resellerId property: Reseller ID, basically MPN Id.
+     * Get the resellerId property: Reseller Id.
      * 
      * @return the resellerId value.
      */
@@ -137,7 +154,7 @@ public final class PutAliasRequestProperties implements JsonSerializable<PutAlia
     }
 
     /**
-     * Set the resellerId property: Reseller ID, basically MPN Id.
+     * Set the resellerId property: Reseller Id.
      * 
      * @param resellerId the resellerId value to set.
      * @return the PutAliasRequestProperties object itself.
@@ -148,11 +165,35 @@ public final class PutAliasRequestProperties implements JsonSerializable<PutAlia
     }
 
     /**
+     * Get the additionalProperties property: Put alias request additional properties.
+     * 
+     * @return the additionalProperties value.
+     */
+    public PutAliasRequestAdditionalProperties additionalProperties() {
+        return this.additionalProperties;
+    }
+
+    /**
+     * Set the additionalProperties property: Put alias request additional properties.
+     * 
+     * @param additionalProperties the additionalProperties value to set.
+     * @return the PutAliasRequestProperties object itself.
+     */
+    public PutAliasRequestProperties
+        withAdditionalProperties(PutAliasRequestAdditionalProperties additionalProperties) {
+        this.additionalProperties = additionalProperties;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (additionalProperties() != null) {
+            additionalProperties().validate();
+        }
     }
 
     /**
@@ -166,6 +207,7 @@ public final class PutAliasRequestProperties implements JsonSerializable<PutAlia
         jsonWriter.writeStringField("billingScope", this.billingScope);
         jsonWriter.writeStringField("subscriptionId", this.subscriptionId);
         jsonWriter.writeStringField("resellerId", this.resellerId);
+        jsonWriter.writeJsonField("additionalProperties", this.additionalProperties);
         return jsonWriter.writeEndObject();
     }
 
@@ -194,6 +236,9 @@ public final class PutAliasRequestProperties implements JsonSerializable<PutAlia
                     deserializedPutAliasRequestProperties.subscriptionId = reader.getString();
                 } else if ("resellerId".equals(fieldName)) {
                     deserializedPutAliasRequestProperties.resellerId = reader.getString();
+                } else if ("additionalProperties".equals(fieldName)) {
+                    deserializedPutAliasRequestProperties.additionalProperties
+                        = PutAliasRequestAdditionalProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

@@ -1,0 +1,41 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.ai.agents;
+
+import com.azure.core.util.Configuration;
+import com.azure.identity.AuthenticationUtil;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.openai.client.OpenAIClient;
+import com.openai.client.okhttp.OpenAIOkHttpClient;
+import com.openai.credential.BearerTokenCredential;
+import com.openai.models.responses.Response;
+import com.openai.models.responses.ResponseCreateParams;
+
+/**
+ * Exemplifying how to use OpenAI's official Java library with a Microsoft resource endpoint.
+ */
+public class OpenAIClientLibrary {
+    public static void main(String[] args) {
+        String endpoint = Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT");
+        String model = Configuration.getGlobalConfiguration().get("FOUNDRY_MODEL_DEPLOYMENT_NAME");
+
+        OpenAIClient client = OpenAIOkHttpClient.builder()
+                .baseUrl(endpoint.endsWith("/") ? endpoint + "openai/v1" : endpoint + "/openai/v1")
+                .credential(BearerTokenCredential.create(AuthenticationUtil.getBearerTokenSupplier(
+                        new DefaultAzureCredentialBuilder().build(), "https://ai.azure.com/.default")))
+                .build();
+
+        ResponseCreateParams responseRequest = new ResponseCreateParams.Builder()
+                .input("Hello, how can you help me?")
+                .model(model)
+                .build();
+
+        Response response = client.responses().create(responseRequest);
+
+        System.out.println("Response ID: " + response.id());
+        System.out.println("Response Model: " + response.model());
+        System.out.println("Response Created At: " + response.createdAt());
+        System.out.println("Response Output: " + response.output());
+    }
+}

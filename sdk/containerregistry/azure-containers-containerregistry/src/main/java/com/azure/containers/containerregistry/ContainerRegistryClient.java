@@ -125,7 +125,7 @@ public final class ContainerRegistryClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<String> listRepositoryNames(Context context) {
         return new PagedIterable<>((pageSize) -> listRepositoryNamesSinglePageSync(pageSize, context),
-            (token, pageSize) -> listRepositoryNamesNextSinglePageSync(token, context));
+            (token, ignored) -> listRepositoryNamesNextSinglePageSync(token, context));
     }
 
     private PagedResponse<String> listRepositoryNamesSinglePageSync(Integer pageSize, Context context) {
@@ -134,7 +134,8 @@ public final class ContainerRegistryClient {
         }
 
         try {
-            return this.registriesImplClient.getRepositoriesSinglePage(null, pageSize, context);
+            return UtilsImpl.getPagedResponseWithContinuationToken(
+                this.registriesImplClient.getRepositoriesSinglePage(null, pageSize, context));
         } catch (AcrErrorsException exception) {
             throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
         }
@@ -142,7 +143,8 @@ public final class ContainerRegistryClient {
 
     private PagedResponse<String> listRepositoryNamesNextSinglePageSync(String nextLink, Context context) {
         try {
-            return this.registriesImplClient.getRepositoriesNextSinglePage(nextLink, context);
+            return UtilsImpl.getPagedResponseWithContinuationToken(
+                this.registriesImplClient.getRepositoriesNextSinglePage(nextLink, context));
         } catch (AcrErrorsException exception) {
             throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
         }

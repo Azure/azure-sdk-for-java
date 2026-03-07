@@ -10,8 +10,8 @@ package com.azure.resourcemanager.appservice.generated;
 public final class AppServiceCertificateOrdersRetrieveCertificateEmailHistorySamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2024-11-01/examples/
-     * RetrieveCertificateEmailHistory.json
+     * specification/certificateregistration/resource-manager/Microsoft.CertificateRegistration/CertificateRegistration/
+     * stable/2024-11-01/examples/RetrieveCertificateEmailHistory.json
      */
     /**
      * Sample code: Retrieve Certificate Email History.

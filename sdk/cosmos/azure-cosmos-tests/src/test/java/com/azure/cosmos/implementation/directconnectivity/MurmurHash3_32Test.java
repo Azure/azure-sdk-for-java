@@ -4,8 +4,8 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 
-import com.azure.cosmos.implementation.apachecommons.codec.digest.MurmurHash3;
 import com.azure.cosmos.implementation.routing.MurmurHash3_32;
+import org.apache.commons.codec.digest.MurmurHash3;
 import org.apache.commons.lang3.RandomUtils;
 import org.testng.annotations.Test;
 import java.io.UnsupportedEncodingException;

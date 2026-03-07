@@ -3,8 +3,9 @@
 
 package com.azure.cosmos.benchmark.encryption;
 
-import com.azure.cosmos.benchmark.Configuration;
 import com.azure.cosmos.benchmark.PojoizedJson;
+import com.azure.cosmos.benchmark.TenantWorkloadConfig;
+import com.codahale.metrics.MetricRegistry;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
@@ -20,8 +21,8 @@ public class AsyncEncryptionQuerySinglePartitionMultiple extends AsyncEncryption
     private CosmosQueryRequestOptions options;
     private int pageCount = 0;
 
-    public AsyncEncryptionQuerySinglePartitionMultiple(Configuration cfg) throws IOException {
-        super(cfg);
+    public AsyncEncryptionQuerySinglePartitionMultiple(TenantWorkloadConfig workloadCfg, MetricRegistry sharedRegistry) throws IOException {
+        super(workloadCfg, sharedRegistry);
         options = new CosmosQueryRequestOptions();
         options.setPartitionKey(new PartitionKey("pk"));
     }

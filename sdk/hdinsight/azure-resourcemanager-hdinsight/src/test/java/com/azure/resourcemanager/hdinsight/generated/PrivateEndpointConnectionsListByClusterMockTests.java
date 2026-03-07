@@ -7,8 +7,8 @@ package com.azure.resourcemanager.hdinsight.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.hdinsight.HDInsightManager;
 import com.azure.resourcemanager.hdinsight.models.PrivateEndpointConnection;
@@ -23,23 +23,23 @@ public final class PrivateEndpointConnectionsListByClusterMockTests {
     @Test
     public void testListByCluster() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"privateEndpoint\":{\"id\":\"knlejjjkxybwfd\"},\"privateLinkServiceConnectionState\":{\"status\":\"Removed\",\"description\":\"bztensvkzykjtj\",\"actionsRequired\":\"sxfwushcdp\"},\"linkIdentifier\":\"pn\",\"provisioningState\":\"Updating\"},\"id\":\"jfbp\",\"name\":\"uwxeoiojfizf\",\"type\":\"vkjzwfbcyaykm\"}]}";
+            = "{\"value\":[{\"properties\":{\"privateEndpoint\":{\"id\":\"bklqpxz\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"feddwwnlza\",\"actionsRequired\":\"xud\"},\"linkIdentifier\":\"hgookrtalvnbwgpb\",\"provisioningState\":\"Failed\"},\"id\":\"uclvdjj\",\"name\":\"kyrdnqodx\",\"type\":\"hhxhq\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         HDInsightManager manager = HDInsightManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<PrivateEndpointConnection> response
-            = manager.privateEndpointConnections().listByCluster("ustcpoq", "avnwqj", com.azure.core.util.Context.NONE);
+        PagedIterable<PrivateEndpointConnection> response = manager.privateEndpointConnections()
+            .listByCluster("xzutgqztwhghmupg", "yjtcdxabbujftab", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.REMOVED,
+        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.REJECTED,
             response.iterator().next().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("bztensvkzykjtj",
+        Assertions.assertEquals("feddwwnlza",
             response.iterator().next().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("sxfwushcdp",
+        Assertions.assertEquals("xud",
             response.iterator().next().privateLinkServiceConnectionState().actionsRequired());
     }
 }

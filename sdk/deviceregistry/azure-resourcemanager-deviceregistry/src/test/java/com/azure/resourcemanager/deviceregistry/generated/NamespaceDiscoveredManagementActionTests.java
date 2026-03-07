@@ -14,36 +14,37 @@ public final class NamespaceDiscoveredManagementActionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NamespaceDiscoveredManagementAction model = BinaryData.fromString(
-            "{\"name\":\"lazszrn\",\"actionConfiguration\":\"iin\",\"targetUri\":\"fpwpjylwbt\",\"typeRef\":\"flsjc\",\"topic\":\"szfjvfbgofelja\",\"actionType\":\"Write\",\"timeoutInSeconds\":720803172,\"lastUpdatedOn\":\"2021-05-17T18:51:39Z\"}")
+            "{\"name\":\"tnqttezlwfffiak\",\"actionConfiguration\":\"pqqmted\",\"targetUri\":\"tmmjihyeozph\",\"typeRef\":\"auyqncygupkv\",\"topic\":\"mdscwxqupev\",\"actionType\":\"Write\",\"timeoutInSeconds\":434974760,\"lastUpdatedOn\":\"2021-10-10T08:16:26Z\"}")
             .toObject(NamespaceDiscoveredManagementAction.class);
-        Assertions.assertEquals("lazszrn", model.name());
-        Assertions.assertEquals("iin", model.actionConfiguration());
-        Assertions.assertEquals("fpwpjylwbt", model.targetUri());
-        Assertions.assertEquals("flsjc", model.typeRef());
-        Assertions.assertEquals("szfjvfbgofelja", model.topic());
+        Assertions.assertEquals("tnqttezlwfffiak", model.name());
+        Assertions.assertEquals("pqqmted", model.actionConfiguration());
+        Assertions.assertEquals("tmmjihyeozph", model.targetUri());
+        Assertions.assertEquals("auyqncygupkv", model.typeRef());
+        Assertions.assertEquals("mdscwxqupev", model.topic());
         Assertions.assertEquals(NamespaceDiscoveredManagementActionType.WRITE, model.actionType());
-        Assertions.assertEquals(720803172, model.timeoutInSeconds());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-17T18:51:39Z"), model.lastUpdatedOn());
+        Assertions.assertEquals(434974760, model.timeoutInSeconds());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-10T08:16:26Z"), model.lastUpdatedOn());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NamespaceDiscoveredManagementAction model = new NamespaceDiscoveredManagementAction().withName("lazszrn")
-            .withActionConfiguration("iin")
-            .withTargetUri("fpwpjylwbt")
-            .withTypeRef("flsjc")
-            .withTopic("szfjvfbgofelja")
-            .withActionType(NamespaceDiscoveredManagementActionType.WRITE)
-            .withTimeoutInSeconds(720803172)
-            .withLastUpdatedOn(OffsetDateTime.parse("2021-05-17T18:51:39Z"));
+        NamespaceDiscoveredManagementAction model
+            = new NamespaceDiscoveredManagementAction().withName("tnqttezlwfffiak")
+                .withActionConfiguration("pqqmted")
+                .withTargetUri("tmmjihyeozph")
+                .withTypeRef("auyqncygupkv")
+                .withTopic("mdscwxqupev")
+                .withActionType(NamespaceDiscoveredManagementActionType.WRITE)
+                .withTimeoutInSeconds(434974760)
+                .withLastUpdatedOn(OffsetDateTime.parse("2021-10-10T08:16:26Z"));
         model = BinaryData.fromObject(model).toObject(NamespaceDiscoveredManagementAction.class);
-        Assertions.assertEquals("lazszrn", model.name());
-        Assertions.assertEquals("iin", model.actionConfiguration());
-        Assertions.assertEquals("fpwpjylwbt", model.targetUri());
-        Assertions.assertEquals("flsjc", model.typeRef());
-        Assertions.assertEquals("szfjvfbgofelja", model.topic());
+        Assertions.assertEquals("tnqttezlwfffiak", model.name());
+        Assertions.assertEquals("pqqmted", model.actionConfiguration());
+        Assertions.assertEquals("tmmjihyeozph", model.targetUri());
+        Assertions.assertEquals("auyqncygupkv", model.typeRef());
+        Assertions.assertEquals("mdscwxqupev", model.topic());
         Assertions.assertEquals(NamespaceDiscoveredManagementActionType.WRITE, model.actionType());
-        Assertions.assertEquals(720803172, model.timeoutInSeconds());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-17T18:51:39Z"), model.lastUpdatedOn());
+        Assertions.assertEquals(434974760, model.timeoutInSeconds());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-10T08:16:26Z"), model.lastUpdatedOn());
     }
 }

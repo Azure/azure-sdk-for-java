@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * todo.
+ * Represents a todo.
  */
 @Fluent
 public final class MicrosoftGraphTodo extends MicrosoftGraphEntity {

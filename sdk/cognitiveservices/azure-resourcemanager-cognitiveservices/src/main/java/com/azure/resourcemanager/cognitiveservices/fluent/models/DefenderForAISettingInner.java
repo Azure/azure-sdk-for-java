@@ -20,11 +20,6 @@ import java.util.Map;
 @Fluent
 public final class DefenderForAISettingInner extends ProxyResource {
     /*
-     * Metadata pertaining to creation and last modification of the resource.
-     */
-    private SystemData systemData;
-
-    /*
      * Resource Etag.
      */
     private String etag;
@@ -38,6 +33,11 @@ public final class DefenderForAISettingInner extends ProxyResource {
      * The Defender for AI resource properties.
      */
     private DefenderForAISettingProperties innerProperties;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
 
     /*
      * The type of the resource.
@@ -58,15 +58,6 @@ public final class DefenderForAISettingInner extends ProxyResource {
      * Creates an instance of DefenderForAISettingInner class.
      */
     public DefenderForAISettingInner() {
-    }
-
-    /**
-     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     * 
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
     }
 
     /**
@@ -105,6 +96,15 @@ public final class DefenderForAISettingInner extends ProxyResource {
      */
     private DefenderForAISettingProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
@@ -204,8 +204,6 @@ public final class DefenderForAISettingInner extends ProxyResource {
                     deserializedDefenderForAISettingInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedDefenderForAISettingInner.type = reader.getString();
-                } else if ("systemData".equals(fieldName)) {
-                    deserializedDefenderForAISettingInner.systemData = SystemData.fromJson(reader);
                 } else if ("etag".equals(fieldName)) {
                     deserializedDefenderForAISettingInner.etag = reader.getString();
                 } else if ("tags".equals(fieldName)) {
@@ -214,6 +212,8 @@ public final class DefenderForAISettingInner extends ProxyResource {
                 } else if ("properties".equals(fieldName)) {
                     deserializedDefenderForAISettingInner.innerProperties
                         = DefenderForAISettingProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedDefenderForAISettingInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

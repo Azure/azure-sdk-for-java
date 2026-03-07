@@ -60,7 +60,7 @@ public final class OperationsClientImpl implements OperationsClient {
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "CosmosDBManagementCl")
+    @ServiceInterface(name = "CosmosDBManagementClientOperations")
     public interface OperationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.DocumentDB/operations")

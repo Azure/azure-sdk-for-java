@@ -66,7 +66,7 @@ public final class WorkflowTriggerHistoriesClientImpl implements WorkflowTrigger
      * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "WebSiteManagementCli")
+    @ServiceInterface(name = "WebSiteManagementClientWorkflowTriggerHistories")
     public interface WorkflowTriggerHistoriesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/triggers/{triggerName}/histories")
@@ -150,11 +150,11 @@ public final class WorkflowTriggerHistoriesClientImpl implements WorkflowTrigger
         if (triggerName == null) {
             return Mono.error(new IllegalArgumentException("Parameter triggerName is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-                    name, workflowName, triggerName, this.client.getApiVersion(), top, filter, accept, context))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, name, workflowName, triggerName, apiVersion, top, filter, accept, context))
             .<PagedResponse<WorkflowTriggerHistoryInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -201,11 +201,12 @@ public final class WorkflowTriggerHistoriesClientImpl implements WorkflowTrigger
         if (triggerName == null) {
             return Mono.error(new IllegalArgumentException("Parameter triggerName is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, name, workflowName,
-                triggerName, this.client.getApiVersion(), top, filter, accept, context)
+                triggerName, apiVersion, top, filter, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -362,11 +363,11 @@ public final class WorkflowTriggerHistoriesClientImpl implements WorkflowTrigger
         if (historyName == null) {
             return Mono.error(new IllegalArgumentException("Parameter historyName is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-                    name, workflowName, triggerName, historyName, this.client.getApiVersion(), accept, context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, name, workflowName, triggerName, historyName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -412,10 +413,11 @@ public final class WorkflowTriggerHistoriesClientImpl implements WorkflowTrigger
         if (historyName == null) {
             return Mono.error(new IllegalArgumentException("Parameter historyName is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, name,
-            workflowName, triggerName, historyName, this.client.getApiVersion(), accept, context);
+            workflowName, triggerName, historyName, apiVersion, accept, context);
     }
 
     /**
@@ -522,11 +524,11 @@ public final class WorkflowTriggerHistoriesClientImpl implements WorkflowTrigger
         if (historyName == null) {
             return Mono.error(new IllegalArgumentException("Parameter historyName is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.resubmit(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, name, workflowName, triggerName, historyName, this.client.getApiVersion(), accept,
-                context))
+                resourceGroupName, name, workflowName, triggerName, historyName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -572,10 +574,11 @@ public final class WorkflowTriggerHistoriesClientImpl implements WorkflowTrigger
         if (historyName == null) {
             return Mono.error(new IllegalArgumentException("Parameter historyName is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.resubmit(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, name,
-            workflowName, triggerName, historyName, this.client.getApiVersion(), accept, context);
+            workflowName, triggerName, historyName, apiVersion, accept, context);
     }
 
     /**
@@ -757,7 +760,7 @@ public final class WorkflowTriggerHistoriesClientImpl implements WorkflowTrigger
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of workflow trigger histories along with {@link PagedResponse} on successful completion of
+     * @return a list of workflow trigger histories along with {@link PagedResponse} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -784,7 +787,7 @@ public final class WorkflowTriggerHistoriesClientImpl implements WorkflowTrigger
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of workflow trigger histories along with {@link PagedResponse} on successful completion of
+     * @return a list of workflow trigger histories along with {@link PagedResponse} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

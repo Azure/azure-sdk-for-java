@@ -197,6 +197,11 @@ public final class CloudExadataInfrastructureProperties
      */
     private ComputeModel computeModel;
 
+    /*
+     * The exascale config details for the cloud Exadata infrastructure
+     */
+    private ExascaleConfigDetails exascaleConfig;
+
     /**
      * Creates an instance of CloudExadataInfrastructureProperties class.
      */
@@ -622,6 +627,15 @@ public final class CloudExadataInfrastructureProperties
     }
 
     /**
+     * Get the exascaleConfig property: The exascale config details for the cloud Exadata infrastructure.
+     * 
+     * @return the exascaleConfig value.
+     */
+    public ExascaleConfigDetails exascaleConfig() {
+        return this.exascaleConfig;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -749,6 +763,9 @@ public final class CloudExadataInfrastructureProperties
                 } else if ("computeModel".equals(fieldName)) {
                     deserializedCloudExadataInfrastructureProperties.computeModel
                         = ComputeModel.fromString(reader.getString());
+                } else if ("exascaleConfig".equals(fieldName)) {
+                    deserializedCloudExadataInfrastructureProperties.exascaleConfig
+                        = ExascaleConfigDetails.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

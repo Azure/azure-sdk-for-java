@@ -16,7 +16,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 /**
- * permissionScope.
+ * Represents a permission scope.
  */
 @Fluent
 public final class MicrosoftGraphPermissionScope implements JsonSerializable<MicrosoftGraphPermissionScope> {

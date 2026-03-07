@@ -65,7 +65,7 @@ public final class DataCollectionRuleAssociationsClientImpl
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "MonitorClientDataCol")
+    @ServiceInterface(name = "MonitorClientDataCollectionRuleAssociations")
     public interface DataCollectionRuleAssociationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/{resourceUri}/providers/Microsoft.Insights/dataCollectionRuleAssociations")
@@ -83,6 +83,7 @@ public final class DataCollectionRuleAssociationsClientImpl
             @HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("dataCollectionRuleName") String dataCollectionRuleName,
+            @QueryParam("$skipToken") String skipToken, @QueryParam("$top") Integer top,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -167,7 +168,7 @@ public final class DataCollectionRuleAssociationsClientImpl
         if (resourceUri == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
         }
-        final String apiVersion = "2021-09-01-preview";
+        final String apiVersion = "2024-03-11";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -198,7 +199,7 @@ public final class DataCollectionRuleAssociationsClientImpl
         if (resourceUri == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
         }
-        final String apiVersion = "2021-09-01-preview";
+        final String apiVersion = "2024-03-11";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listByResource(this.client.getEndpoint(), resourceUri, apiVersion, accept, context)
@@ -273,14 +274,16 @@ public final class DataCollectionRuleAssociationsClientImpl
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dataCollectionRuleName The name of the data collection rule. The name is case insensitive.
+     * @param skipToken (Optional) The continuation token for paginated responses.
+     * @param top (Optional) The max number of items to return per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a pageable list of resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DataCollectionRuleAssociationProxyOnlyResourceInner>>
-        listByRuleSinglePageAsync(String resourceGroupName, String dataCollectionRuleName) {
+    private Mono<PagedResponse<DataCollectionRuleAssociationProxyOnlyResourceInner>> listByRuleSinglePageAsync(
+        String resourceGroupName, String dataCollectionRuleName, String skipToken, Integer top) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -297,11 +300,11 @@ public final class DataCollectionRuleAssociationsClientImpl
             return Mono.error(
                 new IllegalArgumentException("Parameter dataCollectionRuleName is required and cannot be null."));
         }
-        final String apiVersion = "2021-09-01-preview";
+        final String apiVersion = "2024-03-11";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByRule(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, dataCollectionRuleName, apiVersion, accept, context))
+                resourceGroupName, dataCollectionRuleName, skipToken, top, apiVersion, accept, context))
             .<PagedResponse<DataCollectionRuleAssociationProxyOnlyResourceInner>>map(
                 res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                     res.getValue().value(), res.getValue().nextLink(), null))
@@ -313,6 +316,8 @@ public final class DataCollectionRuleAssociationsClientImpl
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dataCollectionRuleName The name of the data collection rule. The name is case insensitive.
+     * @param skipToken (Optional) The continuation token for paginated responses.
+     * @param top (Optional) The max number of items to return per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -320,8 +325,8 @@ public final class DataCollectionRuleAssociationsClientImpl
      * @return a pageable list of resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DataCollectionRuleAssociationProxyOnlyResourceInner>>
-        listByRuleSinglePageAsync(String resourceGroupName, String dataCollectionRuleName, Context context) {
+    private Mono<PagedResponse<DataCollectionRuleAssociationProxyOnlyResourceInner>> listByRuleSinglePageAsync(
+        String resourceGroupName, String dataCollectionRuleName, String skipToken, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -338,14 +343,34 @@ public final class DataCollectionRuleAssociationsClientImpl
             return Mono.error(
                 new IllegalArgumentException("Parameter dataCollectionRuleName is required and cannot be null."));
         }
-        final String apiVersion = "2021-09-01-preview";
+        final String apiVersion = "2024-03-11";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByRule(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-                dataCollectionRuleName, apiVersion, accept, context)
+                dataCollectionRuleName, skipToken, top, apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
+    }
+
+    /**
+     * Lists associations for the specified data collection rule.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param dataCollectionRuleName The name of the data collection rule. The name is case insensitive.
+     * @param skipToken (Optional) The continuation token for paginated responses.
+     * @param top (Optional) The max number of items to return per page.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a pageable list of resources as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<DataCollectionRuleAssociationProxyOnlyResourceInner> listByRuleAsync(String resourceGroupName,
+        String dataCollectionRuleName, String skipToken, Integer top) {
+        return new PagedFlux<>(
+            () -> listByRuleSinglePageAsync(resourceGroupName, dataCollectionRuleName, skipToken, top),
+            nextLink -> listByRuleNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -361,7 +386,10 @@ public final class DataCollectionRuleAssociationsClientImpl
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DataCollectionRuleAssociationProxyOnlyResourceInner> listByRuleAsync(String resourceGroupName,
         String dataCollectionRuleName) {
-        return new PagedFlux<>(() -> listByRuleSinglePageAsync(resourceGroupName, dataCollectionRuleName),
+        final String skipToken = null;
+        final Integer top = null;
+        return new PagedFlux<>(
+            () -> listByRuleSinglePageAsync(resourceGroupName, dataCollectionRuleName, skipToken, top),
             nextLink -> listByRuleNextSinglePageAsync(nextLink));
     }
 
@@ -370,6 +398,8 @@ public final class DataCollectionRuleAssociationsClientImpl
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dataCollectionRuleName The name of the data collection rule. The name is case insensitive.
+     * @param skipToken (Optional) The continuation token for paginated responses.
+     * @param top (Optional) The max number of items to return per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -378,8 +408,9 @@ public final class DataCollectionRuleAssociationsClientImpl
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DataCollectionRuleAssociationProxyOnlyResourceInner> listByRuleAsync(String resourceGroupName,
-        String dataCollectionRuleName, Context context) {
-        return new PagedFlux<>(() -> listByRuleSinglePageAsync(resourceGroupName, dataCollectionRuleName, context),
+        String dataCollectionRuleName, String skipToken, Integer top, Context context) {
+        return new PagedFlux<>(
+            () -> listByRuleSinglePageAsync(resourceGroupName, dataCollectionRuleName, skipToken, top, context),
             nextLink -> listByRuleNextSinglePageAsync(nextLink, context));
     }
 
@@ -396,7 +427,9 @@ public final class DataCollectionRuleAssociationsClientImpl
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataCollectionRuleAssociationProxyOnlyResourceInner> listByRule(String resourceGroupName,
         String dataCollectionRuleName) {
-        return new PagedIterable<>(listByRuleAsync(resourceGroupName, dataCollectionRuleName));
+        final String skipToken = null;
+        final Integer top = null;
+        return new PagedIterable<>(listByRuleAsync(resourceGroupName, dataCollectionRuleName, skipToken, top));
     }
 
     /**
@@ -404,6 +437,8 @@ public final class DataCollectionRuleAssociationsClientImpl
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dataCollectionRuleName The name of the data collection rule. The name is case insensitive.
+     * @param skipToken (Optional) The continuation token for paginated responses.
+     * @param top (Optional) The max number of items to return per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -412,8 +447,8 @@ public final class DataCollectionRuleAssociationsClientImpl
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataCollectionRuleAssociationProxyOnlyResourceInner> listByRule(String resourceGroupName,
-        String dataCollectionRuleName, Context context) {
-        return new PagedIterable<>(listByRuleAsync(resourceGroupName, dataCollectionRuleName, context));
+        String dataCollectionRuleName, String skipToken, Integer top, Context context) {
+        return new PagedIterable<>(listByRuleAsync(resourceGroupName, dataCollectionRuleName, skipToken, top, context));
     }
 
     /**
@@ -445,7 +480,7 @@ public final class DataCollectionRuleAssociationsClientImpl
             return Mono.error(
                 new IllegalArgumentException("Parameter dataCollectionEndpointName is required and cannot be null."));
         }
-        final String apiVersion = "2021-09-01-preview";
+        final String apiVersion = "2024-03-11";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByDataCollectionEndpoint(this.client.getEndpoint(),
@@ -488,7 +523,7 @@ public final class DataCollectionRuleAssociationsClientImpl
             return Mono.error(
                 new IllegalArgumentException("Parameter dataCollectionEndpointName is required and cannot be null."));
         }
-        final String apiVersion = "2021-09-01-preview";
+        final String apiVersion = "2024-03-11";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -594,7 +629,7 @@ public final class DataCollectionRuleAssociationsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter associationName is required and cannot be null."));
         }
-        final String apiVersion = "2021-09-01-preview";
+        final String apiVersion = "2024-03-11";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), resourceUri, associationName, apiVersion,
@@ -628,7 +663,7 @@ public final class DataCollectionRuleAssociationsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter associationName is required and cannot be null."));
         }
-        final String apiVersion = "2021-09-01-preview";
+        final String apiVersion = "2024-03-11";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), resourceUri, associationName, apiVersion, accept, context);
@@ -711,7 +746,7 @@ public final class DataCollectionRuleAssociationsClientImpl
         if (body != null) {
             body.validate();
         }
-        final String apiVersion = "2021-09-01-preview";
+        final String apiVersion = "2024-03-11";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.create(this.client.getEndpoint(), resourceUri, associationName, apiVersion,
@@ -750,7 +785,7 @@ public final class DataCollectionRuleAssociationsClientImpl
         if (body != null) {
             body.validate();
         }
-        final String apiVersion = "2021-09-01-preview";
+        final String apiVersion = "2024-03-11";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.create(this.client.getEndpoint(), resourceUri, associationName, apiVersion, body, accept,
@@ -832,7 +867,7 @@ public final class DataCollectionRuleAssociationsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter associationName is required and cannot be null."));
         }
-        final String apiVersion = "2021-09-01-preview";
+        final String apiVersion = "2024-03-11";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceUri, associationName, apiVersion,
@@ -864,7 +899,7 @@ public final class DataCollectionRuleAssociationsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter associationName is required and cannot be null."));
         }
-        final String apiVersion = "2021-09-01-preview";
+        final String apiVersion = "2024-03-11";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceUri, associationName, apiVersion, accept, context);
@@ -916,6 +951,8 @@ public final class DataCollectionRuleAssociationsClientImpl
     }
 
     /**
+     * Lists associations for the specified resource.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -944,6 +981,8 @@ public final class DataCollectionRuleAssociationsClientImpl
     }
 
     /**
+     * Lists associations for the specified resource.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -971,6 +1010,8 @@ public final class DataCollectionRuleAssociationsClientImpl
     }
 
     /**
+     * Lists associations for the specified data collection rule.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -999,6 +1040,8 @@ public final class DataCollectionRuleAssociationsClientImpl
     }
 
     /**
+     * Lists associations for the specified data collection rule.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1026,6 +1069,8 @@ public final class DataCollectionRuleAssociationsClientImpl
     }
 
     /**
+     * Lists associations for the specified data collection endpoint.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1054,6 +1099,8 @@ public final class DataCollectionRuleAssociationsClientImpl
     }
 
     /**
+     * Lists associations for the specified data collection endpoint.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.

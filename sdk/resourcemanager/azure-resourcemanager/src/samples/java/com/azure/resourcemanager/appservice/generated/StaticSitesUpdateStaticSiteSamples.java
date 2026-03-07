@@ -12,7 +12,7 @@ import com.azure.resourcemanager.appservice.models.StaticSitePatchResource;
 public final class StaticSitesUpdateStaticSiteSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/PatchStaticSite.json
+     * specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/PatchStaticSite.json
      */
     /**
      * Sample code: Patch a static site.

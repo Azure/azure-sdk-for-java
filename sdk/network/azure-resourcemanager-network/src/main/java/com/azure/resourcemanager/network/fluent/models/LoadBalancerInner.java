@@ -11,6 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ExtendedLocation;
 import com.azure.resourcemanager.network.models.InboundNatPool;
+import com.azure.resourcemanager.network.models.LoadBalancerScope;
 import com.azure.resourcemanager.network.models.LoadBalancerSku;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
@@ -374,6 +375,29 @@ public final class LoadBalancerInner extends Resource {
      */
     public ProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the scope property: Indicates the scope of the load balancer: external (Public) or internal (Private).
+     * 
+     * @return the scope value.
+     */
+    public LoadBalancerScope scope() {
+        return this.innerProperties() == null ? null : this.innerProperties().scope();
+    }
+
+    /**
+     * Set the scope property: Indicates the scope of the load balancer: external (Public) or internal (Private).
+     * 
+     * @param scope the scope value to set.
+     * @return the LoadBalancerInner object itself.
+     */
+    public LoadBalancerInner withScope(LoadBalancerScope scope) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LoadBalancerPropertiesFormat();
+        }
+        this.innerProperties().withScope(scope);
+        return this;
     }
 
     /**

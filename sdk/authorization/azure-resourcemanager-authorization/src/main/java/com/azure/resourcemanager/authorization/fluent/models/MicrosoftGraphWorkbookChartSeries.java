@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * workbookChartSeries.
+ * Represents a workbook chart series.
  */
 @Fluent
 public final class MicrosoftGraphWorkbookChartSeries extends MicrosoftGraphEntity {

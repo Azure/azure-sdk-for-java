@@ -771,5 +771,4 @@ public class ServiceAsyncApiTests extends DataLakeTestBase {
 
         StepVerifier.create(aadServiceClient.getProperties()).assertNext(Assertions::assertNotNull).verifyComplete();
     }
-
 }

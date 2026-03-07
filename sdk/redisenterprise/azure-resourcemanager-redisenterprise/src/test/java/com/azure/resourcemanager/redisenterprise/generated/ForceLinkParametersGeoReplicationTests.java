@@ -13,21 +13,20 @@ import org.junit.jupiter.api.Assertions;
 public final class ForceLinkParametersGeoReplicationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ForceLinkParametersGeoReplication model = BinaryData
-            .fromString(
-                "{\"groupNickname\":\"ozmyzydagfu\",\"linkedDatabases\":[{\"id\":\"zyiuokk\",\"state\":\"Linked\"}]}")
+        ForceLinkParametersGeoReplication model = BinaryData.fromString(
+            "{\"groupNickname\":\"zb\",\"linkedDatabases\":[{\"id\":\"ovm\",\"state\":\"Linked\"},{\"id\":\"cspkwlhzdobpxjmf\",\"state\":\"LinkFailed\"},{\"id\":\"nchrkcciww\",\"state\":\"Linked\"}]}")
             .toObject(ForceLinkParametersGeoReplication.class);
-        Assertions.assertEquals("ozmyzydagfu", model.groupNickname());
-        Assertions.assertEquals("zyiuokk", model.linkedDatabases().get(0).id());
+        Assertions.assertEquals("zb", model.groupNickname());
+        Assertions.assertEquals("ovm", model.linkedDatabases().get(0).id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ForceLinkParametersGeoReplication model
-            = new ForceLinkParametersGeoReplication().withGroupNickname("ozmyzydagfu")
-                .withLinkedDatabases(Arrays.asList(new LinkedDatabase().withId("zyiuokk")));
+        ForceLinkParametersGeoReplication model = new ForceLinkParametersGeoReplication().withGroupNickname("zb")
+            .withLinkedDatabases(Arrays.asList(new LinkedDatabase().withId("ovm"),
+                new LinkedDatabase().withId("cspkwlhzdobpxjmf"), new LinkedDatabase().withId("nchrkcciww")));
         model = BinaryData.fromObject(model).toObject(ForceLinkParametersGeoReplication.class);
-        Assertions.assertEquals("ozmyzydagfu", model.groupNickname());
-        Assertions.assertEquals("zyiuokk", model.linkedDatabases().get(0).id());
+        Assertions.assertEquals("zb", model.groupNickname());
+        Assertions.assertEquals("ovm", model.linkedDatabases().get(0).id());
     }
 }

@@ -94,6 +94,10 @@ public class VirtualMachineScaleSetSkuTypes {
     public static final VirtualMachineScaleSetSkuTypes STANDARD_D14
         = new VirtualMachineScaleSetSkuTypes("Standard_D14", "Standard");
 
+    /** Static value Standard_A1_v2 for VirtualMachineScaleSetSkuTypes. */
+    public static final VirtualMachineScaleSetSkuTypes STANDARD_A1_V2
+        = new VirtualMachineScaleSetSkuTypes("Standard_A1_v2", "Standard");
+
     /** Static value Standard_D1_v2 for VirtualMachineScaleSetSkuTypes. */
     public static final VirtualMachineScaleSetSkuTypes STANDARD_D1_V2
         = new VirtualMachineScaleSetSkuTypes("Standard_D1_v2", "Standard");

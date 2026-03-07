@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * quota.
+ * Represents a quota.
  */
 @Fluent
 public final class MicrosoftGraphQuota implements JsonSerializable<MicrosoftGraphQuota> {

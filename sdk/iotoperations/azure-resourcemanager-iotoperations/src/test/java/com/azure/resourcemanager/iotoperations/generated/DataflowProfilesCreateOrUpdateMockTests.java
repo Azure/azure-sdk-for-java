@@ -27,7 +27,7 @@ public final class DataflowProfilesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"diagnostics\":{\"logs\":{\"level\":\"of\"},\"metrics\":{\"prometheusPort\":443890613}},\"instanceCount\":697365196,\"provisioningState\":\"Succeeded\"},\"extendedLocation\":{\"name\":\"qdhcu\",\"type\":\"CustomLocation\"},\"id\":\"plcwkhi\",\"name\":\"ihlhzdsqtzb\",\"type\":\"rgnowcjhfgm\"}";
+            = "{\"properties\":{\"diagnostics\":{\"logs\":{\"level\":\"kdmflvestmjlx\"},\"metrics\":{\"prometheusPort\":1514832740}},\"instanceCount\":444057541,\"provisioningState\":\"Succeeded\",\"healthState\":\"Unavailable\"},\"extendedLocation\":{\"name\":\"chpxlktwku\",\"type\":\"CustomLocation\"},\"id\":\"cslevufuztckt\",\"name\":\"h\",\"type\":\"tqedcgzulwm\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -37,20 +37,20 @@ public final class DataflowProfilesCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DataflowProfileResource response = manager.dataflowProfiles()
-            .define("ojocqwogf")
-            .withExistingInstance("knlrariaawiuagy", "wqfbylyrfgiagt")
+            .define("tlvofq")
+            .withExistingInstance("wyrpgogtqxepnyl", "fuajly")
             .withProperties(new DataflowProfileProperties()
-                .withDiagnostics(new ProfileDiagnostics().withLogs(new DiagnosticsLogs().withLevel("sfzldmoz"))
-                    .withMetrics(new Metrics().withPrometheusPort(1126537021)))
-                .withInstanceCount(2095359903))
+                .withDiagnostics(new ProfileDiagnostics().withLogs(new DiagnosticsLogs().withLevel("ibyfmo"))
+                    .withMetrics(new Metrics().withPrometheusPort(1105067830)))
+                .withInstanceCount(1042377929))
             .withExtendedLocation(
-                new ExtendedLocation().withName("adpysownbt").withType(ExtendedLocationType.CUSTOM_LOCATION))
+                new ExtendedLocation().withName("fzwiivwzjbhyz").withType(ExtendedLocationType.CUSTOM_LOCATION))
             .create();
 
-        Assertions.assertEquals("of", response.properties().diagnostics().logs().level());
-        Assertions.assertEquals(443890613, response.properties().diagnostics().metrics().prometheusPort());
-        Assertions.assertEquals(697365196, response.properties().instanceCount());
-        Assertions.assertEquals("qdhcu", response.extendedLocation().name());
+        Assertions.assertEquals("kdmflvestmjlx", response.properties().diagnostics().logs().level());
+        Assertions.assertEquals(1514832740, response.properties().diagnostics().metrics().prometheusPort());
+        Assertions.assertEquals(444057541, response.properties().instanceCount());
+        Assertions.assertEquals("chpxlktwku", response.extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, response.extendedLocation().type());
     }
 }

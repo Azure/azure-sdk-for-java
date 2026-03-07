@@ -55,9 +55,9 @@ public class WebAppsMsiTests extends AppServiceTest {
         // Create with new app service plan
         WebApp webApp = appServiceManager.webApps()
             .define(webappName1)
-            .withRegion(Region.US_WEST)
+            .withRegion(Region.US_WEST3)
             .withNewResourceGroup(rgName1)
-            .withNewWindowsPlan(PricingTier.BASIC_B1)
+            .withNewWindowsPlan(PricingTier.PREMIUM_P1V3)
             .withRemoteDebuggingEnabled(RemoteVisualStudioVersion.fromString("VS2022"))
             .withSystemAssignedManagedServiceIdentity()
             .withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(BuiltInRole.CONTRIBUTOR)
@@ -65,11 +65,11 @@ public class WebAppsMsiTests extends AppServiceTest {
             .withWebContainer(WebContainer.TOMCAT_8_0_NEWEST)
             .create();
         Assertions.assertNotNull(webApp);
-        Assertions.assertEquals(Region.US_WEST, webApp.region());
+        Assertions.assertEquals(Region.US_WEST3, webApp.region());
         AppServicePlan plan = appServiceManager.appServicePlans().getById(webApp.appServicePlanId());
         Assertions.assertNotNull(plan);
-        Assertions.assertEquals(Region.US_WEST, plan.region());
-        Assertions.assertEquals(PricingTier.BASIC_B1, plan.pricingTier());
+        Assertions.assertEquals(Region.US_WEST3, plan.region());
+        Assertions.assertEquals(PricingTier.PREMIUM_P1V3, plan.pricingTier());
         Assertions.assertNotNull(webApp.systemAssignedManagedServiceIdentityPrincipalId());
         Assertions.assertNotNull(webApp.systemAssignedManagedServiceIdentityTenantId());
 
@@ -97,14 +97,14 @@ public class WebAppsMsiTests extends AppServiceTest {
         // Prepare a definition for yet-to-be-created resource group
         //
         Creatable<ResourceGroup> creatableRG
-            = resourceManager.resourceGroups().define(rgName).withRegion(Region.US_WEST);
+            = resourceManager.resourceGroups().define(rgName).withRegion(Region.US_WEST3);
 
         // Create an "User Assigned (External) MSI" residing in the above RG and assign reader access to the virtual
         // network
         //
         final Identity createdIdentity = msiManager.identities()
             .define(identityName1)
-            .withRegion(Region.US_WEST)
+            .withRegion(Region.US_WEST3)
             .withNewResourceGroup(creatableRG)
             .withAccessToCurrentResourceGroup(BuiltInRole.CONTRIBUTOR)
             .create();
@@ -115,16 +115,16 @@ public class WebAppsMsiTests extends AppServiceTest {
         //
         Creatable<Identity> creatableIdentity = msiManager.identities()
             .define(identityName2)
-            .withRegion(Region.US_WEST)
+            .withRegion(Region.US_WEST3)
             .withNewResourceGroup(creatableRG)
             .withAccessToCurrentResourceGroup(BuiltInRole.CONTRIBUTOR);
 
         // Create with new app service plan
         WebApp webApp = appServiceManager.webApps()
             .define(webappName1)
-            .withRegion(Region.US_WEST)
+            .withRegion(Region.US_WEST3)
             .withNewResourceGroup(rgName1)
-            .withNewWindowsPlan(PricingTier.BASIC_B1)
+            .withNewWindowsPlan(PricingTier.PREMIUM_P1V3)
             .withRemoteDebuggingEnabled(RemoteVisualStudioVersion.fromString("VS2022"))
             .withSystemAssignedManagedServiceIdentity()
             .withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(BuiltInRole.CONTRIBUTOR)
@@ -135,11 +135,11 @@ public class WebAppsMsiTests extends AppServiceTest {
             .withExistingUserAssignedManagedServiceIdentity(createdIdentity)
             .create();
         Assertions.assertNotNull(webApp);
-        Assertions.assertEquals(Region.US_WEST, webApp.region());
+        Assertions.assertEquals(Region.US_WEST3, webApp.region());
         AppServicePlan plan = appServiceManager.appServicePlans().getById(webApp.appServicePlanId());
         Assertions.assertNotNull(plan);
-        Assertions.assertEquals(Region.US_WEST, plan.region());
-        Assertions.assertEquals(PricingTier.BASIC_B1, plan.pricingTier());
+        Assertions.assertEquals(Region.US_WEST3, plan.region());
+        Assertions.assertEquals(PricingTier.PREMIUM_P1V3, plan.pricingTier());
         Assertions.assertNotNull(webApp.systemAssignedManagedServiceIdentityPrincipalId());
         Assertions.assertNotNull(webApp.systemAssignedManagedServiceIdentityTenantId());
         Set<String> identityIds = webApp.userAssignedManagedServiceIdentityIds();

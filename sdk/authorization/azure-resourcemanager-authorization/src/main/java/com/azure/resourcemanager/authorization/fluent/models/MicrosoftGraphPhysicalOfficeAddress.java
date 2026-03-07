@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * physicalOfficeAddress.
+ * Represents a physical office address.
  */
 @Fluent
 public final class MicrosoftGraphPhysicalOfficeAddress

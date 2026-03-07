@@ -9,7 +9,7 @@ package com.azure.resourcemanager.iotoperations.generated;
  */
 public final class AkriConnectorTemplateGetSamples {
     /*
-     * x-ms-original-file: 2025-07-01-preview/AkriConnectorTemplate_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-10-01/AkriConnectorTemplate_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: AkriConnectorTemplate_Get_MaximumSet.
@@ -24,7 +24,7 @@ public final class AkriConnectorTemplateGetSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01-preview/AkriConnectorTemplate_Get_Managed_Rest.json
+     * x-ms-original-file: 2025-10-01/AkriConnectorTemplate_Get_Managed_Rest.json
      */
     /**
      * Sample code: AkriConnectorTemplate_Get_Managed_Rest.

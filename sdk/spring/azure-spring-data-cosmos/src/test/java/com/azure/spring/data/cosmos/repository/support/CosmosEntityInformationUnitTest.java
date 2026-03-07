@@ -10,7 +10,7 @@ import com.azure.spring.data.cosmos.domain.LongIdDomain;
 import com.azure.spring.data.cosmos.domain.Person;
 import com.azure.spring.data.cosmos.domain.Student;
 import com.azure.spring.data.cosmos.domain.UUIDIdDomain;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
 

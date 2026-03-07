@@ -19,7 +19,7 @@ import java.util.List;
 @Fluent
 public final class MetricAlertResourceCollection implements JsonSerializable<MetricAlertResourceCollection> {
     /*
-     * the values for the alert rule resources.
+     * The values for the alert rule resources.
      */
     private List<MetricAlertResourceInner> value;
 
@@ -30,7 +30,7 @@ public final class MetricAlertResourceCollection implements JsonSerializable<Met
     }
 
     /**
-     * Get the value property: the values for the alert rule resources.
+     * Get the value property: The values for the alert rule resources.
      * 
      * @return the value value.
      */
@@ -39,7 +39,7 @@ public final class MetricAlertResourceCollection implements JsonSerializable<Met
     }
 
     /**
-     * Set the value property: the values for the alert rule resources.
+     * Set the value property: The values for the alert rule resources.
      * 
      * @param value the value value to set.
      * @return the MetricAlertResourceCollection object itself.

@@ -36,6 +36,11 @@ public final class NamespaceDiscoveredManagementGroup implements JsonSerializabl
     private String typeRef;
 
     /*
+     * Reference to a data source for a given management group.
+     */
+    private String dataSource;
+
+    /*
      * Default MQTT topic path on which a client will receive the request for all actions that are part of the
      * management group.
      */
@@ -121,6 +126,26 @@ public final class NamespaceDiscoveredManagementGroup implements JsonSerializabl
      */
     public NamespaceDiscoveredManagementGroup withTypeRef(String typeRef) {
         this.typeRef = typeRef;
+        return this;
+    }
+
+    /**
+     * Get the dataSource property: Reference to a data source for a given management group.
+     * 
+     * @return the dataSource value.
+     */
+    public String dataSource() {
+        return this.dataSource;
+    }
+
+    /**
+     * Set the dataSource property: Reference to a data source for a given management group.
+     * 
+     * @param dataSource the dataSource value to set.
+     * @return the NamespaceDiscoveredManagementGroup object itself.
+     */
+    public NamespaceDiscoveredManagementGroup withDataSource(String dataSource) {
+        this.dataSource = dataSource;
         return this;
     }
 
@@ -219,6 +244,7 @@ public final class NamespaceDiscoveredManagementGroup implements JsonSerializabl
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("managementGroupConfiguration", this.managementGroupConfiguration);
         jsonWriter.writeStringField("typeRef", this.typeRef);
+        jsonWriter.writeStringField("dataSource", this.dataSource);
         jsonWriter.writeStringField("defaultTopic", this.defaultTopic);
         jsonWriter.writeNumberField("defaultTimeoutInSeconds", this.defaultTimeoutInSeconds);
         jsonWriter.writeArrayField("actions", this.actions, (writer, element) -> writer.writeJson(element));
@@ -250,6 +276,8 @@ public final class NamespaceDiscoveredManagementGroup implements JsonSerializabl
                     deserializedNamespaceDiscoveredManagementGroup.managementGroupConfiguration = reader.getString();
                 } else if ("typeRef".equals(fieldName)) {
                     deserializedNamespaceDiscoveredManagementGroup.typeRef = reader.getString();
+                } else if ("dataSource".equals(fieldName)) {
+                    deserializedNamespaceDiscoveredManagementGroup.dataSource = reader.getString();
                 } else if ("defaultTopic".equals(fieldName)) {
                     deserializedNamespaceDiscoveredManagementGroup.defaultTopic = reader.getString();
                 } else if ("defaultTimeoutInSeconds".equals(fieldName)) {

@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * recurrencePattern.
+ * Represents a recurrence pattern.
  */
 @Fluent
 public final class MicrosoftGraphRecurrencePattern implements JsonSerializable<MicrosoftGraphRecurrencePattern> {

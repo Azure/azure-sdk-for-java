@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * directory.
+ * Represents a directory.
  */
 @Fluent
 public final class MicrosoftGraphDirectory extends MicrosoftGraphEntity {

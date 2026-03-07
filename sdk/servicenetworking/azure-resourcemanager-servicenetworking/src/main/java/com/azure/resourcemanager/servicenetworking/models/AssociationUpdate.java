@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.servicenetworking.fluent.models.AssociationUpdateProperties;
 import java.io.IOException;
 import java.util.Map;
 
@@ -25,7 +26,7 @@ public final class AssociationUpdate implements JsonSerializable<AssociationUpda
     /*
      * The resource-specific properties for this resource.
      */
-    private AssociationUpdateProperties properties;
+    private AssociationUpdateProperties innerProperties;
 
     /**
      * Creates an instance of AssociationUpdate class.
@@ -54,22 +55,57 @@ public final class AssociationUpdate implements JsonSerializable<AssociationUpda
     }
 
     /**
-     * Get the properties property: The resource-specific properties for this resource.
+     * Get the innerProperties property: The resource-specific properties for this resource.
      * 
-     * @return the properties value.
+     * @return the innerProperties value.
      */
-    public AssociationUpdateProperties properties() {
-        return this.properties;
+    private AssociationUpdateProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
-     * Set the properties property: The resource-specific properties for this resource.
+     * Get the associationType property: Association Type.
      * 
-     * @param properties the properties value to set.
+     * @return the associationType value.
+     */
+    public AssociationType associationType() {
+        return this.innerProperties() == null ? null : this.innerProperties().associationType();
+    }
+
+    /**
+     * Set the associationType property: Association Type.
+     * 
+     * @param associationType the associationType value to set.
      * @return the AssociationUpdate object itself.
      */
-    public AssociationUpdate withProperties(AssociationUpdateProperties properties) {
-        this.properties = properties;
+    public AssociationUpdate withAssociationType(AssociationType associationType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AssociationUpdateProperties();
+        }
+        this.innerProperties().withAssociationType(associationType);
+        return this;
+    }
+
+    /**
+     * Get the subnet property: Association Subnet.
+     * 
+     * @return the subnet value.
+     */
+    public AssociationSubnetUpdate subnet() {
+        return this.innerProperties() == null ? null : this.innerProperties().subnet();
+    }
+
+    /**
+     * Set the subnet property: Association Subnet.
+     * 
+     * @param subnet the subnet value to set.
+     * @return the AssociationUpdate object itself.
+     */
+    public AssociationUpdate withSubnet(AssociationSubnetUpdate subnet) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AssociationUpdateProperties();
+        }
+        this.innerProperties().withSubnet(subnet);
         return this;
     }
 
@@ -80,7 +116,7 @@ public final class AssociationUpdate implements JsonSerializable<AssociationUpda
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
         return jsonWriter.writeEndObject();
     }
 
@@ -103,7 +139,7 @@ public final class AssociationUpdate implements JsonSerializable<AssociationUpda
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedAssociationUpdate.tags = tags;
                 } else if ("properties".equals(fieldName)) {
-                    deserializedAssociationUpdate.properties = AssociationUpdateProperties.fromJson(reader);
+                    deserializedAssociationUpdate.innerProperties = AssociationUpdateProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

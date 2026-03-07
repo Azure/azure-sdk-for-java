@@ -20,7 +20,7 @@ public final class OracleSubscriptionsListActivationLinksMockTests {
     @Test
     public void testListActivationLinks() throws Exception {
         String responseStr
-            = "{\"newCloudAccountActivationLink\":\"lkafhonqjuje\",\"existingCloudAccountActivationLink\":\"kpzvcpopmxelnwc\"}";
+            = "{\"newCloudAccountActivationLink\":\"nq\",\"existingCloudAccountActivationLink\":\"gjfbpkuwxeoi\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));

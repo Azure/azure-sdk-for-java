@@ -75,6 +75,12 @@ public final class ApplicationGatewayProbePropertiesFormat
     private ApplicationGatewayProbeHealthResponseMatch match;
 
     /*
+     * Whether to send Proxy Protocol header along with the Health Probe over TCP or TLS protocol. Default value is
+     * false.
+     */
+    private Boolean enableProbeProxyProtocolHeader;
+
+    /*
      * The provisioning state of the probe resource.
      */
     private ProvisioningState provisioningState;
@@ -306,6 +312,29 @@ public final class ApplicationGatewayProbePropertiesFormat
     }
 
     /**
+     * Get the enableProbeProxyProtocolHeader property: Whether to send Proxy Protocol header along with the Health
+     * Probe over TCP or TLS protocol. Default value is false.
+     * 
+     * @return the enableProbeProxyProtocolHeader value.
+     */
+    public Boolean enableProbeProxyProtocolHeader() {
+        return this.enableProbeProxyProtocolHeader;
+    }
+
+    /**
+     * Set the enableProbeProxyProtocolHeader property: Whether to send Proxy Protocol header along with the Health
+     * Probe over TCP or TLS protocol. Default value is false.
+     * 
+     * @param enableProbeProxyProtocolHeader the enableProbeProxyProtocolHeader value to set.
+     * @return the ApplicationGatewayProbePropertiesFormat object itself.
+     */
+    public ApplicationGatewayProbePropertiesFormat
+        withEnableProbeProxyProtocolHeader(Boolean enableProbeProxyProtocolHeader) {
+        this.enableProbeProxyProtocolHeader = enableProbeProxyProtocolHeader;
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: The provisioning state of the probe resource.
      * 
      * @return the provisioningState value.
@@ -365,6 +394,7 @@ public final class ApplicationGatewayProbePropertiesFormat
         jsonWriter.writeBooleanField("pickHostNameFromBackendSettings", this.pickHostnameFromBackendSettings);
         jsonWriter.writeNumberField("minServers", this.minServers);
         jsonWriter.writeJsonField("match", this.match);
+        jsonWriter.writeBooleanField("enableProbeProxyProtocolHeader", this.enableProbeProxyProtocolHeader);
         jsonWriter.writeNumberField("port", this.port);
         return jsonWriter.writeEndObject();
     }
@@ -413,6 +443,9 @@ public final class ApplicationGatewayProbePropertiesFormat
                 } else if ("match".equals(fieldName)) {
                     deserializedApplicationGatewayProbePropertiesFormat.match
                         = ApplicationGatewayProbeHealthResponseMatch.fromJson(reader);
+                } else if ("enableProbeProxyProtocolHeader".equals(fieldName)) {
+                    deserializedApplicationGatewayProbePropertiesFormat.enableProbeProxyProtocolHeader
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedApplicationGatewayProbePropertiesFormat.provisioningState
                         = ProvisioningState.fromString(reader.getString());

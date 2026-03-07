@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * schedulingGroup.
+ * Represents a scheduling group.
  */
 @Fluent
 public final class MicrosoftGraphSchedulingGroup extends MicrosoftGraphChangeTrackedEntity {

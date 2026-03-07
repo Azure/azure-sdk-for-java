@@ -60,7 +60,7 @@ public final class RestorableMongodbResourcesClientImpl implements RestorableMon
      * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "CosmosDBManagementCl")
+    @ServiceInterface(name = "CosmosDBManagementClientRestorableMongodbResources")
     public interface RestorableMongodbResourcesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{instanceId}/restorableMongodbResources")

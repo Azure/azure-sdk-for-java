@@ -16,7 +16,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * baseItem.
+ * Represents a base item.
  */
 @Fluent
 public class MicrosoftGraphBaseItemInner extends MicrosoftGraphEntity {

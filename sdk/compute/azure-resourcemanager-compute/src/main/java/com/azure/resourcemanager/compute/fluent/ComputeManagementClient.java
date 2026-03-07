@@ -355,6 +355,20 @@ public interface ComputeManagementClient {
     GalleryInVMAccessControlProfileVersionsClient getGalleryInVMAccessControlProfileVersions();
 
     /**
+     * Gets the GalleryScriptsClient object to access its operations.
+     * 
+     * @return the GalleryScriptsClient object.
+     */
+    GalleryScriptsClient getGalleryScripts();
+
+    /**
+     * Gets the GalleryScriptVersionsClient object to access its operations.
+     * 
+     * @return the GalleryScriptVersionsClient object.
+     */
+    GalleryScriptVersionsClient getGalleryScriptVersions();
+
+    /**
      * Gets the GallerySharingProfilesClient object to access its operations.
      * 
      * @return the GallerySharingProfilesClient object.

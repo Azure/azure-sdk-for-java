@@ -13,15 +13,16 @@ public final class SchemaRegistryListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SchemaRegistryListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"uuid\":\"bzevwrd\",\"namespace\":\"hfuk\",\"displayName\":\"sjcswsmystuluqyp\",\"description\":\"vlerchpqbmfpjba\",\"storageAccountContainerUrl\":\"widf\",\"provisioningState\":\"Accepted\"},\"identity\":{\"principalId\":\"uunnoxyhkxgqdd\",\"tenantId\":\"hp\",\"type\":\"None\"},\"location\":\"qcaaewdaomdjvl\",\"tags\":{\"msgeivsiykzk\":\"xkzb\"},\"id\":\"ncj\",\"name\":\"xonbzoggculapz\",\"type\":\"y\"},{\"properties\":{\"uuid\":\"ogtqxepnylbf\",\"namespace\":\"ajlyjtlvofqzhv\",\"displayName\":\"ibyfmo\",\"description\":\"xrkjpvdw\",\"storageAccountContainerUrl\":\"fzwiivwzjbhyz\",\"provisioningState\":\"Succeeded\"},\"identity\":{\"principalId\":\"ambtrnegvm\",\"tenantId\":\"uqeqv\",\"type\":\"SystemAssigned\"},\"location\":\"pa\",\"tags\":{\"flvestmjlxrrilo\":\"bkkd\",\"kuziycsle\":\"apeewchpxlkt\",\"dcgzul\":\"ufuztcktyhjtq\",\"rr\":\"mmrqz\"},\"id\":\"vpglydz\",\"name\":\"krvq\",\"type\":\"ev\"},{\"properties\":{\"uuid\":\"pryu\",\"namespace\":\"nwy\",\"displayName\":\"zdmovzv\",\"description\":\"aawzqadfl\",\"storageAccountContainerUrl\":\"z\",\"provisioningState\":\"Canceled\"},\"identity\":{\"principalId\":\"aecxndtic\",\"tenantId\":\"pvz\",\"type\":\"SystemAssigned\"},\"location\":\"t\",\"tags\":{\"ciayzriykhya\":\"gxobfirclnp\",\"omdynhdwdigum\":\"fvjlboxqvkjlmx\",\"tj\":\"nraauzz\"},\"id\":\"zysdzh\",\"name\":\"zwwva\",\"type\":\"qyuvvfonkp\"}],\"nextLink\":\"qyikvy\"}")
+            "{\"value\":[{\"properties\":{\"uuid\":\"alzxwhcan\",\"namespace\":\"ymo\",\"displayName\":\"hlwigdivbkbxg\",\"description\":\"fajuwas\",\"storageAccountContainerUrl\":\"vdaeyyguxakjsq\",\"provisioningState\":\"Canceled\"},\"identity\":{\"principalId\":\"zkgimsid\",\"tenantId\":\"sicddyvv\",\"type\":\"SystemAssigned\"},\"location\":\"gfmo\",\"tags\":{\"hnakzyb\":\"hpqgatjeaahhvj\"},\"id\":\"jjidjk\",\"name\":\"yxkyxvx\",\"type\":\"vblbjednljlageua\"},{\"properties\":{\"uuid\":\"unsmjbnkpp\",\"namespace\":\"ynenlsvxeizz\",\"displayName\":\"klnsrmffey\",\"description\":\"ckt\",\"storageAccountContainerUrl\":\"iymerteeammxqi\",\"provisioningState\":\"Failed\"},\"identity\":{\"principalId\":\"ddrtkgdojb\",\"tenantId\":\"vavrefdees\",\"type\":\"SystemAssigned\"},\"location\":\"uij\",\"tags\":{\"wprtu\":\"xs\"},\"id\":\"wsawddjibabxvi\",\"name\":\"itvtzeexavo\",\"type\":\"tfgle\"},{\"properties\":{\"uuid\":\"dqbwpypqtgsfja\",\"namespace\":\"b\",\"displayName\":\"hhxud\",\"description\":\"vodhtn\",\"storageAccountContainerUrl\":\"irudh\",\"provisioningState\":\"Succeeded\"},\"identity\":{\"principalId\":\"ckdlpag\",\"tenantId\":\"cxfailcfxwmdboxd\",\"type\":\"SystemAssigned\"},\"location\":\"ft\",\"tags\":{\"knh\":\"obrjlnacgcc\"},\"id\":\"kizvytn\",\"name\":\"zvulj\",\"type\":\"aaeranokqgukk\"}],\"nextLink\":\"nvbroylaxx\"}")
             .toObject(SchemaRegistryListResult.class);
-        Assertions.assertEquals("qcaaewdaomdjvl", model.value().get(0).location());
-        Assertions.assertEquals("xkzb", model.value().get(0).tags().get("msgeivsiykzk"));
-        Assertions.assertEquals("hfuk", model.value().get(0).properties().namespace());
-        Assertions.assertEquals("sjcswsmystuluqyp", model.value().get(0).properties().displayName());
-        Assertions.assertEquals("vlerchpqbmfpjba", model.value().get(0).properties().description());
-        Assertions.assertEquals("widf", model.value().get(0).properties().storageAccountContainerUrl());
-        Assertions.assertEquals(SystemAssignedServiceIdentityType.NONE, model.value().get(0).identity().type());
-        Assertions.assertEquals("qyikvy", model.nextLink());
+        Assertions.assertEquals("gfmo", model.value().get(0).location());
+        Assertions.assertEquals("hpqgatjeaahhvj", model.value().get(0).tags().get("hnakzyb"));
+        Assertions.assertEquals("ymo", model.value().get(0).properties().namespace());
+        Assertions.assertEquals("hlwigdivbkbxg", model.value().get(0).properties().displayName());
+        Assertions.assertEquals("fajuwas", model.value().get(0).properties().description());
+        Assertions.assertEquals("vdaeyyguxakjsq", model.value().get(0).properties().storageAccountContainerUrl());
+        Assertions.assertEquals(SystemAssignedServiceIdentityType.SYSTEM_ASSIGNED,
+            model.value().get(0).identity().type());
+        Assertions.assertEquals("nvbroylaxx", model.nextLink());
     }
 }

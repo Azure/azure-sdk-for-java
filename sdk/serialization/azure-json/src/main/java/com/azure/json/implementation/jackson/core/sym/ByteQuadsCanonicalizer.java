@@ -4,7 +4,6 @@ package com.azure.json.implementation.jackson.core.sym;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicReference;
 
-import com.azure.json.implementation.jackson.core.JsonFactory;
 import com.azure.json.implementation.jackson.core.util.InternCache;
 
 /**
@@ -310,14 +309,10 @@ public final class ByteQuadsCanonicalizer {
      * Factory method used to create actual symbol table instance to
      * use for parsing.
      *
-     * @param flags Bit flags of active {@link JsonFactory.Feature}s enabled.
-     *
      * @return Actual canonicalizer instance that can be used by a parser
      */
-    public ByteQuadsCanonicalizer makeChild(int flags) {
-        return new ByteQuadsCanonicalizer(this, _seed, _tableInfo.get(),
-            JsonFactory.Feature.INTERN_FIELD_NAMES.enabledIn(flags),
-            JsonFactory.Feature.FAIL_ON_SYMBOL_HASH_OVERFLOW.enabledIn(flags));
+    public ByteQuadsCanonicalizer makeChild() {
+        return new ByteQuadsCanonicalizer(this, _seed, _tableInfo.get(), true, true);
     }
 
     /**
@@ -938,9 +933,7 @@ public final class ByteQuadsCanonicalizer {
         // Yes if above 80%, or above 50% AND have ~1% spill-overs
         if (_count > (_hashSize >> 1)) { // over 50%
             int spillCount = (_spilloverEnd - _spilloverStart()) >> 2;
-            if ((spillCount > (1 + _count >> 7)) || (_count > (_hashSize * 0.80))) {
-                return true;
-            }
+            return (spillCount > (1 + _count >> 7)) || (_count > (_hashSize * 0.80));
         }
         return false;
     }

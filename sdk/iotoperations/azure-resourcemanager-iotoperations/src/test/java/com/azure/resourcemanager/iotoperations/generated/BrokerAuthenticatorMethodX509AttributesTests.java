@@ -13,22 +13,21 @@ import org.junit.jupiter.api.Assertions;
 public final class BrokerAuthenticatorMethodX509AttributesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BrokerAuthenticatorMethodX509Attributes model = BinaryData.fromString(
-            "{\"attributes\":{\"fmvfaxkffeiit\":\"u\",\"ggi\":\"lvmezyvshxmzsbbz\",\"xxjnspydptk\":\"rxwburv\",\"iukbldngkpoci\":\"enkouknvudw\"},\"subject\":\"azyxoegukg\"}")
-            .toObject(BrokerAuthenticatorMethodX509Attributes.class);
-        Assertions.assertEquals("u", model.attributes().get("fmvfaxkffeiit"));
-        Assertions.assertEquals("azyxoegukg", model.subject());
+        BrokerAuthenticatorMethodX509Attributes model
+            = BinaryData.fromString("{\"attributes\":{\"wburvjxxjnspydpt\":\"gigr\"},\"subject\":\"oenkouknvudwti\"}")
+                .toObject(BrokerAuthenticatorMethodX509Attributes.class);
+        Assertions.assertEquals("gigr", model.attributes().get("wburvjxxjnspydpt"));
+        Assertions.assertEquals("oenkouknvudwti", model.subject());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BrokerAuthenticatorMethodX509Attributes model = new BrokerAuthenticatorMethodX509Attributes()
-            .withAttributes(mapOf("fmvfaxkffeiit", "u", "ggi", "lvmezyvshxmzsbbz", "xxjnspydptk", "rxwburv",
-                "iukbldngkpoci", "enkouknvudw"))
-            .withSubject("azyxoegukg");
+        BrokerAuthenticatorMethodX509Attributes model
+            = new BrokerAuthenticatorMethodX509Attributes().withAttributes(mapOf("wburvjxxjnspydpt", "gigr"))
+                .withSubject("oenkouknvudwti");
         model = BinaryData.fromObject(model).toObject(BrokerAuthenticatorMethodX509Attributes.class);
-        Assertions.assertEquals("u", model.attributes().get("fmvfaxkffeiit"));
-        Assertions.assertEquals("azyxoegukg", model.subject());
+        Assertions.assertEquals("gigr", model.attributes().get("wburvjxxjnspydpt"));
+        Assertions.assertEquals("oenkouknvudwti", model.subject());
     }
 
     // Use "Map.of" if available

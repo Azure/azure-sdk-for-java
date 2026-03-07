@@ -175,7 +175,12 @@ public final class ClusterCreateRequestValidationParameters extends ClusterCreat
      */
     @Override
     public void validate() {
-        super.validate();
+        if (properties() != null) {
+            properties().validate();
+        }
+        if (identity() != null) {
+            identity().validate();
+        }
     }
 
     /**

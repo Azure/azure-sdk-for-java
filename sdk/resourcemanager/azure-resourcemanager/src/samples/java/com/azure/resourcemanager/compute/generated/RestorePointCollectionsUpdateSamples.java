@@ -31,8 +31,8 @@ public final class RestorePointCollectionsUpdateSamples {
             .updateWithResponse("rgcompute", "aaaaaaaaaaaaaaaaaaaa", new RestorePointCollectionUpdate()
                 .withTags(mapOf("key8536", "fakeTokenPlaceholder"))
                 .withSource(new RestorePointCollectionSourceProperties().withId(
-                    "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM")),
-                com.azure.core.util.Context.NONE);
+                    "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"))
+                .withInstantAccess(true), com.azure.core.util.Context.NONE);
     }
 
     /*

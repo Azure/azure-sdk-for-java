@@ -23,6 +23,7 @@ import com.azure.resourcemanager.containerservice.models.GpuProfile;
 import com.azure.resourcemanager.containerservice.models.KubeletConfig;
 import com.azure.resourcemanager.containerservice.models.KubeletDiskType;
 import com.azure.resourcemanager.containerservice.models.LinuxOSConfig;
+import com.azure.resourcemanager.containerservice.models.LocalDnsProfile;
 import com.azure.resourcemanager.containerservice.models.OSDiskType;
 import com.azure.resourcemanager.containerservice.models.OSSku;
 import com.azure.resourcemanager.containerservice.models.OSType;
@@ -47,7 +48,7 @@ public class ManagedClusterAgentPoolProfileProperties
     /*
      * Unique read-only string used to implement optimistic concurrency. The eTag value will change when the resource is
      * updated. Specify an if-match or if-none-match header with the eTag value for a subsequent request to enable
-     * optimistic concurrency per the normal etag convention.
+     * optimistic concurrency per the normal eTag convention.
      */
     private String etag;
 
@@ -364,6 +365,12 @@ public class ManagedClusterAgentPoolProfileProperties
      */
     private AgentPoolStatus status;
 
+    /*
+     * Configures the per-node local DNS, with VnetDNS and KubeDNS overrides. LocalDNS helps improve performance and
+     * reliability of DNS resolution in an AKS cluster. For more details see aka.ms/aks/localdns.
+     */
+    private LocalDnsProfile localDnsProfile;
+
     /**
      * Creates an instance of ManagedClusterAgentPoolProfileProperties class.
      */
@@ -373,7 +380,7 @@ public class ManagedClusterAgentPoolProfileProperties
     /**
      * Get the etag property: Unique read-only string used to implement optimistic concurrency. The eTag value will
      * change when the resource is updated. Specify an if-match or if-none-match header with the eTag value for a
-     * subsequent request to enable optimistic concurrency per the normal etag convention.
+     * subsequent request to enable optimistic concurrency per the normal eTag convention.
      * 
      * @return the etag value.
      */
@@ -384,7 +391,7 @@ public class ManagedClusterAgentPoolProfileProperties
     /**
      * Set the etag property: Unique read-only string used to implement optimistic concurrency. The eTag value will
      * change when the resource is updated. Specify an if-match or if-none-match header with the eTag value for a
-     * subsequent request to enable optimistic concurrency per the normal etag convention.
+     * subsequent request to enable optimistic concurrency per the normal eTag convention.
      * 
      * @param etag the etag value to set.
      * @return the ManagedClusterAgentPoolProfileProperties object itself.
@@ -1566,6 +1573,30 @@ public class ManagedClusterAgentPoolProfileProperties
     }
 
     /**
+     * Get the localDnsProfile property: Configures the per-node local DNS, with VnetDNS and KubeDNS overrides. LocalDNS
+     * helps improve performance and reliability of DNS resolution in an AKS cluster. For more details see
+     * aka.ms/aks/localdns.
+     * 
+     * @return the localDnsProfile value.
+     */
+    public LocalDnsProfile localDnsProfile() {
+        return this.localDnsProfile;
+    }
+
+    /**
+     * Set the localDnsProfile property: Configures the per-node local DNS, with VnetDNS and KubeDNS overrides. LocalDNS
+     * helps improve performance and reliability of DNS resolution in an AKS cluster. For more details see
+     * aka.ms/aks/localdns.
+     * 
+     * @param localDnsProfile the localDnsProfile value to set.
+     * @return the ManagedClusterAgentPoolProfileProperties object itself.
+     */
+    public ManagedClusterAgentPoolProfileProperties withLocalDnsProfile(LocalDnsProfile localDnsProfile) {
+        this.localDnsProfile = localDnsProfile;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -1609,6 +1640,9 @@ public class ManagedClusterAgentPoolProfileProperties
         }
         if (status() != null) {
             status().validate();
+        }
+        if (localDnsProfile() != null) {
+            localDnsProfile().validate();
         }
     }
 
@@ -1675,6 +1709,7 @@ public class ManagedClusterAgentPoolProfileProperties
         jsonWriter.writeArrayField("virtualMachineNodesStatus", this.virtualMachineNodesStatus,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("status", this.status);
+        jsonWriter.writeJsonField("localDNSProfile", this.localDnsProfile);
         return jsonWriter.writeEndObject();
     }
 
@@ -1835,6 +1870,9 @@ public class ManagedClusterAgentPoolProfileProperties
                         = virtualMachineNodesStatus;
                 } else if ("status".equals(fieldName)) {
                     deserializedManagedClusterAgentPoolProfileProperties.status = AgentPoolStatus.fromJson(reader);
+                } else if ("localDNSProfile".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfileProperties.localDnsProfile
+                        = LocalDnsProfile.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

@@ -42,6 +42,11 @@ public final class DataflowGraphProperties implements JsonSerializable<DataflowG
      */
     private ProvisioningState provisioningState;
 
+    /*
+     * The health state of the resource.
+     */
+    private ResourceHealthState healthState;
+
     /**
      * Creates an instance of DataflowGraphProperties class.
      */
@@ -138,6 +143,15 @@ public final class DataflowGraphProperties implements JsonSerializable<DataflowG
     }
 
     /**
+     * Get the healthState property: The health state of the resource.
+     * 
+     * @return the healthState value.
+     */
+    public ResourceHealthState healthState() {
+        return this.healthState;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -183,6 +197,9 @@ public final class DataflowGraphProperties implements JsonSerializable<DataflowG
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedDataflowGraphProperties.provisioningState
                         = ProvisioningState.fromString(reader.getString());
+                } else if ("healthState".equals(fieldName)) {
+                    deserializedDataflowGraphProperties.healthState
+                        = ResourceHealthState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

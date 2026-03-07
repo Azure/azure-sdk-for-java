@@ -6,8 +6,8 @@ package com.azure.resourcemanager.hdinsight.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.hdinsight.HDInsightManager;
 import com.azure.resourcemanager.hdinsight.models.CapabilitiesResult;
@@ -21,27 +21,25 @@ public final class LocationsGetCapabilitiesWithResponseMockTests {
     @Test
     public void testGetCapabilitiesWithResponse() throws Exception {
         String responseStr
-            = "{\"versions\":{\"oyueayfbpcmsp\":{\"available\":[{\"friendlyName\":\"qbnqbpizxqltgrdo\",\"displayName\":\"pxrxvbfihwu\",\"isDefault\":true,\"componentVersions\":{\"rblmli\":\"fsrb\"}},{\"friendlyName\":\"xihspnxwq\",\"displayName\":\"nepzwakls\",\"isDefault\":true,\"componentVersions\":{\"sgl\":\"qagwwrxaomz\",\"jadhqoawj\":\"rczezkhhlt\"}}]},\"fiqwoy\":{\"available\":[{\"friendlyName\":\"rueqthwm\",\"displayName\":\"mbscbbx\",\"isDefault\":true,\"componentVersions\":{\"dbwdpyqyybxubmdn\":\"iidlop\",\"acigel\":\"fcbqwremjela\",\"pwbeonr\":\"ohdbvqvwzkj\"}},{\"friendlyName\":\"wzdqybxceakxcpts\",\"displayName\":\"fyiaseqch\",\"isDefault\":true,\"componentVersions\":{\"kiuemv\":\"razisg\",\"klinhmdptysprq\":\"nbwzohmnrxxbso\",\"pli\":\"gnzxojpslsvj\"}}]},\"cxneh\":{\"available\":[{\"friendlyName\":\"pcohhoucqpqojx\",\"displayName\":\"zrzdcgd\",\"isDefault\":false,\"componentVersions\":{\"ljhznamtuatmzwcj\":\"ibcawetzqddtjw\",\"tjzmi\":\"nc\",\"ebwgga\":\"vgbgatzuuvbxng\",\"oqza\":\"ttzlswvajqfutlx\"}},{\"friendlyName\":\"nwqrjzfrgqh\",\"displayName\":\"hcmbuocnjrohmbp\",\"isDefault\":false,\"componentVersions\":{\"vkfkmr\":\"meblyd\"}}]}},\"regions\":{\"gvvpasek\":{\"available\":[\"dlfp\",\"apucygvo\",\"vyuns\",\"xlghieegj\"]},\"mjnlexwhcb\":{\"available\":[\"uxantuygdhgaqipi\",\"piwrqofu\",\"o\"]}},\"features\":[\"bke\",\"hu\"],\"quota\":{\"coresUsed\":5032005553771086807,\"maxCoresAllowed\":5825591327077815588,\"regionalQuotas\":[{\"regionName\":\"ntqpbr\",\"coresUsed\":7453365577501286272,\"coresAvailable\":5915975308764094349},{\"regionName\":\"kg\",\"coresUsed\":3170849573195747250,\"coresAvailable\":5670456401736991740},{\"regionName\":\"cvcrrp\",\"coresUsed\":5679636640607196195,\"coresAvailable\":1765568550536459632}]}}";
+            = "{\"versions\":{\"ddpqt\":{\"available\":[{\"friendlyName\":\"pihehce\",\"displayName\":\"bmrqbrjbbmp\",\"isDefault\":false,\"componentVersions\":{\"hud\":\"kfrexcrseqwjks\"}},{\"friendlyName\":\"hxogjggsvoujkxi\",\"displayName\":\"afhrkmdyomk\",\"isDefault\":false,\"componentVersions\":{\"pwpgddei\":\"bhdyir\",\"muikjcjcaztbws\":\"awzovgkk\"}},{\"friendlyName\":\"qowxwcom\",\"displayName\":\"kytwvcz\",\"isDefault\":false,\"componentVersions\":{\"xt\":\"cvejyfdvlvhbwrn\"}}]},\"vteo\":{\"available\":[{\"friendlyName\":\"mnaoy\",\"displayName\":\"kcoeqswank\",\"isDefault\":true,\"componentVersions\":{\"rlktgjcsggu\":\"hdroznnh\",\"zgfbukklelssx\":\"hemlwywaee\",\"jks\":\"lycsxz\",\"oewbid\":\"lsmdesqplpvmjc\"}}]},\"iiiovgqcgxuugq\":{\"available\":[{\"friendlyName\":\"piudeugfsxzecpa\",\"displayName\":\"kufykhvu\",\"isDefault\":false,\"componentVersions\":{\"jltymkmvguihy\":\"rutznabaobnsluj\",\"phkixkykxdssjpe\":\"arts\",\"rmymyincqlhr\":\"mucfxhikkf\",\"sl\":\"s\"}}]}},\"regions\":{\"hqlkccuzgygqwaho\":{\"available\":[\"iowlxteqdptj\",\"wdtgukranblw\"]},\"mhbrbqgvg\":{\"available\":[\"wgniipr\",\"lvawuwzdufypivls\",\"bjpmcubk\",\"ifoxxkubvphav\"]},\"wfiwzcxmj\":{\"available\":[\"bbttefjo\",\"nssqyzqed\",\"kdfrdbiqmrjgeihf\",\"lg\"]},\"fjlrxwtoauk\":{\"available\":[\"ephmgtvljvrcmyfq\",\"pgxh\",\"pomyqwcabvnuile\",\"yaswlpaugmr\"]}},\"features\":[\"vcisiz\"],\"quota\":{\"coresUsed\":3070657287286069217,\"maxCoresAllowed\":2996980592511322774,\"regionalQuotas\":[{\"regionName\":\"vedwcgyeewx\",\"coresUsed\":6124367728048997773,\"coresAvailable\":2080947935687298140},{\"regionName\":\"omguamlj\",\"coresUsed\":89407002480372975,\"coresAvailable\":5798228186879436561},{\"regionName\":\"zgaufcshhvn\",\"coresUsed\":2190540767152653017,\"coresAvailable\":7283254554944912845},{\"regionName\":\"pqanxrjkix\",\"coresUsed\":3357915863387443370,\"coresAvailable\":6541184818779379216}]}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         HDInsightManager manager = HDInsightManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CapabilitiesResult response = manager.locations()
-            .getCapabilitiesWithResponse("rdcoxnbkkj", com.azure.core.util.Context.NONE)
+            .getCapabilitiesWithResponse("yrrleaesinuqt", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("qbnqbpizxqltgrdo",
-            response.versions().get("oyueayfbpcmsp").available().get(0).friendlyName());
-        Assertions.assertEquals("pxrxvbfihwu",
-            response.versions().get("oyueayfbpcmsp").available().get(0).displayName());
-        Assertions.assertEquals(true, response.versions().get("oyueayfbpcmsp").available().get(0).isDefault());
-        Assertions.assertEquals("fsrb",
-            response.versions().get("oyueayfbpcmsp").available().get(0).componentVersions().get("rblmli"));
-        Assertions.assertEquals("dlfp", response.regions().get("gvvpasek").available().get(0));
-        Assertions.assertEquals("bke", response.features().get(0));
+        Assertions.assertEquals("pihehce", response.versions().get("ddpqt").available().get(0).friendlyName());
+        Assertions.assertEquals("bmrqbrjbbmp", response.versions().get("ddpqt").available().get(0).displayName());
+        Assertions.assertFalse(response.versions().get("ddpqt").available().get(0).isDefault());
+        Assertions.assertEquals("kfrexcrseqwjks",
+            response.versions().get("ddpqt").available().get(0).componentVersions().get("hud"));
+        Assertions.assertEquals("iowlxteqdptj", response.regions().get("hqlkccuzgygqwaho").available().get(0));
+        Assertions.assertEquals("vcisiz", response.features().get(0));
     }
 }

@@ -51,7 +51,7 @@ public final class ModelDeployment extends Deployment {
      * Sku of the model deployment
      */
     @Generated
-    private Sku sku;
+    private ModelDeploymentSku sku;
 
     /*
      * Name of the connection the deployment comes from
@@ -123,7 +123,7 @@ public final class ModelDeployment extends Deployment {
      * @return the sku value.
      */
     @Generated
-    public Sku getSku() {
+    public ModelDeploymentSku getSku() {
         return this.sku;
     }
 
@@ -176,7 +176,7 @@ public final class ModelDeployment extends Deployment {
                     Map<String, String> capabilities = reader.readMap(reader1 -> reader1.getString());
                     deserializedModelDeployment.capabilities = capabilities;
                 } else if ("sku".equals(fieldName)) {
-                    deserializedModelDeployment.sku = Sku.fromJson(reader);
+                    deserializedModelDeployment.sku = ModelDeploymentSku.fromJson(reader);
                 } else if ("type".equals(fieldName)) {
                     deserializedModelDeployment.type = DeploymentType.fromString(reader.getString());
                 } else if ("connectionName".equals(fieldName)) {

@@ -14,18 +14,16 @@ public final class PrivateLinkResourceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateLinkResourceListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"groupId\":\"wxrjfeallnwsub\",\"requiredMembers\":[\"jampmngnzscxaqw\",\"ochcbonqvpkvl\"],\"requiredZoneNames\":[\"jease\",\"pheoflokeyy\",\"enjbdlwtgrhp\",\"jp\"]},\"id\":\"umasxazjpq\",\"name\":\"e\",\"type\":\"ualhbxxhejj\"},{\"properties\":{\"groupId\":\"dudgwdslfhot\",\"requiredMembers\":[\"ynpwlbj\",\"pgacftadehxnlty\",\"sop\"],\"requiredZoneNames\":[\"uesnzwdejbavo\",\"xzdmohctb\"]},\"id\":\"vudwx\",\"name\":\"ndnvo\",\"type\":\"gujjugwdkcglh\"}]}")
+            "{\"value\":[{\"properties\":{\"groupId\":\"ypvhezrkg\",\"requiredMembers\":[\"jrefovgmkqsle\"],\"requiredZoneNames\":[\"xyqj\",\"k\",\"attpngjcrcczsq\",\"jh\"]},\"id\":\"mdajv\",\"name\":\"ysou\",\"type\":\"q\"}]}")
             .toObject(PrivateLinkResourceListResult.class);
-        Assertions.assertEquals("jease", model.value().get(0).requiredZoneNames().get(0));
+        Assertions.assertEquals("xyqj", model.value().get(0).requiredZoneNames().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PrivateLinkResourceListResult model = new PrivateLinkResourceListResult().withValue(Arrays.asList(
-            new PrivateLinkResourceInner()
-                .withRequiredZoneNames(Arrays.asList("jease", "pheoflokeyy", "enjbdlwtgrhp", "jp")),
-            new PrivateLinkResourceInner().withRequiredZoneNames(Arrays.asList("uesnzwdejbavo", "xzdmohctb"))));
+            new PrivateLinkResourceInner().withRequiredZoneNames(Arrays.asList("xyqj", "k", "attpngjcrcczsq", "jh"))));
         model = BinaryData.fromObject(model).toObject(PrivateLinkResourceListResult.class);
-        Assertions.assertEquals("jease", model.value().get(0).requiredZoneNames().get(0));
+        Assertions.assertEquals("xyqj", model.value().get(0).requiredZoneNames().get(0));
     }
 }

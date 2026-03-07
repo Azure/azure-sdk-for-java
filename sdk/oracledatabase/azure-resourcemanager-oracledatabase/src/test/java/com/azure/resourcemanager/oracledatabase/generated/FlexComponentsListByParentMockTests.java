@@ -22,7 +22,7 @@ public final class FlexComponentsListByParentMockTests {
     @Test
     public void testListByParent() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"minimumCoreCount\":1340564567,\"availableCoreCount\":1515346381,\"availableDbStorageInGbs\":226736084,\"runtimeMinimumCoreCount\":2138595682,\"shape\":\"febwlnbmhyreeudz\",\"availableMemoryInGbs\":1880601088,\"availableLocalStorageInGbs\":2042624094,\"computeModel\":\"qmjxlyyzglgouwtl\",\"hardwareType\":\"CELL\",\"descriptionSummary\":\"uojqt\"},\"id\":\"axkjeytunlbfjk\",\"name\":\"rusnk\",\"type\":\"bhsy\"}]}";
+            = "{\"value\":[{\"properties\":{\"minimumCoreCount\":1830038305,\"availableCoreCount\":461124348,\"availableDbStorageInGbs\":740556470,\"runtimeMinimumCoreCount\":2036757634,\"shape\":\"gltbxoeeo\",\"availableMemoryInGbs\":558021080,\"availableLocalStorageInGbs\":1794310518,\"computeModel\":\"myymvqdbpbhfckdv\",\"hardwareType\":\"COMPUTE\",\"descriptionSummary\":\"cssbzhddu\"},\"id\":\"nqfblhkalehpava\",\"name\":\"ugiqjtiogqg\",\"type\":\"minict\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,7 +32,7 @@ public final class FlexComponentsListByParentMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<FlexComponent> response = manager.flexComponents()
-            .listByParent("nnbsoqeqa", SystemShapes.EXA_DB_XS, com.azure.core.util.Context.NONE);
+            .listByParent("pirykycndzfqiv", SystemShapes.EXA_DB_XS, com.azure.core.util.Context.NONE);
 
     }
 }

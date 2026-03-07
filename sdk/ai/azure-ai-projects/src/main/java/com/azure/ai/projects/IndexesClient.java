@@ -5,7 +5,7 @@ package com.azure.ai.projects;
 
 import com.azure.ai.projects.implementation.IndexesImpl;
 import com.azure.ai.projects.implementation.JsonMergePatchHelper;
-import com.azure.ai.projects.models.Index;
+import com.azure.ai.projects.models.AIProjectIndex;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -67,8 +67,29 @@ public final class IndexesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listIndexVersions(String name, RequestOptions requestOptions) {
-        return this.serviceClient.listIndexVersions(name, requestOptions);
+    public PagedIterable<BinaryData> listVersions(String name, RequestOptions requestOptions) {
+        return this.serviceClient.listVersions(name, requestOptions);
+    }
+
+    /**
+     * List all versions of the given Index.
+     *
+     * @param name The name of the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return paged collection of Index items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<AIProjectIndex> listVersions(String name) {
+        // Generated convenience method for listVersions
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient.listVersions(name, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(AIProjectIndex.class));
     }
 
     /**
@@ -99,12 +120,12 @@ public final class IndexesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listLatestIndexVersions(RequestOptions requestOptions) {
-        return this.serviceClient.listLatestIndexVersions(requestOptions);
+    public PagedIterable<BinaryData> listLatest(RequestOptions requestOptions) {
+        return this.serviceClient.listLatest(requestOptions);
     }
 
     /**
-     * Get the specific version of the Index.
+     * Get the specific version of the Index. The service returns 404 Not Found error if the Index does not exist.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -133,13 +154,13 @@ public final class IndexesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getIndexVersionWithResponse(String name, String version,
-        RequestOptions requestOptions) {
-        return this.serviceClient.getIndexVersionWithResponse(name, version, requestOptions);
+    public Response<BinaryData> getVersionWithResponse(String name, String version, RequestOptions requestOptions) {
+        return this.serviceClient.getVersionWithResponse(name, version, requestOptions);
     }
 
     /**
-     * Delete the specific version of the Index.
+     * Delete the specific version of the Index. The service returns 204 No Content if the Index was deleted
+     * successfully or if the Index does not exist.
      *
      * @param name The name of the resource.
      * @param version The version of the Index to delete.
@@ -152,8 +173,69 @@ public final class IndexesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteIndexVersionWithResponse(String name, String version, RequestOptions requestOptions) {
-        return this.serviceClient.deleteIndexVersionWithResponse(name, version, requestOptions);
+    public Response<Void> deleteVersionWithResponse(String name, String version, RequestOptions requestOptions) {
+        return this.serviceClient.deleteVersionWithResponse(name, version, requestOptions);
+    }
+
+    /**
+     * List the latest version of each Index.
+     *
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return paged collection of Index items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<AIProjectIndex> listLatest() {
+        // Generated convenience method for listLatest
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient.listLatest(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(AIProjectIndex.class));
+    }
+
+    /**
+     * Get the specific version of the Index. The service returns 404 Not Found error if the Index does not exist.
+     *
+     * @param name The name of the resource.
+     * @param version The specific version id of the Index to retrieve.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specific version of the Index.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AIProjectIndex getVersion(String name, String version) {
+        // Generated convenience method for getVersionWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getVersionWithResponse(name, version, requestOptions).getValue().toObject(AIProjectIndex.class);
+    }
+
+    /**
+     * Delete the specific version of the Index. The service returns 204 No Content if the Index was deleted
+     * successfully or if the Index does not exist.
+     *
+     * @param name The name of the resource.
+     * @param version The version of the Index to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteVersion(String name, String version) {
+        // Generated convenience method for deleteVersionWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        deleteVersionWithResponse(name, version, requestOptions).getValue();
     }
 
     /**
@@ -204,90 +286,9 @@ public final class IndexesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateIndexVersionWithResponse(String name, String version, BinaryData index,
+    public Response<BinaryData> createOrUpdateVersionWithResponse(String name, String version, BinaryData index,
         RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateIndexVersionWithResponse(name, version, index, requestOptions);
-    }
-
-    /**
-     * List all versions of the given Index.
-     *
-     * @param name The name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of Index items as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Index> listIndexVersions(String name) {
-        // Generated convenience method for listIndexVersions
-        RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listIndexVersions(name, requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(Index.class));
-    }
-
-    /**
-     * List the latest version of each Index.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of Index items as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Index> listLatestIndexVersions() {
-        // Generated convenience method for listLatestIndexVersions
-        RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listLatestIndexVersions(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(Index.class));
-    }
-
-    /**
-     * Get the specific version of the Index.
-     *
-     * @param name The name of the resource.
-     * @param version The specific version id of the Index to retrieve.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specific version of the Index.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Index getIndexVersion(String name, String version) {
-        // Generated convenience method for getIndexVersionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getIndexVersionWithResponse(name, version, requestOptions).getValue().toObject(Index.class);
-    }
-
-    /**
-     * Delete the specific version of the Index.
-     *
-     * @param name The name of the resource.
-     * @param version The version of the Index to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteIndexVersion(String name, String version) {
-        // Generated convenience method for deleteIndexVersionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        deleteIndexVersionWithResponse(name, version, requestOptions).getValue();
+        return this.serviceClient.createOrUpdateVersionWithResponse(name, version, index, requestOptions);
     }
 
     /**
@@ -306,15 +307,15 @@ public final class IndexesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Index createOrUpdateIndexVersion(String name, String version, Index index) {
-        // Generated convenience method for createOrUpdateIndexVersionWithResponse
+    public AIProjectIndex createOrUpdateVersion(String name, String version, AIProjectIndex index) {
+        // Generated convenience method for createOrUpdateVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        JsonMergePatchHelper.getIndexAccessor().prepareModelForJsonMergePatch(index, true);
+        JsonMergePatchHelper.getAIProjectIndexAccessor().prepareModelForJsonMergePatch(index, true);
         BinaryData indexInBinaryData = BinaryData.fromObject(index);
         // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
         indexInBinaryData.getLength();
-        JsonMergePatchHelper.getIndexAccessor().prepareModelForJsonMergePatch(index, false);
-        return createOrUpdateIndexVersionWithResponse(name, version, indexInBinaryData, requestOptions).getValue()
-            .toObject(Index.class);
+        JsonMergePatchHelper.getAIProjectIndexAccessor().prepareModelForJsonMergePatch(index, false);
+        return createOrUpdateVersionWithResponse(name, version, indexInBinaryData, requestOptions).getValue()
+            .toObject(AIProjectIndex.class);
     }
 }

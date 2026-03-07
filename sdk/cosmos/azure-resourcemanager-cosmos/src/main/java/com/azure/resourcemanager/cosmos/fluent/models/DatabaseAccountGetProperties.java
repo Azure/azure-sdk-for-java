@@ -20,6 +20,7 @@ import com.azure.resourcemanager.cosmos.models.CorsPolicy;
 import com.azure.resourcemanager.cosmos.models.CreateMode;
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountKeysMetadata;
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountOfferType;
+import com.azure.resourcemanager.cosmos.models.DefaultPriorityLevel;
 import com.azure.resourcemanager.cosmos.models.FailoverPolicy;
 import com.azure.resourcemanager.cosmos.models.IpAddressOrRange;
 import com.azure.resourcemanager.cosmos.models.Location;
@@ -245,6 +246,21 @@ public final class DatabaseAccountGetProperties implements JsonSerializable<Data
      * Flag to indicate enabling/disabling of PerRegionPerPartitionAutoscale feature on the account
      */
     private Boolean enablePerRegionPerPartitionAutoscale;
+
+    /*
+     * The version of the Customer Managed Key currently being used by the account
+     */
+    private String keyVaultKeyUriVersion;
+
+    /*
+     * Flag to indicate enabling/disabling of Priority Based Execution Preview feature on the account
+     */
+    private Boolean enablePriorityBasedExecution;
+
+    /*
+     * Enum to indicate default Priority Level of request for Priority Based Execution.
+     */
+    private DefaultPriorityLevel defaultPriorityLevel;
 
     /**
      * Creates an instance of DatabaseAccountGetProperties class.
@@ -982,6 +998,60 @@ public final class DatabaseAccountGetProperties implements JsonSerializable<Data
     }
 
     /**
+     * Get the keyVaultKeyUriVersion property: The version of the Customer Managed Key currently being used by the
+     * account.
+     * 
+     * @return the keyVaultKeyUriVersion value.
+     */
+    public String keyVaultKeyUriVersion() {
+        return this.keyVaultKeyUriVersion;
+    }
+
+    /**
+     * Get the enablePriorityBasedExecution property: Flag to indicate enabling/disabling of Priority Based Execution
+     * Preview feature on the account.
+     * 
+     * @return the enablePriorityBasedExecution value.
+     */
+    public Boolean enablePriorityBasedExecution() {
+        return this.enablePriorityBasedExecution;
+    }
+
+    /**
+     * Set the enablePriorityBasedExecution property: Flag to indicate enabling/disabling of Priority Based Execution
+     * Preview feature on the account.
+     * 
+     * @param enablePriorityBasedExecution the enablePriorityBasedExecution value to set.
+     * @return the DatabaseAccountGetProperties object itself.
+     */
+    public DatabaseAccountGetProperties withEnablePriorityBasedExecution(Boolean enablePriorityBasedExecution) {
+        this.enablePriorityBasedExecution = enablePriorityBasedExecution;
+        return this;
+    }
+
+    /**
+     * Get the defaultPriorityLevel property: Enum to indicate default Priority Level of request for Priority Based
+     * Execution.
+     * 
+     * @return the defaultPriorityLevel value.
+     */
+    public DefaultPriorityLevel defaultPriorityLevel() {
+        return this.defaultPriorityLevel;
+    }
+
+    /**
+     * Set the defaultPriorityLevel property: Enum to indicate default Priority Level of request for Priority Based
+     * Execution.
+     * 
+     * @param defaultPriorityLevel the defaultPriorityLevel value to set.
+     * @return the DatabaseAccountGetProperties object itself.
+     */
+    public DatabaseAccountGetProperties withDefaultPriorityLevel(DefaultPriorityLevel defaultPriorityLevel) {
+        this.defaultPriorityLevel = defaultPriorityLevel;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -1079,6 +1149,9 @@ public final class DatabaseAccountGetProperties implements JsonSerializable<Data
         jsonWriter.writeBooleanField("enableBurstCapacity", this.enableBurstCapacity);
         jsonWriter.writeStringField("customerManagedKeyStatus", this.customerManagedKeyStatus);
         jsonWriter.writeBooleanField("enablePerRegionPerPartitionAutoscale", this.enablePerRegionPerPartitionAutoscale);
+        jsonWriter.writeBooleanField("enablePriorityBasedExecution", this.enablePriorityBasedExecution);
+        jsonWriter.writeStringField("defaultPriorityLevel",
+            this.defaultPriorityLevel == null ? null : this.defaultPriorityLevel.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -1208,6 +1281,14 @@ public final class DatabaseAccountGetProperties implements JsonSerializable<Data
                 } else if ("enablePerRegionPerPartitionAutoscale".equals(fieldName)) {
                     deserializedDatabaseAccountGetProperties.enablePerRegionPerPartitionAutoscale
                         = reader.getNullable(JsonReader::getBoolean);
+                } else if ("keyVaultKeyUriVersion".equals(fieldName)) {
+                    deserializedDatabaseAccountGetProperties.keyVaultKeyUriVersion = reader.getString();
+                } else if ("enablePriorityBasedExecution".equals(fieldName)) {
+                    deserializedDatabaseAccountGetProperties.enablePriorityBasedExecution
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("defaultPriorityLevel".equals(fieldName)) {
+                    deserializedDatabaseAccountGetProperties.defaultPriorityLevel
+                        = DefaultPriorityLevel.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

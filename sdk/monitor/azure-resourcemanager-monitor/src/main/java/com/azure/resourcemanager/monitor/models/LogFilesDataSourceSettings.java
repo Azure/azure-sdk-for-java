@@ -37,7 +37,9 @@ public final class LogFilesDataSourceSettings extends LogFileSettings {
      */
     @Override
     public void validate() {
-        super.validate();
+        if (text() != null) {
+            text().validate();
+        }
     }
 
     /**

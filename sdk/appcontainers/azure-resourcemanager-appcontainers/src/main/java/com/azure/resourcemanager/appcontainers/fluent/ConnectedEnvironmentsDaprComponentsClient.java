@@ -11,7 +11,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.appcontainers.fluent.models.ConnectedEnvironmentDaprComponentInner;
+import com.azure.resourcemanager.appcontainers.fluent.models.DaprComponentInner;
 import com.azure.resourcemanager.appcontainers.fluent.models.DaprSecretsCollectionInner;
 
 /**
@@ -30,8 +30,7 @@ public interface ConnectedEnvironmentsDaprComponentsClient {
      * @return the Dapr Components for a connected environment as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ConnectedEnvironmentDaprComponentInner> list(String resourceGroupName,
-        String connectedEnvironmentName);
+    PagedIterable<DaprComponentInner> list(String resourceGroupName, String connectedEnvironmentName);
 
     /**
      * Get the Dapr Components for a connected environment.
@@ -46,8 +45,7 @@ public interface ConnectedEnvironmentsDaprComponentsClient {
      * @return the Dapr Components for a connected environment as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ConnectedEnvironmentDaprComponentInner> list(String resourceGroupName,
-        String connectedEnvironmentName, Context context);
+    PagedIterable<DaprComponentInner> list(String resourceGroupName, String connectedEnvironmentName, Context context);
 
     /**
      * Get a dapr component.
@@ -63,8 +61,8 @@ public interface ConnectedEnvironmentsDaprComponentsClient {
      * @return a dapr component along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ConnectedEnvironmentDaprComponentInner> getWithResponse(String resourceGroupName,
-        String connectedEnvironmentName, String componentName, Context context);
+    Response<DaprComponentInner> getWithResponse(String resourceGroupName, String connectedEnvironmentName,
+        String componentName, Context context);
 
     /**
      * Get a dapr component.
@@ -79,8 +77,7 @@ public interface ConnectedEnvironmentsDaprComponentsClient {
      * @return a dapr component.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ConnectedEnvironmentDaprComponentInner get(String resourceGroupName, String connectedEnvironmentName,
-        String componentName);
+    DaprComponentInner get(String resourceGroupName, String connectedEnvironmentName, String componentName);
 
     /**
      * Creates or updates a Dapr Component.
@@ -97,9 +94,8 @@ public interface ConnectedEnvironmentsDaprComponentsClient {
      * @return the {@link SyncPoller} for polling of dapr Component.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ConnectedEnvironmentDaprComponentInner>, ConnectedEnvironmentDaprComponentInner>
-        beginCreateOrUpdate(String resourceGroupName, String connectedEnvironmentName, String componentName,
-            ConnectedEnvironmentDaprComponentInner daprComponentEnvelope);
+    SyncPoller<PollResult<DaprComponentInner>, DaprComponentInner> beginCreateOrUpdate(String resourceGroupName,
+        String connectedEnvironmentName, String componentName, DaprComponentInner daprComponentEnvelope);
 
     /**
      * Creates or updates a Dapr Component.
@@ -117,9 +113,9 @@ public interface ConnectedEnvironmentsDaprComponentsClient {
      * @return the {@link SyncPoller} for polling of dapr Component.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ConnectedEnvironmentDaprComponentInner>, ConnectedEnvironmentDaprComponentInner>
-        beginCreateOrUpdate(String resourceGroupName, String connectedEnvironmentName, String componentName,
-            ConnectedEnvironmentDaprComponentInner daprComponentEnvelope, Context context);
+    SyncPoller<PollResult<DaprComponentInner>, DaprComponentInner> beginCreateOrUpdate(String resourceGroupName,
+        String connectedEnvironmentName, String componentName, DaprComponentInner daprComponentEnvelope,
+        Context context);
 
     /**
      * Creates or updates a Dapr Component.
@@ -136,8 +132,8 @@ public interface ConnectedEnvironmentsDaprComponentsClient {
      * @return dapr Component.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ConnectedEnvironmentDaprComponentInner createOrUpdate(String resourceGroupName, String connectedEnvironmentName,
-        String componentName, ConnectedEnvironmentDaprComponentInner daprComponentEnvelope);
+    DaprComponentInner createOrUpdate(String resourceGroupName, String connectedEnvironmentName, String componentName,
+        DaprComponentInner daprComponentEnvelope);
 
     /**
      * Creates or updates a Dapr Component.
@@ -155,8 +151,8 @@ public interface ConnectedEnvironmentsDaprComponentsClient {
      * @return dapr Component.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ConnectedEnvironmentDaprComponentInner createOrUpdate(String resourceGroupName, String connectedEnvironmentName,
-        String componentName, ConnectedEnvironmentDaprComponentInner daprComponentEnvelope, Context context);
+    DaprComponentInner createOrUpdate(String resourceGroupName, String connectedEnvironmentName, String componentName,
+        DaprComponentInner daprComponentEnvelope, Context context);
 
     /**
      * Delete a Dapr Component.

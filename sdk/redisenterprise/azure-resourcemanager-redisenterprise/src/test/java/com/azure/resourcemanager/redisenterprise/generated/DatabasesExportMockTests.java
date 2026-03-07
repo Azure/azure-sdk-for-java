@@ -29,7 +29,7 @@ public final class DatabasesExportMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.databases()
-            .export("qugxywpmueefjzwf", "kqujidsuyono", "glaocq", new ExportClusterParameters().withSasUri("tcc"),
+            .export("ehhseyvjusrts", "hspkdeemao", "mx", new ExportClusterParameters().withSasUri("gkvtmelmqkrhah"),
                 com.azure.core.util.Context.NONE);
 
     }

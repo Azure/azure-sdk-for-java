@@ -7,8 +7,8 @@ package com.azure.resourcemanager.loganalytics.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.loganalytics.LogAnalyticsManager;
 import com.azure.resourcemanager.loganalytics.models.ColumnDataTypeHintEnum;
@@ -25,41 +25,41 @@ public final class TablesListByWorkspaceMockTests {
     @Test
     public void testListByWorkspace() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"retentionInDays\":143517524,\"totalRetentionInDays\":1172309322,\"archiveRetentionInDays\":1559182660,\"searchResults\":{\"query\":\"mmfz\",\"description\":\"fwxrzxmdew\",\"limit\":1373177035,\"startSearchTime\":\"2021-04-20T22:50:05Z\",\"endSearchTime\":\"2021-01-08T17:25:29Z\",\"sourceTable\":\"bjazejwwviy\",\"azureAsyncOperationId\":\"ps\"},\"restoredLogs\":{\"startRestoreTime\":\"2021-11-20T14:34:31Z\",\"endRestoreTime\":\"2021-01-22T13:49:23Z\",\"sourceTable\":\"jxsqwjhqkbiwetp\",\"azureAsyncOperationId\":\"ycyqiqyhgfsetzl\"},\"resultStatistics\":{\"progress\":37.550117,\"ingestedRecords\":207278850,\"scannedGb\":68.76575},\"plan\":\"Basic\",\"lastPlanModifiedDate\":\"jpziu\",\"schema\":{\"name\":\"zkkdtnhqs\",\"displayName\":\"ljselp\",\"description\":\"bafvafhlbylcc\",\"columns\":[{\"name\":\"rhyzdf\",\"type\":\"real\",\"dataTypeHint\":\"uri\",\"displayName\":\"ltdb\",\"description\":\"irrhv\",\"isDefaultDisplay\":false,\"isHidden\":false}],\"standardColumns\":[{\"name\":\"pqigtuujwouhd\",\"type\":\"string\",\"dataTypeHint\":\"ip\",\"displayName\":\"bjb\",\"description\":\"jybvit\",\"isDefaultDisplay\":true,\"isHidden\":false},{\"name\":\"znumtggmuwdchoz\",\"type\":\"long\",\"dataTypeHint\":\"armPath\",\"displayName\":\"lv\",\"description\":\"oakizvoai\",\"isDefaultDisplay\":false,\"isHidden\":false},{\"name\":\"uwiguyxlyk\",\"type\":\"boolean\",\"dataTypeHint\":\"armPath\",\"displayName\":\"cwxhmpej\",\"description\":\"ke\",\"isDefaultDisplay\":true,\"isHidden\":false},{\"name\":\"vkcqhr\",\"type\":\"string\",\"dataTypeHint\":\"guid\",\"displayName\":\"ccrmmk\",\"description\":\"pijubyq\",\"isDefaultDisplay\":false,\"isHidden\":false}],\"categories\":[\"frkemyildudxja\",\"cowvfdjkp\",\"xphlkksnmg\",\"vyfijdkzuqnw\"],\"labels\":[\"huqol\",\"ah\",\"uqwqulsutrjbhxyk\"],\"source\":\"microsoft\",\"tableType\":\"CustomLog\",\"tableSubType\":\"Any\",\"solutions\":[\"ugdrftbc\",\"exreu\",\"uowtljvfwhrea\",\"khyxvrqtvbcz\"]},\"provisioningState\":\"Succeeded\",\"retentionInDaysAsDefault\":true,\"totalRetentionInDaysAsDefault\":false},\"systemData\":{\"createdBy\":\"epjpfs\",\"createdByType\":\"ManagedIdentity\",\"createdAt\":\"2021-11-01T10:59:42Z\",\"lastModifiedBy\":\"ngpszngafpg\",\"lastModifiedByType\":\"User\",\"lastModifiedAt\":\"2021-07-27T16:28:59Z\"},\"id\":\"cj\",\"name\":\"jcngoadyed\",\"type\":\"zrgjfok\"}]}";
+            = "{\"value\":[{\"properties\":{\"retentionInDays\":1986729733,\"totalRetentionInDays\":260996663,\"archiveRetentionInDays\":1750889059,\"searchResults\":{\"query\":\"cdxa\",\"description\":\"u\",\"limit\":2063766495,\"startSearchTime\":\"2021-08-26T08:46Z\",\"endSearchTime\":\"2021-09-09T20:53:20Z\",\"sourceTable\":\"bklqpxz\",\"azureAsyncOperationId\":\"afeddwwnlza\"},\"restoredLogs\":{\"startRestoreTime\":\"2021-04-21T23:27:57Z\",\"endRestoreTime\":\"2021-11-21T23:37:33Z\",\"sourceTable\":\"hgookrtalvnbwgpb\",\"azureAsyncOperationId\":\"eluclvdjj\"},\"resultStatistics\":{\"progress\":84.43588,\"ingestedRecords\":574084923,\"scannedGb\":58.54812},\"plan\":\"Basic\",\"lastPlanModifiedDate\":\"hhxhq\",\"schema\":{\"name\":\"nvzoqgyipemch\",\"displayName\":\"v\",\"description\":\"zuejd\",\"columns\":[{\"name\":\"lghwzhome\",\"type\":\"string\",\"dataTypeHint\":\"uri\",\"displayName\":\"iuh\",\"description\":\"wmoaiancznvodrrs\",\"isDefaultDisplay\":true,\"isHidden\":false},{\"name\":\"kxrx\",\"type\":\"dateTime\",\"dataTypeHint\":\"armPath\",\"displayName\":\"kgfbqljnqkhy\",\"description\":\"ocokule\",\"isDefaultDisplay\":true,\"isHidden\":false},{\"name\":\"qffawey\",\"type\":\"boolean\",\"dataTypeHint\":\"uri\",\"displayName\":\"jdxravjuqdbrx\",\"description\":\"gchbapxkiy\",\"isDefaultDisplay\":false,\"isHidden\":true},{\"name\":\"jbuscg\",\"type\":\"string\",\"dataTypeHint\":\"guid\",\"displayName\":\"ycblevpmcl\",\"description\":\"yxkyxlz\",\"isDefaultDisplay\":false,\"isHidden\":true}],\"standardColumns\":[{\"name\":\"taf\",\"type\":\"boolean\",\"dataTypeHint\":\"ip\",\"displayName\":\"vwmbjlzqsczpg\",\"description\":\"wnapfdq\",\"isDefaultDisplay\":false,\"isHidden\":true},{\"name\":\"tnuwjtkschgc\",\"type\":\"string\",\"dataTypeHint\":\"ip\",\"displayName\":\"seyqrhvyeldotjv\",\"description\":\"wiswskukjtasbvw\",\"isDefaultDisplay\":true,\"isHidden\":true},{\"name\":\"dtxfkndlqvtwknvg\",\"type\":\"dateTime\",\"dataTypeHint\":\"ip\",\"displayName\":\"yw\",\"description\":\"mqaqkueatgroes\",\"isDefaultDisplay\":false,\"isHidden\":false},{\"name\":\"byfqxkfaoy\",\"type\":\"string\",\"dataTypeHint\":\"armPath\",\"displayName\":\"vjmvqmtdwckygr\",\"description\":\"jn\",\"isDefaultDisplay\":true,\"isHidden\":false}],\"categories\":[\"skbrreqynkc\",\"ysfaqegplwrysh\"],\"labels\":[\"kvb\"],\"source\":\"customer\",\"tableType\":\"RestoredLogs\",\"tableSubType\":\"Any\",\"solutions\":[\"ptdacarvvl\"]},\"provisioningState\":\"Deleting\",\"retentionInDaysAsDefault\":false,\"totalRetentionInDaysAsDefault\":false},\"id\":\"iwenazero\",\"name\":\"zrsq\",\"type\":\"lsxkd\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         LogAnalyticsManager manager = LogAnalyticsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Table> response
-            = manager.tables().listByWorkspace("upnqrmgjfb", "kuwxeoiojfizfavk", com.azure.core.util.Context.NONE);
+            = manager.tables().listByWorkspace("kxrerlniylylyfwx", "utgqztwh", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(143517524, response.iterator().next().retentionInDays());
-        Assertions.assertEquals(1172309322, response.iterator().next().totalRetentionInDays());
-        Assertions.assertEquals("mmfz", response.iterator().next().searchResults().query());
-        Assertions.assertEquals("fwxrzxmdew", response.iterator().next().searchResults().description());
-        Assertions.assertEquals(1373177035, response.iterator().next().searchResults().limit());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-20T22:50:05Z"),
+        Assertions.assertEquals(1986729733, response.iterator().next().retentionInDays());
+        Assertions.assertEquals(260996663, response.iterator().next().totalRetentionInDays());
+        Assertions.assertEquals("cdxa", response.iterator().next().searchResults().query());
+        Assertions.assertEquals("u", response.iterator().next().searchResults().description());
+        Assertions.assertEquals(2063766495, response.iterator().next().searchResults().limit());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-26T08:46Z"),
             response.iterator().next().searchResults().startSearchTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-08T17:25:29Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-09T20:53:20Z"),
             response.iterator().next().searchResults().endSearchTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-20T14:34:31Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-21T23:27:57Z"),
             response.iterator().next().restoredLogs().startRestoreTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-22T13:49:23Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-21T23:37:33Z"),
             response.iterator().next().restoredLogs().endRestoreTime());
-        Assertions.assertEquals("jxsqwjhqkbiwetp", response.iterator().next().restoredLogs().sourceTable());
+        Assertions.assertEquals("hgookrtalvnbwgpb", response.iterator().next().restoredLogs().sourceTable());
         Assertions.assertEquals(TablePlanEnum.BASIC, response.iterator().next().plan());
-        Assertions.assertEquals("zkkdtnhqs", response.iterator().next().schema().name());
-        Assertions.assertEquals("ljselp", response.iterator().next().schema().displayName());
-        Assertions.assertEquals("bafvafhlbylcc", response.iterator().next().schema().description());
-        Assertions.assertEquals("rhyzdf", response.iterator().next().schema().columns().get(0).name());
-        Assertions.assertEquals(ColumnTypeEnum.REAL, response.iterator().next().schema().columns().get(0).type());
+        Assertions.assertEquals("nvzoqgyipemch", response.iterator().next().schema().name());
+        Assertions.assertEquals("v", response.iterator().next().schema().displayName());
+        Assertions.assertEquals("zuejd", response.iterator().next().schema().description());
+        Assertions.assertEquals("lghwzhome", response.iterator().next().schema().columns().get(0).name());
+        Assertions.assertEquals(ColumnTypeEnum.STRING, response.iterator().next().schema().columns().get(0).type());
         Assertions.assertEquals(ColumnDataTypeHintEnum.URI,
             response.iterator().next().schema().columns().get(0).dataTypeHint());
-        Assertions.assertEquals("ltdb", response.iterator().next().schema().columns().get(0).displayName());
-        Assertions.assertEquals("irrhv", response.iterator().next().schema().columns().get(0).description());
+        Assertions.assertEquals("iuh", response.iterator().next().schema().columns().get(0).displayName());
+        Assertions.assertEquals("wmoaiancznvodrrs", response.iterator().next().schema().columns().get(0).description());
     }
 }

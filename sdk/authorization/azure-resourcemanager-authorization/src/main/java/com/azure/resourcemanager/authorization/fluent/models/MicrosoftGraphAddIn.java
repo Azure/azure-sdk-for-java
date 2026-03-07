@@ -17,7 +17,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 /**
- * addIn.
+ * Represents an add-in.
  */
 @Fluent
 public final class MicrosoftGraphAddIn implements JsonSerializable<MicrosoftGraphAddIn> {

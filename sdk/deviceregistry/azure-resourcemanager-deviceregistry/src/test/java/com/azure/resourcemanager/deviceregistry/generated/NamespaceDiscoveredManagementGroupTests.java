@@ -16,79 +16,82 @@ public final class NamespaceDiscoveredManagementGroupTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NamespaceDiscoveredManagementGroup model = BinaryData.fromString(
-            "{\"name\":\"djrkvfgbvfvpd\",\"managementGroupConfiguration\":\"daciz\",\"typeRef\":\"q\",\"defaultTopic\":\"krribdeibqi\",\"defaultTimeoutInSeconds\":840101476,\"actions\":[{\"name\":\"vxndz\",\"actionConfiguration\":\"krefajpjo\",\"targetUri\":\"wkqnyhg\",\"typeRef\":\"j\",\"topic\":\"ivfxzsjabibsyst\",\"actionType\":\"Read\",\"timeoutInSeconds\":1095825236,\"lastUpdatedOn\":\"2021-04-01T03:56:35Z\"},{\"name\":\"vkvp\",\"actionConfiguration\":\"xbkzbzkdvncj\",\"targetUri\":\"budurgkakmo\",\"typeRef\":\"hjjklff\",\"topic\":\"ouw\",\"actionType\":\"Read\",\"timeoutInSeconds\":1358338018,\"lastUpdatedOn\":\"2021-01-25T05:55:11Z\"},{\"name\":\"eeyebi\",\"actionConfiguration\":\"kayuhqlbjbs\",\"targetUri\":\"bbqwrvtldg\",\"typeRef\":\"pgvmpipaslthaqfx\",\"topic\":\"mwutwbdsre\",\"actionType\":\"Call\",\"timeoutInSeconds\":481709550,\"lastUpdatedOn\":\"2021-08-18T10:27:03Z\"},{\"name\":\"uyowqkdwy\",\"actionConfiguration\":\"sibircgpi\",\"targetUri\":\"pzimejzanlfzxi\",\"typeRef\":\"rmbzo\",\"topic\":\"kixrj\",\"actionType\":\"Write\",\"timeoutInSeconds\":1711524187,\"lastUpdatedOn\":\"2021-02-12T14:44:45Z\"}],\"lastUpdatedOn\":\"2021-01-31T15:02:11Z\"}")
+            "{\"name\":\"byrqufeg\",\"managementGroupConfiguration\":\"vwz\",\"typeRef\":\"nhlmctlpdng\",\"dataSource\":\"vgbmhr\",\"defaultTopic\":\"kw\",\"defaultTimeoutInSeconds\":881216516,\"actions\":[{\"name\":\"jvegrhbpnaixexcc\",\"actionConfiguration\":\"reaxhcexdr\",\"targetUri\":\"vqahqkghtpwi\",\"typeRef\":\"hyjsvfycx\",\"topic\":\"fvoow\",\"actionType\":\"Call\",\"timeoutInSeconds\":64762748,\"lastUpdatedOn\":\"2021-12-04T01:16:08Z\"},{\"name\":\"qp\",\"actionConfiguration\":\"ostronz\",\"targetUri\":\"yhgfipnsx\",\"typeRef\":\"cwaekrrjre\",\"topic\":\"xt\",\"actionType\":\"Write\",\"timeoutInSeconds\":1781492308,\"lastUpdatedOn\":\"2021-06-07T04:38:31Z\"},{\"name\":\"lik\",\"actionConfiguration\":\"wslolbqp\",\"targetUri\":\"uzlm\",\"typeRef\":\"elfk\",\"topic\":\"plcrpwjxeznoig\",\"actionType\":\"Read\",\"timeoutInSeconds\":78326163,\"lastUpdatedOn\":\"2021-07-10T07:09:22Z\"},{\"name\":\"kpnb\",\"actionConfiguration\":\"zejjoqk\",\"targetUri\":\"gfhsxttaugzxn\",\"typeRef\":\"azpxdtnkdmkqjjl\",\"topic\":\"envrkpyouaibrebq\",\"actionType\":\"Call\",\"timeoutInSeconds\":34950484,\"lastUpdatedOn\":\"2021-11-07T06:56:28Z\"}],\"lastUpdatedOn\":\"2021-04-29T05:21:23Z\"}")
             .toObject(NamespaceDiscoveredManagementGroup.class);
-        Assertions.assertEquals("djrkvfgbvfvpd", model.name());
-        Assertions.assertEquals("daciz", model.managementGroupConfiguration());
-        Assertions.assertEquals("q", model.typeRef());
-        Assertions.assertEquals("krribdeibqi", model.defaultTopic());
-        Assertions.assertEquals(840101476, model.defaultTimeoutInSeconds());
-        Assertions.assertEquals("vxndz", model.actions().get(0).name());
-        Assertions.assertEquals("krefajpjo", model.actions().get(0).actionConfiguration());
-        Assertions.assertEquals("wkqnyhg", model.actions().get(0).targetUri());
-        Assertions.assertEquals("j", model.actions().get(0).typeRef());
-        Assertions.assertEquals("ivfxzsjabibsyst", model.actions().get(0).topic());
-        Assertions.assertEquals(NamespaceDiscoveredManagementActionType.READ, model.actions().get(0).actionType());
-        Assertions.assertEquals(1095825236, model.actions().get(0).timeoutInSeconds());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-01T03:56:35Z"), model.actions().get(0).lastUpdatedOn());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-31T15:02:11Z"), model.lastUpdatedOn());
+        Assertions.assertEquals("byrqufeg", model.name());
+        Assertions.assertEquals("vwz", model.managementGroupConfiguration());
+        Assertions.assertEquals("nhlmctlpdng", model.typeRef());
+        Assertions.assertEquals("vgbmhr", model.dataSource());
+        Assertions.assertEquals("kw", model.defaultTopic());
+        Assertions.assertEquals(881216516, model.defaultTimeoutInSeconds());
+        Assertions.assertEquals("jvegrhbpnaixexcc", model.actions().get(0).name());
+        Assertions.assertEquals("reaxhcexdr", model.actions().get(0).actionConfiguration());
+        Assertions.assertEquals("vqahqkghtpwi", model.actions().get(0).targetUri());
+        Assertions.assertEquals("hyjsvfycx", model.actions().get(0).typeRef());
+        Assertions.assertEquals("fvoow", model.actions().get(0).topic());
+        Assertions.assertEquals(NamespaceDiscoveredManagementActionType.CALL, model.actions().get(0).actionType());
+        Assertions.assertEquals(64762748, model.actions().get(0).timeoutInSeconds());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-12-04T01:16:08Z"), model.actions().get(0).lastUpdatedOn());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-29T05:21:23Z"), model.lastUpdatedOn());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NamespaceDiscoveredManagementGroup model = new NamespaceDiscoveredManagementGroup().withName("djrkvfgbvfvpd")
-            .withManagementGroupConfiguration("daciz")
-            .withTypeRef("q")
-            .withDefaultTopic("krribdeibqi")
-            .withDefaultTimeoutInSeconds(840101476)
+        NamespaceDiscoveredManagementGroup model = new NamespaceDiscoveredManagementGroup().withName("byrqufeg")
+            .withManagementGroupConfiguration("vwz")
+            .withTypeRef("nhlmctlpdng")
+            .withDataSource("vgbmhr")
+            .withDefaultTopic("kw")
+            .withDefaultTimeoutInSeconds(881216516)
             .withActions(Arrays.asList(
-                new NamespaceDiscoveredManagementAction().withName("vxndz")
-                    .withActionConfiguration("krefajpjo")
-                    .withTargetUri("wkqnyhg")
-                    .withTypeRef("j")
-                    .withTopic("ivfxzsjabibsyst")
-                    .withActionType(NamespaceDiscoveredManagementActionType.READ)
-                    .withTimeoutInSeconds(1095825236)
-                    .withLastUpdatedOn(OffsetDateTime.parse("2021-04-01T03:56:35Z")),
-                new NamespaceDiscoveredManagementAction().withName("vkvp")
-                    .withActionConfiguration("xbkzbzkdvncj")
-                    .withTargetUri("budurgkakmo")
-                    .withTypeRef("hjjklff")
-                    .withTopic("ouw")
-                    .withActionType(NamespaceDiscoveredManagementActionType.READ)
-                    .withTimeoutInSeconds(1358338018)
-                    .withLastUpdatedOn(OffsetDateTime.parse("2021-01-25T05:55:11Z")),
-                new NamespaceDiscoveredManagementAction().withName("eeyebi")
-                    .withActionConfiguration("kayuhqlbjbs")
-                    .withTargetUri("bbqwrvtldg")
-                    .withTypeRef("pgvmpipaslthaqfx")
-                    .withTopic("mwutwbdsre")
+                new NamespaceDiscoveredManagementAction().withName("jvegrhbpnaixexcc")
+                    .withActionConfiguration("reaxhcexdr")
+                    .withTargetUri("vqahqkghtpwi")
+                    .withTypeRef("hyjsvfycx")
+                    .withTopic("fvoow")
                     .withActionType(NamespaceDiscoveredManagementActionType.CALL)
-                    .withTimeoutInSeconds(481709550)
-                    .withLastUpdatedOn(OffsetDateTime.parse("2021-08-18T10:27:03Z")),
-                new NamespaceDiscoveredManagementAction().withName("uyowqkdwy")
-                    .withActionConfiguration("sibircgpi")
-                    .withTargetUri("pzimejzanlfzxi")
-                    .withTypeRef("rmbzo")
-                    .withTopic("kixrj")
+                    .withTimeoutInSeconds(64762748)
+                    .withLastUpdatedOn(OffsetDateTime.parse("2021-12-04T01:16:08Z")),
+                new NamespaceDiscoveredManagementAction().withName("qp")
+                    .withActionConfiguration("ostronz")
+                    .withTargetUri("yhgfipnsx")
+                    .withTypeRef("cwaekrrjre")
+                    .withTopic("xt")
                     .withActionType(NamespaceDiscoveredManagementActionType.WRITE)
-                    .withTimeoutInSeconds(1711524187)
-                    .withLastUpdatedOn(OffsetDateTime.parse("2021-02-12T14:44:45Z"))))
-            .withLastUpdatedOn(OffsetDateTime.parse("2021-01-31T15:02:11Z"));
+                    .withTimeoutInSeconds(1781492308)
+                    .withLastUpdatedOn(OffsetDateTime.parse("2021-06-07T04:38:31Z")),
+                new NamespaceDiscoveredManagementAction().withName("lik")
+                    .withActionConfiguration("wslolbqp")
+                    .withTargetUri("uzlm")
+                    .withTypeRef("elfk")
+                    .withTopic("plcrpwjxeznoig")
+                    .withActionType(NamespaceDiscoveredManagementActionType.READ)
+                    .withTimeoutInSeconds(78326163)
+                    .withLastUpdatedOn(OffsetDateTime.parse("2021-07-10T07:09:22Z")),
+                new NamespaceDiscoveredManagementAction().withName("kpnb")
+                    .withActionConfiguration("zejjoqk")
+                    .withTargetUri("gfhsxttaugzxn")
+                    .withTypeRef("azpxdtnkdmkqjjl")
+                    .withTopic("envrkpyouaibrebq")
+                    .withActionType(NamespaceDiscoveredManagementActionType.CALL)
+                    .withTimeoutInSeconds(34950484)
+                    .withLastUpdatedOn(OffsetDateTime.parse("2021-11-07T06:56:28Z"))))
+            .withLastUpdatedOn(OffsetDateTime.parse("2021-04-29T05:21:23Z"));
         model = BinaryData.fromObject(model).toObject(NamespaceDiscoveredManagementGroup.class);
-        Assertions.assertEquals("djrkvfgbvfvpd", model.name());
-        Assertions.assertEquals("daciz", model.managementGroupConfiguration());
-        Assertions.assertEquals("q", model.typeRef());
-        Assertions.assertEquals("krribdeibqi", model.defaultTopic());
-        Assertions.assertEquals(840101476, model.defaultTimeoutInSeconds());
-        Assertions.assertEquals("vxndz", model.actions().get(0).name());
-        Assertions.assertEquals("krefajpjo", model.actions().get(0).actionConfiguration());
-        Assertions.assertEquals("wkqnyhg", model.actions().get(0).targetUri());
-        Assertions.assertEquals("j", model.actions().get(0).typeRef());
-        Assertions.assertEquals("ivfxzsjabibsyst", model.actions().get(0).topic());
-        Assertions.assertEquals(NamespaceDiscoveredManagementActionType.READ, model.actions().get(0).actionType());
-        Assertions.assertEquals(1095825236, model.actions().get(0).timeoutInSeconds());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-01T03:56:35Z"), model.actions().get(0).lastUpdatedOn());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-31T15:02:11Z"), model.lastUpdatedOn());
+        Assertions.assertEquals("byrqufeg", model.name());
+        Assertions.assertEquals("vwz", model.managementGroupConfiguration());
+        Assertions.assertEquals("nhlmctlpdng", model.typeRef());
+        Assertions.assertEquals("vgbmhr", model.dataSource());
+        Assertions.assertEquals("kw", model.defaultTopic());
+        Assertions.assertEquals(881216516, model.defaultTimeoutInSeconds());
+        Assertions.assertEquals("jvegrhbpnaixexcc", model.actions().get(0).name());
+        Assertions.assertEquals("reaxhcexdr", model.actions().get(0).actionConfiguration());
+        Assertions.assertEquals("vqahqkghtpwi", model.actions().get(0).targetUri());
+        Assertions.assertEquals("hyjsvfycx", model.actions().get(0).typeRef());
+        Assertions.assertEquals("fvoow", model.actions().get(0).topic());
+        Assertions.assertEquals(NamespaceDiscoveredManagementActionType.CALL, model.actions().get(0).actionType());
+        Assertions.assertEquals(64762748, model.actions().get(0).timeoutInSeconds());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-12-04T01:16:08Z"), model.actions().get(0).lastUpdatedOn());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-29T05:21:23Z"), model.lastUpdatedOn());
     }
 }

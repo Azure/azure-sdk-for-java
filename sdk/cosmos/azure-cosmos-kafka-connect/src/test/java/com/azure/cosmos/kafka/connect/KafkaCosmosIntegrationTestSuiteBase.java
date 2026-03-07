@@ -39,7 +39,7 @@ public class KafkaCosmosIntegrationTestSuiteBase extends KafkaCosmosTestSuiteBas
     protected static KafkaCosmosConnectContainer kafkaCosmosConnectContainer;
 
     @BeforeSuite(groups = { "kafka-integration" }, timeOut = 10 * SUITE_SETUP_TIMEOUT)
-    public static void beforeIntegrationSuite() throws IOException, InterruptedException {
+    public void beforeIntegrationSuite() throws IOException, InterruptedException {
 
         logger.info("beforeIntegrationSuite Started");
         // initialize the kafka, kafka-connect containers
@@ -47,7 +47,7 @@ public class KafkaCosmosIntegrationTestSuiteBase extends KafkaCosmosTestSuiteBas
     }
 
     @AfterSuite(groups = { "kafka-integration" }, timeOut = 10 * SUITE_SETUP_TIMEOUT)
-    public static void afterIntegrationSuite() {
+    public void afterIntegrationSuite() {
 
         logger.info("afterIntegrationSuite Started");
         // The TestContainers library will automatically clean up resources by using Ryuk sidecar container

@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public final class IntegrationFabricsUpdateSamples {
     /*
-     * x-ms-original-file: 2024-11-01-preview/IntegrationFabrics_Update.json
+     * x-ms-original-file: 2025-08-01/IntegrationFabrics_Update.json
      */
     /**
      * Sample code: IntegrationFabrics_Update.

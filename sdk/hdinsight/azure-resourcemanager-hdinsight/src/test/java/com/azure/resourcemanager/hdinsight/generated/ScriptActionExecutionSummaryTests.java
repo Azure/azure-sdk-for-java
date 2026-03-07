@@ -11,7 +11,7 @@ public final class ScriptActionExecutionSummaryTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScriptActionExecutionSummary model
-            = BinaryData.fromString("{\"status\":\"wpgdak\",\"instanceCount\":1202587998}")
+            = BinaryData.fromString("{\"status\":\"hhxud\",\"instanceCount\":1368673691}")
                 .toObject(ScriptActionExecutionSummary.class);
     }
 

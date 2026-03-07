@@ -75,17 +75,6 @@ public final class ExecutedValidation implements JsonSerializable<ExecutedValida
     }
 
     /**
-     * Set the status property: This property specifies the status of the validationProfile of the image version.
-     * 
-     * @param status the status value to set.
-     * @return the ExecutedValidation object itself.
-     */
-    public ExecutedValidation withStatus(ValidationStatus status) {
-        this.status = status;
-        return this;
-    }
-
-    /**
      * Get the version property: This property specifies the valid version of the validation.
      * 
      * @return the version value.
@@ -140,7 +129,6 @@ public final class ExecutedValidation implements JsonSerializable<ExecutedValida
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
         jsonWriter.writeStringField("version", this.version);
         jsonWriter.writeStringField("executionTime",
             this.executionTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.executionTime));

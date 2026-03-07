@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * shiftPreferences.
+ * Represents a shift preferences.
  */
 @Fluent
 public final class MicrosoftGraphShiftPreferences extends MicrosoftGraphChangeTrackedEntity {

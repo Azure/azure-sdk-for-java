@@ -9,7 +9,7 @@ package com.azure.resourcemanager.dashboard.generated;
  */
 public final class ManagedPrivateEndpointsDeleteSamples {
     /*
-     * x-ms-original-file: 2024-11-01-preview/ManagedPrivateEndpoints_Delete.json
+     * x-ms-original-file: 2025-08-01/ManagedPrivateEndpoints_Delete.json
      */
     /**
      * Sample code: ManagedPrivateEndpoint_Delete.

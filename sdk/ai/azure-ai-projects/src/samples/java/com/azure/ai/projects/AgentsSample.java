@@ -2,48 +2,36 @@
 // Licensed under the MIT License.
 package com.azure.ai.projects;
 
-import com.azure.ai.agents.persistent.PersistentAgentsAdministrationClient;
-import com.azure.ai.agents.persistent.PersistentAgentsClient;
-import com.azure.ai.agents.persistent.PersistentAgentsClientBuilder;
-import com.azure.ai.agents.persistent.models.CreateAgentOptions;
-import com.azure.ai.agents.persistent.models.PersistentAgent;
+import com.azure.ai.agents.AgentsClient;
+import com.azure.ai.agents.AgentsClientBuilder;
+import com.azure.ai.agents.models.AgentVersionDetails;
+import com.azure.ai.agents.models.DeleteAgentResponse;
+import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class AgentsSample {
 
-    private static PersistentAgentsClient agentsClient
-        = new PersistentAgentsClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
-        .credential(new DefaultAzureCredentialBuilder().build())
-        .buildClient();
-    private static PersistentAgentsAdministrationClient administrationClient
-        = agentsClient.getPersistentAgentsAdministrationClient();
-
     public static void main(String[] args) {
-        PersistentAgent createdAgent = createAgent();
-        deleteAgent(createdAgent.getId());
-    }
+        String endpoint = Configuration.getGlobalConfiguration().get("AZURE_AGENTS_ENDPOINT");
+        String model = Configuration.getGlobalConfiguration().get("AZURE_AGENT_MODEL");
 
-    public static PersistentAgent createAgent() {
-        // BEGIN:com.azure.ai.projects.AgentsSample.createAgent
+        AgentsClient agentsClient = new AgentsClientBuilder()
+                .credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint(endpoint)
+                .buildAgentsClient();
 
-        String agentName = "basic_example";
-        CreateAgentOptions createAgentOptions = new CreateAgentOptions("gpt-4o-mini")
-            .setName(agentName)
-            .setInstructions("You are a helpful agent");
-        PersistentAgent agent = administrationClient.createAgent(createAgentOptions);
-        System.out.println("Agent created: " + agent.getId());
-        return agent;
+        PromptAgentDefinition request = new PromptAgentDefinition(model);
+        AgentVersionDetails agent = agentsClient.createAgentVersion("agent_created_from_java", request);
 
-        // END:com.azure.ai.projects.AgentsSample.createAgent
-    }
+        System.out.println("Agent ID: " + agent.getId());
+        System.out.println("Agent Name: " + agent.getName());
+        System.out.println("Agent Version: " + agent.getVersion());
 
-    public static void deleteAgent(String agentId) {
-        // BEGIN:com.azure.ai.projects.AgentsSample.deleteAgent
+        DeleteAgentResponse agentDeletion = agentsClient.deleteAgent(agent.getName());
 
-        administrationClient.deleteAgent(agentId);
-        System.out.println("Agent deleted: " + agentId);
-
-        // END:com.azure.ai.projects.AgentsSample.deleteAgent
+        System.out.println("Deleted agent with the following details:");
+        System.out.println("\tAgent Name: " + agentDeletion.getName());
+        System.out.println("\tAgent was deleted: " + agentDeletion.isDeleted());
     }
 }

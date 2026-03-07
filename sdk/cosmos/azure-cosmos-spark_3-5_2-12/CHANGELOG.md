@@ -1,14 +1,49 @@
 ## Release History
 
-### 4.41.0-beta.1 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
-
-#### Bugs Fixed
+### 4.44.2 (2026-03-05)
 
 #### Other Changes
+* Changed azure-resourcemanager-cosmos usage to a pinned version which is deployed across all public and non-public clouds - [PR 48268](https://github.com/Azure/azure-sdk-for-java/pull/48268)
+
+### 4.44.1 (2026-03-03)
+
+#### Other Changes
+* Reduced noisy warning logs in Gateway mode - [PR 48189](https://github.com/Azure/azure-sdk-for-java/pull/48189)
+
+### 4.44.0 (2026-02-27)
+
+#### Features Added
+* Added config entry `spark.cosmos.account.azureEnvironment.management.scope` to allow specifying the Entra ID scope/audience to be used when retrieving tokens to authenticate against the ARM/management endpoint of non-public clouds. - See [PR 48137](https://github.com/Azure/azure-sdk-for-java/pull/48137)
+
+### 4.43.1 (2026-02-25)
+
+#### Bugs Fixed
+* Fixed an issue where `TransientIOErrorsRetryingIterator` would trigger extra query during retries and on close. - See [PR 47996](https://github.com/Azure/azure-sdk-for-java/pull/47996)
+
+#### Other Changes
+* Added status code history in `BulkWriterNoProgressException` error message. - See [PR 48022](https://github.com/Azure/azure-sdk-for-java/pull/48022)
+* Reduced the log noise level for frequent transient errors - for example throttling - in Gateway mode - [PR 48112](https://github.com/Azure/azure-sdk-for-java/pull/48112)
+
+### 4.43.0 (2026-02-10)
+
+#### Features Added
+* Added transactional batch support. See [PR 47478](https://github.com/Azure/azure-sdk-for-java/pull/47478) and [PR 47697](https://github.com/Azure/azure-sdk-for-java/pull/47697) and [47803](https://github.com/Azure/azure-sdk-for-java/pull/47803)
+* Added support for throughput bucket. - See [47856](https://github.com/Azure/azure-sdk-for-java/pull/47856)
+
+#### Bugs Fixed
+* Fixed an issue for micro batch stream query where feed range starts with null or incorrect initial offset. **NOTE:** This issue only happens when a partition split happened during initial offset calculation stage. - See [47742](https://github.com/Azure/azure-sdk-for-java/pull/47742)
+* Fixed `java.lang.ClassCastException` during bulk write operations for write strategy `ItemPatch` or `ItemPatchIfExists`. - See [47748](https://github.com/Azure/azure-sdk-for-java/pull/47748)
+
+### 4.42.0 (2025-12-09)
+
+#### Other Changes
+* Enabled hostname validation for RNTBD connections to backend - [PR 47111](https://github.com/Azure/azure-sdk-for-java/pull/47111)
+
+### 4.41.0 (2025-10-21)
+
+#### Features Added
+* Added support `spark.cosmos.write.strategy` value `ItemPatchIfExists` which allows gracefully ignoring documents/patch-instructions when the document does not exist (anymore). - See [47034](https://github.com/Azure/azure-sdk-for-java/pull/47034)
+* Added support to optionally omit info about spark environment and/or machine-info for driver/executors from `UserAgent` header via new config `spark.cosmos.userAgent.format` (allowed values are `SparkEnvAndWorkers` (default value), `OnlySparkEnv` and `NoSparkEnv`.  - See [47047](https://github.com/Azure/azure-sdk-for-java/pull/47047)
 
 ### 4.40.0 (2025-09-27)
 

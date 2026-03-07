@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * calendar.
+ * Represents a calendar.
  */
 @Fluent
 public final class MicrosoftGraphCalendar extends MicrosoftGraphEntity {

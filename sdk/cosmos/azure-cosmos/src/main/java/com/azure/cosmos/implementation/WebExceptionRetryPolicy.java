@@ -42,9 +42,18 @@ public class WebExceptionRetryPolicy implements IRetryPolicy {
     @Override
     public Mono<ShouldRetryResult> shouldRetry(Exception e) {
 
-        checkArgument(this.overriddenEndpoint != null ||
-            this.regionalRoutingContext != null,
-            "Both overriddenEndpoint and regionalRoutingContext cannot null!");
+        // if both are null it means the client wasn't initialized yet
+        if (this.overriddenEndpoint == null && this.regionalRoutingContext == null) {
+            logger
+                .warn(
+                    "WebExceptionRetryPolicy() No retries because client is not initialized yet. - "
+                    + "operationType = {}, count = {}, isAddressRefresh = {}",
+                    this.request != null ? this.request.getOperationType() : "n/a",
+                    this.retryCount,
+                    this.request != null ? this.request.isAddressRefresh() : "n/a");
+
+            return Mono.just(ShouldRetryResult.noRetry());
+        }
 
         if (this.isOutOfRetries()) {
             logger
@@ -65,7 +74,7 @@ public class WebExceptionRetryPolicy implements IRetryPolicy {
             if (this.isReadRequest
                 || request.isAddressRefresh()
                 || WebExceptionUtility.isWebExceptionRetriable(e)) {
-                int delayInSeconds = this.timeoutPolicy.getTimeoutAndDelaysList().get(this.retryCount).getDelayForNextRequestInSeconds();
+                Duration delay = this.timeoutPolicy.getTimeoutAndDelaysList().get(this.retryCount).getDelayForNextRequest();
                 // Increase the retry count after calculating the delay
                 retryCount++;
                 logger
@@ -79,7 +88,7 @@ public class WebExceptionRetryPolicy implements IRetryPolicy {
                         this.request.forceCollectionRoutingMapRefresh);
 
                 this.request.setResponseTimeout(this.timeoutPolicy.getTimeoutAndDelaysList().get(this.retryCount).getResponseTimeout());
-                return Mono.just(ShouldRetryResult.retryAfter(Duration.ofSeconds(delayInSeconds)));
+                return Mono.just(ShouldRetryResult.retryAfter(delay));
             }
         }
 

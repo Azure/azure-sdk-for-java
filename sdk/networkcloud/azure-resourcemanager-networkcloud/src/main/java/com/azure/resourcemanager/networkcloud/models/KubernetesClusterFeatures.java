@@ -34,6 +34,9 @@ public interface KubernetesClusterFeatures {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -41,7 +44,7 @@ public interface KubernetesClusterFeatures {
      * @return a list of features for the provided Kubernetes cluster as paginated response with {@link PagedIterable}.
      */
     PagedIterable<KubernetesClusterFeature> listByKubernetesCluster(String resourceGroupName,
-        String kubernetesClusterName, Context context);
+        String kubernetesClusterName, Integer top, String skipToken, Context context);
 
     /**
      * Retrieve the Kubernetes cluster feature.

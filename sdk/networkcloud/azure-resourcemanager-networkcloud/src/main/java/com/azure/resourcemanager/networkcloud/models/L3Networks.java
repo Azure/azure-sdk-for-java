@@ -29,6 +29,9 @@ public interface L3Networks {
      * 
      * Get a list of layer 3 (L3) networks in the provided subscription.
      * 
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -36,7 +39,7 @@ public interface L3Networks {
      * @return a list of layer 3 (L3) networks in the provided subscription as paginated response with
      * {@link PagedIterable}.
      */
-    PagedIterable<L3Network> list(Context context);
+    PagedIterable<L3Network> list(Integer top, String skipToken, Context context);
 
     /**
      * List layer 3 (L3) networks in the resource group.
@@ -58,6 +61,9 @@ public interface L3Networks {
      * Get a list of layer 3 (L3) networks in the provided resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -65,7 +71,8 @@ public interface L3Networks {
      * @return a list of layer 3 (L3) networks in the provided resource group as paginated response with
      * {@link PagedIterable}.
      */
-    PagedIterable<L3Network> listByResourceGroup(String resourceGroupName, Context context);
+    PagedIterable<L3Network> listByResourceGroup(String resourceGroupName, Integer top, String skipToken,
+        Context context);
 
     /**
      * Retrieve the layer 3 (L3) network.

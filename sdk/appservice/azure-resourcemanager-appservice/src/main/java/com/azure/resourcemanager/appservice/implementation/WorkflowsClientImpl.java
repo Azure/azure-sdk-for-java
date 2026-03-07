@@ -57,7 +57,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "WebSiteManagementCli")
+    @ServiceInterface(name = "WebSiteManagementClientWorkflows")
     public interface WorkflowsService {
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/regenerateAccessKey")
@@ -119,11 +119,12 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
         } else {
             keyType.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.regenerateAccessKey(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                    resourceGroupName, name, workflowName, this.client.getApiVersion(), keyType, accept, context))
+                    resourceGroupName, name, workflowName, apiVersion, keyType, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -166,10 +167,11 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
         } else {
             keyType.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.regenerateAccessKey(this.client.getEndpoint(), this.client.getSubscriptionId(),
-            resourceGroupName, name, workflowName, this.client.getApiVersion(), keyType, accept, context);
+            resourceGroupName, name, workflowName, apiVersion, keyType, accept, context);
     }
 
     /**
@@ -265,10 +267,11 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
         } else {
             validate.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.validate(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, name, workflowName, this.client.getApiVersion(), validate, accept, context))
+                resourceGroupName, name, workflowName, apiVersion, validate, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -311,10 +314,11 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
         } else {
             validate.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.validate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, name,
-            workflowName, this.client.getApiVersion(), validate, accept, context);
+            workflowName, apiVersion, validate, accept, context);
     }
 
     /**

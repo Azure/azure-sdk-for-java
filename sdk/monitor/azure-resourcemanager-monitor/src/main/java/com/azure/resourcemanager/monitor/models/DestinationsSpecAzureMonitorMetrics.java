@@ -37,7 +37,6 @@ public final class DestinationsSpecAzureMonitorMetrics extends AzureMonitorMetri
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

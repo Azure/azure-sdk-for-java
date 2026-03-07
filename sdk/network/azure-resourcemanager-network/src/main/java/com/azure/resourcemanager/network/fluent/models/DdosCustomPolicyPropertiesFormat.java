@@ -4,18 +4,21 @@
 
 package com.azure.resourcemanager.network.fluent.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
+import com.azure.core.management.SubResource;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.network.models.DdosDetectionRule;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * DDoS custom policy properties.
  */
-@Immutable
+@Fluent
 public final class DdosCustomPolicyPropertiesFormat implements JsonSerializable<DdosCustomPolicyPropertiesFormat> {
     /*
      * The resource GUID property of the DDoS custom policy resource. It uniquely identifies the resource, even if the
@@ -27,6 +30,16 @@ public final class DdosCustomPolicyPropertiesFormat implements JsonSerializable<
      * The provisioning state of the DDoS custom policy resource.
      */
     private ProvisioningState provisioningState;
+
+    /*
+     * The list of DDoS detection rules associated with the custom policy.
+     */
+    private List<DdosDetectionRule> detectionRules;
+
+    /*
+     * The list of frontend IP configurations associated with the custom policy.
+     */
+    private List<SubResource> frontEndIpConfiguration;
 
     /**
      * Creates an instance of DdosCustomPolicyPropertiesFormat class.
@@ -55,11 +68,56 @@ public final class DdosCustomPolicyPropertiesFormat implements JsonSerializable<
     }
 
     /**
+     * Get the detectionRules property: The list of DDoS detection rules associated with the custom policy.
+     * 
+     * @return the detectionRules value.
+     */
+    public List<DdosDetectionRule> detectionRules() {
+        return this.detectionRules;
+    }
+
+    /**
+     * Set the detectionRules property: The list of DDoS detection rules associated with the custom policy.
+     * 
+     * @param detectionRules the detectionRules value to set.
+     * @return the DdosCustomPolicyPropertiesFormat object itself.
+     */
+    public DdosCustomPolicyPropertiesFormat withDetectionRules(List<DdosDetectionRule> detectionRules) {
+        this.detectionRules = detectionRules;
+        return this;
+    }
+
+    /**
+     * Get the frontEndIpConfiguration property: The list of frontend IP configurations associated with the custom
+     * policy.
+     * 
+     * @return the frontEndIpConfiguration value.
+     */
+    public List<SubResource> frontEndIpConfiguration() {
+        return this.frontEndIpConfiguration;
+    }
+
+    /**
+     * Set the frontEndIpConfiguration property: The list of frontend IP configurations associated with the custom
+     * policy.
+     * 
+     * @param frontEndIpConfiguration the frontEndIpConfiguration value to set.
+     * @return the DdosCustomPolicyPropertiesFormat object itself.
+     */
+    public DdosCustomPolicyPropertiesFormat withFrontEndIpConfiguration(List<SubResource> frontEndIpConfiguration) {
+        this.frontEndIpConfiguration = frontEndIpConfiguration;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (detectionRules() != null) {
+            detectionRules().forEach(e -> e.validate());
+        }
     }
 
     /**
@@ -68,6 +126,10 @@ public final class DdosCustomPolicyPropertiesFormat implements JsonSerializable<
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("detectionRules", this.detectionRules,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("frontEndIpConfiguration", this.frontEndIpConfiguration,
+            (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -92,6 +154,14 @@ public final class DdosCustomPolicyPropertiesFormat implements JsonSerializable<
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedDdosCustomPolicyPropertiesFormat.provisioningState
                         = ProvisioningState.fromString(reader.getString());
+                } else if ("detectionRules".equals(fieldName)) {
+                    List<DdosDetectionRule> detectionRules
+                        = reader.readArray(reader1 -> DdosDetectionRule.fromJson(reader1));
+                    deserializedDdosCustomPolicyPropertiesFormat.detectionRules = detectionRules;
+                } else if ("frontEndIpConfiguration".equals(fieldName)) {
+                    List<SubResource> frontEndIpConfiguration
+                        = reader.readArray(reader1 -> SubResource.fromJson(reader1));
+                    deserializedDdosCustomPolicyPropertiesFormat.frontEndIpConfiguration = frontEndIpConfiguration;
                 } else {
                     reader.skipChildren();
                 }

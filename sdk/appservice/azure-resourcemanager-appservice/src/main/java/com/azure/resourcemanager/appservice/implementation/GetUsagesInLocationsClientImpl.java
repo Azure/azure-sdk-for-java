@@ -60,7 +60,7 @@ public final class GetUsagesInLocationsClientImpl implements GetUsagesInLocation
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "WebSiteManagementCli")
+    @ServiceInterface(name = "WebSiteManagementClientGetUsagesInLocations")
     public interface GetUsagesInLocationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Web/locations/{location}/usages")
@@ -102,10 +102,11 @@ public final class GetUsagesInLocationsClientImpl implements GetUsagesInLocation
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), location, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context))
+                apiVersion, accept, context))
             .<PagedResponse<CsmUsageQuotaInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -136,11 +137,11 @@ public final class GetUsagesInLocationsClientImpl implements GetUsagesInLocation
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), location, this.client.getSubscriptionId(), this.client.getApiVersion(),
-                accept, context)
+            .list(this.client.getEndpoint(), location, this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -213,6 +214,8 @@ public final class GetUsagesInLocationsClientImpl implements GetUsagesInLocation
     }
 
     /**
+     * Lists subscription core usages for all skus used in a location, for a given type of quota.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -238,6 +241,8 @@ public final class GetUsagesInLocationsClientImpl implements GetUsagesInLocation
     }
 
     /**
+     * Lists subscription core usages for all skus used in a location, for a given type of quota.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.

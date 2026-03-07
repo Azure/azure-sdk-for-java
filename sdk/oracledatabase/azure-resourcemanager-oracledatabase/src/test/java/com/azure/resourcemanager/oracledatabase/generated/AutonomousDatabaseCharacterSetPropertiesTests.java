@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class AutonomousDatabaseCharacterSetPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AutonomousDatabaseCharacterSetProperties model = BinaryData.fromString("{\"characterSet\":\"xuuwhcj\"}")
+        AutonomousDatabaseCharacterSetProperties model = BinaryData.fromString("{\"characterSet\":\"bcihxuuwhc\"}")
             .toObject(AutonomousDatabaseCharacterSetProperties.class);
-        Assertions.assertEquals("xuuwhcj", model.characterSet());
+        Assertions.assertEquals("bcihxuuwhc", model.characterSet());
     }
 }

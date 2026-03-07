@@ -18,8 +18,8 @@ import java.util.Objects;
 import java.util.UUID;
 
 /**
- * appRoleAssignment
- * 
+ * Represents an app role assignment.
+ * <p>
  * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
  * entity types.
  */

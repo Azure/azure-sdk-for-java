@@ -60,7 +60,7 @@ public final class CertificateRegistrationProvidersClientImpl implements Certifi
      * the proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "WebSiteManagementCli")
+    @ServiceInterface(name = "WebSiteManagementClientCertificateRegistrationProviders")
     public interface CertificateRegistrationProvidersService {
         @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.CertificateRegistration/operations")
@@ -95,9 +95,10 @@ public final class CertificateRegistrationProvidersClientImpl implements Certifi
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.listOperations(this.client.getEndpoint(), this.client.getApiVersion(), accept, context))
+        return FluxUtil
+            .withContext(context -> service.listOperations(this.client.getEndpoint(), apiVersion, accept, context))
             .<PagedResponse<CsmOperationDescriptionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -122,9 +123,10 @@ public final class CertificateRegistrationProvidersClientImpl implements Certifi
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        final String apiVersion = "2024-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listOperations(this.client.getEndpoint(), this.client.getApiVersion(), accept, context)
+        return service.listOperations(this.client.getEndpoint(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -196,6 +198,8 @@ public final class CertificateRegistrationProvidersClientImpl implements Certifi
     }
 
     /**
+     * Implements Csm operations Api to exposes the list of available Csm Apis under the resource provider
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -223,6 +227,8 @@ public final class CertificateRegistrationProvidersClientImpl implements Certifi
     }
 
     /**
+     * Implements Csm operations Api to exposes the list of available Csm Apis under the resource provider
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.

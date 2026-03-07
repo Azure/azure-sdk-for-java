@@ -24,7 +24,7 @@ public final class AzureOpenAIModelConfiguration extends TargetConfig {
 
     /*
      * Deployment name for AOAI model. Example: gpt-4o if in AIServices or connection based
-     * `connection_name/deployment_name` (i.e. `my-aoai-connection/gpt-4o`.
+     * `connection_name/deployment_name` (e.g. `my-aoai-connection/gpt-4o`).
      */
     @Generated
     private final String modelDeploymentName;
@@ -52,7 +52,7 @@ public final class AzureOpenAIModelConfiguration extends TargetConfig {
 
     /**
      * Get the modelDeploymentName property: Deployment name for AOAI model. Example: gpt-4o if in AIServices or
-     * connection based `connection_name/deployment_name` (i.e. `my-aoai-connection/gpt-4o`.
+     * connection based `connection_name/deployment_name` (e.g. `my-aoai-connection/gpt-4o`).
      *
      * @return the modelDeploymentName value.
      */

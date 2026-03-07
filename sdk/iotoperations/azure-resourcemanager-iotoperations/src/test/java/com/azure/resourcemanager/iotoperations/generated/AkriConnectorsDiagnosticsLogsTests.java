@@ -12,14 +12,14 @@ public final class AkriConnectorsDiagnosticsLogsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AkriConnectorsDiagnosticsLogs model
-            = BinaryData.fromString("{\"level\":\"wqiok\"}").toObject(AkriConnectorsDiagnosticsLogs.class);
-        Assertions.assertEquals("wqiok", model.level());
+            = BinaryData.fromString("{\"level\":\"plcrpwjxeznoig\"}").toObject(AkriConnectorsDiagnosticsLogs.class);
+        Assertions.assertEquals("plcrpwjxeznoig", model.level());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AkriConnectorsDiagnosticsLogs model = new AkriConnectorsDiagnosticsLogs().withLevel("wqiok");
+        AkriConnectorsDiagnosticsLogs model = new AkriConnectorsDiagnosticsLogs().withLevel("plcrpwjxeznoig");
         model = BinaryData.fromObject(model).toObject(AkriConnectorsDiagnosticsLogs.class);
-        Assertions.assertEquals("wqiok", model.level());
+        Assertions.assertEquals("plcrpwjxeznoig", model.level());
     }
 }

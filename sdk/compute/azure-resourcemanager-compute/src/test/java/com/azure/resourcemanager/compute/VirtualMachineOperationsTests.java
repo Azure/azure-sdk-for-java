@@ -106,7 +106,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
 
     private String rgName = "";
     private String rgName2 = "";
-    private final Region region = Region.US_WEST2;
+    private final Region region = Region.US_WEST3;
     private final Region regionProxPlacementGroup = Region.US_WEST2;
     private final Region regionProxPlacementGroup2 = Region.US_WEST3;
     private final String vmName = "javavm";
@@ -297,6 +297,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withRootUsername("Foo12")
             .withSsh(sshPublicKey())
             .withNewStorageAccount(storageAccountCreatable)
+            .withSize(VirtualMachineSizeTypes.STANDARD_A1_V2)
             .create();
 
         NetworkInterface primaryNic = vm.getPrimaryNetworkInterface();
@@ -1089,6 +1090,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
             .withRootUsername("firstuser")
             .withSsh(sshPublicKey())
+            .withSize(VirtualMachineSizeTypes.STANDARD_A1_V2)
             .create();
 
         List<String> installGit = new ArrayList<>();
@@ -1600,7 +1602,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withRootUsername("jvuser2")
             .withSsh(sshPublicKey())
             .withExistingVirtualMachineScaleSet(flexibleVMSS)
-            .withSize(VirtualMachineSizeTypes.STANDARD_A0)
+            .withSize(VirtualMachineSizeTypes.STANDARD_A1_V2)
             .create();
         flexibleVMSS.refresh();
         Assertions.assertEquals(flexibleVMSS.id(), regularVM.virtualMachineScaleSetId());
@@ -1630,7 +1632,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                 .withRootUsername("jvuser3")
                 .withSsh(sshPublicKey())
                 .withUnmanagedDisks() /* UN-MANAGED OS and DATA DISKS */
-                .withSize(VirtualMachineSizeTypes.STANDARD_A0)
+                .withSize(VirtualMachineSizeTypes.STANDARD_A1_V2)
                 .withNewStorageAccount(storageAccountName)
                 .withOSDiskCaching(CachingTypes.READ_WRITE)
                 .withExistingVirtualMachineScaleSet(flexibleVMSS)
@@ -1651,7 +1653,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .define(vmssName2)
             .withRegion(region)
             .withNewResourceGroup(rgName)
-            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
+            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A1_V2)
             .withExistingPrimaryNetworkSubnet(network2, "subnet2")
             .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer2)
             .withoutPrimaryInternalLoadBalancer()
@@ -1674,7 +1676,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
                 .withRootUsername("jvuser5")
                 .withSsh(sshPublicKey())
-                .withSize(VirtualMachineSizeTypes.STANDARD_A0)
+                .withSize(VirtualMachineSizeTypes.STANDARD_A1)
                 .withExistingVirtualMachineScaleSet(uniformVMSS)
                 .create());
     }
@@ -1705,6 +1707,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withNewDataDisk(10, 1, CachingTypes.READ_WRITE)
             .withOSDiskDeleteOptions(DeleteOptions.DETACH)
             .withExistingStorageAccount(storageAccount)
+            .withSize(VirtualMachineSizeTypes.STANDARD_A1_V2)
             .create();
         Disk vm1OSDisk = this.computeManager.disks().getById(vm1.osDiskId());
         Assertions.assertEquals(EncryptionType.ENCRYPTION_AT_REST_WITH_PLATFORM_KEY, vm1OSDisk.encryption().type());
@@ -1756,6 +1759,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withSsh(sshPublicKey())
             .withOSDiskDiskEncryptionSet(des.id())
             .withOSDiskDeleteOptions(DeleteOptions.DETACH)
+            .withSize(VirtualMachineSizeTypes.STANDARD_A1_V2)
             .create();
         String vm2OSDiskId = vm2.osDiskId();
         this.computeManager.virtualMachines().deleteById(vm2.id());
@@ -1962,6 +1966,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withRootUsername("jvuser")
             .withSsh(sshPublicKey())
             .withExistingVirtualMachineScaleSet(vmss)
+            .withSize(VirtualMachineSizeTypes.STANDARD_A1_V2)
             .create();
 
         Assertions.assertNotNull(vm.virtualMachineScaleSetId());
@@ -1976,6 +1981,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
             .withRootUsername("jvuser")
             .withSsh(sshPublicKey())
+            .withSize(VirtualMachineSizeTypes.STANDARD_A1_V2)
             .create();
 
         Assertions.assertNull(vm2.virtualMachineScaleSetId());
@@ -2029,7 +2035,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withRegion(region)
             .withExistingResourceGroup(rgName)
             .withFlexibleOrchestrationMode()
-            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
+            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A1_V2)
             .withExistingPrimaryNetworkSubnet(network, "subnet1")
             .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
             .withoutPrimaryInternalLoadBalancer()
@@ -2474,7 +2480,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withSsh(sshPublicKey())
             .withExistingDataDisk(disk, disk.sizeInGB(), -1,
                 new VirtualMachineDiskOptions().withDeleteOptions(DeleteOptions.DETACH))
-            .withSize(VirtualMachineSizeTypes.STANDARD_A0)
+            .withSize(VirtualMachineSizeTypes.STANDARD_A1_V2)
             .withPrimaryNetworkInterfaceDeleteOptions(DeleteOptions.DETACH)
             .beginCreate(context);
         VirtualMachine vm = accepted.getFinalResult();
@@ -2556,6 +2562,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                 .withRootUsername("tirekicker")
                 .withSsh(sshPublicKey())
                 .withUnmanagedDisks()
+                .withSize(VirtualMachineSizeTypes.STANDARD_A1_V2)
                 .withNewStorageAccount(storageAccountCreatable);
 
             virtualMachineCreatables.add(virtualMachineCreatable);

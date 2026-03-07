@@ -10,8 +10,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
-import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -30,21 +30,27 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
  * ServiceClient is the abstraction for accessing REST operations and their payload data types.
  */
 public abstract class AzureServiceClient {
-
+    private static final String UNKNOWN_VERSION = "UnknownVersion";
+    // Library to version map. E.g. azure-resourcemanager-compute -> 2.54.0
+    private static final Map<String, String> LIBRARY_VERSION_MAP = new HashMap<>();
     private final ClientLogger logger = new ClientLogger(getClass());
-
-    private final String sdkVersion;
 
     private final SerializerAdapter serializerAdapter;
     private final HttpPipeline httpPipeline;
-
     private final String sdkName;
+    private final String sdkVersion;
+
+    static {
+        loadLibraryVersions();
+    }
 
     /**
      * Creates a new instance of {@link AzureServiceClient}.
@@ -57,7 +63,6 @@ public abstract class AzureServiceClient {
         AzureEnvironment environment) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
-
         String packageName = this.getClass().getPackage().getName();
         String implementationSegment = ".implementation";
         if (packageName.endsWith(implementationSegment)) {
@@ -65,12 +70,10 @@ public abstract class AzureServiceClient {
         }
         this.sdkName = packageName;
         if (packageName.startsWith("com.")) {
-            // com.azure.resourcemanager.compute -> azure-resourcemanager-compute.properties
             String artifactId = packageName.substring("com.".length()).replace(".", "-");
-            Map<String, String> properties = CoreUtils.getProperties(artifactId + ".properties");
-            sdkVersion = properties.getOrDefault("version", "UnknownVersion");
+            this.sdkVersion = LIBRARY_VERSION_MAP.getOrDefault(artifactId, UNKNOWN_VERSION);
         } else {
-            sdkVersion = "UnknownVersion";
+            this.sdkVersion = UNKNOWN_VERSION;
         }
     }
 
@@ -182,6 +185,22 @@ public abstract class AzureServiceClient {
         } else {
             return response.getFinalResult();
         }
+    }
+
+    private static void loadLibraryVersions() {
+        // Get premium libraries
+        // CoreUtils.getProperties will return empty map for any IOException, e.g. if the property file does not exist.
+        // It'll neither throw nor return null.
+        Map<String, String> properties = CoreUtils.getProperties("azure-resourcemanager-resources.properties");
+        Arrays.stream(properties.getOrDefault("premium-libraries", "").split(","))
+            .filter(premiumLibrary -> !CoreUtils.isNullOrEmpty(premiumLibrary))
+            .map(String::trim)
+            .forEach(premiumLibrary -> {
+                // load version for each library
+                Map<String, String> libraryProperties = CoreUtils.getProperties(premiumLibrary + ".properties");
+                String version = libraryProperties.getOrDefault("version", UNKNOWN_VERSION);
+                LIBRARY_VERSION_MAP.put(premiumLibrary, version);
+            });
     }
 
     private static class HttpResponseImpl extends HttpResponse {

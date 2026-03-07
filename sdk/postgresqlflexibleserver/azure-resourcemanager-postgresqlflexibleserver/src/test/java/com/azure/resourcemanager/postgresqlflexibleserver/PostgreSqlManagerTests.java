@@ -13,20 +13,20 @@ import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.DataEncryptionType;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.GeographicallyRedundantBackup;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.MicrosoftEntraAuth;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.PasswordBasedAuth;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.PostgresMajorVersion;
 import com.azure.resourcemanager.test.utils.TestUtilities;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.ActiveDirectoryAuthEnum;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.ArmServerKeyType;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.AuthConfig;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Backup;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.DataEncryption;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.GeoRedundantBackupEnum;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.HighAvailability;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.HighAvailabilityMode;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.IdentityType;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.PasswordAuthEnum;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ReplicationRole;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Server;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerVersion;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Sku;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.SkuTier;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Storage;
@@ -98,16 +98,16 @@ public class PostgreSqlManagerTests extends TestProxyTestBase {
                 .withAdministratorLogin(adminName)
                 .withAdministratorLoginPassword(adminPwd)
                 .withSku(new Sku().withName("Standard_D2ds_v4").withTier(SkuTier.GENERAL_PURPOSE))
-                .withAuthConfig(new AuthConfig().withActiveDirectoryAuth(ActiveDirectoryAuthEnum.DISABLED)
-                    .withPasswordAuth(PasswordAuthEnum.ENABLED))
+                .withAuthConfig(new AuthConfig().withActiveDirectoryAuth(MicrosoftEntraAuth.DISABLED)
+                    .withPasswordAuth(PasswordBasedAuth.ENABLED))
                 .withIdentity(new UserAssignedIdentity().withType(IdentityType.NONE))
-                .withDataEncryption(new DataEncryption().withType(ArmServerKeyType.SYSTEM_MANAGED))
-                .withVersion(ServerVersion.ONE_FOUR)
+                .withDataEncryption(new DataEncryption().withType(DataEncryptionType.SYSTEM_MANAGED))
+                .withVersion(PostgresMajorVersion.ONE_FOUR)
                 .withAvailabilityZone("2")
                 .withStorage(new Storage().withStorageSizeGB(128))
-                .withBackup(
-                    new Backup().withGeoRedundantBackup(GeoRedundantBackupEnum.DISABLED).withBackupRetentionDays(7))
-                .withHighAvailability(new HighAvailability().withMode(HighAvailabilityMode.DISABLED))
+                .withBackup(new Backup().withGeoRedundantBackup(GeographicallyRedundantBackup.DISABLED)
+                    .withBackupRetentionDays(7))
+                .withHighAvailability(new HighAvailability().withMode(HighAvailabilityMode.SAME_ZONE))
                 .withReplicationRole(ReplicationRole.PRIMARY)
                 .create();
             // @embedmeEnd

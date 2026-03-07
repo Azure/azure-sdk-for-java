@@ -267,6 +267,31 @@ public final class ApplicationGatewayBackendSettings extends SubResource {
     }
 
     /**
+     * Get the enableL4ClientIpPreservation property: Whether to send Proxy Protocol header to backend servers over TCP
+     * or TLS protocols. Default value is false.
+     * 
+     * @return the enableL4ClientIpPreservation value.
+     */
+    public Boolean enableL4ClientIpPreservation() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableL4ClientIpPreservation();
+    }
+
+    /**
+     * Set the enableL4ClientIpPreservation property: Whether to send Proxy Protocol header to backend servers over TCP
+     * or TLS protocols. Default value is false.
+     * 
+     * @param enableL4ClientIpPreservation the enableL4ClientIpPreservation value to set.
+     * @return the ApplicationGatewayBackendSettings object itself.
+     */
+    public ApplicationGatewayBackendSettings withEnableL4ClientIpPreservation(Boolean enableL4ClientIpPreservation) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayBackendSettingsPropertiesFormat();
+        }
+        this.innerProperties().withEnableL4ClientIpPreservation(enableL4ClientIpPreservation);
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: The provisioning state of the backend HTTP settings resource.
      * 
      * @return the provisioningState value.

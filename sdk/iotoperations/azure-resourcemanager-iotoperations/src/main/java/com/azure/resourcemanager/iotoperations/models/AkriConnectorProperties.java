@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * AkriConnector properties.
@@ -20,6 +21,16 @@ public final class AkriConnectorProperties implements JsonSerializable<AkriConne
      * The status of the last operation.
      */
     private ProvisioningState provisioningState;
+
+    /*
+     * The allocated devices for the connector.
+     */
+    private List<AkriConnectorAllocatedDevice> allocatedDevices;
+
+    /*
+     * The health state of the resource.
+     */
+    private ResourceHealthState healthState;
 
     /**
      * Creates an instance of AkriConnectorProperties class.
@@ -34,6 +45,24 @@ public final class AkriConnectorProperties implements JsonSerializable<AkriConne
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the allocatedDevices property: The allocated devices for the connector.
+     * 
+     * @return the allocatedDevices value.
+     */
+    public List<AkriConnectorAllocatedDevice> allocatedDevices() {
+        return this.allocatedDevices;
+    }
+
+    /**
+     * Get the healthState property: The health state of the resource.
+     * 
+     * @return the healthState value.
+     */
+    public ResourceHealthState healthState() {
+        return this.healthState;
     }
 
     /**
@@ -63,6 +92,13 @@ public final class AkriConnectorProperties implements JsonSerializable<AkriConne
                 if ("provisioningState".equals(fieldName)) {
                     deserializedAkriConnectorProperties.provisioningState
                         = ProvisioningState.fromString(reader.getString());
+                } else if ("allocatedDevices".equals(fieldName)) {
+                    List<AkriConnectorAllocatedDevice> allocatedDevices
+                        = reader.readArray(reader1 -> AkriConnectorAllocatedDevice.fromJson(reader1));
+                    deserializedAkriConnectorProperties.allocatedDevices = allocatedDevices;
+                } else if ("healthState".equals(fieldName)) {
+                    deserializedAkriConnectorProperties.healthState
+                        = ResourceHealthState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

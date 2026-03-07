@@ -27,7 +27,7 @@ public final class ProjectCapabilityHostsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"aiServicesConnections\":[\"lilw\"],\"capabilityHostKind\":\"Agents\",\"customerSubnet\":\"hjvmabzzbwaybfm\",\"provisioningState\":\"Succeeded\",\"storageConnections\":[\"ymqtnapreojx\",\"jnbscon\",\"avip\"],\"threadStorageConnections\":[\"chbj\"],\"vectorStoreConnections\":[\"fsgnw\"],\"description\":\"zed\",\"tags\":{\"xi\":\"rfbo\"}},\"id\":\"mlnfyz\",\"name\":\"vfrbypic\",\"type\":\"bkpdjtaqhsmq\"}";
+            = "{\"properties\":{\"aiServicesConnections\":[\"g\",\"zstuj\",\"zx\"],\"capabilityHostKind\":\"Agents\",\"customerSubnet\":\"fdrld\",\"provisioningState\":\"Succeeded\",\"storageConnections\":[\"iitt\"],\"threadStorageConnections\":[\"uqwr\",\"daxurfqazc\",\"ozjv\",\"dzciggb\"],\"vectorStoreConnections\":[\"xofwalzy\",\"whoea\"],\"description\":\"e\",\"tags\":{\"imtwuuhau\":\"oeysfp\"}},\"id\":\"nkwmnfeub\",\"name\":\"zjy\",\"type\":\"kwfugiphrrkuu\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -37,25 +37,26 @@ public final class ProjectCapabilityHostsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CapabilityHost response = manager.projectCapabilityHosts()
-            .createOrUpdate("wh", "d", "kp", "qwuntob",
-                new CapabilityHostInner().withProperties(new CapabilityHostProperties().withDescription("pter")
-                    .withTags(mapOf("kskw", "wki", "olzkgys", "tsdetjygowifcq"))
-                    .withAiServicesConnections(Arrays.asList("azz"))
+            .createOrUpdate("e", "lzuqloiwyayyzivr", "itcdqlhchwhrk", "jlei",
+                new CapabilityHostInner().withProperties(new CapabilityHostProperties().withDescription("nukxrkemjp")
+                    .withTags(mapOf("bc", "lrlzaudgjt", "dwnhczbutoucgjti", "akkuc", "qqwwvgwks", "jwayhi", "abv",
+                        "vlizedvb"))
+                    .withAiServicesConnections(Arrays.asList("fiplhx"))
                     .withCapabilityHostKind(CapabilityHostKind.AGENTS)
-                    .withCustomerSubnet("vydjufbnk")
-                    .withStorageConnections(Arrays.asList("peg", "wdabalfdxaglzfyt"))
-                    .withThreadStorageConnections(Arrays.asList("lqhopxouvmrs"))
-                    .withVectorStoreConnections(Arrays.asList("ikyypz", "gxfx", "myrqsdbpokszan", "h"))),
+                    .withCustomerSubnet("ycjowlyeyzmudsq")
+                    .withStorageConnections(Arrays.asList("lzbuwodmachbkvn"))
+                    .withThreadStorageConnections(Arrays.asList("j", "mvgoqpleh"))
+                    .withVectorStoreConnections(Arrays.asList("kzdllczdprwnhkgq", "goxsstci", "rak", "rrynjcwmhly"))),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("zed", response.properties().description());
-        Assertions.assertEquals("rfbo", response.properties().tags().get("xi"));
-        Assertions.assertEquals("lilw", response.properties().aiServicesConnections().get(0));
+        Assertions.assertEquals("e", response.properties().description());
+        Assertions.assertEquals("oeysfp", response.properties().tags().get("imtwuuhau"));
+        Assertions.assertEquals("g", response.properties().aiServicesConnections().get(0));
         Assertions.assertEquals(CapabilityHostKind.AGENTS, response.properties().capabilityHostKind());
-        Assertions.assertEquals("hjvmabzzbwaybfm", response.properties().customerSubnet());
-        Assertions.assertEquals("ymqtnapreojx", response.properties().storageConnections().get(0));
-        Assertions.assertEquals("chbj", response.properties().threadStorageConnections().get(0));
-        Assertions.assertEquals("fsgnw", response.properties().vectorStoreConnections().get(0));
+        Assertions.assertEquals("fdrld", response.properties().customerSubnet());
+        Assertions.assertEquals("iitt", response.properties().storageConnections().get(0));
+        Assertions.assertEquals("uqwr", response.properties().threadStorageConnections().get(0));
+        Assertions.assertEquals("xofwalzy", response.properties().vectorStoreConnections().get(0));
     }
 
     // Use "Map.of" if available

@@ -19,7 +19,7 @@ import java.util.Map;
 @Fluent
 public final class WebtestLocationAvailabilityCriteria extends MetricAlertCriteria {
     /*
-     * specifies the type of the alert criteria.
+     * Specifies the type of the alert criteria. Previously undocumented values might be returned
      */
     private Odatatype odataType = Odatatype.MICROSOFT_AZURE_MONITOR_WEBTEST_LOCATION_AVAILABILITY_CRITERIA;
 
@@ -45,7 +45,8 @@ public final class WebtestLocationAvailabilityCriteria extends MetricAlertCriter
     }
 
     /**
-     * Get the odataType property: specifies the type of the alert criteria.
+     * Get the odataType property: Specifies the type of the alert criteria. Previously undocumented values might be
+     * returned.
      * 
      * @return the odataType value.
      */
@@ -121,7 +122,6 @@ public final class WebtestLocationAvailabilityCriteria extends MetricAlertCriter
      */
     @Override
     public void validate() {
-        super.validate();
         if (webTestId() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(

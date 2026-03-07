@@ -10,6 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storage.models.ObjectReplicationPolicyPropertiesMetrics;
+import com.azure.resourcemanager.storage.models.ObjectReplicationPolicyPropertiesPriorityReplication;
 import com.azure.resourcemanager.storage.models.ObjectReplicationPolicyRule;
 import java.io.IOException;
 import java.time.OffsetDateTime;
@@ -196,6 +197,32 @@ public final class ObjectReplicationPolicyInner extends ProxyResource {
             this.innerProperties = new ObjectReplicationPolicyProperties();
         }
         this.innerProperties().withMetrics(metrics);
+        return this;
+    }
+
+    /**
+     * Get the priorityReplication property: Optional. The object replication policy priority replication feature
+     * options.
+     * 
+     * @return the priorityReplication value.
+     */
+    public ObjectReplicationPolicyPropertiesPriorityReplication priorityReplication() {
+        return this.innerProperties() == null ? null : this.innerProperties().priorityReplication();
+    }
+
+    /**
+     * Set the priorityReplication property: Optional. The object replication policy priority replication feature
+     * options.
+     * 
+     * @param priorityReplication the priorityReplication value to set.
+     * @return the ObjectReplicationPolicyInner object itself.
+     */
+    public ObjectReplicationPolicyInner
+        withPriorityReplication(ObjectReplicationPolicyPropertiesPriorityReplication priorityReplication) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ObjectReplicationPolicyProperties();
+        }
+        this.innerProperties().withPriorityReplication(priorityReplication);
         return this;
     }
 

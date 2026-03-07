@@ -61,7 +61,7 @@
  */
 public final class GrafanaCheckEnterpriseDetailsSamples {
     /*
-     * x-ms-original-file: 2024-11-01-preview/EnterpriseDetails_Post.json
+     * x-ms-original-file: 2025-08-01/EnterpriseDetails_Post.json
      */
     /**
      * Sample code: EnterpriseDetails_Post.
@@ -107,7 +107,7 @@ import java.util.Map;
  */
 public final class GrafanaCreateSamples {
     /*
-     * x-ms-original-file: 2024-11-01-preview/Grafana_Create.json
+     * x-ms-original-file: 2025-08-01/Grafana_Create.json
      */
     /**
      * Sample code: Grafana_Create.
@@ -171,7 +171,7 @@ public final class GrafanaCreateSamples {
  */
 public final class GrafanaDeleteSamples {
     /*
-     * x-ms-original-file: 2024-11-01-preview/Grafana_Delete.json
+     * x-ms-original-file: 2025-08-01/Grafana_Delete.json
      */
     /**
      * Sample code: Grafana_Delete.
@@ -192,7 +192,7 @@ public final class GrafanaDeleteSamples {
  */
 public final class GrafanaFetchAvailablePluginsSamples {
     /*
-     * x-ms-original-file: 2024-11-01-preview/Grafana_FetchAvailablePlugins.json
+     * x-ms-original-file: 2025-08-01/Grafana_FetchAvailablePlugins.json
      */
     /**
      * Sample code: Grafana_FetchAvailablePlugins.
@@ -214,7 +214,7 @@ public final class GrafanaFetchAvailablePluginsSamples {
  */
 public final class GrafanaGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2024-11-01-preview/Grafana_Get.json
+     * x-ms-original-file: 2025-08-01/Grafana_Get.json
      */
     /**
      * Sample code: Grafana_Get.
@@ -236,7 +236,7 @@ public final class GrafanaGetByResourceGroupSamples {
  */
 public final class GrafanaListSamples {
     /*
-     * x-ms-original-file: 2024-11-01-preview/Grafana_List.json
+     * x-ms-original-file: 2025-08-01/Grafana_List.json
      */
     /**
      * Sample code: Grafana_List.
@@ -257,7 +257,7 @@ public final class GrafanaListSamples {
  */
 public final class GrafanaListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2024-11-01-preview/Grafana_ListByResourceGroup.json
+     * x-ms-original-file: 2025-08-01/Grafana_ListByResourceGroup.json
      */
     /**
      * Sample code: Grafana_ListByResourceGroup.
@@ -299,7 +299,7 @@ import java.util.Map;
  */
 public final class GrafanaUpdateSamples {
     /*
-     * x-ms-original-file: 2024-11-01-preview/Grafana_Update.json
+     * x-ms-original-file: 2025-08-01/Grafana_Update.json
      */
     /**
      * Sample code: Grafana_Update.
@@ -363,7 +363,7 @@ import java.util.Arrays;
  */
 public final class IntegrationFabricsCreateSamples {
     /*
-     * x-ms-original-file: 2024-11-01-preview/IntegrationFabrics_Create.json
+     * x-ms-original-file: 2025-08-01/IntegrationFabrics_Create.json
      */
     /**
      * Sample code: IntegrationFabrics_Create.
@@ -393,7 +393,7 @@ public final class IntegrationFabricsCreateSamples {
  */
 public final class IntegrationFabricsDeleteSamples {
     /*
-     * x-ms-original-file: 2024-11-01-preview/IntegrationFabrics_Delete.json
+     * x-ms-original-file: 2025-08-01/IntegrationFabrics_Delete.json
      */
     /**
      * Sample code: IntegrationFabrics_Delete.
@@ -415,7 +415,7 @@ public final class IntegrationFabricsDeleteSamples {
  */
 public final class IntegrationFabricsGetSamples {
     /*
-     * x-ms-original-file: 2024-11-01-preview/IntegrationFabrics_Get.json
+     * x-ms-original-file: 2025-08-01/IntegrationFabrics_Get.json
      */
     /**
      * Sample code: IntegrationFabrics_Get.
@@ -437,7 +437,7 @@ public final class IntegrationFabricsGetSamples {
  */
 public final class IntegrationFabricsListSamples {
     /*
-     * x-ms-original-file: 2024-11-01-preview/IntegrationFabrics_List.json
+     * x-ms-original-file: 2025-08-01/IntegrationFabrics_List.json
      */
     /**
      * Sample code: IntegrationFabrics_List.
@@ -464,7 +464,7 @@ import java.util.Map;
  */
 public final class IntegrationFabricsUpdateSamples {
     /*
-     * x-ms-original-file: 2024-11-01-preview/IntegrationFabrics_Update.json
+     * x-ms-original-file: 2025-08-01/IntegrationFabrics_Update.json
      */
     /**
      * Sample code: IntegrationFabrics_Update.
@@ -506,7 +506,7 @@ import java.util.Map;
  */
 public final class ManagedDashboardsCreateSamples {
     /*
-     * x-ms-original-file: 2024-11-01-preview/Dashboard_Create.json
+     * x-ms-original-file: 2025-08-01/Dashboard_Create.json
      */
     /**
      * Sample code: Dashboard_Create.
@@ -544,7 +544,7 @@ public final class ManagedDashboardsCreateSamples {
  */
 public final class ManagedDashboardsDeleteSamples {
     /*
-     * x-ms-original-file: 2024-11-01-preview/Dashboard_Delete.json
+     * x-ms-original-file: 2025-08-01/Dashboard_Delete.json
      */
     /**
      * Sample code: Dashboard_Delete.
@@ -566,7 +566,7 @@ public final class ManagedDashboardsDeleteSamples {
  */
 public final class ManagedDashboardsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2024-11-01-preview/Dashboard_Get.json
+     * x-ms-original-file: 2025-08-01/Dashboard_Get.json
      */
     /**
      * Sample code: Dashboard_Get.
@@ -588,7 +588,7 @@ public final class ManagedDashboardsGetByResourceGroupSamples {
  */
 public final class ManagedDashboardsListSamples {
     /*
-     * x-ms-original-file: 2024-11-01-preview/Dashboard_List.json
+     * x-ms-original-file: 2025-08-01/Dashboard_List.json
      */
     /**
      * Sample code: Dashboard_ListByResourceGroup.
@@ -609,7 +609,7 @@ public final class ManagedDashboardsListSamples {
  */
 public final class ManagedDashboardsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2024-11-01-preview/Dashboard_ListByResourceGroup.json
+     * x-ms-original-file: 2025-08-01/Dashboard_ListByResourceGroup.json
      */
     /**
      * Sample code: Dashboard_ListByResourceGroup.
@@ -634,7 +634,7 @@ import java.util.Map;
  */
 public final class ManagedDashboardsUpdateSamples {
     /*
-     * x-ms-original-file: 2024-11-01-preview/Dashboard_Update.json
+     * x-ms-original-file: 2025-08-01/Dashboard_Update.json
      */
     /**
      * Sample code: Dashboard_Update.
@@ -672,7 +672,7 @@ import java.util.Arrays;
  */
 public final class ManagedPrivateEndpointsCreateSamples {
     /*
-     * x-ms-original-file: 2024-11-01-preview/ManagedPrivateEndpoints_Create.json
+     * x-ms-original-file: 2025-08-01/ManagedPrivateEndpoints_Create.json
      */
     /**
      * Sample code: ManagedPrivateEndpoint_Create.
@@ -703,7 +703,7 @@ public final class ManagedPrivateEndpointsCreateSamples {
  */
 public final class ManagedPrivateEndpointsDeleteSamples {
     /*
-     * x-ms-original-file: 2024-11-01-preview/ManagedPrivateEndpoints_Delete.json
+     * x-ms-original-file: 2025-08-01/ManagedPrivateEndpoints_Delete.json
      */
     /**
      * Sample code: ManagedPrivateEndpoint_Delete.
@@ -725,7 +725,7 @@ public final class ManagedPrivateEndpointsDeleteSamples {
  */
 public final class ManagedPrivateEndpointsGetSamples {
     /*
-     * x-ms-original-file: 2024-11-01-preview/ManagedPrivateEndpoints_Get.json
+     * x-ms-original-file: 2025-08-01/ManagedPrivateEndpoints_Get.json
      */
     /**
      * Sample code: ManagedPrivateEndpoint_Get.
@@ -747,7 +747,7 @@ public final class ManagedPrivateEndpointsGetSamples {
  */
 public final class ManagedPrivateEndpointsListSamples {
     /*
-     * x-ms-original-file: 2024-11-01-preview/ManagedPrivateEndpoints_List.json
+     * x-ms-original-file: 2025-08-01/ManagedPrivateEndpoints_List.json
      */
     /**
      * Sample code: ManagedPrivateEndpoint_List.
@@ -768,7 +768,7 @@ public final class ManagedPrivateEndpointsListSamples {
  */
 public final class ManagedPrivateEndpointsRefreshSamples {
     /*
-     * x-ms-original-file: 2024-11-01-preview/ManagedPrivateEndpoints_Refresh.json
+     * x-ms-original-file: 2025-08-01/ManagedPrivateEndpoints_Refresh.json
      */
     /**
      * Sample code: ManagedPrivateEndpoint_Refresh.
@@ -793,7 +793,7 @@ import java.util.Map;
  */
 public final class ManagedPrivateEndpointsUpdateSamples {
     /*
-     * x-ms-original-file: 2024-11-01-preview/ManagedPrivateEndpoints_Patch.json
+     * x-ms-original-file: 2025-08-01/ManagedPrivateEndpoints_Patch.json
      */
     /**
      * Sample code: ManagedPrivateEndpoints_Patch.
@@ -829,7 +829,7 @@ public final class ManagedPrivateEndpointsUpdateSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2024-11-01-preview/Operations_List.json
+     * x-ms-original-file: 2025-08-01/Operations_List.json
      */
     /**
      * Sample code: Operations_List.
@@ -850,7 +850,7 @@ public final class OperationsListSamples {
  */
 public final class PrivateEndpointConnectionsApproveSamples {
     /*
-     * x-ms-original-file: 2024-11-01-preview/PrivateEndpointConnections_Approve.json
+     * x-ms-original-file: 2025-08-01/PrivateEndpointConnections_Approve.json
      */
     /**
      * Sample code: PrivateEndpointConnections_Approve.
@@ -874,7 +874,7 @@ public final class PrivateEndpointConnectionsApproveSamples {
  */
 public final class PrivateEndpointConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: 2024-11-01-preview/PrivateEndpointConnections_Delete.json
+     * x-ms-original-file: 2025-08-01/PrivateEndpointConnections_Delete.json
      */
     /**
      * Sample code: PrivateEndpointConnections_Delete.
@@ -896,7 +896,7 @@ public final class PrivateEndpointConnectionsDeleteSamples {
  */
 public final class PrivateEndpointConnectionsGetSamples {
     /*
-     * x-ms-original-file: 2024-11-01-preview/PrivateEndpointConnections_Get.json
+     * x-ms-original-file: 2025-08-01/PrivateEndpointConnections_Get.json
      */
     /**
      * Sample code: PrivateEndpointConnections_Get.
@@ -918,7 +918,7 @@ public final class PrivateEndpointConnectionsGetSamples {
  */
 public final class PrivateEndpointConnectionsListSamples {
     /*
-     * x-ms-original-file: 2024-11-01-preview/PrivateEndpointConnections_List.json
+     * x-ms-original-file: 2025-08-01/PrivateEndpointConnections_List.json
      */
     /**
      * Sample code: PrivateEndpointConnections_List.
@@ -939,7 +939,7 @@ public final class PrivateEndpointConnectionsListSamples {
  */
 public final class PrivateLinkResourcesGetSamples {
     /*
-     * x-ms-original-file: 2024-11-01-preview/PrivateLinkResources_Get.json
+     * x-ms-original-file: 2025-08-01/PrivateLinkResources_Get.json
      */
     /**
      * Sample code: PrivateLinkResources_Get.
@@ -961,7 +961,7 @@ public final class PrivateLinkResourcesGetSamples {
  */
 public final class PrivateLinkResourcesListSamples {
     /*
-     * x-ms-original-file: 2024-11-01-preview/PrivateLinkResources_List.json
+     * x-ms-original-file: 2025-08-01/PrivateLinkResources_List.json
      */
     /**
      * Sample code: PrivateLinkResources_List.

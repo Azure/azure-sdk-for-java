@@ -14,6 +14,7 @@ import com.azure.resourcemanager.cognitiveservices.models.DeploymentModel;
 import com.azure.resourcemanager.cognitiveservices.models.ModelDeprecationInfo;
 import com.azure.resourcemanager.cognitiveservices.models.ModelLifecycleStatus;
 import com.azure.resourcemanager.cognitiveservices.models.ModelSku;
+import com.azure.resourcemanager.cognitiveservices.models.ReplacementConfig;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -57,6 +58,16 @@ public final class AccountModelInner extends DeploymentModel {
      * Cognitive Services account ModelDeprecationInfo.
      */
     private ModelDeprecationInfo deprecation;
+
+    /*
+     * Configuration for model replacement.
+     */
+    private ReplacementConfig replacementConfig;
+
+    /*
+     * Asset identifier for the model in the model catalog.
+     */
+    private String modelCatalogAssetId;
 
     /*
      * Model lifecycle status.
@@ -220,6 +231,46 @@ public final class AccountModelInner extends DeploymentModel {
     }
 
     /**
+     * Get the replacementConfig property: Configuration for model replacement.
+     * 
+     * @return the replacementConfig value.
+     */
+    public ReplacementConfig replacementConfig() {
+        return this.replacementConfig;
+    }
+
+    /**
+     * Set the replacementConfig property: Configuration for model replacement.
+     * 
+     * @param replacementConfig the replacementConfig value to set.
+     * @return the AccountModelInner object itself.
+     */
+    public AccountModelInner withReplacementConfig(ReplacementConfig replacementConfig) {
+        this.replacementConfig = replacementConfig;
+        return this;
+    }
+
+    /**
+     * Get the modelCatalogAssetId property: Asset identifier for the model in the model catalog.
+     * 
+     * @return the modelCatalogAssetId value.
+     */
+    public String modelCatalogAssetId() {
+        return this.modelCatalogAssetId;
+    }
+
+    /**
+     * Set the modelCatalogAssetId property: Asset identifier for the model in the model catalog.
+     * 
+     * @param modelCatalogAssetId the modelCatalogAssetId value to set.
+     * @return the AccountModelInner object itself.
+     */
+    public AccountModelInner withModelCatalogAssetId(String modelCatalogAssetId) {
+        this.modelCatalogAssetId = modelCatalogAssetId;
+        return this;
+    }
+
+    /**
      * Get the lifecycleStatus property: Model lifecycle status.
      * 
      * @return the lifecycleStatus value.
@@ -328,6 +379,9 @@ public final class AccountModelInner extends DeploymentModel {
         if (deprecation() != null) {
             deprecation().validate();
         }
+        if (replacementConfig() != null) {
+            replacementConfig().validate();
+        }
         if (callRateLimit() != null) {
             callRateLimit().validate();
         }
@@ -353,6 +407,8 @@ public final class AccountModelInner extends DeploymentModel {
         jsonWriter.writeMapField("finetuneCapabilities", this.finetuneCapabilities,
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("deprecation", this.deprecation);
+        jsonWriter.writeJsonField("replacementConfig", this.replacementConfig);
+        jsonWriter.writeStringField("modelCatalogAssetId", this.modelCatalogAssetId);
         jsonWriter.writeStringField("lifecycleStatus",
             this.lifecycleStatus == null ? null : this.lifecycleStatus.toString());
         return jsonWriter.writeEndObject();
@@ -404,6 +460,10 @@ public final class AccountModelInner extends DeploymentModel {
                     deserializedAccountModelInner.finetuneCapabilities = finetuneCapabilities;
                 } else if ("deprecation".equals(fieldName)) {
                     deserializedAccountModelInner.deprecation = ModelDeprecationInfo.fromJson(reader);
+                } else if ("replacementConfig".equals(fieldName)) {
+                    deserializedAccountModelInner.replacementConfig = ReplacementConfig.fromJson(reader);
+                } else if ("modelCatalogAssetId".equals(fieldName)) {
+                    deserializedAccountModelInner.modelCatalogAssetId = reader.getString();
                 } else if ("lifecycleStatus".equals(fieldName)) {
                     deserializedAccountModelInner.lifecycleStatus = ModelLifecycleStatus.fromString(reader.getString());
                 } else if ("systemData".equals(fieldName)) {

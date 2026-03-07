@@ -9,7 +9,6 @@ import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.ShouldRetryResult;
 import com.azure.cosmos.implementation.directconnectivity.AddressSelector;
-import com.azure.cosmos.implementation.directconnectivity.TransportException;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.models.CosmosContainerIdentity;
 import org.slf4j.Logger;
@@ -35,8 +34,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.stream.Collectors;
-
-import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 
 public final class ProactiveOpenConnectionsProcessor implements Closeable {
 
@@ -109,7 +106,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
         // and RntbdTransportClient / RntbdEndpointProvider are also closed
         // this prevents netty executor classes from entering into IllegalStateException
         if (this.endpointProvider.isClosed() || this.isClosed.get()) {
-            openConnectionTask.completeExceptionally(new ClosedClientTransportException(lenientFormat("%s is closed", this), null));
+            openConnectionTask.completeExceptionally(new ClosedClientTransportException(String.format("%s is closed", this), null));
             return;
         }
 
@@ -159,7 +156,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
             // Fail all pending tasks
             this.endpointsUnderMonitorMap.forEach((addresses, taskList) -> {
                 for (OpenConnectionTask openConnectionTask : taskList) {
-                    openConnectionTask.completeExceptionally(new ClosedClientTransportException(lenientFormat("%s is closed", this), null));
+                    openConnectionTask.completeExceptionally(new ClosedClientTransportException(String.format("%s is closed", this), null));
                 }
             });
         }

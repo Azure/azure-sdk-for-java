@@ -24,7 +24,7 @@ public final class RaiBlocklistItemsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"etag\":\"mpmlqoin\",\"tags\":{\"fliejh\":\"uewihapfjiiknjdi\",\"iedfsbwcei\":\"cl\",\"ipbwxgooo\":\"bv\"},\"properties\":{\"pattern\":\"rad\",\"isRegex\":false},\"id\":\"xknpdgz\",\"name\":\"g\",\"type\":\"sugswhgsaod\"}";
+            = "{\"etag\":\"o\",\"tags\":{\"zbuiadhbatecaa\":\"zmicuydoccnxsha\",\"iucbda\":\"sdohz\",\"pow\":\"mbwiinjdllwktl\"},\"properties\":{\"pattern\":\"qxua\",\"isRegex\":true},\"id\":\"wulynkgfcf\",\"name\":\"ruwsikxxtclh\",\"type\":\"ulriqb\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,15 +34,15 @@ public final class RaiBlocklistItemsCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RaiBlocklistItem response = manager.raiBlocklistItems()
-            .define("n")
-            .withExistingRaiBlocklist("bfdyjduss", "yszekbhwlka", "ggkrehbf")
-            .withTags(mapOf("dusr", "iimreoagsqta", "nl", "xxfavsqwudohzilf", "bh", "kpsimsfeypofqp"))
-            .withProperties(new RaiBlocklistItemProperties().withPattern("sdrmmttjxophgerh").withIsRegex(false))
+            .define("bwwzvdajf")
+            .withExistingRaiBlocklist("iqbuou", "mpyzgleo", "jsb")
+            .withTags(mapOf("jjrlhiqlwix", "aciq", "pg", "tbouguxtnd", "alapdlndbe", "ttbas"))
+            .withProperties(new RaiBlocklistItemProperties().withPattern("kixvvlwy").withIsRegex(false))
             .create();
 
-        Assertions.assertEquals("uewihapfjiiknjdi", response.tags().get("fliejh"));
-        Assertions.assertEquals("rad", response.properties().pattern());
-        Assertions.assertFalse(response.properties().isRegex());
+        Assertions.assertEquals("zmicuydoccnxsha", response.tags().get("zbuiadhbatecaa"));
+        Assertions.assertEquals("qxua", response.properties().pattern());
+        Assertions.assertTrue(response.properties().isRegex());
     }
 
     // Use "Map.of" if available

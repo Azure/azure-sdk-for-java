@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config;
 
-import org.springframework.boot.BootstrapContext;
+import org.springframework.boot.bootstrap.BootstrapContext;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -38,8 +38,12 @@ public class AppConfigurationWatchAutoConfiguration {
     @ConditionalOnMissingBean
     AppConfigurationRefresh appConfigurationRefresh(AppConfigurationProperties properties, BootstrapContext context) {
         AppConfigurationReplicaClientFactory clientFactory = context
-            .get(AppConfigurationReplicaClientFactory.class);
-        ReplicaLookUp replicaLookUp = context.get(ReplicaLookUp.class);
+            .getOrElse(AppConfigurationReplicaClientFactory.class, null);
+        ReplicaLookUp replicaLookUp = context.getOrElse(ReplicaLookUp.class, null);
+
+        if (clientFactory == null || replicaLookUp == null) {
+            return null;
+        }
 
         return new AppConfigurationPullRefresh(clientFactory, properties.getRefreshInterval(), replicaLookUp,
             new AppConfigurationRefreshUtil());

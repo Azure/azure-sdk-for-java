@@ -9,7 +9,7 @@ package com.azure.resourcemanager.iotoperations.generated;
  */
 public final class RegistryEndpointDeleteSamples {
     /*
-     * x-ms-original-file: 2025-07-01-preview/RegistryEndpoint_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-10-01/RegistryEndpoint_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: RegistryEndpoint_Delete_MaximumSet.

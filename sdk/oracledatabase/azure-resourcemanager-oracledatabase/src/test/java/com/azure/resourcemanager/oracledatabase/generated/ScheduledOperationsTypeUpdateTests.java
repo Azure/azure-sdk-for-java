@@ -14,22 +14,22 @@ public final class ScheduledOperationsTypeUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScheduledOperationsTypeUpdate model = BinaryData.fromString(
-            "{\"dayOfWeek\":{\"name\":\"Tuesday\"},\"scheduledStartTime\":\"tmczuomejwcwwqi\",\"scheduledStopTime\":\"nssxmojmsvpk\"}")
+            "{\"dayOfWeek\":{\"name\":\"Tuesday\"},\"scheduledStartTime\":\"tdrjfutacoebj\",\"scheduledStopTime\":\"wzcjznmwcpmgua\"}")
             .toObject(ScheduledOperationsTypeUpdate.class);
         Assertions.assertEquals(DayOfWeekName.TUESDAY, model.dayOfWeek().name());
-        Assertions.assertEquals("tmczuomejwcwwqi", model.scheduledStartTime());
-        Assertions.assertEquals("nssxmojmsvpk", model.scheduledStopTime());
+        Assertions.assertEquals("tdrjfutacoebj", model.scheduledStartTime());
+        Assertions.assertEquals("wzcjznmwcpmgua", model.scheduledStopTime());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ScheduledOperationsTypeUpdate model
             = new ScheduledOperationsTypeUpdate().withDayOfWeek(new DayOfWeekUpdate().withName(DayOfWeekName.TUESDAY))
-                .withScheduledStartTime("tmczuomejwcwwqi")
-                .withScheduledStopTime("nssxmojmsvpk");
+                .withScheduledStartTime("tdrjfutacoebj")
+                .withScheduledStopTime("wzcjznmwcpmgua");
         model = BinaryData.fromObject(model).toObject(ScheduledOperationsTypeUpdate.class);
         Assertions.assertEquals(DayOfWeekName.TUESDAY, model.dayOfWeek().name());
-        Assertions.assertEquals("tmczuomejwcwwqi", model.scheduledStartTime());
-        Assertions.assertEquals("nssxmojmsvpk", model.scheduledStopTime());
+        Assertions.assertEquals("tdrjfutacoebj", model.scheduledStartTime());
+        Assertions.assertEquals("wzcjznmwcpmgua", model.scheduledStopTime());
     }
 }

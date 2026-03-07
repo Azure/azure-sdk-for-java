@@ -10,8 +10,8 @@ package com.azure.resourcemanager.loganalytics.generated;
 public final class DataExportsListByWorkspaceSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
-     * DataExportListByWorkspace.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/DataExportListByWorkspace.json
      */
     /**
      * Sample code: DataExportGet.

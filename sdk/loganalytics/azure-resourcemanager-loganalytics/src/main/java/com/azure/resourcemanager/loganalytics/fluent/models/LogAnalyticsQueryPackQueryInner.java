@@ -5,11 +5,11 @@
 package com.azure.resourcemanager.loganalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.loganalytics.models.AzureResourceProperties;
 import com.azure.resourcemanager.loganalytics.models.LogAnalyticsQueryPackQueryPropertiesRelated;
 import java.io.IOException;
 import java.time.OffsetDateTime;
@@ -20,29 +20,29 @@ import java.util.Map;
  * A Log Analytics QueryPack-Query definition.
  */
 @Fluent
-public final class LogAnalyticsQueryPackQueryInner extends AzureResourceProperties {
+public final class LogAnalyticsQueryPackQueryInner extends ProxyResource {
     /*
      * Properties that define an Log Analytics QueryPack-Query resource.
      */
     private LogAnalyticsQueryPackQueryProperties innerProperties;
 
     /*
-     * Read only system data
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     private SystemData systemData;
 
     /*
-     * Azure resource type
+     * The type of the resource.
      */
     private String type;
 
     /*
-     * Azure resource name
+     * The name of the resource.
      */
     private String name;
 
     /*
-     * Azure resource Id
+     * Fully qualified resource Id for the resource.
      */
     private String id;
 
@@ -62,17 +62,16 @@ public final class LogAnalyticsQueryPackQueryInner extends AzureResourceProperti
     }
 
     /**
-     * Get the systemData property: Read only system data.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
      * @return the systemData value.
      */
-    @Override
     public SystemData systemData() {
         return this.systemData;
     }
 
     /**
-     * Get the type property: Azure resource type.
+     * Get the type property: The type of the resource.
      * 
      * @return the type value.
      */
@@ -82,7 +81,7 @@ public final class LogAnalyticsQueryPackQueryInner extends AzureResourceProperti
     }
 
     /**
-     * Get the name property: Azure resource name.
+     * Get the name property: The name of the resource.
      * 
      * @return the name value.
      */
@@ -92,7 +91,7 @@ public final class LogAnalyticsQueryPackQueryInner extends AzureResourceProperti
     }
 
     /**
-     * Get the id property: Azure resource Id.
+     * Get the id property: Fully qualified resource Id for the resource.
      * 
      * @return the id value.
      */
@@ -280,7 +279,6 @@ public final class LogAnalyticsQueryPackQueryInner extends AzureResourceProperti
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
@@ -303,6 +301,7 @@ public final class LogAnalyticsQueryPackQueryInner extends AzureResourceProperti
      * @param jsonReader The JsonReader being read.
      * @return An instance of LogAnalyticsQueryPackQueryInner if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the LogAnalyticsQueryPackQueryInner.
      */
     public static LogAnalyticsQueryPackQueryInner fromJson(JsonReader jsonReader) throws IOException {
@@ -319,11 +318,11 @@ public final class LogAnalyticsQueryPackQueryInner extends AzureResourceProperti
                     deserializedLogAnalyticsQueryPackQueryInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedLogAnalyticsQueryPackQueryInner.type = reader.getString();
-                } else if ("systemData".equals(fieldName)) {
-                    deserializedLogAnalyticsQueryPackQueryInner.systemData = SystemData.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {
                     deserializedLogAnalyticsQueryPackQueryInner.innerProperties
                         = LogAnalyticsQueryPackQueryProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedLogAnalyticsQueryPackQueryInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

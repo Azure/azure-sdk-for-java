@@ -60,7 +60,7 @@ public final class WorkflowVersionsClientImpl implements WorkflowVersionsClient 
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "WebSiteManagementCli")
+    @ServiceInterface(name = "WebSiteManagementClientWorkflowVersions")
     public interface WorkflowVersionsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/versions")
@@ -124,10 +124,11 @@ public final class WorkflowVersionsClientImpl implements WorkflowVersionsClient 
         if (workflowName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workflowName is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, name, workflowName, this.client.getApiVersion(), top, accept, context))
+                resourceGroupName, name, workflowName, apiVersion, top, accept, context))
             .<PagedResponse<WorkflowVersionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -167,11 +168,12 @@ public final class WorkflowVersionsClientImpl implements WorkflowVersionsClient 
         if (workflowName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workflowName is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, name, workflowName,
-                this.client.getApiVersion(), top, accept, context)
+                apiVersion, top, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -305,10 +307,11 @@ public final class WorkflowVersionsClientImpl implements WorkflowVersionsClient 
         if (versionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter versionId is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, name, workflowName, versionId, this.client.getApiVersion(), accept, context))
+                resourceGroupName, name, workflowName, versionId, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -349,10 +352,11 @@ public final class WorkflowVersionsClientImpl implements WorkflowVersionsClient 
         if (versionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter versionId is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, name,
-            workflowName, versionId, this.client.getApiVersion(), accept, context);
+            workflowName, versionId, apiVersion, accept, context);
     }
 
     /**
@@ -417,7 +421,7 @@ public final class WorkflowVersionsClientImpl implements WorkflowVersionsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of workflow versions along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of workflow versions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkflowVersionInner>> listNextSinglePageAsync(String nextLink) {
@@ -443,7 +447,7 @@ public final class WorkflowVersionsClientImpl implements WorkflowVersionsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of workflow versions along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of workflow versions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkflowVersionInner>> listNextSinglePageAsync(String nextLink, Context context) {

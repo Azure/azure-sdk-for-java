@@ -60,7 +60,7 @@ public final class RestorableDatabaseAccountsClientImpl implements RestorableDat
      * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "CosmosDBManagementCl")
+    @ServiceInterface(name = "CosmosDBManagementClientRestorableDatabaseAccounts")
     public interface RestorableDatabaseAccountsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts")

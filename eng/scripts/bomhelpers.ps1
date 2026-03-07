@@ -174,6 +174,13 @@ function GetChangeLogContentFromMessage($ContentMessage) {
 function GetChangeLogEntryForPatch($NewDependencyNameToVersion, $OldDependencyNameToVersion) {
   $content = GetDependencyUpgradeChangeLogMessage -NewDependencyNameToVersion $NewDependencyNameToVersion -OldDependencyNameToVersion $OldDependencyNameToVersion
 
+  # Check if there are any actual dependency upgrades (filter out empty strings)
+  $actualUpgrades = $content | Where-Object { -not [string]::IsNullOrWhiteSpace($_) }
+  if ($actualUpgrades.Count -eq 0) {
+    # No specific dependency changes detected, add a generic message
+    $content = @("- Upgraded core dependencies.", "")
+  }
+
   $content = GetChangeLogContentFromMessage($content)
   return $content
 }
@@ -303,9 +310,9 @@ function GeneratePatch($PatchInfo, [string]$BranchName, [string]$RemoteName, [st
     Write-Output "PatchVersion is: $patchVersion"
   }
 
-  $releaseTag = "$($artifactId)_$($releaseVersion)"
+  $releaseTag = "$($GroupId)+$($artifactId)_$($releaseVersion)"
   if (!$currentPomFileVersion -or !$artifactDirPath -or !$changelogPath) {
-    $pkgProperties = [PackageProps](Get-PkgProperties -PackageName $artifactId -ServiceDirectory $serviceDirectoryName)
+    $pkgProperties = [PackageProps](Get-PkgProperties -PackageName $artifactId -ServiceDirectory $serviceDirectoryName -GroupId $GroupId)
     $artifactDirPath = $pkgProperties.DirectoryPath
     $currentPomFileVersion = $pkgProperties.Version
     $changelogPath = $pkgProperties.ChangeLogPath
@@ -323,12 +330,22 @@ function GeneratePatch($PatchInfo, [string]$BranchName, [string]$RemoteName, [st
     $cmdOutput = git fetch $RemoteName $releaseTag
 
     if ($LASTEXITCODE -ne 0) {
-      LogError "Could not restore the tags for release tag $releaseTag"
-      exit $LASTEXITCODE
+      # Fall back to old tag format: <artifactId>_<version>
+      $oldReleaseTag = "$($artifactId)_$($releaseVersion)"
+      Write-Output "Failed to fetch new tag format. Trying old tag format: $oldReleaseTag"
+      Write-Host "git fetch $RemoteName $oldReleaseTag"
+      $cmdOutput = git fetch $RemoteName $oldReleaseTag
+      
+      if ($LASTEXITCODE -ne 0) {
+        LogError "Could not restore the tags for release tag $releaseTag or $oldReleaseTag"
+        exit $LASTEXITCODE
+      }
+      
+      $releaseTag = $oldReleaseTag
     }
 
-    Write-Host "git restore --source $releaseTag -W -S $artifactDirPath"
-    $cmdOutput = git restore --source $releaseTag -W -S $artifactDirPath
+    Write-Host "git restore --source $releaseTag -W -S -- $artifactDirPath"
+    $cmdOutput = git restore --source $releaseTag -W -S -- $artifactDirPath
     if ($LASTEXITCODE -ne 0) {
       LogError "Could not reset sources for $artifactId to the release version $releaseVersion"
       exit $LASTEXITCODE

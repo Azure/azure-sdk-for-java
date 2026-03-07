@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * workbookNamedItem.
+ * Represents a workbook named item.
  */
 @Fluent
 public final class MicrosoftGraphWorkbookNamedItem extends MicrosoftGraphEntity {

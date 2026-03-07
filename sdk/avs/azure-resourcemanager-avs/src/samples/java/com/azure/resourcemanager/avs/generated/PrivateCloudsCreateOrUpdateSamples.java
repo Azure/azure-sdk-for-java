@@ -11,6 +11,8 @@ import com.azure.resourcemanager.avs.models.ManagementCluster;
 import com.azure.resourcemanager.avs.models.PrivateCloudIdentity;
 import com.azure.resourcemanager.avs.models.ResourceIdentityType;
 import com.azure.resourcemanager.avs.models.Sku;
+import com.azure.resourcemanager.avs.models.Vcf5License;
+import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,7 +22,7 @@ import java.util.Map;
  */
 public final class PrivateCloudsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2024-09-01/PrivateClouds_CreateOrUpdate.json
+     * x-ms-original-file: 2025-09-01/PrivateClouds_CreateOrUpdate.json
      */
     /**
      * Sample code: PrivateClouds_CreateOrUpdate.
@@ -37,11 +39,16 @@ public final class PrivateCloudsCreateOrUpdateSamples {
             .withIdentity(new PrivateCloudIdentity().withType(ResourceIdentityType.SYSTEM_ASSIGNED))
             .withManagementCluster(new ManagementCluster().withClusterSize(4))
             .withNetworkBlock("192.168.48.0/22")
+            .withVcfLicense(new Vcf5License().withLicenseKey("fakeTokenPlaceholder")
+                .withCores(16)
+                .withEndDate(OffsetDateTime.parse("2025-12-31T23:59:59Z"))
+                .withBroadcomSiteId("123456")
+                .withBroadcomContractNumber("123456"))
             .create();
     }
 
     /*
-     * x-ms-original-file: 2024-09-01/PrivateClouds_CreateOrUpdate_StretchedZones.json
+     * x-ms-original-file: 2025-09-01/PrivateClouds_CreateOrUpdate_StretchedZones.json
      */
     /**
      * Sample code: PrivateClouds_CreateOrUpdate_StretchedZones.
@@ -58,11 +65,16 @@ public final class PrivateCloudsCreateOrUpdateSamples {
             .withZones(Arrays.asList("1", "2"))
             .withManagementCluster(new ManagementCluster().withClusterSize(4))
             .withNetworkBlock("192.168.48.0/22")
+            .withVcfLicense(new Vcf5License().withLicenseKey("fakeTokenPlaceholder")
+                .withCores(16)
+                .withEndDate(OffsetDateTime.parse("2025-12-31T23:59:59Z"))
+                .withBroadcomSiteId("123456")
+                .withBroadcomContractNumber("123456"))
             .create();
     }
 
     /*
-     * x-ms-original-file: 2024-09-01/PrivateClouds_CreateOrUpdate_FleetNative.json
+     * x-ms-original-file: 2025-09-01/PrivateClouds_CreateOrUpdate_FleetNative.json
      */
     /**
      * Sample code: PrivateClouds_CreateOrUpdate_FleetNative.
@@ -81,11 +93,16 @@ public final class PrivateCloudsCreateOrUpdateSamples {
             .withVirtualNetworkId(
                 "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.Network/virtualNetworks/vnet")
             .withDnsZoneType(DnsZoneType.PRIVATE)
+            .withVcfLicense(new Vcf5License().withLicenseKey("fakeTokenPlaceholder")
+                .withCores(16)
+                .withEndDate(OffsetDateTime.parse("2025-12-31T23:59:59Z"))
+                .withBroadcomSiteId("123456")
+                .withBroadcomContractNumber("123456"))
             .create();
     }
 
     /*
-     * x-ms-original-file: 2024-09-01/PrivateClouds_CreateOrUpdate_Stretched.json
+     * x-ms-original-file: 2025-09-01/PrivateClouds_CreateOrUpdate_Stretched.json
      */
     /**
      * Sample code: PrivateClouds_CreateOrUpdate_Stretched.
@@ -104,6 +121,11 @@ public final class PrivateCloudsCreateOrUpdateSamples {
                 .withZone(1)
                 .withSecondaryZone(2))
             .withNetworkBlock("192.168.48.0/22")
+            .withVcfLicense(new Vcf5License().withLicenseKey("fakeTokenPlaceholder")
+                .withCores(16)
+                .withEndDate(OffsetDateTime.parse("2025-12-31T23:59:59Z"))
+                .withBroadcomSiteId("123456")
+                .withBroadcomContractNumber("123456"))
             .create();
     }
 

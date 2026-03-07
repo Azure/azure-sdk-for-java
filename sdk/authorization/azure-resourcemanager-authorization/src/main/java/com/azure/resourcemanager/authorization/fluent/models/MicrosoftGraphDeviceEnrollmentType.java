@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * deviceEnrollmentType.
+ * Represents a device enrollment type.
  */
 public final class MicrosoftGraphDeviceEnrollmentType extends ExpandableStringEnum<MicrosoftGraphDeviceEnrollmentType> {
     /**

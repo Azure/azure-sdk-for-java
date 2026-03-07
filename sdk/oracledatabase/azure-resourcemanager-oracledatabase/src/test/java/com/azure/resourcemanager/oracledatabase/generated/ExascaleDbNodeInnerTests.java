@@ -14,22 +14,22 @@ public final class ExascaleDbNodeInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExascaleDbNodeInner model = BinaryData.fromString(
-            "{\"properties\":{\"ocid\":\"usnfepgfewet\",\"additionalDetails\":\"yxgncxykxhdjhli\",\"cpuCoreCount\":926197609,\"dbNodeStorageSizeInGbs\":122728116,\"faultDomain\":\"h\",\"hostname\":\"po\",\"lifecycleState\":\"Starting\",\"maintenanceType\":\"cjzhqi\",\"memorySizeInGbs\":1212582847,\"softwareStorageSizeInGb\":1356255115,\"timeMaintenanceWindowEnd\":\"2021-01-04T20:39:53Z\",\"timeMaintenanceWindowStart\":\"2021-03-07T05:50:04Z\",\"totalCpuCoreCount\":612006389},\"id\":\"vftjuhd\",\"name\":\"azkmtgguwp\",\"type\":\"jrajcivm\"}")
+            "{\"properties\":{\"ocid\":\"rpetogebjoxsl\",\"additionalDetails\":\"nhl\",\"cpuCoreCount\":1064191938,\"dbNodeStorageSizeInGbs\":413797833,\"faultDomain\":\"kzjcjbtrgae\",\"hostname\":\"vibr\",\"lifecycleState\":\"Terminated\",\"maintenanceType\":\"toqbeitpkxztmoob\",\"memorySizeInGbs\":358908286,\"softwareStorageSizeInGb\":1257381047,\"timeMaintenanceWindowEnd\":\"2021-09-03T03:39:31Z\",\"timeMaintenanceWindowStart\":\"2020-12-22T14:36:49Z\",\"totalCpuCoreCount\":913661496},\"id\":\"pimaqxzhemjyh\",\"name\":\"hujswtwkozzwcul\",\"type\":\"bawpfajnjwltlwt\"}")
             .toObject(ExascaleDbNodeInner.class);
-        Assertions.assertEquals("usnfepgfewet", model.properties().ocid());
-        Assertions.assertEquals("yxgncxykxhdjhli", model.properties().additionalDetails());
-        Assertions.assertEquals(926197609, model.properties().cpuCoreCount());
-        Assertions.assertEquals(122728116, model.properties().dbNodeStorageSizeInGbs());
-        Assertions.assertEquals("h", model.properties().faultDomain());
-        Assertions.assertEquals("po", model.properties().hostname());
-        Assertions.assertEquals(DbNodeProvisioningState.STARTING, model.properties().lifecycleState());
-        Assertions.assertEquals("cjzhqi", model.properties().maintenanceType());
-        Assertions.assertEquals(1212582847, model.properties().memorySizeInGbs());
-        Assertions.assertEquals(1356255115, model.properties().softwareStorageSizeInGb());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-04T20:39:53Z"),
+        Assertions.assertEquals("rpetogebjoxsl", model.properties().ocid());
+        Assertions.assertEquals("nhl", model.properties().additionalDetails());
+        Assertions.assertEquals(1064191938, model.properties().cpuCoreCount());
+        Assertions.assertEquals(413797833, model.properties().dbNodeStorageSizeInGbs());
+        Assertions.assertEquals("kzjcjbtrgae", model.properties().faultDomain());
+        Assertions.assertEquals("vibr", model.properties().hostname());
+        Assertions.assertEquals(DbNodeProvisioningState.TERMINATED, model.properties().lifecycleState());
+        Assertions.assertEquals("toqbeitpkxztmoob", model.properties().maintenanceType());
+        Assertions.assertEquals(358908286, model.properties().memorySizeInGbs());
+        Assertions.assertEquals(1257381047, model.properties().softwareStorageSizeInGb());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-03T03:39:31Z"),
             model.properties().timeMaintenanceWindowEnd());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-07T05:50:04Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2020-12-22T14:36:49Z"),
             model.properties().timeMaintenanceWindowStart());
-        Assertions.assertEquals(612006389, model.properties().totalCpuCoreCount());
+        Assertions.assertEquals(913661496, model.properties().totalCpuCoreCount());
     }
 }

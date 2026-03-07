@@ -15,7 +15,7 @@ import java.util.Map;
 public final class L3NetworksCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/L3Networks_Create.
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-09-01/examples/L3Networks_Create.
      * json
      */
     /**

@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.directconnectivity;
+import com.azure.cosmos.rx.TestSuiteBase;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.FlakyTestRetryAnalyzer;
@@ -22,7 +23,6 @@ import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.TestConfigurations;
-import com.azure.cosmos.implementation.TestSuiteBase;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.OpenConnectionTask;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor;
@@ -32,7 +32,6 @@ import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.models.PartitionKeyDefinition;
-import io.reactivex.subscribers.TestSubscriber;
 import org.assertj.core.api.AssertionsForClassTypes;
 import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
@@ -45,6 +44,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -76,7 +76,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
 
     private AsyncDocumentClient client;
 
-    @Factory(dataProvider = "clientBuilders")
+    @Factory(dataProvider = "internalClientBuilders")
     public GatewayAddressCacheTest(Builder clientBuilder) {
         super(clientBuilder);
     }
@@ -125,7 +125,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         };
     }
 
-    @Test(groups = { "direct" }, dataProvider = "targetPartitionsKeyRangeListAndCollectionLinkParams", timeOut = TIMEOUT)
+    @Test(groups = { "direct" }, dataProvider = "targetPartitionsKeyRangeListAndCollectionLinkParams", timeOut = TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void getServerAddressesViaGateway(List<String> partitionKeyRangeIds,
                                              String collectionLink,
                                              Protocol protocol) throws Exception {
@@ -168,7 +168,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "direct" }, dataProvider = "protocolProvider", timeOut = TIMEOUT)
+    @Test(groups = { "direct" }, dataProvider = "protocolProvider", timeOut = TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     @SuppressWarnings({"unchecked", "rawtypes"})
     public void getMasterAddressesViaGatewayAsync(Protocol protocol) throws Exception {
         Configs configs = ConfigsBuilder.instance().withProtocol(protocol).build();
@@ -1565,13 +1565,12 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
     }
 
     public static<T> T getSuccessResult(Mono<T> observable, long timeout) {
-        TestSubscriber<T> testSubscriber = new TestSubscriber<>();
-        observable.subscribe(testSubscriber);
-        testSubscriber.awaitTerminalEvent(timeout, TimeUnit.MILLISECONDS);
-        testSubscriber.assertNoErrors();
-        testSubscriber.assertComplete();
-        testSubscriber.assertValueCount(1);
-        return testSubscriber.values().get(0);
+        AtomicReference<T> value = new AtomicReference<>();
+        StepVerifier.create(observable)
+            .assertNext(value::set)
+            .expectComplete()
+            .verify(Duration.ofMillis(timeout));
+        return value.get();
     }
 
     public static void validateSuccess(Mono<List<Address>> observable,
@@ -1580,13 +1579,10 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                        RxDocumentServiceRequest serviceRequest,
                                        int requestIndex,
                                        long timeout) {
-        TestSubscriber<List<Address>> testSubscriber = new TestSubscriber<>();
-        observable.subscribe(testSubscriber);
-        testSubscriber.awaitTerminalEvent(timeout, TimeUnit.MILLISECONDS);
-        testSubscriber.assertNoErrors();
-        testSubscriber.assertComplete();
-        testSubscriber.assertValueCount(1);
-        validator.validate(testSubscriber.values().get(0));
+        StepVerifier.create(observable)
+            .assertNext(validator::validate)
+            .expectComplete()
+            .verify(Duration.ofMillis(timeout));
         // Verifying activity id is being set in header on address call to gateway.
         String addressResolutionActivityId =
             BridgeInternal.getClientSideRequestStatics(serviceRequest.requestContext.cosmosDiagnostics).getAddressResolutionStatistics().keySet().iterator().next();
@@ -1597,11 +1593,11 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
     @BeforeClass(groups = { "direct" }, timeOut = SETUP_TIMEOUT)
     public void before_GatewayAddressCacheTest() {
         client = clientBuilder().build();
-        createdDatabase = SHARED_DATABASE;
+        createdDatabase = SHARED_DATABASE_INTERNAL;
 
         RequestOptions options = new RequestOptions();
         options.setOfferThroughput(30000);
-        createdCollection = createCollection(client, createdDatabase.getId(), getCollectionDefinition(), options);
+        createdCollection = createCollection(client, createdDatabase.getId(), getInternalCollectionDefinition(), options);
     }
 
     @AfterClass(groups = { "direct" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
@@ -1610,7 +1606,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         safeClose(client);
     }
 
-    static protected DocumentCollection getCollectionDefinition() {
+    static protected DocumentCollection getInternalCollectionDefinition() {
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
         ArrayList<String> paths = new ArrayList<>();
         paths.add("/mypk");

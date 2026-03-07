@@ -64,8 +64,8 @@ public final class BareMetalMachinePatchParameters implements JsonSerializable<B
     }
 
     /**
-     * Get the machineDetails property: The details provided by the customer during the creation of rack manifests
-     * that allows for custom data to be associated with this machine.
+     * Get the machineDetails property: The details provided by the customer during the creation of rack manifests that
+     * allows for custom data to be associated with this machine.
      * 
      * @return the machineDetails value.
      */
@@ -74,8 +74,8 @@ public final class BareMetalMachinePatchParameters implements JsonSerializable<B
     }
 
     /**
-     * Set the machineDetails property: The details provided by the customer during the creation of rack manifests
-     * that allows for custom data to be associated with this machine.
+     * Set the machineDetails property: The details provided by the customer during the creation of rack manifests that
+     * allows for custom data to be associated with this machine.
      * 
      * @param machineDetails the machineDetails value to set.
      * @return the BareMetalMachinePatchParameters object itself.

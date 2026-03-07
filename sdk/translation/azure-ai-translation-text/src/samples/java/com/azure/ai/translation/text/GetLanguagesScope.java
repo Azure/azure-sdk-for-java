@@ -33,7 +33,7 @@ public class GetLanguagesScope {
 
         System.out.println("Number of supported languages for translate operation: " + languages.getTranslation().size() + ".");
         System.out.println("Number of supported languages for transliterate operation: " + (languages.getTransliteration() == null ? 0 : languages.getTransliteration().size()) + ".");
-        System.out.println("Number of supported languages for dictionary operations: " + (languages.getDictionary() == null ? 0 : languages.getDictionary().size()) + ".");
+        System.out.println("Number of supported models for translate operation: " + languages.getModels().size() + ".");
 
         System.out.println("Translation Languages:");
 

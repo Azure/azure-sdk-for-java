@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * plannerGroup.
+ * Represents a planner group.
  */
 @Fluent
 public final class MicrosoftGraphPlannerGroup extends MicrosoftGraphEntity {

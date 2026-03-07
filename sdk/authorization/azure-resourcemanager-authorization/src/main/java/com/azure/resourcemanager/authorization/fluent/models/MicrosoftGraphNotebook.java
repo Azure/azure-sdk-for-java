@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * notebook.
+ * Represents a notebook.
  */
 @Fluent
 public final class MicrosoftGraphNotebook extends MicrosoftGraphOnenoteEntityHierarchyModel {

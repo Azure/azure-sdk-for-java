@@ -56,7 +56,7 @@ public class ReadFeedStoredProceduresTest extends TestSuiteBase {
     public void before_ReadFeedStoredProceduresTest() {
         client = getClientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
-        truncateCollection(createdCollection);
+        cleanUpContainer(createdCollection);
 
         for (int i = 0; i < 5; i++) {
             createdStoredProcedures.add(createStoredProcedures(createdCollection));

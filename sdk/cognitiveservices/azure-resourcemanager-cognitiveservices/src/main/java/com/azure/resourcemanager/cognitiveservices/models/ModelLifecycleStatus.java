@@ -37,6 +37,11 @@ public final class ModelLifecycleStatus extends ExpandableStringEnum<ModelLifecy
     public static final ModelLifecycleStatus DEPRECATED = fromString("Deprecated");
 
     /**
+     * Static value Legacy for ModelLifecycleStatus.
+     */
+    public static final ModelLifecycleStatus LEGACY = fromString("Legacy");
+
+    /**
      * Creates a new instance of ModelLifecycleStatus value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

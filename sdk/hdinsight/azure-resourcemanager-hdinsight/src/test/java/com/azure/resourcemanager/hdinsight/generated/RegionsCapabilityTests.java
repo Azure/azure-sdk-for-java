@@ -12,15 +12,15 @@ import org.junit.jupiter.api.Assertions;
 public final class RegionsCapabilityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RegionsCapability model = BinaryData.fromString("{\"available\":[\"dmovsm\",\"l\",\"wabm\",\"oefki\"]}")
+        RegionsCapability model = BinaryData.fromString("{\"available\":[\"nsj\",\"r\",\"tiagx\",\"dszue\"]}")
             .toObject(RegionsCapability.class);
-        Assertions.assertEquals("dmovsm", model.available().get(0));
+        Assertions.assertEquals("nsj", model.available().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RegionsCapability model = new RegionsCapability().withAvailable(Arrays.asList("dmovsm", "l", "wabm", "oefki"));
+        RegionsCapability model = new RegionsCapability().withAvailable(Arrays.asList("nsj", "r", "tiagx", "dszue"));
         model = BinaryData.fromObject(model).toObject(RegionsCapability.class);
-        Assertions.assertEquals("dmovsm", model.available().get(0));
+        Assertions.assertEquals("nsj", model.available().get(0));
     }
 }

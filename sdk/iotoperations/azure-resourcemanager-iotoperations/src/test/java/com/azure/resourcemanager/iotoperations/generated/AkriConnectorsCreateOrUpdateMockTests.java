@@ -24,7 +24,7 @@ public final class AkriConnectorsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\"},\"extendedLocation\":{\"name\":\"gcrpfbcun\",\"type\":\"CustomLocation\"},\"id\":\"cez\",\"name\":\"lfwyfwlwxjwetn\",\"type\":\"sihclafzvaylp\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"allocatedDevices\":[{\"deviceInboundEndpointName\":\"cqucwyhahnom\",\"deviceName\":\"rkywuhpsvfuu\"},{\"deviceInboundEndpointName\":\"utlwexxwla\",\"deviceName\":\"niexzsrzpgepq\"}],\"healthState\":\"Available\"},\"extendedLocation\":{\"name\":\"wwpgdakchzyvlixq\",\"type\":\"CustomLocation\"},\"id\":\"cxkjibnxmysuxswq\",\"name\":\"ntvlwijpsttexo\",\"type\":\"qpwcyyufmh\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,14 +34,14 @@ public final class AkriConnectorsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         AkriConnectorResource response = manager.akriConnectors()
-            .define("bcuiiz")
-            .withExistingAkriConnectorTemplate("apvu", "rylniofrzg", "zjedmstkvnlv")
+            .define("bccxjmonfdgn")
+            .withExistingAkriConnectorTemplate("xlpm", "erbdk", "lvidizozs")
             .withProperties(new AkriConnectorProperties())
             .withExtendedLocation(
-                new ExtendedLocation().withName("ansnvp").withType(ExtendedLocationType.CUSTOM_LOCATION))
+                new ExtendedLocation().withName("gsrboldforobw").withType(ExtendedLocationType.CUSTOM_LOCATION))
             .create();
 
-        Assertions.assertEquals("gcrpfbcun", response.extendedLocation().name());
+        Assertions.assertEquals("wwpgdakchzyvlixq", response.extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, response.extendedLocation().type());
     }
 }

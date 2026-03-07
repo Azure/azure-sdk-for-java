@@ -11,11 +11,18 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.monitor.models.DataCollectionEndpointConfigurationAccess;
+import com.azure.resourcemanager.monitor.models.DataCollectionEndpointFailoverConfiguration;
 import com.azure.resourcemanager.monitor.models.DataCollectionEndpointLogsIngestion;
+import com.azure.resourcemanager.monitor.models.DataCollectionEndpointMetadata;
+import com.azure.resourcemanager.monitor.models.DataCollectionEndpointMetricsIngestion;
 import com.azure.resourcemanager.monitor.models.DataCollectionEndpointNetworkAcls;
+import com.azure.resourcemanager.monitor.models.DataCollectionEndpointResourceIdentity;
+import com.azure.resourcemanager.monitor.models.DataCollectionEndpointResourceSku;
 import com.azure.resourcemanager.monitor.models.KnownDataCollectionEndpointProvisioningState;
 import com.azure.resourcemanager.monitor.models.KnownDataCollectionEndpointResourceKind;
+import com.azure.resourcemanager.monitor.models.PrivateLinkScopedResource;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -24,7 +31,7 @@ import java.util.Map;
 @Fluent
 public final class DataCollectionEndpointResourceInner extends Resource {
     /*
-     * Resource properties.
+     * The properties property.
      */
     private DataCollectionEndpointResourceProperties innerProperties;
 
@@ -32,6 +39,16 @@ public final class DataCollectionEndpointResourceInner extends Resource {
      * The kind of the resource.
      */
     private KnownDataCollectionEndpointResourceKind kind;
+
+    /*
+     * The SKU of the resource.
+     */
+    private DataCollectionEndpointResourceSku sku;
+
+    /*
+     * Managed service identity of the resource.
+     */
+    private DataCollectionEndpointResourceIdentity identity;
 
     /*
      * Resource entity tag (ETag).
@@ -44,9 +61,9 @@ public final class DataCollectionEndpointResourceInner extends Resource {
     private SystemData systemData;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * The type of the resource.
      */
-    private String id;
+    private String type;
 
     /*
      * The name of the resource.
@@ -54,9 +71,9 @@ public final class DataCollectionEndpointResourceInner extends Resource {
     private String name;
 
     /*
-     * The type of the resource.
+     * Fully qualified resource Id for the resource.
      */
-    private String type;
+    private String id;
 
     /**
      * Creates an instance of DataCollectionEndpointResourceInner class.
@@ -65,7 +82,7 @@ public final class DataCollectionEndpointResourceInner extends Resource {
     }
 
     /**
-     * Get the innerProperties property: Resource properties.
+     * Get the innerProperties property: The properties property.
      * 
      * @return the innerProperties value.
      */
@@ -94,6 +111,46 @@ public final class DataCollectionEndpointResourceInner extends Resource {
     }
 
     /**
+     * Get the sku property: The SKU of the resource.
+     * 
+     * @return the sku value.
+     */
+    public DataCollectionEndpointResourceSku sku() {
+        return this.sku;
+    }
+
+    /**
+     * Set the sku property: The SKU of the resource.
+     * 
+     * @param sku the sku value to set.
+     * @return the DataCollectionEndpointResourceInner object itself.
+     */
+    public DataCollectionEndpointResourceInner withSku(DataCollectionEndpointResourceSku sku) {
+        this.sku = sku;
+        return this;
+    }
+
+    /**
+     * Get the identity property: Managed service identity of the resource.
+     * 
+     * @return the identity value.
+     */
+    public DataCollectionEndpointResourceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Managed service identity of the resource.
+     * 
+     * @param identity the identity value to set.
+     * @return the DataCollectionEndpointResourceInner object itself.
+     */
+    public DataCollectionEndpointResourceInner withIdentity(DataCollectionEndpointResourceIdentity identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
      * Get the etag property: Resource entity tag (ETag).
      * 
      * @return the etag value.
@@ -112,13 +169,13 @@ public final class DataCollectionEndpointResourceInner extends Resource {
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the type property: The type of the resource.
      * 
-     * @return the id value.
+     * @return the type value.
      */
     @Override
-    public String id() {
-        return this.id;
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -132,13 +189,13 @@ public final class DataCollectionEndpointResourceInner extends Resource {
     }
 
     /**
-     * Get the type property: The type of the resource.
+     * Get the id property: Fully qualified resource Id for the resource.
      * 
-     * @return the type value.
+     * @return the id value.
      */
     @Override
-    public String type() {
-        return this.type;
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -255,6 +312,30 @@ public final class DataCollectionEndpointResourceInner extends Resource {
     }
 
     /**
+     * Get the metricsIngestion property: The endpoint used by clients to ingest metrics.
+     * 
+     * @return the metricsIngestion value.
+     */
+    public DataCollectionEndpointMetricsIngestion metricsIngestion() {
+        return this.innerProperties() == null ? null : this.innerProperties().metricsIngestion();
+    }
+
+    /**
+     * Set the metricsIngestion property: The endpoint used by clients to ingest metrics.
+     * 
+     * @param metricsIngestion the metricsIngestion value to set.
+     * @return the DataCollectionEndpointResourceInner object itself.
+     */
+    public DataCollectionEndpointResourceInner
+        withMetricsIngestion(DataCollectionEndpointMetricsIngestion metricsIngestion) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DataCollectionEndpointResourceProperties();
+        }
+        this.innerProperties().withMetricsIngestion(metricsIngestion);
+        return this;
+    }
+
+    /**
      * Get the networkAcls property: Network access control rules for the endpoints.
      * 
      * @return the networkAcls value.
@@ -287,6 +368,36 @@ public final class DataCollectionEndpointResourceInner extends Resource {
     }
 
     /**
+     * Get the privateLinkScopedResources property: List of Azure Monitor Private Link Scope Resources to which this
+     * data collection endpoint resource is associated. This property is READ-ONLY.
+     * 
+     * @return the privateLinkScopedResources value.
+     */
+    public List<PrivateLinkScopedResource> privateLinkScopedResources() {
+        return this.innerProperties() == null ? null : this.innerProperties().privateLinkScopedResources();
+    }
+
+    /**
+     * Get the failoverConfiguration property: Metadata for the resource. This property can only be updated by Log
+     * Analytics Control Plane for Data Collection Endpoint with Log Analytics Destination.
+     * 
+     * @return the failoverConfiguration value.
+     */
+    public DataCollectionEndpointFailoverConfiguration failoverConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().failoverConfiguration();
+    }
+
+    /**
+     * Get the metadata property: Metadata for the resource. This property can only be updated by Log Analytics Control
+     * Plane for Data Collection Endpoint with Log Analytics Destination.
+     * 
+     * @return the metadata value.
+     */
+    public DataCollectionEndpointMetadata metadata() {
+        return this.innerProperties() == null ? null : this.innerProperties().metadata();
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -294,6 +405,12 @@ public final class DataCollectionEndpointResourceInner extends Resource {
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
+        }
+        if (sku() != null) {
+            sku().validate();
+        }
+        if (identity() != null) {
+            identity().validate();
         }
     }
 
@@ -307,6 +424,8 @@ public final class DataCollectionEndpointResourceInner extends Resource {
         jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("properties", this.innerProperties);
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeJsonField("identity", this.identity);
         return jsonWriter.writeEndObject();
     }
 
@@ -344,6 +463,12 @@ public final class DataCollectionEndpointResourceInner extends Resource {
                 } else if ("kind".equals(fieldName)) {
                     deserializedDataCollectionEndpointResourceInner.kind
                         = KnownDataCollectionEndpointResourceKind.fromString(reader.getString());
+                } else if ("sku".equals(fieldName)) {
+                    deserializedDataCollectionEndpointResourceInner.sku
+                        = DataCollectionEndpointResourceSku.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedDataCollectionEndpointResourceInner.identity
+                        = DataCollectionEndpointResourceIdentity.fromJson(reader);
                 } else if ("etag".equals(fieldName)) {
                     deserializedDataCollectionEndpointResourceInner.etag = reader.getString();
                 } else if ("systemData".equals(fieldName)) {

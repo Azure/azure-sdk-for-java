@@ -14,27 +14,27 @@ public final class ColumnTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Column model = BinaryData.fromString(
-            "{\"name\":\"q\",\"type\":\"dateTime\",\"dataTypeHint\":\"guid\",\"displayName\":\"jb\",\"description\":\"gaehvvibrxjjst\",\"isDefaultDisplay\":false,\"isHidden\":false}")
+            "{\"name\":\"pikpz\",\"type\":\"real\",\"dataTypeHint\":\"uri\",\"displayName\":\"nlfzxiavrmbz\",\"description\":\"okixrjqcir\",\"isDefaultDisplay\":false,\"isHidden\":true}")
             .toObject(Column.class);
-        Assertions.assertEquals("q", model.name());
-        Assertions.assertEquals(ColumnTypeEnum.DATE_TIME, model.type());
-        Assertions.assertEquals(ColumnDataTypeHintEnum.GUID, model.dataTypeHint());
-        Assertions.assertEquals("jb", model.displayName());
-        Assertions.assertEquals("gaehvvibrxjjst", model.description());
+        Assertions.assertEquals("pikpz", model.name());
+        Assertions.assertEquals(ColumnTypeEnum.REAL, model.type());
+        Assertions.assertEquals(ColumnDataTypeHintEnum.URI, model.dataTypeHint());
+        Assertions.assertEquals("nlfzxiavrmbz", model.displayName());
+        Assertions.assertEquals("okixrjqcir", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Column model = new Column().withName("q")
-            .withType(ColumnTypeEnum.DATE_TIME)
-            .withDataTypeHint(ColumnDataTypeHintEnum.GUID)
-            .withDisplayName("jb")
-            .withDescription("gaehvvibrxjjst");
+        Column model = new Column().withName("pikpz")
+            .withType(ColumnTypeEnum.REAL)
+            .withDataTypeHint(ColumnDataTypeHintEnum.URI)
+            .withDisplayName("nlfzxiavrmbz")
+            .withDescription("okixrjqcir");
         model = BinaryData.fromObject(model).toObject(Column.class);
-        Assertions.assertEquals("q", model.name());
-        Assertions.assertEquals(ColumnTypeEnum.DATE_TIME, model.type());
-        Assertions.assertEquals(ColumnDataTypeHintEnum.GUID, model.dataTypeHint());
-        Assertions.assertEquals("jb", model.displayName());
-        Assertions.assertEquals("gaehvvibrxjjst", model.description());
+        Assertions.assertEquals("pikpz", model.name());
+        Assertions.assertEquals(ColumnTypeEnum.REAL, model.type());
+        Assertions.assertEquals(ColumnDataTypeHintEnum.URI, model.dataTypeHint());
+        Assertions.assertEquals("nlfzxiavrmbz", model.displayName());
+        Assertions.assertEquals("okixrjqcir", model.description());
     }
 }

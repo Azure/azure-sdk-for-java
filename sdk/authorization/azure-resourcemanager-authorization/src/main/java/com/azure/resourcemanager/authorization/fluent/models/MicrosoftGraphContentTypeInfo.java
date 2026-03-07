@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * contentTypeInfo.
+ * Represents content type info.
  */
 @Fluent
 public final class MicrosoftGraphContentTypeInfo implements JsonSerializable<MicrosoftGraphContentTypeInfo> {

@@ -304,4 +304,25 @@ public interface CosmosDBManagementClient {
      * @return the ServicesClient object.
      */
     ServicesClient getServices();
+
+    /**
+     * Gets the FleetsClient object to access its operations.
+     * 
+     * @return the FleetsClient object.
+     */
+    FleetsClient getFleets();
+
+    /**
+     * Gets the FleetspacesClient object to access its operations.
+     * 
+     * @return the FleetspacesClient object.
+     */
+    FleetspacesClient getFleetspaces();
+
+    /**
+     * Gets the FleetspaceAccountsClient object to access its operations.
+     * 
+     * @return the FleetspaceAccountsClient object.
+     */
+    FleetspaceAccountsClient getFleetspaceAccounts();
 }

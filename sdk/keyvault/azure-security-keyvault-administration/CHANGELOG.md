@@ -8,6 +8,29 @@
 
 ### Bugs Fixed
 
+- Fixed an issue where certain `HttpResponseException.getResponse()` calls could cause a `NullPointerException`. ([#47801](https://github.com/Azure/azure-sdk-for-java/issues/47801))
+
+### Other Changes
+
+## 4.7.5 (2026-01-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.2` to version `1.16.3`.
+- Upgraded `azure-json` from `1.5.0` to version `1.5.1`.
+- Upgraded `azure-core` from `1.57.0` to version `1.57.1`.
+
+## 4.7.4 (2025-10-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.56.1` to version `1.57.0`.
+- Upgraded `azure-core-http-netty` from `1.16.1` to version `1.16.2`.
+
 ## 4.7.3 (2025-09-25)
 
 ### Other Changes

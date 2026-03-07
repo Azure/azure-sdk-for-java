@@ -33,6 +33,11 @@ public final class KnownDataCollectionEndpointProvisioningState
     public static final KnownDataCollectionEndpointProvisioningState SUCCEEDED = fromString("Succeeded");
 
     /**
+     * Static value Canceled for KnownDataCollectionEndpointProvisioningState.
+     */
+    public static final KnownDataCollectionEndpointProvisioningState CANCELED = fromString("Canceled");
+
+    /**
      * Static value Failed for KnownDataCollectionEndpointProvisioningState.
      */
     public static final KnownDataCollectionEndpointProvisioningState FAILED = fromString("Failed");

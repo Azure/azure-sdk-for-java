@@ -15,30 +15,29 @@ public final class OutboundEndpointsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OutboundEndpoints model = BinaryData.fromString(
-            "{\"assigned\":{\"hcohfwdsjnk\":{\"endpointType\":\"uvxzxclvi\",\"address\":\"hhqzonosgg\"},\"pnppfuf\":{\"endpointType\":\"jutiiswacff\",\"address\":\"dkzzewkfvhqcrail\"},\"bcvkcvqvpkeq\":{\"endpointType\":\"wdmhdlxyjrxs\",\"address\":\"gafcnihgwqapnedg\"}},\"unassigned\":{\"opcjwvnhd\":{\"endpointType\":\"rhvoods\",\"address\":\"tbobz\"},\"rpkhjwn\":{\"endpointType\":\"wmgxcxrsl\",\"address\":\"mutwuoe\"}}}")
+            "{\"assigned\":{\"osphyoul\":{\"endpointType\":\"enwabfatk\",\"address\":\"ddxbjhwuaanoz\"}},\"unassigned\":{\"tx\":{\"endpointType\":\"xagl\",\"address\":\"vimjwos\"},\"gge\":{\"endpointType\":\"cskfcktqumiekk\",\"address\":\"zzikhlyfjhdg\"},\"a\":{\"endpointType\":\"unygaeqid\",\"address\":\"qfatpxllrxcyjm\"},\"xkgymareqnajxqu\":{\"endpointType\":\"uvarmywdmjsjq\",\"address\":\"jhhyxxrwlycoduhp\"}}}")
             .toObject(OutboundEndpoints.class);
-        Assertions.assertEquals("uvxzxclvi", model.assigned().get("hcohfwdsjnk").endpointType());
-        Assertions.assertEquals("hhqzonosgg", model.assigned().get("hcohfwdsjnk").address());
-        Assertions.assertEquals("rhvoods", model.unassigned().get("opcjwvnhd").endpointType());
-        Assertions.assertEquals("tbobz", model.unassigned().get("opcjwvnhd").address());
+        Assertions.assertEquals("enwabfatk", model.assigned().get("osphyoul").endpointType());
+        Assertions.assertEquals("ddxbjhwuaanoz", model.assigned().get("osphyoul").address());
+        Assertions.assertEquals("xagl", model.unassigned().get("tx").endpointType());
+        Assertions.assertEquals("vimjwos", model.unassigned().get("tx").address());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         OutboundEndpoints model = new OutboundEndpoints()
-            .withAssigned(mapOf("hcohfwdsjnk",
-                new DeviceMessagingEndpoint().withEndpointType("uvxzxclvi").withAddress("hhqzonosgg"), "pnppfuf",
-                new DeviceMessagingEndpoint().withEndpointType("jutiiswacff").withAddress("dkzzewkfvhqcrail"),
-                "bcvkcvqvpkeq",
-                new DeviceMessagingEndpoint().withEndpointType("wdmhdlxyjrxs").withAddress("gafcnihgwqapnedg")))
-            .withUnassigned(
-                mapOf("opcjwvnhd", new DeviceMessagingEndpoint().withEndpointType("rhvoods").withAddress("tbobz"),
-                    "rpkhjwn", new DeviceMessagingEndpoint().withEndpointType("wmgxcxrsl").withAddress("mutwuoe")));
+            .withAssigned(mapOf("osphyoul",
+                new DeviceMessagingEndpoint().withEndpointType("enwabfatk").withAddress("ddxbjhwuaanoz")))
+            .withUnassigned(mapOf("tx", new DeviceMessagingEndpoint().withEndpointType("xagl").withAddress("vimjwos"),
+                "gge", new DeviceMessagingEndpoint().withEndpointType("cskfcktqumiekk").withAddress("zzikhlyfjhdg"),
+                "a", new DeviceMessagingEndpoint().withEndpointType("unygaeqid").withAddress("qfatpxllrxcyjm"),
+                "xkgymareqnajxqu",
+                new DeviceMessagingEndpoint().withEndpointType("uvarmywdmjsjq").withAddress("jhhyxxrwlycoduhp")));
         model = BinaryData.fromObject(model).toObject(OutboundEndpoints.class);
-        Assertions.assertEquals("uvxzxclvi", model.assigned().get("hcohfwdsjnk").endpointType());
-        Assertions.assertEquals("hhqzonosgg", model.assigned().get("hcohfwdsjnk").address());
-        Assertions.assertEquals("rhvoods", model.unassigned().get("opcjwvnhd").endpointType());
-        Assertions.assertEquals("tbobz", model.unassigned().get("opcjwvnhd").address());
+        Assertions.assertEquals("enwabfatk", model.assigned().get("osphyoul").endpointType());
+        Assertions.assertEquals("ddxbjhwuaanoz", model.assigned().get("osphyoul").address());
+        Assertions.assertEquals("xagl", model.unassigned().get("tx").endpointType());
+        Assertions.assertEquals("vimjwos", model.unassigned().get("tx").address());
     }
 
     // Use "Map.of" if available

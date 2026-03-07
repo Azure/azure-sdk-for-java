@@ -12,14 +12,14 @@ public final class WorkspacePurgeResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkspacePurgeResponseInner model
-            = BinaryData.fromString("{\"operationId\":\"hky\"}").toObject(WorkspacePurgeResponseInner.class);
-        Assertions.assertEquals("hky", model.operationId());
+            = BinaryData.fromString("{\"operationId\":\"y\"}").toObject(WorkspacePurgeResponseInner.class);
+        Assertions.assertEquals("y", model.operationId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkspacePurgeResponseInner model = new WorkspacePurgeResponseInner().withOperationId("hky");
+        WorkspacePurgeResponseInner model = new WorkspacePurgeResponseInner().withOperationId("y");
         model = BinaryData.fromObject(model).toObject(WorkspacePurgeResponseInner.class);
-        Assertions.assertEquals("hky", model.operationId());
+        Assertions.assertEquals("y", model.operationId());
     }
 }

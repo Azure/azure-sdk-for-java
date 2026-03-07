@@ -16,54 +16,54 @@ public final class NetworkSecurityRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkSecurityRule model = BinaryData.fromString(
-            "{\"name\":\"afnn\",\"description\":\"pichkoymkcdy\",\"protocol\":\"http\",\"sourceAddressPrefixes\":[\"kpw\",\"reqnovvqfov\",\"jxywsuws\",\"rsndsytgadgvra\"],\"destinationAddressPrefixes\":[\"neqn\"],\"sourcePortRanges\":[\"rwlqu\",\"ijfqkacewiipfp\",\"bjibwwiftohq\",\"vpuvks\"],\"destinationPortRanges\":[\"saknynfsyn\"],\"sourceAddressPrefix\":\"ph\",\"destinationAddressPrefix\":\"pxodlqiyntorzih\",\"sourcePortRange\":\"osjswsr\",\"destinationPortRange\":\"lyzrpzbchckqqzqi\",\"access\":\"allow\",\"priority\":1257157038,\"direction\":\"outbound\"}")
+            "{\"name\":\"pkukghi\",\"description\":\"blxgwimf\",\"protocol\":\"esp\",\"sourceAddressPrefixes\":[\"j\",\"wmszkk\"],\"destinationAddressPrefixes\":[\"rey\",\"kzikfjawneaivxwc\"],\"sourcePortRanges\":[\"pcirelsfeaen\",\"abfatkl\",\"dxbjhwuaanozj\"],\"destinationPortRanges\":[\"hyoulpjr\"],\"sourceAddressPrefix\":\"ag\",\"destinationAddressPrefix\":\"vimjwos\",\"sourcePortRange\":\"xitc\",\"destinationPortRange\":\"fcktqumiekke\",\"access\":\"allow\",\"priority\":697538658,\"direction\":\"inbound\"}")
             .toObject(NetworkSecurityRule.class);
-        Assertions.assertEquals("afnn", model.name());
-        Assertions.assertEquals("pichkoymkcdy", model.description());
-        Assertions.assertEquals(NsgProtocol.HTTP, model.protocol());
-        Assertions.assertEquals("kpw", model.sourceAddressPrefixes().get(0));
-        Assertions.assertEquals("neqn", model.destinationAddressPrefixes().get(0));
-        Assertions.assertEquals("rwlqu", model.sourcePortRanges().get(0));
-        Assertions.assertEquals("saknynfsyn", model.destinationPortRanges().get(0));
-        Assertions.assertEquals("ph", model.sourceAddressPrefix());
-        Assertions.assertEquals("pxodlqiyntorzih", model.destinationAddressPrefix());
-        Assertions.assertEquals("osjswsr", model.sourcePortRange());
-        Assertions.assertEquals("lyzrpzbchckqqzqi", model.destinationPortRange());
+        Assertions.assertEquals("pkukghi", model.name());
+        Assertions.assertEquals("blxgwimf", model.description());
+        Assertions.assertEquals(NsgProtocol.ESP, model.protocol());
+        Assertions.assertEquals("j", model.sourceAddressPrefixes().get(0));
+        Assertions.assertEquals("rey", model.destinationAddressPrefixes().get(0));
+        Assertions.assertEquals("pcirelsfeaen", model.sourcePortRanges().get(0));
+        Assertions.assertEquals("hyoulpjr", model.destinationPortRanges().get(0));
+        Assertions.assertEquals("ag", model.sourceAddressPrefix());
+        Assertions.assertEquals("vimjwos", model.destinationAddressPrefix());
+        Assertions.assertEquals("xitc", model.sourcePortRange());
+        Assertions.assertEquals("fcktqumiekke", model.destinationPortRange());
         Assertions.assertEquals(Access.ALLOW, model.access());
-        Assertions.assertEquals(1257157038, model.priority());
-        Assertions.assertEquals(Direction.OUTBOUND, model.direction());
+        Assertions.assertEquals(697538658, model.priority());
+        Assertions.assertEquals(Direction.INBOUND, model.direction());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkSecurityRule model = new NetworkSecurityRule().withName("afnn")
-            .withDescription("pichkoymkcdy")
-            .withProtocol(NsgProtocol.HTTP)
-            .withSourceAddressPrefixes(Arrays.asList("kpw", "reqnovvqfov", "jxywsuws", "rsndsytgadgvra"))
-            .withDestinationAddressPrefixes(Arrays.asList("neqn"))
-            .withSourcePortRanges(Arrays.asList("rwlqu", "ijfqkacewiipfp", "bjibwwiftohq", "vpuvks"))
-            .withDestinationPortRanges(Arrays.asList("saknynfsyn"))
-            .withSourceAddressPrefix("ph")
-            .withDestinationAddressPrefix("pxodlqiyntorzih")
-            .withSourcePortRange("osjswsr")
-            .withDestinationPortRange("lyzrpzbchckqqzqi")
+        NetworkSecurityRule model = new NetworkSecurityRule().withName("pkukghi")
+            .withDescription("blxgwimf")
+            .withProtocol(NsgProtocol.ESP)
+            .withSourceAddressPrefixes(Arrays.asList("j", "wmszkk"))
+            .withDestinationAddressPrefixes(Arrays.asList("rey", "kzikfjawneaivxwc"))
+            .withSourcePortRanges(Arrays.asList("pcirelsfeaen", "abfatkl", "dxbjhwuaanozj"))
+            .withDestinationPortRanges(Arrays.asList("hyoulpjr"))
+            .withSourceAddressPrefix("ag")
+            .withDestinationAddressPrefix("vimjwos")
+            .withSourcePortRange("xitc")
+            .withDestinationPortRange("fcktqumiekke")
             .withAccess(Access.ALLOW)
-            .withPriority(1257157038)
-            .withDirection(Direction.OUTBOUND);
+            .withPriority(697538658)
+            .withDirection(Direction.INBOUND);
         model = BinaryData.fromObject(model).toObject(NetworkSecurityRule.class);
-        Assertions.assertEquals("afnn", model.name());
-        Assertions.assertEquals("pichkoymkcdy", model.description());
-        Assertions.assertEquals(NsgProtocol.HTTP, model.protocol());
-        Assertions.assertEquals("kpw", model.sourceAddressPrefixes().get(0));
-        Assertions.assertEquals("neqn", model.destinationAddressPrefixes().get(0));
-        Assertions.assertEquals("rwlqu", model.sourcePortRanges().get(0));
-        Assertions.assertEquals("saknynfsyn", model.destinationPortRanges().get(0));
-        Assertions.assertEquals("ph", model.sourceAddressPrefix());
-        Assertions.assertEquals("pxodlqiyntorzih", model.destinationAddressPrefix());
-        Assertions.assertEquals("osjswsr", model.sourcePortRange());
-        Assertions.assertEquals("lyzrpzbchckqqzqi", model.destinationPortRange());
+        Assertions.assertEquals("pkukghi", model.name());
+        Assertions.assertEquals("blxgwimf", model.description());
+        Assertions.assertEquals(NsgProtocol.ESP, model.protocol());
+        Assertions.assertEquals("j", model.sourceAddressPrefixes().get(0));
+        Assertions.assertEquals("rey", model.destinationAddressPrefixes().get(0));
+        Assertions.assertEquals("pcirelsfeaen", model.sourcePortRanges().get(0));
+        Assertions.assertEquals("hyoulpjr", model.destinationPortRanges().get(0));
+        Assertions.assertEquals("ag", model.sourceAddressPrefix());
+        Assertions.assertEquals("vimjwos", model.destinationAddressPrefix());
+        Assertions.assertEquals("xitc", model.sourcePortRange());
+        Assertions.assertEquals("fcktqumiekke", model.destinationPortRange());
         Assertions.assertEquals(Access.ALLOW, model.access());
-        Assertions.assertEquals(1257157038, model.priority());
-        Assertions.assertEquals(Direction.OUTBOUND, model.direction());
+        Assertions.assertEquals(697538658, model.priority());
+        Assertions.assertEquals(Direction.INBOUND, model.direction());
     }
 }

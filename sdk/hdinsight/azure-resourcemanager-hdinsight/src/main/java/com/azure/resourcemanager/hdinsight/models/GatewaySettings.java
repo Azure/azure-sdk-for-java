@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.resourcemanager.hdinsight.fluent.models.GatewaySettingsInner;
+import java.util.List;
 
 /**
  * An immutable client-side representation of GatewaySettings.
@@ -31,6 +32,13 @@ public interface GatewaySettings {
      * @return the password value.
      */
     String password();
+
+    /**
+     * Gets the restAuthEntraUsers property: List of Entra users for gateway access.
+     * 
+     * @return the restAuthEntraUsers value.
+     */
+    List<EntraUserInfo> restAuthEntraUsers();
 
     /**
      * Gets the inner com.azure.resourcemanager.hdinsight.fluent.models.GatewaySettingsInner object.

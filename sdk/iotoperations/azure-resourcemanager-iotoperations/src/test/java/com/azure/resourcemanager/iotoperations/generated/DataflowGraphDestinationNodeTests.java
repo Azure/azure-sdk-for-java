@@ -5,40 +5,34 @@
 package com.azure.resourcemanager.iotoperations.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.iotoperations.models.DataflowGraphDestinationHeaderAction;
 import com.azure.resourcemanager.iotoperations.models.DataflowGraphDestinationNode;
 import com.azure.resourcemanager.iotoperations.models.DataflowGraphDestinationNodeSettings;
-import com.azure.resourcemanager.iotoperations.models.DataflowGraphDestinationSchemaSerializationFormat;
-import com.azure.resourcemanager.iotoperations.models.DataflowGraphDestinationSchemaSettings;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class DataflowGraphDestinationNodeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataflowGraphDestinationNode model = BinaryData.fromString(
-            "{\"nodeType\":\"Destination\",\"destinationSettings\":{\"endpointRef\":\"vglsbjjca\",\"dataDestination\":\"vxb\",\"outputSchemaSettings\":{\"serializationFormat\":\"Delta\",\"schemaRef\":\"dut\"}},\"name\":\"cormr\"}")
+            "{\"nodeType\":\"Destination\",\"destinationSettings\":{\"endpointRef\":\"ptramxj\",\"dataDestination\":\"zwl\",\"headers\":[{\"actionType\":\"DataflowGraphDestinationHeaderAction\"},{\"actionType\":\"DataflowGraphDestinationHeaderAction\"},{\"actionType\":\"DataflowGraphDestinationHeaderAction\"},{\"actionType\":\"DataflowGraphDestinationHeaderAction\"}]},\"name\":\"xuqlcvydypat\"}")
             .toObject(DataflowGraphDestinationNode.class);
-        Assertions.assertEquals("cormr", model.name());
-        Assertions.assertEquals("vglsbjjca", model.destinationSettings().endpointRef());
-        Assertions.assertEquals("vxb", model.destinationSettings().dataDestination());
-        Assertions.assertEquals(DataflowGraphDestinationSchemaSerializationFormat.DELTA,
-            model.destinationSettings().outputSchemaSettings().serializationFormat());
-        Assertions.assertEquals("dut", model.destinationSettings().outputSchemaSettings().schemaRef());
+        Assertions.assertEquals("xuqlcvydypat", model.name());
+        Assertions.assertEquals("ptramxj", model.destinationSettings().endpointRef());
+        Assertions.assertEquals("zwl", model.destinationSettings().dataDestination());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataflowGraphDestinationNode model = new DataflowGraphDestinationNode().withName("cormr")
-            .withDestinationSettings(new DataflowGraphDestinationNodeSettings().withEndpointRef("vglsbjjca")
-                .withDataDestination("vxb")
-                .withOutputSchemaSettings(new DataflowGraphDestinationSchemaSettings()
-                    .withSerializationFormat(DataflowGraphDestinationSchemaSerializationFormat.DELTA)
-                    .withSchemaRef("dut")));
+        DataflowGraphDestinationNode model = new DataflowGraphDestinationNode().withName("xuqlcvydypat")
+            .withDestinationSettings(new DataflowGraphDestinationNodeSettings().withEndpointRef("ptramxj")
+                .withDataDestination("zwl")
+                .withHeaders(Arrays.asList(new DataflowGraphDestinationHeaderAction(),
+                    new DataflowGraphDestinationHeaderAction(), new DataflowGraphDestinationHeaderAction(),
+                    new DataflowGraphDestinationHeaderAction())));
         model = BinaryData.fromObject(model).toObject(DataflowGraphDestinationNode.class);
-        Assertions.assertEquals("cormr", model.name());
-        Assertions.assertEquals("vglsbjjca", model.destinationSettings().endpointRef());
-        Assertions.assertEquals("vxb", model.destinationSettings().dataDestination());
-        Assertions.assertEquals(DataflowGraphDestinationSchemaSerializationFormat.DELTA,
-            model.destinationSettings().outputSchemaSettings().serializationFormat());
-        Assertions.assertEquals("dut", model.destinationSettings().outputSchemaSettings().schemaRef());
+        Assertions.assertEquals("xuqlcvydypat", model.name());
+        Assertions.assertEquals("ptramxj", model.destinationSettings().endpointRef());
+        Assertions.assertEquals("zwl", model.destinationSettings().dataDestination());
     }
 }

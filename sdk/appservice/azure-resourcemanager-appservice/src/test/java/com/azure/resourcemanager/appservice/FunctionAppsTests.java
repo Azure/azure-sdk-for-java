@@ -96,20 +96,21 @@ public class FunctionAppsTests extends AppServiceTest {
         }
     }
 
+    @Disabled("Policy disallows create storage account with share keys. Function app would fail on this.")
     @Test
     public void canCRUDFunctionApp() throws Exception {
         // Create with consumption
         FunctionApp functionApp1 = appServiceManager.functionApps()
             .define(webappName1)
-            .withRegion(Region.US_WEST)
+            .withRegion(Region.US_WEST3)
             .withNewResourceGroup(rgName1)
             .create();
         Assertions.assertNotNull(functionApp1);
-        Assertions.assertEquals(Region.US_WEST, functionApp1.region());
+        Assertions.assertEquals(Region.US_WEST3, functionApp1.region());
         Assertions.assertFalse(functionApp1.alwaysOn());
         AppServicePlan plan1 = appServiceManager.appServicePlans().getById(functionApp1.appServicePlanId());
         Assertions.assertNotNull(plan1);
-        Assertions.assertEquals(Region.US_WEST, plan1.region());
+        Assertions.assertEquals(Region.US_WEST3, plan1.region());
         Assertions.assertEquals(new PricingTier(SkuName.DYNAMIC.toString(), "Y1"), plan1.pricingTier());
 
         FunctionAppResource functionAppResource1 = getStorageAccount(storageManager, functionApp1);
@@ -132,19 +133,19 @@ public class FunctionAppsTests extends AppServiceTest {
             .withExistingStorageAccount(functionApp1.storageAccount())
             .create();
         Assertions.assertNotNull(functionApp2);
-        Assertions.assertEquals(Region.US_WEST, functionApp2.region());
+        Assertions.assertEquals(Region.US_WEST3, functionApp2.region());
         Assertions.assertFalse(functionApp2.alwaysOn());
 
         // Create with app service plan
         FunctionApp functionApp3 = appServiceManager.functionApps()
             .define(webappName3)
-            .withRegion(Region.US_WEST)
+            .withRegion(Region.US_WEST3)
             .withExistingResourceGroup(rgName2)
             .withNewAppServicePlan(PricingTier.BASIC_B1)
             .withExistingStorageAccount(functionApp1.storageAccount())
             .create();
         Assertions.assertNotNull(functionApp3);
-        Assertions.assertEquals(Region.US_WEST, functionApp3.region());
+        Assertions.assertEquals(Region.US_WEST3, functionApp3.region());
         Assertions.assertTrue(functionApp3.alwaysOn());
 
         // app service plan does not have this 2 settings
@@ -211,8 +212,9 @@ public class FunctionAppsTests extends AppServiceTest {
     }
 
     private static final String FUNCTION_APP_PACKAGE_URL
-        = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager/azure-resourcemanager-appservice/src/test/resources/java-functions.zip";
+        = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/appservice/azure-resourcemanager-appservice/src/test/resources/java-functions.zip";
 
+    @Disabled("Policy disallows create storage account with share keys. Function app would fail on this.")
     @Test
     public void canCRUDLinuxFunctionApp() throws Exception {
         rgName2 = null;
@@ -310,6 +312,7 @@ public class FunctionAppsTests extends AppServiceTest {
         Assertions.assertEquals(1, TestUtilities.getSize(functions));
     }
 
+    @Disabled("Policy disallows create storage account with share keys. Function app would fail on this.")
     @Test
     public void canCRUDLinuxFunctionAppPremium() {
         rgName2 = null;
@@ -370,6 +373,7 @@ public class FunctionAppsTests extends AppServiceTest {
         }
     }
 
+    @Disabled("Policy disallows create storage account with share keys. Function app would fail on this.")
     @Test
     public void canCRUDLinuxFunctionAppJava11() throws Exception {
         rgName2 = null;
@@ -393,6 +397,7 @@ public class FunctionAppsTests extends AppServiceTest {
         assertFunctionAppRunning(functionApp1);
     }
 
+    @Disabled("Policy disallows create storage account with share keys. Function app would fail on this.")
     @Test
     public void canCRUDLinuxFunctionAppJava17() throws Exception {
         rgName2 = null;
@@ -413,6 +418,7 @@ public class FunctionAppsTests extends AppServiceTest {
         assertFunctionAppRunning(functionApp1);
     }
 
+    @Disabled("Policy disallows create storage account with share keys. Function app would fail on this.")
     @Test
     public void canCreateAndUpdateFunctionAppWithContainerSize() {
         rgName2 = null;
@@ -421,7 +427,7 @@ public class FunctionAppsTests extends AppServiceTest {
 
         FunctionApp functionApp1 = appServiceManager.functionApps()
             .define(webappName1)
-            .withRegion(Region.US_WEST)
+            .withRegion(Region.US_WEST3)
             .withNewResourceGroup(rgName1)
             .withContainerSize(512)
             .create();
@@ -569,12 +575,13 @@ public class FunctionAppsTests extends AppServiceTest {
             .apply();
     }
 
+    @Disabled("Policy disallows create storage account with share keys. Function app would fail on this.")
     @Test
     public void canCreateAndUpdatePublicNetworkAccess() {
         webappName1 = generateRandomResourceName("java-function-", 20);
         FunctionApp functionApp = appServiceManager.functionApps()
             .define(webappName1)
-            .withRegion(Region.US_WEST)
+            .withRegion(Region.US_WEST3)
             .withNewResourceGroup(rgName1)
             .withContainerSize(512)
             .disablePublicNetworkAccess()

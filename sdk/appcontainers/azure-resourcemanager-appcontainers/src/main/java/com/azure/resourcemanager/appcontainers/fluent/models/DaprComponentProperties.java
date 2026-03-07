@@ -9,7 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.appcontainers.models.DaprComponentServiceBinding;
+import com.azure.resourcemanager.appcontainers.models.DaprComponentProvisioningState;
 import com.azure.resourcemanager.appcontainers.models.DaprMetadata;
 import com.azure.resourcemanager.appcontainers.models.Secret;
 import java.io.IOException;
@@ -19,7 +19,7 @@ import java.util.List;
  * Dapr Component resource specific properties.
  */
 @Fluent
-public class DaprComponentProperties implements JsonSerializable<DaprComponentProperties> {
+public final class DaprComponentProperties implements JsonSerializable<DaprComponentProperties> {
     /*
      * Component type
      */
@@ -61,9 +61,14 @@ public class DaprComponentProperties implements JsonSerializable<DaprComponentPr
     private List<String> scopes;
 
     /*
-     * List of container app services that are bound to the Dapr component
+     * Provisioning state of the Dapr Component.
      */
-    private List<DaprComponentServiceBinding> serviceComponentBind;
+    private DaprComponentProvisioningState provisioningState;
+
+    /*
+     * Any errors that occurred during deployment or deployment validation
+     */
+    private String deploymentErrors;
 
     /**
      * Creates an instance of DaprComponentProperties class.
@@ -232,23 +237,21 @@ public class DaprComponentProperties implements JsonSerializable<DaprComponentPr
     }
 
     /**
-     * Get the serviceComponentBind property: List of container app services that are bound to the Dapr component.
+     * Get the provisioningState property: Provisioning state of the Dapr Component.
      * 
-     * @return the serviceComponentBind value.
+     * @return the provisioningState value.
      */
-    public List<DaprComponentServiceBinding> serviceComponentBind() {
-        return this.serviceComponentBind;
+    public DaprComponentProvisioningState provisioningState() {
+        return this.provisioningState;
     }
 
     /**
-     * Set the serviceComponentBind property: List of container app services that are bound to the Dapr component.
+     * Get the deploymentErrors property: Any errors that occurred during deployment or deployment validation.
      * 
-     * @param serviceComponentBind the serviceComponentBind value to set.
-     * @return the DaprComponentProperties object itself.
+     * @return the deploymentErrors value.
      */
-    public DaprComponentProperties withServiceComponentBind(List<DaprComponentServiceBinding> serviceComponentBind) {
-        this.serviceComponentBind = serviceComponentBind;
-        return this;
+    public String deploymentErrors() {
+        return this.deploymentErrors;
     }
 
     /**
@@ -262,9 +265,6 @@ public class DaprComponentProperties implements JsonSerializable<DaprComponentPr
         }
         if (metadata() != null) {
             metadata().forEach(e -> e.validate());
-        }
-        if (serviceComponentBind() != null) {
-            serviceComponentBind().forEach(e -> e.validate());
         }
     }
 
@@ -282,8 +282,6 @@ public class DaprComponentProperties implements JsonSerializable<DaprComponentPr
         jsonWriter.writeStringField("secretStoreComponent", this.secretStoreComponent);
         jsonWriter.writeArrayField("metadata", this.metadata, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("scopes", this.scopes, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeArrayField("serviceComponentBind", this.serviceComponentBind,
-            (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -321,10 +319,11 @@ public class DaprComponentProperties implements JsonSerializable<DaprComponentPr
                 } else if ("scopes".equals(fieldName)) {
                     List<String> scopes = reader.readArray(reader1 -> reader1.getString());
                     deserializedDaprComponentProperties.scopes = scopes;
-                } else if ("serviceComponentBind".equals(fieldName)) {
-                    List<DaprComponentServiceBinding> serviceComponentBind
-                        = reader.readArray(reader1 -> DaprComponentServiceBinding.fromJson(reader1));
-                    deserializedDaprComponentProperties.serviceComponentBind = serviceComponentBind;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedDaprComponentProperties.provisioningState
+                        = DaprComponentProvisioningState.fromString(reader.getString());
+                } else if ("deploymentErrors".equals(fieldName)) {
+                    deserializedDaprComponentProperties.deploymentErrors = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

@@ -53,7 +53,7 @@ public class DatasetsSample {
         // BEGIN:com.azure.ai.projects.DatasetsSample.listDatasets
 
         System.out.println("Listing all datasets (latest versions):");
-        datasetsClient.listLatestDatasetVersions().forEach(dataset -> {
+        datasetsClient.listLatestVersion().forEach(dataset -> {
             System.out.println("\nDataset name: " + dataset.getName());
             System.out.println("Dataset Id: " + dataset.getId());
             System.out.println("Dataset version: " + dataset.getVersion());
@@ -72,7 +72,7 @@ public class DatasetsSample {
         String datasetName = Configuration.getGlobalConfiguration().get("DATASET_NAME", "test");
 
         System.out.println("Listing all versions of dataset: " + datasetName);
-        datasetsClient.listDatasetVersions(datasetName).forEach(version -> {
+        datasetsClient.listVersions(datasetName).forEach(version -> {
             System.out.println("\nDataset name: " + version.getName());
             System.out.println("Dataset version: " + version.getVersion());
             System.out.println("Dataset type: " + version.getType());
@@ -113,7 +113,7 @@ public class DatasetsSample {
         String datasetVersion = Configuration.getGlobalConfiguration().get("DATASET_VERSION", "1.0");
 
         // Delete the specific version of the dataset
-        datasetsClient.deleteDatasetVersion(datasetName, datasetVersion);
+        datasetsClient.deleteVersion(datasetName, datasetVersion);
 
         System.out.println("Deleted dataset: " + datasetName + ", version: " + datasetVersion);
 
@@ -133,9 +133,9 @@ public class DatasetsSample {
             .setDescription("Sample dataset created via SDK");
 
         // Create or update the dataset
-        FileDatasetVersion createdDataset = (FileDatasetVersion) datasetsClient.createOrUpdateDatasetVersion(
-            datasetName, 
-            datasetVersion, 
+        FileDatasetVersion createdDataset = (FileDatasetVersion) datasetsClient.createOrUpdateVersion(
+            datasetName,
+            datasetVersion,
             fileDataset
         );
 
@@ -155,12 +155,12 @@ public class DatasetsSample {
 
         // Create a pending upload request for the dataset
         PendingUploadRequest request = new PendingUploadRequest();
-        
+
         // Get the pending upload response with blob reference
         PendingUploadResponse response = datasetsClient.pendingUpload(datasetName, datasetVersion, request);
-        
+
         System.out.println("Pending upload initiated with ID: " + response.getPendingUploadId());
-        System.out.println("Blob URI: " + response.getBlobReference().getBlobUri());
+        System.out.println("Blob URI: " + response.getBlobReference().getBlobUrl());
 
         // END:com.azure.ai.projects.DatasetsSample.pendingUploadSample
     }

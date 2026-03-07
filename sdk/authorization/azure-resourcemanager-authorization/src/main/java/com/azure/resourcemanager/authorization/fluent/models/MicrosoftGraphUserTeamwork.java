@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * userTeamwork.
+ * Represents an user teamwork.
  */
 @Fluent
 public final class MicrosoftGraphUserTeamwork extends MicrosoftGraphEntity {

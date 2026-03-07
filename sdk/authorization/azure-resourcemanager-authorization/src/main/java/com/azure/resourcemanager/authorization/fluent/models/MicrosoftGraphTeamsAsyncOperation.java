@@ -16,7 +16,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * teamsAsyncOperation.
+ * Represents a teams async operation.
  */
 @Fluent
 public final class MicrosoftGraphTeamsAsyncOperation extends MicrosoftGraphEntity {

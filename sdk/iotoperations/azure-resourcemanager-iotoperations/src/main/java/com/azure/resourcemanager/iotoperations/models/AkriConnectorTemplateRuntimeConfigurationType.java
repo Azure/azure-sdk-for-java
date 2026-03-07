@@ -13,12 +13,6 @@ import java.util.Collection;
 public final class AkriConnectorTemplateRuntimeConfigurationType
     extends ExpandableStringEnum<AkriConnectorTemplateRuntimeConfigurationType> {
     /**
-     * Helm Configuration Type.
-     */
-    public static final AkriConnectorTemplateRuntimeConfigurationType HELM_CONFIGURATION
-        = fromString("HelmConfiguration");
-
-    /**
      * Managed Configuration Type.
      */
     public static final AkriConnectorTemplateRuntimeConfigurationType MANAGED_CONFIGURATION

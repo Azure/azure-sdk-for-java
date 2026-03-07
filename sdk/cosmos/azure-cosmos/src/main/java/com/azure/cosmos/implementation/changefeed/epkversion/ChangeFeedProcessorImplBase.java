@@ -440,10 +440,11 @@ public abstract class ChangeFeedProcessorImplBase<T> implements ChangeFeedProces
 
         if (this.loadBalancingStrategy == null) {
             this.loadBalancingStrategy = new EqualPartitionsBalancingStrategy(
-                    this.hostName,
-                    this.changeFeedProcessorOptions.getMinScaleCount(),
-                    this.changeFeedProcessorOptions.getMaxScaleCount(),
-                    this.changeFeedProcessorOptions.getLeaseExpirationInterval());
+                this.hostName,
+                this.changeFeedProcessorOptions.getMinScaleCount(),
+                this.changeFeedProcessorOptions.getMaxScaleCount(),
+                this.changeFeedProcessorOptions.getLeaseExpirationInterval(),
+                this.changeFeedProcessorOptions.getMaxLeasesToAcquirePerCycle());
         }
 
         PartitionController partitionController = new PartitionControllerImpl(leaseStoreManager, leaseStoreManager, partitionSupervisorFactory, synchronizer, scheduler);

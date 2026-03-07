@@ -21,15 +21,15 @@ import java.util.Arrays;
 public final class HttpRouteConfigUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/
-     * HttpRouteConfig_Patch.json
+     * specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/HttpRouteConfig_Patch.
+     * json
      */
     /**
-     * Sample code: Patch Managed Http Route.
+     * Sample code: Patch a Http Route Config.
      * 
      * @param manager Entry point to ContainerAppsApiManager.
      */
-    public static void patchManagedHttpRoute(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
+    public static void patchAHttpRouteConfig(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
         HttpRouteConfig resource = manager.httpRouteConfigs()
             .getWithResponse("examplerg", "testcontainerenv", "httproutefriendlyname", com.azure.core.util.Context.NONE)
             .getValue();
@@ -40,8 +40,8 @@ public final class HttpRouteConfigUpdateSamples {
                 .withCertificateId(
                     "/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/testcontainerenv/certificates/certificate-1")))
                 .withRules(Arrays.asList(new HttpRouteRule()
-                    .withTargets(Arrays
-                        .asList(new HttpRouteTarget().withContainerApp("capp-1").withRevision("rev-1").withWeight(100)))
+                    .withTargets(
+                        Arrays.asList(new HttpRouteTarget().withContainerApp("capp-1").withRevision("capp-1--0000001")))
                     .withRoutes(Arrays
                         .asList(new HttpRoute().withMatch(new HttpRouteMatch().withPath("/v1").withCaseSensitive(true))
                             .withAction(new HttpRouteAction().withPrefixRewrite("/v1/api"))))

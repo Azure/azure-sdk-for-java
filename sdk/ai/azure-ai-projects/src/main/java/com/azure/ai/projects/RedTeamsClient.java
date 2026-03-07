@@ -48,11 +48,11 @@ public final class RedTeamsClient {
      *     displayName: String (Optional)
      *     numTurns: Integer (Optional)
      *     attackStrategies (Optional): [
-     *         String(easy/moderate/difficult/ascii_art/ascii_smuggler/atbash/base64/binary/caesar/character_space/jailbreak/ansii_attack/character_swap/suffix_append/string_join/unicode_confusable/unicode_substitution/diacritic/flip/leetspeak/rot13/morse/url/baseline) (Optional)
+     *         String(easy/moderate/difficult/ascii_art/ascii_smuggler/atbash/base64/binary/caesar/character_space/jailbreak/ansi_attack/character_swap/suffix_append/string_join/unicode_confusable/unicode_substitution/diacritic/flip/leetspeak/rot13/morse/url/baseline/indirect_jailbreak/tense/multi_turn/crescendo) (Optional)
      *     ]
      *     simulationOnly: Boolean (Optional)
      *     riskCategories (Optional): [
-     *         String(HateUnfairness/Violence/Sexual/SelfHarm) (Optional)
+     *         String(HateUnfairness/Violence/Sexual/SelfHarm/ProtectedMaterial/CodeVulnerability/UngroundedAttributes/ProhibitedActions/SensitiveDataLeakage/TaskAdherence) (Optional)
      *     ]
      *     applicationScenario: String (Optional)
      *     tags (Optional): {
@@ -94,11 +94,11 @@ public final class RedTeamsClient {
      *     displayName: String (Optional)
      *     numTurns: Integer (Optional)
      *     attackStrategies (Optional): [
-     *         String(easy/moderate/difficult/ascii_art/ascii_smuggler/atbash/base64/binary/caesar/character_space/jailbreak/ansii_attack/character_swap/suffix_append/string_join/unicode_confusable/unicode_substitution/diacritic/flip/leetspeak/rot13/morse/url/baseline) (Optional)
+     *         String(easy/moderate/difficult/ascii_art/ascii_smuggler/atbash/base64/binary/caesar/character_space/jailbreak/ansi_attack/character_swap/suffix_append/string_join/unicode_confusable/unicode_substitution/diacritic/flip/leetspeak/rot13/morse/url/baseline/indirect_jailbreak/tense/multi_turn/crescendo) (Optional)
      *     ]
      *     simulationOnly: Boolean (Optional)
      *     riskCategories (Optional): [
-     *         String(HateUnfairness/Violence/Sexual/SelfHarm) (Optional)
+     *         String(HateUnfairness/Violence/Sexual/SelfHarm/ProtectedMaterial/CodeVulnerability/UngroundedAttributes/ProhibitedActions/SensitiveDataLeakage/TaskAdherence) (Optional)
      *     ]
      *     applicationScenario: String (Optional)
      *     tags (Optional): {
@@ -139,11 +139,11 @@ public final class RedTeamsClient {
      *     displayName: String (Optional)
      *     numTurns: Integer (Optional)
      *     attackStrategies (Optional): [
-     *         String(easy/moderate/difficult/ascii_art/ascii_smuggler/atbash/base64/binary/caesar/character_space/jailbreak/ansii_attack/character_swap/suffix_append/string_join/unicode_confusable/unicode_substitution/diacritic/flip/leetspeak/rot13/morse/url/baseline) (Optional)
+     *         String(easy/moderate/difficult/ascii_art/ascii_smuggler/atbash/base64/binary/caesar/character_space/jailbreak/ansi_attack/character_swap/suffix_append/string_join/unicode_confusable/unicode_substitution/diacritic/flip/leetspeak/rot13/morse/url/baseline/indirect_jailbreak/tense/multi_turn/crescendo) (Optional)
      *     ]
      *     simulationOnly: Boolean (Optional)
      *     riskCategories (Optional): [
-     *         String(HateUnfairness/Violence/Sexual/SelfHarm) (Optional)
+     *         String(HateUnfairness/Violence/Sexual/SelfHarm/ProtectedMaterial/CodeVulnerability/UngroundedAttributes/ProhibitedActions/SensitiveDataLeakage/TaskAdherence) (Optional)
      *     ]
      *     applicationScenario: String (Optional)
      *     tags (Optional): {
@@ -169,11 +169,11 @@ public final class RedTeamsClient {
      *     displayName: String (Optional)
      *     numTurns: Integer (Optional)
      *     attackStrategies (Optional): [
-     *         String(easy/moderate/difficult/ascii_art/ascii_smuggler/atbash/base64/binary/caesar/character_space/jailbreak/ansii_attack/character_swap/suffix_append/string_join/unicode_confusable/unicode_substitution/diacritic/flip/leetspeak/rot13/morse/url/baseline) (Optional)
+     *         String(easy/moderate/difficult/ascii_art/ascii_smuggler/atbash/base64/binary/caesar/character_space/jailbreak/ansi_attack/character_swap/suffix_append/string_join/unicode_confusable/unicode_substitution/diacritic/flip/leetspeak/rot13/morse/url/baseline/indirect_jailbreak/tense/multi_turn/crescendo) (Optional)
      *     ]
      *     simulationOnly: Boolean (Optional)
      *     riskCategories (Optional): [
-     *         String(HateUnfairness/Violence/Sexual/SelfHarm) (Optional)
+     *         String(HateUnfairness/Violence/Sexual/SelfHarm/ProtectedMaterial/CodeVulnerability/UngroundedAttributes/ProhibitedActions/SensitiveDataLeakage/TaskAdherence) (Optional)
      *     ]
      *     applicationScenario: String (Optional)
      *     tags (Optional): {
@@ -200,8 +200,8 @@ public final class RedTeamsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createRedTeamWithResponse(BinaryData redTeam, RequestOptions requestOptions) {
-        return this.serviceClient.createRedTeamWithResponse(redTeam, requestOptions);
+    public Response<BinaryData> createRedTeamRunWithResponse(BinaryData redTeam, RequestOptions requestOptions) {
+        return this.serviceClient.createRedTeamRunWithResponse(redTeam, requestOptions);
     }
 
     /**
@@ -257,10 +257,10 @@ public final class RedTeamsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RedTeam createRedTeam(RedTeam redTeam) {
-        // Generated convenience method for createRedTeamWithResponse
+    public RedTeam createRedTeamRun(RedTeam redTeam) {
+        // Generated convenience method for createRedTeamRunWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createRedTeamWithResponse(BinaryData.fromObject(redTeam), requestOptions).getValue()
+        return createRedTeamRunWithResponse(BinaryData.fromObject(redTeam), requestOptions).getValue()
             .toObject(RedTeam.class);
     }
 }

@@ -145,7 +145,6 @@ public final class AcsChatMessageEditedEventData extends AcsChatMessageEventBase
         jsonWriter.writeStringField("messageBody", this.messageBody);
         jsonWriter.writeStringField("editTime",
             this.editTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.editTime));
-        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 

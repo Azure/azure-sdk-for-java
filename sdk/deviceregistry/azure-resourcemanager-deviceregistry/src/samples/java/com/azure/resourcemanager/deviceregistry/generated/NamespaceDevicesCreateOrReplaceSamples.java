@@ -15,7 +15,7 @@ import com.azure.resourcemanager.deviceregistry.models.NamespaceDeviceProperties
 import com.azure.resourcemanager.deviceregistry.models.OutboundEndpoints;
 import com.azure.resourcemanager.deviceregistry.models.TrustSettings;
 import com.azure.resourcemanager.deviceregistry.models.UsernamePasswordCredentials;
-import com.azure.resourcemanager.deviceregistry.models.X509Credentials;
+import com.azure.resourcemanager.deviceregistry.models.X509CertificateCredentials;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,7 +25,7 @@ import java.util.Map;
  */
 public final class NamespaceDevicesCreateOrReplaceSamples {
     /*
-     * x-ms-original-file: 2025-07-01-preview/CreateOrReplace_NamespaceDevice_Edge_x509.json
+     * x-ms-original-file: 2025-11-01-preview/CreateOrReplace_NamespaceDevice_Edge_x509.json
      */
     /**
      * Sample code: Create edge enabled device with x509 inbound authentication.
@@ -38,26 +38,33 @@ public final class NamespaceDevicesCreateOrReplaceSamples {
             .define("namespace-device-on-edge")
             .withRegion("West Europe")
             .withExistingNamespace("myResourceGroup", "adr-namespace-gbk0925-n01")
-            .withProperties(new NamespaceDeviceProperties().withEnabled(true)
-                .withExternalDeviceId("unique-edge-device-identifier")
-                .withEndpoints(new MessagingEndpoints().withInbound(mapOf("theV1OPCUAEndpoint", new InboundEndpoints()
-                    .withEndpointType("microsoft.opcua/v1")
-                    .withAddress("opc.tcp://192.168.86.23:51211/UA/SampleServer")
-                    .withVersion("2")
-                    .withAuthentication(new HostAuthentication().withMethod(AuthenticationMethod.CERTIFICATE)
-                        .withX509Credentials(new X509Credentials().withCertificateSecretName("fakeTokenPlaceholder"))),
-                    "theV2OPCUAEndpoint",
-                    new InboundEndpoints().withEndpointType("microsoft.opcua/v1")
-                        .withAddress("opc.tcp://192.168.86.23:51211/UA/SampleServer")
-                        .withVersion("2")
-                        .withAuthentication(new HostAuthentication().withMethod(AuthenticationMethod.CERTIFICATE)
-                            .withX509Credentials(
-                                new X509Credentials().withCertificateSecretName("fakeTokenPlaceholder")))
-                        .withTrustSettings(new TrustSettings().withTrustList("trust-secret-reference")))))
-                .withAttributes(
-                    mapOf("deviceType", BinaryData.fromBytes("OPCUAServers".getBytes(StandardCharsets.UTF_8)),
-                        "deviceOwner", BinaryData.fromBytes("OT".getBytes(StandardCharsets.UTF_8)), "deviceCategory",
-                        BinaryData.fromBytes("16".getBytes(StandardCharsets.UTF_8)))))
+            .withProperties(
+                new NamespaceDeviceProperties().withEnabled(true)
+                    .withExternalDeviceId("unique-edge-device-identifier")
+                    .withEndpoints(
+                        new MessagingEndpoints().withInbound(mapOf("theV1OPCUAEndpoint",
+                            new InboundEndpoints().withEndpointType("microsoft.opcua")
+                                .withAddress("opc.tcp://192.168.86.23:51211/UA/SampleServer")
+                                .withVersion("2")
+                                .withAuthentication(new HostAuthentication()
+                                    .withMethod(AuthenticationMethod.CERTIFICATE)
+                                    .withX509Credentials(new X509CertificateCredentials()
+                                        .withCertificateSecretName("fakeTokenPlaceholder")
+                                        .withKeySecretName("fakeTokenPlaceholder")
+                                        .withIntermediateCertificatesSecretName("fakeTokenPlaceholder"))),
+                            "theV2OPCUAEndpoint",
+                            new InboundEndpoints().withEndpointType("microsoft.opcua")
+                                .withAddress("opc.tcp://192.168.86.23:51211/UA/SampleServer")
+                                .withVersion("2")
+                                .withAuthentication(
+                                    new HostAuthentication().withMethod(AuthenticationMethod.CERTIFICATE)
+                                        .withX509Credentials(new X509CertificateCredentials()
+                                            .withCertificateSecretName("fakeTokenPlaceholder")))
+                                .withTrustSettings(new TrustSettings().withTrustList("trust-secret-reference")))))
+                    .withAttributes(
+                        mapOf("deviceType", BinaryData.fromBytes("OPCUAServers".getBytes(StandardCharsets.UTF_8)),
+                            "deviceOwner", BinaryData.fromBytes("OT".getBytes(StandardCharsets.UTF_8)),
+                            "deviceCategory", BinaryData.fromBytes("16".getBytes(StandardCharsets.UTF_8)))))
             .withExtendedLocation(new ExtendedLocation().withType("CustomLocation")
                 .withName(
                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/microsoft.extendedlocation/customlocations/location1"))
@@ -65,7 +72,7 @@ public final class NamespaceDevicesCreateOrReplaceSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01-preview/CreateOrReplace_NamespaceDevice_Edge_Anonymous.json
+     * x-ms-original-file: 2025-11-01-preview/CreateOrReplace_NamespaceDevice_Edge_Anonymous.json
      */
     /**
      * Sample code: Create edge enabled device with anonymous host authentication.
@@ -81,7 +88,7 @@ public final class NamespaceDevicesCreateOrReplaceSamples {
             .withProperties(new NamespaceDeviceProperties().withEnabled(true)
                 .withExternalDeviceId("unique-edge-device-identifier")
                 .withEndpoints(new MessagingEndpoints().withInbound(mapOf("theOnlyOPCUABroker",
-                    new InboundEndpoints().withEndpointType("microsoft.opcua/v1")
+                    new InboundEndpoints().withEndpointType("microsoft.opcua")
                         .withAddress("opc.tcp://192.168.86.23:51211/UA/SampleServer")
                         .withVersion("2")
                         .withAuthentication(new HostAuthentication().withMethod(AuthenticationMethod.ANONYMOUS)))))
@@ -96,7 +103,7 @@ public final class NamespaceDevicesCreateOrReplaceSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01-preview/CreateOrReplace_NamespaceDevice_Edge_UsernamePass.json
+     * x-ms-original-file: 2025-11-01-preview/CreateOrReplace_NamespaceDevice_Edge_UsernamePass.json
      */
     /**
      * Sample code: Create edge enabled device with UsernamesPassword inbound authentication.
@@ -112,7 +119,7 @@ public final class NamespaceDevicesCreateOrReplaceSamples {
             .withProperties(new NamespaceDeviceProperties().withEnabled(true)
                 .withExternalDeviceId("unique-edge-device-identifier")
                 .withEndpoints(new MessagingEndpoints().withInbound(mapOf("theOnlyOPCUABroker",
-                    new InboundEndpoints().withEndpointType("microsoft.opcua/v1")
+                    new InboundEndpoints().withEndpointType("microsoft.opcua")
                         .withAddress("opc.tcp://192.168.86.23:51211/UA/SampleServer")
                         .withVersion("2")
                         .withAuthentication(new HostAuthentication().withMethod(AuthenticationMethod.USERNAME_PASSWORD)
@@ -129,7 +136,7 @@ public final class NamespaceDevicesCreateOrReplaceSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-07-01-preview/CreateOrReplace_NamespaceDevice.json
+     * x-ms-original-file: 2025-11-01-preview/CreateOrReplace_NamespaceDevice.json
      */
     /**
      * Sample code: CreateOrReplace_NamespaceDevices.
@@ -146,7 +153,7 @@ public final class NamespaceDevicesCreateOrReplaceSamples {
                 .withExternalDeviceId("adr-smart-device3-7a848b15-af47-40a7-8c06-a3f43314d44f")
                 .withEndpoints(new MessagingEndpoints()
                     .withOutbound(new OutboundEndpoints().withAssigned(mapOf("eventGridEndpoint",
-                        new DeviceMessagingEndpoint().withEndpointType("Microsoft.EventGrid")
+                        new DeviceMessagingEndpoint().withEndpointType("Microsoft.Devices/IoTHubs")
                             .withAddress("https://myeventgridtopic.westeurope-1.eventgrid.azure.net/api/events")))))
                 .withAttributes(mapOf("deviceType", BinaryData.fromBytes("sensor".getBytes(StandardCharsets.UTF_8)),
                     "deviceOwner", BinaryData.fromBytes("IT".getBytes(StandardCharsets.UTF_8)), "deviceCategory",

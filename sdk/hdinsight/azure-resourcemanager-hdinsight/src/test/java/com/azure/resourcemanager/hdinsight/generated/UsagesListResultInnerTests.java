@@ -14,25 +14,21 @@ public final class UsagesListResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UsagesListResultInner model = BinaryData.fromString(
-            "{\"value\":[{\"unit\":\"dcpzfoqo\",\"currentValue\":4892524565143747736,\"limit\":6615741978857229687,\"name\":{\"value\":\"gszufoxciqopid\",\"localizedValue\":\"mciodhkhazxkhn\"}},{\"unit\":\"onlwntoeg\",\"currentValue\":8928756986200818231,\"limit\":8840780603115522856,\"name\":{\"value\":\"z\",\"localizedValue\":\"mrv\"}},{\"unit\":\"ztvbtqgsfr\",\"currentValue\":3999543626969444509,\"limit\":1008926283024648920,\"name\":{\"value\":\"lmnguxaw\",\"localizedValue\":\"ldsyuuximerqfob\"}},{\"unit\":\"znkbykutwpfhpagm\",\"currentValue\":5006093182566843640,\"limit\":5038627427973777976,\"name\":{\"value\":\"sd\",\"localizedValue\":\"kgtdlmkkze\"}}]}")
+            "{\"value\":[{\"unit\":\"tolmncwsobqw\",\"currentValue\":4514787452108885554,\"limit\":5654195431166964592,\"name\":{\"value\":\"hucqdpfuvg\",\"localizedValue\":\"bjj\"}},{\"unit\":\"nvxbvt\",\"currentValue\":2563596213274806167,\"limit\":5788917619070236735,\"name\":{\"value\":\"mr\",\"localizedValue\":\"qtvcofudflvkgj\"}}]}")
             .toObject(UsagesListResultInner.class);
-        Assertions.assertEquals("dcpzfoqo", model.value().get(0).unit());
-        Assertions.assertEquals(4892524565143747736L, model.value().get(0).currentValue());
-        Assertions.assertEquals(6615741978857229687L, model.value().get(0).limit());
+        Assertions.assertEquals("tolmncwsobqw", model.value().get(0).unit());
+        Assertions.assertEquals(4514787452108885554L, model.value().get(0).currentValue());
+        Assertions.assertEquals(5654195431166964592L, model.value().get(0).limit());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         UsagesListResultInner model = new UsagesListResultInner().withValue(Arrays.asList(
-            new Usage().withUnit("dcpzfoqo").withCurrentValue(4892524565143747736L).withLimit(6615741978857229687L),
-            new Usage().withUnit("onlwntoeg").withCurrentValue(8928756986200818231L).withLimit(8840780603115522856L),
-            new Usage().withUnit("ztvbtqgsfr").withCurrentValue(3999543626969444509L).withLimit(1008926283024648920L),
-            new Usage().withUnit("znkbykutwpfhpagm")
-                .withCurrentValue(5006093182566843640L)
-                .withLimit(5038627427973777976L)));
+            new Usage().withUnit("tolmncwsobqw").withCurrentValue(4514787452108885554L).withLimit(5654195431166964592L),
+            new Usage().withUnit("nvxbvt").withCurrentValue(2563596213274806167L).withLimit(5788917619070236735L)));
         model = BinaryData.fromObject(model).toObject(UsagesListResultInner.class);
-        Assertions.assertEquals("dcpzfoqo", model.value().get(0).unit());
-        Assertions.assertEquals(4892524565143747736L, model.value().get(0).currentValue());
-        Assertions.assertEquals(6615741978857229687L, model.value().get(0).limit());
+        Assertions.assertEquals("tolmncwsobqw", model.value().get(0).unit());
+        Assertions.assertEquals(4514787452108885554L, model.value().get(0).currentValue());
+        Assertions.assertEquals(5654195431166964592L, model.value().get(0).limit());
     }
 }

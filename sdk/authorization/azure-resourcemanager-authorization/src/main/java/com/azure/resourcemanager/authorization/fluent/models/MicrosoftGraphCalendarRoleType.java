@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * calendarRoleType.
+ * Represents a calendar role type.
  */
 public final class MicrosoftGraphCalendarRoleType extends ExpandableStringEnum<MicrosoftGraphCalendarRoleType> {
     /**

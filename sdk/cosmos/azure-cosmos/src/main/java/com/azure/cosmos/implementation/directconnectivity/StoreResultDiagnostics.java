@@ -27,6 +27,7 @@ public class StoreResultDiagnostics {
     private final long lsn;
     private final long quorumAckedLSN;
     private final long globalCommittedLSN;
+    private final long globalNRegionCommittedLSN;
     private final long numberOfReadRegions;
     private final long itemLSN;
     private final int currentReplicaSetSize;
@@ -68,6 +69,7 @@ public class StoreResultDiagnostics {
         this.itemLSN = storeResult.itemLSN;
         this.backendLatencyInMs = storeResult.backendLatencyInMs;
         this.retryAfterInMs = storeResult.retryAfterInMs;
+        this.globalNRegionCommittedLSN = storeResult.globalNRegionCommittedLSN;
     }
 
     private StoreResultDiagnostics(StoreResult storeResult, CosmosException e, RxDocumentServiceRequest request) {
@@ -98,6 +100,10 @@ public class StoreResultDiagnostics {
 
     public long getGlobalCommittedLSN() {
         return globalCommittedLSN;
+    }
+
+    public long getGlobalNRegionCommittedLSN() {
+        return globalNRegionCommittedLSN;
     }
 
     public long getNumberOfReadRegions() {
@@ -204,6 +210,7 @@ public class StoreResultDiagnostics {
             jsonGenerator.writeNumberField("quorumAckedLSN",storeResultDiagnostics.quorumAckedLSN);
             jsonGenerator.writeNumberField("currentReplicaSetSize", storeResultDiagnostics.currentReplicaSetSize);
             jsonGenerator.writeNumberField("globalCommittedLsn", storeResultDiagnostics.globalCommittedLSN);
+            jsonGenerator.writeNumberField("globalNRegionCommittedGlsn", storeResultDiagnostics.globalNRegionCommittedLSN);
             jsonGenerator.writeStringField("partitionKeyRangeId", storeResponseDiagnostics.getPartitionKeyRangeId());
             jsonGenerator.writeBooleanField("isValid", storeResultDiagnostics.isValid);
             jsonGenerator.writeNumberField("statusCode", storeResponseDiagnostics.getStatusCode());

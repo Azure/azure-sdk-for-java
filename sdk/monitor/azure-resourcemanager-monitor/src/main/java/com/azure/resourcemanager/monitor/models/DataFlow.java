@@ -37,6 +37,16 @@ public final class DataFlow implements JsonSerializable<DataFlow> {
      */
     private String outputStream;
 
+    /*
+     * The builtIn transform to transform stream data
+     */
+    private String builtInTransform;
+
+    /*
+     * Flag to enable overflow column in LA destinations
+     */
+    private Boolean captureOverflow;
+
     /**
      * Creates an instance of DataFlow class.
      */
@@ -126,6 +136,46 @@ public final class DataFlow implements JsonSerializable<DataFlow> {
     }
 
     /**
+     * Get the builtInTransform property: The builtIn transform to transform stream data.
+     * 
+     * @return the builtInTransform value.
+     */
+    public String builtInTransform() {
+        return this.builtInTransform;
+    }
+
+    /**
+     * Set the builtInTransform property: The builtIn transform to transform stream data.
+     * 
+     * @param builtInTransform the builtInTransform value to set.
+     * @return the DataFlow object itself.
+     */
+    public DataFlow withBuiltInTransform(String builtInTransform) {
+        this.builtInTransform = builtInTransform;
+        return this;
+    }
+
+    /**
+     * Get the captureOverflow property: Flag to enable overflow column in LA destinations.
+     * 
+     * @return the captureOverflow value.
+     */
+    public Boolean captureOverflow() {
+        return this.captureOverflow;
+    }
+
+    /**
+     * Set the captureOverflow property: Flag to enable overflow column in LA destinations.
+     * 
+     * @param captureOverflow the captureOverflow value to set.
+     * @return the DataFlow object itself.
+     */
+    public DataFlow withCaptureOverflow(Boolean captureOverflow) {
+        this.captureOverflow = captureOverflow;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -144,6 +194,8 @@ public final class DataFlow implements JsonSerializable<DataFlow> {
         jsonWriter.writeArrayField("destinations", this.destinations, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("transformKql", this.transformKql);
         jsonWriter.writeStringField("outputStream", this.outputStream);
+        jsonWriter.writeStringField("builtInTransform", this.builtInTransform);
+        jsonWriter.writeBooleanField("captureOverflow", this.captureOverflow);
         return jsonWriter.writeEndObject();
     }
 
@@ -173,6 +225,10 @@ public final class DataFlow implements JsonSerializable<DataFlow> {
                     deserializedDataFlow.transformKql = reader.getString();
                 } else if ("outputStream".equals(fieldName)) {
                     deserializedDataFlow.outputStream = reader.getString();
+                } else if ("builtInTransform".equals(fieldName)) {
+                    deserializedDataFlow.builtInTransform = reader.getString();
+                } else if ("captureOverflow".equals(fieldName)) {
+                    deserializedDataFlow.captureOverflow = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appservice.generated;
 public final class WorkflowRunsCancelSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/WorkflowRuns_Cancel.json
+     * specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/WorkflowRuns_Cancel.json
      */
     /**
      * Sample code: Cancel a workflow run.

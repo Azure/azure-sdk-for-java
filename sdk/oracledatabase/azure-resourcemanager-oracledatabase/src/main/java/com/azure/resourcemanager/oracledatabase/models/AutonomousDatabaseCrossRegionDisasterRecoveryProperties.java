@@ -390,8 +390,8 @@ public final class AutonomousDatabaseCrossRegionDisasterRecoveryProperties exten
      */
     @Override
     public AutonomousDatabaseCrossRegionDisasterRecoveryProperties
-        withScheduledOperations(ScheduledOperationsType scheduledOperations) {
-        super.withScheduledOperations(scheduledOperations);
+        withScheduledOperationsList(List<ScheduledOperationsType> scheduledOperationsList) {
+        super.withScheduledOperationsList(scheduledOperationsList);
         return this;
     }
 
@@ -548,7 +548,8 @@ public final class AutonomousDatabaseCrossRegionDisasterRecoveryProperties exten
             isPreviewVersionWithServiceTermsAccepted());
         jsonWriter.writeStringField("licenseModel", licenseModel() == null ? null : licenseModel().toString());
         jsonWriter.writeStringField("ncharacterSet", ncharacterSet());
-        jsonWriter.writeJsonField("scheduledOperations", scheduledOperations());
+        jsonWriter.writeArrayField("scheduledOperationsList", scheduledOperationsList(),
+            (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("privateEndpointIp", privateEndpointIp());
         jsonWriter.writeStringField("privateEndpointLabel", privateEndpointLabel());
         jsonWriter.writeStringField("subnetId", subnetId());
@@ -686,9 +687,11 @@ public final class AutonomousDatabaseCrossRegionDisasterRecoveryProperties exten
                 } else if ("lifecycleState".equals(fieldName)) {
                     deserializedAutonomousDatabaseCrossRegionDisasterRecoveryProperties
                         .withLifecycleState(AutonomousDatabaseLifecycleState.fromString(reader.getString()));
-                } else if ("scheduledOperations".equals(fieldName)) {
+                } else if ("scheduledOperationsList".equals(fieldName)) {
+                    List<ScheduledOperationsType> scheduledOperationsList
+                        = reader.readArray(reader1 -> ScheduledOperationsType.fromJson(reader1));
                     deserializedAutonomousDatabaseCrossRegionDisasterRecoveryProperties
-                        .withScheduledOperations(ScheduledOperationsType.fromJson(reader));
+                        .withScheduledOperationsList(scheduledOperationsList);
                 } else if ("privateEndpointIp".equals(fieldName)) {
                     deserializedAutonomousDatabaseCrossRegionDisasterRecoveryProperties
                         .withPrivateEndpointIp(reader.getString());

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.oracledatabase.generated;
  */
 public final class FlexComponentsGetSamples {
     /*
-     * x-ms-original-file: 2025-03-01/FlexComponents_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-09-01/FlexComponents_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: FlexComponents_Get_MaximumSet.
@@ -18,6 +18,6 @@ public final class FlexComponentsGetSamples {
      */
     public static void
         flexComponentsGetMaximumSet(com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
-        manager.flexComponents().getWithResponse("eastus", "flexComponent", com.azure.core.util.Context.NONE);
+        manager.flexComponents().getWithResponse("eastus", "flexname1", com.azure.core.util.Context.NONE);
     }
 }

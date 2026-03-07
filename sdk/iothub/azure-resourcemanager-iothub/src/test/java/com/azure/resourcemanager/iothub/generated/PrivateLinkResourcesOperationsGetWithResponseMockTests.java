@@ -6,8 +6,8 @@ package com.azure.resourcemanager.iothub.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.iothub.IotHubManager;
 import com.azure.resourcemanager.iothub.models.GroupIdInformation;
@@ -21,21 +21,21 @@ public final class PrivateLinkResourcesOperationsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"id\":\"h\",\"name\":\"odqkdlwwqfb\",\"type\":\"lkxt\",\"properties\":{\"groupId\":\"jfsmlmbtxhwgfwsr\",\"requiredMembers\":[\"coezbrhubskh\",\"dyg\",\"ookk\"],\"requiredZoneNames\":[\"jb\",\"leorfmluiqtqz\",\"avyvnqqyba\"]}}";
+            = "{\"id\":\"ulfgslqu\",\"name\":\"wdlenrdsut\",\"type\":\"bazpjuohmi\",\"properties\":{\"groupId\":\"flnorwmduvwp\",\"requiredMembers\":[\"xwmygdxpgpqc\",\"isze\"],\"requiredZoneNames\":[\"bjcrxgibbdaxco\"]}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         IotHubManager manager = IotHubManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         GroupIdInformation response = manager.privateLinkResourcesOperations()
-            .getWithResponse("thost", "ktst", "dxeclzedqbcvh", com.azure.core.util.Context.NONE)
+            .getWithResponse("wcpmguaadraufac", "kahzo", "ajjziuxxpshne", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("jfsmlmbtxhwgfwsr", response.properties().groupId());
-        Assertions.assertEquals("coezbrhubskh", response.properties().requiredMembers().get(0));
-        Assertions.assertEquals("jb", response.properties().requiredZoneNames().get(0));
+        Assertions.assertEquals("flnorwmduvwp", response.properties().groupId());
+        Assertions.assertEquals("xwmygdxpgpqc", response.properties().requiredMembers().get(0));
+        Assertions.assertEquals("bjcrxgibbdaxco", response.properties().requiredZoneNames().get(0));
     }
 }

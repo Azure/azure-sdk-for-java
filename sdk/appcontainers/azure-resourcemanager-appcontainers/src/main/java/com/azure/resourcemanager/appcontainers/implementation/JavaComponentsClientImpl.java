@@ -1041,6 +1041,8 @@ public final class JavaComponentsClientImpl implements JavaComponentsClient {
     }
 
     /**
+     * Delete.
+     * 
      * Delete a Java Component.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -1081,6 +1083,8 @@ public final class JavaComponentsClientImpl implements JavaComponentsClient {
     }
 
     /**
+     * Delete.
+     * 
      * Delete a Java Component.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -1120,6 +1124,8 @@ public final class JavaComponentsClientImpl implements JavaComponentsClient {
     }
 
     /**
+     * Delete.
+     * 
      * Delete a Java Component.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -1161,6 +1167,8 @@ public final class JavaComponentsClientImpl implements JavaComponentsClient {
     }
 
     /**
+     * Delete.
+     * 
      * Delete a Java Component.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -1180,6 +1188,8 @@ public final class JavaComponentsClientImpl implements JavaComponentsClient {
     }
 
     /**
+     * Delete.
+     * 
      * Delete a Java Component.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -1198,6 +1208,8 @@ public final class JavaComponentsClientImpl implements JavaComponentsClient {
     }
 
     /**
+     * Delete.
+     * 
      * Delete a Java Component.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -1217,6 +1229,8 @@ public final class JavaComponentsClientImpl implements JavaComponentsClient {
     }
 
     /**
+     * Delete.
+     * 
      * Delete a Java Component.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -1234,6 +1248,8 @@ public final class JavaComponentsClientImpl implements JavaComponentsClient {
     }
 
     /**
+     * Delete.
+     * 
      * Delete a Java Component.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -1249,6 +1265,8 @@ public final class JavaComponentsClientImpl implements JavaComponentsClient {
     }
 
     /**
+     * Delete.
+     * 
      * Delete a Java Component.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.

@@ -4,7 +4,7 @@ package com.azure.resourcemanager.appservice;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.resourcemanager.appservice.models.FunctionApp;
 import com.azure.resourcemanager.appservice.models.FunctionEnvelope;
 import com.azure.resourcemanager.test.utils.TestUtilities;
@@ -16,6 +16,7 @@ import java.time.Duration;
 import java.util.Map;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class ZipDeployTests extends AppServiceTest {
@@ -28,13 +29,14 @@ public class ZipDeployTests extends AppServiceTest {
         super.initializeClients(httpPipeline, profile);
     }
 
+    @Disabled("Policy disallows create storage account with share keys. Function app would fail on this.")
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void canZipDeployFunction() {
         // Create function app
         FunctionApp functionApp = appServiceManager.functionApps()
             .define(webappName4)
-            .withRegion(Region.US_WEST)
+            .withRegion(Region.US_WEST3)
             .withNewResourceGroup(rgName)
             .create();
         Assertions.assertNotNull(functionApp);

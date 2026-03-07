@@ -9,7 +9,7 @@ package com.azure.resourcemanager.oracledatabase.generated;
  */
 public final class DbServersListByCloudExadataInfrastructureSamples {
     /*
-     * x-ms-original-file: 2025-03-01/dbServers_listByParent.json
+     * x-ms-original-file: 2025-09-01/dbServers_listByParent.json
      */
     /**
      * Sample code: DbServers_listByCloudExadataInfrastructure.

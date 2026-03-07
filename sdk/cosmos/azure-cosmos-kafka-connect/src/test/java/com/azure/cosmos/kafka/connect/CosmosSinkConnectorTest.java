@@ -9,9 +9,12 @@ import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.TestConfigurations;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.caches.AsyncCache;
 import com.azure.cosmos.kafka.connect.implementation.CosmosAadAuthConfig;
 import com.azure.cosmos.kafka.connect.implementation.CosmosAuthType;
+import com.azure.cosmos.kafka.connect.implementation.CosmosSDKThroughputControlConfig;
+import com.azure.cosmos.kafka.connect.implementation.CosmosServerThroughputControlConfig;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosUtils;
 import com.azure.cosmos.kafka.connect.implementation.sink.CosmosSinkConfig;
 import com.azure.cosmos.kafka.connect.implementation.sink.CosmosSinkTask;
@@ -24,19 +27,25 @@ import org.apache.kafka.common.config.Config;
 import org.apache.kafka.common.config.ConfigDef;
 import org.apache.kafka.common.config.ConfigValue;
 import org.apache.kafka.common.config.types.Password;
-import org.testcontainers.shaded.org.apache.commons.lang3.tuple.Pair;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -215,6 +224,23 @@ public class CosmosSinkConnectorTest extends KafkaCosmosTestSuiteBase {
     }
 
     @Test(groups = "unit")
+    public void evilDeserializationIsBlocked() throws Exception {
+        AtomicReference<String> payload = new AtomicReference<>("Test RCE payload");
+        Evil evil = new Evil(payload);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try (ObjectOutputStream oos = new ObjectOutputStream(baos)) {
+            oos.writeObject(evil);
+        }
+        String evilBase64 = Base64.getEncoder().encodeToString(baos.toByteArray());
+
+        // Through KafkaCosmosUtils: should be blocked and return null
+        CosmosClientMetadataCachesSnapshot snapshot =
+            KafkaCosmosUtils.getCosmosClientMetadataFromString(evilBase64);
+        assertThat(snapshot).isNull();
+        assertThat(payload.get()).isEqualTo("Test RCE payload");
+    }
+
+    @Test(groups = "unit")
     public void misFormattedConfig() {
         CosmosSinkConnector sinkConnector = new CosmosSinkConnector();
         Map<String, String> sinkConfigMap = this.getValidSinkConfig();
@@ -289,14 +315,75 @@ public class CosmosSinkConnectorTest extends KafkaCosmosTestSuiteBase {
         CosmosSinkConfig sinkConfig = new CosmosSinkConfig(sinkConfigMap);
         assertThat(sinkConfig.getThroughputControlConfig()).isNotNull();
         assertThat(sinkConfig.getThroughputControlConfig().isThroughputControlEnabled()).isTrue();
-        assertThat(sinkConfig.getThroughputControlConfig().getThroughputControlAccountConfig()).isNull();
+        assertThat(sinkConfig.getThroughputControlConfig()).isInstanceOf(CosmosSDKThroughputControlConfig.class);
+        CosmosSDKThroughputControlConfig sdkConfig = (CosmosSDKThroughputControlConfig) sinkConfig.getThroughputControlConfig();
+        assertThat(sdkConfig.getThroughputControlAccountConfig()).isNull();
         assertThat(sinkConfig.getThroughputControlConfig().getThroughputControlGroupName()).isEqualTo(throughputControlGroupName);
-        assertThat(sinkConfig.getThroughputControlConfig().getTargetThroughput()).isEqualTo(targetThroughput);
-        assertThat(sinkConfig.getThroughputControlConfig().getTargetThroughputThreshold()).isEqualTo(targetThroughputThreshold);
-        assertThat(sinkConfig.getThroughputControlConfig().getGlobalThroughputControlDatabaseName()).isEqualTo(throughputControlDatabaseName);
-        assertThat(sinkConfig.getThroughputControlConfig().getGlobalThroughputControlContainerName()).isEqualTo(throughputControlContainerName);
-        assertThat(sinkConfig.getThroughputControlConfig().getGlobalThroughputControlRenewInterval()).isNull();
-        assertThat(sinkConfig.getThroughputControlConfig().getGlobalThroughputControlExpireInterval()).isNull();
+        assertThat(sdkConfig.getTargetThroughput()).isEqualTo(targetThroughput);
+        assertThat(sdkConfig.getTargetThroughputThreshold()).isEqualTo(targetThroughputThreshold);
+        assertThat(sdkConfig.getGlobalThroughputControlDatabaseName()).isEqualTo(throughputControlDatabaseName);
+        assertThat(sdkConfig.getGlobalThroughputControlContainerName()).isEqualTo(throughputControlContainerName);
+        assertThat(sdkConfig.getGlobalThroughputControlRenewInterval()).isNull();
+        assertThat(sdkConfig.getGlobalThroughputControlExpireInterval()).isNull();
+    }
+
+    @Test(groups = { "unit" })
+    public void sinkConfigWithThroughputBucket() {
+        String throughputControlGroupName = "test-bucket-group";
+        int throughputBucket = 2;
+
+        Map<String, String> sinkConfigMap = this.getValidSinkConfig();
+        sinkConfigMap.put("azure.cosmos.throughputControl.enabled", "true");
+        sinkConfigMap.put("azure.cosmos.throughputControl.group.name", throughputControlGroupName);
+        sinkConfigMap.put("azure.cosmos.throughputControl.throughputBucket", String.valueOf(throughputBucket));
+
+        CosmosSinkConfig sinkConfig = new CosmosSinkConfig(sinkConfigMap);
+        assertThat(sinkConfig.getThroughputControlConfig()).isNotNull();
+        assertThat(sinkConfig.getThroughputControlConfig().isThroughputControlEnabled()).isTrue();
+        assertThat(sinkConfig.getThroughputControlConfig()).isInstanceOf(CosmosServerThroughputControlConfig.class);
+        CosmosServerThroughputControlConfig serverConfig = (CosmosServerThroughputControlConfig) sinkConfig.getThroughputControlConfig();
+        assertThat(serverConfig.getThroughputBucket()).isEqualTo(throughputBucket);
+        assertThat(sinkConfig.getThroughputControlConfig().getThroughputControlGroupName()).isEqualTo(throughputControlGroupName);
+    }
+
+    @Test(groups = { "unit" })
+    public void invalidThroughputBucketConfig() {
+        CosmosSinkConnector sinkConnector = new CosmosSinkConnector();
+
+        // throughputBucket combined with SDK throughput control configs
+        Map<String, String> sinkConfigMap = this.getValidSinkConfig();
+        sinkConfigMap.put("azure.cosmos.throughputControl.enabled", "true");
+        sinkConfigMap.put("azure.cosmos.throughputControl.group.name", "test-group");
+        sinkConfigMap.put("azure.cosmos.throughputControl.throughputBucket", "2");
+        sinkConfigMap.put("azure.cosmos.throughputControl.targetThroughput", "400");
+
+        Config config = sinkConnector.validate(sinkConfigMap);
+        Map<String, List<String>> errorMessages = config.configValues().stream()
+            .collect(Collectors.toMap(ConfigValue::name, ConfigValue::errorMessages));
+        assertThat(errorMessages.get("azure.cosmos.throughputControl.throughputBucket").size()).isGreaterThan(0);
+
+        // throughputBucket combined with global control database
+        sinkConfigMap = this.getValidSinkConfig();
+        sinkConfigMap.put("azure.cosmos.throughputControl.enabled", "true");
+        sinkConfigMap.put("azure.cosmos.throughputControl.group.name", "test-group");
+        sinkConfigMap.put("azure.cosmos.throughputControl.throughputBucket", "2");
+        sinkConfigMap.put("azure.cosmos.throughputControl.globalControl.database.name", "controlDb");
+
+        config = sinkConnector.validate(sinkConfigMap);
+        errorMessages = config.configValues().stream()
+            .collect(Collectors.toMap(ConfigValue::name, ConfigValue::errorMessages));
+        assertThat(errorMessages.get("azure.cosmos.throughputControl.throughputBucket").size()).isGreaterThan(0);
+
+        // invalid throughput bucket value (0)
+        sinkConfigMap = this.getValidSinkConfig();
+        sinkConfigMap.put("azure.cosmos.throughputControl.enabled", "true");
+        sinkConfigMap.put("azure.cosmos.throughputControl.group.name", "test-group");
+        sinkConfigMap.put("azure.cosmos.throughputControl.throughputBucket", "0");
+
+        config = sinkConnector.validate(sinkConfigMap);
+        errorMessages = config.configValues().stream()
+            .collect(Collectors.toMap(ConfigValue::name, ConfigValue::errorMessages));
+        assertThat(errorMessages.get("azure.cosmos.throughputControl.throughputBucket").size()).isGreaterThan(0);
     }
 
     @Test(groups = { "unit" })
@@ -437,6 +524,7 @@ public class CosmosSinkConnectorTest extends KafkaCosmosTestSuiteBase {
             new KafkaCosmosConfigEntry<>("azure.cosmos.throughputControl.targetThroughput", -1, true),
             new KafkaCosmosConfigEntry<>("azure.cosmos.throughputControl.targetThroughputThreshold", -1d, true),
             new KafkaCosmosConfigEntry<>("azure.cosmos.throughputControl.priorityLevel", "None", true),
+            new KafkaCosmosConfigEntry<>("azure.cosmos.throughputControl.throughputBucket", -1, true),
             new KafkaCosmosConfigEntry<>("azure.cosmos.throughputControl.globalControl.database.name", Strings.Emtpy, true),
             new KafkaCosmosConfigEntry<>("azure.cosmos.throughputControl.globalControl.container.name", Strings.Emtpy, true),
             new KafkaCosmosConfigEntry<>("azure.cosmos.throughputControl.globalControl.renewIntervalInMS", -1, true),
@@ -471,4 +559,26 @@ public class CosmosSinkConnectorTest extends KafkaCosmosTestSuiteBase {
                 true)
         );
     }
+
+    public static class Evil implements Serializable {
+        private static final long serialVersionUID = 1L;
+
+        private final AtomicReference<String> payload;
+
+        public Evil(AtomicReference<String> payload) {
+            this.payload = payload;
+        }
+
+        private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+            in.defaultReadObject();
+            System.out.println("Payload executed");
+            payload.set("Payload executed");
+        }
+
+        @Override
+        public String toString() {
+            return "Evil{payload='" + payload.get() + "'}";
+        }
+    }
+
 }

@@ -37,6 +37,9 @@ public interface L2NetworksClient {
      * 
      * Get a list of layer 2 (L2) networks in the provided subscription.
      * 
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -45,7 +48,7 @@ public interface L2NetworksClient {
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<L2NetworkInner> list(Context context);
+    PagedIterable<L2NetworkInner> list(Integer top, String skipToken, Context context);
 
     /**
      * List layer 2 (L2) networks in the resource group.
@@ -68,6 +71,9 @@ public interface L2NetworksClient {
      * Get a list of layer 2 (L2) networks in the provided resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -76,7 +82,8 @@ public interface L2NetworksClient {
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<L2NetworkInner> listByResourceGroup(String resourceGroupName, Context context);
+    PagedIterable<L2NetworkInner> listByResourceGroup(String resourceGroupName, Integer top, String skipToken,
+        Context context);
 
     /**
      * Retrieve the layer 2 (L2) network.

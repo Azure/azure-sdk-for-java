@@ -14,9 +14,9 @@ public final class DiagnosticsDefinitionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DiagnosticsDefinition model = BinaryData.fromString(
-            "{\"id\":\"ivhjknidi\",\"name\":\"qjxgpnrhgovfgp\",\"description\":\"qmhhaowj\",\"author\":\"zvuporqzdfuydz\",\"category\":\"fvxcnqmxqpswo\",\"supportTopicList\":[{\"id\":\"hl\",\"pesId\":\"dhbemzqkzszu\"},{\"id\":\"wtglxx\",\"pesId\":\"jfpgpicrmn\"},{\"id\":\"rgmqgjs\",\"pesId\":\"pqcbfrmbodthsq\"}],\"analysisTypes\":[\"riibakclacj\",\"rnxousxauzlwvsg\",\"wohqfzizvu\",\"mmkjsvthnwpztek\"],\"type\":\"mribiat\",\"score\":96.43654}")
+            "{\"id\":\"fnczdwvvbalx\",\"name\":\"lchpodbzevwrdn\",\"description\":\"ukuv\",\"author\":\"cswsmystul\",\"category\":\"ypfcvlerchpqbmf\",\"supportTopicList\":[{\"id\":\"bwidfcxsspuunn\",\"pesId\":\"yhkx\"},{\"id\":\"ddrihpf\",\"pesId\":\"qcaaewdaomdjvl\"},{\"id\":\"x\",\"pesId\":\"zb\"}],\"analysisTypes\":[\"geivsiykzkdncj\",\"xonbzoggculapz\"],\"type\":\"rpgogtqxep\",\"score\":23.087067}")
             .toObject(DiagnosticsDefinition.class);
-        Assertions.assertEquals("riibakclacj", model.analysisTypes().get(0));
+        Assertions.assertEquals("geivsiykzkdncj", model.analysisTypes().get(0));
     }
 
     @org.junit.jupiter.api.Test
@@ -24,8 +24,8 @@ public final class DiagnosticsDefinitionTests {
         DiagnosticsDefinition model = new DiagnosticsDefinition()
             .withSupportTopicList(
                 Arrays.asList(new DiagnosticSupportTopic(), new DiagnosticSupportTopic(), new DiagnosticSupportTopic()))
-            .withAnalysisTypes(Arrays.asList("riibakclacj", "rnxousxauzlwvsg", "wohqfzizvu", "mmkjsvthnwpztek"));
+            .withAnalysisTypes(Arrays.asList("geivsiykzkdncj", "xonbzoggculapz"));
         model = BinaryData.fromObject(model).toObject(DiagnosticsDefinition.class);
-        Assertions.assertEquals("riibakclacj", model.analysisTypes().get(0));
+        Assertions.assertEquals("geivsiykzkdncj", model.analysisTypes().get(0));
     }
 }

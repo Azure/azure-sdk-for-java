@@ -14,7 +14,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-security-keyvault-jca</artifactId>
-  <version>2.11.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-jca;current} -->
+  <version>2.12.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-jca;current} -->
   <name>JCA Provider for Azure Key Vault</name>
   <description>The Java Crypto Architecture (JCA) Provider for Azure Key Vault</description>
 
@@ -41,12 +41,6 @@
       <artifactId>httpclient5</artifactId>
       <version>5.4.3</version> <!-- {x-version-update;org.apache.httpcomponents.client5:httpclient5;external_dependency} -->
     </dependency>
-    <dependency>
-      <groupId>org.brotli</groupId>
-      <artifactId>dec</artifactId>
-      <version>0.1.2</version> <!-- {x-version-update;org.brotli:dec;external_dependency} -->
-      <optional>true</optional>
-    </dependency>
     <!-- Conscrypt -->
     <dependency>
       <groupId>org.conscrypt</groupId>
@@ -58,7 +52,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-json</artifactId>
-      <version>1.5.0</version> <!-- {x-version-update;com.azure:azure-json;dependency} -->
+      <version>1.5.1</version> <!-- {x-version-update;com.azure:azure-json;dependency} -->
       <optional>true</optional>
     </dependency>
     <!-- SLF4j -->
@@ -98,7 +92,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.57.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.57.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
       <scope>test</scope>
     </dependency>
     <!-- JUnit -->
@@ -162,6 +156,11 @@
                     <exclude>META-INF/*.DSA</exclude>
                     <exclude>META-INF/*.RSA</exclude>
                     <exclude>META-INF/services/java.security.Provider</exclude>
+                    <!-- Exclude OSGI metadata since it references original (unshaded) package names
+                         and is not applicable after relocation -->
+                    <exclude>**/OSGI-INF/**</exclude>
+                    <!-- Exclude Bouncy Castle's module-info since it references unshaded packages. -->
+                    <exclude>**/module-info.class</exclude>
                   </excludes>
                 </filter>
               </filters>
@@ -169,6 +168,21 @@
                 <relocation>
                   <pattern>org.bouncycastle</pattern>
                   <shadedPattern>com.azure.security.keyvault.jca.implementation.shaded.org.bouncycastle</shadedPattern>
+                </relocation>
+                <!-- Manually relocate Bouncy Castle multi-release classes to the correct shaded package.
+                     This workaround is needed because the maven-shade-plugin (as of 3.6.1) relocates the
+                     bytecode but does not move the class files to the shaded directory structure (MSHADE-406).
+                     This additional relocation rule matches the file path pattern and moves multi-release
+                     classes to preserve Java 9+ optimizations while preventing package leakage.
+                     Based on: https://github.com/datafaker-net/datafaker/pull/1008
+                     See:
+                       - https://github.com/apache/maven-shade-plugin/pull/202
+                       - https://issues.apache.org/jira/browse/MSHADE-406
+                       - https://github.com/Azure/azure-sdk-for-java/issues/45277 -->
+                <relocation>
+                  <pattern>META-INF/versions/(\d+)/org/bouncycastle</pattern>
+                  <shadedPattern>META-INF/versions/$1/com/azure/security/keyvault/jca/implementation/shaded/org/bouncycastle</shadedPattern>
+                  <rawString>true</rawString>
                 </relocation>
               </relocations>
               <transformers>
@@ -209,10 +223,6 @@
                   <shadedPattern>com.azure.security.keyvault.jca.implementation.shaded.org.apache.hc</shadedPattern>
                 </relocation>
                 <relocation>
-                  <pattern>org.brotli</pattern>
-                  <shadedPattern>com.azure.security.keyvault.jca.implementation.shaded.org.brotli</shadedPattern>
-                </relocation>
-                <relocation>
                   <pattern>org.slf4j</pattern>
                   <shadedPattern>com.azure.security.keyvault.jca.implementation.shaded.org.slf4j</shadedPattern>
                 </relocation>
@@ -247,26 +257,6 @@
         </executions>
       </plugin>
       <plugin>
-        <groupId>org.jacoco</groupId>
-        <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.13</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
-        <executions>
-          <execution>
-            <id>default-prepare-agent</id>
-            <goals>
-              <goal>prepare-agent</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>default-report</id>
-            <phase>prepare-package</phase>
-            <goals>
-              <goal>report</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
         <version>3.6.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
@@ -277,7 +267,6 @@
                 <include>org.bouncycastle:bcpkix-lts8on:[2.73.8]</include> <!-- {x-include-update;org.bouncycastle:bcpkix-lts8on;external_dependency} -->
                 <include>org.conscrypt:conscrypt-openjdk-uber:[2.5.2]</include> <!-- {x-include-update;org.conscrypt:conscrypt-openjdk-uber;external_dependency} -->
                 <include>org.apache.httpcomponents.client5:httpclient5:[5.4.3]</include> <!-- {x-include-update;org.apache.httpcomponents.client5:httpclient5;external_dependency} -->
-                <include>org.brotli:dec:[0.1.2]</include> <!-- {x-include-update;org.brotli:dec;external_dependency} -->
                 <include>org.slf4j:slf4j-nop:[1.7.36]</include> <!-- {x-include-update;org.slf4j:slf4j-nop;external_dependency} -->
               </includes>
             </bannedDependencies>

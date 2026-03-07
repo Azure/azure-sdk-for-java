@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * certificateBasedAuthConfiguration.
+ * Represents a certificate based auth configuration.
  */
 @Fluent
 public final class MicrosoftGraphCertificateBasedAuthConfiguration extends MicrosoftGraphEntity {

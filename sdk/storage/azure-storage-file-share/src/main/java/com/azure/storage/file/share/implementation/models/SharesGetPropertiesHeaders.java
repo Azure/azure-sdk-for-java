@@ -107,6 +107,12 @@ public final class SharesGetPropertiesHeaders {
     private LeaseDurationType xMsLeaseDuration;
 
     /*
+     * The x-ms-enable-smb-directory-lease property.
+     */
+    @Generated
+    private Boolean xMsEnableSmbDirectoryLease;
+
+    /*
      * The x-ms-request-id property.
      */
     @Generated
@@ -223,6 +229,9 @@ public final class SharesGetPropertiesHeaders {
 
     private static final HttpHeaderName X_MS_LEASE_DURATION = HttpHeaderName.fromString("x-ms-lease-duration");
 
+    private static final HttpHeaderName X_MS_ENABLE_SMB_DIRECTORY_LEASE
+        = HttpHeaderName.fromString("x-ms-enable-smb-directory-lease");
+
     private static final HttpHeaderName X_MS_ACCESS_TIER_TRANSITION_STATE
         = HttpHeaderName.fromString("x-ms-access-tier-transition-state");
 
@@ -332,6 +341,12 @@ public final class SharesGetPropertiesHeaders {
             this.xMsLeaseDuration = LeaseDurationType.fromString(xMsLeaseDuration);
         } else {
             this.xMsLeaseDuration = null;
+        }
+        String xMsEnableSmbDirectoryLease = rawHeaders.getValue(X_MS_ENABLE_SMB_DIRECTORY_LEASE);
+        if (xMsEnableSmbDirectoryLease != null) {
+            this.xMsEnableSmbDirectoryLease = Boolean.parseBoolean(xMsEnableSmbDirectoryLease);
+        } else {
+            this.xMsEnableSmbDirectoryLease = null;
         }
         this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
         this.xMsAccessTierTransitionState = rawHeaders.getValue(X_MS_ACCESS_TIER_TRANSITION_STATE);
@@ -731,6 +746,28 @@ public final class SharesGetPropertiesHeaders {
     @Generated
     public SharesGetPropertiesHeaders setXMsLeaseDuration(LeaseDurationType xMsLeaseDuration) {
         this.xMsLeaseDuration = xMsLeaseDuration;
+        return this;
+    }
+
+    /**
+     * Get the xMsEnableSmbDirectoryLease property: The x-ms-enable-smb-directory-lease property.
+     * 
+     * @return the xMsEnableSmbDirectoryLease value.
+     */
+    @Generated
+    public Boolean isXMsEnableSmbDirectoryLease() {
+        return this.xMsEnableSmbDirectoryLease;
+    }
+
+    /**
+     * Set the xMsEnableSmbDirectoryLease property: The x-ms-enable-smb-directory-lease property.
+     * 
+     * @param xMsEnableSmbDirectoryLease the xMsEnableSmbDirectoryLease value to set.
+     * @return the SharesGetPropertiesHeaders object itself.
+     */
+    @Generated
+    public SharesGetPropertiesHeaders setXMsEnableSmbDirectoryLease(Boolean xMsEnableSmbDirectoryLease) {
+        this.xMsEnableSmbDirectoryLease = xMsEnableSmbDirectoryLease;
         return this;
     }
 

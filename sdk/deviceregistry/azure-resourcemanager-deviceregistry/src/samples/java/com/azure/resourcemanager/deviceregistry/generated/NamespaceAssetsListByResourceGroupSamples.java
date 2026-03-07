@@ -9,7 +9,7 @@ package com.azure.resourcemanager.deviceregistry.generated;
  */
 public final class NamespaceAssetsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-07-01-preview/List_NamespaceAssets_ByResourceGroup.json
+     * x-ms-original-file: 2025-11-01-preview/List_NamespaceAssets_ByResourceGroup.json
      */
     /**
      * Sample code: List_NamespaceAssets_ByResourceGroup.

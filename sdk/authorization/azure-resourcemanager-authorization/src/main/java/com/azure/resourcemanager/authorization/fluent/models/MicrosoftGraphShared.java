@@ -17,7 +17,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * shared.
+ * Represents a shared.
  */
 @Fluent
 public final class MicrosoftGraphShared implements JsonSerializable<MicrosoftGraphShared> {

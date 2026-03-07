@@ -20,7 +20,7 @@ public final class FlexComponentsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"minimumCoreCount\":1667275200,\"availableCoreCount\":1141313452,\"availableDbStorageInGbs\":2082373615,\"runtimeMinimumCoreCount\":735394972,\"shape\":\"ykggnoxuztrksx\",\"availableMemoryInGbs\":1615864463,\"availableLocalStorageInGbs\":29504887,\"computeModel\":\"pfnznthjtwkj\",\"hardwareType\":\"CELL\",\"descriptionSummary\":\"xuzvoamktcqi\"},\"id\":\"mgbzahgxqdlyrtl\",\"name\":\"laprlt\",\"type\":\"katbhjm\"}";
+            = "{\"properties\":{\"minimumCoreCount\":1354484922,\"availableCoreCount\":1345768053,\"availableDbStorageInGbs\":220853463,\"runtimeMinimumCoreCount\":1307566390,\"shape\":\"fytpqsixymmpuji\",\"availableMemoryInGbs\":1474208160,\"availableLocalStorageInGbs\":1164095786,\"computeModel\":\"uvsmbms\",\"hardwareType\":\"COMPUTE\",\"descriptionSummary\":\"ovwzdbpqvybefg\"},\"id\":\"x\",\"name\":\"okcvtlubses\",\"type\":\"vcuartrhun\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -29,9 +29,8 @@ public final class FlexComponentsGetWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        FlexComponent response = manager.flexComponents()
-            .getWithResponse("hmipgawtxxpkyjc", "cjxgrytf", com.azure.core.util.Context.NONE)
-            .getValue();
+        FlexComponent response
+            = manager.flexComponents().getWithResponse("xf", "vaknokzwjj", com.azure.core.util.Context.NONE).getValue();
 
     }
 }

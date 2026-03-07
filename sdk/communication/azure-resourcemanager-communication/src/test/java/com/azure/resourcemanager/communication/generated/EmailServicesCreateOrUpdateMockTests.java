@@ -6,8 +6,8 @@ package com.azure.resourcemanager.communication.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.communication.CommunicationManager;
 import com.azure.resourcemanager.communication.models.EmailServiceResource;
@@ -23,26 +23,26 @@ public final class EmailServicesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"dataLocation\":\"xogaokonzmnsikv\"},\"location\":\"qzeqqkdltfzxm\",\"tags\":{\"dkwobdagx\":\"hgure\"},\"id\":\"ibqdxbxwakbogqx\",\"name\":\"dlkzgxhuri\",\"type\":\"lbpodxunk\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"dataLocation\":\"knso\"},\"location\":\"jhxbld\",\"tags\":{\"vokotllxdyh\":\"wrlkdmtn\",\"oocrkvcikhnv\":\"syocogjltdtbnnha\",\"gxk\":\"amqgxqquezikyw\"},\"id\":\"lla\",\"name\":\"melwuipiccjz\",\"type\":\"z\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         CommunicationManager manager = CommunicationManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         EmailServiceResource response = manager.emailServices()
-            .define("mnvdfzn")
-            .withRegion("hh")
-            .withExistingResourceGroup("mcwyhzdxssadb")
-            .withTags(mapOf("wjmy", "zdzucerscdntnevf", "s", "tdss", "emwabnet", "tmweriofzpyq", "d", "hhszh"))
-            .withDataLocation("dvxzbncblylpst")
+            .define("n")
+            .withRegion("ynt")
+            .withExistingResourceGroup("sgplsakn")
+            .withTags(mapOf("swsrms", "ihleos", "ox", "yzrpzbchckqqzq", "rwyhqmibzyhwitsm", "ysuiizynkedya"))
+            .withDataLocation("ljphuopxodl")
             .create();
 
-        Assertions.assertEquals("qzeqqkdltfzxm", response.location());
-        Assertions.assertEquals("hgure", response.tags().get("dkwobdagx"));
-        Assertions.assertEquals("xogaokonzmnsikv", response.dataLocation());
+        Assertions.assertEquals("jhxbld", response.location());
+        Assertions.assertEquals("wrlkdmtn", response.tags().get("vokotllxdyh"));
+        Assertions.assertEquals("knso", response.dataLocation());
     }
 
     // Use "Map.of" if available

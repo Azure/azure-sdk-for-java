@@ -13,19 +13,19 @@ import org.junit.jupiter.api.Assertions;
 public final class ProfileDiagnosticsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ProfileDiagnostics model
-            = BinaryData.fromString("{\"logs\":{\"level\":\"j\"},\"metrics\":{\"prometheusPort\":46275154}}")
-                .toObject(ProfileDiagnostics.class);
-        Assertions.assertEquals("j", model.logs().level());
-        Assertions.assertEquals(46275154, model.metrics().prometheusPort());
+        ProfileDiagnostics model = BinaryData
+            .fromString("{\"logs\":{\"level\":\"hzovawjvzunlut\"},\"metrics\":{\"prometheusPort\":72730946}}")
+            .toObject(ProfileDiagnostics.class);
+        Assertions.assertEquals("hzovawjvzunlut", model.logs().level());
+        Assertions.assertEquals(72730946, model.metrics().prometheusPort());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProfileDiagnostics model = new ProfileDiagnostics().withLogs(new DiagnosticsLogs().withLevel("j"))
-            .withMetrics(new Metrics().withPrometheusPort(46275154));
+        ProfileDiagnostics model = new ProfileDiagnostics().withLogs(new DiagnosticsLogs().withLevel("hzovawjvzunlut"))
+            .withMetrics(new Metrics().withPrometheusPort(72730946));
         model = BinaryData.fromObject(model).toObject(ProfileDiagnostics.class);
-        Assertions.assertEquals("j", model.logs().level());
-        Assertions.assertEquals(46275154, model.metrics().prometheusPort());
+        Assertions.assertEquals("hzovawjvzunlut", model.logs().level());
+        Assertions.assertEquals(72730946, model.metrics().prometheusPort());
     }
 }

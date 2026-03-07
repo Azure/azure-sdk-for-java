@@ -14,6 +14,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.models.AzureFirewallInner;
+import com.azure.resourcemanager.network.fluent.models.AzureFirewallPacketCaptureResponseInner;
 import com.azure.resourcemanager.network.fluent.models.IpPrefixesListInner;
 import com.azure.resourcemanager.network.models.FirewallPacketCaptureParameters;
 import com.azure.resourcemanager.network.models.TagsObject;
@@ -657,4 +658,115 @@ public interface AzureFirewallsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     void packetCapture(String resourceGroupName, String azureFirewallName, FirewallPacketCaptureParameters parameters,
         Context context);
+
+    /**
+     * Runs a packet capture operation on AzureFirewall.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the azure firewall.
+     * @param parameters Parameters supplied to run packet capture on azure firewall.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of an Azure Firewall Packet Capture Operation along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> packetCaptureOperationWithResponseAsync(String resourceGroupName,
+        String azureFirewallName, FirewallPacketCaptureParameters parameters);
+
+    /**
+     * Runs a packet capture operation on AzureFirewall.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the azure firewall.
+     * @param parameters Parameters supplied to run packet capture on azure firewall.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of response of an Azure Firewall Packet Capture Operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<AzureFirewallPacketCaptureResponseInner>, AzureFirewallPacketCaptureResponseInner>
+        beginPacketCaptureOperationAsync(String resourceGroupName, String azureFirewallName,
+            FirewallPacketCaptureParameters parameters);
+
+    /**
+     * Runs a packet capture operation on AzureFirewall.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the azure firewall.
+     * @param parameters Parameters supplied to run packet capture on azure firewall.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of response of an Azure Firewall Packet Capture Operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<AzureFirewallPacketCaptureResponseInner>, AzureFirewallPacketCaptureResponseInner>
+        beginPacketCaptureOperation(String resourceGroupName, String azureFirewallName,
+            FirewallPacketCaptureParameters parameters);
+
+    /**
+     * Runs a packet capture operation on AzureFirewall.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the azure firewall.
+     * @param parameters Parameters supplied to run packet capture on azure firewall.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of response of an Azure Firewall Packet Capture Operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<AzureFirewallPacketCaptureResponseInner>, AzureFirewallPacketCaptureResponseInner>
+        beginPacketCaptureOperation(String resourceGroupName, String azureFirewallName,
+            FirewallPacketCaptureParameters parameters, Context context);
+
+    /**
+     * Runs a packet capture operation on AzureFirewall.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the azure firewall.
+     * @param parameters Parameters supplied to run packet capture on azure firewall.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of an Azure Firewall Packet Capture Operation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<AzureFirewallPacketCaptureResponseInner> packetCaptureOperationAsync(String resourceGroupName,
+        String azureFirewallName, FirewallPacketCaptureParameters parameters);
+
+    /**
+     * Runs a packet capture operation on AzureFirewall.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the azure firewall.
+     * @param parameters Parameters supplied to run packet capture on azure firewall.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of an Azure Firewall Packet Capture Operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AzureFirewallPacketCaptureResponseInner packetCaptureOperation(String resourceGroupName, String azureFirewallName,
+        FirewallPacketCaptureParameters parameters);
+
+    /**
+     * Runs a packet capture operation on AzureFirewall.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the azure firewall.
+     * @param parameters Parameters supplied to run packet capture on azure firewall.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of an Azure Firewall Packet Capture Operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AzureFirewallPacketCaptureResponseInner packetCaptureOperation(String resourceGroupName, String azureFirewallName,
+        FirewallPacketCaptureParameters parameters, Context context);
 }

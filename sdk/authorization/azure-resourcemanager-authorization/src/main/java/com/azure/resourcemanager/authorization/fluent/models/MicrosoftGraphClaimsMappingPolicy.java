@@ -17,8 +17,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * claimsMappingPolicy
- * 
+ * Represents a claims mapping policy.
+ * <p>
  * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
  * entity types.
  */

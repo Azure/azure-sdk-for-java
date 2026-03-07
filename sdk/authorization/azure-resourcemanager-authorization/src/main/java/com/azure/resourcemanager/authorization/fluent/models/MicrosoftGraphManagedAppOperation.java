@@ -16,8 +16,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * managedAppOperation
- * 
+ * Represents a managed app operation.
+ * <p>
  * Represents an operation applied against an app registration.
  */
 @Fluent

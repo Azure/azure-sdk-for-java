@@ -1,5 +1,37 @@
 # Release History
 
+## 1.3.5 (2026-03-05)
+
+### Dependency Updates
+
+- Updated Azure SDK dependency versions to the latest releases.
+- Added a new libary entry to the BOM:
+    - [`azure-ai-contentunderstanding`](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/contentunderstanding/azure-ai-contentunderstanding/README.md)  
+
+## 1.3.4 (2026-01-30)
+
+- Updated Azure SDK dependency versions to the latest releases.
+
+## 1.3.3 (2025-11-26)
+
+### Dependency Updates
+
+- Updated Azure SDK dependency versions to the latest releases.
+
+## 1.3.2 (2025-11-04)
+
+### Dependency Updates
+
+- Updated Azure SDK dependency versions to the latest releases.
+
+## 1.3.1 (2025-10-10)
+
+### Breaking Changes
+
+- Removed the following libraries from the BOM:
+    - `azure-mixedreality-remoterendering` - Service is deprecated and non-functional since 2025-10-01 see: [retirement notice](https://azure.microsoft.com/updates?id=azure-remote-rendering-retirement)
+
+
 ## 1.3.0 (2025-10-02)
 
 ### Dependency Updates

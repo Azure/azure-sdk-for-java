@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class DataflowGraphNodeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataflowGraphNode model = BinaryData.fromString("{\"nodeType\":\"DataflowGraphNode\",\"name\":\"rxxle\"}")
+        DataflowGraphNode model = BinaryData.fromString("{\"nodeType\":\"DataflowGraphNode\",\"name\":\"areqna\"}")
             .toObject(DataflowGraphNode.class);
-        Assertions.assertEquals("rxxle", model.name());
+        Assertions.assertEquals("areqna", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataflowGraphNode model = new DataflowGraphNode().withName("rxxle");
+        DataflowGraphNode model = new DataflowGraphNode().withName("areqna");
         model = BinaryData.fromObject(model).toObject(DataflowGraphNode.class);
-        Assertions.assertEquals("rxxle", model.name());
+        Assertions.assertEquals("areqna", model.name());
     }
 }

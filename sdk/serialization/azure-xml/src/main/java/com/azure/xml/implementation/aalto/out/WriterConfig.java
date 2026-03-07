@@ -1,16 +1,13 @@
 // Original file from https://github.com/FasterXML/aalto-xml under Apache-2.0 license.
 package com.azure.xml.implementation.aalto.out;
 
-import java.util.*;
-import java.lang.ref.SoftReference;
-
-import javax.xml.stream.XMLOutputFactory; // to get constants
-
-import com.azure.xml.implementation.stax2.XMLOutputFactory2;
-import com.azure.xml.implementation.stax2.XMLStreamProperties;
-
 import com.azure.xml.implementation.aalto.impl.CommonConfig;
+import com.azure.xml.implementation.aalto.stax.OutputFactoryImpl;
 import com.azure.xml.implementation.aalto.util.BufferRecycler;
+
+import javax.xml.stream.XMLOutputFactory;
+import java.lang.ref.SoftReference;
+import java.util.HashMap;
 
 /**
  * This is the shared configuration object passed by the factory to writer.
@@ -43,17 +40,17 @@ public final class WriterConfig extends CommonConfig {
         // Stax2:
 
         // not configurable, but are recognized
-        sProperties.put(XMLStreamProperties.XSP_NAMESPACE_AWARE, F_NS_AWARE);
-        sProperties.put(XMLStreamProperties.XSP_PROBLEM_REPORTER, null);
+        sProperties.put(XSP_NAMESPACE_AWARE, F_NS_AWARE);
+        sProperties.put(XSP_PROBLEM_REPORTER, null);
 
         // and then writer-side properties, mostly unsupported but recognized
 
-        sProperties.put(XMLOutputFactory2.P_AUTO_CLOSE_OUTPUT, F_AUTO_CLOSE_OUTPUT);
+        sProperties.put(OutputFactoryImpl.P_AUTO_CLOSE_OUTPUT, F_AUTO_CLOSE_OUTPUT);
 
-        sProperties.put(XMLOutputFactory2.P_AUTOMATIC_EMPTY_ELEMENTS, F_AUTO_EMPTY_ELEMS);
-        sProperties.put(XMLOutputFactory2.P_AUTOMATIC_NS_PREFIX, PROP_AUTO_NS_PREFIX);
-        sProperties.put(XMLOutputFactory2.P_TEXT_ESCAPER, null);
-        sProperties.put(XMLOutputFactory2.P_ATTR_VALUE_ESCAPER, null);
+        sProperties.put(OutputFactoryImpl.P_AUTOMATIC_EMPTY_ELEMENTS, F_AUTO_EMPTY_ELEMS);
+        sProperties.put(OutputFactoryImpl.P_AUTOMATIC_NS_PREFIX, PROP_AUTO_NS_PREFIX);
+        sProperties.put(OutputFactoryImpl.P_TEXT_ESCAPER, null);
+        sProperties.put(OutputFactoryImpl.P_ATTR_VALUE_ESCAPER, null);
     }
 
     /*
@@ -148,14 +145,6 @@ public final class WriterConfig extends CommonConfig {
 
     public WriterConfig createNonShared() {
         return new WriterConfig(_encoding, _flags, _flagMods, _encodingContext, _propAutoNsPrefix);
-    }
-
-    @Override
-    public String getExternalEncoding() {
-        /* !!! 01-Jan-2007, tatus: Can we distinguish this from the
-         *   actual encoding? Should we be able to?
-         */
-        return getActualEncoding();
     }
 
     @Override

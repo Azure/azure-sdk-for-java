@@ -410,7 +410,7 @@ public final class CertificateAsyncClient {
      * @return A {@link ResourceModifiedException} created from the {@link HttpResponseException}.
      */
     static HttpResponseException mapCreateCertificateException(HttpResponseException e) {
-        return e.getResponse().getStatusCode() == 400
+        return e.getResponse() != null && e.getResponse().getStatusCode() == 400
             ? new ResourceModifiedException(e.getMessage(), e.getResponse(), e.getValue())
             : e;
     }
@@ -430,7 +430,7 @@ public final class CertificateAsyncClient {
      * @return A {@link ResourceModifiedException} created from the {@link HttpResponseException}.
      */
     static HttpResponseException mapGetCertificateOperationException(HttpResponseException e) {
-        return e.getResponse().getStatusCode() == 400
+        return e.getResponse() != null && e.getResponse().getStatusCode() == 400
             ? new ResourceModifiedException(e.getMessage(), e.getResponse(), e.getValue())
             : e;
     }
@@ -472,7 +472,7 @@ public final class CertificateAsyncClient {
     }
 
     static HttpResponseException mapUpdateCertificateOperationException(HttpResponseException e) {
-        return e.getResponse().getStatusCode() == 400
+        return e.getResponse() != null && e.getResponse().getStatusCode() == 400
             ? new ResourceModifiedException(e.getMessage(), e.getResponse(), e.getValue())
             : e;
     }
@@ -486,7 +486,7 @@ public final class CertificateAsyncClient {
     }
 
     static HttpResponseException mapGetCertificateException(HttpResponseException e) {
-        return e.getResponse().getStatusCode() == 403
+        return e.getResponse() != null && e.getResponse().getStatusCode() == 403
             ? new ResourceModifiedException(e.getMessage(), e.getResponse(), e.getValue())
             : e;
     }
@@ -813,7 +813,7 @@ public final class CertificateAsyncClient {
     }
 
     static HttpResponseException mapDeleteCertificateException(HttpResponseException e) {
-        return e.getResponse().getStatusCode() == 404
+        return e.getResponse() != null && e.getResponse().getStatusCode() == 404
             ? new ResourceNotFoundException(e.getMessage(), e.getResponse(), e.getValue())
             : e;
     }
@@ -825,7 +825,7 @@ public final class CertificateAsyncClient {
             .map(binaryData -> new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
                 createDeletedCertificate(binaryData.toObject(DeletedCertificateBundle.class))))
             .onErrorResume(HttpResponseException.class, e -> {
-                if (e.getResponse().getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
+                if (e.getResponse() != null && e.getResponse().getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
                     return Mono.just(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
                         pollingContext.getLatestResponse().getValue()));
                 } else {
@@ -1021,7 +1021,7 @@ public final class CertificateAsyncClient {
             .map(binaryData -> new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
                 createCertificateWithPolicy(binaryData.toObject(CertificateBundle.class))))
             .onErrorResume(HttpResponseException.class, e -> {
-                if (e.getResponse().getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
+                if (e.getResponse() != null && e.getResponse().getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
                     return Mono.just(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
                         pollingContext.getLatestResponse().getValue()));
                 } else {
@@ -1167,7 +1167,7 @@ public final class CertificateAsyncClient {
     }
 
     static HttpResponseException mapRestoreCertificateException(HttpResponseException e) {
-        return e.getResponse().getStatusCode() == 400
+        return e.getResponse() != null && e.getResponse().getStatusCode() == 400
             ? new ResourceModifiedException(e.getMessage(), e.getResponse(), e.getValue())
             : e;
     }
@@ -1523,7 +1523,7 @@ public final class CertificateAsyncClient {
     }
 
     static HttpResponseException mapGetCertificatePolicyException(HttpResponseException e) {
-        return e.getResponse().getStatusCode() == 403
+        return e.getResponse() != null && e.getResponse().getStatusCode() == 403
             ? new ResourceModifiedException(e.getMessage(), e.getResponse(), e.getValue())
             : e;
     }
@@ -2123,7 +2123,7 @@ public final class CertificateAsyncClient {
     }
 
     static HttpResponseException mapDeleteCertificateOperationException(HttpResponseException e) {
-        return e.getResponse().getStatusCode() == 400
+        return e.getResponse() != null && e.getResponse().getStatusCode() == 400
             ? new ResourceModifiedException(e.getMessage(), e.getResponse(), e.getValue())
             : e;
     }

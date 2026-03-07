@@ -35,13 +35,6 @@ public interface LogicApp {
     String type();
 
     /**
-     * Gets the properties property: The resource-specific properties for this resource.
-     * 
-     * @return the properties value.
-     */
-    Object properties();
-
-    /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
      * @return the systemData value.
@@ -97,7 +90,7 @@ public interface LogicApp {
          * The stage of the LogicApp definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithProperties {
+        interface WithCreate {
             /**
              * Executes the create request.
              * 
@@ -113,19 +106,6 @@ public interface LogicApp {
              */
             LogicApp create(Context context);
         }
-
-        /**
-         * The stage of the LogicApp definition allowing to specify properties.
-         */
-        interface WithProperties {
-            /**
-             * Specifies the properties property: The resource-specific properties for this resource..
-             * 
-             * @param properties The resource-specific properties for this resource.
-             * @return the next definition stage.
-             */
-            WithCreate withProperties(Object properties);
-        }
     }
 
     /**
@@ -138,7 +118,7 @@ public interface LogicApp {
     /**
      * The template for LogicApp update.
      */
-    interface Update extends UpdateStages.WithProperties {
+    interface Update {
         /**
          * Executes the update request.
          * 
@@ -159,18 +139,6 @@ public interface LogicApp {
      * The LogicApp update stages.
      */
     interface UpdateStages {
-        /**
-         * The stage of the LogicApp update allowing to specify properties.
-         */
-        interface WithProperties {
-            /**
-             * Specifies the properties property: The resource-specific properties for this resource..
-             * 
-             * @param properties The resource-specific properties for this resource.
-             * @return the next definition stage.
-             */
-            Update withProperties(Object properties);
-        }
     }
 
     /**
@@ -187,28 +155,6 @@ public interface LogicApp {
      * @return the refreshed resource.
      */
     LogicApp refresh(Context context);
-
-    /**
-     * Creates or updates the artifacts for the logic app.
-     * 
-     * @param workflowArtifacts Application settings and files of the workflow.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     * is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    Response<Void> deployWorkflowArtifactsWithResponse(WorkflowArtifacts workflowArtifacts, Context context);
-
-    /**
-     * Creates or updates the artifacts for the logic app.
-     * 
-     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     * is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void deployWorkflowArtifacts();
 
     /**
      * Gets logic app's connections.

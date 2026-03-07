@@ -4,6 +4,6 @@
 
 /**
  * Package containing the data models for WebSiteManagementClient.
- * WebSite Management Client.
+ * AppService Management Client.
  */
 package com.azure.resourcemanager.appservice.models;

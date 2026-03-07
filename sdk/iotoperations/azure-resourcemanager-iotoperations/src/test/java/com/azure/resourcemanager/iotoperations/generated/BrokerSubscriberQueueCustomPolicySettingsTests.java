@@ -15,22 +15,19 @@ public final class BrokerSubscriberQueueCustomPolicySettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BrokerSubscriberQueueCustomPolicySettings model = BinaryData.fromString(
-            "{\"subscriberClientIds\":[\"ea\",\"eipheoflokeyy\"],\"dynamic\":{\"mode\":\"Enabled\"},\"topics\":[\"dlwtgrhpdj\",\"jumasx\",\"zj\",\"qyeg\"]}")
+            "{\"subscriberClientIds\":[\"ggd\",\"jixhbk\",\"ofqweykhmenevfye\"],\"dynamic\":{\"mode\":\"Enabled\"}}")
             .toObject(BrokerSubscriberQueueCustomPolicySettings.class);
-        Assertions.assertEquals("ea", model.subscriberClientIds().get(0));
+        Assertions.assertEquals("ggd", model.subscriberClientIds().get(0));
         Assertions.assertEquals(OperationalMode.ENABLED, model.dynamic().mode());
-        Assertions.assertEquals("dlwtgrhpdj", model.topics().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BrokerSubscriberQueueCustomPolicySettings model = new BrokerSubscriberQueueCustomPolicySettings()
-            .withSubscriberClientIds(Arrays.asList("ea", "eipheoflokeyy"))
-            .withDynamic(new BrokerSubscriberQueueDynamic().withMode(OperationalMode.ENABLED))
-            .withTopics(Arrays.asList("dlwtgrhpdj", "jumasx", "zj", "qyeg"));
+            .withSubscriberClientIds(Arrays.asList("ggd", "jixhbk", "ofqweykhmenevfye"))
+            .withDynamic(new BrokerSubscriberQueueDynamic().withMode(OperationalMode.ENABLED));
         model = BinaryData.fromObject(model).toObject(BrokerSubscriberQueueCustomPolicySettings.class);
-        Assertions.assertEquals("ea", model.subscriberClientIds().get(0));
+        Assertions.assertEquals("ggd", model.subscriberClientIds().get(0));
         Assertions.assertEquals(OperationalMode.ENABLED, model.dynamic().mode());
-        Assertions.assertEquals("dlwtgrhpdj", model.topics().get(0));
     }
 }

@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * privacyProfile.
+ * Represents a privacy profile.
  */
 @Fluent
 public final class MicrosoftGraphPrivacyProfile implements JsonSerializable<MicrosoftGraphPrivacyProfile> {

@@ -18,8 +18,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
-
 /**
  * Query metrics in the Azure Cosmos database service.
  * This metric represents a moving average for a set of queries whose metrics have been aggregated together.
@@ -299,7 +297,7 @@ public final class QueryMetrics {
         } catch (final JsonProcessingException error) {
             LOGGER.debug("could not convert {} value to JSON due to:", this.getClass(), error);
             try {
-                return lenientFormat("{\"error\":%s}", Utils.getDurationEnabledObjectMapper().writeValueAsString(error.toString()));
+                return String.format("{\"error\":%s}", Utils.getDurationEnabledObjectMapper().writeValueAsString(error.toString()));
             } catch (final JsonProcessingException exception) {
                 return "null";
             }

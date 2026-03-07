@@ -11,10 +11,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.deviceregistry.fluent.NamespacesClient;
 import com.azure.resourcemanager.deviceregistry.fluent.models.NamespaceInner;
-import com.azure.resourcemanager.deviceregistry.fluent.models.NamespaceMigrateResponseInner;
 import com.azure.resourcemanager.deviceregistry.models.Namespace;
 import com.azure.resourcemanager.deviceregistry.models.NamespaceMigrateRequest;
-import com.azure.resourcemanager.deviceregistry.models.NamespaceMigrateResponse;
 import com.azure.resourcemanager.deviceregistry.models.Namespaces;
 
 public final class NamespacesImpl implements Namespaces {
@@ -79,25 +77,12 @@ public final class NamespacesImpl implements Namespaces {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new NamespaceImpl(inner1, this.manager()));
     }
 
-    public NamespaceMigrateResponse migrate(String resourceGroupName, String namespaceName,
-        NamespaceMigrateRequest body) {
-        NamespaceMigrateResponseInner inner = this.serviceClient().migrate(resourceGroupName, namespaceName, body);
-        if (inner != null) {
-            return new NamespaceMigrateResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void migrate(String resourceGroupName, String namespaceName, NamespaceMigrateRequest body) {
+        this.serviceClient().migrate(resourceGroupName, namespaceName, body);
     }
 
-    public NamespaceMigrateResponse migrate(String resourceGroupName, String namespaceName,
-        NamespaceMigrateRequest body, Context context) {
-        NamespaceMigrateResponseInner inner
-            = this.serviceClient().migrate(resourceGroupName, namespaceName, body, context);
-        if (inner != null) {
-            return new NamespaceMigrateResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void migrate(String resourceGroupName, String namespaceName, NamespaceMigrateRequest body, Context context) {
+        this.serviceClient().migrate(resourceGroupName, namespaceName, body, context);
     }
 
     public Namespace getById(String id) {

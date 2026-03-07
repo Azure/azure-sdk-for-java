@@ -11,19 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class UserOwnedStorageTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UserOwnedStorage model
-            = BinaryData.fromString("{\"resourceId\":\"zitonpeqfpjkjl\",\"identityClientId\":\"fpdvhpfxxypi\"}")
-                .toObject(UserOwnedStorage.class);
-        Assertions.assertEquals("zitonpeqfpjkjl", model.resourceId());
-        Assertions.assertEquals("fpdvhpfxxypi", model.identityClientId());
+        UserOwnedStorage model = BinaryData.fromString("{\"resourceId\":\"trg\",\"identityClientId\":\"bpf\"}")
+            .toObject(UserOwnedStorage.class);
+        Assertions.assertEquals("trg", model.resourceId());
+        Assertions.assertEquals("bpf", model.identityClientId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UserOwnedStorage model
-            = new UserOwnedStorage().withResourceId("zitonpeqfpjkjl").withIdentityClientId("fpdvhpfxxypi");
+        UserOwnedStorage model = new UserOwnedStorage().withResourceId("trg").withIdentityClientId("bpf");
         model = BinaryData.fromObject(model).toObject(UserOwnedStorage.class);
-        Assertions.assertEquals("zitonpeqfpjkjl", model.resourceId());
-        Assertions.assertEquals("fpdvhpfxxypi", model.identityClientId());
+        Assertions.assertEquals("trg", model.resourceId());
+        Assertions.assertEquals("bpf", model.identityClientId());
     }
 }

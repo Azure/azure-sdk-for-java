@@ -17,7 +17,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * remoteItem.
+ * Represents a remote item.
  */
 @Fluent
 public final class MicrosoftGraphRemoteItem implements JsonSerializable<MicrosoftGraphRemoteItem> {

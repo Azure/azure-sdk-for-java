@@ -9,8 +9,7 @@ package com.azure.resourcemanager.appcontainers.generated;
  */
 public final class ConnectedEnvironmentsDaprComponentsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/
      * ConnectedEnvironmentsDaprComponents_Delete.json
      */
     /**

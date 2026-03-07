@@ -89,7 +89,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "WebSiteManagementCli")
+    @ServiceInterface(name = "WebSiteManagementClientResourceProviders")
     public interface ResourceProvidersService {
         @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.Web/publishingUsers/web")
@@ -180,6 +180,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             @QueryParam("sku") SkuName sku, @QueryParam("linuxWorkersEnabled") Boolean linuxWorkersEnabled,
             @QueryParam("xenonWorkersEnabled") Boolean xenonWorkersEnabled,
             @QueryParam("linuxDynamicWorkersEnabled") Boolean linuxDynamicWorkersEnabled,
+            @QueryParam("customModeWorkersEnabled ") Boolean customModeWorkersEnabled,
             @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -330,10 +331,10 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getPublishingUser(this.client.getEndpoint(), this.client.getApiVersion(),
-                accept, context))
+            .withContext(context -> service.getPublishingUser(this.client.getEndpoint(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -355,9 +356,10 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getPublishingUser(this.client.getEndpoint(), this.client.getApiVersion(), accept, context);
+        return service.getPublishingUser(this.client.getEndpoint(), apiVersion, accept, context);
     }
 
     /**
@@ -427,10 +429,11 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         } else {
             userDetails.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.updatePublishingUser(this.client.getEndpoint(), this.client.getApiVersion(),
-                userDetails, accept, context))
+            .withContext(context -> service.updatePublishingUser(this.client.getEndpoint(), apiVersion, userDetails,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -458,10 +461,10 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         } else {
             userDetails.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.updatePublishingUser(this.client.getEndpoint(), this.client.getApiVersion(), userDetails, accept,
-            context);
+        return service.updatePublishingUser(this.client.getEndpoint(), apiVersion, userDetails, accept, context);
     }
 
     /**
@@ -528,10 +531,10 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listSourceControls(this.client.getEndpoint(), this.client.getApiVersion(),
-                accept, context))
+            .withContext(context -> service.listSourceControls(this.client.getEndpoint(), apiVersion, accept, context))
             .<PagedResponse<SourceControlInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -554,9 +557,10 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listSourceControls(this.client.getEndpoint(), this.client.getApiVersion(), accept, context)
+        return service.listSourceControls(this.client.getEndpoint(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -644,10 +648,11 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             return Mono
                 .error(new IllegalArgumentException("Parameter sourceControlType is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getSourceControl(this.client.getEndpoint(), sourceControlType,
-                this.client.getApiVersion(), accept, context))
+            .withContext(context -> service.getSourceControl(this.client.getEndpoint(), sourceControlType, apiVersion,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -674,10 +679,10 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             return Mono
                 .error(new IllegalArgumentException("Parameter sourceControlType is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getSourceControl(this.client.getEndpoint(), sourceControlType, this.client.getApiVersion(),
-            accept, context);
+        return service.getSourceControl(this.client.getEndpoint(), sourceControlType, apiVersion, accept, context);
     }
 
     /**
@@ -757,10 +762,11 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         } else {
             requestMessage.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.updateSourceControl(this.client.getEndpoint(), sourceControlType,
-                this.client.getApiVersion(), requestMessage, accept, context))
+                apiVersion, requestMessage, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -793,10 +799,11 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         } else {
             requestMessage.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.updateSourceControl(this.client.getEndpoint(), sourceControlType, this.client.getApiVersion(),
-            requestMessage, accept, context);
+        return service.updateSourceControl(this.client.getEndpoint(), sourceControlType, apiVersion, requestMessage,
+            accept, context);
     }
 
     /**
@@ -876,10 +883,11 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), billingLocation, osType,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<BillingMeterInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -909,11 +917,12 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), billingLocation, osType, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context)
+            .list(this.client.getEndpoint(), billingLocation, osType, this.client.getSubscriptionId(), apiVersion,
+                accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -1034,10 +1043,11 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         } else {
             request.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.checkNameAvailability(this.client.getEndpoint(),
-                this.client.getSubscriptionId(), this.client.getApiVersion(), request, accept, context))
+                this.client.getSubscriptionId(), apiVersion, request, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1070,10 +1080,11 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         } else {
             request.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.checkNameAvailability(this.client.getEndpoint(), this.client.getSubscriptionId(),
-            this.client.getApiVersion(), request, accept, context);
+        return service.checkNameAvailability(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion,
+            request, accept, context);
     }
 
     /**
@@ -1146,10 +1157,11 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listCustomHostnameSites(this.client.getEndpoint(),
-                this.client.getSubscriptionId(), hostname, this.client.getApiVersion(), accept, context))
+                this.client.getSubscriptionId(), hostname, apiVersion, accept, context))
             .<PagedResponse<CustomHostnameSitesInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -1177,11 +1189,12 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listCustomHostnameSites(this.client.getEndpoint(), this.client.getSubscriptionId(), hostname,
-                this.client.getApiVersion(), accept, context)
+            .listCustomHostnameSites(this.client.getEndpoint(), this.client.getSubscriptionId(), hostname, apiVersion,
+                accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -1279,10 +1292,11 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getSubscriptionDeploymentLocations(this.client.getEndpoint(),
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1309,10 +1323,11 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getSubscriptionDeploymentLocations(this.client.getEndpoint(), this.client.getSubscriptionId(),
-            this.client.getApiVersion(), accept, context);
+            apiVersion, accept, context);
     }
 
     /**
@@ -1381,10 +1396,11 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listAseRegions(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context))
+                apiVersion, accept, context))
             .<PagedResponse<AseRegionInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -1411,11 +1427,11 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listAseRegions(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(),
-                accept, context)
+            .listAseRegions(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -1494,6 +1510,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * support Xenon workers.
      * @param linuxDynamicWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions
      * that support Linux Consumption Workers.
+     * @param customModeWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions that
+     * support App Service Plans with &lt;code&gt;IsCustomMode&lt;/code&gt; set to &lt;code&gt;true&lt;/code&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1502,7 +1520,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GeoRegionInner>> listGeoRegionsSinglePageAsync(SkuName sku, Boolean linuxWorkersEnabled,
-        Boolean xenonWorkersEnabled, Boolean linuxDynamicWorkersEnabled) {
+        Boolean xenonWorkersEnabled, Boolean linuxDynamicWorkersEnabled, Boolean customModeWorkersEnabled) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -1511,11 +1529,12 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listGeoRegions(this.client.getEndpoint(), sku, linuxWorkersEnabled,
-                xenonWorkersEnabled, linuxDynamicWorkersEnabled, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context))
+                xenonWorkersEnabled, linuxDynamicWorkersEnabled, customModeWorkersEnabled,
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<GeoRegionInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -1533,6 +1552,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * support Xenon workers.
      * @param linuxDynamicWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions
      * that support Linux Consumption Workers.
+     * @param customModeWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions that
+     * support App Service Plans with &lt;code&gt;IsCustomMode&lt;/code&gt; set to &lt;code&gt;true&lt;/code&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1542,7 +1563,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GeoRegionInner>> listGeoRegionsSinglePageAsync(SkuName sku, Boolean linuxWorkersEnabled,
-        Boolean xenonWorkersEnabled, Boolean linuxDynamicWorkersEnabled, Context context) {
+        Boolean xenonWorkersEnabled, Boolean linuxDynamicWorkersEnabled, Boolean customModeWorkersEnabled,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -1551,10 +1573,13 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listGeoRegions(this.client.getEndpoint(), sku, linuxWorkersEnabled, xenonWorkersEnabled,
-            linuxDynamicWorkersEnabled, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+        return service
+            .listGeoRegions(this.client.getEndpoint(), sku, linuxWorkersEnabled, xenonWorkersEnabled,
+                linuxDynamicWorkersEnabled, customModeWorkersEnabled, this.client.getSubscriptionId(), apiVersion,
+                accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -1571,6 +1596,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * support Xenon workers.
      * @param linuxDynamicWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions
      * that support Linux Consumption Workers.
+     * @param customModeWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions that
+     * support App Service Plans with &lt;code&gt;IsCustomMode&lt;/code&gt; set to &lt;code&gt;true&lt;/code&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1578,9 +1605,11 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<GeoRegionInner> listGeoRegionsAsync(SkuName sku, Boolean linuxWorkersEnabled,
-        Boolean xenonWorkersEnabled, Boolean linuxDynamicWorkersEnabled) {
-        return new PagedFlux<>(() -> listGeoRegionsSinglePageAsync(sku, linuxWorkersEnabled, xenonWorkersEnabled,
-            linuxDynamicWorkersEnabled), nextLink -> listGeoRegionsNextSinglePageAsync(nextLink));
+        Boolean xenonWorkersEnabled, Boolean linuxDynamicWorkersEnabled, Boolean customModeWorkersEnabled) {
+        return new PagedFlux<>(
+            () -> listGeoRegionsSinglePageAsync(sku, linuxWorkersEnabled, xenonWorkersEnabled,
+                linuxDynamicWorkersEnabled, customModeWorkersEnabled),
+            nextLink -> listGeoRegionsNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -1598,8 +1627,11 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         final Boolean linuxWorkersEnabled = null;
         final Boolean xenonWorkersEnabled = null;
         final Boolean linuxDynamicWorkersEnabled = null;
-        return new PagedFlux<>(() -> listGeoRegionsSinglePageAsync(sku, linuxWorkersEnabled, xenonWorkersEnabled,
-            linuxDynamicWorkersEnabled), nextLink -> listGeoRegionsNextSinglePageAsync(nextLink));
+        final Boolean customModeWorkersEnabled = null;
+        return new PagedFlux<>(
+            () -> listGeoRegionsSinglePageAsync(sku, linuxWorkersEnabled, xenonWorkersEnabled,
+                linuxDynamicWorkersEnabled, customModeWorkersEnabled),
+            nextLink -> listGeoRegionsNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -1614,6 +1646,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * support Xenon workers.
      * @param linuxDynamicWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions
      * that support Linux Consumption Workers.
+     * @param customModeWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions that
+     * support App Service Plans with &lt;code&gt;IsCustomMode&lt;/code&gt; set to &lt;code&gt;true&lt;/code&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1622,9 +1656,12 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<GeoRegionInner> listGeoRegionsAsync(SkuName sku, Boolean linuxWorkersEnabled,
-        Boolean xenonWorkersEnabled, Boolean linuxDynamicWorkersEnabled, Context context) {
-        return new PagedFlux<>(() -> listGeoRegionsSinglePageAsync(sku, linuxWorkersEnabled, xenonWorkersEnabled,
-            linuxDynamicWorkersEnabled, context), nextLink -> listGeoRegionsNextSinglePageAsync(nextLink, context));
+        Boolean xenonWorkersEnabled, Boolean linuxDynamicWorkersEnabled, Boolean customModeWorkersEnabled,
+        Context context) {
+        return new PagedFlux<>(
+            () -> listGeoRegionsSinglePageAsync(sku, linuxWorkersEnabled, xenonWorkersEnabled,
+                linuxDynamicWorkersEnabled, customModeWorkersEnabled, context),
+            nextLink -> listGeoRegionsNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1642,8 +1679,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         final Boolean linuxWorkersEnabled = null;
         final Boolean xenonWorkersEnabled = null;
         final Boolean linuxDynamicWorkersEnabled = null;
-        return new PagedIterable<>(
-            listGeoRegionsAsync(sku, linuxWorkersEnabled, xenonWorkersEnabled, linuxDynamicWorkersEnabled));
+        final Boolean customModeWorkersEnabled = null;
+        return new PagedIterable<>(listGeoRegionsAsync(sku, linuxWorkersEnabled, xenonWorkersEnabled,
+            linuxDynamicWorkersEnabled, customModeWorkersEnabled));
     }
 
     /**
@@ -1658,6 +1696,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * support Xenon workers.
      * @param linuxDynamicWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions
      * that support Linux Consumption Workers.
+     * @param customModeWorkersEnabled Specify &lt;code&gt;true&lt;/code&gt; if you want to filter to only regions that
+     * support App Service Plans with &lt;code&gt;IsCustomMode&lt;/code&gt; set to &lt;code&gt;true&lt;/code&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1666,9 +1706,10 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GeoRegionInner> listGeoRegions(SkuName sku, Boolean linuxWorkersEnabled,
-        Boolean xenonWorkersEnabled, Boolean linuxDynamicWorkersEnabled, Context context) {
-        return new PagedIterable<>(
-            listGeoRegionsAsync(sku, linuxWorkersEnabled, xenonWorkersEnabled, linuxDynamicWorkersEnabled, context));
+        Boolean xenonWorkersEnabled, Boolean linuxDynamicWorkersEnabled, Boolean customModeWorkersEnabled,
+        Context context) {
+        return new PagedIterable<>(listGeoRegionsAsync(sku, linuxWorkersEnabled, xenonWorkersEnabled,
+            linuxDynamicWorkersEnabled, customModeWorkersEnabled, context));
     }
 
     /**
@@ -1698,10 +1739,11 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         } else {
             nameIdentifier.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listSiteIdentifiersAssignedToHostname(this.client.getEndpoint(),
-                this.client.getSubscriptionId(), this.client.getApiVersion(), nameIdentifier, accept, context))
+                this.client.getSubscriptionId(), apiVersion, nameIdentifier, accept, context))
             .<PagedResponse<IdentifierInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -1735,11 +1777,12 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         } else {
             nameIdentifier.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listSiteIdentifiersAssignedToHostname(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                this.client.getApiVersion(), nameIdentifier, accept, context)
+                apiVersion, nameIdentifier, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -1844,10 +1887,11 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         } else {
             request.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.regionalCheckNameAvailability(this.client.getEndpoint(), location,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), request, accept, context))
+                this.client.getSubscriptionId(), apiVersion, request, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1882,10 +1926,11 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         } else {
             request.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.regionalCheckNameAvailability(this.client.getEndpoint(), location,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), request, accept, context);
+            this.client.getSubscriptionId(), apiVersion, request, accept, context);
     }
 
     /**
@@ -1960,10 +2005,11 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listPremierAddOnOffers(this.client.getEndpoint(),
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<PremierAddOnOfferInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -1991,11 +2037,12 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listPremierAddOnOffers(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context)
+            .listPremierAddOnOffers(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, accept,
+                context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -2081,10 +2128,11 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listSkus(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context))
+                apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2109,10 +2157,11 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listSkus(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(),
-            accept, context);
+        return service.listSkus(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, accept,
+            context);
     }
 
     /**
@@ -2189,10 +2238,11 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.verifyHostingEnvironmentVnet(this.client.getEndpoint(),
-                this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, accept, context))
+                this.client.getSubscriptionId(), apiVersion, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2227,10 +2277,11 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.verifyHostingEnvironmentVnet(this.client.getEndpoint(), this.client.getSubscriptionId(),
-            this.client.getApiVersion(), parameters, accept, context);
+            apiVersion, parameters, accept, context);
     }
 
     /**
@@ -2323,10 +2374,11 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         } else {
             moveResourceEnvelope.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.move(this.client.getEndpoint(), resourceGroupName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), moveResourceEnvelope, accept, context))
+                this.client.getSubscriptionId(), apiVersion, moveResourceEnvelope, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2364,10 +2416,11 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         } else {
             moveResourceEnvelope.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.move(this.client.getEndpoint(), resourceGroupName, this.client.getSubscriptionId(),
-            this.client.getApiVersion(), moveResourceEnvelope, accept, context);
+        return service.move(this.client.getEndpoint(), resourceGroupName, this.client.getSubscriptionId(), apiVersion,
+            moveResourceEnvelope, accept, context);
     }
 
     /**
@@ -2456,10 +2509,11 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         } else {
             validateRequest.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.validate(this.client.getEndpoint(), resourceGroupName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), validateRequest, accept, context))
+                this.client.getSubscriptionId(), apiVersion, validateRequest, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2498,10 +2552,11 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         } else {
             validateRequest.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.validate(this.client.getEndpoint(), resourceGroupName, this.client.getSubscriptionId(),
-            this.client.getApiVersion(), validateRequest, accept, context);
+            apiVersion, validateRequest, accept, context);
     }
 
     /**
@@ -2591,10 +2646,11 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         } else {
             moveResourceEnvelope.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.validateMove(this.client.getEndpoint(), resourceGroupName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), moveResourceEnvelope, accept, context))
+                this.client.getSubscriptionId(), apiVersion, moveResourceEnvelope, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2632,10 +2688,11 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         } else {
             moveResourceEnvelope.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.validateMove(this.client.getEndpoint(), resourceGroupName, this.client.getSubscriptionId(),
-            this.client.getApiVersion(), moveResourceEnvelope, accept, context);
+            apiVersion, moveResourceEnvelope, accept, context);
     }
 
     /**
@@ -2691,6 +2748,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
+     * Gets the source controls available for Azure websites.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -2718,6 +2777,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
+     * Gets the source controls available for Azure websites.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -2745,6 +2806,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
+     * Gets a list of meters for a given location.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -2771,6 +2834,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
+     * Gets a list of meters for a given location.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -2798,13 +2863,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
+     * Get custom hostnames under this subscription
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of custom hostname sites along with {@link PagedResponse} on successful completion of
+     * @return custom hostnames under this subscription along with {@link PagedResponse} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2826,6 +2893,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
+     * Get custom hostnames under this subscription
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -2833,7 +2902,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of custom hostname sites along with {@link PagedResponse} on successful completion of
+     * @return custom hostnames under this subscription along with {@link PagedResponse} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2854,6 +2923,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
+     * Get a list of available ASE regions and its supported Skus.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -2880,6 +2951,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
+     * Get a list of available ASE regions and its supported Skus.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -2906,6 +2979,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
+     * Get a list of available geographical regions.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -2933,6 +3008,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
+     * Get a list of available geographical regions.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -2960,6 +3037,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
+     * List all apps that are assigned to a hostname.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -2988,6 +3067,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
+     * List all apps that are assigned to a hostname.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -3015,6 +3096,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
+     * List all premier add-on offers.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -3043,6 +3126,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
+     * List all premier add-on offers.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.

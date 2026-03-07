@@ -42,18 +42,18 @@ public interface PrivateEndpointConnection {
     String etag();
 
     /**
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
      * Gets the properties property: Resource properties.
      * 
      * @return the properties value.
      */
     PrivateEndpointConnectionProperties properties();
-
-    /**
-     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
-     * 
-     * @return the systemData value.
-     */
-    SystemData systemData();
 
     /**
      * Gets the location property: The location of the private endpoint connection.

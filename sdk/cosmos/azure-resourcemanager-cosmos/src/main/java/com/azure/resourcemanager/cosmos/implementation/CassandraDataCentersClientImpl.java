@@ -69,7 +69,7 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "CosmosDBManagementCl")
+    @ServiceInterface(name = "CosmosDBManagementClientCassandraDataCenters")
     public interface CassandraDataCentersService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/cassandraClusters/{clusterName}/dataCenters")

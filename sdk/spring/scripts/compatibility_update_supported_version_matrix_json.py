@@ -15,7 +15,7 @@ import json
 import argparse
 
 from compatibility_get_spring_cloud_version import get_spring_cloud_version
-from _constants import SPRING_BOOT_MAJOR_2_VERSION_NAME, SPRING_BOOT_MAJOR_3_VERSION_NAME
+from _constants import SPRING_BOOT_MAJOR_2_VERSION_NAME, SPRING_BOOT_MAJOR_3_VERSION_NAME, SPRING_BOOT_MAJOR_4_VERSION_NAME
 
 
 def get_args():
@@ -26,9 +26,9 @@ def get_args():
         '-sbmvn',
         '--spring-boot-major-version-number',
         type=str,
-        choices=[SPRING_BOOT_MAJOR_2_VERSION_NAME, SPRING_BOOT_MAJOR_3_VERSION_NAME],
-        default=SPRING_BOOT_MAJOR_3_VERSION_NAME,
-        help='Which major version of Spring Boot to use. The default is ' + SPRING_BOOT_MAJOR_3_VERSION_NAME + '.'
+        choices=[SPRING_BOOT_MAJOR_2_VERSION_NAME, SPRING_BOOT_MAJOR_3_VERSION_NAME, SPRING_BOOT_MAJOR_4_VERSION_NAME],
+        default=SPRING_BOOT_MAJOR_4_VERSION_NAME,
+        help='Which major version of Spring Boot to use. The default is ' + SPRING_BOOT_MAJOR_4_VERSION_NAME + '.'
     )
     parser.add_argument('-mcp', '--matrix-config-path', type=str, default='sdk/spring/pipeline/supported-version-matrix.json')
     parser.add_argument(
