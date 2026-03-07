@@ -57,31 +57,39 @@ public class BenchmarkOrchestrator {
 
         setGlobalSystemProperties(config);
 
-        // DropwizardBridgeMeterRegistry bridges Micrometer meters to Dropwizard for
-        // console summary and CSV reporting.
-        DropwizardBridgeMeterRegistry dropwizardBridge = new DropwizardBridgeMeterRegistry();
-
-        // Composite registry: always includes the Dropwizard bridge (for console summary).
-        // Additional registries added based on reportingDestination.
         CompositeMeterRegistry compositeRegistry = new CompositeMeterRegistry();
-        compositeRegistry.add(dropwizardBridge);
 
-        // Reporter destination — mutually exclusive. Default: console.
-        CsvMetricsReporter localReporter = null;
+        // Reporter destination — mutually exclusive. Default: console via LoggingMeterRegistry.
+        DropwizardBridgeMeterRegistry dropwizardBridge = null;
+        CsvMetricsReporter csvReporter = null;
+        io.micrometer.core.instrument.logging.LoggingMeterRegistry loggingRegistry = null;
         CosmosMetricsReporter cosmosReporter = null;
         MeterRegistry appInsightsRegistry = null;
 
         ReportingDestination destination = config.getReportingDestination();
         if (destination == null) {
-            // Default: Dropwizard ConsoleReporter
-            localReporter = new CsvMetricsReporter(dropwizardBridge);
-            localReporter.start(config.getPrintingInterval(), TimeUnit.SECONDS);
+            // Default: Micrometer's native LoggingMeterRegistry (logs all meters via SLF4J)
+            loggingRegistry = io.micrometer.core.instrument.logging.LoggingMeterRegistry.builder(
+                new io.micrometer.core.instrument.logging.LoggingRegistryConfig() {
+                    @Override
+                    public String get(String key) { return null; }
+
+                    @Override
+                    public java.time.Duration step() {
+                        return java.time.Duration.ofSeconds(config.getPrintingInterval());
+                    }
+                }).build();
+            compositeRegistry.add(loggingRegistry);
+            logger.info("Console reporter started (LoggingMeterRegistry, interval={}s)",
+                config.getPrintingInterval());
         } else {
             switch (destination) {
                 case CSV:
-                    localReporter = new CsvMetricsReporter(
+                    dropwizardBridge = new DropwizardBridgeMeterRegistry();
+                    compositeRegistry.add(dropwizardBridge);
+                    csvReporter = new CsvMetricsReporter(
                         dropwizardBridge, config.getCsvReporterConfig().getReportingDirectory());
-                    localReporter.start(config.getPrintingInterval(), TimeUnit.SECONDS);
+                    csvReporter.start(config.getPrintingInterval(), TimeUnit.SECONDS);
                     break;
 
                 case COSMOSDB:
@@ -142,8 +150,11 @@ public class BenchmarkOrchestrator {
         try {
             runLifecycleLoop(config);
         } finally {
-            if (localReporter != null) {
-                localReporter.stop();
+            if (csvReporter != null) {
+                csvReporter.stop();
+            }
+            if (loggingRegistry != null) {
+                loggingRegistry.close();
             }
             if (cosmosReporter != null) {
                 cosmosReporter.stop();
@@ -158,7 +169,9 @@ public class BenchmarkOrchestrator {
                 threadPrefixGaugeSet.close();
             }
             compositeRegistry.close();
-            dropwizardBridge.close();
+            if (dropwizardBridge != null) {
+                dropwizardBridge.close();
+            }
             clearGlobalSystemProperties();
         }
     }
