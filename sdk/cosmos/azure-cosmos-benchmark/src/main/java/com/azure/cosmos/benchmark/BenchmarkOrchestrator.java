@@ -93,6 +93,9 @@ public class BenchmarkOrchestrator {
                     break;
 
                 case COSMOSDB:
+                    // SimpleMeterRegistry backs the composite so meters are stored and
+                    // queryable by CosmosMetricsReporter when it iterates the registry.
+                    compositeRegistry.add(new io.micrometer.core.instrument.simple.SimpleMeterRegistry());
                     Set<String> ops = new LinkedHashSet<>();
                     int totalConcurrency = 0;
                     for (TenantWorkloadConfig t : config.getTenantWorkloads()) {
