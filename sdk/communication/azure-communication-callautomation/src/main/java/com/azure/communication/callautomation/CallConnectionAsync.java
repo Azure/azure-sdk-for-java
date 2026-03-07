@@ -390,17 +390,17 @@ public final class CallConnectionAsync {
             // Need to do a null check since SipHeaders and VoipHeaders are optional; If
             // they both are null then we do not need to set custom context
             if (addParticipantOptions.getTargetParticipant().getCustomCallingContext().getSipHeaders() != null
-            || addParticipantOptions.getTargetParticipant().getCustomCallingContext().getVoipHeaders() != null
-            || addParticipantOptions.getTargetParticipant().getCustomCallingContext().getTeamsPhoneCallDetails()
-                     != null) {
-                 CustomCallingContext customCallingContext = new CustomCallingContext();
-                 customCallingContext.setSipHeaders(
-                     addParticipantOptions.getTargetParticipant().getCustomCallingContext().getSipHeaders());
-                 customCallingContext.setVoipHeaders(
-                     addParticipantOptions.getTargetParticipant().getCustomCallingContext().getVoipHeaders());
-                 customCallingContext.setTeamsPhoneCallDetails(createTeamsPhoneCallDetailsInternal(
-                     addParticipantOptions.getTargetParticipant().getCustomCallingContext().getTeamsPhoneCallDetails()));
-                 request.setCustomCallingContext(customCallingContext);
+                || addParticipantOptions.getTargetParticipant().getCustomCallingContext().getVoipHeaders() != null
+                || addParticipantOptions.getTargetParticipant().getCustomCallingContext().getTeamsPhoneCallDetails()
+                    != null) {
+                CustomCallingContext customCallingContext = new CustomCallingContext();
+                customCallingContext.setSipHeaders(
+                    addParticipantOptions.getTargetParticipant().getCustomCallingContext().getSipHeaders());
+                customCallingContext.setVoipHeaders(
+                    addParticipantOptions.getTargetParticipant().getCustomCallingContext().getVoipHeaders());
+                customCallingContext.setTeamsPhoneCallDetails(createTeamsPhoneCallDetailsInternal(
+                    addParticipantOptions.getTargetParticipant().getCustomCallingContext().getTeamsPhoneCallDetails()));
+                request.setCustomCallingContext(customCallingContext);
             }
 
             // Need to do a null check since SipHeaders and VoipHeaders are optional; If they both are null then we do not need to set custom context
