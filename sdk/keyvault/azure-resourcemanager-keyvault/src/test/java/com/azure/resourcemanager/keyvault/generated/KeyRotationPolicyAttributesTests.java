@@ -12,15 +12,16 @@ public final class KeyRotationPolicyAttributesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         KeyRotationPolicyAttributes model = BinaryData
-            .fromString("{\"created\":2312516572905893398,\"updated\":2430943026747864938,\"expiryTime\":\"swe\"}")
+            .fromString(
+                "{\"created\":5082029566266572596,\"updated\":5278865850444538799,\"expiryTime\":\"gmhrskdsnfdsdoak\"}")
             .toObject(KeyRotationPolicyAttributes.class);
-        Assertions.assertEquals("swe", model.expiryTime());
+        Assertions.assertEquals("gmhrskdsnfdsdoak", model.expiryTime());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        KeyRotationPolicyAttributes model = new KeyRotationPolicyAttributes().withExpiryTime("swe");
+        KeyRotationPolicyAttributes model = new KeyRotationPolicyAttributes().withExpiryTime("gmhrskdsnfdsdoak");
         model = BinaryData.fromObject(model).toObject(KeyRotationPolicyAttributes.class);
-        Assertions.assertEquals("swe", model.expiryTime());
+        Assertions.assertEquals("gmhrskdsnfdsdoak", model.expiryTime());
     }
 }

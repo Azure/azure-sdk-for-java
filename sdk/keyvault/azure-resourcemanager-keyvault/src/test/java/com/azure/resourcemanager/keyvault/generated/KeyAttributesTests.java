@@ -12,24 +12,24 @@ public final class KeyAttributesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         KeyAttributes model = BinaryData.fromString(
-            "{\"enabled\":false,\"nbf\":8275503100033850709,\"exp\":3608755251903413455,\"created\":1918976274191147199,\"updated\":1502170199128472445,\"recoveryLevel\":\"Recoverable+Purgeable\",\"exportable\":true}")
+            "{\"enabled\":false,\"nbf\":1041367784247768357,\"exp\":1966773457300164671,\"created\":6364486515251999629,\"updated\":4892524565143747736,\"recoveryLevel\":\"Recoverable+ProtectedSubscription\",\"exportable\":true}")
             .toObject(KeyAttributes.class);
         Assertions.assertFalse(model.enabled());
-        Assertions.assertEquals(8275503100033850709L, model.notBefore());
-        Assertions.assertEquals(3608755251903413455L, model.expires());
+        Assertions.assertEquals(1041367784247768357L, model.notBefore());
+        Assertions.assertEquals(1966773457300164671L, model.expires());
         Assertions.assertTrue(model.exportable());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         KeyAttributes model = new KeyAttributes().withEnabled(false)
-            .withNotBefore(8275503100033850709L)
-            .withExpires(3608755251903413455L)
+            .withNotBefore(1041367784247768357L)
+            .withExpires(1966773457300164671L)
             .withExportable(true);
         model = BinaryData.fromObject(model).toObject(KeyAttributes.class);
         Assertions.assertFalse(model.enabled());
-        Assertions.assertEquals(8275503100033850709L, model.notBefore());
-        Assertions.assertEquals(3608755251903413455L, model.expires());
+        Assertions.assertEquals(1041367784247768357L, model.notBefore());
+        Assertions.assertEquals(1966773457300164671L, model.expires());
         Assertions.assertTrue(model.exportable());
     }
 }

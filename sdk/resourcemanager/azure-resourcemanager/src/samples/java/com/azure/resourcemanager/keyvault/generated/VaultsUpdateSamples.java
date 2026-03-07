@@ -22,7 +22,7 @@ import java.util.UUID;
  */
 public final class VaultsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/updateVault.json
+     * x-ms-original-file: 2026-02-01/updateVault.json
      */
     /**
      * Sample code: Update an existing vault.

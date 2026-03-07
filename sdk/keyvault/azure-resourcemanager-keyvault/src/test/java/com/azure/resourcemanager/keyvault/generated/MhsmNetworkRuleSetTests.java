@@ -18,28 +18,32 @@ public final class MhsmNetworkRuleSetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MhsmNetworkRuleSet model = BinaryData.fromString(
-            "{\"bypass\":\"None\",\"defaultAction\":\"Allow\",\"ipRules\":[{\"value\":\"ekg\"}],\"serviceTags\":[{\"tag\":\"zuhkfpbsjyof\"},{\"tag\":\"xl\"}],\"virtualNetworkRules\":[{\"id\":\"dttouwaboekqvkel\"}]}")
+            "{\"bypass\":\"AzureServices\",\"defaultAction\":\"Deny\",\"ipRules\":[{\"value\":\"yjsflhhcaalnji\"},{\"value\":\"isxyawjoyaqcslyj\"},{\"value\":\"kiidzyex\"},{\"value\":\"nelixhnrztfo\"}],\"serviceTags\":[{\"tag\":\"nxknalaulp\"},{\"tag\":\"ggdtpnapnyiro\"},{\"tag\":\"uhpigvp\"},{\"tag\":\"ylgqgitxmedjvcsl\"}],\"virtualNetworkRules\":[{\"id\":\"wwncwzzhxgk\"},{\"id\":\"rmgucnap\"}]}")
             .toObject(MhsmNetworkRuleSet.class);
-        Assertions.assertEquals(NetworkRuleBypassOptions.NONE, model.bypass());
-        Assertions.assertEquals(NetworkRuleAction.ALLOW, model.defaultAction());
-        Assertions.assertEquals("ekg", model.ipRules().get(0).value());
-        Assertions.assertEquals("zuhkfpbsjyof", model.serviceTags().get(0).tag());
-        Assertions.assertEquals("dttouwaboekqvkel", model.virtualNetworkRules().get(0).id());
+        Assertions.assertEquals(NetworkRuleBypassOptions.AZURE_SERVICES, model.bypass());
+        Assertions.assertEquals(NetworkRuleAction.DENY, model.defaultAction());
+        Assertions.assertEquals("yjsflhhcaalnji", model.ipRules().get(0).value());
+        Assertions.assertEquals("nxknalaulp", model.serviceTags().get(0).tag());
+        Assertions.assertEquals("wwncwzzhxgk", model.virtualNetworkRules().get(0).id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MhsmNetworkRuleSet model = new MhsmNetworkRuleSet().withBypass(NetworkRuleBypassOptions.NONE)
-            .withDefaultAction(NetworkRuleAction.ALLOW)
-            .withIpRules(Arrays.asList(new MhsmipRule().withValue("ekg")))
-            .withServiceTags(
-                Arrays.asList(new MhsmServiceTagRule().withTag("zuhkfpbsjyof"), new MhsmServiceTagRule().withTag("xl")))
-            .withVirtualNetworkRules(Arrays.asList(new MhsmVirtualNetworkRule().withId("dttouwaboekqvkel")));
+        MhsmNetworkRuleSet model = new MhsmNetworkRuleSet().withBypass(NetworkRuleBypassOptions.AZURE_SERVICES)
+            .withDefaultAction(NetworkRuleAction.DENY)
+            .withIpRules(Arrays.asList(new MhsmipRule().withValue("yjsflhhcaalnji"),
+                new MhsmipRule().withValue("isxyawjoyaqcslyj"), new MhsmipRule().withValue("kiidzyex"),
+                new MhsmipRule().withValue("nelixhnrztfo")))
+            .withServiceTags(Arrays.asList(new MhsmServiceTagRule().withTag("nxknalaulp"),
+                new MhsmServiceTagRule().withTag("ggdtpnapnyiro"), new MhsmServiceTagRule().withTag("uhpigvp"),
+                new MhsmServiceTagRule().withTag("ylgqgitxmedjvcsl")))
+            .withVirtualNetworkRules(Arrays.asList(new MhsmVirtualNetworkRule().withId("wwncwzzhxgk"),
+                new MhsmVirtualNetworkRule().withId("rmgucnap")));
         model = BinaryData.fromObject(model).toObject(MhsmNetworkRuleSet.class);
-        Assertions.assertEquals(NetworkRuleBypassOptions.NONE, model.bypass());
-        Assertions.assertEquals(NetworkRuleAction.ALLOW, model.defaultAction());
-        Assertions.assertEquals("ekg", model.ipRules().get(0).value());
-        Assertions.assertEquals("zuhkfpbsjyof", model.serviceTags().get(0).tag());
-        Assertions.assertEquals("dttouwaboekqvkel", model.virtualNetworkRules().get(0).id());
+        Assertions.assertEquals(NetworkRuleBypassOptions.AZURE_SERVICES, model.bypass());
+        Assertions.assertEquals(NetworkRuleAction.DENY, model.defaultAction());
+        Assertions.assertEquals("yjsflhhcaalnji", model.ipRules().get(0).value());
+        Assertions.assertEquals("nxknalaulp", model.serviceTags().get(0).tag());
+        Assertions.assertEquals("wwncwzzhxgk", model.virtualNetworkRules().get(0).id());
     }
 }

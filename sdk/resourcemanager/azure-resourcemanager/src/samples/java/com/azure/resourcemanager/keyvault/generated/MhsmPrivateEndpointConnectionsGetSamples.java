@@ -9,7 +9,7 @@ package com.azure.resourcemanager.keyvault.generated;
  */
 public final class MhsmPrivateEndpointConnectionsGetSamples {
     /*
-     * x-ms-original-file: 2025-05-01/ManagedHsm_getPrivateEndpointConnection.json
+     * x-ms-original-file: 2026-02-01/ManagedHsm_getPrivateEndpointConnection.json
      */
     /**
      * Sample code: ManagedHsmGetPrivateEndpointConnection.

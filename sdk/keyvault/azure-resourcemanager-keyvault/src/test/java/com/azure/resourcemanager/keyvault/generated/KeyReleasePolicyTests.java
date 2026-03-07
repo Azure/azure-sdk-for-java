@@ -12,14 +12,14 @@ public final class KeyReleasePolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         KeyReleasePolicy model
-            = BinaryData.fromString("{\"contentType\":\"iypbsfgytgusl\"}").toObject(KeyReleasePolicy.class);
-        Assertions.assertEquals("iypbsfgytgusl", model.contentType());
+            = BinaryData.fromString("{\"contentType\":\"uzkopbminrfd\"}").toObject(KeyReleasePolicy.class);
+        Assertions.assertEquals("uzkopbminrfd", model.contentType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        KeyReleasePolicy model = new KeyReleasePolicy().withContentType("iypbsfgytgusl");
+        KeyReleasePolicy model = new KeyReleasePolicy().withContentType("uzkopbminrfd");
         model = BinaryData.fromObject(model).toObject(KeyReleasePolicy.class);
-        Assertions.assertEquals("iypbsfgytgusl", model.contentType());
+        Assertions.assertEquals("uzkopbminrfd", model.contentType());
     }
 }

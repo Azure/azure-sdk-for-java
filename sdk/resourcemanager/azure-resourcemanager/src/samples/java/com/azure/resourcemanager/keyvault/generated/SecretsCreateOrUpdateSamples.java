@@ -12,7 +12,7 @@ import com.azure.resourcemanager.keyvault.models.SecretProperties;
  */
 public final class SecretsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/createSecret.json
+     * x-ms-original-file: 2026-02-01/createSecret.json
      */
     /**
      * Sample code: Create a secret.

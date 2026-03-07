@@ -9,7 +9,7 @@ package com.azure.resourcemanager.keyvault.generated;
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2025-05-01/listOperations.json
+     * x-ms-original-file: 2026-02-01/listOperations.json
      */
     /**
      * Sample code: Lists available Rest API operations.

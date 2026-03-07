@@ -9,7 +9,7 @@ package com.azure.resourcemanager.keyvault.generated;
  */
 public final class VaultsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-05-01/listVaultByResourceGroup.json
+     * x-ms-original-file: 2026-02-01/listVaultByResourceGroup.json
      */
     /**
      * Sample code: List vaults in the specified resource group.

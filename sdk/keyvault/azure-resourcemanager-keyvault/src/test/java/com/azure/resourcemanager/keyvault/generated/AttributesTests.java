@@ -12,22 +12,23 @@ import org.junit.jupiter.api.Assertions;
 public final class AttributesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Attributes model = BinaryData.fromString(
-            "{\"enabled\":false,\"nbf\":1218996877,\"exp\":1229712399,\"created\":754766432,\"updated\":1395198209}")
+        Attributes model = BinaryData
+            .fromString(
+                "{\"enabled\":false,\"nbf\":737609208,\"exp\":332964812,\"created\":969914681,\"updated\":1059529277}")
             .toObject(Attributes.class);
         Assertions.assertFalse(model.enabled());
-        Assertions.assertEquals(OffsetDateTime.parse("2008-08-17T18:14:37Z"), model.notBefore());
-        Assertions.assertEquals(OffsetDateTime.parse("2008-12-19T18:46:39Z"), model.expires());
+        Assertions.assertEquals(OffsetDateTime.parse("1993-05-17T03:26:48Z"), model.notBefore());
+        Assertions.assertEquals(OffsetDateTime.parse("1980-07-20T18:13:32Z"), model.expires());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         Attributes model = new Attributes().withEnabled(false)
-            .withNotBefore(OffsetDateTime.parse("2008-08-17T18:14:37Z"))
-            .withExpires(OffsetDateTime.parse("2008-12-19T18:46:39Z"));
+            .withNotBefore(OffsetDateTime.parse("1993-05-17T03:26:48Z"))
+            .withExpires(OffsetDateTime.parse("1980-07-20T18:13:32Z"));
         model = BinaryData.fromObject(model).toObject(Attributes.class);
         Assertions.assertFalse(model.enabled());
-        Assertions.assertEquals(OffsetDateTime.parse("2008-08-17T18:14:37Z"), model.notBefore());
-        Assertions.assertEquals(OffsetDateTime.parse("2008-12-19T18:46:39Z"), model.expires());
+        Assertions.assertEquals(OffsetDateTime.parse("1993-05-17T03:26:48Z"), model.notBefore());
+        Assertions.assertEquals(OffsetDateTime.parse("1980-07-20T18:13:32Z"), model.expires());
     }
 }

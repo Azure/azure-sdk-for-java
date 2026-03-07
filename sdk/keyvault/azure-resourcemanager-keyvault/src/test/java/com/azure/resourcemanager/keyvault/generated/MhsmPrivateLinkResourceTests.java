@@ -15,13 +15,13 @@ public final class MhsmPrivateLinkResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MhsmPrivateLinkResource model = BinaryData.fromString(
-            "{\"properties\":{\"groupId\":\"wcw\",\"requiredMembers\":[\"oknssxmojmsvpkjp\",\"vk\",\"cfzq\"],\"requiredZoneNames\":[\"x\",\"tczheydbsdshmkx\"]},\"id\":\"ehvbbxurip\",\"name\":\"fnhtbaxkgxyw\",\"type\":\"kpyklyhp\",\"location\":\"odpvruudlgzib\",\"sku\":{\"family\":\"B\",\"name\":\"Custom_C42\"},\"tags\":{\"dxeclzedqbcvh\":\"ktst\",\"dqkdlwwqfbu\":\"lhpl\",\"qjfsmlmbtxhw\":\"lkxt\",\"skh\":\"fwsrtawcoezbrhu\"},\"identity\":{\"principalId\":\"34db059d-4071-47d3-bdcd-f1ed0ddf2f10\",\"tenantId\":\"4379989c-f49c-40d0-ad81-af7d93009165\",\"type\":\"None\",\"userAssignedIdentities\":{\"fqjbvleo\":{\"principalId\":\"1c87280a-26ea-4b45-b363-05cbcbf4fd05\",\"clientId\":\"dcae4b67-f4a0-4f89-aafa-14f5a07669b4\"},\"luiqtqzfavyvnqq\":{\"principalId\":\"3717068f-e7df-4337-99f6-3a7c11c5a3b6\",\"clientId\":\"c950176c-6d84-48fc-8cd7-377a94f9f2fd\"},\"ryeu\":{\"principalId\":\"090067cf-cb83-4a26-8525-af19166bd1de\",\"clientId\":\"c56c45f9-11be-4410-bb98-b1d53b5d9acc\"}}}}")
+            "{\"properties\":{\"groupId\":\"hvygdyftumr\",\"requiredMembers\":[\"awjs\",\"biwkojgcyzt\",\"fmznba\",\"qphchqnrnrpxehuw\"],\"requiredZoneNames\":[\"qgaifmviklbydv\"]},\"sku\":{\"family\":\"C\",\"name\":\"Standard_B1\"},\"identity\":{\"principalId\":\"bf4266ef-872a-4c6e-8b2a-11c53ecc52ac\",\"tenantId\":\"473d4479-1c8c-4180-8cc7-3618932781c5\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"srhnjivo\":{\"principalId\":\"91be816f-828c-4cca-8f24-3f3c87c8d949\",\"clientId\":\"9ffdec5e-caf3-4b91-b169-eed65366122c\"},\"novqfzge\":{\"principalId\":\"336dc30d-96c1-44d3-b004-014ec70c970c\",\"clientId\":\"db0a8975-7e7c-4130-a9ce-4c4da09b3a46\"}}},\"location\":\"dftuljltduce\",\"tags\":{\"ejwcwwqiok\":\"mczuo\",\"p\":\"ssxmojms\",\"kwcf\":\"jpr\",\"yxgtczh\":\"ql\"},\"id\":\"ydbsd\",\"name\":\"hmkxmaehvbb\",\"type\":\"uripltfnhtba\"}")
             .toObject(MhsmPrivateLinkResource.class);
-        Assertions.assertEquals("odpvruudlgzib", model.location());
-        Assertions.assertEquals(ManagedHsmSkuFamily.B, model.sku().family());
-        Assertions.assertEquals(ManagedHsmSkuName.CUSTOM_C42, model.sku().name());
-        Assertions.assertEquals("ktst", model.tags().get("dxeclzedqbcvh"));
-        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.identity().type());
-        Assertions.assertEquals("x", model.requiredZoneNames().get(0));
+        Assertions.assertEquals("dftuljltduce", model.location());
+        Assertions.assertEquals("mczuo", model.tags().get("ejwcwwqiok"));
+        Assertions.assertEquals(ManagedHsmSkuFamily.C, model.sku().family());
+        Assertions.assertEquals(ManagedHsmSkuName.STANDARD_B1, model.sku().name());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("qgaifmviklbydv", model.requiredZoneNames().get(0));
     }
 }

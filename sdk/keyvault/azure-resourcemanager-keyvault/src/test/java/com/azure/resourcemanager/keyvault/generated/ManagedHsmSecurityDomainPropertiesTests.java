@@ -11,7 +11,7 @@ public final class ManagedHsmSecurityDomainPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedHsmSecurityDomainProperties model
-            = BinaryData.fromString("{\"activationStatus\":\"Active\",\"activationStatusMessage\":\"ac\"}")
+            = BinaryData.fromString("{\"activationStatus\":\"Active\",\"activationStatusMessage\":\"wvxysl\"}")
                 .toObject(ManagedHsmSecurityDomainProperties.class);
     }
 }

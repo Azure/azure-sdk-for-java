@@ -12,8 +12,8 @@ public final class DeletedManagedHsmListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeletedManagedHsmListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"mhsmId\":\"vc\",\"location\":\"y\",\"deletionDate\":\"2021-11-24T00:50:55Z\",\"scheduledPurgeDate\":\"2021-11-02T04:27:35Z\",\"purgeProtectionEnabled\":false,\"tags\":{\"ealmfmtdaaygdvwv\":\"eedndrdvstkwqqtc\",\"xepxgyqagvrvmn\":\"piohgwxrtfu\",\"kghimdblxgwimfnj\":\"k\"}},\"id\":\"j\",\"name\":\"wmszkk\",\"type\":\"oqreyfkzikfjawn\"}],\"nextLink\":\"ivx\"}")
+            "{\"value\":[{\"properties\":{\"mhsmId\":\"v\",\"location\":\"kwqqtchealmf\",\"deletionDate\":\"2021-05-23T20:32:01Z\",\"scheduledPurgeDate\":\"2021-06-02T22:58:14Z\",\"purgeProtectionEnabled\":false,\"tags\":{\"xrtfudxep\":\"wvgpiohg\"}},\"id\":\"yqagvrvm\",\"name\":\"pkukghi\",\"type\":\"dblx\"}],\"nextLink\":\"imfnjhfjx\"}")
             .toObject(DeletedManagedHsmListResult.class);
-        Assertions.assertEquals("ivx", model.nextLink());
+        Assertions.assertEquals("imfnjhfjx", model.nextLink());
     }
 }

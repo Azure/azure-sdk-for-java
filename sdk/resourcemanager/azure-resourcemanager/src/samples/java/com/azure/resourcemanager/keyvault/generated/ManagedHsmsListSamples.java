@@ -9,7 +9,7 @@ package com.azure.resourcemanager.keyvault.generated;
  */
 public final class ManagedHsmsListSamples {
     /*
-     * x-ms-original-file: 2025-05-01/ManagedHsm_ListBySubscription.json
+     * x-ms-original-file: 2026-02-01/ManagedHsm_ListBySubscription.json
      */
     /**
      * Sample code: List managed HSM Pools in a subscription.

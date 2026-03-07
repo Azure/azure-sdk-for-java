@@ -15,21 +15,21 @@ public final class ManagedHsmLifetimeActionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedHsmLifetimeAction model = BinaryData.fromString(
-            "{\"trigger\":{\"timeAfterCreate\":\"thaqfxssmwu\",\"timeBeforeExpiry\":\"bdsrez\"},\"action\":{\"type\":\"notify\"}}")
+            "{\"trigger\":{\"timeAfterCreate\":\"unyowxwl\",\"timeBeforeExpiry\":\"jrkvfgbvfvpdbo\"},\"action\":{\"type\":\"notify\"}}")
             .toObject(ManagedHsmLifetimeAction.class);
-        Assertions.assertEquals("thaqfxssmwu", model.trigger().timeAfterCreate());
-        Assertions.assertEquals("bdsrez", model.trigger().timeBeforeExpiry());
+        Assertions.assertEquals("unyowxwl", model.trigger().timeAfterCreate());
+        Assertions.assertEquals("jrkvfgbvfvpdbo", model.trigger().timeBeforeExpiry());
         Assertions.assertEquals(KeyRotationPolicyActionType.NOTIFY, model.action().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ManagedHsmLifetimeAction model = new ManagedHsmLifetimeAction()
-            .withTrigger(new ManagedHsmTrigger().withTimeAfterCreate("thaqfxssmwu").withTimeBeforeExpiry("bdsrez"))
+            .withTrigger(new ManagedHsmTrigger().withTimeAfterCreate("unyowxwl").withTimeBeforeExpiry("jrkvfgbvfvpdbo"))
             .withAction(new ManagedHsmAction().withType(KeyRotationPolicyActionType.NOTIFY));
         model = BinaryData.fromObject(model).toObject(ManagedHsmLifetimeAction.class);
-        Assertions.assertEquals("thaqfxssmwu", model.trigger().timeAfterCreate());
-        Assertions.assertEquals("bdsrez", model.trigger().timeBeforeExpiry());
+        Assertions.assertEquals("unyowxwl", model.trigger().timeAfterCreate());
+        Assertions.assertEquals("jrkvfgbvfvpdbo", model.trigger().timeBeforeExpiry());
         Assertions.assertEquals(KeyRotationPolicyActionType.NOTIFY, model.action().type());
     }
 }
