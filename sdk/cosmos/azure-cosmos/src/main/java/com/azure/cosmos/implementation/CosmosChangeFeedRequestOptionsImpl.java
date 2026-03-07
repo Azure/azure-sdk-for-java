@@ -149,6 +149,11 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
         return null;
     }
 
+    @Override
+    public Boolean isQueryAdviceEnabled() {
+        return null;
+    }
+
     public void setMaxItemCount(int maxItemCount) {
         this.maxItemCount = maxItemCount;
     }
