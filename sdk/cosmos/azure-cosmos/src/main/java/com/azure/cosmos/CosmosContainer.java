@@ -25,7 +25,6 @@ import com.azure.cosmos.models.CosmosReadManyRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.models.SemanticRerankRequestOptions;
 import com.azure.cosmos.models.SemanticRerankResult;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
@@ -40,6 +39,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.Map;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -954,7 +954,7 @@ public class CosmosContainer {
     public SemanticRerankResult semanticRerank(
         String rerankContext,
         List<String> documents,
-        SemanticRerankRequestOptions options) {
+        Map<String, Object> options) {
         return blockSemanticRerankResponse(this.asyncContainer.semanticRerank(rerankContext, documents, options));
     }
 

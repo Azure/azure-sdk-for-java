@@ -6,6 +6,7 @@ import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Represents the result of a semantic rerank operation.
@@ -16,10 +17,10 @@ public final class SemanticRerankResult {
     private List<SemanticRerankScore> scores;
 
     @JsonProperty("latency")
-    private SemanticRerankLatency latency;
+    private Map<String, Object> latency;
 
     @JsonProperty("token_usage")
-    private SemanticRerankTokenUsage tokenUsage;
+    private Map<String, Object> tokenUsage;
 
     /**
      * Creates a new instance of SemanticRerankResult.
@@ -46,38 +47,38 @@ public final class SemanticRerankResult {
     }
 
     /**
-     * Gets the latency information for the operation.
+     * Gets the latency information for the operation as a map of metric names to values.
      *
-     * @return the latency information.
+     * @return the latency information map.
      */
-    public SemanticRerankLatency getLatency() {
+    public Map<String, Object> getLatency() {
         return latency;
     }
 
     /**
      * Sets the latency information for the operation.
      *
-     * @param latency the latency information.
+     * @param latency the latency information map.
      */
-    public void setLatency(SemanticRerankLatency latency) {
+    public void setLatency(Map<String, Object> latency) {
         this.latency = latency;
     }
 
     /**
-     * Gets the token usage information for the operation.
+     * Gets the token usage information for the operation as a map of metric names to values.
      *
-     * @return the token usage information.
+     * @return the token usage information map.
      */
-    public SemanticRerankTokenUsage getTokenUsage() {
+    public Map<String, Object> getTokenUsage() {
         return tokenUsage;
     }
 
     /**
      * Sets the token usage information for the operation.
      *
-     * @param tokenUsage the token usage information.
+     * @param tokenUsage the token usage information map.
      */
-    public void setTokenUsage(SemanticRerankTokenUsage tokenUsage) {
+    public void setTokenUsage(Map<String, Object> tokenUsage) {
         this.tokenUsage = tokenUsage;
     }
 }

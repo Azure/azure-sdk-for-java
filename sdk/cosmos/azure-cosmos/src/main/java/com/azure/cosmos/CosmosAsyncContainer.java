@@ -2,17 +2,39 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
-import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.Context;
-import com.azure.cosmos.implementation.*;
+import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.ChangeFeedOperationState;
+import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.CosmosBulkExecutionOptionsImpl;
+import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
+import com.azure.cosmos.implementation.CosmosQueryRequestOptionsBase;
+import com.azure.cosmos.implementation.CosmosSchedulers;
+import com.azure.cosmos.implementation.DiagnosticsProvider;
+import com.azure.cosmos.implementation.Document;
+import com.azure.cosmos.implementation.DocumentCollection;
+import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.InternalObjectNode;
+import com.azure.cosmos.implementation.Offer;
+import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.OverridableRequestOptions;
+import com.azure.cosmos.implementation.PartitionKeyHelper;
+import com.azure.cosmos.implementation.PartitionKeyRange;
+import com.azure.cosmos.implementation.Paths;
+import com.azure.cosmos.implementation.QueryFeedOperationState;
+import com.azure.cosmos.implementation.RequestOptions;
+import com.azure.cosmos.implementation.ResourceResponse;
+import com.azure.cosmos.implementation.ResourceType;
+import com.azure.cosmos.implementation.UUIDs;
+import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.WriteRetryPolicy;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.batch.BatchExecutor;
 import com.azure.cosmos.implementation.batch.BulkExecutor;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
-import com.azure.cosmos.implementation.http.HttpClientConfig;
 import com.azure.cosmos.implementation.inference.InferenceService;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.Range;
@@ -20,7 +42,37 @@ import com.azure.cosmos.implementation.throughputControl.sdk.config.GlobalThroug
 import com.azure.cosmos.implementation.throughputControl.sdk.config.LocalThroughputControlGroup;
 import com.azure.cosmos.implementation.throughputControl.server.config.ServerThroughputControlGroup;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlGroupFactory;
-import com.azure.cosmos.models.*;
+import com.azure.cosmos.models.CosmosBatch;
+import com.azure.cosmos.models.CosmosBatchOperationResult;
+import com.azure.cosmos.models.CosmosBatchRequestOptions;
+import com.azure.cosmos.models.CosmosBatchResponse;
+import com.azure.cosmos.models.CosmosBulkExecutionOptions;
+import com.azure.cosmos.models.CosmosBulkOperationResponse;
+import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
+import com.azure.cosmos.models.CosmosConflictProperties;
+import com.azure.cosmos.models.CosmosContainerIdentity;
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerRequestOptions;
+import com.azure.cosmos.models.CosmosContainerResponse;
+import com.azure.cosmos.models.CosmosItemIdentity;
+import com.azure.cosmos.models.CosmosItemOperation;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
+import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.CosmosOperationDetails;
+import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
+import com.azure.cosmos.models.CosmosPatchOperations;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.CosmosReadManyRequestOptions;
+import com.azure.cosmos.models.FeedRange;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.azure.cosmos.models.SemanticRerankResult;
+import com.azure.cosmos.models.ShowQueryMode;
+import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.models.ThroughputProperties;
+import com.azure.cosmos.models.ThroughputResponse;
 import com.azure.cosmos.util.Beta;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
@@ -33,6 +85,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -1630,7 +1683,7 @@ public class CosmosAsyncContainer {
     public Mono<SemanticRerankResult> semanticRerank(
         String rerankContext,
         List<String> documents,
-        SemanticRerankRequestOptions options) {
+        Map<String, Object> options) {
 
         checkNotNull(rerankContext, "Rerank context cannot be null");
         checkNotNull(documents, "Documents list cannot be null");

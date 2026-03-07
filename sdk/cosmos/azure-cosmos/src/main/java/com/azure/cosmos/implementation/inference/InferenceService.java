@@ -7,17 +7,13 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
-import com.azure.cosmos.models.SemanticRerankLatency;
-import com.azure.cosmos.models.SemanticRerankRequestOptions;
 import com.azure.cosmos.models.SemanticRerankResult;
 import com.azure.cosmos.models.SemanticRerankScore;
-import com.azure.cosmos.models.SemanticRerankTokenUsage;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -112,7 +108,7 @@ public class InferenceService {
     public Mono<SemanticRerankResult> semanticRerank(
         String rerankContext,
         List<String> documents,
-        SemanticRerankRequestOptions options) {
+        Map<String, Object> options) {
 
         checkNotNull(rerankContext, "Rerank context cannot be null");
         checkNotNull(documents, "Documents list cannot be null");
@@ -138,18 +134,13 @@ public class InferenceService {
                     }
 
                     if (options != null) {
-                        if (options.getReturnDocuments() != null) {
-                            payload.put("return_documents", options.getReturnDocuments());
-                        }
-                        if (options.getTopK() != null) {
-                            payload.put("top_k", options.getTopK());
-                        }
-                        if (options.getBatchSize() != null) {
-                            payload.put("batch_size", options.getBatchSize());
-                        }
-                        if (options.getSort() != null) {
-                            payload.put("sort", options.getSort());
-                        }
+                        options.forEach((key, value) -> {
+                            if (value instanceof Boolean) {
+                                payload.put(key, (Boolean) value);
+                            } else if (value instanceof Integer) {
+                                payload.put(key, (Integer) value);
+                            }
+                        });
                     }
 
                     String requestBody = OBJECT_MAPPER.writeValueAsString(payload);
@@ -239,31 +230,17 @@ public class InferenceService {
 
                     // Parse latency
                     if (rootNode.has("latency")) {
-                        JsonNode latencyNode = rootNode.get("latency");
-                        SemanticRerankLatency latency = new SemanticRerankLatency();
-
-                        if (latencyNode.has("data_preprocess_time")) {
-                            latency.setDataPreprocessTime(latencyNode.get("data_preprocess_time").asDouble());
-                        }
-                        if (latencyNode.has("inference_time")) {
-                            latency.setInferenceTime(latencyNode.get("inference_time").asDouble());
-                        }
-                        if (latencyNode.has("postprocess_time")) {
-                            latency.setPostprocessTime(latencyNode.get("postprocess_time").asDouble());
-                        }
-
+                        Map<String, Object> latency = new HashMap<>();
+                        rootNode.get("latency").fields().forEachRemaining(
+                            entry -> latency.put(entry.getKey(), entry.getValue().asDouble()));
                         result.setLatency(latency);
                     }
 
                     // Parse token usage
                     if (rootNode.has("token_usage")) {
-                        JsonNode tokenUsageNode = rootNode.get("token_usage");
-                        SemanticRerankTokenUsage tokenUsage = new SemanticRerankTokenUsage();
-
-                        if (tokenUsageNode.has("total_tokens")) {
-                            tokenUsage.setTotalTokens(tokenUsageNode.get("total_tokens").asInt());
-                        }
-
+                        Map<String, Object> tokenUsage = new HashMap<>();
+                        rootNode.get("token_usage").fields().forEachRemaining(
+                            entry -> tokenUsage.put(entry.getKey(), entry.getValue().asInt()));
                         result.setTokenUsage(tokenUsage);
                     }
 

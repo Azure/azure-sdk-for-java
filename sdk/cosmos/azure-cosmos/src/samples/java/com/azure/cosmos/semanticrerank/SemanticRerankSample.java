@@ -4,15 +4,13 @@ package com.azure.cosmos.semanticrerank;
 
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.models.SemanticRerankLatency;
-import com.azure.cosmos.models.SemanticRerankRequestOptions;
 import com.azure.cosmos.models.SemanticRerankResult;
 import com.azure.cosmos.models.SemanticRerankScore;
-import com.azure.cosmos.models.SemanticRerankTokenUsage;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Sample demonstrating semantic rerank functionality in Azure Cosmos DB.
@@ -27,12 +25,12 @@ public class SemanticRerankSample {
 
     public static void main(String[] args) {
         String endpoint = System.getenv("COSMOS_ENDPOINT");
-        
+
         if (endpoint == null || endpoint.isEmpty()) {
             System.err.println("Please set COSMOS_ENDPOINT environment variable");
             return;
         }
-        
+
         String inferenceEndpoint = System.getenv("AZURE_COSMOS_SEMANTIC_RERANKER_INFERENCE_ENDPOINT");
         if (inferenceEndpoint == null || inferenceEndpoint.isEmpty()) {
             System.err.println("Please set AZURE_COSMOS_SEMANTIC_RERANKER_INFERENCE_ENDPOINT environment variable");
@@ -40,9 +38,10 @@ public class SemanticRerankSample {
         }
 
         // Create client with Azure AD authentication (required for semantic reranking)
+        // Use DefaultAzureCredentialBuilder from azure-identity dependency:
+        //   new CosmosClientBuilder().endpoint(endpoint).credential(new DefaultAzureCredentialBuilder().build())
         CosmosAsyncClient client = new CosmosClientBuilder()
             .endpoint(endpoint)
-            .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
 
         try {
@@ -79,7 +78,7 @@ public class SemanticRerankSample {
         // Full implementation requires semantic rerank method to be added to CosmosAsyncContainer
         /*
         CosmosAsyncContainer container = client.getDatabase("mydb").getContainer("mycontainer");
-        
+
         // Basic usage with default options
         container.semanticRerank(rerankContext, documents)
             .subscribe(
@@ -88,10 +87,10 @@ public class SemanticRerankSample {
             );
 
         // Usage with custom options
-        SemanticRerankRequestOptions options = new SemanticRerankRequestOptions()
-            .setReturnDocuments(true)
-            .setTopK(3)
-            .setSort(true);
+        Map<String, Object> options = new HashMap<>();
+        options.put("return_documents", true);
+        options.put("top_k", 3);
+        options.put("sort", true);
 
         container.semanticRerank(rerankContext, documents, options)
             .subscribe(
@@ -131,7 +130,7 @@ public class SemanticRerankSample {
                 SemanticRerankScore score = scores.get(i);
                 System.out.printf("  [%d] index=%d, score=%.7f%n",
                     i, score.getIndex(), score.getScore());
-                
+
                 if (score.getDocument() != null) {
                     System.out.println("      document: " + score.getDocument());
                 }
@@ -139,19 +138,19 @@ public class SemanticRerankSample {
         }
 
         // Print latency information
-        SemanticRerankLatency latency = result.getLatency();
+        Map<String, Object> latency = result.getLatency();
         if (latency != null) {
             System.out.println("\nLatency:");
-            System.out.printf("  Data preprocess time: %.7f seconds%n", latency.getDataPreprocessTime());
-            System.out.printf("  Inference time: %.7f seconds%n", latency.getInferenceTime());
-            System.out.printf("  Postprocess time: %.7f seconds%n", latency.getPostprocessTime());
+            latency.forEach((key, value) ->
+                System.out.printf("  %s: %s%n", key, value));
         }
 
         // Print token usage
-        SemanticRerankTokenUsage tokenUsage = result.getTokenUsage();
+        Map<String, Object> tokenUsage = result.getTokenUsage();
         if (tokenUsage != null) {
             System.out.println("\nToken Usage:");
-            System.out.printf("  Total tokens: %d%n", tokenUsage.getTotalTokens());
+            tokenUsage.forEach((key, value) ->
+                System.out.printf("  %s: %s%n", key, value));
         }
     }
 }

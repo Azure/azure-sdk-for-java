@@ -9,7 +9,6 @@ import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
-import com.azure.cosmos.models.SemanticRerankRequestOptions;
 import org.mockito.ArgumentCaptor;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
@@ -25,7 +24,9 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -148,9 +149,9 @@ public class InferenceServiceTest {
                 assertThat(result.getScores().get(0).getScore()).isEqualTo(0.95);
                 assertThat(result.getScores().get(0).getDocument()).isEqualTo("This is document 1");
                 assertThat(result.getLatency()).isNotNull();
-                assertThat(result.getLatency().getInferenceTime()).isEqualTo(0.5);
+                assertThat(result.getLatency().get("inference_time")).isEqualTo(0.5);
                 assertThat(result.getTokenUsage()).isNotNull();
-                assertThat(result.getTokenUsage().getTotalTokens()).isEqualTo(100);
+                assertThat(result.getTokenUsage().get("total_tokens")).isEqualTo(100);
             })
             .verifyComplete();
 
@@ -170,11 +171,11 @@ public class InferenceServiceTest {
         InferenceService service = new InferenceService(mockTokenCredential);
 
         List<String> documents = Arrays.asList("doc1", "doc2");
-        SemanticRerankRequestOptions options = new SemanticRerankRequestOptions()
-            .setReturnDocuments(true)
-            .setTopK(5)
-            .setBatchSize(16)
-            .setSort(true);
+        Map<String, Object> options = new HashMap<>();
+        options.put("return_documents", true);
+        options.put("top_k", 5);
+        options.put("batch_size", 16);
+        options.put("sort", true);
 
         StepVerifier.create(service.semanticRerank("query", documents, options))
             .assertNext(result -> assertThat(result).isNotNull())
