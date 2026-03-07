@@ -134,6 +134,12 @@ public class CosmosMetricsReporter {
         double cpuPercent = round(cpuReader.getSystemWideCpuUsage() * 100);
 
         for (Meter meter : micrometerRegistry.getMeters()) {
+            // Only upload cosmos.client.* metrics — skip JVM, Netty, system metrics
+            String metricName = meter.getId().getName();
+            if (!metricName.startsWith("cosmos.client.")) {
+                continue;
+            }
+
             try {
                 if (meter instanceof Timer) {
                     reportTimer(timestamp, (Timer) meter, cpuPercent);
@@ -145,7 +151,7 @@ public class CosmosMetricsReporter {
                     reportDistributionSummary(timestamp, (DistributionSummary) meter, cpuPercent);
                 }
             } catch (Exception e) {
-                LOGGER.warn("Failed to upload metric: {}", meter.getId().getName(), e);
+                LOGGER.warn("Failed to upload metric: {}", metricName, e);
             }
         }
     }
@@ -200,7 +206,7 @@ public class CosmosMetricsReporter {
 
     private void reportGauge(String timestamp, Gauge gauge, double cpuPercent) {
         double value = gauge.value();
-        if (Double.isNaN(value)) return;
+        if (Double.isNaN(value) || value == 0) return;
 
         ObjectNode doc = createBaseDoc(timestamp, gauge, "gauge", cpuPercent);
         doc.put("Value", round(value));
@@ -236,9 +242,16 @@ public class CosmosMetricsReporter {
         doc.put("MetricName", meter.getId().getName());
         doc.put("MetricType", metricType);
 
-        // Emit all tag dimensions as explicit fields
+        // Emit all tag dimensions as explicit fields.
+        // Tags are written directly as field names since cosmos.client.* tags
+        // (Container, Operation, etc.) don't collide with document metadata.
         for (Tag tag : meter.getId().getTags()) {
-            doc.put(tag.getKey(), tag.getValue());
+            String key = tag.getKey();
+            // Guard against tags that could collide with document metadata fields
+            if ("id".equals(key) || "partition_key".equals(key)) {
+                key = "tag_" + key;
+            }
+            doc.put(key, tag.getValue());
         }
 
         // Run metadata
