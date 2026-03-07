@@ -172,8 +172,17 @@ public class BenchmarkOrchestrator {
         logger.info("Starting benchmark: {} cycles x {} tenants", totalCycles, tenants.size());
         long startTime = System.currentTimeMillis();
 
-        Scheduler benchmarkScheduler = Schedulers.newParallel(
-            "cosmos-bench", Runtime.getRuntime().availableProcessors(), true);
+        java.util.concurrent.ScheduledThreadPoolExecutor benchExecutor =
+            new java.util.concurrent.ScheduledThreadPoolExecutor(
+                Runtime.getRuntime().availableProcessors(),
+                r -> {
+                    Thread t = new Thread(r, "cosmos-bench");
+                    t.setDaemon(true);
+                    return t;
+                });
+        benchExecutor.setKeepAliveTime(60, TimeUnit.SECONDS);
+        benchExecutor.allowCoreThreadTimeOut(true);
+        Scheduler benchmarkScheduler = Schedulers.fromExecutorService(benchExecutor, "cosmos-bench");
 
         AtomicInteger threadCounter = new AtomicInteger(0);
         ExecutorService executor = Executors.newFixedThreadPool(tenants.size(), r -> {
