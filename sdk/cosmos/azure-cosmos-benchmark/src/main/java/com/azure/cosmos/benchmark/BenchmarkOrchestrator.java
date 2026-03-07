@@ -93,9 +93,16 @@ public class BenchmarkOrchestrator {
                     break;
 
                 case COSMOSDB:
-                    // SimpleMeterRegistry backs the composite so meters are stored and
-                    // queryable by CosmosMetricsReporter when it iterates the registry.
-                    compositeRegistry.add(new io.micrometer.core.instrument.simple.SimpleMeterRegistry());
+                    // The SDK's ClientTelemetryMetrics owns a static CompositeMeterRegistry
+                    // and adds our compositeRegistry as a child. Meters are registered on the
+                    // SDK's composite and flow *down* into child registries, but
+                    // CompositeMeterRegistry.getMeters() only returns meters registered
+                    // directly on that instance — not meters propagated from a parent.
+                    // Therefore the reporter must iterate the SimpleMeterRegistry (where
+                    // the actual meter data is stored), not the composite wrapper.
+                    io.micrometer.core.instrument.simple.SimpleMeterRegistry simpleMeterRegistry =
+                        new io.micrometer.core.instrument.simple.SimpleMeterRegistry();
+                    compositeRegistry.add(simpleMeterRegistry);
                     Set<String> ops = new LinkedHashSet<>();
                     int totalConcurrency = 0;
                     for (TenantWorkloadConfig t : config.getTenantWorkloads()) {
@@ -103,7 +110,7 @@ public class BenchmarkOrchestrator {
                         totalConcurrency += t.getConcurrency();
                     }
                     cosmosReporter = CosmosMetricsReporter.create(
-                        compositeRegistry, config.getCosmosReporterConfig(),
+                        simpleMeterRegistry, config.getCosmosReporterConfig(),
                         String.join("+", ops), totalConcurrency);
                     cosmosReporter.start(config.getPrintingInterval(), TimeUnit.SECONDS);
                     break;
