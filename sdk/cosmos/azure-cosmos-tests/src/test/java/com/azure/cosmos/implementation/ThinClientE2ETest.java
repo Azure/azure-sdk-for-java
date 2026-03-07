@@ -633,6 +633,47 @@ public class ThinClientE2ETest extends TestSuiteBase {
         }
     }
 
+    /**
+     * Test: Stored procedure execution without partition key throws UnsupportedOperationException.
+     * Proves that V4 SDK enforces logical partition key for sproc execution
+     * regardless of connection mode (thin client, gateway, direct).
+     */
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    public void testStoredProcedureExecutionWithoutPartitionKeyThrows() {
+        String sprocId = "noPartitionKeySproc_" + UUID.randomUUID().toString();
+        try {
+            // Create a simple stored procedure
+            CosmosStoredProcedureProperties storedProcedureDef = new CosmosStoredProcedureProperties(
+                sprocId,
+                "function() { getContext().getResponse().setBody('Hello'); }"
+            );
+
+            container.getScripts().createStoredProcedure(storedProcedureDef).block();
+
+            // Execute WITHOUT setting partition key — should throw
+            CosmosStoredProcedureRequestOptions options = new CosmosStoredProcedureRequestOptions();
+            // Intentionally NOT calling options.setPartitionKey(...)
+
+            try {
+                container.getScripts()
+                    .getStoredProcedure(sprocId)
+                    .execute(null, options)
+                    .block();
+                fail("Expected UnsupportedOperationException for sproc execution without partition key");
+            } catch (UnsupportedOperationException e) {
+                assertThat(e.getMessage()).contains("PartitionKey value must be supplied");
+                logger.info("Confirmed: V4 SDK throws UnsupportedOperationException for sproc without PK: {}", e.getMessage());
+            }
+
+        } finally {
+            try {
+                container.getScripts().getStoredProcedure(sprocId).delete().block();
+            } catch (Exception e) {
+                logger.warn("Failed to cleanup stored procedure: {}", sprocId, e);
+            }
+        }
+    }
+
     // ==================== Query Plan Feature Tests ====================
     // These tests verify that various query features work correctly through thin client
 

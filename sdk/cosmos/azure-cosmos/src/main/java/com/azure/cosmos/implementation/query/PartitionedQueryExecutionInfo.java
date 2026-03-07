@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -158,7 +159,7 @@ public final class PartitionedQueryExecutionInfo extends JsonSerializable {
         try {
             // Use Jackson to deserialize using PartitionKeyInternal's custom deserializer
             return Utils.getSimpleObjectMapper().treeToValue(node, PartitionKeyInternal.class);
-        } catch (Exception e) {
+        } catch (JsonProcessingException e) {
             throw new IllegalStateException("Failed to parse PartitionKeyInternal from JSON: " + node, e);
         }
     }
