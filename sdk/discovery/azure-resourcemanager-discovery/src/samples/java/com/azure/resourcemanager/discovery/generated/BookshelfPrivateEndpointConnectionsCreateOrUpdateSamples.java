@@ -25,7 +25,7 @@ public final class BookshelfPrivateEndpointConnectionsCreateOrUpdateSamples {
         com.azure.resourcemanager.discovery.DiscoveryManager manager) {
         manager.bookshelfPrivateEndpointConnections()
             .define("connection")
-            .withExistingBookshelf("rgdiscovery", "a65f3c23bf2baa5bd4")
+            .withExistingBookshelve("rgdiscovery", "a65f3c23bf2baa5bd4")
             .withProperties(
                 new PrivateEndpointConnectionProperties().withPrivateEndpoint(new PrivateEndpoint())
                     .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()

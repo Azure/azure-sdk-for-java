@@ -54,7 +54,7 @@ public final class BookshelfPrivateEndpointConnectionImpl implements BookshelfPr
 
     private String privateEndpointConnectionName;
 
-    public BookshelfPrivateEndpointConnectionImpl withExistingBookshelf(String resourceGroupName,
+    public BookshelfPrivateEndpointConnectionImpl withExistingBookshelve(String resourceGroupName,
         String bookshelfName) {
         this.resourceGroupName = resourceGroupName;
         this.bookshelfName = bookshelfName;

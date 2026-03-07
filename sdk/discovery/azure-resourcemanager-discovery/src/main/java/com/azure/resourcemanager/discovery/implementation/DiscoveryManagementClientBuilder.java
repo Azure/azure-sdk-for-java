@@ -36,12 +36,12 @@ public final class DiscoveryManagementClientBuilder {
     }
 
     /*
-     * The ID of the target subscription. The value must be a UUID.
+     * The ID of the target subscription. The value must be an UUID.
      */
     private String subscriptionId;
 
     /**
-     * Sets The ID of the target subscription. The value must be a UUID.
+     * Sets The ID of the target subscription. The value must be an UUID.
      * 
      * @param subscriptionId the subscriptionId value.
      * @return the DiscoveryManagementClientBuilder.
