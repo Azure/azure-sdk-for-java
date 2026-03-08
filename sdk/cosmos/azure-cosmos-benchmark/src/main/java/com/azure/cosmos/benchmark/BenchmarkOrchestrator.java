@@ -15,6 +15,9 @@ import io.micrometer.core.instrument.binder.jvm.JvmGcMetrics;
 import io.micrometer.core.instrument.binder.jvm.JvmMemoryMetrics;
 import io.micrometer.core.instrument.binder.jvm.JvmThreadMetrics;
 import io.micrometer.core.instrument.composite.CompositeMeterRegistry;
+import io.micrometer.core.instrument.logging.LoggingMeterRegistry;
+import io.micrometer.core.instrument.logging.LoggingRegistryConfig;
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,17 +63,16 @@ public class BenchmarkOrchestrator {
         CompositeMeterRegistry compositeRegistry = new CompositeMeterRegistry();
 
         // Reporter destination — mutually exclusive. Default: console via LoggingMeterRegistry.
-        DropwizardBridgeMeterRegistry dropwizardBridge = null;
         CsvMetricsReporter csvReporter = null;
-        io.micrometer.core.instrument.logging.LoggingMeterRegistry loggingRegistry = null;
+        LoggingMeterRegistry loggingRegistry = null;
         CosmosMetricsReporter cosmosReporter = null;
         MeterRegistry appInsightsRegistry = null;
 
         ReportingDestination destination = config.getReportingDestination();
         if (destination == null) {
             // Default: Micrometer's native LoggingMeterRegistry (logs all meters via SLF4J)
-            loggingRegistry = io.micrometer.core.instrument.logging.LoggingMeterRegistry.builder(
-                new io.micrometer.core.instrument.logging.LoggingRegistryConfig() {
+            loggingRegistry = LoggingMeterRegistry.builder(
+                new LoggingRegistryConfig() {
                     @Override
                     public String get(String key) { return null; }
 
@@ -85,10 +87,10 @@ public class BenchmarkOrchestrator {
         } else {
             switch (destination) {
                 case CSV:
-                    dropwizardBridge = new DropwizardBridgeMeterRegistry();
-                    compositeRegistry.add(dropwizardBridge);
+                    SimpleMeterRegistry csvSimpleRegistry = new SimpleMeterRegistry();
+                    compositeRegistry.add(csvSimpleRegistry);
                     csvReporter = new CsvMetricsReporter(
-                        dropwizardBridge, config.getCsvReporterConfig().getReportingDirectory());
+                        csvSimpleRegistry, config.getCsvReporterConfig().getReportingDirectory());
                     csvReporter.start(config.getPrintingInterval(), TimeUnit.SECONDS);
                     break;
 
@@ -100,8 +102,7 @@ public class BenchmarkOrchestrator {
                     // directly on that instance — not meters propagated from a parent.
                     // Therefore the reporter must iterate the SimpleMeterRegistry (where
                     // the actual meter data is stored), not the composite wrapper.
-                    io.micrometer.core.instrument.simple.SimpleMeterRegistry simpleMeterRegistry =
-                        new io.micrometer.core.instrument.simple.SimpleMeterRegistry();
+                    SimpleMeterRegistry simpleMeterRegistry = new SimpleMeterRegistry();
                     compositeRegistry.add(simpleMeterRegistry);
                     Set<String> ops = new LinkedHashSet<>();
                     int totalConcurrency = 0;
@@ -179,9 +180,6 @@ public class BenchmarkOrchestrator {
                 threadPrefixGaugeSet.close();
             }
             compositeRegistry.close();
-            if (dropwizardBridge != null) {
-                dropwizardBridge.close();
-            }
             clearGlobalSystemProperties();
         }
     }
