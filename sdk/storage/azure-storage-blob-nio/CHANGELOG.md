@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- Throw java.nio.NoSuchFileException instead of raw java.io.IOException for non existent blob file attributes request
 
 ### Other Changes
 

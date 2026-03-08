@@ -14,6 +14,7 @@ import com.azure.storage.blob.models.CopyStatusType;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileAttribute;
 import java.nio.file.attribute.FileTime;
@@ -58,13 +59,19 @@ public final class AzureBlobFileAttributes implements BasicFileAttributes {
                 this.properties = null;
                 return;
             } else if (e.getStatusCode() == 404) {
-                throw new IOException("Path: " + path.toString(), e);
+                throw toNoSuchFileException(e, path);
             } else {
                 throw LoggingUtility.logError(LOGGER, new IOException("Path: " + path.toString(), e));
             }
         }
         this.properties = props;
         this.isVirtualDirectory = false;
+    }
+
+    private NoSuchFileException toNoSuchFileException(Exception e, Path path) {
+        NoSuchFileException ex = new NoSuchFileException(path.toString());
+        ex.initCause(e);
+        return ex;
     }
 
     static Map<String, Supplier<Object>> getAttributeSuppliers(AzureBlobFileAttributes attributes) {

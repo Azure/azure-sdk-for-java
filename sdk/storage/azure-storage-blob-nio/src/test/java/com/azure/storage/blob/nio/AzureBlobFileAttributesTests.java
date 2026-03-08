@@ -16,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -81,11 +82,12 @@ public class AzureBlobFileAttributesTests extends BlobNioTestBase {
         boolean isDirectory = Files.isDirectory(path);
         boolean isFile = Files.exists(path);
 
-        IOException exception = assertThrows(IOException.class, () -> new AzureBlobFileAttributes(path));
+        NoSuchFileException e = assertThrows(NoSuchFileException.class, () -> new AzureBlobFileAttributes(path));
         assertFalse(isDirectory);
         assertFalse(isFile);
-        BlobStorageException e = assertInstanceOf(BlobStorageException.class, exception.getCause());
-        assertEquals(404, e.getStatusCode());
+        assertEquals(path.toString(), e.getMessage());
+        BlobStorageException cause = assertInstanceOf(BlobStorageException.class, e.getCause());
+        assertEquals(404, cause.getStatusCode());
     }
 
     @Test
@@ -96,11 +98,12 @@ public class AzureBlobFileAttributesTests extends BlobNioTestBase {
         boolean isDirectory = Files.isDirectory(path);
         boolean isFile = Files.exists(path);
 
-        IOException exception = assertThrows(IOException.class, () -> new AzureBlobFileAttributes(path));
+        NoSuchFileException e = assertThrows(NoSuchFileException.class, () -> new AzureBlobFileAttributes(path));
         assertFalse(isDirectory);
         assertFalse(isFile);
-        BlobStorageException e = assertInstanceOf(BlobStorageException.class, exception.getCause());
-        assertEquals(404, e.getStatusCode());
+        assertEquals(path.toString(), e.getMessage());
+        BlobStorageException cause = assertInstanceOf(BlobStorageException.class, e.getCause());
+        assertEquals(404, cause.getStatusCode());
     }
 
     @Test
