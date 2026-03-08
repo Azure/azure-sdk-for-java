@@ -1,16 +1,27 @@
 # Release History
 
-## 4.9.0-beta.1 (Unreleased)
-
-### Features Added
+## 4.9.0-beta.1 (2026-03-08)
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `implementation.CertificateClientImpl$CertificateClientService` was modified
 
-- Fixed an issue where certain `HttpResponseException.getResponse()` calls could cause a `NullPointerException`. ([#47801](https://github.com/Azure/azure-sdk-for-java/issues/47801))
+* `purgeDeletedCertificateSync(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions,com.azure.core.util.Context)` was removed
+* `purgeDeletedCertificate(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions,com.azure.core.util.Context)` was removed
 
-### Other Changes
+### Features Added
+
+#### `models.SubjectAlternativeNames` was modified
+
+* `setIpAddresses(java.util.List)` was added
+* `getIpAddresses()` was added
+* `getUniformResourceIdentifiers()` was added
+* `setUniformResourceIdentifiers(java.util.List)` was added
+
+#### `implementation.CertificateClientImpl$CertificateClientService` was modified
+
+* `purgeDeletedCertificateSync(java.lang.String,java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions,com.azure.core.util.Context)` was added
+* `purgeDeletedCertificate(java.lang.String,java.lang.String,java.lang.String,com.azure.core.http.rest.RequestOptions,com.azure.core.util.Context)` was added
 
 ## 4.8.5 (2026-01-29)
 
