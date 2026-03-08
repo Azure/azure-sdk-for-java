@@ -278,11 +278,6 @@ public abstract class AsyncEncryptionBenchmark<T> implements Benchmark {
     protected Mono sparsityMono(long i) {
         Duration duration = workloadConfig.getSparsityWaitTime();
         if (duration != null && !duration.isZero()) {
-            if (workloadConfig.getSkipWarmUpOperations() > i) {
-                // don't wait on the initial warm up time.
-                return null;
-            }
-
             return Mono.delay(duration);
         } else return null;
     }

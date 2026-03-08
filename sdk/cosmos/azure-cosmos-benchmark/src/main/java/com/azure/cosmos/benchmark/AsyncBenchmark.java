@@ -421,10 +421,6 @@ abstract class AsyncBenchmark<T> implements Benchmark {
     protected Mono sparsityMono(long i) {
         Duration duration = workloadConfig.getSparsityWaitTime();
         if (duration != null && !duration.isZero()) {
-            if (workloadConfig.getSkipWarmUpOperations() > i) {
-                // don't wait during warmup
-                return null;
-            }
             return Mono.delay(duration);
         }
         return null;
