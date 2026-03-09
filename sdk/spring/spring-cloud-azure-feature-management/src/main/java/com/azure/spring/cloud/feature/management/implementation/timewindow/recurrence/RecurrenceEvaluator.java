@@ -98,8 +98,16 @@ public class RecurrenceEvaluator {
 
         final long numberOfInterval = Duration.between(firstDayOfFirstWeek, now).toSeconds()
             / Duration.ofDays((long) interval * RecurrenceConstants.DAYS_PER_WEEK).toSeconds();
-        final ZonedDateTime firstDayOfMostRecentOccurringWeek = firstDayOfFirstWeek.plusDays(
+        
+        ZonedDateTime firstDayOfMostRecentOccurringWeek = firstDayOfFirstWeek.plusDays(
             numberOfInterval * (interval * RecurrenceConstants.DAYS_PER_WEEK));
+        // Handle DST transitions: if the offset difference is exactly 1 hour, it's likely a DST
+        // transition rather than a different geographic timezone. Apply zone conversion to handle this.
+        int offsetDiffSeconds = Math.abs(firstDayOfMostRecentOccurringWeek.getOffset().getTotalSeconds() 
+            - now.getOffset().getTotalSeconds());
+        if (offsetDiffSeconds == 3600) { // 1 hour in seconds
+            firstDayOfMostRecentOccurringWeek = firstDayOfMostRecentOccurringWeek.withZoneSameLocal(now.getZone());
+        }
         final List<DayOfWeek> sortedDaysOfWeek = TimeWindowUtils.sortDaysOfWeek(pattern.getDaysOfWeek(), pattern.getFirstDayOfWeek());
         final int maxDayOffset = TimeWindowUtils.getPassedWeekDays(sortedDaysOfWeek.get(sortedDaysOfWeek.size() - 1), pattern.getFirstDayOfWeek());
         final int minDayOffset = TimeWindowUtils.getPassedWeekDays(sortedDaysOfWeek.get(0), pattern.getFirstDayOfWeek());
