@@ -25,6 +25,7 @@ import static com.azure.storage.common.implementation.contentvalidation.Structur
 import static com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants.V1_DEFAULT_SEGMENT_CONTENT_LENGTH;
 import static com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants.V1_HEADER_LENGTH;
 import static com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants.V1_SEGMENT_HEADER_LENGTH;
+import static com.azure.core.util.FluxUtil.collectBytesInByteBufferStream;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;

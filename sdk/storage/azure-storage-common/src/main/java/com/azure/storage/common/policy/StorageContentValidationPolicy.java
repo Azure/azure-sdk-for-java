@@ -9,18 +9,14 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.util.BinaryData;
-import com.azure.core.util.FluxUtil;
-import com.azure.storage.common.implementation.StorageCrc64Calculator;
+import com.azure.storage.common.implementation.contentvalidation.StorageCrc64Calculator;
 import com.azure.storage.common.implementation.contentvalidation.StructuredMessageEncoder;
 import com.azure.storage.common.implementation.contentvalidation.StructuredMessageFlags;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
-import java.util.ArrayList;
 import java.util.Base64;
-import java.util.List;
 import java.util.Optional;
 
 import static com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants.CONTENT_VALIDATION_BEHAVIOR_KEY;
@@ -41,17 +37,6 @@ public class StorageContentValidationPolicy implements HttpPipelinePolicy {
      * Creates a new instance of {@link StorageContentValidationPolicy}.
      */
     public StorageContentValidationPolicy() {
-    }
-
-    /**
-     * stuff
-     *
-     * @return stuff
-     */
-    @Override
-    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
-        applyContentValidation(context);
-        return next.processSync();
     }
 
     /**
@@ -100,11 +85,21 @@ public class StorageContentValidationPolicy implements HttpPipelinePolicy {
     }
 
     private void applyStructuredMessage(HttpPipelineCallContext context) {
-        // Sync path only: supply body as a streaming Flux and set Content-Length/structured headers.
         int unencodedContentLength
             = Integer.parseInt(context.getHttpRequest().getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH));
         Flux<ByteBuffer> originalBody = context.getHttpRequest().getBody();
 
+        /*
+         * Replace the request body with a structured message: raw content wrapped with headers, segment
+         * boundaries, and CRC64 checksums so the service can validate integrity as it receives the stream.
+         *
+         * A fresh encoder is created on each subscribe (via defer) so retries re-encode correctly from the
+         * original replayable body. The encoded buffers are slices of the original data, produced lazily and
+         * consumed by the HTTP client without materialization. This avoids the ~2x peak memory that a
+         * collectList + cache approach would cause (holding both original and encoded copies simultaneously).
+         *
+         * limitRate(1) keeps the encoder's segment boundaries aligned with buffer boundaries.
+         */
         Flux<ByteBuffer> encodedBody = Flux.defer(() -> {
             StructuredMessageEncoder encoder = new StructuredMessageEncoder(unencodedContentLength,
                 V1_DEFAULT_SEGMENT_CONTENT_LENGTH, StructuredMessageFlags.STORAGE_CRC64);

@@ -198,33 +198,16 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
      * 2. So the full payload is already held in memory (e.g. 500 MB) in the gate when the single-upload
      *    path is taken, and that body Flux is passed to BlockBlobSimpleUploadOptions and into the pipeline.
      *
-     * 3. StorageContentValidationPolicy (when structured message is used) replaces the body with an
-     *    encoded Flux that reads from the original body and emits segment-sized encoded ByteBuffers.
-     *    The encoder uses slices when the buffer hasArray() to avoid extra copies; copyToArray only for direct buffers.
+     * 3. StorageContentValidationPolicy (when structured message is used) replaces the body with a
+     *    streaming encoded Flux (via Flux.defer) that creates a fresh encoder on each subscribe and
+     *    encodes lazily using slices of the original data. No collectList or materialization is performed,
+     *    so peak memory stays close to the baseline (source + in-flight blocks).
      *
      * 4. BufferStagingArea.write() (in uploadInChunks) emits overflow aggregators lazily so we don't hold
      *    all segment aggregators at once.
      *
-     * WHY CHUNKED STRUCTURED MESSAGE USES ~2x MEMORY (e.g. 1026 MB vs 550 MB):
-     *
-     * - Chunked no validation: 500 MB source + up to maxConcurrency (8) blocks buffered in BinaryData in
-     *   BlockBlobAsyncClient.stageBlockWithResponse(Flux,...) via BinaryData.fromFlux(data, length, false).
-     *   So peak ≈ 500 + 8*10 MB ≈ 580 MB (plus overhead).
-     *
-     * - Chunked structured message: same 500 MB source and same per-block BinaryData buffering (10 MB per
-     *   in-flight block). The policy then replaces the body with encodedBody = Flux.from(getBody()).limitRate(1)
-     *   .concatMap(encoder::encode). The encoder emits slices (no extra copy). The extra ~500 MB peak is
-     *   likely from one or both of:
-     *   (a) The HTTP pipeline (e.g. RestProxy/Netty) buffering the full encoded body per request for retries,
-     *       so we hold both the BinaryData copy (10 MB) and the encoded body buffer (~10 MB) per block; with
-     *       many blocks in flight or queued this can approach payload size.
-     *   (b) flatMapSequential or subscription order causing more block bodies (BinaryData or encoded) to be
-     *       retained than the nominal maxConcurrency (e.g. prefetch or caching retaining all 50 block bodies).
-     *   CONTENT_VALIDATION_MEMORY_ANALYSIS.md notes that reducing maxConcurrency to 1 did not reduce peak
-     *   (~910 MB), so the duplication is not solely from concurrent blocks and may be in the policy/HTTP stack.
-     *
-     * Net: baseline chunked peak ≈ payload + (blockSize * maxConcurrency); with structured message add
-     * encoded-body buffering and/or retention in the HTTP pipeline.
+     * Net: baseline chunked peak ≈ payload + (blockSize * maxConcurrency); structured message adds only
+     * small per-segment header/footer overhead since the encoder uses slices (no extra data copy).
      */
     /**
      * Condition: run only when perf is explicitly enabled and JVM has enough heap for the test size.
@@ -390,16 +373,14 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
     }
 
     /**
-     * Documents peak heap for chunked upload with structured message (pipeline-only encoding).
-     * The policy materializes each block (collect + encode) and the blob layer uses concurrency 1;
-     * peak varies by run; assertion caps at 1400 MB to catch regressions (no-limit case was ~1.4 GB).
+     * Documents peak heap for chunked upload with structured message (streaming encoding).
+     * The policy encodes lazily via Flux.defer (no collectList materialization), so peak should be
+     * close to the no-validation baseline (source + in-flight blocks overhead).
      * Condition: run only when perf is explicitly enabled and JVM has enough heap for the test size.
      */
     @Test
     public void documentMemoryUsageChunkedStructuredMessage() {
-        // When heap < 700MB (forceOomDuringUpload), use 200MB payload. Policy allocates 150MB on first block.
-        // Use -Xmx320m to force OOM during upload (200+150=350MB > 335MB heap).
-        int size = Runtime.getRuntime().maxMemory() < 700 * 1024 * 1024 ? 200 * Constants.MB : FIVE_HUNDRED_MB;
+        int size = FIVE_HUNDRED_MB;
         long blockSize = 10 * (long) Constants.MB;
         xmxToSmall(size);
 
@@ -436,8 +417,6 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         System.out.println("  Peak heap during upload: " + (peakHeap.get() / (1024 * 1024)) + " MB");
         System.out.println("  Heap after (post-GC): " + (usedAfterGc / (1024 * 1024)) + " MB");
         System.out.println();
-        // Pipeline-only encoding: we materialize each block in the policy and use concurrency 1.
-        // Peak is documented above; no hard assertion so the test is not flaky (variance from GC/timing).
         long peakMb = peakHeap.get() / (1024 * 1024);
         assertTrue(peakHeap.get() < 2L * 1024 * 1024 * 1024,
             "Chunked structured message peak heap must be < 2 GB (sanity check), was " + peakMb + " MB");
