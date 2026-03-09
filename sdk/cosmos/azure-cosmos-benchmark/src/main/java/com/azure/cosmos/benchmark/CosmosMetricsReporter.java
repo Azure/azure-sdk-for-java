@@ -134,11 +134,7 @@ public class CosmosMetricsReporter {
         double cpuPercent = round(cpuReader.getSystemWideCpuUsage() * 100);
 
         for (Meter meter : micrometerRegistry.getMeters()) {
-            // Only upload cosmos.client.* metrics — skip JVM, Netty, system metrics
             String metricName = meter.getId().getName();
-            if (!metricName.startsWith("cosmos.client.")) {
-                continue;
-            }
 
             try {
                 if (meter instanceof Timer) {
