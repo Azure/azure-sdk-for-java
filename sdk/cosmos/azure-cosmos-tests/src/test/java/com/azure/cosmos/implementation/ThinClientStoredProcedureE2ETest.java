@@ -60,7 +60,7 @@ public class ThinClientStoredProcedureE2ETest extends ThinClientTestBase {
         CosmosStoredProcedureRequestOptions options = new CosmosStoredProcedureRequestOptions();
         options.setPartitionKey(new PartitionKey(pkValue));
 
-        String docToCreate = String.format("{\"%s\": \"%s\", \"%s\": \"%s\"}", ID_FIELD, docId, PARTITION_KEY_FIELD, pkValue);
+        ObjectNode docToCreate = createTestDocument(docId, pkValue);
 
         CosmosStoredProcedureResponse executeResponse = container.getScripts()
             .getStoredProcedure(sprocId)
