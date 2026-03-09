@@ -364,9 +364,6 @@ public class ToolsAsyncTests extends ClientTestBase {
                 .setInstructions("You are a helpful assistant that searches uploaded files to answer questions.")
                 .setTools(Collections.singletonList(tool));
 
-            final FileObject uploadedFileFinal = uploadedFile;
-            final VectorStore vectorStoreFinal = vectorStore;
-
             StepVerifier.create(
                 agentsClient.createAgentVersion("file-search-test-agent-java-async", agentDefinition).flatMap(agent -> {
                     agentRef.set(agent);

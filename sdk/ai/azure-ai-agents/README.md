@@ -290,10 +290,9 @@ See the full sample in [ComputerUseSync.java](https://github.com/Azure/azure-sdk
 
 Connect agents to external MCP servers:
 
-```java
+```java com.azure.ai.agents.built_in_mcp
 McpTool tool = new McpTool("api-specs")
     .setServerUrl("https://gitmcp.io/Azure/azure-rest-api-specs")
-    .setProjectConnectionId(mcpConnectionId)
     .setRequireApproval(BinaryData.fromObject("always"));
 ```
 
@@ -323,13 +322,26 @@ OpenApiTool tool = new OpenApiTool(
 Define custom functions that allow agents to interact with external APIs, databases, or application logic:
 
 ```java  com.azure.ai.agents.define_function_call
-Map<String, BinaryData> parameters = new HashMap<>();
-parameters.put("type", BinaryData.fromString("\"object\""));
-parameters.put("properties", BinaryData.fromString(
-    "{\"location\":{\"type\":\"string\",\"description\":\"The city and state\"}}"));
-parameters.put("required", BinaryData.fromString("[\"location\"]"));
+Map<String, Object> locationProp = new LinkedHashMap<String, Object>();
+locationProp.put("type", "string");
+locationProp.put("description", "The city and state, e.g. Seattle, WA");
 
-FunctionTool tool = new FunctionTool("get_weather", parameters, true);
+Map<String, Object> unitProp = new LinkedHashMap<String, Object>();
+unitProp.put("type", "string");
+unitProp.put("enum", Arrays.asList("celsius", "fahrenheit"));
+
+Map<String, Object> properties = new LinkedHashMap<String, Object>();
+properties.put("location", locationProp);
+properties.put("unit", unitProp);
+
+Map<String, BinaryData> parameters = new HashMap<String, BinaryData>();
+parameters.put("type", BinaryData.fromObject("object"));
+parameters.put("properties", BinaryData.fromObject(properties));
+parameters.put("required", BinaryData.fromObject(Arrays.asList("location", "unit")));
+parameters.put("additionalProperties", BinaryData.fromObject(false));
+
+FunctionTool tool = new FunctionTool("get_weather", parameters, true)
+    .setDescription("Get the current weather in a given location");
 ```
 
 See the full sample in [FunctionCallingSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/FunctionCallingSample.java).

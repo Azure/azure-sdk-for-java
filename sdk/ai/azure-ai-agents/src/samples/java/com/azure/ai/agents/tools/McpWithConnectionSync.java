@@ -78,7 +78,7 @@ public class McpWithConnectionSync {
             Response response = responsesClient.createWithAgentConversation(
                 agentReference, conversation.id(),
                 ResponseCreateParams.builder()
-                    .input("What is my username in Github profile?"));
+                    .input("What is my username in GitHub profile?"));
 
             // Process MCP approval requests: approve each one so the agent can proceed
             List<ResponseInputItem> approvals = new ArrayList<>();

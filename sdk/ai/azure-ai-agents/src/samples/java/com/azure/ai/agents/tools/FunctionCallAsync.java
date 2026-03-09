@@ -74,12 +74,12 @@ public class FunctionCallAsync {
 
         FunctionTool tool = new FunctionTool("get_weather", parameters, true)
             .setDescription("Get the current weather in a given location");
+        // END: com.azure.ai.agents.define_function_call
 
         PromptAgentDefinition agentDefinition = new PromptAgentDefinition(model)
             .setInstructions("You are a helpful assistant that can get weather information. "
                 + "When asked about the weather, use the get_weather function to retrieve weather data.")
             .setTools(Collections.singletonList(tool));
-        // END: com.azure.ai.agents.define_function_call
 
         agentsAsyncClient.createAgentVersion("function-call-agent", agentDefinition)
             .flatMap(agent -> {

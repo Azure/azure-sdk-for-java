@@ -69,7 +69,7 @@ public class McpWithConnectionAsync {
 
                 return responsesAsyncClient.createWithAgent(agentReference,
                     ResponseCreateParams.builder()
-                        .input("What is my username in Github profile?"));
+                        .input("What is my username in GitHub profile?"));
             })
             .flatMap(response -> {
                 AgentVersionDetails agent = agentRef.get();
