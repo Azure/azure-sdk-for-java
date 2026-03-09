@@ -52,19 +52,22 @@ public class OpenApiSync {
         ConversationsClient conversationsClient = builder.buildConversationsClient();
 
 
+        // BEGIN: com.azure.ai.agents.define_openapi
         // Load the OpenAPI spec from a JSON file
         Map<String, BinaryData> spec = OpenApiFunctionDefinition.readSpecFromFile(
             SampleUtils.getResourcePath("assets/httpbin_openapi.json"));
 
-        OpenApiFunctionDefinition toolDefinition = new OpenApiFunctionDefinition(
-            "httpbin_get",
-            spec,
-            new OpenApiAnonymousAuthDetails())
-            .setDescription("Get request metadata from an OpenAPI endpoint.");
+        OpenApiTool tool = new OpenApiTool(
+            new OpenApiFunctionDefinition(
+                "httpbin_get",
+                spec,
+                new OpenApiAnonymousAuthDetails())
+                .setDescription("Get request metadata from an OpenAPI endpoint."));
+        // END: com.azure.ai.agents.define_openapi
 
         PromptAgentDefinition agentDefinition = new PromptAgentDefinition(model)
             .setInstructions("Use the OpenAPI tool for HTTP request metadata.")
-            .setTools(Arrays.asList(new OpenApiTool(toolDefinition)));
+            .setTools(Arrays.asList(tool));
 
         AgentVersionDetails agentVersion = agentsClient.createAgentVersion("openapi-agent", agentDefinition);
         System.out.println("Agent: " + agentVersion.getName() + ", version: " + agentVersion.getVersion());

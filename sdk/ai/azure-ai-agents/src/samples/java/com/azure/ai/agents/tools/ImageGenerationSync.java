@@ -44,11 +44,13 @@ public class ImageGenerationSync {
         AgentsClient agentsClient = builder.buildAgentsClient();
         ResponsesClient responsesClient = builder.buildResponsesClient();
 
+        // BEGIN: com.azure.ai.agents.define_image_generation
         // Create image generation tool with model, quality, and size
         ImageGenTool imageGenTool = new ImageGenTool()
             .setModel(ImageGenToolModel.fromString(imageModel))
             .setQuality(ImageGenToolQuality.LOW)
             .setSize(ImageGenToolSize.fromString("1024x1024"));
+        // END: com.azure.ai.agents.define_image_generation
 
         // Create agent with image generation tool
         PromptAgentDefinition agentDefinition = new PromptAgentDefinition(model)

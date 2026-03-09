@@ -91,8 +91,10 @@ public class FileSearchSync {
             System.out.println("Waiting for vector store to process files...");
             Thread.sleep(5000);
 
+            // BEGIN: com.azure.ai.agents.define_file_search
             // Create a FileSearchTool with the vector store ID
             FileSearchTool tool = new FileSearchTool(Collections.singletonList(vectorStore.id()));
+            // END: com.azure.ai.agents.define_file_search
 
             PromptAgentDefinition agentDefinition = new PromptAgentDefinition(model)
                 .setInstructions("You are a helpful assistant that can search through uploaded files to answer questions. "

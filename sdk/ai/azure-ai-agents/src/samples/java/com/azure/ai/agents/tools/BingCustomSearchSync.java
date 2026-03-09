@@ -51,12 +51,14 @@ public class BingCustomSearchSync {
         AgentsClient agentsClient = builder.buildAgentsClient();
         ResponsesClient responsesClient = builder.buildResponsesClient();
 
+        // BEGIN: com.azure.ai.agents.define_bing_custom_search
         // Create Bing Custom Search tool with connection and instance configuration
         BingCustomSearchPreviewTool bingCustomSearchTool = new BingCustomSearchPreviewTool(
             new BingCustomSearchToolParameters(Arrays.asList(
                 new BingCustomSearchConfiguration(connectionId, instanceName)
             ))
         );
+        // END: com.azure.ai.agents.define_bing_custom_search
 
         // Create agent with Bing Custom Search tool
         PromptAgentDefinition agentDefinition = new PromptAgentDefinition(model)

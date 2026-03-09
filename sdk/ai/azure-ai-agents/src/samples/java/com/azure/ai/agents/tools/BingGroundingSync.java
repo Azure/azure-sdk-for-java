@@ -44,12 +44,14 @@ public class BingGroundingSync {
         AgentsClient agentsClient = builder.buildAgentsClient();
         ResponsesClient responsesClient = builder.buildResponsesClient();
 
+        // BEGIN: com.azure.ai.agents.define_bing_grounding
         // Create Bing grounding tool with connection configuration
         BingGroundingTool bingTool = new BingGroundingTool(
             new BingGroundingSearchToolParameters(Arrays.asList(
                 new BingGroundingSearchConfiguration(bingConnectionId)
             ))
         );
+        // END: com.azure.ai.agents.define_bing_grounding
 
         // Create agent with Bing grounding tool
         PromptAgentDefinition agentDefinition = new PromptAgentDefinition(model)

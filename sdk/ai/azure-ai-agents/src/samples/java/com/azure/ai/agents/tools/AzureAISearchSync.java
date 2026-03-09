@@ -47,6 +47,7 @@ public class AzureAISearchSync {
         AgentsClient agentsClient = builder.buildAgentsClient();
         ResponsesClient responsesClient = builder.buildResponsesClient();
 
+        // BEGIN: com.azure.ai.agents.define_azure_ai_search
         // Create Azure AI Search tool with index configuration
         AzureAISearchTool aiSearchTool = new AzureAISearchTool(
             new AzureAISearchToolResource(Arrays.asList(
@@ -56,6 +57,7 @@ public class AzureAISearchSync {
                     .setQueryType(AzureAISearchQueryType.SIMPLE)
             ))
         );
+        // END: com.azure.ai.agents.define_azure_ai_search
 
         // Create agent with AI Search tool
         PromptAgentDefinition agentDefinition = new PromptAgentDefinition(model)

@@ -44,8 +44,10 @@ public class WebSearchSync {
         AgentVersionDetails agent = null;
 
         try {
+            // BEGIN: com.azure.ai.agents.define_web_search
             // Create a WebSearchPreviewTool
             WebSearchPreviewTool tool = new WebSearchPreviewTool();
+            // END: com.azure.ai.agents.define_web_search
 
             // Create the agent definition with Web Search tool enabled
             PromptAgentDefinition agentDefinition = new PromptAgentDefinition(model)

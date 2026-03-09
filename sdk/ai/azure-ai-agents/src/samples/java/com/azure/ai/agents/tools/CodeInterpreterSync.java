@@ -45,8 +45,10 @@ public class CodeInterpreterSync {
         AgentVersionDetails agent = null;
 
         try {
+            // BEGIN: com.azure.ai.agents.define_code_interpreter
             // Create a CodeInterpreterTool with default auto container configuration
             CodeInterpreterTool tool = new CodeInterpreterTool();
+            // END: com.azure.ai.agents.define_code_interpreter
 
             // Create the agent definition with Code Interpreter tool enabled
             PromptAgentDefinition agentDefinition = new PromptAgentDefinition(model)

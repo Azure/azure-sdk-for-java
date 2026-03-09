@@ -53,11 +53,13 @@ public class McpWithConnectionSync {
         ResponsesClient responsesClient = builder.buildResponsesClient();
         ConversationsClient conversationsClient = builder.buildConversationsClient();
 
+        // BEGIN: com.azure.ai.agents.define_mcp_with_connection
         // Create MCP tool with project connection authentication
         McpTool mcpTool = new McpTool("api-specs")
             .setServerUrl("https://api.githubcopilot.com/mcp")
             .setProjectConnectionId(mcpConnectionId)
             .setRequireApproval(BinaryData.fromObject("always"));
+        // END: com.azure.ai.agents.define_mcp_with_connection
 
         // Create agent with MCP tool
         PromptAgentDefinition agentDefinition = new PromptAgentDefinition(model)

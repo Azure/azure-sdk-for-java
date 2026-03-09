@@ -41,9 +41,11 @@ public class AgentToAgentSync {
         AgentsClient agentsClient = builder.buildAgentsClient();
         ResponsesClient responsesClient = builder.buildResponsesClient();
 
+        // BEGIN: com.azure.ai.agents.define_agent_to_agent
         // Create agent-to-agent tool with connection ID
         A2APreviewTool a2aTool = new A2APreviewTool()
             .setProjectConnectionId(a2aConnectionId);
+        // END: com.azure.ai.agents.define_agent_to_agent
 
         // Create agent with agent-to-agent tool
         PromptAgentDefinition agentDefinition = new PromptAgentDefinition(model)

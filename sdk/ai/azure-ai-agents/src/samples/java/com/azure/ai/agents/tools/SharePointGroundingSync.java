@@ -44,6 +44,7 @@ public class SharePointGroundingSync {
         AgentsClient agentsClient = builder.buildAgentsClient();
         ResponsesClient responsesClient = builder.buildResponsesClient();
 
+        // BEGIN: com.azure.ai.agents.define_sharepoint
         // Create SharePoint grounding tool with connection configuration
         SharepointPreviewTool sharepointTool = new SharepointPreviewTool(
             new SharepointGroundingToolParameters()
@@ -51,6 +52,7 @@ public class SharePointGroundingSync {
                     new ToolProjectConnection(sharepointConnectionId)
                 ))
         );
+        // END: com.azure.ai.agents.define_sharepoint
 
         // Create agent with SharePoint tool
         PromptAgentDefinition agentDefinition = new PromptAgentDefinition(model)

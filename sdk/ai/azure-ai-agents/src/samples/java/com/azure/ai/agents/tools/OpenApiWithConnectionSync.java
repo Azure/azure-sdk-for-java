@@ -57,6 +57,7 @@ public class OpenApiWithConnectionSync {
         Map<String, BinaryData> spec = OpenApiFunctionDefinition.readSpecFromFile(
             SampleUtils.getResourcePath("assets/httpbin_openapi.json"));
 
+        // BEGIN: com.azure.ai.agents.define_openapi_with_connection
         // Create OpenAPI tool with project connection authentication
         OpenApiTool openApiTool = new OpenApiTool(
             new OpenApiFunctionDefinition(
@@ -65,6 +66,7 @@ public class OpenApiWithConnectionSync {
                 new OpenApiProjectConnectionAuthDetails(
                     new OpenApiProjectConnectionSecurityScheme(connectionId)))
                 .setDescription("Get request metadata from an OpenAPI endpoint."));
+        // END: com.azure.ai.agents.define_openapi_with_connection
 
         // Create agent with OpenAPI tool
         PromptAgentDefinition agentDefinition = new PromptAgentDefinition(model)

@@ -44,6 +44,7 @@ public class FabricSync {
         AgentsClient agentsClient = builder.buildAgentsClient();
         ResponsesClient responsesClient = builder.buildResponsesClient();
 
+        // BEGIN: com.azure.ai.agents.define_fabric
         // Create Microsoft Fabric tool with connection configuration
         MicrosoftFabricPreviewTool fabricTool = new MicrosoftFabricPreviewTool(
             new FabricDataAgentToolParameters()
@@ -51,6 +52,7 @@ public class FabricSync {
                     new ToolProjectConnection(fabricConnectionId)
                 ))
         );
+        // END: com.azure.ai.agents.define_fabric
 
         // Create agent with Fabric tool
         PromptAgentDefinition agentDefinition = new PromptAgentDefinition(model)

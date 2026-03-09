@@ -73,9 +73,11 @@ public class MemorySearchSync {
                 memoryStoreName, definition, "Example memory store for conversations", null);
             System.out.printf("Created memory store: %s (%s)%n", memoryStore.getName(), memoryStore.getId());
 
+            // BEGIN: com.azure.ai.agents.define_memory_search
             // Create memory search tool
             MemorySearchPreviewTool tool = new MemorySearchPreviewTool(memoryStore.getName(), scope)
                 .setUpdateDelaySeconds(1);
+            // END: com.azure.ai.agents.define_memory_search
 
             // Create agent with memory search tool
             PromptAgentDefinition agentDefinition = new PromptAgentDefinition(model)

@@ -67,6 +67,7 @@ public class AzureFunctionSync {
         parameters.put("type", BinaryData.fromObject("object"));
         parameters.put("properties", BinaryData.fromObject(props));
 
+        // BEGIN: com.azure.ai.agents.define_azure_function
         // Create Azure Function tool with Storage Queue bindings
         AzureFunctionTool azureFunctionTool = new AzureFunctionTool(
             new AzureFunctionDefinition(
@@ -78,6 +79,7 @@ public class AzureFunctionSync {
                     new AzureFunctionStorageQueue(queueServiceEndpoint, outputQueueName))
             )
         );
+        // END: com.azure.ai.agents.define_azure_function
 
         // Create agent with Azure Function tool
         PromptAgentDefinition agentDefinition = new PromptAgentDefinition(model)

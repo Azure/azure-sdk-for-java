@@ -43,12 +43,14 @@ public class BrowserAutomationSync {
         AgentsClient agentsClient = builder.buildAgentsClient();
         ResponsesClient responsesClient = builder.buildResponsesClient();
 
+        // BEGIN: com.azure.ai.agents.define_browser_automation
         // Create browser automation tool with connection configuration
         BrowserAutomationPreviewTool browserTool = new BrowserAutomationPreviewTool(
             new BrowserAutomationToolParameters(
                 new BrowserAutomationToolConnectionParameters(connectionId)
             )
         );
+        // END: com.azure.ai.agents.define_browser_automation
 
         // Create agent with browser automation tool
         PromptAgentDefinition agentDefinition = new PromptAgentDefinition(model)
