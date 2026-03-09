@@ -20,6 +20,7 @@ import static org.assertj.core.api.Fail.fail;
 
 /**
  * Thin client E2E tests for stored procedure execution.
+ * Container is truncated in {@code @BeforeClass} — no per-test cleanup needed.
  */
 public class ThinClientStoredProcedureE2ETest extends ThinClientTestBase {
 
@@ -30,100 +31,88 @@ public class ThinClientStoredProcedureE2ETest extends ThinClientTestBase {
 
     @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
     public void testThinClientStoredProcedure() {
-        String sprocId = "createDocSproc_" + UUID.randomUUID().toString();
+        String sprocId = "createDocSproc_" + UUID.randomUUID();
         String pkValue = UUID.randomUUID().toString();
         String docId = UUID.randomUUID().toString();
-        try {
-            CosmosStoredProcedureProperties storedProcedureDef = new CosmosStoredProcedureProperties(
-                sprocId,
-                "function createDocument(docToCreate) {" +
-                    "    var context = getContext();" +
-                    "    var container = context.getCollection();" +
-                    "    var response = context.getResponse();" +
-                    "    var accepted = container.createDocument(" +
-                    "        container.getSelfLink()," +
-                    "        docToCreate," +
-                    "        function(err, docCreated) {" +
-                    "            if (err) throw new Error('Error creating document: ' + err.message);" +
-                    "            response.setBody(docCreated);" +
-                    "        }" +
-                    "    );" +
-                    "    if (!accepted) throw new Error('Document creation was not accepted');" +
-                    "}"
-            );
 
-            CosmosStoredProcedureResponse createResponse = container.getScripts()
-                .createStoredProcedure(storedProcedureDef).block();
-            assertThat(createResponse).isNotNull();
-            assertThat(createResponse.getStatusCode()).isEqualTo(201);
+        CosmosStoredProcedureProperties storedProcedureDef = new CosmosStoredProcedureProperties(
+            sprocId,
+            "function createDocument(docToCreate) {"
+                + "var context = getContext();"
+                + "var container = context.getCollection();"
+                + "var response = context.getResponse();"
+                + "var accepted = container.createDocument("
+                + "    container.getSelfLink(),"
+                + "    docToCreate,"
+                + "    function(err, docCreated) {"
+                + "        if (err) throw new Error('Error creating document: ' + err.message);"
+                + "        response.setBody(docCreated);"
+                + "    });"
+                + "if (!accepted) throw new Error('Document creation was not accepted');"
+                + "}"
+        );
 
-            CosmosStoredProcedureRequestOptions options = new CosmosStoredProcedureRequestOptions();
-            options.setPartitionKey(new PartitionKey(pkValue));
+        CosmosStoredProcedureResponse createResponse = container.getScripts()
+            .createStoredProcedure(storedProcedureDef).block();
+        assertThat(createResponse).isNotNull();
+        assertThat(createResponse.getStatusCode()).isEqualTo(201);
 
-            String docToCreate = String.format("{\"%s\": \"%s\", \"%s\": \"%s\"}", ID_FIELD, docId, PARTITION_KEY_FIELD, pkValue);
+        CosmosStoredProcedureRequestOptions options = new CosmosStoredProcedureRequestOptions();
+        options.setPartitionKey(new PartitionKey(pkValue));
 
-            CosmosStoredProcedureResponse executeResponse = container.getScripts()
-                .getStoredProcedure(sprocId)
-                .execute(Arrays.asList(docToCreate), options).block();
+        String docToCreate = String.format("{\"%s\": \"%s\", \"%s\": \"%s\"}", ID_FIELD, docId, PARTITION_KEY_FIELD, pkValue);
 
-            assertThat(executeResponse).isNotNull();
-            assertThat(executeResponse.getStatusCode()).isEqualTo(200);
-            assertThat(executeResponse.getRequestCharge()).isGreaterThan(0.0);
-            assertThinClientEndpointUsed(executeResponse.getDiagnostics());
+        CosmosStoredProcedureResponse executeResponse = container.getScripts()
+            .getStoredProcedure(sprocId)
+            .execute(Arrays.asList(docToCreate), options).block();
 
-            CosmosItemResponse<ObjectNode> readResponse = container.readItem(docId, new PartitionKey(pkValue), ObjectNode.class).block();
-            assertThat(readResponse).isNotNull();
-            assertThat(readResponse.getItem().get(ID_FIELD).asText()).isEqualTo(docId);
-        } finally {
-            try { container.deleteItem(docId, new PartitionKey(pkValue)).block(); } catch (Exception e) { logger.warn("Cleanup failed", e); }
-            try { container.getScripts().getStoredProcedure(sprocId).delete().block(); } catch (Exception e) { logger.warn("Cleanup failed", e); }
-        }
+        assertThat(executeResponse).isNotNull();
+        assertThat(executeResponse.getStatusCode()).isEqualTo(200);
+        assertThat(executeResponse.getRequestCharge()).isGreaterThan(0.0);
+        assertThinClientEndpointUsed(executeResponse.getDiagnostics());
+
+        CosmosItemResponse<ObjectNode> readResponse = container.readItem(docId, new PartitionKey(pkValue), ObjectNode.class).block();
+        assertThat(readResponse).isNotNull();
+        assertThat(readResponse.getItem().get(ID_FIELD).asText()).isEqualTo(docId);
     }
 
     @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
     public void testStoredProcedureExecutionWithoutPartitionKeyThrows() {
-        String sprocId = "noPartitionKeySproc_" + UUID.randomUUID().toString();
+        String sprocId = "noPartitionKeySproc_" + UUID.randomUUID();
+
+        CosmosStoredProcedureProperties storedProcedureDef = new CosmosStoredProcedureProperties(
+            sprocId, "function() { getContext().getResponse().setBody('Hello'); }");
+
+        container.getScripts().createStoredProcedure(storedProcedureDef).block();
+
+        CosmosStoredProcedureRequestOptions options = new CosmosStoredProcedureRequestOptions();
+
         try {
-            CosmosStoredProcedureProperties storedProcedureDef = new CosmosStoredProcedureProperties(
-                sprocId, "function() { getContext().getResponse().setBody('Hello'); }");
-
-            container.getScripts().createStoredProcedure(storedProcedureDef).block();
-
-            CosmosStoredProcedureRequestOptions options = new CosmosStoredProcedureRequestOptions();
-
-            try {
-                container.getScripts().getStoredProcedure(sprocId).execute(null, options).block();
-                fail("Expected UnsupportedOperationException for sproc execution without partition key");
-            } catch (UnsupportedOperationException e) {
-                assertThat(e.getMessage()).contains("PartitionKey value must be supplied");
-                logger.info("Confirmed: V4 SDK throws UnsupportedOperationException for sproc without PK: {}", e.getMessage());
-            }
-        } finally {
-            try { container.getScripts().getStoredProcedure(sprocId).delete().block(); } catch (Exception e) { logger.warn("Cleanup failed", e); }
+            container.getScripts().getStoredProcedure(sprocId).execute(null, options).block();
+            fail("Expected UnsupportedOperationException for sproc execution without partition key");
+        } catch (UnsupportedOperationException e) {
+            assertThat(e.getMessage()).contains("PartitionKey value must be supplied");
         }
     }
 
     @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
     public void testThinClientStoredProcedureWithPartitionKeyNone() {
-        String sprocId = "pkNoneSproc_" + UUID.randomUUID().toString();
-        try {
-            CosmosStoredProcedureProperties storedProcedureDef = new CosmosStoredProcedureProperties(
-                sprocId, "function() { getContext().getResponse().setBody('Hello from PK.NONE'); }");
+        String sprocId = "pkNoneSproc_" + UUID.randomUUID();
 
-            container.getScripts().createStoredProcedure(storedProcedureDef).block();
+        CosmosStoredProcedureProperties storedProcedureDef = new CosmosStoredProcedureProperties(
+            sprocId, "function() { getContext().getResponse().setBody('Hello from PK.NONE'); }");
 
-            CosmosStoredProcedureRequestOptions options = new CosmosStoredProcedureRequestOptions();
-            options.setPartitionKey(PartitionKey.NONE);
+        container.getScripts().createStoredProcedure(storedProcedureDef).block();
 
-            CosmosStoredProcedureResponse executeResponse = container.getScripts()
-                .getStoredProcedure(sprocId).execute(null, options).block();
+        CosmosStoredProcedureRequestOptions options = new CosmosStoredProcedureRequestOptions();
+        options.setPartitionKey(PartitionKey.NONE);
 
-            assertThat(executeResponse).isNotNull();
-            assertThat(executeResponse.getStatusCode()).isEqualTo(200);
-            assertThat(executeResponse.getRequestCharge()).isGreaterThan(0.0);
-            assertThinClientEndpointUsed(executeResponse.getDiagnostics());
-        } finally {
-            try { container.getScripts().getStoredProcedure(sprocId).delete().block(); } catch (Exception e) { logger.warn("Cleanup failed", e); }
-        }
+        CosmosStoredProcedureResponse executeResponse = container.getScripts()
+            .getStoredProcedure(sprocId).execute(null, options).block();
+
+        assertThat(executeResponse).isNotNull();
+        assertThat(executeResponse.getStatusCode()).isEqualTo(200);
+        assertThat(executeResponse.getRequestCharge()).isGreaterThan(0.0);
+        assertThinClientEndpointUsed(executeResponse.getDiagnostics());
     }
 }

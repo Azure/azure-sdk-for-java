@@ -21,6 +21,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 /**
  * Thin client E2E tests for change feed operations.
+ * Container is truncated in {@code @BeforeClass} — no per-test cleanup needed.
  */
 public class ThinClientChangeFeedE2ETest extends ThinClientTestBase {
 
@@ -32,50 +33,32 @@ public class ThinClientChangeFeedE2ETest extends ThinClientTestBase {
     @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
     public void testThinClientIncrementalChangeFeed() {
         String pkValue = UUID.randomUUID().toString();
-        String idValue1 = UUID.randomUUID().toString();
-        String idValue2 = UUID.randomUUID().toString();
-        try {
-            ObjectNode doc1 = createTestDocument(idValue1, pkValue);
-            ObjectNode doc2 = createTestDocument(idValue2, pkValue);
+        ObjectNode doc1 = createTestDocument(UUID.randomUUID().toString(), pkValue);
+        ObjectNode doc2 = createTestDocument(UUID.randomUUID().toString(), pkValue);
 
-            CosmosBatch batch = CosmosBatch.createCosmosBatch(new PartitionKey(pkValue));
-            batch.createItemOperation(doc1);
-            batch.createItemOperation(doc2);
-            container.executeCosmosBatch(batch).block();
+        CosmosBatch batch = CosmosBatch.createCosmosBatch(new PartitionKey(pkValue));
+        batch.createItemOperation(doc1);
+        batch.createItemOperation(doc2);
+        container.executeCosmosBatch(batch).block();
 
-            // Read change feed scoped to the specific partition key to avoid
-            // consuming changes from other partitions/test classes.
-            CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
-                .createForProcessingFromBeginning(FeedRange.forLogicalPartition(new PartitionKey(pkValue)));
+        // Scope change feed to the specific logical partition to avoid
+        // consuming changes from other tests or partitions.
+        CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
+            .createForProcessingFromBeginning(FeedRange.forLogicalPartition(new PartitionKey(pkValue)));
 
-            // Drain all pages — blockFirst() on full range is fragile when docs span multiple
-            // physical partitions.
-            List<ObjectNode> changeFeedResults = new ArrayList<>();
-            List<CosmosDiagnostics> allDiag = new ArrayList<>();
-            Iterable<FeedResponse<ObjectNode>> pages = container
-                .queryChangeFeed(options, ObjectNode.class)
-                .byPage()
-                .toIterable();
-            for (FeedResponse<ObjectNode> page : pages) {
-                changeFeedResults.addAll(page.getResults());
-                allDiag.add(page.getCosmosDiagnostics());
-                // Change feed returns empty pages with a continuation when fully drained
-                if (page.getResults().isEmpty()) {
-                    break;
-                }
+        List<ObjectNode> changeFeedResults = new ArrayList<>();
+        List<CosmosDiagnostics> allDiag = new ArrayList<>();
+        for (FeedResponse<ObjectNode> page : container.queryChangeFeed(options, ObjectNode.class).byPage().toIterable()) {
+            changeFeedResults.addAll(page.getResults());
+            allDiag.add(page.getCosmosDiagnostics());
+            if (page.getResults().isEmpty()) {
+                break;
             }
+        }
 
-            assertThat(changeFeedResults.size()).isGreaterThanOrEqualTo(2);
-            for (CosmosDiagnostics d : allDiag) {
-                assertThinClientEndpointUsed(d);
-            }
-        } finally {
-            try {
-                container.deleteItem(idValue1, new PartitionKey(pkValue)).block();
-                container.deleteItem(idValue2, new PartitionKey(pkValue)).block();
-            } catch (Exception e) {
-                logger.warn("Failed to cleanup documents", e);
-            }
+        assertThat(changeFeedResults.size()).isGreaterThanOrEqualTo(2);
+        for (CosmosDiagnostics d : allDiag) {
+            assertThinClientEndpointUsed(d);
         }
     }
 }

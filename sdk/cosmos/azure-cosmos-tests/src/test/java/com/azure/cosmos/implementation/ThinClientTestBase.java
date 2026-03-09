@@ -8,7 +8,6 @@ import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosDiagnosticsRequestInfo;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -16,7 +15,6 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 
 import java.util.Collection;
-import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -53,6 +51,7 @@ public abstract class ThinClientTestBase extends TestSuiteBase {
 
     @AfterClass(groups = {"thinclient"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
+        // If running locally, uncomment these lines
         System.clearProperty("COSMOS.THINCLIENT_ENABLED");
         if (this.client != null) {
             this.client.close();
@@ -67,21 +66,6 @@ public abstract class ThinClientTestBase extends TestSuiteBase {
         doc.put(ID_FIELD, id);
         doc.put(PARTITION_KEY_FIELD, mypk);
         return doc;
-    }
-
-    /**
-     * Deletes specific documents by their ids and partition keys. Logs warnings on failure.
-     */
-    protected void deleteDocuments(List<ObjectNode> documents) {
-        for (ObjectNode doc : documents) {
-            String id = doc.get(ID_FIELD).asText();
-            String pk = doc.get(PARTITION_KEY_FIELD).asText();
-            try {
-                container.deleteItem(id, new PartitionKey(pk)).block();
-            } catch (Exception e) {
-                logger.warn("Failed to delete document with id: {}", id, e);
-            }
-        }
     }
 
     /**
