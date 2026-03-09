@@ -119,15 +119,15 @@ public class MemorySearchAsync {
             })
             .doOnNext(response -> System.out.println("Response: " + response.output()))
             .doFinally(signal -> {
-                // Cleanup (sync)
+                // Cleanup — await conversation deletes before proceeding
                 try {
                     String c1 = firstConvRef.get();
                     if (c1 != null) {
-                        conversationsAsyncClient.getConversationServiceAsync().delete(c1);
+                        conversationsAsyncClient.getConversationServiceAsync().delete(c1).join();
                     }
                     String c2 = secondConvRef.get();
                     if (c2 != null) {
-                        conversationsAsyncClient.getConversationServiceAsync().delete(c2);
+                        conversationsAsyncClient.getConversationServiceAsync().delete(c2).join();
                     }
                 } catch (Exception ignored) {
                     // best-effort

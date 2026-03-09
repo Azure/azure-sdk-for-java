@@ -54,7 +54,7 @@ public class OpenApiAsync {
         OpenApiTool openApiTool = new OpenApiTool(
             new OpenApiFunctionDefinition("httpbin_get", spec,
                 new OpenApiAnonymousAuthDetails())
-                .setDescription("Retrieve weather information for a location."));
+                .setDescription("Get request metadata from an OpenAPI endpoint."));
 
         PromptAgentDefinition agentDefinition = new PromptAgentDefinition(model)
             .setInstructions("You are a helpful assistant. Use the OpenAPI tool when asked to call an API.")
