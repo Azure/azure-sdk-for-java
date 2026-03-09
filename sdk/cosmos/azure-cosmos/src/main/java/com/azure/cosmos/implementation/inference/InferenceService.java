@@ -2,7 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.inference;
 
-import com.azure.core.credential.*;
+import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.credential.TokenRequestContext;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.HttpConstants;

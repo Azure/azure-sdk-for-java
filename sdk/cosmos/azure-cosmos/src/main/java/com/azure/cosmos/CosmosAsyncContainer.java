@@ -152,7 +152,7 @@ public class CosmosAsyncContainer {
     private final AtomicBoolean isInitialized;
     private CosmosAsyncScripts scripts;
     private IFaultInjectorProvider faultInjectorProvider;
-    private InferenceService infereceService;
+    private InferenceService inferenceService;
 
     protected CosmosAsyncContainer(CosmosAsyncContainer toBeWrappedContainer) {
         this(toBeWrappedContainer.getId(), toBeWrappedContainer.getDatabase());
@@ -1696,11 +1696,11 @@ public class CosmosAsyncContainer {
             return Mono.error(new IllegalArgumentException("Documents list cannot be empty"));
         }
 
-        if (this.infereceService == null) {
-            this.infereceService = new InferenceService(this.database.getClient().tokenCredential());
+        if (this.inferenceService == null) {
+            this.inferenceService = new InferenceService(this.database.getClient().tokenCredential());
         }
 
-        return this.infereceService.semanticRerank(rerankContext, documents, options);
+        return this.inferenceService.semanticRerank(rerankContext, documents, options);
     }
 
 

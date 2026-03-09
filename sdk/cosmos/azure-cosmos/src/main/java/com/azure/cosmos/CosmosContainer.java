@@ -951,6 +951,19 @@ public class CosmosContainer {
         return this.blockBulkResponse(asyncContainer.executeBulkOperations(Flux.fromIterable(operations), bulkOptions));
     }
 
+    /**
+     * Performs semantic reranking of documents using the inference service.
+     *
+     * @param rerankContext The query or context string used to score documents.
+     * @param documents The list of document strings to rerank.
+     * @param options Optional reranking parameters as a map. Supported keys include:
+     *                {@code return_documents} (Boolean) - whether to return document text in the response,
+     *                {@code top_k} (Integer) - maximum number of documents to return,
+     *                {@code batch_size} (Integer) - number of documents per batch,
+     *                {@code sort} (Boolean) - whether to sort results by relevance score.
+     * @return The semantic rerank result.
+     */
+    @Beta(value = Beta.SinceVersion.V4_78_0)
     public SemanticRerankResult semanticRerank(
         String rerankContext,
         List<String> documents,
