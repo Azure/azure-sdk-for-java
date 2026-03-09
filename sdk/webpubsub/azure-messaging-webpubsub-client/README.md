@@ -175,13 +175,34 @@ client.addOnStoppedEventHandler(event -> {
 ### Invoke upstream events (preview)
 
 `invokeEvent` sends an `invoke` request to the service, awaits the correlated `invokeResponse` payload.
-_Streaming and service-initiated invocations are not yet supported._
 
 ```java readme-sample-invokeEvent
 InvokeEventResult result = client.invokeEvent("processOrder",
     BinaryData.fromString("{\"orderId\":1}"), WebPubSubDataFormat.JSON);
 System.out.println("Invocation result: " + result.getData().toString());
 ```
+
+You can set a timeout via `InvokeEventOptions` so the invocation fails with an `InvocationException` if no response is received within the specified duration. By default, there is no timeout and the invocation waits indefinitely.
+
+```java readme-sample-invokeEventWithTimeout
+InvokeEventOptions options = new InvokeEventOptions().setTimeout(Duration.ofSeconds(10));
+InvokeEventResult result = client.invokeEvent("processOrder",
+    BinaryData.fromString("{\"orderId\":1}"), WebPubSubDataFormat.JSON, options);
+System.out.println("Invocation result: " + result.getData().toString());
+```
+
+To cancel a pending invocation by its invocation ID, you can use `cancelInvocation` to send a cancel message to the server.
+
+```java readme-sample-cancelInvocation
+InvokeEventOptions options = new InvokeEventOptions().setInvocationId("my-invocation-1");
+client.invokeEvent("processOrder",
+    BinaryData.fromString("{\"orderId\":1}"), WebPubSubDataFormat.JSON, options);
+
+client.cancelInvocation("my-invocation-1");
+```
+
+_Streaming and service-initiated invocations are not yet supported._
+
 
 ### Operation and retry
 

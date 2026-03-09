@@ -6,12 +6,15 @@ package com.azure.messaging.webpubsub.client;
 import com.azure.core.util.BinaryData;
 import com.azure.messaging.webpubsub.WebPubSubServiceClient;
 import com.azure.messaging.webpubsub.WebPubSubServiceClientBuilder;
+import com.azure.messaging.webpubsub.client.models.InvokeEventOptions;
 import com.azure.messaging.webpubsub.client.models.InvokeEventResult;
 import com.azure.messaging.webpubsub.client.models.SendMessageFailedException;
 import com.azure.messaging.webpubsub.client.models.WebPubSubClientCredential;
 import com.azure.messaging.webpubsub.client.models.WebPubSubDataFormat;
 import com.azure.messaging.webpubsub.client.models.WebPubSubProtocolType;
 import com.azure.messaging.webpubsub.models.GetClientAccessTokenOptions;
+
+import java.time.Duration;
 
 public final class ReadmeSamples {
 
@@ -95,6 +98,29 @@ public final class ReadmeSamples {
             BinaryData.fromString("{\"orderId\":1}"), WebPubSubDataFormat.JSON);
         System.out.println("Invocation result: " + result.getData().toString());
         // END: readme-sample-invokeEvent
+    }
+
+    public void invokeEventWithTimeout() {
+        WebPubSubClient client = createMockClient();
+
+        // BEGIN: readme-sample-invokeEventWithTimeout
+        InvokeEventOptions options = new InvokeEventOptions().setTimeout(Duration.ofSeconds(10));
+        InvokeEventResult result = client.invokeEvent("processOrder",
+            BinaryData.fromString("{\"orderId\":1}"), WebPubSubDataFormat.JSON, options);
+        System.out.println("Invocation result: " + result.getData().toString());
+        // END: readme-sample-invokeEventWithTimeout
+    }
+
+    public void cancelInvocation() {
+        WebPubSubClient client = createMockClient();
+
+        // BEGIN: readme-sample-cancelInvocation
+        InvokeEventOptions options = new InvokeEventOptions().setInvocationId("my-invocation-1");
+        client.invokeEvent("processOrder",
+            BinaryData.fromString("{\"orderId\":1}"), WebPubSubDataFormat.JSON, options);
+
+        client.cancelInvocation("my-invocation-1");
+        // END: readme-sample-cancelInvocation
     }
 
     public void sendAndRetry() {

@@ -5,6 +5,7 @@ package com.azure.messaging.webpubsub.client;
 
 import com.azure.core.util.BinaryData;
 import com.azure.messaging.webpubsub.client.implementation.MessageDecoder;
+import com.azure.messaging.webpubsub.client.implementation.models.CancelInvocationMessage;
 import com.azure.messaging.webpubsub.client.implementation.models.ConnectedMessage;
 import com.azure.messaging.webpubsub.client.implementation.models.InvokeResponseMessage;
 import com.azure.messaging.webpubsub.client.implementation.models.WebPubSubMessage;
@@ -218,6 +219,95 @@ public class InvokeEventTests {
         Assertions.assertEquals("inv-json-1", result.getInvocationId());
         Assertions.assertEquals(WebPubSubDataFormat.JSON, result.getDataFormat());
         Assertions.assertEquals("{\"status\":\"completed\"}", result.getData().toString());
+    }
+
+    @Test
+    public void testInvokeEventTimeout() throws InterruptedException {
+        WebSocketSession mockWsSession = new MockWebSocketSession() {
+            @Override
+            public void sendObjectAsync(Object data, Consumer<SendResult> handler) {
+                handler.accept(new SendResult());
+            }
+        };
+
+        WebSocketClient mockWsClient = (cec, path, loggerReference, messageHandler, openHandler, closeHandler) -> {
+            openHandler.accept(mockWsSession);
+            sendConnectedEvent(messageHandler);
+            return mockWsSession;
+        };
+
+        WebPubSubClientBuilder builder = new WebPubSubClientBuilder();
+        builder.webSocketClient = mockWsClient;
+        WebPubSubClient client = builder.clientAccessUrl("mock").buildClient();
+        client.start();
+
+        Thread.sleep(100);
+
+        CountDownLatch latch = new CountDownLatch(1);
+        AtomicReference<Throwable> errorRef = new AtomicReference<>();
+
+        Thread invokeThread = new Thread(() -> {
+            try {
+                // Set a short timeout; no response will be delivered, so it should time out
+                InvokeEventOptions options = new InvokeEventOptions()
+                    .setInvocationId("inv-timeout-1")
+                    .setTimeout(Duration.ofMillis(500));
+                client.invokeEvent("echo", BinaryData.fromString("ping"), WebPubSubDataFormat.TEXT, options);
+            } catch (Exception e) {
+                errorRef.set(e);
+            } finally {
+                latch.countDown();
+            }
+        });
+        invokeThread.start();
+
+        // Do NOT deliver any response — let the timeout expire
+        latch.await(5, TimeUnit.SECONDS);
+
+        Assertions.assertNotNull(errorRef.get());
+        Assertions.assertTrue(errorRef.get() instanceof InvocationException);
+        InvocationException ex = (InvocationException) errorRef.get();
+        Assertions.assertEquals("inv-timeout-1", ex.getInvocationId());
+        Assertions.assertTrue(ex.getMessage().contains("timed out"));
+    }
+
+    @Test
+    public void testCancelInvocation() throws InterruptedException {
+        final List<Object> sentMessages = new ArrayList<>();
+
+        WebSocketSession mockWsSession = new MockWebSocketSession() {
+            @Override
+            public void sendObjectAsync(Object data, Consumer<SendResult> handler) {
+                sentMessages.add(data);
+                handler.accept(new SendResult());
+            }
+        };
+
+        WebSocketClient mockWsClient = (cec, path, loggerReference, messageHandler, openHandler, closeHandler) -> {
+            openHandler.accept(mockWsSession);
+            sendConnectedEvent(messageHandler);
+            return mockWsSession;
+        };
+
+        WebPubSubClientBuilder builder = new WebPubSubClientBuilder();
+        builder.webSocketClient = mockWsClient;
+        WebPubSubClient client = builder.clientAccessUrl("mock").buildClient();
+        client.start();
+
+        Thread.sleep(100);
+
+        // Call cancelInvocation and verify a cancelInvocation message was sent
+        client.cancelInvocation("inv-cancel-1");
+
+        // Find the CancelInvocationMessage among sent messages
+        CancelInvocationMessage cancelMsg = sentMessages.stream()
+            .filter(m -> m instanceof CancelInvocationMessage)
+            .map(m -> (CancelInvocationMessage) m)
+            .findFirst()
+            .orElse(null);
+
+        Assertions.assertNotNull(cancelMsg, "Expected a CancelInvocationMessage to be sent");
+        Assertions.assertEquals("inv-cancel-1", cancelMsg.getInvocationId());
     }
 
     private static void sendConnectedEvent(Consumer<WebPubSubMessage> messageHandler) {

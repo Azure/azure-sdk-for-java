@@ -563,6 +563,18 @@ final class WebPubSubAsyncClient implements Closeable {
         }
     }
 
+    /**
+     * Cancels a pending invocation by sending a cancel message to the server.
+     *
+     * @param invocationId the invocation ID to cancel.
+     * @return a {@link Mono} that completes when the cancel message has been sent.
+     * @throws NullPointerException if {@code invocationId} is null.
+     */
+    public Mono<Void> cancelInvocation(String invocationId) {
+        Objects.requireNonNull(invocationId, "'invocationId' cannot be null.");
+        return sendCancelInvocation(invocationId);
+    }
+
     private Mono<Void> sendCancelInvocation(String invocationId) {
         CancelInvocationMessage cancelMessage = new CancelInvocationMessage().setInvocationId(invocationId);
         return sendMessage(cancelMessage).onErrorResume(error -> {
