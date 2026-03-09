@@ -291,6 +291,10 @@ implements IDocumentQueryExecutionContext<T> {
             requestHeaders.put(HttpConstants.HttpHeaders.POPULATE_INDEX_METRICS, String.valueOf(cosmosQueryRequestOptions.isIndexMetricsEnabled()));
         }
 
+        if (cosmosQueryRequestOptions.isQueryAdviceEnabled()) {
+            requestHeaders.put(HttpConstants.HttpHeaders.POPULATE_QUERY_ADVICE, String.valueOf(cosmosQueryRequestOptions.isQueryAdviceEnabled()));
+        }
+
         boolean consistencyLevelOverrideApplicable = true;
 
         if (cosmosQueryRequestOptions.getReadConsistencyStrategy() != null) {
