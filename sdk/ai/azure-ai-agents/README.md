@@ -230,7 +230,7 @@ Write and run Python code in a sandboxed environment, process files and work wit
 CodeInterpreterTool tool = new CodeInterpreterTool();
 ```
 
-See the full sample in [CodeInterpreterSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/CodeInterpreterSample.java).
+See the full sample in [CodeInterpreterSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/CodeInterpreterSync.java).
 
 ---
 
@@ -242,7 +242,7 @@ Search through files in a vector store for knowledge retrieval:
 FileSearchTool tool = new FileSearchTool(Arrays.asList(vectorStoreId));
 ```
 
-See the full sample in [FileSearchSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/FileSearchSample.java).
+See the full sample in [FileSearchSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/FileSearchSync.java).
 
 ---
 
@@ -257,7 +257,7 @@ ImageGenTool tool = new ImageGenTool()
     .setSize(ImageGenToolSize.fromString("1024x1024"));
 ```
 
-See the full sample in [ImageGenerationSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/ImageGenerationSample.java).
+See the full sample in [ImageGenerationSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/ImageGenerationSync.java).
 
 ---
 
@@ -269,7 +269,7 @@ Search the web for current information:
 WebSearchPreviewTool tool = new WebSearchPreviewTool();
 ```
 
-See the full sample in [WebSearchSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/WebSearchSample.java).
+See the full sample in [WebSearchSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/WebSearchSync.java).
 
 ---
 
@@ -297,7 +297,7 @@ McpTool tool = new McpTool("api-specs")
     .setRequireApproval(BinaryData.fromObject("always"));
 ```
 
-See the full sample in [McpToolSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/McpToolSample.java).
+See the full sample in [McpSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/McpSync.java).
 
 ---
 
@@ -314,7 +314,7 @@ OpenApiTool tool = new OpenApiTool(
         .setDescription("Retrieve weather information for a location."));
 ```
 
-<!-- TODO: Add link to OpenApiSample.java once checked into main -->
+See the full sample in [OpenApiSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/OpenApiSync.java).
 
 ---
 
@@ -332,7 +332,7 @@ parameters.put("required", BinaryData.fromString("[\"location\"]"));
 FunctionTool tool = new FunctionTool("get_weather", parameters, true);
 ```
 
-See the full sample in [FunctionCallingSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/FunctionCallingSample.java).
+See the full sample in [FunctionCallSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/FunctionCallSync.java).
 
 ---
 
@@ -355,7 +355,7 @@ AzureAISearchTool tool = new AzureAISearchTool(
             .setQueryType(AzureAISearchQueryType.SIMPLE))));
 ```
 
-See the full sample in [AzureAISearchSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/AzureAISearchSample.java).
+See the full sample in [AzureAISearchSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/AzureAISearchSync.java).
 
 ---
 
@@ -369,7 +369,7 @@ BingGroundingTool tool = new BingGroundingTool(
         new BingGroundingSearchConfiguration(bingConnectionId))));
 ```
 
-See the full sample in [BingGroundingSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/BingGroundingSample.java).
+See the full sample in [BingGroundingSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/BingGroundingSync.java).
 
 ---
 
@@ -384,7 +384,7 @@ MicrosoftFabricPreviewTool tool = new MicrosoftFabricPreviewTool(
             new ToolProjectConnection(fabricConnectionId))));
 ```
 
-See the full sample in [FabricSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/FabricSample.java).
+See the full sample in [FabricSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/FabricSync.java).
 
 ---
 
@@ -399,7 +399,7 @@ SharepointPreviewTool tool = new SharepointPreviewTool(
             new ToolProjectConnection(sharepointConnectionId))));
 ```
 
-See the full sample in [SharePointGroundingSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/SharePointGroundingSample.java).
+See the full sample in [SharePointGroundingSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/SharePointGroundingSync.java).
 
 ---
 
@@ -413,7 +413,7 @@ BrowserAutomationPreviewTool tool = new BrowserAutomationPreviewTool(
         new BrowserAutomationToolConnectionParameters(connectionId)));
 ```
 
-See the full sample in [BrowserAutomationSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/BrowserAutomationSample.java).
+See the full sample in [BrowserAutomationSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/BrowserAutomationSync.java).
 
 ---
 
@@ -426,7 +426,7 @@ A2APreviewTool tool = new A2APreviewTool()
     .setProjectConnectionId(a2aConnectionId);
 ```
 
-See the full sample in [AgentToAgentSample.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/AgentToAgentSample.java).
+See the full sample in [AgentToAgentSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/AgentToAgentSync.java).
 
 ---
 
