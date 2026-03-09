@@ -111,6 +111,14 @@ public final class ReadmeSamples {
         // END: readme-sample-invokeEventWithTimeout
     }
 
+    public void cancelInvocation() {
+        WebPubSubClient client = createMockClient();
+
+        // BEGIN: readme-sample-cancelInvocation
+        client.cancelInvocation("my-invocation-1");
+        // END: readme-sample-cancelInvocation
+    }
+
     public void sendAndRetry() {
         WebPubSubClient client = createMockClient();
 

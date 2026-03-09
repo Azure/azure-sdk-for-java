@@ -484,6 +484,16 @@ public final class WebPubSubClient implements Closeable {
         return asyncClient.invokeEvent(eventName, content, dataFormat, options).block();
     }
 
+    /**
+     * Cancels a pending invocation by sending a cancel message to the server.
+     * @param invocationId the invocation ID to cancel.
+     * @throws NullPointerException if {@code invocationId} is null.
+     * @throws SendMessageFailedException if the cancel message could not be sent (e.g., when disconnected).
+     */
+    public void cancelInvocation(String invocationId) {
+        asyncClient.cancelInvocation(invocationId).block();
+    }
+
     // following API is for testing
     WebPubSubClientState getClientState() {
         return this.asyncClient.getClientState();
