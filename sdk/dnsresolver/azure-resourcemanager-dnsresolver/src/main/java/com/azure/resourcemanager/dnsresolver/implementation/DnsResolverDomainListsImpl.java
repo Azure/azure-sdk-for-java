@@ -32,12 +32,8 @@ public final class DnsResolverDomainListsImpl implements DnsResolverDomainLists 
         String dnsResolverDomainListName, Context context) {
         Response<DnsResolverDomainListInner> inner = this.serviceClient()
             .getByResourceGroupWithResponse(resourceGroupName, dnsResolverDomainListName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new DnsResolverDomainListImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new DnsResolverDomainListImpl(inner.getValue(), this.manager()));
     }
 
     public DnsResolverDomainList getByResourceGroup(String resourceGroupName, String dnsResolverDomainListName) {

@@ -31,12 +31,8 @@ public final class TasksImpl implements Tasks {
         Context context) {
         Response<TaskInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, registryName, taskName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new TaskImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new TaskImpl(inner.getValue(), this.manager()));
     }
 
     public Task get(String resourceGroupName, String registryName, String taskName) {
@@ -71,12 +67,8 @@ public final class TasksImpl implements Tasks {
         Context context) {
         Response<TaskInner> inner
             = this.serviceClient().getDetailsWithResponse(resourceGroupName, registryName, taskName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new TaskImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new TaskImpl(inner.getValue(), this.manager()));
     }
 
     public Task getDetails(String resourceGroupName, String registryName, String taskName) {

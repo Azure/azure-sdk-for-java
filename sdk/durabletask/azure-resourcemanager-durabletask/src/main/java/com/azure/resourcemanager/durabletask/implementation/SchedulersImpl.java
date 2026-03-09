@@ -31,12 +31,8 @@ public final class SchedulersImpl implements Schedulers {
         Context context) {
         Response<SchedulerInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, schedulerName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new SchedulerImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new SchedulerImpl(inner.getValue(), this.manager()));
     }
 
     public Scheduler getByResourceGroup(String resourceGroupName, String schedulerName) {

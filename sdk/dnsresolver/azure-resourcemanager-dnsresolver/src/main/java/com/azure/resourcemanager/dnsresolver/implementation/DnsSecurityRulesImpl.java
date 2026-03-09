@@ -31,12 +31,8 @@ public final class DnsSecurityRulesImpl implements DnsSecurityRules {
         String dnsSecurityRuleName, Context context) {
         Response<DnsSecurityRuleInner> inner = this.serviceClient()
             .getWithResponse(resourceGroupName, dnsResolverPolicyName, dnsSecurityRuleName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new DnsSecurityRuleImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new DnsSecurityRuleImpl(inner.getValue(), this.manager()));
     }
 
     public DnsSecurityRule get(String resourceGroupName, String dnsResolverPolicyName, String dnsSecurityRuleName) {
