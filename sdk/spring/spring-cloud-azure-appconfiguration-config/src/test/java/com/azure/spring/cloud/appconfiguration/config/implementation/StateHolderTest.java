@@ -44,12 +44,15 @@ public class StateHolderTest {
 
         State originalState = stateHolder.getState(TEST_ENDPOINT);
         assertNotNull(originalState);
+        Instant originalRefreshCheck = originalState.getNextRefreshCheck();
         
         stateHolder.expireState(TEST_ENDPOINT);
         State newState = stateHolder.getState(TEST_ENDPOINT);
         
-        // State should be different because expireState adds jitter
-        assertNotEquals(originalState, newState);
+        // expireState should update the refresh check time with jitter (0-15 seconds from now)
+        assertNotEquals(originalRefreshCheck, newState.getNextRefreshCheck());
+        // The new refresh check should be sooner than the original (since jitter is added from now)
+        assertTrue(newState.getNextRefreshCheck().isBefore(originalRefreshCheck));
     }
 
     @Test

@@ -256,10 +256,26 @@ public class AppConfigurationRefreshUtilTest {
         endpoint = testInfo.getDisplayName() + ".azconfig.io";
         setupFeatureFlagLoadBasic();
 
+        // Set up state with WatchedConfigurationSettings and a future refresh time (not expired)
+        WatchedConfigurationSettings watchedConfigurationSettings = new WatchedConfigurationSettings(
+            new SettingSelector().setKeyFilter(KEY_FILTER).setLabelFilter(EMPTY_LABEL),
+            generateWatchKeys());
+        // Use a positive duration so the refresh time is in the future
+        State state = new State(null, List.of(watchedConfigurationSettings),
+            Math.toIntExact(Duration.ofMinutes(10).getSeconds()), endpoint);
+
+        when(currentStateMock.getLoadState(endpoint)).thenReturn(true);
+        when(currentStateMock.getState(endpoint)).thenReturn(state);
+        when(clientFactoryMock.getNextActiveClient(Mockito.eq(endpoint), Mockito.booleanThat(value -> true)))
+            .thenReturn(clientOriginMock);
+
         RefreshEventData eventData = refreshUtil.refreshStoresCheck(clientFactoryMock,
             Duration.ofMinutes(10),
             (long) 60, replicaLookUpMock);
         assertFalse(eventData.getDoRefresh());
+        // Verify that checkWatchKeys is NOT called because refresh time hasn't arrived
+        verify(clientOriginMock, times(0)).checkWatchKeys(Mockito.any(SettingSelector.class),
+            Mockito.any(Context.class));
         verify(clientOriginMock, times(0)).getWatchKey(Mockito.anyString(), Mockito.anyString(),
             Mockito.any(Context.class));
     }
@@ -431,10 +447,16 @@ public class AppConfigurationRefreshUtilTest {
         endpoint = testInfo.getDisplayName() + ".azconfig.io";
         setupFeatureFlagLoadBasic();
 
+        // Feature flag state is not loaded (null)
+        when(currentStateMock.getStateFeatureFlag(endpoint)).thenReturn(null);
+
         RefreshEventData eventData = refreshUtil.refreshStoresCheck(clientFactoryMock,
             Duration.ofMinutes(10),
             (long) 60, replicaLookUpMock);
         assertFalse(eventData.getDoRefresh());
+        // Verify that checkWatchKeys is NOT called because feature flag state is not loaded
+        verify(clientOriginMock, times(0)).checkWatchKeys(Mockito.any(SettingSelector.class),
+            Mockito.any(Context.class));
         verify(clientOriginMock, times(0)).getWatchKey(Mockito.anyString(), Mockito.anyString(),
             Mockito.any(Context.class));
     }
@@ -444,10 +466,25 @@ public class AppConfigurationRefreshUtilTest {
         endpoint = testInfo.getDisplayName() + ".azconfig.io";
         setupFeatureFlagLoadBasic();
 
+        // Set up feature flag state with a future refresh time (not expired)
+        WatchedConfigurationSettings featureFlags = new WatchedConfigurationSettings(
+            new SettingSelector().setKeyFilter(FEATURE_FLAG_PREFIX).setLabelFilter(EMPTY_LABEL),
+            watchKeysFeatureFlags);
+        // Use a positive duration so the refresh time is in the future
+        FeatureFlagState ffState = new FeatureFlagState(List.of(featureFlags),
+            Math.toIntExact(Duration.ofMinutes(10).getSeconds()), endpoint);
+
+        when(currentStateMock.getStateFeatureFlag(endpoint)).thenReturn(ffState);
+        when(clientFactoryMock.getNextActiveClient(Mockito.eq(endpoint), Mockito.booleanThat(value -> true)))
+            .thenReturn(clientOriginMock);
+
         RefreshEventData eventData = refreshUtil.refreshStoresCheck(clientFactoryMock,
             Duration.ofMinutes(10),
             (long) 60, replicaLookUpMock);
         assertFalse(eventData.getDoRefresh());
+        // Verify that checkWatchKeys is NOT called because refresh time hasn't arrived
+        verify(clientOriginMock, times(0)).checkWatchKeys(Mockito.any(SettingSelector.class),
+            Mockito.any(Context.class));
         verify(clientOriginMock, times(0)).getWatchKey(Mockito.anyString(), Mockito.anyString(),
             Mockito.any(Context.class));
     }

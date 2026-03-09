@@ -150,6 +150,9 @@ public class StateHolder {
      */
     public void expireState(String originEndpoint) {
         State oldState = state.get(originEndpoint);
+        if (oldState == null) {
+            return;
+        }
         long wait = (long) (new SecureRandom().nextDouble() * MAX_JITTER);
 
         long timeLeft = (int) ((oldState.getNextRefreshCheck().toEpochMilli() - (Instant.now().toEpochMilli())) / 1000);
