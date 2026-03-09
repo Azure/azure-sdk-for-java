@@ -35,12 +35,8 @@ public final class TuningOptionsOperationsImpl implements TuningOptionsOperation
         TuningOptionParameterEnum tuningOption, Context context) {
         Response<TuningOptionsInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, serverName, tuningOption, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new TuningOptionsImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new TuningOptionsImpl(inner.getValue(), this.manager()));
     }
 
     public TuningOptions get(String resourceGroupName, String serverName, TuningOptionParameterEnum tuningOption) {

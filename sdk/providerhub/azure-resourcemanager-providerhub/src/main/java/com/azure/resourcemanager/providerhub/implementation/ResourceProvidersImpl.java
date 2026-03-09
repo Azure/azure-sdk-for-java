@@ -32,12 +32,8 @@ public final class ResourceProvidersImpl implements ResourceProviders {
     public Response<ResourceProviderManifest> generateManifestWithResponse(String providerNamespace, Context context) {
         Response<ResourceProviderManifestInner> inner
             = this.serviceClient().generateManifestWithResponse(providerNamespace, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ResourceProviderManifestImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ResourceProviderManifestImpl(inner.getValue(), this.manager()));
     }
 
     public ResourceProviderManifest generateManifest(String providerNamespace) {
@@ -53,12 +49,8 @@ public final class ResourceProvidersImpl implements ResourceProviders {
         CheckinManifestParams checkinManifestParams, Context context) {
         Response<CheckinManifestInfoInner> inner
             = this.serviceClient().checkinManifestWithResponse(providerNamespace, checkinManifestParams, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new CheckinManifestInfoImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new CheckinManifestInfoImpl(inner.getValue(), this.manager()));
     }
 
     public CheckinManifestInfo checkinManifest(String providerNamespace, CheckinManifestParams checkinManifestParams) {

@@ -43,12 +43,8 @@ public final class OrganizationsImpl implements Organizations {
         String apiKeyId, Context context) {
         Response<ApiKeyRecordInner> inner
             = this.serviceClient().getClusterApiKeyWithResponse(resourceGroupName, organizationName, apiKeyId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ApiKeyRecordImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ApiKeyRecordImpl(inner.getValue(), this.manager()));
     }
 
     public ApiKeyRecord getClusterApiKey(String resourceGroupName, String organizationName, String apiKeyId) {
@@ -74,12 +70,8 @@ public final class OrganizationsImpl implements Organizations {
         String organizationName, Context context) {
         Response<OrganizationResourceInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, organizationName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new OrganizationResourceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new OrganizationResourceImpl(inner.getValue(), this.manager()));
     }
 
     public OrganizationResource getByResourceGroup(String resourceGroupName, String organizationName) {
@@ -124,12 +116,8 @@ public final class OrganizationsImpl implements Organizations {
         String organizationName, ListAccessRequestModel body, Context context) {
         Response<ListRegionsSuccessResponseInner> inner
             = this.serviceClient().listRegionsWithResponse(resourceGroupName, organizationName, body, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ListRegionsSuccessResponseImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ListRegionsSuccessResponseImpl(inner.getValue(), this.manager()));
     }
 
     public ListRegionsSuccessResponse listRegions(String resourceGroupName, String organizationName,
@@ -147,12 +135,8 @@ public final class OrganizationsImpl implements Organizations {
         String organizationName, String environmentId, Context context) {
         Response<SCEnvironmentRecordInner> inner = this.serviceClient()
             .getEnvironmentByIdWithResponse(resourceGroupName, organizationName, environmentId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new SCEnvironmentRecordImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new SCEnvironmentRecordImpl(inner.getValue(), this.manager()));
     }
 
     public SCEnvironmentRecord getEnvironmentById(String resourceGroupName, String organizationName,
@@ -201,12 +185,8 @@ public final class OrganizationsImpl implements Organizations {
         Response<SchemaRegistryClusterRecordInner> inner = this.serviceClient()
             .getSchemaRegistryClusterByIdWithResponse(resourceGroupName, organizationName, environmentId, clusterId,
                 context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new SchemaRegistryClusterRecordImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new SchemaRegistryClusterRecordImpl(inner.getValue(), this.manager()));
     }
 
     public SchemaRegistryClusterRecord getSchemaRegistryClusterById(String resourceGroupName, String organizationName,
@@ -224,12 +204,8 @@ public final class OrganizationsImpl implements Organizations {
         String environmentId, String clusterId, Context context) {
         Response<SCClusterRecordInner> inner = this.serviceClient()
             .getClusterByIdWithResponse(resourceGroupName, organizationName, environmentId, clusterId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new SCClusterRecordImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new SCClusterRecordImpl(inner.getValue(), this.manager()));
     }
 
     public SCClusterRecord getClusterById(String resourceGroupName, String organizationName, String environmentId,
@@ -261,12 +237,8 @@ public final class OrganizationsImpl implements Organizations {
         String environmentId, String clusterId, CreateApiKeyModel body, Context context) {
         Response<ApiKeyRecordInner> inner = this.serviceClient()
             .createApiKeyWithResponse(resourceGroupName, organizationName, environmentId, clusterId, body, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ApiKeyRecordImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ApiKeyRecordImpl(inner.getValue(), this.manager()));
     }
 
     public ApiKeyRecord createApiKey(String resourceGroupName, String organizationName, String environmentId,

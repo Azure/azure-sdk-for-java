@@ -30,12 +30,8 @@ public final class ExportJobsOperationResultsImpl implements ExportJobsOperation
         String operationId, Context context) {
         Response<OperationResultInfoBaseResourceInner> inner
             = this.serviceClient().getWithResponse(vaultName, resourceGroupName, operationId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new OperationResultInfoBaseResourceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new OperationResultInfoBaseResourceImpl(inner.getValue(), this.manager()));
     }
 
     public OperationResultInfoBaseResource get(String vaultName, String resourceGroupName, String operationId) {

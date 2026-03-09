@@ -32,12 +32,8 @@ public final class GatesImpl implements Gates {
         Context context) {
         Response<GateInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, fleetName, gateName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new GateImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new GateImpl(inner.getValue(), this.manager()));
     }
 
     public Gate get(String resourceGroupName, String fleetName, String gateName) {

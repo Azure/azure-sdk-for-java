@@ -31,12 +31,8 @@ public final class DiscoverySourcesImpl implements DiscoverySources {
         String sourceName, Context context) {
         Response<DiscoverySourceResourceInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, mapName, sourceName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new DiscoverySourceResourceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new DiscoverySourceResourceImpl(inner.getValue(), this.manager()));
     }
 
     public DiscoverySourceResource get(String resourceGroupName, String mapName, String sourceName) {

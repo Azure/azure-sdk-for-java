@@ -39,12 +39,8 @@ public final class NetAppResourcesImpl implements NetAppResources {
         ResourceNameAvailabilityRequest body, Context context) {
         Response<CheckAvailabilityResponseInner> inner
             = this.serviceClient().checkNameAvailabilityWithResponse(location, body, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new CheckAvailabilityResponseImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new CheckAvailabilityResponseImpl(inner.getValue(), this.manager()));
     }
 
     public CheckAvailabilityResponse checkNameAvailability(String location, ResourceNameAvailabilityRequest body) {
@@ -60,12 +56,8 @@ public final class NetAppResourcesImpl implements NetAppResources {
         FilePathAvailabilityRequest body, Context context) {
         Response<CheckAvailabilityResponseInner> inner
             = this.serviceClient().checkFilePathAvailabilityWithResponse(location, body, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new CheckAvailabilityResponseImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new CheckAvailabilityResponseImpl(inner.getValue(), this.manager()));
     }
 
     public CheckAvailabilityResponse checkFilePathAvailability(String location, FilePathAvailabilityRequest body) {
@@ -81,12 +73,8 @@ public final class NetAppResourcesImpl implements NetAppResources {
         QuotaAvailabilityRequest body, Context context) {
         Response<CheckAvailabilityResponseInner> inner
             = this.serviceClient().checkQuotaAvailabilityWithResponse(location, body, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new CheckAvailabilityResponseImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new CheckAvailabilityResponseImpl(inner.getValue(), this.manager()));
     }
 
     public CheckAvailabilityResponse checkQuotaAvailability(String location, QuotaAvailabilityRequest body) {
@@ -100,12 +88,8 @@ public final class NetAppResourcesImpl implements NetAppResources {
 
     public Response<RegionInfo> queryRegionInfoWithResponse(String location, Context context) {
         Response<RegionInfoInner> inner = this.serviceClient().queryRegionInfoWithResponse(location, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new RegionInfoImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new RegionInfoImpl(inner.getValue(), this.manager()));
     }
 
     public RegionInfo queryRegionInfo(String location) {
@@ -121,12 +105,8 @@ public final class NetAppResourcesImpl implements NetAppResources {
         QueryNetworkSiblingSetRequest body, Context context) {
         Response<NetworkSiblingSetInner> inner
             = this.serviceClient().queryNetworkSiblingSetWithResponse(location, body, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new NetworkSiblingSetImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new NetworkSiblingSetImpl(inner.getValue(), this.manager()));
     }
 
     public NetworkSiblingSet queryNetworkSiblingSet(String location, QueryNetworkSiblingSetRequest body) {

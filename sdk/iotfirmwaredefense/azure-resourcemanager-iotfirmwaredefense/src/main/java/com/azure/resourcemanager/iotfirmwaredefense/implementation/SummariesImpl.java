@@ -32,12 +32,8 @@ public final class SummariesImpl implements Summaries {
         SummaryType summaryType, Context context) {
         Response<SummaryResourceInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, workspaceName, firmwareId, summaryType, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new SummaryResourceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new SummaryResourceImpl(inner.getValue(), this.manager()));
     }
 
     public SummaryResource get(String resourceGroupName, String workspaceName, String firmwareId,
