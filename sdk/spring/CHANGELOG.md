@@ -72,6 +72,41 @@ This section includes changes in `spring-messaging-azure-servicebus` module.
 
 - Fixed `DefaultServiceBusNamespaceProcessorFactory` not removing closed/disposed `ServiceBusProcessorClient` instances from its internal cache, causing subsequent `createProcessor()` calls to return stale, non-functional processors. [#48030](https://github.com/Azure/azure-sdk-for-java/issues/48030)
 
+## 5.25.0 (2026-03-05)
+- This release is compatible with Spring Boot 3.5.0-3.5.8, 3.4.0-3.4.12, 3.3.0-3.3.13, 3.2.0-3.2.12, 3.1.0-3.1.12. (Note: 3.5.x (x>8) should be supported, but they aren't tested with this release.)
+- This release is compatible with Spring Cloud 2025.0.0, 2024.0.0-2024.0.2, 2023.0.0-2023.0.5, 2022.0.0-2022.0.5. (Note: 2025.0.x(x>0) should be supported, but they aren't tested with this release.)
+
+### Spring Cloud Azure Autoconfigure
+
+This section includes changes in `spring-cloud-azure-autoconfigure` module.
+
+#### New Features
+
+- Add ConnectionDetails for ServiceBus. [#44019](https://github.com/Azure/azure-sdk-for-java/pull/44019).
+- Add ConnectionDetails for EventHubs. [#47926](https://github.com/Azure/azure-sdk-for-java/pull/47926).
+
+### Spring Cloud Azure Docker Compose
+
+This section includes changes in `spring-cloud-azure-docker-compose` module.
+
+#### New Features
+
+- Add ServiceBusDockerComposeConnectionDetailsFactory. [#44019](https://github.com/Azure/azure-sdk-for-java/pull/44019).
+- Add EventHubsDockerComposeConnectionDetailsFactory. [#47926](https://github.com/Azure/azure-sdk-for-java/pull/47926).
+
+### Spring Cloud Azure Test Containers
+
+This section includes changes in `spring-cloud-azure-testcontainers` module.
+
+#### New Features
+
+- Add ServiceBusContainerConnectionDetailsFactory. [#44019](https://github.com/Azure/azure-sdk-for-java/pull/44019).
+- Add EventHubsContainerConnectionDetailsFactory. [#47926](https://github.com/Azure/azure-sdk-for-java/pull/47926).
+
+### Azure Spring Data Cosmos
+This section includes changes in `azure-spring-data-cosmos` module.
+Please refer to [azure-spring-data-cosmos/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-data-cosmos/CHANGELOG.md#5250-03-05) for more details.
+
 ## 7.0.0 (2026-02-03)
 - This release is compatible with Spring Boot 4.0.0-4.0.2. (Note: 4.0.x (x>2) should be supported, but they aren't tested with this release.)
 - This release is compatible with Spring Cloud 2025.1.0. (Note: 2025.1.x (x>0) should be supported, but they aren't tested with this release.)
