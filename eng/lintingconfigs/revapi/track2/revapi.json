@@ -879,6 +879,73 @@
           "code": "java.method.visibilityReduced",
           "old" : {
             "matcher": "regex",
+            "match": "method void com\\.azure\\.resourcemanager\\.cdn\\.models\\..*\\:\\:\\<init\\>\\(\\)"
+          },
+          "justification": "Output-only immutable models' constructors are now private."
+        },
+        {
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.cdn\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are now package-private if it's being used by child class."
+        },
+        {
+          "code": "java.method.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.cdn\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are removed if no explicit usage."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.cdn\\.models\\..*ListResult"
+          },
+          "justification": "Pageable models moved to implementation package. Unlikely used by user."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.cdn\\.models\\..*(List|Result)$"
+          },
+          "justification": "Pageable models moved to implementation package. Unlikely used by user."
+        },
+        {
+          "regex": true,
+          "code": "java\\.missing\\.(oldSuperType|newSuperType)",
+          "old" : "class com\\.azure\\.resourcemanager\\.cdn\\.models\\..*",
+          "justification": "TypeSpec fix for base resource class."
+        },
+        {
+          "code": "java.method.returnTypeChanged",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.cdn\\.models\\..*\\:\\:typeName\\(\\)"
+          },
+          "justification": "TypeSpec uses proper enum types for discriminator fields instead of raw strings."
+        },
+        {
+          "code": "java.method.parameterTypeChanged",
+          "old" : {
+            "matcher": "regex",
+            "match": "parameter .* com\\.azure\\.resourcemanager\\.cdn\\.models\\..*\\:\\:withTypeName\\(.*\\)"
+          },
+          "justification": "TypeSpec uses proper enum types for discriminator fields instead of raw strings."
+        },
+        {
+          "code": "java.method.removed",
+          "old" : "method com.azure.resourcemanager.cdn.models.PolicySettingsDefaultCustomBlockResponseStatusCode com.azure.resourcemanager.cdn.models.PolicySettingsDefaultCustomBlockResponseStatusCode::fromInt(int)",
+          "justification": "ExpandableStringEnum changed to ExpandableEnum<Integer>. Use fromValue(Integer) instead."
+        },
+                {
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
             "match": "method void com\\.azure\\.resourcemanager\\.appservice\\.models\\..*\\:\\:\\<init\\>\\(\\)"
           },
           "justification": "Output-only immutable models' constructors are now private."
