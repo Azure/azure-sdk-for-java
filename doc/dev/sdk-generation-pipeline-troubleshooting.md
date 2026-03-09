@@ -4,11 +4,11 @@ This guide helps you **identify which category** a pipeline failure belongs to a
 
 > Applies to: **Java SDK generation pipeline** (spec PR validation / spec PR generation)
 
-1. [Quick Triage](#quick-triage)
-2. [tspconfig.yaml Errors](#1-tspconfig-errors) — misconfigurations in the spec repo's `tspconfig.yaml`
-3. [Customization Errors](#2-customization-errors) — hand-written SDK code conflicts with regenerated code
-4. [Intermittent Errors](#3-intermittent-errors) — transient failures, usually resolved by rerun
-5. [Escalation](#escalation)
+- [Quick Triage](#quick-triage)
+- [tspconfig.yaml Errors](#1-tspconfig-errors) — misconfigurations in the spec repo's `tspconfig.yaml`
+- [Customization Errors](#2-customization-errors) — hand-written SDK code conflicts with regenerated code
+- [Intermittent Errors](#3-intermittent-errors) — transient failures, usually resolved by rerun
+- [Escalation](#escalation)
 
 > Related: [SDK Validation FAQ](https://aka.ms/azsdk/sdk-automation-faq) | [SDK Generation Pipelines](https://eng.ms/docs/products/azure-developer-experience/develop/sdk-generation-pipelines) | [SDK Release Pipeline](https://eng.ms/docs/products/azure-developer-experience/develop/sdk-release/sdk-release-pipeline) | [Language - Java Teams channel][teams-java]
 
@@ -20,11 +20,12 @@ Find the most specific signal in the failure log and jump directly:
 
 | Log Signal | Category | Jump |
 |---|---|---|
-| `[VALIDATE][tspconfig.yaml]` | tspconfig | [1. tspconfig Errors](#1-tspconfig-errors) |
-| `namespace is REQUIRED` | tspconfig | [1.1 Missing `namespace`](#11-missing-namespace) |
-| `PackageName` + `must match pattern` | tspconfig | [1.4 Namespace Segment Too Long](#14-namespace-segment-too-long) |
-| `Google Java Formatter encountered errors` + `<identifier> expected` | tspconfig | [1.3 Invalid Namespace Characters](#13-invalid-namespace-characters) |
-| `not supported by Fluent Premium` | tspconfig | [1.5 Unsupported Emitter Option (Fluent Premium)](#15-unsupported-emitter-option-fluent-premium) |
+| `[VALIDATE][tspconfig.yaml] ... namespace is REQUIRED` | tspconfig | [1.1 Missing `namespace`](#11-missing-namespace) |
+| `Could not find the selected project in the reactor` | tspconfig | [1.1 Missing `namespace`](#11-missing-namespace) |
+| `Google Java Formatter encountered errors` | tspconfig | [1.2 Invalid Namespace Characters](#12-invalid-namespace-characters) |
+| `error: <identifier> expected` | tspconfig | [1.2 Invalid Namespace Characters](#12-invalid-namespace-characters) |
+| `[COMPILE] Maven build fail.` + Checkstyle `PackageName` `must match pattern` | tspconfig | [1.3 Namespace Segment Too Long](#13-namespace-segment-too-long) |
+| `not supported by Fluent Premium` | tspconfig | [1.4 Unsupported Emitter Option (Fluent Premium)](#14-unsupported-emitter-option-fluent-premium) |
 | `[COMPILE] Maven build fail.` + customization class/method referenced | customization | [2. Customization Errors](#2-customization-errors) |
 | `Could not resolve dependencies` / `Could not transfer artifact` | intermittent | [3.1 Maven Dependency Download Failure](#31-maven-dependency-download-failure) |
 | None match | unknown | [Escalation](#escalation) |
@@ -42,16 +43,21 @@ Find the most specific signal in the failure log and jump directly:
 
 ### 1.1 Missing `namespace`
 
-**Error:**
+**Log signal:**
+- `[VALIDATE][tspconfig.yaml] ... namespace is REQUIRED`
+- `Could not find the selected project in the reactor`
+
+**Error (real-world example):**
 ```
 [VALIDATE][tspconfig.yaml] options.@azure-tools/typespec-java.namespace is REQUIRED for Java SDK
 ```
-
-**Error (real-world example):**
+or, if validation does not block it, Maven fails later:
 ```
 [ERROR] Could not find the selected project in the reactor: com.azure.resourcemanager:azure-resourcemanager-<package>
 [ERROR] [COMPILE] Maven build fail.
 ```
+
+**Root cause:** `namespace` is not set in `tspconfig.yaml`. Without it, the generator cannot determine the correct Maven project, causing either a validation error or a downstream Maven build failure.
 
 **Solution:** Add `namespace` to `tspconfig.yaml` in the spec repo:
 ```yaml
@@ -62,14 +68,9 @@ options:
     namespace: "com.azure.yourservice"                  # data-plane
 ```
 
-**Notes:** If validate does not block it, TypeSpec generation may still succeed, but Maven may later fail with:
-```
-Could not find the selected project in the reactor
-```
+### 1.2 Invalid Namespace Characters
 
-### 1.3 Invalid Namespace Characters
-
-**Error (common pattern):**
+**Log signal:**
 - `Google Java Formatter encountered errors`
 - `error: <identifier> expected`
 
@@ -90,9 +91,9 @@ options:
     namespace: "com.azure.resourcemanager.foo"  # ✅
 ```
 
-### 1.4 Namespace Segment Too Long
+### 1.3 Namespace Segment Too Long
 
-**Error (common pattern):**
+**Log signal:**
 - `[COMPILE] Maven build fail.`
 - Checkstyle `PackageName` error with `must match pattern`
 
@@ -107,9 +108,9 @@ options:
 
 **Solution:** Shorten the long segment so each segment is within 32 characters and keep the whole package name within typical limits.
 
-### 1.5 Unsupported Emitter Option (Fluent Premium)
+### 1.4 Unsupported Emitter Option (Fluent Premium)
 
-**Error (common pattern):**
+**Log signal:**
 - `not supported by Fluent Premium`
 
 **Error (real-world example):**
