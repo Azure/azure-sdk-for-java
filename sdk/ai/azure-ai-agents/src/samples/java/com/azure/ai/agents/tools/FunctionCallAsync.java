@@ -53,6 +53,7 @@ public class FunctionCallAsync {
 
         // Create a FunctionTool with parameters schema
         // Use BinaryData.fromObject() to produce correct JSON types (not double-encoded strings)
+        // BEGIN: com.azure.ai.agents.define_function_call
         Map<String, Object> locationProp = new LinkedHashMap<String, Object>();
         locationProp.put("type", "string");
         locationProp.put("description", "The city and state, e.g. Seattle, WA");
@@ -78,6 +79,7 @@ public class FunctionCallAsync {
             .setInstructions("You are a helpful assistant that can get weather information. "
                 + "When asked about the weather, use the get_weather function to retrieve weather data.")
             .setTools(Collections.singletonList(tool));
+        // END: com.azure.ai.agents.define_function_call
 
         agentsAsyncClient.createAgentVersion("function-call-agent", agentDefinition)
             .flatMap(agent -> {

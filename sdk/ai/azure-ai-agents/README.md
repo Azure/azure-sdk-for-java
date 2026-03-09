@@ -322,7 +322,7 @@ OpenApiTool tool = new OpenApiTool(
 
 Define custom functions that allow agents to interact with external APIs, databases, or application logic:
 
-```java
+```java  com.azure.ai.agents.define_function_call
 Map<String, BinaryData> parameters = new HashMap<>();
 parameters.put("type", BinaryData.fromString("\"object\""));
 parameters.put("properties", BinaryData.fromString(
