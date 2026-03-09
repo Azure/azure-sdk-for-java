@@ -5,8 +5,8 @@ package com.azure.cosmos.benchmark;
 
 /**
  * The destination for detailed benchmark metrics reporting.
- * Console summary is always enabled regardless of this setting.
- * If no destination is configured, only console summary is active.
+ * Console logging via {@code LoggingMeterRegistry} is always active alongside
+ * any configured destination.
  */
 public enum ReportingDestination {
     /**

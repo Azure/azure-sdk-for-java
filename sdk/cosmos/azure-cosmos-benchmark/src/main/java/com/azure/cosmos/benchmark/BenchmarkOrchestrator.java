@@ -62,29 +62,27 @@ public class BenchmarkOrchestrator {
 
         CompositeMeterRegistry compositeRegistry = new CompositeMeterRegistry();
 
-        // Reporter destination — mutually exclusive. Default: console via LoggingMeterRegistry.
+        // Console logging is always active — provides real-time visibility regardless of destination.
         CsvMetricsReporter csvReporter = null;
-        LoggingMeterRegistry loggingRegistry = null;
         CosmosMetricsReporter cosmosReporter = null;
         MeterRegistry appInsightsRegistry = null;
 
-        ReportingDestination destination = config.getReportingDestination();
-        if (destination == null) {
-            // Default: Micrometer's native LoggingMeterRegistry (logs all meters via SLF4J)
-            loggingRegistry = LoggingMeterRegistry.builder(
-                new LoggingRegistryConfig() {
-                    @Override
-                    public String get(String key) { return null; }
+        LoggingMeterRegistry loggingRegistry = LoggingMeterRegistry.builder(
+            new LoggingRegistryConfig() {
+                @Override
+                public String get(String key) { return null; }
 
-                    @Override
-                    public java.time.Duration step() {
-                        return java.time.Duration.ofSeconds(config.getPrintingInterval());
-                    }
-                }).build();
-            compositeRegistry.add(loggingRegistry);
-            logger.info("Console reporter started (LoggingMeterRegistry, interval={}s)",
-                config.getPrintingInterval());
-        } else {
+                @Override
+                public java.time.Duration step() {
+                    return java.time.Duration.ofSeconds(config.getPrintingInterval());
+                }
+            }).build();
+        compositeRegistry.add(loggingRegistry);
+        logger.info("Console reporter started (LoggingMeterRegistry, interval={}s)",
+            config.getPrintingInterval());
+
+        ReportingDestination destination = config.getReportingDestination();
+        if (destination != null) {
             switch (destination) {
                 case CSV:
                     SimpleMeterRegistry csvSimpleRegistry = new SimpleMeterRegistry();
