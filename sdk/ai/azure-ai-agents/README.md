@@ -500,10 +500,13 @@ See the full sample in [SharePointGroundingSync.java](https://github.com/Azure/a
 
 Interact with web pages through browser automation:
 
-```java
-BrowserAutomationPreviewTool tool = new BrowserAutomationPreviewTool(
+```java com.azure.ai.agents.define_browser_automation
+// Create browser automation tool with connection configuration
+BrowserAutomationPreviewTool browserTool = new BrowserAutomationPreviewTool(
     new BrowserAutomationToolParameters(
-        new BrowserAutomationToolConnectionParameters(connectionId)));
+        new BrowserAutomationToolConnectionParameters(connectionId)
+    )
+);
 ```
 
 See the full sample in [BrowserAutomationSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/BrowserAutomationSync.java).
@@ -514,8 +517,9 @@ See the full sample in [BrowserAutomationSync.java](https://github.com/Azure/azu
 
 Enable agent-to-agent communication with remote A2A endpoints:
 
-```java
-A2APreviewTool tool = new A2APreviewTool()
+```java com.azure.ai.agents.define_agent_to_agent
+// Create agent-to-agent tool with connection ID
+A2APreviewTool a2aTool = new A2APreviewTool()
     .setProjectConnectionId(a2aConnectionId);
 ```
 
