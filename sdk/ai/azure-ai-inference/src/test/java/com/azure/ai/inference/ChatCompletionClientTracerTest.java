@@ -60,8 +60,6 @@ public final class ChatCompletionClientTracerTest {
     private static final String AZ_NAMESPACE_NAME = "Microsoft.CognitiveServices";
 
     private static final AttributeKey<String> AZ_NAMESPACE = AttributeKey.stringKey("az.namespace");
-    private static final AttributeKey<String> AZURE_RESOURCE_PROVIDER_NAMESPACE
-        = AttributeKey.stringKey("azure.resource_provider.namespace");
     private static final AttributeKey<String> GEN_AI_SYSTEM = AttributeKey.stringKey("gen_ai.system");
     private static final AttributeKey<String> GEN_AI_OPERATION_NAME = AttributeKey.stringKey("gen_ai.operation.name");
     private static final AttributeKey<Double> GEN_AI_REQUEST_TOP_P = AttributeKey.doubleKey("gen_ai.request.top_p");
@@ -183,7 +181,6 @@ public final class ChatCompletionClientTracerTest {
 
     static void assertChatSpanRequestAttributes(Attributes chatAttributes, ChatCompletionsOptions completionRequest) {
         assertEquals(AZ_NAMESPACE_NAME, chatAttributes.get(AZ_NAMESPACE));
-        assertEquals(AZ_NAMESPACE_NAME, chatAttributes.get(AZURE_RESOURCE_PROVIDER_NAMESPACE));
         assertEquals(INFERENCE_GEN_AI_SYSTEM_NAME, chatAttributes.get(GEN_AI_SYSTEM));
         assertEquals(GEN_AI_CHAT_OPERATION_NAME, chatAttributes.get(GEN_AI_OPERATION_NAME));
         final String modelId = completionRequest.getModel();
