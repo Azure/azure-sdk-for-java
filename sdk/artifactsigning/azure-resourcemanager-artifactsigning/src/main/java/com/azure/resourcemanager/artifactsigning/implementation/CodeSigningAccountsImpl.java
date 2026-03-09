@@ -34,12 +34,8 @@ public final class CodeSigningAccountsImpl implements CodeSigningAccounts {
         Context context) {
         Response<CodeSigningAccountInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, accountName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new CodeSigningAccountImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new CodeSigningAccountImpl(inner.getValue(), this.manager()));
     }
 
     public CodeSigningAccount getByResourceGroup(String resourceGroupName, String accountName) {
@@ -84,12 +80,8 @@ public final class CodeSigningAccountsImpl implements CodeSigningAccounts {
         Context context) {
         Response<CheckNameAvailabilityResultInner> inner
             = this.serviceClient().checkNameAvailabilityWithResponse(body, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new CheckNameAvailabilityResultImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new CheckNameAvailabilityResultImpl(inner.getValue(), this.manager()));
     }
 
     public CheckNameAvailabilityResult checkNameAvailability(CheckNameAvailability body) {

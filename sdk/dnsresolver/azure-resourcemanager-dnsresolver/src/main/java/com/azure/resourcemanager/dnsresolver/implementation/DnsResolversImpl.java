@@ -32,12 +32,8 @@ public final class DnsResolversImpl implements DnsResolvers {
         Context context) {
         Response<DnsResolverInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, dnsResolverName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new DnsResolverImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new DnsResolverImpl(inner.getValue(), this.manager()));
     }
 
     public DnsResolver getByResourceGroup(String resourceGroupName, String dnsResolverName) {
