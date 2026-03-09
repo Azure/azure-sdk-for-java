@@ -38,17 +38,12 @@ import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.security.keyvault.keys.cryptography.KeyEncryptionKeyClientBuilder;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
-import com.codahale.metrics.Meter;
-import com.codahale.metrics.MetricRegistry;
-import com.codahale.metrics.Timer;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.mpierce.metrics.reservoir.hdrhistogram.HdrHistogramResetOnSnapshotReservoir;
-import org.reactivestreams.Subscription;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
 import reactor.util.retry.Retry;
 
 import java.io.IOException;
@@ -58,17 +53,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.UUID;
-import java.util.concurrent.CancellationException;
-import java.util.concurrent.Semaphore;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
 public abstract class AsyncEncryptionBenchmark<T> implements Benchmark {
-    private final MetricRegistry metricsRegistry;
 
-    private volatile Meter successMeter;
-    private volatile Meter failureMeter;
+    // Dedicated scheduler for encryption benchmark workload dispatch.
+    // Owned and disposed by the orchestrator (or test harness) that creates the benchmark.
+    final Scheduler benchmarkScheduler;
+
     private boolean databaseCreated;
     private boolean collectionCreated;
 
@@ -82,12 +74,7 @@ public abstract class AsyncEncryptionBenchmark<T> implements Benchmark {
     final String partitionKey;
     final TenantWorkloadConfig workloadConfig;
     final List<PojoizedJson> docsToRead;
-    final Semaphore concurrencyControlSemaphore;
-    Timer latency;
 
-    private static final String SUCCESS_COUNTER_METER_NAME = "#Successful Operations";
-    private static final String FAILURE_COUNTER_METER_NAME = "#Unsuccessful Operations";
-    private static final String LATENCY_METER_NAME = "latency";
     private static final String dataEncryptionKeyId = "theDataEncryptionKey";
     static final String ENCRYPTED_STRING_FIELD = "encryptedStringField";
     static final String ENCRYPTED_LONG_FIELD = "encryptedLongField";
@@ -97,12 +84,10 @@ public abstract class AsyncEncryptionBenchmark<T> implements Benchmark {
     CosmosEncryptionAsyncDatabase cosmosEncryptionAsyncDatabase;
     CosmosEncryptionAsyncContainer cosmosEncryptionAsyncContainer;
 
-
-    private AtomicBoolean warmupMode = new AtomicBoolean(false);
-
-    AsyncEncryptionBenchmark(TenantWorkloadConfig workloadCfg, MetricRegistry sharedRegistry) throws IOException {
+    AsyncEncryptionBenchmark(TenantWorkloadConfig workloadCfg, Scheduler scheduler) throws IOException {
 
         workloadConfig = workloadCfg;
+        this.benchmarkScheduler = scheduler;
 
         final TokenCredential credential = workloadCfg.isManagedIdentityRequired()
             ? workloadCfg.buildTokenCredential()
@@ -127,12 +112,10 @@ public abstract class AsyncEncryptionBenchmark<T> implements Benchmark {
         }
         cosmosClient = cosmosClientBuilder.buildAsyncClient();
         cosmosEncryptionAsyncClient = createEncryptionClientInstance(cosmosClient);
-        metricsRegistry = sharedRegistry;
         logger = LoggerFactory.getLogger(this.getClass());
         createEncryptionDatabaseAndContainer();
         partitionKey = cosmosAsyncContainer.read().block().getProperties().getPartitionKeyDefinition()
             .getPaths().iterator().next().split("/")[1];
-        concurrencyControlSemaphore = new Semaphore(workloadCfg.getConcurrency());
         ArrayList<Flux<PojoizedJson>> createDocumentObservables = new ArrayList<>();
 
         if (workloadConfig.getOperationType() != Operation.WriteLatency
@@ -221,146 +204,80 @@ public abstract class AsyncEncryptionBenchmark<T> implements Benchmark {
     protected void onSuccess() {
     }
 
-    protected void initializeMetersIfSkippedEnoughOperations(AtomicLong count) {
-        if (workloadConfig.getSkipWarmUpOperations() > 0) {
-            if (count.get() >= workloadConfig.getSkipWarmUpOperations()) {
-                if (warmupMode.get()) {
-                    synchronized (this) {
-                        if (warmupMode.get()) {
-                            logger.info("Warmup phase finished. Starting capturing perf numbers ....");
-                            resetMeters();
-                            initializeMeter();
-                            warmupMode.set(false);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     protected void onError(Throwable throwable) {
     }
 
-    protected abstract void performWorkload(BaseSubscriber<T> baseSubscriber, long i) throws Exception;
+    protected abstract Mono<T> performWorkload(long i);
 
-    private void resetMeters() {
-        metricsRegistry.remove(SUCCESS_COUNTER_METER_NAME);
-        metricsRegistry.remove(FAILURE_COUNTER_METER_NAME);
-        if (latencyAwareOperations(workloadConfig.getOperationType())) {
-            metricsRegistry.remove(LATENCY_METER_NAME);
-        }
-    }
-
-    private void initializeMeter() {
-        successMeter = metricsRegistry.meter(SUCCESS_COUNTER_METER_NAME);
-        failureMeter = metricsRegistry.meter(FAILURE_COUNTER_METER_NAME);
-        if (latencyAwareOperations(workloadConfig.getOperationType())) {
-            latency = metricsRegistry.register(LATENCY_METER_NAME,
-                new Timer(new HdrHistogramResetOnSnapshotReservoir()));
-        }
-    }
-
-    private boolean latencyAwareOperations(Operation operation) {
-        switch (workloadConfig.getOperationType()) {
-            case ReadLatency:
-            case WriteLatency:
-            case QueryInClauseParallel:
-            case QueryCross:
-            case QuerySingle:
-            case QuerySingleMany:
-            case QueryParallel:
-            case QueryOrderby:
-            case QueryTopOrderby:
-            case Mixed:
-                return true;
-            default:
-                return false;
-        }
-    }
-
+    @SuppressWarnings("unchecked")
     public void run() throws Exception {
-        initializeMeter();
-        if (workloadConfig.getSkipWarmUpOperations() > 0) {
-            logger.info("Starting warm up phase. Executing {} operations to warm up ...",
-                workloadConfig.getSkipWarmUpOperations());
-            warmupMode.set(true);
-        }
 
         long startTime = System.currentTimeMillis();
+        int concurrency = workloadConfig.getConcurrency();
 
-        AtomicLong count = new AtomicLong(0);
-        long i;
-
-        for (i = 0; BenchmarkHelper.shouldContinue(startTime, i, workloadConfig); i++) {
-
-            BaseSubscriber<T> baseSubscriber = new BaseSubscriber<T>() {
-                @Override
-                protected void hookOnSubscribe(Subscription subscription) {
-                    super.hookOnSubscribe(subscription);
-                }
-
-                @Override
-                protected void hookOnNext(T value) {
-                    logger.debug("hookOnNext: {}, count:{}", value, count.get());
-                }
-
-                @Override
-                protected void hookOnCancel() {
-                    this.hookOnError(new CancellationException());
-                }
-
-                @Override
-                protected void hookOnComplete() {
-                    initializeMetersIfSkippedEnoughOperations(count);
-                    successMeter.mark();
-                    concurrencyControlSemaphore.release();
-                    AsyncEncryptionBenchmark.this.onSuccess();
-
-                    synchronized (count) {
-                        count.incrementAndGet();
-                        count.notify();
+        Flux<Long> source;
+        Duration maxDuration = workloadConfig.getMaxRunningTimeDuration();
+        if (maxDuration != null) {
+            final long deadline = startTime + maxDuration.toMillis();
+            source = Flux.generate(
+                AtomicLong::new,
+                (state, sink) -> {
+                    if (System.currentTimeMillis() < deadline) {
+                        sink.next(state.getAndIncrement());
+                    } else {
+                        sink.complete();
                     }
-                }
-
-                @Override
-                protected void hookOnError(Throwable throwable) {
-                    initializeMetersIfSkippedEnoughOperations(count);
-                    failureMeter.mark();
-
-                    logger.error("Encountered failure {} on thread {}",
-                        throwable.getMessage(), Thread.currentThread().getName(), throwable);
-                    concurrencyControlSemaphore.release();
-                    AsyncEncryptionBenchmark.this.onError(throwable);
-
-                    synchronized (count) {
-                        count.incrementAndGet();
-                        count.notify();
+                    return state;
+                });
+        } else {
+            // Count-based termination using Flux.generate to avoid long-to-int truncation
+            long numberOfOps = workloadConfig.getNumberOfOperations();
+            source = Flux.generate(
+                AtomicLong::new,
+                (state, sink) -> {
+                    long current = state.getAndIncrement();
+                    if (current < numberOfOps) {
+                        sink.next(current);
+                    } else {
+                        sink.complete();
                     }
-                }
-            };
-
-            performWorkload(baseSubscriber, i);
+                    return state;
+                });
         }
 
-        synchronized (count) {
-            while (count.get() < i) {
-                count.wait();
-            }
-        }
+        AtomicLong completedCount = new AtomicLong(0);
+
+        source
+            .flatMap(i -> {
+                Mono<T> workload = performWorkload(i);
+                Mono<T> delayed = sparsityMono(i);
+                if (delayed != null) {
+                    workload = delayed.then(workload);
+                }
+                return workload
+                    .subscribeOn(benchmarkScheduler)
+                    .doOnSuccess(v -> {
+                        completedCount.incrementAndGet();
+                        AsyncEncryptionBenchmark.this.onSuccess();
+                    })
+                    .doOnError(e -> {
+                        completedCount.incrementAndGet();
+                        logger.error("Encountered failure {} on thread {}",
+                            e.getMessage(), Thread.currentThread().getName(), e);
+                        AsyncEncryptionBenchmark.this.onError(e);
+                    })
+                    .onErrorResume(e -> Mono.empty());
+            }, concurrency)
+            .blockLast();
 
         long endTime = System.currentTimeMillis();
         logger.info("[{}] operations performed in [{}] seconds.",
-            workloadConfig.getNumberOfOperations(), (int) ((endTime - startTime) / 1000));
+            completedCount.get(), (int) ((endTime - startTime) / 1000));
     }
 
     protected Mono sparsityMono(long i) {
         Duration duration = workloadConfig.getSparsityWaitTime();
         if (duration != null && !duration.isZero()) {
-            if (workloadConfig.getSkipWarmUpOperations() > i) {
-                // don't wait on the initial warm up time.
-                return null;
-            }
-
             return Mono.delay(duration);
         } else return null;
     }
