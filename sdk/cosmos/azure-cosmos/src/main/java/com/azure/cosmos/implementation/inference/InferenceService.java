@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation.inference;
 
 import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.SimpleTokenCache;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.cosmos.BridgeInternal;
