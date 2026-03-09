@@ -25,6 +25,7 @@
     <module>sdk/appplatform</module>
     <module>sdk/appservice</module>
     <module>sdk/arizeaiobservabilityeval</module>
+    <module>sdk/artifactsigning</module>
     <module>sdk/astro</module>
     <module>sdk/attestation</module>
     <module>sdk/authorization</module>
@@ -67,6 +68,7 @@
     <module>sdk/containerservicefleet</module>
     <module>sdk/containerservicesafeguards</module>
     <module>sdk/contentsafety</module>
+    <module>sdk/contentunderstanding</module>
     <module>sdk/core</module>
     <module>sdk/core-v2</module>
     <module>sdk/cosmos</module>
@@ -157,6 +159,7 @@
     <module>sdk/maintenance</module>
     <module>sdk/managedapplications</module>
     <module>sdk/managednetworkfabric</module>
+    <module>sdk/managedops</module>
     <module>sdk/managementgroups</module>
     <module>sdk/maps</module>
     <module>sdk/mariadb</module>
@@ -272,6 +275,7 @@
     <module>sdk/virtualenclaves</module>
     <module>sdk/vision</module>
     <module>sdk/vmwarecloudsimple</module>
+    <module>sdk/voicelive</module>
     <module>sdk/voiceservices</module>
     <module>sdk/webpubsub</module>
     <module>sdk/weightsandbiases</module>

@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.benchmark.linkedin.data;
 
-import com.azure.cosmos.benchmark.Configuration;
+import com.azure.cosmos.benchmark.TenantWorkloadConfig;
 import com.azure.cosmos.benchmark.linkedin.data.entity.InvitationDataGenerator;
 import com.azure.cosmos.benchmark.linkedin.data.entity.InvitationsCollectionAttributes;
 import com.azure.cosmos.benchmark.linkedin.data.entity.InvitationsKeyGenerator;
@@ -20,7 +20,7 @@ public class InvitationsEntityConfiguration implements EntityConfiguration {
     private final DataGenerator _dataGenerator;
     private final CollectionAttributes _collectionAttributes;
 
-    public InvitationsEntityConfiguration(final Configuration configuration) {
+    public InvitationsEntityConfiguration(final TenantWorkloadConfig configuration) {
         Preconditions.checkNotNull(configuration, "The test configuration can not be null");
         _keyGenerator = () -> new InvitationsKeyGenerator(configuration.getNumberOfPreCreatedDocuments());
         _dataGenerator = new InvitationDataGenerator(_keyGenerator.get());

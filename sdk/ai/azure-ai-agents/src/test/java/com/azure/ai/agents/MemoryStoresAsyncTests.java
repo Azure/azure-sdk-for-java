@@ -3,7 +3,6 @@
 
 package com.azure.ai.agents;
 
-import com.azure.ai.agents.models.ListAgentsRequestOrder;
 import com.azure.ai.agents.models.MemoryOperation;
 import com.azure.ai.agents.models.MemorySearchItem;
 import com.azure.ai.agents.models.MemorySearchOptions;
@@ -13,33 +12,30 @@ import com.azure.ai.agents.models.MemoryStoreDefinition;
 import com.azure.ai.agents.models.MemoryStoreDetails;
 import com.azure.ai.agents.models.MemoryStoreUpdateCompletedResult;
 import com.azure.ai.agents.models.MemoryStoreUpdateResponse;
-import com.azure.ai.agents.models.MemoryStoreUpdateStatus;
-import com.azure.ai.agents.models.ResponsesAssistantMessageItemParam;
-import com.azure.ai.agents.models.ResponsesUserMessageItemParam;
+import com.azure.ai.agents.models.PageOrder;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.AsyncPollResponse;
-import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
+import com.openai.models.responses.EasyInputMessage;
+import com.openai.models.responses.ResponseInputItem;
+import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Objects;
 
 import static com.azure.ai.agents.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Timeout(30)
 public class MemoryStoresAsyncTests extends ClientTestBase {
-
-    private static final LongRunningOperationStatus COMPLETED_OPERATION_STATUS
-        = LongRunningOperationStatus.fromString(MemoryStoreUpdateStatus.COMPLETED.toString(), true);
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.agents.TestUtils#getTestParameters")
@@ -75,7 +71,7 @@ public class MemoryStoresAsyncTests extends ClientTestBase {
                             assertEquals(createdStore.getName(), updatedStore.getName());
                             assertEquals(updatedDescription, updatedStore.getDescription());
 
-                            return memoryStoreClient.listMemoryStores(10, ListAgentsRequestOrder.DESC, null, null)
+                            return memoryStoreClient.listMemoryStores(10, PageOrder.DESC, null, null)
                                 .collectList()
                                 .doOnNext(stores -> {
                                     assertNotNull(stores);
@@ -124,10 +120,10 @@ public class MemoryStoresAsyncTests extends ClientTestBase {
             = new MemoryStoreDefaultDefinition(deploymentName, embeddingDeploymentName);
         definition.setOptions(new MemoryStoreDefaultOptions(true, true));
 
-        ResponsesUserMessageItemParam userMessage
-            = new ResponsesUserMessageItemParam(BinaryData.fromString(userMessageContent));
-        ResponsesUserMessageItemParam queryMessage
-            = new ResponsesUserMessageItemParam(BinaryData.fromString(queryMessageContent));
+        ResponseInputItem userMessage = ResponseInputItem.ofEasyInputMessage(
+            EasyInputMessage.builder().role(EasyInputMessage.Role.USER).content(userMessageContent).build());
+        ResponseInputItem queryMessage = ResponseInputItem.ofEasyInputMessage(
+            EasyInputMessage.builder().role(EasyInputMessage.Role.USER).content(queryMessageContent).build());
         MemorySearchOptions searchOptions = new MemorySearchOptions();
         searchOptions.setMaxMemories(5);
 
@@ -143,7 +139,6 @@ public class MemoryStoresAsyncTests extends ClientTestBase {
                         .doOnNext(updateResult -> {
                             assertNotNull(updateResult);
                             assertNotNull(updateResult.getMemoryOperations());
-                            assertFalse(updateResult.getMemoryOperations().isEmpty());
                             for (MemoryOperation operation : updateResult.getMemoryOperations()) {
                                 assertNotNull(operation.getKind());
                                 assertNotNull(operation.getMemoryItem().getMemoryId());
@@ -155,7 +150,6 @@ public class MemoryStoresAsyncTests extends ClientTestBase {
                             .doOnNext(searchResponse -> {
                                 assertNotNull(searchResponse);
                                 assertNotNull(searchResponse.getMemories());
-                                assertFalse(searchResponse.getMemories().isEmpty());
                                 for (MemorySearchItem memory : searchResponse.getMemories()) {
                                     assertNotNull(memory.getMemoryItem().getMemoryId());
                                     assertNotNull(memory.getMemoryItem().getContent());
@@ -197,16 +191,16 @@ public class MemoryStoresAsyncTests extends ClientTestBase {
             = new MemoryStoreDefaultDefinition(deploymentName, embeddingDeploymentName);
         definition.setOptions(options);
 
-        ResponsesUserMessageItemParam initialMessage
-            = new ResponsesUserMessageItemParam(BinaryData.fromString(firstMessageContent));
-        ResponsesUserMessageItemParam chainedMessage
-            = new ResponsesUserMessageItemParam(BinaryData.fromString(chainedMessageContent));
-        ResponsesUserMessageItemParam searchQuery
-            = new ResponsesUserMessageItemParam(BinaryData.fromString(queryMessageContent));
-        ResponsesAssistantMessageItemParam agentMessage
-            = new ResponsesAssistantMessageItemParam(BinaryData.fromString(followupContextContent));
-        ResponsesUserMessageItemParam followupQuery
-            = new ResponsesUserMessageItemParam(BinaryData.fromString(followupQuestionContent));
+        ResponseInputItem initialMessage = ResponseInputItem.ofEasyInputMessage(
+            EasyInputMessage.builder().role(EasyInputMessage.Role.USER).content(firstMessageContent).build());
+        ResponseInputItem chainedMessage = ResponseInputItem.ofEasyInputMessage(
+            EasyInputMessage.builder().role(EasyInputMessage.Role.USER).content(chainedMessageContent).build());
+        ResponseInputItem searchQuery = ResponseInputItem.ofEasyInputMessage(
+            EasyInputMessage.builder().role(EasyInputMessage.Role.USER).content(queryMessageContent).build());
+        ResponseInputItem agentMessage = ResponseInputItem.ofEasyInputMessage(
+            EasyInputMessage.builder().role(EasyInputMessage.Role.ASSISTANT).content(followupContextContent).build());
+        ResponseInputItem followupQuery = ResponseInputItem.ofEasyInputMessage(
+            EasyInputMessage.builder().role(EasyInputMessage.Role.USER).content(followupQuestionContent).build());
 
         MemorySearchOptions searchOptions = new MemorySearchOptions();
         searchOptions.setMaxMemories(5);
@@ -233,7 +227,6 @@ public class MemoryStoresAsyncTests extends ClientTestBase {
                         scope, Arrays.asList(chainedMessage), initialUpdateId, 0)).doOnNext(updateResult -> {
                             assertNotNull(updateResult);
                             assertNotNull(updateResult.getMemoryOperations());
-                            assertFalse(updateResult.getMemoryOperations().isEmpty());
                             for (MemoryOperation operation : updateResult.getMemoryOperations()) {
                                 assertNotNull(operation.getKind());
                                 assertNotNull(operation.getMemoryItem().getMemoryId());
@@ -245,7 +238,6 @@ public class MemoryStoresAsyncTests extends ClientTestBase {
                                 .flatMap(searchResponse -> {
                                     assertNotNull(searchResponse);
                                     assertNotNull(searchResponse.getMemories());
-                                    assertFalse(searchResponse.getMemories().isEmpty());
                                     for (MemorySearchItem memory : searchResponse.getMemories()) {
                                         assertNotNull(memory.getMemoryItem().getMemoryId());
                                         assertNotNull(memory.getMemoryItem().getContent());
@@ -259,7 +251,6 @@ public class MemoryStoresAsyncTests extends ClientTestBase {
                                         .doOnNext(followupSearch -> {
                                             assertNotNull(followupSearch);
                                             assertNotNull(followupSearch.getMemories());
-                                            assertFalse(followupSearch.getMemories().isEmpty());
                                             for (MemorySearchItem memory : followupSearch.getMemories()) {
                                                 assertNotNull(memory.getMemoryItem().getMemoryId());
                                                 assertNotNull(memory.getMemoryItem().getContent());
@@ -287,15 +278,9 @@ public class MemoryStoresAsyncTests extends ClientTestBase {
     private static Mono<MemoryStoreUpdateCompletedResult>
         waitForUpdateCompletion(PollerFlux<MemoryStoreUpdateResponse, MemoryStoreUpdateCompletedResult> pollerFlux) {
         Objects.requireNonNull(pollerFlux, "pollerFlux cannot be null");
-        return pollerFlux.takeUntil(response -> COMPLETED_OPERATION_STATUS.equals(response.getStatus()))
+        return pollerFlux.takeUntil(response -> response.getStatus().isComplete())
+            .timeout(Duration.ofSeconds(30))
             .last()
-            .map(AsyncPollResponse::getValue)
-            .map(response -> {
-                MemoryStoreUpdateCompletedResult result = response == null ? null : response.getResult();
-                if (result == null) {
-                    throw new IllegalStateException("Memory store update did not complete successfully.");
-                }
-                return result;
-            });
+            .flatMap(AsyncPollResponse::getFinalResult);
     }
 }

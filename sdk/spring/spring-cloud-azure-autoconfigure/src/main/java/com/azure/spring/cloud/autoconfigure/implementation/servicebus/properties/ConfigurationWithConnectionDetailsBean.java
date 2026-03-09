@@ -40,6 +40,7 @@ class ConfigurationWithConnectionDetailsBean {
         AzureServiceBusProperties properties = bindResult.isBound() ? bindResult.get()
             : propertiesLoadFromGlobalProperties;
         properties.setConnectionString(connectionDetails.getConnectionString());
+        properties.setNamespace(null);
         return properties;
     }
 

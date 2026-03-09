@@ -15,7 +15,7 @@ import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.ResourceResponse;
-import com.azure.cosmos.implementation.TestSuiteBase;
+// Uses rx.TestSuiteBase (local package)
 import com.azure.cosmos.implementation.TestUtils;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
@@ -93,7 +93,7 @@ public class ChangeFeedTest extends TestSuiteBase {
     }
 
     public ChangeFeedTest() {
-        super(createGatewayRxDocumentClient());
+        super(createInternalGatewayRxDocumentClient());
         subscriberValidationTimeout = TIMEOUT;
     }
 
@@ -527,11 +527,15 @@ public class ChangeFeedTest extends TestSuiteBase {
     @AfterMethod(groups = { "query", "emulator" }, timeOut = SETUP_TIMEOUT)
     public void removeCollection() {
         if (createdCollection != null) {
-            deleteCollection(client, getCollectionLink());
+            try {
+                deleteCollection(client, getCollectionLink());
+            } catch (Exception e) {
+                logger.warn("Failed to delete collection during cleanup", e);
+            }
         }
     }
 
-    @BeforeMethod(groups = { "query", "emulator" }, timeOut = SETUP_TIMEOUT)
+    @BeforeMethod(groups = { "query", "emulator" }, timeOut = 2 * SETUP_TIMEOUT)
     public void populateDocuments(Method method) {
 
         checkNotNull(method, "Argument method must not be null.");
@@ -575,7 +579,7 @@ public class ChangeFeedTest extends TestSuiteBase {
     public void before_ChangeFeedTest() {
         // set up the client
         client = clientBuilder().build();
-        createdDatabase = SHARED_DATABASE;
+        createdDatabase = SHARED_DATABASE_INTERNAL;
     }
 
     @AfterClass(groups = { "query", "emulator" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.3 (Unreleased)
+## 1.1.0-beta.4 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,133 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.0-beta.3 (2026-03-04)
+
+- Azure Resource Manager Cosmos DB for PostgreSql client library for Java. This package contains Microsoft Azure SDK for Cosmos DB for PostgreSql Management SDK. Azure Cosmos DB for PostgreSQL database service resource provider REST APIs. Package api-version 2023-03-02-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.ClusterListResult` was removed
+
+#### `models.ServerConfigurationListResult` was removed
+
+#### `models.ClusterServerListResult` was removed
+
+#### `models.OperationOrigin` was removed
+
+#### `models.OperationListResult` was removed
+
+#### `models.PrivateEndpointConnectionListResult` was removed
+
+#### `models.RoleListResult` was removed
+
+#### `models.ClusterConfigurationListResult` was removed
+
+#### `models.FirewallRuleListResult` was removed
+
+#### `models.PrivateLinkResourceListResult` was removed
+
+#### `models.PrivateLinkServiceConnectionState` was modified
+
+* `validate()` was removed
+
+#### `models.UserAssignedIdentity` was modified
+
+* `java.util.UUID clientId()` -> `java.lang.String clientId()`
+* `validate()` was removed
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
+
+#### `models.SimplePrivateEndpointConnection` was modified
+
+* `SimplePrivateEndpointConnection()` was changed to private access
+* `withPrivateEndpoint(models.PrivateEndpointProperty)` was removed
+* `withGroupIds(java.util.List)` was removed
+* `validate()` was removed
+* `withPrivateLinkServiceConnectionState(models.PrivateLinkServiceConnectionState)` was removed
+
+#### `models.AuthConfig` was modified
+
+* `validate()` was removed
+
+#### `models.ClusterForUpdate` was modified
+
+* `validate()` was removed
+
+#### `CosmosDBForPostgreSqlManager` was modified
+
+* `fluent.CosmosDBForPostgreSql serviceClient()` -> `fluent.CosmosDBforPostgreSqlManagementClient serviceClient()`
+
+#### `models.DataEncryption` was modified
+
+* `validate()` was removed
+
+#### `models.MaintenanceWindow` was modified
+
+* `validate()` was removed
+
+#### `models.IdentityProperties` was modified
+
+* `validate()` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `OperationDisplay()` was changed to private access
+* `validate()` was removed
+
+#### `models.NameAvailabilityRequest` was modified
+
+* `validate()` was removed
+
+#### `models.Operation` was modified
+
+* `models.OperationOrigin origin()` -> `models.Origin origin()`
+* `properties()` was removed
+
+#### `models.ServerProperties` was modified
+
+* `validate()` was removed
+* `models.ServerProperties withVCores(java.lang.Integer)` -> `models.ServerProperties withVCores(java.lang.Integer)`
+* `models.ServerProperties withEnableHa(java.lang.Boolean)` -> `models.ServerProperties withEnableHa(java.lang.Boolean)`
+* `models.ServerProperties withServerEdition(java.lang.String)` -> `models.ServerProperties withServerEdition(java.lang.String)`
+* `models.ServerProperties withStorageQuotaInMb(java.lang.Integer)` -> `models.ServerProperties withStorageQuotaInMb(java.lang.Integer)`
+
+#### `models.PromoteRequest` was modified
+
+* `validate()` was removed
+
+#### `models.PrivateEndpoint` was modified
+
+* `validate()` was removed
+
+#### `models.PrivateEndpointProperty` was modified
+
+* `PrivateEndpointProperty()` was changed to private access
+* `withId(java.lang.String)` was removed
+* `validate()` was removed
+
+#### `models.ServerNameItem` was modified
+
+* `ServerNameItem()` was changed to private access
+* `validate()` was removed
+* `withName(java.lang.String)` was removed
+
+#### `models.ServerRoleGroupConfiguration` was modified
+
+* `ServerRoleGroupConfiguration()` was changed to private access
+* `withRole(models.ServerRole)` was removed
+* `validate()` was removed
+* `withValue(java.lang.String)` was removed
+
+### Features Added
+
+* `models.Origin` was added
+
+* `models.ActionType` was added
+
+#### `models.Operation` was modified
+
+* `actionType()` was added
 
 ## 1.1.0-beta.2 (2024-12-03)
 

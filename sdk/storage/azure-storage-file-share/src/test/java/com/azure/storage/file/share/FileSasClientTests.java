@@ -27,6 +27,7 @@ import com.azure.storage.file.share.models.ShareSignedIdentifier;
 import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.models.ShareTokenIntent;
 import com.azure.storage.file.share.models.UserDelegationKey;
+import com.azure.storage.file.share.options.ShareGetUserDelegationKeyOptions;
 import com.azure.storage.file.share.sas.ShareFileSasPermission;
 import com.azure.storage.file.share.sas.ShareSasPermission;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
@@ -42,13 +43,16 @@ import java.time.OffsetDateTime;
 import java.util.Arrays;
 
 import static com.azure.storage.common.test.shared.StorageCommonTestUtils.getOidFromToken;
+import static com.azure.storage.common.test.shared.StorageCommonTestUtils.getTidFromToken;
 import static com.azure.storage.common.test.shared.StorageCommonTestUtils.verifySasAndTokenInRequest;
 import static com.azure.storage.file.share.FileShareTestHelper.assertExceptionStatusCodeAndMessage;
 import static com.azure.storage.file.share.FileShareTestHelper.assertResponseStatusCode;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -755,6 +759,177 @@ class FileSasClientTests extends FileShareTestBase {
                 assertEquals(ShareErrorCode.AUTHENTICATION_FAILED, e.getErrorCode());
             });
 
+        });
+    }
+
+    @Test
+    @LiveOnly // Cannot record Entra ID token
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2025-07-05")
+    public void shareUserDelegationSasDelegatedTenantId() {
+        liveTestScenarioWithRetry(() -> {
+            OffsetDateTime expiresOn = testResourceNamer.now().plusHours(1);
+            TokenCredential tokenCredential = StorageCommonTestUtils.getTokenCredential(interceptorManager);
+            ShareSasPermission permissions = new ShareSasPermission().setReadPermission(true).setWritePermission(true);
+
+            // Get tenant ID and object ID from the token credential
+            String tid = getTidFromToken(tokenCredential);
+            String oid = getOidFromToken(tokenCredential);
+
+            ShareGetUserDelegationKeyOptions options
+                = new ShareGetUserDelegationKeyOptions(expiresOn).setDelegatedUserTenantId(tid);
+            UserDelegationKey userDelegationKey
+                = getOAuthServiceClient().getUserDelegationKeyWithResponse(options, null, Context.NONE).getValue();
+
+            assertNotNull(userDelegationKey);
+            assertEquals(tid, userDelegationKey.getSignedDelegatedUserTenantId());
+
+            ShareServiceSasSignatureValues sasValues
+                = new ShareServiceSasSignatureValues(expiresOn, permissions).setDelegatedUserObjectId(oid);
+            String sasToken = primaryShareClient.generateUserDelegationSas(sasValues, userDelegationKey);
+
+            // Validate SAS token contains required parameters
+            assertTrue(sasToken.contains("sduoid=" + oid));
+            assertTrue(sasToken.contains("skdutid=" + tid));
+
+            ShareFileClient identityShareClient
+                = instrument(new ShareClientBuilder().endpoint(primaryShareClient.getShareUrl())
+                    .sasToken(sasToken)
+                    .shareTokenIntent(ShareTokenIntent.BACKUP)
+                    .credential(tokenCredential)).buildClient().getFileClient(primaryFileClient.getFilePath());
+
+            verifySasAndTokenInRequest(identityShareClient.getPropertiesWithResponse(null, null));
+        });
+    }
+
+    @Test
+    @LiveOnly // Cannot record Entra ID token
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2025-07-05")
+    public void shareUserDelegationSasDelegatedTenantIdFail() {
+        liveTestScenarioWithRetry(() -> {
+            OffsetDateTime expiresOn = testResourceNamer.now().plusHours(1);
+            TokenCredential tokenCredential = StorageCommonTestUtils.getTokenCredential(interceptorManager);
+            ShareSasPermission permissions = new ShareSasPermission().setReadPermission(true).setWritePermission(true);
+
+            // Get tenant ID and object ID from the token credential
+            String tid = getTidFromToken(tokenCredential);
+
+            ShareGetUserDelegationKeyOptions options
+                = new ShareGetUserDelegationKeyOptions(expiresOn).setDelegatedUserTenantId(tid);
+            UserDelegationKey userDelegationKey
+                = getOAuthServiceClient().getUserDelegationKeyWithResponse(options, null, Context.NONE).getValue();
+
+            assertNotNull(userDelegationKey);
+            assertEquals(tid, userDelegationKey.getSignedDelegatedUserTenantId());
+
+            ShareServiceSasSignatureValues sasValues = new ShareServiceSasSignatureValues(expiresOn, permissions);
+            String sasToken = primaryShareClient.generateUserDelegationSas(sasValues, userDelegationKey);
+
+            // Validate SAS token contains required parameters
+            assertFalse(sasToken.contains("sduoid="));
+            assertTrue(sasToken.contains("skdutid=" + tid));
+
+            ShareFileClient identityFileClient
+                = instrument(new ShareClientBuilder().endpoint(primaryShareClient.getShareUrl())
+                    .sasToken(sasToken)
+                    .credential(tokenCredential)).buildClient().getFileClient(primaryFileClient.getFilePath());
+
+            ShareStorageException e = assertThrows(ShareStorageException.class,
+                () -> identityFileClient.getPropertiesWithResponse(null, null));
+            assertEquals(403, e.getStatusCode());
+            assertEquals("AuthenticationFailed", e.getErrorCode().toString());
+        });
+    }
+
+    @Test
+    @LiveOnly // Cannot record Entra ID token
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2025-07-05")
+    public void shareUserDelegationSasDelegatedTenantIdAsync() {
+        liveTestScenarioWithRetry(() -> {
+            OffsetDateTime expiresOn = testResourceNamer.now().plusHours(1);
+            TokenCredential tokenCredential = StorageCommonTestUtils.getTokenCredential(interceptorManager);
+            ShareSasPermission permissions = new ShareSasPermission().setReadPermission(true).setWritePermission(true);
+
+            // Get tenant ID and object ID from the token credential
+            String tid = getTidFromToken(tokenCredential);
+
+            ShareGetUserDelegationKeyOptions options
+                = new ShareGetUserDelegationKeyOptions(expiresOn).setDelegatedUserTenantId(tid);
+
+            Mono<Response<ShareFileProperties>> response
+                = getOAuthServiceAsyncClient().getUserDelegationKeyWithResponse(options).flatMap(r -> {
+                    UserDelegationKey userDelegationKey = r.getValue();
+
+                    assertEquals(tid, userDelegationKey.getSignedDelegatedUserTenantId());
+
+                    ShareServiceSasSignatureValues sasValues
+                        = new ShareServiceSasSignatureValues(expiresOn, permissions);
+                    String sasToken = primaryShareClient.generateUserDelegationSas(sasValues, userDelegationKey);
+
+                    // Validate SAS token contains required parameters
+                    assertTrue(sasToken.contains("skdutid=" + tid));
+                    assertFalse(sasToken.contains("sduoid="));
+
+                    ShareFileAsyncClient identityShareClient
+                        = instrument(new ShareClientBuilder().endpoint(primaryShareClient.getShareUrl())
+                            .sasToken(sasToken)
+                            .shareTokenIntent(ShareTokenIntent.BACKUP)
+                            .credential(tokenCredential)).buildAsyncClient()
+                                .getFileClient(primaryFileClient.getFilePath());
+
+                    return identityShareClient.getPropertiesWithResponse();
+
+                });
+            StepVerifier.create(response).verifyErrorSatisfies(e -> {
+                ShareStorageException ex = assertInstanceOf(ShareStorageException.class, e);
+                assertEquals(403, ex.getStatusCode());
+                assertEquals("AuthenticationFailed", ex.getErrorCode().toString());
+            });
+        });
+    }
+
+    @Test
+    @LiveOnly // Cannot record Entra ID token
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2025-07-05")
+    public void shareUserDelegationSasDelegatedTenantIdFailAsync() {
+        liveTestScenarioWithRetry(() -> {
+            OffsetDateTime expiresOn = testResourceNamer.now().plusHours(1);
+            TokenCredential tokenCredential = StorageCommonTestUtils.getTokenCredential(interceptorManager);
+            ShareSasPermission permissions = new ShareSasPermission().setReadPermission(true).setWritePermission(true);
+
+            // Get tenant ID and object ID from the token credential
+            String tid = getTidFromToken(tokenCredential);
+            String oid = getOidFromToken(tokenCredential);
+
+            ShareGetUserDelegationKeyOptions options
+                = new ShareGetUserDelegationKeyOptions(expiresOn).setDelegatedUserTenantId(tid);
+
+            Mono<Response<ShareFileProperties>> response
+                = getOAuthServiceAsyncClient().getUserDelegationKeyWithResponse(options).flatMap(r -> {
+                    UserDelegationKey userDelegationKey = r.getValue();
+
+                    assertEquals(tid, userDelegationKey.getSignedDelegatedUserTenantId());
+
+                    ShareServiceSasSignatureValues sasValues
+                        = new ShareServiceSasSignatureValues(expiresOn, permissions).setDelegatedUserObjectId(oid);
+                    String sasToken = primaryShareClient.generateUserDelegationSas(sasValues, userDelegationKey);
+
+                    // Validate SAS token contains required parameters
+                    assertTrue(sasToken.contains("sduoid=" + oid));
+                    assertTrue(sasToken.contains("skdutid=" + tid));
+
+                    ShareFileAsyncClient identityShareClient
+                        = instrument(new ShareClientBuilder().endpoint(primaryShareClient.getShareUrl())
+                            .sasToken(sasToken)
+                            .shareTokenIntent(ShareTokenIntent.BACKUP)
+                            .credential(tokenCredential)).buildAsyncClient()
+                                .getFileClient(primaryFileClient.getFilePath());
+
+                    return identityShareClient.getPropertiesWithResponse();
+
+                });
+            StepVerifier.create(response)
+                .assertNext(StorageCommonTestUtils::verifySasAndTokenInRequest)
+                .verifyComplete();
         });
     }
 
