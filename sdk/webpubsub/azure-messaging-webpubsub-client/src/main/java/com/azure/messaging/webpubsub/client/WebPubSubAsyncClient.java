@@ -516,7 +516,9 @@ final class WebPubSubAsyncClient implements Closeable {
         Duration timeout) {
         return Mono.defer(() -> {
             Mono<InvokeResponseMessage> responsePromise = waitForInvokeResponse(invocationId, timeout).cache();
-            responsePromise.subscribe(v -> { }, e -> { });
+            responsePromise.subscribe(v -> {
+            }, e -> {
+            });
 
             return sendMessage(invokeMessage).then(responsePromise)
                 .map(this::mapInvokeResponse)
@@ -534,13 +536,16 @@ final class WebPubSubAsyncClient implements Closeable {
     }
 
     private Mono<InvokeResponseMessage> waitForInvokeResponse(String invocationId, Duration timeout) {
-        Mono<InvokeResponseMessage> responseMono = receiveInvokeResponses()
-            .filter(m -> invocationId.equals(m.getInvocationId()))
-            .next();
+        Mono<InvokeResponseMessage> responseMono
+            = receiveInvokeResponses().filter(m -> invocationId.equals(m.getInvocationId())).next();
         if (timeout != null) {
-            responseMono = responseMono.timeout(timeout, Mono.defer(() -> Mono.error(
-                new InvocationException("Invocation timed out after " + timeout.toMillis()
-                    + "ms. No response received for invocation '" + invocationId + "'.", invocationId, null))));
+            responseMono
+                = responseMono
+                    .timeout(timeout,
+                        Mono.defer(() -> Mono.error(new InvocationException(
+                            "Invocation timed out after " + timeout.toMillis()
+                                + "ms. No response received for invocation '" + invocationId + "'.",
+                            invocationId, null))));
         }
         return responseMono;
     }
