@@ -29,12 +29,8 @@ public final class DeploymentSafeguardsImpl implements DeploymentSafeguards {
 
     public Response<DeploymentSafeguard> getWithResponse(String resourceUri, Context context) {
         Response<DeploymentSafeguardInner> inner = this.serviceClient().getWithResponse(resourceUri, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new DeploymentSafeguardImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new DeploymentSafeguardImpl(inner.getValue(), this.manager()));
     }
 
     public DeploymentSafeguard get(String resourceUri) {

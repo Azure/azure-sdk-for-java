@@ -30,12 +30,8 @@ public final class TopicsImpl implements Topics {
         String environmentId, String clusterId, String topicName, Context context) {
         Response<TopicRecordInner> inner = this.serviceClient()
             .getWithResponse(resourceGroupName, organizationName, environmentId, clusterId, topicName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new TopicRecordImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new TopicRecordImpl(inner.getValue(), this.manager()));
     }
 
     public TopicRecord get(String resourceGroupName, String organizationName, String environmentId, String clusterId,

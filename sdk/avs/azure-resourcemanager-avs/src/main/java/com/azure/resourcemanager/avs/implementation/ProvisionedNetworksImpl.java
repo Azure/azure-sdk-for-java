@@ -42,12 +42,8 @@ public final class ProvisionedNetworksImpl implements ProvisionedNetworks {
         String provisionedNetworkName, Context context) {
         Response<ProvisionedNetworkInner> inner = this.serviceClient()
             .getWithResponse(resourceGroupName, privateCloudName, provisionedNetworkName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ProvisionedNetworkImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ProvisionedNetworkImpl(inner.getValue(), this.manager()));
     }
 
     public ProvisionedNetwork get(String resourceGroupName, String privateCloudName, String provisionedNetworkName) {

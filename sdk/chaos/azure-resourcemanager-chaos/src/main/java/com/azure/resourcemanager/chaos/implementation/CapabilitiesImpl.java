@@ -33,12 +33,8 @@ public final class CapabilitiesImpl implements Capabilities {
         Response<CapabilityInner> inner = this.serviceClient()
             .getWithResponse(resourceGroupName, parentProviderNamespace, parentResourceType, parentResourceName,
                 targetName, capabilityName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new CapabilityImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new CapabilityImpl(inner.getValue(), this.manager()));
     }
 
     public Capability get(String resourceGroupName, String parentProviderNamespace, String parentResourceType,
@@ -59,12 +55,8 @@ public final class CapabilitiesImpl implements Capabilities {
         Response<CapabilityInner> inner = this.serviceClient()
             .createOrUpdateWithResponse(resourceGroupName, parentProviderNamespace, parentResourceType,
                 parentResourceName, targetName, capabilityName, resource, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new CapabilityImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new CapabilityImpl(inner.getValue(), this.manager()));
     }
 
     public Capability createOrUpdate(String resourceGroupName, String parentProviderNamespace,

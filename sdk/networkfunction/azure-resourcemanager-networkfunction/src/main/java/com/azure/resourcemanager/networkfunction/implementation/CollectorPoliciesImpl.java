@@ -31,12 +31,8 @@ public final class CollectorPoliciesImpl implements CollectorPolicies {
         String collectorPolicyName, Context context) {
         Response<CollectorPolicyInner> inner = this.serviceClient()
             .getWithResponse(resourceGroupName, azureTrafficCollectorName, collectorPolicyName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new CollectorPolicyImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new CollectorPolicyImpl(inner.getValue(), this.manager()));
     }
 
     public CollectorPolicy get(String resourceGroupName, String azureTrafficCollectorName, String collectorPolicyName) {

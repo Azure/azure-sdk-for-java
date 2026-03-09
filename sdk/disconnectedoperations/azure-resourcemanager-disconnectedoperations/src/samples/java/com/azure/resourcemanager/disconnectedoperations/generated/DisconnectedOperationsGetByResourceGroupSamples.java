@@ -9,7 +9,7 @@ package com.azure.resourcemanager.disconnectedoperations.generated;
  */
 public final class DisconnectedOperationsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/DisconnectedOperations_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-15/DisconnectedOperations_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: DisconnectedOperations_Get.
