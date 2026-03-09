@@ -26,7 +26,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.BinaryData;
 import com.azure.identity.AzureCliCredentialBuilder;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
+
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
@@ -244,7 +244,6 @@ public final class VoiceAssistantSample {
 
                         // Send audio asynchronously using the session's audio buffer append
                         session.sendInputAudio(BinaryData.fromBytes(audioChunk))
-                            .subscribeOn(Schedulers.boundedElastic())
                             .subscribe(
                                 v -> {}, // onNext
                                 error -> {
@@ -502,11 +501,13 @@ public final class VoiceAssistantSample {
         // Configure session options for voice conversation
         VoiceLiveSessionOptions sessionOptions = createVoiceSessionOptions();
         AtomicReference<AudioProcessor> audioProcessorRef = new AtomicReference<>();
+        AtomicReference<VoiceLiveSessionAsyncClient> sessionRef = new AtomicReference<>();
 
         // Execute the reactive workflow - start with just the model
         client.startSession(DEFAULT_MODEL)
             .flatMap(session -> {
                 System.out.println("✓ Session started successfully");
+                sessionRef.set(session);
 
                 // Create audio processor
                 AudioProcessor audioProcessor = new AudioProcessor(session);
@@ -542,6 +543,12 @@ public final class VoiceAssistantSample {
                 Runtime.getRuntime().addShutdownHook(new Thread(() -> {
                     System.out.println("\n🛑 Shutting down gracefully...");
                     audioProcessor.shutdown();
+                    try {
+                        session.close();
+                    } catch (Exception e) {
+                        // Suppress errors during forced JVM shutdown -
+                        // the WebSocket connection may already be partially torn down
+                    }
                 }));
 
                 // Keep the reactive chain alive to continue processing events
@@ -552,10 +559,18 @@ public final class VoiceAssistantSample {
             })
             .doOnError(error -> System.err.println("❌ Error: " + error.getMessage()))
             .doFinally(signalType -> {
-                // Cleanup audio processor
+                // Cleanup audio processor and close session
                 AudioProcessor audioProcessor = audioProcessorRef.get();
                 if (audioProcessor != null) {
                     audioProcessor.shutdown();
+                }
+                VoiceLiveSessionAsyncClient session = sessionRef.get();
+                if (session != null) {
+                    try {
+                        session.close();
+                    } catch (Exception e) {
+                        // Suppress errors during cleanup
+                    }
                 }
             })
             .block(); // Block only for demo purposes; use reactive patterns in production

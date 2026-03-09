@@ -15,6 +15,7 @@ import com.azure.ai.voicelive.models.SessionUpdateConversationItemInputAudioTran
 import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
 import com.azure.core.test.annotation.LiveOnly;
 import org.junit.jupiter.api.Assertions;
+import reactor.core.Disposable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -60,7 +61,7 @@ public class VoiceLiveTranscriptionTests extends VoiceLiveTestBase {
 
             Assertions.assertNotNull(session, "Session should be created successfully");
 
-            session.receiveEvents().subscribe(event -> {
+            Disposable subscription = session.receiveEvents().subscribe(event -> {
                 ServerEventType eventType = event.getType();
 
                 if (eventType == ServerEventType.CONVERSATION_ITEM_INPUT_AUDIO_TRANSCRIPTION_COMPLETED) {
@@ -97,6 +98,7 @@ public class VoiceLiveTranscriptionTests extends VoiceLiveTestBase {
             Assertions.assertTrue(received, "Should receive transcription within timeout");
             Assertions.assertTrue(transcriptionReceived.get(), "Should receive transcription completed event");
 
+            subscription.dispose();
             session.close();
         } catch (Exception e) {
             Assertions.fail("Test failed with exception: " + e.getMessage());
@@ -133,7 +135,7 @@ public class VoiceLiveTranscriptionTests extends VoiceLiveTestBase {
 
             Assertions.assertNotNull(session, "Session should be created successfully");
 
-            session.receiveEvents().subscribe(event -> {
+            Disposable subscription = session.receiveEvents().subscribe(event -> {
                 ServerEventType eventType = event.getType();
 
                 if (eventType == ServerEventType.CONVERSATION_ITEM_INPUT_AUDIO_TRANSCRIPTION_COMPLETED) {
@@ -176,6 +178,7 @@ public class VoiceLiveTranscriptionTests extends VoiceLiveTestBase {
                     || transcriptText.get().toLowerCase().contains("lake"),
                 "Transcript should contain 'largest' or 'lake', got: " + transcriptText.get());
 
+            subscription.dispose();
             session.close();
         } catch (Exception e) {
             Assertions.fail("Test failed with exception: " + e.getMessage());

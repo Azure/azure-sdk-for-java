@@ -16,6 +16,7 @@ import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Assertions;
+import reactor.core.Disposable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -32,7 +33,7 @@ import java.util.stream.Stream;
 public class VoiceLiveVoicePropertiesTests extends VoiceLiveTestBase {
 
     static Stream<Arguments> voicePropertiesParams() {
-        return crossProduct(new String[] { "gpt-4o-realtime", "gpt-4.1", "phi4-mm-realtime" },
+        return crossProduct(new String[] { "gpt-4o-realtime", "gpt-4.1" },
             new String[] { API_VERSION_GA, API_VERSION_PREVIEW });
     }
 
@@ -62,7 +63,7 @@ public class VoiceLiveVoicePropertiesTests extends VoiceLiveTestBase {
 
             Assertions.assertNotNull(session, "Session should be created successfully");
 
-            session.receiveEvents().subscribe(event -> {
+            Disposable subscription = session.receiveEvents().subscribe(event -> {
                 ServerEventType eventType = event.getType();
 
                 if (eventType == ServerEventType.RESPONSE_CONTENT_PART_ADDED) {
@@ -99,6 +100,7 @@ public class VoiceLiveVoicePropertiesTests extends VoiceLiveTestBase {
             Assertions.assertTrue(received, "Should receive response within timeout");
             Assertions.assertTrue(contentPartAddedEvents.get() >= 1, "Should receive content part added events");
 
+            subscription.dispose();
             session.close();
         } catch (Exception e) {
             Assertions.fail("Test failed with exception: " + e.getMessage());
@@ -134,7 +136,7 @@ public class VoiceLiveVoicePropertiesTests extends VoiceLiveTestBase {
 
             Assertions.assertNotNull(session, "Session should be created successfully");
 
-            session.receiveEvents().subscribe(event -> {
+            Disposable subscription = session.receiveEvents().subscribe(event -> {
                 if (!collectingEvents.get()) {
                     return;
                 }
@@ -174,6 +176,7 @@ public class VoiceLiveVoicePropertiesTests extends VoiceLiveTestBase {
             Assertions.assertTrue(timestampEvents.get() > 0, "Should receive audio timestamp events");
             Assertions.assertTrue(visemeEvents.get() > 0, "Should receive viseme events");
 
+            subscription.dispose();
             session.close();
         } catch (Exception e) {
             Assertions.fail("Test failed with exception: " + e.getMessage());

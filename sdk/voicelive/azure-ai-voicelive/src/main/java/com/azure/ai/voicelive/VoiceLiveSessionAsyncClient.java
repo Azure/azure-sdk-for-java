@@ -44,7 +44,6 @@ import reactor.core.publisher.BufferOverflowStrategy;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
-import reactor.core.scheduler.Schedulers;
 import reactor.netty.http.client.HttpClient;
 import reactor.netty.http.client.WebsocketClientSpec;
 import reactor.netty.http.websocket.WebsocketInbound;
@@ -438,7 +437,7 @@ public final class VoiceLiveSessionAsyncClient implements AsyncCloseable, AutoCl
                 LOGGER.atError().addKeyValue("error", e.getMessage()).log("Failed to parse SessionUpdate");
                 return null;
             }
-        }).filter(Objects::nonNull).subscribeOn(Schedulers.boundedElastic());
+        }).filter(Objects::nonNull);
     }
 
     // ============================================================================

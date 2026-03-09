@@ -18,7 +18,6 @@ import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.util.BinaryData;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
@@ -196,7 +195,6 @@ public final class MicrophoneInputSample {
                         // Send audio to VoiceLive service
                         byte[] audioChunk = Arrays.copyOf(buffer, bytesRead);
                         session.sendInputAudio(BinaryData.fromBytes(audioChunk))
-                            .subscribeOn(Schedulers.boundedElastic())
                             .subscribe(
                                 v -> {},
                                 error -> System.err.println("Error sending audio: " + error.getMessage())

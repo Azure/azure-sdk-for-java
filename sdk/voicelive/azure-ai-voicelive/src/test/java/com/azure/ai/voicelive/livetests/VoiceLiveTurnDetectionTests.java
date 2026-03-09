@@ -17,6 +17,7 @@ import com.azure.ai.voicelive.models.TurnDetection;
 import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
 import com.azure.core.test.annotation.LiveOnly;
 import org.junit.jupiter.api.Assertions;
+import reactor.core.Disposable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -83,11 +84,12 @@ public class VoiceLiveTurnDetectionTests extends VoiceLiveTestBase {
         CountDownLatch audioDeltaLatch = new CountDownLatch(1);
 
         VoiceLiveSessionAsyncClient session = null;
+        Disposable subscription = null;
         try {
             session = client.startSession(model).block(SESSION_TIMEOUT);
             Assertions.assertNotNull(session, "Session should be created successfully");
 
-            session.receiveEvents().subscribe(event -> {
+            subscription = session.receiveEvents().subscribe(event -> {
                 ServerEventType eventType = event.getType();
                 if (eventType == ServerEventType.RESPONSE_AUDIO_DELTA) {
                     if (event instanceof SessionUpdateResponseAudioDelta) {
@@ -120,6 +122,9 @@ public class VoiceLiveTurnDetectionTests extends VoiceLiveTestBase {
             Assertions.assertNotNull(audioDelta.getDelta(), "Audio delta data should not be null");
             Assertions.assertTrue(audioDelta.getDelta().length > 0, "Audio delta data should not be empty");
         } finally {
+            if (subscription != null) {
+                subscription.dispose();
+            }
             closeSession(session);
         }
     }
@@ -173,11 +178,12 @@ public class VoiceLiveTurnDetectionTests extends VoiceLiveTestBase {
         AtomicBoolean collectingEvents = new AtomicBoolean(true);
 
         VoiceLiveSessionAsyncClient session = null;
+        Disposable subscription = null;
         try {
             session = client.startSession(model).block(SESSION_TIMEOUT);
             Assertions.assertNotNull(session, "Session should be created successfully");
 
-            session.receiveEvents().subscribe(event -> {
+            subscription = session.receiveEvents().subscribe(event -> {
                 if (!collectingEvents.get()) {
                     return;
                 }
@@ -216,6 +222,9 @@ public class VoiceLiveTurnDetectionTests extends VoiceLiveTestBase {
             Assertions.assertTrue(audioResponseBytes.get() > 0,
                 description + ": Should receive audio response bytes, got " + audioResponseBytes.get());
         } finally {
+            if (subscription != null) {
+                subscription.dispose();
+            }
             closeSession(session);
         }
     }
@@ -286,11 +295,12 @@ public class VoiceLiveTurnDetectionTests extends VoiceLiveTestBase {
         AtomicBoolean collectingEvents = new AtomicBoolean(true);
 
         VoiceLiveSessionAsyncClient session = null;
+        Disposable subscription = null;
         try {
             session = client.startSession(model).block(SESSION_TIMEOUT);
             Assertions.assertNotNull(session, "Session should be created successfully");
 
-            session.receiveEvents().subscribe(event -> {
+            subscription = session.receiveEvents().subscribe(event -> {
                 if (!collectingEvents.get()) {
                     return;
                 }
@@ -333,6 +343,9 @@ public class VoiceLiveTurnDetectionTests extends VoiceLiveTestBase {
             Assertions.assertTrue(audioResponseBytes.get() > 0,
                 description + ": Should receive audio response bytes, got " + audioResponseBytes.get());
         } finally {
+            if (subscription != null) {
+                subscription.dispose();
+            }
             closeSession(session);
         }
     }

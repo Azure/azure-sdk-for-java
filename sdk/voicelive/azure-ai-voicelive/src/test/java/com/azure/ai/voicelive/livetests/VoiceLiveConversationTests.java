@@ -20,6 +20,7 @@ import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Assertions;
+import reactor.core.Disposable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -62,7 +63,7 @@ public class VoiceLiveConversationTests extends VoiceLiveTestBase {
 
             Assertions.assertNotNull(session, "Session should be created successfully");
 
-            session.receiveEvents().subscribe(event -> {
+            Disposable subscription = session.receiveEvents().subscribe(event -> {
                 ServerEventType eventType = event.getType();
 
                 if (eventType == ServerEventType.RESPONSE_OUTPUT_ITEM_DONE) {
@@ -121,6 +122,7 @@ public class VoiceLiveConversationTests extends VoiceLiveTestBase {
             Assertions.assertNotNull(messageItem.getContent(), "Message item should have content");
             Assertions.assertFalse(messageItem.getContent().isEmpty(), "Message content should not be empty");
 
+            subscription.dispose();
             session.close();
         } catch (Exception e) {
             Assertions.fail("Test failed with exception: " + e.getMessage());
@@ -153,7 +155,7 @@ public class VoiceLiveConversationTests extends VoiceLiveTestBase {
 
             Assertions.assertNotNull(session, "Session should be created successfully");
 
-            session.receiveEvents().subscribe(event -> {
+            Disposable subscription = session.receiveEvents().subscribe(event -> {
                 ServerEventType eventType = event.getType();
 
                 if (eventType == ServerEventType.RESPONSE_OUTPUT_ITEM_DONE) {
@@ -203,6 +205,7 @@ public class VoiceLiveConversationTests extends VoiceLiveTestBase {
             Assertions.assertEquals(outputItemId.get(), truncatedEvent.get().getItemId(),
                 "Truncated item ID should match the output item ID");
 
+            subscription.dispose();
             session.close();
         } catch (Exception e) {
             Assertions.fail("Test failed with exception: " + e.getMessage());
