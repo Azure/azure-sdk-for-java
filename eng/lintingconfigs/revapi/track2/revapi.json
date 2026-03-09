@@ -942,7 +942,7 @@
           "old" : "method com.azure.resourcemanager.cdn.models.PolicySettingsDefaultCustomBlockResponseStatusCode com.azure.resourcemanager.cdn.models.PolicySettingsDefaultCustomBlockResponseStatusCode::fromInt(int)",
           "justification": "ExpandableStringEnum changed to ExpandableEnum<Integer>. Use fromValue(Integer) instead."
         },
-                {
+        {
           "code": "java.method.visibilityReduced",
           "old" : {
             "matcher": "regex",
