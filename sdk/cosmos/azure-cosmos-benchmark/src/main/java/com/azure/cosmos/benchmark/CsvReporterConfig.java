@@ -10,6 +10,9 @@ public class CsvReporterConfig {
     private final String reportingDirectory;
 
     public CsvReporterConfig(String reportingDirectory) {
+        if (reportingDirectory == null || reportingDirectory.isEmpty()) {
+            throw new IllegalArgumentException("CSV reporter requires 'reportingDirectory' to be set");
+        }
         this.reportingDirectory = reportingDirectory;
     }
 

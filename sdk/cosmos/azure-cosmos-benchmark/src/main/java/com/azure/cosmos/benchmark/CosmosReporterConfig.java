@@ -18,6 +18,18 @@ public class CosmosReporterConfig {
     public CosmosReporterConfig(String serviceEndpoint, String masterKey,
                                 String database, String container,
                                 String testVariationName, String branchName, String commitId) {
+        if (serviceEndpoint == null || serviceEndpoint.isEmpty()) {
+            throw new IllegalArgumentException("Cosmos reporter requires 'serviceEndpoint' to be set");
+        }
+        if (masterKey == null || masterKey.isEmpty()) {
+            throw new IllegalArgumentException("Cosmos reporter requires 'masterKey' to be set");
+        }
+        if (database == null || database.isEmpty()) {
+            throw new IllegalArgumentException("Cosmos reporter requires 'database' to be set");
+        }
+        if (container == null || container.isEmpty()) {
+            throw new IllegalArgumentException("Cosmos reporter requires 'container' to be set");
+        }
         this.serviceEndpoint = serviceEndpoint;
         this.masterKey = masterKey;
         this.database = database;

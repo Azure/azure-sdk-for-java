@@ -10,7 +10,7 @@ package com.azure.cosmos.benchmark;
  */
 public enum ReportingDestination {
     /**
-     * Per-metric CSV files via Dropwizard CsvReporter.
+     * Per-metric CSV files via CsvMetricsReporter (Micrometer-based).
      */
     CSV,
 

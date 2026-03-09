@@ -21,7 +21,11 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Paths;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
@@ -73,21 +77,26 @@ public class CsvMetricsReporter {
     public void report() {
         String timestamp = Instant.now().toString();
 
+        // Collect all rows per file, then flush once per file to minimize I/O syscalls
+        Map<String, List<String>> pendingRows = new HashMap<>();
+
         for (Meter meter : meterRegistry.getMeters()) {
             try {
                 if (meter instanceof Timer) {
-                    reportTimer(timestamp, (Timer) meter);
+                    reportTimer(timestamp, (Timer) meter, pendingRows);
                 } else if (meter instanceof Counter) {
-                    reportCounter(timestamp, (Counter) meter);
+                    reportCounter(timestamp, (Counter) meter, pendingRows);
                 } else if (meter instanceof Gauge) {
-                    reportGauge(timestamp, (Gauge) meter);
+                    reportGauge(timestamp, (Gauge) meter, pendingRows);
                 } else if (meter instanceof DistributionSummary) {
-                    reportDistributionSummary(timestamp, (DistributionSummary) meter);
+                    reportDistributionSummary(timestamp, (DistributionSummary) meter, pendingRows);
                 }
             } catch (Exception e) {
                 logger.warn("Failed to write metric: {}", meter.getId().getName(), e);
             }
         }
+
+        flushRows(pendingRows);
     }
 
     public void stop() {
@@ -100,7 +109,7 @@ public class CsvMetricsReporter {
         report();
     }
 
-    private void reportTimer(String timestamp, Timer timer) {
+    private void reportTimer(String timestamp, Timer timer, Map<String, List<String>> pendingRows) {
         if (timer.count() == 0) {
             return;
         }
@@ -122,7 +131,7 @@ public class CsvMetricsReporter {
             }
         }
 
-        writeRow(fileName, TIMER_HEADER,
+        addRow(pendingRows, fileName, TIMER_HEADER,
             String.format(Locale.US, "%s,%d,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f",
                 timestamp,
                 timer.count(),
@@ -131,28 +140,29 @@ public class CsvMetricsReporter {
                 p50, p90, p95, p99));
     }
 
-    private void reportCounter(String timestamp, Counter counter) {
+    private void reportCounter(String timestamp, Counter counter, Map<String, List<String>> pendingRows) {
         if (counter.count() == 0) {
             return;
         }
 
         String fileName = csvFileName(counter);
-        writeRow(fileName, COUNTER_HEADER,
+        addRow(pendingRows, fileName, COUNTER_HEADER,
             String.format(Locale.US, "%s,%d", timestamp, (long) counter.count()));
     }
 
-    private void reportGauge(String timestamp, Gauge gauge) {
+    private void reportGauge(String timestamp, Gauge gauge, Map<String, List<String>> pendingRows) {
         double value = gauge.value();
         if (Double.isNaN(value)) {
             return;
         }
 
         String fileName = csvFileName(gauge);
-        writeRow(fileName, GAUGE_HEADER,
+        addRow(pendingRows, fileName, GAUGE_HEADER,
             String.format(Locale.US, "%s,%.2f", timestamp, value));
     }
 
-    private void reportDistributionSummary(String timestamp, DistributionSummary summary) {
+    private void reportDistributionSummary(String timestamp, DistributionSummary summary,
+                                           Map<String, List<String>> pendingRows) {
         if (summary.count() == 0) {
             return;
         }
@@ -174,7 +184,7 @@ public class CsvMetricsReporter {
             }
         }
 
-        writeRow(fileName, DISTRIBUTION_HEADER,
+        addRow(pendingRows, fileName, DISTRIBUTION_HEADER,
             String.format(Locale.US, "%s,%d,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f",
                 timestamp,
                 summary.count(),
@@ -191,17 +201,28 @@ public class CsvMetricsReporter {
         return sb.toString().replaceAll("[^a-zA-Z0-9._-]", "_");
     }
 
-    private void writeRow(String fileName, String header, String row) {
-        File file = new File(metricsDir, fileName + ".csv");
-        boolean needsHeader = initializedFiles.add(fileName) && !file.exists();
-
-        try (PrintWriter writer = new PrintWriter(new FileWriter(file, true))) {
-            if (needsHeader) {
-                writer.println(header);
+    private void addRow(Map<String, List<String>> pendingRows, String fileName, String header, String row) {
+        List<String> rows = pendingRows.computeIfAbsent(fileName, k -> {
+            List<String> list = new ArrayList<>();
+            // Add header as first row if this file hasn't been initialized yet
+            if (initializedFiles.add(fileName)) {
+                list.add(header);
             }
-            writer.println(row);
-        } catch (IOException e) {
-            logger.warn("Failed to write to CSV file: {}", file, e);
+            return list;
+        });
+        rows.add(row);
+    }
+
+    private void flushRows(Map<String, List<String>> pendingRows) {
+        for (Map.Entry<String, List<String>> entry : pendingRows.entrySet()) {
+            File file = new File(metricsDir, entry.getKey() + ".csv");
+            try (PrintWriter writer = new PrintWriter(new FileWriter(file, true))) {
+                for (String line : entry.getValue()) {
+                    writer.println(line);
+                }
+            } catch (IOException e) {
+                logger.warn("Failed to write to CSV file: {}", file, e);
+            }
         }
     }
 }

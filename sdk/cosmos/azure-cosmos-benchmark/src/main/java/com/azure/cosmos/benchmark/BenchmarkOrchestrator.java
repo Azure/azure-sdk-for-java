@@ -170,6 +170,9 @@ public class BenchmarkOrchestrator {
             if (cosmosReporter != null) {
                 cosmosReporter.stop();
             }
+            if (appInsightsRegistry != null) {
+                appInsightsRegistry.close();
+            }
             if (addedToGlobalRegistry) {
                 Metrics.removeRegistry(compositeRegistry);
             }

@@ -223,5 +223,14 @@ public class BenchmarkConfig {
                 appInsights.has("stepSeconds") ? Integer.parseInt(appInsights.get("stepSeconds").asText()) : 10,
                 appInsights.has("testCategory") ? appInsights.get("testCategory").asText() : null);
         }
+
+        // Warn if multiple destinations are configured — only the first match is used
+        int configuredCount = (csvReporterConfig != null ? 1 : 0)
+            + (cosmosReporterConfig != null ? 1 : 0)
+            + (appInsightsReporterConfig != null ? 1 : 0);
+        if (configuredCount > 1) {
+            logger.warn("Multiple reporting destinations configured; only '{}' will be used. "
+                + "Destinations are mutually exclusive.", getReportingDestination());
+        }
     }
 }

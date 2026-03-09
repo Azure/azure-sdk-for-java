@@ -42,8 +42,8 @@ abstract class AsyncBenchmark<T> implements Benchmark {
     private static final ImplementationBridgeHelpers.CosmosClientBuilderHelper.CosmosClientBuilderAccessor clientBuilderAccessor
         = ImplementationBridgeHelpers.CosmosClientBuilderHelper.getCosmosClientBuilderAccessor();
 
-    // Dedicated scheduler for benchmark workload dispatch — avoids contention with global Schedulers.parallel().
-    // Owned and disposed by the orchestrator (or test harness) that creates the benchmark.
+    // Shared Reactor scheduler for benchmark workload dispatch.
+    // Uses Schedulers.parallel() (global shared singleton). Must NOT be disposed by the benchmark.
     final Scheduler benchmarkScheduler;
 
     private boolean databaseCreated;
@@ -356,6 +356,36 @@ abstract class AsyncBenchmark<T> implements Benchmark {
 
         long startTime = System.currentTimeMillis();
         int concurrency = workloadConfig.getConcurrency();
+        int warmupOps = workloadConfig.getSkipWarmUpOperations();
+
+        // Warmup phase: run warmupOps operations with a throwaway SimpleMeterRegistry
+        // so cold-start noise (JIT, connection pool, caches) is excluded from measurement.
+        if (warmupOps > 0) {
+            logger.info("Starting warmup phase: {} operations ...", warmupOps);
+            long warmupStart = System.currentTimeMillis();
+
+            Flux.generate(
+                    AtomicLong::new,
+                    (state, sink) -> {
+                        long current = state.getAndIncrement();
+                        if (current < warmupOps) {
+                            sink.next(current);
+                        } else {
+                            sink.complete();
+                        }
+                        return state;
+                    })
+                .flatMap(i -> performWorkload((Long) i)
+                    .subscribeOn(benchmarkScheduler)
+                    .onErrorResume(e -> Mono.empty()), concurrency)
+                .blockLast();
+
+            logger.info("Warmup phase completed: {} operations in {}s",
+                warmupOps, (System.currentTimeMillis() - warmupStart) / 1000);
+
+            // Reset start time so measurement excludes warmup
+            startTime = System.currentTimeMillis();
+        }
 
         Flux<Long> source;
         Duration maxDuration = workloadConfig.getMaxRunningTimeDuration();

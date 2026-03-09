@@ -101,6 +101,9 @@ public class TenantWorkloadConfig {
     @JsonProperty("throughput")
     private Integer throughput;
 
+    @JsonProperty("skipWarmUpOperations")
+    private Integer skipWarmUpOperations;
+
     @JsonProperty("documentDataFieldSize")
     private Integer documentDataFieldSize;
 
@@ -249,6 +252,7 @@ public class TenantWorkloadConfig {
     public int getNumberOfOperations() { return numberOfOperations != null ? numberOfOperations : 100000; }
     public int getNumberOfPreCreatedDocuments() { return numberOfPreCreatedDocuments != null ? numberOfPreCreatedDocuments : 1000; }
     public int getThroughput() { return throughput != null ? throughput : 100000; }
+    public int getSkipWarmUpOperations() { return skipWarmUpOperations != null ? skipWarmUpOperations : 0; }
     public int getDocumentDataFieldSize() { return documentDataFieldSize != null ? documentDataFieldSize : 20; }
     public int getDocumentDataFieldCount() { return documentDataFieldCount != null ? documentDataFieldCount : 5; }
     public boolean isContentResponseOnWriteEnabled() { return contentResponseOnWriteEnabled != null ? contentResponseOnWriteEnabled : true; }
@@ -440,6 +444,8 @@ public class TenantWorkloadConfig {
                     if (overwrite || numberOfOperations == null) numberOfOperations = Integer.parseInt(value); break;
                 case "numberOfPreCreatedDocuments":
                     if (overwrite || numberOfPreCreatedDocuments == null) numberOfPreCreatedDocuments = Integer.parseInt(value); break;
+                case "skipWarmUpOperations":
+                    if (overwrite || skipWarmUpOperations == null) skipWarmUpOperations = Integer.parseInt(value); break;
                 case "throughput":
                     if (overwrite || throughput == null) throughput = Integer.parseInt(value); break;
                 case "documentDataFieldSize":
