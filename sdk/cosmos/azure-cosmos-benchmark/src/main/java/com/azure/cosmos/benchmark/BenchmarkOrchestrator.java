@@ -63,10 +63,6 @@ public class BenchmarkOrchestrator {
         CompositeMeterRegistry compositeRegistry = new CompositeMeterRegistry();
 
         // Console logging is always active — provides real-time visibility regardless of destination.
-        CsvMetricsReporter csvReporter = null;
-        CosmosMetricsReporter cosmosReporter = null;
-        MeterRegistry appInsightsRegistry = null;
-
         LoggingMeterRegistry loggingRegistry = LoggingMeterRegistry.builder(
             new LoggingRegistryConfig() {
                 @Override
@@ -81,7 +77,27 @@ public class BenchmarkOrchestrator {
         logger.info("Console reporter started (LoggingMeterRegistry, interval={}s)",
             config.getPrintingInterval());
 
+        JvmGcMetrics gcMetrics = null;
+        ThreadPrefixGaugeSet threadPrefixGaugeSet = null;
+
+        if (config.isEnableJvmStats()) {
+            gcMetrics = new JvmGcMetrics();
+            gcMetrics.bindTo(compositeRegistry);
+            new JvmMemoryMetrics().bindTo(compositeRegistry);
+            new JvmThreadMetrics().bindTo(compositeRegistry);
+            threadPrefixGaugeSet = new ThreadPrefixGaugeSet(config.getPrintingInterval());
+            threadPrefixGaugeSet.bindTo(compositeRegistry);
+            logger.info("JVM stats enabled (gc, memory, threads, threadPrefix)");
+        }
+
+        // Prepare all tenants (inject shared registry for SDK telemetry)
+        prepareTenants(config, compositeRegistry);
+
         ReportingDestination destination = config.getReportingDestination();
+        CsvMetricsReporter csvReporter = null;
+        CosmosMetricsReporter cosmosReporter = null;
+        MeterRegistry appInsightsRegistry = null;
+
         if (destination != null) {
             switch (destination) {
                 case CSV:
@@ -126,22 +142,6 @@ public class BenchmarkOrchestrator {
             }
         }
 
-        JvmGcMetrics gcMetrics = null;
-        ThreadPrefixGaugeSet threadPrefixGaugeSet = null;
-
-        if (config.isEnableJvmStats()) {
-            gcMetrics = new JvmGcMetrics();
-            gcMetrics.bindTo(compositeRegistry);
-            new JvmMemoryMetrics().bindTo(compositeRegistry);
-            new JvmThreadMetrics().bindTo(compositeRegistry);
-            threadPrefixGaugeSet = new ThreadPrefixGaugeSet(config.getPrintingInterval());
-            threadPrefixGaugeSet.bindTo(compositeRegistry);
-            logger.info("JVM stats enabled (gc, memory, threads, threadPrefix)");
-        }
-
-        // Prepare all tenants (inject shared registry for SDK telemetry)
-        prepareTenants(config, compositeRegistry);
-
         // Netty HTTP connection pool metrics: when enabled, add the composite registry
         // to Metrics.globalRegistry so Reactor Netty pool gauges flow through to
         // whichever reporting destination is active.
@@ -162,15 +162,13 @@ public class BenchmarkOrchestrator {
             if (csvReporter != null) {
                 csvReporter.stop();
             }
-            if (loggingRegistry != null) {
-                loggingRegistry.close();
-            }
             if (cosmosReporter != null) {
                 cosmosReporter.stop();
             }
             if (appInsightsRegistry != null) {
                 appInsightsRegistry.close();
             }
+            loggingRegistry.close();
             if (addedToGlobalRegistry) {
                 Metrics.removeRegistry(compositeRegistry);
             }

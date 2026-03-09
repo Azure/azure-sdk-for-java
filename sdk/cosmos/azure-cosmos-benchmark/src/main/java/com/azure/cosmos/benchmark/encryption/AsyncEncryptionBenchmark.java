@@ -214,34 +214,6 @@ public abstract class AsyncEncryptionBenchmark<T> implements Benchmark {
 
         long startTime = System.currentTimeMillis();
         int concurrency = workloadConfig.getConcurrency();
-        int warmupOps = workloadConfig.getSkipWarmUpOperations();
-
-        // Warmup phase: run warmupOps operations so cold-start noise is excluded from measurement.
-        if (warmupOps > 0) {
-            logger.info("Starting warmup phase: {} operations ...", warmupOps);
-            long warmupStart = System.currentTimeMillis();
-
-            Flux.generate(
-                    AtomicLong::new,
-                    (state, sink) -> {
-                        long current = state.getAndIncrement();
-                        if (current < warmupOps) {
-                            sink.next(current);
-                        } else {
-                            sink.complete();
-                        }
-                        return state;
-                    })
-                .flatMap(i -> performWorkload((Long) i)
-                    .subscribeOn(benchmarkScheduler)
-                    .onErrorResume(e -> Mono.empty()), concurrency)
-                .blockLast();
-
-            logger.info("Warmup phase completed: {} operations in {}s",
-                warmupOps, (System.currentTimeMillis() - warmupStart) / 1000);
-
-            startTime = System.currentTimeMillis();
-        }
 
         Flux<Long> source;
         Duration maxDuration = workloadConfig.getMaxRunningTimeDuration();
