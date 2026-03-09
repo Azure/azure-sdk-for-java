@@ -31,9 +31,9 @@ private[spark] case class CosmosClientConfiguration (
                                                       clientInterceptors: Option[List[CosmosAsyncClient => CosmosAsyncClient]],
                                                       sampledDiagnosticsLoggerConfig: Option[SampledDiagnosticsLoggerConfig],
                                                       azureMonitorConfig: Option[AzureMonitorConfig],
-                                                      // Optional custom HTTP headers (e.g., workload-id) to attach to
-                                                      // all Cosmos DB requests via CosmosClientBuilder.customHeaders()
-                                                      customHeaders: Option[Map[String, String]]
+                                                      // Optional additional HTTP headers (e.g., workload-id) to attach to
+                                                      // all Cosmos DB requests via CosmosClientBuilder.additionalHeaders()
+                                                      additionalHeaders: Option[Map[String, String]]
                                                     ) {
   private[spark] def getRoleInstanceName(machineId: Option[String]): String = {
     CosmosClientConfiguration.getRoleInstanceName(sparkEnvironmentInfo, machineId)
@@ -98,7 +98,7 @@ private[spark] object CosmosClientConfiguration {
       cosmosAccountConfig.clientInterceptors,
       diagnosticsConfig.sampledDiagnosticsLoggerConfig,
       diagnosticsConfig.azureMonitorConfig,
-      cosmosAccountConfig.customHeaders
+      cosmosAccountConfig.additionalHeaders
     )
   }
 

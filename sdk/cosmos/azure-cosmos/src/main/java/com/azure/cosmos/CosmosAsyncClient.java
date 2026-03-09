@@ -186,7 +186,7 @@ public final class CosmosAsyncClient implements Closeable {
                                        .withDefaultSerializer(this.defaultCustomSerializer)
                                        .withRegionScopedSessionCapturingEnabled(builder.isRegionScopedSessionCapturingEnabled())
                                        .withPerPartitionAutomaticFailoverEnabled(builder.isPerPartitionAutomaticFailoverEnabled())
-                                       .withCustomHeaders(builder.getCustomHeaders())
+                                       .withAdditionalHeaders(builder.getAdditionalHeaders())
                                        .build();
 
         this.accountConsistencyLevel = this.asyncDocumentClient.getDefaultConsistencyLevelOfAccount();

@@ -62,7 +62,7 @@ public class GlobalAddressResolver implements IAddressResolver {
     private ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor;
     private ConnectionPolicy connectionPolicy;
     private GatewayServerErrorInjector gatewayServerErrorInjector;
-    private final Map<String, String> customHeaders;
+    private final Map<String, String> additionalHeaders;
 
     public GlobalAddressResolver(
         DiagnosticsClientContext diagnosticsClientContext,
@@ -76,7 +76,7 @@ public class GlobalAddressResolver implements IAddressResolver {
         GatewayServiceConfigurationReader serviceConfigReader,
         ConnectionPolicy connectionPolicy,
         ApiType apiType,
-        Map<String, String> customHeaders) {
+        Map<String, String> additionalHeaders) {
         this.diagnosticsClientContext = diagnosticsClientContext;
         this.httpClient = httpClient;
         this.endpointManager = endpointManager;
@@ -88,7 +88,7 @@ public class GlobalAddressResolver implements IAddressResolver {
         this.serviceConfigReader = serviceConfigReader;
         this.tcpConnectionEndpointRediscoveryEnabled = connectionPolicy.isTcpConnectionEndpointRediscoveryEnabled();
         this.connectionPolicy = connectionPolicy;
-        this.customHeaders = customHeaders;
+        this.additionalHeaders = additionalHeaders;
 
         int maxBackupReadEndpoints = (connectionPolicy.isReadRequestsFallbackEnabled()) ? GlobalAddressResolver.MaxBackupReadRegions : 0;
         this.maxEndpoints = maxBackupReadEndpoints + 2; // for write and alternate write getEndpoint (during failover)
@@ -294,7 +294,7 @@ public class GlobalAddressResolver implements IAddressResolver {
                 this.connectionPolicy,
                 this.proactiveOpenConnectionsProcessor,
                 this.gatewayServerErrorInjector,
-                this.customHeaders);
+                this.additionalHeaders);
             AddressResolver addressResolver = new AddressResolver();
             addressResolver.initializeCaches(this.collectionCache, this.routingMapProvider, gatewayAddressCache);
             EndpointCache cache = new EndpointCache();

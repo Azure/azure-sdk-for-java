@@ -39,7 +39,7 @@ class PartitionMetadataSpec extends UnitSpec {
     clientInterceptors = None,
     sampledDiagnosticsLoggerConfig = None,
     azureMonitorConfig = None,
-      customHeaders = None
+      additionalHeaders = None
   )
 
   private[this] val contCfg = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString, None)
@@ -86,7 +86,7 @@ class PartitionMetadataSpec extends UnitSpec {
       clientInterceptors = None,
       sampledDiagnosticsLoggerConfig = None,
       azureMonitorConfig = None,
-      customHeaders = None
+      additionalHeaders = None
     )
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString, None)
@@ -172,7 +172,7 @@ class PartitionMetadataSpec extends UnitSpec {
       clientInterceptors = None,
       sampledDiagnosticsLoggerConfig = None,
       azureMonitorConfig = None,
-      customHeaders = None
+      additionalHeaders = None
     )
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString, None)
@@ -258,7 +258,7 @@ class PartitionMetadataSpec extends UnitSpec {
       clientInterceptors = None,
       sampledDiagnosticsLoggerConfig = None,
       azureMonitorConfig = None,
-      customHeaders = None
+      additionalHeaders = None
     )
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString, None)
@@ -326,7 +326,7 @@ class PartitionMetadataSpec extends UnitSpec {
       clientInterceptors = None,
       sampledDiagnosticsLoggerConfig = None,
       azureMonitorConfig = None,
-      customHeaders = None
+      additionalHeaders = None
     )
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString, None)
@@ -389,7 +389,7 @@ class PartitionMetadataSpec extends UnitSpec {
       clientInterceptors = None,
       sampledDiagnosticsLoggerConfig = None,
       azureMonitorConfig = None,
-      customHeaders = None
+      additionalHeaders = None
     )
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString, None)
@@ -446,7 +446,7 @@ class PartitionMetadataSpec extends UnitSpec {
       clientInterceptors = None,
       sampledDiagnosticsLoggerConfig = None,
       azureMonitorConfig = None,
-      customHeaders = None
+      additionalHeaders = None
     )
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString, None)
@@ -503,7 +503,7 @@ class PartitionMetadataSpec extends UnitSpec {
       clientInterceptors = None,
       sampledDiagnosticsLoggerConfig = None,
       azureMonitorConfig = None,
-      customHeaders = None
+      additionalHeaders = None
     )
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString, None)
@@ -560,7 +560,7 @@ class PartitionMetadataSpec extends UnitSpec {
       clientInterceptors = None,
       sampledDiagnosticsLoggerConfig = None,
       azureMonitorConfig = None,
-      customHeaders = None
+      additionalHeaders = None
     )
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString, None)
@@ -617,7 +617,7 @@ class PartitionMetadataSpec extends UnitSpec {
       clientInterceptors = None,
       sampledDiagnosticsLoggerConfig = None,
       azureMonitorConfig = None,
-      customHeaders = None
+      additionalHeaders = None
     )
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString, None)
@@ -697,7 +697,7 @@ class PartitionMetadataSpec extends UnitSpec {
       clientInterceptors = None,
       sampledDiagnosticsLoggerConfig = None,
       azureMonitorConfig = None,
-      customHeaders = None
+      additionalHeaders = None
     )
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString, None)
@@ -759,7 +759,7 @@ class PartitionMetadataSpec extends UnitSpec {
       clientInterceptors = None,
       sampledDiagnosticsLoggerConfig = None,
       azureMonitorConfig = None,
-      customHeaders = None
+      additionalHeaders = None
     )
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString, None)
@@ -816,7 +816,7 @@ class PartitionMetadataSpec extends UnitSpec {
       clientInterceptors = None,
       sampledDiagnosticsLoggerConfig = None,
       azureMonitorConfig = None,
-      customHeaders = None
+      additionalHeaders = None
     )
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString, None)
@@ -890,7 +890,7 @@ class PartitionMetadataSpec extends UnitSpec {
       clientInterceptors = None,
       sampledDiagnosticsLoggerConfig = None,
       azureMonitorConfig = None,
-      customHeaders = None
+      additionalHeaders = None
     )
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString, None)
@@ -964,7 +964,7 @@ class PartitionMetadataSpec extends UnitSpec {
       clientInterceptors = None,
       sampledDiagnosticsLoggerConfig = None,
       azureMonitorConfig = None,
-      customHeaders = None
+      additionalHeaders = None
     )
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString, None)
@@ -1043,7 +1043,7 @@ class PartitionMetadataSpec extends UnitSpec {
       clientInterceptors = None,
       sampledDiagnosticsLoggerConfig = None,
       azureMonitorConfig = None,
-      customHeaders = None
+      additionalHeaders = None
     )
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString, None)

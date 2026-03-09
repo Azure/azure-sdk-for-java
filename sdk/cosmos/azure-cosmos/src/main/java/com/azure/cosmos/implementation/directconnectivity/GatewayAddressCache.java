@@ -124,7 +124,7 @@ public class GatewayAddressCache implements IAddressCache {
         ConnectionPolicy connectionPolicy,
         ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor,
         GatewayServerErrorInjector gatewayServerErrorInjector,
-        Map<String, String> customHeaders) {
+        Map<String, String> additionalHeaders) {
 
         this.clientContext = clientContext;
         try {
@@ -166,10 +166,10 @@ public class GatewayAddressCache implements IAddressCache {
             HttpConstants.HttpHeaders.SDK_SUPPORTED_CAPABILITIES,
             HttpConstants.SDKSupportedCapabilities.SUPPORTED_CAPABILITIES);
 
-        // Apply client-level custom headers (e.g., workload-id) to metadata requests
+        // Apply client-level additional headers (e.g., workload-id) to metadata requests
         // Use putIfAbsent to ensure SDK system headers (USER_AGENT, VERSION, etc.) are not overwritten
-        if (customHeaders != null && !customHeaders.isEmpty()) {
-            for (Map.Entry<String, String> entry : customHeaders.entrySet()) {
+        if (additionalHeaders != null && !additionalHeaders.isEmpty()) {
+            for (Map.Entry<String, String> entry : additionalHeaders.entrySet()) {
                 this.defaultRequestHeaders.putIfAbsent(entry.getKey(), entry.getValue());
             }
         }
@@ -198,7 +198,7 @@ public class GatewayAddressCache implements IAddressCache {
         ConnectionPolicy connectionPolicy,
         ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor,
         GatewayServerErrorInjector gatewayServerErrorInjector,
-        Map<String, String> customHeaders) {
+        Map<String, String> additionalHeaders) {
         this(clientContext,
                 serviceEndpoint,
                 protocol,
@@ -211,7 +211,7 @@ public class GatewayAddressCache implements IAddressCache {
                 connectionPolicy,
                 proactiveOpenConnectionsProcessor,
                 gatewayServerErrorInjector,
-                customHeaders);
+                additionalHeaders);
     }
 
     @Override

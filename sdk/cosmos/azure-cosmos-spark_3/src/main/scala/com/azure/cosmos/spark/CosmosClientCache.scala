@@ -13,7 +13,7 @@ import com.azure.cosmos.models.{CosmosClientTelemetryConfig, CosmosMetricCategor
 import com.azure.cosmos.spark.CosmosPredicates.isOnSparkDriver
 import com.azure.cosmos.spark.catalog.{CosmosCatalogClient, CosmosCatalogCosmosSDKClient, CosmosCatalogManagementSDKClient}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
-import com.azure.cosmos.{ConsistencyLevel, CosmosAsyncClient, CosmosClientBuilder, CosmosContainerProactiveInitConfigBuilder, CosmosDiagnosticsThresholds, DirectConnectionConfig, GatewayConnectionConfig, ReadConsistencyStrategy, ThrottlingRetryOptions}
+import com.azure.cosmos.{ConsistencyLevel, CosmosAsyncClient, CosmosClientBuilder, CosmosContainerProactiveInitConfigBuilder, CosmosDiagnosticsThresholds, CosmosHeaderName, DirectConnectionConfig, GatewayConnectionConfig, ReadConsistencyStrategy, ThrottlingRetryOptions}
 import com.azure.identity.{ClientCertificateCredentialBuilder, ClientSecretCredentialBuilder, ManagedIdentityCredentialBuilder}
 import com.azure.monitor.opentelemetry.autoconfigure.{AzureMonitorAutoConfigure, AzureMonitorAutoConfigureOptions}
 import com.azure.resourcemanager.cosmos.CosmosManager
@@ -712,10 +712,15 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
         }
       }
 
-      // Apply custom HTTP headers (e.g., workload-id) to the builder if configured.
+      // Apply additional HTTP headers (e.g., workload-id) to the builder if configured.
       // These headers are attached to every Cosmos DB request made by this client instance.
-      if (cosmosClientConfiguration.customHeaders.isDefined) {
-        builder.customHeaders(cosmosClientConfiguration.customHeaders.get.asJava)
+      // Converts Map[String, String] from Spark config to Map[CosmosHeaderName, String] for the builder.
+      if (cosmosClientConfiguration.additionalHeaders.isDefined) {
+        val enumHeaders = new java.util.HashMap[CosmosHeaderName, String]()
+        for ((key, value) <- cosmosClientConfiguration.additionalHeaders.get) {
+          enumHeaders.put(CosmosHeaderName.fromString(key), value)
+        }
+        builder.additionalHeaders(enumHeaders)
       }
 
       var client = builder.buildAsyncClient()
@@ -922,9 +927,9 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
     clientInterceptors: Option[List[CosmosAsyncClient => CosmosAsyncClient]],
     sampledDiagnosticsLoggerConfig: Option[SampledDiagnosticsLoggerConfig],
     azureMonitorConfig: Option[AzureMonitorConfig],
-    // Custom HTTP headers are part of the cache key because different workload-ids
+    // Additional HTTP headers are part of the cache key because different workload-ids
     // should produce different CosmosAsyncClient instances
-    customHeaders: Option[Map[String, String]]
+    additionalHeaders: Option[Map[String, String]]
   )
 
   private[this] object ClientConfigurationWrapper {
@@ -944,7 +949,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
         clientConfig.clientInterceptors,
         clientConfig.sampledDiagnosticsLoggerConfig,
         clientConfig.azureMonitorConfig,
-        clientConfig.customHeaders
+        clientConfig.additionalHeaders
       )
     }
   }

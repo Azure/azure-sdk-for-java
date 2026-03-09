@@ -294,7 +294,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private final AtomicReference<CosmosAsyncClient> cachedCosmosAsyncClientSnapshot;
     private CosmosEndToEndOperationLatencyPolicyConfig ppafEnforcedE2ELatencyPolicyConfigForReads;
     private Consumer<DatabaseAccount> perPartitionFailoverConfigModifier;
-    private Map<String, String> customHeaders;
+    private Map<String, String> additionalHeaders;
 
     public RxDocumentClientImpl(URI serviceEndpoint,
                                 String masterKeyOrResourceToken,
@@ -421,7 +421,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 boolean isRegionScopedSessionCapturingEnabled,
                                 List<CosmosOperationPolicy> operationPolicies,
                                 boolean isPerPartitionAutomaticFailoverEnabled,
-                                Map<String, String> customHeaders) {
+                                Map<String, String> additionalHeaders) {
         this(
                 serviceEndpoint,
                 masterKeyOrResourceToken,
@@ -448,7 +448,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
         this.operationPolicies = operationPolicies;
-        this.customHeaders = customHeaders;
+        this.additionalHeaders = additionalHeaders;
     }
 
     private RxDocumentClientImpl(URI serviceEndpoint,
@@ -865,7 +865,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 this.globalEndpointManager,
                 this.reactorHttpClient,
                 this.apiType,
-                this.customHeaders);
+                this.additionalHeaders);
 
             this.thinProxy = createThinProxy(this.sessionContainer,
                 this.consistencyLevel,
@@ -983,7 +983,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             null,
             this.connectionPolicy,
             this.apiType,
-            this.customHeaders);
+            this.additionalHeaders);
 
         this.storeClientFactory = new StoreClientFactory(
             this.addressResolver,
@@ -1028,7 +1028,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                              GlobalEndpointManager globalEndpointManager,
                                              HttpClient httpClient,
                                              ApiType apiType,
-                                             Map<String, String> customHeaders) {
+                                             Map<String, String> additionalHeaders) {
         return new RxGatewayStoreModel(
                 this,
                 sessionContainer,
@@ -1038,7 +1038,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 globalEndpointManager,
                 httpClient,
                 apiType,
-                customHeaders);
+                additionalHeaders);
     }
 
     ThinClientStoreModel createThinProxy(ISessionContainer sessionContainer,
@@ -1956,9 +1956,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private Map<String, String> getRequestHeaders(RequestOptions options, ResourceType resourceType, OperationType operationType) {
         Map<String, String> headers = new HashMap<>();
 
-        // Apply client-level custom headers first (e.g., workload-id from CosmosClientBuilder.customHeaders())
-        if (this.customHeaders != null && !this.customHeaders.isEmpty()) {
-            headers.putAll(this.customHeaders);
+        // Apply client-level additional headers first (e.g., workload-id from CosmosClientBuilder.additionalHeaders())
+        if (this.additionalHeaders != null && !this.additionalHeaders.isEmpty()) {
+            headers.putAll(this.additionalHeaders);
         }
 
         if (this.useMultipleWriteLocations) {
