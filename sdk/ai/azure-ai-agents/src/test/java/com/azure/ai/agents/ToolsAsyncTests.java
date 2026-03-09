@@ -4,7 +4,6 @@
 package com.azure.ai.agents;
 
 import com.azure.ai.agents.models.AgentReference;
-import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.CodeInterpreterTool;
 import com.azure.ai.agents.models.FileSearchTool;
 import com.azure.ai.agents.models.FunctionTool;
@@ -41,7 +40,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.ai.agents.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.*;
@@ -70,11 +68,8 @@ public class ToolsAsyncTests extends ClientTestBase {
             = new PromptAgentDefinition("gpt-4o").setInstructions("Use the OpenAPI tool for HTTP request metadata.")
                 .setTools(Arrays.asList(new OpenApiTool(toolDefinition)));
 
-        AtomicReference<AgentVersionDetails> agentRef = new AtomicReference<>();
-
         StepVerifier.create(
             agentsClient.createAgentVersion("openapi-tool-test-agent-java-async", agentDefinition).flatMap(agent -> {
-                agentRef.set(agent);
                 assertNotNull(agent);
                 assertNotNull(agent.getId());
 
@@ -88,19 +83,19 @@ public class ToolsAsyncTests extends ClientTestBase {
                                 .input(
                                     "Use the OpenAPI tool and summarize the returned URL and origin in one sentence.")
                                 .maxOutputTokens(300L));
-                    });
-            }).doFinally(signal -> {
-                AgentVersionDetails agent = agentRef.get();
-                if (agent != null) {
-                    agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion()).block();
-                }
-            })).assertNext(response -> {
-                assertNotNull(response);
-                assertTrue(response.id().startsWith("resp"));
-                assertTrue(response.status().isPresent());
-                assertEquals(ResponseStatus.COMPLETED, response.status().get());
-                assertFalse(response.output().isEmpty());
-                assertTrue(response.output().stream().anyMatch(item -> item.isMessage()));
+                    })
+                    .doOnNext(response -> {
+                        assertNotNull(response);
+                        assertTrue(response.id().startsWith("resp"));
+                        assertTrue(response.status().isPresent());
+                        assertEquals(ResponseStatus.COMPLETED, response.status().get());
+                        assertFalse(response.output().isEmpty());
+                        assertTrue(response.output().stream().anyMatch(item -> item.isMessage()));
+                    })
+                    .then(agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion()));
+            })).assertNext(deletedAgent -> {
+                assertEquals("openapi-tool-test-agent-java-async", deletedAgent.getName());
+                assertTrue(deletedAgent.isDeleted());
             }).verifyComplete();
     }
 
@@ -120,29 +115,27 @@ public class ToolsAsyncTests extends ClientTestBase {
             .setInstructions("You are a helpful assistant that can execute Python code to solve problems.")
             .setTools(Collections.singletonList(tool));
 
-        AtomicReference<AgentVersionDetails> agentRef = new AtomicReference<>();
-
         StepVerifier.create(agentsClient.createAgentVersion("code-interpreter-test-agent-java-async", agentDefinition)
             .flatMap(agent -> {
-                agentRef.set(agent);
                 assertNotNull(agent);
 
                 AgentReference agentReference = new AgentReference(agent.getName()).setVersion(agent.getVersion());
 
-                return responsesClient.createWithAgent(agentReference, ResponseCreateParams.builder()
-                    .input("Calculate the first 10 prime numbers and show the Python code."));
-            })
-            .doFinally(signal -> {
-                AgentVersionDetails agent = agentRef.get();
-                if (agent != null) {
-                    agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion()).block();
-                }
-            })).assertNext(response -> {
-                assertNotNull(response);
-                assertTrue(response.status().isPresent());
-                assertEquals(ResponseStatus.COMPLETED, response.status().get());
-                assertFalse(response.output().isEmpty());
-                assertTrue(response.output().stream().anyMatch(item -> item.isCodeInterpreterCall()));
+                return responsesClient
+                    .createWithAgent(agentReference,
+                        ResponseCreateParams.builder()
+                            .input("Calculate the first 10 prime numbers and show the Python code."))
+                    .doOnNext(response -> {
+                        assertNotNull(response);
+                        assertTrue(response.status().isPresent());
+                        assertEquals(ResponseStatus.COMPLETED, response.status().get());
+                        assertFalse(response.output().isEmpty());
+                        assertTrue(response.output().stream().anyMatch(item -> item.isCodeInterpreterCall()));
+                    })
+                    .then(agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion()));
+            })).assertNext(deletedAgent -> {
+                assertEquals("code-interpreter-test-agent-java-async", deletedAgent.getName());
+                assertTrue(deletedAgent.isDeleted());
             }).verifyComplete();
     }
 
@@ -181,33 +174,31 @@ public class ToolsAsyncTests extends ClientTestBase {
             .setInstructions("You are a helpful assistant. When asked about weather, use the get_weather function.")
             .setTools(Collections.singletonList(tool));
 
-        AtomicReference<AgentVersionDetails> agentRef = new AtomicReference<>();
-
         StepVerifier.create(
             agentsClient.createAgentVersion("function-call-test-agent-java-async", agentDefinition).flatMap(agent -> {
-                agentRef.set(agent);
                 assertNotNull(agent);
 
                 AgentReference agentReference = new AgentReference(agent.getName()).setVersion(agent.getVersion());
 
-                return responsesClient.createWithAgent(agentReference,
-                    ResponseCreateParams.builder().input("What's the weather like in Seattle?"));
-            }).doFinally(signal -> {
-                AgentVersionDetails agent = agentRef.get();
-                if (agent != null) {
-                    agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion()).block();
-                }
-            })).assertNext(response -> {
-                assertNotNull(response);
-                assertTrue(response.status().isPresent());
-                assertEquals(ResponseStatus.COMPLETED, response.status().get());
-                assertFalse(response.output().isEmpty());
-                assertTrue(response.output().stream().anyMatch(item -> item.isFunctionCall()));
+                return responsesClient
+                    .createWithAgent(agentReference,
+                        ResponseCreateParams.builder().input("What's the weather like in Seattle?"))
+                    .doOnNext(response -> {
+                        assertNotNull(response);
+                        assertTrue(response.status().isPresent());
+                        assertEquals(ResponseStatus.COMPLETED, response.status().get());
+                        assertFalse(response.output().isEmpty());
+                        assertTrue(response.output().stream().anyMatch(item -> item.isFunctionCall()));
 
-                ResponseOutputItem functionCallItem
-                    = response.output().stream().filter(item -> item.isFunctionCall()).findFirst().get();
-                assertEquals("get_weather", functionCallItem.asFunctionCall().name());
-                assertNotNull(functionCallItem.asFunctionCall().arguments());
+                        ResponseOutputItem functionCallItem
+                            = response.output().stream().filter(item -> item.isFunctionCall()).findFirst().get();
+                        assertEquals("get_weather", functionCallItem.asFunctionCall().name());
+                        assertNotNull(functionCallItem.asFunctionCall().arguments());
+                    })
+                    .then(agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion()));
+            })).assertNext(deletedAgent -> {
+                assertEquals("function-call-test-agent-java-async", deletedAgent.getName());
+                assertTrue(deletedAgent.isDeleted());
             }).verifyComplete();
     }
 
@@ -227,28 +218,26 @@ public class ToolsAsyncTests extends ClientTestBase {
             .setInstructions("You are a helpful assistant that can search the web.")
             .setTools(Collections.singletonList(tool));
 
-        AtomicReference<AgentVersionDetails> agentRef = new AtomicReference<>();
-
         StepVerifier.create(
             agentsClient.createAgentVersion("web-search-test-agent-java-async", agentDefinition).flatMap(agent -> {
-                agentRef.set(agent);
                 assertNotNull(agent);
 
                 AgentReference agentReference = new AgentReference(agent.getName()).setVersion(agent.getVersion());
 
-                return responsesClient.createWithAgent(agentReference,
-                    ResponseCreateParams.builder().input("What are the latest trends in renewable energy?"));
-            }).doFinally(signal -> {
-                AgentVersionDetails agent = agentRef.get();
-                if (agent != null) {
-                    agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion()).block();
-                }
-            })).assertNext(response -> {
-                assertNotNull(response);
-                assertTrue(response.status().isPresent());
-                assertEquals(ResponseStatus.COMPLETED, response.status().get());
-                assertFalse(response.output().isEmpty());
-                assertTrue(response.output().stream().anyMatch(item -> item.isMessage()));
+                return responsesClient
+                    .createWithAgent(agentReference,
+                        ResponseCreateParams.builder().input("What are the latest trends in renewable energy?"))
+                    .doOnNext(response -> {
+                        assertNotNull(response);
+                        assertTrue(response.status().isPresent());
+                        assertEquals(ResponseStatus.COMPLETED, response.status().get());
+                        assertFalse(response.output().isEmpty());
+                        assertTrue(response.output().stream().anyMatch(item -> item.isMessage()));
+                    })
+                    .then(agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion()));
+            })).assertNext(deletedAgent -> {
+                assertEquals("web-search-test-agent-java-async", deletedAgent.getName());
+                assertTrue(deletedAgent.isDeleted());
             }).verifyComplete();
     }
 
@@ -269,52 +258,51 @@ public class ToolsAsyncTests extends ClientTestBase {
             .setInstructions("You are a helpful agent that can use MCP tools to assist users.")
             .setTools(Collections.singletonList(tool));
 
-        AtomicReference<AgentVersionDetails> agentRef = new AtomicReference<>();
-
         StepVerifier
             .create(agentsClient.createAgentVersion("mcp-test-agent-java-async", agentDefinition).flatMap(agent -> {
-                agentRef.set(agent);
                 assertNotNull(agent);
 
                 AgentReference agentReference = new AgentReference(agent.getName()).setVersion(agent.getVersion());
 
-                return responsesClient.createWithAgent(agentReference,
-                    ResponseCreateParams.builder().input("Please summarize the Azure REST API specifications Readme"));
-            }).flatMap(response -> {
-                assertNotNull(response);
-                assertTrue(response.status().isPresent());
-                assertEquals(ResponseStatus.COMPLETED, response.status().get());
+                return responsesClient
+                    .createWithAgent(agentReference,
+                        ResponseCreateParams.builder()
+                            .input("Please summarize the Azure REST API specifications Readme"))
+                    .flatMap(response -> {
+                        assertNotNull(response);
+                        assertTrue(response.status().isPresent());
+                        assertEquals(ResponseStatus.COMPLETED, response.status().get());
 
-                AgentVersionDetails agent = agentRef.get();
-                AgentReference agentReference = new AgentReference(agent.getName()).setVersion(agent.getVersion());
+                        List<ResponseInputItem> approvals = new ArrayList<ResponseInputItem>();
+                        for (ResponseOutputItem item : response.output()) {
+                            if (item.isMcpApprovalRequest()) {
+                                approvals.add(ResponseInputItem
+                                    .ofMcpApprovalResponse(ResponseInputItem.McpApprovalResponse.builder()
+                                        .approvalRequestId(item.asMcpApprovalRequest().id())
+                                        .approve(true)
+                                        .build()));
+                            }
+                        }
 
-                List<ResponseInputItem> approvals = new ArrayList<ResponseInputItem>();
-                for (ResponseOutputItem item : response.output()) {
-                    if (item.isMcpApprovalRequest()) {
-                        approvals
-                            .add(ResponseInputItem.ofMcpApprovalResponse(ResponseInputItem.McpApprovalResponse.builder()
-                                .approvalRequestId(item.asMcpApprovalRequest().id())
-                                .approve(true)
-                                .build()));
-                    }
-                }
+                        assertFalse(approvals.isEmpty(), "Expected at least one MCP approval request");
 
-                assertFalse(approvals.isEmpty(), "Expected at least one MCP approval request");
-
-                return responsesClient.createWithAgent(agentReference,
-                    ResponseCreateParams.builder().inputOfResponse(approvals).previousResponseId(response.id()));
-            }).doFinally(signal -> {
-                AgentVersionDetails agent = agentRef.get();
-                if (agent != null) {
-                    agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion()).block();
-                }
+                        return responsesClient.createWithAgent(agentReference,
+                            ResponseCreateParams.builder()
+                                .inputOfResponse(approvals)
+                                .previousResponseId(response.id()));
+                    })
+                    .doOnNext(response -> {
+                        assertNotNull(response);
+                        assertTrue(response.status().isPresent());
+                        assertEquals(ResponseStatus.COMPLETED, response.status().get());
+                        assertFalse(response.output().isEmpty());
+                        assertTrue(response.output().stream().anyMatch(item -> item.isMessage()));
+                    })
+                    .then(agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion()));
             }))
-            .assertNext(response -> {
-                assertNotNull(response);
-                assertTrue(response.status().isPresent());
-                assertEquals(ResponseStatus.COMPLETED, response.status().get());
-                assertFalse(response.output().isEmpty());
-                assertTrue(response.output().stream().anyMatch(item -> item.isMessage()));
+            .assertNext(deletedAgent -> {
+                assertEquals("mcp-test-agent-java-async", deletedAgent.getName());
+                assertTrue(deletedAgent.isDeleted());
             })
             .verifyComplete();
     }
@@ -342,7 +330,6 @@ public class ToolsAsyncTests extends ClientTestBase {
 
         FileObject uploadedFile = null;
         VectorStore vectorStore = null;
-        AtomicReference<AgentVersionDetails> agentRef = new AtomicReference<>();
 
         try {
             uploadedFile = openAIClient.files()
@@ -366,7 +353,6 @@ public class ToolsAsyncTests extends ClientTestBase {
 
             StepVerifier.create(
                 agentsClient.createAgentVersion("file-search-test-agent-java-async", agentDefinition).flatMap(agent -> {
-                    agentRef.set(agent);
                     assertNotNull(agent);
 
                     AgentReference agentReference = new AgentReference(agent.getName()).setVersion(agent.getVersion());
@@ -377,19 +363,19 @@ public class ToolsAsyncTests extends ClientTestBase {
                             return responsesClient.createWithAgentConversation(agentReference, conversation.id(),
                                 ResponseCreateParams.builder()
                                     .input("What is the largest planet in the Solar System?"));
-                        });
-                }).doFinally(signal -> {
-                    AgentVersionDetails agent = agentRef.get();
-                    if (agent != null) {
-                        agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion()).block();
-                    }
-                })).assertNext(response -> {
-                    assertNotNull(response);
-                    assertTrue(response.status().isPresent());
-                    assertEquals(ResponseStatus.COMPLETED, response.status().get());
-                    assertFalse(response.output().isEmpty());
-                    assertTrue(response.output().stream().anyMatch(item -> item.isFileSearchCall()));
-                    assertTrue(response.output().stream().anyMatch(item -> item.isMessage()));
+                        })
+                        .doOnNext(response -> {
+                            assertNotNull(response);
+                            assertTrue(response.status().isPresent());
+                            assertEquals(ResponseStatus.COMPLETED, response.status().get());
+                            assertFalse(response.output().isEmpty());
+                            assertTrue(response.output().stream().anyMatch(item -> item.isFileSearchCall()));
+                            assertTrue(response.output().stream().anyMatch(item -> item.isMessage()));
+                        })
+                        .then(agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion()));
+                })).assertNext(deletedAgent -> {
+                    assertEquals("file-search-test-agent-java-async", deletedAgent.getName());
+                    assertTrue(deletedAgent.isDeleted());
                 }).verifyComplete();
         } finally {
             Files.deleteIfExists(tempFile);
