@@ -14,7 +14,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-ai-agents</artifactId>
-  <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-ai-agents;current} -->
+  <version>2.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-ai-agents;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Agents</name>
@@ -46,6 +46,10 @@
     <!-- TODO: remove on Public Preview release -->
     <jacoco.min.linecoverage>0.0</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.0</jacoco.min.branchcoverage>
+    <javaModulesSurefireArgLine>
+      --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
+      --add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
+    </javaModulesSurefireArgLine>
   </properties>
   <dependencies>
     <!-- compile scope -->
@@ -68,6 +72,12 @@
     <!-- test scope -->
     <dependency>
       <groupId>com.azure</groupId>
+      <artifactId>azure-core-http-okhttp</artifactId>
+      <version>1.13.3</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
       <version>1.18.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
@@ -76,12 +86,6 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
       <version>1.27.0-beta.14</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core-http-okhttp</artifactId>
-      <version>1.13.3</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
       <scope>test</scope>
     </dependency>
 

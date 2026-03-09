@@ -4,7 +4,6 @@
 package com.azure.cosmos.benchmark.encryption;
 
 import com.azure.core.credential.TokenCredential;
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
@@ -13,8 +12,10 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
+import com.azure.cosmos.benchmark.Benchmark;
 import com.azure.cosmos.benchmark.BenchmarkHelper;
-import com.azure.cosmos.benchmark.Configuration;
+import com.azure.cosmos.benchmark.Operation;
+import com.azure.cosmos.benchmark.TenantWorkloadConfig;
 import com.azure.cosmos.benchmark.PojoizedJson;
 import com.azure.cosmos.encryption.CosmosEncryptionAsyncClient;
 import com.azure.cosmos.encryption.CosmosEncryptionAsyncContainer;
@@ -35,22 +36,11 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.keys.cryptography.KeyEncryptionKeyClientBuilder;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
-import com.codahale.metrics.ConsoleReporter;
-import com.codahale.metrics.CsvReporter;
 import com.codahale.metrics.Meter;
-import com.codahale.metrics.MetricFilter;
 import com.codahale.metrics.MetricRegistry;
-import com.codahale.metrics.ScheduledReporter;
 import com.codahale.metrics.Timer;
-import com.codahale.metrics.graphite.Graphite;
-import com.codahale.metrics.graphite.GraphiteReporter;
-import com.codahale.metrics.jvm.CachedThreadStatesGaugeSet;
-import com.codahale.metrics.jvm.GarbageCollectorMetricSet;
-import com.codahale.metrics.jvm.MemoryUsageGaugeSet;
-import io.micrometer.core.instrument.MeterRegistry;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.mpierce.metrics.reservoir.hdrhistogram.HdrHistogramResetOnSnapshotReservoir;
 import org.reactivestreams.Subscription;
@@ -63,7 +53,6 @@ import reactor.util.retry.Retry;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.InetSocketAddress;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -75,9 +64,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
-public abstract class AsyncEncryptionBenchmark<T> {
-    private final MetricRegistry metricsRegistry = new MetricRegistry();
-    private ScheduledReporter reporter;
+public abstract class AsyncEncryptionBenchmark<T> implements Benchmark {
+    private final MetricRegistry metricsRegistry;
 
     private volatile Meter successMeter;
     private volatile Meter failureMeter;
@@ -92,7 +80,7 @@ public abstract class AsyncEncryptionBenchmark<T> {
     final CosmosAsyncClient cosmosClient;
 
     final String partitionKey;
-    final Configuration configuration;
+    final TenantWorkloadConfig workloadConfig;
     final List<PojoizedJson> docsToRead;
     final Semaphore concurrencyControlSemaphore;
     Timer latency;
@@ -112,59 +100,59 @@ public abstract class AsyncEncryptionBenchmark<T> {
 
     private AtomicBoolean warmupMode = new AtomicBoolean(false);
 
-    private static final TokenCredential CREDENTIAL = new DefaultAzureCredentialBuilder()
-            .managedIdentityClientId(Configuration.getAadManagedIdentityId())
-            .authorityHost(Configuration.getAadLoginUri())
-            .tenantId(Configuration.getAadTenantId())
-            .build();
+    AsyncEncryptionBenchmark(TenantWorkloadConfig workloadCfg, MetricRegistry sharedRegistry) throws IOException {
 
-    AsyncEncryptionBenchmark(Configuration cfg) throws IOException {
+        workloadConfig = workloadCfg;
 
-        CosmosClientBuilder cosmosClientBuilder = cfg.isManagedIdentityRequired() ?
-                new CosmosClientBuilder().credential(CREDENTIAL) :
-                new CosmosClientBuilder().key(cfg.getMasterKey());
+        final TokenCredential credential = workloadCfg.isManagedIdentityRequired()
+            ? workloadCfg.buildTokenCredential()
+            : null;
+
+        CosmosClientBuilder cosmosClientBuilder = workloadCfg.isManagedIdentityRequired() ?
+                new CosmosClientBuilder().credential(credential) :
+                new CosmosClientBuilder().key(workloadCfg.getMasterKey());
 
         cosmosClientBuilder
-                .preferredRegions(cfg.getPreferredRegionsList())
-                .endpoint(cfg.getServiceEndpoint())
-                .consistencyLevel(cfg.getConsistencyLevel())
-                .contentResponseOnWriteEnabled(cfg.isContentResponseOnWriteEnabled());
+                .preferredRegions(workloadCfg.getPreferredRegionsList())
+                .endpoint(workloadCfg.getServiceEndpoint())
+                .consistencyLevel(workloadCfg.getConsistencyLevel())
+                .contentResponseOnWriteEnabled(workloadCfg.isContentResponseOnWriteEnabled());
 
-        if (cfg.getConnectionMode().equals(ConnectionMode.DIRECT)) {
+        if (workloadCfg.getConnectionMode().equals(ConnectionMode.DIRECT)) {
             cosmosClientBuilder = cosmosClientBuilder.directMode(DirectConnectionConfig.getDefaultConfig());
         } else {
             GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
-            gatewayConnectionConfig.setMaxConnectionPoolSize(cfg.getMaxConnectionPoolSize());
+            gatewayConnectionConfig.setMaxConnectionPoolSize(workloadCfg.getMaxConnectionPoolSize());
             cosmosClientBuilder = cosmosClientBuilder.gatewayMode(gatewayConnectionConfig);
         }
         cosmosClient = cosmosClientBuilder.buildAsyncClient();
         cosmosEncryptionAsyncClient = createEncryptionClientInstance(cosmosClient);
-        configuration = cfg;
+        metricsRegistry = sharedRegistry;
         logger = LoggerFactory.getLogger(this.getClass());
         createEncryptionDatabaseAndContainer();
         partitionKey = cosmosAsyncContainer.read().block().getProperties().getPartitionKeyDefinition()
             .getPaths().iterator().next().split("/")[1];
-        concurrencyControlSemaphore = new Semaphore(cfg.getConcurrency());
+        concurrencyControlSemaphore = new Semaphore(workloadCfg.getConcurrency());
         ArrayList<Flux<PojoizedJson>> createDocumentObservables = new ArrayList<>();
 
-        if (configuration.getOperationType() != Configuration.Operation.WriteLatency
-            && configuration.getOperationType() != Configuration.Operation.WriteThroughput
-            && configuration.getOperationType() != Configuration.Operation.ReadMyWrites) {
-            logger.info("PRE-populating {} documents ....", cfg.getNumberOfPreCreatedDocuments());
-            String dataFieldValue = RandomStringUtils.randomAlphabetic(cfg.getDocumentDataFieldSize());
-            for (int i = 0; i < cfg.getNumberOfPreCreatedDocuments(); i++) {
+        if (workloadConfig.getOperationType() != Operation.WriteLatency
+            && workloadConfig.getOperationType() != Operation.WriteThroughput
+            && workloadConfig.getOperationType() != Operation.ReadMyWrites) {
+            logger.info("PRE-populating {} documents ....", workloadCfg.getNumberOfPreCreatedDocuments());
+            String dataFieldValue = RandomStringUtils.randomAlphabetic(workloadCfg.getDocumentDataFieldSize());
+            for (int i = 0; i < workloadCfg.getNumberOfPreCreatedDocuments(); i++) {
                 String uuid = UUID.randomUUID().toString();
                 PojoizedJson newDoc = BenchmarkHelper.generateDocument(uuid,
                     dataFieldValue,
                     partitionKey,
-                    configuration.getDocumentDataFieldCount());
-                for (int j = 1; j <= cfg.getEncryptedStringFieldCount(); j++) {
+                    workloadConfig.getDocumentDataFieldCount());
+                for (int j = 1; j <= workloadCfg.getEncryptedStringFieldCount(); j++) {
                     newDoc.setProperty(ENCRYPTED_STRING_FIELD + j, uuid);
                 }
-                for (int j = 1; j <= cfg.getEncryptedLongFieldCount(); j++) {
+                for (int j = 1; j <= workloadCfg.getEncryptedLongFieldCount(); j++) {
                     newDoc.setProperty(ENCRYPTED_LONG_FIELD + j, 1234l);
                 }
-                for (int j = 1; j <= cfg.getEncryptedDoubleFieldCount(); j++) {
+                for (int j = 1; j <= workloadCfg.getEncryptedDoubleFieldCount(); j++) {
                     newDoc.setProperty(ENCRYPTED_DOUBLE_FIELD + j, 1234.01d);
                 }
 
@@ -210,49 +198,9 @@ public abstract class AsyncEncryptionBenchmark<T> {
         }
 
         docsToRead = Flux.merge(Flux.fromIterable(createDocumentObservables), 100).collectList().block();
-        logger.info("Finished pre-populating {} documents", cfg.getNumberOfPreCreatedDocuments());
+        logger.info("Finished pre-populating {} documents", workloadCfg.getNumberOfPreCreatedDocuments());
 
         init();
-
-        if (configuration.isEnableJvmStats()) {
-            metricsRegistry.register("gc", new GarbageCollectorMetricSet());
-            metricsRegistry.register("threads", new CachedThreadStatesGaugeSet(10, TimeUnit.SECONDS));
-            metricsRegistry.register("memory", new MemoryUsageGaugeSet());
-        }
-
-        if (configuration.getGraphiteEndpoint() != null) {
-            final Graphite graphite = new Graphite(new InetSocketAddress(
-                configuration.getGraphiteEndpoint(),
-                configuration.getGraphiteEndpointPort()));
-            reporter = GraphiteReporter.forRegistry(metricsRegistry)
-                .prefixedWith(configuration.getOperationType().name())
-                .convertDurationsTo(TimeUnit.MILLISECONDS)
-                .convertRatesTo(TimeUnit.SECONDS)
-                .filter(MetricFilter.ALL)
-                .build(graphite);
-        } else if (configuration.getReportingDirectory() != null) {
-            reporter = CsvReporter.forRegistry(metricsRegistry)
-                .convertDurationsTo(TimeUnit.MILLISECONDS)
-                .convertRatesTo(TimeUnit.SECONDS)
-                .build(configuration.getReportingDirectory());
-        } else {
-            reporter = ConsoleReporter.forRegistry(metricsRegistry)
-                .convertDurationsTo(TimeUnit.MILLISECONDS)
-                .convertRatesTo(TimeUnit.SECONDS)
-                .build();
-        }
-
-        MeterRegistry registry = configuration.getAzureMonitorMeterRegistry();
-
-        if (registry != null) {
-            BridgeInternal.monitorTelemetry(registry);
-        }
-
-        registry = configuration.getGraphiteMeterRegistry();
-
-        if (registry != null) {
-            BridgeInternal.monitorTelemetry(registry);
-        }
     }
 
     protected void init() {
@@ -261,10 +209,10 @@ public abstract class AsyncEncryptionBenchmark<T> {
     public void shutdown() {
         if (this.databaseCreated) {
             cosmosAsyncDatabase.delete().block();
-            logger.info("Deleted temporary database {} created for this test", this.configuration.getDatabaseId());
+            logger.info("Deleted temporary database {} created for this test", this.workloadConfig.getDatabaseId());
         } else if (this.collectionCreated) {
             cosmosAsyncContainer.delete().block();
-            logger.info("Deleted temporary collection {} created for this test", this.configuration.getCollectionId());
+            logger.info("Deleted temporary collection {} created for this test", this.workloadConfig.getContainerId());
         }
 
         cosmosClient.close();
@@ -274,15 +222,14 @@ public abstract class AsyncEncryptionBenchmark<T> {
     }
 
     protected void initializeMetersIfSkippedEnoughOperations(AtomicLong count) {
-        if (configuration.getSkipWarmUpOperations() > 0) {
-            if (count.get() >= configuration.getSkipWarmUpOperations()) {
+        if (workloadConfig.getSkipWarmUpOperations() > 0) {
+            if (count.get() >= workloadConfig.getSkipWarmUpOperations()) {
                 if (warmupMode.get()) {
                     synchronized (this) {
                         if (warmupMode.get()) {
                             logger.info("Warmup phase finished. Starting capturing perf numbers ....");
                             resetMeters();
                             initializeMeter();
-                            reporter.start(configuration.getPrintingInterval(), TimeUnit.SECONDS);
                             warmupMode.set(false);
                         }
                     }
@@ -299,7 +246,7 @@ public abstract class AsyncEncryptionBenchmark<T> {
     private void resetMeters() {
         metricsRegistry.remove(SUCCESS_COUNTER_METER_NAME);
         metricsRegistry.remove(FAILURE_COUNTER_METER_NAME);
-        if (latencyAwareOperations(configuration.getOperationType())) {
+        if (latencyAwareOperations(workloadConfig.getOperationType())) {
             metricsRegistry.remove(LATENCY_METER_NAME);
         }
     }
@@ -307,14 +254,14 @@ public abstract class AsyncEncryptionBenchmark<T> {
     private void initializeMeter() {
         successMeter = metricsRegistry.meter(SUCCESS_COUNTER_METER_NAME);
         failureMeter = metricsRegistry.meter(FAILURE_COUNTER_METER_NAME);
-        if (latencyAwareOperations(configuration.getOperationType())) {
+        if (latencyAwareOperations(workloadConfig.getOperationType())) {
             latency = metricsRegistry.register(LATENCY_METER_NAME,
                 new Timer(new HdrHistogramResetOnSnapshotReservoir()));
         }
     }
 
-    private boolean latencyAwareOperations(Configuration.Operation operation) {
-        switch (configuration.getOperationType()) {
+    private boolean latencyAwareOperations(Operation operation) {
+        switch (workloadConfig.getOperationType()) {
             case ReadLatency:
             case WriteLatency:
             case QueryInClauseParallel:
@@ -333,12 +280,10 @@ public abstract class AsyncEncryptionBenchmark<T> {
 
     public void run() throws Exception {
         initializeMeter();
-        if (configuration.getSkipWarmUpOperations() > 0) {
+        if (workloadConfig.getSkipWarmUpOperations() > 0) {
             logger.info("Starting warm up phase. Executing {} operations to warm up ...",
-                configuration.getSkipWarmUpOperations());
+                workloadConfig.getSkipWarmUpOperations());
             warmupMode.set(true);
-        } else {
-            reporter.start(configuration.getPrintingInterval(), TimeUnit.SECONDS);
         }
 
         long startTime = System.currentTimeMillis();
@@ -346,7 +291,7 @@ public abstract class AsyncEncryptionBenchmark<T> {
         AtomicLong count = new AtomicLong(0);
         long i;
 
-        for (i = 0; BenchmarkHelper.shouldContinue(startTime, i, configuration); i++) {
+        for (i = 0; BenchmarkHelper.shouldContinue(startTime, i, workloadConfig); i++) {
 
             BaseSubscriber<T> baseSubscriber = new BaseSubscriber<T>() {
                 @Override
@@ -405,16 +350,13 @@ public abstract class AsyncEncryptionBenchmark<T> {
 
         long endTime = System.currentTimeMillis();
         logger.info("[{}] operations performed in [{}] seconds.",
-            configuration.getNumberOfOperations(), (int) ((endTime - startTime) / 1000));
-
-        reporter.report();
-        reporter.close();
+            workloadConfig.getNumberOfOperations(), (int) ((endTime - startTime) / 1000));
     }
 
     protected Mono sparsityMono(long i) {
-        Duration duration = configuration.getSparsityWaitTime();
+        Duration duration = workloadConfig.getSparsityWaitTime();
         if (duration != null && !duration.isZero()) {
-            if (configuration.getSkipWarmUpOperations() > i) {
+            if (workloadConfig.getSkipWarmUpOperations() > i) {
                 // don't wait on the initial warm up time.
                 return null;
             }
@@ -475,14 +417,14 @@ public abstract class AsyncEncryptionBenchmark<T> {
 
     private void createEncryptionDatabaseAndContainer() {
         try {
-            cosmosAsyncDatabase = cosmosClient.getDatabase(this.configuration.getDatabaseId());
+            cosmosAsyncDatabase = cosmosClient.getDatabase(this.workloadConfig.getDatabaseId());
             cosmosAsyncDatabase.read().block();
             FeedResponse<CosmosClientEncryptionKeyProperties> keyFeedResponse =
                 cosmosAsyncDatabase.readAllClientEncryptionKeys().byPage().blockFirst();
             if (keyFeedResponse.getResults().size() < 1) {
                 throw new IllegalArgumentException(String.format("database %s does not have any client encryption key" +
                     " %s" +
-                    "key", this.configuration.getDatabaseId(), dataEncryptionKeyId));
+                    "key", this.workloadConfig.getDatabaseId(), dataEncryptionKeyId));
             } else {
                 boolean containsDataEncryptionKeyId = false;
                 for (CosmosClientEncryptionKeyProperties keyProperties : keyFeedResponse.getResults()) {
@@ -494,17 +436,17 @@ public abstract class AsyncEncryptionBenchmark<T> {
                 if (!containsDataEncryptionKeyId) {
                     throw new IllegalArgumentException(String.format("database %s does not have any client encryption" +
                         " key %s" +
-                        "key", this.configuration.getDatabaseId(), dataEncryptionKeyId));
+                        "key", this.workloadConfig.getDatabaseId(), dataEncryptionKeyId));
                 }
             }
             cosmosEncryptionAsyncDatabase =
-                cosmosEncryptionAsyncClient.getCosmosEncryptionAsyncDatabase(this.configuration.getDatabaseId());
+                cosmosEncryptionAsyncClient.getCosmosEncryptionAsyncDatabase(this.workloadConfig.getDatabaseId());
         } catch (CosmosException e) {
             if (e.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
-                cosmosClient.createDatabase(configuration.getDatabaseId()).block();
-                cosmosAsyncDatabase = cosmosClient.getDatabase(configuration.getDatabaseId());
+                cosmosClient.createDatabase(workloadConfig.getDatabaseId()).block();
+                cosmosAsyncDatabase = cosmosClient.getDatabase(workloadConfig.getDatabaseId());
                 cosmosEncryptionAsyncDatabase =
-                    cosmosEncryptionAsyncClient.getCosmosEncryptionAsyncDatabase(this.configuration.getDatabaseId());
+                    cosmosEncryptionAsyncClient.getCosmosEncryptionAsyncDatabase(this.workloadConfig.getDatabaseId());
                 String masterKeyUrlFromConfig = getConfiguration("KeyVaultMasterKeyUrl", keyVaultProperties);
                 if (StringUtils.isEmpty(masterKeyUrlFromConfig)) {
                     throw new IllegalArgumentException("Please specify a valid MasterKeyUrl in the appSettings.json");
@@ -521,14 +463,14 @@ public abstract class AsyncEncryptionBenchmark<T> {
                         CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName(), metadata).block().getProperties();
 
                 logger.info("Database {} is created for this test with client encryption key {}",
-                    this.configuration.getDatabaseId(), dataEncryptionKeyId);
+                    this.workloadConfig.getDatabaseId(), dataEncryptionKeyId);
                 databaseCreated = true;
             } else {
                 throw e;
             }
         }
 
-        cosmosAsyncContainer = cosmosAsyncDatabase.getContainer(this.configuration.getCollectionId());
+        cosmosAsyncContainer = cosmosAsyncDatabase.getContainer(this.workloadConfig.getContainerId());
         try {
             cosmosAsyncContainer.delete().block();
         } catch (CosmosException ex) {
@@ -536,7 +478,7 @@ public abstract class AsyncEncryptionBenchmark<T> {
         }
 
         List<ClientEncryptionIncludedPath> encryptionPaths = new ArrayList<>();
-        for (int i = 1; i <= configuration.getEncryptedStringFieldCount(); i++) {
+        for (int i = 1; i <= workloadConfig.getEncryptedStringFieldCount(); i++) {
             ClientEncryptionIncludedPath includedPath = new ClientEncryptionIncludedPath();
             includedPath.setClientEncryptionKeyId(dataEncryptionKeyId);
             includedPath.setPath("/" + ENCRYPTED_STRING_FIELD + i);
@@ -544,7 +486,7 @@ public abstract class AsyncEncryptionBenchmark<T> {
             includedPath.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
             encryptionPaths.add(includedPath);
         }
-        for (int i = 1; i <= configuration.getEncryptedDoubleFieldCount(); i++) {
+        for (int i = 1; i <= workloadConfig.getEncryptedDoubleFieldCount(); i++) {
             ClientEncryptionIncludedPath includedPath = new ClientEncryptionIncludedPath();
             includedPath.setClientEncryptionKeyId(dataEncryptionKeyId);
             includedPath.setPath("/" + ENCRYPTED_LONG_FIELD + i);
@@ -552,7 +494,7 @@ public abstract class AsyncEncryptionBenchmark<T> {
             includedPath.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
             encryptionPaths.add(includedPath);
         }
-        for (int i = 1; i <= configuration.getEncryptedLongFieldCount(); i++) {
+        for (int i = 1; i <= workloadConfig.getEncryptedLongFieldCount(); i++) {
             ClientEncryptionIncludedPath includedPath = new ClientEncryptionIncludedPath();
             includedPath.setClientEncryptionKeyId(dataEncryptionKeyId);
             includedPath.setPath("/" + ENCRYPTED_DOUBLE_FIELD + i);
@@ -562,18 +504,18 @@ public abstract class AsyncEncryptionBenchmark<T> {
         }
         ClientEncryptionPolicy clientEncryptionPolicy = new ClientEncryptionPolicy(encryptionPaths);
         CosmosContainerProperties containerProperties =
-            new CosmosContainerProperties(this.configuration.getCollectionId(),
-                Configuration.DEFAULT_PARTITION_KEY_PATH);
+            new CosmosContainerProperties(this.workloadConfig.getContainerId(),
+                TenantWorkloadConfig.DEFAULT_PARTITION_KEY_PATH);
         containerProperties.setClientEncryptionPolicy(clientEncryptionPolicy);
         cosmosAsyncDatabase.createContainer(containerProperties,
-            ThroughputProperties.createManualThroughput(this.configuration.getThroughput())
+            ThroughputProperties.createManualThroughput(this.workloadConfig.getThroughput())
         ).block();
 
-        cosmosAsyncContainer = cosmosAsyncDatabase.getContainer(this.configuration.getCollectionId());
+        cosmosAsyncContainer = cosmosAsyncDatabase.getContainer(this.workloadConfig.getContainerId());
         logger.info("Collection {} is created for this test with encryption paths",
-            this.configuration.getCollectionId());
+            this.workloadConfig.getContainerId());
         collectionCreated = true;
         cosmosEncryptionAsyncContainer =
-            cosmosEncryptionAsyncDatabase.getCosmosEncryptionAsyncContainer(this.configuration.getCollectionId());
+            cosmosEncryptionAsyncDatabase.getCosmosEncryptionAsyncContainer(this.workloadConfig.getContainerId());
     }
 }

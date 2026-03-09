@@ -1605,7 +1605,7 @@ public final class EasmClientImpl {
      *         ]
      *         innererror (Optional): {
      *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
+     *             value: BinaryData (Optional)
      *         }
      *     }
      * }
@@ -1660,7 +1660,7 @@ public final class EasmClientImpl {
      *         ]
      *         innererror (Optional): {
      *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
+     *             value: BinaryData (Optional)
      *         }
      *     }
      * }
@@ -2285,7 +2285,7 @@ public final class EasmClientImpl {
      *         ]
      *         innererror (Optional): {
      *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
+     *             value: BinaryData (Optional)
      *         }
      *     }
      * }
@@ -2352,7 +2352,7 @@ public final class EasmClientImpl {
      *         ]
      *         innererror (Optional): {
      *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
+     *             value: BinaryData (Optional)
      *         }
      *     }
      * }

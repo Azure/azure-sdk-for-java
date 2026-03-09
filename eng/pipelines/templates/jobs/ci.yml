@@ -40,6 +40,9 @@ parameters:
   - name: BuildParallelization
     type: string
     default: '2C'
+  - name: BuildOptions
+    type: string
+    default: ''
   - name: TestGoals
     type: string
     default: $(TestGoals)
@@ -114,6 +117,9 @@ jobs:
           JobType: 'Build'
           ServiceDirectory: ${{parameters.ServiceDirectory}}
           ExcludePaths: ${{parameters.ExcludePaths}}
+
+      # Authenticate with Azure Artifacts
+      - template: /eng/pipelines/templates/steps/maven-authenticate.yml
 
       - task: UsePythonVersion@0
         displayName: 'Use Python $(PythonVersion)'
@@ -419,6 +425,9 @@ jobs:
             -ServiceDirectories '$(PRServiceDirectories)'
             -RegenerationType 'All'
 
+      # Authenticate with Azure Artifacts
+      - template: /eng/pipelines/templates/steps/maven-authenticate.yml
+
       - template: /eng/pipelines/templates/steps/run-and-validate-linting.yml
         parameters:
           JavaBuildVersion: ${{ parameters.JavaBuildVersion }}
@@ -497,6 +506,7 @@ jobs:
         TestOptions: ${{ parameters.TestOptions }}
         TestParallelization: ${{ parameters.TestParallelization }}
         BuildParallelization: ${{ parameters.BuildParallelization }}
+        BuildOptions: ${{ parameters.BuildOptions }}
         AdditionalLintingOptions: ${{ parameters.AdditionalLintingOptions }}
         TimeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
         EnvVars: ${{ parameters.EnvVars }}

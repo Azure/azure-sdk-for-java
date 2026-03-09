@@ -9,7 +9,9 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.time.DayOfWeek;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Weekly recurrence schedule.
@@ -28,16 +30,6 @@ public final class WeeklyRecurrenceSchedule extends RecurrenceSchedule {
      */
     @Generated
     private final List<DayOfWeek> daysOfWeek;
-
-    /**
-     * Creates an instance of WeeklyRecurrenceSchedule class.
-     *
-     * @param daysOfWeek the daysOfWeek value to set.
-     */
-    @Generated
-    public WeeklyRecurrenceSchedule(List<DayOfWeek> daysOfWeek) {
-        this.daysOfWeek = daysOfWeek;
-    }
 
     /**
      * Get the type property: Recurrence type for the recurrence schedule.
@@ -63,12 +55,11 @@ public final class WeeklyRecurrenceSchedule extends RecurrenceSchedule {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("daysOfWeek", this.daysOfWeek,
-            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+            (writer, element) -> writer.writeString(element == null ? null : toPascalCase(element)));
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
     }
@@ -82,7 +73,6 @@ public final class WeeklyRecurrenceSchedule extends RecurrenceSchedule {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the WeeklyRecurrenceSchedule.
      */
-    @Generated
     public static WeeklyRecurrenceSchedule fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             List<DayOfWeek> daysOfWeek = null;
@@ -91,7 +81,7 @@ public final class WeeklyRecurrenceSchedule extends RecurrenceSchedule {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("daysOfWeek".equals(fieldName)) {
-                    daysOfWeek = reader.readArray(reader1 -> DayOfWeek.fromString(reader1.getString()));
+                    daysOfWeek = reader.readArray(reader1 -> DayOfWeek.valueOf(reader1.getString().toUpperCase()));
                 } else if ("type".equals(fieldName)) {
                     type = RecurrenceType.fromString(reader.getString());
                 } else {
@@ -102,5 +92,24 @@ public final class WeeklyRecurrenceSchedule extends RecurrenceSchedule {
             deserializedWeeklyRecurrenceSchedule.type = type;
             return deserializedWeeklyRecurrenceSchedule;
         });
+    }
+
+    /**
+     * Creates an instance of WeeklyRecurrenceSchedule class.
+     *
+     * @param daysOfWeek the daysOfWeek value to set.
+     */
+    @Generated
+    public WeeklyRecurrenceSchedule(List<DayOfWeek> daysOfWeek) {
+        this.daysOfWeek = daysOfWeek;
+    }
+
+    /**
+     * Converts a {@link DayOfWeek} enum constant to PascalCase to match the API wire format
+     * (e.g. {@code MONDAY} becomes {@code "Monday"}).
+     */
+    private static String toPascalCase(DayOfWeek day) {
+        String name = day.name();
+        return name.charAt(0) + name.substring(1).toLowerCase(Locale.ROOT);
     }
 }

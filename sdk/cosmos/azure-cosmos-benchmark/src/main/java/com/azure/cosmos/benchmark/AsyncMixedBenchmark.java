@@ -13,6 +13,7 @@ import reactor.core.scheduler.Schedulers;
 
 import java.util.Random;
 import java.util.UUID;
+import com.codahale.metrics.MetricRegistry;
 
 class AsyncMixedBenchmark extends AsyncBenchmark<Object> {
 
@@ -20,10 +21,10 @@ class AsyncMixedBenchmark extends AsyncBenchmark<Object> {
     private final String dataFieldValue;
     private final Random r;
 
-    AsyncMixedBenchmark(Configuration cfg) {
-        super(cfg);
+    AsyncMixedBenchmark(TenantWorkloadConfig cfg, MetricRegistry sharedRegistry) {
+        super(cfg, sharedRegistry);
         uuid = UUID.randomUUID().toString();
-        dataFieldValue = RandomStringUtils.randomAlphabetic(configuration.getDocumentDataFieldSize());
+        dataFieldValue = RandomStringUtils.randomAlphabetic(workloadConfig.getDocumentDataFieldSize());
         r = new Random();
     }
 
@@ -35,7 +36,7 @@ class AsyncMixedBenchmark extends AsyncBenchmark<Object> {
             PojoizedJson data = BenchmarkHelper.generateDocument(uuid + i,
                 dataFieldValue,
                 partitionKey,
-                configuration.getDocumentDataFieldCount());
+                workloadConfig.getDocumentDataFieldCount());
             obs = cosmosAsyncContainer.createItem(data).flux();
 
         } else if (i % 100 == 0) {

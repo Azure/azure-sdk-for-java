@@ -3,11 +3,13 @@
 
 package com.azure.cosmos.benchmark.encryption;
 
-import com.azure.cosmos.benchmark.Configuration;
+import com.azure.cosmos.benchmark.Operation;
 import com.azure.cosmos.benchmark.PojoizedJson;
+import com.azure.cosmos.benchmark.TenantWorkloadConfig;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
+import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.Timer;
 import org.reactivestreams.Subscription;
 import reactor.core.publisher.BaseSubscriber;
@@ -52,8 +54,8 @@ public class AsyncEncryptionQueryBenchmark extends AsyncEncryptionBenchmark<Feed
         }
     }
 
-    public AsyncEncryptionQueryBenchmark(Configuration cfg) throws IOException {
-        super(cfg);
+    public AsyncEncryptionQueryBenchmark(TenantWorkloadConfig workloadCfg, MetricRegistry sharedRegistry) throws IOException {
+        super(workloadCfg, sharedRegistry);
     }
 
     @Override
@@ -73,34 +75,34 @@ public class AsyncEncryptionQueryBenchmark extends AsyncEncryptionBenchmark<Feed
         Random r = new Random();
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
 
-        if (configuration.getOperationType() == Configuration.Operation.QueryCross) {
+        if (workloadConfig.getOperationType() == Operation.QueryCross) {
 
-            int index = r.nextInt(this.configuration.getNumberOfPreCreatedDocuments());
+            int index = r.nextInt(this.workloadConfig.getNumberOfPreCreatedDocuments());
             String sqlQuery = "Select * from c where c.id = \"" + docsToRead.get(index).getId() + "\"";
             obs = cosmosEncryptionAsyncContainer.queryItems(sqlQuery, options, PojoizedJson.class).byPage();
-        } else if (configuration.getOperationType() == Configuration.Operation.QuerySingle) {
+        } else if (workloadConfig.getOperationType() == Operation.QuerySingle) {
 
-            int index = r.nextInt(this.configuration.getNumberOfPreCreatedDocuments());
+            int index = r.nextInt(this.workloadConfig.getNumberOfPreCreatedDocuments());
             String pk = (String) docsToRead.get(index).getProperty(partitionKey);
             options.setPartitionKey(new PartitionKey(pk));
             String sqlQuery = "Select * from c where c." + partitionKey + " = \"" + pk + "\"";
             obs = cosmosEncryptionAsyncContainer.queryItems(sqlQuery, options, PojoizedJson.class).byPage();
-        } else if (configuration.getOperationType() == Configuration.Operation.QueryParallel) {
+        } else if (workloadConfig.getOperationType() == Operation.QueryParallel) {
 
             String sqlQuery = "Select * from c";
             obs = cosmosEncryptionAsyncContainer.queryItems(sqlQuery, options, PojoizedJson.class).byPage(10);
-        } else if (configuration.getOperationType() == Configuration.Operation.QueryOrderby) {
+        } else if (workloadConfig.getOperationType() == Operation.QueryOrderby) {
 
             String sqlQuery = "Select * from c order by c._ts";
             obs = cosmosEncryptionAsyncContainer.queryItems(sqlQuery, options, PojoizedJson.class).byPage(10);
-        } else if (configuration.getOperationType() == Configuration.Operation.QueryTopOrderby) {
+        } else if (workloadConfig.getOperationType() == Operation.QueryTopOrderby) {
 
             String sqlQuery = "Select top 1000 * from c order by c._ts";
             obs = cosmosEncryptionAsyncContainer.queryItems(sqlQuery, options, PojoizedJson.class).byPage();
-        } else if (configuration.getOperationType() == Configuration.Operation.ReadAllItemsOfLogicalPartition) {
-            throw new IllegalArgumentException("Unsupported Operation on encryption: " + configuration.getOperationType());
+        } else if (workloadConfig.getOperationType() == Operation.ReadAllItemsOfLogicalPartition) {
+            throw new IllegalArgumentException("Unsupported Operation on encryption: " + workloadConfig.getOperationType());
         } else {
-            throw new IllegalArgumentException("Unsupported Operation: " + configuration.getOperationType());
+            throw new IllegalArgumentException("Unsupported Operation: " + workloadConfig.getOperationType());
         }
 
         concurrencyControlSemaphore.acquire();

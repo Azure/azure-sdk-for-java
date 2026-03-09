@@ -30,16 +30,6 @@ public final class MonthlyRecurrenceSchedule extends RecurrenceSchedule {
     private final List<Integer> daysOfMonth;
 
     /**
-     * Creates an instance of MonthlyRecurrenceSchedule class.
-     *
-     * @param daysOfMonth the daysOfMonth value to set.
-     */
-    @Generated
-    public MonthlyRecurrenceSchedule(List<Integer> daysOfMonth) {
-        this.daysOfMonth = daysOfMonth;
-    }
-
-    /**
      * Get the type property: Recurrence type for the recurrence schedule.
      *
      * @return the type value.
@@ -102,5 +92,15 @@ public final class MonthlyRecurrenceSchedule extends RecurrenceSchedule {
             deserializedMonthlyRecurrenceSchedule.type = type;
             return deserializedMonthlyRecurrenceSchedule;
         });
+    }
+
+    /**
+     * Creates an instance of MonthlyRecurrenceSchedule class.
+     *
+     * @param daysOfMonth the daysOfMonth value to set.
+     */
+    @Generated
+    public MonthlyRecurrenceSchedule(List<Integer> daysOfMonth) {
+        this.daysOfMonth = daysOfMonth;
     }
 }

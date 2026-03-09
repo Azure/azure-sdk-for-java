@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.2.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,100 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.0 (2026-03-05)
+
+- Azure Resource Manager PowerBIDedicated client library for Java. This package contains Microsoft Azure SDK for PowerBIDedicated Management SDK. PowerBI Dedicated Web API provides a RESTful set of web services that enables users to create, retrieve, update, and delete Power BI dedicated capacities. Package api-version 2021-01-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.OperationListResult` was removed
+
+#### `models.AutoScaleVCoreListResult` was removed
+
+#### `models.DedicatedCapacities` was removed
+
+#### `PowerBIDedicatedManager` was modified
+
+* `fluent.PowerBIDedicated serviceClient()` -> `fluent.PowerBIDedicatedManagementClient serviceClient()`
+
+#### `models.AutoScaleVCoreSku` was modified
+
+* `validate()` was removed
+
+#### `models.CheckCapacityNameAvailabilityParameters` was modified
+
+* `validate()` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `OperationDisplay()` was changed to private access
+* `validate()` was removed
+* `withDescription(java.lang.String)` was removed
+
+#### `models.SkuDetailsForExistingResource` was modified
+
+* `SkuDetailsForExistingResource()` was changed to private access
+* `withSku(models.CapacitySku)` was removed
+* `withResourceType(java.lang.String)` was removed
+* `validate()` was removed
+
+#### `models.DedicatedCapacityAdministrators` was modified
+
+* `validate()` was removed
+
+#### `models.MetricSpecificationDimensionsItem` was modified
+
+* `MetricSpecificationDimensionsItem()` was changed to private access
+* `withDisplayName(java.lang.String)` was removed
+* `validate()` was removed
+
+#### `models.AutoScaleVCoreUpdateParameters` was modified
+
+* `validate()` was removed
+
+#### `models.ServiceSpecification` was modified
+
+* `ServiceSpecification()` was changed to private access
+* `withMetricSpecifications(java.util.List)` was removed
+* `withLogSpecifications(java.util.List)` was removed
+* `validate()` was removed
+
+#### `models.LogSpecification` was modified
+
+* `LogSpecification()` was changed to private access
+* `withDisplayName(java.lang.String)` was removed
+* `validate()` was removed
+
+#### `models.CapacitySku` was modified
+
+* `validate()` was removed
+
+#### `models.DedicatedCapacity$Definition` was modified
+
+* `withSystemData(com.azure.core.management.SystemData)` was removed
+
+#### `models.DedicatedCapacityUpdateParameters` was modified
+
+* `validate()` was removed
+
+#### `models.MetricSpecification` was modified
+
+* `MetricSpecification()` was changed to private access
+* `validate()` was removed
+* `withDisplayDescription(java.lang.String)` was removed
+* `withDimensions(java.util.List)` was removed
+* `withDisplayName(java.lang.String)` was removed
+
+#### `models.AutoScaleVCore$Definition` was modified
+
+* `withSystemData(com.azure.core.management.SystemData)` was removed
+
+#### `models.OperationProperties` was modified
+
+* `OperationProperties()` was changed to private access
+* `withServiceSpecification(models.ServiceSpecification)` was removed
+* `validate()` was removed
 
 ## 1.0.0 (2024-12-25)
 

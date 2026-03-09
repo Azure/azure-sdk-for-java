@@ -52,6 +52,7 @@ private[spark] object CosmosConfigNames {
   val AzureEnvironment = "spark.cosmos.account.azureEnvironment"
   val AzureEnvironmentAAD = "spark.cosmos.account.azureEnvironment.aad"
   val AzureEnvironmentManagement = "spark.cosmos.account.azureEnvironment.management"
+  val AzureEnvironmentManagementScope = "spark.cosmos.account.azureEnvironment.management.scope"
   val AuthType = "spark.cosmos.auth.type"
   val ClientId = "spark.cosmos.auth.aad.clientId"
   val ResourceId = "spark.cosmos.auth.aad.resourceId"
@@ -192,6 +193,7 @@ private[spark] object CosmosConfigNames {
     AzureEnvironment,
     AzureEnvironmentAAD,
     AzureEnvironmentManagement,
+    AzureEnvironmentManagementScope,
     Database,
     Container,
     PreferredRegionsList,
@@ -688,6 +690,12 @@ private object CosmosAccountConfig extends BasicLoggingTrait {
     parseFromStringFunction = managementUri => managementUri,
     helpMessage = "The ARM management endpoint to be used when selecting AzureEnvironment `Custom`.")
 
+  private val AzureEnvironmentManagementScope = CosmosConfigEntry[String](key = CosmosConfigNames.AzureEnvironmentManagementScope,
+    defaultValue = None,
+    mandatory = false,
+    parseFromStringFunction = scope => scope,
+    helpMessage = "The audience/scope for the ARM management endpoint to be used when selecting AzureEnvironment `Custom`.")
+
   private val AzureEnvironmentAadUri = CosmosConfigEntry[String](key = CosmosConfigNames.AzureEnvironmentAAD,
     defaultValue = None,
     mandatory = false,
@@ -767,13 +775,21 @@ private object CosmosAccountConfig extends BasicLoggingTrait {
         && "Custom".equalsIgnoreCase(kvp._2))) {
 
       val endpoints: util.Map[String, String] = new util.HashMap[String, String]()
-      val mgmtEndpoint = CosmosConfigEntry.parse(cfg, AzureEnvironmentManagementUri)
-      if (mgmtEndpoint.isDefined) {
-        endpoints.put("resourceManagerEndpointUrl", mgmtEndpoint.get)
+      val resMgrEndpoint = CosmosConfigEntry.parse(cfg, AzureEnvironmentManagementUri)
+      if (resMgrEndpoint.isDefined) {
+        endpoints.put("resourceManagerEndpointUrl", resMgrEndpoint.get)
       } else {
         throw new IllegalArgumentException(
           s"The configuration '${CosmosConfigNames.AzureEnvironmentManagement}' is required when "
             + "choosing AzureEnvironment 'Custom'.")
+      }
+
+      val mgmtScope = CosmosConfigEntry.parse(cfg, AzureEnvironmentManagementScope)
+      if (mgmtScope.isDefined) {
+        endpoints.put("managementEndpointUrl", mgmtScope.get)
+      } else {
+        logError(s"The configuration '${CosmosConfigNames.AzureEnvironmentManagementScope}' is missing. "
+            + "This config is required  for Spark catalog integration when choosing AzureEnvironment 'Custom'.")
       }
 
       val aadEndpoint = CosmosConfigEntry.parse(cfg, AzureEnvironmentAadUri)
@@ -1510,8 +1526,7 @@ private object CosmosWriteConfig {
     defaultValue = Option.apply(false),
     parseFromStringFunction = bulkTransactionalAsString => bulkTransactionalAsString.toBoolean,
     helpMessage = "Cosmos DB Item Write bulk transactional batch mode enabled - requires bulk write to be enabled. " +
-      "Spark 3.5+ provides automatic distribution/ordering for transactional batch. " +
-      "On Spark 3.3/3.4, transactional batch is supported but requires manual sorting for optimal performance.")
+      "Requires Spark 3.5 or later.")
 
   private val microBatchPayloadSizeInBytes = CosmosConfigEntry[Int](key = CosmosConfigNames.WriteBulkPayloadSizeInBytes,
     defaultValue = Option.apply(BatchRequestResponseConstants.DEFAULT_MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES),

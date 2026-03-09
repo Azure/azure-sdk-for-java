@@ -27,7 +27,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-developer-loadtesting</artifactId>
-    <version>1.1.0-beta.1</version>
+    <version>1.2.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -280,8 +280,8 @@ For details on contributing to this repository, see the [contributing guide](htt
 <!-- LINKS -->
 [source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/loadtesting/azure-developer-loadtesting/src
 [sample_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/loadtesting/azure-developer-loadtesting/src/samples
-[data_plane_uri]: https://learn.microsoft.com/rest/api/loadtesting/data-plane-uri
-[api_reference_doc]: https://learn.microsoft.com/rest/api/loadtesting/
+[data_plane_uri]: https://learn.microsoft.com/rest/api/apptesting/loadtest/data-plane-uri
+[api_reference_doc]: https://learn.microsoft.com/rest/api/apptesting/loadtest/
 [product_documentation]: https://azure.microsoft.com/services/load-testing/
 [jdk]: https://learn.microsoft.com/java/azure/jdk/
 [azure_subscription]: https://azure.microsoft.com/free/
