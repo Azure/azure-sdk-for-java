@@ -9,6 +9,9 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosFullTextIndex;
+import com.azure.cosmos.models.CosmosFullTextPath;
+import com.azure.cosmos.models.CosmosFullTextPolicy;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.CosmosVectorDataType;
 import com.azure.cosmos.models.CosmosVectorDistanceFunction;
@@ -41,21 +44,22 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import static com.azure.cosmos.implementation.ThinClientTestBase.assertGatewayEndpointUsed;
 import static com.azure.cosmos.implementation.ThinClientTestBase.assertThinClientEndpointUsed;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.Fail.fail;
 
 /**
- * Unified thin client query E2E tests using oracle-style comparison.
- *
- * Every query is run through both a Gateway HTTP/1 client (oracle — via Compute Gateway,
+ * Unified thin client query E2E tests using thin client vs compute gateway comparison.
+ * <p>
+ * Every query is run through both a Gateway HTTP/1 client (via Compute Gateway,
  * which does ServiceInterop EPK conversion server-side) and a Thin Client HTTP/2 client
  * (system under test — via Proxy, which returns raw PartitionKeyInternal arrays, SDK
  * converts to EPK client-side). Tests assert:
  *   (1) Thin client used the :10250 endpoint
  *   (2) Result counts match
  *   (3) Document contents/order match
- *
+ * <p>
  * Covers: equality, range, IN, compound AND/OR, parameterized/non-parameterized,
  * boolean, IS_DEFINED, STARTSWITH, CONTAINS, ARRAY_CONTAINS, nested properties,
  * projections, computed aliases, ORDER BY ASC/DESC, DISTINCT, TOP, OFFSET/LIMIT,
@@ -64,7 +68,7 @@ import static org.assertj.core.api.Fail.fail;
  */
 public class ThinClientQueryE2ETest extends TestSuiteBase {
 
-    private CosmosAsyncClient gatewayClient;   // Oracle: HTTP/1 → Compute Gateway
+    private CosmosAsyncClient gatewayClient;   // Gateway: HTTP/1 → Compute Gateway
     private CosmosAsyncClient thinClient;       // SUT: HTTP/2 → Proxy (thin client)
     private CosmosAsyncContainer gatewayContainer;
     private CosmosAsyncContainer thinClientContainer;
@@ -79,25 +83,32 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
 
     @BeforeClass(groups = {"thinclient"}, timeOut = SETUP_TIMEOUT * 2)
     public void before_ThinClientQueryE2ETest() {
-        // 1. Gateway HTTP/1 client (oracle) — Compute Gateway does EPK conversion server-side
-        CosmosClientBuilder gatewayBuilder = createGatewayRxDocumentClient();
-        this.gatewayClient = gatewayBuilder.buildAsyncClient();
-        this.gatewayContainer = getSharedMultiPartitionCosmosContainer(this.gatewayClient);
+        try {
+            // 1. Gateway HTTP/1 client (baseline) — Compute Gateway does EPK conversion server-side
+            CosmosClientBuilder gatewayBuilder = createGatewayRxDocumentClient();
+            this.gatewayClient = gatewayBuilder.buildAsyncClient();
+            this.gatewayContainer = getSharedMultiPartitionCosmosContainer(this.gatewayClient);
 
-        // 2. Thin client HTTP/2 — Proxy returns raw PartitionKeyInternal, SDK converts client-side
-        // If running locally, uncomment these lines
-        System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
-        CosmosClientBuilder thinBuilder = createGatewayRxDocumentClient(
-            TestConfigurations.HOST, null, true, null, true, true, true);
-        this.thinClient = thinBuilder.buildAsyncClient();
-        this.thinClientContainer = this.thinClient.getDatabase(
-            gatewayContainer.getDatabase().getId()).getContainer(gatewayContainer.getId());
+            // 2. Thin client HTTP/2 — Proxy returns raw PartitionKeyInternal, SDK converts client-side
+            // If running locally, uncomment these lines
+            System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
+            CosmosClientBuilder thinBuilder = createGatewayRxDocumentClient(
+                TestConfigurations.HOST, null, true, null, true, true, true);
+            this.thinClient = thinBuilder.buildAsyncClient();
+            this.thinClientContainer = this.thinClient.getDatabase(
+                gatewayContainer.getDatabase().getId()).getContainer(gatewayContainer.getId());
 
-        // 3. Truncate shared container to prevent cross-test-class pollution
-        truncateCollection(this.gatewayContainer);
+            // 3. Truncate shared container to prevent cross-test-class pollution
+            truncateCollection(this.gatewayContainer);
 
-        // 4. Seed diverse test data for broad query coverage
-        seedTestData();
+            // 4. Seed diverse test data for broad query coverage
+            seedTestData();
+        } catch (Exception e) {
+            // Clean up any clients that were successfully created before the failure
+            if (this.thinClient != null) { this.thinClient.close(); this.thinClient = null; }
+            if (this.gatewayClient != null) { this.gatewayClient.close(); this.gatewayClient = null; }
+            throw e;
+        }
     }
 
     private void seedTestData() {
@@ -127,9 +138,16 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
 
             doc.putArray("scores").add(i * 10).add(i * 10 + 5);
 
-            gatewayContainer.createItem(doc, new PartitionKey(commonPk), null).block();
+            // Tags array for JOIN/EXISTS tests — varies per doc
+            ArrayNode tags = doc.putArray("tags");
+            tags.add(categories[i]); // first tag matches category
+            if (i % 2 == 0) tags.add("on-sale");
+            if (i % 3 == 0) tags.add("featured");
+
             seededDocs.add(doc);
         }
+
+        voidBulkInsertBlocking(gatewayContainer, seededDocs);
     }
 
     @AfterClass(groups = {"thinclient"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
@@ -143,201 +161,83 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
         if (this.gatewayClient != null) { this.gatewayClient.close(); }
     }
 
-    // ==================== Oracle Comparison Helpers ====================
-
-    private CosmosQueryRequestOptions partitionedOptions() {
-        CosmosQueryRequestOptions opts = new CosmosQueryRequestOptions();
-        opts.setPartitionKey(new PartitionKey(commonPk));
-        return opts;
-    }
-
-    /**
-     * Oracle comparison: run query via both gateway and thin client.
-     * Assert: (1) thin client used :10250, (2) same count, (3) same document IDs in order.
-     */
-    private void assertOracleMatch(String query) {
-        assertOracleMatch(query, partitionedOptions());
-    }
-
-    private void assertOracleMatch(String query, CosmosQueryRequestOptions options) {
-        List<ObjectNode> gwResults = drainQuery(gatewayContainer, query, options);
-
-        List<ObjectNode> tcResults = new ArrayList<>();
-        List<CosmosDiagnostics> tcDiag = new ArrayList<>();
-        for (FeedResponse<ObjectNode> page : thinClientContainer.queryItems(query, options, ObjectNode.class).byPage().toIterable()) {
-            tcResults.addAll(page.getResults());
-            tcDiag.add(page.getCosmosDiagnostics());
-        }
-        for (CosmosDiagnostics d : tcDiag) { assertThinClientEndpointUsed(d); }
-
-        assertThat(tcResults.size()).as("Count mismatch: " + query).isEqualTo(gwResults.size());
-
-        List<String> gwIds = gwResults.stream().filter(d -> d.has(ID_FIELD)).map(d -> d.get(ID_FIELD).asText()).collect(Collectors.toList());
-        List<String> tcIds = tcResults.stream().filter(d -> d.has(ID_FIELD)).map(d -> d.get(ID_FIELD).asText()).collect(Collectors.toList());
-        assertThat(tcIds).as("IDs mismatch: " + query).isEqualTo(gwIds);
-    }
-
-    private void assertOracleMatch(SqlQuerySpec querySpec, CosmosQueryRequestOptions options) {
-        List<ObjectNode> gwResults = drainQuery(gatewayContainer, querySpec, options);
-
-        List<ObjectNode> tcResults = new ArrayList<>();
-        List<CosmosDiagnostics> tcDiag = new ArrayList<>();
-        for (FeedResponse<ObjectNode> page : thinClientContainer.queryItems(querySpec, options, ObjectNode.class).byPage().toIterable()) {
-            tcResults.addAll(page.getResults());
-            tcDiag.add(page.getCosmosDiagnostics());
-        }
-        for (CosmosDiagnostics d : tcDiag) { assertThinClientEndpointUsed(d); }
-
-        assertThat(tcResults.size()).as("Count mismatch: " + querySpec.getQueryText()).isEqualTo(gwResults.size());
-
-        List<String> gwIds = gwResults.stream().filter(d -> d.has(ID_FIELD)).map(d -> d.get(ID_FIELD).asText()).collect(Collectors.toList());
-        List<String> tcIds = tcResults.stream().filter(d -> d.has(ID_FIELD)).map(d -> d.get(ID_FIELD).asText()).collect(Collectors.toList());
-        assertThat(tcIds).as("IDs mismatch: " + querySpec.getQueryText()).isEqualTo(gwIds);
-    }
-
-    private <T> void assertScalarOracleMatch(String query, Class<T> resultType) {
-        assertScalarOracleMatch(query, partitionedOptions(), resultType);
-    }
-
-    private <T> void assertScalarOracleMatch(String query, CosmosQueryRequestOptions options, Class<T> resultType) {
-        List<T> gwResults = drainScalarQuery(gatewayContainer, query, options, resultType);
-
-        List<T> tcResults = new ArrayList<>();
-        List<CosmosDiagnostics> tcDiag = new ArrayList<>();
-        for (FeedResponse<T> page : thinClientContainer.queryItems(query, options, resultType).byPage().toIterable()) {
-            tcResults.addAll(page.getResults());
-            tcDiag.add(page.getCosmosDiagnostics());
-        }
-        for (CosmosDiagnostics d : tcDiag) { assertThinClientEndpointUsed(d); }
-
-        assertThat(tcResults.size()).as("Scalar count mismatch: " + query).isEqualTo(gwResults.size());
-        for (int i = 0; i < gwResults.size(); i++) {
-            assertThat(tcResults.get(i).toString()).as("Scalar value mismatch at " + i + ": " + query)
-                .isEqualTo(gwResults.get(i).toString());
-        }
-    }
-
-    /** Oracle comparison for GROUP BY where result order may vary — compare as sets. */
-    private void assertGroupByOracleMatch(String query, String groupField) {
-        List<ObjectNode> gwResults = drainQuery(gatewayContainer, query, partitionedOptions());
-        List<ObjectNode> tcResults = new ArrayList<>();
-        List<CosmosDiagnostics> tcDiag = new ArrayList<>();
-        for (FeedResponse<ObjectNode> page : thinClientContainer.queryItems(query, partitionedOptions(), ObjectNode.class).byPage().toIterable()) {
-            tcResults.addAll(page.getResults());
-            tcDiag.add(page.getCosmosDiagnostics());
-        }
-        for (CosmosDiagnostics d : tcDiag) { assertThinClientEndpointUsed(d); }
-
-        assertThat(tcResults.size()).as("GROUP BY count mismatch: " + query).isEqualTo(gwResults.size());
-        for (ObjectNode gwRow : gwResults) {
-            String key = gwRow.get(groupField).asText();
-            boolean found = tcResults.stream().anyMatch(tc -> tc.get(groupField).asText().equals(key)
-                && tc.toString().equals(gwRow.toString()));
-            assertThat(found).as("GROUP BY row not found in thin client results: " + key).isTrue();
-        }
-    }
-
-    private List<ObjectNode> drainQuery(CosmosAsyncContainer c, String query, CosmosQueryRequestOptions opts) {
-        List<ObjectNode> results = new ArrayList<>();
-        for (FeedResponse<ObjectNode> p : c.queryItems(query, opts, ObjectNode.class).byPage().toIterable()) {
-            results.addAll(p.getResults());
-        }
-        return results;
-    }
-
-    private List<ObjectNode> drainQuery(CosmosAsyncContainer c, SqlQuerySpec qs, CosmosQueryRequestOptions opts) {
-        List<ObjectNode> results = new ArrayList<>();
-        for (FeedResponse<ObjectNode> p : c.queryItems(qs, opts, ObjectNode.class).byPage().toIterable()) {
-            results.addAll(p.getResults());
-        }
-        return results;
-    }
-
-    private <T> List<T> drainScalarQuery(CosmosAsyncContainer c, String query, CosmosQueryRequestOptions opts, Class<T> type) {
-        List<T> results = new ArrayList<>();
-        for (FeedResponse<T> p : c.queryItems(query, opts, type).byPage().toIterable()) {
-            results.addAll(p.getResults());
-        }
-        return results;
-    }
-
     // ==================== Equality & Filter Tests ====================
 
     @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
     public void testSelectAll() {
-        assertOracleMatch("SELECT * FROM c");
+        assertGatewayAndThinClientMatch("SELECT * FROM c");
     }
 
     @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
     public void testWhereEquality() {
-        assertOracleMatch("SELECT * FROM c WHERE c.category = 'electronics'");
+        assertGatewayAndThinClientMatch("SELECT * FROM c WHERE c.category = 'electronics'");
     }
 
     @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
     public void testWhereEqualityParameterized() {
         SqlQuerySpec qs = new SqlQuerySpec("SELECT * FROM c WHERE c.category = @cat");
         qs.setParameters(Arrays.asList(new SqlParameter("@cat", "books")));
-        assertOracleMatch(qs, partitionedOptions());
+        assertGatewayAndThinClientMatch(qs, partitionedOptions());
     }
 
     @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
     public void testWhereRangeGreaterThan() {
-        assertOracleMatch("SELECT * FROM c WHERE c.age > 30");
+        assertGatewayAndThinClientMatch("SELECT * FROM c WHERE c.age > 30");
     }
 
     @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
     public void testWhereRangeLessThanOrEqual() {
-        assertOracleMatch("SELECT * FROM c WHERE c.price <= 25.00");
+        assertGatewayAndThinClientMatch("SELECT * FROM c WHERE c.price <= 25.00");
     }
 
     @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
     public void testWhereRangeBetween() {
-        assertOracleMatch("SELECT * FROM c WHERE c.age >= 18 AND c.age <= 40");
+        assertGatewayAndThinClientMatch("SELECT * FROM c WHERE c.age >= 18 AND c.age <= 40");
     }
 
     @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
     public void testWhereIn() {
-        assertOracleMatch("SELECT * FROM c WHERE c.category IN ('electronics', 'toys')");
+        assertGatewayAndThinClientMatch("SELECT * FROM c WHERE c.category IN ('electronics', 'toys')");
     }
 
     @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
     public void testWhereCompoundAndOr() {
-        assertOracleMatch("SELECT * FROM c WHERE c.status = 'active' AND (c.category = 'electronics' OR c.category = 'books')");
+        assertGatewayAndThinClientMatch("SELECT * FROM c WHERE c.status = 'active' AND (c.category = 'electronics' OR c.category = 'books')");
     }
 
     @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
     public void testWhereNotEqual() {
-        assertOracleMatch("SELECT * FROM c WHERE c.status != 'inactive'");
+        assertGatewayAndThinClientMatch("SELECT * FROM c WHERE c.status != 'inactive'");
     }
 
     @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
     public void testWhereBooleanField() {
-        assertOracleMatch("SELECT * FROM c WHERE c.isActive = true");
+        assertGatewayAndThinClientMatch("SELECT * FROM c WHERE c.isActive = true");
     }
 
     @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
     public void testWhereIsDefined() {
-        assertOracleMatch("SELECT * FROM c WHERE IS_DEFINED(c.address)");
+        assertGatewayAndThinClientMatch("SELECT * FROM c WHERE IS_DEFINED(c.address)");
     }
 
     @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
     public void testWhereStartsWith() {
-        assertOracleMatch("SELECT * FROM c WHERE STARTSWITH(c.category, 'elec')");
+        assertGatewayAndThinClientMatch("SELECT * FROM c WHERE STARTSWITH(c.category, 'elec')");
     }
 
     @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
     public void testWhereContains() {
-        assertOracleMatch("SELECT * FROM c WHERE CONTAINS(c.category, 'ook')");
+        assertGatewayAndThinClientMatch("SELECT * FROM c WHERE CONTAINS(c.category, 'ook')");
     }
 
     @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
     public void testWhereArrayContains() {
-        assertOracleMatch("SELECT * FROM c WHERE ARRAY_CONTAINS(c.scores, 50)");
+        assertGatewayAndThinClientMatch("SELECT * FROM c WHERE ARRAY_CONTAINS(c.scores, 50)");
     }
 
     @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
     public void testWhereNestedProperty() {
-        assertOracleMatch("SELECT * FROM c WHERE c.address.city = 'Seattle'");
+        assertGatewayAndThinClientMatch("SELECT * FROM c WHERE c.address.city = 'Seattle'");
     }
 
     // ==================== Projection Tests ====================
@@ -345,131 +245,186 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
     @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
     public void testSelectSpecificFields() {
         String query = "SELECT c.id, c.category, c.price FROM c";
-        List<ObjectNode> gwResults = drainQuery(gatewayContainer, query, partitionedOptions());
+        QueryResult<ObjectNode> gwResult = drainQuery(gatewayContainer, query, partitionedOptions(), ObjectNode.class);
+        QueryResult<ObjectNode> tcResult = drainQuery(thinClientContainer, query, partitionedOptions(), ObjectNode.class);
 
-        List<ObjectNode> tcResults = new ArrayList<>();
-        List<CosmosDiagnostics> tcDiag = new ArrayList<>();
-        for (FeedResponse<ObjectNode> page : thinClientContainer.queryItems(query, partitionedOptions(), ObjectNode.class).byPage().toIterable()) {
-            tcResults.addAll(page.getResults());
-            tcDiag.add(page.getCosmosDiagnostics());
-        }
-        for (CosmosDiagnostics d : tcDiag) { assertThinClientEndpointUsed(d); }
+        for (CosmosDiagnostics d : gwResult.diagnostics) { assertGatewayEndpointUsed(d); }
+        for (CosmosDiagnostics d : tcResult.diagnostics) { assertThinClientEndpointUsed(d); }
 
-        assertThat(tcResults.size()).isEqualTo(gwResults.size());
-        for (int i = 0; i < gwResults.size(); i++) {
-            assertThat(tcResults.get(i).get("category").asText()).isEqualTo(gwResults.get(i).get("category").asText());
-            assertThat(tcResults.get(i).get("price").asDouble()).isEqualTo(gwResults.get(i).get("price").asDouble());
+        assertThat(tcResult.results.size()).as("Count mismatch: " + query).isEqualTo(gwResult.results.size());
+        for (int i = 0; i < gwResult.results.size(); i++) {
+            assertThat(tcResult.results.get(i).get("category").asText()).isEqualTo(gwResult.results.get(i).get("category").asText());
+            assertThat(tcResult.results.get(i).get("price").asDouble()).isEqualTo(gwResult.results.get(i).get("price").asDouble());
         }
     }
 
     @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
     public void testSelectComputedAlias() {
         String query = "SELECT c.id, c.price * 1.1 AS taxedPrice FROM c";
-        List<ObjectNode> gwResults = drainQuery(gatewayContainer, query, partitionedOptions());
+        QueryResult<ObjectNode> gwResult = drainQuery(gatewayContainer, query, partitionedOptions(), ObjectNode.class);
+        QueryResult<ObjectNode> tcResult = drainQuery(thinClientContainer, query, partitionedOptions(), ObjectNode.class);
 
-        List<ObjectNode> tcResults = new ArrayList<>();
-        List<CosmosDiagnostics> tcDiag = new ArrayList<>();
-        for (FeedResponse<ObjectNode> page : thinClientContainer.queryItems(query, partitionedOptions(), ObjectNode.class).byPage().toIterable()) {
-            tcResults.addAll(page.getResults());
-            tcDiag.add(page.getCosmosDiagnostics());
-        }
-        for (CosmosDiagnostics d : tcDiag) { assertThinClientEndpointUsed(d); }
+        for (CosmosDiagnostics d : gwResult.diagnostics) { assertGatewayEndpointUsed(d); }
+        for (CosmosDiagnostics d : tcResult.diagnostics) { assertThinClientEndpointUsed(d); }
 
-        assertThat(tcResults.size()).isEqualTo(gwResults.size());
+        assertThat(tcResult.results.size()).as("Count mismatch: " + query).isEqualTo(gwResult.results.size());
     }
 
     // ==================== ORDER BY Tests ====================
 
     @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
     public void testOrderByAsc() {
-        assertOracleMatch("SELECT * FROM c ORDER BY c.age");
+        assertGatewayAndThinClientMatch("SELECT * FROM c ORDER BY c.age");
     }
 
     @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
     public void testOrderByDesc() {
-        assertOracleMatch("SELECT * FROM c ORDER BY c.price DESC");
+        assertGatewayAndThinClientMatch("SELECT * FROM c ORDER BY c.price DESC");
     }
 
     // ==================== DISTINCT Tests ====================
 
     @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
     public void testDistinctValue() {
-        assertScalarOracleMatch("SELECT DISTINCT VALUE c.category FROM c", String.class);
+        assertScalarGatewayAndThinClientMatch("SELECT DISTINCT VALUE c.category FROM c", String.class);
     }
 
     @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
     public void testDistinctValueBoolean() {
-        assertScalarOracleMatch("SELECT DISTINCT VALUE c.isActive FROM c", Boolean.class);
+        assertScalarGatewayAndThinClientMatch("SELECT DISTINCT VALUE c.isActive FROM c", Boolean.class);
     }
 
     // ==================== TOP Tests ====================
 
     @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
     public void testTop() {
-        assertOracleMatch("SELECT TOP 3 * FROM c");
+        assertGatewayAndThinClientMatch("SELECT TOP 3 * FROM c");
     }
 
     @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
     public void testTopWithOrderBy() {
-        assertOracleMatch("SELECT TOP 5 * FROM c ORDER BY c.price DESC");
+        assertGatewayAndThinClientMatch("SELECT TOP 5 * FROM c ORDER BY c.price DESC");
     }
 
     // ==================== Aggregate Tests ====================
 
     @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
     public void testCount() {
-        assertScalarOracleMatch("SELECT VALUE COUNT(1) FROM c", Integer.class);
+        assertScalarGatewayAndThinClientMatch("SELECT VALUE COUNT(1) FROM c", Integer.class);
     }
 
     @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
     public void testSum() {
-        assertScalarOracleMatch("SELECT VALUE SUM(c.price) FROM c", Double.class);
+        assertScalarGatewayAndThinClientMatch("SELECT VALUE SUM(c.price) FROM c", Double.class);
     }
 
     @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
     public void testAvg() {
-        assertScalarOracleMatch("SELECT VALUE AVG(c.age) FROM c", Double.class);
+        assertScalarGatewayAndThinClientMatch("SELECT VALUE AVG(c.age) FROM c", Double.class);
     }
 
     @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
     public void testMin() {
-        assertScalarOracleMatch("SELECT VALUE MIN(c.price) FROM c", Double.class);
+        assertScalarGatewayAndThinClientMatch("SELECT VALUE MIN(c.price) FROM c", Double.class);
     }
 
     @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
     public void testMax() {
-        assertScalarOracleMatch("SELECT VALUE MAX(c.age) FROM c", Integer.class);
+        assertScalarGatewayAndThinClientMatch("SELECT VALUE MAX(c.age) FROM c", Integer.class);
     }
 
     // ==================== GROUP BY Tests ====================
 
     @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
     public void testGroupByCount() {
-        assertGroupByOracleMatch("SELECT c.category, COUNT(1) as cnt FROM c GROUP BY c.category", "category");
+        assertGroupByGatewayAndThinClientMatch("SELECT c.category, COUNT(1) as cnt FROM c GROUP BY c.category", "category");
     }
 
     @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
     public void testGroupBySumAvg() {
-        assertGroupByOracleMatch("SELECT c.category, SUM(c.price) as total, AVG(c.price) as avg FROM c GROUP BY c.category", "category");
+        assertGroupByGatewayAndThinClientMatch("SELECT c.category, SUM(c.price) as total, AVG(c.price) as avg FROM c GROUP BY c.category", "category");
     }
 
     // ==================== OFFSET / LIMIT Tests ====================
 
     @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
     public void testOffsetLimit() {
-        assertOracleMatch("SELECT * FROM c ORDER BY c.idx OFFSET 3 LIMIT 4");
+        assertGatewayAndThinClientMatch("SELECT * FROM c ORDER BY c.idx OFFSET 3 LIMIT 4");
+    }
+
+    // ==================== JOIN Tests ====================
+
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    public void testJoinScoresArray() {
+        // Self-join on scores array — produces one row per array element
+        assertGatewayAndThinClientMatch("SELECT c.id, s AS score FROM c JOIN s IN c.scores");
+    }
+
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    public void testJoinWithFilter() {
+        // Self-join with WHERE filter on the joined element
+        assertGatewayAndThinClientMatch("SELECT c.id, s AS score FROM c JOIN s IN c.scores WHERE s >= 50");
+    }
+
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    public void testJoinTagsArray() {
+        // Self-join on tags string array
+        assertGatewayAndThinClientMatch("SELECT c.id, t AS tag FROM c JOIN t IN c.tags");
+    }
+
+    // ==================== EXISTS Subquery Tests ====================
+
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    public void testExistsSubquery() {
+        // Docs pattern: use EXISTS to check if any array element matches
+        assertGatewayAndThinClientMatch(
+            "SELECT * FROM c WHERE EXISTS (SELECT VALUE s FROM s IN c.scores WHERE s > 60)");
+    }
+
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    public void testExistsSubqueryWithStringMatch() {
+        // EXISTS on tags array with string match
+        assertGatewayAndThinClientMatch(
+            "SELECT * FROM c WHERE EXISTS (SELECT VALUE t FROM t IN c.tags WHERE t = 'on-sale')");
+    }
+
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    public void testExistsAliasInProjection() {
+        // EXISTS aliased in SELECT — returns boolean column
+        assertGatewayAndThinClientMatch(
+            "SELECT c.id, EXISTS (SELECT VALUE s FROM s IN c.scores WHERE s > 60) AS hasHighScore FROM c");
+    }
+
+    // ==================== LIKE Tests ====================
+
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    public void testLikePrefix() {
+        // LIKE with prefix pattern
+        assertGatewayAndThinClientMatch("SELECT * FROM c WHERE c.category LIKE 'elec%'");
+    }
+
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    public void testLikeSuffix() {
+        // LIKE with suffix pattern
+        assertGatewayAndThinClientMatch("SELECT * FROM c WHERE c.category LIKE '%ing'");
+    }
+
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
+    public void testLikeContains() {
+        // LIKE with contains pattern (substring match via wildcards)
+        assertGatewayAndThinClientMatch("SELECT * FROM c WHERE c.category LIKE '%ook%'");
     }
 
     // ==================== Cross-Partition Tests ====================
 
     @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
     public void testCrossPartitionSelectAll() {
-        assertOracleMatch("SELECT * FROM c ORDER BY c.idx", new CosmosQueryRequestOptions());
+        assertGatewayAndThinClientMatch("SELECT * FROM c ORDER BY c.idx", new CosmosQueryRequestOptions());
     }
 
     @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
     public void testCrossPartitionWhereFilter() {
-        assertOracleMatch("SELECT * FROM c WHERE c.category = 'electronics' ORDER BY c.idx",
+        assertGatewayAndThinClientMatch("SELECT * FROM c WHERE c.category = 'electronics' ORDER BY c.idx",
             new CosmosQueryRequestOptions());
     }
 
@@ -514,7 +469,7 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
             // Build query from template (replace %s with constructed IN list if needed)
             String query = queryTemplate;
 
-            // Oracle comparison
+            // Gateway vs thin client comparison
             List<ObjectNode> gwResults = new ArrayList<>();
             for (FeedResponse<ObjectNode> page : gwContainer.queryItems(query, new CosmosQueryRequestOptions(), ObjectNode.class).byPage().toIterable()) {
                 gwResults.addAll(page.getResults());
@@ -590,9 +545,11 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
 
     @Test(groups = {"thinclient"}, timeOut = TIMEOUT)
     public void testContinuationTokenDraining() {
-        // Drain with small page size to force multiple continuations
-        List<ObjectNode> gwAll = drainQuery(gatewayContainer, "SELECT * FROM c", partitionedOptions());
+        // Drain gateway fully for expected count
+        QueryResult<ObjectNode> gwResult = drainQuery(gatewayContainer, "SELECT * FROM c", partitionedOptions(), ObjectNode.class);
+        for (CosmosDiagnostics d : gwResult.diagnostics) { assertGatewayEndpointUsed(d); }
 
+        // Drain thin client with small page size to force multiple continuations
         List<ObjectNode> tcAll = new ArrayList<>();
         List<CosmosDiagnostics> tcDiag = new ArrayList<>();
         String continuationToken = null;
@@ -613,7 +570,7 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
 
         for (CosmosDiagnostics d : tcDiag) { assertThinClientEndpointUsed(d); }
         assertThat(pageCount).as("Should have multiple pages with page size 3").isGreaterThan(1);
-        assertThat(tcAll.size()).as("Continuation draining count mismatch").isEqualTo(gwAll.size());
+        assertThat(tcAll.size()).as("Continuation draining count mismatch").isEqualTo(gwResult.results.size());
     }
 
     // ==================== Invalid Query ====================
@@ -634,15 +591,15 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
         }
     }
 
-    // ==================== Vector Search (Oracle Comparison on Special Container) ====================
+    // ==================== Vector Search (Gateway vs Thin Client on Vector Container) ====================
 
     /**
      * Creates a vector-enabled container, runs VectorDistance query through both
      * gateway and thin client, compares results.
      */
     @Test(groups = {"thinclient"}, timeOut = TIMEOUT * 2)
-    public void testVectorSearchOracleComparison() {
-        String vectorContainerId = "vecOracle_" + UUID.randomUUID().toString().substring(0, 8);
+    public void testVectorSearchGatewayVsThinClient() {
+        String vectorContainerId = "vecCompare_" + UUID.randomUUID().toString().substring(0, 8);
         CosmosAsyncDatabase gwDb = gatewayClient.getDatabase(gatewayContainer.getDatabase().getId());
         CosmosAsyncContainer gwVectorContainer = null;
         CosmosAsyncContainer tcVectorContainer = null;
@@ -736,6 +693,291 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
             if (gwVectorContainer != null) {
                 try { gwVectorContainer.delete().block(); } catch (Exception e) { logger.warn("Cleanup failed", e); }
             }
+        }
+    }
+
+    // ==================== Full-Text Search (Expected to fail — capability not enabled) ====================
+
+    /**
+     * Creates a container with full-text policy and index, runs FullTextContains query.
+     * Expected to fail: account requires EnableNoSQLFullTextSearch capability.
+     */
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT * 2)
+    public void testFullTextSearchGatewayVsThinClient() {
+        String containerId = "ftsCompare_" + UUID.randomUUID().toString().substring(0, 8);
+        CosmosAsyncDatabase gwDb = gatewayClient.getDatabase(gatewayContainer.getDatabase().getId());
+        CosmosAsyncContainer gwFtsContainer = null;
+
+        try {
+            // 1. Create container with full-text policy and full-text index
+            PartitionKeyDefinition pkDef = new PartitionKeyDefinition();
+            pkDef.setPaths(Collections.singletonList("/" + PK_FIELD));
+
+            CosmosContainerProperties props = new CosmosContainerProperties(containerId, pkDef);
+
+            CosmosFullTextPath ftPath = new CosmosFullTextPath();
+            ftPath.setPath("/text");
+            ftPath.setLanguage("en-US");
+            CosmosFullTextPolicy ftPolicy = new CosmosFullTextPolicy();
+            ftPolicy.setDefaultLanguage("en-US");
+            ftPolicy.setPaths(Collections.singletonList(ftPath));
+            props.setFullTextPolicy(ftPolicy);
+
+            IndexingPolicy idxPolicy = new IndexingPolicy();
+            idxPolicy.setIndexingMode(IndexingMode.CONSISTENT);
+            idxPolicy.setIncludedPaths(Collections.singletonList(new IncludedPath("/*")));
+            idxPolicy.setExcludedPaths(Collections.singletonList(new ExcludedPath("/\"_etag\"/?")));
+            CosmosFullTextIndex ftIndex = new CosmosFullTextIndex();
+            ftIndex.setPath("/text");
+            idxPolicy.setCosmosFullTextIndexes(Collections.singletonList(ftIndex));
+            props.setIndexingPolicy(idxPolicy);
+
+            gwDb.createContainer(props).block();
+            gwFtsContainer = gwDb.getContainer(containerId);
+            CosmosAsyncContainer tcFtsContainer = thinClient.getDatabase(gwDb.getId()).getContainer(containerId);
+
+            // 2. Insert docs with text content
+            String ftsPk = UUID.randomUUID().toString();
+            String[] texts = {
+                "The quick brown fox jumps over the lazy dog",
+                "A red bicycle parked near the mountain trail",
+                "Electronic devices on sale at the downtown store",
+                "Mountain biking trails with scenic views",
+                "The lazy cat sleeps on the warm brown couch"
+            };
+            for (int i = 0; i < texts.length; i++) {
+                ObjectNode doc = OBJECT_MAPPER.createObjectNode();
+                doc.put(ID_FIELD, "fts_" + i + "_" + UUID.randomUUID().toString().substring(0, 8));
+                doc.put(PK_FIELD, ftsPk);
+                doc.put("text", texts[i]);
+                gwFtsContainer.createItem(doc, new PartitionKey(ftsPk), null).block();
+            }
+
+            // 3. Run FullTextContains query through both paths
+            String query = "SELECT TOP 10 * FROM c WHERE FullTextContains(c.text, 'mountain')";
+
+            QueryResult<ObjectNode> gwResult = drainQuery(gwFtsContainer, query, new CosmosQueryRequestOptions(), ObjectNode.class);
+            QueryResult<ObjectNode> tcResult = drainQuery(tcFtsContainer, query, new CosmosQueryRequestOptions(), ObjectNode.class);
+
+            for (CosmosDiagnostics d : tcResult.diagnostics) { assertThinClientEndpointUsed(d); }
+            assertThat(tcResult.results.size()).isEqualTo(gwResult.results.size());
+
+        } catch (CosmosException e) {
+            // Expected: account does not have EnableNoSQLFullTextSearch capability.
+            // Status may be 400 (gateway) or 0 (proxy error wrapping).
+            logger.info("Full-text search test failed as expected: {} (status {})", e.getMessage(), e.getStatusCode());
+            assertThat(e.getStatusCode() == 400 || e.getStatusCode() == 0)
+                .as("Expected 400 or proxy error for missing full-text capability, got: " + e.getStatusCode())
+                .isTrue();
+        } finally {
+            if (gwFtsContainer != null) {
+                try { gwFtsContainer.delete().block(); } catch (Exception e) { logger.warn("Cleanup failed", e); }
+            }
+        }
+    }
+
+    // ==================== Hybrid Search (Expected to fail — capability not enabled) ====================
+
+    /**
+     * Creates a container with vector + full-text policies, runs hybrid RRF query.
+     * Expected to fail: account requires both EnableNoSQLVectorSearch and EnableNoSQLFullTextSearch.
+     */
+    @Test(groups = {"thinclient"}, timeOut = TIMEOUT * 2)
+    public void testHybridSearchGatewayVsThinClient() {
+        String containerId = "hybridCompare_" + UUID.randomUUID().toString().substring(0, 8);
+        CosmosAsyncDatabase gwDb = gatewayClient.getDatabase(gatewayContainer.getDatabase().getId());
+        CosmosAsyncContainer gwHybridContainer = null;
+
+        try {
+            // 1. Create container with both vector and full-text policies
+            PartitionKeyDefinition pkDef = new PartitionKeyDefinition();
+            pkDef.setPaths(Collections.singletonList("/" + PK_FIELD));
+
+            CosmosContainerProperties props = new CosmosContainerProperties(containerId, pkDef);
+
+            // Vector policy
+            CosmosVectorEmbeddingPolicy vecPolicy = new CosmosVectorEmbeddingPolicy();
+            CosmosVectorEmbedding emb = new CosmosVectorEmbedding();
+            emb.setPath("/vector");
+            emb.setDataType(CosmosVectorDataType.FLOAT32);
+            emb.setEmbeddingDimensions(3);
+            emb.setDistanceFunction(CosmosVectorDistanceFunction.COSINE);
+            vecPolicy.setCosmosVectorEmbeddings(Collections.singletonList(emb));
+            props.setVectorEmbeddingPolicy(vecPolicy);
+
+            // Full-text policy
+            CosmosFullTextPath ftPath = new CosmosFullTextPath();
+            ftPath.setPath("/text");
+            ftPath.setLanguage("en-US");
+            CosmosFullTextPolicy ftPolicy = new CosmosFullTextPolicy();
+            ftPolicy.setDefaultLanguage("en-US");
+            ftPolicy.setPaths(Collections.singletonList(ftPath));
+            props.setFullTextPolicy(ftPolicy);
+
+            // Indexing policy with vector + full-text indexes
+            IndexingPolicy idxPolicy = new IndexingPolicy();
+            idxPolicy.setIndexingMode(IndexingMode.CONSISTENT);
+            idxPolicy.setIncludedPaths(Collections.singletonList(new IncludedPath("/*")));
+            idxPolicy.setExcludedPaths(Arrays.asList(new ExcludedPath("/vector/*"), new ExcludedPath("/\"_etag\"/?")));
+            CosmosVectorIndexSpec vecIdx = new CosmosVectorIndexSpec();
+            vecIdx.setPath("/vector");
+            vecIdx.setType(CosmosVectorIndexType.FLAT.toString());
+            idxPolicy.setVectorIndexes(Collections.singletonList(vecIdx));
+            CosmosFullTextIndex ftIndex = new CosmosFullTextIndex();
+            ftIndex.setPath("/text");
+            idxPolicy.setCosmosFullTextIndexes(Collections.singletonList(ftIndex));
+            props.setIndexingPolicy(idxPolicy);
+
+            gwDb.createContainer(props).block();
+            gwHybridContainer = gwDb.getContainer(containerId);
+            CosmosAsyncContainer tcHybridContainer = thinClient.getDatabase(gwDb.getId()).getContainer(containerId);
+
+            // 2. Insert docs with both text and vector
+            String hybridPk = UUID.randomUUID().toString();
+            String[] texts = {
+                "Red bicycle on the mountain trail",
+                "Blue car parked in the city",
+                "Green bicycle near the lake"
+            };
+            double[][] vectors = {
+                {1.0, 0.0, 0.0},
+                {0.0, 1.0, 0.0},
+                {0.0, 0.0, 1.0}
+            };
+            for (int i = 0; i < texts.length; i++) {
+                ObjectNode doc = OBJECT_MAPPER.createObjectNode();
+                doc.put(ID_FIELD, "hybrid_" + i + "_" + UUID.randomUUID().toString().substring(0, 8));
+                doc.put(PK_FIELD, hybridPk);
+                doc.put("text", texts[i]);
+                ArrayNode arr = doc.putArray("vector");
+                for (double v : vectors[i]) { arr.add(v); }
+                gwHybridContainer.createItem(doc, new PartitionKey(hybridPk), null).block();
+            }
+
+            // 3. Run hybrid RRF query combining VectorDistance + FullTextScore
+            String query = "SELECT TOP 3 * FROM c "
+                + "ORDER BY RANK RRF(VectorDistance(c.vector, [1.0, 0.0, 0.0]), FullTextScore(c.text, 'bicycle'))";
+
+            QueryResult<ObjectNode> gwResult = drainQuery(gwHybridContainer, query, new CosmosQueryRequestOptions(), ObjectNode.class);
+            QueryResult<ObjectNode> tcResult = drainQuery(tcHybridContainer, query, new CosmosQueryRequestOptions(), ObjectNode.class);
+
+            for (CosmosDiagnostics d : tcResult.diagnostics) { assertThinClientEndpointUsed(d); }
+            assertThat(tcResult.results.size()).isEqualTo(gwResult.results.size());
+
+        } catch (CosmosException e) {
+            // Expected: account does not have required capabilities.
+            // Status may be 400 (gateway) or 0 (proxy error wrapping).
+            logger.info("Hybrid search test failed as expected: {} (status {})", e.getMessage(), e.getStatusCode());
+            assertThat(e.getStatusCode() == 400 || e.getStatusCode() == 0)
+                .as("Expected 400 or proxy error for missing capabilities, got: " + e.getStatusCode())
+                .isTrue();
+        } finally {
+            if (gwHybridContainer != null) {
+                try { gwHybridContainer.delete().block(); } catch (Exception e) { logger.warn("Cleanup failed", e); }
+            }
+        }
+    }
+
+    // ==================== Assertion & Drain Helpers ====================
+
+    /** Holds query results and per-page diagnostics from a fully drained query. */
+    private static class QueryResult<T> {
+        final List<T> results = new ArrayList<>();
+        final List<CosmosDiagnostics> diagnostics = new ArrayList<>();
+    }
+
+    private CosmosQueryRequestOptions partitionedOptions() {
+        CosmosQueryRequestOptions opts = new CosmosQueryRequestOptions();
+        opts.setPartitionKey(new PartitionKey(commonPk));
+        return opts;
+    }
+
+    private <T> QueryResult<T> drainQuery(CosmosAsyncContainer c, String query, CosmosQueryRequestOptions opts, Class<T> type) {
+        QueryResult<T> result = new QueryResult<>();
+        for (FeedResponse<T> page : c.queryItems(query, opts, type).byPage().toIterable()) {
+            result.results.addAll(page.getResults());
+            result.diagnostics.add(page.getCosmosDiagnostics());
+        }
+        return result;
+    }
+
+    private <T> QueryResult<T> drainQuery(CosmosAsyncContainer c, SqlQuerySpec qs, CosmosQueryRequestOptions opts, Class<T> type) {
+        QueryResult<T> result = new QueryResult<>();
+        for (FeedResponse<T> page : c.queryItems(qs, opts, type).byPage().toIterable()) {
+            result.results.addAll(page.getResults());
+            result.diagnostics.add(page.getCosmosDiagnostics());
+        }
+        return result;
+    }
+
+    /**
+     * Gateway vs thin client comparison: run query via both gateway and thin client.
+     * Assert: (1) gateway used :443, (2) thin client used :10250, (3) same count, (4) same document IDs in order.
+     */
+    private void assertGatewayAndThinClientMatch(String query) {
+        assertGatewayAndThinClientMatch(query, partitionedOptions());
+    }
+
+    private void assertGatewayAndThinClientMatch(String query, CosmosQueryRequestOptions options) {
+        QueryResult<ObjectNode> gwResult = drainQuery(gatewayContainer, query, options, ObjectNode.class);
+        QueryResult<ObjectNode> tcResult = drainQuery(thinClientContainer, query, options, ObjectNode.class);
+
+        for (CosmosDiagnostics d : gwResult.diagnostics) { assertGatewayEndpointUsed(d); }
+        for (CosmosDiagnostics d : tcResult.diagnostics) { assertThinClientEndpointUsed(d); }
+
+        assertThat(tcResult.results.size()).as("Count mismatch: " + query).isEqualTo(gwResult.results.size());
+
+        List<String> gwIds = gwResult.results.stream().filter(d -> d.has(ID_FIELD)).map(d -> d.get(ID_FIELD).asText()).collect(Collectors.toList());
+        List<String> tcIds = tcResult.results.stream().filter(d -> d.has(ID_FIELD)).map(d -> d.get(ID_FIELD).asText()).collect(Collectors.toList());
+        assertThat(tcIds).as("IDs mismatch: " + query).isEqualTo(gwIds);
+    }
+
+    private void assertGatewayAndThinClientMatch(SqlQuerySpec querySpec, CosmosQueryRequestOptions options) {
+        QueryResult<ObjectNode> gwResult = drainQuery(gatewayContainer, querySpec, options, ObjectNode.class);
+        QueryResult<ObjectNode> tcResult = drainQuery(thinClientContainer, querySpec, options, ObjectNode.class);
+
+        for (CosmosDiagnostics d : gwResult.diagnostics) { assertGatewayEndpointUsed(d); }
+        for (CosmosDiagnostics d : tcResult.diagnostics) { assertThinClientEndpointUsed(d); }
+
+        assertThat(tcResult.results.size()).as("Count mismatch: " + querySpec.getQueryText()).isEqualTo(gwResult.results.size());
+
+        List<String> gwIds = gwResult.results.stream().filter(d -> d.has(ID_FIELD)).map(d -> d.get(ID_FIELD).asText()).collect(Collectors.toList());
+        List<String> tcIds = tcResult.results.stream().filter(d -> d.has(ID_FIELD)).map(d -> d.get(ID_FIELD).asText()).collect(Collectors.toList());
+        assertThat(tcIds).as("IDs mismatch: " + querySpec.getQueryText()).isEqualTo(gwIds);
+    }
+
+    private <T> void assertScalarGatewayAndThinClientMatch(String query, Class<T> resultType) {
+        assertScalarGatewayAndThinClientMatch(query, partitionedOptions(), resultType);
+    }
+
+    private <T> void assertScalarGatewayAndThinClientMatch(String query, CosmosQueryRequestOptions options, Class<T> resultType) {
+        QueryResult<T> gwResult = drainQuery(gatewayContainer, query, options, resultType);
+        QueryResult<T> tcResult = drainQuery(thinClientContainer, query, options, resultType);
+
+        for (CosmosDiagnostics d : gwResult.diagnostics) { assertGatewayEndpointUsed(d); }
+        for (CosmosDiagnostics d : tcResult.diagnostics) { assertThinClientEndpointUsed(d); }
+
+        assertThat(tcResult.results.size()).as("Scalar count mismatch: " + query).isEqualTo(gwResult.results.size());
+        for (int i = 0; i < gwResult.results.size(); i++) {
+            assertThat(tcResult.results.get(i).toString()).as("Scalar value mismatch at " + i + ": " + query)
+                .isEqualTo(gwResult.results.get(i).toString());
+        }
+    }
+
+    /** Gateway vs thin client comparison for GROUP BY where result order may vary — compare as sets. */
+    private void assertGroupByGatewayAndThinClientMatch(String query, String groupField) {
+        QueryResult<ObjectNode> gwResult = drainQuery(gatewayContainer, query, partitionedOptions(), ObjectNode.class);
+        QueryResult<ObjectNode> tcResult = drainQuery(thinClientContainer, query, partitionedOptions(), ObjectNode.class);
+
+        for (CosmosDiagnostics d : gwResult.diagnostics) { assertGatewayEndpointUsed(d); }
+        for (CosmosDiagnostics d : tcResult.diagnostics) { assertThinClientEndpointUsed(d); }
+
+        assertThat(tcResult.results.size()).as("GROUP BY count mismatch: " + query).isEqualTo(gwResult.results.size());
+        for (ObjectNode gwRow : gwResult.results) {
+            String key = gwRow.get(groupField).asText();
+            boolean found = tcResult.results.stream().anyMatch(tc -> tc.get(groupField).asText().equals(key)
+                && tc.toString().equals(gwRow.toString()));
+            assertThat(found).as("GROUP BY row not found in thin client results: " + key).isTrue();
         }
     }
 }

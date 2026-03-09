@@ -86,4 +86,22 @@ public abstract class ThinClientTestBase extends TestSuiteBase {
         }
         assertThat(requestCountAgainstThinClientEndpoint).isEqualTo(requests.size());
     }
+
+    /**
+     * Asserts that NO requests in the diagnostics were routed through the thin client endpoint,
+     * confirming the gateway client used the standard :443 path.
+     */
+    protected static void assertGatewayEndpointUsed(CosmosDiagnostics diagnostics) {
+        assertThat(diagnostics).isNotNull();
+        CosmosDiagnosticsContext ctx = diagnostics.getDiagnosticsContext();
+        assertThat(ctx).isNotNull();
+        Collection<CosmosDiagnosticsRequestInfo> requests = ctx.getRequestInfo();
+        assertThat(requests).isNotNull();
+        assertThat(requests.size()).isPositive();
+        for (CosmosDiagnosticsRequestInfo requestInfo : requests) {
+            assertThat(requestInfo.getEndpoint())
+                .as("Gateway client must not route through thin client endpoint, but found: " + requestInfo.getEndpoint())
+                .doesNotContain(THIN_CLIENT_ENDPOINT_INDICATOR);
+        }
+    }
 }
