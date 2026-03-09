@@ -31,12 +31,8 @@ public final class MonitoredSubscriptionsImpl implements MonitoredSubscriptions 
         String configurationName, Context context) {
         Response<MonitoredSubscriptionPropertiesInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, monitorName, configurationName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new MonitoredSubscriptionPropertiesImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new MonitoredSubscriptionPropertiesImpl(inner.getValue(), this.manager()));
     }
 
     public MonitoredSubscriptionProperties get(String resourceGroupName, String monitorName, String configurationName) {

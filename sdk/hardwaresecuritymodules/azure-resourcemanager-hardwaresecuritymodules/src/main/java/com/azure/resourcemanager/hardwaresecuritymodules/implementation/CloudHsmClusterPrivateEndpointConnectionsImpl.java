@@ -30,12 +30,8 @@ public final class CloudHsmClusterPrivateEndpointConnectionsImpl implements Clou
         String peConnectionName, Context context) {
         Response<PrivateEndpointConnectionInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, cloudHsmClusterName, peConnectionName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new PrivateEndpointConnectionImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new PrivateEndpointConnectionImpl(inner.getValue(), this.manager()));
     }
 
     public PrivateEndpointConnection get(String resourceGroupName, String cloudHsmClusterName,

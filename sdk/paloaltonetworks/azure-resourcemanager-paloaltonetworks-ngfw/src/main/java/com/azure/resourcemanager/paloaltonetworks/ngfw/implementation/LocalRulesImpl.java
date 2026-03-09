@@ -35,12 +35,8 @@ public final class LocalRulesImpl implements LocalRules {
         String priority, Context context) {
         Response<LocalRulesResourceInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, localRulestackName, priority, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new LocalRulesResourceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new LocalRulesResourceImpl(inner.getValue(), this.manager()));
     }
 
     public LocalRulesResource get(String resourceGroupName, String localRulestackName, String priority) {
@@ -78,12 +74,8 @@ public final class LocalRulesImpl implements LocalRules {
         String priority, String firewallName, Context context) {
         Response<RuleCounterInner> inner = this.serviceClient()
             .getCountersWithResponse(resourceGroupName, localRulestackName, priority, firewallName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new RuleCounterImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new RuleCounterImpl(inner.getValue(), this.manager()));
     }
 
     public RuleCounter getCounters(String resourceGroupName, String localRulestackName, String priority) {
@@ -109,12 +101,8 @@ public final class LocalRulesImpl implements LocalRules {
         String priority, String firewallName, Context context) {
         Response<RuleCounterResetInner> inner = this.serviceClient()
             .resetCountersWithResponse(resourceGroupName, localRulestackName, priority, firewallName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new RuleCounterResetImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new RuleCounterResetImpl(inner.getValue(), this.manager()));
     }
 
     public RuleCounterReset resetCounters(String resourceGroupName, String localRulestackName, String priority) {

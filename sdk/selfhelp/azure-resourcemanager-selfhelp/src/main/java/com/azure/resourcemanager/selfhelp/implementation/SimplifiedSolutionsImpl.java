@@ -30,12 +30,8 @@ public final class SimplifiedSolutionsImpl implements SimplifiedSolutions {
         Context context) {
         Response<SimplifiedSolutionsResourceInner> inner
             = this.serviceClient().getWithResponse(scope, simplifiedSolutionsResourceName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new SimplifiedSolutionsResourceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new SimplifiedSolutionsResourceImpl(inner.getValue(), this.manager()));
     }
 
     public SimplifiedSolutionsResource get(String scope, String simplifiedSolutionsResourceName) {

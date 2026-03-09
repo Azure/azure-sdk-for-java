@@ -68,12 +68,8 @@ public final class ScheduledActionsImpl implements ScheduledActions {
         String locationparameter, SubmitDeallocateRequest requestBody, Context context) {
         Response<DeallocateResourceOperationResponseInner> inner
             = this.serviceClient().virtualMachinesSubmitDeallocateWithResponse(locationparameter, requestBody, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new DeallocateResourceOperationResponseImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new DeallocateResourceOperationResponseImpl(inner.getValue(), this.manager()));
     }
 
     public DeallocateResourceOperationResponse virtualMachinesSubmitDeallocate(String locationparameter,
@@ -91,12 +87,8 @@ public final class ScheduledActionsImpl implements ScheduledActions {
         String locationparameter, SubmitHibernateRequest requestBody, Context context) {
         Response<HibernateResourceOperationResponseInner> inner
             = this.serviceClient().virtualMachinesSubmitHibernateWithResponse(locationparameter, requestBody, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new HibernateResourceOperationResponseImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new HibernateResourceOperationResponseImpl(inner.getValue(), this.manager()));
     }
 
     public HibernateResourceOperationResponse virtualMachinesSubmitHibernate(String locationparameter,
@@ -114,12 +106,8 @@ public final class ScheduledActionsImpl implements ScheduledActions {
         SubmitStartRequest requestBody, Context context) {
         Response<StartResourceOperationResponseInner> inner
             = this.serviceClient().virtualMachinesSubmitStartWithResponse(locationparameter, requestBody, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new StartResourceOperationResponseImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new StartResourceOperationResponseImpl(inner.getValue(), this.manager()));
     }
 
     public StartResourceOperationResponse virtualMachinesSubmitStart(String locationparameter,
@@ -137,12 +125,8 @@ public final class ScheduledActionsImpl implements ScheduledActions {
         String locationparameter, ExecuteDeallocateRequest requestBody, Context context) {
         Response<DeallocateResourceOperationResponseInner> inner = this.serviceClient()
             .virtualMachinesExecuteDeallocateWithResponse(locationparameter, requestBody, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new DeallocateResourceOperationResponseImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new DeallocateResourceOperationResponseImpl(inner.getValue(), this.manager()));
     }
 
     public DeallocateResourceOperationResponse virtualMachinesExecuteDeallocate(String locationparameter,
@@ -160,12 +144,8 @@ public final class ScheduledActionsImpl implements ScheduledActions {
         String locationparameter, ExecuteHibernateRequest requestBody, Context context) {
         Response<HibernateResourceOperationResponseInner> inner
             = this.serviceClient().virtualMachinesExecuteHibernateWithResponse(locationparameter, requestBody, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new HibernateResourceOperationResponseImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new HibernateResourceOperationResponseImpl(inner.getValue(), this.manager()));
     }
 
     public HibernateResourceOperationResponse virtualMachinesExecuteHibernate(String locationparameter,
@@ -183,12 +163,8 @@ public final class ScheduledActionsImpl implements ScheduledActions {
         ExecuteStartRequest requestBody, Context context) {
         Response<StartResourceOperationResponseInner> inner
             = this.serviceClient().virtualMachinesExecuteStartWithResponse(locationparameter, requestBody, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new StartResourceOperationResponseImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new StartResourceOperationResponseImpl(inner.getValue(), this.manager()));
     }
 
     public StartResourceOperationResponse virtualMachinesExecuteStart(String locationparameter,
@@ -206,12 +182,8 @@ public final class ScheduledActionsImpl implements ScheduledActions {
         ExecuteCreateRequest requestBody, Context context) {
         Response<CreateResourceOperationResponseInner> inner
             = this.serviceClient().virtualMachinesExecuteCreateWithResponse(locationparameter, requestBody, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new CreateResourceOperationResponseImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new CreateResourceOperationResponseImpl(inner.getValue(), this.manager()));
     }
 
     public CreateResourceOperationResponse virtualMachinesExecuteCreate(String locationparameter,
@@ -229,12 +201,8 @@ public final class ScheduledActionsImpl implements ScheduledActions {
         ExecuteDeleteRequest requestBody, Context context) {
         Response<DeleteResourceOperationResponseInner> inner
             = this.serviceClient().virtualMachinesExecuteDeleteWithResponse(locationparameter, requestBody, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new DeleteResourceOperationResponseImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new DeleteResourceOperationResponseImpl(inner.getValue(), this.manager()));
     }
 
     public DeleteResourceOperationResponse virtualMachinesExecuteDelete(String locationparameter,
@@ -252,12 +220,8 @@ public final class ScheduledActionsImpl implements ScheduledActions {
         GetOperationStatusRequest requestBody, Context context) {
         Response<GetOperationStatusResponseInner> inner = this.serviceClient()
             .virtualMachinesGetOperationStatusWithResponse(locationparameter, requestBody, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new GetOperationStatusResponseImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new GetOperationStatusResponseImpl(inner.getValue(), this.manager()));
     }
 
     public GetOperationStatusResponse virtualMachinesGetOperationStatus(String locationparameter,
@@ -275,12 +239,8 @@ public final class ScheduledActionsImpl implements ScheduledActions {
         CancelOperationsRequest requestBody, Context context) {
         Response<CancelOperationsResponseInner> inner
             = this.serviceClient().virtualMachinesCancelOperationsWithResponse(locationparameter, requestBody, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new CancelOperationsResponseImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new CancelOperationsResponseImpl(inner.getValue(), this.manager()));
     }
 
     public CancelOperationsResponse virtualMachinesCancelOperations(String locationparameter,
@@ -298,12 +258,8 @@ public final class ScheduledActionsImpl implements ScheduledActions {
         GetOperationErrorsRequest requestBody, Context context) {
         Response<GetOperationErrorsResponseInner> inner = this.serviceClient()
             .virtualMachinesGetOperationErrorsWithResponse(locationparameter, requestBody, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new GetOperationErrorsResponseImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new GetOperationErrorsResponseImpl(inner.getValue(), this.manager()));
     }
 
     public GetOperationErrorsResponse virtualMachinesGetOperationErrors(String locationparameter,
@@ -321,12 +277,8 @@ public final class ScheduledActionsImpl implements ScheduledActions {
         String scheduledActionName, Context context) {
         Response<ScheduledActionInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, scheduledActionName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ScheduledActionImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ScheduledActionImpl(inner.getValue(), this.manager()));
     }
 
     public ScheduledAction getByResourceGroup(String resourceGroupName, String scheduledActionName) {
@@ -384,12 +336,8 @@ public final class ScheduledActionsImpl implements ScheduledActions {
         String scheduledActionName, ResourceAttachRequest body, Context context) {
         Response<RecurringActionsResourceOperationResultInner> inner
             = this.serviceClient().attachResourcesWithResponse(resourceGroupName, scheduledActionName, body, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new RecurringActionsResourceOperationResultImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new RecurringActionsResourceOperationResultImpl(inner.getValue(), this.manager()));
     }
 
     public RecurringActionsResourceOperationResult attachResources(String resourceGroupName, String scheduledActionName,
@@ -407,12 +355,8 @@ public final class ScheduledActionsImpl implements ScheduledActions {
         String scheduledActionName, ResourceDetachRequest body, Context context) {
         Response<RecurringActionsResourceOperationResultInner> inner
             = this.serviceClient().detachResourcesWithResponse(resourceGroupName, scheduledActionName, body, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new RecurringActionsResourceOperationResultImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new RecurringActionsResourceOperationResultImpl(inner.getValue(), this.manager()));
     }
 
     public RecurringActionsResourceOperationResult detachResources(String resourceGroupName, String scheduledActionName,
@@ -430,12 +374,8 @@ public final class ScheduledActionsImpl implements ScheduledActions {
         String scheduledActionName, ResourcePatchRequest body, Context context) {
         Response<RecurringActionsResourceOperationResultInner> inner
             = this.serviceClient().patchResourcesWithResponse(resourceGroupName, scheduledActionName, body, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new RecurringActionsResourceOperationResultImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new RecurringActionsResourceOperationResultImpl(inner.getValue(), this.manager()));
     }
 
     public RecurringActionsResourceOperationResult patchResources(String resourceGroupName, String scheduledActionName,
@@ -469,12 +409,8 @@ public final class ScheduledActionsImpl implements ScheduledActions {
         String scheduledActionName, CancelOccurrenceRequest body, Context context) {
         Response<RecurringActionsResourceOperationResultInner> inner = this.serviceClient()
             .cancelNextOccurrenceWithResponse(resourceGroupName, scheduledActionName, body, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new RecurringActionsResourceOperationResultImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new RecurringActionsResourceOperationResultImpl(inner.getValue(), this.manager()));
     }
 
     public RecurringActionsResourceOperationResult cancelNextOccurrence(String resourceGroupName,
@@ -492,12 +428,8 @@ public final class ScheduledActionsImpl implements ScheduledActions {
         String scheduledActionName, Context context) {
         Response<OccurrenceInner> inner
             = this.serviceClient().triggerManualOccurrenceWithResponse(resourceGroupName, scheduledActionName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new OccurrenceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new OccurrenceImpl(inner.getValue(), this.manager()));
     }
 
     public Occurrence triggerManualOccurrence(String resourceGroupName, String scheduledActionName) {

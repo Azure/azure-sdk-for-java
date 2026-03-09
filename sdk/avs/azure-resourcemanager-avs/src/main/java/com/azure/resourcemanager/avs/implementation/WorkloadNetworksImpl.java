@@ -49,12 +49,8 @@ public final class WorkloadNetworksImpl implements WorkloadNetworks {
         Context context) {
         Response<WorkloadNetworkInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, privateCloudName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new WorkloadNetworkImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new WorkloadNetworkImpl(inner.getValue(), this.manager()));
     }
 
     public WorkloadNetwork get(String resourceGroupName, String privateCloudName) {
@@ -94,12 +90,8 @@ public final class WorkloadNetworksImpl implements WorkloadNetworks {
         String privateCloudName, Context context) {
         Response<WorkloadNetworkDhcpInner> inner
             = this.serviceClient().getDhcpWithResponse(resourceGroupName, dhcpId, privateCloudName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new WorkloadNetworkDhcpImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new WorkloadNetworkDhcpImpl(inner.getValue(), this.manager()));
     }
 
     public WorkloadNetworkDhcp getDhcp(String resourceGroupName, String dhcpId, String privateCloudName) {
@@ -136,12 +128,8 @@ public final class WorkloadNetworksImpl implements WorkloadNetworks {
         String privateCloudName, String dnsServiceId, Context context) {
         Response<WorkloadNetworkDnsServiceInner> inner = this.serviceClient()
             .getDnsServiceWithResponse(resourceGroupName, privateCloudName, dnsServiceId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new WorkloadNetworkDnsServiceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new WorkloadNetworkDnsServiceImpl(inner.getValue(), this.manager()));
     }
 
     public WorkloadNetworkDnsService getDnsService(String resourceGroupName, String privateCloudName,
@@ -181,12 +169,8 @@ public final class WorkloadNetworksImpl implements WorkloadNetworks {
         String dnsZoneId, Context context) {
         Response<WorkloadNetworkDnsZoneInner> inner
             = this.serviceClient().getDnsZoneWithResponse(resourceGroupName, privateCloudName, dnsZoneId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new WorkloadNetworkDnsZoneImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new WorkloadNetworkDnsZoneImpl(inner.getValue(), this.manager()));
     }
 
     public WorkloadNetworkDnsZone getDnsZone(String resourceGroupName, String privateCloudName, String dnsZoneId) {
@@ -224,12 +208,8 @@ public final class WorkloadNetworksImpl implements WorkloadNetworks {
         String gatewayId, Context context) {
         Response<WorkloadNetworkGatewayInner> inner
             = this.serviceClient().getGatewayWithResponse(resourceGroupName, privateCloudName, gatewayId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new WorkloadNetworkGatewayImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new WorkloadNetworkGatewayImpl(inner.getValue(), this.manager()));
     }
 
     public WorkloadNetworkGateway getGateway(String resourceGroupName, String privateCloudName, String gatewayId) {
@@ -262,12 +242,8 @@ public final class WorkloadNetworksImpl implements WorkloadNetworks {
         String privateCloudName, String portMirroringId, Context context) {
         Response<WorkloadNetworkPortMirroringInner> inner = this.serviceClient()
             .getPortMirroringWithResponse(resourceGroupName, privateCloudName, portMirroringId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new WorkloadNetworkPortMirroringImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new WorkloadNetworkPortMirroringImpl(inner.getValue(), this.manager()));
     }
 
     public WorkloadNetworkPortMirroring getPortMirroring(String resourceGroupName, String privateCloudName,
@@ -307,12 +283,8 @@ public final class WorkloadNetworksImpl implements WorkloadNetworks {
         String publicIPId, Context context) {
         Response<WorkloadNetworkPublicIpInner> inner
             = this.serviceClient().getPublicIpWithResponse(resourceGroupName, privateCloudName, publicIPId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new WorkloadNetworkPublicIpImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new WorkloadNetworkPublicIpImpl(inner.getValue(), this.manager()));
     }
 
     public WorkloadNetworkPublicIp getPublicIp(String resourceGroupName, String privateCloudName, String publicIPId) {
@@ -350,12 +322,8 @@ public final class WorkloadNetworksImpl implements WorkloadNetworks {
         String segmentId, Context context) {
         Response<WorkloadNetworkSegmentInner> inner
             = this.serviceClient().getSegmentWithResponse(resourceGroupName, privateCloudName, segmentId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new WorkloadNetworkSegmentImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new WorkloadNetworkSegmentImpl(inner.getValue(), this.manager()));
     }
 
     public WorkloadNetworkSegment getSegment(String resourceGroupName, String privateCloudName, String segmentId) {
@@ -396,12 +364,8 @@ public final class WorkloadNetworksImpl implements WorkloadNetworks {
         String privateCloudName, String virtualMachineId, Context context) {
         Response<WorkloadNetworkVirtualMachineInner> inner = this.serviceClient()
             .getVirtualMachineWithResponse(resourceGroupName, privateCloudName, virtualMachineId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new WorkloadNetworkVirtualMachineImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new WorkloadNetworkVirtualMachineImpl(inner.getValue(), this.manager()));
     }
 
     public WorkloadNetworkVirtualMachine getVirtualMachine(String resourceGroupName, String privateCloudName,
@@ -432,12 +396,8 @@ public final class WorkloadNetworksImpl implements WorkloadNetworks {
         String vmGroupId, Context context) {
         Response<WorkloadNetworkVMGroupInner> inner
             = this.serviceClient().getVMGroupWithResponse(resourceGroupName, privateCloudName, vmGroupId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new WorkloadNetworkVMGroupImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new WorkloadNetworkVMGroupImpl(inner.getValue(), this.manager()));
     }
 
     public WorkloadNetworkVMGroup getVMGroup(String resourceGroupName, String privateCloudName, String vmGroupId) {

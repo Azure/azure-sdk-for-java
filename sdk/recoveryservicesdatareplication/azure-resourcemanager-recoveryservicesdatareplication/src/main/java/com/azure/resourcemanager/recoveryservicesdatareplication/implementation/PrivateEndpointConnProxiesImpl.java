@@ -31,12 +31,8 @@ public final class PrivateEndpointConnProxiesImpl implements PrivateEndpointConn
         String privateEndpointConnectionProxyName, Context context) {
         Response<PrivateEndpointConnectionProxyInner> inner = this.serviceClient()
             .getWithResponse(resourceGroupName, vaultName, privateEndpointConnectionProxyName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new PrivateEndpointConnectionProxyImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new PrivateEndpointConnectionProxyImpl(inner.getValue(), this.manager()));
     }
 
     public PrivateEndpointConnectionProxy get(String resourceGroupName, String vaultName,
@@ -78,12 +74,8 @@ public final class PrivateEndpointConnProxiesImpl implements PrivateEndpointConn
         String privateEndpointConnectionProxyName, PrivateEndpointConnectionProxyInner body, Context context) {
         Response<PrivateEndpointConnectionProxyInner> inner = this.serviceClient()
             .validateWithResponse(resourceGroupName, vaultName, privateEndpointConnectionProxyName, body, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new PrivateEndpointConnectionProxyImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new PrivateEndpointConnectionProxyImpl(inner.getValue(), this.manager()));
     }
 
     public PrivateEndpointConnectionProxy validate(String resourceGroupName, String vaultName,
