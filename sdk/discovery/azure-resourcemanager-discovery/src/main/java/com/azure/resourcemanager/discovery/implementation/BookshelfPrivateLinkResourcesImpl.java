@@ -31,12 +31,8 @@ public final class BookshelfPrivateLinkResourcesImpl implements BookshelfPrivate
         String privateLinkResourceName, Context context) {
         Response<BookshelfPrivateLinkResourceInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, bookshelfName, privateLinkResourceName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new BookshelfPrivateLinkResourceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new BookshelfPrivateLinkResourceImpl(inner.getValue(), this.manager()));
     }
 
     public BookshelfPrivateLinkResource get(String resourceGroupName, String bookshelfName,

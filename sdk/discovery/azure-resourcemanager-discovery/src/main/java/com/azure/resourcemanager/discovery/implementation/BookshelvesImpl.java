@@ -31,12 +31,8 @@ public final class BookshelvesImpl implements Bookshelves {
         Context context) {
         Response<BookshelfInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, bookshelfName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new BookshelfImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new BookshelfImpl(inner.getValue(), this.manager()));
     }
 
     public Bookshelf getByResourceGroup(String resourceGroupName, String bookshelfName) {

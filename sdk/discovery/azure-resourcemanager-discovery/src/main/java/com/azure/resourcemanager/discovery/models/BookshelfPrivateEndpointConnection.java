@@ -89,7 +89,7 @@ public interface BookshelfPrivateEndpointConnection {
              * @param bookshelfName The name of the Bookshelf.
              * @return the next definition stage.
              */
-            WithCreate withExistingBookshelve(String resourceGroupName, String bookshelfName);
+            WithCreate withExistingBookshelf(String resourceGroupName, String bookshelfName);
         }
 
         /**

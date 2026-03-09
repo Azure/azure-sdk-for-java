@@ -29,12 +29,8 @@ public final class ToolsImpl implements Tools {
     public Response<Tool> getByResourceGroupWithResponse(String resourceGroupName, String toolName, Context context) {
         Response<ToolInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, toolName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ToolImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ToolImpl(inner.getValue(), this.manager()));
     }
 
     public Tool getByResourceGroup(String resourceGroupName, String toolName) {

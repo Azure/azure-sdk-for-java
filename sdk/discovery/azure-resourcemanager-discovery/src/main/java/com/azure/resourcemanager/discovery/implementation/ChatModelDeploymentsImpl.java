@@ -31,12 +31,8 @@ public final class ChatModelDeploymentsImpl implements ChatModelDeployments {
         String chatModelDeploymentName, Context context) {
         Response<ChatModelDeploymentInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, workspaceName, chatModelDeploymentName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ChatModelDeploymentImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ChatModelDeploymentImpl(inner.getValue(), this.manager()));
     }
 
     public ChatModelDeployment get(String resourceGroupName, String workspaceName, String chatModelDeploymentName) {

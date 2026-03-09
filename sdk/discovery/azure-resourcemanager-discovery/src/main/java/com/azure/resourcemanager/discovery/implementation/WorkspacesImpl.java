@@ -31,12 +31,8 @@ public final class WorkspacesImpl implements Workspaces {
         Context context) {
         Response<WorkspaceInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, workspaceName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new WorkspaceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new WorkspaceImpl(inner.getValue(), this.manager()));
     }
 
     public Workspace getByResourceGroup(String resourceGroupName, String workspaceName) {

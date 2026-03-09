@@ -31,12 +31,8 @@ public final class StorageAssetsImpl implements StorageAssets {
         String storageAssetName, Context context) {
         Response<StorageAssetInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, storageContainerName, storageAssetName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new StorageAssetImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new StorageAssetImpl(inner.getValue(), this.manager()));
     }
 
     public StorageAsset get(String resourceGroupName, String storageContainerName, String storageAssetName) {

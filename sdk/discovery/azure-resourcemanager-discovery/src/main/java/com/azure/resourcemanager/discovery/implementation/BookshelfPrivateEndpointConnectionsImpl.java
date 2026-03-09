@@ -31,12 +31,8 @@ public final class BookshelfPrivateEndpointConnectionsImpl implements BookshelfP
         String privateEndpointConnectionName, Context context) {
         Response<BookshelfPrivateEndpointConnectionInner> inner = this.serviceClient()
             .getWithResponse(resourceGroupName, bookshelfName, privateEndpointConnectionName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new BookshelfPrivateEndpointConnectionImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new BookshelfPrivateEndpointConnectionImpl(inner.getValue(), this.manager()));
     }
 
     public BookshelfPrivateEndpointConnection get(String resourceGroupName, String bookshelfName,

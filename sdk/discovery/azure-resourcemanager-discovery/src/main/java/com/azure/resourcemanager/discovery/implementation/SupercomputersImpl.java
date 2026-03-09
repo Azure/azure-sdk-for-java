@@ -31,12 +31,8 @@ public final class SupercomputersImpl implements Supercomputers {
         Context context) {
         Response<SupercomputerInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, supercomputerName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new SupercomputerImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new SupercomputerImpl(inner.getValue(), this.manager()));
     }
 
     public Supercomputer getByResourceGroup(String resourceGroupName, String supercomputerName) {

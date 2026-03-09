@@ -31,12 +31,8 @@ public final class NodePoolsImpl implements NodePools {
         Context context) {
         Response<NodePoolInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, supercomputerName, nodePoolName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new NodePoolImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new NodePoolImpl(inner.getValue(), this.manager()));
     }
 
     public NodePool get(String resourceGroupName, String supercomputerName, String nodePoolName) {

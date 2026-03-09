@@ -31,12 +31,8 @@ public final class WorkspacePrivateEndpointConnectionsImpl implements WorkspaceP
         String privateEndpointConnectionName, Context context) {
         Response<WorkspacePrivateEndpointConnectionInner> inner = this.serviceClient()
             .getWithResponse(resourceGroupName, workspaceName, privateEndpointConnectionName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new WorkspacePrivateEndpointConnectionImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new WorkspacePrivateEndpointConnectionImpl(inner.getValue(), this.manager()));
     }
 
     public WorkspacePrivateEndpointConnection get(String resourceGroupName, String workspaceName,

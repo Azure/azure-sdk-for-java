@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.1 (2026-03-07)
+## 1.0.0-beta.1 (2026-03-09)
 
 - Azure Resource Manager Discovery client library for Java. This package contains Microsoft Azure SDK for Discovery Management SDK. Microsoft.Discovery Resource Provider management API. Package api-version 2026-02-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 ### Features Added

@@ -31,12 +31,8 @@ public final class WorkspacePrivateLinkResourcesImpl implements WorkspacePrivate
         String privateLinkResourceName, Context context) {
         Response<WorkspacePrivateLinkResourceInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, workspaceName, privateLinkResourceName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new WorkspacePrivateLinkResourceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new WorkspacePrivateLinkResourceImpl(inner.getValue(), this.manager()));
     }
 
     public WorkspacePrivateLinkResource get(String resourceGroupName, String workspaceName,
