@@ -126,19 +126,17 @@ class ConnectionManager {
      * Finds the currently active clients for a given origin endpoint.
      */
     void findActiveClients() {
-        if (activeClients.size() == 0 && configStore.isLoadBalancingEnabled()) {
-            // If load balancing is enabled and there are no currently active clients, attempt to find any available
-            // clients
-            // Otherwise we continue from where we left off with the active clients list and rotate through.
-            activeClients = getAvailableClients();
-        } else if (!configStore.isLoadBalancingEnabled()) {
-            // If load balancing is not enabled, we want to ensure we are always using the most preferred available
-            // client. This means
-            // we check for available clients on each refresh and update the active clients list accordingly.
-            List<AppConfigurationReplicaClient> availableClients = getAvailableClients();
-            if (availableClients.size() > 0) {
-                activeClients = availableClients;
+        // Load balancing enabled: only refresh if no active clients (rotation happens in getNextActiveClient)
+        if (configStore.isLoadBalancingEnabled()) {
+            if (activeClients.isEmpty()) {
+                activeClients = getAvailableClients();
             }
+            return;
+        }
+        // Load balancing disabled: always refresh to use the most preferred available client
+        List<AppConfigurationReplicaClient> availableClients = getAvailableClients();
+        if (!availableClients.isEmpty()) {
+            activeClients = availableClients;
         }
     }
 
