@@ -60,6 +60,20 @@ public interface DisconnectedOperationDeploymentManifest {
     String cloud();
 
     /**
+     * Gets the billingConfiguration property: The billing configuration.
+     * 
+     * @return the billingConfiguration value.
+     */
+    BillingConfiguration billingConfiguration();
+
+    /**
+     * Gets the benefitPlans property: The benefit plans.
+     * 
+     * @return the benefitPlans value.
+     */
+    BenefitPlans benefitPlans();
+
+    /**
      * Gets the inner
      * com.azure.resourcemanager.disconnectedoperations.fluent.models.DisconnectedOperationDeploymentManifestInner
      * object.

@@ -13,6 +13,11 @@
 
 #### Other Changes
 
+### 5.25.0 (2026-03-05)
+
+#### Other Changes
+* regular release
+
 ### 7.0.0 (2026-02-03)
 
 #### Other Changes

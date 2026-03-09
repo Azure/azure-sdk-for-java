@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.benchmark.linkedin.impl.metrics;
 
-import com.azure.cosmos.benchmark.Configuration;
+import com.azure.cosmos.benchmark.TenantWorkloadConfig;
 import com.azure.cosmos.benchmark.linkedin.impl.Metrics;
 import com.azure.cosmos.benchmark.linkedin.impl.models.CollectionKey;
 import com.codahale.metrics.Meter;
@@ -27,7 +27,7 @@ public class MetricsImpl implements Metrics {
         final Clock clock,
         final CollectionKey collectionKey,
         final String operationName,
-        final Configuration.Environment environment) {
+        final TenantWorkloadConfig.Environment environment) {
         Preconditions.checkNotNull(metricsRegistry, "The MetricsRegistry can not be null");
         Preconditions.checkNotNull(clock, "Need a non-null Clock instance for latency tracking");
         Preconditions.checkNotNull(operationName, "The operation name can not be null");

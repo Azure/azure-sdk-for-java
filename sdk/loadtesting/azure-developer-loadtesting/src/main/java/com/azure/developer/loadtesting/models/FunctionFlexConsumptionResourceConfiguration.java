@@ -107,6 +107,19 @@ public final class FunctionFlexConsumptionResourceConfiguration
     }
 
     /**
+     * Set the httpConcurrency property: HTTP Concurrency for the function app.
+     *
+     * @param httpConcurrency the httpConcurrency value to set.
+     * @return the FunctionFlexConsumptionResourceConfiguration object itself.
+     */
+    @Generated
+    public FunctionFlexConsumptionResourceConfiguration setHttpConcurrency(Long httpConcurrency) {
+        this.httpConcurrency = httpConcurrency;
+        this.updatedProperties.add("httpConcurrency");
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -165,18 +178,5 @@ public final class FunctionFlexConsumptionResourceConfiguration
             }
             return deserializedFunctionFlexConsumptionResourceConfiguration;
         });
-    }
-
-    /**
-     * Set the httpConcurrency property: HTTP Concurrency for the function app.
-     *
-     * @param httpConcurrency the httpConcurrency value to set.
-     * @return the FunctionFlexConsumptionResourceConfiguration object itself.
-     */
-    @Generated
-    public FunctionFlexConsumptionResourceConfiguration setHttpConcurrency(Long httpConcurrency) {
-        this.httpConcurrency = httpConcurrency;
-        this.updatedProperties.add("httpConcurrency");
-        return this;
     }
 }

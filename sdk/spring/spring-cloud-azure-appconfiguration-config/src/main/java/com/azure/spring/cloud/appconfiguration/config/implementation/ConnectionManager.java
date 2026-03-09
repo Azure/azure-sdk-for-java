@@ -34,9 +34,6 @@ class ConnectionManager {
     /** Map of auto-discovered failover clients, keyed by endpoint URL. */
     private final Map<String, AppConfigurationReplicaClient> autoFailoverClients;
 
-    /** Currently active replica endpoint being used for requests. */
-    private String currentReplica;
-
     /** Current health status of the App Configuration store connection. */
     private AppConfigurationStoreHealth health;
 
@@ -67,7 +64,6 @@ class ConnectionManager {
         this.configStore = configStore;
         this.originEndpoint = configStore.getEndpoint();
         this.health = AppConfigurationStoreHealth.NOT_LOADED;
-        this.currentReplica = configStore.getEndpoint();
         this.autoFailoverClients = new HashMap<>();
         this.replicaLookUp = replicaLookUp;
         this.activeClients = new ArrayList<>();
@@ -81,15 +77,6 @@ class ConnectionManager {
      */
     AppConfigurationStoreHealth getHealth() {
         return this.health;
-    }
-
-    /**
-     * Sets the current active replica endpoint for client routing.
-     * 
-     * @param replicaEndpoint the endpoint URL to set as current; may be null to reset to primary endpoint
-     */
-    void setCurrentClient(String replicaEndpoint) {
-        this.currentReplica = replicaEndpoint;
     }
 
     /**
@@ -108,10 +95,7 @@ class ConnectionManager {
      * @return the next active AppConfigurationReplicaClient
      */
     AppConfigurationReplicaClient getNextActiveClient(boolean useLastActive) {
-        if (activeClients.isEmpty()) {
-            lastActiveClient = "";
-            return null;
-        } else if (useLastActive) {
+        if (useLastActive) {
             List<AppConfigurationReplicaClient> clients = getAvailableClients();
             for (AppConfigurationReplicaClient client: clients) {
                 if (client.getEndpoint().equals(lastActiveClient)) {
@@ -119,6 +103,10 @@ class ConnectionManager {
                 }
             }
         }
+        if (activeClients.isEmpty()) {
+            lastActiveClient = "";
+            return null;
+        } 
 
         if (!configStore.isLoadBalancingEnabled()) {
             if (!activeClients.isEmpty()) {
@@ -127,6 +115,7 @@ class ConnectionManager {
             return null;
         }
 
+        // Remove the current client from the list. The list will be rebuilt and rotated on the next refresh cycle by findActiveClients().
         AppConfigurationReplicaClient nextClient = activeClients.remove(0);
         lastActiveClient = nextClient.getEndpoint();
         return nextClient;

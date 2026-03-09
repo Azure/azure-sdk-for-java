@@ -45,7 +45,7 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
-abstract class AsyncBenchmark<T> {
+abstract class AsyncBenchmark<T> implements Benchmark {
 
     private static final ImplementationBridgeHelpers.CosmosClientBuilderHelper.CosmosClientBuilderAccessor clientBuilderAccessor
         = ImplementationBridgeHelpers.CosmosClientBuilderHelper.getCosmosClientBuilderAccessor();
@@ -92,7 +92,8 @@ abstract class AsyncBenchmark<T> {
                 .preferredRegions(cfg.getPreferredRegionsList())
                 .consistencyLevel(cfg.getConsistencyLevel())
                 .userAgentSuffix(cfg.getApplicationName())
-                .contentResponseOnWriteEnabled(cfg.isContentResponseOnWriteEnabled());
+                .contentResponseOnWriteEnabled(cfg.isContentResponseOnWriteEnabled())
+                .connectionSharingAcrossClientsEnabled(cfg.isConnectionSharingAcrossClientsEnabled());
 
         clientBuilderAccessor
             .setRegionScopedSessionCapturingEnabled(benchmarkSpecificClientBuilder, cfg.isRegionScopedSessionContainerEnabled());
@@ -252,7 +253,14 @@ abstract class AsyncBenchmark<T> {
             }
         }
 
-        docsToRead = Flux.merge(Flux.fromIterable(createDocumentObservables), 100).collectList().block();
+        if (createDocumentObservables.isEmpty()) {
+            docsToRead = new ArrayList<>();
+        } else {
+            int prePopConcurrency = Math.max(1, Math.min(cfg.getConcurrency(), 100));
+            docsToRead = Flux.merge(Flux.fromIterable(createDocumentObservables), prePopConcurrency)
+                .collectList()
+                .block();
+        }
         logger.info("Finished pre-populating {} documents", cfg.getNumberOfPreCreatedDocuments());
 
         init();
@@ -335,7 +343,7 @@ abstract class AsyncBenchmark<T> {
     protected void init() {
     }
 
-    void shutdown() {
+    public void shutdown() {
         if (workloadConfig.isSuppressCleanup()) {
             logger.info("Skipping cleanup of database/container (suppressCleanup=true)");
         } else if (this.databaseCreated) {
@@ -412,7 +420,7 @@ abstract class AsyncBenchmark<T> {
         }
     }
 
-    void run() throws Exception {
+    public void run() throws Exception {
         initializeMeter();
         if (workloadConfig.getSkipWarmUpOperations() > 0) {
             logger.info("Starting warm up phase. Executing {} operations to warm up ...", workloadConfig.getSkipWarmUpOperations());
