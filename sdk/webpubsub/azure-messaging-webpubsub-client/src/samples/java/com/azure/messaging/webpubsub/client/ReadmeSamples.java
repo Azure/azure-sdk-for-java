@@ -3,10 +3,13 @@
 
 package com.azure.messaging.webpubsub.client;
 
+import com.azure.core.util.BinaryData;
 import com.azure.messaging.webpubsub.WebPubSubServiceClient;
 import com.azure.messaging.webpubsub.WebPubSubServiceClientBuilder;
+import com.azure.messaging.webpubsub.client.models.InvokeEventResult;
 import com.azure.messaging.webpubsub.client.models.SendMessageFailedException;
 import com.azure.messaging.webpubsub.client.models.WebPubSubClientCredential;
+import com.azure.messaging.webpubsub.client.models.WebPubSubDataFormat;
 import com.azure.messaging.webpubsub.client.models.WebPubSubProtocolType;
 import com.azure.messaging.webpubsub.models.GetClientAccessTokenOptions;
 
@@ -82,6 +85,16 @@ public final class ReadmeSamples {
             System.out.println("Client is stopped");
         });
         // END: readme-sample-listenEvent
+    }
+
+    public void invokeEvent() {
+        WebPubSubClient client = createMockClient();
+
+        // BEGIN: readme-sample-invokeEvent
+        InvokeEventResult result = client.invokeEvent("processOrder",
+            BinaryData.fromString("{\"orderId\":1}"), WebPubSubDataFormat.JSON);
+        System.out.println("Invocation result: " + result.getData().toString());
+        // END: readme-sample-invokeEvent
     }
 
     public void sendAndRetry() {

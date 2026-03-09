@@ -172,6 +172,17 @@ client.addOnStoppedEventHandler(event -> {
 });
 ```
 
+### Invoke upstream events (preview)
+
+`invokeEvent` sends an `invoke` request to the service, awaits the correlated `invokeResponse` payload.
+_Streaming and service-initiated invocations are not yet supported._
+
+```java readme-sample-invokeEvent
+InvokeEventResult result = client.invokeEvent("processOrder",
+    BinaryData.fromString("{\"orderId\":1}"), WebPubSubDataFormat.JSON);
+System.out.println("Invocation result: " + result.getData().toString());
+```
+
 ### Operation and retry
 
 By default, the operation such as `client.joinGroup()`, `client.leaveGroup()`, `client.sendToGroup()`, `client.sendEvent()` has three reties. You can use `WebPubSubClientBuilder.retryOptions()` to change. If all retries have failed, an error will be thrown. You can keep retrying by passing in the same `ackId` as previous retries, thus the service can help to deduplicate the operation with the same `ackId`
