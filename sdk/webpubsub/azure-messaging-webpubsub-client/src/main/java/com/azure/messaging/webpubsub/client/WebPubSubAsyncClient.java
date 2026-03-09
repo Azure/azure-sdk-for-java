@@ -501,6 +501,7 @@ final class WebPubSubAsyncClient implements Closeable {
         }
 
         String invocationId = options.getInvocationId() != null ? options.getInvocationId() : nextInvocationId();
+        Duration timeout = options.getTimeout();
 
         InvokeMessage invokeMessage = new InvokeMessage().setInvocationId(invocationId)
             .setTarget("event")
@@ -508,12 +509,13 @@ final class WebPubSubAsyncClient implements Closeable {
             .setDataType(dataFormat.toString())
             .setData(content);
 
-        return invokeEventAttempt(invocationId, invokeMessage).retryWhen(sendMessageRetrySpec);
+        return invokeEventAttempt(invocationId, invokeMessage, timeout).retryWhen(sendMessageRetrySpec);
     }
 
-    private Mono<InvokeEventResult> invokeEventAttempt(String invocationId, InvokeMessage invokeMessage) {
+    private Mono<InvokeEventResult> invokeEventAttempt(String invocationId, InvokeMessage invokeMessage,
+        Duration timeout) {
         return Mono.defer(() -> {
-            Mono<InvokeResponseMessage> responsePromise = waitForInvokeResponse(invocationId).cache();
+            Mono<InvokeResponseMessage> responsePromise = waitForInvokeResponse(invocationId, timeout).cache();
             responsePromise.subscribe(v -> { }, e -> { });
 
             return sendMessage(invokeMessage).then(responsePromise)
@@ -531,11 +533,16 @@ final class WebPubSubAsyncClient implements Closeable {
         });
     }
 
-    private Mono<InvokeResponseMessage> waitForInvokeResponse(String invocationId) {
-        return receiveInvokeResponses().filter(m -> invocationId.equals(m.getInvocationId()))
-            .next()
-            .timeout(ACK_TIMEOUT, Mono.defer(() -> Mono
-                .error(new InvocationException("Invoke response from the service not received.", invocationId, null))));
+    private Mono<InvokeResponseMessage> waitForInvokeResponse(String invocationId, Duration timeout) {
+        Mono<InvokeResponseMessage> responseMono = receiveInvokeResponses()
+            .filter(m -> invocationId.equals(m.getInvocationId()))
+            .next();
+        if (timeout != null) {
+            responseMono = responseMono.timeout(timeout, Mono.defer(() -> Mono.error(
+                new InvocationException("Invocation timed out after " + timeout.toMillis()
+                    + "ms. No response received for invocation '" + invocationId + "'.", invocationId, null))));
+        }
+        return responseMono;
     }
 
     private InvokeEventResult mapInvokeResponse(InvokeResponseMessage message) {
