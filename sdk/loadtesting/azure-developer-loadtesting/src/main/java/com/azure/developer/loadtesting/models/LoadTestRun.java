@@ -152,7 +152,7 @@ public final class LoadTestRun implements JsonSerializable<LoadTestRun> {
     private OffsetDateTime endDateTime;
 
     /*
-     * Test run initiated time.
+     * Test run initiated time. This is legacy, new developments should use createdDateTime.
      */
     @Generated
     private OffsetDateTime executedDateTime;
@@ -210,6 +210,30 @@ public final class LoadTestRun implements JsonSerializable<LoadTestRun> {
      */
     @Generated
     private CreatedByType createdByType;
+
+    /*
+     * The URI pointing to the entity that created the test run.
+     */
+    @Generated
+    private String createdByUri;
+
+    /*
+     * Estimated virtual user hours for the test run.
+     */
+    @Generated
+    private Double estimatedVirtualUserHours;
+
+    /*
+     * The test run execution start DateTime(RFC 3339 literal format).
+     */
+    @Generated
+    private OffsetDateTime executionStartDateTime;
+
+    /*
+     * The test run execution end DateTime(RFC 3339 literal format).
+     */
+    @Generated
+    private OffsetDateTime executionEndDateTime;
 
     /*
      * The creation datetime(RFC 3339 literal format).
@@ -588,7 +612,8 @@ public final class LoadTestRun implements JsonSerializable<LoadTestRun> {
     }
 
     /**
-     * Get the executedDateTime property: Test run initiated time.
+     * Get the executedDateTime property: Test run initiated time. This is legacy, new developments should use
+     * createdDateTime.
      *
      * @return the executedDateTime value.
      */
@@ -728,6 +753,46 @@ public final class LoadTestRun implements JsonSerializable<LoadTestRun> {
         this.createdByType = createdByType;
         this.updatedProperties.add("createdByType");
         return this;
+    }
+
+    /**
+     * Get the createdByUri property: The URI pointing to the entity that created the test run.
+     *
+     * @return the createdByUri value.
+     */
+    @Generated
+    public String getCreatedByUri() {
+        return this.createdByUri;
+    }
+
+    /**
+     * Get the estimatedVirtualUserHours property: Estimated virtual user hours for the test run.
+     *
+     * @return the estimatedVirtualUserHours value.
+     */
+    @Generated
+    public Double getEstimatedVirtualUserHours() {
+        return this.estimatedVirtualUserHours;
+    }
+
+    /**
+     * Get the executionStartDateTime property: The test run execution start DateTime(RFC 3339 literal format).
+     *
+     * @return the executionStartDateTime value.
+     */
+    @Generated
+    public OffsetDateTime getExecutionStartDateTime() {
+        return this.executionStartDateTime;
+    }
+
+    /**
+     * Get the executionEndDateTime property: The test run execution end DateTime(RFC 3339 literal format).
+     *
+     * @return the executionEndDateTime value.
+     */
+    @Generated
+    public OffsetDateTime getExecutionEndDateTime() {
+        return this.executionEndDateTime;
     }
 
     /**
@@ -990,6 +1055,16 @@ public final class LoadTestRun implements JsonSerializable<LoadTestRun> {
                     deserializedLoadTestRun.publicIpDisabled = reader.getNullable(JsonReader::getBoolean);
                 } else if ("createdByType".equals(fieldName)) {
                     deserializedLoadTestRun.createdByType = CreatedByType.fromString(reader.getString());
+                } else if ("createdByUri".equals(fieldName)) {
+                    deserializedLoadTestRun.createdByUri = reader.getString();
+                } else if ("estimatedVirtualUserHours".equals(fieldName)) {
+                    deserializedLoadTestRun.estimatedVirtualUserHours = reader.getNullable(JsonReader::getDouble);
+                } else if ("executionStartDateTime".equals(fieldName)) {
+                    deserializedLoadTestRun.executionStartDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("executionEndDateTime".equals(fieldName)) {
+                    deserializedLoadTestRun.executionEndDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("createdDateTime".equals(fieldName)) {
                     deserializedLoadTestRun.createdDateTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
