@@ -191,12 +191,6 @@ InvokeEventResult result = client.invokeEvent("processOrder",
 System.out.println("Invocation result: " + result.getData().toString());
 ```
 
-To cancel a pending invocation by its invocation ID from a different thread, you can use `cancelInvocation` to send a cancel message to the server.
-
-```java readme-sample-cancelInvocation
-client.cancelInvocation("my-invocation-1");
-```
-
 _Streaming and service-initiated invocations are not yet supported._
 
 
