@@ -31,12 +31,8 @@ public final class ConfigTemplateVersionsImpl implements ConfigTemplateVersions 
         String configTemplateVersionName, Context context) {
         Response<ConfigTemplateVersionInner> inner = this.serviceClient()
             .getWithResponse(resourceGroupName, configTemplateName, configTemplateVersionName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ConfigTemplateVersionImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ConfigTemplateVersionImpl(inner.getValue(), this.manager()));
     }
 
     public ConfigTemplateVersion get(String resourceGroupName, String configTemplateName,

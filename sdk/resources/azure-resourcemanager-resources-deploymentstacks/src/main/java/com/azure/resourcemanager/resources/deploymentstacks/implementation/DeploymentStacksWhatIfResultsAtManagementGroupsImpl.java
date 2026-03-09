@@ -38,12 +38,8 @@ public final class DeploymentStacksWhatIfResultsAtManagementGroupsImpl
         String deploymentStacksWhatIfResultName, Context context) {
         Response<DeploymentStacksWhatIfResultInner> inner
             = this.serviceClient().getWithResponse(managementGroupId, deploymentStacksWhatIfResultName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new DeploymentStacksWhatIfResultImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new DeploymentStacksWhatIfResultImpl(inner.getValue(), this.manager()));
     }
 
     public DeploymentStacksWhatIfResult get(String managementGroupId, String deploymentStacksWhatIfResultName) {

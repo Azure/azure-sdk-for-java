@@ -30,12 +30,8 @@ public final class VirtualMachineInstancesImpl implements VirtualMachineInstance
 
     public Response<VirtualMachineInstance> getWithResponse(String resourceUri, Context context) {
         Response<VirtualMachineInstanceInner> inner = this.serviceClient().getWithResponse(resourceUri, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new VirtualMachineInstanceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new VirtualMachineInstanceImpl(inner.getValue(), this.manager()));
     }
 
     public VirtualMachineInstance get(String resourceUri) {

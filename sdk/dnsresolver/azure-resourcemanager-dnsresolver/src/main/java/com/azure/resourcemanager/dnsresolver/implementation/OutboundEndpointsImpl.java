@@ -31,12 +31,8 @@ public final class OutboundEndpointsImpl implements OutboundEndpoints {
         String outboundEndpointName, Context context) {
         Response<OutboundEndpointInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, dnsResolverName, outboundEndpointName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new OutboundEndpointImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new OutboundEndpointImpl(inner.getValue(), this.manager()));
     }
 
     public OutboundEndpoint get(String resourceGroupName, String dnsResolverName, String outboundEndpointName) {
