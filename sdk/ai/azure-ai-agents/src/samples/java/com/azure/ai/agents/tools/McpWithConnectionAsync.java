@@ -13,7 +13,6 @@ import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
 import com.openai.models.responses.ResponseInputItem;
 import com.openai.models.responses.ResponseOutputItem;
