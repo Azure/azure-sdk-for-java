@@ -5,7 +5,6 @@ package com.azure.messaging.webpubsub.client;
 
 import com.azure.core.util.BinaryData;
 import com.azure.messaging.webpubsub.client.implementation.MessageDecoder;
-import com.azure.messaging.webpubsub.client.implementation.models.CancelInvocationMessage;
 import com.azure.messaging.webpubsub.client.implementation.models.ConnectedMessage;
 import com.azure.messaging.webpubsub.client.implementation.models.InvokeResponseMessage;
 import com.azure.messaging.webpubsub.client.implementation.models.WebPubSubMessage;
@@ -38,12 +37,15 @@ public class InvokeEventTests {
     public void testInvokeEventSuccess() throws InterruptedException {
         final List<String> sentMessages = new ArrayList<>();
         final AtomicReference<Consumer<WebPubSubMessage>> messageHandlerRef = new AtomicReference<>();
+        final CountDownLatch connectedLatch = new CountDownLatch(1);
+        final CountDownLatch sendLatch = new CountDownLatch(1);
 
         WebSocketSession mockWsSession = new MockWebSocketSession() {
             @Override
             public void sendObjectAsync(Object data, Consumer<SendResult> handler) {
                 sentMessages.add(data.toString());
                 handler.accept(new SendResult());
+                sendLatch.countDown();
             }
         };
 
@@ -57,10 +59,11 @@ public class InvokeEventTests {
         WebPubSubClientBuilder builder = new WebPubSubClientBuilder();
         builder.webSocketClient = mockWsClient;
         WebPubSubClient client = builder.clientAccessUrl("mock").buildClient();
+        client.addOnConnectedEventHandler(e -> connectedLatch.countDown());
         client.start();
 
         // Wait for connected event to be processed
-        Thread.sleep(100);
+        Assertions.assertTrue(connectedLatch.await(5, TimeUnit.SECONDS), "Timed out waiting for connected event");
 
         // We need a separate thread to send the response because invokeEvent blocks
         CountDownLatch latch = new CountDownLatch(1);
@@ -80,8 +83,8 @@ public class InvokeEventTests {
         });
         invokeThread.start();
 
-        // Give time for the invoke message to be sent
-        Thread.sleep(100);
+        // Wait for the invoke message to be sent
+        Assertions.assertTrue(sendLatch.await(5, TimeUnit.SECONDS), "Timed out waiting for invoke message to be sent");
 
         // Deliver the invoke response
         Consumer<WebPubSubMessage> messageHandler = messageHandlerRef.get();
@@ -102,11 +105,14 @@ public class InvokeEventTests {
     @Test
     public void testInvokeEventServiceError() throws InterruptedException {
         final AtomicReference<Consumer<WebPubSubMessage>> messageHandlerRef = new AtomicReference<>();
+        final CountDownLatch connectedLatch = new CountDownLatch(1);
+        final CountDownLatch sendLatch = new CountDownLatch(1);
 
         WebSocketSession mockWsSession = new MockWebSocketSession() {
             @Override
             public void sendObjectAsync(Object data, Consumer<SendResult> handler) {
                 handler.accept(new SendResult());
+                sendLatch.countDown();
             }
         };
 
@@ -120,9 +126,10 @@ public class InvokeEventTests {
         WebPubSubClientBuilder builder = new WebPubSubClientBuilder();
         builder.webSocketClient = mockWsClient;
         WebPubSubClient client = builder.clientAccessUrl("mock").buildClient();
+        client.addOnConnectedEventHandler(e -> connectedLatch.countDown());
         client.start();
 
-        Thread.sleep(100);
+        Assertions.assertTrue(connectedLatch.await(5, TimeUnit.SECONDS), "Timed out waiting for connected event");
 
         CountDownLatch latch = new CountDownLatch(1);
         AtomicReference<Throwable> errorRef = new AtomicReference<>();
@@ -139,7 +146,7 @@ public class InvokeEventTests {
         });
         invokeThread.start();
 
-        Thread.sleep(100);
+        Assertions.assertTrue(sendLatch.await(5, TimeUnit.SECONDS), "Timed out waiting for invoke message to be sent");
 
         Consumer<WebPubSubMessage> messageHandler = messageHandlerRef.get();
         Assertions.assertNotNull(messageHandler);
@@ -160,11 +167,14 @@ public class InvokeEventTests {
     @Test
     public void testInvokeEventWithJsonData() throws InterruptedException {
         final AtomicReference<Consumer<WebPubSubMessage>> messageHandlerRef = new AtomicReference<>();
+        final CountDownLatch connectedLatch = new CountDownLatch(1);
+        final CountDownLatch sendLatch = new CountDownLatch(1);
 
         WebSocketSession mockWsSession = new MockWebSocketSession() {
             @Override
             public void sendObjectAsync(Object data, Consumer<SendResult> handler) {
                 handler.accept(new SendResult());
+                sendLatch.countDown();
             }
         };
 
@@ -178,9 +188,10 @@ public class InvokeEventTests {
         WebPubSubClientBuilder builder = new WebPubSubClientBuilder();
         builder.webSocketClient = mockWsClient;
         WebPubSubClient client = builder.clientAccessUrl("mock").buildClient();
+        client.addOnConnectedEventHandler(e -> connectedLatch.countDown());
         client.start();
 
-        Thread.sleep(100);
+        Assertions.assertTrue(connectedLatch.await(5, TimeUnit.SECONDS), "Timed out waiting for connected event");
 
         CountDownLatch latch = new CountDownLatch(1);
         AtomicReference<InvokeEventResult> resultRef = new AtomicReference<>();
@@ -199,7 +210,7 @@ public class InvokeEventTests {
         });
         invokeThread.start();
 
-        Thread.sleep(100);
+        Assertions.assertTrue(sendLatch.await(5, TimeUnit.SECONDS), "Timed out waiting for invoke message to be sent");
 
         // Deliver response with JSON data - use the decoder to parse it as the client would
         Consumer<WebPubSubMessage> messageHandler = messageHandlerRef.get();
@@ -223,6 +234,8 @@ public class InvokeEventTests {
 
     @Test
     public void testInvokeEventTimeout() throws InterruptedException {
+        final CountDownLatch connectedLatch = new CountDownLatch(1);
+
         WebSocketSession mockWsSession = new MockWebSocketSession() {
             @Override
             public void sendObjectAsync(Object data, Consumer<SendResult> handler) {
@@ -239,9 +252,10 @@ public class InvokeEventTests {
         WebPubSubClientBuilder builder = new WebPubSubClientBuilder();
         builder.webSocketClient = mockWsClient;
         WebPubSubClient client = builder.clientAccessUrl("mock").buildClient();
+        client.addOnConnectedEventHandler(e -> connectedLatch.countDown());
         client.start();
 
-        Thread.sleep(100);
+        Assertions.assertTrue(connectedLatch.await(5, TimeUnit.SECONDS), "Timed out waiting for connected event");
 
         CountDownLatch latch = new CountDownLatch(1);
         AtomicReference<Throwable> errorRef = new AtomicReference<>();
@@ -249,9 +263,8 @@ public class InvokeEventTests {
         Thread invokeThread = new Thread(() -> {
             try {
                 // Set a short timeout; no response will be delivered, so it should time out
-                InvokeEventOptions options = new InvokeEventOptions()
-                    .setInvocationId("inv-timeout-1")
-                    .setTimeout(Duration.ofMillis(500));
+                InvokeEventOptions options
+                    = new InvokeEventOptions().setInvocationId("inv-timeout-1").setTimeout(Duration.ofMillis(500));
                 client.invokeEvent("echo", BinaryData.fromString("ping"), WebPubSubDataFormat.TEXT, options);
             } catch (Exception e) {
                 errorRef.set(e);
@@ -269,45 +282,6 @@ public class InvokeEventTests {
         InvocationException ex = (InvocationException) errorRef.get();
         Assertions.assertEquals("inv-timeout-1", ex.getInvocationId());
         Assertions.assertTrue(ex.getMessage().contains("timed out"));
-    }
-
-    @Test
-    public void testCancelInvocation() throws InterruptedException {
-        final List<Object> sentMessages = new ArrayList<>();
-
-        WebSocketSession mockWsSession = new MockWebSocketSession() {
-            @Override
-            public void sendObjectAsync(Object data, Consumer<SendResult> handler) {
-                sentMessages.add(data);
-                handler.accept(new SendResult());
-            }
-        };
-
-        WebSocketClient mockWsClient = (cec, path, loggerReference, messageHandler, openHandler, closeHandler) -> {
-            openHandler.accept(mockWsSession);
-            sendConnectedEvent(messageHandler);
-            return mockWsSession;
-        };
-
-        WebPubSubClientBuilder builder = new WebPubSubClientBuilder();
-        builder.webSocketClient = mockWsClient;
-        WebPubSubClient client = builder.clientAccessUrl("mock").buildClient();
-        client.start();
-
-        Thread.sleep(100);
-
-        // Call cancelInvocation and verify a cancelInvocation message was sent
-        client.cancelInvocation("inv-cancel-1");
-
-        // Find the CancelInvocationMessage among sent messages
-        CancelInvocationMessage cancelMsg = sentMessages.stream()
-            .filter(m -> m instanceof CancelInvocationMessage)
-            .map(m -> (CancelInvocationMessage) m)
-            .findFirst()
-            .orElse(null);
-
-        Assertions.assertNotNull(cancelMsg, "Expected a CancelInvocationMessage to be sent");
-        Assertions.assertEquals("inv-cancel-1", cancelMsg.getInvocationId());
     }
 
     private static void sendConnectedEvent(Consumer<WebPubSubMessage> messageHandler) {

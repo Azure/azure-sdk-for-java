@@ -514,24 +514,20 @@ final class WebPubSubAsyncClient implements Closeable {
 
     private Mono<InvokeEventResult> invokeEventAttempt(String invocationId, InvokeMessage invokeMessage,
         Duration timeout) {
-        return Mono.defer(() -> {
-            Mono<InvokeResponseMessage> responsePromise = waitForInvokeResponse(invocationId, timeout).cache();
-            responsePromise.subscribe(v -> {
-            }, e -> {
-            });
+        return Mono.<InvokeResponseMessage>create(sink -> {
+            Disposable responseDisposable
+                = waitForInvokeResponse(invocationId, timeout).subscribe(sink::success, sink::error);
+            sink.onDispose(responseDisposable);
 
-            return sendMessage(invokeMessage).then(responsePromise)
-                .map(this::mapInvokeResponse)
-                .onErrorResume(throwable -> {
-                    // If InvocationException, do not retry
-                    if (throwable instanceof InvocationException) {
-                        return Mono.error(throwable);
-                    }
-                    // Attempt to send cancelInvocation on failure
-                    return sendCancelInvocation(invocationId).onErrorResume(cancelError -> Mono.empty())
-                        .then(Mono.error(
-                            logSendMessageFailedException("Failed to invoke event.", throwable, true, (Long) null)));
-                });
+            sendMessage(invokeMessage).subscribe(null, error -> sink.error(error));
+        }).map(this::mapInvokeResponse).onErrorResume(throwable -> {
+            // If InvocationException, do not retry
+            if (throwable instanceof InvocationException) {
+                return Mono.error(throwable);
+            }
+            // Attempt to send cancelInvocation on failure
+            return sendCancelInvocationBestEffort(invocationId).then(
+                Mono.error(logSendMessageFailedException("Failed to invoke event.", throwable, true, (Long) null)));
         });
     }
 
@@ -567,15 +563,17 @@ final class WebPubSubAsyncClient implements Closeable {
      * Cancels a pending invocation by sending a cancel message to the server.
      *
      * @param invocationId the invocation ID to cancel.
-     * @return a {@link Mono} that completes when the cancel message has been sent.
+     * @return a {@link Mono} that completes when the cancel message has been sent, or errors if the
+     *     cancel message could not be sent (e.g., when disconnected).
      * @throws NullPointerException if {@code invocationId} is null.
      */
     public Mono<Void> cancelInvocation(String invocationId) {
         Objects.requireNonNull(invocationId, "'invocationId' cannot be null.");
-        return sendCancelInvocation(invocationId);
+        CancelInvocationMessage cancelMessage = new CancelInvocationMessage().setInvocationId(invocationId);
+        return sendMessage(cancelMessage);
     }
 
-    private Mono<Void> sendCancelInvocation(String invocationId) {
+    private Mono<Void> sendCancelInvocationBestEffort(String invocationId) {
         CancelInvocationMessage cancelMessage = new CancelInvocationMessage().setInvocationId(invocationId);
         return sendMessage(cancelMessage).onErrorResume(error -> {
             logger.atVerbose().log("Failed to send cancelInvocation for " + invocationId, error);

@@ -104,23 +104,11 @@ public final class ReadmeSamples {
         WebPubSubClient client = createMockClient();
 
         // BEGIN: readme-sample-invokeEventWithTimeout
-        InvokeEventOptions options = new InvokeEventOptions().setTimeout(Duration.ofSeconds(10));
+        InvokeEventOptions options = new InvokeEventOptions().setTimeout(Duration.ofSeconds(10)).setInvocationId("my-invocation-1");
         InvokeEventResult result = client.invokeEvent("processOrder",
             BinaryData.fromString("{\"orderId\":1}"), WebPubSubDataFormat.JSON, options);
         System.out.println("Invocation result: " + result.getData().toString());
         // END: readme-sample-invokeEventWithTimeout
-    }
-
-    public void cancelInvocation() {
-        WebPubSubClient client = createMockClient();
-
-        // BEGIN: readme-sample-cancelInvocation
-        InvokeEventOptions options = new InvokeEventOptions().setInvocationId("my-invocation-1");
-        client.invokeEvent("processOrder",
-            BinaryData.fromString("{\"orderId\":1}"), WebPubSubDataFormat.JSON, options);
-
-        client.cancelInvocation("my-invocation-1");
-        // END: readme-sample-cancelInvocation
     }
 
     public void sendAndRetry() {
