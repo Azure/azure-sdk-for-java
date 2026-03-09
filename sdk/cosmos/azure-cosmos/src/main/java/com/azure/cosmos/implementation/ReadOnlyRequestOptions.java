@@ -129,6 +129,13 @@ public interface ReadOnlyRequestOptions {
     Boolean isIndexMetricsEnabled();
 
     /**
+     * Gets the query advice enabled.
+     *
+     * @return the query advice enabled. It could be null if not defined or called on an irrelevant operation.
+     */
+    Boolean isQueryAdviceEnabled();
+
+    /**
      * Gets the query name.
      *
      * @return the query name. It could be null if not defined or called on an irrelevant operation.

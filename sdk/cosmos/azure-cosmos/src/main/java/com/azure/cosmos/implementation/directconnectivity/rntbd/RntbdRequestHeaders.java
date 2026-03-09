@@ -133,6 +133,7 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
         this.addPriorityLevel(headers);
         this.addGlobalDatabaseAccountName(headers);
         this.addThroughputBucket(headers);
+        this.addPopulateQueryAdvice(headers);
         this.addHubRegionProcessingOnly(headers);
 
         // Normal headers (Strings, Ints, Longs, etc.)
@@ -294,6 +295,8 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
     private RntbdToken getPriorityLevel() { return this.get(RntbdRequestHeader.PriorityLevel); }
 
     private RntbdToken getThroughputBucket() { return this.get(RntbdRequestHeader.ThroughputBucket); }
+
+    private RntbdToken getPopulateQueryAdvice() { return this.get(RntbdRequestHeader.PopulateQueryAdvice); }
 
     private RntbdToken getHubRegionProcessingOnly() { return this.get(RntbdRequestHeader.HubRegionProcessingOnly); }
 
@@ -804,6 +807,13 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
         if (StringUtils.isNotEmpty(value)) {
             final int throughputBucket = Integer.valueOf(value);
             this.getThroughputBucket().setValue((byte)throughputBucket);
+        }
+    }
+
+    private void addPopulateQueryAdvice(final Map<String, String> headers) {
+        final String value = headers.get(HttpHeaders.POPULATE_QUERY_ADVICE);
+        if (StringUtils.isNotEmpty(value)) {
+            this.getPopulateQueryAdvice().setValue(Boolean.parseBoolean(value));
         }
     }
 
