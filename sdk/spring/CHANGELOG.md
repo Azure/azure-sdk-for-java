@@ -74,7 +74,7 @@ This section includes changes in `spring-messaging-azure-servicebus` module.
 
 ## 5.25.0 (2026-03-05)
 - This release is compatible with Spring Boot 3.5.0-3.5.8, 3.4.0-3.4.12, 3.3.0-3.3.13, 3.2.0-3.2.12, 3.1.0-3.1.12. (Note: 3.5.x (x>8) should be supported, but they aren't tested with this release.)
-- This release is compatible with Spring Cloud 2025.0.0, 2024.0.0-2024.0.2, 2023.0.0-2023.0.5, 2022.0.0-2022.0.5. (Note: 2025.0.x(x>0) should be supported, but they aren't tested with this release.)
+- This release is compatible with Spring Cloud 2025.0.0, 2024.0.0-2024.0.2, 2023.0.0-2023.0.5, 2022.0.0-2022.0.5. (Note: 2025.0.x (x>0) should be supported, but they aren't tested with this release.)
 
 ### Spring Cloud Azure Autoconfigure
 
