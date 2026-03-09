@@ -5,8 +5,8 @@
 ### Features Added
 
 - Added `readSpecFromFile(Path)` static convenience method to `OpenApiFunctionDefinition` for loading OpenAPI specification JSON files as the `Map<String, BinaryData>` required by the constructor, eliminating the need for manual `JsonReader`/`BinaryData` wiring.
-- Added new `OpenApiSample` demonstrating end-to-end OpenAPI tool integration: loading a spec file, creating an agent with an `OpenApiTool`, and invoking an external API via conversation.
-- Added new tool samples for parity with the Python SDK: `AzureFunctionSample`, `BingCustomSearchSample`, `MemorySearchSample`, `McpWithConnectionSample`, and `OpenApiWithConnectionSample`.
+- Added new `OpenApiSync`/`OpenApiAsync` samples demonstrating end-to-end OpenAPI tool integration: loading a spec file, creating an agent with an `OpenApiTool`, and invoking an external API via conversation.
+- Added new tool samples for parity with the Python SDK: `AzureFunctionSync`/`AzureFunctionAsync`, `BingCustomSearchSync`/`BingCustomSearchAsync`, `MemorySearchSync`/`MemorySearchAsync`, `McpWithConnectionSync`/`McpWithConnectionAsync`, and `OpenApiWithConnectionSync`/`OpenApiWithConnectionAsync`.
 
 ### Breaking Changes
 
@@ -14,7 +14,7 @@
 
 ### Other Changes
 
-- Added `OpenAPIToolTests` with recorded end-to-end test coverage for the OpenAPI tool flow.
+- Added `ToolsTests` and `ToolsAsyncTests` with recorded end-to-end test coverage for OpenAPI, Code Interpreter, Function Call, Web Search, MCP, and File Search tools.
 
 ## 2.0.0-beta.2 (2026-03-04)
 
