@@ -101,12 +101,20 @@ public class RecurrenceEvaluator {
         
         ZonedDateTime firstDayOfMostRecentOccurringWeek = firstDayOfFirstWeek.plusDays(
             numberOfInterval * (interval * RecurrenceConstants.DAYS_PER_WEEK));
-        // Handle DST transitions: if the offset difference is exactly 1 hour, it's likely a DST
-        // transition rather than a different geographic timezone. Apply zone conversion to handle this.
-        int offsetDiffSeconds = Math.abs(firstDayOfMostRecentOccurringWeek.getOffset().getTotalSeconds() 
-            - now.getOffset().getTotalSeconds());
-        if (offsetDiffSeconds == 3600) { // 1 hour in seconds
-            firstDayOfMostRecentOccurringWeek = firstDayOfMostRecentOccurringWeek.withZoneSameLocal(now.getZone());
+        // Handle DST transitions: when offsets differ, check if converting to the same instant
+        // changes the local time significantly (indicating different geographic timezones) or
+        // minimally (indicating DST transition in the same location). This handles both standard
+        // 1-hour DST transitions and non-standard ones like Lord Howe Island's 30-minute shift.
+        if (!firstDayOfMostRecentOccurringWeek.getOffset().equals(now.getOffset())) {
+            ZonedDateTime converted = firstDayOfMostRecentOccurringWeek.withZoneSameInstant(now.getZone());
+            long hoursDiff = Math.abs(Duration.between(
+                converted.toLocalDateTime(), 
+                firstDayOfMostRecentOccurringWeek.toLocalDateTime()).toHours());
+            // If local time difference is small (≤2 hours), it's likely a DST transition
+            // rather than a different geographic timezone (which typically differ by ≥3 hours)
+            if (hoursDiff <= 2) {
+                firstDayOfMostRecentOccurringWeek = firstDayOfMostRecentOccurringWeek.withZoneSameLocal(now.getZone());
+            }
         }
         final List<DayOfWeek> sortedDaysOfWeek = TimeWindowUtils.sortDaysOfWeek(pattern.getDaysOfWeek(), pattern.getFirstDayOfWeek());
         final int maxDayOffset = TimeWindowUtils.getPassedWeekDays(sortedDaysOfWeek.get(sortedDaysOfWeek.size() - 1), pattern.getFirstDayOfWeek());
