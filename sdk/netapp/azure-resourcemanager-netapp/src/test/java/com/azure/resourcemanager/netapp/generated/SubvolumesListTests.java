@@ -12,11 +12,11 @@ public final class SubvolumesListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SubvolumesList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"path\":\"vxwmygd\",\"size\":5636888396415086824,\"parentPath\":\"chisze\",\"provisioningState\":\"nb\"},\"id\":\"rxgibbd\",\"name\":\"xconfozauors\",\"type\":\"kokwbqplhlvnu\"},{\"properties\":{\"path\":\"zlrphwzs\",\"size\":1934599669073503654,\"parentPath\":\"yuqdu\",\"provisioningState\":\"mnnrwr\"},\"id\":\"ork\",\"name\":\"alywjhhgdn\",\"type\":\"xmsivfomiloxggdu\"}],\"nextLink\":\"q\"}")
+            "{\"value\":[{\"properties\":{\"path\":\"mizvgbgatzuuvbx\",\"size\":1464612539790608915,\"parentPath\":\"wggahttzlswvaj\",\"provisioningState\":\"utlxjoqzasunwqrj\"},\"id\":\"rg\",\"name\":\"haohcmbuo\",\"type\":\"njrohmbpy\"},{\"properties\":{\"path\":\"ameb\",\"size\":8593674276467236286,\"parentPath\":\"kfkmrocxnehvsmt\",\"provisioningState\":\"lfpya\"},\"id\":\"cygvoavyunssx\",\"name\":\"ghiee\",\"type\":\"jlgvvpase\"}],\"nextLink\":\"gbuxantuygdh\"}")
             .toObject(SubvolumesList.class);
-        Assertions.assertEquals("vxwmygd", model.value().get(0).path());
-        Assertions.assertEquals(5636888396415086824L, model.value().get(0).size());
-        Assertions.assertEquals("chisze", model.value().get(0).parentPath());
-        Assertions.assertEquals("q", model.nextLink());
+        Assertions.assertEquals("mizvgbgatzuuvbx", model.value().get(0).path());
+        Assertions.assertEquals(1464612539790608915L, model.value().get(0).size());
+        Assertions.assertEquals("wggahttzlswvaj", model.value().get(0).parentPath());
+        Assertions.assertEquals("gbuxantuygdh", model.nextLink());
     }
 }

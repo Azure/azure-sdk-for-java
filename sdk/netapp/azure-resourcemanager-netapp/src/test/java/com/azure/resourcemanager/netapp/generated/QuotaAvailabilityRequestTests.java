@@ -13,25 +13,25 @@ public final class QuotaAvailabilityRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         QuotaAvailabilityRequest model = BinaryData.fromString(
-            "{\"name\":\"tx\",\"type\":\"Microsoft.NetApp/netAppAccounts/capacityPools/volumes/backups\",\"resourceGroup\":\"zukxitmmqtgqq\"}")
+            "{\"name\":\"wcdommpvfqaw\",\"type\":\"Microsoft.NetApp/netAppAccounts/capacityPools/volumes/snapshots\",\"resourceGroup\":\"gbrt\"}")
             .toObject(QuotaAvailabilityRequest.class);
-        Assertions.assertEquals("tx", model.name());
+        Assertions.assertEquals("wcdommpvfqaw", model.name());
         Assertions.assertEquals(
-            CheckQuotaNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS_VOLUMES_BACKUPS,
+            CheckQuotaNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS_VOLUMES_SNAPSHOTS,
             model.type());
-        Assertions.assertEquals("zukxitmmqtgqq", model.resourceGroup());
+        Assertions.assertEquals("gbrt", model.resourceGroup());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        QuotaAvailabilityRequest model = new QuotaAvailabilityRequest().withName("tx")
-            .withType(CheckQuotaNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS_VOLUMES_BACKUPS)
-            .withResourceGroup("zukxitmmqtgqq");
+        QuotaAvailabilityRequest model = new QuotaAvailabilityRequest().withName("wcdommpvfqaw")
+            .withType(CheckQuotaNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS_VOLUMES_SNAPSHOTS)
+            .withResourceGroup("gbrt");
         model = BinaryData.fromObject(model).toObject(QuotaAvailabilityRequest.class);
-        Assertions.assertEquals("tx", model.name());
+        Assertions.assertEquals("wcdommpvfqaw", model.name());
         Assertions.assertEquals(
-            CheckQuotaNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS_VOLUMES_BACKUPS,
+            CheckQuotaNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS_VOLUMES_SNAPSHOTS,
             model.type());
-        Assertions.assertEquals("zukxitmmqtgqq", model.resourceGroup());
+        Assertions.assertEquals("gbrt", model.resourceGroup());
     }
 }
