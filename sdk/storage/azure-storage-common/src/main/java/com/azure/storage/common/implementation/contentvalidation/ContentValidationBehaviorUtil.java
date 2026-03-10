@@ -26,7 +26,7 @@ public final class ContentValidationBehaviorUtil {
      * message.
      *
      * @param algorithm The request checksum algorithm (e.g. from upload options).
-     * @param length    The upload length in bytes.
+     * @param length The upload length in bytes.
      * @return The behavior string for context, or null if no content validation should be applied.
      */
     public static String getBehaviorForSinglePartUpload(StorageChecksumAlgorithm algorithm, long length) {

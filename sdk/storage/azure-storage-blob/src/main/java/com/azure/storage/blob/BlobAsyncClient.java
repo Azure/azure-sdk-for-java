@@ -39,6 +39,7 @@ import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.specialized.PageBlobAsyncClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.common.StorageChecksumAlgorithm;
+
 import com.azure.storage.common.implementation.BufferStagingArea;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -791,11 +792,11 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
             .concatWith(Flux.defer(stagingArea::flush))
             .flatMapSequential(bufferAggregator -> {
                 Flux<ByteBuffer> chunkData = bufferAggregator.asFlux();
-                long blockLength = bufferAggregator.length();
                 String blockId = Base64.getEncoder().encodeToString(CoreUtils.randomUuid().toString().getBytes(UTF_8));
                 return UploadUtils.computeMd5(chunkData, computeMd5, LOGGER).flatMap(fluxMd5Wrapper -> {
-                    Mono<Response<Void>> responseMono = blockBlobAsyncClient.stageBlockWithResponse(blockId,
-                        fluxMd5Wrapper.getData(), blockLength, fluxMd5Wrapper.getMd5(), requestConditions.getLeaseId());
+                    Mono<Response<Void>> responseMono
+                        = blockBlobAsyncClient.stageBlockWithResponse(blockId, fluxMd5Wrapper.getData(),
+                            bufferAggregator.length(), fluxMd5Wrapper.getMd5(), requestConditions.getLeaseId());
                     String contentValidationBehavior
                         = ContentValidationBehaviorUtil.getBehaviorForChunkedUpload(requestChecksumAlgorithm);
                     if (contentValidationBehavior != null) {

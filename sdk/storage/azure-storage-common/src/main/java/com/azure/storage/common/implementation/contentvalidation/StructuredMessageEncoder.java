@@ -143,18 +143,23 @@ public class StructuredMessageEncoder {
 
             // Emit buffers lazily to avoid materializing full encoded output in memory
             return Flux.create(sink -> {
+                // if we are at the beginning of the message, encode message header and emit it
                 if (currentContentOffset == 0) {
                     sink.next(ByteBuffer.wrap(generateMessageHeader()));
                 }
 
+                // while there are remaining bytes in the unencoded buffer, encode the segment content
                 while (unencodedBuffer.hasRemaining()) {
+                    // if we are at the beginning of a segment's content, encode segment header and emit it
                     if (currentSegmentOffset == 0) {
                         incrementCurrentSegment();
                         sink.next(ByteBuffer.wrap(generateSegmentHeader()));
                     }
 
+                    // encode the segment content and emit it
                     sink.next(encodeSegmentContent(unencodedBuffer));
 
+                    // if we are at the end of a segment's content, encode segment footer
                     if (currentSegmentOffset == getSegmentContentLength()) {
                         byte[] footer = generateSegmentFooter();
                         if (footer.length > 0) {
@@ -164,6 +169,7 @@ public class StructuredMessageEncoder {
                     }
                 }
 
+                // if all content has been encoded, encode message footer and emit it
                 if (currentContentOffset == contentLength) {
                     byte[] footer = generateMessageFooter();
                     if (footer.length > 0) {
@@ -194,15 +200,19 @@ public class StructuredMessageEncoder {
     }
 
     private ByteBuffer encodeSegmentContent(ByteBuffer unencodedBuffer) {
+        // get the number of bytes to read from the unencoded buffer based on the segment content length and the current segment offset
         int readSize = Math.min(unencodedBuffer.remaining(), getSegmentContentLength() - currentSegmentOffset);
 
         if (structuredMessageFlags == StructuredMessageFlags.STORAGE_CRC64) {
             if (unencodedBuffer.hasArray()) {
+                // if the unencoded buffer has an array, compute the CRC64 checksum of the segment content
+                // this is more efficient than copying the array to a new byte array and computing the checksum
                 int pos = unencodedBuffer.arrayOffset() + unencodedBuffer.position();
                 segmentCRC64s.put(currentSegmentNumber, StorageCrc64Calculator.compute(unencodedBuffer.array(), pos,
                     readSize, segmentCRC64s.get(currentSegmentNumber)));
                 messageCRC64 = StorageCrc64Calculator.compute(unencodedBuffer.array(), pos, readSize, messageCRC64);
             } else {
+                // if the unencoded buffer does not have an array, copy the array to a new byte array and compute the CRC64 checksum
                 byte[] copy = copyToArray(unencodedBuffer, readSize);
                 segmentCRC64s.put(currentSegmentNumber,
                     StorageCrc64Calculator.compute(copy, segmentCRC64s.get(currentSegmentNumber)));

@@ -754,11 +754,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
 
     Mono<Response<Void>> stageBlockWithResponse(String base64BlockId, Flux<ByteBuffer> data, long length,
         byte[] contentMd5, String leaseId, Context context) {
-        context = context == null ? Context.NONE : context;
-        // Pass Flux directly to avoid BinaryData.fromFlux buffering each block; policy encodes on-demand (defer).
-        return this.azureBlobStorage.getBlockBlobs()
-            .stageBlockNoCustomHeadersWithResponseAsync(containerName, blobName, base64BlockId, length, data,
-                contentMd5, null, null, leaseId, null, null, null, getCustomerProvidedKey(), encryptionScope, context);
+        return BinaryData.fromFlux(data, length, false)
+            .flatMap(binaryData -> stageBlockWithResponse(base64BlockId, binaryData, contentMd5, leaseId, context));
     }
 
     Mono<Response<Void>> stageBlockWithResponse(String base64BlockId, BinaryData data, byte[] contentMd5,

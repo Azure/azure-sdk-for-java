@@ -6,7 +6,6 @@ package com.azure.storage.common.policy;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
-import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.storage.common.implementation.contentvalidation.StorageCrc64Calculator;
@@ -39,17 +38,17 @@ public class StorageContentValidationPolicy implements HttpPipelinePolicy {
     public StorageContentValidationPolicy() {
     }
 
-    /**
-     * Stuff
-     *
-     * @return stuff
-     */
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         applyContentValidation(context);
         return next.process();
     }
-
+ 
+    /**
+     * Applies content validation to the request body.
+     *
+     * @param context the HTTP pipeline call context
+     */
     private void applyContentValidation(HttpPipelineCallContext context) {
         Optional<Object> behaviorOptional = context.getContext().getData(CONTENT_VALIDATION_BEHAVIOR_KEY);
         if (!behaviorOptional.isPresent()) {
@@ -69,6 +68,11 @@ public class StorageContentValidationPolicy implements HttpPipelinePolicy {
         }
     }
 
+    /**
+     * Applies the crc64 header to the request body.
+     *
+     * @param context the HTTP pipeline call context
+     */
     private void applyCRC64Header(HttpPipelineCallContext context) {
         // Implementation for setting the crc64 header
         long contentCRC64 = StorageCrc64Calculator.compute(context.getHttpRequest().getBodyAsBinaryData().toBytes(), 0);
@@ -84,6 +88,11 @@ public class StorageContentValidationPolicy implements HttpPipelinePolicy {
         context.getHttpRequest().setHeader(CONTENT_CRC64_HEADER_NAME, encodedCRC64);
     }
 
+    /**
+     * Applies the structured message to the request body.
+     *
+     * @param context the HTTP pipeline call context
+     */
     private void applyStructuredMessage(HttpPipelineCallContext context) {
         int unencodedContentLength
             = Integer.parseInt(context.getHttpRequest().getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH));
