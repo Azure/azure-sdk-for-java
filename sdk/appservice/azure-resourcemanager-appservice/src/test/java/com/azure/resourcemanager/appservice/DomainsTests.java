@@ -52,7 +52,7 @@ public class DomainsTests extends AppServiceTest {
 
     @Test
     public void canListTopLevelDomainsAgreements() {
-        PagedIterable<TldLegalAgreementInner> iterable = appServiceManager.serviceClient()
+        PagedIterable<TldLegalAgreementInner> iterable = appServiceManager.domainRegistrationClient()
             .getTopLevelDomains()
             .listAgreements("com", new TopLevelDomainAgreementOption());
         Assertions.assertNotNull(iterable.stream().collect(Collectors.toList()));
