@@ -9,6 +9,7 @@ import static com.azure.spring.cloud.feature.management.models.FilterParameters.
 
 import java.time.DayOfWeek;
 import java.time.Duration;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -135,7 +136,7 @@ public class RecurrenceValidator {
         }
 
         // Get the date of first day of the week
-        final ZonedDateTime today = ZonedDateTime.now();
+        final ZonedDateTime today = ZonedDateTime.now(ZoneOffset.UTC);
         final DayOfWeek firstDayOfWeek = settings.getRecurrence().getPattern().getFirstDayOfWeek();
         final int offset = TimeWindowUtils.getPassedWeekDays(today.getDayOfWeek(), firstDayOfWeek);
         final ZonedDateTime firstDateOfWeek = today.minusDays(offset).truncatedTo(ChronoUnit.DAYS);
