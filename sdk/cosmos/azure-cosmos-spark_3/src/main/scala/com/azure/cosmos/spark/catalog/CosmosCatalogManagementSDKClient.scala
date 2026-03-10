@@ -8,7 +8,7 @@ import com.azure.cosmos.models.{FeedRange, PartitionKeyDefinitionVersion, SparkM
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.spark.{ContainerFeedRangesCache, CosmosConstants}
 import com.azure.resourcemanager.cosmos.CosmosManager
-import com.azure.resourcemanager.cosmos.models.{AutoscaleSettings, AutoscaleSettingsResource, ContainerPartitionKey, CreateUpdateOptions, ExcludedPath, IncludedPath, IndexingMode, IndexingPolicy, SqlContainerCreateUpdateParameters, SqlContainerGetPropertiesResource, SqlContainerResource, SqlDatabaseCreateUpdateParameters, SqlDatabaseResource, ThroughputSettingsGetPropertiesResource, ThroughputSettingsResource, ThroughputSettingsUpdateParameters}
+import com.azure.resourcemanager.cosmos.models.{AutoscaleSettings, AutoscaleSettingsResource, ContainerPartitionKey, CreateUpdateOptions, ExcludedPath, IncludedPath, IndexingMode, IndexingPolicy, SqlContainerCreateUpdateParameters, SqlContainerGetPropertiesResource, SqlContainerResource, SqlDatabaseCreateUpdateParameters, SqlDatabaseResource, ThroughputSettingsGetPropertiesResource, ThroughputSettingsResource, ThroughputSettingsUpdateParameters, VectorEmbeddingPolicy => MgmtVectorEmbeddingPolicy}
 import com.fasterxml.jackson.annotation.JsonInclude.Include
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.apache.spark.sql.connector.catalog.{NamespaceChange, TableChange}
@@ -113,6 +113,14 @@ private[spark] case class CosmosCatalogManagementSDKClient(resourceGroupName: St
         //setup analytical store ttl
         CosmosContainerProperties.getAnalyticalStoreTtlInSeconds(containerProperties) match {
             case Some(ttl) => sqlContainerResource.withAnalyticalStorageTtl(ttl)
+            case None =>
+        }
+
+        // setup vector embedding policy
+        CosmosContainerProperties.getVectorEmbeddingPolicy(containerProperties) match {
+            case Some(vectorEmbeddingPolicyJson) =>
+                sqlContainerResource.withVectorEmbeddingPolicy(
+                    objectMapper.readValue(vectorEmbeddingPolicyJson, classOf[MgmtVectorEmbeddingPolicy]))
             case None =>
         }
 
@@ -312,6 +320,11 @@ private[spark] case class CosmosCatalogManagementSDKClient(resourceGroupName: St
             case None => "null"
         }
 
+        val vectorEmbeddingPolicySnapshot = Option.apply(containerProperties.vectorEmbeddingPolicy()) match {
+            case Some(policy) => objectMapper.writeValueAsString(policy)
+            case None => "null"
+        }
+
         // TODO: Annie: Is it okie to do this way
         val lastModifiedSnapshot = ZonedDateTime
             .ofInstant(Instant.ofEpochSecond(containerProperties.ts().longValue()), ZoneOffset.UTC)
@@ -382,6 +395,10 @@ private[spark] case class CosmosCatalogManagementSDKClient(resourceGroupName: St
         tableProperties.put(
             CosmosConstants.TableProperties.IndexingPolicy,
             s"'$indexingPolicySnapshotJson'"
+        )
+        tableProperties.put(
+            CosmosConstants.TableProperties.VectorEmbeddingPolicy,
+            s"'$vectorEmbeddingPolicySnapshot'"
         )
 
         tableProperties
