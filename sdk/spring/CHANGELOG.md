@@ -2,7 +2,16 @@
 # (Unreleased)
 Upgrade Spring Boot dependencies version to 4.0.3 and Spring Cloud dependencies version to 2025.1.0
 
-## 7.1.0 (Not Released)
+## 7.1.0 (2026-03-11)
+
+This release is compatible with Spring Boot 4.0.3.
+This release is compatible with Spring Cloud 2025.1.0.
+
+### Spring Cloud Azure Dependencies (BOM)
+
+#### Dependency Updates
+
+- Upgrade `azure-sdk-bom` to 1.3.5.
 
 ### Spring Cloud Azure Autoconfigure
 
@@ -71,6 +80,12 @@ This section includes changes in `spring-messaging-azure-servicebus` module.
 #### Bugs Fixed
 
 - Fixed `DefaultServiceBusNamespaceProcessorFactory` not removing closed/disposed `ServiceBusProcessorClient` instances from its internal cache, causing subsequent `createProcessor()` calls to return stale, non-functional processors. [#48030](https://github.com/Azure/azure-sdk-for-java/issues/48030)
+
+### Azure Spring Data Cosmos
+
+This section includes changes in `azure-spring-data-cosmos` module.
+
+Please refer to [azure-spring-data-cosmos/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-data-cosmos/CHANGELOG.md#710-2026-03-11) for more details.
 
 ## 5.25.0 (2026-03-05)
 - This release is compatible with Spring Boot 3.5.0-3.5.8, 3.4.0-3.4.12, 3.3.0-3.3.13, 3.2.0-3.2.12, 3.1.0-3.1.12. (Note: 3.5.x (x>8) should be supported, but they aren't tested with this release.)
