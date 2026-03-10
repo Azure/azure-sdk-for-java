@@ -314,7 +314,7 @@ public final class CallConnectionAsync {
                 CustomCallingContext customCallingContext = new CustomCallingContext();
                 if (transferCallToParticipantOptions.getCustomCallingContext().getVoipHeaders() != null) {
                     customCallingContext
-                        .setVoipHeaders(transferCallToParticipantOptions.getCustomCallingContext().getSipHeaders());
+                        .setVoipHeaders(transferCallToParticipantOptions.getCustomCallingContext().getVoipHeaders());
                 }
 
                 if (transferCallToParticipantOptions.getCustomCallingContext().getSipHeaders() != null) {
@@ -400,17 +400,6 @@ public final class CallConnectionAsync {
                     addParticipantOptions.getTargetParticipant().getCustomCallingContext().getVoipHeaders());
                 customCallingContext.setTeamsPhoneCallDetails(createTeamsPhoneCallDetailsInternal(
                     addParticipantOptions.getTargetParticipant().getCustomCallingContext().getTeamsPhoneCallDetails()));
-                request.setCustomCallingContext(customCallingContext);
-            }
-
-            // Need to do a null check since SipHeaders and VoipHeaders are optional; If they both are null then we do not need to set custom context
-            if (addParticipantOptions.getTargetParticipant().getCustomCallingContext().getSipHeaders() != null
-                || addParticipantOptions.getTargetParticipant().getCustomCallingContext().getVoipHeaders() != null) {
-                CustomCallingContext customCallingContext = new CustomCallingContext();
-                customCallingContext.setSipHeaders(
-                    addParticipantOptions.getTargetParticipant().getCustomCallingContext().getSipHeaders());
-                customCallingContext.setVoipHeaders(
-                    addParticipantOptions.getTargetParticipant().getCustomCallingContext().getVoipHeaders());
                 request.setCustomCallingContext(customCallingContext);
             }
 
@@ -644,8 +633,8 @@ public final class CallConnectionAsync {
                 teamsPhoneCallerDetailsInternal.setPhoneNumber(teamsPhoneCallerDetails.getPhoneNumber());
                 teamsPhoneCallerDetailsInternal.setRecordId(teamsPhoneCallerDetails.getRecordId());
                 teamsPhoneCallerDetailsInternal.setScreenPopUrl(teamsPhoneCallerDetails.getScreenPopUrl());
-                teamsPhoneCallerDetails.setIsAuthenticated(teamsPhoneCallerDetails.isAuthenticated());
-                teamsPhoneCallerDetails
+                teamsPhoneCallerDetailsInternal.setIsAuthenticated(teamsPhoneCallerDetails.isAuthenticated());
+                teamsPhoneCallerDetailsInternal
                     .setAdditionalCallerInformation(teamsPhoneCallerDetails.getAdditionalCallerInformation());
             }
         }

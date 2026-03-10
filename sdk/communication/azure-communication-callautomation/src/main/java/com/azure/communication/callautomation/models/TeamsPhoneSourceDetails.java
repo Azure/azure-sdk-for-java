@@ -5,12 +5,14 @@ package com.azure.communication.callautomation.models;
 
 import java.util.Map;
 import com.azure.communication.common.CommunicationIdentifier;
+import com.azure.core.annotation.Fluent;
 
 /**
  * Container for details relating to the entity responsible for the creation of
  * these call details.
  */
-public class TeamsPhoneSourceDetails {
+@Fluent
+public final class TeamsPhoneSourceDetails {
     /*
      * ID of the source entity passing along the call details (ex. Application
      * Instance ID of - CQ/AA)

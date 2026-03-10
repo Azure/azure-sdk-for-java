@@ -4,13 +4,15 @@
 package com.azure.communication.callautomation.models;
 
 import com.azure.communication.common.CommunicationIdentifier;
+import com.azure.core.annotation.Fluent;
 
 import java.util.Map;
 
 /**
  * Container for details relating to the original caller of the call.
  */
-public class TeamsPhoneCallerDetails {
+@Fluent
+public final class TeamsPhoneCallerDetails {
     /*
      * Caller's ID
      */

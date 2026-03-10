@@ -3,11 +3,14 @@
 
 package com.azure.communication.callautomation.models;
 
+import com.azure.core.annotation.Fluent;
+
 /**
  * Container for details relating to the entity responsible for the creation of
  * these call details.
  */
-public class TeamsPhoneCallDetails {
+@Fluent
+public final class TeamsPhoneCallDetails {
     /*
      * Container for details relating to the original caller of the call
      */
