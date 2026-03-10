@@ -21,9 +21,9 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
 import org.apache.commons.lang3.RandomUtils;
-import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Flux;
-import reactor.core.scheduler.Schedulers;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
 import reactor.util.retry.Retry;
 
 import java.util.ArrayList;
@@ -34,7 +34,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
-import com.codahale.metrics.MetricRegistry;
+
 
 /**
  * This workflow is intended for session and above consistency levels.
@@ -53,8 +53,8 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
     private ConcurrentHashMap<Integer, Document> cache;
     private int cacheSize;
 
-    ReadMyWriteWorkflow(TenantWorkloadConfig cfg, MetricRegistry sharedRegistry) {
-        super(cfg, sharedRegistry);
+    ReadMyWriteWorkflow(TenantWorkloadConfig cfg, Scheduler scheduler) {
+        super(cfg, scheduler);
     }
 
     @Override
@@ -71,7 +71,7 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
     }
 
     @Override
-    protected void performWorkload(BaseSubscriber<Document> baseSubscriber, long i) throws Exception {
+    protected Mono<Document> performWorkload(long i) {
 
         Flux<Document> obs;
         boolean readyMyWrite = RandomUtils.nextBoolean();
@@ -149,18 +149,7 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
             }
         }
 
-        concurrencyControlSemaphore.acquire();
-        logger.debug("concurrencyControlSemaphore: {}", concurrencyControlSemaphore);
-
-        try {
-            obs.subscribeOn(Schedulers.parallel()).subscribe(baseSubscriber);
-        } catch (Throwable error) {
-            concurrencyControlSemaphore.release();
-            logger.error("subscription failed due to ", error);
-            if (error instanceof Error) {
-                throw (Error) error;
-            }
-        }
+        return obs.last();
     }
 
     private void populateCache() {

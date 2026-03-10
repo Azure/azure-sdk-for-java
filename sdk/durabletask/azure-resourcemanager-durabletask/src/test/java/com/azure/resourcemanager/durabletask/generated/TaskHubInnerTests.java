@@ -12,7 +12,7 @@ public final class TaskHubInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TaskHubInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Accepted\",\"dashboardUrl\":\"xqeofjaeqjhqjba\"},\"id\":\"msmjqulngsntn\",\"name\":\"ybkzgcwr\",\"type\":\"clxxwrljdo\"}")
+            "{\"properties\":{\"provisioningState\":\"Deleting\",\"dashboardUrl\":\"gnzscxaqwo\"},\"id\":\"hcbonqvpkvlr\",\"name\":\"njeaseipheofloke\",\"type\":\"y\"}")
             .toObject(TaskHubInner.class);
     }
 

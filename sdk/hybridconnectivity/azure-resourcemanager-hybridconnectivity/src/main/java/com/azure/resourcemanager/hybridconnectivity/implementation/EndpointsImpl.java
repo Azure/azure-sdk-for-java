@@ -39,12 +39,8 @@ public final class EndpointsImpl implements Endpoints {
     public Response<EndpointResource> getWithResponse(String resourceUri, String endpointName, Context context) {
         Response<EndpointResourceInner> inner
             = this.serviceClient().getWithResponse(resourceUri, endpointName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new EndpointResourceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new EndpointResourceImpl(inner.getValue(), this.manager()));
     }
 
     public EndpointResource get(String resourceUri, String endpointName) {
@@ -78,12 +74,8 @@ public final class EndpointsImpl implements Endpoints {
         Long expiresin, ListCredentialsRequest listCredentialsRequest, Context context) {
         Response<EndpointAccessResourceInner> inner = this.serviceClient()
             .listCredentialsWithResponse(resourceUri, endpointName, expiresin, listCredentialsRequest, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new EndpointAccessResourceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new EndpointAccessResourceImpl(inner.getValue(), this.manager()));
     }
 
     public EndpointAccessResource listCredentials(String resourceUri, String endpointName) {
@@ -101,12 +93,8 @@ public final class EndpointsImpl implements Endpoints {
         Response<IngressGatewayResourceInner> inner = this.serviceClient()
             .listIngressGatewayCredentialsWithResponse(resourceUri, endpointName, expiresin,
                 listIngressGatewayCredentialsRequest, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new IngressGatewayResourceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new IngressGatewayResourceImpl(inner.getValue(), this.manager()));
     }
 
     public IngressGatewayResource listIngressGatewayCredentials(String resourceUri, String endpointName) {
@@ -123,12 +111,8 @@ public final class EndpointsImpl implements Endpoints {
         ManagedProxyRequest managedProxyRequest, Context context) {
         Response<ManagedProxyResourceInner> inner = this.serviceClient()
             .listManagedProxyDetailsWithResponse(resourceUri, endpointName, managedProxyRequest, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ManagedProxyResourceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ManagedProxyResourceImpl(inner.getValue(), this.manager()));
     }
 
     public ManagedProxyResource listManagedProxyDetails(String resourceUri, String endpointName,

@@ -11,7 +11,7 @@ public final class TaskHubPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TaskHubProperties model
-            = BinaryData.fromString("{\"provisioningState\":\"Canceled\",\"dashboardUrl\":\"qvkoc\"}")
+            = BinaryData.fromString("{\"provisioningState\":\"Canceled\",\"dashboardUrl\":\"bdlwtgrhpdjpj\"}")
                 .toObject(TaskHubProperties.class);
     }
 

@@ -32,12 +32,8 @@ public final class DbNodesImpl implements DbNodes {
         Context context) {
         Response<DbNodeInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, cloudvmclustername, dbnodeocid, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new DbNodeImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new DbNodeImpl(inner.getValue(), this.manager()));
     }
 
     public DbNode get(String resourceGroupName, String cloudvmclustername, String dbnodeocid) {

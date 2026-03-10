@@ -31,12 +31,8 @@ public final class DiscoverySolutionNlpsImpl implements DiscoverySolutionNlps {
         Context context) {
         Response<DiscoveryNlpResponseInner> inner
             = this.serviceClient().discoverSolutionsWithResponse(discoverSolutionRequest, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new DiscoveryNlpResponseImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new DiscoveryNlpResponseImpl(inner.getValue(), this.manager()));
     }
 
     public DiscoveryNlpResponse discoverSolutions() {
@@ -52,12 +48,8 @@ public final class DiscoverySolutionNlpsImpl implements DiscoverySolutionNlps {
         DiscoveryNlpRequest discoverSolutionRequest, Context context) {
         Response<DiscoveryNlpResponseInner> inner = this.serviceClient()
             .discoverSolutionsBySubscriptionWithResponse(subscriptionId, discoverSolutionRequest, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new DiscoveryNlpResponseImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new DiscoveryNlpResponseImpl(inner.getValue(), this.manager()));
     }
 
     public DiscoveryNlpResponse discoverSolutionsBySubscription(String subscriptionId) {

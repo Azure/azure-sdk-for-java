@@ -57,19 +57,19 @@
               - compatibilityRange: "[3.1.0,3.1.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-dependencies
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.2.0,3.2.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-dependencies
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.3.0,3.3.13]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-dependencies
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.4.0,3.4.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-dependencies
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.5.0,3.5.10]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-dependencies
@@ -124,19 +124,19 @@
               - compatibilityRange: "[3.1.0,3.1.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-active-directory
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.2.0,3.2.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-active-directory
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.3.0,3.3.13]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-active-directory
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.4.0,3.4.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-active-directory
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.5.0,3.5.10]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-active-directory
@@ -187,19 +187,19 @@
               - compatibilityRange: "[3.1.0,3.1.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-active-directory-b2c
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.2.0,3.2.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-active-directory-b2c
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.3.0,3.3.13]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-active-directory-b2c
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.4.0,3.4.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-active-directory-b2c
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.5.0,3.5.10]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-active-directory-b2c
@@ -256,19 +256,19 @@
               - compatibilityRange: "[3.1.0,3.1.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-appconfiguration
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.2.0,3.2.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-appconfiguration
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.3.0,3.3.13]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-appconfiguration
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.4.0,3.4.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-appconfiguration
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.5.0,3.5.10]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-appconfiguration
@@ -311,19 +311,19 @@
               - compatibilityRange: "[3.1.0,3.1.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-appconfiguration-config
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.2.0,3.2.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-appconfiguration-config
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.3.0,3.3.13]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-appconfiguration-config
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.4.0,3.4.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-appconfiguration-config
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.5.0,3.5.10]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-appconfiguration-config
@@ -382,19 +382,19 @@
               - compatibilityRange: "[3.1.0,3.1.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-data-cosmos
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.2.0,3.2.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-data-cosmos
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.3.0,3.3.13]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-data-cosmos
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.4.0,3.4.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-data-cosmos
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.5.0,3.5.10]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-data-cosmos
@@ -447,19 +447,19 @@
               - compatibilityRange: "[3.1.0,3.1.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-cosmos
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.2.0,3.2.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-cosmos
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.3.0,3.3.13]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-cosmos
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.4.0,3.4.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-cosmos
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.5.0,3.5.10]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-cosmos
@@ -511,19 +511,19 @@
               - compatibilityRange: "[3.1.0,3.1.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-keyvault
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.2.0,3.2.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-keyvault
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.3.0,3.3.13]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-keyvault
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.4.0,3.4.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-keyvault
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.5.0,3.5.10]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-keyvault
@@ -576,19 +576,19 @@
               - compatibilityRange: "[3.1.0,3.1.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-keyvault-certificates
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.2.0,3.2.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-keyvault-certificates
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.3.0,3.3.13]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-keyvault-certificates
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.4.0,3.4.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-keyvault-certificates
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.5.0,3.5.10]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-keyvault-certificates
@@ -656,19 +656,19 @@
               - compatibilityRange: "[3.1.0,3.1.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-keyvault-secrets
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.2.0,3.2.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-keyvault-secrets
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.3.0,3.3.13]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-keyvault-secrets
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.4.0,3.4.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-keyvault-secrets
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.5.0,3.5.10]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-keyvault-secrets
@@ -720,19 +720,19 @@
               - compatibilityRange: "[3.1.0,3.1.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-storage
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.2.0,3.2.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-storage
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.3.0,3.3.13]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-storage
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.4.0,3.4.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-storage
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.5.0,3.5.10]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-storage
@@ -789,19 +789,19 @@
               - compatibilityRange: "[3.1.0,3.1.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-storage-blob
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.2.0,3.2.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-storage-blob
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.3.0,3.3.13]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-storage-blob
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.4.0,3.4.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-storage-blob
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.5.0,3.5.10]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-storage-blob
@@ -859,19 +859,19 @@
               - compatibilityRange: "[3.1.0,3.1.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-storage-file-share
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.2.0,3.2.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-storage-file-share
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.3.0,3.3.13]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-storage-file-share
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.4.0,3.4.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-storage-file-share
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.5.0,3.5.10]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-storage-file-share
@@ -928,19 +928,19 @@
               - compatibilityRange: "[3.1.0,3.1.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-storage-queue
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.2.0,3.2.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-storage-queue
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.3.0,3.3.13]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-storage-queue
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.4.0,3.4.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-storage-queue
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.5.0,3.5.10]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-storage-queue
@@ -985,19 +985,19 @@
               - compatibilityRange: "[3.1.0,3.1.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-integration-storage-queue
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.2.0,3.2.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-integration-storage-queue
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.3.0,3.3.13]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-integration-storage-queue
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.4.0,3.4.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-integration-storage-queue
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.5.0,3.5.10]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-integration-storage-queue
@@ -1043,19 +1043,19 @@
               - compatibilityRange: "[3.1.0,3.1.12]"
                 groupId: com.azure.spring
                 artifactId: spring-integration-azure-storage-queue
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.2.0,3.2.12]"
                 groupId: com.azure.spring
                 artifactId: spring-integration-azure-storage-queue
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.3.0,3.3.13]"
                 groupId: com.azure.spring
                 artifactId: spring-integration-azure-storage-queue
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.4.0,3.4.12]"
                 groupId: com.azure.spring
                 artifactId: spring-integration-azure-storage-queue
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.5.0,3.5.10]"
                 groupId: com.azure.spring
                 artifactId: spring-integration-azure-storage-queue
@@ -1113,19 +1113,19 @@
               - compatibilityRange: "[3.1.0,3.1.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-servicebus
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.2.0,3.2.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-servicebus
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.3.0,3.3.13]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-servicebus
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.4.0,3.4.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-servicebus
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.5.0,3.5.10]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-servicebus
@@ -1170,19 +1170,19 @@
               - compatibilityRange: "[3.1.0,3.1.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-integration-servicebus
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.2.0,3.2.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-integration-servicebus
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.3.0,3.3.13]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-integration-servicebus
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.4.0,3.4.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-integration-servicebus
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.5.0,3.5.10]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-integration-servicebus
@@ -1228,19 +1228,19 @@
               - compatibilityRange: "[3.1.0,3.1.12]"
                 groupId: com.azure.spring
                 artifactId: spring-integration-azure-servicebus
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.2.0,3.2.12]"
                 groupId: com.azure.spring
                 artifactId: spring-integration-azure-servicebus
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.3.0,3.3.13]"
                 groupId: com.azure.spring
                 artifactId: spring-integration-azure-servicebus
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.4.0,3.4.12]"
                 groupId: com.azure.spring
                 artifactId: spring-integration-azure-servicebus
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.5.0,3.5.10]"
                 groupId: com.azure.spring
                 artifactId: spring-integration-azure-servicebus
@@ -1287,19 +1287,19 @@
               - compatibilityRange: "[3.1.0,3.1.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-stream-binder-servicebus
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.2.0,3.2.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-stream-binder-servicebus
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.3.0,3.3.13]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-stream-binder-servicebus
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.4.0,3.4.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-stream-binder-servicebus
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.5.0,3.5.10]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-stream-binder-servicebus
@@ -1352,19 +1352,19 @@
               - compatibilityRange: "[3.1.0,3.1.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-servicebus-jms
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.2.0,3.2.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-servicebus-jms
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.3.0,3.3.13]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-servicebus-jms
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.4.0,3.4.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-servicebus-jms
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.5.0,3.5.10]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-servicebus-jms
@@ -1428,19 +1428,19 @@
               - compatibilityRange: "[3.1.0,3.1.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-eventgrid
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.2.0,3.2.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-eventgrid
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.3.0,3.3.13]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-eventgrid
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.4.0,3.4.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-eventgrid
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.5.0,3.5.10]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-eventgrid
@@ -1498,19 +1498,19 @@
               - compatibilityRange: "[3.1.0,3.1.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-eventhubs
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.2.0,3.2.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-eventhubs
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.3.0,3.3.13]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-eventhubs
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.4.0,3.4.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-eventhubs
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.5.0,3.5.10]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-eventhubs
@@ -1555,19 +1555,19 @@
               - compatibilityRange: "[3.1.0,3.1.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-integration-eventhubs
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.2.0,3.2.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-integration-eventhubs
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.3.0,3.3.13]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-integration-eventhubs
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.4.0,3.4.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-integration-eventhubs
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.5.0,3.5.10]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-integration-eventhubs
@@ -1613,19 +1613,19 @@
               - compatibilityRange: "[3.1.0,3.1.12]"
                 groupId: com.azure.spring
                 artifactId: spring-integration-azure-eventhubs
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.2.0,3.2.12]"
                 groupId: com.azure.spring
                 artifactId: spring-integration-azure-eventhubs
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.3.0,3.3.13]"
                 groupId: com.azure.spring
                 artifactId: spring-integration-azure-eventhubs
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.4.0,3.4.12]"
                 groupId: com.azure.spring
                 artifactId: spring-integration-azure-eventhubs
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.5.0,3.5.10]"
                 groupId: com.azure.spring
                 artifactId: spring-integration-azure-eventhubs
@@ -1672,19 +1672,19 @@
               - compatibilityRange: "[3.1.0,3.1.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-stream-binder-eventhubs
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.2.0,3.2.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-stream-binder-eventhubs
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.3.0,3.3.13]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-stream-binder-eventhubs
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.4.0,3.4.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-stream-binder-eventhubs
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.5.0,3.5.10]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-stream-binder-eventhubs
@@ -1738,19 +1738,19 @@
               - compatibilityRange: "[3.1.0,3.1.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-jdbc-mysql
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.2.0,3.2.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-jdbc-mysql
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.3.0,3.3.13]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-jdbc-mysql
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.4.0,3.4.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-jdbc-mysql
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.5.0,3.5.10]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-jdbc-mysql
@@ -1804,19 +1804,19 @@
               - compatibilityRange: "[3.1.0,3.1.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-jdbc-postgresql
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.2.0,3.2.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-jdbc-postgresql
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.3.0,3.3.13]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-jdbc-postgresql
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.4.0,3.4.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-jdbc-postgresql
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.5.0,3.5.10]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-jdbc-postgresql
@@ -1861,19 +1861,19 @@
               - compatibilityRange: "[3.1.0,3.1.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-data-redis-lettuce
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.2.0,3.2.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-data-redis-lettuce
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.3.0,3.3.13]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-data-redis-lettuce
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.4.0,3.4.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-data-redis-lettuce
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.5.0,3.5.10]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-data-redis-lettuce
@@ -1914,19 +1914,19 @@
               - compatibilityRange: "[3.1.0,3.1.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-testcontainers
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.2.0,3.2.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-testcontainers
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.3.0,3.3.13]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-testcontainers
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.4.0,3.4.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-testcontainers
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.5.0,3.5.10]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-testcontainers
@@ -1968,19 +1968,19 @@
               - compatibilityRange: "[3.1.0,3.1.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-docker-compose
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.2.0,3.2.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-docker-compose
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.3.0,3.3.13]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-docker-compose
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.4.0,3.4.12]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-docker-compose
-                version: 5.24.1
+                version: 5.25.0
               - compatibilityRange: "[3.5.0,3.5.10]"
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-docker-compose
