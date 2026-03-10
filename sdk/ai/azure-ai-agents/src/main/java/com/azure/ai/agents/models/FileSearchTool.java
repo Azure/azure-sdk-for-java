@@ -42,7 +42,7 @@ public final class FileSearchTool extends Tool {
     /*
      * The filters property.
      */
-    @Generated
+    // AI Tooling: union type
     private BinaryData filters;
 
     /**
@@ -103,8 +103,7 @@ public final class FileSearchTool extends Tool {
      *
      * @return the filters value.
      */
-    @Generated
-    public BinaryData getFilters() {
+    private BinaryData getFiltersInternal() {
         return this.filters;
     }
 
@@ -114,10 +113,56 @@ public final class FileSearchTool extends Tool {
      * @param filters the filters value to set.
      * @return the FileSearchTool object itself.
      */
-    @Generated
-    public FileSearchTool setFilters(BinaryData filters) {
+    // AI Tooling: union type
+    private FileSearchTool setFiltersInternal(BinaryData filters) {
         this.filters = filters;
         return this;
+    }
+
+    /**
+     * Set the filters property as a {@link ComparisonFilter}.
+     *
+     * @param filters the comparison filter to set.
+     * @return the FileSearchTool object itself.
+     */
+    public FileSearchTool setFilters(ComparisonFilter filters) {
+        this.filters = BinaryData.fromObject(filters);
+        return this;
+    }
+
+    /**
+     * Set the filters property as a {@link CompoundFilter}.
+     *
+     * @param filters the compound filter to set.
+     * @return the FileSearchTool object itself.
+     */
+    public FileSearchTool setFilters(CompoundFilter filters) {
+        this.filters = BinaryData.fromObject(filters);
+        return this;
+    }
+
+    /**
+     * Get the filters property as a {@link ComparisonFilter}.
+     *
+     * @return the filters value as a ComparisonFilter.
+     */
+    public ComparisonFilter getFiltersAsComparisonFilter() {
+        if (this.filters == null) {
+            return null;
+        }
+        return this.filters.toObject(ComparisonFilter.class);
+    }
+
+    /**
+     * Get the filters property as a {@link CompoundFilter}.
+     *
+     * @return the filters value as a CompoundFilter.
+     */
+    public CompoundFilter getFiltersAsCompoundFilter() {
+        if (this.filters == null) {
+            return null;
+        }
+        return this.filters.toObject(CompoundFilter.class);
     }
 
     /**

@@ -43,7 +43,7 @@ public final class ComparisonFilter implements JsonSerializable<ComparisonFilter
     /*
      * The value to compare against the attribute key; supports string, number, or boolean types.
      */
-    @Generated
+    // AI Tooling: union type
     private final BinaryData value;
 
     /**
@@ -53,11 +53,50 @@ public final class ComparisonFilter implements JsonSerializable<ComparisonFilter
      * @param key the key value to set.
      * @param value the value value to set.
      */
-    @Generated
-    public ComparisonFilter(ComparisonFilterType type, String key, BinaryData value) {
+    // AI Tooling: union type
+    ComparisonFilter(ComparisonFilterType type, String key, BinaryData value) {
         this.type = type;
         this.key = key;
         this.value = value;
+    }
+
+    /**
+     * Creates an instance of ComparisonFilter class with a String value.
+     *
+     * @param type the type value to set.
+     * @param key the key value to set.
+     * @param value the String value to compare against the attribute key.
+     */
+    public ComparisonFilter(ComparisonFilterType type, String key, String value) {
+        this.type = type;
+        this.key = key;
+        this.value = BinaryData.fromObject(value);
+    }
+
+    /**
+     * Creates an instance of ComparisonFilter class with a numeric value.
+     *
+     * @param type the type value to set.
+     * @param key the key value to set.
+     * @param value the numeric value to compare against the attribute key.
+     */
+    public ComparisonFilter(ComparisonFilterType type, String key, double value) {
+        this.type = type;
+        this.key = key;
+        this.value = BinaryData.fromObject(value);
+    }
+
+    /**
+     * Creates an instance of ComparisonFilter class with a boolean value.
+     *
+     * @param type the type value to set.
+     * @param key the key value to set.
+     * @param value the boolean value to compare against the attribute key.
+     */
+    public ComparisonFilter(ComparisonFilterType type, String key, boolean value) {
+        this.type = type;
+        this.key = key;
+        this.value = BinaryData.fromObject(value);
     }
 
     /**
@@ -94,9 +133,44 @@ public final class ComparisonFilter implements JsonSerializable<ComparisonFilter
      *
      * @return the value value.
      */
-    @Generated
-    public BinaryData getValue() {
+    private BinaryData getValue() {
         return this.value;
+    }
+
+    /**
+     * Get the value property as a String.
+     *
+     * @return the value as a String.
+     */
+    public String getValueAsString() {
+        if (this.value == null) {
+            return null;
+        }
+        return this.value.toObject(String.class);
+    }
+
+    /**
+     * Get the value property as a number.
+     *
+     * @return the value as a Double.
+     */
+    public Double getValueAsNumber() {
+        if (this.value == null) {
+            return null;
+        }
+        return this.value.toObject(Double.class);
+    }
+
+    /**
+     * Get the value property as a boolean.
+     *
+     * @return the value as a Boolean.
+     */
+    public Boolean getValueAsBoolean() {
+        if (this.value == null) {
+            return null;
+        }
+        return this.value.toObject(Boolean.class);
     }
 
     /**

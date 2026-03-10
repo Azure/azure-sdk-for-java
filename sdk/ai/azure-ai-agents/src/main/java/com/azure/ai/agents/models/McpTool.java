@@ -10,6 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -80,13 +81,13 @@ public final class McpTool extends Tool {
     /*
      * The allowed_tools property.
      */
-    @Generated
+    // AI Tooling: union type
     private BinaryData allowedTools;
 
     /*
      * The require_approval property.
      */
-    @Generated
+    // AI Tooling: union type
     private BinaryData requireApproval;
 
     /*
@@ -270,8 +271,7 @@ public final class McpTool extends Tool {
      *
      * @return the allowedTools value.
      */
-    @Generated
-    public BinaryData getAllowedTools() {
+    private BinaryData getAllowedToolsInternal() {
         return this.allowedTools;
     }
 
@@ -281,10 +281,57 @@ public final class McpTool extends Tool {
      * @param allowedTools the allowedTools value to set.
      * @return the McpTool object itself.
      */
-    @Generated
-    public McpTool setAllowedTools(BinaryData allowedTools) {
+    // AI Tooling: union type
+    private McpTool setAllowedToolsInternal(BinaryData allowedTools) {
         this.allowedTools = allowedTools;
         return this;
+    }
+
+    /**
+     * Set the allowedTools property as a list of tool name strings.
+     *
+     * @param allowedTools the list of allowed tool names to set.
+     * @return the McpTool object itself.
+     */
+    public McpTool setAllowedTools(List<String> allowedTools) {
+        this.allowedTools = BinaryData.fromObject(allowedTools);
+        return this;
+    }
+
+    /**
+     * Set the allowedTools property as a {@link McpToolFilter}.
+     *
+     * @param allowedTools the MCP tool filter to set.
+     * @return the McpTool object itself.
+     */
+    public McpTool setAllowedTools(McpToolFilter allowedTools) {
+        this.allowedTools = BinaryData.fromObject(allowedTools);
+        return this;
+    }
+
+    /**
+     * Get the allowedTools property as a list of tool name strings.
+     *
+     * @return the allowedTools value as a list of Strings.
+     */
+    @SuppressWarnings("unchecked")
+    public List<String> getAllowedToolsAsStringList() {
+        if (this.allowedTools == null) {
+            return null;
+        }
+        return this.allowedTools.toObject(List.class);
+    }
+
+    /**
+     * Get the allowedTools property as a {@link McpToolFilter}.
+     *
+     * @return the allowedTools value as a McpToolFilter.
+     */
+    public McpToolFilter getAllowedToolsAsMcpToolFilter() {
+        if (this.allowedTools == null) {
+            return null;
+        }
+        return this.allowedTools.toObject(McpToolFilter.class);
     }
 
     /**
@@ -292,8 +339,7 @@ public final class McpTool extends Tool {
      *
      * @return the requireApproval value.
      */
-    @Generated
-    public BinaryData getRequireApproval() {
+    private BinaryData getRequireApprovalInternal() {
         return this.requireApproval;
     }
 
@@ -303,10 +349,56 @@ public final class McpTool extends Tool {
      * @param requireApproval the requireApproval value to set.
      * @return the McpTool object itself.
      */
-    @Generated
-    public McpTool setRequireApproval(BinaryData requireApproval) {
+    // AI Tooling: union type
+    private McpTool setRequireApprovalInternal(BinaryData requireApproval) {
         this.requireApproval = requireApproval;
         return this;
+    }
+
+    /**
+     * Set the requireApproval property as a String (e.g., "always" or "never").
+     *
+     * @param requireApproval the approval setting string to set.
+     * @return the McpTool object itself.
+     */
+    public McpTool setRequireApproval(String requireApproval) {
+        this.requireApproval = BinaryData.fromString(requireApproval);
+        return this;
+    }
+
+    /**
+     * Set the requireApproval property as a {@link McpToolRequireApproval} filter.
+     *
+     * @param requireApproval the MCP tool require approval filter to set.
+     * @return the McpTool object itself.
+     */
+    public McpTool setRequireApproval(McpToolRequireApproval requireApproval) {
+        this.requireApproval = BinaryData.fromObject(requireApproval);
+        return this;
+    }
+
+    /**
+     * Get the requireApproval property as a String.
+     *
+     * @return the requireApproval value as a String.
+     */
+    public String getRequireApprovalAsString() {
+        if (this.requireApproval == null) {
+            return null;
+        }
+        return this.requireApproval.toString();
+    }
+
+    /**
+     * Get the requireApproval property as a {@link McpToolRequireApproval}.
+     *
+     * @return the requireApproval value as a McpToolRequireApproval.
+     */
+    public McpToolRequireApproval getRequireApprovalAsMcpToolRequireApproval() {
+        if (this.requireApproval == null) {
+            return null;
+        }
+        return this.requireApproval.toObject(McpToolRequireApproval.class);
     }
 
     /**

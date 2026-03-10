@@ -251,7 +251,7 @@ public class ToolsTests extends ClientTestBase {
         ResponsesClient responsesClient = getResponsesSyncClient(httpClient, serviceVersion);
 
         McpTool tool = new McpTool("api-specs").setServerUrl("https://gitmcp.io/Azure/azure-rest-api-specs")
-            .setRequireApproval(BinaryData.fromObject("always"));
+            .setRequireApproval("always");
 
         PromptAgentDefinition agentDefinition = new PromptAgentDefinition("gpt-4o")
             .setInstructions("You are a helpful agent that can use MCP tools to assist users.")

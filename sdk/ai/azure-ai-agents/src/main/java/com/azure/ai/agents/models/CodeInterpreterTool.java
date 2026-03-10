@@ -31,7 +31,7 @@ public final class CodeInterpreterTool extends Tool {
      * optional `memory_limit` setting.
      * If not provided, the service assumes auto.
      */
-    @Generated
+    // AI Tooling: union type
     private BinaryData container;
 
     /**
@@ -53,8 +53,7 @@ public final class CodeInterpreterTool extends Tool {
      *
      * @return the container value.
      */
-    @Generated
-    public BinaryData getContainer() {
+    private BinaryData getContainerInternal() {
         return this.container;
     }
 
@@ -117,9 +116,55 @@ public final class CodeInterpreterTool extends Tool {
      * @param container the container value to set.
      * @return the CodeInterpreterTool object itself.
      */
-    @Generated
-    public CodeInterpreterTool setContainer(BinaryData container) {
+    // AI Tooling: union type
+    private CodeInterpreterTool setContainerInternal(BinaryData container) {
         this.container = container;
         return this;
+    }
+
+    /**
+     * Set the container property as a container ID string.
+     *
+     * @param containerId the container ID to set.
+     * @return the CodeInterpreterTool object itself.
+     */
+    public CodeInterpreterTool setContainer(String containerId) {
+        this.container = BinaryData.fromString(containerId);
+        return this;
+    }
+
+    /**
+     * Set the container property as an {@link AutoCodeInterpreterToolParam}.
+     *
+     * @param container the auto code interpreter tool parameters to set.
+     * @return the CodeInterpreterTool object itself.
+     */
+    public CodeInterpreterTool setContainer(AutoCodeInterpreterToolParam container) {
+        this.container = BinaryData.fromObject(container);
+        return this;
+    }
+
+    /**
+     * Get the container property as a String: The code interpreter container ID.
+     *
+     * @return the container value as a String.
+     */
+    public String getContainerAsString() {
+        if (this.container == null) {
+            return null;
+        }
+        return this.container.toString();
+    }
+
+    /**
+     * Get the container property as an {@link AutoCodeInterpreterToolParam}.
+     *
+     * @return the container value as an AutoCodeInterpreterToolParam.
+     */
+    public AutoCodeInterpreterToolParam getContainerAsAutoCodeInterpreterToolParam() {
+        if (this.container == null) {
+            return null;
+        }
+        return this.container.toObject(AutoCodeInterpreterToolParam.class);
     }
 }
