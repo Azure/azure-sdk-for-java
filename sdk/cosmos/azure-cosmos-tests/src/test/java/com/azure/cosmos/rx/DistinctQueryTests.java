@@ -325,8 +325,8 @@ public class DistinctQueryTests extends TestSuiteBase {
 
     public void bulkInsert() {
         generateTestData();
-        voidBulkInsertBlocking(createdCollection, docs);
-        voidBulkInsertBlocking(createdCollection, propertiesDocs);
+        voidInsertAllItemsBlocking(createdCollection, docs, true);
+        voidInsertAllItemsBlocking(createdCollection, propertiesDocs, true);
     }
 
     public void generateTestData() {
@@ -379,7 +379,7 @@ public class DistinctQueryTests extends TestSuiteBase {
     public void beforeClass() throws Exception {
         client = this.getClientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
-        truncateCollection(createdCollection);
+        cleanUpContainer(createdCollection);
 
         bulkInsert();
 

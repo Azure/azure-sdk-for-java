@@ -281,10 +281,18 @@ implements IDocumentQueryExecutionContext<T> {
                 requestHeaders.put(HttpConstants.HttpHeaders.DEDICATED_GATEWAY_PER_REQUEST_BYPASS_CACHE,
                     String.valueOf(cosmosQueryRequestOptions.getDedicatedGatewayRequestOptions().isIntegratedCacheBypassed()));
             }
+            if (cosmosQueryRequestOptions.getDedicatedGatewayRequestOptions().getShardKey() != null) {
+                requestHeaders.put(HttpConstants.HttpHeaders.DEDICATED_GATEWAY_PER_REQUEST_SHARD_KEY,
+                    cosmosQueryRequestOptions.getDedicatedGatewayRequestOptions().getShardKey());
+            }
         }
 
         if (cosmosQueryRequestOptions.isIndexMetricsEnabled()) {
             requestHeaders.put(HttpConstants.HttpHeaders.POPULATE_INDEX_METRICS, String.valueOf(cosmosQueryRequestOptions.isIndexMetricsEnabled()));
+        }
+
+        if (cosmosQueryRequestOptions.isQueryAdviceEnabled()) {
+            requestHeaders.put(HttpConstants.HttpHeaders.POPULATE_QUERY_ADVICE, String.valueOf(cosmosQueryRequestOptions.isQueryAdviceEnabled()));
         }
 
         boolean consistencyLevelOverrideApplicable = true;

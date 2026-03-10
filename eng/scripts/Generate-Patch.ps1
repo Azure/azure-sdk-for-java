@@ -121,7 +121,7 @@ function ResetSourcesToReleaseTag($ArtifactName, $ServiceDirectoryName, $Release
     $ReleaseTag = $OldReleaseTag
   }
 
-  $cmdOutput = git restore --source $ReleaseTag -W -S $ArtifactDirPath
+  $cmdOutput = git restore --source $ReleaseTag -W -S -- $ArtifactDirPath
   if($LASTEXITCODE -ne 0) {
     LogError "Could not restore the changes for release tag $ReleaseTag"
     exit 1
@@ -211,12 +211,19 @@ function CreatePatchRelease($ArtifactName, $ServiceDirectoryName, $PatchVersion,
   $Content += "#### Dependency Updates"
   $Content += ""
 
+  $hasUpgrades = $false
   foreach($key in $oldDependenciesToVersion.Keys) {
     $oldVersion = $($oldDependenciesToVersion[$key]).Trim()
     $newVersion = $($newDependenciesToVersion[$key]).Trim()
     if($oldVersion -ne $newVersion) {
       $Content += "- Upgraded ``$key`` from ``$oldVersion`` to version ``$newVersion``."
+      $hasUpgrades = $true
     }
+  }
+
+  # If no specific dependency changes detected, add a generic message
+  if (-not $hasUpgrades) {
+    $Content += "- Upgraded core dependencies."
   }
 
   $Content += ""

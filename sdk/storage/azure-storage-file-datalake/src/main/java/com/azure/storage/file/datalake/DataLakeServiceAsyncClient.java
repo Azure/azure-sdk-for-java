@@ -29,6 +29,7 @@ import com.azure.storage.file.datalake.models.FileSystemItem;
 import com.azure.storage.file.datalake.models.ListFileSystemsOptions;
 import com.azure.storage.file.datalake.models.PublicAccessType;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
+import com.azure.storage.file.datalake.options.DataLakeGetUserDelegationKeyOptions;
 import com.azure.storage.file.datalake.options.FileSystemUndeleteOptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -516,6 +517,26 @@ public class DataLakeServiceAsyncClient {
     public Mono<Response<UserDelegationKey>> getUserDelegationKeyWithResponse(OffsetDateTime start,
         OffsetDateTime expiry) {
         return blobServiceAsyncClient.getUserDelegationKeyWithResponse(start, expiry)
+            .onErrorMap(DataLakeImplUtils::transformBlobStorageException)
+            .map(response -> new SimpleResponse<>(response,
+                Transforms.toDataLakeUserDelegationKey(response.getValue())));
+    }
+
+    /**
+     * Gets a user delegation key for use with this account's data lake storage. Note: This method call is only valid
+     * when using {@link TokenCredential} in this object's {@link HttpPipeline}.
+     *
+     * @param options The {@link DataLakeGetUserDelegationKeyOptions options} to configure the request.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} containing the user
+     * delegation key.
+     * @throws IllegalArgumentException If {@code options.startsOn} isn't null and is after {@code options.expiry}.
+     * @throws NullPointerException If {@code options.expiry} is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<UserDelegationKey>>
+        getUserDelegationKeyWithResponse(DataLakeGetUserDelegationKeyOptions options) {
+        return blobServiceAsyncClient
+            .getUserDelegationKeyWithResponse(Transforms.toBlobGetUserDelegationKeyOptions(options))
             .onErrorMap(DataLakeImplUtils::transformBlobStorageException)
             .map(response -> new SimpleResponse<>(response,
                 Transforms.toDataLakeUserDelegationKey(response.getValue())));

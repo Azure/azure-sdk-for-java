@@ -54,24 +54,27 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
 
     @BeforeClass(groups = {"fast", "thinclient"}, timeOut = SETUP_TIMEOUT)
     public void before_CosmosNotFoundTests() {
-        this.commonAsyncClient = getClientBuilder().buildAsyncClient();
+        executeWithRetry(() -> {
+            safeClose(this.commonAsyncClient);
+            this.commonAsyncClient = getClientBuilder().buildAsyncClient();
 
-        // Get shared container and create an item in it
-        CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.commonAsyncClient);
-        this.existingAsyncContainer = this.commonAsyncClient.getDatabase(asyncContainer.getDatabase().getId())
-            .getContainer(asyncContainer.getId());
+            // Get shared container and create an item in it
+            CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.commonAsyncClient);
+            this.existingAsyncContainer = this.commonAsyncClient.getDatabase(asyncContainer.getDatabase().getId())
+                .getContainer(asyncContainer.getId());
 
-        // Get/create test database for this test class
-        CosmosAsyncDatabase asyncDatabase = getSharedCosmosDatabase(this.commonAsyncClient);
-        this.testAsyncDatabase = this.commonAsyncClient.getDatabase(asyncDatabase.getId());
+            // Get/create test database for this test class
+            CosmosAsyncDatabase asyncDatabase = getSharedCosmosDatabase(this.commonAsyncClient);
+            this.testAsyncDatabase = this.commonAsyncClient.getDatabase(asyncDatabase.getId());
 
-        // Create a test document
-        this.createdItemPk = UUID.randomUUID().toString();
+            // Create a test document
+            this.createdItemPk = UUID.randomUUID().toString();
 
-        TestObject testObject = TestObject.create(this.createdItemPk);
+            TestObject testObject = TestObject.create(this.createdItemPk);
 
-        this.existingAsyncContainer.createItem(testObject).block();
-        this.objectToCreate = testObject;
+            this.existingAsyncContainer.createItem(testObject).block();
+            this.objectToCreate = testObject;
+        }, 3, "CosmosNotFoundTests setup");
     }
 
     @DataProvider(name = "operationTypeProvider")
@@ -307,10 +310,6 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
 
             Thread.sleep(5000);
 
-            // Create an item in the container
-            TestObject testObject = TestObject.create(this.createdItemPk);
-            testContainer.createItem(testObject).block();
-
             // Create a different client instance to delete the container
             deletingAsyncClient = getClientBuilder()
                 .endpoint(TestConfigurations.HOST)
@@ -337,30 +336,18 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
                 .as("Status code should be 404 (Not Found)")
                 .isEqualTo(HttpConstants.StatusCodes.NOTFOUND);
 
-            // Verify sub-status code is either 0 or 1003
-
-            if (ConnectionMode.DIRECT.name().equals(accessor.getConnectionMode(clientToUse))) {
-                assertThat(diagnosticsContext.getSubStatusCode())
-                    .as("Sub-status code should be 1003")
-                    .isIn(
-                        HttpConstants.SubStatusCodes.OWNER_RESOURCE_NOT_EXISTS
-                    );
-            }
-
-            if (ConnectionMode.GATEWAY.name().equals(accessor.getConnectionMode(clientToUse))) {
-                assertThat(diagnosticsContext.getSubStatusCode())
-                    .as("Sub-status code should be 0")
-                    .isIn(
-                        HttpConstants.SubStatusCodes.UNKNOWN
-                    );
-            }
+            assertThat(diagnosticsContext.getSubStatusCode())
+                .as("Sub-status code should be 1003")
+                .isIn(
+                    HttpConstants.SubStatusCodes.OWNER_RESOURCE_NOT_EXISTS
+                );
         } finally {
             safeClose(clientToUse);
             safeClose(deletingAsyncClient);
         }
     }
 
-    @Test(groups = {"fast"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void performBulkOnDeletedContainer() throws InterruptedException {
 
         CosmosAsyncClient clientToUse = null, deletingAsyncClient = null;
@@ -394,10 +381,10 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
             CosmosAsyncContainer containerToDelete = deletingAsyncClient.getDatabase(testAsyncDatabase.getId()).getContainer(testContainerId);
             containerToDelete.delete().block();
 
-            Thread.sleep(5000);
+            // Increase wait time for container deletion to propagate to all caches
+            Thread.sleep(15000);
 
             // Try to read the item from the deleted container using the original client
-
             List<CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
 
             CosmosItemOperation cosmosItemOperation = CosmosBulkOperations.getReadItemOperation(

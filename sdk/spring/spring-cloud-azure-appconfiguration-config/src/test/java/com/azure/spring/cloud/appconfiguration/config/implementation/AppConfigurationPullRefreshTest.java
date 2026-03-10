@@ -22,14 +22,11 @@ import org.springframework.context.ApplicationEventPublisher;
 import com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationRefreshUtil.RefreshEventData;
 import com.azure.spring.cloud.appconfiguration.config.implementation.autofailover.ReplicaLookUp;
 
-import net.jcip.annotations.NotThreadSafe;
-
-@NotThreadSafe
 public class AppConfigurationPullRefreshTest {
 
     @Mock
     private ApplicationEventPublisher publisher;
-    
+
     @Mock
     private ReplicaLookUp replicaLookUpMock;
 
@@ -40,10 +37,10 @@ public class AppConfigurationPullRefreshTest {
 
     @Mock
     private AppConfigurationReplicaClientFactory clientFactoryMock;
-    
+
     @Mock
     private AppConfigurationRefreshUtil refreshUtilMock;
-    
+
     private MockitoSession session;
 
     @BeforeEach
@@ -65,7 +62,7 @@ public class AppConfigurationPullRefreshTest {
         AppConfigurationPullRefresh refresh = new AppConfigurationPullRefresh(clientFactoryMock, refreshInterval,
             replicaLookUpMock, refreshUtilMock);
         assertFalse(refresh.refreshConfigurations().block());
-       
+
     }
 
     @Test
@@ -78,6 +75,6 @@ public class AppConfigurationPullRefreshTest {
             replicaLookUpMock, refreshUtilMock);
         refresh.setApplicationEventPublisher(publisher);
         assertTrue(refresh.refreshConfigurations().block());
-        
+
     }
 }

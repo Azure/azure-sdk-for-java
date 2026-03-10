@@ -7,6 +7,7 @@ package com.azure.resourcemanager.communication.generated;
 import com.azure.resourcemanager.communication.models.CommunicationServiceResource;
 import com.azure.resourcemanager.communication.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.communication.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.communication.models.PublicNetworkAccess;
 import com.azure.resourcemanager.communication.models.UserAssignedIdentity;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,7 +18,7 @@ import java.util.Map;
 public final class CommunicationServicesUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/communication/resource-manager/Microsoft.Communication/stable/2023-04-01/examples/
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2025-09-01/examples/
      * communicationServices/update.json
      */
     /**
@@ -35,7 +36,7 @@ public final class CommunicationServicesUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/communication/resource-manager/Microsoft.Communication/stable/2023-04-01/examples/
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2025-09-01/examples/
      * communicationServices/updateWithUserAssignedIdentity.json
      */
     /**
@@ -58,7 +59,48 @@ public final class CommunicationServicesUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/communication/resource-manager/Microsoft.Communication/stable/2023-04-01/examples/
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2025-09-01/examples/
+     * communicationServices/updateWithPublicNetworkAccess.json
+     */
+    /**
+     * Sample code: Update resource to add PublicNetworkAccess.
+     * 
+     * @param manager Entry point to CommunicationManager.
+     */
+    public static void
+        updateResourceToAddPublicNetworkAccess(com.azure.resourcemanager.communication.CommunicationManager manager) {
+        CommunicationServiceResource resource = manager.communicationServices()
+            .getByResourceGroupWithResponse("MyResourceGroup", "MyCommunicationResource",
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withTags(mapOf("newTag", "newVal"))
+            .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2025-09-01/examples/
+     * communicationServices/updateWithDisableLocalAuth.json
+     */
+    /**
+     * Sample code: Update resource to add DisableLocalAuth.
+     * 
+     * @param manager Entry point to CommunicationManager.
+     */
+    public static void
+        updateResourceToAddDisableLocalAuth(com.azure.resourcemanager.communication.CommunicationManager manager) {
+        CommunicationServiceResource resource = manager.communicationServices()
+            .getByResourceGroupWithResponse("MyResourceGroup", "MyCommunicationResource",
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().withTags(mapOf("newTag", "newVal")).withDisableLocalAuth(true).apply();
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2025-09-01/examples/
      * communicationServices/updateWithSystemAssignedIdentity.json
      */
     /**
@@ -80,7 +122,7 @@ public final class CommunicationServicesUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/communication/resource-manager/Microsoft.Communication/stable/2023-04-01/examples/
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2025-09-01/examples/
      * communicationServices/updateRemoveSystemIdentity.json
      */
     /**
@@ -102,7 +144,7 @@ public final class CommunicationServicesUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/communication/resource-manager/Microsoft.Communication/stable/2023-04-01/examples/
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2025-09-01/examples/
      * communicationServices/updateWithSystemAndUserIdentity.json
      */
     /**

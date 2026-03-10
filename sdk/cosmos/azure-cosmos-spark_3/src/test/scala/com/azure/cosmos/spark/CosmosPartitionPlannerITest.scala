@@ -2,22 +2,27 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.ReadConsistencyStrategy
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState
+import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl
 import com.azure.cosmos.implementation.{SparkBridgeImplementationInternal, TestConfigurations, Utils}
-import com.azure.cosmos.models.{CosmosChangeFeedRequestOptions, FeedRange}
+import com.azure.cosmos.models.{CosmosChangeFeedRequestOptions, FeedRange, ThroughputProperties}
 import com.azure.cosmos.spark.CosmosPartitionPlanner.{createInputPartitions, getFilteredPartitionMetadata}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.util.CosmosPagedFlux
+import com.azure.cosmos.{CosmosAsyncContainer, ReadConsistencyStrategy}
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.sql.connector.read.streaming.ReadLimit
 import org.mockito.invocation.InvocationOnMock
 import org.mockito.stubbing.Answer
 import org.mockito.{ArgumentMatchers, Mockito}
 import org.scalatest.Assertion
+import reactor.core.publisher.Mono
+import reactor.core.scala.publisher.SFlux
 
 import java.time.Instant
 import java.util
 import java.util.UUID
+import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.{AtomicInteger, AtomicLong}
 import scala.collection.mutable.ArrayBuffer
 import scala.jdk.CollectionConverters._
@@ -228,15 +233,7 @@ class CosmosPartitionPlannerITest
       .getDatabase(containerConfig.database)
       .getContainer(containerConfig.container)
 
-    for (i <- 0 until 10) {
-      val objectNode = Utils.getSimpleObjectMapper.createObjectNode()
-      objectNode.put("name", "Shrodigner's cat")
-      objectNode.put("type", "cat")
-      objectNode.put("age", 20)
-      objectNode.put("index", i.toString)
-      objectNode.put("id", UUID.randomUUID().toString)
-      container.createItem(objectNode).block()
-    }
+    createDocuments(container, 10)
 
     val changeFeedConfig = CosmosChangeFeedConfig.parseCosmosChangeFeedConfig(userConfigTemplate)
     val testId = UUID.randomUUID().toString
@@ -275,6 +272,123 @@ class CosmosPartitionPlannerITest
     for (feedRange <- container.getFeedRanges.block().asScala) {
       pagesRetrievedCounterMap.get(feedRange).get() shouldEqual 1
     }
+  }
+
+  "createInitialOffset" should "return correct initial offset for all child ranges after split" in {
+
+    val pointInTime = Instant.now
+    val changeFeedConfigWithPointInTime =
+      userConfigTemplate ++ Map(
+        "spark.cosmos.changeFeed.startFrom" -> pointInTime.toString,
+        "spark.cosmos.metadata.feedRange.refreshIntervalInSeconds" -> "1800" // Disable FeedRange cache refresh to enforce that the cached feed ranges won't be aware of splits
+      )
+
+    val container = this.cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
+
+    val mockContainer = Mockito.spy(container)
+    val invocationCount = new AtomicInteger(0)
+    Mockito.doAnswer(new Answer[Mono[util.List[FeedRange]]]() {
+      override def answer(invocationOnMock: InvocationOnMock): Mono[util.List[FeedRange]] = {
+        if (invocationCount.get() < 1) {
+          invocationCount.incrementAndGet()
+          Mono.just(List(FeedRange.forFullRange()).asJava)
+        } else {
+          container.getFeedRanges()
+        }
+      }
+    }).when(mockContainer).getFeedRanges()
+
+    createDocuments(container, 10)
+
+    val initialOffset = getInitialOffset(changeFeedConfigWithPointInTime, mockContainer)
+    validateInitialOffset(
+      initialOffset,
+      getInitialContinuationTokensForPointInTime(pointInTime, container))
+  }
+
+  private[this] def getInitialOffset(config: Map[String, String], container: CosmosAsyncContainer): String = {
+    val containerConfig = CosmosContainerConfig.parseCosmosContainerConfig(config)
+    val partitioningConfig = CosmosPartitioningConfig.parseCosmosPartitioningConfig(config)
+
+    val changeFeedConfig = CosmosChangeFeedConfig.parseCosmosChangeFeedConfig(config)
+    val testId = UUID.randomUUID().toString
+
+    CosmosPartitionPlanner.createInitialOffset(
+      container, containerConfig, changeFeedConfig, partitioningConfig, streamId = Some(testId))
+  }
+
+  private[this] def createDocuments(container: CosmosAsyncContainer, docCount: Int): Unit = {
+    for (i <- 0 until docCount) {
+      val objectNode = Utils.getSimpleObjectMapper.createObjectNode()
+      objectNode.put("name", "Schrödinger's cat")
+      objectNode.put("type", "cat")
+      objectNode.put("age", 20)
+      objectNode.put("index", i.toString)
+      objectNode.put("id", UUID.randomUUID().toString)
+      container.createItem(objectNode).block()
+    }
+  }
+
+  private[this] def getInitialContinuationTokensForPointInTime(
+                                                                pointInTime: Instant,
+                                                                container: CosmosAsyncContainer): ConcurrentHashMap[FeedRange, String] = {
+    val expectedFeedRangeContinuationMap = new ConcurrentHashMap[FeedRange, String]()
+    container
+      .getFeedRanges()
+      .flatMapMany(feedRanges => {
+        SFlux.fromIterable(feedRanges.asScala)
+          .flatMap(feedRange => {
+            val changeFeedRequestOptions = CosmosChangeFeedRequestOptions.createForProcessingFromPointInTime(pointInTime, feedRange)
+            changeFeedRequestOptions.setMaxItemCount(1)
+            changeFeedRequestOptions.setMaxPrefetchPageCount(1)
+
+            container.queryChangeFeed(changeFeedRequestOptions, classOf[ObjectNode])
+              .byPage()
+              .next()
+              .doOnNext(r => {
+                val lsnFromItemsOpt = r.getElements.asScala.collectFirst({
+                  case item: ObjectNode if item != null => Some((item.get("_lsn").asLong() - 1).toString)
+                  case _ => None
+                }).flatten
+
+                lsnFromItemsOpt match {
+                  case Some(lsnFromItem) => expectedFeedRangeContinuationMap.put(feedRange, lsnFromItem)
+                  case _ => {
+                    val changeFeedState = ChangeFeedState.fromString(r.getContinuationToken)
+                    changeFeedState should not equal null
+                    changeFeedState.getContinuation.getCompositeContinuationTokens.size() should equal(1)
+                    expectedFeedRangeContinuationMap.put(
+                      feedRange,
+                      changeFeedState
+                        .getContinuation
+                        .getCurrentContinuationToken
+                        .getToken)
+                  }
+                }
+              })
+          })
+      }).blockLast()
+    expectedFeedRangeContinuationMap
+  }
+
+  private[this] def validateInitialOffset(
+                                           initialOffset: String,
+                                           expectedFeedRangeContinuationTokenMap: ConcurrentHashMap[FeedRange, String]): Unit = {
+    // validate initial offset contains all feed ranges
+    // validate each feed range has correct initial token
+    initialOffset should not equal null
+    val initialOffsetChangeFeedState = ChangeFeedState.fromString(initialOffset)
+
+    initialOffsetChangeFeedState.getContinuation.getCompositeContinuationTokens.size() should equal(expectedFeedRangeContinuationTokenMap.size())
+
+    initialOffsetChangeFeedState.getContinuation.getCompositeContinuationTokens.forEach(
+      compositeContinuation => {
+        compositeContinuation.getToken should not equal null
+        val expectedToken = expectedFeedRangeContinuationTokenMap.get(new FeedRangeEpkImpl(compositeContinuation.getRange))
+        expectedToken should not equal null
+        compositeContinuation.getToken should equal(expectedToken)
+      }
+    )
   }
 
   //scalastyle:on magic.number

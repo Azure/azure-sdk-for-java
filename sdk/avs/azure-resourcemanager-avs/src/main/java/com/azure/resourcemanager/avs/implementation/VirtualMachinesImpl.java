@@ -45,12 +45,8 @@ public final class VirtualMachinesImpl implements VirtualMachines {
         String clusterName, String virtualMachineId, Context context) {
         Response<VirtualMachineInner> inner = this.serviceClient()
             .getWithResponse(resourceGroupName, privateCloudName, clusterName, virtualMachineId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new VirtualMachineImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new VirtualMachineImpl(inner.getValue(), this.manager()));
     }
 
     public VirtualMachine get(String resourceGroupName, String privateCloudName, String clusterName,

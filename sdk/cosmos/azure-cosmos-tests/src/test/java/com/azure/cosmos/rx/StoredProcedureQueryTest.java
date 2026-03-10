@@ -127,7 +127,7 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
     public void before_StoredProcedureQueryTest() throws Exception {
         client = getClientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
-        truncateCollection(createdCollection);
+        cleanUpContainer(createdCollection);
 
         for (int i = 0; i < 5; i++) {
             createdStoredProcs.add(createStoredProc(createdCollection));

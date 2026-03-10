@@ -32,6 +32,16 @@ public final class DisconnectedOperationUpdateProperties
      */
     private String deviceVersion;
 
+    /*
+     * The billing configuration
+     */
+    private BillingConfiguration billingConfiguration;
+
+    /*
+     * The benefit plans
+     */
+    private BenefitPlans benefitPlans;
+
     /**
      * Creates an instance of DisconnectedOperationUpdateProperties class.
      */
@@ -99,6 +109,46 @@ public final class DisconnectedOperationUpdateProperties
     }
 
     /**
+     * Get the billingConfiguration property: The billing configuration.
+     * 
+     * @return the billingConfiguration value.
+     */
+    public BillingConfiguration billingConfiguration() {
+        return this.billingConfiguration;
+    }
+
+    /**
+     * Set the billingConfiguration property: The billing configuration.
+     * 
+     * @param billingConfiguration the billingConfiguration value to set.
+     * @return the DisconnectedOperationUpdateProperties object itself.
+     */
+    public DisconnectedOperationUpdateProperties withBillingConfiguration(BillingConfiguration billingConfiguration) {
+        this.billingConfiguration = billingConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the benefitPlans property: The benefit plans.
+     * 
+     * @return the benefitPlans value.
+     */
+    public BenefitPlans benefitPlans() {
+        return this.benefitPlans;
+    }
+
+    /**
+     * Set the benefitPlans property: The benefit plans.
+     * 
+     * @param benefitPlans the benefitPlans value to set.
+     * @return the DisconnectedOperationUpdateProperties object itself.
+     */
+    public DisconnectedOperationUpdateProperties withBenefitPlans(BenefitPlans benefitPlans) {
+        this.benefitPlans = benefitPlans;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -109,6 +159,8 @@ public final class DisconnectedOperationUpdateProperties
         jsonWriter.writeStringField("registrationStatus",
             this.registrationStatus == null ? null : this.registrationStatus.toString());
         jsonWriter.writeStringField("deviceVersion", this.deviceVersion);
+        jsonWriter.writeJsonField("billingConfiguration", this.billingConfiguration);
+        jsonWriter.writeJsonField("benefitPlans", this.benefitPlans);
         return jsonWriter.writeEndObject();
     }
 
@@ -136,6 +188,11 @@ public final class DisconnectedOperationUpdateProperties
                         = RegistrationStatus.fromString(reader.getString());
                 } else if ("deviceVersion".equals(fieldName)) {
                     deserializedDisconnectedOperationUpdateProperties.deviceVersion = reader.getString();
+                } else if ("billingConfiguration".equals(fieldName)) {
+                    deserializedDisconnectedOperationUpdateProperties.billingConfiguration
+                        = BillingConfiguration.fromJson(reader);
+                } else if ("benefitPlans".equals(fieldName)) {
+                    deserializedDisconnectedOperationUpdateProperties.benefitPlans = BenefitPlans.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

@@ -16,7 +16,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-search-documents</artifactId>
-  <version>11.9.0-beta.2</version> <!-- {x-version-update;com.azure:azure-search-documents;current} -->
+  <version>12.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-search-documents;current} -->
   <packaging>jar</packaging>
 
   <properties>
@@ -28,26 +28,28 @@
     <jacoco.min.branchcoverage>0.35</jacoco.min.branchcoverage>
     <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
     <javaModulesSurefireArgLine>
-      --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
-      --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
-      --add-exports com.azure.core/com.azure.core.implementation.jackson=ALL-UNNAMED
+        --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
+        --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
+        --add-exports com.azure.core/com.azure.core.implementation.jackson=ALL-UNNAMED
 
-      --add-opens com.azure.core/com.azure.core.util=ALL-UNNAMED
-      --add-opens com.azure.search.documents/com.azure.search.documents=ALL-UNNAMED
-      --add-opens com.azure.search.documents/com.azure.search.documents.indexes=ALL-UNNAMED
-      --add-opens com.azure.search.documents/com.azure.search.documents.models=ALL-UNNAMED
-      --add-opens com.azure.search.documents/com.azure.search.documents.implementation=ALL-UNNAMED
-      --add-opens com.azure.search.documents/com.azure.search.documents.implementation.models=ALL-UNNAMED
-      --add-opens com.azure.search.documents/com.azure.search.documents.test.environment.models=com.fasterxml.jackson.databind
-      --add-opens com.azure.search.documents/com.azure.search.documents.test.environment.models=ALL-UNNAMED
+        --add-opens com.azure.core/com.azure.core.util=ALL-UNNAMED
+        --add-opens com.azure.search.documents/com.azure.search.documents=ALL-UNNAMED
+        --add-opens com.azure.search.documents/com.azure.search.documents.indexes=ALL-UNNAMED
+        --add-opens com.azure.search.documents/com.azure.search.documents.models=ALL-UNNAMED
+        --add-opens com.azure.search.documents/com.azure.search.documents.implementation=ALL-UNNAMED
+        --add-opens com.azure.search.documents/com.azure.search.documents.implementation.models=ALL-UNNAMED
+        --add-opens
+        com.azure.search.documents/com.azure.search.documents.testingmodels.environment.models=com.fasterxml.jackson.databind
+        --add-opens com.azure.search.documents/com.azure.search.documents.testingmodels.environment.models=ALL-UNNAMED
 
-      --add-opens com.azure.search.documents/com.azure.search.documents=com.fasterxml.jackson.databind
-      --add-opens com.azure.search.documents/com.azure.search.documents.implementation.models=com.fasterxml.jackson.databind
+        --add-opens com.azure.search.documents/com.azure.search.documents=com.fasterxml.jackson.databind
+        --add-opens
+        com.azure.search.documents/com.azure.search.documents.implementation.models=com.fasterxml.jackson.databind
 
-      --add-reads com.azure.search.documents=com.azure.core.serializer.json.jackson
-      --add-reads com.azure.core=ALL-UNNAMED
-      --add-reads com.azure.core.test=ALL-UNNAMED
-      --add-reads com.azure.core.http.netty=ALL-UNNAMED
+        --add-reads com.azure.search.documents=com.azure.core.serializer.json.jackson
+        --add-reads com.azure.core=ALL-UNNAMED
+        --add-reads com.azure.core.test=ALL-UNNAMED
+        --add-reads com.azure.core.http.netty=ALL-UNNAMED
     </javaModulesSurefireArgLine>
 
     <spotbugs.includeTests>true</spotbugs.includeTests>
@@ -71,11 +73,6 @@
       <artifactId>azure-core-http-netty</artifactId>
       <version>1.16.3</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core-serializer-json-jackson</artifactId>
-      <version>1.6.3</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-jackson;dependency} -->
-    </dependency>
 
     <!-- Added this dependency to include necessary annotations used by reactor core.
     Without this dependency, javadoc throws a warning as it cannot find enum When.MAYBE
@@ -97,7 +94,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.18.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.18.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

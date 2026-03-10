@@ -5,7 +5,7 @@ package com.azure.ai.projects;
 
 import com.azure.ai.projects.implementation.IndexesImpl;
 import com.azure.ai.projects.implementation.JsonMergePatchHelper;
-import com.azure.ai.projects.models.Index;
+import com.azure.ai.projects.models.AIProjectIndex;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -85,92 +85,11 @@ public final class IndexesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Index> listVersions(String name) {
+    public PagedIterable<AIProjectIndex> listVersions(String name) {
         // Generated convenience method for listVersions
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.listVersions(name, requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(Index.class));
-    }
-
-    /**
-     * Create a new or update an existing Index with the given version id.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     type: String(AzureSearch/CosmosDBNoSqlVectorStore/ManagedAzureSearch) (Required)
-     *     id: String (Optional)
-     *     name: String (Required)
-     *     version: String (Required)
-     *     description: String (Optional)
-     *     tags (Optional): {
-     *         String: String (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     type: String(AzureSearch/CosmosDBNoSqlVectorStore/ManagedAzureSearch) (Required)
-     *     id: String (Optional)
-     *     name: String (Required)
-     *     version: String (Required)
-     *     description: String (Optional)
-     *     tags (Optional): {
-     *         String: String (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param name The name of the resource.
-     * @param version The specific version id of the Index to create or update.
-     * @param index The Index to create or update.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return index resource Definition along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateWithResponse(String name, String version, BinaryData index,
-        RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateWithResponse(name, version, index, requestOptions);
-    }
-
-    /**
-     * Create a new or update an existing Index with the given version id.
-     *
-     * @param name The name of the resource.
-     * @param version The specific version id of the Index to create or update.
-     * @param index The Index to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return index resource Definition.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Index createOrUpdate(String name, String version, Index index) {
-        // Generated convenience method for createOrUpdateWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        JsonMergePatchHelper.getIndexAccessor().prepareModelForJsonMergePatch(index, true);
-        BinaryData indexInBinaryData = BinaryData.fromObject(index);
-        // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
-        indexInBinaryData.getLength();
-        JsonMergePatchHelper.getIndexAccessor().prepareModelForJsonMergePatch(index, false);
-        return createOrUpdateWithResponse(name, version, indexInBinaryData, requestOptions).getValue()
-            .toObject(Index.class);
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(AIProjectIndex.class));
     }
 
     /**
@@ -270,10 +189,11 @@ public final class IndexesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Index> listLatest() {
+    public PagedIterable<AIProjectIndex> listLatest() {
         // Generated convenience method for listLatest
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listLatest(requestOptions).mapPage(bodyItemValue -> bodyItemValue.toObject(Index.class));
+        return serviceClient.listLatest(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(AIProjectIndex.class));
     }
 
     /**
@@ -291,10 +211,10 @@ public final class IndexesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Index getVersion(String name, String version) {
+    public AIProjectIndex getVersion(String name, String version) {
         // Generated convenience method for getVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getVersionWithResponse(name, version, requestOptions).getValue().toObject(Index.class);
+        return getVersionWithResponse(name, version, requestOptions).getValue().toObject(AIProjectIndex.class);
     }
 
     /**
@@ -316,5 +236,86 @@ public final class IndexesClient {
         // Generated convenience method for deleteVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
         deleteVersionWithResponse(name, version, requestOptions).getValue();
+    }
+
+    /**
+     * Create a new or update an existing Index with the given version id.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     type: String(AzureSearch/CosmosDBNoSqlVectorStore/ManagedAzureSearch) (Required)
+     *     id: String (Optional)
+     *     name: String (Required)
+     *     version: String (Required)
+     *     description: String (Optional)
+     *     tags (Optional): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     type: String(AzureSearch/CosmosDBNoSqlVectorStore/ManagedAzureSearch) (Required)
+     *     id: String (Optional)
+     *     name: String (Required)
+     *     version: String (Required)
+     *     description: String (Optional)
+     *     tags (Optional): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The name of the resource.
+     * @param version The specific version id of the Index to create or update.
+     * @param index The Index to create or update.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return index resource Definition along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> createOrUpdateVersionWithResponse(String name, String version, BinaryData index,
+        RequestOptions requestOptions) {
+        return this.serviceClient.createOrUpdateVersionWithResponse(name, version, index, requestOptions);
+    }
+
+    /**
+     * Create a new or update an existing Index with the given version id.
+     *
+     * @param name The name of the resource.
+     * @param version The specific version id of the Index to create or update.
+     * @param index The Index to create or update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return index resource Definition.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AIProjectIndex createOrUpdateVersion(String name, String version, AIProjectIndex index) {
+        // Generated convenience method for createOrUpdateVersionWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        JsonMergePatchHelper.getAIProjectIndexAccessor().prepareModelForJsonMergePatch(index, true);
+        BinaryData indexInBinaryData = BinaryData.fromObject(index);
+        // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
+        indexInBinaryData.getLength();
+        JsonMergePatchHelper.getAIProjectIndexAccessor().prepareModelForJsonMergePatch(index, false);
+        return createOrUpdateVersionWithResponse(name, version, indexInBinaryData, requestOptions).getValue()
+            .toObject(AIProjectIndex.class);
     }
 }

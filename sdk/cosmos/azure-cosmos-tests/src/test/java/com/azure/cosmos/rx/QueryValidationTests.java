@@ -38,6 +38,7 @@ import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
@@ -83,7 +84,7 @@ public class QueryValidationTests extends TestSuiteBase {
         client = this.getClientBuilder().buildAsyncClient();
         createdDatabase = getSharedCosmosDatabase(client);
         createdContainer = getSharedMultiPartitionCosmosContainer(client);
-        truncateCollection(createdContainer);
+        cleanUpContainer(createdContainer);
 
         createdDocuments.addAll(this.insertDocuments(DEFAULT_NUM_DOCUMENTS, null, createdContainer));
     }
@@ -99,7 +100,7 @@ public class QueryValidationTests extends TestSuiteBase {
         assertThat(Configs.isQueryPlanCachingEnabled()).isFalse();
     }
 
-    @Test(groups = {"query"}, timeOut = TIMEOUT)
+    @Test(groups = {"query"}, timeOut = TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void orderByQuery() {
         /*
         The idea here is to query documents in pages, query all the documents(with pagesize as num_documents and compare
@@ -115,7 +116,7 @@ public class QueryValidationTests extends TestSuiteBase {
             createdDocuments);
     }
 
-    @Test(groups = {"query"}, timeOut = TIMEOUT *2)
+    @Test(groups = {"query"}, timeOut = TIMEOUT *2, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void orderByQueryForLargeCollection() {
         CosmosContainerProperties containerProperties = getCollectionDefinition();
         createdDatabase.createContainer(
@@ -156,7 +157,7 @@ public class QueryValidationTests extends TestSuiteBase {
             documentsInserted);
     }
 
-    @Test(groups = {"query"}, timeOut = TIMEOUT)
+    @Test(groups = {"query"}, timeOut = TIMEOUT, retryAnalyzer = com.azure.cosmos.FlakyTestRetryAnalyzer.class)
     public void queryOptionNullValidation() {
         String query = "Select top 1 * from c";
 
@@ -274,7 +275,7 @@ public class QueryValidationTests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"query"}, dataProvider = "query", timeOut = TIMEOUT)
+    @Test(groups = {"query"}, dataProvider = "query", timeOut = TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void queryPlanCacheSinglePartitionCorrectness(String query) {
 
         String pk1 = "pk1";
@@ -309,7 +310,7 @@ public class QueryValidationTests extends TestSuiteBase {
 
     }
 
-    @Test(groups = {"query"}, timeOut = TIMEOUT)
+    @Test(groups = {"query"}, timeOut = TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void queryPlanCacheSinglePartitionParameterizedQueriesCorrectness() {
         SqlQuerySpec sqlQuerySpec = new SqlQuerySpec();
         sqlQuerySpec.setQueryText("select * from c where c.id = @id");
@@ -356,7 +357,7 @@ public class QueryValidationTests extends TestSuiteBase {
         assertThat(contextClient.getQueryPlanCache().containsKey(sqlQuerySpec.getQueryText())).isFalse();
 
         // group by should not be cached
-        sqlQuerySpec.setQueryText("select max(c.id) from c order by c.name group by c.name");
+        sqlQuerySpec.setQueryText("select max(c.id) from c group by c.name order by c.name");
         values1 = queryAndGetResults(sqlQuerySpec, options, TestObject.class);
         assertThat(contextClient.getQueryPlanCache().containsKey(sqlQuerySpec.getQueryText())).isFalse();
 
@@ -481,7 +482,7 @@ public class QueryValidationTests extends TestSuiteBase {
         container.delete().block();
     }
 
-    @Test(groups = {"query"}, timeOut = TIMEOUT * 10)
+    @Test(groups = {"query"}, timeOut = TIMEOUT * 10, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void orderbyContinuationOnUndefinedAndNull() throws Exception {
         /*
         Objective of this test is to break on undefined/null orderbyItems and resume queryFormat using that continuation
@@ -569,10 +570,10 @@ public class QueryValidationTests extends TestSuiteBase {
             }
             docsToInsert.add(objectNode);
         }
-        return bulkInsertBlocking(container, docsToInsert);
+        return insertAllItemsBlocking(container, docsToInsert, true);
     }
 
-    @Test(groups = {"query"}, timeOut = TIMEOUT)
+    @Test(groups = {"query"}, timeOut = TIMEOUT, retryAnalyzer = com.azure.cosmos.FlakyTestRetryAnalyzer.class)
     public void queryLargePartitionKeyOn100BPKCollection() throws Exception {
         String containerId = "testContainer_" + UUID.randomUUID();
         CosmosContainerProperties containerProperties = new CosmosContainerProperties(containerId, "/id");
@@ -594,6 +595,11 @@ public class QueryValidationTests extends TestSuiteBase {
         assertThat(results).isNotNull();
         assertThat(results.size()).isEqualTo(2);
         container.delete().block();
+    }
+
+    @AfterClass(groups = {"query", "split"}, timeOut = SHUTDOWN_TIMEOUT)
+    public void afterClass() {
+        safeClose(this.client);
     }
 
     private List<PartitionKeyRange> getPartitionKeyRanges(
@@ -662,7 +668,7 @@ public class QueryValidationTests extends TestSuiteBase {
                     partitionKeys == null ? UUID.randomUUID().toString() : partitionKeys.get(random.nextInt(partitionKeys.size()))));
         }
 
-        List<TestObject> documentInserted = bulkInsertBlocking(container, documentsToInsert);
+        List<TestObject> documentInserted = insertAllItemsBlocking(container, documentsToInsert, true);
 
         waitIfNeededForReplicasToCatchUp(this.getClientBuilder());
 

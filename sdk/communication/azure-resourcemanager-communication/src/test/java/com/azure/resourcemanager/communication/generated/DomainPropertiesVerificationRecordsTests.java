@@ -12,7 +12,7 @@ public final class DomainPropertiesVerificationRecordsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DomainPropertiesVerificationRecords model = BinaryData.fromString(
-            "{\"Domain\":{\"type\":\"qcjm\",\"name\":\"javbqidtqajz\",\"value\":\"l\",\"ttl\":144447336},\"SPF\":{\"type\":\"krlkhbzhfepg\",\"name\":\"qex\",\"value\":\"ocxscpaierhhbcs\",\"ttl\":526297458},\"DKIM\":{\"type\":\"a\",\"name\":\"j\",\"value\":\"dxob\",\"ttl\":1455975978},\"DKIM2\":{\"type\":\"qp\",\"name\":\"kajionpim\",\"value\":\"gstxgcp\",\"ttl\":1867037750},\"DMARC\":{\"type\":\"ajrmvdjwzrlovmc\",\"name\":\"hijco\",\"value\":\"ctbzaq\",\"ttl\":2038129581}}")
+            "{\"Domain\":{\"type\":\"bqidtqaj\",\"name\":\"ulpkudjkrl\",\"value\":\"bzhfepgzgqexz\",\"ttl\":208705149},\"SPF\":{\"type\":\"c\",\"name\":\"ierhhbcsglummaj\",\"value\":\"aodxo\",\"ttl\":547031215},\"DKIM\":{\"type\":\"k\",\"name\":\"xo\",\"value\":\"jionpimexgstxgc\",\"ttl\":524649765},\"DKIM2\":{\"type\":\"aajrm\",\"name\":\"jwzrl\",\"value\":\"mcl\",\"ttl\":186307619},\"DMARC\":{\"type\":\"oejctbzaqsqsy\",\"name\":\"kbfkg\",\"value\":\"dkexxppofm\",\"ttl\":159547648}}")
             .toObject(DomainPropertiesVerificationRecords.class);
     }
 

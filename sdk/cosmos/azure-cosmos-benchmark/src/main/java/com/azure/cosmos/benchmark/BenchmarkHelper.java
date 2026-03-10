@@ -20,10 +20,9 @@ public class BenchmarkHelper {
         return instance;
     }
 
-    public static boolean shouldContinue(long startTimeMillis, long iterationCount, Configuration configuration) {
-
-        Duration maxDurationTime = configuration.getMaxRunningTimeDuration();
-        int maxNumberOfOperations = configuration.getNumberOfOperations();
+    public static boolean shouldContinue(long startTimeMillis, long iterationCount, TenantWorkloadConfig workloadConfig) {
+        Duration maxDurationTime = workloadConfig.getMaxRunningTimeDuration();
+        int maxNumberOfOperations = workloadConfig.getNumberOfOperations();
 
         if (maxDurationTime == null) {
             return iterationCount < maxNumberOfOperations;

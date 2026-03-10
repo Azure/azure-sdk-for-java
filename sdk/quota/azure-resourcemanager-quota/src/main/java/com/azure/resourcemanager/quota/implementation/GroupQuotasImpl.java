@@ -31,12 +31,8 @@ public final class GroupQuotasImpl implements GroupQuotas {
         Context context) {
         Response<GroupQuotasEntityInner> inner
             = this.serviceClient().getWithResponse(managementGroupId, groupQuotaName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new GroupQuotasEntityImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new GroupQuotasEntityImpl(inner.getValue(), this.manager()));
     }
 
     public GroupQuotasEntity get(String managementGroupId, String groupQuotaName) {

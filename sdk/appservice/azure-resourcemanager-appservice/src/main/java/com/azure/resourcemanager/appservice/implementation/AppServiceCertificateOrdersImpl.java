@@ -17,7 +17,7 @@ public class AppServiceCertificateOrdersImpl extends
     implements AppServiceCertificateOrders {
 
     public AppServiceCertificateOrdersImpl(AppServiceManager manager) {
-        super(manager.serviceClient().getAppServiceCertificateOrders(), manager);
+        super(manager.certificateRegistrationClient().getAppServiceCertificateOrders(), manager);
     }
 
     @Override

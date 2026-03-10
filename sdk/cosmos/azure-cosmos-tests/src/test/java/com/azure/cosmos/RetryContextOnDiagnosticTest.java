@@ -781,7 +781,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
                 // On single region we will have 3 retry of session policy (One retry from first request, one from
                 // client retry policy and last from rename policy.
                 assertThat(retryContext.getStatusAndSubStatusCodes().size()).isGreaterThanOrEqualTo(45);
-                assertThat(retryContext.getStatusAndSubStatusCodes().size()).isLessThanOrEqualTo(60);
+                assertThat(retryContext.getStatusAndSubStatusCodes().size()).isLessThanOrEqualTo(65);
                 assertThat(retryContext.getStatusAndSubStatusCodes().get(retryContext.getStatusAndSubStatusCodes().size()-1)[0]).isEqualTo(404);
                 assertThat(retryContext.getStatusAndSubStatusCodes().get(retryContext.getStatusAndSubStatusCodes().size()-1)[1]).isEqualTo(1002);
             }

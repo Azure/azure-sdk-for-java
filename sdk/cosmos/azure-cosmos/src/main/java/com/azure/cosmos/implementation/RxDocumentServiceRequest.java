@@ -77,6 +77,7 @@ public class RxDocumentServiceRequest implements Cloneable {
     // so it means most likely the corresponding features are also missing from the main sdk
     // we need to wire this up.
     public boolean useGatewayMode;
+    public boolean useThinClientMode;
 
     private volatile boolean isDisposed = false;
     public volatile String entityId;
@@ -1055,6 +1056,7 @@ public class RxDocumentServiceRequest implements Cloneable {
         rxDocumentServiceRequest.forceCollectionRoutingMapRefresh = this.forceCollectionRoutingMapRefresh;
         rxDocumentServiceRequest.forcePartitionKeyRangeRefresh = this.forcePartitionKeyRangeRefresh;
         rxDocumentServiceRequest.useGatewayMode = this.useGatewayMode;
+        rxDocumentServiceRequest.useThinClientMode = this.useThinClientMode;
         rxDocumentServiceRequest.requestContext = this.requestContext;
         rxDocumentServiceRequest.faultInjectionRequestContext = new FaultInjectionRequestContext(this.faultInjectionRequestContext);
         rxDocumentServiceRequest.nonIdempotentWriteRetriesEnabled = this.nonIdempotentWriteRetriesEnabled;
@@ -1187,6 +1189,10 @@ public class RxDocumentServiceRequest implements Cloneable {
         if (throughputBucket != null) {
             this.headers.put(HttpConstants.HttpHeaders.THROUGHPUT_BUCKET, throughputBucket.toString());
         }
+    }
+
+    public void setHubRegionProcessingOnly(boolean hubRegionProcessingOnly) {
+        this.headers.put(HttpConstants.HttpHeaders.HUB_REGION_PROCESSING_ONLY, Boolean.toString(hubRegionProcessingOnly));
     }
 
     public Duration getResponseTimeout() {

@@ -234,7 +234,7 @@ public class QuorumReader {
                                         String.join(";", secondaryQuorumReadResult.storeResponses));
                                     return Flux.error(
                                         new GoneException(
-                                            RMResources.ReadQuorumNotMet,
+                                            String.format(RMResources.ReadQuorumNotMet, readQuorumValue),
                                             HttpConstants.SubStatusCodes.READ_QUORUM_NOT_MET));
                                 }
 

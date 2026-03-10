@@ -21,11 +21,13 @@ import reactor.core.publisher.Mono;
 
 /**
  * An instance of this class provides access to all the operations defined in AgentPoolsClient.
+ * @deprecated Use azure-resourcemanager-containerregistry-tasks lib.
  */
+@Deprecated
 public interface AgentPoolsClient {
     /**
      * Gets the detailed information for a given agent pool.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param agentPoolName The name of the agent pool.
@@ -41,7 +43,7 @@ public interface AgentPoolsClient {
 
     /**
      * Gets the detailed information for a given agent pool.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param agentPoolName The name of the agent pool.
@@ -55,7 +57,7 @@ public interface AgentPoolsClient {
 
     /**
      * Gets the detailed information for a given agent pool.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param agentPoolName The name of the agent pool.
@@ -71,7 +73,7 @@ public interface AgentPoolsClient {
 
     /**
      * Gets the detailed information for a given agent pool.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param agentPoolName The name of the agent pool.
@@ -85,7 +87,7 @@ public interface AgentPoolsClient {
 
     /**
      * Creates an agent pool for a container registry with the specified parameters.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param agentPoolName The name of the agent pool.
@@ -102,7 +104,7 @@ public interface AgentPoolsClient {
 
     /**
      * Creates an agent pool for a container registry with the specified parameters.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param agentPoolName The name of the agent pool.
@@ -118,7 +120,7 @@ public interface AgentPoolsClient {
 
     /**
      * Creates an agent pool for a container registry with the specified parameters.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param agentPoolName The name of the agent pool.
@@ -134,7 +136,7 @@ public interface AgentPoolsClient {
 
     /**
      * Creates an agent pool for a container registry with the specified parameters.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param agentPoolName The name of the agent pool.
@@ -151,7 +153,7 @@ public interface AgentPoolsClient {
 
     /**
      * Creates an agent pool for a container registry with the specified parameters.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param agentPoolName The name of the agent pool.
@@ -167,7 +169,7 @@ public interface AgentPoolsClient {
 
     /**
      * Creates an agent pool for a container registry with the specified parameters.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param agentPoolName The name of the agent pool.
@@ -183,7 +185,7 @@ public interface AgentPoolsClient {
 
     /**
      * Creates an agent pool for a container registry with the specified parameters.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param agentPoolName The name of the agent pool.
@@ -200,7 +202,7 @@ public interface AgentPoolsClient {
 
     /**
      * Deletes a specified agent pool resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param agentPoolName The name of the agent pool.
@@ -215,7 +217,7 @@ public interface AgentPoolsClient {
 
     /**
      * Deletes a specified agent pool resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param agentPoolName The name of the agent pool.
@@ -230,7 +232,7 @@ public interface AgentPoolsClient {
 
     /**
      * Deletes a specified agent pool resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param agentPoolName The name of the agent pool.
@@ -244,7 +246,7 @@ public interface AgentPoolsClient {
 
     /**
      * Deletes a specified agent pool resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param agentPoolName The name of the agent pool.
@@ -260,7 +262,7 @@ public interface AgentPoolsClient {
 
     /**
      * Deletes a specified agent pool resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param agentPoolName The name of the agent pool.
@@ -274,7 +276,7 @@ public interface AgentPoolsClient {
 
     /**
      * Deletes a specified agent pool resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param agentPoolName The name of the agent pool.
@@ -287,7 +289,7 @@ public interface AgentPoolsClient {
 
     /**
      * Deletes a specified agent pool resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param agentPoolName The name of the agent pool.
@@ -301,7 +303,7 @@ public interface AgentPoolsClient {
 
     /**
      * Updates an agent pool with the specified parameters.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param agentPoolName The name of the agent pool.
@@ -318,7 +320,7 @@ public interface AgentPoolsClient {
 
     /**
      * Updates an agent pool with the specified parameters.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param agentPoolName The name of the agent pool.
@@ -334,7 +336,7 @@ public interface AgentPoolsClient {
 
     /**
      * Updates an agent pool with the specified parameters.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param agentPoolName The name of the agent pool.
@@ -350,7 +352,7 @@ public interface AgentPoolsClient {
 
     /**
      * Updates an agent pool with the specified parameters.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param agentPoolName The name of the agent pool.
@@ -367,7 +369,7 @@ public interface AgentPoolsClient {
 
     /**
      * Updates an agent pool with the specified parameters.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param agentPoolName The name of the agent pool.
@@ -383,7 +385,7 @@ public interface AgentPoolsClient {
 
     /**
      * Updates an agent pool with the specified parameters.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param agentPoolName The name of the agent pool.
@@ -399,7 +401,7 @@ public interface AgentPoolsClient {
 
     /**
      * Updates an agent pool with the specified parameters.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param agentPoolName The name of the agent pool.
@@ -416,7 +418,7 @@ public interface AgentPoolsClient {
 
     /**
      * Lists all the agent pools for a specified container registry.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -429,7 +431,7 @@ public interface AgentPoolsClient {
 
     /**
      * Lists all the agent pools for a specified container registry.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -442,7 +444,7 @@ public interface AgentPoolsClient {
 
     /**
      * Lists all the agent pools for a specified container registry.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param context The context to associate with this operation.
@@ -456,7 +458,7 @@ public interface AgentPoolsClient {
 
     /**
      * Gets the count of queued runs for a given agent pool.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param agentPoolName The name of the agent pool.
@@ -472,7 +474,7 @@ public interface AgentPoolsClient {
 
     /**
      * Gets the count of queued runs for a given agent pool.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param agentPoolName The name of the agent pool.
@@ -487,7 +489,7 @@ public interface AgentPoolsClient {
 
     /**
      * Gets the count of queued runs for a given agent pool.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param agentPoolName The name of the agent pool.
@@ -503,7 +505,7 @@ public interface AgentPoolsClient {
 
     /**
      * Gets the count of queued runs for a given agent pool.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param agentPoolName The name of the agent pool.

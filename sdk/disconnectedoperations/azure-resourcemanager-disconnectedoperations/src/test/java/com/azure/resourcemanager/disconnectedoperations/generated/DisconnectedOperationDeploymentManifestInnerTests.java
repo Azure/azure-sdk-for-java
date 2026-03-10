@@ -11,7 +11,7 @@ public final class DisconnectedOperationDeploymentManifestInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DisconnectedOperationDeploymentManifestInner model = BinaryData.fromString(
-            "{\"resourceId\":\"mglzufcy\",\"resourceName\":\"kohdbiha\",\"stampId\":\"ufhfcbjysa\",\"location\":\"ithxqhabifpi\",\"billingModel\":\"Capacity\",\"connectionIntent\":\"Connected\",\"cloud\":\"zb\"}")
+            "{\"resourceId\":\"azakl\",\"resourceName\":\"lahbcryff\",\"stampId\":\"fdosyg\",\"location\":\"xpaojakhmsbz\",\"billingModel\":\"Capacity\",\"connectionIntent\":\"Disconnected\",\"cloud\":\"zevdphlx\",\"billingConfiguration\":{\"autoRenew\":\"Disabled\",\"billingStatus\":\"Stopped\",\"current\":{\"cores\":527902610,\"pricingModel\":\"Annual\"},\"upcoming\":{\"cores\":432896608,\"pricingModel\":\"Trial\"}},\"benefitPlans\":{\"azureHybridWindowsServerBenefit\":\"Disabled\",\"windowsServerVmCount\":1977769752}}")
             .toObject(DisconnectedOperationDeploymentManifestInner.class);
     }
 }

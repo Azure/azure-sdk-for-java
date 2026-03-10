@@ -8,7 +8,11 @@ import com.azure.resourcemanager.appservice.AppServiceManager;
 import com.azure.resourcemanager.appservice.fluent.models.AppServiceCertificateResourceInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.IndependentChildResource;
 
-/** An immutable client-side representation of an Azure App Service Key Vault binding. */
+/**
+ *  An immutable client-side representation of an Azure App Service Key Vault binding.
+ * @deprecated Use azure-resourcemanager-certificateregistration lib.
+ */
+@Deprecated
 @Fluent
 public interface AppServiceCertificateKeyVaultBinding
     extends IndependentChildResource<AppServiceManager, AppServiceCertificateResourceInner> {

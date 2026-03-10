@@ -52,12 +52,8 @@ public final class AvsVmsImpl implements AvsVms {
         Context context) {
         Response<AvsVmInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, storagePoolName, avsVmId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new AvsVmImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new AvsVmImpl(inner.getValue(), this.manager()));
     }
 
     public AvsVm get(String resourceGroupName, String storagePoolName, String avsVmId) {

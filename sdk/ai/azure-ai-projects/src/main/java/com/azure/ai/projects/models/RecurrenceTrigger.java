@@ -5,10 +5,14 @@ package com.azure.ai.projects.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.TimeZone;
 
 /**
  * Recurrence based trigger.
@@ -26,19 +30,19 @@ public final class RecurrenceTrigger extends Trigger {
      * Start time for the recurrence schedule in ISO 8601 format.
      */
     @Generated
-    private String startTime;
+    private OffsetDateTime startTime;
 
     /*
      * End time for the recurrence schedule in ISO 8601 format.
      */
     @Generated
-    private String endTime;
+    private OffsetDateTime endTime;
 
     /*
      * Time zone for the recurrence schedule.
      */
     @Generated
-    private String timeZone;
+    private TimeZone timeZone;
 
     /*
      * Interval for the recurrence schedule.
@@ -51,18 +55,6 @@ public final class RecurrenceTrigger extends Trigger {
      */
     @Generated
     private final RecurrenceSchedule schedule;
-
-    /**
-     * Creates an instance of RecurrenceTrigger class.
-     *
-     * @param interval the interval value to set.
-     * @param schedule the schedule value to set.
-     */
-    @Generated
-    public RecurrenceTrigger(int interval, RecurrenceSchedule schedule) {
-        this.interval = interval;
-        this.schedule = schedule;
-    }
 
     /**
      * Get the type property: Type of the trigger.
@@ -81,20 +73,8 @@ public final class RecurrenceTrigger extends Trigger {
      * @return the startTime value.
      */
     @Generated
-    public String getStartTime() {
+    public OffsetDateTime getStartTime() {
         return this.startTime;
-    }
-
-    /**
-     * Set the startTime property: Start time for the recurrence schedule in ISO 8601 format.
-     *
-     * @param startTime the startTime value to set.
-     * @return the RecurrenceTrigger object itself.
-     */
-    @Generated
-    public RecurrenceTrigger setStartTime(String startTime) {
-        this.startTime = startTime;
-        return this;
     }
 
     /**
@@ -103,20 +83,8 @@ public final class RecurrenceTrigger extends Trigger {
      * @return the endTime value.
      */
     @Generated
-    public String getEndTime() {
+    public OffsetDateTime getEndTime() {
         return this.endTime;
-    }
-
-    /**
-     * Set the endTime property: End time for the recurrence schedule in ISO 8601 format.
-     *
-     * @param endTime the endTime value to set.
-     * @return the RecurrenceTrigger object itself.
-     */
-    @Generated
-    public RecurrenceTrigger setEndTime(String endTime) {
-        this.endTime = endTime;
-        return this;
     }
 
     /**
@@ -125,20 +93,8 @@ public final class RecurrenceTrigger extends Trigger {
      * @return the timeZone value.
      */
     @Generated
-    public String getTimeZone() {
+    public TimeZone getTimeZone() {
         return this.timeZone;
-    }
-
-    /**
-     * Set the timeZone property: Time zone for the recurrence schedule.
-     *
-     * @param timeZone the timeZone value to set.
-     * @return the RecurrenceTrigger object itself.
-     */
-    @Generated
-    public RecurrenceTrigger setTimeZone(String timeZone) {
-        this.timeZone = timeZone;
-        return this;
     }
 
     /**
@@ -164,16 +120,17 @@ public final class RecurrenceTrigger extends Trigger {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeIntField("interval", this.interval);
         jsonWriter.writeJsonField("schedule", this.schedule);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        jsonWriter.writeStringField("startTime", this.startTime);
-        jsonWriter.writeStringField("endTime", this.endTime);
-        jsonWriter.writeStringField("timeZone", this.timeZone);
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("endTime",
+            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
+        jsonWriter.writeStringField("timeZone", this.timeZone != null ? this.timeZone.getID() : null);
         return jsonWriter.writeEndObject();
     }
 
@@ -186,15 +143,14 @@ public final class RecurrenceTrigger extends Trigger {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the RecurrenceTrigger.
      */
-    @Generated
     public static RecurrenceTrigger fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             int interval = 0;
             RecurrenceSchedule schedule = null;
             TriggerType type = TriggerType.RECURRENCE;
-            String startTime = null;
-            String endTime = null;
-            String timeZone = null;
+            OffsetDateTime startTime = null;
+            OffsetDateTime endTime = null;
+            TimeZone timeZone = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -205,11 +161,14 @@ public final class RecurrenceTrigger extends Trigger {
                 } else if ("type".equals(fieldName)) {
                     type = TriggerType.fromString(reader.getString());
                 } else if ("startTime".equals(fieldName)) {
-                    startTime = reader.getString();
+                    startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("endTime".equals(fieldName)) {
-                    endTime = reader.getString();
+                    endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("timeZone".equals(fieldName)) {
-                    timeZone = reader.getString();
+                    String timeZoneId = reader.getString();
+                    timeZone = parseTimeZone(timeZoneId);
                 } else {
                     reader.skipChildren();
                 }
@@ -221,5 +180,73 @@ public final class RecurrenceTrigger extends Trigger {
             deserializedRecurrenceTrigger.timeZone = timeZone;
             return deserializedRecurrenceTrigger;
         });
+    }
+
+    /**
+     * Creates an instance of RecurrenceTrigger class.
+     *
+     * @param interval the interval value to set.
+     * @param schedule the schedule value to set.
+     */
+    @Generated
+    public RecurrenceTrigger(int interval, RecurrenceSchedule schedule) {
+        this.interval = interval;
+        this.schedule = schedule;
+    }
+
+    /**
+     * Set the startTime property: Start time for the recurrence schedule in ISO 8601 format.
+     *
+     * @param startTime the startTime value to set.
+     * @return the RecurrenceTrigger object itself.
+     */
+    @Generated
+    public RecurrenceTrigger setStartTime(OffsetDateTime startTime) {
+        this.startTime = startTime;
+        return this;
+    }
+
+    /**
+     * Set the endTime property: End time for the recurrence schedule in ISO 8601 format.
+     *
+     * @param endTime the endTime value to set.
+     * @return the RecurrenceTrigger object itself.
+     */
+    @Generated
+    public RecurrenceTrigger setEndTime(OffsetDateTime endTime) {
+        this.endTime = endTime;
+        return this;
+    }
+
+    /**
+     * Set the timeZone property: Time zone for the recurrence schedule.
+     *
+     * @param timeZone the timeZone value to set.
+     * @return the RecurrenceTrigger object itself.
+     */
+    @Generated
+    public RecurrenceTrigger setTimeZone(TimeZone timeZone) {
+        this.timeZone = timeZone;
+        return this;
+    }
+
+    /**
+     * Parses a timezone ID string into a {@link TimeZone}, returning {@code null} for unknown IDs.
+     * <p>
+     * {@link TimeZone#getTimeZone(String)} silently falls back to GMT for unrecognized IDs.
+     * This method detects that fallback and returns {@code null} instead, to avoid silent data corruption.
+     *
+     * @param timeZoneId the timezone ID to parse, or {@code null}.
+     * @return the corresponding {@link TimeZone}, or {@code null} if the ID is {@code null} or unrecognized.
+     */
+    private static TimeZone parseTimeZone(String timeZoneId) {
+        if (timeZoneId == null) {
+            return null;
+        }
+        TimeZone tz = TimeZone.getTimeZone(timeZoneId);
+        if ("GMT".equals(tz.getID()) && !"GMT".equalsIgnoreCase(timeZoneId)) {
+            return null;
+        }
+        return tz;
     }
 }

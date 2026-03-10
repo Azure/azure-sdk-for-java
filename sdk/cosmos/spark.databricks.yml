@@ -34,10 +34,15 @@ parameters:
     type: string
   - name: JarReadOnlySasUri
     type: string
+  - name: JarReadOnlySasUriIndex
+    type: number
   - name: JarStorageAccountName
     type: string
   - name: JarName
     type: string
+  - name: JavaVersion
+    type: string
+    default: '1.11'
 stages:
   - stage:
     displayName: 'Spark Databricks integration ${{ parameters.ClusterName }} - ${{ parameters.SparkVersion }}'
@@ -59,7 +64,7 @@ stages:
           goals: 'package'
           options: '$(DefaultOptions) -T 1 -Ppackage-assembly -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl com.azure:azure-cosmos,com.azure:azure-cosmos-test,com.azure.cosmos.spark:${{ parameters.SparkVersion }}'
           javaHomeOption: 'JDKVersion'
-          jdkVersionOption: '1.11'
+          jdkVersionOption: '${{ parameters.JavaVersion }}'
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
       - task: UsePythonVersion@0
@@ -108,13 +113,24 @@ stages:
           script: >-
             if [[ "${AVOID_DBFS,,}" == "true" ]]; then
               TMP_FILE="/tmp/${JAR_NAME}.$$"
+            
+              IFS='|' read -r -a JAR_URL_ARRAY <<< "$JAR_URL"
+            
+              if [[ -z "${JAR_URL_ARRAY[$JAR_URL_INDEX]:-}" ]]; then
+                echo "[error] Invalid JAR_URL_INDEX=$JAR_URL_INDEX"
+                exit 1
+              fi
+
+              JAR_URL_SELECTED="$(echo "${JAR_URL_ARRAY[$JAR_URL_INDEX]}" | xargs)"
+            
               echo "[init] Downloading $JAR_NAME to validate checksum..."
+
               # Download with retries; fail non-zero on HTTP errors
               if command -v curl >/dev/null 2>&1; then
                 curl -fL --retry 8 --retry-connrefused --retry-delay 2 --max-time 600 \
-                  "$JAR_URL" -o "$TMP_FILE"
+                  "$JAR_URL_SELECTED" -o "$TMP_FILE"
               elif command -v wget >/dev/null 2>&1; then
-                wget --tries=10 --timeout=60 -O "$TMP_FILE" "$JAR_URL"
+                wget --tries=10 --timeout=60 -O "$TMP_FILE" "$JAR_URL_SELECTED"
               else
                 echo "[init][error] Neither curl nor wget is available." >&2
                 exit 1
@@ -139,6 +155,7 @@ stages:
             fi
         env:
           JAR_URL: '${{ parameters.JarReadOnlySasUri }}'
+          JAR_URL_INDEX: '${{ parameters.JarReadOnlySasUriIndex }}'
           JAR_NAME: '${{ parameters.SparkVersion }}-latest-ci-candidate.jar'
           JAR_CHECK_SUM: $(JarCheckSum)
           AVOID_DBFS:  ${{ parameters.AvoidDBFS }}
