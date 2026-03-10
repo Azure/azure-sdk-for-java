@@ -86,11 +86,13 @@ public class ComputerUseSync {
         AgentVersionDetails agent = null;
 
         try {
+            // BEGIN: com.azure.ai.agents.define_computer_use
             ComputerUsePreviewTool tool = new ComputerUsePreviewTool(
                 ComputerEnvironment.WINDOWS,
                 1026,
                 769
             );
+            // END: com.azure.ai.agents.define_computer_use
 
             PromptAgentDefinition agentDefinition = new PromptAgentDefinition(model)
                 .setInstructions("You are a computer automation assistant."
