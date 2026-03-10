@@ -98,8 +98,8 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
             this.thinClientContainer = this.thinClient.getDatabase(
                 gatewayContainer.getDatabase().getId()).getContainer(gatewayContainer.getId());
 
-            // 3. Truncate shared container to prevent cross-test-class pollution
-            truncateCollection(this.gatewayContainer);
+            // 3. Clean up shared container to prevent cross-test-class pollution
+            cleanUpContainer(this.gatewayContainer);
 
             // 4. Seed diverse test data for broad query coverage
             seedTestData();
@@ -147,7 +147,7 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
             seededDocs.add(doc);
         }
 
-        voidBulkInsertBlocking(gatewayContainer, seededDocs);
+        bulkInsert(gatewayContainer, seededDocs, 10).blockLast();
     }
 
     @AfterClass(groups = {"thinclient"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)

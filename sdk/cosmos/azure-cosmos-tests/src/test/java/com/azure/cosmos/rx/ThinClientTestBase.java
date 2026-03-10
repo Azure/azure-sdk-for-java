@@ -43,8 +43,8 @@ public abstract class ThinClientTestBase extends TestSuiteBase {
         this.client = getClientBuilder().buildAsyncClient();
         this.container = getSharedMultiPartitionCosmosContainer(this.client);
 
-        // Truncate shared container to prevent cross-test-class pollution.
-        truncateCollection(this.container);
+        // Clean up shared container to prevent cross-test-class pollution.
+        cleanUpContainer(this.container);
     }
 
     @AfterClass(groups = {"thinclient"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
