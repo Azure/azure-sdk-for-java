@@ -6,6 +6,7 @@ package com.azure.spring.cloud.feature.management.implementation.timewindow.recu
 import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.ZonedDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 
 import com.azure.spring.cloud.feature.management.implementation.models.RecurrencePattern;
@@ -106,11 +107,11 @@ public class RecurrenceEvaluator {
         // We do this by checking if the fixed offset matches what the region zone's offset
         // was at the *original start time*. If it matches, they're in the same timezone,
         // and we should convert to the region zone for DST-aware comparisons.
-        if (firstDayOfMostRecentOccurringWeek.getZone() instanceof java.time.ZoneOffset 
-            && !(now.getZone() instanceof java.time.ZoneOffset)) {
+        if (firstDayOfMostRecentOccurringWeek.getZone() instanceof ZoneOffset 
+            && !(now.getZone() instanceof ZoneOffset)) {
             // Check if the fixed offset matches the region zone's offset at the *start* instant
             // (not at firstDayOfMostRecentOccurringWeek's instant, which might have crossed DST)
-            java.time.ZoneOffset offsetAtStart = now.getZone().getRules().getOffset(start.toInstant());
+            ZoneOffset offsetAtStart = now.getZone().getRules().getOffset(start.toInstant());
             if (start.getOffset().equals(offsetAtStart)) {
                 // Same geographic location, convert to region zone for DST-aware comparisons
                 firstDayOfMostRecentOccurringWeek = firstDayOfMostRecentOccurringWeek
