@@ -11,13 +11,12 @@ import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.models.IncludedPath;
 import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.PartitionKeyDefinition;
-import com.codahale.metrics.MetricRegistry;
-import com.beust.jcommander.JCommander;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import reactor.core.scheduler.Schedulers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,26 +48,23 @@ public class WorkflowTest {
     @Test(dataProvider = "collectionLinkTypeArgProvider", groups = "fast", timeOut = TIMEOUT)
     public void readMyWrites(boolean useNameLink) throws Exception {
         int numberOfOperations = 123;
-        String cmdFormat = "-serviceEndpoint %s -masterKey %s" +
-                " -databaseId %s -collectionId %s" +
-                " -consistencyLevel SESSION -concurrency 2 -numberOfOperations %s" +
-                " -operation ReadMyWrites -connectionMode DIRECT -numberOfPreCreatedDocuments 100";
 
-        String cmd = String.format(cmdFormat,
-                                   TestConfigurations.HOST,
-                                   TestConfigurations.MASTER_KEY,
-                                   database.getId(),
-                                   collection.getId(),
-                                   numberOfOperations)
-                + (useNameLink ? " -useNameLink" : "");
-
-        Configuration cfg = new Configuration();
-        new JCommander(cfg, StringUtils.split(cmd));
+        TenantWorkloadConfig cfg = new TenantWorkloadConfig();
+        cfg.setServiceEndpoint(TestConfigurations.HOST);
+        cfg.setMasterKey(TestConfigurations.MASTER_KEY);
+        cfg.setDatabaseId(database.getId());
+        cfg.setContainerId(collection.getId());
+        cfg.setConsistencyLevel("SESSION");
+        cfg.setConcurrency(2);
+        cfg.setNumberOfOperations(numberOfOperations);
+        cfg.setOperation("ReadMyWrites");
+        cfg.setConnectionMode("DIRECT");
+        cfg.setNumberOfPreCreatedDocuments(100);
 
         AtomicInteger success = new AtomicInteger();
         AtomicInteger error = new AtomicInteger();
 
-        ReadMyWriteWorkflow wf = new ReadMyWriteWorkflow(TenantWorkloadConfig.fromConfiguration(cfg), new MetricRegistry()) {
+        ReadMyWriteWorkflow wf = new ReadMyWriteWorkflow(cfg, Schedulers.parallel()) {
             @Override
             protected void onError(Throwable throwable) {
                 error.incrementAndGet();
@@ -105,26 +101,22 @@ public class WorkflowTest {
     @Test(dataProvider = "collectionLinkTypeArgProvider", groups = "fast", timeOut = TIMEOUT)
     public void writeLatency(boolean useNameLink) throws Exception {
         int numberOfOperations = 123;
-        String cmdFormat = "-serviceEndpoint %s -masterKey %s" +
-                " -databaseId %s -collectionId %s" +
-                " -consistencyLevel SESSION -concurrency 2 -numberOfOperations %s" +
-                " -operation WriteLatency -connectionMode DIRECT";
 
-        String cmd = String.format(cmdFormat,
-                                   TestConfigurations.HOST,
-                                   TestConfigurations.MASTER_KEY,
-                                   database.getId(),
-                                   collection.getId(),
-                                   numberOfOperations)
-                + (useNameLink ? " -useNameLink" : "");
-
-        Configuration cfg = new Configuration();
-        new JCommander(cfg, StringUtils.split(cmd));
+        TenantWorkloadConfig cfg = new TenantWorkloadConfig();
+        cfg.setServiceEndpoint(TestConfigurations.HOST);
+        cfg.setMasterKey(TestConfigurations.MASTER_KEY);
+        cfg.setDatabaseId(database.getId());
+        cfg.setContainerId(collection.getId());
+        cfg.setConsistencyLevel("SESSION");
+        cfg.setConcurrency(2);
+        cfg.setNumberOfOperations(numberOfOperations);
+        cfg.setOperation("WriteLatency");
+        cfg.setConnectionMode("DIRECT");
 
         AtomicInteger success = new AtomicInteger();
         AtomicInteger error = new AtomicInteger();
 
-        AsyncWriteBenchmark wf = new AsyncWriteBenchmark(TenantWorkloadConfig.fromConfiguration(cfg), new MetricRegistry()) {
+        AsyncWriteBenchmark wf = new AsyncWriteBenchmark(cfg, Schedulers.parallel()) {
             @Override
             protected void onError(Throwable throwable) {
                 error.incrementAndGet();
@@ -146,26 +138,22 @@ public class WorkflowTest {
     @Test(dataProvider = "collectionLinkTypeArgProvider", groups = "fast", timeOut = TIMEOUT)
     public void writeThroughput(boolean useNameLink) throws Exception {
         int numberOfOperations = 123;
-        String cmdFormat = "-serviceEndpoint %s -masterKey %s" +
-                " -databaseId %s -collectionId %s" +
-                " -consistencyLevel SESSION -concurrency 2 -numberOfOperations %s" +
-                " -operation WriteThroughput -connectionMode DIRECT";
 
-        String cmd = String.format(cmdFormat,
-                                   TestConfigurations.HOST,
-                                   TestConfigurations.MASTER_KEY,
-                                   database.getId(),
-                                   collection.getId(),
-                                   numberOfOperations)
-                + (useNameLink ? " -useNameLink" : "");
-
-        Configuration cfg = new Configuration();
-        new JCommander(cfg, StringUtils.split(cmd));
+        TenantWorkloadConfig cfg = new TenantWorkloadConfig();
+        cfg.setServiceEndpoint(TestConfigurations.HOST);
+        cfg.setMasterKey(TestConfigurations.MASTER_KEY);
+        cfg.setDatabaseId(database.getId());
+        cfg.setContainerId(collection.getId());
+        cfg.setConsistencyLevel("SESSION");
+        cfg.setConcurrency(2);
+        cfg.setNumberOfOperations(numberOfOperations);
+        cfg.setOperation("WriteThroughput");
+        cfg.setConnectionMode("DIRECT");
 
         AtomicInteger success = new AtomicInteger();
         AtomicInteger error = new AtomicInteger();
 
-        AsyncWriteBenchmark wf = new AsyncWriteBenchmark(TenantWorkloadConfig.fromConfiguration(cfg), new MetricRegistry()) {
+        AsyncWriteBenchmark wf = new AsyncWriteBenchmark(cfg, Schedulers.parallel()) {
             @Override
             protected void onError(Throwable throwable) {
                 error.incrementAndGet();
@@ -187,26 +175,22 @@ public class WorkflowTest {
     @Test(dataProvider = "collectionLinkTypeArgProvider", groups = "fast", timeOut = TIMEOUT)
     public void readLatency(boolean useNameLink) throws Exception {
         int numberOfOperations = 123;
-        String cmdFormat = "-serviceEndpoint %s -masterKey %s" +
-                " -databaseId %s -collectionId %s" +
-                " -consistencyLevel SESSION -concurrency 2 -numberOfOperations %s" +
-                " -operation ReadLatency -connectionMode DIRECT";
 
-        String cmd = String.format(cmdFormat,
-                                   TestConfigurations.HOST,
-                                   TestConfigurations.MASTER_KEY,
-                                   database.getId(),
-                                   collection.getId(),
-                                   numberOfOperations)
-                + (useNameLink ? " -useNameLink" : "");
-
-        Configuration cfg = new Configuration();
-        new JCommander(cfg, StringUtils.split(cmd));
+        TenantWorkloadConfig cfg = new TenantWorkloadConfig();
+        cfg.setServiceEndpoint(TestConfigurations.HOST);
+        cfg.setMasterKey(TestConfigurations.MASTER_KEY);
+        cfg.setDatabaseId(database.getId());
+        cfg.setContainerId(collection.getId());
+        cfg.setConsistencyLevel("SESSION");
+        cfg.setConcurrency(2);
+        cfg.setNumberOfOperations(numberOfOperations);
+        cfg.setOperation("ReadLatency");
+        cfg.setConnectionMode("DIRECT");
 
         AtomicInteger success = new AtomicInteger();
         AtomicInteger error = new AtomicInteger();
 
-        AsyncReadBenchmark wf = new AsyncReadBenchmark(TenantWorkloadConfig.fromConfiguration(cfg), new MetricRegistry()) {
+        AsyncReadBenchmark wf = new AsyncReadBenchmark(cfg, Schedulers.parallel()) {
             @Override
             protected void onError(Throwable throwable) {
                 error.incrementAndGet();
@@ -228,26 +212,22 @@ public class WorkflowTest {
     @Test(dataProvider = "collectionLinkTypeArgProvider", groups = "fast", timeOut = TIMEOUT)
     public void readThroughput(boolean useNameLink) throws Exception {
         int numberOfOperations = 123;
-        String cmdFormat = "-serviceEndpoint %s -masterKey %s" +
-                " -databaseId %s -collectionId %s" +
-                " -consistencyLevel SESSION -concurrency 2 -numberOfOperations %s" +
-                " -operation ReadThroughput -connectionMode DIRECT";
 
-        String cmd = String.format(cmdFormat,
-                                   TestConfigurations.HOST,
-                                   TestConfigurations.MASTER_KEY,
-                                   database.getId(),
-                                   collection.getId(),
-                                   numberOfOperations)
-                + (useNameLink ? " -useNameLink" : "");
-
-        Configuration cfg = new Configuration();
-        new JCommander(cfg, StringUtils.split(cmd));
+        TenantWorkloadConfig cfg = new TenantWorkloadConfig();
+        cfg.setServiceEndpoint(TestConfigurations.HOST);
+        cfg.setMasterKey(TestConfigurations.MASTER_KEY);
+        cfg.setDatabaseId(database.getId());
+        cfg.setContainerId(collection.getId());
+        cfg.setConsistencyLevel("SESSION");
+        cfg.setConcurrency(2);
+        cfg.setNumberOfOperations(numberOfOperations);
+        cfg.setOperation("ReadThroughput");
+        cfg.setConnectionMode("DIRECT");
 
         AtomicInteger success = new AtomicInteger();
         AtomicInteger error = new AtomicInteger();
 
-        AsyncReadBenchmark wf = new AsyncReadBenchmark(TenantWorkloadConfig.fromConfiguration(cfg), new MetricRegistry()) {
+        AsyncReadBenchmark wf = new AsyncReadBenchmark(cfg, Schedulers.parallel()) {
             @Override
             protected void onError(Throwable throwable) {
                 error.incrementAndGet();

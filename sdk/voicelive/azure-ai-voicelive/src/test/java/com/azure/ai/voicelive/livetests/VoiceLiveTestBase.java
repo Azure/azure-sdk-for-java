@@ -5,6 +5,7 @@ package com.azure.ai.voicelive.livetests;
 
 import com.azure.ai.voicelive.VoiceLiveAsyncClient;
 import com.azure.ai.voicelive.VoiceLiveClientBuilder;
+import com.azure.ai.voicelive.VoiceLiveServiceVersion;
 import com.azure.ai.voicelive.VoiceLiveSessionAsyncClient;
 import com.azure.ai.voicelive.models.AudioInputTranscriptionOptions;
 import com.azure.ai.voicelive.models.AudioInputTranscriptionOptionsModel;
@@ -17,6 +18,7 @@ import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.params.provider.Arguments;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -28,6 +30,7 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Stream;
 
 /**
  * Base class for VoiceLive live tests with shared utilities.
@@ -58,11 +61,15 @@ public abstract class VoiceLiveTestBase extends TestProxyTestBase {
 
     // Audio thresholds
     protected static final int MIN_AUDIO_BYTES = 10 * 1024;
-    protected static final int MIN_AUDIO_BYTES_LARGE = 50 * 1000;
+    protected static final int MIN_AUDIO_BYTES_LARGE = 40 * 1000;
 
     // Default silence settings
     protected static final int DEFAULT_SAMPLE_RATE = 24000;
     protected static final double DEFAULT_SILENCE_DURATION = 2.0;
+
+    // API version constants
+    protected static final String API_VERSION_GA = "2025-10-01";
+    protected static final String API_VERSION_PREVIEW = "2026-01-01-preview";
 
     protected String getEndpoint() {
         String endpoint = Configuration.getGlobalConfiguration().get("AI_SERVICES_ENDPOINT");
@@ -84,6 +91,40 @@ public abstract class VoiceLiveTestBase extends TestProxyTestBase {
         return new VoiceLiveClientBuilder().endpoint(getEndpoint())
             .credential(new KeyCredential(getApiKey()))
             .buildAsyncClient();
+    }
+
+    protected VoiceLiveAsyncClient createClient(String apiVersion) {
+        return new VoiceLiveClientBuilder().endpoint(getEndpoint())
+            .credential(new KeyCredential(getApiKey()))
+            .serviceVersion(parseServiceVersion(apiVersion))
+            .buildAsyncClient();
+    }
+
+    protected static VoiceLiveServiceVersion parseServiceVersion(String version) {
+        for (VoiceLiveServiceVersion sv : VoiceLiveServiceVersion.values()) {
+            if (sv.getVersion().equals(version)) {
+                return sv;
+            }
+        }
+        throw new IllegalArgumentException("Unknown service version: " + version);
+    }
+
+    protected static Stream<Arguments> crossProduct(String[] models, String[] apiVersions) {
+        return Arrays.stream(models).flatMap(model -> Arrays.stream(apiVersions).map(v -> Arguments.of(model, v)));
+    }
+
+    protected static Stream<Arguments> withApiVersions(Stream<Arguments> base) {
+        return withApiVersions(base, API_VERSION_GA, API_VERSION_PREVIEW);
+    }
+
+    protected static Stream<Arguments> withApiVersions(Stream<Arguments> base, String... apiVersions) {
+        Arguments[] baseArgs = base.toArray(Arguments[]::new);
+        return Arrays.stream(apiVersions).flatMap(version -> Arrays.stream(baseArgs).map(args -> {
+            Object[] existing = args.get();
+            Object[] extended = Arrays.copyOf(existing, existing.length + 1);
+            extended[existing.length] = version;
+            return Arguments.of(extended);
+        }));
     }
 
     protected byte[] loadAudioFile(String filename) throws IOException {

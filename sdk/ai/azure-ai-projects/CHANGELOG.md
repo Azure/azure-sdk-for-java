@@ -1,6 +1,6 @@
 # Release History
 
-## 2.0.0-beta.2 (Unreleased)
+## 2.0.0-beta.3 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,18 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.0.0-beta.2 (2026-03-04)
+
+### Breaking Changes
+
+- Renamed `Index` model to `AIProjectIndex` across the SDK; all `IndexesClient` and `IndexesAsyncClient` methods now use `AIProjectIndex` instead of `Index`
+- Replaced `DayOfWeek` custom enum (`com.azure.ai.projects.models.DayOfWeek`) with the JDK standard `java.time.DayOfWeek` in `WeeklyRecurrenceSchedule`
+- Removed `CONTAINER_AGENTS_V1_PREVIEW`, `HOSTED_AGENTS_V1_PREVIEW`, and `WORKFLOW_AGENTS_V1_PREVIEW` constants from `FoundryFeaturesOptInKeys` (agent-specific feature flags moved to `azure-ai-agents`)
+
+### Other Changes
+
+- Generated from latest API spec
 
 ## 2.0.0-beta.1 (2026-02-25)
 

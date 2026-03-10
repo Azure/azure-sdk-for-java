@@ -66,4 +66,11 @@ public interface DisconnectedOperationsManagementClient {
      * @return the ArtifactsClient object.
      */
     ArtifactsClient getArtifacts();
+
+    /**
+     * Gets the HardwareSettingsClient object to access its operations.
+     * 
+     * @return the HardwareSettingsClient object.
+     */
+    HardwareSettingsClient getHardwareSettings();
 }

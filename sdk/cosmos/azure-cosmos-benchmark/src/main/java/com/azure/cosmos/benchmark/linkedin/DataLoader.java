@@ -6,7 +6,7 @@ package com.azure.cosmos.benchmark.linkedin;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
-import com.azure.cosmos.benchmark.Configuration;
+import com.azure.cosmos.benchmark.TenantWorkloadConfig;
 import com.azure.cosmos.benchmark.linkedin.data.EntityConfiguration;
 import com.azure.cosmos.benchmark.linkedin.data.Key;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
@@ -38,14 +38,14 @@ public class DataLoader {
     private static final String COUNT_ALL_QUERY = "SELECT COUNT(1) FROM c";
     private static final String COUNT_ALL_QUERY_RESULT_FIELD = "$1";
 
-    private final Configuration _configuration;
+    private final TenantWorkloadConfig _workloadConfig;
     private final EntityConfiguration _entityConfiguration;
     private final CosmosAsyncClient _client;
 
-    public DataLoader(final Configuration configuration,
+    public DataLoader(final TenantWorkloadConfig workloadConfig,
         final EntityConfiguration entityConfiguration,
         final CosmosAsyncClient client) {
-        _configuration = Preconditions.checkNotNull(configuration,
+        _workloadConfig = Preconditions.checkNotNull(workloadConfig,
             "The Workload configuration defining the parameters can not be null");
         _entityConfiguration = Preconditions.checkNotNull(entityConfiguration,
             "The test entity configuration can not be null");
@@ -54,27 +54,27 @@ public class DataLoader {
     }
 
     public void loadData() {
-        final String containerName = _configuration.getCollectionId();
-        final CosmosAsyncDatabase database = _client.getDatabase(_configuration.getDatabaseId());
+        final String containerName = _workloadConfig.getContainerId();
+        final CosmosAsyncDatabase database = _client.getDatabase(_workloadConfig.getDatabaseId());
         final CosmosAsyncContainer container = database.getContainer(containerName);
 
         LOGGER.info("Check container {} for existing data", containerName);
         final int documentCount = getDocumentCount(container);
-        final int documentsToLoad = _configuration.getNumberOfPreCreatedDocuments() - documentCount;
+        final int documentsToLoad = _workloadConfig.getNumberOfPreCreatedDocuments() - documentCount;
 
         if (documentsToLoad <= 0) {
             LOGGER.info("Container {} already has the requisite number of documents: {} [desired: {}]",
-                containerName, documentCount, _configuration.getNumberOfPreCreatedDocuments());
+                containerName, documentCount, _workloadConfig.getNumberOfPreCreatedDocuments());
             return;
         }
 
         LOGGER.info("Starting batched data loading to load {} documents, with {} documents in each iteration",
             documentsToLoad,
-            _configuration.getBulkloadBatchSize());
+            _workloadConfig.getBulkloadBatchSize());
         final DataGenerationIterator dataGenerator =
             new DataGenerationIterator(_entityConfiguration.dataGenerator(),
                 documentsToLoad,
-                _configuration.getBulkloadBatchSize());
+                _workloadConfig.getBulkloadBatchSize());
 
         while (dataGenerator.hasNext()) {
             final Map<Key, ObjectNode> newDocuments = dataGenerator.next();
@@ -82,7 +82,7 @@ public class DataLoader {
             newDocuments.clear();
         }
 
-        validateDataCreation(_configuration.getNumberOfPreCreatedDocuments());
+        validateDataCreation(_workloadConfig.getNumberOfPreCreatedDocuments());
     }
 
     private void bulkCreateItems(final CosmosAsyncDatabase database,
@@ -104,11 +104,11 @@ public class DataLoader {
     }
 
     private void validateDataCreation(int expectedSize) {
-        final String containerName = _configuration.getCollectionId();
-        final CosmosAsyncDatabase database = _client.getDatabase(_configuration.getDatabaseId());
+        final String containerName = _workloadConfig.getContainerId();
+        final CosmosAsyncDatabase database = _client.getDatabase(_workloadConfig.getDatabaseId());
         final CosmosAsyncContainer container = database.getContainer(containerName);
         LOGGER.info("Validating {} documents were loaded into [{}:{}]",
-            expectedSize, _configuration.getDatabaseId(), containerName);
+            expectedSize, _workloadConfig.getDatabaseId(), containerName);
 
         final int resultCount = getDocumentCount(container);
         if (resultCount < (expectedSize * 0.90)) {
@@ -118,7 +118,7 @@ public class DataLoader {
         }
 
         LOGGER.info("Validated {} out of the {} expected documents were loaded into [{}:{}]",
-            resultCount, expectedSize, _configuration.getDatabaseId(), containerName);
+            resultCount, expectedSize, _workloadConfig.getDatabaseId(), containerName);
     }
 
     private int getDocumentCount(CosmosAsyncContainer container) {

@@ -65,12 +65,8 @@ public final class OracleSubscriptionsImpl implements OracleSubscriptions {
 
     public Response<OracleSubscription> getWithResponse(Context context) {
         Response<OracleSubscriptionInner> inner = this.serviceClient().getWithResponse(context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new OracleSubscriptionImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new OracleSubscriptionImpl(inner.getValue(), this.manager()));
     }
 
     public OracleSubscription get() {

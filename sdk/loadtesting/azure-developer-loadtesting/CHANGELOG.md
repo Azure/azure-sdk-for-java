@@ -1,14 +1,22 @@
 # Release History
 
-## 1.1.0-beta.2 (Unreleased)
+## 1.2.0-beta.1 (2026-03-06)
+
+Updated the client library to use API Version 2025-11-01-preview. This adds all the capabilities that were introduced until this API version.
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- This release adds models and enums for all the APIs supported by Azure Load Testing
+- Support for Notification Rules
+    - Added methods `createOrUpdateNotificationRule`, `getNotificationRule`, `deleteNotificationRule` and `listNotificationRules` in `LoadTestAdministrationClient` to work with Notification rules.
+- Support for Trigger
+    - Added methods `createOrUpdateTrigger`, `getTrigger`, `deleteTrigger` and `listTriggers` in `LoadTestAdministrationClient` to work with Scheduling test triggers.
+- Support for Actionable Insights
+    - Added methods `beginGenerateTestRunInsights`, `updateLatestTestRunInsights` and `getLatestTestRunInsights` in `LoadTestRunClient` to work with actionable insights.
+- Support for generating test plan recommendations
+    - Added method `beginGenerateTestPlanRecommendations` in `LoadTestAdministrationClient` which generates test plan recommendations.
+- Support for Cloning load test
+    - Added method `beginCloneTest` in `LoadTestAdministrationClient` to Clone a load test.
 
 ## 1.0.28 (2026-01-29)
 

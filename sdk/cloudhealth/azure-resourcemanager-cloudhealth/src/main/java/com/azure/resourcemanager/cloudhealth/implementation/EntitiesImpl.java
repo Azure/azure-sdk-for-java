@@ -32,12 +32,8 @@ public final class EntitiesImpl implements Entities {
         Context context) {
         Response<EntityInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, healthModelName, entityName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new EntityImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new EntityImpl(inner.getValue(), this.manager()));
     }
 
     public Entity get(String resourceGroupName, String healthModelName, String entityName) {

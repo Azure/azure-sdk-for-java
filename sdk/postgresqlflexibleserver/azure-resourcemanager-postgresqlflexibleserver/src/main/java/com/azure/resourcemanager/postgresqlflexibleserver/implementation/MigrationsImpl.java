@@ -34,12 +34,8 @@ public final class MigrationsImpl implements Migrations {
         Context context) {
         Response<MigrationInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, serverName, migrationName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new MigrationImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new MigrationImpl(inner.getValue(), this.manager()));
     }
 
     public Migration get(String resourceGroupName, String serverName, String migrationName) {
@@ -55,12 +51,8 @@ public final class MigrationsImpl implements Migrations {
         Context context) {
         Response<MigrationInner> inner
             = this.serviceClient().cancelWithResponse(resourceGroupName, serverName, migrationName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new MigrationImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new MigrationImpl(inner.getValue(), this.manager()));
     }
 
     public Migration cancel(String resourceGroupName, String serverName, String migrationName) {
@@ -88,12 +80,8 @@ public final class MigrationsImpl implements Migrations {
         String serverName, MigrationNameAvailabilityInner parameters, Context context) {
         Response<MigrationNameAvailabilityInner> inner = this.serviceClient()
             .checkNameAvailabilityWithResponse(resourceGroupName, serverName, parameters, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new MigrationNameAvailabilityImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new MigrationNameAvailabilityImpl(inner.getValue(), this.manager()));
     }
 
     public MigrationNameAvailability checkNameAvailability(String resourceGroupName, String serverName,

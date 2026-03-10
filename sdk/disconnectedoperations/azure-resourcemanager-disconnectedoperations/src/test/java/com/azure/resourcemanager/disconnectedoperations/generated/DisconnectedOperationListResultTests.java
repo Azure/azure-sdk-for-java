@@ -6,7 +6,10 @@ package com.azure.resourcemanager.disconnectedoperations.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.disconnectedoperations.implementation.models.DisconnectedOperationListResult;
+import com.azure.resourcemanager.disconnectedoperations.models.AutoRenew;
+import com.azure.resourcemanager.disconnectedoperations.models.BenefitPlanStatus;
 import com.azure.resourcemanager.disconnectedoperations.models.ConnectionIntent;
+import com.azure.resourcemanager.disconnectedoperations.models.PricingModel;
 import com.azure.resourcemanager.disconnectedoperations.models.RegistrationStatus;
 import org.junit.jupiter.api.Assertions;
 
@@ -14,13 +17,24 @@ public final class DisconnectedOperationListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DisconnectedOperationListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"stampId\":\"ajpsquc\",\"billingModel\":\"Capacity\",\"connectionIntent\":\"Connected\",\"connectionStatus\":\"Connected\",\"registrationStatus\":\"Registered\",\"deviceVersion\":\"ogknygjofjdd\"},\"location\":\"s\",\"tags\":{\"lusarh\":\"upewnwreitjzy\",\"urkdtmlx\":\"ofcqhsm\",\"kc\":\"ekuksjtx\",\"xzdxtayrlhmwh\":\"mparcryuanzw\"},\"id\":\"pmrqobm\",\"name\":\"u\",\"type\":\"knryrtihfxtij\"}],\"nextLink\":\"zvgnwzs\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"stampId\":\"zdxtayrlhmwhf\",\"billingModel\":\"Capacity\",\"connectionIntent\":\"Connected\",\"connectionStatus\":\"Connected\",\"registrationStatus\":\"Registered\",\"deviceVersion\":\"u\",\"billingConfiguration\":{\"autoRenew\":\"Enabled\",\"billingStatus\":\"Disabled\",\"current\":{\"cores\":1306784267,\"pricingModel\":\"Annual\"},\"upcoming\":{\"cores\":899456182,\"pricingModel\":\"Trial\"}},\"benefitPlans\":{\"azureHybridWindowsServerBenefit\":\"Disabled\",\"windowsServerVmCount\":322305671}},\"location\":\"nwzsymg\",\"tags\":{\"cbjy\":\"fcyzkohdbihanufh\"},\"id\":\"a\",\"name\":\"ithxqhabifpi\",\"type\":\"xwczbyscnp\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"stampId\":\"ivyqniwbybrkxvd\",\"billingModel\":\"Capacity\",\"connectionIntent\":\"Disconnected\",\"connectionStatus\":\"Connected\",\"registrationStatus\":\"Registered\",\"deviceVersion\":\"vukxgau\",\"billingConfiguration\":{\"autoRenew\":\"Enabled\",\"billingStatus\":\"Enabled\",\"current\":{\"cores\":157917305,\"pricingModel\":\"Trial\"},\"upcoming\":{\"cores\":1290060857,\"pricingModel\":\"Trial\"}},\"benefitPlans\":{\"azureHybridWindowsServerBenefit\":\"Disabled\",\"windowsServerVmCount\":1656493513}},\"location\":\"napczwlokjy\",\"tags\":{\"nchgej\":\"kvnipjoxz\",\"huxinpmqnj\":\"podmailzydehojwy\",\"vcputegj\":\"qwixjspro\"},\"id\":\"wmfdatscmdvpjhul\",\"name\":\"uuvmkjozkrwfnd\",\"type\":\"odjpslwejd\"}],\"nextLink\":\"wryoqpsoacc\"}")
             .toObject(DisconnectedOperationListResult.class);
-        Assertions.assertEquals("s", model.value().get(0).location());
-        Assertions.assertEquals("upewnwreitjzy", model.value().get(0).tags().get("lusarh"));
+        Assertions.assertEquals("nwzsymg", model.value().get(0).location());
+        Assertions.assertEquals("fcyzkohdbihanufh", model.value().get(0).tags().get("cbjy"));
         Assertions.assertEquals(ConnectionIntent.CONNECTED, model.value().get(0).properties().connectionIntent());
         Assertions.assertEquals(RegistrationStatus.REGISTERED, model.value().get(0).properties().registrationStatus());
-        Assertions.assertEquals("ogknygjofjdd", model.value().get(0).properties().deviceVersion());
-        Assertions.assertEquals("zvgnwzs", model.nextLink());
+        Assertions.assertEquals("u", model.value().get(0).properties().deviceVersion());
+        Assertions.assertEquals(AutoRenew.ENABLED,
+            model.value().get(0).properties().billingConfiguration().autoRenew());
+        Assertions.assertEquals(1306784267, model.value().get(0).properties().billingConfiguration().current().cores());
+        Assertions.assertEquals(PricingModel.ANNUAL,
+            model.value().get(0).properties().billingConfiguration().current().pricingModel());
+        Assertions.assertEquals(899456182, model.value().get(0).properties().billingConfiguration().upcoming().cores());
+        Assertions.assertEquals(PricingModel.TRIAL,
+            model.value().get(0).properties().billingConfiguration().upcoming().pricingModel());
+        Assertions.assertEquals(BenefitPlanStatus.DISABLED,
+            model.value().get(0).properties().benefitPlans().azureHybridWindowsServerBenefit());
+        Assertions.assertEquals(322305671, model.value().get(0).properties().benefitPlans().windowsServerVmCount());
+        Assertions.assertEquals("wryoqpsoacc", model.nextLink());
     }
 }

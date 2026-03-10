@@ -4,8 +4,14 @@
 
 package com.azure.resourcemanager.disconnectedoperations.generated;
 
+import com.azure.resourcemanager.disconnectedoperations.models.AutoRenew;
+import com.azure.resourcemanager.disconnectedoperations.models.BenefitPlanStatus;
+import com.azure.resourcemanager.disconnectedoperations.models.BenefitPlans;
+import com.azure.resourcemanager.disconnectedoperations.models.BillingConfiguration;
+import com.azure.resourcemanager.disconnectedoperations.models.BillingPeriod;
 import com.azure.resourcemanager.disconnectedoperations.models.ConnectionIntent;
 import com.azure.resourcemanager.disconnectedoperations.models.DisconnectedOperationProperties;
+import com.azure.resourcemanager.disconnectedoperations.models.PricingModel;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,7 +20,7 @@ import java.util.Map;
  */
 public final class DisconnectedOperationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/DisconnectedOperations_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-15/DisconnectedOperations_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: DisconnectedOperations_CreateOrUpdate.
@@ -28,7 +34,11 @@ public final class DisconnectedOperationsCreateOrUpdateSamples {
             .withRegion("eastus")
             .withExistingResourceGroup("rgdisconnectedOperations")
             .withTags(mapOf("key1", "fakeTokenPlaceholder"))
-            .withProperties(new DisconnectedOperationProperties().withConnectionIntent(ConnectionIntent.DISCONNECTED))
+            .withProperties(new DisconnectedOperationProperties().withConnectionIntent(ConnectionIntent.DISCONNECTED)
+                .withBillingConfiguration(new BillingConfiguration().withAutoRenew(AutoRenew.ENABLED)
+                    .withCurrent(new BillingPeriod().withCores(12).withPricingModel(PricingModel.TRIAL)))
+                .withBenefitPlans(new BenefitPlans().withAzureHybridWindowsServerBenefit(BenefitPlanStatus.ENABLED)
+                    .withWindowsServerVmCount(5)))
             .create();
     }
 
