@@ -54,16 +54,18 @@ public class VoiceLiveConversationTests extends VoiceLiveTestBase {
         CountDownLatch outputItemLatch = new CountDownLatch(1);
         CountDownLatch retrieveLatch = new CountDownLatch(1);
 
+        VoiceLiveSessionAsyncClient session = null;
+        Disposable subscription = null;
         try {
             VoiceLiveSessionOptions sessionOptions
                 = new VoiceLiveSessionOptions().setInstructions("You are a helpful assistant.")
                     .setVoice(BinaryData.fromObject(new OpenAIVoice(OpenAIVoiceName.ALLOY)));
 
-            VoiceLiveSessionAsyncClient session = client.startSession(model).block(SESSION_TIMEOUT);
+            session = client.startSession(model).block(SESSION_TIMEOUT);
 
             Assertions.assertNotNull(session, "Session should be created successfully");
 
-            Disposable subscription = session.receiveEvents().subscribe(event -> {
+            subscription = session.receiveEvents().subscribe(event -> {
                 ServerEventType eventType = event.getType();
 
                 if (eventType == ServerEventType.RESPONSE_OUTPUT_ITEM_DONE) {
@@ -121,11 +123,11 @@ public class VoiceLiveConversationTests extends VoiceLiveTestBase {
                 "Message role should be 'assistant'");
             Assertions.assertNotNull(messageItem.getContent(), "Message item should have content");
             Assertions.assertFalse(messageItem.getContent().isEmpty(), "Message content should not be empty");
-
-            subscription.dispose();
-            session.close();
-        } catch (Exception e) {
-            Assertions.fail("Test failed with exception: " + e.getMessage());
+        } finally {
+            if (subscription != null) {
+                subscription.dispose();
+            }
+            closeSession(session);
         }
     }
 
@@ -147,15 +149,17 @@ public class VoiceLiveConversationTests extends VoiceLiveTestBase {
         CountDownLatch outputItemLatch = new CountDownLatch(1);
         CountDownLatch truncateLatch = new CountDownLatch(1);
 
+        VoiceLiveSessionAsyncClient session = null;
+        Disposable subscription = null;
         try {
             VoiceLiveSessionOptions sessionOptions
                 = new VoiceLiveSessionOptions().setInstructions("You are a helpful assistant.");
 
-            VoiceLiveSessionAsyncClient session = client.startSession(model).block(SESSION_TIMEOUT);
+            session = client.startSession(model).block(SESSION_TIMEOUT);
 
             Assertions.assertNotNull(session, "Session should be created successfully");
 
-            Disposable subscription = session.receiveEvents().subscribe(event -> {
+            subscription = session.receiveEvents().subscribe(event -> {
                 ServerEventType eventType = event.getType();
 
                 if (eventType == ServerEventType.RESPONSE_OUTPUT_ITEM_DONE) {
@@ -204,11 +208,11 @@ public class VoiceLiveConversationTests extends VoiceLiveTestBase {
             Assertions.assertNotNull(truncatedEvent.get(), "Truncated event should not be null");
             Assertions.assertEquals(outputItemId.get(), truncatedEvent.get().getItemId(),
                 "Truncated item ID should match the output item ID");
-
-            subscription.dispose();
-            session.close();
-        } catch (Exception e) {
-            Assertions.fail("Test failed with exception: " + e.getMessage());
+        } finally {
+            if (subscription != null) {
+                subscription.dispose();
+            }
+            closeSession(session);
         }
     }
 }

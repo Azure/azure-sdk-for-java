@@ -42,6 +42,7 @@ import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.TargetDataLine;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
@@ -202,7 +203,7 @@ public final class MCPSample {
                         processor.cleanup();
                     }
                     try {
-                        session.close();
+                        session.closeAsync().block(Duration.ofSeconds(5));
                     } catch (Exception e) {
                         // Suppress errors during forced JVM shutdown
                     }

@@ -86,6 +86,8 @@ public class VoiceLiveAudioFormatTests extends VoiceLiveTestBase {
         CountDownLatch sessionUpdatedLatch = new CountDownLatch(1);
         CountDownLatch responseLatch = new CountDownLatch(1);
 
+        VoiceLiveSessionAsyncClient session = null;
+        Disposable subscription = null;
         try {
             InputAudioFormat inputFormat = parseInputAudioFormat(audioFormat);
 
@@ -99,11 +101,11 @@ public class VoiceLiveAudioFormatTests extends VoiceLiveTestBase {
                 .setTurnDetection(turnDetection)
                 .setInputAudioTranscription(getSpeechRecognitionSetting(model));
 
-            VoiceLiveSessionAsyncClient session = client.startSession(model).block(SESSION_TIMEOUT);
+            session = client.startSession(model).block(SESSION_TIMEOUT);
 
             Assertions.assertNotNull(session, "Session should be created successfully");
 
-            Disposable subscription = session.receiveEvents().subscribe(event -> {
+            subscription = session.receiveEvents().subscribe(event -> {
                 ServerEventType eventType = event.getType();
 
                 if (eventType == ServerEventType.SESSION_UPDATED) {
@@ -161,11 +163,11 @@ public class VoiceLiveAudioFormatTests extends VoiceLiveTestBase {
             Assertions.assertTrue(received, "Should receive response within timeout");
             Assertions.assertTrue(audioResponseBytes.get() > MIN_AUDIO_BYTES_LARGE,
                 "Output audio too short for " + audioFormat + " format: " + audioResponseBytes.get() + " bytes");
-
-            subscription.dispose();
-            session.close();
-        } catch (Exception e) {
-            Assertions.fail("Test failed with exception: " + e.getMessage());
+        } finally {
+            if (subscription != null) {
+                subscription.dispose();
+            }
+            closeSession(session);
         }
     }
 
@@ -188,6 +190,8 @@ public class VoiceLiveAudioFormatTests extends VoiceLiveTestBase {
         CountDownLatch speechStoppedLatch = new CountDownLatch(1);
         CountDownLatch responseLatch = new CountDownLatch(1);
 
+        VoiceLiveSessionAsyncClient session = null;
+        Disposable subscription = null;
         try {
             VoiceLiveSessionOptions sessionOptions = new VoiceLiveSessionOptions()
                 .setVoice(BinaryData.fromObject(new AzureStandardVoice("en-US-AriaNeural")))
@@ -199,11 +203,11 @@ public class VoiceLiveAudioFormatTests extends VoiceLiveTestBase {
                     ? new ServerVadTurnDetection().setSilenceDurationMs(200)
                     : new ServerVadTurnDetection());
 
-            VoiceLiveSessionAsyncClient session = client.startSession(model).block(SESSION_TIMEOUT);
+            session = client.startSession(model).block(SESSION_TIMEOUT);
 
             Assertions.assertNotNull(session, "Session should be created successfully");
 
-            Disposable subscription = session.receiveEvents().subscribe(event -> {
+            subscription = session.receiveEvents().subscribe(event -> {
                 ServerEventType eventType = event.getType();
 
                 if (eventType == ServerEventType.SESSION_UPDATED) {
@@ -281,11 +285,11 @@ public class VoiceLiveAudioFormatTests extends VoiceLiveTestBase {
             Assertions.assertTrue(received, "Should receive response within timeout");
             Assertions.assertTrue(audioResponseBytes.get() > MIN_AUDIO_BYTES_LARGE, "Output audio too short: "
                 + audioResponseBytes.get() + " bytes (expected > " + MIN_AUDIO_BYTES_LARGE + ")");
-
-            subscription.dispose();
-            session.close();
-        } catch (Exception e) {
-            Assertions.fail("Test failed with exception: " + e.getMessage());
+        } finally {
+            if (subscription != null) {
+                subscription.dispose();
+            }
+            closeSession(session);
         }
     }
 
@@ -302,6 +306,8 @@ public class VoiceLiveAudioFormatTests extends VoiceLiveTestBase {
         AtomicInteger audioDoneEvents = new AtomicInteger(0);
         CountDownLatch responseLatch = new CountDownLatch(1);
 
+        VoiceLiveSessionAsyncClient session = null;
+        Disposable subscription = null;
         try {
             OutputAudioFormat format = parseOutputAudioFormat(outputFormat);
 
@@ -312,11 +318,11 @@ public class VoiceLiveAudioFormatTests extends VoiceLiveTestBase {
                 .setTurnDetection(
                     new ServerVadTurnDetection().setThreshold(0.5).setPrefixPaddingMs(300).setSilenceDurationMs(200));
 
-            VoiceLiveSessionAsyncClient session = client.startSession(model).block(SESSION_TIMEOUT);
+            session = client.startSession(model).block(SESSION_TIMEOUT);
 
             Assertions.assertNotNull(session, "Session should be created successfully");
 
-            Disposable subscription = session.receiveEvents().subscribe(event -> {
+            subscription = session.receiveEvents().subscribe(event -> {
                 ServerEventType eventType = event.getType();
 
                 if (eventType == ServerEventType.RESPONSE_AUDIO_DELTA) {
@@ -354,11 +360,11 @@ public class VoiceLiveAudioFormatTests extends VoiceLiveTestBase {
             Assertions.assertTrue(audioDoneEvents.get() >= 1, "Should receive audio done events");
             Assertions.assertTrue(audioResponseBytes.get() > MIN_AUDIO_BYTES,
                 "Output audio too short: " + audioResponseBytes.get() + " bytes");
-
-            subscription.dispose();
-            session.close();
-        } catch (Exception e) {
-            Assertions.fail("Test failed with exception: " + e.getMessage());
+        } finally {
+            if (subscription != null) {
+                subscription.dispose();
+            }
+            closeSession(session);
         }
     }
 
@@ -375,6 +381,8 @@ public class VoiceLiveAudioFormatTests extends VoiceLiveTestBase {
         AtomicInteger audioDoneEvents = new AtomicInteger(0);
         CountDownLatch responseLatch = new CountDownLatch(1);
 
+        VoiceLiveSessionAsyncClient session = null;
+        Disposable subscription = null;
         try {
             OutputAudioFormat format = parseOutputAudioFormat(outputFormat);
 
@@ -386,11 +394,11 @@ public class VoiceLiveAudioFormatTests extends VoiceLiveTestBase {
                 .setTurnDetection(
                     new ServerVadTurnDetection().setThreshold(0.5).setPrefixPaddingMs(300).setSilenceDurationMs(200));
 
-            VoiceLiveSessionAsyncClient session = client.startSession(model).block(SESSION_TIMEOUT);
+            session = client.startSession(model).block(SESSION_TIMEOUT);
 
             Assertions.assertNotNull(session, "Session should be created successfully");
 
-            Disposable subscription2 = session.receiveEvents().subscribe(event -> {
+            subscription = session.receiveEvents().subscribe(event -> {
                 ServerEventType eventType = event.getType();
 
                 if (eventType == ServerEventType.RESPONSE_AUDIO_DELTA) {
@@ -428,11 +436,11 @@ public class VoiceLiveAudioFormatTests extends VoiceLiveTestBase {
             Assertions.assertTrue(audioDoneEvents.get() >= 1, "Should receive audio done events");
             Assertions.assertTrue(audioResponseBytes.get() > MIN_AUDIO_BYTES,
                 "Output audio too short: " + audioResponseBytes.get() + " bytes");
-
-            subscription2.dispose();
-            session.close();
-        } catch (Exception e) {
-            Assertions.fail("Test failed with exception: " + e.getMessage());
+        } finally {
+            if (subscription != null) {
+                subscription.dispose();
+            }
+            closeSession(session);
         }
     }
 }

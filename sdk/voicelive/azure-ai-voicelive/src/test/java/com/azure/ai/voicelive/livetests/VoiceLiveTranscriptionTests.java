@@ -51,17 +51,19 @@ public class VoiceLiveTranscriptionTests extends VoiceLiveTestBase {
         AtomicReference<String> transcriptText = new AtomicReference<>("");
         CountDownLatch transcriptionLatch = new CountDownLatch(1);
 
+        VoiceLiveSessionAsyncClient session = null;
+        Disposable subscription = null;
         try {
             VoiceLiveSessionOptions sessionOptions = new VoiceLiveSessionOptions()
                 .setModalities(Arrays.asList(InteractionModality.TEXT, InteractionModality.AUDIO))
                 .setInputAudioFormat(InputAudioFormat.PCM16)
                 .setInputAudioTranscription(getSpeechRecognitionSetting(model));
 
-            VoiceLiveSessionAsyncClient session = client.startSession(model).block(SESSION_TIMEOUT);
+            session = client.startSession(model).block(SESSION_TIMEOUT);
 
             Assertions.assertNotNull(session, "Session should be created successfully");
 
-            Disposable subscription = session.receiveEvents().subscribe(event -> {
+            subscription = session.receiveEvents().subscribe(event -> {
                 ServerEventType eventType = event.getType();
 
                 if (eventType == ServerEventType.CONVERSATION_ITEM_INPUT_AUDIO_TRANSCRIPTION_COMPLETED) {
@@ -97,11 +99,11 @@ public class VoiceLiveTranscriptionTests extends VoiceLiveTestBase {
 
             Assertions.assertTrue(received, "Should receive transcription within timeout");
             Assertions.assertTrue(transcriptionReceived.get(), "Should receive transcription completed event");
-
-            subscription.dispose();
-            session.close();
-        } catch (Exception e) {
-            Assertions.fail("Test failed with exception: " + e.getMessage());
+        } finally {
+            if (subscription != null) {
+                subscription.dispose();
+            }
+            closeSession(session);
         }
     }
 
@@ -124,6 +126,8 @@ public class VoiceLiveTranscriptionTests extends VoiceLiveTestBase {
         AtomicReference<String> transcriptText = new AtomicReference<>("");
         CountDownLatch transcriptionLatch = new CountDownLatch(1);
 
+        VoiceLiveSessionAsyncClient session = null;
+        Disposable subscription = null;
         try {
             AudioInputTranscriptionOptionsModel transcriptionOptionsModel
                 = AudioInputTranscriptionOptionsModel.fromString(transcriptionModel);
@@ -131,11 +135,11 @@ public class VoiceLiveTranscriptionTests extends VoiceLiveTestBase {
             VoiceLiveSessionOptions sessionOptions = new VoiceLiveSessionOptions().setInputAudioTranscription(
                 new AudioInputTranscriptionOptions(transcriptionOptionsModel).setLanguage("en-US"));
 
-            VoiceLiveSessionAsyncClient session = client.startSession(model).block(SESSION_TIMEOUT);
+            session = client.startSession(model).block(SESSION_TIMEOUT);
 
             Assertions.assertNotNull(session, "Session should be created successfully");
 
-            Disposable subscription = session.receiveEvents().subscribe(event -> {
+            subscription = session.receiveEvents().subscribe(event -> {
                 ServerEventType eventType = event.getType();
 
                 if (eventType == ServerEventType.CONVERSATION_ITEM_INPUT_AUDIO_TRANSCRIPTION_COMPLETED) {
@@ -177,11 +181,11 @@ public class VoiceLiveTranscriptionTests extends VoiceLiveTestBase {
                 transcriptText.get().toLowerCase().contains("largest")
                     || transcriptText.get().toLowerCase().contains("lake"),
                 "Transcript should contain 'largest' or 'lake', got: " + transcriptText.get());
-
-            subscription.dispose();
-            session.close();
-        } catch (Exception e) {
-            Assertions.fail("Test failed with exception: " + e.getMessage());
+        } finally {
+            if (subscription != null) {
+                subscription.dispose();
+            }
+            closeSession(session);
         }
     }
 }

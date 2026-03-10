@@ -205,7 +205,7 @@ public final class FunctionCallingSample {
                     running.set(false);
                     audioProcessor.cleanup();
                     try {
-                        session.close();
+                        session.closeAsync().block(Duration.ofSeconds(5));
                     } catch (Exception e) {
                         // Suppress errors during forced JVM shutdown
                     }

@@ -35,6 +35,7 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.TargetDataLine;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -544,7 +545,7 @@ public final class VoiceAssistantSample {
                     System.out.println("\n🛑 Shutting down gracefully...");
                     audioProcessor.shutdown();
                     try {
-                        session.close();
+                        session.closeAsync().block(Duration.ofSeconds(5));
                     } catch (Exception e) {
                         // Suppress errors during forced JVM shutdown -
                         // the WebSocket connection may already be partially torn down
