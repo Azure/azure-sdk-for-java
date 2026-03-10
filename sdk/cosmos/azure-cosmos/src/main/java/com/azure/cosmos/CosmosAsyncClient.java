@@ -22,6 +22,7 @@ import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.WriteRetryPolicy;
 import com.azure.cosmos.implementation.clienttelemetry.ClientMetricsDiagnosticsHandler;
+import com.azure.cosmos.implementation.inference.InferenceService;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetryMetrics;
 import com.azure.cosmos.implementation.clienttelemetry.CosmosMeterOptions;
@@ -61,6 +62,7 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -117,6 +119,7 @@ public final class CosmosAsyncClient implements Closeable {
     private final List<CosmosOperationPolicy> requestPolicies;
     private final CosmosItemSerializer defaultCustomSerializer;
     private final java.util.function.Function<CosmosAsyncContainer, CosmosAsyncContainer> containerFactory;
+    private final AtomicReference<InferenceService> inferenceService = new AtomicReference<>();
 
     CosmosAsyncClient(CosmosClientBuilder builder) {
         // Async Cosmos client wrapper
@@ -297,6 +300,19 @@ public final class CosmosAsyncClient implements Closeable {
      */
     TokenCredential tokenCredential() {
         return this.tokenCredential;
+    }
+
+    /**
+     * Returns the shared InferenceService instance for this client, creating it lazily on first use.
+     * The instance is tied to this client's lifecycle and will be shut down in {@link #close()}.
+     */
+    InferenceService getOrCreateInferenceService() {
+        if (this.inferenceService.get() == null) {
+            InferenceService newSvc = new InferenceService(this.tokenCredential);
+            // If another thread already set it, compareAndSet is a no-op and newSvc is discarded
+            this.inferenceService.compareAndSet(null, newSvc);
+        }
+        return this.inferenceService.get();
     }
 
     /***
@@ -570,6 +586,10 @@ public final class CosmosAsyncClient implements Closeable {
     public void close() {
         if (this.clientMetricRegistrySnapshot != null) {
             ClientTelemetryMetrics.remove(this.clientMetricRegistrySnapshot);
+        }
+        InferenceService svc = this.inferenceService.get();
+        if (svc != null) {
+            svc.close();
         }
         asyncDocumentClient.close();
     }

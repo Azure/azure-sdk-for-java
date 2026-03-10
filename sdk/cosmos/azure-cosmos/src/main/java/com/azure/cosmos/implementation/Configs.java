@@ -521,8 +521,7 @@ public class Configs {
         if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
             return URI.create(valueFromEnvVariable);
         }
-
-        return URI.create(DEFAULT_THINCLIENT_ENDPOINT);
+        return null;
     }
 
     public static boolean isThinClientEnabled() {

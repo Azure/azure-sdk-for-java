@@ -89,6 +89,7 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -152,7 +153,6 @@ public class CosmosAsyncContainer {
     private final AtomicBoolean isInitialized;
     private CosmosAsyncScripts scripts;
     private IFaultInjectorProvider faultInjectorProvider;
-    private InferenceService inferenceService;
 
     protected CosmosAsyncContainer(CosmosAsyncContainer toBeWrappedContainer) {
         this(toBeWrappedContainer.getId(), toBeWrappedContainer.getDatabase());
@@ -1696,11 +1696,7 @@ public class CosmosAsyncContainer {
             return Mono.error(new IllegalArgumentException("Documents list cannot be empty"));
         }
 
-        if (this.inferenceService == null) {
-            this.inferenceService = new InferenceService(this.database.getClient().tokenCredential());
-        }
-
-        return this.inferenceService.semanticRerank(rerankContext, documents, options);
+        return this.database.getClient().getOrCreateInferenceService().semanticRerank(rerankContext, documents, options);
     }
 
 

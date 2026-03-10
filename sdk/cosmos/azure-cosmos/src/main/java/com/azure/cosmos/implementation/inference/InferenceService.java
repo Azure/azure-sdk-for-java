@@ -9,6 +9,7 @@ import com.azure.core.credential.TokenRequestContext;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.LifeCycleUtils;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
@@ -43,7 +44,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * While this class is public, it is not part of our published public APIs.
  * This is meant to be internally used only by our SDK.
  */
-public class InferenceService {
+public class InferenceService implements AutoCloseable {
     private static final Logger logger = LoggerFactory.getLogger(InferenceService.class);
     private static final String INFERENCE_SCOPE = "https://dbinference.azure.com/.default";
     private static final String BASE_PATH = "/inference/semanticReranking";
@@ -98,6 +99,15 @@ public class InferenceService {
         if (logger.isInfoEnabled()) {
             logger.info("InferenceService initialized with endpoint: {}", inferenceEndpoint);
         }
+    }
+
+    /**
+     * Closes the InferenceService and releases the underlying HTTP client connection pool.
+     */
+    @Override
+    public void close() {
+        logger.info("Shutting down InferenceService httpClient...");
+        LifeCycleUtils.closeQuietly(this.httpClient);
     }
 
     /**
