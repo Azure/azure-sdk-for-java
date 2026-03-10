@@ -8,6 +8,7 @@ import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.ReadConsistencyStrategy;
+import com.azure.cosmos.implementation.directconnectivity.BarrierType;
 import com.azure.cosmos.implementation.perPartitionAutomaticFailover.PartitionLevelAutomaticFailoverInfo;
 import com.azure.cosmos.implementation.perPartitionAutomaticFailover.PerPartitionAutomaticFailoverInfoHolder;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.PerPartitionCircuitBreakerInfoHolder;
@@ -16,6 +17,7 @@ import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResult;
 import com.azure.cosmos.implementation.directconnectivity.TimeoutHelper;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
+import com.azure.cosmos.implementation.http.ReactorNettyRequestRecord;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlRequestContext;
@@ -38,7 +40,7 @@ public class DocumentServiceRequestContext implements Cloneable {
     public volatile ISessionToken sessionToken;
     public volatile long quorumSelectedLSN;
     public volatile long globalCommittedSelectedLSN;
-    public volatile StoreResponse globalStrongWriteResponse;
+    public volatile StoreResponse cachedWriteResponse;
     public volatile ConsistencyLevel originalRequestConsistencyLevel;
     public volatile ReadConsistencyStrategy readConsistencyStrategy;
     public volatile PartitionKeyRange resolvedPartitionKeyRange;
@@ -59,12 +61,15 @@ public class DocumentServiceRequestContext implements Cloneable {
     public volatile boolean replicaAddressValidationEnabled = Configs.isReplicaAddressValidationEnabled();
     private final Set<Uri> failedEndpoints = ConcurrentHashMap.newKeySet();
     private CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig;
+    public volatile ReactorNettyRequestRecord reactorNettyRequestRecord;
     private AtomicBoolean isRequestCancelledOnTimeout = null;
     private volatile List<String> excludeRegions;
     private volatile Set<String> keywordIdentifiers;
     private volatile long approximateBloomFilterInsertionCount;
     private final Set<String> sessionTokenEvaluationResults = ConcurrentHashMap.newKeySet();
     private volatile List<String> unavailableRegionsForPartition;
+    private volatile boolean nRegionSynchronousCommitEnabled;
+    private volatile BarrierType barrierType = BarrierType.NONE;
 
     // For cancelled rntbd requests, track the response as OperationCancelledException which later will be used to populate the cosmosDiagnostics
     public final Map<String, CosmosException> rntbdCancelledRequestMap = new ConcurrentHashMap<>();
@@ -145,7 +150,7 @@ public class DocumentServiceRequestContext implements Cloneable {
         context.sessionToken = this.sessionToken;
         context.quorumSelectedLSN = this.quorumSelectedLSN;
         context.globalCommittedSelectedLSN = this.globalCommittedSelectedLSN;
-        context.globalStrongWriteResponse = this.globalStrongWriteResponse;
+        context.cachedWriteResponse = this.cachedWriteResponse;
         context.originalRequestConsistencyLevel = this.originalRequestConsistencyLevel;
         context.readConsistencyStrategy = this.readConsistencyStrategy;
         context.resolvedPartitionKeyRange = this.resolvedPartitionKeyRange;
@@ -264,6 +269,22 @@ public class DocumentServiceRequestContext implements Cloneable {
         if (this.crossRegionAvailabilityContextForRequest != null) {
             this.crossRegionAvailabilityContextForRequest.setPerPartitionFailoverInfo(partitionLevelAutomaticFailoverInfo);
         }
+    }
+
+    public boolean getNRegionSynchronousCommitEnabled() {
+        return nRegionSynchronousCommitEnabled;
+    }
+
+    public void setNRegionSynchronousCommitEnabled(Boolean nRegionSynchronousCommitEnabled) {
+        this.nRegionSynchronousCommitEnabled = nRegionSynchronousCommitEnabled;
+    }
+
+    public BarrierType getBarrierType() {
+        return barrierType;
+    }
+
+    public void setBarrierType(BarrierType barrierType) {
+        this.barrierType = barrierType;
     }
 }
 

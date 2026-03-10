@@ -6,6 +6,8 @@ import com.azure.cosmos.Http2ConnectionConfig;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import io.netty.buffer.ByteBuf;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelId;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.ChannelPipeline;
 import io.netty.handler.codec.http.HttpMethod;
@@ -184,9 +186,20 @@ public class ReactorNettyClient implements HttpClient {
 
         final AtomicReference<ReactorNettyHttpResponse> responseReference = new AtomicReference<>();
 
+        // Per-request CONNECT_TIMEOUT_MILLIS via reactor-netty's immutable HttpClient.
+        // .option() returns a new config snapshot — does NOT mutate the shared httpClient.
+        // Thin client requests (isThinClientRequest=true): connect timeout is configured via
+        // HttpClientConfig.getThinClientConnectTimeoutMs() (default 5s) to fail fast.
+        // Standard gateway requests: 45s (default).
+        // Note: CONNECT_TIMEOUT_MILLIS controls TCP SYN→SYN-ACK timeout for NEW connections.
+        // For H2, once a TCP connection exists, stream acquisition is near-instant (~sub-ms)
+        // so pendingAcquireTimeout (pool-level 45s) is effectively never hit.
+        int connectTimeoutMs = this.resolveConnectTimeoutMs(request);
+
         return this.httpClient
             .keepAlive(this.httpClientConfig.isConnectionKeepAlive())
             .port(request.port())
+            .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, connectTimeoutMs)
             .responseTimeout(responseTimeout)
             .request(HttpMethod.valueOf(request.httpMethod().toString()))
             .uri(request.uri().toASCIIString())
@@ -240,6 +253,27 @@ public class ReactorNettyClient implements HttpClient {
         }
     }
 
+    /**
+     * Resolves the TCP connect timeout (CONNECT_TIMEOUT_MILLIS) based on the request type.
+     *
+     * Thin client requests (identified by {@link HttpRequest#isThinClientRequest()}) use the thin
+     * client connection timeout configured via {@link Configs#getThinClientConnectionTimeoutInSeconds()}
+     * (default 5s) to fail fast when the thin client proxy is unreachable.
+     * Standard gateway requests use the configured connection acquire timeout (default 45s).
+     *
+     * The thin client timeout is eagerly cached in {@link HttpClientConfig} at construction time
+     * to avoid per-request System.getProperty/getenv overhead.
+     *
+     * @param request the HTTP request
+     * @return the connect timeout in milliseconds
+     */
+    private int resolveConnectTimeoutMs(HttpRequest request) {
+        if (request.isThinClientRequest()) {
+            return this.httpClientConfig.getThinClientConnectTimeoutMs();
+        }
+        return (int) this.httpClientConfig.getConnectionAcquireTimeout().toMillis();
+    }
+
     private static ConnectionObserver getConnectionObserver() {
         return (conn, state) -> {
             Instant time = Instant.now();
@@ -247,26 +281,23 @@ public class ReactorNettyClient implements HttpClient {
             logger.trace("STATE {}, Connection {}, Time {}", state, conn, time);
 
             if (state.equals(HttpClientState.CONNECTED)) {
-                if (conn instanceof ConnectionObserver) {
-                    ConnectionObserver observer = (ConnectionObserver) conn;
-                    ReactorNettyRequestRecord requestRecord =
-                        observer.currentContext().getOrDefault(REACTOR_NETTY_REQUEST_RECORD_KEY, null);
-                    if (requestRecord == null) {
-                        throw new IllegalStateException("ReactorNettyRequestRecord not found in context");
-                    }
-                    requestRecord.setTimeConnected(time);
+                ReactorNettyRequestRecord requestRecord = getRequestRecordFromConnection(conn);
+                if (requestRecord == null) {
+                    throw new IllegalStateException("ReactorNettyRequestRecord not found in context");
                 }
+                requestRecord.setTimeConnected(time);
+                captureChannelIds(conn.channel(), requestRecord, true);
             } else if (state.equals(HttpClientState.ACQUIRED)) {
-                if (conn instanceof ConnectionObserver) {
-                    ConnectionObserver observer = (ConnectionObserver) conn;
-                    ReactorNettyRequestRecord requestRecord =
-                        observer.currentContext().getOrDefault(REACTOR_NETTY_REQUEST_RECORD_KEY, null);
-                    if (requestRecord == null) {
-                        throw new IllegalStateException("ReactorNettyRequestRecord not found in context");
-                    }
-                    requestRecord.setTimeAcquired(time);
+                ReactorNettyRequestRecord requestRecord = getRequestRecordFromConnection(conn);
+                if (requestRecord == null) {
+                    throw new IllegalStateException("ReactorNettyRequestRecord not found in context");
                 }
+                requestRecord.setTimeAcquired(time);
+                captureChannelIds(conn.channel(), requestRecord, false);
             } else if (state.equals(HttpClientState.STREAM_CONFIGURED)) {
+                // STREAM_CONFIGURED fires for HTTP/2 streams on every request (unlike CONNECTED
+                // which only fires once when the TCP connection is established).
+                // For H2, conn.channel() here is the stream channel; conn.channel().parent() is the TCP connection.
                 if (conn instanceof HttpClientRequest) {
                     HttpClientRequest httpClientRequest = (HttpClientRequest) conn;
                     ReactorNettyRequestRecord requestRecord =
@@ -275,6 +306,8 @@ public class ReactorNettyClient implements HttpClient {
                         throw new IllegalStateException("ReactorNettyRequestRecord not found in context");
                     }
                     requestRecord.setTimeAcquired(time);
+                    requestRecord.setHttp2(true);
+                    captureChannelIds(conn.channel(), requestRecord, true);
                 }
             } else if (state.equals(HttpClientState.CONFIGURED) || state.equals(HttpClientState.REQUEST_PREPARED)) {
                 if (conn instanceof HttpClientRequest) {
@@ -316,6 +349,40 @@ public class ReactorNettyClient implements HttpClient {
                 logger.debug("IGNORED STATE {}, Connection {}, Time {}", state, conn, time);
             }
         };
+    }
+
+    /**
+     * Extracts the ReactorNettyRequestRecord from the connection's context.
+     * Returns null if the connection is not a ConnectionObserver or if the record is not in context.
+     */
+    private static ReactorNettyRequestRecord getRequestRecordFromConnection(Connection conn) {
+        if (conn instanceof ConnectionObserver) {
+            return ((ConnectionObserver) conn)
+                .currentContext().getOrDefault(REACTOR_NETTY_REQUEST_RECORD_KEY, null);
+        }
+        return null;
+    }
+
+    /**
+     * Captures channelId and parentChannelId from the given channel onto the request record.
+     * For HTTP/2, channel.parent() is the TCP connection; for HTTP/1.1, parent is null.
+     *
+     * @param channel the netty channel (stream channel for H2, connection channel for H1)
+     * @param requestRecord the record to populate
+     * @param overwrite if true, always writes channel IDs; if false, only writes when not already set
+     */
+    private static void captureChannelIds(Channel channel, ReactorNettyRequestRecord requestRecord, boolean overwrite) {
+        ChannelId id = channel.id();
+        String channelId = id.asShortText();
+        Channel parent = channel.parent();
+        String parentChannelId = parent != null
+            ? parent.id().asShortText()
+            : channelId;
+
+        if (overwrite || requestRecord.getParentChannelId() == null) {
+            requestRecord.setChannelId(channelId);
+            requestRecord.setParentChannelId(parentChannelId);
+        }
     }
 
     private static class ReactorNettyHttpResponse extends HttpResponse {

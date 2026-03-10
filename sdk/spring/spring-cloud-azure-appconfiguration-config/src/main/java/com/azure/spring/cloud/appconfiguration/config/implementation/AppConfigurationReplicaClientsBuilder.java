@@ -8,6 +8,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 import java.util.regex.Matcher;
@@ -156,7 +157,8 @@ public class AppConfigurationReplicaClientsBuilder {
                 LOGGER.debug("Connecting to " + endpoint + " using Connecting String.");
                 ConfigurationClientBuilder builder = createBuilderInstance().connectionString(connectionString);
 
-                clients.add(modifyAndBuildClient(builder, endpoint, configStore.getEndpoint(), connectionStrings.size() - 1));
+                clients.add(
+                    modifyAndBuildClient(builder, endpoint, configStore.getEndpoint(), connectionStrings.size() - 1));
             }
         } else {
             DefaultAzureCredential defautAzureCredential = new DefaultAzureCredentialBuilder().build();
@@ -171,6 +173,11 @@ public class AppConfigurationReplicaClientsBuilder {
                 clients.add(modifyAndBuildClient(builder, endpoint, configStore.getEndpoint(), endpoints.size() - 1));
             }
         }
+
+        if (configStore.isLoadBalancingEnabled()) {
+            Collections.shuffle(clients);
+        }
+
         return clients;
     }
 
@@ -196,7 +203,8 @@ public class AppConfigurationReplicaClientsBuilder {
         }
     }
 
-    private AppConfigurationReplicaClient modifyAndBuildClient(ConfigurationClientBuilder builder, String endpoint, String originEndpoint,
+    private AppConfigurationReplicaClient modifyAndBuildClient(ConfigurationClientBuilder builder, String endpoint,
+        String originEndpoint,
         Integer replicaCount) {
         TracingInfo tracingInfo = new TracingInfo(isKeyVaultConfigured, replicaCount,
             Configuration.getGlobalConfiguration());

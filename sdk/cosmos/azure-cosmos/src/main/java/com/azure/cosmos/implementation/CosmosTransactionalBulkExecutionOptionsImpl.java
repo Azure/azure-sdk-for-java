@@ -200,6 +200,11 @@ public class CosmosTransactionalBulkExecutionOptionsImpl implements OverridableR
     }
 
     @Override
+    public Boolean isQueryAdviceEnabled() {
+        return null;
+    }
+
+    @Override
     public Integer getMaxPrefetchPageCount() {
         return null;
     }

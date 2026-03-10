@@ -30,16 +30,6 @@ public final class DailyRecurrenceSchedule extends RecurrenceSchedule {
     private final List<Integer> hours;
 
     /**
-     * Creates an instance of DailyRecurrenceSchedule class.
-     *
-     * @param hours the hours value to set.
-     */
-    @Generated
-    public DailyRecurrenceSchedule(List<Integer> hours) {
-        this.hours = hours;
-    }
-
-    /**
      * Get the type property: Recurrence type for the recurrence schedule.
      *
      * @return the type value.
@@ -101,5 +91,15 @@ public final class DailyRecurrenceSchedule extends RecurrenceSchedule {
             deserializedDailyRecurrenceSchedule.type = type;
             return deserializedDailyRecurrenceSchedule;
         });
+    }
+
+    /**
+     * Creates an instance of DailyRecurrenceSchedule class.
+     *
+     * @param hours the hours value to set.
+     */
+    @Generated
+    public DailyRecurrenceSchedule(List<Integer> hours) {
+        this.hours = hours;
     }
 }

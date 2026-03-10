@@ -31,12 +31,8 @@ public final class EventsImpl implements Events {
         Context context) {
         Response<EventModelInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, vaultName, eventName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new EventModelImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new EventModelImpl(inner.getValue(), this.manager()));
     }
 
     public EventModel get(String resourceGroupName, String vaultName, String eventName) {

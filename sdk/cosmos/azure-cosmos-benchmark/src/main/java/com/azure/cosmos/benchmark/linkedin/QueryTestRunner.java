@@ -4,14 +4,13 @@
 package com.azure.cosmos.benchmark.linkedin;
 
 import com.azure.cosmos.CosmosAsyncClient;
-import com.azure.cosmos.benchmark.Configuration;
+import com.azure.cosmos.benchmark.TenantWorkloadConfig;
 import com.azure.cosmos.benchmark.linkedin.data.EntityConfiguration;
 import com.azure.cosmos.benchmark.linkedin.data.Key;
 import com.azure.cosmos.benchmark.linkedin.impl.Constants;
 import com.azure.cosmos.benchmark.linkedin.impl.exceptions.AccessorException;
 import com.azure.cosmos.benchmark.linkedin.impl.models.QueryOptions;
 import com.azure.cosmos.models.SqlParameter;
-import com.codahale.metrics.MetricRegistry;
 import com.google.common.collect.ImmutableList;
 
 
@@ -26,11 +25,10 @@ public class QueryTestRunner extends TestRunner {
 
     private final QueryGenerator _queryGenerator;
 
-    QueryTestRunner(final Configuration configuration,
+    QueryTestRunner(final TenantWorkloadConfig workloadConfig,
         final CosmosAsyncClient client,
-        final MetricRegistry metricsRegistry,
         final EntityConfiguration entityConfiguration) {
-        super(configuration, client, metricsRegistry, entityConfiguration);
+        super(workloadConfig, client, entityConfiguration);
         _queryGenerator = new QueryGenerator();
     }
 

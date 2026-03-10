@@ -4,14 +4,14 @@
 
 package com.azure.resourcemanager.netapp.generated;
 
-import com.azure.resourcemanager.netapp.models.Type;
+import com.azure.resourcemanager.netapp.models.QuotaType;
 
 /**
  * Samples for VolumeQuotaRules Create.
  */
 public final class VolumeQuotaRulesCreateSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/VolumeQuotaRules_Create.json
+     * x-ms-original-file: 2025-12-01/VolumeQuotaRules_Create.json
      */
     /**
      * Sample code: VolumeQuotaRules_Create.
@@ -24,7 +24,7 @@ public final class VolumeQuotaRulesCreateSamples {
             .withRegion("westus")
             .withExistingVolume("myRG", "account-9957", "pool-5210", "volume-6387")
             .withQuotaSizeInKiBs(100005L)
-            .withQuotaType(Type.INDIVIDUAL_USER_QUOTA)
+            .withQuotaType(QuotaType.INDIVIDUAL_USER_QUOTA)
             .withQuotaTarget("1821")
             .create();
     }

@@ -44,12 +44,8 @@ public final class GiMinorVersionsImpl implements GiMinorVersions {
         Context context) {
         Response<GiMinorVersionInner> inner
             = this.serviceClient().getWithResponse(location, giversionname, giMinorVersionName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new GiMinorVersionImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new GiMinorVersionImpl(inner.getValue(), this.manager()));
     }
 
     public GiMinorVersion get(String location, String giversionname, String giMinorVersionName) {

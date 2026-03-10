@@ -121,7 +121,7 @@ public class ConversationsTests extends ClientTestBase {
         assertEquals(conversationId, conversationWithDeletedItem.id());
     }
 
-    @Disabled("Flaky test")
+    @Disabled("Flaky test - needs investigation")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.agents.TestUtils#getTestParameters")
     public void timeoutResponse(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
