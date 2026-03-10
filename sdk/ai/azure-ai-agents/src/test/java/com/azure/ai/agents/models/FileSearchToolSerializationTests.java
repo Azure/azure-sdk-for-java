@@ -1,0 +1,307 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.ai.agents.models;
+
+import com.azure.core.util.BinaryData;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonWriter;
+import org.junit.jupiter.api.Test;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+/**
+ * AI Tooling: openai-java de-dup
+ *
+ * Tests for FileSearchTool serialization and deserialization, including
+ * vector store IDs, ranking options, max results, and filters with openai-java types.
+ */
+public class FileSearchToolSerializationTests {
+
+    // -----------------------------------------------------------------------
+    // Basic serialization
+    // -----------------------------------------------------------------------
+
+    @Test
+    public void testMinimalSerialization() throws IOException {
+        FileSearchTool tool = new FileSearchTool(Collections.singletonList("vs_001"));
+
+        String json = serialize(tool);
+
+        assertTrue(json.contains("\"type\":\"file_search\""));
+        assertTrue(json.contains("\"vector_store_ids\":[\"vs_001\"]"));
+    }
+
+    @Test
+    public void testSerializationWithAllFields() throws IOException {
+        FileSearchTool tool = new FileSearchTool(Arrays.asList("vs_a", "vs_b")).setMaxResults(25L)
+            .setRankingOptions(new RankingOptions().setScoreThreshold(0.75)
+                .setRanker(RankerVersionType.AUTO)
+                .setHybridSearch(new HybridSearchOptions(0.6, 0.4)));
+
+        String json = serialize(tool);
+
+        assertTrue(json.contains("\"vector_store_ids\":[\"vs_a\",\"vs_b\"]"));
+        assertTrue(json.contains("\"max_num_results\":25"));
+        assertTrue(json.contains("\"score_threshold\":0.75"));
+        assertTrue(json.contains("\"ranker\":\"auto\""));
+        assertTrue(json.contains("\"embedding_weight\":0.6"));
+        assertTrue(json.contains("\"text_weight\":0.4"));
+    }
+
+    // -----------------------------------------------------------------------
+    // Deserialization
+    // -----------------------------------------------------------------------
+
+    @Test
+    public void testMinimalDeserialization() throws IOException {
+        String json = "{\"type\":\"file_search\",\"vector_store_ids\":[\"vs_xyz\"]}";
+
+        FileSearchTool tool = deserialize(json);
+
+        assertEquals(ToolType.FILE_SEARCH, tool.getType());
+        assertEquals(Collections.singletonList("vs_xyz"), tool.getVectorStoreIds());
+        assertNull(tool.getMaxResults());
+        assertNull(tool.getRankingOptions());
+        assertNull(tool.getFilters());
+    }
+
+    @Test
+    public void testDeserializationWithAllFields() throws IOException {
+        String json = "{\"type\":\"file_search\"," + "\"vector_store_ids\":[\"vs_1\",\"vs_2\"],"
+            + "\"max_num_results\":10," + "\"ranking_options\":{\"ranker\":\"auto\",\"score_threshold\":0.5,"
+            + "\"hybrid_search\":{\"embedding_weight\":0.7,\"text_weight\":0.3}},"
+            + "\"filters\":{\"type\":\"eq\",\"key\":\"author\",\"value\":\"alice\"}}";
+
+        FileSearchTool tool = deserialize(json);
+
+        assertEquals(Arrays.asList("vs_1", "vs_2"), tool.getVectorStoreIds());
+        assertEquals(10L, tool.getMaxResults());
+        assertNotNull(tool.getRankingOptions());
+        assertEquals(0.5, tool.getRankingOptions().getScoreThreshold());
+        assertEquals(RankerVersionType.AUTO, tool.getRankingOptions().getRanker());
+        assertNotNull(tool.getRankingOptions().getHybridSearch());
+        assertEquals(0.7, tool.getRankingOptions().getHybridSearch().getEmbeddingWeight());
+        assertEquals(0.3, tool.getRankingOptions().getHybridSearch().getTextWeight());
+        assertNotNull(tool.getFilters());
+    }
+
+    // -----------------------------------------------------------------------
+    // Round-trip
+    // -----------------------------------------------------------------------
+
+    @Test
+    public void testRoundTripMinimal() throws IOException {
+        FileSearchTool original = new FileSearchTool(Collections.singletonList("vs_rt"));
+
+        String json = serialize(original);
+        FileSearchTool deserialized = deserialize(json);
+
+        assertEquals(original.getVectorStoreIds(), deserialized.getVectorStoreIds());
+        assertEquals(original.getType(), deserialized.getType());
+    }
+
+    @Test
+    public void testRoundTripWithRankingOptions() throws IOException {
+        FileSearchTool original = new FileSearchTool(Collections.singletonList("vs_rt")).setMaxResults(15L)
+            .setRankingOptions(new RankingOptions().setScoreThreshold(0.9)
+                .setRanker(RankerVersionType.AUTO)
+                .setHybridSearch(new HybridSearchOptions(0.5, 0.5)));
+
+        String json = serialize(original);
+        FileSearchTool deserialized = deserialize(json);
+
+        assertEquals(original.getVectorStoreIds(), deserialized.getVectorStoreIds());
+        assertEquals(original.getMaxResults(), deserialized.getMaxResults());
+        assertEquals(original.getRankingOptions().getScoreThreshold(),
+            deserialized.getRankingOptions().getScoreThreshold());
+        assertEquals(original.getRankingOptions().getHybridSearch().getEmbeddingWeight(),
+            deserialized.getRankingOptions().getHybridSearch().getEmbeddingWeight());
+
+        // JSON should be identical
+        String reserializedJson = serialize(deserialized);
+        assertEquals(json, reserializedJson);
+    }
+
+    // -----------------------------------------------------------------------
+    // Filters with openai-java ComparisonFilter
+    // -----------------------------------------------------------------------
+
+    @Test
+    public void testSerializationWithComparisonFilter() throws IOException {
+        com.openai.models.ComparisonFilter filter = com.openai.models.ComparisonFilter.builder()
+            .key("category")
+            .type(com.openai.models.ComparisonFilter.Type.EQ)
+            .value(com.openai.models.ComparisonFilter.Value.ofString("science"))
+            .build();
+
+        FileSearchTool tool = new FileSearchTool(Collections.singletonList("vs_f1")).setFilters(filter);
+
+        String json = serialize(tool);
+
+        assertTrue(json.contains("\"key\":\"category\""), "Missing key, got: " + json);
+        assertTrue(json.contains("\"value\":\"science\""), "Missing value, got: " + json);
+        assertTrue(json.contains("\"vector_store_ids\":[\"vs_f1\"]"));
+    }
+
+    @Test
+    public void testRoundTripWithComparisonFilter() throws IOException {
+        com.openai.models.ComparisonFilter filter = com.openai.models.ComparisonFilter.builder()
+            .key("year")
+            .type(com.openai.models.ComparisonFilter.Type.GTE)
+            .value(com.openai.models.ComparisonFilter.Value.ofNumber(2020.0))
+            .build();
+
+        FileSearchTool original
+            = new FileSearchTool(Collections.singletonList("vs_f2")).setMaxResults(5L).setFilters(filter);
+
+        String json = serialize(original);
+        FileSearchTool deserialized = deserialize(json);
+
+        assertEquals(original.getVectorStoreIds(), deserialized.getVectorStoreIds());
+        assertEquals(original.getMaxResults(), deserialized.getMaxResults());
+        assertNotNull(deserialized.getFilters());
+
+        // Re-serialize and compare JSON
+        String reserializedJson = serialize(deserialized);
+        assertEquals(json, reserializedJson);
+    }
+
+    @Test
+    public void testComparisonFilterAllOperators() throws IOException {
+        com.openai.models.ComparisonFilter.Type[] operators = {
+            com.openai.models.ComparisonFilter.Type.EQ,
+            com.openai.models.ComparisonFilter.Type.NE,
+            com.openai.models.ComparisonFilter.Type.GT,
+            com.openai.models.ComparisonFilter.Type.GTE,
+            com.openai.models.ComparisonFilter.Type.LT,
+            com.openai.models.ComparisonFilter.Type.LTE, };
+        String[] expectedStrings = { "eq", "ne", "gt", "gte", "lt", "lte" };
+
+        for (int i = 0; i < operators.length; i++) {
+            com.openai.models.ComparisonFilter filter = com.openai.models.ComparisonFilter.builder()
+                .key("k")
+                .type(operators[i])
+                .value(com.openai.models.ComparisonFilter.Value.ofString("v"))
+                .build();
+
+            FileSearchTool tool = new FileSearchTool(Collections.singletonList("vs")).setFilters(filter);
+
+            String json = serialize(tool);
+            assertTrue(json.contains("\"type\":\"" + expectedStrings[i] + "\""),
+                "Expected operator " + expectedStrings[i] + ", got: " + json);
+        }
+    }
+
+    // -----------------------------------------------------------------------
+    // Filters with openai-java CompoundFilter
+    // -----------------------------------------------------------------------
+
+    @Test
+    public void testSerializationWithCompoundFilter() throws IOException {
+        com.openai.models.CompoundFilter filter = com.openai.models.CompoundFilter.builder()
+            .type(com.openai.models.CompoundFilter.Type.AND)
+            .addFilter(com.openai.models.CompoundFilter.Filter.ofComparison(com.openai.models.ComparisonFilter.builder()
+                .key("status")
+                .type(com.openai.models.ComparisonFilter.Type.EQ)
+                .value(com.openai.models.ComparisonFilter.Value.ofString("active"))
+                .build()))
+            .addFilter(com.openai.models.CompoundFilter.Filter.ofComparison(com.openai.models.ComparisonFilter.builder()
+                .key("priority")
+                .type(com.openai.models.ComparisonFilter.Type.GTE)
+                .value(com.openai.models.ComparisonFilter.Value.ofNumber(3.0))
+                .build()))
+            .build();
+
+        FileSearchTool tool = new FileSearchTool(Collections.singletonList("vs_c1")).setFilters(filter);
+
+        String json = serialize(tool);
+
+        assertTrue(json.contains("\"key\":\"status\""), "Missing status key, got: " + json);
+        assertTrue(json.contains("\"key\":\"priority\""), "Missing priority key, got: " + json);
+        assertTrue(json.contains("\"active\""), "Missing active value, got: " + json);
+    }
+
+    @Test
+    public void testRoundTripWithCompoundFilter() throws IOException {
+        com.openai.models.CompoundFilter filter = com.openai.models.CompoundFilter.builder()
+            .type(com.openai.models.CompoundFilter.Type.OR)
+            .addFilter(com.openai.models.CompoundFilter.Filter.ofComparison(com.openai.models.ComparisonFilter.builder()
+                .key("tag")
+                .type(com.openai.models.ComparisonFilter.Type.EQ)
+                .value(com.openai.models.ComparisonFilter.Value.ofString("ai"))
+                .build()))
+            .build();
+
+        FileSearchTool original = new FileSearchTool(Collections.singletonList("vs_c2")).setFilters(filter);
+
+        String json = serialize(original);
+        FileSearchTool deserialized = deserialize(json);
+
+        assertNotNull(deserialized.getFilters());
+
+        String reserializedJson = serialize(deserialized);
+        assertEquals(json, reserializedJson);
+    }
+
+    // -----------------------------------------------------------------------
+    // Filters with BinaryData (existing API still works)
+    // -----------------------------------------------------------------------
+
+    @Test
+    public void testBinaryDataFilterStillWorks() throws IOException {
+        String filterJson = "{\"type\":\"eq\",\"key\":\"source\",\"value\":\"web\"}";
+        FileSearchTool tool
+            = new FileSearchTool(Collections.singletonList("vs_bd")).setFilters(BinaryData.fromString(filterJson));
+
+        assertNotNull(tool.getFilters());
+    }
+
+    // -----------------------------------------------------------------------
+    // Deserialization via Tool.fromJson (polymorphic discriminator)
+    // -----------------------------------------------------------------------
+
+    @Test
+    public void testPolymorphicDeserialization() throws IOException {
+        String json = "{\"type\":\"file_search\",\"vector_store_ids\":[\"vs_poly\"]," + "\"max_num_results\":3,"
+            + "\"filters\":{\"type\":\"eq\",\"key\":\"lang\",\"value\":\"en\"}}";
+
+        Tool tool;
+        try (JsonReader reader = JsonProviders.createReader(json)) {
+            tool = Tool.fromJson(reader);
+        }
+
+        assertTrue(tool instanceof FileSearchTool, "Should deserialize as FileSearchTool");
+        FileSearchTool fst = (FileSearchTool) tool;
+        assertEquals(Collections.singletonList("vs_poly"), fst.getVectorStoreIds());
+        assertEquals(3L, fst.getMaxResults());
+        assertNotNull(fst.getFilters());
+    }
+
+    // -----------------------------------------------------------------------
+    // Helpers
+    // -----------------------------------------------------------------------
+
+    private String serialize(FileSearchTool tool) throws IOException {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        try (JsonWriter writer = JsonProviders.createWriter(out)) {
+            tool.toJson(writer);
+        }
+        return out.toString("UTF-8");
+    }
+
+    private FileSearchTool deserialize(String json) throws IOException {
+        try (JsonReader reader = JsonProviders.createReader(json)) {
+            return FileSearchTool.fromJson(reader);
+        }
+    }
+}

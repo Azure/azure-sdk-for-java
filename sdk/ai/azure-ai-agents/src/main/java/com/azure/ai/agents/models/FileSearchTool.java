@@ -211,4 +211,16 @@ public final class FileSearchTool extends Tool {
         this.maxResults = maxResults;
         return this;
     }
+
+    // AI Tooling: openai-java de-dup
+    public FileSearchTool setFilters(com.openai.models.ComparisonFilter filter) {
+        this.filters = com.azure.ai.agents.implementation.OpenAIJsonHelper.toBinaryData(filter);
+        return this;
+    }
+
+    // AI Tooling: openai-java de-dup
+    public FileSearchTool setFilters(com.openai.models.CompoundFilter filter) {
+        this.filters = com.azure.ai.agents.implementation.OpenAIJsonHelper.toBinaryData(filter);
+        return this;
+    }
 }
