@@ -147,7 +147,7 @@ public class ThinClientQueryE2ETest extends TestSuiteBase {
             seededDocs.add(doc);
         }
 
-        bulkInsert(gatewayContainer, seededDocs, 10).blockLast();
+        bulkInsert(gatewayContainer, seededDocs).blockLast();
     }
 
     @AfterClass(groups = {"thinclient"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
