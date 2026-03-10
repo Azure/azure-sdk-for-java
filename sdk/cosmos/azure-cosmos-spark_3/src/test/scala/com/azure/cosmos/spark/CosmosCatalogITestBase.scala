@@ -164,6 +164,7 @@ abstract class CosmosCatalogITestBase(val skipHive: Boolean = false) extends Int
     tblProperties("CosmosPartitionCount") shouldEqual "1"
     tblProperties("CosmosPartitionKeyDefinition") shouldEqual "{\"paths\":[\"/id\"],\"kind\":\"Hash\"}"
     tblProperties("DefaultTtlInSeconds") shouldEqual "null"
+    tblProperties("VectorEmbeddingPolicy") shouldEqual "null"
     tblProperties("IndexingPolicy") shouldEqual
       "{\"indexingMode\":\"consistent\",\"automatic\":true,\"includedPaths\":[{\"path\":\"/*\"}]," +
         "\"excludedPaths\":[{\"path\":\"/\\\"_etag\\\"/?\"}]}"
@@ -259,6 +260,7 @@ abstract class CosmosCatalogITestBase(val skipHive: Boolean = false) extends Int
     tblProperties("CosmosPartitionCount") shouldEqual "1"
     tblProperties("CosmosPartitionKeyDefinition") shouldEqual "{\"paths\":[\"/id\"],\"kind\":\"Hash\",\"version\":2}"
     tblProperties("DefaultTtlInSeconds") shouldEqual "null"
+    tblProperties("VectorEmbeddingPolicy") shouldEqual "null"
     tblProperties("IndexingPolicy") shouldEqual
       "{\"indexingMode\":\"consistent\",\"automatic\":true,\"includedPaths\":[{\"path\":\"/*\"}]," +
         "\"excludedPaths\":[{\"path\":\"/\\\"_etag\\\"/?\"}]}"
@@ -306,6 +308,7 @@ abstract class CosmosCatalogITestBase(val skipHive: Boolean = false) extends Int
     tblProperties("CosmosPartitionCount") shouldEqual "2"
     tblProperties("CosmosPartitionKeyDefinition") shouldEqual "{\"paths\":[\"/id\"],\"kind\":\"Hash\"}"
     tblProperties("DefaultTtlInSeconds") shouldEqual "null"
+    tblProperties("VectorEmbeddingPolicy") shouldEqual "null"
     tblProperties("IndexingPolicy") shouldEqual
       "{\"indexingMode\":\"consistent\",\"automatic\":true,\"includedPaths\":[{\"path\":\"/*\"}]," +
         "\"excludedPaths\":[{\"path\":\"/\\\"_etag\\\"/?\"}]}"
@@ -432,6 +435,7 @@ abstract class CosmosCatalogITestBase(val skipHive: Boolean = false) extends Int
     tblProperties("CosmosPartitionCount") shouldEqual "1"
     tblProperties("CosmosPartitionKeyDefinition") shouldEqual "{\"paths\":[\"/mypk\"],\"kind\":\"Hash\"}"
     tblProperties("DefaultTtlInSeconds") shouldEqual "null"
+    tblProperties("VectorEmbeddingPolicy") shouldEqual "null"
 
     // indexPolicyJson will be normalized by the backend - so not be the same as the input json
     // for the purpose of this test I just want to make sure that the custom indexing options
@@ -530,13 +534,21 @@ abstract class CosmosCatalogITestBase(val skipHive: Boolean = false) extends Int
     tblProperties("DefaultTtlInSeconds") shouldEqual "null"
     tblProperties("AnalyticalStoreTtlInSeconds") shouldEqual "null"
 
-    // validate vector embedding policy is in table properties
-    tblProperties("VectorEmbeddingPolicy").contains("vector1") shouldEqual true
-    tblProperties("VectorEmbeddingPolicy").contains("float32") shouldEqual true
-    tblProperties("VectorEmbeddingPolicy").contains("cosine") shouldEqual true
+    // validate vector embedding policy is in table properties (structured check)
+    val vepObjectMapper = Utils.getSimpleObjectMapper
+    val vepNode = vepObjectMapper.readTree(tblProperties("VectorEmbeddingPolicy"))
+    val vepEmbeddings = vepNode.get("vectorEmbeddings")
+    vepEmbeddings.size() shouldEqual 1
+    vepEmbeddings.get(0).get("path").asText() shouldEqual "/vector1"
+    vepEmbeddings.get(0).get("dataType").asText() shouldEqual "float32"
+    vepEmbeddings.get(0).get("distanceFunction").asText() shouldEqual "cosine"
 
-    // validate vector indexes are in indexing policy
-    tblProperties("IndexingPolicy").contains("vector1") shouldEqual true
+    // validate vector indexes are in indexing policy (structured check)
+    val ipNode = vepObjectMapper.readTree(tblProperties("IndexingPolicy"))
+    val vectorIndexesNode = ipNode.get("vectorIndexes")
+    vectorIndexesNode.size() shouldEqual 1
+    vectorIndexesNode.get(0).get("path").asText() shouldEqual "/vector1"
+    vectorIndexesNode.get(0).get("type").asText() shouldEqual "flat"
 
     // would look like Manual|RUProvisioned|LastOfferModification
     // - last modified as iso datetime like 2021-12-07T10:33:44Z

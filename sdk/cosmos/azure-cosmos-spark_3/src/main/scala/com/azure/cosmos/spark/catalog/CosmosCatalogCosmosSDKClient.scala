@@ -100,6 +100,7 @@ private[spark] case class CosmosCatalogCosmosSDKClient(cosmosAsyncClient: Cosmos
             case Some(vectorEmbeddingPolicyJson) =>
                 cosmosContainerProperties.setVectorEmbeddingPolicy(
                     SparkModelBridgeInternal.createVectorEmbeddingPolicyFromJson(vectorEmbeddingPolicyJson))
+                logInfo(s"Applying vector embedding policy for container '$containerName'")
             case None =>
         }
 
@@ -307,8 +308,9 @@ private[spark] case class CosmosCatalogCosmosSDKClient(cosmosAsyncClient: Cosmos
         }
 
         val vectorEmbeddingPolicySnapshot = Option.apply(containerProperties.getVectorEmbeddingPolicy) match {
-            case Some(policy) => SparkModelBridgeInternal.vectorEmbeddingPolicyToJson(policy)
-            case None => "null"
+            case Some(policy) if policy.getVectorEmbeddings != null && !policy.getVectorEmbeddings.isEmpty =>
+                SparkModelBridgeInternal.vectorEmbeddingPolicyToJson(policy)
+            case _ => "null"
         }
 
         val lastModifiedSnapshot = ZonedDateTime

@@ -8,7 +8,7 @@ import com.azure.cosmos.models.{FeedRange, PartitionKeyDefinitionVersion, SparkM
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.spark.{ContainerFeedRangesCache, CosmosConstants}
 import com.azure.resourcemanager.cosmos.CosmosManager
-import com.azure.resourcemanager.cosmos.models.{AutoscaleSettings, AutoscaleSettingsResource, ContainerPartitionKey, CreateUpdateOptions, ExcludedPath, IncludedPath, IndexingMode, IndexingPolicy, SqlContainerCreateUpdateParameters, SqlContainerGetPropertiesResource, SqlContainerResource, SqlDatabaseCreateUpdateParameters, SqlDatabaseResource, ThroughputSettingsGetPropertiesResource, ThroughputSettingsResource, ThroughputSettingsUpdateParameters, VectorEmbeddingPolicy => MgmtVectorEmbeddingPolicy}
+import com.azure.resourcemanager.cosmos.models.{AutoscaleSettings, AutoscaleSettingsResource, ContainerPartitionKey, CreateUpdateOptions, ExcludedPath, IncludedPath, IndexingMode, IndexingPolicy, SqlContainerCreateUpdateParameters, SqlContainerGetPropertiesResource, SqlContainerResource, SqlDatabaseCreateUpdateParameters, SqlDatabaseResource, ThroughputSettingsGetPropertiesResource, ThroughputSettingsResource, ThroughputSettingsUpdateParameters, VectorEmbeddingPolicy => MgmtVectorEmbeddingPolicy, VectorIndex, VectorIndexType}
 import com.fasterxml.jackson.annotation.JsonInclude.Include
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.apache.spark.sql.connector.catalog.{NamespaceChange, TableChange}
@@ -119,8 +119,15 @@ private[spark] case class CosmosCatalogManagementSDKClient(resourceGroupName: St
         // setup vector embedding policy
         CosmosContainerProperties.getVectorEmbeddingPolicy(containerProperties) match {
             case Some(vectorEmbeddingPolicyJson) =>
-                sqlContainerResource.withVectorEmbeddingPolicy(
-                    objectMapper.readValue(vectorEmbeddingPolicyJson, classOf[MgmtVectorEmbeddingPolicy]))
+                val mgmtVectorEmbeddingPolicy = try {
+                    objectMapper.readValue(vectorEmbeddingPolicyJson, classOf[MgmtVectorEmbeddingPolicy])
+                } catch {
+                    case e: Exception =>
+                        throw new IllegalArgumentException(
+                            s"Failed to parse vectorEmbeddingPolicy JSON. Ensure the JSON is well-formed: ${e.getMessage}", e)
+                }
+                sqlContainerResource.withVectorEmbeddingPolicy(mgmtVectorEmbeddingPolicy)
+                logInfo(s"Applying vector embedding policy for container '$containerName'")
             case None =>
         }
 
@@ -271,11 +278,19 @@ private[spark] case class CosmosCatalogManagementSDKClient(resourceGroupName: St
                 excludedPathList += new ExcludedPath().withPath(excludedPath.getPath())
             })
 
+            val vectorIndexList = new ListBuffer[VectorIndex]()
+            cosmosIndexingPolicy.getVectorIndexes.forEach(vectorIndex => {
+                vectorIndexList += new VectorIndex()
+                    .withPath(vectorIndex.getPath)
+                    .withType(VectorIndexType.fromString(vectorIndex.getType))
+            })
+
             new IndexingPolicy()
                 .withAutomatic(cosmosIndexingPolicy.isAutomatic)
                 .withIndexingMode(indexingMode)
                 .withIncludedPaths(includedPathList.toList.asJava)
                 .withExcludedPaths(excludedPathList.toList.asJava)
+                .withVectorIndexes(vectorIndexList.toList.asJava)
         }
         //scalastyle:off multiple.string.literals
     }

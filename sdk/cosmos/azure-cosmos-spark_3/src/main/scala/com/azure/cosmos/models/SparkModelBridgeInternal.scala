@@ -17,7 +17,13 @@ private[cosmos] object SparkModelBridgeInternal {
   }
 
   def createVectorEmbeddingPolicyFromJson(json: String): CosmosVectorEmbeddingPolicy = {
-    objectMapper.readValue(json, classOf[CosmosVectorEmbeddingPolicy])
+    try {
+      objectMapper.readValue(json, classOf[CosmosVectorEmbeddingPolicy])
+    } catch {
+      case e: Exception =>
+        throw new IllegalArgumentException(
+          s"Failed to parse vectorEmbeddingPolicy JSON. Ensure the JSON is well-formed: ${e.getMessage}", e)
+    }
   }
 
   def vectorEmbeddingPolicyToJson(policy: CosmosVectorEmbeddingPolicy): String = {
