@@ -42,7 +42,7 @@ abstract class CosmosCatalogITestBase(val skipHive: Boolean = false) extends Int
     spark.conf.set(s"spark.sql.catalog.testCatalog.spark.cosmos.accountKey", cosmosMasterKey)
     spark.conf.set(
       "spark.sql.catalog.testCatalog.spark.cosmos.views.repositoryPath",
-      s"/viewRepository/${UUID.randomUUID().toString}")
+      s"/tmp/viewRepository/${UUID.randomUUID().toString}")
     spark.conf.set(
       "spark.sql.catalog.testCatalog.spark.cosmos.read.partitioning.strategy",
       "Restrictive")
@@ -486,13 +486,18 @@ abstract class CosmosCatalogITestBase(val skipHive: Boolean = false) extends Int
     cleanupDatabaseLater(databaseName)
 
     val vectorEmbeddingPolicyJson =
-      raw"""{"vectorEmbeddings":[{"path":"/vector1","dataType":"float32","distanceFunction":"cosine","dimensions":1536}]}"""
+      raw"""{"vectorEmbeddings":[{"path":"/vector1","dataType":"float32","distanceFunction":"cosine","dimensions":500}]}"""
 
     val indexingPolicyJson =
       raw"""{"indexingMode":"consistent","automatic":true,"includedPaths":[{"path":"\/mypk\/?"}],""" +
         raw""""excludedPaths":[{"path":"\/*"}],"vectorIndexes":[{"path":"\/vector1","type":"flat"}]}"""
 
     spark.sql(s"CREATE DATABASE testCatalog.$databaseName;")
+    val creationString = s"CREATE TABLE testCatalog.$databaseName.$containerName (word STRING, number INT) using cosmos.oltp " +
+      s"TBLPROPERTIES(partitionKeyPath = '/mypk', manualThroughput = '1100', " +
+      s"indexingPolicy = '$indexingPolicyJson', " +
+      s"vectorEmbeddingPolicy = '$vectorEmbeddingPolicyJson')"
+
     spark.sql(s"CREATE TABLE testCatalog.$databaseName.$containerName (word STRING, number INT) using cosmos.oltp " +
       s"TBLPROPERTIES(partitionKeyPath = '/mypk', manualThroughput = '1100', " +
       s"indexingPolicy = '$indexingPolicyJson', " +
@@ -509,7 +514,7 @@ abstract class CosmosCatalogITestBase(val skipHive: Boolean = false) extends Int
     embedding.getPath shouldEqual "/vector1"
     embedding.getDataType.toString shouldEqual "float32"
     embedding.getDistanceFunction.toString shouldEqual "cosine"
-    embedding.getEmbeddingDimensions shouldEqual 1536
+    embedding.getEmbeddingDimensions shouldEqual 500
 
     // validate vector indexes are in indexing policy
     val vectorIndexes = containerProperties.getIndexingPolicy.getVectorIndexes

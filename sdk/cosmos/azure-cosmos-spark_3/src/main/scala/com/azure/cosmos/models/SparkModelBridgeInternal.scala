@@ -3,10 +3,10 @@
 
 package com.azure.cosmos.models
 
-import com.fasterxml.jackson.databind.ObjectMapper
+import com.azure.cosmos.implementation.Utils
 
 private[cosmos] object SparkModelBridgeInternal {
-  private val objectMapper = new ObjectMapper()
+  private val objectMapper = Utils.getSimpleObjectMapper
 
   def createIndexingPolicyFromJson(json: String): IndexingPolicy = {
     new IndexingPolicy(json)
