@@ -47,7 +47,7 @@ import java.util.stream.Collectors;
  *
  * <p>Before running the sample, set these environment variables with your own values:</p>
  * <ul>
- *   <li>AZURE_AGENTS_ENDPOINT - The Azure AI Project endpoint, as found in the Overview
+ *   <li>FOUNDRY_PROJECT_ENDPOINT - The Azure AI Project endpoint, as found in the Overview
  *       page of your Microsoft Foundry portal.</li>
  *   <li>(Optional) AZURE_COMPUTER_USE_MODEL_DEPLOYMENT_NAME - The deployment name of the
  *       computer-use-preview model, as found under the "Name" column in the "Models + endpoints"
@@ -58,7 +58,7 @@ public class ComputerUseSync {
 
     public static void main(String[] args) {
         Configuration configuration = Configuration.getGlobalConfiguration();
-        String endpoint = configuration.get("AZURE_AGENTS_ENDPOINT");
+        String endpoint = configuration.get("FOUNDRY_PROJECT_ENDPOINT");
         String model = configuration.get("AZURE_COMPUTER_USE_MODEL_DEPLOYMENT_NAME", "computer-use-preview");
 
         AgentsClientBuilder builder = new AgentsClientBuilder()
@@ -86,11 +86,13 @@ public class ComputerUseSync {
         AgentVersionDetails agent = null;
 
         try {
+            // BEGIN: com.azure.ai.agents.define_computer_use
             ComputerUsePreviewTool tool = new ComputerUsePreviewTool(
                 ComputerEnvironment.WINDOWS,
                 1026,
                 769
             );
+            // END: com.azure.ai.agents.define_computer_use
 
             PromptAgentDefinition agentDefinition = new PromptAgentDefinition(model)
                 .setInstructions("You are a computer automation assistant."

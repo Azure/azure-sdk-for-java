@@ -282,7 +282,7 @@ public final class DurableTaskManager {
     }
 
     /**
-     * Gets the resource collection API of Schedulers. It manages Scheduler.
+     * Gets the resource collection API of Schedulers. It manages Scheduler, PrivateEndpointConnection.
      * 
      * @return Resource collection API of Schedulers.
      */

@@ -69,8 +69,6 @@ public class AppConfigurationRefreshUtil {
             for (Entry<String, ConnectionManager> entry : clientFactory.getConnections().entrySet()) {
                 String originEndpoint = entry.getKey();
                 ConnectionManager connection = entry.getValue();
-                // For safety reset current used replica.
-                clientFactory.setCurrentConfigStoreClient(originEndpoint, originEndpoint);
 
                 AppConfigurationStoreMonitoring monitor = connection.getMonitoring();
 
@@ -94,7 +92,8 @@ public class AppConfigurationRefreshUtil {
                             monitor.getRefreshInterval(), data, replicaLookUp, ctx),
                         eventData,
                         context,
-                        "configuration refresh check");
+                        "configuration refresh check",
+                        false);
                     if (result != null) {
                         return result;
                     }
@@ -113,7 +112,8 @@ public class AppConfigurationRefreshUtil {
                             monitor.getFeatureFlagRefreshInterval(), data, replicaLookUp, ctx),
                         eventData,
                         context,
-                        "feature flag refresh check");
+                        "feature flag refresh check",
+                        true);
                     if (result != null) {
                         return result;
                     }
@@ -139,6 +139,7 @@ public class AppConfigurationRefreshUtil {
      * @param eventData the refresh event data to update
      * @param context the operation context
      * @param checkType description of the check type for logging (e.g., "configuration refresh check")
+     * @param useLastActive whether to reuse the last active client
      * @return the eventData if refresh is needed, null otherwise
      */
     private RefreshEventData executeRefreshWithRetry(
@@ -147,14 +148,14 @@ public class AppConfigurationRefreshUtil {
         RefreshOperation operation,
         RefreshEventData eventData,
         Context context,
-        String checkType) {
-        AppConfigurationReplicaClient client = clientFactory.getNextActiveClient(originEndpoint, false);
+        String checkType,
+        boolean useLastActive) {
+        AppConfigurationReplicaClient client = clientFactory.getNextActiveClient(originEndpoint, useLastActive);
 
         while (client != null) {
             try {
                 operation.execute(client, eventData, context);
                 if (eventData.getDoRefresh()) {
-                    clientFactory.setCurrentConfigStoreClient(originEndpoint, client.getEndpoint());
                     return eventData;
                 }
                 // If check didn't throw an error, other clients don't need to be checked.

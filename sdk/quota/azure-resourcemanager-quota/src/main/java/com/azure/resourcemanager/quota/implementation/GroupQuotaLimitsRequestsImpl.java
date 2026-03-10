@@ -71,12 +71,8 @@ public final class GroupQuotaLimitsRequestsImpl implements GroupQuotaLimitsReque
         String requestId, Context context) {
         Response<SubmittedResourceRequestStatusInner> inner
             = this.serviceClient().getWithResponse(managementGroupId, groupQuotaName, requestId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new SubmittedResourceRequestStatusImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new SubmittedResourceRequestStatusImpl(inner.getValue(), this.manager()));
     }
 
     public SubmittedResourceRequestStatus get(String managementGroupId, String groupQuotaName, String requestId) {

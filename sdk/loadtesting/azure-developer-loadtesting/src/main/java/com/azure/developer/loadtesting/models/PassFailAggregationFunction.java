@@ -25,37 +25,6 @@ public final class PassFailAggregationFunction extends ExpandableStringEnum<Pass
     public static final PassFailAggregationFunction PERCENTAGE = fromString("percentage");
 
     /**
-     * Creates a new instance of PassFailAggregationFunction value.
-     *
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Generated
-    @Deprecated
-    public PassFailAggregationFunction() {
-    }
-
-    /**
-     * Creates or finds a PassFailAggregationFunction from its string representation.
-     *
-     * @param name a name to look for.
-     * @return the corresponding PassFailAggregationFunction.
-     */
-    @Generated
-    public static PassFailAggregationFunction fromString(String name) {
-        return fromString(name, PassFailAggregationFunction.class);
-    }
-
-    /**
-     * Gets known PassFailAggregationFunction values.
-     *
-     * @return known PassFailAggregationFunction values.
-     */
-    @Generated
-    public static Collection<PassFailAggregationFunction> values() {
-        return values(PassFailAggregationFunction.class);
-    }
-
-    /**
      * Criteria applies for avg value.
      */
     @Generated
@@ -132,4 +101,35 @@ public final class PassFailAggregationFunction extends ExpandableStringEnum<Pass
      */
     @Generated
     public static final PassFailAggregationFunction MAXIMUM = fromString("max");
+
+    /**
+     * Creates a new instance of PassFailAggregationFunction value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Generated
+    @Deprecated
+    public PassFailAggregationFunction() {
+    }
+
+    /**
+     * Creates or finds a PassFailAggregationFunction from its string representation.
+     *
+     * @param name a name to look for.
+     * @return the corresponding PassFailAggregationFunction.
+     */
+    @Generated
+    public static PassFailAggregationFunction fromString(String name) {
+        return fromString(name, PassFailAggregationFunction.class);
+    }
+
+    /**
+     * Gets known PassFailAggregationFunction values.
+     *
+     * @return known PassFailAggregationFunction values.
+     */
+    @Generated
+    public static Collection<PassFailAggregationFunction> values() {
+        return values(PassFailAggregationFunction.class);
+    }
 }

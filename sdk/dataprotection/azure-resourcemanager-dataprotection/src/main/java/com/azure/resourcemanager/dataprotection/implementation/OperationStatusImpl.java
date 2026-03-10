@@ -28,12 +28,8 @@ public final class OperationStatusImpl implements OperationStatus {
 
     public Response<OperationResource> getWithResponse(String location, String operationId, Context context) {
         Response<OperationResourceInner> inner = this.serviceClient().getWithResponse(location, operationId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new OperationResourceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new OperationResourceImpl(inner.getValue(), this.manager()));
     }
 
     public OperationResource get(String location, String operationId) {

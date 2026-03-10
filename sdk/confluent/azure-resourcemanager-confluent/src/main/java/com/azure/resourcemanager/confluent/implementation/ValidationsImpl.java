@@ -32,12 +32,8 @@ public final class ValidationsImpl implements Validations {
         String organizationName, OrganizationResourceInner body, Context context) {
         Response<OrganizationResourceInner> inner
             = this.serviceClient().validateOrganizationWithResponse(resourceGroupName, organizationName, body, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new OrganizationResourceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new OrganizationResourceImpl(inner.getValue(), this.manager()));
     }
 
     public OrganizationResource validateOrganization(String resourceGroupName, String organizationName,
@@ -55,12 +51,8 @@ public final class ValidationsImpl implements Validations {
         String organizationName, OrganizationResourceInner body, Context context) {
         Response<ValidationResponseInner> inner = this.serviceClient()
             .validateOrganizationV2WithResponse(resourceGroupName, organizationName, body, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ValidationResponseImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ValidationResponseImpl(inner.getValue(), this.manager()));
     }
 
     public ValidationResponse validateOrganizationV2(String resourceGroupName, String organizationName,

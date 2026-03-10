@@ -48,12 +48,8 @@ public final class MaintenancesImpl implements Maintenances {
         String maintenanceName, Context context) {
         Response<MaintenanceInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, privateCloudName, maintenanceName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new MaintenanceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new MaintenanceImpl(inner.getValue(), this.manager()));
     }
 
     public Maintenance get(String resourceGroupName, String privateCloudName, String maintenanceName) {
@@ -69,12 +65,8 @@ public final class MaintenancesImpl implements Maintenances {
         String maintenanceName, MaintenanceReschedule body, Context context) {
         Response<MaintenanceInner> inner = this.serviceClient()
             .rescheduleWithResponse(resourceGroupName, privateCloudName, maintenanceName, body, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new MaintenanceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new MaintenanceImpl(inner.getValue(), this.manager()));
     }
 
     public Maintenance reschedule(String resourceGroupName, String privateCloudName, String maintenanceName,
@@ -92,12 +84,8 @@ public final class MaintenancesImpl implements Maintenances {
         String maintenanceName, MaintenanceSchedule body, Context context) {
         Response<MaintenanceInner> inner = this.serviceClient()
             .scheduleWithResponse(resourceGroupName, privateCloudName, maintenanceName, body, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new MaintenanceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new MaintenanceImpl(inner.getValue(), this.manager()));
     }
 
     public Maintenance schedule(String resourceGroupName, String privateCloudName, String maintenanceName,
@@ -115,12 +103,8 @@ public final class MaintenancesImpl implements Maintenances {
         String maintenanceName, Context context) {
         Response<MaintenanceInner> inner = this.serviceClient()
             .initiateChecksWithResponse(resourceGroupName, privateCloudName, maintenanceName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new MaintenanceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new MaintenanceImpl(inner.getValue(), this.manager()));
     }
 
     public Maintenance initiateChecks(String resourceGroupName, String privateCloudName, String maintenanceName) {
