@@ -29,7 +29,7 @@ public final class SentimentSkillV3 extends SearchIndexerSkill {
      * A value indicating which language code to use. Default is `en`.
      */
     @Generated
-    private String defaultLanguageCode;
+    private SentimentSkillLanguage defaultLanguageCode;
 
     /*
      * If set to true, the skill output will include information from Text Analytics for opinion mining, namely targets
@@ -73,20 +73,8 @@ public final class SentimentSkillV3 extends SearchIndexerSkill {
      * @return the defaultLanguageCode value.
      */
     @Generated
-    public String getDefaultLanguageCode() {
+    public SentimentSkillLanguage getDefaultLanguageCode() {
         return this.defaultLanguageCode;
-    }
-
-    /**
-     * Set the defaultLanguageCode property: A value indicating which language code to use. Default is `en`.
-     *
-     * @param defaultLanguageCode the defaultLanguageCode value to set.
-     * @return the SentimentSkillV3 object itself.
-     */
-    @Generated
-    public SentimentSkillV3 setDefaultLanguageCode(String defaultLanguageCode) {
-        this.defaultLanguageCode = defaultLanguageCode;
-        return this;
     }
 
     /**
@@ -184,7 +172,8 @@ public final class SentimentSkillV3 extends SearchIndexerSkill {
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeStringField("context", getContext());
         jsonWriter.writeStringField("@odata.type", this.odataType);
-        jsonWriter.writeStringField("defaultLanguageCode", this.defaultLanguageCode);
+        jsonWriter.writeStringField("defaultLanguageCode",
+            this.defaultLanguageCode == null ? null : this.defaultLanguageCode.toString());
         jsonWriter.writeBooleanField("includeOpinionMining", this.includeOpinionMining);
         jsonWriter.writeStringField("modelVersion", this.modelVersion);
         return jsonWriter.writeEndObject();
@@ -208,7 +197,7 @@ public final class SentimentSkillV3 extends SearchIndexerSkill {
             String description = null;
             String context = null;
             String odataType = "#Microsoft.Skills.Text.V3.SentimentSkill";
-            String defaultLanguageCode = null;
+            SentimentSkillLanguage defaultLanguageCode = null;
             Boolean includeOpinionMining = null;
             String modelVersion = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -227,7 +216,7 @@ public final class SentimentSkillV3 extends SearchIndexerSkill {
                 } else if ("@odata.type".equals(fieldName)) {
                     odataType = reader.getString();
                 } else if ("defaultLanguageCode".equals(fieldName)) {
-                    defaultLanguageCode = reader.getString();
+                    defaultLanguageCode = SentimentSkillLanguage.fromString(reader.getString());
                 } else if ("includeOpinionMining".equals(fieldName)) {
                     includeOpinionMining = reader.getNullable(JsonReader::getBoolean);
                 } else if ("modelVersion".equals(fieldName)) {
@@ -246,5 +235,17 @@ public final class SentimentSkillV3 extends SearchIndexerSkill {
             deserializedSentimentSkillV3.modelVersion = modelVersion;
             return deserializedSentimentSkillV3;
         });
+    }
+
+    /**
+     * Set the defaultLanguageCode property: A value indicating which language code to use. Default is `en`.
+     *
+     * @param defaultLanguageCode the defaultLanguageCode value to set.
+     * @return the SentimentSkillV3 object itself.
+     */
+    @Generated
+    public SentimentSkillV3 setDefaultLanguageCode(SentimentSkillLanguage defaultLanguageCode) {
+        this.defaultLanguageCode = defaultLanguageCode;
+        return this;
     }
 }

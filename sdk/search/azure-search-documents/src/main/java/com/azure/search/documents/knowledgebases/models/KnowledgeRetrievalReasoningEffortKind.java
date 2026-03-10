@@ -20,18 +20,6 @@ public final class KnowledgeRetrievalReasoningEffortKind
     public static final KnowledgeRetrievalReasoningEffortKind MINIMAL = fromString("minimal");
 
     /**
-     * Use low reasoning during retrieval.
-     */
-    @Generated
-    public static final KnowledgeRetrievalReasoningEffortKind LOW = fromString("low");
-
-    /**
-     * Use a moderate amount of reasoning during retrieval.
-     */
-    @Generated
-    public static final KnowledgeRetrievalReasoningEffortKind MEDIUM = fromString("medium");
-
-    /**
      * Creates a new instance of KnowledgeRetrievalReasoningEffortKind value.
      *
      * @deprecated Use the {@link #fromString(String)} factory method.

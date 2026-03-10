@@ -87,12 +87,6 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
     @Generated
     private SemanticSearchResultsType semanticPartialResponseType;
 
-    /*
-     * Type of query rewrite that was used to retrieve documents.
-     */
-    @Generated
-    private SemanticQueryRewritesResultType semanticQueryRewritesResultType;
-
     /**
      * Creates an instance of SearchDocumentsResult class.
      */
@@ -212,16 +206,6 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
     }
 
     /**
-     * Get the semanticQueryRewritesResultType property: Type of query rewrite that was used to retrieve documents.
-     *
-     * @return the semanticQueryRewritesResultType value.
-     */
-    @Generated
-    public SemanticQueryRewritesResultType getSemanticQueryRewritesResultType() {
-        return this.semanticQueryRewritesResultType;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -273,9 +257,6 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
                 } else if ("@search.semanticPartialResponseType".equals(fieldName)) {
                     deserializedSearchDocumentsResult.semanticPartialResponseType
                         = SemanticSearchResultsType.fromString(reader.getString());
-                } else if ("@search.semanticQueryRewritesResultType".equals(fieldName)) {
-                    deserializedSearchDocumentsResult.semanticQueryRewritesResultType
-                        = SemanticQueryRewritesResultType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

@@ -97,16 +97,6 @@ public final class SearchIndexKnowledgeSourceParams extends KnowledgeSourceParam
      */
     @Generated
     @Override
-    public SearchIndexKnowledgeSourceParams setAlwaysQuerySource(Boolean alwaysQuerySource) {
-        super.setAlwaysQuerySource(alwaysQuerySource);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
     public SearchIndexKnowledgeSourceParams setRerankerThreshold(Float rerankerThreshold) {
         super.setRerankerThreshold(rerankerThreshold);
         return this;
@@ -122,7 +112,6 @@ public final class SearchIndexKnowledgeSourceParams extends KnowledgeSourceParam
         jsonWriter.writeStringField("knowledgeSourceName", getKnowledgeSourceName());
         jsonWriter.writeBooleanField("includeReferences", isIncludeReferences());
         jsonWriter.writeBooleanField("includeReferenceSourceData", isIncludeReferenceSourceData());
-        jsonWriter.writeBooleanField("alwaysQuerySource", isAlwaysQuerySource());
         jsonWriter.writeNumberField("rerankerThreshold", getRerankerThreshold());
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         jsonWriter.writeStringField("filterAddOn", this.filterAddOn);
@@ -144,7 +133,6 @@ public final class SearchIndexKnowledgeSourceParams extends KnowledgeSourceParam
             String knowledgeSourceName = null;
             Boolean includeReferences = null;
             Boolean includeReferenceSourceData = null;
-            Boolean alwaysQuerySource = null;
             Float rerankerThreshold = null;
             KnowledgeSourceKind kind = KnowledgeSourceKind.SEARCH_INDEX;
             String filterAddOn = null;
@@ -157,8 +145,6 @@ public final class SearchIndexKnowledgeSourceParams extends KnowledgeSourceParam
                     includeReferences = reader.getNullable(JsonReader::getBoolean);
                 } else if ("includeReferenceSourceData".equals(fieldName)) {
                     includeReferenceSourceData = reader.getNullable(JsonReader::getBoolean);
-                } else if ("alwaysQuerySource".equals(fieldName)) {
-                    alwaysQuerySource = reader.getNullable(JsonReader::getBoolean);
                 } else if ("rerankerThreshold".equals(fieldName)) {
                     rerankerThreshold = reader.getNullable(JsonReader::getFloat);
                 } else if ("kind".equals(fieldName)) {
@@ -173,7 +159,6 @@ public final class SearchIndexKnowledgeSourceParams extends KnowledgeSourceParam
                 = new SearchIndexKnowledgeSourceParams(knowledgeSourceName);
             deserializedSearchIndexKnowledgeSourceParams.setIncludeReferences(includeReferences);
             deserializedSearchIndexKnowledgeSourceParams.setIncludeReferenceSourceData(includeReferenceSourceData);
-            deserializedSearchIndexKnowledgeSourceParams.setAlwaysQuerySource(alwaysQuerySource);
             deserializedSearchIndexKnowledgeSourceParams.setRerankerThreshold(rerankerThreshold);
             deserializedSearchIndexKnowledgeSourceParams.kind = kind;
             deserializedSearchIndexKnowledgeSourceParams.filterAddOn = filterAddOn;

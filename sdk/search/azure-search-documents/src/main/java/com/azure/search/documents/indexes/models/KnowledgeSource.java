@@ -207,14 +207,10 @@ public class KnowledgeSource implements JsonSerializable<KnowledgeSource> {
                     return SearchIndexKnowledgeSource.fromJson(readerToUse.reset());
                 } else if ("azureBlob".equals(discriminatorValue)) {
                     return AzureBlobKnowledgeSource.fromJson(readerToUse.reset());
-                } else if ("indexedSharePoint".equals(discriminatorValue)) {
-                    return IndexedSharePointKnowledgeSource.fromJson(readerToUse.reset());
                 } else if ("indexedOneLake".equals(discriminatorValue)) {
                     return IndexedOneLakeKnowledgeSource.fromJson(readerToUse.reset());
                 } else if ("web".equals(discriminatorValue)) {
                     return WebKnowledgeSource.fromJson(readerToUse.reset());
-                } else if ("remoteSharePoint".equals(discriminatorValue)) {
-                    return RemoteSharePointKnowledgeSource.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }
