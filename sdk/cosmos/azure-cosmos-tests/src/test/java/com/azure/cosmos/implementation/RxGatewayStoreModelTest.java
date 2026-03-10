@@ -436,12 +436,12 @@ public class RxGatewayStoreModelTest {
     }
 
     /**
-     * Verifies that client-level customHeaders (e.g., workload-id) are injected into
+     * Verifies that client-level additionalHeaders (e.g., workload-id) are injected into
      * outgoing HTTP requests by performRequest(). This covers metadata requests
      * (collection cache, partition key range) that don't go through getRequestHeaders().
      */
     @Test(groups = "unit")
-    public void customHeadersInjectedInPerformRequest() throws Exception {
+    public void additionalHeadersInjectedInPerformRequest() throws Exception {
         DiagnosticsClientContext clientContext = mockDiagnosticsClientContext();
         ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);
         GlobalEndpointManager globalEndpointManager = Mockito.mock(GlobalEndpointManager.class);
@@ -453,8 +453,8 @@ public class RxGatewayStoreModelTest {
         ArgumentCaptor<HttpRequest> httpClientRequestCaptor = ArgumentCaptor.forClass(HttpRequest.class);
         Mockito.when(httpClient.send(any(), any())).thenReturn(Mono.error(new ConnectTimeoutException()));
 
-        Map<String, String> customHeaders = new HashMap<>();
-        customHeaders.put(HttpConstants.HttpHeaders.WORKLOAD_ID, "25");
+        Map<String, String> additionalHeaders = new HashMap<>();
+        additionalHeaders.put(HttpConstants.HttpHeaders.WORKLOAD_ID, "25");
 
         RxGatewayStoreModel storeModel = new RxGatewayStoreModel(
             clientContext,
@@ -465,9 +465,9 @@ public class RxGatewayStoreModelTest {
             globalEndpointManager,
             httpClient,
             null,
-            customHeaders);
+            additionalHeaders);
 
-        // Simulate a metadata request (e.g., collection cache lookup) — no customHeaders on the request itself
+        // Simulate a metadata request (e.g., collection cache lookup) — no additionalHeaders on the request itself
         RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(
             clientContext,
             OperationType.Read,
@@ -490,12 +490,12 @@ public class RxGatewayStoreModelTest {
     }
 
     /**
-     * Verifies that request-level headers take precedence over client-level customHeaders.
+     * Verifies that request-level headers take precedence over client-level additionalHeaders.
      * If a request already has workload-id set (e.g., via getRequestHeaders()), performRequest()
      * should NOT overwrite it.
      */
     @Test(groups = "unit")
-    public void requestLevelHeadersTakePrecedenceOverCustomHeaders() throws Exception {
+    public void requestLevelHeadersTakePrecedenceOverAdditionalHeaders() throws Exception {
         DiagnosticsClientContext clientContext = mockDiagnosticsClientContext();
         ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);
         GlobalEndpointManager globalEndpointManager = Mockito.mock(GlobalEndpointManager.class);
@@ -507,8 +507,8 @@ public class RxGatewayStoreModelTest {
         ArgumentCaptor<HttpRequest> httpClientRequestCaptor = ArgumentCaptor.forClass(HttpRequest.class);
         Mockito.when(httpClient.send(any(), any())).thenReturn(Mono.error(new ConnectTimeoutException()));
 
-        Map<String, String> customHeaders = new HashMap<>();
-        customHeaders.put(HttpConstants.HttpHeaders.WORKLOAD_ID, "10");
+        Map<String, String> additionalHeaders = new HashMap<>();
+        additionalHeaders.put(HttpConstants.HttpHeaders.WORKLOAD_ID, "10");
 
         RxGatewayStoreModel storeModel = new RxGatewayStoreModel(
             clientContext,
@@ -519,7 +519,7 @@ public class RxGatewayStoreModelTest {
             globalEndpointManager,
             httpClient,
             null,
-            customHeaders);
+            additionalHeaders);
 
         RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(
             clientContext,
@@ -547,11 +547,11 @@ public class RxGatewayStoreModelTest {
     }
 
     /**
-     * Verifies that when customHeaders is null, performRequest() still works normally
+     * Verifies that when additionalHeaders is null, performRequest() still works normally
      * without injecting any extra headers.
      */
     @Test(groups = "unit")
-    public void nullCustomHeadersDoesNotAffectPerformRequest() throws Exception {
+    public void nullAdditionalHeadersDoesNotAffectPerformRequest() throws Exception {
         DiagnosticsClientContext clientContext = mockDiagnosticsClientContext();
         ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);
         GlobalEndpointManager globalEndpointManager = Mockito.mock(GlobalEndpointManager.class);

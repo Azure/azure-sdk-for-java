@@ -1647,16 +1647,16 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
     }
 
     /**
-     * Verifies that client-level customHeaders (e.g., workload-id) are included in
+     * Verifies that client-level additionalHeaders (e.g., workload-id) are included in
      * GatewayAddressCache's defaultRequestHeaders, which are sent on every address
      * resolution request.
      */
     @Test(groups = { "unit" })
-    public void customHeadersIncludedInDefaultRequestHeaders() throws Exception {
+    public void additionalHeadersIncludedInDefaultRequestHeaders() throws Exception {
         URI serviceEndpoint = new URI("https://localhost");
 
-        Map<String, String> customHeaders = new HashMap<>();
-        customHeaders.put(HttpConstants.HttpHeaders.WORKLOAD_ID, "25");
+        Map<String, String> additionalHeaders = new HashMap<>();
+        additionalHeaders.put(HttpConstants.HttpHeaders.WORKLOAD_ID, "25");
 
         GatewayAddressCache cache = new GatewayAddressCache(
             mockDiagnosticsClientContext(),
@@ -1670,7 +1670,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
             null,
             null,
             null,
-            customHeaders);
+            additionalHeaders);
 
         Field defaultRequestHeadersField = GatewayAddressCache.class.getDeclaredField("defaultRequestHeaders");
         defaultRequestHeadersField.setAccessible(true);
@@ -1681,18 +1681,18 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
     }
 
     /**
-     * Verifies that customHeaders do NOT overwrite SDK system headers (USER_AGENT, VERSION, etc.)
+     * Verifies that additionalHeaders do NOT overwrite SDK system headers (USER_AGENT, VERSION, etc.)
      * in GatewayAddressCache's defaultRequestHeaders. putIfAbsent is used so SDK headers
-     * set before customHeaders are preserved.
+     * set before additionalHeaders are preserved.
      */
     @Test(groups = { "unit" })
-    public void customHeadersDoNotOverwriteSdkSystemHeaders() throws Exception {
+    public void additionalHeadersDoNotOverwriteSdkSystemHeaders() throws Exception {
         URI serviceEndpoint = new URI("https://localhost");
 
-        Map<String, String> customHeaders = new HashMap<>();
-        customHeaders.put(HttpConstants.HttpHeaders.USER_AGENT, "malicious-agent");
-        customHeaders.put(HttpConstants.HttpHeaders.VERSION, "bad-version");
-        customHeaders.put(HttpConstants.HttpHeaders.WORKLOAD_ID, "25");
+        Map<String, String> additionalHeaders = new HashMap<>();
+        additionalHeaders.put(HttpConstants.HttpHeaders.USER_AGENT, "malicious-agent");
+        additionalHeaders.put(HttpConstants.HttpHeaders.VERSION, "bad-version");
+        additionalHeaders.put(HttpConstants.HttpHeaders.WORKLOAD_ID, "25");
 
         GatewayAddressCache cache = new GatewayAddressCache(
             mockDiagnosticsClientContext(),
@@ -1706,7 +1706,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
             null,
             null,
             null,
-            customHeaders);
+            additionalHeaders);
 
         Field defaultRequestHeadersField = GatewayAddressCache.class.getDeclaredField("defaultRequestHeaders");
         defaultRequestHeadersField.setAccessible(true);
@@ -1716,16 +1716,16 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         // SDK headers should NOT be overwritten
         assertThat(defaultRequestHeaders.get(HttpConstants.HttpHeaders.USER_AGENT)).isNotEqualTo("malicious-agent");
         assertThat(defaultRequestHeaders.get(HttpConstants.HttpHeaders.VERSION)).isEqualTo(HttpConstants.Versions.CURRENT_VERSION);
-        // Custom header should still be added
+        // Additional header should still be added
         assertThat(defaultRequestHeaders).containsEntry(HttpConstants.HttpHeaders.WORKLOAD_ID, "25");
     }
 
     /**
-     * Verifies that when customHeaders is null, GatewayAddressCache's defaultRequestHeaders
+     * Verifies that when additionalHeaders is null, GatewayAddressCache's defaultRequestHeaders
      * contains only SDK system headers and no extra entries.
      */
     @Test(groups = { "unit" })
-    public void nullCustomHeadersDoesNotAffectDefaultRequestHeaders() throws Exception {
+    public void nullAdditionalHeadersDoesNotAffectDefaultRequestHeaders() throws Exception {
         URI serviceEndpoint = new URI("https://localhost");
 
         GatewayAddressCache cache = new GatewayAddressCache(

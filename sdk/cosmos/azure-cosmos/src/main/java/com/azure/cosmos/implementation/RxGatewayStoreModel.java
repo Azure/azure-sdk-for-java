@@ -91,7 +91,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
     private GatewayServiceConfigurationReader gatewayServiceConfigurationReader;
     private RxClientCollectionCache collectionCache;
     private GatewayServerErrorInjector gatewayServerErrorInjector;
-    private final Map<String, String> customHeaders;
+    private final Map<String, String> additionalHeaders;
 
     public RxGatewayStoreModel(
         DiagnosticsClientContext clientContext,
@@ -102,7 +102,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
         GlobalEndpointManager globalEndpointManager,
         HttpClient httpClient,
         ApiType apiType,
-        Map<String, String> customHeaders) {
+        Map<String, String> additionalHeaders) {
 
         this.clientContext = clientContext;
 
@@ -118,7 +118,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
 
         this.httpClient = httpClient;
         this.sessionContainer = sessionContainer;
-        this.customHeaders = customHeaders;
+        this.additionalHeaders = additionalHeaders;
     }
 
     public RxGatewayStoreModel(RxGatewayStoreModel inner) {
@@ -130,7 +130,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
 
         this.httpClient = inner.httpClient;
         this.sessionContainer = inner.sessionContainer;
-        this.customHeaders = inner.customHeaders;
+        this.additionalHeaders = inner.additionalHeaders;
     }
 
     protected Map<String, String> getDefaultHeaders(
@@ -283,10 +283,10 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                 request.requestContext.cosmosDiagnostics = clientContext.createDiagnostics();
             }
 
-            // Apply client-level custom headers (e.g., workload-id) to all requests
+            // Apply client-level additional headers (e.g., workload-id) to all requests
             // including metadata requests (collection cache, partition key range, etc.)
-            if (this.customHeaders != null && !this.customHeaders.isEmpty()) {
-                for (Map.Entry<String, String> entry : this.customHeaders.entrySet()) {
+            if (this.additionalHeaders != null && !this.additionalHeaders.isEmpty()) {
+                for (Map.Entry<String, String> entry : this.additionalHeaders.entrySet()) {
                     // Only set if not already present — request-level headers take precedence
                     if (!request.getHeaders().containsKey(entry.getKey())) {
                         request.getHeaders().put(entry.getKey(), entry.getValue());

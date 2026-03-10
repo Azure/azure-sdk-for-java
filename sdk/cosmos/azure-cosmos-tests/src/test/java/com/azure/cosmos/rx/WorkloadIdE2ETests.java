@@ -6,8 +6,8 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.CosmosHeaderName;
 import com.azure.cosmos.TestObject;
-import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
@@ -27,13 +27,21 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * End-to-end integration tests for the custom headers / workload-id feature.
+ * End-to-end smoke tests for the additional headers / workload-id feature in Gateway mode.
  * <p>
- * Test type: EMULATOR INTEGRATION TEST — requires the Cosmos DB Emulator to be running locally.
+ * Test type: EMULATOR INTEGRATION TEST — requires a Cosmos DB account or emulator.
  * <p>
  * Uses {@code @Factory(dataProvider = "simpleClientBuilderGatewaySession")} to run all tests
- * against both Gateway mode (HTTP headers) and Direct mode (RNTBD binary token 0x00DC),
- * ensuring the workload-id header is correctly encoded and sent in both transport paths.
+ * in Gateway mode with Session consistency.
+ * <p>
+ * These are <b>smoke tests</b> — they verify CRUD/query operations succeed (status code
+ * 200/201/204) when the workload-id header is set. They prove the header doesn't break
+ * anything but do NOT assert the header is actually present on the wire request.
+ * <p>
+ * For wire-level assertion tests that verify the header is actually present on
+ * {@link com.azure.cosmos.implementation.RxDocumentServiceRequest}, see
+ * {@link WorkloadIdDirectInterceptorTests} which runs in Direct mode (RNTBD) using
+ * the transport client interceptor.
  */
 public class WorkloadIdE2ETests extends TestSuiteBase {
 
@@ -51,11 +59,11 @@ public class WorkloadIdE2ETests extends TestSuiteBase {
 
     @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
-        Map<String, String> headers = new HashMap<>();
-        headers.put(HttpConstants.HttpHeaders.WORKLOAD_ID, "15");
+        Map<CosmosHeaderName, String> headers = new HashMap<>();
+        headers.put(CosmosHeaderName.WORKLOAD_ID, "15");
 
         clientWithWorkloadId = getClientBuilder()
-            .customHeaders(headers)
+            .additionalHeaders(headers)
             .buildAsyncClient();
 
         database = createDatabase(clientWithWorkloadId, DATABASE_ID);
@@ -71,7 +79,7 @@ public class WorkloadIdE2ETests extends TestSuiteBase {
 
     /**
      * verifies that a create (POST) operation succeeds when the client
-     * has a workload-id custom header set at the builder level. Confirms the header
+     * has a workload-id additional header set at the builder level. Confirms the header
      * flows through the request pipeline without causing errors.
      */
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
@@ -145,7 +153,7 @@ public class WorkloadIdE2ETests extends TestSuiteBase {
 
     /**
      * Verifies that a per-request workload-id header override via
-     * {@code CosmosItemRequestOptions.setHeader()} works. The request-level header
+     * {@code CosmosItemRequestOptions.setAdditionalHeaders()} works. The request-level header
      * (value "30") should take precedence over the client-level default (value "15").
      */
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
@@ -153,8 +161,11 @@ public class WorkloadIdE2ETests extends TestSuiteBase {
         // Verify per-request header override works — request-level should take precedence
         TestObject doc = TestObject.create();
 
+        Map<CosmosHeaderName, String> requestHeaders = new HashMap<>();
+        requestHeaders.put(CosmosHeaderName.WORKLOAD_ID, "30");
+
         CosmosItemRequestOptions options = new CosmosItemRequestOptions()
-            .setHeader(HttpConstants.HttpHeaders.WORKLOAD_ID, "30");
+            .setAdditionalHeaders(requestHeaders);
 
         CosmosItemResponse<TestObject> response = container
             .createItem(doc, new PartitionKey(doc.getMypk()), options)
@@ -166,7 +177,7 @@ public class WorkloadIdE2ETests extends TestSuiteBase {
 
     /**
      * Verifies that a cross-partition query operation succeeds when the client has a
-     * workload-id custom header. Confirms the header flows correctly through the
+     * workload-id additional header. Confirms the header flows correctly through the
      * query pipeline and does not affect result correctness.
      */
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
@@ -187,7 +198,7 @@ public class WorkloadIdE2ETests extends TestSuiteBase {
 
     /**
      * Verifies that a per-request workload-id header override on
-     * {@code CosmosQueryRequestOptions.setHeader()} works for query operations.
+     * {@code CosmosQueryRequestOptions.setAdditionalHeaders()} works for query operations.
      * The request-level header (value "42") should take precedence over the
      * client-level default.
      */
@@ -197,8 +208,11 @@ public class WorkloadIdE2ETests extends TestSuiteBase {
         TestObject doc = TestObject.create();
         container.createItem(doc, new PartitionKey(doc.getMypk()), new CosmosItemRequestOptions()).block();
 
+        Map<CosmosHeaderName, String> requestHeaders = new HashMap<>();
+        requestHeaders.put(CosmosHeaderName.WORKLOAD_ID, "42");
+
         CosmosQueryRequestOptions queryOptions = new CosmosQueryRequestOptions()
-            .setHeader(HttpConstants.HttpHeaders.WORKLOAD_ID, "42");
+            .setAdditionalHeaders(requestHeaders);
 
         long count = container
             .queryItems("SELECT * FROM c WHERE c.id = '" + doc.getId() + "'", queryOptions, TestObject.class)
@@ -210,13 +224,13 @@ public class WorkloadIdE2ETests extends TestSuiteBase {
     }
 
     /**
-     * Regression test: verifies that a client created without any custom headers
-     * continues to work normally. Ensures the custom headers feature does not
+     * Regression test: verifies that a client created without any additional headers
+     * continues to work normally. Ensures the additional headers feature does not
      * introduce regressions for clients that do not use it.
      */
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
-    public void clientWithNoCustomHeadersStillWorks() {
-        // Verify that a client without custom headers works normally (no regression)
+    public void clientWithNoAdditionalHeadersStillWorks() {
+        // Verify that a client without additional headers works normally (no regression)
         CosmosAsyncClient clientWithoutHeaders = copyCosmosClientBuilder(getClientBuilder())
             .buildAsyncClient();
 
@@ -238,15 +252,15 @@ public class WorkloadIdE2ETests extends TestSuiteBase {
     }
 
     /**
-     * Verifies that a client created with an empty custom headers map works normally.
-     * An empty map should behave identically to no custom headers — no errors,
+     * Verifies that a client created with an empty additional headers map works normally.
+     * An empty map should behave identically to no additional headers — no errors,
      * no unexpected behavior.
      */
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
-    public void clientWithEmptyCustomHeaders() {
-        // Verify that a client with empty custom headers map works normally
+    public void clientWithEmptyAdditionalHeaders() {
+        // Verify that a client with empty additional headers map works normally
         CosmosAsyncClient clientWithEmptyHeaders = copyCosmosClientBuilder(getClientBuilder())
-            .customHeaders(new HashMap<>())
+            .additionalHeaders(new HashMap<>())
             .buildAsyncClient();
 
         try {
@@ -266,20 +280,21 @@ public class WorkloadIdE2ETests extends TestSuiteBase {
         }
     }
 
-    /**
-     * Verifies that unknown headers in customHeaders are rejected by the allowlist.
-     * In Direct mode (RNTBD), unknown headers are silently dropped, so the allowlist
-     * ensures consistent behavior across Gateway and Direct modes.
-     */
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT, expectedExceptions = IllegalArgumentException.class)
-    public void unknownCustomHeadersRejectedByAllowlist() {
-        Map<String, String> headers = new HashMap<>();
-        headers.put(HttpConstants.HttpHeaders.WORKLOAD_ID, "20");
-        headers.put("x-ms-custom-test-header", "test-value");
 
-        // Should throw IllegalArgumentException due to unknown header
-        copyCosmosClientBuilder(getClientBuilder())
-            .customHeaders(headers);
+    /**
+     * Verifies that the {@link CosmosHeaderName} enum-based allowlist rejects unknown
+     * header names at client build time. Attempting to set an unrecognized header via
+     * {@code additionalHeaders()} should throw {@link IllegalArgumentException} from
+     * {@link CosmosHeaderName#fromString(String)}, preventing arbitrary headers from
+     * being sent.
+     */
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT,
+        expectedExceptions = IllegalArgumentException.class)
+    public void unknownAdditionalHeadersRejectedByAllowlist() {
+        Map<CosmosHeaderName, String> headers = new HashMap<>();
+        headers.put(CosmosHeaderName.WORKLOAD_ID, "15");
+        // Use fromString with an unknown header — should throw IllegalArgumentException
+        CosmosHeaderName.fromString("x-unknown-header");
     }
 
     @AfterClass(groups = { "emulator" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)

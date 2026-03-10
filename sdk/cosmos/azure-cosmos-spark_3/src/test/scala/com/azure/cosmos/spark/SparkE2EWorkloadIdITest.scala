@@ -10,14 +10,18 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import java.util.UUID
 
 /**
- * End-to-end integration tests for the custom headers (workload-id) feature in the Spark connector.
+ * Integration tests (smoke tests) for the additional headers (workload-id) feature in the Spark connector.
+ * These are smoke tests — they verify that Spark DataFrame read and write operations succeed
+ * (no errors, correct data) when the `spark.cosmos.additionalHeaders` configuration is set.
+ * They do NOT assert that the workload-id header is actually present on the wire request.
+ * Wire-level header propagation is verified by:
+ *   - Java SDK unit tests: RxGatewayStoreModelTest, GatewayAddressCacheTest
+ *   - Java SDK integration tests: WorkloadIdE2ETests (interceptor-based wire assertions)
  *
- * These tests verify that the `spark.cosmos.customHeaders` configuration option correctly flows
- * through the Spark connector pipeline into CosmosClientBuilder.customHeaders(), ensuring that
- * custom HTTP headers (such as x-ms-cosmos-workload-id) are applied to all Cosmos DB operations
- * initiated via Spark DataFrames (reads and writes).
- *
- * Requires the Cosmos DB Emulator running
+ * Test cases:
+ *   1. Read with workload-id header — Spark read succeeds, correct item returned
+ *   2. Write with workload-id header — Spark write succeeds, item verified via SDK read-back
+ *   3. No additionalHeaders (regression) — operations succeed without the config set
  */
 class SparkE2EWorkloadIdITest
   extends IntegrationSpec
@@ -32,10 +36,12 @@ class SparkE2EWorkloadIdITest
   //scalastyle:off magic.number
   //scalastyle:off null
 
-  // Verifies that a Spark DataFrame read operation succeeds when spark.cosmos.customHeaders
-  // is configured with a workload-id header. The header should be passed through to the
-  // CosmosAsyncClient via CosmosClientBuilder.customHeaders() without affecting read behavior.
-  "spark query with customHeaders" can "read items with workload-id header" in {
+  // Integration smoke test #1: Spark read with workload-id header.
+  // Creates an item via SDK, then reads it back via Spark DataFrame with
+  // spark.cosmos.additionalHeaders set to {"x-ms-cosmos-workload-id": "15"}.
+  // Verifies the read succeeds and returns the correct item.
+  // This proves the header flows through the Spark config pipeline without causing errors.
+  "spark query with additionalHeaders" can "read items with workload-id header" in {
     val cosmosEndpoint = TestConfigurations.HOST
     val cosmosMasterKey = TestConfigurations.MASTER_KEY
 
@@ -58,7 +64,7 @@ class SparkE2EWorkloadIdITest
       "spark.cosmos.accountKey" -> cosmosMasterKey,
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> cosmosContainer,
-      "spark.cosmos.customHeaders" -> """{"x-ms-cosmos-workload-id": "15"}""",
+      "spark.cosmos.additionalHeaders" -> """{"x-ms-cosmos-workload-id": "15"}""",
       "spark.cosmos.read.partitioning.strategy" -> "Restrictive"
     )
 
@@ -70,10 +76,12 @@ class SparkE2EWorkloadIdITest
     item.getAs[String]("id") shouldEqual id
   }
 
-  // Verifies that a Spark DataFrame write operation succeeds when spark.cosmos.customHeaders
-  // is configured with a workload-id header. The item is written via Spark and then verified
-  // via a direct SDK read to confirm the write was persisted correctly.
-  "spark write with customHeaders" can "write items with workload-id header" in {
+  // Integration smoke test #2: Spark write with workload-id header.
+  // Writes an item via Spark DataFrame with spark.cosmos.additionalHeaders set to
+  // {"x-ms-cosmos-workload-id": "20"}, then reads it back via SDK to confirm
+  // write was persisted correctly.
+  // This proves the header flows through the Spark write pipeline without causing errors.
+  "spark write with additionalHeaders" can "write items with workload-id header" in {
     val cosmosEndpoint = TestConfigurations.HOST
     val cosmosMasterKey = TestConfigurations.MASTER_KEY
 
@@ -91,7 +99,7 @@ class SparkE2EWorkloadIdITest
       "spark.cosmos.accountKey" -> cosmosMasterKey,
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> cosmosContainer,
-      "spark.cosmos.customHeaders" -> """{"x-ms-cosmos-workload-id": "20"}""",
+      "spark.cosmos.additionalHeaders" -> """{"x-ms-cosmos-workload-id": "20"}""",
       "spark.cosmos.write.strategy" -> "ItemOverwrite",
       "spark.cosmos.write.bulk.enabled" -> "false",
       "spark.cosmos.serialization.inclusionMode" -> "NonDefault"
@@ -110,10 +118,12 @@ class SparkE2EWorkloadIdITest
     readItem.getItem.get("name").textValue() shouldEqual "testWriteItem"
   }
 
-  // Regression test: verifies that Spark read operations continue to work correctly when
-  // spark.cosmos.customHeaders is NOT specified. Ensures that the feature addition does not
-  // break existing behavior for clients that do not use custom headers.
-  "spark operations without customHeaders" can "still succeed" in {
+  // Integration smoke test #3: Regression test — no additionalHeaders configured.
+  // Verifies that Spark read operations continue to work correctly when
+  // spark.cosmos.additionalHeaders is NOT specified in the config map.
+  // This ensures the feature addition does not break existing Spark jobs
+  // that don't use additional headers.
+  "spark operations without additionalHeaders" can "still succeed" in {
     val cosmosEndpoint = TestConfigurations.HOST
     val cosmosMasterKey = TestConfigurations.MASTER_KEY
 

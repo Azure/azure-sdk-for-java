@@ -77,7 +77,7 @@ public class RxDocumentClientUnderTest extends RxDocumentClientImpl {
             GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
             HttpClient rxOrigClient,
             ApiType apiType,
-            Map<String, String> customHeaders) {
+            Map<String, String> additionalHeaders) {
 
         origHttpClient = rxOrigClient;
         spyHttpClient = Mockito.spy(rxOrigClient);
@@ -96,6 +96,6 @@ public class RxDocumentClientUnderTest extends RxDocumentClientImpl {
                 globalEndpointManager,
                 spyHttpClient,
                 apiType,
-                customHeaders);
+                additionalHeaders);
     }
 }
