@@ -4,8 +4,6 @@
 
 ### Features Added
 
-- Added `entryPoint` and `imageTag` properties to `CodeBasedEvaluatorDefinition`. The `codeText` property is now optional (no longer a required constructor parameter).
-
 ### Breaking Changes
 
 - `FoundryFeaturesOptInKeys` changed from an `ExpandableStringEnum`-based class to a standard Java `enum` type. The `values()` method now returns an array instead of a `Collection`, and the deprecated no-arg constructor is removed.

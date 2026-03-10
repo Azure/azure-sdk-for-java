@@ -28,7 +28,7 @@ public final class CodeBasedEvaluatorDefinition extends EvaluatorDefinition {
      * Inline code text for the evaluator
      */
     @Generated
-    private String codeText;
+    private final String codeText;
 
     /**
      * Get the type property: The type of evaluator definition.
@@ -83,10 +83,8 @@ public final class CodeBasedEvaluatorDefinition extends EvaluatorDefinition {
             }
         });
         jsonWriter.writeMapField("metrics", getMetrics(), (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("code_text", this.codeText);
-        jsonWriter.writeStringField("entry_point", this.entryPoint);
-        jsonWriter.writeStringField("image_tag", this.imageTag);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -96,39 +94,42 @@ public final class CodeBasedEvaluatorDefinition extends EvaluatorDefinition {
      * @param jsonReader The JsonReader being read.
      * @return An instance of CodeBasedEvaluatorDefinition if the JsonReader was pointing to an instance of it, or null
      * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the CodeBasedEvaluatorDefinition.
      */
     @Generated
     public static CodeBasedEvaluatorDefinition fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            CodeBasedEvaluatorDefinition deserializedCodeBasedEvaluatorDefinition = new CodeBasedEvaluatorDefinition();
+            Map<String, BinaryData> initParameters = null;
+            Map<String, BinaryData> dataSchema = null;
+            Map<String, EvaluatorMetric> metrics = null;
+            String codeText = null;
+            EvaluatorDefinitionType type = EvaluatorDefinitionType.CODE;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("init_parameters".equals(fieldName)) {
-                    Map<String, BinaryData> initParameters = reader.readMap(reader1 -> reader1
+                    initParameters = reader.readMap(reader1 -> reader1
                         .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
-                    deserializedCodeBasedEvaluatorDefinition.setInitParameters(initParameters);
                 } else if ("data_schema".equals(fieldName)) {
-                    Map<String, BinaryData> dataSchema = reader.readMap(reader1 -> reader1
+                    dataSchema = reader.readMap(reader1 -> reader1
                         .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
-                    deserializedCodeBasedEvaluatorDefinition.setDataSchema(dataSchema);
                 } else if ("metrics".equals(fieldName)) {
-                    Map<String, EvaluatorMetric> metrics = reader.readMap(reader1 -> EvaluatorMetric.fromJson(reader1));
-                    deserializedCodeBasedEvaluatorDefinition.setMetrics(metrics);
-                } else if ("type".equals(fieldName)) {
-                    deserializedCodeBasedEvaluatorDefinition.type
-                        = EvaluatorDefinitionType.fromString(reader.getString());
+                    metrics = reader.readMap(reader1 -> EvaluatorMetric.fromJson(reader1));
                 } else if ("code_text".equals(fieldName)) {
-                    deserializedCodeBasedEvaluatorDefinition.codeText = reader.getString();
-                } else if ("entry_point".equals(fieldName)) {
-                    deserializedCodeBasedEvaluatorDefinition.entryPoint = reader.getString();
-                } else if ("image_tag".equals(fieldName)) {
-                    deserializedCodeBasedEvaluatorDefinition.imageTag = reader.getString();
+                    codeText = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    type = EvaluatorDefinitionType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
+            CodeBasedEvaluatorDefinition deserializedCodeBasedEvaluatorDefinition
+                = new CodeBasedEvaluatorDefinition(codeText);
+            deserializedCodeBasedEvaluatorDefinition.setInitParameters(initParameters);
+            deserializedCodeBasedEvaluatorDefinition.setDataSchema(dataSchema);
+            deserializedCodeBasedEvaluatorDefinition.setMetrics(metrics);
+            deserializedCodeBasedEvaluatorDefinition.type = type;
             return deserializedCodeBasedEvaluatorDefinition;
         });
     }
@@ -153,80 +154,13 @@ public final class CodeBasedEvaluatorDefinition extends EvaluatorDefinition {
         return this;
     }
 
-    /*
-     * The entry point Python file name for the uploaded evaluator code (e.g. 'answer_length_evaluator.py')
-     */
-    @Generated
-    private String entryPoint;
-
-    /*
-     * The container image tag to use for evaluator code execution
-     */
-    @Generated
-    private String imageTag;
-
     /**
      * Creates an instance of CodeBasedEvaluatorDefinition class.
-     */
-    @Generated
-    public CodeBasedEvaluatorDefinition() {
-    }
-
-    /**
-     * Set the codeText property: Inline code text for the evaluator.
      *
      * @param codeText the codeText value to set.
-     * @return the CodeBasedEvaluatorDefinition object itself.
      */
     @Generated
-    public CodeBasedEvaluatorDefinition setCodeText(String codeText) {
+    public CodeBasedEvaluatorDefinition(String codeText) {
         this.codeText = codeText;
-        return this;
-    }
-
-    /**
-     * Get the entryPoint property: The entry point Python file name for the uploaded evaluator code (e.g.
-     * 'answer_length_evaluator.py').
-     *
-     * @return the entryPoint value.
-     */
-    @Generated
-    public String getEntryPoint() {
-        return this.entryPoint;
-    }
-
-    /**
-     * Set the entryPoint property: The entry point Python file name for the uploaded evaluator code (e.g.
-     * 'answer_length_evaluator.py').
-     *
-     * @param entryPoint the entryPoint value to set.
-     * @return the CodeBasedEvaluatorDefinition object itself.
-     */
-    @Generated
-    public CodeBasedEvaluatorDefinition setEntryPoint(String entryPoint) {
-        this.entryPoint = entryPoint;
-        return this;
-    }
-
-    /**
-     * Get the imageTag property: The container image tag to use for evaluator code execution.
-     *
-     * @return the imageTag value.
-     */
-    @Generated
-    public String getImageTag() {
-        return this.imageTag;
-    }
-
-    /**
-     * Set the imageTag property: The container image tag to use for evaluator code execution.
-     *
-     * @param imageTag the imageTag value to set.
-     * @return the CodeBasedEvaluatorDefinition object itself.
-     */
-    @Generated
-    public CodeBasedEvaluatorDefinition setImageTag(String imageTag) {
-        this.imageTag = imageTag;
-        return this;
     }
 }
