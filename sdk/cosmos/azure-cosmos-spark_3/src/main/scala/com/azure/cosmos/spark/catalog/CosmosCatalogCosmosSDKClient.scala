@@ -100,7 +100,6 @@ private[spark] case class CosmosCatalogCosmosSDKClient(cosmosAsyncClient: Cosmos
             case Some(vectorEmbeddingPolicyJson) =>
                 cosmosContainerProperties.setVectorEmbeddingPolicy(
                     SparkModelBridgeInternal.createVectorEmbeddingPolicyFromJson(vectorEmbeddingPolicyJson))
-                logInfo(s"Applying vector embedding policy for container '$containerName'")
             case None =>
         }
 

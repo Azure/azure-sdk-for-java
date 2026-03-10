@@ -127,7 +127,6 @@ private[spark] case class CosmosCatalogManagementSDKClient(resourceGroupName: St
                             s"Failed to parse vectorEmbeddingPolicy JSON. Ensure the JSON is well-formed: ${e.getMessage}", e)
                 }
                 sqlContainerResource.withVectorEmbeddingPolicy(mgmtVectorEmbeddingPolicy)
-                logInfo(s"Applying vector embedding policy for container '$containerName'")
             case None =>
         }
 
