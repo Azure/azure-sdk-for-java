@@ -36,6 +36,18 @@ public final class SubjectAlternativeNames implements JsonSerializable<SubjectAl
     @Generated
     private List<String> userPrincipalNames;
 
+    /*
+     * Uniform Resource Identifiers.
+     */
+    @Generated
+    private List<String> uniformResourceIdentifiers;
+
+    /*
+     * IP addresses; supports IPv4 and IPv6.
+     */
+    @Generated
+    private List<String> ipAddresses;
+
     /**
      * Creates an instance of SubjectAlternativeNames class.
      */
@@ -110,6 +122,50 @@ public final class SubjectAlternativeNames implements JsonSerializable<SubjectAl
     }
 
     /**
+     * Get the uniformResourceIdentifiers property: Uniform Resource Identifiers.
+     * 
+     * @return the uniformResourceIdentifiers value.
+     */
+    @Generated
+    public List<String> getUniformResourceIdentifiers() {
+        return this.uniformResourceIdentifiers;
+    }
+
+    /**
+     * Set the uniformResourceIdentifiers property: Uniform Resource Identifiers.
+     * 
+     * @param uniformResourceIdentifiers the uniformResourceIdentifiers value to set.
+     * @return the SubjectAlternativeNames object itself.
+     */
+    @Generated
+    public SubjectAlternativeNames setUniformResourceIdentifiers(List<String> uniformResourceIdentifiers) {
+        this.uniformResourceIdentifiers = uniformResourceIdentifiers;
+        return this;
+    }
+
+    /**
+     * Get the ipAddresses property: IP addresses; supports IPv4 and IPv6.
+     * 
+     * @return the ipAddresses value.
+     */
+    @Generated
+    public List<String> getIpAddresses() {
+        return this.ipAddresses;
+    }
+
+    /**
+     * Set the ipAddresses property: IP addresses; supports IPv4 and IPv6.
+     * 
+     * @param ipAddresses the ipAddresses value to set.
+     * @return the SubjectAlternativeNames object itself.
+     */
+    @Generated
+    public SubjectAlternativeNames setIpAddresses(List<String> ipAddresses) {
+        this.ipAddresses = ipAddresses;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -119,6 +175,9 @@ public final class SubjectAlternativeNames implements JsonSerializable<SubjectAl
         jsonWriter.writeArrayField("emails", this.emails, (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("dns_names", this.dnsNames, (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("upns", this.userPrincipalNames, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("uris", this.uniformResourceIdentifiers,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("ipAddresses", this.ipAddresses, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -147,6 +206,12 @@ public final class SubjectAlternativeNames implements JsonSerializable<SubjectAl
                 } else if ("upns".equals(fieldName)) {
                     List<String> userPrincipalNames = reader.readArray(reader1 -> reader1.getString());
                     deserializedSubjectAlternativeNames.userPrincipalNames = userPrincipalNames;
+                } else if ("uris".equals(fieldName)) {
+                    List<String> uniformResourceIdentifiers = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSubjectAlternativeNames.uniformResourceIdentifiers = uniformResourceIdentifiers;
+                } else if ("ipAddresses".equals(fieldName)) {
+                    List<String> ipAddresses = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSubjectAlternativeNames.ipAddresses = ipAddresses;
                 } else {
                     reader.skipChildren();
                 }
