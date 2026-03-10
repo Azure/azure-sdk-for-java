@@ -200,11 +200,11 @@ public class RecurrenceEvaluatorDSTTest {
         final ZonedDateTime now = ZonedDateTime.of(2024, 3, 8, 10, 30, 0, 0, 
             ZoneId.of("Europe/Paris")); // Friday
         
-        // This test verifies the behavior exists, but the expected result depends
-        // on whether the local time comparison still finds a match
-        boolean result = RecurrenceEvaluator.isMatch(settings, now);
-        // Result may vary based on how different offsets are handled
+        // This test verifies that evaluation completes without exceptions
+        // when different geographic locations are used (no conversion should happen)
         // The key is that no conversion should happen since offsets don't match
+        RecurrenceEvaluator.isMatch(settings, now);
+        // Test passes if no exception is thrown
     }
 
     /**
@@ -424,7 +424,7 @@ public class RecurrenceEvaluatorDSTTest {
             ZoneOffset.ofHours(2)); // Friday
         
         // Should still evaluate correctly even without conversion
-        boolean result = RecurrenceEvaluator.isMatch(settings, now);
+        RecurrenceEvaluator.isMatch(settings, now);
         // The test verifies no exception is thrown and evaluation completes
     }
 }
