@@ -25,12 +25,6 @@ public final class KnowledgeBaseActivityRecordType extends ExpandableStringEnum<
     public static final KnowledgeBaseActivityRecordType AZURE_BLOB = fromString("azureBlob");
 
     /**
-     * Indexed SharePoint retrieval activity.
-     */
-    @Generated
-    public static final KnowledgeBaseActivityRecordType INDEXED_SHARE_POINT = fromString("indexedSharePoint");
-
-    /**
      * Indexed OneLake retrieval activity.
      */
     @Generated
@@ -41,24 +35,6 @@ public final class KnowledgeBaseActivityRecordType extends ExpandableStringEnum<
      */
     @Generated
     public static final KnowledgeBaseActivityRecordType WEB = fromString("web");
-
-    /**
-     * Remote SharePoint retrieval activity.
-     */
-    @Generated
-    public static final KnowledgeBaseActivityRecordType REMOTE_SHARE_POINT = fromString("remoteSharePoint");
-
-    /**
-     * LLM query planning activity.
-     */
-    @Generated
-    public static final KnowledgeBaseActivityRecordType MODEL_QUERY_PLANNING = fromString("modelQueryPlanning");
-
-    /**
-     * LLM answer synthesis activity.
-     */
-    @Generated
-    public static final KnowledgeBaseActivityRecordType MODEL_ANSWER_SYNTHESIS = fromString("modelAnswerSynthesis");
 
     /**
      * Agentic reasoning activity.

@@ -22,8 +22,9 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.implementation.SearchIndexerClientImpl;
-import com.azure.search.documents.indexes.models.DocumentKeysOrIds;
-import com.azure.search.documents.indexes.models.IndexerResyncBody;
+import com.azure.search.documents.implementation.models.CreateOrUpdateRequestAccept33;
+import com.azure.search.documents.implementation.models.CreateOrUpdateRequestAccept40;
+import com.azure.search.documents.implementation.models.CreateOrUpdateRequestAccept46;
 import com.azure.search.documents.indexes.models.ListDataSourcesResult;
 import com.azure.search.documents.indexes.models.ListIndexersResult;
 import com.azure.search.documents.indexes.models.ListSkillsetsResult;
@@ -31,7 +32,15 @@ import com.azure.search.documents.indexes.models.SearchIndexer;
 import com.azure.search.documents.indexes.models.SearchIndexerDataSourceConnection;
 import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
 import com.azure.search.documents.indexes.models.SearchIndexerStatus;
-import com.azure.search.documents.indexes.models.SkillNames;
+import com.azure.search.documents.models.CreateOrUpdateRequestAccept32;
+import com.azure.search.documents.models.CreateOrUpdateRequestAccept34;
+import com.azure.search.documents.models.CreateOrUpdateRequestAccept35;
+import com.azure.search.documents.models.CreateOrUpdateRequestAccept36;
+import com.azure.search.documents.models.CreateOrUpdateRequestAccept39;
+import com.azure.search.documents.models.CreateOrUpdateRequestAccept41;
+import com.azure.search.documents.models.CreateOrUpdateRequestAccept42;
+import com.azure.search.documents.models.CreateOrUpdateRequestAccept45;
+import com.azure.search.documents.models.CreateOrUpdateRequestAccept47;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -85,17 +94,12 @@ public final class SearchIndexerAsyncClient {
 
     /**
      * Creates a new datasource or updates a datasource if it already exists.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>ignoreResetRequirements</td><td>Boolean</td><td>No</td><td>Ignores cache reset requirements.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
      * performed only if the ETag on the server matches this value.</td></tr>
      * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
@@ -110,7 +114,6 @@ public final class SearchIndexerAsyncClient {
      *     name: String (Required)
      *     description: String (Optional)
      *     type: String(azuresql/cosmosdb/azureblob/azuretable/mysql/adlsgen2/onelake/sharepoint) (Required)
-     *     subType: String (Optional)
      *     credentials (Required): {
      *         connectionString: String (Optional)
      *     }
@@ -121,9 +124,6 @@ public final class SearchIndexerAsyncClient {
      *     identity (Optional): {
      *         &#64;odata.type: String (Required)
      *     }
-     *     indexerPermissionOptions (Optional): [
-     *         String(userIds/groupIds/rbacScope) (Optional)
-     *     ]
      *     dataChangeDetectionPolicy (Optional): {
      *         &#64;odata.type: String (Required)
      *     }
@@ -153,7 +153,6 @@ public final class SearchIndexerAsyncClient {
      *     name: String (Required)
      *     description: String (Optional)
      *     type: String(azuresql/cosmosdb/azureblob/azuretable/mysql/adlsgen2/onelake/sharepoint) (Required)
-     *     subType: String (Optional)
      *     credentials (Required): {
      *         connectionString: String (Optional)
      *     }
@@ -164,9 +163,6 @@ public final class SearchIndexerAsyncClient {
      *     identity (Optional): {
      *         &#64;odata.type: String (Required)
      *     }
-     *     indexerPermissionOptions (Optional): [
-     *         String(userIds/groupIds/rbacScope) (Optional)
-     *     ]
      *     dataChangeDetectionPolicy (Optional): {
      *         &#64;odata.type: String (Required)
      *     }
@@ -253,6 +249,8 @@ public final class SearchIndexerAsyncClient {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
      * performed only if the ETag on the server matches this value.</td></tr>
      * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
@@ -284,6 +282,14 @@ public final class SearchIndexerAsyncClient {
      * properties. In the form of "," separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -294,7 +300,6 @@ public final class SearchIndexerAsyncClient {
      *             name: String (Required)
      *             description: String (Optional)
      *             type: String(azuresql/cosmosdb/azureblob/azuretable/mysql/adlsgen2/onelake/sharepoint) (Required)
-     *             subType: String (Optional)
      *             credentials (Required): {
      *                 connectionString: String (Optional)
      *             }
@@ -305,9 +310,6 @@ public final class SearchIndexerAsyncClient {
      *             identity (Optional): {
      *                 &#64;odata.type: String (Required)
      *             }
-     *             indexerPermissionOptions (Optional): [
-     *                 String(userIds/groupIds/rbacScope) (Optional)
-     *             ]
      *             dataChangeDetectionPolicy (Optional): {
      *                 &#64;odata.type: String (Required)
      *             }
@@ -347,6 +349,14 @@ public final class SearchIndexerAsyncClient {
 
     /**
      * Resets the change tracking state associated with an indexer.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * @param name The name of the indexer.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -363,84 +373,15 @@ public final class SearchIndexerAsyncClient {
     }
 
     /**
-     * Resync selective options from the datasource to be re-ingested by the indexer.".
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     options (Optional): [
-     *         String(permissions) (Optional)
-     *     ]
-     * }
-     * }
-     * </pre>
-     *
-     * @param name The name of the indexer.
-     * @param indexerResync The definition of the indexer resync options.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> resyncWithResponse(String name, BinaryData indexerResync,
-        RequestOptions requestOptions) {
-        return this.serviceClient.resyncWithResponseAsync(name, indexerResync, requestOptions);
-    }
-
-    /**
-     * Resets specific documents in the datasource to be selectively re-ingested by the indexer.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>overwrite</td><td>Boolean</td><td>No</td><td>If false, keys or ids will be appended to existing ones. If
-     * true, only the keys or ids in this payload will be queued to be re-ingested.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * Runs an indexer on-demand.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
-     * "application/json".</td></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     documentKeys (Optional): [
-     *         String (Optional)
-     *     ]
-     *     datasourceDocumentIds (Optional): [
-     *         String (Optional)
-     *     ]
-     * }
-     * }
-     * </pre>
-     *
-     * @param name The name of the indexer.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> resetDocumentsWithResponse(String name, RequestOptions requestOptions) {
-        return this.serviceClient.resetDocumentsWithResponseAsync(name, requestOptions);
-    }
-
-    /**
-     * Runs an indexer on-demand.
      *
      * @param name The name of the indexer.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -458,19 +399,12 @@ public final class SearchIndexerAsyncClient {
 
     /**
      * Creates a new indexer or updates an indexer if it already exists.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>ignoreResetRequirements</td><td>Boolean</td><td>No</td><td>Ignores cache reset requirements.</td></tr>
-     * <tr><td>disableCacheReprocessingChangeDetection</td><td>Boolean</td><td>No</td><td>Disables cache reprocessing
-     * change detection.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
      * performed only if the ETag on the server matches this value.</td></tr>
      * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
@@ -548,12 +482,6 @@ public final class SearchIndexerAsyncClient {
      *             &#64;odata.type: String (Required)
      *         }
      *     }
-     *     cache (Optional): {
-     *         id: String (Optional)
-     *         storageConnectionString: String (Optional)
-     *         enableReprocessing: Boolean (Optional)
-     *         identity (Optional): (recursive schema, see identity above)
-     *     }
      * }
      * }
      * </pre>
@@ -628,12 +556,6 @@ public final class SearchIndexerAsyncClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
-     *     }
-     *     cache (Optional): {
-     *         id: String (Optional)
-     *         storageConnectionString: String (Optional)
-     *         enableReprocessing: Boolean (Optional)
-     *         identity (Optional): (recursive schema, see identity above)
      *     }
      * }
      * }
@@ -702,6 +624,8 @@ public final class SearchIndexerAsyncClient {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
      * performed only if the ETag on the server matches this value.</td></tr>
      * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
@@ -733,6 +657,14 @@ public final class SearchIndexerAsyncClient {
      * properties. In the form of "," separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -806,12 +738,6 @@ public final class SearchIndexerAsyncClient {
      *                     &#64;odata.type: String (Required)
      *                 }
      *             }
-     *             cache (Optional): {
-     *                 id: String (Optional)
-     *                 storageConnectionString: String (Optional)
-     *                 enableReprocessing: Boolean (Optional)
-     *                 identity (Optional): (recursive schema, see identity above)
-     *             }
      *         }
      *     ]
      * }
@@ -834,19 +760,12 @@ public final class SearchIndexerAsyncClient {
 
     /**
      * Creates a new skillset in a search service or updates the skillset if it already exists.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>ignoreResetRequirements</td><td>Boolean</td><td>No</td><td>Ignores cache reset requirements.</td></tr>
-     * <tr><td>disableCacheReprocessingChangeDetection</td><td>Boolean</td><td>No</td><td>Disables cache reprocessing
-     * change detection.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
      * performed only if the ETag on the server matches this value.</td></tr>
      * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
@@ -932,12 +851,6 @@ public final class SearchIndexerAsyncClient {
      *         ]
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
-     *         }
-     *         parameters (Optional): {
-     *             synthesizeGeneratedKeyName: Boolean (Optional)
-     *              (Optional): {
-     *                 String: Object (Required)
-     *             }
      *         }
      *     }
      *     indexProjections (Optional): {
@@ -1052,12 +965,6 @@ public final class SearchIndexerAsyncClient {
      *         ]
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
-     *         }
-     *         parameters (Optional): {
-     *             synthesizeGeneratedKeyName: Boolean (Optional)
-     *              (Optional): {
-     *                 String: Object (Required)
-     *             }
      *         }
      *     }
      *     indexProjections (Optional): {
@@ -1156,6 +1063,8 @@ public final class SearchIndexerAsyncClient {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
      * performed only if the ETag on the server matches this value.</td></tr>
      * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
@@ -1187,6 +1096,14 @@ public final class SearchIndexerAsyncClient {
      * properties. In the form of "," separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -1269,12 +1186,6 @@ public final class SearchIndexerAsyncClient {
      *                 identity (Optional): {
      *                     &#64;odata.type: String (Required)
      *                 }
-     *                 parameters (Optional): {
-     *                     synthesizeGeneratedKeyName: Boolean (Optional)
-     *                      (Optional): {
-     *                         String: Object (Required)
-     *                     }
-     *                 }
      *             }
      *             indexProjections (Optional): {
      *                 selectors (Required): [
@@ -1323,76 +1234,6 @@ public final class SearchIndexerAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<BinaryData>> getSkillsetsWithResponse(RequestOptions requestOptions) {
         return this.serviceClient.getSkillsetsWithResponseAsync(requestOptions);
-    }
-
-    /**
-     * Reset an existing skillset in a search service.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     skillNames (Optional): [
-     *         String (Optional)
-     *     ]
-     * }
-     * }
-     * </pre>
-     *
-     * @param name The name of the skillset.
-     * @param skillNames The names of the skills to reset. If not specified, all skills in the skillset will be reset.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> resetSkillsWithResponse(String name, BinaryData skillNames,
-        RequestOptions requestOptions) {
-        return this.serviceClient.resetSkillsWithResponseAsync(name, skillNames, requestOptions);
-    }
-
-    /**
-     * Creates a new datasource or updates a datasource if it already exists.
-     *
-     * @param name The name of the datasource.
-     * @param dataSource The definition of the datasource to create or update.
-     * @param skipIndexerResetRequirementForCache Ignores cache reset requirements.
-     * @param matchConditions Specifies HTTP options for conditional requests.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a datasource definition, which can be used to configure an indexer on successful completion of
-     * {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<SearchIndexerDataSourceConnection> createOrUpdateDataSourceConnection(String name,
-        SearchIndexerDataSourceConnection dataSource, Boolean skipIndexerResetRequirementForCache,
-        MatchConditions matchConditions) {
-        // Generated convenience method for createOrUpdateDataSourceConnectionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
-        String ifNoneMatch = matchConditions == null ? null : matchConditions.getIfNoneMatch();
-        if (skipIndexerResetRequirementForCache != null) {
-            requestOptions.addQueryParam("ignoreResetRequirements", String.valueOf(skipIndexerResetRequirementForCache),
-                false);
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        return createOrUpdateDataSourceConnectionWithResponse(name, BinaryData.fromObject(dataSource), requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(SearchIndexerDataSourceConnection.class));
     }
 
     /**
@@ -1593,35 +1434,6 @@ public final class SearchIndexerAsyncClient {
     /**
      * Lists all datasources available for a search service.
      *
-     * @param select Selects which top-level properties to retrieve. Specified as a comma-separated list of JSON
-     * property names, or '*' for all properties. The default is all properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a List Datasources request on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ListDataSourcesResult> getDataSourceConnections(List<String> select) {
-        // Generated convenience method for getDataSourceConnectionsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (select != null) {
-            requestOptions.addQueryParam("$select",
-                select.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
-        }
-        return getDataSourceConnectionsWithResponse(requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(ListDataSourcesResult.class));
-    }
-
-    /**
-     * Lists all datasources available for a search service.
-     *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
@@ -1683,77 +1495,6 @@ public final class SearchIndexerAsyncClient {
     }
 
     /**
-     * Resync selective options from the datasource to be re-ingested by the indexer.".
-     *
-     * @param name The name of the indexer.
-     * @param indexerResync The definition of the indexer resync options.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> resync(String name, IndexerResyncBody indexerResync) {
-        // Generated convenience method for resyncWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return resyncWithResponse(name, BinaryData.fromObject(indexerResync), requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Resets specific documents in the datasource to be selectively re-ingested by the indexer.
-     *
-     * @param name The name of the indexer.
-     * @param overwrite If false, keys or ids will be appended to existing ones. If true, only the keys or ids in this
-     * payload will be queued to be re-ingested.
-     * @param keysOrIds The keys or ids of the documents to be re-ingested. If keys are provided, the document key field
-     * must be specified in the indexer configuration. If ids are provided, the document key field is ignored.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> resetDocuments(String name, Boolean overwrite, DocumentKeysOrIds keysOrIds) {
-        // Generated convenience method for resetDocumentsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (overwrite != null) {
-            requestOptions.addQueryParam("overwrite", String.valueOf(overwrite), false);
-        }
-        if (keysOrIds != null) {
-            requestOptions.setBody(BinaryData.fromObject(keysOrIds));
-        }
-        return resetDocumentsWithResponse(name, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Resets specific documents in the datasource to be selectively re-ingested by the indexer.
-     *
-     * @param name The name of the indexer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> resetDocuments(String name) {
-        // Generated convenience method for resetDocumentsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return resetDocumentsWithResponse(name, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
      * Runs an indexer on-demand.
      *
      * @param name The name of the indexer.
@@ -1771,50 +1512,6 @@ public final class SearchIndexerAsyncClient {
         // Generated convenience method for runIndexerWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return runIndexerWithResponse(name, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Creates a new indexer or updates an indexer if it already exists.
-     *
-     * @param name The name of the indexer.
-     * @param indexer The definition of the indexer to create or update.
-     * @param skipIndexerResetRequirementForCache Ignores cache reset requirements.
-     * @param disableCacheReprocessingChangeDetection Disables cache reprocessing change detection.
-     * @param matchConditions Specifies HTTP options for conditional requests.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an indexer on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<SearchIndexer> createOrUpdateIndexer(String name, SearchIndexer indexer,
-        Boolean skipIndexerResetRequirementForCache, Boolean disableCacheReprocessingChangeDetection,
-        MatchConditions matchConditions) {
-        // Generated convenience method for createOrUpdateIndexerWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
-        String ifNoneMatch = matchConditions == null ? null : matchConditions.getIfNoneMatch();
-        if (skipIndexerResetRequirementForCache != null) {
-            requestOptions.addQueryParam("ignoreResetRequirements", String.valueOf(skipIndexerResetRequirementForCache),
-                false);
-        }
-        if (disableCacheReprocessingChangeDetection != null) {
-            requestOptions.addQueryParam("disableCacheReprocessingChangeDetection",
-                String.valueOf(disableCacheReprocessingChangeDetection), false);
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        return createOrUpdateIndexerWithResponse(name, BinaryData.fromObject(indexer), requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(SearchIndexer.class));
     }
 
     /**
@@ -1927,35 +1624,6 @@ public final class SearchIndexerAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return hiddenGeneratedgetIndexerWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(SearchIndexer.class));
-    }
-
-    /**
-     * Lists all indexers available for a search service.
-     *
-     * @param select Selects which top-level properties to retrieve. Specified as a comma-separated list of JSON
-     * property names, or '*' for all properties. The default is all properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a List Indexers request on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ListIndexersResult> getIndexers(List<String> select) {
-        // Generated convenience method for getIndexersWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (select != null) {
-            requestOptions.addQueryParam("$select",
-                select.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
-        }
-        return getIndexersWithResponse(requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(ListIndexersResult.class));
     }
 
     /**
@@ -2100,50 +1768,6 @@ public final class SearchIndexerAsyncClient {
      *
      * @param name The name of the skillset.
      * @param skillset The skillset containing one or more skills to create or update in a search service.
-     * @param skipIndexerResetRequirementForCache Ignores cache reset requirements.
-     * @param disableCacheReprocessingChangeDetection Disables cache reprocessing change detection.
-     * @param matchConditions Specifies HTTP options for conditional requests.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of skills on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<SearchIndexerSkillset> createOrUpdateSkillset(String name, SearchIndexerSkillset skillset,
-        Boolean skipIndexerResetRequirementForCache, Boolean disableCacheReprocessingChangeDetection,
-        MatchConditions matchConditions) {
-        // Generated convenience method for createOrUpdateSkillsetWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
-        String ifNoneMatch = matchConditions == null ? null : matchConditions.getIfNoneMatch();
-        if (skipIndexerResetRequirementForCache != null) {
-            requestOptions.addQueryParam("ignoreResetRequirements", String.valueOf(skipIndexerResetRequirementForCache),
-                false);
-        }
-        if (disableCacheReprocessingChangeDetection != null) {
-            requestOptions.addQueryParam("disableCacheReprocessingChangeDetection",
-                String.valueOf(disableCacheReprocessingChangeDetection), false);
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        return createOrUpdateSkillsetWithResponse(name, BinaryData.fromObject(skillset), requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(SearchIndexerSkillset.class));
-    }
-
-    /**
-     * Creates a new skillset in a search service or updates the skillset if it already exists.
-     *
-     * @param name The name of the skillset.
-     * @param skillset The skillset containing one or more skills to create or update in a search service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2249,35 +1873,6 @@ public final class SearchIndexerAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return hiddenGeneratedgetSkillsetWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(SearchIndexerSkillset.class));
-    }
-
-    /**
-     * List all skillsets in a search service.
-     *
-     * @param select Selects which top-level properties to retrieve. Specified as a comma-separated list of JSON
-     * property names, or '*' for all properties. The default is all properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a list skillset request on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ListSkillsetsResult> getSkillsets(List<String> select) {
-        // Generated convenience method for getSkillsetsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (select != null) {
-            requestOptions.addQueryParam("$select",
-                select.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
-        }
-        return getSkillsetsWithResponse(requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(ListSkillsetsResult.class));
     }
 
     /**
@@ -2397,28 +1992,6 @@ public final class SearchIndexerAsyncClient {
         return hiddenGeneratedcreateSkillsetWithResponse(BinaryData.fromObject(skillset), requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(SearchIndexerSkillset.class));
-    }
-
-    /**
-     * Reset an existing skillset in a search service.
-     *
-     * @param name The name of the skillset.
-     * @param skillNames The names of the skills to reset. If not specified, all skills in the skillset will be reset.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> resetSkills(String name, SkillNames skillNames) {
-        // Generated convenience method for resetSkillsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return resetSkillsWithResponse(name, BinaryData.fromObject(skillNames), requestOptions)
-            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -2551,6 +2124,14 @@ public final class SearchIndexerAsyncClient {
 
     /**
      * Retrieves a datasource definition.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -2559,7 +2140,6 @@ public final class SearchIndexerAsyncClient {
      *     name: String (Required)
      *     description: String (Optional)
      *     type: String(azuresql/cosmosdb/azureblob/azuretable/mysql/adlsgen2/onelake/sharepoint) (Required)
-     *     subType: String (Optional)
      *     credentials (Required): {
      *         connectionString: String (Optional)
      *     }
@@ -2570,9 +2150,6 @@ public final class SearchIndexerAsyncClient {
      *     identity (Optional): {
      *         &#64;odata.type: String (Required)
      *     }
-     *     indexerPermissionOptions (Optional): [
-     *         String(userIds/groupIds/rbacScope) (Optional)
-     *     ]
      *     dataChangeDetectionPolicy (Optional): {
      *         &#64;odata.type: String (Required)
      *     }
@@ -2612,6 +2189,14 @@ public final class SearchIndexerAsyncClient {
 
     /**
      * Creates a new datasource.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -2620,7 +2205,6 @@ public final class SearchIndexerAsyncClient {
      *     name: String (Required)
      *     description: String (Optional)
      *     type: String(azuresql/cosmosdb/azureblob/azuretable/mysql/adlsgen2/onelake/sharepoint) (Required)
-     *     subType: String (Optional)
      *     credentials (Required): {
      *         connectionString: String (Optional)
      *     }
@@ -2631,9 +2215,6 @@ public final class SearchIndexerAsyncClient {
      *     identity (Optional): {
      *         &#64;odata.type: String (Required)
      *     }
-     *     indexerPermissionOptions (Optional): [
-     *         String(userIds/groupIds/rbacScope) (Optional)
-     *     ]
      *     dataChangeDetectionPolicy (Optional): {
      *         &#64;odata.type: String (Required)
      *     }
@@ -2663,7 +2244,6 @@ public final class SearchIndexerAsyncClient {
      *     name: String (Required)
      *     description: String (Optional)
      *     type: String(azuresql/cosmosdb/azureblob/azuretable/mysql/adlsgen2/onelake/sharepoint) (Required)
-     *     subType: String (Optional)
      *     credentials (Required): {
      *         connectionString: String (Optional)
      *     }
@@ -2674,9 +2254,6 @@ public final class SearchIndexerAsyncClient {
      *     identity (Optional): {
      *         &#64;odata.type: String (Required)
      *     }
-     *     indexerPermissionOptions (Optional): [
-     *         String(userIds/groupIds/rbacScope) (Optional)
-     *     ]
      *     dataChangeDetectionPolicy (Optional): {
      *         &#64;odata.type: String (Required)
      *     }
@@ -2716,6 +2293,14 @@ public final class SearchIndexerAsyncClient {
 
     /**
      * Retrieves an indexer definition.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -2787,12 +2372,6 @@ public final class SearchIndexerAsyncClient {
      *             &#64;odata.type: String (Required)
      *         }
      *     }
-     *     cache (Optional): {
-     *         id: String (Optional)
-     *         storageConnectionString: String (Optional)
-     *         enableReprocessing: Boolean (Optional)
-     *         identity (Optional): (recursive schema, see identity above)
-     *     }
      * }
      * }
      * </pre>
@@ -2813,6 +2392,14 @@ public final class SearchIndexerAsyncClient {
 
     /**
      * Creates a new indexer.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -2884,12 +2471,6 @@ public final class SearchIndexerAsyncClient {
      *             &#64;odata.type: String (Required)
      *         }
      *     }
-     *     cache (Optional): {
-     *         id: String (Optional)
-     *         storageConnectionString: String (Optional)
-     *         enableReprocessing: Boolean (Optional)
-     *         identity (Optional): (recursive schema, see identity above)
-     *     }
      * }
      * }
      * </pre>
@@ -2965,12 +2546,6 @@ public final class SearchIndexerAsyncClient {
      *             &#64;odata.type: String (Required)
      *         }
      *     }
-     *     cache (Optional): {
-     *         id: String (Optional)
-     *         storageConnectionString: String (Optional)
-     *         enableReprocessing: Boolean (Optional)
-     *         identity (Optional): (recursive schema, see identity above)
-     *     }
      * }
      * }
      * </pre>
@@ -2992,6 +2567,14 @@ public final class SearchIndexerAsyncClient {
 
     /**
      * Returns the current status and execution history of an indexer.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -2999,12 +2582,6 @@ public final class SearchIndexerAsyncClient {
      * {
      *     name: String (Required)
      *     status: String(unknown/error/running) (Required)
-     *     runtime (Required): {
-     *         usedSeconds: long (Required)
-     *         remainingSeconds: Long (Optional)
-     *         beginningTime: OffsetDateTime (Required)
-     *         endingTime: OffsetDateTime (Required)
-     *     }
      *     lastResult (Optional): {
      *         status: String(transientFailure/success/inProgress/reset) (Required)
      *         statusDetail: String(resetDocs/resync) (Optional)
@@ -3080,6 +2657,14 @@ public final class SearchIndexerAsyncClient {
 
     /**
      * Retrieves a skillset in a search service.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -3160,12 +2745,6 @@ public final class SearchIndexerAsyncClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
-     *         parameters (Optional): {
-     *             synthesizeGeneratedKeyName: Boolean (Optional)
-     *              (Optional): {
-     *                 String: Object (Required)
-     *             }
-     *         }
      *     }
      *     indexProjections (Optional): {
      *         selectors (Required): [
@@ -3216,6 +2795,14 @@ public final class SearchIndexerAsyncClient {
 
     /**
      * Creates a new skillset in a search service.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -3296,12 +2883,6 @@ public final class SearchIndexerAsyncClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
-     *         parameters (Optional): {
-     *             synthesizeGeneratedKeyName: Boolean (Optional)
-     *              (Optional): {
-     *                 String: Object (Required)
-     *             }
-     *         }
      *     }
      *     indexProjections (Optional): {
      *         selectors (Required): [
@@ -3416,12 +2997,6 @@ public final class SearchIndexerAsyncClient {
      *         identity (Optional): {
      *             &#64;odata.type: String (Required)
      *         }
-     *         parameters (Optional): {
-     *             synthesizeGeneratedKeyName: Boolean (Optional)
-     *              (Optional): {
-     *                 String: Object (Required)
-     *             }
-     *         }
      *     }
      *     indexProjections (Optional): {
      *         selectors (Required): [
@@ -3469,5 +3044,336 @@ public final class SearchIndexerAsyncClient {
     Mono<Response<BinaryData>> hiddenGeneratedcreateSkillsetWithResponse(BinaryData skillset,
         RequestOptions requestOptions) {
         return this.serviceClient.createSkillsetWithResponseAsync(skillset, requestOptions);
+    }
+
+    /**
+     * Retrieves a datasource definition.
+     *
+     * @param name The name of the datasource.
+     * @param accept The Accept header.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a datasource definition, which can be used to configure an indexer on successful completion of
+     * {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SearchIndexerDataSourceConnection> getDataSourceConnection(String name,
+        CreateOrUpdateRequestAccept32 accept) {
+        // Generated convenience method for hiddenGeneratedgetDataSourceConnectionWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (accept != null) {
+            requestOptions.setHeader(HttpHeaderName.ACCEPT, accept.toString());
+        }
+        return hiddenGeneratedgetDataSourceConnectionWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(SearchIndexerDataSourceConnection.class));
+    }
+
+    /**
+     * Lists all datasources available for a search service.
+     *
+     * @param accept The Accept header.
+     * @param select Selects which top-level properties to retrieve. Specified as a comma-separated list of JSON
+     * property names, or '*' for all properties. The default is all properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from a List Datasources request on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ListDataSourcesResult> getDataSourceConnections(CreateOrUpdateRequestAccept33 accept, List<String> select) {
+        // Generated convenience method for getDataSourceConnectionsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (accept != null) {
+            requestOptions.setHeader(HttpHeaderName.ACCEPT, accept.toString());
+        }
+        if (select != null) {
+            requestOptions.addQueryParam("$select",
+                select.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        return getDataSourceConnectionsWithResponse(requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(ListDataSourcesResult.class));
+    }
+
+    /**
+     * Creates a new datasource.
+     *
+     * @param dataSourceConnection The definition of the datasource to create.
+     * @param accept The Accept header.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a datasource definition, which can be used to configure an indexer on successful completion of
+     * {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SearchIndexerDataSourceConnection> createDataSourceConnection(
+        SearchIndexerDataSourceConnection dataSourceConnection, CreateOrUpdateRequestAccept34 accept) {
+        // Generated convenience method for hiddenGeneratedcreateDataSourceConnectionWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (accept != null) {
+            requestOptions.setHeader(HttpHeaderName.ACCEPT, accept.toString());
+        }
+        return hiddenGeneratedcreateDataSourceConnectionWithResponse(BinaryData.fromObject(dataSourceConnection),
+            requestOptions).flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(SearchIndexerDataSourceConnection.class));
+    }
+
+    /**
+     * Resets the change tracking state associated with an indexer.
+     *
+     * @param name The name of the indexer.
+     * @param accept The Accept header.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> resetIndexer(String name, CreateOrUpdateRequestAccept35 accept) {
+        // Generated convenience method for resetIndexerWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (accept != null) {
+            requestOptions.setHeader(HttpHeaderName.ACCEPT, accept.toString());
+        }
+        return resetIndexerWithResponse(name, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Runs an indexer on-demand.
+     *
+     * @param name The name of the indexer.
+     * @param accept The Accept header.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> runIndexer(String name, CreateOrUpdateRequestAccept36 accept) {
+        // Generated convenience method for runIndexerWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (accept != null) {
+            requestOptions.setHeader(HttpHeaderName.ACCEPT, accept.toString());
+        }
+        return runIndexerWithResponse(name, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Retrieves an indexer definition.
+     *
+     * @param name The name of the indexer.
+     * @param accept The Accept header.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents an indexer on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SearchIndexer> getIndexer(String name, CreateOrUpdateRequestAccept39 accept) {
+        // Generated convenience method for hiddenGeneratedgetIndexerWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (accept != null) {
+            requestOptions.setHeader(HttpHeaderName.ACCEPT, accept.toString());
+        }
+        return hiddenGeneratedgetIndexerWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(SearchIndexer.class));
+    }
+
+    /**
+     * Lists all indexers available for a search service.
+     *
+     * @param accept The Accept header.
+     * @param select Selects which top-level properties to retrieve. Specified as a comma-separated list of JSON
+     * property names, or '*' for all properties. The default is all properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from a List Indexers request on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ListIndexersResult> getIndexers(CreateOrUpdateRequestAccept40 accept, List<String> select) {
+        // Generated convenience method for getIndexersWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (accept != null) {
+            requestOptions.setHeader(HttpHeaderName.ACCEPT, accept.toString());
+        }
+        if (select != null) {
+            requestOptions.addQueryParam("$select",
+                select.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        return getIndexersWithResponse(requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(ListIndexersResult.class));
+    }
+
+    /**
+     * Creates a new indexer.
+     *
+     * @param indexer The definition of the indexer to create.
+     * @param accept The Accept header.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents an indexer on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SearchIndexer> createIndexer(SearchIndexer indexer, CreateOrUpdateRequestAccept41 accept) {
+        // Generated convenience method for hiddenGeneratedcreateIndexerWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (accept != null) {
+            requestOptions.setHeader(HttpHeaderName.ACCEPT, accept.toString());
+        }
+        return hiddenGeneratedcreateIndexerWithResponse(BinaryData.fromObject(indexer), requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(SearchIndexer.class));
+    }
+
+    /**
+     * Returns the current status and execution history of an indexer.
+     *
+     * @param name The name of the indexer.
+     * @param accept The Accept header.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents the current status and execution history of an indexer on successful completion of
+     * {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SearchIndexerStatus> getIndexerStatus(String name, CreateOrUpdateRequestAccept42 accept) {
+        // Generated convenience method for hiddenGeneratedgetIndexerStatusWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (accept != null) {
+            requestOptions.setHeader(HttpHeaderName.ACCEPT, accept.toString());
+        }
+        return hiddenGeneratedgetIndexerStatusWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(SearchIndexerStatus.class));
+    }
+
+    /**
+     * Retrieves a skillset in a search service.
+     *
+     * @param name The name of the skillset.
+     * @param accept The Accept header.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of skills on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SearchIndexerSkillset> getSkillset(String name, CreateOrUpdateRequestAccept45 accept) {
+        // Generated convenience method for hiddenGeneratedgetSkillsetWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (accept != null) {
+            requestOptions.setHeader(HttpHeaderName.ACCEPT, accept.toString());
+        }
+        return hiddenGeneratedgetSkillsetWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(SearchIndexerSkillset.class));
+    }
+
+    /**
+     * List all skillsets in a search service.
+     *
+     * @param accept The Accept header.
+     * @param select Selects which top-level properties to retrieve. Specified as a comma-separated list of JSON
+     * property names, or '*' for all properties. The default is all properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from a list skillset request on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ListSkillsetsResult> getSkillsets(CreateOrUpdateRequestAccept46 accept, List<String> select) {
+        // Generated convenience method for getSkillsetsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (accept != null) {
+            requestOptions.setHeader(HttpHeaderName.ACCEPT, accept.toString());
+        }
+        if (select != null) {
+            requestOptions.addQueryParam("$select",
+                select.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        return getSkillsetsWithResponse(requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(ListSkillsetsResult.class));
+    }
+
+    /**
+     * Creates a new skillset in a search service.
+     *
+     * @param skillset The skillset containing one or more skills to create in a search service.
+     * @param accept The Accept header.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of skills on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SearchIndexerSkillset> createSkillset(SearchIndexerSkillset skillset,
+        CreateOrUpdateRequestAccept47 accept) {
+        // Generated convenience method for hiddenGeneratedcreateSkillsetWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (accept != null) {
+            requestOptions.setHeader(HttpHeaderName.ACCEPT, accept.toString());
+        }
+        return hiddenGeneratedcreateSkillsetWithResponse(BinaryData.fromObject(skillset), requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(SearchIndexerSkillset.class));
     }
 }

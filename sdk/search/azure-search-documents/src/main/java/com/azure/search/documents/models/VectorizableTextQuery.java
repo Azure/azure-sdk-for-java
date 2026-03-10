@@ -28,12 +28,6 @@ public final class VectorizableTextQuery extends VectorQuery {
     @Generated
     private final String text;
 
-    /*
-     * Can be configured to let a generative model rewrite the query before sending it to be vectorized.
-     */
-    @Generated
-    private QueryRewritesType queryRewrites;
-
     /**
      * Creates an instance of VectorizableTextQuery class.
      *
@@ -63,30 +57,6 @@ public final class VectorizableTextQuery extends VectorQuery {
     @Generated
     public String getText() {
         return this.text;
-    }
-
-    /**
-     * Get the queryRewrites property: Can be configured to let a generative model rewrite the query before sending it
-     * to be vectorized.
-     *
-     * @return the queryRewrites value.
-     */
-    @Generated
-    public QueryRewritesType getQueryRewrites() {
-        return this.queryRewrites;
-    }
-
-    /**
-     * Set the queryRewrites property: Can be configured to let a generative model rewrite the query before sending it
-     * to be vectorized.
-     *
-     * @param queryRewrites the queryRewrites value to set.
-     * @return the VectorizableTextQuery object itself.
-     */
-    @Generated
-    public VectorizableTextQuery setQueryRewrites(QueryRewritesType queryRewrites) {
-        this.queryRewrites = queryRewrites;
-        return this;
     }
 
     /**
@@ -176,7 +146,6 @@ public final class VectorizableTextQuery extends VectorQuery {
         jsonWriter.writeNumberField("perDocumentVectorLimit", getPerDocumentVectorLimit());
         jsonWriter.writeStringField("text", this.text);
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
-        jsonWriter.writeStringField("queryRewrites", this.queryRewrites == null ? null : this.queryRewrites.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -202,7 +171,6 @@ public final class VectorizableTextQuery extends VectorQuery {
             Integer perDocumentVectorLimit = null;
             String text = null;
             VectorQueryKind kind = VectorQueryKind.TEXT;
-            QueryRewritesType queryRewrites = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -226,8 +194,6 @@ public final class VectorizableTextQuery extends VectorQuery {
                     text = reader.getString();
                 } else if ("kind".equals(fieldName)) {
                     kind = VectorQueryKind.fromString(reader.getString());
-                } else if ("queryRewrites".equals(fieldName)) {
-                    queryRewrites = QueryRewritesType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
@@ -242,7 +208,6 @@ public final class VectorizableTextQuery extends VectorQuery {
             deserializedVectorizableTextQuery.setFilterOverride(filterOverride);
             deserializedVectorizableTextQuery.setPerDocumentVectorLimit(perDocumentVectorLimit);
             deserializedVectorizableTextQuery.kind = kind;
-            deserializedVectorizableTextQuery.queryRewrites = queryRewrites;
             return deserializedVectorizableTextQuery;
         });
     }

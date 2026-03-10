@@ -69,16 +69,6 @@ public final class AzureBlobKnowledgeSourceParams extends KnowledgeSourceParams 
      */
     @Generated
     @Override
-    public AzureBlobKnowledgeSourceParams setAlwaysQuerySource(Boolean alwaysQuerySource) {
-        super.setAlwaysQuerySource(alwaysQuerySource);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
     public AzureBlobKnowledgeSourceParams setRerankerThreshold(Float rerankerThreshold) {
         super.setRerankerThreshold(rerankerThreshold);
         return this;
@@ -94,7 +84,6 @@ public final class AzureBlobKnowledgeSourceParams extends KnowledgeSourceParams 
         jsonWriter.writeStringField("knowledgeSourceName", getKnowledgeSourceName());
         jsonWriter.writeBooleanField("includeReferences", isIncludeReferences());
         jsonWriter.writeBooleanField("includeReferenceSourceData", isIncludeReferenceSourceData());
-        jsonWriter.writeBooleanField("alwaysQuerySource", isAlwaysQuerySource());
         jsonWriter.writeNumberField("rerankerThreshold", getRerankerThreshold());
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         return jsonWriter.writeEndObject();
@@ -115,7 +104,6 @@ public final class AzureBlobKnowledgeSourceParams extends KnowledgeSourceParams 
             String knowledgeSourceName = null;
             Boolean includeReferences = null;
             Boolean includeReferenceSourceData = null;
-            Boolean alwaysQuerySource = null;
             Float rerankerThreshold = null;
             KnowledgeSourceKind kind = KnowledgeSourceKind.AZURE_BLOB;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -127,8 +115,6 @@ public final class AzureBlobKnowledgeSourceParams extends KnowledgeSourceParams 
                     includeReferences = reader.getNullable(JsonReader::getBoolean);
                 } else if ("includeReferenceSourceData".equals(fieldName)) {
                     includeReferenceSourceData = reader.getNullable(JsonReader::getBoolean);
-                } else if ("alwaysQuerySource".equals(fieldName)) {
-                    alwaysQuerySource = reader.getNullable(JsonReader::getBoolean);
                 } else if ("rerankerThreshold".equals(fieldName)) {
                     rerankerThreshold = reader.getNullable(JsonReader::getFloat);
                 } else if ("kind".equals(fieldName)) {
@@ -141,7 +127,6 @@ public final class AzureBlobKnowledgeSourceParams extends KnowledgeSourceParams 
                 = new AzureBlobKnowledgeSourceParams(knowledgeSourceName);
             deserializedAzureBlobKnowledgeSourceParams.setIncludeReferences(includeReferences);
             deserializedAzureBlobKnowledgeSourceParams.setIncludeReferenceSourceData(includeReferenceSourceData);
-            deserializedAzureBlobKnowledgeSourceParams.setAlwaysQuerySource(alwaysQuerySource);
             deserializedAzureBlobKnowledgeSourceParams.setRerankerThreshold(rerankerThreshold);
             deserializedAzureBlobKnowledgeSourceParams.kind = kind;
             return deserializedAzureBlobKnowledgeSourceParams;

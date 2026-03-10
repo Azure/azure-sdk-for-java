@@ -31,12 +31,6 @@ public final class SearchIndexerStatus implements JsonSerializable<SearchIndexer
     private IndexerStatus status;
 
     /*
-     * Snapshot of the indexer's cumulative runtime consumption for the service over the current UTC period.
-     */
-    @Generated
-    private IndexerRuntime runtime;
-
-    /*
      * The result of the most recent or an in-progress indexer execution.
      */
     @Generated
@@ -85,17 +79,6 @@ public final class SearchIndexerStatus implements JsonSerializable<SearchIndexer
     @Generated
     public IndexerStatus getStatus() {
         return this.status;
-    }
-
-    /**
-     * Get the runtime property: Snapshot of the indexer's cumulative runtime consumption for the service over the
-     * current UTC period.
-     *
-     * @return the runtime value.
-     */
-    @Generated
-    public IndexerRuntime getRuntime() {
-        return this.runtime;
     }
 
     /**
@@ -169,8 +152,6 @@ public final class SearchIndexerStatus implements JsonSerializable<SearchIndexer
                     deserializedSearchIndexerStatus.name = reader.getString();
                 } else if ("status".equals(fieldName)) {
                     deserializedSearchIndexerStatus.status = IndexerStatus.fromString(reader.getString());
-                } else if ("runtime".equals(fieldName)) {
-                    deserializedSearchIndexerStatus.runtime = IndexerRuntime.fromJson(reader);
                 } else if ("executionHistory".equals(fieldName)) {
                     List<IndexerExecutionResult> executionHistory
                         = reader.readArray(reader1 -> IndexerExecutionResult.fromJson(reader1));
