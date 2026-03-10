@@ -6,6 +6,7 @@ package com.azure.ai.contentunderstanding.tests.samples;
 
 import com.azure.ai.contentunderstanding.models.AnalysisResult;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus;
+import com.azure.ai.contentunderstanding.models.ContentRange;
 import com.azure.ai.contentunderstanding.models.DocumentContent;
 import com.azure.ai.contentunderstanding.models.DocumentPage;
 import com.azure.ai.contentunderstanding.models.DocumentTable;
@@ -258,5 +259,108 @@ public class Sample01_AnalyzeBinaryTest extends ContentUnderstandingClientTestBa
                 .println("⚠️ Content type: " + content.getClass().getSimpleName() + " (AnalysisContent validated)");
         }
         // END:Assertion_ContentUnderstandingAccessDocumentProperties
+    }
+
+    @Test
+    public void testAnalyzeBinaryWithPageContentRanges() throws IOException {
+
+        // Load the multi-page sample file (4 pages)
+        String filePath = "src/samples/resources/mixed_financial_docs.pdf";
+        Path path = Paths.get(filePath);
+        byte[] fileBytes = Files.readAllBytes(path);
+        BinaryData binaryData = BinaryData.fromBytes(fileBytes);
+
+        // Full analysis for comparison
+        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> fullOperation
+            = contentUnderstandingClient.beginAnalyzeBinary("prebuilt-documentSearch", binaryData);
+        AnalysisResult fullResult = fullOperation.getFinalResult();
+        DocumentContent fullDoc = (DocumentContent) fullResult.getContents().get(0);
+        assertEquals(4, fullDoc.getPages().size(), "Full document should return all 4 pages");
+
+        // BEGIN:ContentUnderstandingAnalyzeBinaryWithPagesFrom
+        // ---- PagesFrom(3) — extract pages 3 to end ----
+        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> rangeOperation
+            = contentUnderstandingClient.beginAnalyzeBinary("prebuilt-documentSearch", binaryData,
+                ContentRange.pagesFrom(3), "application/octet-stream", null);
+        AnalysisResult rangeResult = rangeOperation.getFinalResult();
+        // END:ContentUnderstandingAnalyzeBinaryWithPagesFrom
+
+        // BEGIN:Assertion_ContentUnderstandingAnalyzeBinaryWithPagesFrom
+        assertNotNull(rangeOperation);
+        assertTrue(rangeOperation.waitForCompletion().getStatus().isComplete());
+        assertNotNull(rangeResult);
+        assertNotNull(rangeResult.getContents());
+        DocumentContent rangeDoc = (DocumentContent) rangeResult.getContents().get(0);
+        assertEquals(2, rangeDoc.getPages().size(), "With ContentRange.pagesFrom(3), should return only 2 pages");
+        assertEquals(3, rangeDoc.getStartPageNumber(), "pagesFrom(3) should start at page 3");
+        assertEquals(4, rangeDoc.getEndPageNumber(), "pagesFrom(3) should end at page 4");
+        assertTrue(fullDoc.getPages().size() > rangeDoc.getPages().size());
+        assertTrue(fullDoc.getMarkdown().length() > rangeDoc.getMarkdown().length());
+        // END:Assertion_ContentUnderstandingAnalyzeBinaryWithPagesFrom
+
+        // BEGIN:ContentUnderstandingAnalyzeBinaryWithCombinedPages
+        // ---- Combine(Pages(1,3), Page(5), PagesFrom(9)) — combined page ranges ----
+        // Note: The document has only 4 pages, so Page(5) and PagesFrom(9) will be clamped
+        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> combineRangeOperation
+            = contentUnderstandingClient.beginAnalyzeBinary("prebuilt-documentSearch", binaryData,
+                ContentRange.combine(ContentRange.pages(1, 3), ContentRange.page(5), ContentRange.pagesFrom(9)),
+                "application/octet-stream", null);
+        AnalysisResult combineRangeResult = combineRangeOperation.getFinalResult();
+        // END:ContentUnderstandingAnalyzeBinaryWithCombinedPages
+
+        // BEGIN:Assertion_ContentUnderstandingAnalyzeBinaryWithCombinedPages
+        assertNotNull(combineRangeOperation);
+        assertTrue(combineRangeOperation.waitForCompletion().getStatus().isComplete());
+        assertNotNull(combineRangeResult);
+        assertNotNull(combineRangeResult.getContents());
+        DocumentContent combineRangeDoc = (DocumentContent) combineRangeResult.getContents().get(0);
+        assertTrue(combineRangeDoc.getPages().size() > 0);
+        assertTrue(fullDoc.getMarkdown().length() >= combineRangeDoc.getMarkdown().length());
+        // END:Assertion_ContentUnderstandingAnalyzeBinaryWithCombinedPages
+
+        // BEGIN:ContentUnderstandingAnalyzeBinaryWithSinglePage
+        // ---- Page(2) — single page ----
+        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> page2Operation
+            = contentUnderstandingClient.beginAnalyzeBinary("prebuilt-documentSearch", binaryData, ContentRange.page(2),
+                "application/octet-stream", null);
+        DocumentContent page2Doc = (DocumentContent) page2Operation.getFinalResult().getContents().get(0);
+        // END:ContentUnderstandingAnalyzeBinaryWithSinglePage
+
+        // BEGIN:Assertion_ContentUnderstandingAnalyzeBinaryWithSinglePage
+        assertEquals(1, page2Doc.getPages().size(), "Page(2) should return exactly 1 page");
+        assertEquals(2, page2Doc.getStartPageNumber(), "Page(2) should start at page 2");
+        assertEquals(2, page2Doc.getEndPageNumber(), "Page(2) should end at page 2");
+        assertTrue(fullDoc.getMarkdown().length() > page2Doc.getMarkdown().length());
+        // END:Assertion_ContentUnderstandingAnalyzeBinaryWithSinglePage
+
+        // BEGIN:ContentUnderstandingAnalyzeBinaryWithPageRange
+        // ---- Pages(1, 3) — page range ----
+        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> pages13Operation
+            = contentUnderstandingClient.beginAnalyzeBinary("prebuilt-documentSearch", binaryData,
+                ContentRange.pages(1, 3), "application/octet-stream", null);
+        DocumentContent pages13Doc = (DocumentContent) pages13Operation.getFinalResult().getContents().get(0);
+        // END:ContentUnderstandingAnalyzeBinaryWithPageRange
+
+        // BEGIN:Assertion_ContentUnderstandingAnalyzeBinaryWithPageRange
+        assertEquals(3, pages13Doc.getPages().size(), "Pages(1,3) should return exactly 3 pages");
+        assertEquals(1, pages13Doc.getStartPageNumber());
+        assertEquals(3, pages13Doc.getEndPageNumber());
+        assertTrue(fullDoc.getMarkdown().length() > pages13Doc.getMarkdown().length());
+        // END:Assertion_ContentUnderstandingAnalyzeBinaryWithPageRange
+
+        // BEGIN:ContentUnderstandingAnalyzeBinaryWithCombinedPageAndRange
+        // ---- Combine(Page(1), Pages(3, 4)) — combined single page and page range ----
+        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> combineOperation
+            = contentUnderstandingClient.beginAnalyzeBinary("prebuilt-documentSearch", binaryData,
+                ContentRange.combine(ContentRange.page(1), ContentRange.pages(3, 4)), "application/octet-stream", null);
+        DocumentContent combineDoc = (DocumentContent) combineOperation.getFinalResult().getContents().get(0);
+        // END:ContentUnderstandingAnalyzeBinaryWithCombinedPageAndRange
+
+        // BEGIN:Assertion_ContentUnderstandingAnalyzeBinaryWithCombinedPageAndRange
+        assertTrue(combineDoc.getPages().size() >= 2);
+        assertEquals(1, combineDoc.getStartPageNumber());
+        assertTrue(combineDoc.getEndPageNumber() >= 4);
+        assertTrue(fullDoc.getMarkdown().length() >= combineDoc.getMarkdown().length());
+        // END:Assertion_ContentUnderstandingAnalyzeBinaryWithCombinedPageAndRange
     }
 }
