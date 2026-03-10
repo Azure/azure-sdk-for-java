@@ -298,4 +298,76 @@ public class AppConfigurationReplicaClientBuilderTest {
             exception.getMessage());
     }
 
+    @Test
+    public void buildClientsWithLoadBalancingEnabledTest() {
+        // Test that load balancing shuffles the order of clients
+        configStore = new ConfigStore();
+        List<String> endpoints = new ArrayList<>();
+
+        // Add multiple endpoints to shuffle
+        endpoints.add(TEST_ENDPOINT);
+        endpoints.add(TEST_ENDPOINT_GEO);
+        endpoints.add("https://third.test.config.io");
+        endpoints.add("https://fourth.test.config.io");
+
+        configStore.setEndpoints(endpoints);
+        configStore.setLoadBalancingEnabled(true);
+        configStore.validateAndInit();
+
+        clientBuilder = new AppConfigurationReplicaClientsBuilder(clientFactoryMock, null, false, false);
+        AppConfigurationReplicaClientsBuilder spy = Mockito.spy(clientBuilder);
+
+        ConfigurationClientBuilder builder = new ConfigurationClientBuilder();
+        when(builderMock.endpoint(Mockito.anyString())).thenReturn(builder);
+        when(builderMock.addPolicy(Mockito.any())).thenReturn(builderMock);
+        when(clientFactoryMock.build()).thenReturn(builderMock);
+
+        // Build clients multiple times and verify that order changes (due to shuffle)
+        List<AppConfigurationReplicaClient> clients1 = spy.buildClients(configStore);
+        List<AppConfigurationReplicaClient> clients2 = spy.buildClients(configStore);
+
+        assertEquals(4, clients1.size());
+        assertEquals(4, clients2.size());
+
+        // The order should potentially differ due to random shuffling
+        // We can't guarantee they're different, but we can verify the same endpoints exist
+        List<String> endpoints1 = clients1.stream().map(AppConfigurationReplicaClient::getEndpoint).toList();
+        List<String> endpoints2 = clients2.stream().map(AppConfigurationReplicaClient::getEndpoint).toList();
+
+        // All endpoints should be present in both lists (just potentially in different order)
+        assertTrue(endpoints1.containsAll(endpoints));
+        assertTrue(endpoints2.containsAll(endpoints));
+    }
+
+    @Test
+    public void buildClientsWithLoadBalancingDisabledTest() {
+        // Test that without load balancing, order is preserved
+        configStore = new ConfigStore();
+        List<String> endpoints = new ArrayList<>();
+
+        endpoints.add(TEST_ENDPOINT);
+        endpoints.add(TEST_ENDPOINT_GEO);
+        endpoints.add("https://third.test.config.io");
+
+        configStore.setEndpoints(endpoints);
+        configStore.setLoadBalancingEnabled(false);
+        configStore.validateAndInit();
+
+        clientBuilder = new AppConfigurationReplicaClientsBuilder(clientFactoryMock, null, false, false);
+        AppConfigurationReplicaClientsBuilder spy = Mockito.spy(clientBuilder);
+
+        ConfigurationClientBuilder builder = new ConfigurationClientBuilder();
+        when(builderMock.endpoint(Mockito.anyString())).thenReturn(builder);
+        when(builderMock.addPolicy(Mockito.any())).thenReturn(builderMock);
+        when(clientFactoryMock.build()).thenReturn(builderMock);
+
+        List<AppConfigurationReplicaClient> clients = spy.buildClients(configStore);
+
+        assertEquals(3, clients.size());
+        // When load balancing is disabled, order should match input order
+        assertEquals(TEST_ENDPOINT, clients.get(0).getEndpoint());
+        assertEquals(TEST_ENDPOINT_GEO, clients.get(1).getEndpoint());
+        assertEquals("https://third.test.config.io", clients.get(2).getEndpoint());
+    }
+
 }
