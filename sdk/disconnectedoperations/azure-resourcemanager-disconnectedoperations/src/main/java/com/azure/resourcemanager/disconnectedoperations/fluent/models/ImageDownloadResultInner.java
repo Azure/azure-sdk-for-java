@@ -10,6 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.disconnectedoperations.models.ImageUpdateProperties;
 import com.azure.resourcemanager.disconnectedoperations.models.ReleaseType;
 import com.azure.resourcemanager.disconnectedoperations.models.ResourceProvisioningState;
 import java.io.IOException;
@@ -56,6 +57,11 @@ public final class ImageDownloadResultInner implements JsonSerializable<ImageDow
      * The versions that are compatible for this update package.
      */
     private List<String> compatibleVersions;
+
+    /*
+     * Image update properties for update release type image.
+     */
+    private ImageUpdateProperties updateProperties;
 
     /*
      * The unique identifier of the download
@@ -142,6 +148,15 @@ public final class ImageDownloadResultInner implements JsonSerializable<ImageDow
     }
 
     /**
+     * Get the updateProperties property: Image update properties for update release type image.
+     * 
+     * @return the updateProperties value.
+     */
+    public ImageUpdateProperties updateProperties() {
+        return this.updateProperties;
+    }
+
+    /**
      * Get the transactionId property: The unique identifier of the download.
      * 
      * @return the transactionId value.
@@ -217,6 +232,8 @@ public final class ImageDownloadResultInner implements JsonSerializable<ImageDow
                 } else if ("compatibleVersions".equals(fieldName)) {
                     List<String> compatibleVersions = reader.readArray(reader1 -> reader1.getString());
                     deserializedImageDownloadResultInner.compatibleVersions = compatibleVersions;
+                } else if ("updateProperties".equals(fieldName)) {
+                    deserializedImageDownloadResultInner.updateProperties = ImageUpdateProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

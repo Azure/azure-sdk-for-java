@@ -26,6 +26,12 @@ public final class ArtifactsContainerInfo implements JsonSerializable<ArtifactsC
     @Generated
     private String url;
 
+    /*
+     * Expiry time of the container (RFC 3339 literal format)
+     */
+    @Generated
+    private OffsetDateTime expiresOn;
+
     /**
      * Creates an instance of ArtifactsContainerInfo class.
      */
@@ -41,6 +47,16 @@ public final class ArtifactsContainerInfo implements JsonSerializable<ArtifactsC
     @Generated
     public String getUrl() {
         return this.url;
+    }
+
+    /**
+     * Get the expiresOn property: Expiry time of the container (RFC 3339 literal format).
+     *
+     * @return the expiresOn value.
+     */
+    @Generated
+    public OffsetDateTime getExpiresOn() {
+        return this.expiresOn;
     }
 
     /**
@@ -82,21 +98,5 @@ public final class ArtifactsContainerInfo implements JsonSerializable<ArtifactsC
             }
             return deserializedArtifactsContainerInfo;
         });
-    }
-
-    /*
-     * Expiry time of the container (RFC 3339 literal format)
-     */
-    @Generated
-    private OffsetDateTime expiresOn;
-
-    /**
-     * Get the expiresOn property: Expiry time of the container (RFC 3339 literal format).
-     *
-     * @return the expiresOn value.
-     */
-    @Generated
-    public OffsetDateTime getExpiresOn() {
-        return this.expiresOn;
     }
 }

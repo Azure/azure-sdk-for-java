@@ -10,6 +10,11 @@
 
 #### Other Changes
 
+### 4.44.2 (2026-03-05)
+
+#### Other Changes
+* Changed azure-resourcemanager-cosmos usage to a pinned version which is deployed across all public and non-public clouds - [PR 48268](https://github.com/Azure/azure-sdk-for-java/pull/48268)
+
 ### 4.44.1 (2026-03-03)
 
 #### Other Changes

@@ -507,6 +507,33 @@ public class CosmosQueryRequestOptions {
 
 
     /**
+     * Gets queryAdviceEnabled, which is used to obtain query advice to understand aspects of the query
+     * that can be optimized. The results will be displayed in FeedResponse.getQueryAdvice().
+     * Please note that this option will incur additional latency overhead, so it should be enabled
+     * when debugging queries.
+     *
+     * @return queryAdviceEnabled (default: false)
+     */
+    public boolean isQueryAdviceEnabled() {
+        return this.actualRequestOptions.isQueryAdviceEnabled();
+    }
+
+    /**
+     * Sets queryAdviceEnabled, which is used to obtain query advice to understand aspects of the query
+     * that can be optimized. The results will be displayed in FeedResponse.getQueryAdvice().
+     * Please note that this option will incur additional latency overhead, so it should be enabled
+     * when debugging queries. By default, query advice is disabled.
+     *
+     * @param queryAdviceEnabled a boolean used to obtain the query advice
+     * @return the CosmosQueryRequestOptions instance
+     */
+    public CosmosQueryRequestOptions setQueryAdviceEnabled(boolean queryAdviceEnabled) {
+        this.actualRequestOptions.setQueryAdviceEnabled(queryAdviceEnabled);
+        return this;
+    }
+
+
+    /**
      * Sets the logical query name - this identifier is only used for metrics and logs
      * to distinguish different queries in telemetry. Cardinality of unique  values for queryName should be
      * reasonably low - like significantly smaller than 100.

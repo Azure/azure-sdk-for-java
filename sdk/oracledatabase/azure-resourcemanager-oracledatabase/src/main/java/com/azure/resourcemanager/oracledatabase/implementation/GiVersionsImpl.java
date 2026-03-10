@@ -30,12 +30,8 @@ public final class GiVersionsImpl implements GiVersions {
 
     public Response<GiVersion> getWithResponse(String location, String giversionname, Context context) {
         Response<GiVersionInner> inner = this.serviceClient().getWithResponse(location, giversionname, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new GiVersionImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new GiVersionImpl(inner.getValue(), this.manager()));
     }
 
     public GiVersion get(String location, String giversionname) {
