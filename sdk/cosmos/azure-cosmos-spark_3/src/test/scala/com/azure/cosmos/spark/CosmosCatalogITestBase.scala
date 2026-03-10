@@ -42,7 +42,7 @@ abstract class CosmosCatalogITestBase(val skipHive: Boolean = false) extends Int
     spark.conf.set(s"spark.sql.catalog.testCatalog.spark.cosmos.accountKey", cosmosMasterKey)
     spark.conf.set(
       "spark.sql.catalog.testCatalog.spark.cosmos.views.repositoryPath",
-      s"/tmp/viewRepository/${UUID.randomUUID().toString}")
+      s"/viewRepository/${UUID.randomUUID().toString}")
     spark.conf.set(
       "spark.sql.catalog.testCatalog.spark.cosmos.read.partitioning.strategy",
       "Restrictive")
@@ -493,11 +493,7 @@ abstract class CosmosCatalogITestBase(val skipHive: Boolean = false) extends Int
         raw""""excludedPaths":[{"path":"\/*"}],"vectorIndexes":[{"path":"\/vector1","type":"flat"}]}"""
 
     spark.sql(s"CREATE DATABASE testCatalog.$databaseName;")
-    val creationString = s"CREATE TABLE testCatalog.$databaseName.$containerName (word STRING, number INT) using cosmos.oltp " +
-      s"TBLPROPERTIES(partitionKeyPath = '/mypk', manualThroughput = '1100', " +
-      s"indexingPolicy = '$indexingPolicyJson', " +
-      s"vectorEmbeddingPolicy = '$vectorEmbeddingPolicyJson')"
-
+    
     spark.sql(s"CREATE TABLE testCatalog.$databaseName.$containerName (word STRING, number INT) using cosmos.oltp " +
       s"TBLPROPERTIES(partitionKeyPath = '/mypk', manualThroughput = '1100', " +
       s"indexingPolicy = '$indexingPolicyJson', " +
