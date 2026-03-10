@@ -21,29 +21,11 @@ public class TimeWindowUtils {
         if (!StringUtils.hasText(timeStr)) {
             return null;
         }
-        ZonedDateTime result;
         try {
-            result = ZonedDateTime.parse(timeStr, DateTimeFormatter.ISO_DATE_TIME);
+            return ZonedDateTime.parse(timeStr, DateTimeFormatter.ISO_DATE_TIME);
         } catch (final DateTimeParseException e) {
-            result = ZonedDateTime.parse(timeStr, DateTimeFormatter.RFC_1123_DATE_TIME);
+            return ZonedDateTime.parse(timeStr, DateTimeFormatter.RFC_1123_DATE_TIME);
         }
-        
-        // If the parsed ZonedDateTime has a fixed offset zone (e.g., "-08:00" instead of 
-        // "America/Los_Angeles"), check if this offset matches the system default zone's
-        // offset at that instant. If so, convert to use the system zone to preserve DST info.
-        // This handles cases where RFC_1123_DATE_TIME format loses region information but
-        // the intent was to use the local timezone. It preserves cross-timezone scenarios
-        // where the offset genuinely differs from the system timezone.
-        if (result.getZone() instanceof java.time.ZoneOffset) {
-            java.time.ZoneId systemZone = java.time.ZoneId.systemDefault();
-            java.time.ZoneOffset systemOffset = systemZone.getRules().getOffset(result.toInstant());
-            // Only convert if the fixed offset matches the system zone's offset at this instant
-            if (result.getOffset().equals(systemOffset)) {
-                result = result.withZoneSameLocal(systemZone);
-            }
-        }
-        
-        return result;
     }
 
     /**
