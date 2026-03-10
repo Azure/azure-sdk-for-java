@@ -32,12 +32,8 @@ public final class NewRegionFrontloadReleasesImpl implements NewRegionFrontloadR
     public Response<DefaultRollout> getWithResponse(String providerNamespace, String releaseName, Context context) {
         Response<DefaultRolloutInner> inner
             = this.serviceClient().getWithResponse(providerNamespace, releaseName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new DefaultRolloutImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new DefaultRolloutImpl(inner.getValue(), this.manager()));
     }
 
     public DefaultRollout get(String providerNamespace, String releaseName) {
@@ -53,12 +49,8 @@ public final class NewRegionFrontloadReleasesImpl implements NewRegionFrontloadR
         FrontloadPayload properties, Context context) {
         Response<DefaultRolloutInner> inner
             = this.serviceClient().createOrUpdateWithResponse(providerNamespace, releaseName, properties, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new DefaultRolloutImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new DefaultRolloutImpl(inner.getValue(), this.manager()));
     }
 
     public DefaultRollout createOrUpdate(String providerNamespace, String releaseName, FrontloadPayload properties) {
@@ -82,12 +74,8 @@ public final class NewRegionFrontloadReleasesImpl implements NewRegionFrontloadR
         FrontloadPayload properties, Context context) {
         Response<ResourceProviderManifestInner> inner
             = this.serviceClient().generateManifestWithResponse(providerNamespace, properties, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ResourceProviderManifestImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ResourceProviderManifestImpl(inner.getValue(), this.manager()));
     }
 
     public ResourceProviderManifest generateManifest(String providerNamespace, FrontloadPayload properties) {

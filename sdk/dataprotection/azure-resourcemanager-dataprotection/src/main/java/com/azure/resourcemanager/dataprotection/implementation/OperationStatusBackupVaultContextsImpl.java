@@ -30,12 +30,8 @@ public final class OperationStatusBackupVaultContextsImpl implements OperationSt
         Context context) {
         Response<OperationResourceInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, vaultName, operationId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new OperationResourceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new OperationResourceImpl(inner.getValue(), this.manager()));
     }
 
     public OperationResource get(String resourceGroupName, String vaultName, String operationId) {

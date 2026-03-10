@@ -43,12 +43,8 @@ public final class DatastoresImpl implements Datastores {
         String datastoreName, Context context) {
         Response<DatastoreInner> inner = this.serviceClient()
             .getWithResponse(resourceGroupName, privateCloudName, clusterName, datastoreName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new DatastoreImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new DatastoreImpl(inner.getValue(), this.manager()));
     }
 
     public Datastore get(String resourceGroupName, String privateCloudName, String clusterName, String datastoreName) {

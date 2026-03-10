@@ -37,12 +37,8 @@ public final class OccurrencesImpl implements Occurrences {
         String occurrenceId, Context context) {
         Response<OccurrenceInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, scheduledActionName, occurrenceId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new OccurrenceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new OccurrenceImpl(inner.getValue(), this.manager()));
     }
 
     public Occurrence get(String resourceGroupName, String scheduledActionName, String occurrenceId) {
@@ -85,12 +81,8 @@ public final class OccurrencesImpl implements Occurrences {
         String scheduledActionName, String occurrenceId, CancelOccurrenceRequest body, Context context) {
         Response<RecurringActionsResourceOperationResultInner> inner = this.serviceClient()
             .cancelWithResponse(resourceGroupName, scheduledActionName, occurrenceId, body, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new RecurringActionsResourceOperationResultImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new RecurringActionsResourceOperationResultImpl(inner.getValue(), this.manager()));
     }
 
     public RecurringActionsResourceOperationResult cancel(String resourceGroupName, String scheduledActionName,

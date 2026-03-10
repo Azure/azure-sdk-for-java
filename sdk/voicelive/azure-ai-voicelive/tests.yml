@@ -11,6 +11,7 @@ extends:
       AZURE_LOG_LEVEL: 2
     CloudConfig:
       Public:
+        Location: 'eastus2'
         ${{ if not(contains(variables['Build.DefinitionName'], 'tests-weekly')) }}:
           MatrixFilters:
             - ArmTemplateParameters=^(?!.*enableHsm.*true)

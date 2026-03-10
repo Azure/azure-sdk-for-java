@@ -31,12 +31,8 @@ public final class StorageMoversImpl implements StorageMovers {
         Context context) {
         Response<StorageMoverInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, storageMoverName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new StorageMoverImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new StorageMoverImpl(inner.getValue(), this.manager()));
     }
 
     public StorageMover getByResourceGroup(String resourceGroupName, String storageMoverName) {
