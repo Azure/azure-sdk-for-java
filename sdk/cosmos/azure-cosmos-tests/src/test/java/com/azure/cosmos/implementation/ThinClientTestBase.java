@@ -8,7 +8,6 @@ import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosDiagnosticsRequestInfo;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.rx.TestSuiteBase;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.testng.annotations.AfterClass;
@@ -21,8 +20,12 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 /**
  * Base class for thin client E2E tests. Provides shared setup/teardown,
  * constants, and helper methods common to all thin client test classes.
+ *
+ * Extends {@code com.azure.cosmos.rx.TestSuiteBase} (FQN required because
+ * {@code com.azure.cosmos.implementation.TestSuiteBase} exists in the same
+ * package and would take precedence over the import).
  */
-public abstract class ThinClientTestBase extends TestSuiteBase {
+public abstract class ThinClientTestBase extends com.azure.cosmos.rx.TestSuiteBase {
 
     protected static final String THIN_CLIENT_ENDPOINT_INDICATOR = ":10250/";
     protected static final String ID_FIELD = "id";
@@ -45,7 +48,6 @@ public abstract class ThinClientTestBase extends TestSuiteBase {
         this.container = getSharedMultiPartitionCosmosContainer(this.client);
 
         // Truncate shared container to prevent cross-test-class pollution.
-        // Each test class starts with a clean container and manages its own data.
         truncateCollection(this.container);
     }
 
