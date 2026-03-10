@@ -8,6 +8,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.standbypool.fluent.models.StandbyContainerGroupPoolResourceInner;
 import com.azure.resourcemanager.standbypool.models.ContainerGroupProfile;
 import com.azure.resourcemanager.standbypool.models.ContainerGroupProperties;
+import com.azure.resourcemanager.standbypool.models.DynamicSizing;
 import com.azure.resourcemanager.standbypool.models.RefillPolicy;
 import com.azure.resourcemanager.standbypool.models.StandbyContainerGroupPoolElasticityProfile;
 import com.azure.resourcemanager.standbypool.models.StandbyContainerGroupPoolResourceProperties;
@@ -21,46 +22,46 @@ public final class StandbyContainerGroupPoolResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StandbyContainerGroupPoolResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"elasticityProfile\":{\"maxReadyCapacity\":5126172098614729653,\"refillPolicy\":\"always\"},\"containerGroupProperties\":{\"containerGroupProfile\":{\"id\":\"keqsrxybzqqedq\",\"revision\":2124589833110260151},\"subnetIds\":[{\"id\":\"fouflmmnkzsmo\"}]},\"zones\":[\"lougpbkw\",\"mutduqktaps\"],\"provisioningState\":\"Succeeded\"},\"location\":\"uertumk\",\"tags\":{\"gmbmbexppbh\":\"vqwhbmdgbbjfd\",\"rolfpfp\":\"q\",\"jaoyfhrtx\":\"algbquxigjyjg\",\"fqawrlyxw\":\"lnerkujysvleju\"},\"id\":\"kcprbnw\",\"name\":\"xgjvtbv\",\"type\":\"ysszdnrujqguh\"}")
+            "{\"properties\":{\"elasticityProfile\":{\"maxReadyCapacity\":7852889630388099405,\"refillPolicy\":\"always\",\"dynamicSizing\":{\"enabled\":true}},\"containerGroupProperties\":{\"containerGroupProfile\":{\"id\":\"glougpbk\",\"revision\":2331240743756595548},\"subnetIds\":[{\"id\":\"uqktap\"},{\"id\":\"pwgcuertu\"}]},\"zones\":[\"o\",\"vqwhbmdgbbjfd\",\"gmbmbexppbh\",\"q\"],\"provisioningState\":\"Succeeded\"},\"location\":\"fpfpsalgbquxigj\",\"tags\":{\"erkujys\":\"zjaoyfhrtxil\",\"juvf\":\"l\",\"jkcpr\":\"awrlyx\",\"nruj\":\"nwbxgjvtbvpyssz\"},\"id\":\"guhmuouqfpr\",\"name\":\"zw\",\"type\":\"nguitnwuizgazxu\"}")
             .toObject(StandbyContainerGroupPoolResourceInner.class);
-        Assertions.assertEquals("uertumk", model.location());
-        Assertions.assertEquals("vqwhbmdgbbjfd", model.tags().get("gmbmbexppbh"));
-        Assertions.assertEquals(5126172098614729653L, model.properties().elasticityProfile().maxReadyCapacity());
+        Assertions.assertEquals("fpfpsalgbquxigj", model.location());
+        Assertions.assertEquals("zjaoyfhrtxil", model.tags().get("erkujys"));
+        Assertions.assertEquals(7852889630388099405L, model.properties().elasticityProfile().maxReadyCapacity());
         Assertions.assertEquals(RefillPolicy.ALWAYS, model.properties().elasticityProfile().refillPolicy());
-        Assertions.assertEquals("keqsrxybzqqedq",
-            model.properties().containerGroupProperties().containerGroupProfile().id());
-        Assertions.assertEquals(2124589833110260151L,
+        Assertions.assertTrue(model.properties().elasticityProfile().dynamicSizing().enabled());
+        Assertions.assertEquals("glougpbk", model.properties().containerGroupProperties().containerGroupProfile().id());
+        Assertions.assertEquals(2331240743756595548L,
             model.properties().containerGroupProperties().containerGroupProfile().revision());
-        Assertions.assertEquals("fouflmmnkzsmo", model.properties().containerGroupProperties().subnetIds().get(0).id());
-        Assertions.assertEquals("lougpbkw", model.properties().zones().get(0));
+        Assertions.assertEquals("uqktap", model.properties().containerGroupProperties().subnetIds().get(0).id());
+        Assertions.assertEquals("o", model.properties().zones().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         StandbyContainerGroupPoolResourceInner model
-            = new StandbyContainerGroupPoolResourceInner().withLocation("uertumk")
-                .withTags(mapOf("gmbmbexppbh", "vqwhbmdgbbjfd", "rolfpfp", "q", "jaoyfhrtx", "algbquxigjyjg",
-                    "fqawrlyxw", "lnerkujysvleju"))
+            = new StandbyContainerGroupPoolResourceInner().withLocation("fpfpsalgbquxigj")
+                .withTags(mapOf("erkujys", "zjaoyfhrtxil", "juvf", "l", "jkcpr", "awrlyx", "nruj", "nwbxgjvtbvpyssz"))
                 .withProperties(new StandbyContainerGroupPoolResourceProperties()
                     .withElasticityProfile(
-                        new StandbyContainerGroupPoolElasticityProfile().withMaxReadyCapacity(5126172098614729653L)
-                            .withRefillPolicy(RefillPolicy.ALWAYS))
+                        new StandbyContainerGroupPoolElasticityProfile().withMaxReadyCapacity(7852889630388099405L)
+                            .withRefillPolicy(RefillPolicy.ALWAYS)
+                            .withDynamicSizing(new DynamicSizing().withEnabled(true)))
                     .withContainerGroupProperties(new ContainerGroupProperties()
                         .withContainerGroupProfile(
-                            new ContainerGroupProfile().withId("keqsrxybzqqedq").withRevision(2124589833110260151L))
-                        .withSubnetIds(Arrays.asList(new Subnet().withId("fouflmmnkzsmo"))))
-                    .withZones(Arrays.asList("lougpbkw", "mutduqktaps")));
+                            new ContainerGroupProfile().withId("glougpbk").withRevision(2331240743756595548L))
+                        .withSubnetIds(Arrays.asList(new Subnet().withId("uqktap"), new Subnet().withId("pwgcuertu"))))
+                    .withZones(Arrays.asList("o", "vqwhbmdgbbjfd", "gmbmbexppbh", "q")));
         model = BinaryData.fromObject(model).toObject(StandbyContainerGroupPoolResourceInner.class);
-        Assertions.assertEquals("uertumk", model.location());
-        Assertions.assertEquals("vqwhbmdgbbjfd", model.tags().get("gmbmbexppbh"));
-        Assertions.assertEquals(5126172098614729653L, model.properties().elasticityProfile().maxReadyCapacity());
+        Assertions.assertEquals("fpfpsalgbquxigj", model.location());
+        Assertions.assertEquals("zjaoyfhrtxil", model.tags().get("erkujys"));
+        Assertions.assertEquals(7852889630388099405L, model.properties().elasticityProfile().maxReadyCapacity());
         Assertions.assertEquals(RefillPolicy.ALWAYS, model.properties().elasticityProfile().refillPolicy());
-        Assertions.assertEquals("keqsrxybzqqedq",
-            model.properties().containerGroupProperties().containerGroupProfile().id());
-        Assertions.assertEquals(2124589833110260151L,
+        Assertions.assertTrue(model.properties().elasticityProfile().dynamicSizing().enabled());
+        Assertions.assertEquals("glougpbk", model.properties().containerGroupProperties().containerGroupProfile().id());
+        Assertions.assertEquals(2331240743756595548L,
             model.properties().containerGroupProperties().containerGroupProfile().revision());
-        Assertions.assertEquals("fouflmmnkzsmo", model.properties().containerGroupProperties().subnetIds().get(0).id());
-        Assertions.assertEquals("lougpbkw", model.properties().zones().get(0));
+        Assertions.assertEquals("uqktap", model.properties().containerGroupProperties().subnetIds().get(0).id());
+        Assertions.assertEquals("o", model.properties().zones().get(0));
     }
 
     // Use "Map.of" if available

@@ -6,6 +6,7 @@ package com.azure.resourcemanager.standbypool.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.standbypool.fluent.models.StandbyVirtualMachinePoolResourceInner;
+import com.azure.resourcemanager.standbypool.models.DynamicSizing;
 import com.azure.resourcemanager.standbypool.models.StandbyVirtualMachinePoolElasticityProfile;
 import com.azure.resourcemanager.standbypool.models.StandbyVirtualMachinePoolResourceProperties;
 import com.azure.resourcemanager.standbypool.models.VirtualMachineState;
@@ -17,34 +18,40 @@ public final class StandbyVirtualMachinePoolResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StandbyVirtualMachinePoolResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"elasticityProfile\":{\"maxReadyCapacity\":5470433313051888734,\"minReadyCapacity\":7911846487069687431},\"virtualMachineState\":\"Deallocated\",\"attachedVirtualMachineScaleSetId\":\"wzsymglzufcy\",\"provisioningState\":\"Canceled\"},\"location\":\"dbihanufhfcbj\",\"tags\":{\"xqhabi\":\"git\"},\"id\":\"pikxwczbyscnpqxu\",\"name\":\"ivyqniwbybrkxvd\",\"type\":\"mjgr\"}")
+            "{\"properties\":{\"elasticityProfile\":{\"maxReadyCapacity\":5470433313051888734,\"minReadyCapacity\":7911846487069687431,\"postProvisioningDelay\":\"nwzsymg\",\"dynamicSizing\":{\"enabled\":true}},\"virtualMachineState\":\"Running\",\"attachedVirtualMachineScaleSetId\":\"zk\",\"provisioningState\":\"Deleting\"},\"location\":\"ihanuf\",\"tags\":{\"s\":\"bj\"},\"id\":\"git\",\"name\":\"xqhabi\",\"type\":\"pikxwczbyscnpqxu\"}")
             .toObject(StandbyVirtualMachinePoolResourceInner.class);
-        Assertions.assertEquals("dbihanufhfcbj", model.location());
-        Assertions.assertEquals("git", model.tags().get("xqhabi"));
+        Assertions.assertEquals("ihanuf", model.location());
+        Assertions.assertEquals("bj", model.tags().get("s"));
         Assertions.assertEquals(5470433313051888734L, model.properties().elasticityProfile().maxReadyCapacity());
         Assertions.assertEquals(7911846487069687431L, model.properties().elasticityProfile().minReadyCapacity());
-        Assertions.assertEquals(VirtualMachineState.DEALLOCATED, model.properties().virtualMachineState());
-        Assertions.assertEquals("wzsymglzufcy", model.properties().attachedVirtualMachineScaleSetId());
+        Assertions.assertEquals("nwzsymg", model.properties().elasticityProfile().postProvisioningDelay());
+        Assertions.assertTrue(model.properties().elasticityProfile().dynamicSizing().enabled());
+        Assertions.assertEquals(VirtualMachineState.RUNNING, model.properties().virtualMachineState());
+        Assertions.assertEquals("zk", model.properties().attachedVirtualMachineScaleSetId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         StandbyVirtualMachinePoolResourceInner model
-            = new StandbyVirtualMachinePoolResourceInner().withLocation("dbihanufhfcbj")
-                .withTags(mapOf("xqhabi", "git"))
+            = new StandbyVirtualMachinePoolResourceInner().withLocation("ihanuf")
+                .withTags(mapOf("s", "bj"))
                 .withProperties(new StandbyVirtualMachinePoolResourceProperties()
                     .withElasticityProfile(
                         new StandbyVirtualMachinePoolElasticityProfile().withMaxReadyCapacity(5470433313051888734L)
-                            .withMinReadyCapacity(7911846487069687431L))
-                    .withVirtualMachineState(VirtualMachineState.DEALLOCATED)
-                    .withAttachedVirtualMachineScaleSetId("wzsymglzufcy"));
+                            .withMinReadyCapacity(7911846487069687431L)
+                            .withPostProvisioningDelay("nwzsymg")
+                            .withDynamicSizing(new DynamicSizing().withEnabled(true)))
+                    .withVirtualMachineState(VirtualMachineState.RUNNING)
+                    .withAttachedVirtualMachineScaleSetId("zk"));
         model = BinaryData.fromObject(model).toObject(StandbyVirtualMachinePoolResourceInner.class);
-        Assertions.assertEquals("dbihanufhfcbj", model.location());
-        Assertions.assertEquals("git", model.tags().get("xqhabi"));
+        Assertions.assertEquals("ihanuf", model.location());
+        Assertions.assertEquals("bj", model.tags().get("s"));
         Assertions.assertEquals(5470433313051888734L, model.properties().elasticityProfile().maxReadyCapacity());
         Assertions.assertEquals(7911846487069687431L, model.properties().elasticityProfile().minReadyCapacity());
-        Assertions.assertEquals(VirtualMachineState.DEALLOCATED, model.properties().virtualMachineState());
-        Assertions.assertEquals("wzsymglzufcy", model.properties().attachedVirtualMachineScaleSetId());
+        Assertions.assertEquals("nwzsymg", model.properties().elasticityProfile().postProvisioningDelay());
+        Assertions.assertTrue(model.properties().elasticityProfile().dynamicSizing().enabled());
+        Assertions.assertEquals(VirtualMachineState.RUNNING, model.properties().virtualMachineState());
+        Assertions.assertEquals("zk", model.properties().attachedVirtualMachineScaleSetId());
     }
 
     // Use "Map.of" if available

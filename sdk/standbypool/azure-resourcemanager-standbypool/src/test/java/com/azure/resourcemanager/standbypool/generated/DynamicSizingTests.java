@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.standbypool.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.standbypool.models.Subnet;
+import com.azure.resourcemanager.standbypool.models.DynamicSizing;
 import org.junit.jupiter.api.Assertions;
 
-public final class SubnetTests {
+public final class DynamicSizingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Subnet model = BinaryData.fromString("{\"id\":\"npvswjdkirso\"}").toObject(Subnet.class);
-        Assertions.assertEquals("npvswjdkirso", model.id());
+        DynamicSizing model = BinaryData.fromString("{\"enabled\":false}").toObject(DynamicSizing.class);
+        Assertions.assertFalse(model.enabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Subnet model = new Subnet().withId("npvswjdkirso");
-        model = BinaryData.fromObject(model).toObject(Subnet.class);
-        Assertions.assertEquals("npvswjdkirso", model.id());
+        DynamicSizing model = new DynamicSizing().withEnabled(false);
+        model = BinaryData.fromObject(model).toObject(DynamicSizing.class);
+        Assertions.assertFalse(model.enabled());
     }
 }

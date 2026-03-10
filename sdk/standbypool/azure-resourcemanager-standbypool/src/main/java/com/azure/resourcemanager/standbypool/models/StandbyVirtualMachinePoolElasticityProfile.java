@@ -28,6 +28,17 @@ public final class StandbyVirtualMachinePoolElasticityProfile
      */
     private Long minReadyCapacity;
 
+    /*
+     * Specifies the duration to wait after virtual machine provisioning before the virtual machine becomes available
+     * for use. The duration should be specified in ISO 8601 format (e.g., PT2S for 2 seconds).
+     */
+    private String postProvisioningDelay;
+
+    /*
+     * Specifies the dynamic sizing configuration.
+     */
+    private DynamicSizing dynamicSizing;
+
     /**
      * Creates an instance of StandbyVirtualMachinePoolElasticityProfile class.
      */
@@ -79,6 +90,50 @@ public final class StandbyVirtualMachinePoolElasticityProfile
     }
 
     /**
+     * Get the postProvisioningDelay property: Specifies the duration to wait after virtual machine provisioning before
+     * the virtual machine becomes available for use. The duration should be specified in ISO 8601 format (e.g., PT2S
+     * for 2 seconds).
+     * 
+     * @return the postProvisioningDelay value.
+     */
+    public String postProvisioningDelay() {
+        return this.postProvisioningDelay;
+    }
+
+    /**
+     * Set the postProvisioningDelay property: Specifies the duration to wait after virtual machine provisioning before
+     * the virtual machine becomes available for use. The duration should be specified in ISO 8601 format (e.g., PT2S
+     * for 2 seconds).
+     * 
+     * @param postProvisioningDelay the postProvisioningDelay value to set.
+     * @return the StandbyVirtualMachinePoolElasticityProfile object itself.
+     */
+    public StandbyVirtualMachinePoolElasticityProfile withPostProvisioningDelay(String postProvisioningDelay) {
+        this.postProvisioningDelay = postProvisioningDelay;
+        return this;
+    }
+
+    /**
+     * Get the dynamicSizing property: Specifies the dynamic sizing configuration.
+     * 
+     * @return the dynamicSizing value.
+     */
+    public DynamicSizing dynamicSizing() {
+        return this.dynamicSizing;
+    }
+
+    /**
+     * Set the dynamicSizing property: Specifies the dynamic sizing configuration.
+     * 
+     * @param dynamicSizing the dynamicSizing value to set.
+     * @return the StandbyVirtualMachinePoolElasticityProfile object itself.
+     */
+    public StandbyVirtualMachinePoolElasticityProfile withDynamicSizing(DynamicSizing dynamicSizing) {
+        this.dynamicSizing = dynamicSizing;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -86,6 +141,8 @@ public final class StandbyVirtualMachinePoolElasticityProfile
         jsonWriter.writeStartObject();
         jsonWriter.writeLongField("maxReadyCapacity", this.maxReadyCapacity);
         jsonWriter.writeNumberField("minReadyCapacity", this.minReadyCapacity);
+        jsonWriter.writeStringField("postProvisioningDelay", this.postProvisioningDelay);
+        jsonWriter.writeJsonField("dynamicSizing", this.dynamicSizing);
         return jsonWriter.writeEndObject();
     }
 
@@ -111,6 +168,11 @@ public final class StandbyVirtualMachinePoolElasticityProfile
                 } else if ("minReadyCapacity".equals(fieldName)) {
                     deserializedStandbyVirtualMachinePoolElasticityProfile.minReadyCapacity
                         = reader.getNullable(JsonReader::getLong);
+                } else if ("postProvisioningDelay".equals(fieldName)) {
+                    deserializedStandbyVirtualMachinePoolElasticityProfile.postProvisioningDelay = reader.getString();
+                } else if ("dynamicSizing".equals(fieldName)) {
+                    deserializedStandbyVirtualMachinePoolElasticityProfile.dynamicSizing
+                        = DynamicSizing.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

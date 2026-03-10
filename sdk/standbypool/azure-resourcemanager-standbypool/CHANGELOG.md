@@ -1,14 +1,122 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.2.0 (2026-03-10)
 
-### Features Added
+- Azure Resource Manager Standby Pool client library for Java. This package contains Microsoft Azure SDK for Standby Pool Management SDK.  Package api-version 2025-10-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.StandbyVirtualMachinePoolElasticityProfile` was modified
 
-### Other Changes
+* `validate()` was removed
+
+#### `models.StandbyContainerGroupPoolResourceProperties` was modified
+
+* `validate()` was removed
+
+#### `models.VirtualMachineInstanceCountSummary` was modified
+
+* `validate()` was removed
+
+#### `models.StandbyVirtualMachinePoolForecastValues` was modified
+
+* `validate()` was removed
+
+#### `models.StandbyVirtualMachinePoolRuntimeViewResourceProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ContainerGroupInstanceCountSummary` was modified
+
+* `validate()` was removed
+
+#### `models.StandbyVirtualMachinePoolPrediction` was modified
+
+* `validate()` was removed
+
+#### `models.StandbyVirtualMachinePoolResourceUpdateProperties` was modified
+
+* `validate()` was removed
+
+#### `models.StandbyVirtualMachineResourceProperties` was modified
+
+* `validate()` was removed
+
+#### `models.StandbyVirtualMachinePoolResourceProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ContainerGroupProperties` was modified
+
+* `validate()` was removed
+
+#### `models.PoolContainerGroupStateCount` was modified
+
+* `validate()` was removed
+
+#### `models.StandbyContainerGroupPoolResourceUpdateProperties` was modified
+
+* `validate()` was removed
+
+#### `models.PoolStatus` was modified
+
+* `validate()` was removed
+
+#### `models.StandbyContainerGroupPoolResourceUpdate` was modified
+
+* `validate()` was removed
+
+#### `models.PoolVirtualMachineStateCount` was modified
+
+* `validate()` was removed
+
+#### `models.Subnet` was modified
+
+* `validate()` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `validate()` was removed
+
+#### `models.StandbyVirtualMachinePoolResourceUpdate` was modified
+
+* `validate()` was removed
+
+#### `models.StandbyContainerGroupPoolElasticityProfile` was modified
+
+* `validate()` was removed
+
+#### `models.ContainerGroupProfile` was modified
+
+* `validate()` was removed
+
+#### `models.StandbyContainerGroupPoolForecastValues` was modified
+
+* `validate()` was removed
+
+#### `models.StandbyContainerGroupPoolPrediction` was modified
+
+* `validate()` was removed
+
+#### `models.StandbyContainerGroupPoolRuntimeViewResourceProperties` was modified
+
+* `validate()` was removed
+
+### Features Added
+
+* `models.DynamicSizing` was added
+
+#### `models.StandbyVirtualMachinePoolElasticityProfile` was modified
+
+* `postProvisioningDelay()` was added
+* `dynamicSizing()` was added
+* `withDynamicSizing(models.DynamicSizing)` was added
+* `withPostProvisioningDelay(java.lang.String)` was added
+
+#### `models.StandbyContainerGroupPoolElasticityProfile` was modified
+
+* `withDynamicSizing(models.DynamicSizing)` was added
+* `dynamicSizing()` was added
 
 ## 1.1.0 (2025-04-21)
 

@@ -5,26 +5,33 @@
 package com.azure.resourcemanager.standbypool.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.standbypool.models.DynamicSizing;
 import com.azure.resourcemanager.standbypool.models.StandbyVirtualMachinePoolElasticityProfile;
 import org.junit.jupiter.api.Assertions;
 
 public final class StandbyVirtualMachinePoolElasticityProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StandbyVirtualMachinePoolElasticityProfile model
-            = BinaryData.fromString("{\"maxReadyCapacity\":29260930905466398,\"minReadyCapacity\":7876389151867200747}")
-                .toObject(StandbyVirtualMachinePoolElasticityProfile.class);
-        Assertions.assertEquals(29260930905466398L, model.maxReadyCapacity());
-        Assertions.assertEquals(7876389151867200747L, model.minReadyCapacity());
+        StandbyVirtualMachinePoolElasticityProfile model = BinaryData.fromString(
+            "{\"maxReadyCapacity\":1165422248066707156,\"minReadyCapacity\":1289256084075144216,\"postProvisioningDelay\":\"h\",\"dynamicSizing\":{\"enabled\":true}}")
+            .toObject(StandbyVirtualMachinePoolElasticityProfile.class);
+        Assertions.assertEquals(1165422248066707156L, model.maxReadyCapacity());
+        Assertions.assertEquals(1289256084075144216L, model.minReadyCapacity());
+        Assertions.assertEquals("h", model.postProvisioningDelay());
+        Assertions.assertTrue(model.dynamicSizing().enabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         StandbyVirtualMachinePoolElasticityProfile model
-            = new StandbyVirtualMachinePoolElasticityProfile().withMaxReadyCapacity(29260930905466398L)
-                .withMinReadyCapacity(7876389151867200747L);
+            = new StandbyVirtualMachinePoolElasticityProfile().withMaxReadyCapacity(1165422248066707156L)
+                .withMinReadyCapacity(1289256084075144216L)
+                .withPostProvisioningDelay("h")
+                .withDynamicSizing(new DynamicSizing().withEnabled(true));
         model = BinaryData.fromObject(model).toObject(StandbyVirtualMachinePoolElasticityProfile.class);
-        Assertions.assertEquals(29260930905466398L, model.maxReadyCapacity());
-        Assertions.assertEquals(7876389151867200747L, model.minReadyCapacity());
+        Assertions.assertEquals(1165422248066707156L, model.maxReadyCapacity());
+        Assertions.assertEquals(1289256084075144216L, model.minReadyCapacity());
+        Assertions.assertEquals("h", model.postProvisioningDelay());
+        Assertions.assertTrue(model.dynamicSizing().enabled());
     }
 }

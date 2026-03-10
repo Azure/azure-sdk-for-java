@@ -11,9 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class StandbyVirtualMachineResourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StandbyVirtualMachineResourceProperties model = BinaryData
-            .fromString("{\"virtualMachineResourceId\":\"xqeofjaeqjhqjba\",\"provisioningState\":\"Deleting\"}")
-            .toObject(StandbyVirtualMachineResourceProperties.class);
-        Assertions.assertEquals("xqeofjaeqjhqjba", model.virtualMachineResourceId());
+        StandbyVirtualMachineResourceProperties model
+            = BinaryData.fromString("{\"virtualMachineResourceId\":\"tnb\",\"provisioningState\":\"Canceled\"}")
+                .toObject(StandbyVirtualMachineResourceProperties.class);
+        Assertions.assertEquals("tnb", model.virtualMachineResourceId());
     }
 }
