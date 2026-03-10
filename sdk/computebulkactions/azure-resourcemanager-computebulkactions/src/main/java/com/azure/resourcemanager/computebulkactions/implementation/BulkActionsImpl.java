@@ -56,12 +56,8 @@ public final class BulkActionsImpl implements BulkActions {
         String location, String name, Context context) {
         Response<LocationBasedLaunchBulkInstancesOperationInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, location, name, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new LocationBasedLaunchBulkInstancesOperationImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new LocationBasedLaunchBulkInstancesOperationImpl(inner.getValue(), this.manager()));
     }
 
     public LocationBasedLaunchBulkInstancesOperation get(String resourceGroupName, String location, String name) {
@@ -77,12 +73,8 @@ public final class BulkActionsImpl implements BulkActions {
     public Response<OperationStatusResult> getOperationStatusWithResponse(String location, String id, Context context) {
         Response<OperationStatusResultInner> inner
             = this.serviceClient().getOperationStatusWithResponse(location, id, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new OperationStatusResultImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new OperationStatusResultImpl(inner.getValue(), this.manager()));
     }
 
     public OperationStatusResult getOperationStatus(String location, String id) {
@@ -159,12 +151,8 @@ public final class BulkActionsImpl implements BulkActions {
         ExecuteDeallocateRequest requestBody, Context context) {
         Response<DeallocateResourceOperationResponseInner> inner
             = this.serviceClient().virtualMachinesExecuteDeallocateWithResponse(location, requestBody, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new DeallocateResourceOperationResponseImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new DeallocateResourceOperationResponseImpl(inner.getValue(), this.manager()));
     }
 
     public DeallocateResourceOperationResponse virtualMachinesExecuteDeallocate(String location,
@@ -182,12 +170,8 @@ public final class BulkActionsImpl implements BulkActions {
         ExecuteHibernateRequest requestBody, Context context) {
         Response<HibernateResourceOperationResponseInner> inner
             = this.serviceClient().virtualMachinesExecuteHibernateWithResponse(location, requestBody, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new HibernateResourceOperationResponseImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new HibernateResourceOperationResponseImpl(inner.getValue(), this.manager()));
     }
 
     public HibernateResourceOperationResponse virtualMachinesExecuteHibernate(String location,
@@ -205,12 +189,8 @@ public final class BulkActionsImpl implements BulkActions {
         ExecuteStartRequest requestBody, Context context) {
         Response<StartResourceOperationResponseInner> inner
             = this.serviceClient().virtualMachinesExecuteStartWithResponse(location, requestBody, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new StartResourceOperationResponseImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new StartResourceOperationResponseImpl(inner.getValue(), this.manager()));
     }
 
     public StartResourceOperationResponse virtualMachinesExecuteStart(String location,
@@ -228,12 +208,8 @@ public final class BulkActionsImpl implements BulkActions {
         ExecuteCreateRequest requestBody, Context context) {
         Response<CreateResourceOperationResponseInner> inner
             = this.serviceClient().virtualMachinesExecuteCreateWithResponse(location, requestBody, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new CreateResourceOperationResponseImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new CreateResourceOperationResponseImpl(inner.getValue(), this.manager()));
     }
 
     public CreateResourceOperationResponse virtualMachinesExecuteCreate(String location,
@@ -251,12 +227,8 @@ public final class BulkActionsImpl implements BulkActions {
         ExecuteDeleteRequest requestBody, Context context) {
         Response<DeleteResourceOperationResponseInner> inner
             = this.serviceClient().virtualMachinesExecuteDeleteWithResponse(location, requestBody, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new DeleteResourceOperationResponseImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new DeleteResourceOperationResponseImpl(inner.getValue(), this.manager()));
     }
 
     public DeleteResourceOperationResponse virtualMachinesExecuteDelete(String location,
@@ -274,12 +246,8 @@ public final class BulkActionsImpl implements BulkActions {
         GetOperationStatusRequest requestBody, Context context) {
         Response<GetOperationStatusResponseInner> inner
             = this.serviceClient().virtualMachinesGetOperationStatusWithResponse(location, requestBody, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new GetOperationStatusResponseImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new GetOperationStatusResponseImpl(inner.getValue(), this.manager()));
     }
 
     public GetOperationStatusResponse virtualMachinesGetOperationStatus(String location,
@@ -297,12 +265,8 @@ public final class BulkActionsImpl implements BulkActions {
         CancelOperationsRequest requestBody, Context context) {
         Response<CancelOperationsResponseInner> inner
             = this.serviceClient().virtualMachinesCancelOperationsWithResponse(location, requestBody, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new CancelOperationsResponseImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new CancelOperationsResponseImpl(inner.getValue(), this.manager()));
     }
 
     public CancelOperationsResponse virtualMachinesCancelOperations(String location,

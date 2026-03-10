@@ -35,12 +35,8 @@ public final class PaloAltoNetworksCloudngfwOperationsImpl implements PaloAltoNe
     public Response<ProductSerialNumberRequestStatus> createProductSerialNumberWithResponse(Context context) {
         Response<ProductSerialNumberRequestStatusInner> inner
             = this.serviceClient().createProductSerialNumberWithResponse(context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ProductSerialNumberRequestStatusImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ProductSerialNumberRequestStatusImpl(inner.getValue(), this.manager()));
     }
 
     public ProductSerialNumberRequestStatus createProductSerialNumber() {
@@ -54,12 +50,8 @@ public final class PaloAltoNetworksCloudngfwOperationsImpl implements PaloAltoNe
 
     public Response<CloudManagerTenantList> listCloudManagerTenantsWithResponse(Context context) {
         Response<CloudManagerTenantListInner> inner = this.serviceClient().listCloudManagerTenantsWithResponse(context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new CloudManagerTenantListImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new CloudManagerTenantListImpl(inner.getValue(), this.manager()));
     }
 
     public CloudManagerTenantList listCloudManagerTenants() {
@@ -74,12 +66,8 @@ public final class PaloAltoNetworksCloudngfwOperationsImpl implements PaloAltoNe
     public Response<ProductSerialNumberStatus> listProductSerialNumberStatusWithResponse(Context context) {
         Response<ProductSerialNumberStatusInner> inner
             = this.serviceClient().listProductSerialNumberStatusWithResponse(context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ProductSerialNumberStatusImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ProductSerialNumberStatusImpl(inner.getValue(), this.manager()));
     }
 
     public ProductSerialNumberStatus listProductSerialNumberStatus() {
@@ -93,12 +81,8 @@ public final class PaloAltoNetworksCloudngfwOperationsImpl implements PaloAltoNe
 
     public Response<SupportInfoModel> listSupportInfoWithResponse(Context context) {
         Response<SupportInfoModelInner> inner = this.serviceClient().listSupportInfoWithResponse(context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new SupportInfoModelImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new SupportInfoModelImpl(inner.getValue(), this.manager()));
     }
 
     public SupportInfoModel listSupportInfo() {

@@ -17,23 +17,31 @@ import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Stream;
 
 /**
  * Live tests for VoiceLive voice properties and animation features.
  */
 public class VoiceLiveVoicePropertiesTests extends VoiceLiveTestBase {
 
+    static Stream<Arguments> voicePropertiesParams() {
+        return crossProduct(new String[] { "gpt-4o-realtime", "gpt-4.1", "phi4-mm-realtime" },
+            new String[] { API_VERSION_GA, API_VERSION_PREVIEW });
+    }
+
     @ParameterizedTest
-    @ValueSource(strings = { "gpt-4o-realtime", "gpt-4.1", "phi4-mm-realtime" })
+    @MethodSource("voicePropertiesParams")
     @LiveOnly
-    public void testRealtimeServiceWithVoiceProperties(String model) throws InterruptedException, IOException {
-        VoiceLiveAsyncClient client = createClient();
+    public void testRealtimeServiceWithVoiceProperties(String model, String apiVersion)
+        throws InterruptedException, IOException {
+        VoiceLiveAsyncClient client = createClient(apiVersion);
 
         byte[] audioData = loadAudioFile("largest_lake.wav");
 
@@ -97,11 +105,17 @@ public class VoiceLiveVoicePropertiesTests extends VoiceLiveTestBase {
         }
     }
 
+    static Stream<Arguments> audioTimestampAndVisemeParams() {
+        return crossProduct(new String[] { "gpt-4o-realtime-preview", "gpt-4.1" },
+            new String[] { API_VERSION_GA, API_VERSION_PREVIEW });
+    }
+
     @ParameterizedTest
-    @ValueSource(strings = { "gpt-4o-realtime-preview", "gpt-4.1" })
+    @MethodSource("audioTimestampAndVisemeParams")
     @LiveOnly
-    public void testRealtimeServiceWithAudioTimestampAndViseme(String model) throws InterruptedException, IOException {
-        VoiceLiveAsyncClient client = createClient();
+    public void testRealtimeServiceWithAudioTimestampAndViseme(String model, String apiVersion)
+        throws InterruptedException, IOException {
+        VoiceLiveAsyncClient client = createClient(apiVersion);
 
         byte[] audioData = loadAudioFile("4-1.wav");
 

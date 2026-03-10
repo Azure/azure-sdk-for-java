@@ -21,9 +21,7 @@ import com.azure.cosmos.benchmark.linkedin.impl.datalocator.StaticDataLocator;
 import com.azure.cosmos.benchmark.linkedin.impl.exceptions.AccessorException;
 import com.azure.cosmos.benchmark.linkedin.impl.keyextractor.KeyExtractor;
 import com.azure.cosmos.benchmark.linkedin.impl.keyextractor.KeyExtractorImpl;
-import com.azure.cosmos.benchmark.linkedin.impl.metrics.MetricsFactory;
 import com.azure.cosmos.benchmark.linkedin.impl.models.CollectionKey;
-import com.codahale.metrics.MetricRegistry;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.base.Preconditions;
 import java.time.Clock;
@@ -57,20 +55,17 @@ public abstract class TestRunner {
 
     TestRunner(final TenantWorkloadConfig workloadConfig,
         final CosmosAsyncClient client,
-        final MetricRegistry metricsRegistry,
         final EntityConfiguration entityConfiguration) {
         Preconditions.checkNotNull(workloadConfig,
             "The Workload configuration defining the parameters can not be null");
         Preconditions.checkNotNull(client,
             "Need a non-null client for setting up the Database and containers for the test");
-        Preconditions.checkNotNull(metricsRegistry,
-            "The MetricsRegistry can not be null");
         Preconditions.checkNotNull(entityConfiguration,
             "The Test entity configuration can not be null");
 
         _workloadConfig = workloadConfig;
         _entityConfiguration = entityConfiguration;
-        _accessor = createAccessor(workloadConfig, client, metricsRegistry);
+        _accessor = createAccessor(workloadConfig, client);
         _executorService = Executors.newFixedThreadPool(workloadConfig.getConcurrency());
         _successCount = new AtomicLong(0);
         _errorCount = new AtomicLong(0);
@@ -141,8 +136,7 @@ public abstract class TestRunner {
     }
 
     private Accessor<Key, JsonNode> createAccessor(final TenantWorkloadConfig workloadConfig,
-        final CosmosAsyncClient client,
-        final MetricRegistry metricsRegistry) {
+        final CosmosAsyncClient client) {
 
         final StaticDataLocator dataLocator = createDataLocator(workloadConfig, client);
         final KeyExtractor<Key> keyExtractor = new KeyExtractorImpl();
@@ -151,7 +145,6 @@ public abstract class TestRunner {
         return new CosmosDBDataAccessor<>(dataLocator,
             keyExtractor,
             new ResponseHandler<>(documentTransformer, keyExtractor),
-            new MetricsFactory(metricsRegistry, clock, workloadConfig.getEnvironment()),
             clock,
             new OperationsLogger(Duration.ofSeconds(10)));
     }

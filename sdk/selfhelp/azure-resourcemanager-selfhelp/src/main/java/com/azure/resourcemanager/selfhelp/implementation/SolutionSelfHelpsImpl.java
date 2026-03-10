@@ -28,12 +28,8 @@ public final class SolutionSelfHelpsImpl implements SolutionSelfHelps {
 
     public Response<SolutionResourceSelfHelp> getWithResponse(String solutionId, Context context) {
         Response<SolutionResourceSelfHelpInner> inner = this.serviceClient().getWithResponse(solutionId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new SolutionResourceSelfHelpImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new SolutionResourceSelfHelpImpl(inner.getValue(), this.manager()));
     }
 
     public SolutionResourceSelfHelp get(String solutionId) {

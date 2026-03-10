@@ -39,12 +39,8 @@ public final class NetAppResourceUsagesImpl implements NetAppResourceUsages {
 
     public Response<UsageResult> getWithResponse(String location, String usageType, Context context) {
         Response<UsageResultInner> inner = this.serviceClient().getWithResponse(location, usageType, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new UsageResultImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new UsageResultImpl(inner.getValue(), this.manager()));
     }
 
     public UsageResult get(String location, String usageType) {

@@ -31,12 +31,8 @@ public final class NameAvailabilitiesImpl implements NameAvailabilities {
         Context context) {
         Response<NameAvailabilityModelInner> inner
             = this.serviceClient().checkGloballyWithResponse(parameters, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new NameAvailabilityModelImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new NameAvailabilityModelImpl(inner.getValue(), this.manager()));
     }
 
     public NameAvailabilityModel checkGlobally(CheckNameAvailabilityRequest parameters) {
@@ -52,12 +48,8 @@ public final class NameAvailabilitiesImpl implements NameAvailabilities {
         CheckNameAvailabilityRequest parameters, Context context) {
         Response<NameAvailabilityModelInner> inner
             = this.serviceClient().checkWithLocationWithResponse(locationName, parameters, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new NameAvailabilityModelImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new NameAvailabilityModelImpl(inner.getValue(), this.manager()));
     }
 
     public NameAvailabilityModel checkWithLocation(String locationName, CheckNameAvailabilityRequest parameters) {

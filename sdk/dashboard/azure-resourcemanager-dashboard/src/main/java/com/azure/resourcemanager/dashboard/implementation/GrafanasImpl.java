@@ -35,12 +35,8 @@ public final class GrafanasImpl implements Grafanas {
         Context context) {
         Response<ManagedGrafanaInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, workspaceName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ManagedGrafanaImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ManagedGrafanaImpl(inner.getValue(), this.manager()));
     }
 
     public ManagedGrafana getByResourceGroup(String resourceGroupName, String workspaceName) {
@@ -84,12 +80,8 @@ public final class GrafanasImpl implements Grafanas {
         String workspaceName, Context context) {
         Response<EnterpriseDetailsInner> inner
             = this.serviceClient().checkEnterpriseDetailsWithResponse(resourceGroupName, workspaceName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new EnterpriseDetailsImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new EnterpriseDetailsImpl(inner.getValue(), this.manager()));
     }
 
     public EnterpriseDetails checkEnterpriseDetails(String resourceGroupName, String workspaceName) {
@@ -105,12 +97,8 @@ public final class GrafanasImpl implements Grafanas {
         String workspaceName, Context context) {
         Response<GrafanaAvailablePluginListResponseInner> inner
             = this.serviceClient().fetchAvailablePluginsWithResponse(resourceGroupName, workspaceName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new GrafanaAvailablePluginListResponseImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new GrafanaAvailablePluginListResponseImpl(inner.getValue(), this.manager()));
     }
 
     public GrafanaAvailablePluginListResponse fetchAvailablePlugins(String resourceGroupName, String workspaceName) {
