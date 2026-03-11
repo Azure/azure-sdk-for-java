@@ -13,20 +13,12 @@ import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collections;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * AI Tooling: openai-java de-dup
- *
- * Tests for FileSearchTool serialization and deserialization, including
- * vector store IDs, ranking options, max results, and filters with openai-java types.
- */
 public class FileSearchToolSerializationTests {
 
     // -----------------------------------------------------------------------
@@ -291,7 +283,7 @@ public class FileSearchToolSerializationTests {
             tool = Tool.fromJson(reader);
         }
 
-        assertTrue(tool instanceof FileSearchTool, "Should deserialize as FileSearchTool");
+        assertInstanceOf(FileSearchTool.class, tool, "Should deserialize as FileSearchTool");
         FileSearchTool fst = (FileSearchTool) tool;
         assertEquals(Collections.singletonList("vs_poly"), fst.getVectorStoreIds());
         assertEquals(3L, fst.getMaxResults());
@@ -307,7 +299,7 @@ public class FileSearchToolSerializationTests {
         try (JsonWriter writer = JsonProviders.createWriter(out)) {
             tool.toJson(writer);
         }
-        return out.toString("UTF-8");
+        return out.toString(StandardCharsets.UTF_8);
     }
 
     private FileSearchTool deserialize(String json) throws IOException {

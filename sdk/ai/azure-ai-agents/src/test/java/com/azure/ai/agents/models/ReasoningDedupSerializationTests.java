@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -20,12 +21,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-/**
- * AI Tooling: openai-java de-dup
- *
- * Tests verifying that de-duplicated openai-java types (Reasoning, ComparisonFilter,
- * CompoundFilter) serialize and deserialize correctly through the agents models.
- */
 public class ReasoningDedupSerializationTests {
 
     private static final String TEST_MODEL = "gpt-4o";
@@ -327,7 +322,7 @@ public class ReasoningDedupSerializationTests {
         try (JsonWriter writer = JsonProviders.createWriter(out)) {
             definition.toJson(writer);
         }
-        return out.toString("UTF-8");
+        return out.toString(StandardCharsets.UTF_8);
     }
 
     private PromptAgentDefinition deserializeDefinition(String json) throws IOException {
@@ -341,7 +336,7 @@ public class ReasoningDedupSerializationTests {
         try (JsonWriter writer = JsonProviders.createWriter(out)) {
             tool.toJson(writer);
         }
-        return out.toString("UTF-8");
+        return out.toString(StandardCharsets.UTF_8);
     }
 
     private FileSearchTool deserializeTool(String json) throws IOException {

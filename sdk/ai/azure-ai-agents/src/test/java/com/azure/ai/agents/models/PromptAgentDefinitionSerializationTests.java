@@ -14,15 +14,13 @@ import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-/**
- * Tests for PromptAgentDefinition serialization, particularly focusing on toolChoice handling.
- */
 public class PromptAgentDefinitionSerializationTests {
 
     private static final String TEST_MODEL = "gpt-4o";
@@ -560,7 +558,7 @@ public class PromptAgentDefinitionSerializationTests {
         try (JsonWriter jsonWriter = JsonProviders.createWriter(outputStream)) {
             definition.toJson(jsonWriter);
         }
-        return outputStream.toString("UTF-8");
+        return outputStream.toString(StandardCharsets.UTF_8);
     }
 
     // Helper method to deserialize JSON string to PromptAgentDefinition
