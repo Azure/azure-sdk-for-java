@@ -4,6 +4,7 @@ overrides:
   - filename: "**/sdk/ai/.workflow_docs/*"
     words:
     - Danimal
+    - Dbuildhelper
     - Dcheckstyle
     - Dcodesnippet
     - Djacoco
@@ -11,5 +12,7 @@ overrides:
     - Drevapi
     - Dspotbugs
     - Dspotless
+    - Dtest
+    - dedup
     - FQCN
     - javap
