@@ -17,7 +17,7 @@ import java.util.Arrays;
  */
 public final class ConnectedRegistriesCreateSamples {
     /*
-     * x-ms-original-file: 2025-11-01/ConnectedRegistryCreate.json
+     * x-ms-original-file: 2026-01-01-preview/ConnectedRegistryCreate.json
      */
     /**
      * Sample code: ConnectedRegistryCreate.

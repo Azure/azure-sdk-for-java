@@ -13,23 +13,23 @@ import org.junit.jupiter.api.Assertions;
 public final class PrivateLinkServiceConnectionStateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrivateLinkServiceConnectionState model = BinaryData
-            .fromString("{\"status\":\"Approved\",\"description\":\"pymzidnsezcxtbzs\",\"actionsRequired\":\"None\"}")
-            .toObject(PrivateLinkServiceConnectionState.class);
-        Assertions.assertEquals(ConnectionStatus.APPROVED, model.status());
-        Assertions.assertEquals("pymzidnsezcxtbzs", model.description());
+        PrivateLinkServiceConnectionState model
+            = BinaryData.fromString("{\"status\":\"Disconnected\",\"description\":\"od\",\"actionsRequired\":\"None\"}")
+                .toObject(PrivateLinkServiceConnectionState.class);
+        Assertions.assertEquals(ConnectionStatus.DISCONNECTED, model.status());
+        Assertions.assertEquals("od", model.description());
         Assertions.assertEquals(ActionsRequired.NONE, model.actionsRequired());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PrivateLinkServiceConnectionState model
-            = new PrivateLinkServiceConnectionState().withStatus(ConnectionStatus.APPROVED)
-                .withDescription("pymzidnsezcxtbzs")
+            = new PrivateLinkServiceConnectionState().withStatus(ConnectionStatus.DISCONNECTED)
+                .withDescription("od")
                 .withActionsRequired(ActionsRequired.NONE);
         model = BinaryData.fromObject(model).toObject(PrivateLinkServiceConnectionState.class);
-        Assertions.assertEquals(ConnectionStatus.APPROVED, model.status());
-        Assertions.assertEquals("pymzidnsezcxtbzs", model.description());
+        Assertions.assertEquals(ConnectionStatus.DISCONNECTED, model.status());
+        Assertions.assertEquals("od", model.description());
         Assertions.assertEquals(ActionsRequired.NONE, model.actionsRequired());
     }
 }

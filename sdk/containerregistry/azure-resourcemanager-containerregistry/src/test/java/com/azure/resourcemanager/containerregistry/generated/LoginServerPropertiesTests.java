@@ -11,7 +11,7 @@ public final class LoginServerPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LoginServerProperties model = BinaryData.fromString(
-            "{\"host\":\"ewrmjmwvvjektc\",\"tls\":{\"status\":\"Disabled\",\"certificate\":{\"type\":\"LocalDirectory\",\"location\":\"s\"}}}")
+            "{\"host\":\"ceoveilovno\",\"tls\":{\"status\":\"Enabled\",\"certificate\":{\"type\":\"LocalDirectory\",\"location\":\"bkc\"}}}")
             .toObject(LoginServerProperties.class);
     }
 
