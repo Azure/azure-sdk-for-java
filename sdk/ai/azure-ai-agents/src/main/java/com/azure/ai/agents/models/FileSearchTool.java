@@ -39,7 +39,10 @@ public final class FileSearchTool extends Tool {
     @Generated
     private RankingOptions rankingOptions;
 
-    // AI Tooling: union type
+    /*
+     * The filters property.
+     */
+    @Generated
     private BinaryData filters;
 
     /**
