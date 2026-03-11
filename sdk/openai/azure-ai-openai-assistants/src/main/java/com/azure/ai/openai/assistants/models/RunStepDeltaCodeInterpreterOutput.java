@@ -99,10 +99,10 @@ public class RunStepDeltaCodeInterpreterOutput implements JsonSerializable<RunSt
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("logs".equals(discriminatorValue)) {
-                    return RunStepDeltaCodeInterpreterLogOutput.fromJson(readerToUse.reset());
-                } else if ("image".equals(discriminatorValue)) {
+                if ("image".equals(discriminatorValue)) {
                     return RunStepDeltaCodeInterpreterImageOutput.fromJson(readerToUse.reset());
+                } else if ("logs".equals(discriminatorValue)) {
+                    return RunStepDeltaCodeInterpreterLogOutput.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

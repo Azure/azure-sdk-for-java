@@ -35,7 +35,7 @@ public final class MetricsResponseSeriesItem implements JsonSerializable<Metrics
     /*
      * The data property.
      */
-    private List<MetricsResponseSeriesItemData> data;
+    private List<MetricsResponseSeriesItemDatum> data;
 
     /**
      * Creates an instance of MetricsResponseSeriesItem class.
@@ -75,7 +75,7 @@ public final class MetricsResponseSeriesItem implements JsonSerializable<Metrics
      * 
      * @return the data value.
      */
-    public List<MetricsResponseSeriesItemData> data() {
+    public List<MetricsResponseSeriesItemDatum> data() {
         return this.data;
     }
 
@@ -130,8 +130,8 @@ public final class MetricsResponseSeriesItem implements JsonSerializable<Metrics
                         = reader.readArray(reader1 -> MetricsResponseSeriesPropertiesItemsItem.fromJson(reader1));
                     deserializedMetricsResponseSeriesItem.groups = groups;
                 } else if ("data".equals(fieldName)) {
-                    List<MetricsResponseSeriesItemData> data
-                        = reader.readArray(reader1 -> MetricsResponseSeriesItemData.fromJson(reader1));
+                    List<MetricsResponseSeriesItemDatum> data
+                        = reader.readArray(reader1 -> MetricsResponseSeriesItemDatum.fromJson(reader1));
                     deserializedMetricsResponseSeriesItem.data = data;
                 } else {
                     reader.skipChildren();

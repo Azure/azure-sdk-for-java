@@ -106,9 +106,7 @@ public class ClientEvent implements JsonSerializable<ClientEvent> {
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("session.update".equals(discriminatorValue)) {
-                    return ClientEventSessionUpdate.fromJson(readerToUse.reset());
-                } else if ("session.avatar.connect".equals(discriminatorValue)) {
+                if ("session.avatar.connect".equals(discriminatorValue)) {
                     return ClientEventSessionAvatarConnect.fromJson(readerToUse.reset());
                 } else if ("input_audio.turn.start".equals(discriminatorValue)) {
                     return ClientEventInputAudioTurnStart.fromJson(readerToUse.reset());
@@ -138,6 +136,8 @@ public class ClientEvent implements JsonSerializable<ClientEvent> {
                     return ClientEventResponseCancel.fromJson(readerToUse.reset());
                 } else if ("conversation.item.retrieve".equals(discriminatorValue)) {
                     return ClientEventConversationItemRetrieve.fromJson(readerToUse.reset());
+                } else if ("session.update".equals(discriminatorValue)) {
+                    return ClientEventSessionUpdate.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

@@ -20,7 +20,7 @@ public final class AzureSemanticEouDetectionMultilingual extends EouDetection {
      * The model property.
      */
     @Generated
-    private EouDetectionModel model = EouDetectionModel.SEMANTIC_DETECTION_V1_MULTILINGUAL;
+    private EouDetectionModel1 model = EouDetectionModel1.SEMANTIC_DETECTION_V1_MULTILINGUAL;
 
     /*
      * Threshold level setting. Recommended instead of `threshold`. One of `low`, `medium`, `high`, or `default`.
@@ -48,7 +48,7 @@ public final class AzureSemanticEouDetectionMultilingual extends EouDetection {
      */
     @Generated
     @Override
-    public EouDetectionModel getModel() {
+    public EouDetectionModel1 getModel() {
         return this.model;
     }
 
@@ -130,7 +130,7 @@ public final class AzureSemanticEouDetectionMultilingual extends EouDetection {
                 reader.nextToken();
                 if ("model".equals(fieldName)) {
                     deserializedAzureSemanticEouDetectionMultilingual.model
-                        = EouDetectionModel.fromString(reader.getString());
+                        = EouDetectionModel1.fromString(reader.getString());
                 } else if ("threshold_level".equals(fieldName)) {
                     deserializedAzureSemanticEouDetectionMultilingual.thresholdLevel
                         = EouThresholdLevel.fromString(reader.getString());

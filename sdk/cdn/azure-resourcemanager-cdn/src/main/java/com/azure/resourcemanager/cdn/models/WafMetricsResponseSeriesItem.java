@@ -35,7 +35,7 @@ public final class WafMetricsResponseSeriesItem implements JsonSerializable<WafM
     /*
      * The data property.
      */
-    private List<WafMetricsResponseSeriesItemData> data;
+    private List<WafMetricsResponseSeriesItemDatum> data;
 
     /**
      * Creates an instance of WafMetricsResponseSeriesItem class.
@@ -75,7 +75,7 @@ public final class WafMetricsResponseSeriesItem implements JsonSerializable<WafM
      * 
      * @return the data value.
      */
-    public List<WafMetricsResponseSeriesItemData> data() {
+    public List<WafMetricsResponseSeriesItemDatum> data() {
         return this.data;
     }
 
@@ -130,8 +130,8 @@ public final class WafMetricsResponseSeriesItem implements JsonSerializable<WafM
                         = reader.readArray(reader1 -> WafMetricsResponseSeriesPropertiesItemsItem.fromJson(reader1));
                     deserializedWafMetricsResponseSeriesItem.groups = groups;
                 } else if ("data".equals(fieldName)) {
-                    List<WafMetricsResponseSeriesItemData> data
-                        = reader.readArray(reader1 -> WafMetricsResponseSeriesItemData.fromJson(reader1));
+                    List<WafMetricsResponseSeriesItemDatum> data
+                        = reader.readArray(reader1 -> WafMetricsResponseSeriesItemDatum.fromJson(reader1));
                     deserializedWafMetricsResponseSeriesItem.data = data;
                 } else {
                     reader.skipChildren();

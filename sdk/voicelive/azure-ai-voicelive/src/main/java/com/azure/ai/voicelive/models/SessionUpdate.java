@@ -106,9 +106,7 @@ public class SessionUpdate implements JsonSerializable<SessionUpdate> {
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("error".equals(discriminatorValue)) {
-                    return SessionUpdateError.fromJson(readerToUse.reset());
-                } else if ("warning".equals(discriminatorValue)) {
+                if ("warning".equals(discriminatorValue)) {
                     return ServerEventWarning.fromJson(readerToUse.reset());
                 } else if ("session.created".equals(discriminatorValue)) {
                     return SessionUpdateSessionCreated.fromJson(readerToUse.reset());
@@ -194,6 +192,8 @@ public class SessionUpdate implements JsonSerializable<SessionUpdate> {
                     return ServerEventResponseMcpCallCompleted.fromJson(readerToUse.reset());
                 } else if ("response.mcp_call.failed".equals(discriminatorValue)) {
                     return ServerEventResponseMcpCallFailed.fromJson(readerToUse.reset());
+                } else if ("error".equals(discriminatorValue)) {
+                    return SessionUpdateError.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

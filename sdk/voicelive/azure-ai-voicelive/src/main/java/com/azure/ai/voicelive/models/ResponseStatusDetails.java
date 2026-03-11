@@ -77,12 +77,12 @@ public class ResponseStatusDetails implements JsonSerializable<ResponseStatusDet
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("cancelled".equals(discriminatorValue)) {
-                    return ResponseCancelledDetails.fromJson(readerToUse.reset());
-                } else if ("incomplete".equals(discriminatorValue)) {
+                if ("incomplete".equals(discriminatorValue)) {
                     return ResponseIncompleteDetails.fromJson(readerToUse.reset());
                 } else if ("failed".equals(discriminatorValue)) {
                     return ResponseFailedDetails.fromJson(readerToUse.reset());
+                } else if ("cancelled".equals(discriminatorValue)) {
+                    return ResponseCancelledDetails.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

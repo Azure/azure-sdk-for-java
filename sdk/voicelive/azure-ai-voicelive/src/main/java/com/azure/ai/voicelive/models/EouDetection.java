@@ -21,7 +21,7 @@ public class EouDetection implements JsonSerializable<EouDetection> {
      * The model property.
      */
     @Generated
-    private EouDetectionModel model = EouDetectionModel.fromString("EouDetection");
+    private EouDetectionModel1 model = EouDetectionModel1.fromString("EouDetection");
 
     /**
      * Creates an instance of EouDetection class.
@@ -36,7 +36,7 @@ public class EouDetection implements JsonSerializable<EouDetection> {
      * @return the model value.
      */
     @Generated
-    public EouDetectionModel getModel() {
+    public EouDetectionModel1 getModel() {
         return this.model;
     }
 
@@ -77,12 +77,12 @@ public class EouDetection implements JsonSerializable<EouDetection> {
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("semantic_detection_v1".equals(discriminatorValue)) {
-                    return AzureSemanticEouDetection.fromJson(readerToUse.reset());
-                } else if ("semantic_detection_v1_en".equals(discriminatorValue)) {
+                if ("semantic_detection_v1_en".equals(discriminatorValue)) {
                     return AzureSemanticEouDetectionEn.fromJson(readerToUse.reset());
                 } else if ("semantic_detection_v1_multilingual".equals(discriminatorValue)) {
                     return AzureSemanticEouDetectionMultilingual.fromJson(readerToUse.reset());
+                } else if ("semantic_detection_v1".equals(discriminatorValue)) {
+                    return AzureSemanticEouDetection.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }
@@ -98,7 +98,7 @@ public class EouDetection implements JsonSerializable<EouDetection> {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("model".equals(fieldName)) {
-                    deserializedEouDetection.model = EouDetectionModel.fromString(reader.getString());
+                    deserializedEouDetection.model = EouDetectionModel1.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

@@ -77,12 +77,12 @@ public class AzureVoice implements JsonSerializable<AzureVoice> {
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("azure-custom".equals(discriminatorValue)) {
-                    return AzureCustomVoice.fromJson(readerToUse.reset());
-                } else if ("azure-standard".equals(discriminatorValue)) {
+                if ("azure-standard".equals(discriminatorValue)) {
                     return AzureStandardVoice.fromJson(readerToUse.reset());
                 } else if ("azure-personal".equals(discriminatorValue)) {
                     return AzurePersonalVoice.fromJson(readerToUse.reset());
+                } else if ("azure-custom".equals(discriminatorValue)) {
+                    return AzureCustomVoice.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }
