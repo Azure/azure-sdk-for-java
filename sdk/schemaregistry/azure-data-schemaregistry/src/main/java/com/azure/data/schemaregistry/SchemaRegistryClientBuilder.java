@@ -10,7 +10,6 @@ import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -35,9 +34,7 @@ import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.ServiceVersion;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.data.schemaregistry.implementation.AzureSchemaRegistryImpl;
 import com.azure.data.schemaregistry.implementation.SchemaRegistryClientImpl;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -116,10 +113,6 @@ public final class SchemaRegistryClientBuilder implements HttpTrait<SchemaRegist
 
     private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy("retry-after-ms", ChronoUnit.MILLIS);
 
-    private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
-
-    private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
-
     private String fullyQualifiedNamespace;
 
     private HttpClient httpClient;
@@ -144,6 +137,7 @@ public final class SchemaRegistryClientBuilder implements HttpTrait<SchemaRegist
      * Constructor for SchemaRegistryClientBuilder. Supplies client defaults.
      */
     public SchemaRegistryClientBuilder() {
+        this.pipelinePolicies = new ArrayList<>();
         this.httpLogOptions = new HttpLogOptions();
         this.httpClient = null;
         this.credential = null;
@@ -207,7 +201,7 @@ public final class SchemaRegistryClientBuilder implements HttpTrait<SchemaRegist
     @Override
     public SchemaRegistryClientBuilder pipeline(HttpPipeline httpPipeline) {
         if (this.httpPipeline != null && httpPipeline == null) {
-            LOGGER.info("HttpPipeline is being set to 'null' when it was previously configured.");
+            LOGGER.atInfo().log("HttpPipeline is being set to 'null' when it was previously configured.");
         }
         this.httpPipeline = httpPipeline;
         return this;
@@ -354,18 +348,14 @@ public final class SchemaRegistryClientBuilder implements HttpTrait<SchemaRegist
      * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
      * documentation of types that implement this trait to understand the full set of implications.</p>
      *
-     * @param policy A {@link HttpPipelinePolicy pipeline policy}.
+     * @param customPolicy A {@link HttpPipelinePolicy pipeline policy}.
      * @return The updated {@link SchemaRegistryClientBuilder} object.
      * @throws NullPointerException If {@code policy} is {@code null}.
      */
     @Override
-    public SchemaRegistryClientBuilder addPolicy(HttpPipelinePolicy policy) {
-        Objects.requireNonNull(policy, "'policy' cannot be null.");
-        if (policy.getPipelinePosition() == HttpPipelinePosition.PER_CALL) {
-            perCallPolicies.add(policy);
-        } else {
-            perRetryPolicies.add(policy);
-        }
+    public SchemaRegistryClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
+        Objects.requireNonNull(customPolicy, "'customPolicy' cannot be null.");
+        pipelinePolicies.add(customPolicy);
         return this;
     }
 
@@ -384,30 +374,8 @@ public final class SchemaRegistryClientBuilder implements HttpTrait<SchemaRegist
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public SchemaRegistryAsyncClient buildAsyncClient() {
-        AzureSchemaRegistryImpl restService = getAzureSchemaRegistryImplService();
+        SchemaRegistryClientImpl restService = buildInnerClient();
         return new SchemaRegistryAsyncClient(restService);
-    }
-
-    private AzureSchemaRegistryImpl getAzureSchemaRegistryImplService() {
-        Objects.requireNonNull(credential,
-            "'credential' cannot be null and must be set via builder.credential(TokenCredential)");
-        Objects.requireNonNull(fullyQualifiedNamespace,
-            "'fullyQualifiedNamespace' cannot be null and must be set via builder.fullyQualifiedNamespace(String)");
-        if (CoreUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("'fullyQualifiedNamespace' cannot be an empty string."));
-        }
-        HttpPipeline buildPipeline = this.httpPipeline;
-
-        // Create a default Pipeline if it is not given
-        if (buildPipeline == null) {
-            buildPipeline = createHttpPipeline();
-        }
-
-        ServiceVersion version = (serviceVersion == null) ? SchemaRegistryServiceVersion.getLatest() : serviceVersion;
-        SerializerAdapter serializerAdapter = new SchemaRegistryJsonSerializer();
-        return new AzureSchemaRegistryImpl(buildPipeline, serializerAdapter, fullyQualifiedNamespace,
-            version.getVersion());
     }
 
     /**
@@ -421,7 +389,7 @@ public final class SchemaRegistryClientBuilder implements HttpTrait<SchemaRegist
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public SchemaRegistryClient buildClient() {
-        AzureSchemaRegistryImpl restService = getAzureSchemaRegistryImplService();
+        SchemaRegistryClientImpl restService = buildInnerClient();
         return new SchemaRegistryClient(restService);
     }
 
@@ -439,7 +407,7 @@ public final class SchemaRegistryClientBuilder implements HttpTrait<SchemaRegist
         = CoreUtils.getProperties("azure-data-schemaregistry.properties");
 
     @Generated
-    private final List<HttpPipelinePolicy> pipelinePolicies = new ArrayList<>();
+    private final List<HttpPipelinePolicy> pipelinePolicies;
 
     /*
      * The HTTP pipeline to send requests through.
@@ -464,8 +432,9 @@ public final class SchemaRegistryClientBuilder implements HttpTrait<SchemaRegist
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
         SchemaRegistryServiceVersion localServiceVersion
             = (serviceVersion != null) ? serviceVersion : SchemaRegistryServiceVersion.getLatest();
+        SerializerAdapter serializerAdapter = new SchemaRegistryJsonSerializer();
         SchemaRegistryClientImpl client = new SchemaRegistryClientImpl(localPipeline,
-            JacksonAdapter.createDefaultSerializerAdapter(), this.fullyQualifiedNamespace, localServiceVersion);
+            serializerAdapter, this.fullyQualifiedNamespace, localServiceVersion);
         return client;
     }
 
@@ -473,7 +442,14 @@ public final class SchemaRegistryClientBuilder implements HttpTrait<SchemaRegist
     private void validateClient() {
         // This method is invoked from 'buildInnerClient'/'buildClient' method.
         // Developer can customize this method, to validate that the necessary conditions are met for the new client.
-        Objects.requireNonNull(fullyQualifiedNamespace, "'fullyQualifiedNamespace' cannot be null.");
+        Objects.requireNonNull(credential,
+            "'credential' cannot be null and must be set via builder.credential(TokenCredential)");
+        Objects.requireNonNull(fullyQualifiedNamespace,
+            "'fullyQualifiedNamespace' cannot be null and must be set via builder.fullyQualifiedNamespace(String)");
+        if (CoreUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("'fullyQualifiedNamespace' cannot be an empty string."));
+        }
     }
 
     @Generated
@@ -497,7 +473,7 @@ public final class SchemaRegistryClientBuilder implements HttpTrait<SchemaRegist
             .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
             .forEach(p -> policies.add(p));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
-        policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
+        policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, DEFAULT_RETRY_POLICY));
         policies.add(new AddDatePolicy());
         if (tokenCredential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
