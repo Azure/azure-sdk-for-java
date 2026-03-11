@@ -174,6 +174,10 @@ public class ReasoningDedupSerializationTests {
         assertNotNull(result);
         assertEquals(ReasoningEffort.LOW, result.effort().get());
         assertEquals(Reasoning.GenerateSummary.DETAILED, result.generateSummary().get());
+
+        // JSON stability: re-serialize and compare
+        String reserializedJson = serializeDefinition(deserialized);
+        assertEquals(json, reserializedJson, "JSON should be identical after round-trip");
     }
 
     @Test
@@ -194,6 +198,9 @@ public class ReasoningDedupSerializationTests {
             PromptAgentDefinition deserialized = deserializeDefinition(json);
 
             assertEquals(effort, deserialized.getReasoning().effort().get(), "Round-trip failed for effort: " + effort);
+
+            // JSON stability
+            assertEquals(json, serializeDefinition(deserialized), "JSON stability failed for effort: " + effort);
         }
     }
 
@@ -252,6 +259,10 @@ public class ReasoningDedupSerializationTests {
         FileSearchTool deserialized = deserializeTool(json);
         assertNotNull(deserialized.getFilters(), "Filters should survive round-trip");
         assertTrue(deserialized.getFilters().toString().contains("category"), "Filter key should survive round-trip");
+
+        // JSON stability
+        String reserializedJson = serializeTool(deserialized);
+        assertEquals(json, reserializedJson, "JSON should be identical after round-trip");
     }
 
     // -----------------------------------------------------------------------
@@ -301,6 +312,10 @@ public class ReasoningDedupSerializationTests {
 
         assertNotNull(deserialized.getFilters());
         assertTrue(deserialized.getFilters().toString().contains("status"));
+
+        // JSON stability
+        String reserializedJson = serializeTool(deserialized);
+        assertEquals(json, reserializedJson, "JSON should be identical after round-trip");
     }
 
     // -----------------------------------------------------------------------
