@@ -40,6 +40,9 @@ import com.azure.storage.blob.options.AppendBlobCreateOptions;
 import com.azure.storage.blob.options.AppendBlobSealOptions;
 import com.azure.storage.common.StorageChecksumAlgorithm;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.contentvalidation.ContentValidationBehaviorUtil;
+import static com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants.CONTENT_VALIDATION_BEHAVIOR_KEY;
+import com.azure.core.http.rest.ResponseBase;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -81,14 +84,14 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      * @deprecated use {@link AppendBlobAsyncClient#getMaxAppendBlockBytes()}.
      */
     @Deprecated
-    public static final int MAX_APPEND_BLOCK_BYTES = 4 * Constants.MB;
+    static final int MAX_APPEND_BLOCK_BYTES = 4 * Constants.MB;
 
     /**
      * Indicates the maximum number of blocks allowed in an append blob.
      * @deprecated use {@link AppendBlobAsyncClient#getMaxBlocks()}.
      */
     @Deprecated
-    public static final int MAX_BLOCKS = 50000;
+    static final int MAX_BLOCKS = 50000;
 
     /**
      * Indicates the maximum number of bytes that can be sent in a call to appendBlock.
@@ -500,9 +503,22 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
             return monoError(LOGGER, new NullPointerException("'data' cannot be null."));
         }
 
+        if (contentMd5 != null
+            && requestChecksumAlgorithm != null
+            && requestChecksumAlgorithm != StorageChecksumAlgorithm.NONE) {
+            return monoError(LOGGER, new IllegalArgumentException(
+                "Both contentMd5 and requestChecksumAlgorithm are set. Only one form of transactional content validation may be used."));
+        }
+
         appendBlobRequestConditions
             = appendBlobRequestConditions == null ? new AppendBlobRequestConditions() : appendBlobRequestConditions;
         context = context == null ? Context.NONE : context;
+
+        String contentValidationBehavior
+            = ContentValidationBehaviorUtil.getBehaviorForSinglePartUpload(requestChecksumAlgorithm, length);
+        if (contentValidationBehavior != null) {
+            context = context.addData(CONTENT_VALIDATION_BEHAVIOR_KEY, contentValidationBehavior);
+        }
 
         return this.azureBlobStorage.getAppendBlobs()
             .appendBlockWithResponseAsync(containerName, blobName, length, data, null, contentMd5, null,

@@ -59,6 +59,7 @@ import com.azure.storage.blob.options.PageBlobUploadPagesFromUrlOptions;
 import com.azure.storage.blob.options.PageBlobUploadPagesOptions;
 import com.azure.storage.common.StorageChecksumAlgorithm;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.contentvalidation.ContentValidationBehaviorUtil;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
 import reactor.core.publisher.Flux;
@@ -77,6 +78,7 @@ import java.util.stream.Stream;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants.CONTENT_VALIDATION_BEHAVIOR_KEY;
 
 /**
  * Client to a page blob. It may only be instantiated through a {@link SpecializedBlobClientBuilder} or via the method
@@ -97,12 +99,12 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
     /**
      * Indicates the number of bytes in a page.
      */
-    public static final int PAGE_BYTES = BlobConstants.PAGE_BYTES;
+    static final int PAGE_BYTES = BlobConstants.PAGE_BYTES;
 
     /**
      * Indicates the maximum number of bytes that may be sent in a call to putPage.
      */
-    public static final int MAX_PUT_PAGES_BYTES = BlobConstants.MAX_PUT_PAGES_BYTES;
+    static final int MAX_PUT_PAGES_BYTES = BlobConstants.MAX_PUT_PAGES_BYTES;
 
     private static final ClientLogger LOGGER = new ClientLogger(PageBlobAsyncClient.class);
 
@@ -543,12 +545,27 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             // subscription.
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("pageRange cannot be null."));
         }
+
+        if (contentMd5 != null
+            && requestChecksumAlgorithm != null
+            && requestChecksumAlgorithm != StorageChecksumAlgorithm.NONE) {
+            return monoError(LOGGER, new IllegalArgumentException(
+                "Both contentMd5 and requestChecksumAlgorithm are set. Only one form of transactional content validation may be used."));
+        }
+
         String pageRangeStr = ModelHelper.pageRangeToString(pageRange);
+        long length = pageRange.getEnd() - pageRange.getStart() + 1;
         context = context == null ? Context.NONE : context;
 
+        String contentValidationBehavior
+            = ContentValidationBehaviorUtil.getBehaviorForSinglePartUpload(requestChecksumAlgorithm, length);
+        if (contentValidationBehavior != null) {
+            context = context.addData(CONTENT_VALIDATION_BEHAVIOR_KEY, contentValidationBehavior);
+        }
+
         return this.azureBlobStorage.getPageBlobs()
-            .uploadPagesWithResponseAsync(containerName, blobName, pageRange.getEnd() - pageRange.getStart() + 1, body,
-                contentMd5, null, null, pageRangeStr, pageBlobRequestConditions.getLeaseId(),
+            .uploadPagesWithResponseAsync(containerName, blobName, length, body, contentMd5, null, null, pageRangeStr,
+                pageBlobRequestConditions.getLeaseId(),
                 pageBlobRequestConditions.getIfSequenceNumberLessThanOrEqualTo(),
                 pageBlobRequestConditions.getIfSequenceNumberLessThan(),
                 pageBlobRequestConditions.getIfSequenceNumberEqualTo(), pageBlobRequestConditions.getIfModifiedSince(),

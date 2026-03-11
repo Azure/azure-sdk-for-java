@@ -43,7 +43,7 @@ public class StorageContentValidationPolicy implements HttpPipelinePolicy {
         applyContentValidation(context);
         return next.process();
     }
- 
+
     /**
      * Applies content validation to the request body.
      *
