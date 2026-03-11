@@ -37,25 +37,23 @@ public class CrcOutputStream extends OutputStream {
     // doesn't throw on the second call.
     @Override
     public void close() throws IOException {
+        String baseErrorMessage = "Failed to emit content because ";
         Sinks.EmitResult emitResult = sink.tryEmitValue(new ContentInfo(crc.getValue(), length, head));
-
         switch (emitResult) {
-            case OK:
-                break;
-            case FAIL_TERMINATED:
-                throw LOGGER.logExceptionAsError(new RuntimeException("Sink was terminated before emitting content: " +
-                    "info: " + emitResult));
+            // OK and FAIL_TERMINATED are expected results and not logged as errors. OK means the content info was
+            // emitted successfully. FAIL_TERMINATED means the content info was already emitted and the sink was terminated,
+            // which can happen if the stream is read to completion multiple times on things like retries
             case FAIL_CANCELLED:
-                throw LOGGER.logExceptionAsError(new RuntimeException("The subscriber cancelled before the value was " +
-                    "emitted: " + emitResult));
+                throw LOGGER.logExceptionAsError(new RuntimeException(baseErrorMessage +
+                    " the sink was previously interrupted by its consumer: " + emitResult));
             case FAIL_OVERFLOW:
-                throw LOGGER.logExceptionAsError(new RuntimeException("Buffer full: " + emitResult));
+                throw LOGGER.logExceptionAsError(new RuntimeException(baseErrorMessage + "the buffer is full: " + emitResult));
             case FAIL_NON_SERIALIZED:
-                throw LOGGER.logExceptionAsError(new RuntimeException("Two threads call emit at once: " + emitResult));
+                throw LOGGER.logExceptionAsError(new RuntimeException(baseErrorMessage + "two threads called emit at " +
+                    "once: " + emitResult));
             case FAIL_ZERO_SUBSCRIBER:
-                throw LOGGER.logExceptionAsError(new RuntimeException("Sink requires a subscriber: " + emitResult));
-            default:
-                throw LOGGER.logExceptionAsError(new RuntimeException("Unknown emit result: " + emitResult));
+                throw LOGGER.logExceptionAsError(new RuntimeException(baseErrorMessage + "the sink requires a " +
+                    "subscriber:" + emitResult));
         }
         super.close();
     }
