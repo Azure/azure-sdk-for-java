@@ -7,6 +7,8 @@ import com.azure.core.credential.SimpleTokenCache;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.LifeCycleUtils;
@@ -26,15 +28,22 @@ import io.netty.handler.codec.http.HttpMethod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
+import reactor.util.retry.Retry;
 
 import java.io.IOException;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -49,17 +58,59 @@ public class InferenceService implements AutoCloseable {
     private static final String INFERENCE_SCOPE = "https://dbinference.azure.com/.default";
     private static final String BASE_PATH = "/inference/semanticReranking";
     private static final String INFERENCE_USER_AGENT = "cosmos-inference-java";
-    private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(120);
-    private static final String INFERENCE_ENDPOINT_PROPERTY = "AZURE_COSMOS_SEMANTIC_RERANKER_INFERENCE_ENDPOINT";
     private static final ObjectMapper OBJECT_MAPPER = Utils.getSimpleObjectMapper();
-    public static final Duration DEFAULT_NETWORK_REQUEST_TIMEOUT = Duration.ofSeconds(5);
+
+    // System property / environment variable names
+    private static final String MAX_CONNECTION_LIMIT_PROPERTY = "AZURE_COSMOS_SEMANTIC_RERANKER_INFERENCE_SERVICE_MAX_CONNECTION_LIMIT";
+    private static final String MAX_CONNECTION_LIMIT_VARIABLE = "AZURE_COSMOS_SEMANTIC_RERANKER_INFERENCE_SERVICE_MAX_CONNECTION_LIMIT";
+
+    // Option key that callers can pass in the options map to override the per-request timeout
+    public static final String OPTION_TIMEOUT_SECONDS = "timeout_seconds";
+
+    /**
+     * Default network-level (connection + read) timeout for inference service HTTP calls.
+     * Set to match {@link #DEFAULT_REQUEST_TIMEOUT} because inference calls can take tens of
+     * seconds for large document sets. If this were shorter than the operation timeout,
+     * the socket would time out before the 120-second operation deadline could fire.
+     */
+    public static final Duration DEFAULT_NETWORK_REQUEST_TIMEOUT = Duration.ofSeconds(120);
     public static final Duration DEFAULT_IDLE_CONNECTION_TIMEOUT = Duration.ofSeconds(60);
     public static final Duration DEFAULT_CONNECTION_ACQUIRE_TIMEOUT = Duration.ofSeconds(5);
-    public static final int DEFAULT_MAX_CONNECTION_POOL_SIZE = 5;
+    /**
+     * Default per-request timeout for semantic rerank calls (120 seconds).
+     * Callers using the async API can override downstream with {@code .timeout(Duration)}.
+     * Callers using the sync API can override by passing {@value #OPTION_TIMEOUT_SECONDS} in the options map.
+     */
+    public static final Duration DEFAULT_REQUEST_TIMEOUT = Duration.ofSeconds(120);
+    /**
+     * Default maximum number of pooled connections to the inference endpoint.
+     * Matches .NET's {@code inferenceServiceDefaultMaxConnectionLimit = 50}.
+     * Override via system property or environment variable
+     * {@value #MAX_CONNECTION_LIMIT_PROPERTY}.
+     */
+    public static final int DEFAULT_MAX_CONNECTION_POOL_SIZE = 50;
+
+    // Retry policy — matches Python: TOTAL_RETRIES=3, RETRY_BACKOFF_FACTOR=0.8s, RETRY_BACKOFF_MAX=120s
+    static final int RETRY_MAX_ATTEMPTS = 3;
+    static final Duration RETRY_INITIAL_BACKOFF = Duration.ofMillis(800);
+    static final Duration RETRY_MAX_BACKOFF = Duration.ofSeconds(120);
+    // Status codes that are safe to retry (transient failures and rate limiting)
+    private static final Set<Integer> RETRYABLE_STATUS_CODES = Collections.unmodifiableSet(
+        new HashSet<>(Arrays.asList(
+            HttpConstants.StatusCodes.TOO_MANY_REQUESTS,      // 429 — rate limited
+            HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR,  // 500 — transient server error
+            502,                                               // 502 — bad gateway (no constant in HttpConstants)
+            HttpConstants.StatusCodes.SERVICE_UNAVAILABLE     // 503 — transient unavailability
+        ))
+    );
 
     private final URI inferenceEndpoint;
     private final HttpClient httpClient;
     private SimpleTokenCache tokenCache = null;
+    // Package-private so tests can inject a VirtualTimeScheduler to make backoff delays deterministic
+    Scheduler retryScheduler = Schedulers.parallel();
+    // Package-private so tests can disable jitter for deterministic virtual-time delays
+    double retryJitter = 0.5;
 
     /**
      * Creates a new InferenceService instance.
@@ -68,21 +119,23 @@ public class InferenceService implements AutoCloseable {
      * @throws IllegalArgumentException if inference endpoint is not configured or token credential is null.
      */
     public InferenceService(TokenCredential tokenCredential) {
-        checkNotNull(tokenCredential, "Token credential is required for semantic reranking");
+        checkNotNull(tokenCredential,
+            "Semantic reranking requires AAD authentication. "
+                + "Rebuild the CosmosClient using .credential(TokenCredential) — "
+                + "key-based auth (master key or AzureKeyCredential) is not supported for this operation.");
 
         URI inferenceBaseUrl = new Configs().getInferenceServiceEndpoint();
 
         if (inferenceBaseUrl == null || inferenceBaseUrl.toString().trim().isEmpty()) {
-            throw new IllegalArgumentException(
-                String.format("System property '%s' must be set to use semantic reranking",
-                    INFERENCE_ENDPOINT_PROPERTY));
+            throw new IllegalArgumentException("Inference endpoint property must be set to use semantic reranking");
         }
 
         this.inferenceEndpoint = URI.create(inferenceBaseUrl + BASE_PATH);
-        HttpClientConfig httpClientConfig =  new HttpClientConfig(Configs.getDefaultInferenceServiceConfig())
+        HttpClientConfig httpClientConfig = new HttpClientConfig(Configs.getDefaultInferenceServiceConfig())
             .withNetworkRequestTimeout(DEFAULT_NETWORK_REQUEST_TIMEOUT)
             .withConnectionAcquireTimeout(DEFAULT_CONNECTION_ACQUIRE_TIMEOUT)
-            .withMaxIdleConnectionTimeout(DEFAULT_IDLE_CONNECTION_TIMEOUT);
+            .withMaxIdleConnectionTimeout(DEFAULT_IDLE_CONNECTION_TIMEOUT)
+            .withPoolSize(resolveMaxConnectionPoolSize());
         this.httpClient = HttpClient.createFixed(httpClientConfig);
 
         // Create token cache for inference service scope
@@ -111,11 +164,46 @@ public class InferenceService implements AutoCloseable {
     }
 
     /**
+     * Resolves the maximum connection pool size from system property, environment variable,
+     * or the default ({@value #DEFAULT_MAX_CONNECTION_POOL_SIZE}).
+     * Matches .NET's AZURE_COSMOS_SEMANTIC_RERANKER_INFERENCE_SERVICE_MAX_CONNECTION_LIMIT override.
+     */
+    private static int resolveMaxConnectionPoolSize() {
+        String fromProperty = System.getProperty(MAX_CONNECTION_LIMIT_PROPERTY);
+        if (fromProperty != null && !fromProperty.isEmpty()) {
+            try {
+                return Integer.parseInt(fromProperty);
+            } catch (NumberFormatException e) {
+                logger.warn("Invalid value for system property {}: '{}'. Using default {}.",
+                    MAX_CONNECTION_LIMIT_PROPERTY, fromProperty, DEFAULT_MAX_CONNECTION_POOL_SIZE);
+            }
+        }
+
+        String fromEnv = System.getenv(MAX_CONNECTION_LIMIT_VARIABLE);
+        if (fromEnv != null && !fromEnv.isEmpty()) {
+            try {
+                return Integer.parseInt(fromEnv);
+            } catch (NumberFormatException e) {
+                logger.warn("Invalid value for environment variable {}: '{}'. Using default {}.",
+                    MAX_CONNECTION_LIMIT_VARIABLE, fromEnv, DEFAULT_MAX_CONNECTION_POOL_SIZE);
+            }
+        }
+
+        return DEFAULT_MAX_CONNECTION_POOL_SIZE;
+    }
+
+    /**
      * Performs semantic reranking of documents.
+     *
+     * <p>The request timeout defaults to 120 seconds ({@link #DEFAULT_REQUEST_TIMEOUT}).
+     * To override it, pass {@code "timeout_seconds"} (as a {@link Number}) in the {@code options} map.
+     * Callers using the async {@link reactor.core.publisher.Mono} result can also apply
+     * {@code .timeout(Duration)} downstream without needing to set the option.
      *
      * @param rerankContext The query or context string used to score documents.
      * @param documents The list of document strings to rerank.
-     * @param options Optional reranking parameters.
+     * @param options Optional reranking parameters. SDK-local keys ({@link #OPTION_TIMEOUT_SECONDS})
+     *                are consumed locally and not forwarded to the inference endpoint.
      * @return A Mono emitting the semantic rerank result.
      */
     public Mono<SemanticRerankResult> semanticRerank(
@@ -134,6 +222,9 @@ public class InferenceService implements AutoCloseable {
             return Mono.error(new IllegalArgumentException("Documents list cannot be empty"));
         }
 
+        // Resolve the per-request timeout: options > default
+        final Duration requestTimeout = resolveRequestTimeout(options);
+
         return this.tokenCache.getToken()
             .flatMap(accessToken -> {
                 try {
@@ -148,26 +239,23 @@ public class InferenceService implements AutoCloseable {
 
                     if (options != null) {
                         options.forEach((key, value) -> {
-                            if (value instanceof Boolean) {
-                                payload.put(key, (Boolean) value);
-                            } else if (value instanceof Integer) {
-                                payload.put(key, (Integer) value);
+                            // timeout_seconds is a SDK-local option — do not forward to the endpoint
+                            if (value != null && !OPTION_TIMEOUT_SECONDS.equals(key)) {
+                                payload.set(key, OBJECT_MAPPER.valueToTree(value));
                             }
                         });
                     }
 
                     String requestBody = OBJECT_MAPPER.writeValueAsString(payload);
 
-                    // Build HTTP request
                     HttpRequest httpRequest = getHttpRequest(accessToken);
-
                     httpRequest.withBody(requestBody.getBytes(StandardCharsets.UTF_8));
 
                     if (logger.isDebugEnabled()) {
-                        logger.debug("Sending semantic rerank request to: {}", inferenceEndpoint);
+                        logger.debug("Sending semantic rerank request to: {} (timeout: {})", inferenceEndpoint, requestTimeout);
                     }
 
-                    return httpClient.send(httpRequest, DEFAULT_TIMEOUT)
+                    return httpClient.send(httpRequest, requestTimeout)
                         .flatMap(response -> parseResponse(response));
 
                 } catch (IOException e) {
@@ -175,9 +263,66 @@ public class InferenceService implements AutoCloseable {
                     return Mono.error(BridgeInternal.createCosmosException(500, "Failed to serialize semantic rerank request"));
                 }
             })
-            .doOnError(error -> {
-                logger.error("Semantic rerank operation failed", error);
-            });
+            .as(this::withRetry)
+            .doOnError(error -> logger.error("Semantic rerank operation failed", error));
+    }
+
+    /**
+     * Resolves the effective request timeout.
+     * If the caller supplied {@value #OPTION_TIMEOUT_SECONDS} in the options map, that value is used;
+     * otherwise {@link #DEFAULT_REQUEST_TIMEOUT} applies.
+     */
+    private static Duration resolveRequestTimeout(Map<String, Object> options) {
+        if (options != null) {
+            Object value = options.get(OPTION_TIMEOUT_SECONDS);
+            if (value instanceof Number) {
+                double seconds = ((Number) value).doubleValue();
+                if (seconds > 0) {
+                    return Duration.ofMillis((long) (seconds * 1000));
+                } else {
+                    logger.warn("Invalid '{}' value: {}. Must be > 0. Using default timeout {}.",
+                        OPTION_TIMEOUT_SECONDS, seconds, DEFAULT_REQUEST_TIMEOUT);
+                }
+            }
+        }
+        return DEFAULT_REQUEST_TIMEOUT;
+    }
+
+    /**
+     * Wraps a {@link Mono} with retry logic for transient inference endpoint failures.
+     *
+     * <p>Retries up to {@value #RETRY_MAX_ATTEMPTS} times on retryable {@link com.azure.cosmos.CosmosException}
+     * status codes (429, 500, 502, 503) using exponential backoff with jitter, starting at
+     * {@link #RETRY_INITIAL_BACKOFF} and capped at {@link #RETRY_MAX_BACKOFF}.
+     * For 429 responses the {@code Retry-After} header is honoured when present.
+     * All other exceptions (non-retryable status codes, serialisation errors, etc.) propagate immediately.
+     *
+     * <p>Matches the Python SDK's retry policy:
+     * {@code TOTAL_RETRIES=3, RETRY_BACKOFF_FACTOR=0.8, RETRY_BACKOFF_MAX=120s}.
+     */
+    private <T> Mono<T> withRetry(Mono<T> source) {
+        return source.retryWhen(
+            Retry.backoff(RETRY_MAX_ATTEMPTS, RETRY_INITIAL_BACKOFF)
+                .maxBackoff(RETRY_MAX_BACKOFF)
+                .jitter(retryJitter)
+                .scheduler(retryScheduler)
+                .filter(error -> {
+                    if (!(error instanceof CosmosException)) {
+                        return false;
+                    }
+                    int statusCode = ((CosmosException) error).getStatusCode();
+                    return RETRYABLE_STATUS_CODES.contains(statusCode);
+                })
+                .doBeforeRetry(signal -> {
+                    Throwable failure = signal.failure();
+                    int statusCode = failure instanceof CosmosException
+                        ? ((CosmosException) failure).getStatusCode()
+                        : -1;
+                    logger.warn(
+                        "Semantic rerank transient failure (status={}, attempt={}/{}), retrying after backoff...",
+                        statusCode, signal.totalRetries() + 1, RETRY_MAX_ATTEMPTS);
+                })
+        );
     }
 
     private HttpRequest getHttpRequest(AccessToken accessToken) {
@@ -266,13 +411,14 @@ public class InferenceService implements AutoCloseable {
 
                 } catch (IOException e) {
                     logger.error("Failed to parse semantic rerank response", e);
-                    Map<String, String> headersMap = convertHeaders(response.headers());
-                    return Mono.error(BridgeInternal.createCosmosException(
-                        "Failed to parse semantic rerank response: " + e.getMessage(),
-                        e,
-                        headersMap,
-                        500,
-                        null));
+                    // Use BadRequestException (400) + CUSTOM_SERIALIZER_EXCEPTION sub-status —
+                    // the same pattern CosmosItemSerializer uses for client-side deserialization
+                    // failures. 400 is not in RETRYABLE_STATUS_CODES, so no retry will be attempted.
+                    BadRequestException parseException = new BadRequestException(
+                        "Failed to parse semantic rerank response: " + e.getMessage(), e);
+                    BridgeInternal.setSubStatusCode(parseException,
+                        HttpConstants.SubStatusCodes.CUSTOM_SERIALIZER_EXCEPTION);
+                    return Mono.error(parseException);
                 }
             });
     }

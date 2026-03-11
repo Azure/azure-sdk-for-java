@@ -394,8 +394,9 @@ public class Configs {
     private static final String CLIENT_LEAK_DETECTION_ENABLED = "COSMOS.CLIENT_LEAK_DETECTION_ENABLED";
 
     // Inference service related configs
-    private static final String INFERENCE_ENDPOINT_PROPERTY = "AZURE_COSMOS_SEMANTIC_RERANKER_INFERENCE_ENDPOINT";
-    public static final String INFERENCE_ENDPOINT_ENVIRONMENT_VARIABLE = "AZURE_COSMOS_SEMANTIC_RERANKER_INFERENCE_ENDPOINT";
+    public static final String INFERENCE_ENDPOINT_PROPERTY = "AZURE_COSMOS_SEMANTIC_RERANKER_INFERENCE_ENDPOINT";
+    // Same name — system property and environment variable share the same key
+    public static final String INFERENCE_ENDPOINT_ENVIRONMENT_VARIABLE = INFERENCE_ENDPOINT_PROPERTY;
 
     private static final Object lockObject = new Object();
     private static Boolean cachedIsHostnameValidationDisabled = null;
