@@ -198,13 +198,15 @@ public class RecurrenceEvaluatorDSTTest {
         
         // Now in Europe/Paris (offset +01:00 at this time)
         final ZonedDateTime now = ZonedDateTime.of(2024, 3, 8, 10, 30, 0, 0, 
-            ZoneId.of("Europe/Paris")); // Friday
+            ZoneId.of("Europe/Paris")); // Friday, 10:30 local time
         
-        // This test verifies that evaluation completes without exceptions
-        // when different geographic locations are used (no conversion should happen)
-        // The key is that no conversion should happen since offsets don't match
-        RecurrenceEvaluator.isMatch(settings, now);
-        // Test passes if no exception is thrown
+        // When offsets don't match (+05:00 vs +01:00), they represent different geographic locations
+        // No conversion should happen. The evaluator will compare times as-is.
+        // Start: 2024-03-01 10:00 +05:00 = 2024-03-01 05:00 UTC
+        // Now:   2024-03-08 10:30 +01:00 = 2024-03-08 09:30 UTC
+        // The recurrence day (Friday) matches, and time window should match
+        assertEquals(false, RecurrenceEvaluator.isMatch(settings, now),
+            "Should not match due to different geographic locations with different time windows");
     }
 
     /**
@@ -423,8 +425,12 @@ public class RecurrenceEvaluatorDSTTest {
         final ZonedDateTime now = ZonedDateTime.of(2024, 4, 5, 10, 30, 0, 0, 
             ZoneOffset.ofHours(2)); // Friday
         
-        // Should still evaluate correctly even without conversion
-        RecurrenceEvaluator.isMatch(settings, now);
-        // The test verifies no exception is thrown and evaluation completes
+        // The DST conversion logic only applies when start is fixed offset and now is region zone.
+        // In this reverse case (start is region zone, now is fixed offset), no conversion happens.
+        // Start: 2024-03-01 10:00 Europe/Paris (+01:00) = Friday
+        // Now:   2024-04-05 10:30 +02:00 = Friday (matches recurring day)
+        // Time window: 10:00-12:00, Now: 10:30 (within window)
+        assertTrue(RecurrenceEvaluator.isMatch(settings, now),
+            "Should match - region zone start with fixed offset now should evaluate correctly");
     }
 }

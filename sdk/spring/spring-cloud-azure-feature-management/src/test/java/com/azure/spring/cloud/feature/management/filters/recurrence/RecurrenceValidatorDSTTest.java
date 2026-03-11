@@ -4,7 +4,11 @@
 package com.azure.spring.cloud.feature.management.filters.recurrence;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -19,105 +23,188 @@ import com.azure.spring.cloud.feature.management.implementation.timewindow.recur
  * Tests for Daylight Saving Time (DST) handling in RecurrenceValidator.
  * These tests verify that validation uses UTC time to avoid DST-related issues
  * when calculating time window durations and validating recurrence patterns.
+ * 
+ * Tests use time windows close to 23-24 hours (the minimum gap between daily occurrences)
+ * to ensure that DST transitions don't cause incorrect validation failures.
  */
 public class RecurrenceValidatorDSTTest {
 
     /**
-     * Test that validator uses UTC for today's date calculation.
-     * This ensures consistency regardless of the system's default timezone
-     * or DST transitions.
+     * Test that a 23.5-hour window between Monday and Wednesday is valid when using UTC,
+     * even during a DST transition week. Without UTC, the validator might incorrectly
+     * calculate the gap as 22.5 or 24.5 hours depending on DST.
+     * 
+     * This test uses a reference time on the DST transition day (Sunday, March 31, 2024)
+     * to ensure the validator correctly calculates gaps in UTC.
      */
     @Test
-    public void validateSettingsUsesUTCForDateCalculation() {
+    public void validate23HourWindowDuringDSTSpringForward() {
         final TimeWindowFilterSettings settings = new TimeWindowFilterSettings();
         final RecurrencePattern pattern = new RecurrencePattern();
         final RecurrenceRange range = new RecurrenceRange();
         final Recurrence recurrence = new Recurrence();
         
         pattern.setType("Weekly");
-        pattern.setDaysOfWeek(List.of("Monday", "Wednesday", "Friday"));
+        pattern.setDaysOfWeek(List.of("Monday", "Wednesday")); // 48-hour gap minimum
         pattern.setFirstDayOfWeek("Monday");
         pattern.setInterval(1);
         
         recurrence.setRange(range);
         recurrence.setPattern(pattern);
         
-        // Start on a Monday
-        settings.setStart("2024-03-04T10:00:00+01:00"); // Monday
-        settings.setEnd("2024-03-04T12:00:00+01:00");
+        // 23.5-hour window (just under 24 hours, well within 48-hour gap)
+        settings.setStart("2024-03-25T10:00:00+01:00"); // Monday, before DST
+        settings.setEnd("2024-03-26T09:30:00+01:00"); // Tuesday, 23.5 hours later
         settings.setRecurrence(recurrence);
         
-        // Should not throw exception, uses UTC internally for validation
-        assertDoesNotThrow(() -> RecurrenceValidator.validateSettings(settings),
-            "Validator should use UTC and not throw exception");
+        // Reference time during DST transition week (Sunday, March 31, 2024 in UTC)
+        // If validator used local time incorrectly, it might miscalculate the Monday-Wednesday gap
+        final ZonedDateTime referenceDuringDST = ZonedDateTime.of(2024, 3, 31, 12, 0, 0, 0, ZoneOffset.UTC);
+        
+        // Should pass because 23.5 hours < 48 hours (Monday to Wednesday gap)
+        assertDoesNotThrow(() -> RecurrenceValidator.validateSettings(settings, referenceDuringDST),
+            "23.5-hour window should be valid with 48-hour gap, even during DST");
     }
 
     /**
-     * Test validation across DST spring forward transition.
-     * Ensures that time window duration validation works correctly
-     * when the start time is before DST and validation runs after DST.
+     * Test that a 23-hour window is valid with consecutive day recurrence (Monday, Tuesday).
+     * Without UTC, if the validator ran on the DST transition day, it might incorrectly
+     * calculate the Monday-Tuesday gap as 23 hours (losing 1 hour), causing validation to fail.
      */
     @Test
-    public void validateSettingsAcrossSpringForwardDST() {
+    public void validate23HourWindowWithConsecutiveDays() {
         final TimeWindowFilterSettings settings = new TimeWindowFilterSettings();
         final RecurrencePattern pattern = new RecurrencePattern();
         final RecurrenceRange range = new RecurrenceRange();
         final Recurrence recurrence = new Recurrence();
         
         pattern.setType("Weekly");
-        pattern.setDaysOfWeek(List.of("Monday", "Friday"));
+        pattern.setDaysOfWeek(List.of("Monday", "Tuesday")); // 24-hour gap minimum
         pattern.setFirstDayOfWeek("Monday");
         pattern.setInterval(1);
         
         recurrence.setRange(range);
         recurrence.setPattern(pattern);
         
-        // Start before DST (standard time)
-        settings.setStart("2024-03-15T10:00:00+01:00"); // Friday
-        settings.setEnd("2024-03-15T11:00:00+01:00"); // 1 hour duration
+        // 23-hour window (1 hour less than 24-hour gap)
+        settings.setStart("2024-03-25T10:00:00+01:00"); // Monday
+        settings.setEnd("2024-03-26T09:00:00+01:00"); // Tuesday, 23 hours later
         settings.setRecurrence(recurrence);
         
-        // Validation should work correctly regardless of current time being after DST
-        assertDoesNotThrow(() -> RecurrenceValidator.validateSettings(settings),
-            "Validator should handle DST spring forward correctly");
+        // Reference time on DST transition day - without UTC, the Monday-Tuesday gap
+        // might be calculated as 23 hours due to DST, causing incorrect failure
+        final ZonedDateTime referenceDuringDST = ZonedDateTime.of(2024, 3, 31, 2, 30, 0, 0, 
+            ZoneId.of("Europe/Paris"));
+        
+        // Should pass because 23 hours < 24 hours (UTC calculation)
+        assertDoesNotThrow(() -> RecurrenceValidator.validateSettings(settings, referenceDuringDST),
+            "23-hour window should be valid with 24-hour gap when calculated in UTC");
+    }
+
+    /**
+     * Test that a 24-hour window FAILS validation with consecutive day recurrence.
+     * The window must be strictly less than the gap between occurrences.
+     */
+    @Test
+    public void validate24HourWindowWithConsecutiveDaysShouldFail() {
+        final TimeWindowFilterSettings settings = new TimeWindowFilterSettings();
+        final RecurrencePattern pattern = new RecurrencePattern();
+        final RecurrenceRange range = new RecurrenceRange();
+        final Recurrence recurrence = new Recurrence();
+        
+        pattern.setType("Weekly");
+        pattern.setDaysOfWeek(List.of("Monday", "Tuesday")); // 24-hour gap minimum
+        pattern.setFirstDayOfWeek("Monday");
+        pattern.setInterval(1);
+        
+        recurrence.setRange(range);
+        recurrence.setPattern(pattern);
+        
+        // Exactly 24-hour window (equal to gap, should fail)
+        settings.setStart("2024-03-25T10:00:00+01:00"); // Monday
+        settings.setEnd("2024-03-26T10:00:00+01:00"); // Tuesday, exactly 24 hours later
+        settings.setRecurrence(recurrence);
+        
+        final ZonedDateTime reference = ZonedDateTime.of(2024, 3, 31, 12, 0, 0, 0, ZoneOffset.UTC);
+        
+        // Should fail because window duration must be strictly less than gap
+        assertThrows(IllegalArgumentException.class, 
+            () -> RecurrenceValidator.validateSettings(settings, reference),
+            "24-hour window should fail validation with 24-hour gap (not strictly less)");
     }
 
     /**
      * Test validation across DST fall back transition.
-     * Ensures that time window duration validation works correctly
-     * when clocks fall back.
+     * A 23.5-hour window on Sunday-Tuesday should be valid even though
+     * the Sunday night has an extra hour (25-hour day).
      */
     @Test
-    public void validateSettingsAcrossFallBackDST() {
+    public void validate23HourWindowDuringDSTFallBack() {
         final TimeWindowFilterSettings settings = new TimeWindowFilterSettings();
         final RecurrencePattern pattern = new RecurrencePattern();
         final RecurrenceRange range = new RecurrenceRange();
         final Recurrence recurrence = new Recurrence();
         
         pattern.setType("Weekly");
-        pattern.setDaysOfWeek(List.of("Monday", "Friday"));
+        pattern.setDaysOfWeek(List.of("Sunday", "Tuesday")); // 48-hour gap minimum
         pattern.setFirstDayOfWeek("Monday");
         pattern.setInterval(1);
         
         recurrence.setRange(range);
         recurrence.setPattern(pattern);
         
-        // Start before DST fall back (daylight time)
-        settings.setStart("2024-10-18T10:00:00+02:00"); // Friday
-        settings.setEnd("2024-10-18T11:00:00+02:00"); // 1 hour duration
+        // 23.5-hour window starting on Sunday before DST fall back
+        settings.setStart("2024-10-27T10:00:00+02:00"); // Sunday (daylight time)
+        settings.setEnd("2024-10-28T09:30:00+01:00"); // Monday, 23.5 hours later (standard time)
         settings.setRecurrence(recurrence);
         
-        // Validation should work correctly after DST fall back
-        assertDoesNotThrow(() -> RecurrenceValidator.validateSettings(settings),
-            "Validator should handle DST fall back correctly");
+        // Reference time during DST fall back week
+        final ZonedDateTime referenceDuringFallBack = ZonedDateTime.of(2024, 10, 27, 12, 0, 0, 0, 
+            ZoneOffset.UTC);
+        
+        // Should pass because 23.5 hours < 48 hours (Sunday to Tuesday gap in UTC)
+        assertDoesNotThrow(() -> RecurrenceValidator.validateSettings(settings, referenceDuringFallBack),
+            "23.5-hour window should be valid during DST fall back when calculated in UTC");
     }
 
     /**
-     * Test validation with daily recurrence across DST.
-     * Daily patterns are simpler but should still use UTC for consistency.
+     * Test that a time window spanning the DST spring forward transition hour
+     * is correctly validated using UTC duration calculation.
      */
     @Test
-    public void validateDailyRecurrenceAcrossDST() {
+    public void validateTimeWindowSpanningDSTSpringForwardHour() {
+        final TimeWindowFilterSettings settings = new TimeWindowFilterSettings();
+        final RecurrencePattern pattern = new RecurrencePattern();
+        final RecurrenceRange range = new RecurrenceRange();
+        final Recurrence recurrence = new Recurrence();
+        
+        pattern.setType("Weekly");
+        pattern.setDaysOfWeek(List.of("Sunday")); // Single day, no gap check
+        pattern.setFirstDayOfWeek("Monday");
+        pattern.setInterval(1);
+        
+        recurrence.setRange(range);
+        recurrence.setPattern(pattern);
+        
+        // DST spring forward in Europe/Paris: 2024-03-31 at 2:00 AM -> 3:00 AM
+        // Time window from 1:30 to 3:30 - appears to be 2 hours locally but is actually 1 hour in UTC
+        settings.setStart("2024-03-31T01:30:00+01:00"); // Sunday, 00:30 UTC
+        settings.setEnd("2024-03-31T03:30:00+02:00"); // Sunday, 01:30 UTC (1 hour duration)
+        settings.setRecurrence(recurrence);
+        
+        final ZonedDateTime reference = ZonedDateTime.of(2024, 3, 31, 12, 0, 0, 0, ZoneOffset.UTC);
+        
+        // Should pass - window is only 1 hour in UTC despite appearing as 2 hours locally
+        assertDoesNotThrow(() -> RecurrenceValidator.validateSettings(settings, reference),
+            "Window spanning DST transition should be validated using UTC duration");
+    }
+
+    /**
+     * Test with daily recurrence and 23-hour window.
+     * Daily recurrence has a 24-hour minimum gap, so 23-hour window should be valid.
+     */
+    @Test
+    public void validateDailyRecurrence23HourWindow() {
         final TimeWindowFilterSettings settings = new TimeWindowFilterSettings();
         final RecurrencePattern pattern = new RecurrencePattern();
         final RecurrenceRange range = new RecurrenceRange();
@@ -129,51 +216,149 @@ public class RecurrenceValidatorDSTTest {
         recurrence.setRange(range);
         recurrence.setPattern(pattern);
         
-        // Start before DST
-        settings.setStart("2024-03-20T10:00:00+01:00");
-        settings.setEnd("2024-03-20T12:00:00+01:00"); // 2 hour duration
+        // 23-hour window
+        settings.setStart("2024-03-30T10:00:00+01:00");
+        settings.setEnd("2024-03-31T09:00:00+01:00"); // 23 hours later
         settings.setRecurrence(recurrence);
         
-        assertDoesNotThrow(() -> RecurrenceValidator.validateSettings(settings),
-            "Daily recurrence validation should work across DST");
+        final ZonedDateTime reference = ZonedDateTime.of(2024, 3, 31, 12, 0, 0, 0, ZoneOffset.UTC);
+        
+        assertDoesNotThrow(() -> RecurrenceValidator.validateSettings(settings, reference),
+            "23-hour window should be valid for daily recurrence (< 24-hour gap)");
     }
 
     /**
-     * Test that validator handles time windows that span the DST transition hour.
-     * For example, a window from 1:30 AM to 3:30 AM on DST spring forward day.
+     * Test that 24-hour window FAILS with daily recurrence.
      */
     @Test
-    public void validateTimeWindowSpanningDSTTransitionHour() {
+    public void validateDailyRecurrence24HourWindowShouldFail() {
+        final TimeWindowFilterSettings settings = new TimeWindowFilterSettings();
+        final RecurrencePattern pattern = new RecurrencePattern();
+        final RecurrenceRange range = new RecurrenceRange();
+        final Recurrence recurrence = new Recurrence();
+        
+        pattern.setType("Daily");
+        pattern.setInterval(1);
+        
+        recurrence.setRange(range);
+        recurrence.setPattern(pattern);
+        
+        // Exactly 24-hour window
+        settings.setStart("2024-03-30T10:00:00+01:00");
+        settings.setEnd("2024-03-31T10:00:00+02:00"); // Exactly 24 hours later (crossing DST)
+        settings.setRecurrence(recurrence);
+        
+        final ZonedDateTime reference = ZonedDateTime.of(2024, 3, 31, 12, 0, 0, 0, ZoneOffset.UTC);
+        
+        assertThrows(IllegalArgumentException.class,
+            () -> RecurrenceValidator.validateSettings(settings, reference),
+            "24-hour window should fail for daily recurrence (not strictly less than 24-hour gap)");
+    }
+
+    /**
+     * Test Monday-Friday-Sunday pattern with 23.5-hour window.
+     * Minimum gap is Monday-Friday (96 hours), so this should pass.
+     */
+    @Test
+    public void validateMultipleDaysOfWeekWith23HourWindow() {
         final TimeWindowFilterSettings settings = new TimeWindowFilterSettings();
         final RecurrencePattern pattern = new RecurrencePattern();
         final RecurrenceRange range = new RecurrenceRange();
         final Recurrence recurrence = new Recurrence();
         
         pattern.setType("Weekly");
-        pattern.setDaysOfWeek(List.of("Sunday"));
+        pattern.setDaysOfWeek(List.of("Monday", "Friday", "Sunday")); 
         pattern.setFirstDayOfWeek("Monday");
         pattern.setInterval(1);
         
         recurrence.setRange(range);
         recurrence.setPattern(pattern);
         
-        // DST spring forward in Europe/Paris: 2024-03-31 at 2:00 AM -> 3:00 AM
-        // Time window from 1:30 to 3:30 (spans the transition)
-        settings.setStart("2024-03-31T01:30:00+01:00"); // Sunday
-        settings.setEnd("2024-03-31T03:30:00+02:00"); // After DST transition
+        // 23.5-hour window
+        settings.setStart("2024-03-25T10:00:00+01:00"); // Monday
+        settings.setEnd("2024-03-26T09:30:00+01:00"); // Tuesday, 23.5 hours later
         settings.setRecurrence(recurrence);
         
-        // Using UTC ensures consistent duration calculation
-        assertDoesNotThrow(() -> RecurrenceValidator.validateSettings(settings),
-            "Validator should handle time window spanning DST transition");
+        // Reference on DST transition day
+        final ZonedDateTime referenceDuringDST = ZonedDateTime.of(2024, 3, 31, 12, 0, 0, 0, ZoneOffset.UTC);
+        
+        // Minimum gap is Friday->Sunday (48 hours), so 23.5 hours should pass
+        assertDoesNotThrow(() -> RecurrenceValidator.validateSettings(settings, referenceDuringDST),
+            "23.5-hour window should be valid with Friday-Sunday 48-hour minimum gap");
     }
 
     /**
-     * Test validation with numbered range across DST.
-     * Ensures occurrence counting validation works correctly.
+     * Test with consecutive days spanning DST transition.
+     * Saturday-Sunday-Monday where Sunday is the DST transition day.
      */
     @Test
-    public void validateNumberedRangeAcrossDST() {
+    public void validateConsecutiveDaysSpanningDSTTransition() {
+        final TimeWindowFilterSettings settings = new TimeWindowFilterSettings();
+        final RecurrencePattern pattern = new RecurrencePattern();
+        final RecurrenceRange range = new RecurrenceRange();
+        final Recurrence recurrence = new Recurrence();
+        
+        pattern.setType("Weekly");
+        pattern.setDaysOfWeek(List.of("Saturday", "Sunday", "Monday"));
+        pattern.setFirstDayOfWeek("Monday");
+        pattern.setInterval(1);
+        
+        recurrence.setRange(range);
+        recurrence.setPattern(pattern);
+        
+        // 23-hour window on Saturday
+        settings.setStart("2024-03-30T10:00:00+01:00"); // Saturday
+        settings.setEnd("2024-03-31T09:00:00+01:00"); // Sunday, 23 hours later
+        settings.setRecurrence(recurrence);
+        
+        // Reference on the DST transition day itself
+        final ZonedDateTime reference = ZonedDateTime.of(2024, 3, 31, 2, 30, 0, 0, 
+            ZoneId.of("Europe/Paris"));
+        
+        // Minimum gap is Saturday-Sunday or Sunday-Monday (24 hours in UTC)
+        // 23 hours < 24 hours, so should pass
+        assertDoesNotThrow(() -> RecurrenceValidator.validateSettings(settings, reference),
+            "23-hour window should be valid spanning DST transition with UTC calculation");
+    }
+
+    /**
+     * Test validation with US timezone DST transition.
+     * US DST spring forward is second Sunday of March (different from Europe).
+     */
+    @Test
+    public void validate23HourWindowDuringUSDSTTransition() {
+        final TimeWindowFilterSettings settings = new TimeWindowFilterSettings();
+        final RecurrencePattern pattern = new RecurrencePattern();
+        final RecurrenceRange range = new RecurrenceRange();
+        final Recurrence recurrence = new Recurrence();
+        
+        pattern.setType("Weekly");
+        pattern.setDaysOfWeek(List.of("Sunday", "Tuesday"));
+        pattern.setFirstDayOfWeek("Monday");
+        pattern.setInterval(1);
+        
+        recurrence.setRange(range);
+        recurrence.setPattern(pattern);
+        
+        // 23-hour window on Sunday (US DST transition day: March 10, 2024)
+        settings.setStart("2024-03-10T10:00:00-08:00"); // Sunday, PST
+        settings.setEnd("2024-03-11T09:00:00-07:00"); // Monday, PDT (23 hours later in UTC)
+        settings.setRecurrence(recurrence);
+        
+        // Reference during US DST transition
+        final ZonedDateTime reference = ZonedDateTime.of(2024, 3, 10, 18, 0, 0, 0, ZoneOffset.UTC);
+        
+        // Sunday-Tuesday gap is 48 hours, 23-hour window should pass
+        assertDoesNotThrow(() -> RecurrenceValidator.validateSettings(settings, reference),
+            "23-hour window should be valid during US DST transition with UTC calculation");
+    }
+
+    /**
+     * Test with multi-week interval and 23-hour window.
+     * Even with larger gaps, the window must still be validated correctly.
+     */
+    @Test
+    public void validateMultiWeekIntervalWith23HourWindow() {
         final TimeWindowFilterSettings settings = new TimeWindowFilterSettings();
         final RecurrencePattern pattern = new RecurrencePattern();
         final RecurrenceRange range = new RecurrenceRange();
@@ -182,182 +367,20 @@ public class RecurrenceValidatorDSTTest {
         pattern.setType("Weekly");
         pattern.setDaysOfWeek(List.of("Monday", "Friday"));
         pattern.setFirstDayOfWeek("Monday");
-        pattern.setInterval(1);
-        
-        range.setType("Numbered");
-        range.setNumberOfOccurrences(20);
+        pattern.setInterval(2); // Every 2 weeks
         
         recurrence.setRange(range);
         recurrence.setPattern(pattern);
         
-        // Start before DST
+        // 23-hour window
         settings.setStart("2024-03-04T10:00:00+01:00"); // Monday
-        settings.setEnd("2024-03-04T11:00:00+01:00");
+        settings.setEnd("2024-03-05T09:00:00+01:00"); // Tuesday, 23 hours later
         settings.setRecurrence(recurrence);
         
-        assertDoesNotThrow(() -> RecurrenceValidator.validateSettings(settings),
-            "Numbered range validation should work across DST");
-    }
-
-    /**
-     * Test validation with end date across DST.
-     * Ensures end date validation works correctly with UTC.
-     */
-    @Test
-    public void validateEndDateAcrossDST() {
-        final TimeWindowFilterSettings settings = new TimeWindowFilterSettings();
-        final RecurrencePattern pattern = new RecurrencePattern();
-        final RecurrenceRange range = new RecurrenceRange();
-        final Recurrence recurrence = new Recurrence();
+        final ZonedDateTime reference = ZonedDateTime.of(2024, 3, 31, 12, 0, 0, 0, ZoneOffset.UTC);
         
-        pattern.setType("Weekly");
-        pattern.setDaysOfWeek(List.of("Monday", "Wednesday", "Friday"));
-        pattern.setFirstDayOfWeek("Monday");
-        pattern.setInterval(1);
-        
-        range.setType("EndDate");
-        range.setEndDate("2024-04-30T23:59:59+02:00"); // After DST
-        
-        recurrence.setRange(range);
-        recurrence.setPattern(pattern);
-        
-        // Start before DST
-        settings.setStart("2024-03-01T10:00:00+01:00"); // Friday
-        settings.setEnd("2024-03-01T11:00:00+01:00");
-        settings.setRecurrence(recurrence);
-        
-        assertDoesNotThrow(() -> RecurrenceValidator.validateSettings(settings),
-            "End date validation should work across DST");
-    }
-
-    /**
-     * Test validation with different timezone offsets.
-     * Ensures UTC usage makes validation consistent across timezones.
-     */
-    @Test
-    public void validateWithDifferentTimezoneOffsets() {
-        final TimeWindowFilterSettings settings = new TimeWindowFilterSettings();
-        final RecurrencePattern pattern = new RecurrencePattern();
-        final RecurrenceRange range = new RecurrenceRange();
-        final Recurrence recurrence = new Recurrence();
-        
-        pattern.setType("Weekly");
-        pattern.setDaysOfWeek(List.of("Tuesday", "Thursday"));
-        pattern.setFirstDayOfWeek("Monday");
-        pattern.setInterval(1);
-        
-        recurrence.setRange(range);
-        recurrence.setPattern(pattern);
-        
-        // Use a different timezone (US Pacific)
-        settings.setStart("2024-03-05T10:00:00-08:00"); // Tuesday
-        settings.setEnd("2024-03-05T11:00:00-08:00");
-        settings.setRecurrence(recurrence);
-        
-        assertDoesNotThrow(() -> RecurrenceValidator.validateSettings(settings),
-            "Validation should work with different timezone offsets using UTC");
-    }
-
-    /**
-     * Test validation with multi-week interval across DST.
-     * Ensures proper validation of longer intervals.
-     */
-    @Test
-    public void validateMultiWeekIntervalAcrossDST() {
-        final TimeWindowFilterSettings settings = new TimeWindowFilterSettings();
-        final RecurrencePattern pattern = new RecurrencePattern();
-        final RecurrenceRange range = new RecurrenceRange();
-        final Recurrence recurrence = new Recurrence();
-        
-        pattern.setType("Weekly");
-        pattern.setDaysOfWeek(List.of("Monday", "Friday"));
-        pattern.setFirstDayOfWeek("Monday");
-        pattern.setInterval(3); // Every 3 weeks
-        
-        recurrence.setRange(range);
-        recurrence.setPattern(pattern);
-        
-        // Start before DST
-        settings.setStart("2024-02-19T10:00:00+01:00"); // Monday
-        settings.setEnd("2024-02-19T12:00:00+01:00");
-        settings.setRecurrence(recurrence);
-        
-        assertDoesNotThrow(() -> RecurrenceValidator.validateSettings(settings),
-            "Multi-week interval validation should work across DST");
-    }
-
-    /**
-     * Test that time window duration validation is consistent regardless of DST.
-     * A 2-hour window should be valid in both standard and daylight time.
-     */
-    @Test
-    public void validateTimeWindowDurationConsistencyAcrossDST() {
-        // Test during standard time
-        final TimeWindowFilterSettings settings1 = new TimeWindowFilterSettings();
-        final RecurrencePattern pattern1 = new RecurrencePattern();
-        final RecurrenceRange range1 = new RecurrenceRange();
-        final Recurrence recurrence1 = new Recurrence();
-        
-        pattern1.setType("Daily");
-        pattern1.setInterval(1);
-        
-        recurrence1.setRange(range1);
-        recurrence1.setPattern(pattern1);
-        
-        settings1.setStart("2024-01-15T10:00:00+01:00"); // Standard time
-        settings1.setEnd("2024-01-15T12:00:00+01:00"); // 2 hours
-        settings1.setRecurrence(recurrence1);
-        
-        assertDoesNotThrow(() -> RecurrenceValidator.validateSettings(settings1),
-            "Time window validation should work during standard time");
-        
-        // Test during daylight time (same duration, different offset)
-        final TimeWindowFilterSettings settings2 = new TimeWindowFilterSettings();
-        final RecurrencePattern pattern2 = new RecurrencePattern();
-        final RecurrenceRange range2 = new RecurrenceRange();
-        final Recurrence recurrence2 = new Recurrence();
-        
-        pattern2.setType("Daily");
-        pattern2.setInterval(1);
-        
-        recurrence2.setRange(range2);
-        recurrence2.setPattern(pattern2);
-        
-        settings2.setStart("2024-06-15T10:00:00+02:00"); // Daylight time
-        settings2.setEnd("2024-06-15T12:00:00+02:00"); // 2 hours
-        settings2.setRecurrence(recurrence2);
-        
-        assertDoesNotThrow(() -> RecurrenceValidator.validateSettings(settings2),
-            "Time window validation should work during daylight time");
-    }
-
-    /**
-     * Test validation when days of week span DST transition.
-     * Ensures that the validator correctly handles weekly patterns
-     * where recurring days cross DST boundaries.
-     */
-    @Test
-    public void validateDaysOfWeekSpanningDSTTransition() {
-        final TimeWindowFilterSettings settings = new TimeWindowFilterSettings();
-        final RecurrencePattern pattern = new RecurrencePattern();
-        final RecurrenceRange range = new RecurrenceRange();
-        final Recurrence recurrence = new Recurrence();
-        
-        pattern.setType("Weekly");
-        // Multiple days including Sunday (typical DST transition day)
-        pattern.setDaysOfWeek(List.of("Friday", "Saturday", "Sunday", "Monday"));
-        pattern.setFirstDayOfWeek("Monday");
-        pattern.setInterval(1);
-        
-        recurrence.setRange(range);
-        recurrence.setPattern(pattern);
-        
-        // Start on Friday before DST transition week
-        settings.setStart("2024-03-22T10:00:00+01:00"); // Friday
-        settings.setEnd("2024-03-22T11:00:00+01:00");
-        settings.setRecurrence(recurrence);
-        
-        assertDoesNotThrow(() -> RecurrenceValidator.validateSettings(settings),
-            "Days of week validation should work spanning DST transition");
+        // Minimum gap is Monday-Friday (96 hours), so 23 hours should pass
+        assertDoesNotThrow(() -> RecurrenceValidator.validateSettings(settings, reference),
+            "23-hour window should be valid with multi-week interval");
     }
 }

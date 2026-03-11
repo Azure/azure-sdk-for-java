@@ -23,8 +23,19 @@ import com.azure.spring.cloud.feature.management.implementation.timewindow.TimeW
 
 public class RecurrenceValidator {
     public static void validateSettings(TimeWindowFilterSettings settings) {
+        validateSettings(settings, ZonedDateTime.now(ZoneOffset.UTC));
+    }
+
+    /**
+     * Validates recurrence settings with a specified reference time.
+     * Public for testing purposes to allow deterministic validation.
+     * 
+     * @param settings The time window filter settings to validate
+     * @param referenceTime The reference time to use for "today" in validation calculations
+     */
+    public static void validateSettings(TimeWindowFilterSettings settings, ZonedDateTime referenceTime) {
         validateRecurrenceRequiredParameter(settings);
-        validateRecurrencePattern(settings);
+        validateRecurrencePattern(settings, referenceTime);
         validateRecurrenceRange(settings);
     }
 
@@ -54,13 +65,13 @@ public class RecurrenceValidator {
         }
     }
 
-    private static void validateRecurrencePattern(TimeWindowFilterSettings settings) {
+    private static void validateRecurrencePattern(TimeWindowFilterSettings settings, ZonedDateTime referenceTime) {
         final RecurrencePatternType patternType = settings.getRecurrence().getPattern().getType();
 
         if (patternType == RecurrencePatternType.DAILY) {
             validateDailyRecurrencePattern(settings);
         } else {
-            validateWeeklyRecurrencePattern(settings);
+            validateWeeklyRecurrencePattern(settings, referenceTime);
         }
     }
 
@@ -77,7 +88,7 @@ public class RecurrenceValidator {
         validateTimeWindowDuration(settings);
     }
 
-    private static void validateWeeklyRecurrencePattern(TimeWindowFilterSettings settings) {
+    private static void validateWeeklyRecurrencePattern(TimeWindowFilterSettings settings, ZonedDateTime referenceTime) {
         validateDaysOfWeek(settings);
 
         // Check whether "Start" is a valid first occurrence
@@ -91,7 +102,7 @@ public class RecurrenceValidator {
         validateTimeWindowDuration(settings);
 
         // Check whether the time window duration is shorter than the minimum gap between days of week
-        if (!isDurationCompliantWithDaysOfWeek(settings)) {
+        if (!isDurationCompliantWithDaysOfWeek(settings, referenceTime)) {
             throw new IllegalArgumentException(String.format(RecurrenceConstants.TIME_WINDOW_DURATION_OUT_OF_RANGE, "Recurrence.Pattern.DaysOfWeek"));
         }
     }
@@ -124,19 +135,20 @@ public class RecurrenceValidator {
     }
 
     /**
-     * Check whether the duration is shorter than the minimum gap between recurrence of days of week.
-     *
-     * @param settings time window filter settings
+    /**
+     * Validate if time window duration is shorter than the minimum gap between days of week
+     * @param settings The settings to validate
+     * @param referenceTime The reference time to use for "today" in gap calculations
      * @return True if the duration is compliant with days of week, false otherwise.
      */
-    private static boolean isDurationCompliantWithDaysOfWeek(TimeWindowFilterSettings settings) {
+    private static boolean isDurationCompliantWithDaysOfWeek(TimeWindowFilterSettings settings, ZonedDateTime referenceTime) {
         final List<DayOfWeek> daysOfWeek = settings.getRecurrence().getPattern().getDaysOfWeek();
         if (daysOfWeek.size() == 1) {
             return true;
         }
 
-        // Get the date of first day of the week
-        final ZonedDateTime today = ZonedDateTime.now(ZoneOffset.UTC);
+        // Get the date of first day of the week using provided reference time
+        final ZonedDateTime today = referenceTime;
         final DayOfWeek firstDayOfWeek = settings.getRecurrence().getPattern().getFirstDayOfWeek();
         final int offset = TimeWindowUtils.getPassedWeekDays(today.getDayOfWeek(), firstDayOfWeek);
         final ZonedDateTime firstDateOfWeek = today.minusDays(offset).truncatedTo(ChronoUnit.DAYS);
