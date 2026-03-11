@@ -1,0 +1,4 @@
+directory: specification/trafficmanager/resource-manager/Microsoft.Network/TrafficManager
+commit: 1aeffe684c5db9e94e5f41fa2b27af3c0e44b753
+repo: Azure/azure-rest-api-specs
+additionalDirectories: 
