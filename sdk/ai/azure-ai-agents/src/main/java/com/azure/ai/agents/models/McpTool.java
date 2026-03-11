@@ -395,7 +395,7 @@ public final class McpTool extends Tool {
         if (this.requireApproval == null) {
             return null;
         }
-        return this.requireApproval.toString();
+        return this.requireApproval.toObject(String.class);
     }
 
     /**

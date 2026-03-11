@@ -166,7 +166,7 @@ public final class CodeInterpreterTool extends Tool {
         if (this.container == null) {
             return null;
         }
-        return this.container.toString();
+        return this.container.toObject(String.class);
     }
 
     /**

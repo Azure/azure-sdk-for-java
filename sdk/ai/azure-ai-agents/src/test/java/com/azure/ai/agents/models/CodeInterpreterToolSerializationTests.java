@@ -176,6 +176,53 @@ public class CodeInterpreterToolSerializationTests {
         assertEquals(2, deserializedParam.getFileIds().size());
     }
 
+    /**
+     * Regression: container string must not be double-quoted in serialized JSON.
+     * Setting via setContainer(String) must produce "container":"value", never "container":"\"value\"".
+     */
+    @Test
+    public void testContainerStringNoDoubleQuoting() throws IOException {
+        CodeInterpreterTool tool = new CodeInterpreterTool();
+        tool.setContainer("cntr-abc-123");
+
+        String json = serializeToJson(tool);
+
+        assertTrue(json.contains("\"container\":\"cntr-abc-123\""),
+            "Container string must not be double-quoted, got: " + json);
+        assertFalse(json.contains("\\\"cntr-abc-123\\\""),
+            "Container string must not have escaped quotes, got: " + json);
+    }
+
+    /**
+     * Regression: container string getter must return the plain string after round-trip,
+     * not a JSON-encoded value with surrounding quotes.
+     */
+    @Test
+    public void testContainerStringRoundTripNoExtraQuotes() throws IOException {
+        CodeInterpreterTool original = new CodeInterpreterTool();
+        original.setContainer("cntr-abc-123");
+
+        String json = serializeToJson(original);
+        CodeInterpreterTool deserialized = deserializeFromJson(json);
+
+        assertEquals("cntr-abc-123", deserialized.getContainerAsString(),
+            "Round-tripped container string must not have extra quotes");
+    }
+
+    /**
+     * Regression: container string deserialized from JSON must return the plain string,
+     * not a JSON-encoded value with surrounding quotes.
+     */
+    @Test
+    public void testContainerStringDeserializationNoExtraQuotes() throws IOException {
+        String json = "{\"type\":\"code_interpreter\",\"container\":\"my-id-456\"}";
+
+        CodeInterpreterTool tool = deserializeFromJson(json);
+
+        assertEquals("my-id-456", tool.getContainerAsString(),
+            "Deserialized container string must not have extra quotes");
+    }
+
     // Helper method to serialize to JSON string
     private String serializeToJson(CodeInterpreterTool tool) throws IOException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();

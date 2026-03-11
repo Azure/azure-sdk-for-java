@@ -343,6 +343,67 @@ public class McpToolSerializationTests {
         assertTrue(json.contains("\"require_approval\""));
     }
 
+    // ===== Regression: no double-quoting =====
+
+    /**
+     * Regression: requireApproval string must not be double-quoted in serialized JSON.
+     * Setting via setRequireApproval(String) must produce "require_approval":"always",
+     * never "require_approval":"\"always\"".
+     */
+    @Test
+    public void testRequireApprovalStringNoDoubleQuoting() throws IOException {
+        McpTool tool = new McpTool(TEST_SERVER_LABEL).setRequireApproval("always");
+
+        String json = serializeToJson(tool);
+
+        assertTrue(json.contains("\"require_approval\":\"always\""),
+            "requireApproval string must not be double-quoted, got: " + json);
+        assertFalse(json.contains("\\\"always\\\""),
+            "requireApproval string must not have escaped quotes, got: " + json);
+    }
+
+    /**
+     * Regression: requireApproval "never" string must not be double-quoted in serialized JSON.
+     */
+    @Test
+    public void testRequireApprovalNeverStringNoDoubleQuoting() throws IOException {
+        McpTool tool = new McpTool(TEST_SERVER_LABEL).setRequireApproval("never");
+
+        String json = serializeToJson(tool);
+
+        assertTrue(json.contains("\"require_approval\":\"never\""),
+            "requireApproval string must not be double-quoted, got: " + json);
+    }
+
+    /**
+     * Regression: requireApproval string getter must return the plain string after round-trip,
+     * not a JSON-encoded value with surrounding quotes.
+     */
+    @Test
+    public void testRequireApprovalStringRoundTripNoExtraQuotes() throws IOException {
+        McpTool original = new McpTool(TEST_SERVER_LABEL).setRequireApproval("always");
+
+        String json = serializeToJson(original);
+        McpTool deserialized = deserializeFromJson(json);
+
+        assertEquals("always", deserialized.getRequireApprovalAsString(),
+            "Round-tripped requireApproval string must not have extra quotes");
+    }
+
+    /**
+     * Regression: requireApproval string deserialized from JSON must return the plain string,
+     * not a JSON-encoded value with surrounding quotes.
+     */
+    @Test
+    public void testRequireApprovalStringDeserializationNoExtraQuotes() throws IOException {
+        String json = "{\"server_label\":\"test-mcp-server\",\"type\":\"mcp\",\"require_approval\":\"never\"}";
+
+        McpTool tool = deserializeFromJson(json);
+
+        assertEquals("never", tool.getRequireApprovalAsString(),
+            "Deserialized requireApproval string must not have extra quotes");
+    }
+
     // Helper method to serialize to JSON string
     private String serializeToJson(McpTool tool) throws IOException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
