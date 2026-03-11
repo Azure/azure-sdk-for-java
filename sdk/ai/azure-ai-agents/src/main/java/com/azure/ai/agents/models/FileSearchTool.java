@@ -11,7 +11,6 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.openai.models.ComparisonFilter;
 import com.openai.models.CompoundFilter;
-
 import java.io.IOException;
 import java.util.List;
 

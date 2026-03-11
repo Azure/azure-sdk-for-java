@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -299,7 +298,7 @@ public class FileSearchToolSerializationTests {
         try (JsonWriter writer = JsonProviders.createWriter(out)) {
             tool.toJson(writer);
         }
-        return out.toString(StandardCharsets.UTF_8);
+        return out.toString("UTF-8");
     }
 
     private FileSearchTool deserialize(String json) throws IOException {
