@@ -53,7 +53,8 @@ public final class CodeInterpreterTool extends Tool {
      *
      * @return the container value.
      */
-    private BinaryData getContainerInternal() {
+    private BinaryData getContainer() {
+        // AI Tooling: union type
         return this.container;
     }
 
@@ -166,18 +167,5 @@ public final class CodeInterpreterTool extends Tool {
             return null;
         }
         return this.container.toObject(AutoCodeInterpreterToolParam.class);
-    }
-
-    /**
-     * Get the container property: The code interpreter container. Can be a container ID or an object that
-     * specifies uploaded file IDs to make available to your code, along with an
-     * optional `memory_limit` setting.
-     * If not provided, the service assumes auto.
-     *
-     * @return the container value.
-     */
-    @Generated
-    public BinaryData getContainer() {
-        return this.container;
     }
 }
