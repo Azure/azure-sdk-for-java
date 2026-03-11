@@ -191,6 +191,14 @@ public final class PromptAgentDefinition extends AgentDefinition {
         return this;
     }
 
+    /**
+     * Gets the reasoning configuration for this prompt agent.
+     * <p>
+     * This property uses the {@link com.openai.models.Reasoning} type from the openai-java library.
+     * It is serialized using {@code snake_case} field names on the wire (e.g. {@code generate_summary}).
+     *
+     * @return the {@link com.openai.models.Reasoning} configuration, or {@code null} if not set.
+     */
     // AI Tooling: openai-java de-dup
     public com.openai.models.Reasoning getReasoning() {
         return this.reasoning;
@@ -443,6 +451,15 @@ public final class PromptAgentDefinition extends AgentDefinition {
         return this.toolChoice.toObject(ResponseCreateParams.ToolChoice.class);
     }
 
+    /**
+     * Sets the reasoning configuration for this prompt agent.
+     * <p>
+     * This property uses the {@link com.openai.models.Reasoning} type from the openai-java library.
+     * It is serialized using {@code snake_case} field names on the wire (e.g. {@code generate_summary}).
+     *
+     * @param reasoning the {@link com.openai.models.Reasoning} configuration to set, or {@code null} to clear.
+     * @return the PromptAgentDefinition object itself.
+     */
     // AI Tooling: openai-java de-dup
     public PromptAgentDefinition setReasoning(com.openai.models.Reasoning reasoning) {
         this.reasoning = reasoning;

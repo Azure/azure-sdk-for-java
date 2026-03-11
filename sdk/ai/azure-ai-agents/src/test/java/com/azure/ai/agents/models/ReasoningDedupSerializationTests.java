@@ -228,7 +228,7 @@ public class ReasoningDedupSerializationTests {
             .value(com.openai.models.ComparisonFilter.Value.ofString("john"))
             .build();
 
-        FileSearchTool tool = new FileSearchTool(Collections.singletonList("vs_123")).setFilters(filter);
+        FileSearchTool tool = new FileSearchTool(Collections.singletonList("vs_123")).setComparisonFilter(filter);
 
         String json = serializeTool(tool);
 
@@ -244,7 +244,7 @@ public class ReasoningDedupSerializationTests {
             .value(com.openai.models.ComparisonFilter.Value.ofNumber(42.0))
             .build();
 
-        FileSearchTool original = new FileSearchTool(Collections.singletonList("vs_abc")).setFilters(filter);
+        FileSearchTool original = new FileSearchTool(Collections.singletonList("vs_abc")).setComparisonFilter(filter);
 
         String json = serializeTool(original);
 
@@ -274,7 +274,7 @@ public class ReasoningDedupSerializationTests {
                 .build()))
             .build();
 
-        FileSearchTool tool = new FileSearchTool(Collections.singletonList("vs_456")).setFilters(filter);
+        FileSearchTool tool = new FileSearchTool(Collections.singletonList("vs_456")).setCompoundFilter(filter);
 
         String json = serializeTool(tool);
 
@@ -294,7 +294,7 @@ public class ReasoningDedupSerializationTests {
                 .build()))
             .build();
 
-        FileSearchTool original = new FileSearchTool(Collections.singletonList("vs_789")).setFilters(filter);
+        FileSearchTool original = new FileSearchTool(Collections.singletonList("vs_789")).setCompoundFilter(filter);
 
         String json = serializeTool(original);
         FileSearchTool deserialized = deserializeTool(json);

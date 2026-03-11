@@ -144,7 +144,7 @@ public class FileSearchToolSerializationTests {
             .value(com.openai.models.ComparisonFilter.Value.ofString("science"))
             .build();
 
-        FileSearchTool tool = new FileSearchTool(Collections.singletonList("vs_f1")).setFilters(filter);
+        FileSearchTool tool = new FileSearchTool(Collections.singletonList("vs_f1")).setComparisonFilter(filter);
 
         String json = serialize(tool);
 
@@ -162,7 +162,7 @@ public class FileSearchToolSerializationTests {
             .build();
 
         FileSearchTool original
-            = new FileSearchTool(Collections.singletonList("vs_f2")).setMaxResults(5L).setFilters(filter);
+            = new FileSearchTool(Collections.singletonList("vs_f2")).setMaxResults(5L).setComparisonFilter(filter);
 
         String json = serialize(original);
         FileSearchTool deserialized = deserialize(json);
@@ -194,7 +194,7 @@ public class FileSearchToolSerializationTests {
                 .value(com.openai.models.ComparisonFilter.Value.ofString("v"))
                 .build();
 
-            FileSearchTool tool = new FileSearchTool(Collections.singletonList("vs")).setFilters(filter);
+            FileSearchTool tool = new FileSearchTool(Collections.singletonList("vs")).setComparisonFilter(filter);
 
             String json = serialize(tool);
             assertTrue(json.contains("\"type\":\"" + expectedStrings[i] + "\""),
@@ -222,7 +222,7 @@ public class FileSearchToolSerializationTests {
                 .build()))
             .build();
 
-        FileSearchTool tool = new FileSearchTool(Collections.singletonList("vs_c1")).setFilters(filter);
+        FileSearchTool tool = new FileSearchTool(Collections.singletonList("vs_c1")).setCompoundFilter(filter);
 
         String json = serialize(tool);
 
@@ -242,7 +242,7 @@ public class FileSearchToolSerializationTests {
                 .build()))
             .build();
 
-        FileSearchTool original = new FileSearchTool(Collections.singletonList("vs_c2")).setFilters(filter);
+        FileSearchTool original = new FileSearchTool(Collections.singletonList("vs_c2")).setCompoundFilter(filter);
 
         String json = serialize(original);
         FileSearchTool deserialized = deserialize(json);
@@ -259,11 +259,20 @@ public class FileSearchToolSerializationTests {
 
     @Test
     public void testBinaryDataFilterStillWorks() throws IOException {
-        String filterJson = "{\"type\":\"eq\",\"key\":\"source\",\"value\":\"web\"}";
+        // Use BinaryData.fromObject with an untyped map to ensure it serializes as a JSON object,
+        // not a quoted string. BinaryData.fromString() would produce "filters":"{...}" (quoted).
+        java.util.Map<String, Object> filterMap = new java.util.LinkedHashMap<>();
+        filterMap.put("type", "eq");
+        filterMap.put("key", "source");
+        filterMap.put("value", "web");
         FileSearchTool tool
-            = new FileSearchTool(Collections.singletonList("vs_bd")).setFilters(BinaryData.fromString(filterJson));
+            = new FileSearchTool(Collections.singletonList("vs_bd")).setFilters(BinaryData.fromObject(filterMap));
 
         assertNotNull(tool.getFilters());
+
+        String json = serialize(tool);
+        // Verify the filter is written as a JSON object, not a quoted string
+        assertTrue(json.contains("\"key\":\"source\""), "Filter should serialize as JSON object, got: " + json);
     }
 
     // -----------------------------------------------------------------------
