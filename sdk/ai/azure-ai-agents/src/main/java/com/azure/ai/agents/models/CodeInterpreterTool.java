@@ -116,8 +116,8 @@ public final class CodeInterpreterTool extends Tool {
      * @param container the container value to set.
      * @return the CodeInterpreterTool object itself.
      */
-    // AI Tooling: union type
     private CodeInterpreterTool setContainerInternal(BinaryData container) {
+        // AI Tooling: union type
         this.container = container;
         return this;
     }
