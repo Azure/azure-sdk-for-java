@@ -446,7 +446,7 @@ public class Sample02_AnalyzeUrlAsyncTest extends ContentUnderstandingClientTest
     public void testAnalyzeUrlWithPageContentRangesAsync() {
 
         String uriSource
-            = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/documents/mixed_financial_docs.pdf";
+            = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/document/mixed_financial_docs.pdf";
 
         // Full 4-page analysis for comparison
         AnalysisInput fullInput = new AnalysisInput();

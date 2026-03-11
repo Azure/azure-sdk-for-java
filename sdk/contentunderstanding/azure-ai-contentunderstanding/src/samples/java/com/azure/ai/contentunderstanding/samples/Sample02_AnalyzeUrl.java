@@ -299,7 +299,7 @@ public class Sample02_AnalyzeUrl {
     public static void analyzeDocumentUrlWithContentRange(ContentUnderstandingClient client) {
         // BEGIN:ContentUnderstandingAnalyzeUrlWithContentRange
         String uriSource
-            = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/documents/mixed_financial_docs.pdf";
+            = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/document/mixed_financial_docs.pdf";
 
         // Extract only page 1 using ContentRange
         AnalysisInput rangeInput = new AnalysisInput();

@@ -434,7 +434,7 @@ public class Sample02_AnalyzeUrlAsync {
     public static void analyzeDocumentUrlWithContentRange(ContentUnderstandingAsyncClient client) {
         // BEGIN:ContentUnderstandingAnalyzeDocumentUrlWithContentRangeAsync
         String uriSource
-            = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/documents/mixed_financial_docs.pdf";
+            = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/document/mixed_financial_docs.pdf";
 
         // Analyze only page 1 using ContentRange
         AnalysisInput input = new AnalysisInput();
