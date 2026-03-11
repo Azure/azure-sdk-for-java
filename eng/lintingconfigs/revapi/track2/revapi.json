@@ -1011,7 +1011,7 @@
           "old": "class com.azure.resourcemanager.appservice.models.ExpressionTraces",
           "justification": "Model not used."
         },
-                {
+        {
           "code": "java.method.visibilityReduced",
           "old" : {
             "matcher": "regex",
