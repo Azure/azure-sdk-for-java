@@ -1158,7 +1158,7 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
         }).verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @ParameterizedTest
     @MethodSource("com.azure.storage.file.share.FileShareTestHelper#filePropertySemanticsSupplier")
     public void createDirectoryFilePropertySemantics(FilePropertySemantics filePropertySemantics) {
@@ -1181,7 +1181,7 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
         }).verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @ParameterizedTest
     @MethodSource("com.azure.storage.file.share.FileShareTestHelper#filePropertySemanticsSupplier")
     public void createDirectoryIfNotExistsFilePropertySemantics(FilePropertySemantics filePropertySemantics) {

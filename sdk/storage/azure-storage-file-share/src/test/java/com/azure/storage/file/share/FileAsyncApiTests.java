@@ -2226,7 +2226,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
         }).verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @ParameterizedTest
     @MethodSource("com.azure.storage.file.share.FileShareTestHelper#filePropertySemanticsSupplier")
     public void createFileFilePropertySemantics(FilePropertySemantics filePropertySemantics) {
@@ -2249,7 +2249,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
         }).verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
     public void createFileWithBinaryData() {
         ShareFileCreateOptions options
@@ -2262,7 +2262,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
             .verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
     public void createFileWithBinaryDataFail() {
         ShareFileCreateOptions options = new ShareFileCreateOptions(2L).setData(DATA.getDefaultBinaryData());
@@ -2271,7 +2271,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
             .verifyError(ShareStorageException.class);
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
     public void createFileWithBinaryDataPartiallyEmpty() {
         ShareFileCreateOptions options = new ShareFileCreateOptions(Constants.KB).setData(DATA.getDefaultBinaryData());
@@ -2286,7 +2286,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
             .verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
     public void createFileWithLargeBinaryData() {
         byte[] randomByteArray = getRandomByteArray(Constants.MB * 4);
@@ -2301,7 +2301,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
             .verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
     public void createFileWithLargeBinaryDataBackedByFlux() {
         ByteBuffer randomByteBuffer = getRandomByteBuffer(Constants.MB * 4);
@@ -2318,7 +2318,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
             .verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
     public void createFileWithLargeBinaryDataPartiallyEmpty() {
         byte[] randomByteArray = getRandomByteArray(Constants.MB * 4);
@@ -2333,7 +2333,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
             .verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
     public void createFileWithBinaryDataMD5() throws NoSuchAlgorithmException {
         ShareFileCreateOptions options = new ShareFileCreateOptions(Constants.KB).setData(DATA.getDefaultBinaryData());
@@ -2348,7 +2348,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
         }).verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
     public void createFileWithLargeBinaryDataPartiallyEmptyMD5() throws NoSuchAlgorithmException {
         byte[] randomByteArray = getRandomByteArray(Constants.MB * 4);

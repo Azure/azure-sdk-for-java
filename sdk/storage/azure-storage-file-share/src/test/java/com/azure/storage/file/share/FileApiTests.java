@@ -3388,7 +3388,7 @@ class FileApiTests extends FileShareTestBase {
             response.getHeaders().getValue(ERROR_CODE_HEADER_NAME));
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @ParameterizedTest
     @MethodSource("com.azure.storage.file.share.FileShareTestHelper#filePropertySemanticsSupplier")
     public void createFileFilePropertySemantics(FilePropertySemantics filePropertySemantics) {
@@ -3410,7 +3410,7 @@ class FileApiTests extends FileShareTestBase {
         }
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
     public void createFileWithBinaryData() {
         ShareFileCreateOptions options
@@ -3424,7 +3424,7 @@ class FileApiTests extends FileShareTestBase {
         assertArrayEquals(DATA.getDefaultBytes(), stream.toByteArray());
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
     public void createFileWithBinaryDataFail() {
         ShareFileCreateOptions options = new ShareFileCreateOptions(2L).setData(DATA.getDefaultBinaryData());
@@ -3433,7 +3433,7 @@ class FileApiTests extends FileShareTestBase {
             () -> primaryFileClient.createWithResponse(options, null, Context.NONE));
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
     public void createFileWithBinaryDataPartiallyEmpty() {
         ShareFileCreateOptions options = new ShareFileCreateOptions(Constants.KB).setData(DATA.getDefaultBinaryData());
@@ -3449,7 +3449,7 @@ class FileApiTests extends FileShareTestBase {
             Arrays.copyOfRange(stream.toByteArray(), 0, DATA.getDefaultDataSize()));
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
     public void createFileWithLargeBinaryData() {
         byte[] randomByteArray = getRandomByteArray(Constants.MB * 4);
@@ -3465,7 +3465,7 @@ class FileApiTests extends FileShareTestBase {
         assertArrayEquals(randomByteArray, stream.toByteArray());
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
     public void createFileWithLargeBinaryDataPartiallyEmpty() {
         byte[] randomByteArray = getRandomByteArray(Constants.MB * 4);
@@ -3481,7 +3481,7 @@ class FileApiTests extends FileShareTestBase {
         assertArrayEquals(randomByteArray, Arrays.copyOfRange(stream.toByteArray(), 0, Constants.MB * 4));
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
     public void createFileWithBinaryDataMD5() throws NoSuchAlgorithmException {
         ShareFileCreateOptions options = new ShareFileCreateOptions(Constants.KB).setData(DATA.getDefaultBinaryData());
@@ -3495,7 +3495,7 @@ class FileApiTests extends FileShareTestBase {
         assertArrayEquals(MessageDigest.getInstance("MD5").digest(DATA.getDefaultText().getBytes()), decodedContentMd5);
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-06-06")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
     public void createFileWithLargeBinaryDataPartiallyEmptyMD5() throws NoSuchAlgorithmException {
         byte[] randomByteArray = getRandomByteArray(Constants.MB * 4);
