@@ -405,11 +405,20 @@ public class Configs {
     private static final boolean DEFAULT_CLIENT_LEAK_DETECTION_ENABLED = false;
     private static final String CLIENT_LEAK_DETECTION_ENABLED = "COSMOS.CLIENT_LEAK_DETECTION_ENABLED";
 
+    // Inference service related configs
+    public static final String INFERENCE_ENDPOINT_PROPERTY = "AZURE_COSMOS_SEMANTIC_RERANKER_INFERENCE_ENDPOINT";
+    // Same name — system property and environment variable share the same key
+    public static final String INFERENCE_ENDPOINT_ENVIRONMENT_VARIABLE = INFERENCE_ENDPOINT_PROPERTY;
+
     private static final Object lockObject = new Object();
     private static Boolean cachedIsHostnameValidationDisabled = null;
 
     public static int getCPUCnt() {
         return CPU_CNT;
+    }
+
+    public static Configs getDefaultInferenceServiceConfig() {
+        return new Configs();
     }
 
     private SslContext sslContextInit(boolean serverCertVerificationDisabled, boolean http2Enabled) {
@@ -513,6 +522,19 @@ public class Configs {
         }
 
         return URI.create(DEFAULT_THINCLIENT_ENDPOINT);
+    }
+
+    public URI getInferenceServiceEndpoint() {
+        String valueFromSystemProperty = System.getProperty(INFERENCE_ENDPOINT_PROPERTY);
+        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
+            return URI.create(valueFromSystemProperty);
+        }
+
+        String valueFromEnvVariable = System.getenv(INFERENCE_ENDPOINT_ENVIRONMENT_VARIABLE);
+        if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
+            return URI.create(valueFromEnvVariable);
+        }
+        return null;
     }
 
     public static boolean isThinClientEnabled() {

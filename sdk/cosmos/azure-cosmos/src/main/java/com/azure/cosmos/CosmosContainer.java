@@ -4,6 +4,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.throughputControl.sdk.config.GlobalThroughputControlGroup;
+import com.azure.cosmos.implementation.inference.InferenceService;
 import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosBatchOperationResult;
 import com.azure.cosmos.models.CosmosBatchRequestOptions;
@@ -25,6 +26,7 @@ import com.azure.cosmos.models.CosmosReadManyRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.SemanticRerankResult;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.models.ThroughputResponse;
@@ -37,7 +39,9 @@ import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.util.List;
+import java.util.Map;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -301,6 +305,34 @@ public class CosmosContainer {
     private CosmosItemResponse<Object> blockDeleteItemResponse(Mono<CosmosItemResponse<Object>> deleteItemMono) {
         try {
             return deleteItemMono.block();
+        } catch (Exception ex) {
+            final Throwable throwable = Exceptions.unwrap(ex);
+            if (throwable instanceof CosmosException) {
+                throw (CosmosException) throwable;
+            } else {
+                throw ex;
+            }
+        }
+    }
+
+    private SemanticRerankResult blockSemanticRerankResponse(
+        Mono<SemanticRerankResult> semanticRerankResultMono,
+        Map<String, Object> options) {
+        // Derive the blocking timeout from the same option key used by InferenceService,
+        // so the sync API respects timeout_seconds just like the async path.
+        // Default is InferenceService.DEFAULT_REQUEST_TIMEOUT (120 s) if not supplied.
+        Duration blockTimeout = InferenceService.DEFAULT_REQUEST_TIMEOUT;
+        if (options != null) {
+            Object timeoutVal = options.get(InferenceService.OPTION_TIMEOUT_SECONDS);
+            if (timeoutVal instanceof Number) {
+                double seconds = ((Number) timeoutVal).doubleValue();
+                if (seconds > 0) {
+                    blockTimeout = Duration.ofMillis((long) (seconds * 1000));
+                }
+            }
+        }
+        try {
+            return semanticRerankResultMono.block(blockTimeout);
         } catch (Exception ex) {
             final Throwable throwable = Exceptions.unwrap(ex);
             if (throwable instanceof CosmosException) {
@@ -934,6 +966,31 @@ public class CosmosContainer {
         CosmosBulkExecutionOptions bulkOptions) {
 
         return this.blockBulkResponse(asyncContainer.executeBulkOperations(Flux.fromIterable(operations), bulkOptions));
+    }
+
+    /**
+     * Performs semantic reranking of documents using the inference service.
+     *
+     * <p><strong>Timeout:</strong> This method blocks with a default timeout of 120 seconds.
+     * To override, pass {@code "timeout_seconds"} (as a {@link Number}) in the {@code options} map,
+     * for example: {@code options.put("timeout_seconds", 30)}.
+     *
+     * @param rerankContext The query or context string used to score documents.
+     * @param documents The list of document strings to rerank.
+     * @param options Optional reranking parameters as a map. Supported keys include:
+     *                {@code return_documents} (Boolean) - whether to return document text in the response,
+     *                {@code top_k} (Integer) - maximum number of documents to return,
+     *                {@code batch_size} (Integer) - number of documents per batch,
+     *                {@code sort} (Boolean) - whether to sort results by relevance score,
+     *                {@code timeout_seconds} (Number) - per-request timeout in seconds (default: 120).
+     * @return The semantic rerank result.
+     */
+    @Beta(value = Beta.SinceVersion.V4_78_0)
+    public SemanticRerankResult semanticRerank(
+        String rerankContext,
+        List<String> documents,
+        Map<String, Object> options) {
+        return blockSemanticRerankResponse(this.asyncContainer.semanticRerank(rerankContext, documents, options), options);
     }
 
     /**
