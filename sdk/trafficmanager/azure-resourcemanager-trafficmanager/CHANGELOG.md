@@ -2,13 +2,13 @@
 
 ## 2.54.0-beta.1 (Unreleased)
 
-### Features Added
-
 ### Breaking Changes
 
-### Bugs Fixed
+- Migrated `azure-resourcemanager-trafficmanager` to TypeSpec.
 
-### Other Changes
+### Features Added
+
+- `models.HeatMapType` was added.
 
 ## 2.53.6 (2026-01-29)
 

@@ -18,7 +18,7 @@ For documentation on how to use this package, please see [Azure Management Libra
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-trafficmanager</artifactId>
-    <version>2.53.1</version>
+    <version>2.54.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -39,12 +39,6 @@ Azure tenant ID can be configured via `AZURE_TENANT_ID` environment variable.
 Assuming the use of the `DefaultAzureCredential` credential class, the client can be authenticated using the following code:
 
 ```java readme-sample-authenticate
-AzureProfile profile = new AzureProfile(AzureCloud.AZURE_PUBLIC_CLOUD);
-TokenCredential credential = new DefaultAzureCredentialBuilder()
-    .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
-    .build();
-TrafficManager manager = TrafficManager
-    .authenticate(credential, profile);
 ```
 
 The sample code assumes global Azure. Please change `AzureEnvironment.AZURE` variable if otherwise.
