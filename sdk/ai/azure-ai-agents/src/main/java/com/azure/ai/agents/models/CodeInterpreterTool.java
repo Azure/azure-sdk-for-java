@@ -25,12 +25,6 @@ public final class CodeInterpreterTool extends Tool {
     @Generated
     private ToolType type = ToolType.CODE_INTERPRETER;
 
-    /*
-     * The code interpreter container. Can be a container ID or an object that
-     * specifies uploaded file IDs to make available to your code, along with an
-     * optional `memory_limit` setting.
-     * If not provided, the service assumes auto.
-     */
     // AI Tooling: union type
     private BinaryData container;
 
@@ -166,5 +160,18 @@ public final class CodeInterpreterTool extends Tool {
             return null;
         }
         return this.container.toObject(AutoCodeInterpreterToolParam.class);
+    }
+
+    /**
+     * Get the container property: The code interpreter container. Can be a container ID or an object that
+     * specifies uploaded file IDs to make available to your code, along with an
+     * optional `memory_limit` setting.
+     * If not provided, the service assumes auto.
+     *
+     * @return the container value.
+     */
+    @Generated
+    public BinaryData getContainer() {
+        return this.container;
     }
 }

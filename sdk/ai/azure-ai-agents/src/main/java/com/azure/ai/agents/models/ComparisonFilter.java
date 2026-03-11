@@ -40,20 +40,16 @@ public final class ComparisonFilter implements JsonSerializable<ComparisonFilter
     @Generated
     private final String key;
 
-    /*
-     * The value to compare against the attribute key; supports string, number, or boolean types.
-     */
-    // AI Tooling: union type
     private final BinaryData value;
 
     /**
-     * Creates an instance of ComparisonFilter class.
-     *
-     * @param type the type value to set.
-     * @param key the key value to set.
-     * @param value the value value to set.
+     * - * Creates an instance of ComparisonFilter class.
+     * - *
+     * - * @param type the type value to set.
+     * - * @param key the key value to set.
+     * - * @param value the value value to set.
+     * -
      */
-    // AI Tooling: union type
     ComparisonFilter(ComparisonFilterType type, String key, BinaryData value) {
         this.type = type;
         this.key = key;

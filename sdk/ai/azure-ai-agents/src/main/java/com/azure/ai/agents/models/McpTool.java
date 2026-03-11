@@ -78,15 +78,9 @@ public final class McpTool extends Tool {
     @Generated
     private Map<String, String> headers;
 
-    /*
-     * The allowed_tools property.
-     */
     // AI Tooling: union type
     private BinaryData allowedTools;
 
-    /*
-     * The require_approval property.
-     */
     // AI Tooling: union type
     private BinaryData requireApproval;
 

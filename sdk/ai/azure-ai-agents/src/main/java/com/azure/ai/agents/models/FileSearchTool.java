@@ -39,9 +39,6 @@ public final class FileSearchTool extends Tool {
     @Generated
     private RankingOptions rankingOptions;
 
-    /*
-     * The filters property.
-     */
     // AI Tooling: union type
     private BinaryData filters;
 
@@ -107,12 +104,6 @@ public final class FileSearchTool extends Tool {
         return this.filters;
     }
 
-    /**
-     * Set the filters property: The filters property.
-     *
-     * @param filters the filters value to set.
-     * @return the FileSearchTool object itself.
-     */
     // AI Tooling: union type
     private FileSearchTool setFiltersInternal(BinaryData filters) {
         this.filters = filters;
@@ -255,5 +246,15 @@ public final class FileSearchTool extends Tool {
     public FileSearchTool setMaxResults(Long maxResults) {
         this.maxResults = maxResults;
         return this;
+    }
+
+    /**
+     * Get the filters property: The filters property.
+     *
+     * @return the filters value.
+     */
+    @Generated
+    public BinaryData getFilters() {
+        return this.filters;
     }
 }
