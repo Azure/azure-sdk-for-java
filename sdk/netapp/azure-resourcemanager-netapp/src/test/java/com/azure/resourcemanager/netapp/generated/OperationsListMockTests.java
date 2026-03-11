@@ -23,7 +23,7 @@ public final class OperationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"name\":\"jtqedcgzulwmm\",\"display\":{\"provider\":\"zrrjvpgly\",\"resource\":\"gkrvqeevto\",\"operation\":\"r\",\"description\":\"t\"},\"origin\":\"ytp\",\"properties\":{\"serviceSpecification\":{\"metricSpecifications\":[{\"name\":\"vf\",\"displayName\":\"awzqadfl\",\"displayDescription\":\"ur\",\"unit\":\"laecxndticok\",\"supportedAggregationTypes\":[\"Average\",\"Average\",\"Average\"],\"supportedTimeGrainTypes\":[\"ld\",\"x\",\"bf\"],\"internalMetricName\":\"clnpkci\",\"enableRegionalMdmAccount\":false,\"sourceMdmAccount\":\"iykhy\",\"sourceMdmNamespace\":\"fvjlboxqvkjlmx\",\"dimensions\":[{}],\"aggregationType\":\"ynhdwdigum\",\"fillGapWithZero\":false,\"category\":\"auzzptjazysd\",\"resourceIdDimensionNameOverride\":\"ezwwv\",\"isInternal\":true},{\"name\":\"uvvfonkp\",\"displayName\":\"qyikvy\",\"displayDescription\":\"uyav\",\"unit\":\"wmn\",\"supportedAggregationTypes\":[\"Average\",\"Average\",\"Average\",\"Average\"],\"supportedTimeGrainTypes\":[\"vpo\",\"krsgsgb\",\"huzqgn\",\"dgkynscliqhzvhxn\"],\"internalMetricName\":\"mtk\",\"enableRegionalMdmAccount\":false,\"sourceMdmAccount\":\"ppnvdxz\",\"sourceMdmNamespace\":\"ihfrbbcevqa\",\"dimensions\":[{}],\"aggregationType\":\"dhlfkqojpykvgt\",\"fillGapWithZero\":false,\"category\":\"ifmzzsd\",\"resourceIdDimensionNameOverride\":\"brn\",\"isInternal\":false},{\"name\":\"m\",\"displayName\":\"a\",\"displayDescription\":\"g\",\"unit\":\"hocxvdfffwafqrou\",\"supportedAggregationTypes\":[\"Average\",\"Average\"],\"supportedTimeGrainTypes\":[\"h\"],\"internalMetricName\":\"vkbunzozudh\",\"enableRegionalMdmAccount\":true,\"sourceMdmAccount\":\"moy\",\"sourceMdmNamespace\":\"dyuib\",\"dimensions\":[{}],\"aggregationType\":\"nbzydvfvfcj\",\"fillGapWithZero\":true,\"category\":\"isrvhm\",\"resourceIdDimensionNameOverride\":\"r\",\"isInternal\":true},{\"name\":\"is\",\"displayName\":\"w\",\"displayDescription\":\"hwplefaxvx\",\"unit\":\"cbtgnhnz\",\"supportedAggregationTypes\":[\"Average\",\"Average\",\"Average\",\"Average\"],\"supportedTimeGrainTypes\":[\"qlqhycavodg\",\"xdbeesmieknl\"],\"internalMetricName\":\"riaa\",\"enableRegionalMdmAccount\":true,\"sourceMdmAccount\":\"gy\",\"sourceMdmNamespace\":\"qfby\",\"dimensions\":[{}],\"aggregationType\":\"giagtcojo\",\"fillGapWithZero\":true,\"category\":\"gfnzjvu\",\"resourceIdDimensionNameOverride\":\"zldmozuxy\",\"isInternal\":true}],\"logSpecifications\":[{\"name\":\"adpysownbt\",\"displayName\":\"bugrj\"}]}}}]}";
+            = "{\"value\":[{\"name\":\"hntasfaymx\",\"display\":{\"provider\":\"pzealbmqkyojw\",\"resource\":\"fkmbtsuahxsgxj\",\"operation\":\"mzrrscubiwsdrn\",\"description\":\"qwodiffjx\"},\"origin\":\"rmmuabwibvjo\",\"properties\":{\"serviceSpecification\":{\"metricSpecifications\":[{\"name\":\"yefoyzbamwineo\",\"displayName\":\"fkak\",\"displayDescription\":\"ldtve\",\"unit\":\"oclzhz\",\"supportedAggregationTypes\":[\"Average\"],\"supportedTimeGrainTypes\":[\"gvttx\",\"nrup\"],\"internalMetricName\":\"amrdixtrekidswys\",\"enableRegionalMdmAccount\":true,\"sourceMdmAccount\":\"ffg\",\"sourceMdmNamespace\":\"ukkutvl\",\"dimensions\":[{}],\"aggregationType\":\"qhvmblcouqe\",\"fillGapWithZero\":true,\"category\":\"cdsziryrand\",\"resourceIdDimensionNameOverride\":\"pmbltoormkfql\",\"isInternal\":true},{\"name\":\"ykalsyga\",\"displayName\":\"njpnnbmj\",\"displayDescription\":\"ibjgsjjxxahm\",\"unit\":\"ad\",\"supportedAggregationTypes\":[\"Average\",\"Average\",\"Average\"],\"supportedTimeGrainTypes\":[\"vpinbmhwbj\"],\"internalMetricName\":\"kgqxn\",\"enableRegionalMdmAccount\":false,\"sourceMdmAccount\":\"eznjaujv\",\"sourceMdmNamespace\":\"nnggiycwkdtaawxw\",\"dimensions\":[{}],\"aggregationType\":\"umrrqmbzm\",\"fillGapWithZero\":true,\"category\":\"tbnxwbjsid\",\"resourceIdDimensionNameOverride\":\"rkfpks\",\"isInternal\":false},{\"name\":\"ogewij\",\"displayName\":\"rhbguzozkyewnfn\",\"displayDescription\":\"hhqosmffjku\",\"unit\":\"cyar\",\"supportedAggregationTypes\":[\"Average\",\"Average\",\"Average\",\"Average\"],\"supportedTimeGrainTypes\":[\"zoghktdpyczhc\"],\"internalMetricName\":\"ocnhzqrottjzcfyj\",\"enableRegionalMdmAccount\":true,\"sourceMdmAccount\":\"rl\",\"sourceMdmNamespace\":\"apqinf\",\"dimensions\":[{},{},{},{}],\"aggregationType\":\"glqdhm\",\"fillGapWithZero\":true,\"category\":\"alcxpjbyy\",\"resourceIdDimensionNameOverride\":\"joqcjenkyhfqzvsq\",\"isInternal\":false}],\"logSpecifications\":[{\"name\":\"gcm\",\"displayName\":\"qjhhhqxuwyvc\"},{\"name\":\"oyvivbsiz\",\"displayName\":\"jszlb\"},{\"name\":\"mnlzijiufehgmvf\",\"displayName\":\"wyvq\"},{\"name\":\"rerlniy\",\"displayName\":\"lyfwxzutg\"}]}}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,19 +34,19 @@ public final class OperationsListMockTests {
 
         PagedIterable<Operation> response = manager.operations().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("jtqedcgzulwmm", response.iterator().next().name());
-        Assertions.assertEquals("zrrjvpgly", response.iterator().next().display().provider());
-        Assertions.assertEquals("gkrvqeevto", response.iterator().next().display().resource());
-        Assertions.assertEquals("r", response.iterator().next().display().operation());
-        Assertions.assertEquals("t", response.iterator().next().display().description());
-        Assertions.assertEquals("ytp", response.iterator().next().origin());
-        Assertions.assertEquals("vf",
+        Assertions.assertEquals("hntasfaymx", response.iterator().next().name());
+        Assertions.assertEquals("pzealbmqkyojw", response.iterator().next().display().provider());
+        Assertions.assertEquals("fkmbtsuahxsgxj", response.iterator().next().display().resource());
+        Assertions.assertEquals("mzrrscubiwsdrn", response.iterator().next().display().operation());
+        Assertions.assertEquals("qwodiffjx", response.iterator().next().display().description());
+        Assertions.assertEquals("rmmuabwibvjo", response.iterator().next().origin());
+        Assertions.assertEquals("yefoyzbamwineo",
             response.iterator().next().serviceSpecification().metricSpecifications().get(0).name());
-        Assertions.assertEquals("awzqadfl",
+        Assertions.assertEquals("fkak",
             response.iterator().next().serviceSpecification().metricSpecifications().get(0).displayName());
-        Assertions.assertEquals("ur",
+        Assertions.assertEquals("ldtve",
             response.iterator().next().serviceSpecification().metricSpecifications().get(0).displayDescription());
-        Assertions.assertEquals("laecxndticok",
+        Assertions.assertEquals("oclzhz",
             response.iterator().next().serviceSpecification().metricSpecifications().get(0).unit());
         Assertions.assertEquals(MetricAggregationType.AVERAGE,
             response.iterator()
@@ -56,7 +56,7 @@ public final class OperationsListMockTests {
                 .get(0)
                 .supportedAggregationTypes()
                 .get(0));
-        Assertions.assertEquals("ld",
+        Assertions.assertEquals("gvttx",
             response.iterator()
                 .next()
                 .serviceSpecification()
@@ -64,21 +64,21 @@ public final class OperationsListMockTests {
                 .get(0)
                 .supportedTimeGrainTypes()
                 .get(0));
-        Assertions.assertEquals("clnpkci",
+        Assertions.assertEquals("amrdixtrekidswys",
             response.iterator().next().serviceSpecification().metricSpecifications().get(0).internalMetricName());
-        Assertions.assertFalse(
+        Assertions.assertTrue(
             response.iterator().next().serviceSpecification().metricSpecifications().get(0).enableRegionalMdmAccount());
-        Assertions.assertEquals("iykhy",
+        Assertions.assertEquals("ffg",
             response.iterator().next().serviceSpecification().metricSpecifications().get(0).sourceMdmAccount());
-        Assertions.assertEquals("fvjlboxqvkjlmx",
+        Assertions.assertEquals("ukkutvl",
             response.iterator().next().serviceSpecification().metricSpecifications().get(0).sourceMdmNamespace());
-        Assertions.assertEquals("ynhdwdigum",
+        Assertions.assertEquals("qhvmblcouqe",
             response.iterator().next().serviceSpecification().metricSpecifications().get(0).aggregationType());
-        Assertions.assertFalse(
+        Assertions.assertTrue(
             response.iterator().next().serviceSpecification().metricSpecifications().get(0).fillGapWithZero());
-        Assertions.assertEquals("auzzptjazysd",
+        Assertions.assertEquals("cdsziryrand",
             response.iterator().next().serviceSpecification().metricSpecifications().get(0).category());
-        Assertions.assertEquals("ezwwv",
+        Assertions.assertEquals("pmbltoormkfql",
             response.iterator()
                 .next()
                 .serviceSpecification()
@@ -87,9 +87,9 @@ public final class OperationsListMockTests {
                 .resourceIdDimensionNameOverride());
         Assertions
             .assertTrue(response.iterator().next().serviceSpecification().metricSpecifications().get(0).isInternal());
-        Assertions.assertEquals("adpysownbt",
+        Assertions.assertEquals("gcm",
             response.iterator().next().serviceSpecification().logSpecifications().get(0).name());
-        Assertions.assertEquals("bugrj",
+        Assertions.assertEquals("qjhhhqxuwyvc",
             response.iterator().next().serviceSpecification().logSpecifications().get(0).displayName());
     }
 }

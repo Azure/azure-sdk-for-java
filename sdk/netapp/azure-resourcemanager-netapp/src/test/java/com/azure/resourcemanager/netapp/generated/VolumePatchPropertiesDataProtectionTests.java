@@ -16,12 +16,12 @@ public final class VolumePatchPropertiesDataProtectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VolumePatchPropertiesDataProtection model = BinaryData.fromString(
-            "{\"backup\":{\"backupPolicyId\":\"ixisxyawjoy\",\"policyEnforced\":false,\"backupVaultId\":\"lyjpk\"},\"snapshot\":{\"snapshotPolicyId\":\"zyexzn\"},\"ransomwareProtection\":{\"desiredRansomwareProtectionState\":\"Enabled\"}}")
+            "{\"backup\":{\"backupPolicyId\":\"hin\",\"policyEnforced\":false,\"backupVaultId\":\"mifthnzdnd\"},\"snapshot\":{\"snapshotPolicyId\":\"nayqi\"},\"ransomwareProtection\":{\"desiredRansomwareProtectionState\":\"Enabled\"}}")
             .toObject(VolumePatchPropertiesDataProtection.class);
-        Assertions.assertEquals("ixisxyawjoy", model.backup().backupPolicyId());
+        Assertions.assertEquals("hin", model.backup().backupPolicyId());
         Assertions.assertFalse(model.backup().policyEnforced());
-        Assertions.assertEquals("lyjpk", model.backup().backupVaultId());
-        Assertions.assertEquals("zyexzn", model.snapshot().snapshotPolicyId());
+        Assertions.assertEquals("mifthnzdnd", model.backup().backupVaultId());
+        Assertions.assertEquals("nayqi", model.snapshot().snapshotPolicyId());
         Assertions.assertEquals(DesiredRansomwareProtectionState.ENABLED,
             model.ransomwareProtection().desiredRansomwareProtectionState());
     }
@@ -29,17 +29,17 @@ public final class VolumePatchPropertiesDataProtectionTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VolumePatchPropertiesDataProtection model = new VolumePatchPropertiesDataProtection()
-            .withBackup(new VolumeBackupProperties().withBackupPolicyId("ixisxyawjoy")
+            .withBackup(new VolumeBackupProperties().withBackupPolicyId("hin")
                 .withPolicyEnforced(false)
-                .withBackupVaultId("lyjpk"))
-            .withSnapshot(new VolumeSnapshotProperties().withSnapshotPolicyId("zyexzn"))
+                .withBackupVaultId("mifthnzdnd"))
+            .withSnapshot(new VolumeSnapshotProperties().withSnapshotPolicyId("nayqi"))
             .withRansomwareProtection(new RansomwareProtectionPatchSettings()
                 .withDesiredRansomwareProtectionState(DesiredRansomwareProtectionState.ENABLED));
         model = BinaryData.fromObject(model).toObject(VolumePatchPropertiesDataProtection.class);
-        Assertions.assertEquals("ixisxyawjoy", model.backup().backupPolicyId());
+        Assertions.assertEquals("hin", model.backup().backupPolicyId());
         Assertions.assertFalse(model.backup().policyEnforced());
-        Assertions.assertEquals("lyjpk", model.backup().backupVaultId());
-        Assertions.assertEquals("zyexzn", model.snapshot().snapshotPolicyId());
+        Assertions.assertEquals("mifthnzdnd", model.backup().backupVaultId());
+        Assertions.assertEquals("nayqi", model.snapshot().snapshotPolicyId());
         Assertions.assertEquals(DesiredRansomwareProtectionState.ENABLED,
             model.ransomwareProtection().desiredRansomwareProtectionState());
     }

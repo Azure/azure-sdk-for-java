@@ -11,23 +11,20 @@ import org.junit.jupiter.api.Assertions;
 public final class RemotePathTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RemotePath model = BinaryData
-            .fromString(
-                "{\"externalHostName\":\"cispnqzahmgkbr\",\"serverName\":\"yydhibnuqqk\",\"volumeName\":\"ik\"}")
-            .toObject(RemotePath.class);
-        Assertions.assertEquals("cispnqzahmgkbr", model.externalHostname());
-        Assertions.assertEquals("yydhibnuqqk", model.serverName());
-        Assertions.assertEquals("ik", model.volumeName());
+        RemotePath model
+            = BinaryData.fromString("{\"externalHostName\":\"krbm\",\"serverName\":\"ukgri\",\"volumeName\":\"flz\"}")
+                .toObject(RemotePath.class);
+        Assertions.assertEquals("krbm", model.externalHostname());
+        Assertions.assertEquals("ukgri", model.serverName());
+        Assertions.assertEquals("flz", model.volumeName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RemotePath model = new RemotePath().withExternalHostname("cispnqzahmgkbr")
-            .withServerName("yydhibnuqqk")
-            .withVolumeName("ik");
+        RemotePath model = new RemotePath().withExternalHostname("krbm").withServerName("ukgri").withVolumeName("flz");
         model = BinaryData.fromObject(model).toObject(RemotePath.class);
-        Assertions.assertEquals("cispnqzahmgkbr", model.externalHostname());
-        Assertions.assertEquals("yydhibnuqqk", model.serverName());
-        Assertions.assertEquals("ik", model.volumeName());
+        Assertions.assertEquals("krbm", model.externalHostname());
+        Assertions.assertEquals("ukgri", model.serverName());
+        Assertions.assertEquals("flz", model.volumeName());
     }
 }
