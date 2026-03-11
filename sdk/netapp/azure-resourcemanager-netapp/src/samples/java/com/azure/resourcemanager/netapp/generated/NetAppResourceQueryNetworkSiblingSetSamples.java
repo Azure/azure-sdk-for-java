@@ -11,7 +11,7 @@ import com.azure.resourcemanager.netapp.models.QueryNetworkSiblingSetRequest;
  */
 public final class NetAppResourceQueryNetworkSiblingSetSamples {
     /*
-     * x-ms-original-file: 2025-12-01/NetworkSiblingSet_Query.json
+     * x-ms-original-file: 2026-01-01/NetworkSiblingSet_Query.json
      */
     /**
      * Sample code: NetworkSiblingSet_Query.

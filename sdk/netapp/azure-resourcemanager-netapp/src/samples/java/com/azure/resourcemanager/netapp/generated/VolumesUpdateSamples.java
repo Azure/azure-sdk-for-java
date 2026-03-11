@@ -11,7 +11,7 @@ import com.azure.resourcemanager.netapp.models.Volume;
  */
 public final class VolumesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-12-01/Volumes_Update.json
+     * x-ms-original-file: 2026-01-01/Volumes_Update.json
      */
     /**
      * Sample code: Volumes_Update.
