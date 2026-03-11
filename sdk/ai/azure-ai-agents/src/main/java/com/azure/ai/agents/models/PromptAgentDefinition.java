@@ -10,6 +10,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.openai.models.Reasoning;
 import com.openai.models.responses.ResponseCreateParams;
 import java.io.IOException;
 import java.util.List;
@@ -52,14 +53,14 @@ public final class PromptAgentDefinition extends AgentDefinition {
      * where the model considers the results of the tokens with top_p probability
      * mass. So 0.1 means only the tokens comprising the top 10% probability mass
      * are considered.
-     * 
+     *
      * We generally recommend altering this or `temperature` but not both.
      */
     @Generated
     private Double topP;
 
     // AI Tooling: openai-java de-dup
-    private com.openai.models.Reasoning reasoning;
+    private Reasoning reasoning;
 
     /*
      * An array of tools the model may call while generating a response. You
@@ -194,13 +195,13 @@ public final class PromptAgentDefinition extends AgentDefinition {
     /**
      * Gets the reasoning configuration for this prompt agent.
      * <p>
-     * This property uses the {@link com.openai.models.Reasoning} type from the openai-java library.
+     * This property uses the {@link Reasoning} type from the openai-java library.
      * It is serialized using {@code snake_case} field names on the wire (e.g. {@code generate_summary}).
      *
-     * @return the {@link com.openai.models.Reasoning} configuration, or {@code null} if not set.
+     * @return the {@link Reasoning} configuration, or {@code null} if not set.
      */
-    // AI Tooling: openai-java de-dup
-    public com.openai.models.Reasoning getReasoning() {
+    public Reasoning getReasoning() {
+        // AI Tooling: openai-java de-dup
         return this.reasoning;
     }
 
@@ -454,14 +455,14 @@ public final class PromptAgentDefinition extends AgentDefinition {
     /**
      * Sets the reasoning configuration for this prompt agent.
      * <p>
-     * This property uses the {@link com.openai.models.Reasoning} type from the openai-java library.
+     * This property uses the {@link Reasoning} type from the openai-java library.
      * It is serialized using {@code snake_case} field names on the wire (e.g. {@code generate_summary}).
      *
-     * @param reasoning the {@link com.openai.models.Reasoning} configuration to set, or {@code null} to clear.
+     * @param reasoning the {@link Reasoning} configuration to set, or {@code null} to clear.
      * @return the PromptAgentDefinition object itself.
      */
-    // AI Tooling: openai-java de-dup
-    public PromptAgentDefinition setReasoning(com.openai.models.Reasoning reasoning) {
+    public PromptAgentDefinition setReasoning(Reasoning reasoning) {
+        // AI Tooling: openai-java de-dup
         this.reasoning = reasoning;
         return this;
     }

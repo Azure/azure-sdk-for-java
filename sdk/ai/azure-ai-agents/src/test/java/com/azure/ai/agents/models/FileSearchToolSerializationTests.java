@@ -7,6 +7,8 @@ import com.azure.core.util.BinaryData;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonWriter;
+import com.openai.models.ComparisonFilter;
+import com.openai.models.CompoundFilter;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
@@ -138,10 +140,10 @@ public class FileSearchToolSerializationTests {
 
     @Test
     public void testSerializationWithComparisonFilter() throws IOException {
-        com.openai.models.ComparisonFilter filter = com.openai.models.ComparisonFilter.builder()
+        ComparisonFilter filter = ComparisonFilter.builder()
             .key("category")
-            .type(com.openai.models.ComparisonFilter.Type.EQ)
-            .value(com.openai.models.ComparisonFilter.Value.ofString("science"))
+            .type(ComparisonFilter.Type.EQ)
+            .value(ComparisonFilter.Value.ofString("science"))
             .build();
 
         FileSearchTool tool = new FileSearchTool(Collections.singletonList("vs_f1")).setComparisonFilter(filter);
@@ -155,10 +157,10 @@ public class FileSearchToolSerializationTests {
 
     @Test
     public void testRoundTripWithComparisonFilter() throws IOException {
-        com.openai.models.ComparisonFilter filter = com.openai.models.ComparisonFilter.builder()
+        ComparisonFilter filter = ComparisonFilter.builder()
             .key("year")
-            .type(com.openai.models.ComparisonFilter.Type.GTE)
-            .value(com.openai.models.ComparisonFilter.Value.ofNumber(2020.0))
+            .type(ComparisonFilter.Type.GTE)
+            .value(ComparisonFilter.Value.ofNumber(2020.0))
             .build();
 
         FileSearchTool original
@@ -178,20 +180,20 @@ public class FileSearchToolSerializationTests {
 
     @Test
     public void testComparisonFilterAllOperators() throws IOException {
-        com.openai.models.ComparisonFilter.Type[] operators = {
-            com.openai.models.ComparisonFilter.Type.EQ,
-            com.openai.models.ComparisonFilter.Type.NE,
-            com.openai.models.ComparisonFilter.Type.GT,
-            com.openai.models.ComparisonFilter.Type.GTE,
-            com.openai.models.ComparisonFilter.Type.LT,
-            com.openai.models.ComparisonFilter.Type.LTE, };
+        ComparisonFilter.Type[] operators = {
+            ComparisonFilter.Type.EQ,
+            ComparisonFilter.Type.NE,
+            ComparisonFilter.Type.GT,
+            ComparisonFilter.Type.GTE,
+            ComparisonFilter.Type.LT,
+            ComparisonFilter.Type.LTE, };
         String[] expectedStrings = { "eq", "ne", "gt", "gte", "lt", "lte" };
 
         for (int i = 0; i < operators.length; i++) {
-            com.openai.models.ComparisonFilter filter = com.openai.models.ComparisonFilter.builder()
+            ComparisonFilter filter = ComparisonFilter.builder()
                 .key("k")
                 .type(operators[i])
-                .value(com.openai.models.ComparisonFilter.Value.ofString("v"))
+                .value(ComparisonFilter.Value.ofString("v"))
                 .build();
 
             FileSearchTool tool = new FileSearchTool(Collections.singletonList("vs")).setComparisonFilter(filter);
@@ -208,17 +210,17 @@ public class FileSearchToolSerializationTests {
 
     @Test
     public void testSerializationWithCompoundFilter() throws IOException {
-        com.openai.models.CompoundFilter filter = com.openai.models.CompoundFilter.builder()
-            .type(com.openai.models.CompoundFilter.Type.AND)
-            .addFilter(com.openai.models.CompoundFilter.Filter.ofComparison(com.openai.models.ComparisonFilter.builder()
+        CompoundFilter filter = CompoundFilter.builder()
+            .type(CompoundFilter.Type.AND)
+            .addFilter(CompoundFilter.Filter.ofComparison(ComparisonFilter.builder()
                 .key("status")
-                .type(com.openai.models.ComparisonFilter.Type.EQ)
-                .value(com.openai.models.ComparisonFilter.Value.ofString("active"))
+                .type(ComparisonFilter.Type.EQ)
+                .value(ComparisonFilter.Value.ofString("active"))
                 .build()))
-            .addFilter(com.openai.models.CompoundFilter.Filter.ofComparison(com.openai.models.ComparisonFilter.builder()
+            .addFilter(CompoundFilter.Filter.ofComparison(ComparisonFilter.builder()
                 .key("priority")
-                .type(com.openai.models.ComparisonFilter.Type.GTE)
-                .value(com.openai.models.ComparisonFilter.Value.ofNumber(3.0))
+                .type(ComparisonFilter.Type.GTE)
+                .value(ComparisonFilter.Value.ofNumber(3.0))
                 .build()))
             .build();
 
@@ -233,12 +235,12 @@ public class FileSearchToolSerializationTests {
 
     @Test
     public void testRoundTripWithCompoundFilter() throws IOException {
-        com.openai.models.CompoundFilter filter = com.openai.models.CompoundFilter.builder()
-            .type(com.openai.models.CompoundFilter.Type.OR)
-            .addFilter(com.openai.models.CompoundFilter.Filter.ofComparison(com.openai.models.ComparisonFilter.builder()
+        CompoundFilter filter = CompoundFilter.builder()
+            .type(CompoundFilter.Type.OR)
+            .addFilter(CompoundFilter.Filter.ofComparison(ComparisonFilter.builder()
                 .key("tag")
-                .type(com.openai.models.ComparisonFilter.Type.EQ)
-                .value(com.openai.models.ComparisonFilter.Value.ofString("ai"))
+                .type(ComparisonFilter.Type.EQ)
+                .value(ComparisonFilter.Value.ofString("ai"))
                 .build()))
             .build();
 
