@@ -113,11 +113,11 @@ com.azure.cosmos.spark:azure-cosmos-spark_3-5;0.0.1-beta.1;0.0.1-beta.1
 com.azure:azure-cosmos-encryption;2.27.0;2.28.0-beta.1
 com.azure.cosmos.spark:azure-cosmos-spark-account-data-resolver-sample;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-cosmos-test;1.0.0-beta.17;1.0.0-beta.18
-com.azure.cosmos.spark:azure-cosmos-spark_3-3_2-12;4.44.1;4.44.2
-com.azure.cosmos.spark:azure-cosmos-spark_3-4_2-12;4.44.1;4.44.2
-com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12;4.44.1;4.44.2
-com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-13;4.44.1;4.44.2
-com.azure.cosmos.spark:azure-cosmos-spark_4-0_2-13;4.44.1;4.44.2
+com.azure.cosmos.spark:azure-cosmos-spark_3-3_2-12;4.44.2;4.45.0-beta.1
+com.azure.cosmos.spark:azure-cosmos-spark_3-4_2-12;4.44.2;4.45.0-beta.1
+com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12;4.44.2;4.45.0-beta.1
+com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-13;4.44.2;4.45.0-beta.1
+com.azure.cosmos.spark:azure-cosmos-spark_4-0_2-13;4.44.2;4.45.0-beta.1
 com.azure.cosmos.spark:fabric-cosmos-spark-auth_3;1.1.0;1.2.0-beta.1
 com.azure:azure-cosmos-tests;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-data-appconfiguration;1.9.1;1.10.0-beta.1
@@ -275,7 +275,7 @@ com.azure.spring:spring-cloud-azure-testcontainers;7.0.0;7.1.0-beta.1
 com.azure:azure-spring-data-cosmos;7.0.0;7.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager;2.60.0;2.61.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-appplatform;2.51.0;2.52.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-appservice;2.54.2;2.55.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-appservice;2.54.2;2.55.0
 com.azure.resourcemanager:azure-resourcemanager-authorization;2.53.7;2.54.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-cdn;2.53.6;2.54.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-compute;2.56.2;2.57.0-beta.1
@@ -513,7 +513,7 @@ com.azure.resourcemanager:azure-resourcemanager-storagediscovery;1.0.0;1.1.0-bet
 com.azure.resourcemanager:azure-resourcemanager-containerservicesafeguards;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-azurestackhci-vm;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-workloadorchestration;1.0.0-beta.1;1.0.0-beta.2
-com.azure.resourcemanager:azure-resourcemanager-disconnectedoperations;1.0.0-beta.1;1.0.0
+com.azure.resourcemanager:azure-resourcemanager-disconnectedoperations;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-compute-recommender;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-computelimit;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-containerregistry-tasks;1.0.0-beta.1;1.0.0-beta.1
@@ -553,6 +553,7 @@ io.clientcore:optional-dependency-tests;1.0.0-beta.1;1.0.0-beta.1
 # In the pom, the version update tag after the version should name the unreleased package and the dependency version:
 # <!-- {x-version-update;unreleased_com.azure:azure-core;dependency} -->
 
+unreleased_com.azure.resourcemanager:azure-resourcemanager-appservice;2.55.0
 unreleased_com.azure.v2:azure-core;2.0.0-beta.1
 unreleased_com.azure.v2:azure-identity;2.0.0-beta.1
 unreleased_com.azure.v2:azure-data-appconfiguration;2.0.0-beta.1

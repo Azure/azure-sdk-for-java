@@ -4,7 +4,7 @@
 package com.azure.cosmos.spark.catalog
 
 import com.azure.cosmos.CosmosAsyncClient
-import com.azure.cosmos.models.{CosmosContainerProperties => ModelsCosmosContainerProperties, ExcludedPath, FeedRange, IncludedPath, IndexingMode, IndexingPolicy, ModelBridgeInternal, PartitionKeyDefinition, PartitionKeyDefinitionVersion, PartitionKind, SparkModelBridgeInternal, ThroughputProperties}
+import com.azure.cosmos.models.{CosmosContainerProperties => ModelsCosmosContainerProperties, CosmosVectorEmbeddingPolicy, ExcludedPath, FeedRange, IncludedPath, IndexingMode, IndexingPolicy, ModelBridgeInternal, PartitionKeyDefinition, PartitionKeyDefinitionVersion, PartitionKind, SparkModelBridgeInternal, ThroughputProperties}
 import com.azure.cosmos.spark.catalog.{CosmosContainerProperties => CatalogCosmosContainerProperties}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.spark.{ContainerFeedRangesCache, CosmosConstants, Exceptions}
@@ -93,6 +93,13 @@ private[spark] case class CosmosCatalogCosmosSDKClient(cosmosAsyncClient: Cosmos
 
         CatalogCosmosContainerProperties.getAnalyticalStoreTtlInSeconds(containerProperties) match {
             case Some(ttl) => cosmosContainerProperties.setAnalyticalStoreTimeToLiveInSeconds(ttl)
+            case None =>
+        }
+
+        CatalogCosmosContainerProperties.getVectorEmbeddingPolicy(containerProperties) match {
+            case Some(vectorEmbeddingPolicyJson) =>
+                cosmosContainerProperties.setVectorEmbeddingPolicy(
+                    SparkModelBridgeInternal.createVectorEmbeddingPolicyFromJson(vectorEmbeddingPolicyJson))
             case None =>
         }
 
@@ -299,6 +306,12 @@ private[spark] case class CosmosCatalogCosmosSDKClient(cosmosAsyncClient: Cosmos
             case None => "null"
         }
 
+        val vectorEmbeddingPolicySnapshot = Option.apply(containerProperties.getVectorEmbeddingPolicy) match {
+            case Some(policy) if policy.getVectorEmbeddings != null && !policy.getVectorEmbeddings.isEmpty =>
+                SparkModelBridgeInternal.vectorEmbeddingPolicyToJson(policy)
+            case _ => "null"
+        }
+
         val lastModifiedSnapshot = ZonedDateTime
             .ofInstant(containerProperties.getTimestamp, ZoneOffset.UTC)
             .format(DateTimeFormatter.ISO_INSTANT)
@@ -362,6 +375,10 @@ private[spark] case class CosmosCatalogCosmosSDKClient(cosmosAsyncClient: Cosmos
         tableProperties.put(
             CosmosConstants.TableProperties.IndexingPolicy,
             s"'$indexingPolicySnapshotJson'"
+        )
+        tableProperties.put(
+            CosmosConstants.TableProperties.VectorEmbeddingPolicy,
+            s"'$vectorEmbeddingPolicySnapshot'"
         )
 
         tableProperties

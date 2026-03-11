@@ -12,6 +12,7 @@ private[spark] object CosmosContainerProperties {
   private val indexingPolicy = "indexingPolicy"
   private val defaultTtlPropertyName = "defaultTtlInSeconds"
   private val analyticalStoreTtlPropertyName = "analyticalStoreTtlInSeconds"
+  private val vectorEmbeddingPolicyPropertyName = "vectorEmbeddingPolicy"
   private val defaultPartitionKeyPath = "/id"
   private val defaultIndexingPolicy = AllPropertiesIndexingPolicyName
 
@@ -44,5 +45,9 @@ private[spark] object CosmosContainerProperties {
     } else {
       None
     }
+  }
+
+  def getVectorEmbeddingPolicy(properties: Map[String, String]): Option[String] = {
+    properties.get(vectorEmbeddingPolicyPropertyName)
   }
 }

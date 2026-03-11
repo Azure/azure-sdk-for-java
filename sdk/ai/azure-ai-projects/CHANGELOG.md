@@ -6,6 +6,9 @@
 
 ### Breaking Changes
 
+- `FoundryFeaturesOptInKeys` changed from an `ExpandableStringEnum`-based class to a standard Java `enum` type. The `values()` method now returns an array instead of a `Collection`, and the deprecated no-arg constructor is removed.
+- The `timeZone` property in `RecurrenceTrigger` changed from `String` to `java.util.TimeZone`.
+
 ### Bugs Fixed
 
 ### Other Changes
