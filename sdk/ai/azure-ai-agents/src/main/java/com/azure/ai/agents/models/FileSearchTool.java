@@ -206,7 +206,7 @@ public final class FileSearchTool extends Tool {
      * @param filters the filters value to set.
      * @return the FileSearchTool object itself.
      */
-    FileSearchTool setFilters(BinaryData filters) {
+    private FileSearchTool setFilters(BinaryData filters) {
         // AI Tooling: union type
         this.filters = filters;
         return this;

@@ -117,40 +117,52 @@ public final class CodeInterpreterTool extends Tool {
      * @param container the container value to set.
      * @return the CodeInterpreterTool object itself.
      */
-    private CodeInterpreterTool setContainerInternal(BinaryData container) {
+    private CodeInterpreterTool setContainer(BinaryData container) {
         // AI Tooling: union type
         this.container = container;
         return this;
     }
 
     /**
-     * Set the container property as a container ID string.
+     * Set the container property: The code interpreter container. Can be a container ID or an object that
+     * specifies uploaded file IDs to make available to your code, along with an
+     * optional `memory_limit` setting.
+     * If not provided, the service assumes auto.
      *
-     * @param containerId the container ID to set.
+     * @param containerId the container ID string to set.
      * @return the CodeInterpreterTool object itself.
      */
     public CodeInterpreterTool setContainer(String containerId) {
+        // AI Tooling: union type
         this.container = BinaryData.fromString(containerId);
         return this;
     }
 
     /**
-     * Set the container property as an {@link AutoCodeInterpreterToolParam}.
+     * Set the container property: The code interpreter container. Can be a container ID or an object that
+     * specifies uploaded file IDs to make available to your code, along with an
+     * optional `memory_limit` setting.
+     * If not provided, the service assumes auto.
      *
-     * @param container the auto code interpreter tool parameters to set.
+     * @param container the {@link AutoCodeInterpreterToolParam} to set.
      * @return the CodeInterpreterTool object itself.
      */
     public CodeInterpreterTool setContainer(AutoCodeInterpreterToolParam container) {
+        // AI Tooling: union type
         this.container = BinaryData.fromObject(container);
         return this;
     }
 
     /**
-     * Get the container property as a String: The code interpreter container ID.
+     * Get the container property: The code interpreter container. Can be a container ID or an object that
+     * specifies uploaded file IDs to make available to your code, along with an
+     * optional `memory_limit` setting.
+     * If not provided, the service assumes auto.
      *
      * @return the container value as a String.
      */
     public String getContainerAsString() {
+        // AI Tooling: union type
         if (this.container == null) {
             return null;
         }
@@ -158,11 +170,15 @@ public final class CodeInterpreterTool extends Tool {
     }
 
     /**
-     * Get the container property as an {@link AutoCodeInterpreterToolParam}.
+     * Get the container property: The code interpreter container. Can be a container ID or an object that
+     * specifies uploaded file IDs to make available to your code, along with an
+     * optional `memory_limit` setting.
+     * If not provided, the service assumes auto.
      *
-     * @return the container value as an AutoCodeInterpreterToolParam.
+     * @return the container value as an {@link AutoCodeInterpreterToolParam}.
      */
     public AutoCodeInterpreterToolParam getContainerAsAutoCodeInterpreterToolParam() {
+        // AI Tooling: union type
         if (this.container == null) {
             return null;
         }

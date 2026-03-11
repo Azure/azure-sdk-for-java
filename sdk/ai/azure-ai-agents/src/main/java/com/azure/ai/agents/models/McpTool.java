@@ -289,34 +289,37 @@ public final class McpTool extends Tool {
     }
 
     /**
-     * Set the allowedTools property as a list of tool name strings.
+     * Set the allowedTools property: The allowed_tools property.
      *
-     * @param allowedTools the list of allowed tool names to set.
+     * @param allowedTools the list of tool name strings to set.
      * @return the McpTool object itself.
      */
     public McpTool setAllowedTools(List<String> allowedTools) {
+        // AI Tooling: union type
         this.allowedTools = BinaryData.fromObject(allowedTools);
         return this;
     }
 
     /**
-     * Set the allowedTools property as a {@link McpToolFilter}.
+     * Set the allowedTools property: The allowed_tools property.
      *
-     * @param allowedTools the MCP tool filter to set.
+     * @param allowedTools the {@link McpToolFilter} to set.
      * @return the McpTool object itself.
      */
     public McpTool setAllowedTools(McpToolFilter allowedTools) {
+        // AI Tooling: union type
         this.allowedTools = BinaryData.fromObject(allowedTools);
         return this;
     }
 
     /**
-     * Get the allowedTools property as a list of tool name strings.
+     * Get the allowedTools property: The allowed_tools property.
      *
      * @return the allowedTools value as a list of Strings.
      */
     @SuppressWarnings("unchecked")
     public List<String> getAllowedToolsAsStringList() {
+        // AI Tooling: union type
         if (this.allowedTools == null) {
             return null;
         }
@@ -324,11 +327,12 @@ public final class McpTool extends Tool {
     }
 
     /**
-     * Get the allowedTools property as a {@link McpToolFilter}.
+     * Get the allowedTools property: The allowed_tools property.
      *
-     * @return the allowedTools value as a McpToolFilter.
+     * @return the allowedTools value as a {@link McpToolFilter}.
      */
     public McpToolFilter getAllowedToolsAsMcpToolFilter() {
+        // AI Tooling: union type
         if (this.allowedTools == null) {
             return null;
         }
@@ -358,33 +362,36 @@ public final class McpTool extends Tool {
     }
 
     /**
-     * Set the requireApproval property as a String (e.g., "always" or "never").
+     * Set the requireApproval property: The require_approval property.
      *
-     * @param requireApproval the approval setting string to set.
+     * @param requireApproval the approval setting string to set (e.g., "always" or "never").
      * @return the McpTool object itself.
      */
     public McpTool setRequireApproval(String requireApproval) {
+        // AI Tooling: union type
         this.requireApproval = BinaryData.fromString(requireApproval);
         return this;
     }
 
     /**
-     * Set the requireApproval property as a {@link McpToolRequireApproval} filter.
+     * Set the requireApproval property: The require_approval property.
      *
-     * @param requireApproval the MCP tool require approval filter to set.
+     * @param requireApproval the {@link McpToolRequireApproval} filter to set.
      * @return the McpTool object itself.
      */
     public McpTool setRequireApproval(McpToolRequireApproval requireApproval) {
+        // AI Tooling: union type
         this.requireApproval = BinaryData.fromObject(requireApproval);
         return this;
     }
 
     /**
-     * Get the requireApproval property as a String.
+     * Get the requireApproval property: The require_approval property.
      *
      * @return the requireApproval value as a String.
      */
     public String getRequireApprovalAsString() {
+        // AI Tooling: union type
         if (this.requireApproval == null) {
             return null;
         }
@@ -392,11 +399,12 @@ public final class McpTool extends Tool {
     }
 
     /**
-     * Get the requireApproval property as a {@link McpToolRequireApproval}.
+     * Get the requireApproval property: The require_approval property.
      *
-     * @return the requireApproval value as a McpToolRequireApproval.
+     * @return the requireApproval value as a {@link McpToolRequireApproval}.
      */
     public McpToolRequireApproval getRequireApprovalAsMcpToolRequireApproval() {
+        // AI Tooling: union type
         if (this.requireApproval == null) {
             return null;
         }
