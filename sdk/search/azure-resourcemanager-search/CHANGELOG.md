@@ -1,14 +1,15 @@
 # Release History
 
-## 2.55.0-beta.1 (Unreleased)
+## 2.55.0-beta.1 (2026-03-11)
 
-### Features Added
+- Azure Resource Manager Cognitive Search client library for Java. This package contains Microsoft Azure SDK for Cognitive Search Management SDK. Client that can be used to manage Azure AI Search services and API keys. Package tag package-2025-02. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+- Based on Azure REST API version 2025-02-01.
+- This is a TypeSpec-based SDK. The SDK is generated from TypeSpec specification.
 
 ### Breaking Changes
 
-### Bugs Fixed
-
-### Other Changes
+- `models.IdentityType`, `models.PublicNetworkAccess`, `models.SharedPrivateLinkResourceProvisioningState`, `models.SharedPrivateLinkResourceStatus`, `models.SkuName` changed from sealed `enum` to `ExpandableStringEnum`.
+- Output-only immutable models' constructors are now private, and their setter methods are removed.
 
 ## 2.54.5 (2026-01-29)
 
