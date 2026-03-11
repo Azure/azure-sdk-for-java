@@ -15,16 +15,11 @@ import java.io.IOException;
  * A CosmosDB Cassandra API data source/sink.
  */
 @Fluent
-public final class CosmosCassandraDataTransferDataSourceSink extends DataTransferDataSourceSink {
+public final class CosmosCassandraDataTransferDataSourceSink extends BaseCosmosDataTransferDataSourceSink {
     /*
      * The component property.
      */
     private DataTransferComponent component = DataTransferComponent.COSMOS_DBCASSANDRA;
-
-    /*
-     * The remoteAccountName property.
-     */
-    private String remoteAccountName;
 
     /*
      * The keyspaceName property.
@@ -50,26 +45,6 @@ public final class CosmosCassandraDataTransferDataSourceSink extends DataTransfe
     @Override
     public DataTransferComponent component() {
         return this.component;
-    }
-
-    /**
-     * Get the remoteAccountName property: The remoteAccountName property.
-     * 
-     * @return the remoteAccountName value.
-     */
-    public String remoteAccountName() {
-        return this.remoteAccountName;
-    }
-
-    /**
-     * Set the remoteAccountName property: The remoteAccountName property.
-     * 
-     * @param remoteAccountName the remoteAccountName value to set.
-     * @return the CosmosCassandraDataTransferDataSourceSink object itself.
-     */
-    public CosmosCassandraDataTransferDataSourceSink withRemoteAccountName(String remoteAccountName) {
-        this.remoteAccountName = remoteAccountName;
-        return this;
     }
 
     /**
@@ -113,6 +88,15 @@ public final class CosmosCassandraDataTransferDataSourceSink extends DataTransfe
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public CosmosCassandraDataTransferDataSourceSink withRemoteAccountName(String remoteAccountName) {
+        super.withRemoteAccountName(remoteAccountName);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -139,10 +123,10 @@ public final class CosmosCassandraDataTransferDataSourceSink extends DataTransfe
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("remoteAccountName", remoteAccountName());
         jsonWriter.writeStringField("keyspaceName", this.keyspaceName);
         jsonWriter.writeStringField("tableName", this.tableName);
         jsonWriter.writeStringField("component", this.component == null ? null : this.component.toString());
-        jsonWriter.writeStringField("remoteAccountName", this.remoteAccountName);
         return jsonWriter.writeEndObject();
     }
 
@@ -163,15 +147,15 @@ public final class CosmosCassandraDataTransferDataSourceSink extends DataTransfe
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("keyspaceName".equals(fieldName)) {
+                if ("remoteAccountName".equals(fieldName)) {
+                    deserializedCosmosCassandraDataTransferDataSourceSink.withRemoteAccountName(reader.getString());
+                } else if ("keyspaceName".equals(fieldName)) {
                     deserializedCosmosCassandraDataTransferDataSourceSink.keyspaceName = reader.getString();
                 } else if ("tableName".equals(fieldName)) {
                     deserializedCosmosCassandraDataTransferDataSourceSink.tableName = reader.getString();
                 } else if ("component".equals(fieldName)) {
                     deserializedCosmosCassandraDataTransferDataSourceSink.component
                         = DataTransferComponent.fromString(reader.getString());
-                } else if ("remoteAccountName".equals(fieldName)) {
-                    deserializedCosmosCassandraDataTransferDataSourceSink.remoteAccountName = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

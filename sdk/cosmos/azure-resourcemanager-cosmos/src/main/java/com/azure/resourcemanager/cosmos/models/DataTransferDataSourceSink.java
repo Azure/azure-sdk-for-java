@@ -78,14 +78,16 @@ public class DataTransferDataSourceSink implements JsonSerializable<DataTransfer
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("CosmosDBCassandra".equals(discriminatorValue)) {
+                if ("BaseCosmosDataTransferDataSourceSink".equals(discriminatorValue)) {
+                    return BaseCosmosDataTransferDataSourceSink.fromJsonKnownDiscriminator(readerToUse.reset());
+                } else if ("CosmosDBCassandra".equals(discriminatorValue)) {
                     return CosmosCassandraDataTransferDataSourceSink.fromJson(readerToUse.reset());
                 } else if ("CosmosDBMongo".equals(discriminatorValue)) {
                     return CosmosMongoDataTransferDataSourceSink.fromJson(readerToUse.reset());
-                } else if ("CosmosDBMongoVCore".equals(discriminatorValue)) {
-                    return CosmosMongoVCoreDataTransferDataSourceSink.fromJson(readerToUse.reset());
                 } else if ("CosmosDBSql".equals(discriminatorValue)) {
                     return CosmosSqlDataTransferDataSourceSink.fromJson(readerToUse.reset());
+                } else if ("CosmosDBMongoVCore".equals(discriminatorValue)) {
+                    return CosmosMongoVCoreDataTransferDataSourceSink.fromJson(readerToUse.reset());
                 } else if ("AzureBlobStorage".equals(discriminatorValue)) {
                     return AzureBlobDataTransferDataSourceSink.fromJson(readerToUse.reset());
                 } else {

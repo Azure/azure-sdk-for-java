@@ -15,16 +15,11 @@ import java.io.IOException;
  * A CosmosDB No Sql API data source/sink.
  */
 @Fluent
-public final class CosmosSqlDataTransferDataSourceSink extends DataTransferDataSourceSink {
+public final class CosmosSqlDataTransferDataSourceSink extends BaseCosmosDataTransferDataSourceSink {
     /*
      * The component property.
      */
     private DataTransferComponent component = DataTransferComponent.COSMOS_DBSQL;
-
-    /*
-     * The remoteAccountName property.
-     */
-    private String remoteAccountName;
 
     /*
      * The databaseName property.
@@ -50,26 +45,6 @@ public final class CosmosSqlDataTransferDataSourceSink extends DataTransferDataS
     @Override
     public DataTransferComponent component() {
         return this.component;
-    }
-
-    /**
-     * Get the remoteAccountName property: The remoteAccountName property.
-     * 
-     * @return the remoteAccountName value.
-     */
-    public String remoteAccountName() {
-        return this.remoteAccountName;
-    }
-
-    /**
-     * Set the remoteAccountName property: The remoteAccountName property.
-     * 
-     * @param remoteAccountName the remoteAccountName value to set.
-     * @return the CosmosSqlDataTransferDataSourceSink object itself.
-     */
-    public CosmosSqlDataTransferDataSourceSink withRemoteAccountName(String remoteAccountName) {
-        this.remoteAccountName = remoteAccountName;
-        return this;
     }
 
     /**
@@ -113,6 +88,15 @@ public final class CosmosSqlDataTransferDataSourceSink extends DataTransferDataS
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public CosmosSqlDataTransferDataSourceSink withRemoteAccountName(String remoteAccountName) {
+        super.withRemoteAccountName(remoteAccountName);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -139,10 +123,10 @@ public final class CosmosSqlDataTransferDataSourceSink extends DataTransferDataS
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("remoteAccountName", remoteAccountName());
         jsonWriter.writeStringField("databaseName", this.databaseName);
         jsonWriter.writeStringField("containerName", this.containerName);
         jsonWriter.writeStringField("component", this.component == null ? null : this.component.toString());
-        jsonWriter.writeStringField("remoteAccountName", this.remoteAccountName);
         return jsonWriter.writeEndObject();
     }
 
@@ -163,15 +147,15 @@ public final class CosmosSqlDataTransferDataSourceSink extends DataTransferDataS
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("databaseName".equals(fieldName)) {
+                if ("remoteAccountName".equals(fieldName)) {
+                    deserializedCosmosSqlDataTransferDataSourceSink.withRemoteAccountName(reader.getString());
+                } else if ("databaseName".equals(fieldName)) {
                     deserializedCosmosSqlDataTransferDataSourceSink.databaseName = reader.getString();
                 } else if ("containerName".equals(fieldName)) {
                     deserializedCosmosSqlDataTransferDataSourceSink.containerName = reader.getString();
                 } else if ("component".equals(fieldName)) {
                     deserializedCosmosSqlDataTransferDataSourceSink.component
                         = DataTransferComponent.fromString(reader.getString());
-                } else if ("remoteAccountName".equals(fieldName)) {
-                    deserializedCosmosSqlDataTransferDataSourceSink.remoteAccountName = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

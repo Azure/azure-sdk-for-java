@@ -20,12 +20,12 @@ public final class DataMaskingPolicy implements JsonSerializable<DataMaskingPoli
     /*
      * List of JSON paths to include in the masking policy.
      */
-    private List<DataMaskingPolicyIncludedPath> includedPaths;
+    private List<DataMaskingPolicyIncludedPathsItem> includedPaths;
 
     /*
      * List of JSON paths to exclude from masking.
      */
-    private List<DataMaskingPolicyExcludedPath> excludedPaths;
+    private List<DataMaskingPolicyExcludedPathsItem> excludedPaths;
 
     /*
      * Flag indicating whether the data masking policy is enabled.
@@ -43,7 +43,7 @@ public final class DataMaskingPolicy implements JsonSerializable<DataMaskingPoli
      * 
      * @return the includedPaths value.
      */
-    public List<DataMaskingPolicyIncludedPath> includedPaths() {
+    public List<DataMaskingPolicyIncludedPathsItem> includedPaths() {
         return this.includedPaths;
     }
 
@@ -53,7 +53,7 @@ public final class DataMaskingPolicy implements JsonSerializable<DataMaskingPoli
      * @param includedPaths the includedPaths value to set.
      * @return the DataMaskingPolicy object itself.
      */
-    public DataMaskingPolicy withIncludedPaths(List<DataMaskingPolicyIncludedPath> includedPaths) {
+    public DataMaskingPolicy withIncludedPaths(List<DataMaskingPolicyIncludedPathsItem> includedPaths) {
         this.includedPaths = includedPaths;
         return this;
     }
@@ -63,7 +63,7 @@ public final class DataMaskingPolicy implements JsonSerializable<DataMaskingPoli
      * 
      * @return the excludedPaths value.
      */
-    public List<DataMaskingPolicyExcludedPath> excludedPaths() {
+    public List<DataMaskingPolicyExcludedPathsItem> excludedPaths() {
         return this.excludedPaths;
     }
 
@@ -73,7 +73,7 @@ public final class DataMaskingPolicy implements JsonSerializable<DataMaskingPoli
      * @param excludedPaths the excludedPaths value to set.
      * @return the DataMaskingPolicy object itself.
      */
-    public DataMaskingPolicy withExcludedPaths(List<DataMaskingPolicyExcludedPath> excludedPaths) {
+    public DataMaskingPolicy withExcludedPaths(List<DataMaskingPolicyExcludedPathsItem> excludedPaths) {
         this.excludedPaths = excludedPaths;
         return this;
     }
@@ -140,12 +140,12 @@ public final class DataMaskingPolicy implements JsonSerializable<DataMaskingPoli
                 reader.nextToken();
 
                 if ("includedPaths".equals(fieldName)) {
-                    List<DataMaskingPolicyIncludedPath> includedPaths
-                        = reader.readArray(reader1 -> DataMaskingPolicyIncludedPath.fromJson(reader1));
+                    List<DataMaskingPolicyIncludedPathsItem> includedPaths
+                        = reader.readArray(reader1 -> DataMaskingPolicyIncludedPathsItem.fromJson(reader1));
                     deserializedDataMaskingPolicy.includedPaths = includedPaths;
                 } else if ("excludedPaths".equals(fieldName)) {
-                    List<DataMaskingPolicyExcludedPath> excludedPaths
-                        = reader.readArray(reader1 -> DataMaskingPolicyExcludedPath.fromJson(reader1));
+                    List<DataMaskingPolicyExcludedPathsItem> excludedPaths
+                        = reader.readArray(reader1 -> DataMaskingPolicyExcludedPathsItem.fromJson(reader1));
                     deserializedDataMaskingPolicy.excludedPaths = excludedPaths;
                 } else if ("isPolicyEnabled".equals(fieldName)) {
                     deserializedDataMaskingPolicy.isPolicyEnabled = reader.getNullable(JsonReader::getBoolean);

@@ -37,6 +37,12 @@ public final class DataTransferComponent extends ExpandableStringEnum<DataTransf
     public static final DataTransferComponent AZURE_BLOB_STORAGE = fromString("AzureBlobStorage");
 
     /**
+     * Static value BaseCosmosDataTransferDataSourceSink for DataTransferComponent.
+     */
+    public static final DataTransferComponent BASE_COSMOS_DATA_TRANSFER_DATA_SOURCE_SINK
+        = fromString("BaseCosmosDataTransferDataSourceSink");
+
+    /**
      * Creates a new instance of DataTransferComponent value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

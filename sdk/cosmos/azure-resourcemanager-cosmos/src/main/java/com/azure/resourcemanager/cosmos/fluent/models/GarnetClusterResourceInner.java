@@ -10,7 +10,7 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.cosmos.models.GarnetClusterProperties;
+import com.azure.resourcemanager.cosmos.models.GarnetClusterResourceProperties;
 import com.azure.resourcemanager.cosmos.models.ManagedCassandraManagedServiceIdentity;
 import java.io.IOException;
 import java.util.Map;
@@ -23,7 +23,7 @@ public final class GarnetClusterResourceInner extends Resource {
     /*
      * The resource-specific properties for this resource.
      */
-    private GarnetClusterProperties properties;
+    private GarnetClusterResourceProperties properties;
 
     /*
      * Identity for the resource.
@@ -61,7 +61,7 @@ public final class GarnetClusterResourceInner extends Resource {
      * 
      * @return the properties value.
      */
-    public GarnetClusterProperties properties() {
+    public GarnetClusterResourceProperties properties() {
         return this.properties;
     }
 
@@ -71,7 +71,7 @@ public final class GarnetClusterResourceInner extends Resource {
      * @param properties the properties value to set.
      * @return the GarnetClusterResourceInner object itself.
      */
-    public GarnetClusterResourceInner withProperties(GarnetClusterProperties properties) {
+    public GarnetClusterResourceInner withProperties(GarnetClusterResourceProperties properties) {
         this.properties = properties;
         return this;
     }
@@ -208,7 +208,8 @@ public final class GarnetClusterResourceInner extends Resource {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedGarnetClusterResourceInner.withTags(tags);
                 } else if ("properties".equals(fieldName)) {
-                    deserializedGarnetClusterResourceInner.properties = GarnetClusterProperties.fromJson(reader);
+                    deserializedGarnetClusterResourceInner.properties
+                        = GarnetClusterResourceProperties.fromJson(reader);
                 } else if ("identity".equals(fieldName)) {
                     deserializedGarnetClusterResourceInner.identity
                         = ManagedCassandraManagedServiceIdentity.fromJson(reader);

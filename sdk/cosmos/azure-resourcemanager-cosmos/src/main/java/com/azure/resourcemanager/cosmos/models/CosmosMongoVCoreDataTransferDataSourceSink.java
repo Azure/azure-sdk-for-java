@@ -22,11 +22,6 @@ public final class CosmosMongoVCoreDataTransferDataSourceSink extends DataTransf
     private DataTransferComponent component = DataTransferComponent.COSMOS_DBMONGO_VCORE;
 
     /*
-     * The remoteAccountName property.
-     */
-    private String remoteAccountName;
-
-    /*
      * The databaseName property.
      */
     private String databaseName;
@@ -60,26 +55,6 @@ public final class CosmosMongoVCoreDataTransferDataSourceSink extends DataTransf
     @Override
     public DataTransferComponent component() {
         return this.component;
-    }
-
-    /**
-     * Get the remoteAccountName property: The remoteAccountName property.
-     * 
-     * @return the remoteAccountName value.
-     */
-    public String remoteAccountName() {
-        return this.remoteAccountName;
-    }
-
-    /**
-     * Set the remoteAccountName property: The remoteAccountName property.
-     * 
-     * @param remoteAccountName the remoteAccountName value to set.
-     * @return the CosmosMongoVCoreDataTransferDataSourceSink object itself.
-     */
-    public CosmosMongoVCoreDataTransferDataSourceSink withRemoteAccountName(String remoteAccountName) {
-        this.remoteAccountName = remoteAccountName;
-        return this;
     }
 
     /**
@@ -193,7 +168,6 @@ public final class CosmosMongoVCoreDataTransferDataSourceSink extends DataTransf
         jsonWriter.writeStringField("databaseName", this.databaseName);
         jsonWriter.writeStringField("collectionName", this.collectionName);
         jsonWriter.writeStringField("component", this.component == null ? null : this.component.toString());
-        jsonWriter.writeStringField("remoteAccountName", this.remoteAccountName);
         jsonWriter.writeStringField("hostName", this.hostname);
         jsonWriter.writeStringField("connectionStringKeyVaultUri", this.connectionStringKeyVaultUri);
         return jsonWriter.writeEndObject();
@@ -223,8 +197,6 @@ public final class CosmosMongoVCoreDataTransferDataSourceSink extends DataTransf
                 } else if ("component".equals(fieldName)) {
                     deserializedCosmosMongoVCoreDataTransferDataSourceSink.component
                         = DataTransferComponent.fromString(reader.getString());
-                } else if ("remoteAccountName".equals(fieldName)) {
-                    deserializedCosmosMongoVCoreDataTransferDataSourceSink.remoteAccountName = reader.getString();
                 } else if ("hostName".equals(fieldName)) {
                     deserializedCosmosMongoVCoreDataTransferDataSourceSink.hostname = reader.getString();
                 } else if ("connectionStringKeyVaultUri".equals(fieldName)) {
