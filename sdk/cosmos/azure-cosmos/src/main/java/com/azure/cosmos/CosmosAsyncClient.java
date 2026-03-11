@@ -107,7 +107,7 @@ public final class CosmosAsyncClient implements Closeable {
     private final ConsistencyLevel desiredConsistencyLevel;
     private final ReadConsistencyStrategy readConsistencyStrategy;
     private final AzureKeyCredential credential;
-    TokenCredential tokenCredential;
+    private final TokenCredential tokenCredential;
     private final CosmosClientTelemetryConfig clientTelemetryConfig;
     private final DiagnosticsProvider diagnosticsProvider;
     private final Tag clientCorrelationTag;
@@ -305,8 +305,18 @@ public final class CosmosAsyncClient implements Closeable {
     /**
      * Returns the shared InferenceService instance for this client, creating it lazily on first use.
      * The instance is tied to this client's lifecycle and will be shut down in {@link #close()}.
+     *
+     * @throws IllegalStateException if the client was built with key-based auth instead of AAD.
      */
     InferenceService getOrCreateInferenceService() {
+        if (this.tokenCredential == null) {
+            throw new IllegalStateException(
+                "Semantic reranking requires AAD authentication. "
+                    + "The CosmosClient was built with key-based auth (master key or AzureKeyCredential), "
+                    + "which is not supported for this operation. "
+                    + "Rebuild the client using .credential(TokenCredential) with a DefaultAzureCredential "
+                    + "or another TokenCredential implementation.");
+        }
         if (this.inferenceService.get() == null) {
             InferenceService newSvc = new InferenceService(this.tokenCredential);
             // If another thread already set it, compareAndSet is a no-op and newSvc is discarded

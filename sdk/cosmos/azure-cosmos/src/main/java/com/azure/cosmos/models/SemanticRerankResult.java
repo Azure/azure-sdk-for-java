@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  * Represents the result of a semantic rerank operation.
  */
-@Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+@Beta(value = Beta.SinceVersion.V4_78_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class SemanticRerankResult {
     @JsonProperty("Scores")
     private List<SemanticRerankScore> scores;
