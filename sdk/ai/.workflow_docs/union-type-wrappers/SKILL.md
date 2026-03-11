@@ -39,7 +39,7 @@ Key: `JacksonAdapter` has special handling for `JsonSerializable` types — `Bin
 
 | Union variant | Deserialization | Notes |
 |---|---|---|
-| String | `this.field.toString()` | Works for both `StringContent` and `SerializableContent` |
+| String | `this.field.toObject(String.class)` | Consistent regardless of how BinaryData was created (`fromString` vs `fromObject` during deserialization) |
 | Primitive (Number, Boolean) | `this.field.toObject(Double.class)` etc. | Jackson deserializes raw JSON values |
 | Azure `JsonSerializable` model | `this.field.toObject(ModelClass.class)` | JacksonAdapter calls `fromJson()` |
 | Stainless type | `this.field.toObject(StainlessType.class)` | Jackson deserializes natively |
@@ -224,7 +224,7 @@ public String getMyFieldAsString() {
     if (this.myField == null) {
         return null;
     }
-    return this.myField.toString();
+    return this.myField.toObject(String.class);
 }
 
 /**
@@ -331,6 +331,6 @@ Before reporting completion, verify:
 | `BinaryData.fromObject(jsonSerializable)` produces wrong JSON | JacksonAdapter not on classpath | Verify `azure-core` dependency includes `JacksonAdapter` |
 | `toObject(AzureModel.class)` fails | JacksonAdapter doesn't find `fromJson` | Use `BinaryData.toObject()` which delegates to `JacksonAdapter.deserialize()` — confirm azure-core ≥ 1.51 |
 | Setter creates `StringContent` but expects raw JSON | Wrong factory method | Use `fromString()` only for string tokens; use `fromObject()` for primitives and objects |
-| Test fails on deserialized value comparison | Asymmetry between `fromString`/`fromObject` for string values | Deserialization always uses `fromObject(readUntyped())`, producing `SerializableContent`. Getters must handle both content types. |
+| Test fails on deserialized value comparison | Asymmetry between `fromString`/`fromObject` for string values | Deserialization always uses `fromObject(readUntyped())`, producing `SerializableContent`. Use `toObject(String.class)` in string getters — never `toString()` — to normalize both paths. |
 | Compilation error: cannot find `List` | Missing import after adding `List<String>` setter | Add `import java.util.List;` |
 | `@SuppressWarnings` needed | Unchecked cast on `toObject(List.class)` | Add `@SuppressWarnings("unchecked")` to the method |
