@@ -26,6 +26,7 @@ Find the most specific signal in the failure log and jump directly:
 | `error: <identifier> expected` | tspconfig | [1.2 Invalid Namespace Characters](#12-invalid-namespace-characters) |
 | `[COMPILE] Maven build fail.` + Checkstyle `PackageName` `must match pattern` | tspconfig | [1.3 Namespace Segment Too Long](#13-namespace-segment-too-long) |
 | `not supported by Fluent Premium` | tspconfig | [1.4 Unsupported Emitter Option (Fluent Premium)](#14-unsupported-emitter-option-fluent-premium) |
+| Verify Swagger and TypeSpec Code Generation check fails | tspconfig | [1.5 Verify Swagger and TypeSpec Code Generation fails](#15-verify-swagger-and-typespec-code-generation-fails) |
 | `[COMPILE] Maven build fail.` + customization class/method referenced | customization | [2. Customization Errors](#2-customization-errors) |
 | `Could not resolve dependencies` / `Could not transfer artifact` | intermittent | [3.1 Maven Dependency Download Failure](#31-maven-dependency-download-failure) |
 | None match | unknown | [Escalation](#escalation) |
@@ -122,6 +123,34 @@ java.lang.IllegalStateException: Package 'com.azure.resourcemanager.<pkg>' is no
 **Root cause:** `tspconfig.yaml` enables an emitter option (for example `premium: true`) that is not supported for the target package.
 
 **Solution:** Remove the unsupported option from `options.@azure-tools/typespec-java`.
+
+---
+
+### 1.5 Verify Swagger and TypeSpec Code Generation fails 
+**Log signal:**
+- Verify Swagger and TypeSpec Code Generation check fails in Java SDK CI - java-pullrequest
+
+**Error (real-world example):**
+```
+Exception: /mnt/vss/_work/1/s/eng/scripts/Compare-CurrentToCodegeneration.ps1:225
+Line |
+ 225 |  $job | Receive-Job 2>$null | Out-Null
+     |  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     | ScriptHalted
+
+##[error]PowerShell exited with code '1'.
+```
+
+**Root cause:**
+The **Verify Swagger and TypeSpec Code Generation** step in the Java SDK PR pipeline re-generates SDKs using only repository-local configuration (tspconfig.yaml, etc.). If api-version is not explicitly fixed in tspconfig.yaml, it defaults to the latest version, causing a mismatch between the api-version used by the generation pipeline and the api-version in the type specification, which causes the failure.
+
+**Solution:**
+Explicitly fix the intended api-version in tspconfig.yaml so that the Verify step and SDK generation use the same version. Example:
+```yaml
+options:
+  "@azure-tools/typespec-java":
+    api-version: "2025-12-01"   # ✅
+```
 
 ---
 
