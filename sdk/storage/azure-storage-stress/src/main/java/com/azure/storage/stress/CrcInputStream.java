@@ -75,7 +75,6 @@ public class CrcInputStream extends InputStream {
     // Uses tryEmitValue instead of emitValue(FAIL_FAST) so that resubscriptions
     // (SDK retries, verification passes) don't throw on the second EOF.
     private void emitContentInfo() {
-        //old was sink.emitValue(new ContentInfo(crc.getValue(), length, head), Sinks.EmitFailureHandler.FAIL_FAST);
         sink.tryEmitValue(new ContentInfo(crc.getValue(), length, head));
     }
 

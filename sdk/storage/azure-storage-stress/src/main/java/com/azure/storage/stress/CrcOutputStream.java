@@ -34,7 +34,6 @@ public class CrcOutputStream extends OutputStream {
     // doesn't throw on the second call.
     @Override
     public void close() throws IOException {
-        //old: sink.emitValue(new ContentInfo(crc.getValue(), length, head), Sinks.EmitFailureHandler.FAIL_FAST);
         sink.tryEmitValue(new ContentInfo(crc.getValue(), length, head));
         super.close();
     }
