@@ -75,7 +75,29 @@ public class CrcInputStream extends InputStream {
     // Uses tryEmitValue instead of emitValue(FAIL_FAST) so that resubscriptions
     // (SDK retries, verification passes) don't throw on the second EOF.
     private void emitContentInfo() {
-        sink.tryEmitValue(new ContentInfo(crc.getValue(), length, head));
+        String baseErrorMessage = "Failed to emit content because ";
+        Sinks.EmitResult emitResult = sink.tryEmitValue(new ContentInfo(crc.getValue(), length, head));
+        switch (emitResult) {
+            case OK:
+                LOGGER.info("CrcInputStream: OK");
+                break;
+            case FAIL_TERMINATED:
+                throw LOGGER.logExceptionAsError(new RuntimeException(baseErrorMessage +
+                    " the sink was previously terminated successfully or with an error" + emitResult));
+            case FAIL_CANCELLED:
+                throw LOGGER.logExceptionAsError(new RuntimeException(baseErrorMessage +
+                    " the sink was previously interrupted by its consumer: " + emitResult));
+            case FAIL_OVERFLOW:
+                throw LOGGER.logExceptionAsError(new RuntimeException(baseErrorMessage + "the buffer is full: " + emitResult));
+            case FAIL_NON_SERIALIZED:
+                throw LOGGER.logExceptionAsError(new RuntimeException(baseErrorMessage + "two threads called emit at " +
+                    "once: " + emitResult));
+            case FAIL_ZERO_SUBSCRIBER:
+                throw LOGGER.logExceptionAsError(new RuntimeException(baseErrorMessage + "the sink requires a " +
+                    "subscriber:" + emitResult));
+            default:
+                throw LOGGER.logExceptionAsError(new RuntimeException("Unknown emit result: " + emitResult));
+        }
     }
 
     @Override
