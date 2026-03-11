@@ -25,7 +25,13 @@ public final class CodeInterpreterTool extends Tool {
     @Generated
     private ToolType type = ToolType.CODE_INTERPRETER;
 
-    // AI Tooling: union type
+    /*
+     * The code interpreter container. Can be a container ID or an object that
+     * specifies uploaded file IDs to make available to your code, along with an
+     * optional `memory_limit` setting.
+     * If not provided, the service assumes auto.
+     */
+    @Generated
     private BinaryData container;
 
     /**

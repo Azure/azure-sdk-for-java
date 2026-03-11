@@ -78,10 +78,16 @@ public final class McpTool extends Tool {
     @Generated
     private Map<String, String> headers;
 
-    // AI Tooling: union type
+    /*
+     * The allowed_tools property.
+     */
+    @Generated
     private BinaryData allowedTools;
 
-    // AI Tooling: union type
+    /*
+     * The require_approval property.
+     */
+    @Generated
     private BinaryData requireApproval;
 
     /*
@@ -265,7 +271,8 @@ public final class McpTool extends Tool {
      *
      * @return the allowedTools value.
      */
-    private BinaryData getAllowedToolsInternal() {
+    private BinaryData getAllowedTools() {
+        // AI Tooling: union type
         return this.allowedTools;
     }
 
@@ -275,7 +282,7 @@ public final class McpTool extends Tool {
      * @param allowedTools the allowedTools value to set.
      * @return the McpTool object itself.
      */
-    private McpTool setAllowedToolsInternal(BinaryData allowedTools) {
+    private McpTool setAllowedTools(BinaryData allowedTools) {
         // AI Tooling: union type
         this.allowedTools = allowedTools;
         return this;
@@ -333,7 +340,8 @@ public final class McpTool extends Tool {
      *
      * @return the requireApproval value.
      */
-    private BinaryData getRequireApprovalInternal() {
+    private BinaryData getRequireApproval() {
+        // AI Tooling: union type
         return this.requireApproval;
     }
 
@@ -343,7 +351,7 @@ public final class McpTool extends Tool {
      * @param requireApproval the requireApproval value to set.
      * @return the McpTool object itself.
      */
-    private McpTool setRequireApprovalInternal(BinaryData requireApproval) {
+    private McpTool setRequireApproval(BinaryData requireApproval) {
         // AI Tooling: union type
         this.requireApproval = requireApproval;
         return this;
@@ -508,25 +516,5 @@ public final class McpTool extends Tool {
             deserializedMcpTool.projectConnectionId = projectConnectionId;
             return deserializedMcpTool;
         });
-    }
-
-    /**
-     * Get the allowedTools property: The allowed_tools property.
-     *
-     * @return the allowedTools value.
-     */
-    @Generated
-    public BinaryData getAllowedTools() {
-        return this.allowedTools;
-    }
-
-    /**
-     * Get the requireApproval property: The require_approval property.
-     *
-     * @return the requireApproval value.
-     */
-    @Generated
-    public BinaryData getRequireApproval() {
-        return this.requireApproval;
     }
 }
