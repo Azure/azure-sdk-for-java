@@ -27,15 +27,15 @@ public class AbstractTelemetryBuilderTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {
-        "gen_ai.input.messages",
-        "gen_ai.output.messages",
-        "gen_ai.system_instructions",
-        "gen_ai.tool.definitions",
-        "gen_ai.tool.call.arguments",
-        "gen_ai.tool.call.result",
-        "gen_ai.evaluation.explanation"
-    })
+    @ValueSource(
+        strings = {
+            "gen_ai.input.messages",
+            "gen_ai.output.messages",
+            "gen_ai.system_instructions",
+            "gen_ai.tool.definitions",
+            "gen_ai.tool.call.arguments",
+            "gen_ai.tool.call.result",
+            "gen_ai.evaluation.explanation" })
     public void genAiPropertyIsNotTruncated(String key) {
         MessageTelemetryBuilder builder = MessageTelemetryBuilder.create();
         String longValue = repeat("a", 50000);
@@ -45,9 +45,6 @@ public class AbstractTelemetryBuilderTest {
         Map<String, String> properties = getProperties(item);
         assertEquals(50000, properties.get(key).length());
         assertEquals(longValue, properties.get(key));
-    }
-
-    
     }
 
     @SuppressWarnings("unchecked")

@@ -26,15 +26,9 @@ public abstract class AbstractTelemetryBuilder {
 
     // gen_ai properties can contain large payloads (e.g. full conversation messages,
     // tool definitions) that should not be truncated
-    private static final Set<String> TRUNCATION_EXEMPT_PROPERTY_KEYS = new HashSet<>(asList(
-        "gen_ai.input.messages",
-        "gen_ai.output.messages",
-        "gen_ai.system_instructions",
-        "gen_ai.tool.definitions",
-        "gen_ai.tool.call.arguments",
-        "gen_ai.tool.call.result",
-        "gen_ai.evaluation.explanation"
-    ));
+    private static final Set<String> TRUNCATION_EXEMPT_PROPERTY_KEYS = new HashSet<>(asList("gen_ai.input.messages",
+        "gen_ai.output.messages", "gen_ai.system_instructions", "gen_ai.tool.definitions", "gen_ai.tool.call.arguments",
+        "gen_ai.tool.call.result", "gen_ai.evaluation.explanation"));
 
     protected static final int MAX_MEASUREMENT_KEY_LENGTH = 150;
 
