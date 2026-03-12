@@ -166,8 +166,10 @@ public class GatewayAddressCache implements IAddressCache {
             HttpConstants.HttpHeaders.SDK_SUPPORTED_CAPABILITIES,
             HttpConstants.SDKSupportedCapabilities.SUPPORTED_CAPABILITIES);
 
-        // Apply client-level additional headers (e.g., workload-id) to metadata requests
-        // Use putIfAbsent to ensure SDK system headers (USER_AGENT, VERSION, etc.) are not overwritten
+        // Apply client-level additional headers (e.g., workload-id) to address resolution requests.
+        // Address resolution is the one metadata path that bypasses RxGatewayStoreModel (which
+        // handles all other metadata requests) — GatewayAddressCache calls httpClient.send() directly.
+        // Use putIfAbsent to ensure SDK system headers (USER_AGENT, VERSION, etc.) are not overwritten.
         if (additionalHeaders != null && !additionalHeaders.isEmpty()) {
             for (Map.Entry<String, String> entry : additionalHeaders.entrySet()) {
                 this.defaultRequestHeaders.putIfAbsent(entry.getKey(), entry.getValue());

@@ -758,7 +758,9 @@ public class CosmosClientBuilder implements
      */
     public CosmosClientBuilder additionalHeaders(Map<CosmosHeaderName, String> additionalHeaders) {
         CosmosHeaderName.validateAdditionalHeaders(additionalHeaders);
-        this.additionalHeaders = additionalHeaders;
+        this.additionalHeaders = additionalHeaders != null
+            ? new HashMap<>(additionalHeaders)
+            : null;
         return this;
     }
 
