@@ -1844,9 +1844,6 @@ private object CosmosWriteConfig {
     if (bulkEnabledOpt.isDefined && bulkEnabledOpt.get) {
 
       if (bulkTransactionalOpt.isDefined && bulkTransactionalOpt.get) {
-        // Validate write strategy for transactional batches
-        assert(itemWriteStrategyOpt.get == ItemWriteStrategy.ItemOverwrite,
-          s"Transactional batches only support ItemOverwrite (upsert) write strategy. Requested: ${itemWriteStrategyOpt.get}")
 
         val maxConcurrentCosmosPartitionsOpt = CosmosConfigEntry.parse(cfg, bulkMaxConcurrentPartitions)
         val maxBulkTransactionalOpsConcurrencyOpt = CosmosConfigEntry.parse(cfg, bulkTransactionalMaxOpsConcurrency)

@@ -3,9 +3,10 @@
 package com.azure.cosmos.spark
 
 // scalastyle:off underscore.import
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils
 import com.azure.cosmos.implementation.batch.{BulkExecutorDiagnosticsTracker, CosmosBatchBulkOperation, CosmosBulkTransactionalBatchResponse, TransactionalBulkExecutor}
 import com.azure.cosmos.implementation.{CosmosTransactionalBulkExecutionOptionsImpl, UUIDs}
-import com.azure.cosmos.models.{CosmosBatch, CosmosBatchResponse}
+import com.azure.cosmos.models.{CosmosBatch, CosmosBatchItemRequestOptions, CosmosBatchPatchItemRequestOptions, CosmosBatchResponse, CosmosBulkOperations, CosmosItemOperation, PartitionKeyDefinition}
 import com.azure.cosmos.spark.BulkWriter.getThreadInfo
 import com.azure.cosmos.spark.TransactionalBulkWriter.{BulkOperationFailedException, DefaultMaxPendingOperationPerCore, emitFailureHandler, transactionalBatchInputBoundedElastic, transactionalBulkWriterInputBoundedElastic, transactionalBulkWriterRequestsBoundedElastic}
 import com.azure.cosmos.spark.diagnostics.DefaultDiagnostics
@@ -46,6 +47,7 @@ private class TransactionalBulkWriter
 (
   container: CosmosAsyncContainer,
   containerConfig: CosmosContainerConfig,
+  partitionKeyDefinition: PartitionKeyDefinition,
   writeConfig: CosmosWriteConfig,
   diagnosticsConfig: DiagnosticsConfig,
   outputMetricsPublisher: OutputMetricsPublisherTrait,
@@ -140,6 +142,12 @@ private class TransactionalBulkWriter
 
   ThroughputControlHelper.populateThroughputControlGroupName(cosmosTransactionalBulkExecutionOptions, writeConfig.throughputControlConfig)
 
+  private val cosmosPatchHelperOpt = writeConfig.itemWriteStrategy match {
+    case ItemWriteStrategy.ItemPatch | ItemWriteStrategy.ItemPatchIfExists | ItemWriteStrategy.ItemBulkUpdate =>
+      Some(new CosmosPatchHelper(diagnosticsConfig, writeConfig.patchConfigs.get))
+    case _ => None
+  }
+
   private val operationContext = initializeOperationContext()
 
   private def initializeOperationContext(): SparkTaskContext = {
@@ -227,12 +235,47 @@ private class TransactionalBulkWriter
           val cosmosBatch = CosmosBatch.createCosmosBatch(bulkItemsList.get(0).partitionKey)
           bulkItemsList.forEach(bulkItem => {
             writeConfig.itemWriteStrategy match {
-              case ItemWriteStrategy.ItemOverwrite => cosmosBatch.upsertItemOperation(bulkItem.objectNode)
-              case _ => throw new IllegalStateException(s"Item write strategy ${writeConfig.itemWriteStrategy} is not supported for bulk with transactional")
+              case ItemWriteStrategy.ItemOverwrite =>
+                cosmosBatch.upsertItemOperation(bulkItem.objectNode)
+
+              case ItemWriteStrategy.ItemAppend =>
+                cosmosBatch.createItemOperation(bulkItem.objectNode)
+
+              case ItemWriteStrategy.ItemDelete =>
+                cosmosBatch.deleteItemOperation(bulkItem.itemId)
+
+              case ItemWriteStrategy.ItemDeleteIfNotModified =>
+                val requestOptions = new CosmosBatchItemRequestOptions()
+                bulkItem.eTag.foreach(etag => requestOptions.setIfMatchETag(etag))
+                cosmosBatch.deleteItemOperation(bulkItem.itemId, requestOptions)
+
+              case ItemWriteStrategy.ItemOverwriteIfNotModified =>
+                bulkItem.eTag match {
+                  case Some(etag) =>
+                    val requestOptions = new CosmosBatchItemRequestOptions()
+                    requestOptions.setIfMatchETag(etag)
+                    cosmosBatch.replaceItemOperation(bulkItem.itemId, bulkItem.objectNode, requestOptions)
+                  case None =>
+                    cosmosBatch.createItemOperation(bulkItem.objectNode)
+                }
+
+              case ItemWriteStrategy.ItemPatch | ItemWriteStrategy.ItemPatchIfExists =>
+                val patchOps = cosmosPatchHelperOpt.get.createCosmosPatchOperations(
+                  bulkItem.itemId, partitionKeyDefinition, bulkItem.objectNode)
+                val requestOptions = new CosmosBatchPatchItemRequestOptions()
+                val patchConfigs = writeConfig.patchConfigs.get
+                if (patchConfigs.filter.isDefined && !StringUtils.isEmpty(patchConfigs.filter.get)) {
+                  requestOptions.setFilterPredicate(patchConfigs.filter.get)
+                }
+                cosmosBatch.patchItemOperation(bulkItem.itemId, patchOps, requestOptions)
+
+              case _ =>
+                throw new IllegalStateException(
+                  s"Item write strategy ${writeConfig.itemWriteStrategy} is not supported for bulk with transactional")
             }
           })
 
-          scheduleBatch(cosmosBatch)
+          scheduleBatch(cosmosBatch, bulkItemsList.asScala.toList)
           SMono.empty
         }
       })
@@ -294,7 +337,8 @@ private class TransactionalBulkWriter
                     batchOperation.cosmosBatchBulkOperation,
                     None,
                     isGettingRetried,
-                    Some(cosmosException))
+                    Some(cosmosException),
+                    batchOperation.originalItems)
                 case _ =>
                   log.logWarning(
                     s"unexpected failure: partitionKeyValue=[" +
@@ -310,7 +354,8 @@ private class TransactionalBulkWriter
                 batchOperation.cosmosBatchBulkOperation,
                 Some(resp.getResponse),
                 isGettingRetried,
-                None)
+                None,
+                batchOperation.originalItems)
             } else {
               // no error case
               outputMetricsPublisher.trackWriteOperation(resp.getResponse.size(), None)
@@ -350,11 +395,20 @@ private class TransactionalBulkWriter
     Preconditions.checkState(!closed.get())
     throwIfCapturedExceptionExists()
 
-    val transactionalBulkItem = TransactionalBulkItem(partitionKeyValue, objectNode)
+    val itemId = getId(objectNode)
+    val eTag = getETag(objectNode)
+
+    val transactionalBulkItem = TransactionalBulkItem(partitionKeyValue, objectNode, itemId, eTag)
     transactionalBulkInputEmitter.emitNext(transactionalBulkItem, emitFailureHandler)
   }
 
-  private def scheduleBatch(cosmosBatch: CosmosBatch): Unit = {
+  private def getId(objectNode: ObjectNode): String = {
+    val idField = objectNode.get(CosmosConstants.Properties.Id)
+    assume(idField != null && idField.isTextual)
+    idField.textValue()
+  }
+
+  private def scheduleBatch(cosmosBatch: CosmosBatch, originalItems: List[TransactionalBulkItem]): Unit = {
     Preconditions.checkState(!closed.get())
     throwIfCapturedExceptionExists()
 
@@ -403,7 +457,7 @@ private class TransactionalBulkWriter
     val cnt = totalScheduledMetrics.getAndAdd(cosmosBatch.getOperations.size())
     log.logTrace(s"total scheduled $cnt, Context: ${operationContext.toString} $getThreadInfo")
 
-    scheduleBatchInternal(CosmosBatchOperation(cosmosBatchBulkOperation, operationContext))
+    scheduleBatchInternal(CosmosBatchOperation(cosmosBatchBulkOperation, operationContext, originalItems))
   }
 
   private def scheduleBatchInternal(cosmosBatchOperation: CosmosBatchOperation): Unit = {
@@ -428,7 +482,8 @@ private class TransactionalBulkWriter
     cosmosBatchBulkOperation: CosmosBatchBulkOperation,
     cosmosBatchResponse: Option[CosmosBatchResponse],
     isGettingRetried: AtomicBoolean,
-    responseException: Option[CosmosException]
+    responseException: Option[CosmosException],
+    originalItems: List[TransactionalBulkItem]
   ) : Unit = {
 
     val exceptionMessage = cosmosBatchResponse match {
@@ -459,7 +514,19 @@ private class TransactionalBulkWriter
       s"$effectiveStatusCode:$effectiveSubStatusCode, " +
       s"Context: ${operationContext.toString} $getThreadInfo")
 
-    if (shouldRetry(effectiveStatusCode, effectiveSubStatusCode, operationContext)) {
+    if (shouldIgnoreOnRetry(operationContext, cosmosBatchResponse)) {
+      // Infer SUCCESS: the original batch committed, this retry confirms it
+      // See DESIGN.md § shouldIgnore in TransactionalBulkWriter vs BulkWriter
+      log.logInfo(s"for partitionKeyValue=[${operationContext.partitionKeyValueInput}], " +
+        s"inferred SUCCESS on retry via shouldIgnore. " +
+        s"statusCode='$effectiveStatusCode:$effectiveSubStatusCode', " +
+        s"attemptNumber=${operationContext.attemptNumber}, " +
+        s"Context: {${operationContext.toString}} $getThreadInfo")
+      outputMetricsPublisher.trackWriteOperation(
+        cosmosBatchBulkOperation.getCosmosBatch.getOperations.size(), None)
+      totalSuccessfulIngestionMetrics.addAndGet(
+        cosmosBatchBulkOperation.getCosmosBatch.getOperations.size())
+    } else if (shouldRetry(effectiveStatusCode, effectiveSubStatusCode, operationContext)) {
       // requeue
       log.logWarning(s"for partitionKeyValue=[${operationContext.partitionKeyValueInput}], " +
         s"encountered status code '$effectiveStatusCode:$effectiveSubStatusCode', will retry! " +
@@ -471,7 +538,9 @@ private class TransactionalBulkWriter
         new OperationContext(
           operationContext.partitionKeyValueInput,
           operationContext.attemptNumber + 1,
-          operationContext.sequenceNumber)
+          operationContext.sequenceNumber,
+          operationContext.isIdempotent),
+        originalItems
       )
 
       this.scheduleRetry(
@@ -611,14 +680,17 @@ private class TransactionalBulkWriter
     if (maxAllowedIntervalWithoutAnyProgressExceeded) {
       val exception = {
         // order by batch sequence number
-        // then return all operations inside the batch
+        // then return all original items for re-scheduling
+        // Use originalItems instead of batch.getOperations to avoid NPE on delete operations
+        // (Issue 3: getItem[ObjectNode] returns null for delete operations)
         val retriableRemainingOperations = if (allowRetryOnNewBulkWriterInstance) {
           Some(
             (pendingRetriesSnapshot ++ activeOperationsSnapshot)
               .toList
               .sortBy(op => op._2.operationContext.sequenceNumber)
-              .map(batchOperationPartitionKeyPair => batchOperationPartitionKeyPair._2.cosmosBatchBulkOperation.getCosmosBatch)
-              .flatMap(batch => batch.getOperations.asScala)
+              .flatMap(batchOperationPartitionKeyPair => batchOperationPartitionKeyPair._2.originalItems)
+              .map(item => CosmosBulkOperations.getUpsertItemOperation(
+                item.objectNode, item.partitionKey).asInstanceOf[CosmosItemOperation])
           )
         } else {
           None
@@ -709,14 +781,27 @@ private class TransactionalBulkWriter
 
                   activeOperationsSnapshot.foreach(operationPartitionKeyPair => {
                     if (activeBatches.contains(operationPartitionKeyPair._1)) {
-                      // re-validating whether the operation is still active - if so, just re-enqueue another retry
-                      // this is harmless - because all bulkItemOperations from Spark connector are always idempotent
-                      // For FAIL_NON_SERIALIZED, will keep retry, while for other errors, use the default behavior
-                      transactionalBatchInputEmitter.emitNext(operationPartitionKeyPair._2.cosmosBatchBulkOperation, TransactionalBulkWriter.emitFailureHandler)
-                      log.logWarning(s"Re-enqueued a retry for pending active batch task "
-                        + s"(${operationPartitionKeyPair._1})' "
-                        + s"- Attempt: ${numberOfIntervalsWithIdenticalActiveOperationSnapshots.get} - "
-                        + s"Context: ${operationContext.toString} $getThreadInfo")
+                      val batchOp = operationPartitionKeyPair._2
+                      if (!batchOp.operationContext.isIdempotent) {
+                        // Skip re-enqueue for non-idempotent operations (e.g., increment patch).
+                        // The original batch may still be in-flight — re-enqueuing would cause
+                        // concurrent double-execution, silently corrupting data (e.g., counters
+                        // incremented twice). Allow no-progress detection to handle instead.
+                        log.logWarning(s"Skipping re-enqueue for non-idempotent batch operation "
+                          + s"(${operationPartitionKeyPair._1}). "
+                          + s"Allowing no-progress detection to handle. "
+                          + s"- Attempt: ${numberOfIntervalsWithIdenticalActiveOperationSnapshots.get} - "
+                          + s"Context: ${operationContext.toString} $getThreadInfo")
+                      } else {
+                        // re-validating whether the operation is still active - if so, just re-enqueue another retry
+                        // this is safe for idempotent operations - double execution produces the same result
+                        transactionalBatchInputEmitter.emitNext(
+                          batchOp.cosmosBatchBulkOperation, TransactionalBulkWriter.emitFailureHandler)
+                        log.logWarning(s"Re-enqueued a retry for pending active batch task "
+                          + s"(${operationPartitionKeyPair._1})' "
+                          + s"- Attempt: ${numberOfIntervalsWithIdenticalActiveOperationSnapshots.get} - "
+                          + s"Context: ${operationContext.toString} $getThreadInfo")
+                      }
                     }
                   })
                 }
@@ -816,12 +901,89 @@ private class TransactionalBulkWriter
     batchSubscriptionDisposable.dispose()
   }
 
+  // Restricted subset of BulkWriter's shouldIgnore — excludes 412 (Precondition Failed)
+  // because 412 is ambiguous on retry for batch operations.
+  // See DESIGN.md § shouldIgnore in TransactionalBulkWriter vs BulkWriter
+  private def shouldIgnore(statusCode: Int, subStatusCode: Int): Boolean = {
+    writeConfig.itemWriteStrategy match {
+      case ItemWriteStrategy.ItemAppend => Exceptions.isResourceExistsException(statusCode)
+      case ItemWriteStrategy.ItemPatchIfExists => Exceptions.isNotFoundExceptionCore(statusCode, subStatusCode)
+      case ItemWriteStrategy.ItemDelete => Exceptions.isNotFoundExceptionCore(statusCode, subStatusCode)
+      // 412 is excluded — ambiguous on retry for batch operations
+      case ItemWriteStrategy.ItemDeleteIfNotModified => Exceptions.isNotFoundExceptionCore(statusCode, subStatusCode)
+      case ItemWriteStrategy.ItemOverwriteIfNotModified =>
+        Exceptions.isResourceExistsException(statusCode) ||
+          Exceptions.isNotFoundExceptionCore(statusCode, subStatusCode)
+      case _ => false
+    }
+  }
+
+  // Batch-level shouldIgnore with retry + first-operation guards.
+  // Only infers SUCCESS when:
+  //   1. This is a retry (attemptNumber > 1)
+  //   2. We have per-operation results
+  //   3. The first non-424 result is on the FIRST operation (index 0)
+  //   4. shouldIgnore returns true for that operation's status code
+  //   5. Strategy is NOT ItemBulkUpdate (retries rebuild the batch — invariant C5)
+  // See DESIGN.md § Response Handling Flow
+  private def shouldIgnoreOnRetry(
+    operationContext: OperationContext,
+    cosmosBatchResponse: Option[CosmosBatchResponse]
+  ): Boolean = {
+    // Condition 0: Must NOT be ItemBulkUpdate — retries rebuild the batch with fresh ETags,
+    // so the retry batch is different from the original. shouldIgnore inference is invalid.
+    if (writeConfig.itemWriteStrategy == ItemWriteStrategy.ItemBulkUpdate) return false
+
+    // Condition 1: Must be a retry (not first attempt)
+    if (operationContext.attemptNumber <= 1) return false
+
+    // Condition 2: Must have per-operation results
+    val response = cosmosBatchResponse.getOrElse(return false)
+    val results = response.getResults.asScala
+
+    // Condition 3: Find the first non-424 result (424 = Failed Dependency = rolled back)
+    val firstNon424 = results.zipWithIndex.find { case (result, _) =>
+      result.getStatusCode != 424
+    }
+
+    firstNon424 match {
+      case Some((result, index)) =>
+        // Condition 4: Must be the FIRST operation in the batch (index 0)
+        if (index != 0) return false
+
+        // Condition 5: Check shouldIgnore for the strategy
+        val returnValue = shouldIgnore(result.getStatusCode, result.getSubStatusCode)
+        if (returnValue) {
+          log.logDebug(s"shouldIgnoreOnRetry: true for statusCode " +
+            s"'${result.getStatusCode}:${result.getSubStatusCode}' on first operation, " +
+            s"attemptNumber=${operationContext.attemptNumber}, " +
+            s"Context: ${operationContext.toString} $getThreadInfo")
+        }
+        returnValue
+
+      case None => false // All results are 424 — shouldn't happen
+    }
+  }
+
   private def shouldRetry(statusCode: Int, subStatusCode: Int, operationContext: OperationContext): Boolean = {
     var returnValue = false
     if (operationContext.attemptNumber < writeConfig.maxRetryCount) {
-      returnValue = Exceptions.canBeTransientFailure(statusCode, subStatusCode) ||
-        statusCode == 0 // Gateway mode reports inability to connect due to PoolAcquirePendingLimitException as status code 0
+      returnValue = writeConfig.itemWriteStrategy match {
+        // Upsert can return 404/0 in rare cases (when due to TTL expiration there is a race condition)
+        case ItemWriteStrategy.ItemOverwrite =>
+          Exceptions.canBeTransientFailure(statusCode, subStatusCode) ||
+            statusCode == 0 || // Gateway mode: PoolAcquirePendingLimitException
+            Exceptions.isNotFoundExceptionCore(statusCode, subStatusCode)
+        case _ =>
+          Exceptions.canBeTransientFailure(statusCode, subStatusCode) ||
+            statusCode == 0 // Gateway mode: PoolAcquirePendingLimitException
+      }
     }
+    // NOTE: isIdempotent does NOT gate shouldRetry. The design doc (Scenario 8) explicitly states
+    // that TransactionalBulkWriter follows BulkWriter's retry behavior — retrying even non-idempotent
+    // operations (e.g., increment) and accepting the double-application risk. This matches BulkWriter
+    // which retries ItemPatch (including increment) with no special handling.
+    // The isIdempotent flag ONLY gates the flushAndClose re-enqueue path (Issue 1 fix).
 
     log.logDebug(s"Should retry statusCode '$statusCode:$subStatusCode' -> $returnValue, " +
       s"Context: ${operationContext.toString} $getThreadInfo")
@@ -851,17 +1013,25 @@ private class TransactionalBulkWriter
     val partitionKeyValueInput: PartitionKey,
     val attemptNumber: Int,
     val sequenceNumber: Long,
-    /** starts from 1 * */)
+    /** starts from 1 * */
+    val isIdempotent: Boolean = true)
   {
     override def equals(obj: Any): Boolean = partitionKeyValueInput.equals(obj)
     override def hashCode(): Int = partitionKeyValueInput.hashCode()
     override def toString: String = {
-      partitionKeyValueInput.toString + s", attemptNumber = $attemptNumber"
+      partitionKeyValueInput.toString + s", attemptNumber = $attemptNumber, isIdempotent = $isIdempotent"
     }
   }
 
-  private case class CosmosBatchOperation(cosmosBatchBulkOperation: CosmosBatchBulkOperation, operationContext: OperationContext)
-  private case class TransactionalBulkItem(partitionKey: PartitionKey, objectNode: ObjectNode)
+  private case class CosmosBatchOperation(
+    cosmosBatchBulkOperation: CosmosBatchBulkOperation,
+    operationContext: OperationContext,
+    originalItems: List[TransactionalBulkItem])
+  private case class TransactionalBulkItem(
+    partitionKey: PartitionKey,
+    objectNode: ObjectNode,
+    itemId: String,
+    eTag: Option[String] = None)
 }
 
 private object TransactionalBulkWriter {

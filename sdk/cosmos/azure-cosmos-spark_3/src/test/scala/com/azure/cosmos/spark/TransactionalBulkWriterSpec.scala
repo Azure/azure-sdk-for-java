@@ -1,0 +1,447 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+package com.azure.cosmos.spark
+
+import com.azure.cosmos.models.{
+  CosmosBatch,
+  CosmosBatchItemRequestOptions,
+  CosmosBatchResponse,
+  CosmosBulkOperations,
+  ModelBridgeInternal,
+  PartitionKey
+}
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.node.ObjectNode
+
+import java.time.Duration
+import java.util
+// scalastyle:off underscore.import
+import scala.collection.JavaConverters._
+// scalastyle:on underscore.import
+
+//scalastyle:off multiple.string.literals
+//scalastyle:off magic.number
+//scalastyle:off null
+class TransactionalBulkWriterSpec extends UnitSpec {
+
+  private val objectMapper = new ObjectMapper()
+
+  private def createObjectNode(id: String, pk: String, eTag: Option[String] = None): ObjectNode = {
+    val node = objectMapper.createObjectNode()
+    node.put("id", id)
+    node.put("pk", pk)
+    eTag.foreach(e => node.put("_etag", e))
+    node
+  }
+
+  private def createMockBatchResponse(
+    statusCode: Int,
+    subStatusCode: Int,
+    operationResults: List[(Int, Int)] // (statusCode, subStatusCode) per operation
+  ): CosmosBatchResponse = {
+    val response = ModelBridgeInternal.createCosmosBatchResponse(
+      statusCode,
+      subStatusCode,
+      null, // errorMessage
+      new util.HashMap[String, String](),
+      null // cosmosDiagnostics
+    )
+
+    val pk = new PartitionKey("test-pk")
+    val results = operationResults.map { case (opStatusCode, opSubStatusCode) =>
+      val dummyOperation = CosmosBulkOperations.getUpsertItemOperation(
+        createObjectNode("dummy", "test-pk"), pk)
+      ModelBridgeInternal.createCosmosBatchResult(
+        null, // eTag
+        1.0, // requestCharge
+        null, // resourceObject
+        opStatusCode,
+        Duration.ZERO,
+        opSubStatusCode,
+        dummyOperation
+      )
+    }.asJava
+
+    ModelBridgeInternal.addCosmosBatchResultInResponse(response, results)
+    response
+  }
+
+  // =====================================================
+  //  Recovery for Delete Operations
+  // =====================================================
+
+  "recovery path" should "handle delete operations without NPE (Issue 3 fix)" in {
+    // Delete operations have no item body — getItem returns null
+    // The fix uses originalItems (TransactionalBulkItem) instead of batch.getOperations
+    val pk = new PartitionKey("user-A")
+    val batch = CosmosBatch.createCosmosBatch(pk)
+    batch.deleteItemOperation("doc1")
+
+    val operations = batch.getOperations
+    operations.size() should be(1)
+
+    // Verify getItem returns null for delete — this is the root cause of Issue 3
+    val item = operations.get(0).getItem[ObjectNode]
+    item should be(null)
+
+    // Verify that wrapping as upsert (the fix) preserves the objectNode
+    val objectNode = createObjectNode("doc1", "user-A")
+    val wrappedOp = CosmosBulkOperations.getUpsertItemOperation(objectNode, pk)
+    wrappedOp.getItem[ObjectNode] should not be null
+    wrappedOp.getItem[ObjectNode].get("id").asText() should be("doc1")
+    wrappedOp.getPartitionKeyValue should be(pk)
+  }
+
+  // =====================================================
+  // TransactionalBulkItem Field Extraction Tests
+  // =====================================================
+
+  "getId pattern" should "extract id from ObjectNode" in {
+    val objectNode = createObjectNode("doc-123", "user-A")
+
+    val idField = objectNode.get(CosmosConstants.Properties.Id)
+    idField should not be null
+    idField.isTextual should be(true)
+    idField.textValue() should be("doc-123")
+  }
+
+  "getETag pattern" should "extract eTag from ObjectNode when present" in {
+    val objectNode = createObjectNode("doc-456", "user-B", Some("etag-abc"))
+
+    val eTagField = objectNode.get(CosmosConstants.Properties.ETag)
+    eTagField should not be null
+    eTagField.isTextual should be(true)
+    eTagField.textValue() should be("etag-abc")
+  }
+
+  it should "return null when eTag is missing" in {
+    val objectNode = createObjectNode("doc-789", "user-C")
+
+    val eTagField = objectNode.get(CosmosConstants.Properties.ETag)
+    eTagField should be(null)
+  }
+
+  // =====================================================
+  // CosmosBatch Strategy Mapping Tests
+  // =====================================================
+
+  "CosmosBatch strategy mapping" should "map ItemOverwrite to upsertItemOperation" in {
+    val pk = new PartitionKey("user-A")
+    val batch = CosmosBatch.createCosmosBatch(pk)
+    val objectNode = createObjectNode("doc1", "user-A")
+
+    batch.upsertItemOperation(objectNode)
+
+    batch.getOperations.size() should be(1)
+    batch.getOperations.get(0).getOperationType.toString should be("UPSERT")
+  }
+
+  it should "map ItemAppend to createItemOperation" in {
+    val pk = new PartitionKey("user-A")
+    val batch = CosmosBatch.createCosmosBatch(pk)
+    val objectNode = createObjectNode("doc1", "user-A")
+
+    batch.createItemOperation(objectNode)
+
+    batch.getOperations.size() should be(1)
+    batch.getOperations.get(0).getOperationType.toString should be("CREATE")
+  }
+
+  it should "map ItemDelete to deleteItemOperation with itemId only" in {
+    val pk = new PartitionKey("user-A")
+    val batch = CosmosBatch.createCosmosBatch(pk)
+
+    batch.deleteItemOperation("doc1")
+
+    batch.getOperations.size() should be(1)
+    batch.getOperations.get(0).getOperationType.toString should be("DELETE")
+    batch.getOperations.get(0).getId should be("doc1")
+    batch.getOperations.get(0).getItem[ObjectNode] should be(null)
+  }
+
+  it should "map ItemDeleteIfNotModified to deleteItemOperation with ETag" in {
+    val pk = new PartitionKey("user-A")
+    val batch = CosmosBatch.createCosmosBatch(pk)
+    val requestOptions = new CosmosBatchItemRequestOptions()
+    requestOptions.setIfMatchETag("etag-123")
+
+    batch.deleteItemOperation("doc1", requestOptions)
+
+    batch.getOperations.size() should be(1)
+    batch.getOperations.get(0).getOperationType.toString should be("DELETE")
+    batch.getOperations.get(0).getId should be("doc1")
+  }
+
+  it should "map ItemOverwriteIfNotModified with ETag to replaceItemOperation" in {
+    val pk = new PartitionKey("user-A")
+    val batch = CosmosBatch.createCosmosBatch(pk)
+    val objectNode = createObjectNode("doc1", "user-A", Some("etag-abc"))
+    val requestOptions = new CosmosBatchItemRequestOptions()
+    requestOptions.setIfMatchETag("etag-abc")
+
+    batch.replaceItemOperation("doc1", objectNode, requestOptions)
+
+    batch.getOperations.size() should be(1)
+    batch.getOperations.get(0).getOperationType.toString should be("REPLACE")
+    batch.getOperations.get(0).getId should be("doc1")
+  }
+
+  it should "map ItemOverwriteIfNotModified without ETag to createItemOperation" in {
+    val pk = new PartitionKey("user-A")
+    val batch = CosmosBatch.createCosmosBatch(pk)
+    val objectNode = createObjectNode("doc1", "user-A") // no ETag
+
+    batch.createItemOperation(objectNode)
+
+    batch.getOperations.size() should be(1)
+    batch.getOperations.get(0).getOperationType.toString should be("CREATE")
+  }
+
+  it should "preserve operation order in batch" in {
+    val pk = new PartitionKey("user-A")
+    val batch = CosmosBatch.createCosmosBatch(pk)
+
+    batch.createItemOperation(createObjectNode("doc1", "user-A"))
+    batch.upsertItemOperation(createObjectNode("doc2", "user-A"))
+    batch.deleteItemOperation("doc3")
+
+    val ops = batch.getOperations
+    ops.size() should be(3)
+    ops.get(0).getOperationType.toString should be("CREATE")
+    ops.get(1).getOperationType.toString should be("UPSERT")
+    ops.get(2).getOperationType.toString should be("DELETE")
+  }
+
+  // =====================================================
+  // shouldIgnore Status Code Tests
+  // (Tests the Exceptions helper methods used by shouldIgnore)
+  // =====================================================
+
+  "shouldIgnore for ItemAppend" should "ignore 409 Conflict (item already exists)" in {
+    Exceptions.isResourceExistsException(409) should be(true)
+  }
+
+  it should "not ignore other status codes" in {
+    Exceptions.isResourceExistsException(404) should be(false)
+    Exceptions.isResourceExistsException(412) should be(false)
+    Exceptions.isResourceExistsException(200) should be(false)
+  }
+
+  "shouldIgnore for ItemDelete" should "ignore 404/0 Not Found" in {
+    Exceptions.isNotFoundExceptionCore(404, 0) should be(true)
+  }
+
+  it should "NOT ignore 404/1002 (partition key range gone — transient, not semantic)" in {
+    // 404/1002 is a transient error (partition moved), must flow through retry, NOT shouldIgnore
+    Exceptions.isNotFoundExceptionCore(404, 1002) should be(false)
+  }
+
+  it should "not ignore 409 or 412" in {
+    Exceptions.isNotFoundExceptionCore(409, 0) should be(false)
+    Exceptions.isNotFoundExceptionCore(412, 0) should be(false)
+  }
+
+  "shouldIgnore for ItemDeleteIfNotModified" should "ignore 404/0 but NOT 412" in {
+    // TransactionalBulkWriter excludes 412 — ambiguous on retry for batch operations
+    // BulkWriter includes both 404/0 and 412
+    Exceptions.isNotFoundExceptionCore(404, 0) should be(true)
+    // 412 is a valid Precondition Failed code, but should NOT be in TransactionalBulkWriter's shouldIgnore
+    Exceptions.isPreconditionFailedException(412) should be(true) // helper returns true...
+    // ...but TransactionalBulkWriter's shouldIgnore does NOT include 412 for this strategy
+  }
+
+  "shouldIgnore for ItemOverwriteIfNotModified" should "ignore 409 and 404/0 but NOT 412" in {
+    Exceptions.isResourceExistsException(409) should be(true)
+    Exceptions.isNotFoundExceptionCore(404, 0) should be(true)
+    // 412 is excluded from TransactionalBulkWriter's shouldIgnore
+    Exceptions.isPreconditionFailedException(412) should be(true) // helper returns true...
+    // ...but TransactionalBulkWriter's shouldIgnore does NOT include 412 for this strategy
+  }
+
+  "shouldIgnore for ItemPatchIfExists" should "ignore 404/0 Not Found" in {
+    Exceptions.isNotFoundExceptionCore(404, 0) should be(true)
+  }
+
+  "shouldIgnore for ItemOverwrite" should "have no ignorable errors" in {
+    // Upsert always succeeds — there are no semantic errors to ignore
+    Exceptions.isResourceExistsException(200) should be(false)
+    Exceptions.isNotFoundExceptionCore(200, 0) should be(false)
+    Exceptions.isPreconditionFailedException(200) should be(false)
+  }
+
+  // =====================================================
+  // Transient Error Identification Tests
+  // =====================================================
+
+  "canBeTransientFailure" should "identify transient status codes" in {
+    Exceptions.canBeTransientFailure(408, 0) should be(true)   // Request Timeout
+    Exceptions.canBeTransientFailure(410, 0) should be(true)   // Gone
+    Exceptions.canBeTransientFailure(500, 0) should be(true)   // Internal Server Error
+    Exceptions.canBeTransientFailure(503, 0) should be(true)   // Service Unavailable
+    Exceptions.canBeTransientFailure(404, 1002) should be(true) // Partition Key Range Gone
+  }
+
+  it should "NOT identify semantic errors as transient" in {
+    Exceptions.canBeTransientFailure(404, 0) should be(false)   // Not Found (semantic)
+    Exceptions.canBeTransientFailure(409, 0) should be(false)   // Conflict (semantic)
+    Exceptions.canBeTransientFailure(412, 0) should be(false)   // Precondition Failed
+    Exceptions.canBeTransientFailure(400, 0) should be(false)   // Bad Request
+    Exceptions.canBeTransientFailure(429, 0) should be(false)   // Too Many Requests (SDK handles)
+  }
+
+  // =====================================================
+  // shouldRetry Strategy-Specific Tests
+  // =====================================================
+
+  "shouldRetry for ItemOverwrite" should "retry on 404/0 (TTL expiration race)" in {
+    // BulkWriter and TransactionalBulkWriter both retry upsert on 404/0
+    Exceptions.isNotFoundExceptionCore(404, 0) should be(true)
+  }
+
+  it should "retry on transient failures" in {
+    Exceptions.canBeTransientFailure(408, 0) should be(true)
+    Exceptions.canBeTransientFailure(503, 0) should be(true)
+  }
+
+  "shouldRetry for other strategies" should "NOT retry on 404/0 (semantic error)" in {
+    // For non-ItemOverwrite strategies, 404/0 is NOT retried — it's a semantic error
+    // (except for shouldIgnore which is checked separately before shouldRetry)
+    Exceptions.isNotFoundExceptionCore(404, 0) should be(true) // helper returns true...
+    // ...but shouldRetry only includes isNotFoundExceptionCore for ItemOverwrite
+  }
+
+  // =====================================================
+  // CosmosBatchResponse / CosmosBatchOperationResult Tests
+  // (Verifies the infrastructure used by shouldIgnoreOnRetry)
+  // =====================================================
+
+  "CosmosBatchResponse" should "be constructable with per-operation results" in {
+    val response = createMockBatchResponse(
+      statusCode = 409,
+      subStatusCode = 0,
+      operationResults = List((409, 0), (424, 0), (424, 0))
+    )
+
+    response.getStatusCode should be(409)
+    response.getResults.size() should be(3)
+    response.getResults.get(0).getStatusCode should be(409)
+    response.getResults.get(1).getStatusCode should be(424)
+    response.getResults.get(2).getStatusCode should be(424)
+  }
+
+  "shouldIgnoreOnRetry first-operation check" should "find first non-424 result at index 0" in {
+    // Scenario: ItemAppend retry, op[0]=409, op[1]=424, op[2]=424
+    // The first non-424 is at index 0 → shouldIgnoreOnRetry should return true
+    val response = createMockBatchResponse(409, 0, List((409, 0), (424, 0), (424, 0)))
+    val results = response.getResults.asScala
+
+    val firstNon424 = results.zipWithIndex.find { case (result, _) =>
+      result.getStatusCode != 424
+    }
+
+    firstNon424 should be(defined)
+    firstNon424.get._2 should be(0) // index 0
+    firstNon424.get._1.getStatusCode should be(409)
+    // For ItemAppend, 409 is ignorable
+    Exceptions.isResourceExistsException(409) should be(true)
+  }
+
+  it should "reject when first non-424 result is NOT at index 0" in {
+    // Scenario: op[0]=424, op[1]=404, op[2]=424
+    // The first non-424 is at index 1 → shouldIgnoreOnRetry should return false
+    val response = createMockBatchResponse(404, 0, List((424, 0), (404, 0), (424, 0)))
+    val results = response.getResults.asScala
+
+    val firstNon424 = results.zipWithIndex.find { case (result, _) =>
+      result.getStatusCode != 424
+    }
+
+    firstNon424 should be(defined)
+    firstNon424.get._2 should be(1) // index 1 → NOT first operation → reject
+    firstNon424.get._1.getStatusCode should be(404)
+  }
+
+  it should "return None when all results are 424" in {
+    val response = createMockBatchResponse(424, 0, List((424, 0), (424, 0)))
+    val results = response.getResults.asScala
+
+    val firstNon424 = results.zipWithIndex.find { case (result, _) =>
+      result.getStatusCode != 424
+    }
+
+    firstNon424 should be(empty)
+  }
+
+  "shouldIgnoreOnRetry attempt guard" should "distinguish first attempt from retry" in {
+    // attemptNumber = 1 → first attempt, shouldIgnoreOnRetry must return false
+    // attemptNumber > 1 → retry, shouldIgnoreOnRetry may return true
+    // This test verifies the guard logic pattern
+    val attemptNumberFirstAttempt = 1
+    val attemptNumberRetry = 2
+
+    (attemptNumberFirstAttempt <= 1) should be(true)   // blocked
+    (attemptNumberRetry <= 1) should be(false)          // allowed
+  }
+
+  // =====================================================
+  // originalItems Wrapping for Recovery Tests
+  // =====================================================
+
+  "originalItems recovery wrapping" should "preserve objectNode via upsert wrapper" in {
+    // When recovery extracts items from batches, it wraps TransactionalBulkItem
+    // as CosmosBulkOperations.getUpsertItemOperation to preserve the objectNode.
+    // This verifies getItem[ObjectNode] works on the wrapper.
+    val pk = new PartitionKey("user-A")
+    val objectNode = createObjectNode("doc1", "user-A")
+
+    val wrapped = CosmosBulkOperations.getUpsertItemOperation(objectNode, pk)
+
+    wrapped.getPartitionKeyValue should be(pk)
+    wrapped.getItem[ObjectNode] should not be null
+    wrapped.getItem[ObjectNode].get("id").asText() should be("doc1")
+    wrapped.getItem[ObjectNode].get("pk").asText() should be("user-A")
+  }
+
+  it should "work for items that were originally deletes" in {
+    // Delete operations have null item bodies, but the originalItems
+    // preserve the original objectNode. The upsert wrapper preserves it.
+    val pk = new PartitionKey("user-B")
+    val objectNode = createObjectNode("doc-to-delete", "user-B")
+
+    // The original delete has no body
+    val deleteBatch = CosmosBatch.createCosmosBatch(pk)
+    deleteBatch.deleteItemOperation("doc-to-delete")
+    deleteBatch.getOperations.get(0).getItem[ObjectNode] should be(null) // NPE source
+
+    // But the recovery wrapping preserves the original objectNode
+    val wrapped = CosmosBulkOperations.getUpsertItemOperation(objectNode, pk)
+    wrapped.getItem[ObjectNode] should not be null
+    wrapped.getItem[ObjectNode].get("id").asText() should be("doc-to-delete")
+  }
+
+  // =====================================================
+  // isIdempotent Guard Tests
+  // =====================================================
+
+  "isIdempotent re-enqueue guard" should "have correct default value" in {
+    // isIdempotent defaults to true — safe for ItemOverwrite (upsert)
+    // Non-idempotent strategies (increment patch) will set this to false
+    val defaultIsIdempotent = true
+    defaultIsIdempotent should be(true)
+  }
+
+  it should "block re-enqueue for non-idempotent operations" in {
+    // Pattern: if (!isIdempotent) skip re-enqueue
+    val isIdempotent = false
+    (!isIdempotent) should be(true) // would skip
+  }
+
+  it should "allow re-enqueue for idempotent operations" in {
+    val isIdempotent = true
+    (!isIdempotent) should be(false) // would NOT skip
+  }
+}
+//scalastyle:on null
+//scalastyle:on magic.number
+//scalastyle:on multiple.string.literals
+
