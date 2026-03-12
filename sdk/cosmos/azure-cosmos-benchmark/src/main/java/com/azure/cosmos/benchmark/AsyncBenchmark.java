@@ -20,6 +20,9 @@ import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosMicrometerMetricsOptions;
 import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.CosmosBulkExecutionOptions;
+import com.azure.cosmos.models.CosmosBulkOperations;
+import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.ThroughputProperties;
 
 import io.micrometer.core.instrument.MeterRegistry;
@@ -29,8 +32,6 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
-import reactor.util.retry.Retry;
-
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -184,68 +185,32 @@ abstract class AsyncBenchmark<T> implements Benchmark {
         partitionKey = cosmosAsyncContainer.read().block().getProperties().getPartitionKeyDefinition()
             .getPaths().iterator().next().split("/")[1];
 
-        ArrayList<Flux<PojoizedJson>> createDocumentObservables = new ArrayList<>();
-
         if (cfg.getOperationType() != Operation.WriteLatency
             && cfg.getOperationType() != Operation.WriteThroughput
             && cfg.getOperationType() != Operation.ReadMyWrites) {
             logger.info("PRE-populating {} documents ....", cfg.getNumberOfPreCreatedDocuments());
             String dataFieldValue = RandomStringUtils.randomAlphabetic(cfg.getDocumentDataFieldSize());
+            List<PojoizedJson> generatedDocs = new ArrayList<>();
+            List<CosmosItemOperation> bulkOperations = new ArrayList<>();
             for (int i = 0; i < cfg.getNumberOfPreCreatedDocuments(); i++) {
                 String uuid = UUID.randomUUID().toString();
                 PojoizedJson newDoc = BenchmarkHelper.generateDocument(uuid,
                     dataFieldValue,
                     partitionKey,
                     cfg.getDocumentDataFieldCount());
-                Flux<PojoizedJson> obs = cosmosAsyncContainer
-                    .createItem(newDoc)
-                    .retryWhen(Retry.max(5).filter((error) -> {
-                        if (!(error instanceof CosmosException)) {
-                            return false;
-                        }
-                        final CosmosException cosmosException = (CosmosException) error;
-                        if (cosmosException.getStatusCode() == 410 ||
-                            cosmosException.getStatusCode() == 408 ||
-                            cosmosException.getStatusCode() == 429 ||
-                            cosmosException.getStatusCode() == 500 ||
-                            cosmosException.getStatusCode() == 503) {
-                            return true;
-                        }
-
-                        return false;
-                    }))
-                    .onErrorResume(
-                        (error) -> {
-                            if (!(error instanceof CosmosException)) {
-                                return false;
-                            }
-                            final CosmosException cosmosException = (CosmosException) error;
-                            if (cosmosException.getStatusCode() == 409) {
-                                return true;
-                            }
-
-                            return false;
-                        },
-                        (conflictException) -> cosmosAsyncContainer.readItem(
-                            uuid, new PartitionKey(partitionKey), PojoizedJson.class)
-                    )
-                    .map(resp -> {
-                        PojoizedJson x =
-                            resp.getItem();
-                        return x;
-                    })
-                    .flux();
-                createDocumentObservables.add(obs);
+                generatedDocs.add(newDoc);
+                bulkOperations.add(
+                    CosmosBulkOperations.getCreateItemOperation(newDoc, new PartitionKey(uuid)));
             }
-        }
 
-        if (createDocumentObservables.isEmpty()) {
-            docsToRead = new ArrayList<>();
+            CosmosBulkExecutionOptions bulkExecutionOptions = new CosmosBulkExecutionOptions();
+            cosmosAsyncContainer
+                .executeBulkOperations(Flux.fromIterable(bulkOperations), bulkExecutionOptions)
+                .blockLast(Duration.ofMinutes(10));
+
+            docsToRead = generatedDocs;
         } else {
-            int prePopConcurrency = Math.max(1, Math.min(cfg.getConcurrency(), 100));
-            docsToRead = Flux.merge(Flux.fromIterable(createDocumentObservables), prePopConcurrency)
-                .collectList()
-                .block();
+            docsToRead = new ArrayList<>();
         }
         logger.info("Finished pre-populating {} documents", cfg.getNumberOfPreCreatedDocuments());
 

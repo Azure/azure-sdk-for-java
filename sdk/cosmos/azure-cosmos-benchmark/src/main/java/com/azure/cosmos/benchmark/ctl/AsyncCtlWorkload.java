@@ -18,7 +18,10 @@ import com.azure.cosmos.benchmark.PojoizedJson;
 import com.azure.cosmos.benchmark.TenantWorkloadConfig;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.models.CosmosBulkExecutionOptions;
+import com.azure.cosmos.models.CosmosBulkOperations;
 import com.azure.cosmos.models.CosmosItemIdentity;
+import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.ThroughputProperties;
@@ -244,33 +247,37 @@ public class AsyncCtlWorkload implements Benchmark {
 
     private void createPrePopulatedDocs(int numberOfPreCreatedDocuments) {
         for (CosmosAsyncContainer container : containers) {
-            AtomicLong successCount = new AtomicLong(0);
-            AtomicLong failureCount = new AtomicLong(0);
-            ArrayList<Flux<PojoizedJson>> createDocumentObservables = new ArrayList<>();
+            List<PojoizedJson> generatedDocs = new ArrayList<>();
+            List<CosmosItemOperation> bulkOperations = new ArrayList<>();
             for (int i = 0; i < numberOfPreCreatedDocuments; i++) {
                 String uId = UUID.randomUUID().toString();
                 PojoizedJson newDoc = BenchmarkHelper.generateDocument(uId,
                     dataFieldValue,
                     partitionKey,
                     workloadConfig.getDocumentDataFieldCount());
-
-                Flux<PojoizedJson> obs = container.createItem(newDoc).map(resp -> {
-                    PojoizedJson x =
-                        resp.getItem();
-                    return x;
-                }).onErrorResume(throwable -> {
-                    failureCount.incrementAndGet();
-                    logger.error("Error during pre populating item ", throwable.getMessage());
-                    return Mono.empty();
-                }).doOnSuccess(pojoizedJson -> {
-                    successCount.incrementAndGet();
-                }).flux();
-                createDocumentObservables.add(obs);
+                generatedDocs.add(newDoc);
+                bulkOperations.add(
+                    CosmosBulkOperations.getCreateItemOperation(newDoc, new PartitionKey(uId)));
             }
-            docsToRead.put(container.getId(),
-                Flux.merge(Flux.fromIterable(createDocumentObservables), 100).collectList().block());
+
+            AtomicLong successCount = new AtomicLong(0);
+            AtomicLong failureCount = new AtomicLong(0);
+            CosmosBulkExecutionOptions bulkExecutionOptions = new CosmosBulkExecutionOptions();
+            container.executeBulkOperations(Flux.fromIterable(bulkOperations), bulkExecutionOptions)
+                .doOnNext(response -> {
+                    if (response.getResponse() != null && response.getResponse().isSuccessStatusCode()) {
+                        successCount.incrementAndGet();
+                    } else {
+                        failureCount.incrementAndGet();
+                        logger.error("Error during pre populating item {}",
+                            response.getException() != null ? response.getException().getMessage() : "unknown error");
+                    }
+                })
+                .blockLast(Duration.ofMinutes(10));
+
+            docsToRead.put(container.getId(), generatedDocs);
             logger.info("Finished pre-populating {} documents for container {}",
-                successCount.get() - failureCount.get(), container.getId());
+                successCount.get(), container.getId());
             if (failureCount.get() > 0) {
                 logger.info("Failed pre-populating {} documents for container {}",
                     failureCount.get(), container.getId());
