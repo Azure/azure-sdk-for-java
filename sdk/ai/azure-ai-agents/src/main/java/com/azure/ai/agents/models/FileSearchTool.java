@@ -9,6 +9,8 @@ import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.openai.models.ComparisonFilter;
+import com.openai.models.CompoundFilter;
 import java.io.IOException;
 import java.util.List;
 
@@ -209,6 +211,36 @@ public final class FileSearchTool extends Tool {
     @Generated
     public FileSearchTool setMaxResults(Long maxResults) {
         this.maxResults = maxResults;
+        return this;
+    }
+
+    /**
+     * Sets the file search filters using an openai-java {@link ComparisonFilter}.
+     * <p>
+     * The provided filter is serialized using the openai-java JSON schema and stored in the
+     * {@code filters} property as {@link com.azure.core.util.BinaryData}.
+     *
+     * @param filter the openai-java ComparisonFilter to apply, or null to clear.
+     * @return the FileSearchTool object itself.
+     */
+    public FileSearchTool setComparisonFilter(ComparisonFilter filter) {
+        // AI Tooling: openai-java de-dup
+        this.filters = com.azure.ai.agents.implementation.OpenAIJsonHelper.toBinaryData(filter);
+        return this;
+    }
+
+    /**
+     * Sets the file search filters using an openai-java {@link CompoundFilter}.
+     * <p>
+     * The provided filter is serialized using the openai-java JSON schema and stored in the
+     * {@code filters} property as {@link BinaryData}.
+     *
+     * @param filter the openai-java CompoundFilter to apply, or null to clear.
+     * @return the FileSearchTool object itself.
+     */
+    public FileSearchTool setCompoundFilter(CompoundFilter filter) {
+        // AI Tooling: openai-java de-dup
+        this.filters = com.azure.ai.agents.implementation.OpenAIJsonHelper.toBinaryData(filter);
         return this;
     }
 }
