@@ -5,11 +5,13 @@ package com.azure.ai.agents.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 
@@ -37,7 +39,7 @@ public final class LocalShellExecAction implements JsonSerializable<LocalShellEx
      * The timeout_ms property.
      */
     @Generated
-    private Long duration;
+    private Duration duration;
 
     /*
      * The working_directory property.
@@ -95,20 +97,8 @@ public final class LocalShellExecAction implements JsonSerializable<LocalShellEx
      * @return the duration value.
      */
     @Generated
-    public Long getDuration() {
+    public Duration getDuration() {
         return this.duration;
-    }
-
-    /**
-     * Set the duration property: The timeout_ms property.
-     *
-     * @param duration the duration value to set.
-     * @return the LocalShellExecAction object itself.
-     */
-    @Generated
-    public LocalShellExecAction setDuration(Long duration) {
-        this.duration = duration;
-        return this;
     }
 
     /**
@@ -175,7 +165,7 @@ public final class LocalShellExecAction implements JsonSerializable<LocalShellEx
         jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeArrayField("command", this.command, (writer, element) -> writer.writeString(element));
         jsonWriter.writeMapField("env", this.env, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeNumberField("timeout_ms", this.duration);
+        jsonWriter.writeStringField("timeout_ms", CoreUtils.durationToStringWithDays(this.duration));
         jsonWriter.writeStringField("working_directory", this.workingDirectory);
         jsonWriter.writeStringField("user", this.user);
         return jsonWriter.writeEndObject();
@@ -195,7 +185,7 @@ public final class LocalShellExecAction implements JsonSerializable<LocalShellEx
         return jsonReader.readObject(reader -> {
             List<String> command = null;
             Map<String, String> env = null;
-            Long duration = null;
+            Duration duration = null;
             String workingDirectory = null;
             String user = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -206,7 +196,7 @@ public final class LocalShellExecAction implements JsonSerializable<LocalShellEx
                 } else if ("env".equals(fieldName)) {
                     env = reader.readMap(reader1 -> reader1.getString());
                 } else if ("timeout_ms".equals(fieldName)) {
-                    duration = reader.getNullable(JsonReader::getLong);
+                    duration = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
                 } else if ("working_directory".equals(fieldName)) {
                     workingDirectory = reader.getString();
                 } else if ("user".equals(fieldName)) {
@@ -221,5 +211,17 @@ public final class LocalShellExecAction implements JsonSerializable<LocalShellEx
             deserializedLocalShellExecAction.user = user;
             return deserializedLocalShellExecAction;
         });
+    }
+
+    /**
+     * Set the duration property: The timeout_ms property.
+     *
+     * @param duration the duration value to set.
+     * @return the LocalShellExecAction object itself.
+     */
+    @Generated
+    public LocalShellExecAction setDuration(Duration duration) {
+        this.duration = duration;
+        return this;
     }
 }
