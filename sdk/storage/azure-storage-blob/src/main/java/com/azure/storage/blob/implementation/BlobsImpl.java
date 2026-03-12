@@ -272,10 +272,8 @@ public final class BlobsImpl {
             @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
             @HeaderParam("x-ms-if-tags") String ifTags, @HeaderParam("x-ms-version") String version,
             @HeaderParam("x-ms-client-request-id") String requestId,
-            @QueryParam("deletetype") BlobDeleteType blobDeleteType,
-            @HeaderParam("x-ms-access-tier-if-modified-since") DateTimeRfc1123 accessTierIfModifiedSince,
-            @HeaderParam("x-ms-access-tier-if-unmodified-since") DateTimeRfc1123 accessTierIfUnmodifiedSince,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("deletetype") BlobDeleteType blobDeleteType, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Delete("/{containerName}/{blob}")
         @ExpectedResponses({ 202 })
@@ -290,10 +288,8 @@ public final class BlobsImpl {
             @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
             @HeaderParam("x-ms-if-tags") String ifTags, @HeaderParam("x-ms-version") String version,
             @HeaderParam("x-ms-client-request-id") String requestId,
-            @QueryParam("deletetype") BlobDeleteType blobDeleteType,
-            @HeaderParam("x-ms-access-tier-if-modified-since") DateTimeRfc1123 accessTierIfModifiedSince,
-            @HeaderParam("x-ms-access-tier-if-unmodified-since") DateTimeRfc1123 accessTierIfUnmodifiedSince,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("deletetype") BlobDeleteType blobDeleteType, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Delete("/{containerName}/{blob}")
         @ExpectedResponses({ 202 })
@@ -308,10 +304,8 @@ public final class BlobsImpl {
             @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
             @HeaderParam("x-ms-if-tags") String ifTags, @HeaderParam("x-ms-version") String version,
             @HeaderParam("x-ms-client-request-id") String requestId,
-            @QueryParam("deletetype") BlobDeleteType blobDeleteType,
-            @HeaderParam("x-ms-access-tier-if-modified-since") DateTimeRfc1123 accessTierIfModifiedSince,
-            @HeaderParam("x-ms-access-tier-if-unmodified-since") DateTimeRfc1123 accessTierIfUnmodifiedSince,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("deletetype") BlobDeleteType blobDeleteType, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Delete("/{containerName}/{blob}")
         @ExpectedResponses({ 202 })
@@ -326,10 +320,8 @@ public final class BlobsImpl {
             @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
             @HeaderParam("x-ms-if-tags") String ifTags, @HeaderParam("x-ms-version") String version,
             @HeaderParam("x-ms-client-request-id") String requestId,
-            @QueryParam("deletetype") BlobDeleteType blobDeleteType,
-            @HeaderParam("x-ms-access-tier-if-modified-since") DateTimeRfc1123 accessTierIfModifiedSince,
-            @HeaderParam("x-ms-access-tier-if-unmodified-since") DateTimeRfc1123 accessTierIfUnmodifiedSince,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("deletetype") BlobDeleteType blobDeleteType, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Put("/{containerName}/{blob}")
         @ExpectedResponses({ 200 })
@@ -2660,10 +2652,6 @@ public final class BlobsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param blobDeleteType Optional. Only possible value is 'permanent', which specifies to permanently delete a blob
      * if blob soft delete is enabled.
-     * @param accessTierIfModifiedSince Specify this header value to operate only on a blob if the access-tier has been
-     * modified since the specified date/time.
-     * @param accessTierIfUnmodifiedSince Specify this header value to operate only on a blob if the access-tier has not
-     * been modified since the specified date/time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2673,12 +2661,11 @@ public final class BlobsImpl {
     public Mono<ResponseBase<BlobsDeleteHeaders, Void>> deleteWithResponseAsync(String containerName, String blob,
         String snapshot, String versionId, Integer timeout, String leaseId, DeleteSnapshotsOptionType deleteSnapshots,
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
-        String ifTags, String requestId, BlobDeleteType blobDeleteType, OffsetDateTime accessTierIfModifiedSince,
-        OffsetDateTime accessTierIfUnmodifiedSince) {
+        String ifTags, String requestId, BlobDeleteType blobDeleteType) {
         return FluxUtil
             .withContext(context -> deleteWithResponseAsync(containerName, blob, snapshot, versionId, timeout, leaseId,
                 deleteSnapshots, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId,
-                blobDeleteType, accessTierIfModifiedSince, accessTierIfUnmodifiedSince, context))
+                blobDeleteType, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -2725,10 +2712,6 @@ public final class BlobsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param blobDeleteType Optional. Only possible value is 'permanent', which specifies to permanently delete a blob
      * if blob soft delete is enabled.
-     * @param accessTierIfModifiedSince Specify this header value to operate only on a blob if the access-tier has been
-     * modified since the specified date/time.
-     * @param accessTierIfUnmodifiedSince Specify this header value to operate only on a blob if the access-tier has not
-     * been modified since the specified date/time.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
@@ -2739,22 +2722,16 @@ public final class BlobsImpl {
     public Mono<ResponseBase<BlobsDeleteHeaders, Void>> deleteWithResponseAsync(String containerName, String blob,
         String snapshot, String versionId, Integer timeout, String leaseId, DeleteSnapshotsOptionType deleteSnapshots,
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
-        String ifTags, String requestId, BlobDeleteType blobDeleteType, OffsetDateTime accessTierIfModifiedSince,
-        OffsetDateTime accessTierIfUnmodifiedSince, Context context) {
+        String ifTags, String requestId, BlobDeleteType blobDeleteType, Context context) {
         final String accept = "application/xml";
         DateTimeRfc1123 ifModifiedSinceConverted
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        DateTimeRfc1123 accessTierIfModifiedSinceConverted
-            = accessTierIfModifiedSince == null ? null : new DateTimeRfc1123(accessTierIfModifiedSince);
-        DateTimeRfc1123 accessTierIfUnmodifiedSinceConverted
-            = accessTierIfUnmodifiedSince == null ? null : new DateTimeRfc1123(accessTierIfUnmodifiedSince);
         return service
             .delete(this.client.getUrl(), containerName, blob, snapshot, versionId, timeout, leaseId, deleteSnapshots,
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
-                this.client.getVersion(), requestId, blobDeleteType, accessTierIfModifiedSinceConverted,
-                accessTierIfUnmodifiedSinceConverted, accept, context)
+                this.client.getVersion(), requestId, blobDeleteType, accept, context)
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -2801,10 +2778,6 @@ public final class BlobsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param blobDeleteType Optional. Only possible value is 'permanent', which specifies to permanently delete a blob
      * if blob soft delete is enabled.
-     * @param accessTierIfModifiedSince Specify this header value to operate only on a blob if the access-tier has been
-     * modified since the specified date/time.
-     * @param accessTierIfUnmodifiedSince Specify this header value to operate only on a blob if the access-tier has not
-     * been modified since the specified date/time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2814,11 +2787,9 @@ public final class BlobsImpl {
     public Mono<Void> deleteAsync(String containerName, String blob, String snapshot, String versionId, Integer timeout,
         String leaseId, DeleteSnapshotsOptionType deleteSnapshots, OffsetDateTime ifModifiedSince,
         OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String ifTags, String requestId,
-        BlobDeleteType blobDeleteType, OffsetDateTime accessTierIfModifiedSince,
-        OffsetDateTime accessTierIfUnmodifiedSince) {
+        BlobDeleteType blobDeleteType) {
         return deleteWithResponseAsync(containerName, blob, snapshot, versionId, timeout, leaseId, deleteSnapshots,
-            ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, blobDeleteType,
-            accessTierIfModifiedSince, accessTierIfUnmodifiedSince)
+            ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, blobDeleteType)
                 .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
                 .flatMap(ignored -> Mono.empty());
     }
@@ -2866,10 +2837,6 @@ public final class BlobsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param blobDeleteType Optional. Only possible value is 'permanent', which specifies to permanently delete a blob
      * if blob soft delete is enabled.
-     * @param accessTierIfModifiedSince Specify this header value to operate only on a blob if the access-tier has been
-     * modified since the specified date/time.
-     * @param accessTierIfUnmodifiedSince Specify this header value to operate only on a blob if the access-tier has not
-     * been modified since the specified date/time.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
@@ -2880,11 +2847,9 @@ public final class BlobsImpl {
     public Mono<Void> deleteAsync(String containerName, String blob, String snapshot, String versionId, Integer timeout,
         String leaseId, DeleteSnapshotsOptionType deleteSnapshots, OffsetDateTime ifModifiedSince,
         OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String ifTags, String requestId,
-        BlobDeleteType blobDeleteType, OffsetDateTime accessTierIfModifiedSince,
-        OffsetDateTime accessTierIfUnmodifiedSince, Context context) {
+        BlobDeleteType blobDeleteType, Context context) {
         return deleteWithResponseAsync(containerName, blob, snapshot, versionId, timeout, leaseId, deleteSnapshots,
-            ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, blobDeleteType,
-            accessTierIfModifiedSince, accessTierIfUnmodifiedSince, context)
+            ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, blobDeleteType, context)
                 .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
                 .flatMap(ignored -> Mono.empty());
     }
@@ -2932,10 +2897,6 @@ public final class BlobsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param blobDeleteType Optional. Only possible value is 'permanent', which specifies to permanently delete a blob
      * if blob soft delete is enabled.
-     * @param accessTierIfModifiedSince Specify this header value to operate only on a blob if the access-tier has been
-     * modified since the specified date/time.
-     * @param accessTierIfUnmodifiedSince Specify this header value to operate only on a blob if the access-tier has not
-     * been modified since the specified date/time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2945,12 +2906,11 @@ public final class BlobsImpl {
     public Mono<Response<Void>> deleteNoCustomHeadersWithResponseAsync(String containerName, String blob,
         String snapshot, String versionId, Integer timeout, String leaseId, DeleteSnapshotsOptionType deleteSnapshots,
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
-        String ifTags, String requestId, BlobDeleteType blobDeleteType, OffsetDateTime accessTierIfModifiedSince,
-        OffsetDateTime accessTierIfUnmodifiedSince) {
+        String ifTags, String requestId, BlobDeleteType blobDeleteType) {
         return FluxUtil
             .withContext(context -> deleteNoCustomHeadersWithResponseAsync(containerName, blob, snapshot, versionId,
                 timeout, leaseId, deleteSnapshots, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags,
-                requestId, blobDeleteType, accessTierIfModifiedSince, accessTierIfUnmodifiedSince, context))
+                requestId, blobDeleteType, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -2997,10 +2957,6 @@ public final class BlobsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param blobDeleteType Optional. Only possible value is 'permanent', which specifies to permanently delete a blob
      * if blob soft delete is enabled.
-     * @param accessTierIfModifiedSince Specify this header value to operate only on a blob if the access-tier has been
-     * modified since the specified date/time.
-     * @param accessTierIfUnmodifiedSince Specify this header value to operate only on a blob if the access-tier has not
-     * been modified since the specified date/time.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
@@ -3011,22 +2967,16 @@ public final class BlobsImpl {
     public Mono<Response<Void>> deleteNoCustomHeadersWithResponseAsync(String containerName, String blob,
         String snapshot, String versionId, Integer timeout, String leaseId, DeleteSnapshotsOptionType deleteSnapshots,
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
-        String ifTags, String requestId, BlobDeleteType blobDeleteType, OffsetDateTime accessTierIfModifiedSince,
-        OffsetDateTime accessTierIfUnmodifiedSince, Context context) {
+        String ifTags, String requestId, BlobDeleteType blobDeleteType, Context context) {
         final String accept = "application/xml";
         DateTimeRfc1123 ifModifiedSinceConverted
             = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        DateTimeRfc1123 accessTierIfModifiedSinceConverted
-            = accessTierIfModifiedSince == null ? null : new DateTimeRfc1123(accessTierIfModifiedSince);
-        DateTimeRfc1123 accessTierIfUnmodifiedSinceConverted
-            = accessTierIfUnmodifiedSince == null ? null : new DateTimeRfc1123(accessTierIfUnmodifiedSince);
         return service
             .deleteNoCustomHeaders(this.client.getUrl(), containerName, blob, snapshot, versionId, timeout, leaseId,
                 deleteSnapshots, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
-                this.client.getVersion(), requestId, blobDeleteType, accessTierIfModifiedSinceConverted,
-                accessTierIfUnmodifiedSinceConverted, accept, context)
+                this.client.getVersion(), requestId, blobDeleteType, accept, context)
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -3073,10 +3023,6 @@ public final class BlobsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param blobDeleteType Optional. Only possible value is 'permanent', which specifies to permanently delete a blob
      * if blob soft delete is enabled.
-     * @param accessTierIfModifiedSince Specify this header value to operate only on a blob if the access-tier has been
-     * modified since the specified date/time.
-     * @param accessTierIfUnmodifiedSince Specify this header value to operate only on a blob if the access-tier has not
-     * been modified since the specified date/time.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
@@ -3087,22 +3033,16 @@ public final class BlobsImpl {
     public ResponseBase<BlobsDeleteHeaders, Void> deleteWithResponse(String containerName, String blob, String snapshot,
         String versionId, Integer timeout, String leaseId, DeleteSnapshotsOptionType deleteSnapshots,
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
-        String ifTags, String requestId, BlobDeleteType blobDeleteType, OffsetDateTime accessTierIfModifiedSince,
-        OffsetDateTime accessTierIfUnmodifiedSince, Context context) {
+        String ifTags, String requestId, BlobDeleteType blobDeleteType, Context context) {
         try {
             final String accept = "application/xml";
             DateTimeRfc1123 ifModifiedSinceConverted
                 = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
             DateTimeRfc1123 ifUnmodifiedSinceConverted
                 = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-            DateTimeRfc1123 accessTierIfModifiedSinceConverted
-                = accessTierIfModifiedSince == null ? null : new DateTimeRfc1123(accessTierIfModifiedSince);
-            DateTimeRfc1123 accessTierIfUnmodifiedSinceConverted
-                = accessTierIfUnmodifiedSince == null ? null : new DateTimeRfc1123(accessTierIfUnmodifiedSince);
             return service.deleteSync(this.client.getUrl(), containerName, blob, snapshot, versionId, timeout, leaseId,
                 deleteSnapshots, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
-                this.client.getVersion(), requestId, blobDeleteType, accessTierIfModifiedSinceConverted,
-                accessTierIfUnmodifiedSinceConverted, accept, context);
+                this.client.getVersion(), requestId, blobDeleteType, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
@@ -3151,10 +3091,6 @@ public final class BlobsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param blobDeleteType Optional. Only possible value is 'permanent', which specifies to permanently delete a blob
      * if blob soft delete is enabled.
-     * @param accessTierIfModifiedSince Specify this header value to operate only on a blob if the access-tier has been
-     * modified since the specified date/time.
-     * @param accessTierIfUnmodifiedSince Specify this header value to operate only on a blob if the access-tier has not
-     * been modified since the specified date/time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3163,11 +3099,9 @@ public final class BlobsImpl {
     public void delete(String containerName, String blob, String snapshot, String versionId, Integer timeout,
         String leaseId, DeleteSnapshotsOptionType deleteSnapshots, OffsetDateTime ifModifiedSince,
         OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String ifTags, String requestId,
-        BlobDeleteType blobDeleteType, OffsetDateTime accessTierIfModifiedSince,
-        OffsetDateTime accessTierIfUnmodifiedSince) {
+        BlobDeleteType blobDeleteType) {
         deleteWithResponse(containerName, blob, snapshot, versionId, timeout, leaseId, deleteSnapshots, ifModifiedSince,
-            ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, blobDeleteType, accessTierIfModifiedSince,
-            accessTierIfUnmodifiedSince, Context.NONE);
+            ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, blobDeleteType, Context.NONE);
     }
 
     /**
@@ -3213,10 +3147,6 @@ public final class BlobsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param blobDeleteType Optional. Only possible value is 'permanent', which specifies to permanently delete a blob
      * if blob soft delete is enabled.
-     * @param accessTierIfModifiedSince Specify this header value to operate only on a blob if the access-tier has been
-     * modified since the specified date/time.
-     * @param accessTierIfUnmodifiedSince Specify this header value to operate only on a blob if the access-tier has not
-     * been modified since the specified date/time.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
@@ -3227,22 +3157,16 @@ public final class BlobsImpl {
     public Response<Void> deleteNoCustomHeadersWithResponse(String containerName, String blob, String snapshot,
         String versionId, Integer timeout, String leaseId, DeleteSnapshotsOptionType deleteSnapshots,
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
-        String ifTags, String requestId, BlobDeleteType blobDeleteType, OffsetDateTime accessTierIfModifiedSince,
-        OffsetDateTime accessTierIfUnmodifiedSince, Context context) {
+        String ifTags, String requestId, BlobDeleteType blobDeleteType, Context context) {
         try {
             final String accept = "application/xml";
             DateTimeRfc1123 ifModifiedSinceConverted
                 = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
             DateTimeRfc1123 ifUnmodifiedSinceConverted
                 = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-            DateTimeRfc1123 accessTierIfModifiedSinceConverted
-                = accessTierIfModifiedSince == null ? null : new DateTimeRfc1123(accessTierIfModifiedSince);
-            DateTimeRfc1123 accessTierIfUnmodifiedSinceConverted
-                = accessTierIfUnmodifiedSince == null ? null : new DateTimeRfc1123(accessTierIfUnmodifiedSince);
             return service.deleteNoCustomHeadersSync(this.client.getUrl(), containerName, blob, snapshot, versionId,
                 timeout, leaseId, deleteSnapshots, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch,
-                ifNoneMatch, ifTags, this.client.getVersion(), requestId, blobDeleteType,
-                accessTierIfModifiedSinceConverted, accessTierIfUnmodifiedSinceConverted, accept, context);
+                ifNoneMatch, ifTags, this.client.getVersion(), requestId, blobDeleteType, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }

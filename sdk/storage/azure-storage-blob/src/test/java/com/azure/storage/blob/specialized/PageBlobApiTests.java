@@ -16,7 +16,6 @@ import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobTestBase;
-import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.FileShareTokenIntent;
 import com.azure.storage.blob.models.BlobAudience;
 import com.azure.storage.blob.models.BlobErrorCode;
@@ -41,7 +40,6 @@ import com.azure.storage.blob.options.PageBlobCopyIncrementalOptions;
 import com.azure.storage.blob.options.PageBlobCreateOptions;
 import com.azure.storage.blob.options.PageBlobUploadPagesFromUrlOptions;
 import com.azure.storage.blob.sas.BlobContainerSasPermission;
-import com.azure.storage.blob.sas.BlobSasPermission;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
@@ -110,7 +108,7 @@ public class PageBlobApiTests extends BlobTestBase {
     @Test
     public void createSequenceNumber() {
         bc.createWithResponse(PageBlobClient.PAGE_BYTES, 2L, null, null, null, null, null);
-        assertEquals(2, bc.getProperties().getBlobSequenceNumber());
+        assertEquals(bc.getProperties().getBlobSequenceNumber(), 2);
     }
 
     @ParameterizedTest
@@ -277,7 +275,7 @@ public class PageBlobApiTests extends BlobTestBase {
         bc.createIfNotExistsWithResponse(new PageBlobCreateOptions(PageBlobClient.PAGE_BYTES).setSequenceNumber(2L),
             null, null);
 
-        assertEquals(2, bc.getProperties().getBlobSequenceNumber());
+        assertEquals(bc.getProperties().getBlobSequenceNumber(), 2);
     }
 
     @ParameterizedTest
@@ -375,7 +373,7 @@ public class PageBlobApiTests extends BlobTestBase {
         assertResponseStatusCode(response, 201);
         assertTrue(validateBasicHeaders(response.getHeaders()));
         assertNotNull(response.getHeaders().getValue(X_MS_CONTENT_CRC64));
-        assertEquals(0, response.getValue().getBlobSequenceNumber());
+        assertEquals(response.getValue().getBlobSequenceNumber(), 0);
         assertTrue(response.getValue().isServerEncrypted());
     }
 
@@ -544,7 +542,7 @@ public class PageBlobApiTests extends BlobTestBase {
         BlobStorageException e = assertThrows(BlobStorageException.class,
             () -> destBlob.uploadPagesFromUrl(pageRange, bc.getBlobUrl(), null));
 
-        assertEquals(401, e.getStatusCode());
+        assertTrue(e.getStatusCode() == 401);
         assertTrue(e.getServiceMessage().contains("NoAuthenticationInformation"));
         assertTrue(e.getServiceMessage()
             .contains(
@@ -873,12 +871,12 @@ public class PageBlobApiTests extends BlobTestBase {
         Iterator<PageRangeItem> iterable = bc.listPageRanges(new BlobRange(0, (long) 4 * Constants.KB)).iterator();
         PageRangeItem item = iterable.next();
 
-        assertEquals(new HttpRange(0, (long) Constants.KB), item.getRange());
+        assertEquals(item.getRange(), new HttpRange(0, (long) Constants.KB));
         assertFalse(item.isClear());
 
         item = iterable.next();
 
-        assertEquals(new HttpRange(2 * Constants.KB, (long) Constants.KB), item.getRange());
+        assertEquals(item.getRange(), new HttpRange(2 * Constants.KB, (long) Constants.KB));
         assertFalse(item.isClear());
 
         assertFalse(iterable.hasNext());
@@ -900,11 +898,11 @@ public class PageBlobApiTests extends BlobTestBase {
                 null, null).iterableByPage().iterator();
         PagedResponse<PageRangeItem> page = iterator.next();
 
-        assertEquals(1, page.getValue().size());
+        assertEquals(page.getValue().size(), 1);
 
         page = iterator.next();
 
-        assertEquals(1, page.getValue().size());
+        assertEquals(page.getValue().size(), 1);
         assertFalse(iterator.hasNext());
 
         // when: "max results on iterableByPage"
@@ -913,11 +911,11 @@ public class PageBlobApiTests extends BlobTestBase {
             .iterator();
         page = iterator.next();
 
-        assertEquals(1, page.getValue().size());
+        assertEquals(page.getValue().size(), 1);
 
         page = iterator.next();
 
-        assertEquals(1, page.getValue().size());
+        assertEquals(page.getValue().size(), 1);
         assertFalse(iterator.hasNext());
     }
 
@@ -941,7 +939,7 @@ public class PageBlobApiTests extends BlobTestBase {
             .iterator();
         PagedResponse<PageRangeItem> page = iterator.next();
 
-        assertEquals(1, page.getValue().size());
+        assertEquals(page.getValue().size(), 1);
         assertFalse(iterator.hasNext());
     }
 
@@ -964,7 +962,7 @@ public class PageBlobApiTests extends BlobTestBase {
             size++;
             iterator.next();
         }
-        assertEquals(1, size);
+        assertEquals(size, 1);
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-06-08")
@@ -1045,7 +1043,7 @@ public class PageBlobApiTests extends BlobTestBase {
             assertEquals(expectedRange.getEnd(), actualRange.getEnd());
         }
 
-        assertEquals(4 * Constants.MB, Integer.parseInt(response.getHeaders().getValue(X_MS_BLOB_CONTENT_LENGTH)));
+        assertEquals(Integer.parseInt(response.getHeaders().getValue(X_MS_BLOB_CONTENT_LENGTH)), 4 * Constants.MB);
     }
 
     private static Stream<Arguments> getPageRangesDiffSupplier() {
@@ -1196,22 +1194,22 @@ public class PageBlobApiTests extends BlobTestBase {
             = bc.listPageRangesDiff(new BlobRange(0, 4L * Constants.KB), snapshot).iterator();
         PageRangeItem item = iterable.next();
 
-        assertEquals(new HttpRange(0L, (long) Constants.KB), item.getRange());
+        assertEquals(item.getRange(), new HttpRange(0L, (long) Constants.KB));
         assertFalse(item.isClear());
 
         item = iterable.next();
 
-        assertEquals(new HttpRange(2 * Constants.KB, (long) Constants.KB), item.getRange());
+        assertEquals(item.getRange(), new HttpRange(2 * Constants.KB, (long) Constants.KB));
         assertFalse(item.isClear());
 
         item = iterable.next();
 
-        assertEquals(new HttpRange(Constants.KB, (long) Constants.KB), item.getRange());
+        assertEquals(item.getRange(), new HttpRange(Constants.KB, (long) Constants.KB));
         assertTrue(item.isClear());
 
         item = iterable.next();
 
-        assertEquals(new HttpRange(3 * Constants.KB, (long) Constants.KB), item.getRange());
+        assertEquals(item.getRange(), new HttpRange(3 * Constants.KB, (long) Constants.KB));
         assertTrue(item.isClear());
 
         assertFalse(iterable.hasNext());
@@ -1238,10 +1236,10 @@ public class PageBlobApiTests extends BlobTestBase {
             null).iterableByPage().iterator();
         PagedResponse<PageRangeItem> page = iterator.next();
 
-        assertEquals(2, page.getValue().size());
+        assertEquals(page.getValue().size(), 2);
         page = iterator.next();
 
-        assertEquals(2, page.getValue().size());
+        assertEquals(page.getValue().size(), 2);
         assertFalse(iterator.hasNext());
 
         // when: "max results on iterableByPage"
@@ -1249,11 +1247,11 @@ public class PageBlobApiTests extends BlobTestBase {
             null, null).iterableByPage(2).iterator();
         page = iterator.next();
 
-        assertEquals(2, page.getValue().size());
+        assertEquals(page.getValue().size(), 2);
 
         page = iterator.next();
 
-        assertEquals(2, page.getValue().size());
+        assertEquals(page.getValue().size(), 2);
         assertFalse(iterator.hasNext());
     }
 
@@ -1281,7 +1279,7 @@ public class PageBlobApiTests extends BlobTestBase {
             null, null).iterableByPage(token).iterator();
         PagedResponse<PageRangeItem> page = iterator.next();
 
-        assertEquals(2, page.getValue().size());
+        assertEquals(page.getValue().size(), 2);
         assertFalse(iterator.hasNext());
     }
 
@@ -1309,7 +1307,7 @@ public class PageBlobApiTests extends BlobTestBase {
             iterator.next();
             size++;
         }
-        assertEquals(2, size);
+        assertEquals(size, 2);
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-06-08")
@@ -1683,7 +1681,7 @@ public class PageBlobApiTests extends BlobTestBase {
 
         Response<BlobProperties> response = specialBlob.getPropertiesWithResponse(null, null, null);
 
-        assertEquals("2017-11-09", response.getHeaders().getValue(X_MS_VERSION));
+        assertEquals(response.getHeaders().getValue(X_MS_VERSION), "2017-11-09");
     }
 
     @Test
@@ -1761,70 +1759,5 @@ public class PageBlobApiTests extends BlobTestBase {
 
         //cleanup
         deleteFileShareWithoutDependency(shareName);
-    }
-
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-04-06")
-    @LiveOnly // Encryption key cannot be stored in recordings
-    @Test
-    public void uploadPagesFromUriSourceCPK() {
-        // Create source page blob
-        PageBlobClient sourceBlob = cc.getBlobClient(generateBlobName()).getPageBlobClient();
-        CustomerProvidedKey sourceCustomerProvidedKey = new CustomerProvidedKey(getRandomKey());
-        sourceBlob = sourceBlob.getCustomerProvidedKeyClient(sourceCustomerProvidedKey);
-        sourceBlob.createIfNotExists(PageBlobClient.PAGE_BYTES);
-
-        // Create destination page blob
-        PageBlobClient destBlob = cc.getBlobClient(generateBlobName()).getPageBlobClient();
-        CustomerProvidedKey destCustomerProvidedKey = new CustomerProvidedKey(getRandomKey());
-        destBlob = destBlob.getCustomerProvidedKeyClient(destCustomerProvidedKey);
-        destBlob.createIfNotExists(PageBlobClient.PAGE_BYTES);
-
-        PageRange defaultRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1);
-
-        sourceBlob.uploadPages(defaultRange, new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)));
-
-        String sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
-            new BlobSasPermission().setReadPermission(true)));
-
-        PageBlobUploadPagesFromUrlOptions options
-            = new PageBlobUploadPagesFromUrlOptions(defaultRange, sourceBlob.getBlobUrl() + "?" + sas)
-                .setSourceCustomerProvidedKey(sourceCustomerProvidedKey);
-
-        Response<PageBlobItem> response = destBlob.uploadPagesFromUrlWithResponse(options, null, null);
-        assertEquals(destCustomerProvidedKey.getKeySha256(), response.getValue().getEncryptionKeySha256());
-    }
-
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-04-06")
-    @LiveOnly // Encryption key cannot be stored in recordings
-    @Test
-    public void uploadPagesFromUriSourceCPKFail() {
-        // Create source page blob
-        PageBlobClient sourceBlob = cc.getBlobClient(generateBlobName()).getPageBlobClient();
-        CustomerProvidedKey sourceCustomerProvidedKey = new CustomerProvidedKey(getRandomKey());
-        sourceBlob = sourceBlob.getCustomerProvidedKeyClient(sourceCustomerProvidedKey);
-        sourceBlob.createIfNotExists(PageBlobClient.PAGE_BYTES);
-
-        // Create destination page blob
-        PageBlobClient destBlob = cc.getBlobClient(generateBlobName()).getPageBlobClient();
-        CustomerProvidedKey destCustomerProvidedKey = new CustomerProvidedKey(getRandomKey());
-        destBlob = destBlob.getCustomerProvidedKeyClient(destCustomerProvidedKey);
-        destBlob.createIfNotExists(PageBlobClient.PAGE_BYTES);
-
-        PageRange defaultRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1);
-
-        sourceBlob.uploadPages(defaultRange, new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)));
-
-        String sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
-            new BlobSasPermission().setReadPermission(true)));
-
-        PageBlobUploadPagesFromUrlOptions options
-            = new PageBlobUploadPagesFromUrlOptions(defaultRange, sourceBlob.getBlobUrl() + "?" + sas)
-                .setSourceCustomerProvidedKey(destCustomerProvidedKey); // wrong cpk
-
-        PageBlobClient finalDestBlob = destBlob;
-        BlobStorageException ex = assertThrows(BlobStorageException.class,
-            () -> finalDestBlob.uploadPagesFromUrlWithResponse(options, null, null));
-        assertEquals(409, ex.getStatusCode());
-        assertEquals(BlobErrorCode.CANNOT_VERIFY_COPY_SOURCE, ex.getErrorCode());
     }
 }
