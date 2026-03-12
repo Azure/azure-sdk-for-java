@@ -5,6 +5,7 @@ package com.azure.cosmos.benchmark;
 
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.models.CosmosBulkExecutionOptions;
+import com.azure.cosmos.models.CosmosBulkOperationResponse;
 import com.azure.cosmos.models.CosmosBulkOperations;
 import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -156,9 +157,17 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<PojoizedJson> {
             });
 
         CosmosBulkExecutionOptions bulkExecutionOptions = new CosmosBulkExecutionOptions();
+        List<CosmosBulkOperationResponse<Object>> failedResponses = new ArrayList<>();
         cosmosAsyncContainer
             .executeBulkOperations(bulkOperationFlux, bulkExecutionOptions)
+            .doOnNext(response -> {
+                if (response.getResponse() == null || !response.getResponse().isSuccessStatusCode()) {
+                    failedResponses.add(response);
+                }
+            })
             .blockLast(Duration.ofMinutes(10));
+
+        BenchmarkHelper.retryFailedBulkOperations(failedResponses, cosmosAsyncContainer, partitionKey);
 
         for (int i = 0; i < generatedDocs.size(); i++) {
             cache.put(i, generatedDocs.get(i));

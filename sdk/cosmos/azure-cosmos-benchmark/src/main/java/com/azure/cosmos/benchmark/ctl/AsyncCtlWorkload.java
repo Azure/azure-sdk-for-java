@@ -19,6 +19,7 @@ import com.azure.cosmos.benchmark.TenantWorkloadConfig;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.models.CosmosBulkExecutionOptions;
+import com.azure.cosmos.models.CosmosBulkOperationResponse;
 import com.azure.cosmos.models.CosmosBulkOperations;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemOperation;
@@ -262,6 +263,7 @@ public class AsyncCtlWorkload implements Benchmark {
 
             AtomicLong successCount = new AtomicLong(0);
             AtomicLong failureCount = new AtomicLong(0);
+            List<CosmosBulkOperationResponse<Object>> failedResponses = new ArrayList<>();
             CosmosBulkExecutionOptions bulkExecutionOptions = new CosmosBulkExecutionOptions();
             container.executeBulkOperations(bulkOperationFlux, bulkExecutionOptions)
                 .doOnNext(response -> {
@@ -269,11 +271,14 @@ public class AsyncCtlWorkload implements Benchmark {
                         successCount.incrementAndGet();
                     } else {
                         failureCount.incrementAndGet();
+                        failedResponses.add(response);
                         logger.error("Error during pre populating item {}",
                             response.getException() != null ? response.getException().getMessage() : "unknown error");
                     }
                 })
                 .blockLast(Duration.ofMinutes(10));
+
+            BenchmarkHelper.retryFailedBulkOperations(failedResponses, container, partitionKey);
 
             docsToRead.put(container.getId(), generatedDocs);
             logger.info("Finished pre-populating {} documents for container {}",

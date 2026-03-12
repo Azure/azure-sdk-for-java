@@ -28,6 +28,7 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.ClientEncryptionIncludedPath;
 import com.azure.cosmos.models.ClientEncryptionPolicy;
 import com.azure.cosmos.models.CosmosBulkExecutionOptions;
+import com.azure.cosmos.models.CosmosBulkOperationResponse;
 import com.azure.cosmos.models.CosmosBulkOperations;
 import com.azure.cosmos.models.CosmosClientEncryptionKeyProperties;
 import com.azure.cosmos.models.CosmosContainerProperties;
@@ -145,9 +146,17 @@ public abstract class AsyncEncryptionBenchmark<T> implements Benchmark {
                 });
 
             CosmosBulkExecutionOptions bulkExecutionOptions = new CosmosBulkExecutionOptions();
+            List<CosmosBulkOperationResponse<Object>> failedResponses = new ArrayList<>();
             cosmosEncryptionAsyncContainer
                 .executeBulkOperations(bulkOperationFlux, bulkExecutionOptions)
+                .doOnNext(response -> {
+                    if (response.getResponse() == null || !response.getResponse().isSuccessStatusCode()) {
+                        failedResponses.add(response);
+                    }
+                })
                 .blockLast(Duration.ofMinutes(10));
+
+            BenchmarkHelper.retryFailedBulkOperations(failedResponses, cosmosAsyncContainer, partitionKey);
 
             docsToRead = generatedDocs;
         } else {
