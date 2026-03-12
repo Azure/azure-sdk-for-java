@@ -1,0 +1,46 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/applink/ci.yml
+      - sdk/applink/azure-resourcemanager-applink/
+    exclude:
+      - sdk/applink/pom.xml
+      - sdk/applink/azure-resourcemanager-applink/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/applink/ci.yml
+      - sdk/applink/azure-resourcemanager-applink/
+    exclude:
+      - sdk/applink/pom.xml
+      - sdk/applink/azure-resourcemanager-applink/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagerapplink
+    displayName: azure-resourcemanager-applink
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: applink
+    Artifacts:
+      - name: azure-resourcemanager-applink
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerapplink
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerapplink }}
