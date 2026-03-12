@@ -99,7 +99,7 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
         String endpoint,
         RxDocumentServiceRequest request,
         int statusCode,
-        HttpHeaders headers,
+        Map<String, String> headers,
         ByteBuf content) {
 
         if (content == null) {
@@ -141,7 +141,7 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
                             endpoint,
                             request,
                             response.getStatus().code(),
-                            new HttpHeaders(response.getHeaders().asMap(request.getActivityId())),
+                            response.getHeaders().asMap(request.getActivityId()),
                             payloadBuf
                         );
 
