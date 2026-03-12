@@ -102,7 +102,7 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-starter-jdbc-mysql</artifactId>
-      <version>7.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-stream-binder-servicebus;current} -->
+      <version>7.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-jdbc-mysql;current} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.cloud</groupId>
