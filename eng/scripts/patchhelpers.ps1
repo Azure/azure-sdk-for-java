@@ -126,6 +126,26 @@ function CreateForwardLookingVersions($ArtifactInfos) {
         }
     }
 
+    # Seed the map with each artifact's own LatestGAOrPatchVersion so that dependents
+    # detect when an artifact in the patch list was independently released (not via this
+    # patch system) and has a newer version than what their POMs reference.
+    foreach ($arId in $ArtifactInfos.Keys) {
+        $latestVersion = $ArtifactInfos[$arId].LatestGAOrPatchVersion
+        if ($null -ne $latestVersion) {
+            $currentVersion = $allDependenciesWithVersion[$arId]
+            if ($null -eq $currentVersion) {
+                $allDependenciesWithVersion[$arId] = $latestVersion
+            }
+            else {
+                $orderedVersions = @($latestVersion, $currentVersion) | ForEach-Object { [AzureEngSemanticVersion]::ParseVersionString($_) }
+                $sortedVersions = [AzureEngSemanticVersion]::SortVersions($orderedVersions)
+                if ($null -ne $sortedVersions) {
+                    $allDependenciesWithVersion[$arId] = $sortedVersions[0].RawVersion
+                }
+            }
+        }
+    }
+
     return $allDependenciesWithVersion
 }
 
