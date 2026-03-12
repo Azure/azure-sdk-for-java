@@ -124,7 +124,8 @@ public class BatchApiTests extends BlobBatchTestBase {
         String containerName = generateContainerName();
         String blobName1 = generateBlobName();
         String blobName2 = generateBlobName();
-        BlobBatch batch = batchClient.getBlobBatch();
+        BlobBatchClient premiumBatchClient = new BlobBatchClientBuilder(premiumStorageBlobServiceClient).buildClient();
+        BlobBatch batch = premiumBatchClient.getBlobBatch();
         BlobContainerClient containerClient = premiumStorageBlobServiceClient.createBlobContainer(containerName);
         containerClient.getBlobClient(blobName1)
             .getBlockBlobClient()
@@ -135,7 +136,7 @@ public class BatchApiTests extends BlobBatchTestBase {
 
         Response<Void> response1 = batch.setBlobAccessTier(containerName, blobName1, AccessTier.SMART);
         Response<Void> response2 = batch.setBlobAccessTier(containerName, blobName2, AccessTier.SMART);
-        batchClient.submitBatch(batch);
+        premiumBatchClient.submitBatch(batch);
 
         assertEquals(200, response1.getStatusCode());
         assertEquals(200, response2.getStatusCode());
