@@ -66,7 +66,7 @@ public class HttpHeaders implements Iterable<HttpHeader>, JsonSerializable {
      * @return this HttpHeaders
      */
     public HttpHeaders set(String name, String value) {
-        final String headerKey = toLowerCaseIfNeeded(name);
+        final String headerKey = name.toLowerCase(Locale.ROOT);
         if (value == null) {
             headers.remove(headerKey);
         } else {
@@ -100,22 +100,8 @@ public class HttpHeaders implements Iterable<HttpHeader>, JsonSerializable {
     }
 
     private HttpHeader getHeader(String headerName) {
-        final String headerKey = toLowerCaseIfNeeded(headerName);
+        final String headerKey = headerName.toLowerCase(Locale.ROOT);
         return headers.get(headerKey);
-    }
-
-    private static String toLowerCaseIfNeeded(String name) {
-        // Fast-path: skip toLowerCase allocation if the string is already all-lowercase.
-        // This avoids creating a new String object on every header set/get call
-        // for the common case of lowercase header names (e.g., "authorization", "etag",
-        // "x-ms-*" headers).
-        for (int i = 0; i < name.length(); i++) {
-            char c = name.charAt(i);
-            if (c >= 'A' && c <= 'Z') {
-                return name.toLowerCase(Locale.ROOT);
-            }
-        }
-        return name;
     }
 
     /**
