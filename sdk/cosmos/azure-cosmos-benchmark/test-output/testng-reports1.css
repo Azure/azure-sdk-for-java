@@ -1,0 +1,344 @@
+body {
+    background-color: whitesmoke;
+    margin: 0 0 5px 5px;
+}
+ul {
+     margin-top: 10px;
+     margin-left:-10px;
+}
+ li {
+     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+     padding:5px 5px;
+ }
+ a {
+     text-decoration: none;
+     color: black;
+     font-size: 14px;
+ }
+
+ a:hover {
+    color:black ;
+    text-decoration: underline;
+ }
+
+ .navigator-selected {
+     /* #ffa500; Mouse hover color after click Orange.*/
+     background:#027368
+ }
+
+ .wrapper {
+     position: absolute;
+     top: 60px;
+     bottom: 0;
+     left: 400px;
+     right: 0;
+     margin-right:9px;
+     overflow: auto;/*imortant*/
+ }
+
+ .navigator-root {
+     position: absolute;
+     top: 60px;
+     bottom: 0;
+     left: 0;
+     width: 400px;
+     overflow-y: auto;/*important*/
+ }
+
+ .suite {
+     margin: -5px 10px 10px 5px;
+     background-color: whitesmoke ;/*Colour of the left bside box*/
+ }
+
+ .suite-name {
+     font-size: 24px;
+     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;/*All TEST SUITE*/
+     color: white;
+ }
+
+ .main-panel-header {
+     padding: 5px;
+     background-color: #027368; /*afeeee*/;
+     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+     color:white;
+     font-size: 18px;
+ }
+
+ .main-panel-content {
+     padding: 5px;
+     margin-bottom: 10px;
+     background-color: #CCD0D1; /*d0ffff*/; /*Belongs to backGround of rightSide boxes*/
+ }
+
+ .rounded-window {
+     border-style: dotted;
+     border-width: 1px;/*Border of left Side box*/
+     background-color: whitesmoke;
+     border-radius: 10px;
+ }
+
+ .rounded-window-top {
+     border-top-right-radius: 10px 10px;
+     border-top-left-radius: 10px 10px;
+     border-style: solid;
+     border-width: 1px;
+     overflow: auto;/*Top of RightSide box*/
+ }
+
+ .light-rounded-window-top {
+     background-color: #027368;
+     padding-left:120px;
+     border-radius: 10px;
+
+ }
+
+ .rounded-window-bottom {
+     border-bottom-right-radius: 10px 10px;
+     border-bottom-left-radius: 10px 10px;
+     overflow: auto;/*Bottom of rightSide box*/
+ }
+
+ .method-name {
+     font-size: 14px;
+     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+     font-weight: bold;
+ }
+
+ .method-content {
+     border-style: solid;
+     border-width: 0 0 1px 0;
+     margin-bottom: 10px;
+     padding-bottom: 5px;
+     width: 100%;
+ }
+
+ .parameters {
+     font-size: 14px;
+     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+ }
+
+ .stack-trace {
+     white-space: pre;
+     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+     font-size: 12px;
+     font-weight: bold;
+     margin-top: 0;
+     margin-left: 20px; /*Error Stack Trace Message*/
+ }
+
+ .testng-xml {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+ }
+
+ .method-list-content {
+     margin-left: 10px;
+ }
+
+ .navigator-suite-content {
+     margin-left: 10px;
+     font: 12px 'Lucida Grande';
+ }
+
+ .suite-section-title {
+     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+     font-size: 14px;
+     font-weight:bold;
+     background-color: #8C8887;
+     margin-left: -10px;
+     margin-top:10px;
+     padding:6px;
+ }
+
+ .suite-section-content {
+     list-style-image: url(bullet_point.png);
+     background-color: whitesmoke;
+     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+     overflow: hidden;
+ }
+
+ .top-banner-root {
+     position: absolute;
+     top: 0;
+     height: 45px;
+     left: 0;
+     right: 0;
+     padding: 5px;
+     margin: 0 0 5px 0;
+     background-color: #027368;
+     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+     font-size: 18px;
+     color: #fff;
+     text-align: center;/*Belongs to the Top of Report*//*Status: - Completed*/
+ }
+
+ .top-banner-title-font {
+     font-size: 25px;
+     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+     padding: 3px;
+     float: right;
+ }
+
+ .test-name {
+     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+     font-size: 16px;
+ }
+
+ .suite-icon {
+     padding: 5px;
+     float: right;
+     height: 20px;
+ }
+
+ .test-group {
+     font: 20px 'Lucida Grande';
+     margin: 5px 5px 10px 5px;
+     border-width: 0 0 1px 0;
+     border-style: solid;
+     padding: 5px;
+ }
+
+ .test-group-name {
+     font-weight: bold;
+ }
+
+ .method-in-group {
+     font-size: 16px;
+     margin-left: 80px;
+ }
+
+ table.google-visualization-table-table {
+     width: 100%;
+ }
+
+ .reporter-method-name {
+     font-size: 14px;
+     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+ }
+
+ .reporter-method-output-div {
+     padding: 5px;
+     margin: 0 0 5px 20px;
+     font-size: 12px;
+     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+     border-width: 0 0 0 1px;
+     border-style: solid;
+ }
+
+ .ignored-class-div {
+     font-size: 14px;
+     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+ }
+
+ .ignored-methods-div {
+     padding: 5px;
+     margin: 0 0 5px 20px;
+     font-size: 12px;
+     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+     border-width: 0 0 0 1px;
+     border-style: solid;
+ }
+
+ .border-failed {
+    border-radius:2px;
+     border-style: solid;
+     border-width: 0 0 0 10px;
+     border-color: #F20505;
+ }
+
+ .border-skipped {
+     border-radius:2px;
+     border-style: solid;
+     border-width: 0 0 0 10px;
+     border-color: #F2BE22;
+ }
+
+ .border-passed {
+     border-radius:2px;
+     border-style: solid;
+     border-width: 0 0 0 10px;
+     border-color: #038C73;
+ }
+
+ .times-div {
+     text-align: center;
+     padding: 5px;
+ }
+
+ .suite-total-time {
+     font: 16px 'Lucida Grande';
+ }
+
+ .configuration-suite {
+     margin-left: 20px;
+ }
+
+ .configuration-test {
+     margin-left: 40px;
+ }
+
+ .configuration-class {
+     margin-left: 60px;
+ }
+
+ .configuration-method {
+     margin-left: 80px;
+ }
+
+ .test-method {
+     margin-left: 100px;
+ }
+
+ .chronological-class {
+     background-color: #CCD0D1;
+     border-width: 0 0 1px 1px;/*Chronological*/
+ }
+
+ .method-start {
+     float: right;
+ }
+
+ .chronological-class-name {
+     padding: 0 0 0 5px;
+     margin-top:5px;
+     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+     color: #008;
+ }
+
+ .after, .before, .test-method {
+     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+     font-size: 14px;
+     margin-top:5px;
+ }
+
+ .navigator-suite-header {
+     font-size: 18px;
+     margin: 0px 10px 10px 5px;
+     padding: 5px;
+     border-radius: 10px;
+     background-color: #027368;
+     color: white;
+     font-weight:bold;
+     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+     text-align: center; /*All Suites on top of left box*//*Status: -Completed*/
+ }
+
+ .collapse-all-icon {
+     padding: 3px;
+     float: right;
+ }
+ .button{
+    position: absolute;
+    margin-left:500px;
+    margin-top:8px;
+    background-color: white;
+    color:#027368;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight:bold;
+    border-color:#027368;
+    border-radius:25px;
+    cursor: pointer;
+    height:30px;
+    width:150px;
+    outline: none;
+}
+/*Author: - Akhil Gullapalli*/

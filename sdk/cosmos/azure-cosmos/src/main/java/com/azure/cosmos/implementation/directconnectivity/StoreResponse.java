@@ -30,8 +30,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 public class StoreResponse {
     private static final Logger logger = LoggerFactory.getLogger(StoreResponse.class.getSimpleName());
     final private int status;
-    final private String[] responseHeaderNames;
-    final private String[] responseHeaderValues;
+    final private Map<String, String> responseHeaders;
     private int requestPayloadLength;
     private RequestTimeline requestTimeline;
     private RntbdChannelAcquisitionTimeline channelAcquisitionTimeline;
@@ -56,16 +55,8 @@ public class StoreResponse {
         checkArgument((contentStream == null) == (responsePayloadLength == 0),
             "Parameter 'contentStream' must be consistent with 'responsePayloadLength'.");
         requestTimeline = RequestTimeline.empty();
-        responseHeaderNames = new String[headerMap.size()];
-        responseHeaderValues = new String[headerMap.size()];
+        this.responseHeaders = headerMap;
         this.endpoint = endpoint != null ? endpoint : "";
-
-        int i = 0;
-        for (Map.Entry<String, String> headerEntry : headerMap.entrySet()) {
-            responseHeaderNames[i] = headerEntry.getKey();
-            responseHeaderValues[i] = headerEntry.getValue();
-            i++;
-        }
 
         this.status = status;
         replicaStatusList = new HashMap<>();
@@ -96,16 +87,8 @@ public class StoreResponse {
         checkNotNull(endpoint, "Parameter 'endpoint' must not be null.");
 
         requestTimeline = RequestTimeline.empty();
-        responseHeaderNames = new String[headerMap.size()];
-        responseHeaderValues = new String[headerMap.size()];
+        this.responseHeaders = headerMap;
         this.endpoint = endpoint;
-
-        int i = 0;
-        for (Map.Entry<String, String> headerEntry : headerMap.entrySet()) {
-            responseHeaderNames[i] = headerEntry.getKey();
-            responseHeaderValues[i] = headerEntry.getValue();
-            i++;
-        }
 
         this.status = status;
         replicaStatusList = new HashMap<>();
@@ -116,12 +99,16 @@ public class StoreResponse {
         return status;
     }
 
+    public Map<String, String> getResponseHeaders() {
+        return responseHeaders;
+    }
+
     public String[] getResponseHeaderNames() {
-        return responseHeaderNames;
+        return responseHeaders.keySet().toArray(new String[0]);
     }
 
     public String[] getResponseHeaderValues() {
-        return responseHeaderValues;
+        return responseHeaders.values().toArray(new String[0]);
     }
 
     public void setRntbdRequestLength(int rntbdRequestLength) {
@@ -191,29 +178,39 @@ public class StoreResponse {
     }
 
     public String getHeaderValue(String attribute) {
-        if (this.responseHeaderValues == null || this.responseHeaderNames.length != this.responseHeaderValues.length) {
+        if (this.responseHeaders == null) {
             return null;
         }
 
-        for (int i = 0; i < responseHeaderNames.length; i++) {
-            if (responseHeaderNames[i].equalsIgnoreCase(attribute)) {
-                return responseHeaderValues[i];
+        // Headers are stored with lowercase keys
+        String value = responseHeaders.get(attribute);
+        if (value != null) {
+            return value;
+        }
+        // Fallback to case-insensitive scan for backward compatibility
+        for (Map.Entry<String, String> entry : responseHeaders.entrySet()) {
+            if (entry.getKey().equalsIgnoreCase(attribute)) {
+                return entry.getValue();
             }
         }
-
         return null;
     }
 
-    //NOTE: only used for testing purpose to change the response header value
     void setHeaderValue(String headerName, String value) {
-        if (this.responseHeaderValues == null || this.responseHeaderNames.length != this.responseHeaderValues.length) {
+        if (this.responseHeaders == null) {
             return;
         }
 
-        for (int i = 0; i < responseHeaderNames.length; i++) {
-            if (responseHeaderNames[i].equalsIgnoreCase(headerName)) {
-                responseHeaderValues[i] = value;
-                break;
+        // Try exact match first (lowercase keys)
+        if (responseHeaders.containsKey(headerName)) {
+            responseHeaders.put(headerName, value);
+            return;
+        }
+        // Fallback to case-insensitive scan
+        for (String key : responseHeaders.keySet()) {
+            if (key.equalsIgnoreCase(headerName)) {
+                responseHeaders.put(key, value);
+                return;
             }
         }
     }
@@ -310,15 +307,14 @@ public class StoreResponse {
 
     public StoreResponse withRemappedStatusCode(int newStatusCode, double additionalRequestCharge) {
 
-        Map<String, String> headers = new HashMap<>();
-        for (int i = 0; i < this.responseHeaderNames.length; i++) {
-            String headerName = this.responseHeaderNames[i];
-            if (headerName.equalsIgnoreCase(HttpConstants.HttpHeaders.REQUEST_CHARGE)) {
+        Map<String, String> headers = new HashMap<>(this.responseHeaders);
+        // Update request charge
+        for (String key : headers.keySet()) {
+            if (key.equalsIgnoreCase(HttpConstants.HttpHeaders.REQUEST_CHARGE)) {
                 double currentRequestCharge = this.getRequestCharge();
                 double newRequestCharge = currentRequestCharge + additionalRequestCharge;
-                headers.put(headerName, String.valueOf(newRequestCharge));
-            } else {
-                headers.put(headerName, this.responseHeaderValues[i]);
+                headers.put(key, String.valueOf(newRequestCharge));
+                break;
             }
         }
 
