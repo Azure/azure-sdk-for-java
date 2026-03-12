@@ -72,7 +72,7 @@ foreach ($ymlFile in $ymlFiles) {
     }
 }
 
-# Use OrderedDictionary here for later "FindAllArtifactsThatNeedPatching"
+# Use OrderedDictionary here for later "FindArtifactsThatNeedPatching"
 $ArtifactInfos = New-Object System.Collections.Specialized.OrderedDictionary
 
 Write-Host "Loading libraries from text file."
@@ -87,9 +87,7 @@ foreach ($line in Get-Content "${PSScriptRoot}/../pipelines/patch_release_client
 
 UpdateDependencies -ArtifactInfos $ArtifactInfos
 
-$AllDependenciesWithVersion = CreateForwardLookingVersions -ArtifactInfos $ArtifactInfos
-
-FindAllArtifactsThatNeedPatching -ArtifactInfos $ArtifactInfos -AllDependenciesWithVersion $AllDependenciesWithVersion
+FindArtifactsThatNeedPatching -ArtifactInfos $ArtifactInfos
 
 $ArtifactsToPatch = $ArtifactInfos.Keys | Where-Object { $null -ne $ArtifactInfos[$_].FutureReleasePatchVersion } | ForEach-Object { $ArtifactInfos[$_].ArtifactId }
 

@@ -57,8 +57,7 @@ UpdateDependencies -ArtifactInfos $ArtifactInfos
 # $AzCoreNettyArtifactId = "azure-core-http-netty"
 # $ArtifactInfos[$AzCoreNettyArtifactId].Dependencies[$AzCoreArtifactId] = $AzCoreVersion
 
-$AllDependenciesWithVersion = CreateForwardLookingVersions -ArtifactInfos $ArtifactInfos
-FindAllArtifactsThatNeedPatching -ArtifactInfos $ArtifactInfos -AllDependenciesWithVersion $AllDependenciesWithVersion
+FindArtifactsThatNeedPatching -ArtifactInfos $ArtifactInfos
 $ArtifactsToPatch =  $ArtifactInfos.Keys | Where-Object { $null -ne $ArtifactInfos[$_].FutureReleasePatchVersion } | ForEach-Object {$ArtifactInfos[$_].ArtifactId}
 
 $RemoteName = GetRemoteName
