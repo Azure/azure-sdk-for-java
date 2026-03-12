@@ -1113,6 +1113,30 @@
           "code": ".*",
           "old": ".*com\\.azure\\.resourcemanager\\.search\\.models\\.(IdentityType|PublicNetworkAccess|SharedPrivateLinkResourceProvisioningState|SharedPrivateLinkResourceStatus|SkuName).*",
           "justification": "Enum changed from sealed to expandable (ExpandableStringEnum) during TypeSpec migration."
+        },
+        {
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method void com\\.azure\\.resourcemanager\\.trafficmanager\\.models\\..*\\:\\:\\<init\\>\\(\\)"
+          },
+          "justification": "Output-only immutable models' constructors are now private."
+        },
+        {
+          "code": "java.method.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.trafficmanager\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are removed if no explicit usage."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.trafficmanager\\.models\\..*ListResult"
+          },
+          "justification": "Pageable models moved to implementation package. Unlikely used by user."
         }
       ]
     }
