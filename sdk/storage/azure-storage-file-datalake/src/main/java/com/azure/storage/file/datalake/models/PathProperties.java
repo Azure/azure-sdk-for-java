@@ -405,8 +405,6 @@ public class PathProperties {
         return accessTierInferred;
     }
 
-
-
     /**
      * Gets the archive status of the path.
      *
