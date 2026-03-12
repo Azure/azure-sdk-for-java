@@ -103,10 +103,18 @@ public class StoreResponse {
         return responseHeaders;
     }
 
+    /**
+     * @deprecated Use {@link #getResponseHeaders()} instead. This method creates a new array on every call.
+     */
+    @Deprecated
     public String[] getResponseHeaderNames() {
         return responseHeaders.keySet().toArray(new String[0]);
     }
 
+    /**
+     * @deprecated Use {@link #getResponseHeaders()} instead. This method creates a new array on every call.
+     */
+    @Deprecated
     public String[] getResponseHeaderValues() {
         return responseHeaders.values().toArray(new String[0]);
     }
