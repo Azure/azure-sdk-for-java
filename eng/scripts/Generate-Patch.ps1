@@ -29,7 +29,9 @@ param(
   [Parameter(Mandatory=$false)][string]$PatchVersion,
   [Parameter(Mandatory=$false)][string]$BranchName,
   [Parameter(Mandatory=$false)][boolean]$PushToRemote,
-  [Parameter(Mandatory=$false)][boolean]$CreateNewBranch = $true
+  [Parameter(Mandatory=$false)][boolean]$CreateNewBranch = $true,
+  # When set, creates patch branches from the current branch instead of remote main.
+  [Parameter(Mandatory=$false)][switch]$UseCurrentBranch
 )
 
 function TestPathThrow($Path, $PathName) {
@@ -268,7 +270,8 @@ if(!$BranchName) {
 try {
   ## Creating a new branch
   if($CreateNewBranch) {
-    $cmdOutput = git checkout -b $BranchName $RemoteName/main
+    $base = if ($UseCurrentBranch) { "HEAD" } else { "$RemoteName/main" }
+    $cmdOutput = git checkout -b $BranchName $base
   }
   else {
     $cmdOutput = git checkout $BranchName

@@ -5,7 +5,9 @@ param(
     # $(Build.SourcesDirectory) - root of the repository
     [Parameter(Mandatory = $true)][string]$SourcesDirectory,
     # The yml file whose artifacts and additionalModules lists will be updated
-    [Parameter(Mandatory = $true)][string]$PackagesYmlPath
+    [Parameter(Mandatory = $true)][string]$PackagesYmlPath,
+    # When set, creates patch branches from the current branch instead of remote main.
+    [switch]$UseCurrentBranch
 )
 
 $StartTime = $( get-date )
@@ -26,10 +28,11 @@ try {
     Write-Host "git fetch --all --prune"
     git fetch --all --prune
 
-    # Checkout a branch to work on based off of main in upstream.
+    # Checkout a branch to work on based off of main (or current branch if -UseCurrentBranch).
     if ($currentBranchName -ne $branchName) {
-        Write-Host "git checkout -b $branchName $remoteName/main"
-        git checkout -b $branchName $remoteName/main
+        $base = if ($UseCurrentBranch) { "HEAD" } else { "$remoteName/main" }
+        Write-Host "git checkout -b $branchName $base"
+        git checkout -b $branchName $base
 
         if ($LASTEXITCODE -ne 0) {
             LogError "Could not checkout branch $branchName, please check if it already exists and delete as necessary. Exiting..."
@@ -54,7 +57,7 @@ try {
 
     # Reset each package to the latest stable release and update CHANGELOG, POM and README for patch release.
     foreach ($packageData in $packagesData) {
-        . "${PSScriptRoot}/generatepatch.ps1" -ArtifactIds $packageData["name"] -ServiceDirectoryName $packageData["ServiceDirectory"] -BranchName $branchName -GroupId $packageData["groupId"]
+        . "${PSScriptRoot}/generatepatch.ps1" -ArtifactIds $packageData["name"] -ServiceDirectoryName $packageData["ServiceDirectory"] -BranchName $branchName -GroupId $packageData["groupId"] -UseCurrentBranch:$UseCurrentBranch
         $libraryList += $packageData["groupId"] + ":" + $packageData["name"] + ","
     }
 

@@ -233,7 +233,7 @@ function CreateDependencyXmlElement($Artifact, [xml]$Doc) {
 }
 
 # Generate BOM file for the given artifacts.
-function GenerateBOMFile($ArtifactInfos, $BomFileBranchName) {
+function GenerateBOMFile($ArtifactInfos, $BomFileBranchName, [bool]$UseCurrentBranch = $false) {
     $gaArtifacts = @()
 
     foreach ($artifact in $ArtifactInfos.Values) {
@@ -270,8 +270,9 @@ function GenerateBOMFile($ArtifactInfos, $BomFileBranchName) {
         $releaseVersion = $bomFileContent.project.version
         $patchVersion = GetPatchVersion -ReleaseVersion $releaseVersion
         $remoteName = GetRemoteName
-        Write-Host "git checkout -b $BomFileBranchName $remoteName/main"
-        $cmdOutput = git checkout -b $BomFileBranchName $remoteName/main
+        $base = if ($UseCurrentBranch) { "HEAD" } else { "$remoteName/main" }
+        Write-Host "git checkout -b $BomFileBranchName $base"
+        $cmdOutput = git checkout -b $BomFileBranchName $base
         $bomFileContent.Save($BomFilePath)
         Write-Host "git add $BomFilePath"
         git add $BomFilePath

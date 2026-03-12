@@ -44,7 +44,9 @@ param(
   [string[]]$ArtifactIds,
   [string]$ServiceDirectoryName,
   [string]$BranchName,
-  [string]$GroupId = 'com.azure'
+  [string]$GroupId = 'com.azure',
+  # When set, creates patch branches from the current branch instead of remote main.
+  [switch]$UseCurrentBranch
 )
 
 $RepoRoot = Resolve-Path "${PSScriptRoot}..\..\.."
@@ -87,7 +89,7 @@ foreach ($artifactId in $ArtifactIds) {
     $patchInfo = [ArtifactPatchInfo]::new()
     $patchInfo.ArtifactId = $artifactId
     $patchInfo.ServiceDirectoryName = $ServiceDirectoryName
-    GeneratePatch -PatchInfo $patchInfo -BranchName $BranchName -RemoteName $RemoteName -GroupId $GroupId
+    GeneratePatch -PatchInfo $patchInfo -BranchName $BranchName -RemoteName $RemoteName -GroupId $GroupId -UseCurrentBranch $UseCurrentBranch
     #TriggerPipeline -PatchInfos $patchInfo -BranchName $BranchName
 }
 

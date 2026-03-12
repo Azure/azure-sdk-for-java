@@ -9,7 +9,9 @@
     4. Generate the forward looking BOM file and create a branch for the BOM release.
 #>
 param(
-    [string]$GroupId = "com.azure"
+    [string]$GroupId = "com.azure",
+    # When set, creates patch branches from the current branch instead of remote main.
+    [switch]$UseCurrentBranch
 )
 
 Write-Information "PS Script Root is: $PSScriptRoot"
@@ -74,8 +76,9 @@ $ArtifactPatchInfos = @()
 Write-Output "Preparing patch releases for BOM updates."
 try {
     $patchBranchName = "PatchSet_$bomPatchVersion"
-    Write-Host "git checkout -b $patchBranchName $RemoteName/main"
-    git checkout -b $patchBranchName $RemoteName/main
+    $base = if ($UseCurrentBranch) { "HEAD" } else { "$RemoteName/main" }
+    Write-Host "git checkout -b $patchBranchName $base"
+    git checkout -b $patchBranchName $base
     UpdateDependenciesInVersionClient -ArtifactInfos $ArtifactInfos
 
     foreach ($artifactId in $ArtifactsToPatch) {
@@ -83,7 +86,7 @@ try {
         $patchInfo = [ArtifactPatchInfo]::new()
         $patchInfo = ConvertToPatchInfo -ArInfo $arInfo
         $ArtifactPatchInfos += $patchInfo
-        GeneratePatches -ArtifactPatchInfos $patchInfo -BranchName $patchBranchName -RemoteName $RemoteName -GroupId $GroupId
+        GeneratePatches -ArtifactPatchInfos $patchInfo -BranchName $patchBranchName -RemoteName $RemoteName -GroupId $GroupId -UseCurrentBranch $UseCurrentBranch
     }
 
     Write-Host "git -c user.name=`"azure-sdk`" -c user.email=`"azuresdk@microsoft.com`" push $RemoteName $patchBranchName"
@@ -99,7 +102,7 @@ finally {
     $cmdOutput = git checkout $CurrentBranchName
 }
 
-GenerateBOMFile -ArtifactInfos $ArtifactInfos -BomFileBranchName $bomBranchName
+GenerateBOMFile -ArtifactInfos $ArtifactInfos -BomFileBranchName $bomBranchName -UseCurrentBranch $UseCurrentBranch
 GenerateJsonReport -ArtifactPatchInfos $ArtifactPatchInfos -PatchBranchName $patchBranchName -BomFileBranchName $bomBranchName
 #$orderedArtifacts = GetTopologicalSort -ArtifactIds $ArtifactsToPatch.Keys -ArtifactInfos $ArtifactInfos
 #GenerateHtmlReport -Artifacts $orderedArtifacts -PatchBranchName $patchBranchName -BomFileBranchName $bomBranchName

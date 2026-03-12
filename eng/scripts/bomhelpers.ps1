@@ -231,9 +231,9 @@ function GitCommit($Message) {
 }
 
 # Generate patches for given artifact patch infos.
-function GeneratePatches($ArtifactPatchInfos, [string]$BranchName, [string]$RemoteName, [string]$GroupId = "com.azure") {
+function GeneratePatches($ArtifactPatchInfos, [string]$BranchName, [string]$RemoteName, [string]$GroupId = "com.azure", [bool]$UseCurrentBranch = $false) {
   foreach ($patchInfo in $ArtifactPatchInfos) {
-    GeneratePatch -PatchInfo $patchInfo -BranchName $BranchName -RemoteName $RemoteName -GroupId $GroupId
+    GeneratePatch -PatchInfo $patchInfo -BranchName $BranchName -RemoteName $RemoteName -GroupId $GroupId -UseCurrentBranch $UseCurrentBranch
   }
 
   #TriggerPipeline  -PatchInfos $ArtifactPatchInfos -BranchName $BranchName
@@ -251,7 +251,7 @@ function GetCurrentBranchName() {
    3. Updating the changelog and readme's to update the dependency information.
    4. Committing these changes.
 #>
-function GeneratePatch($PatchInfo, [string]$BranchName, [string]$RemoteName, [string]$GroupId = "com.azure") {
+function GeneratePatch($PatchInfo, [string]$BranchName, [string]$RemoteName, [string]$GroupId = "com.azure", [bool]$UseCurrentBranch = $false) {
   $artifactId = $PatchInfo.ArtifactId
   $releaseVersion = $PatchInfo.LatestGAOrPatchVersion
   $serviceDirectoryName = $PatchInfo.ServiceDirectoryName
@@ -278,8 +278,9 @@ function GeneratePatch($PatchInfo, [string]$BranchName, [string]$RemoteName, [st
   $currentBranchName = GetCurrentBranchName
 
   if ($currentBranchName -ne $BranchName) {
-    Write-Host "git checkout -b $BranchName $RemoteName/main"
-    $cmdOutput = git checkout -b $BranchName $RemoteName/main
+    $base = if ($UseCurrentBranch) { "HEAD" } else { "$RemoteName/main" }
+    Write-Host "git checkout -b $BranchName $base"
+    $cmdOutput = git checkout -b $BranchName $base
     if ($LASTEXITCODE -ne 0) {
       LogError "Could not checkout branch $BranchName, please check if it already exists and delete as necessary. Exiting..."
       exit $LASTEXITCODE
