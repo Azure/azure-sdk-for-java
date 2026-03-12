@@ -2,13 +2,9 @@
 
 ## 2.55.0-beta.1 (Unreleased)
 
-### Features Added
-
 ### Breaking Changes
 
-### Bugs Fixed
-
-### Other Changes
+- Changed `IdentityType`, `PublicNetworkAccess`, `SharedPrivateLinkResourceProvisioningState`, `SharedPrivateLinkResourceStatus`, `SkuName` from sealed `enum` to `ExpandableStringEnum`.
 
 ## 2.54.5 (2026-01-29)
 
