@@ -1,5 +1,15 @@
 # Release History
 
+## 12.33.3 (2026-03-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-common` from `12.32.2` to version `12.33.0-beta.2`.
+- Upgraded `azure-storage-internal-avro` from `12.18.1` to version `12.19.0-beta.2`.
+
+
 ## 12.33.2 (2026-02-05)
 
 ### Bugs Fixed
