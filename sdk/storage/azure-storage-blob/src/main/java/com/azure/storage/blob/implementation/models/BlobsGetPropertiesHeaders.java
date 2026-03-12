@@ -195,6 +195,12 @@ public final class BlobsGetPropertiesHeaders {
     private String xMsEncryptionScope;
 
     /*
+     * The x-ms-smart-access-tier property.
+     */
+    @Generated
+    private String xMsSmartAccessTier;
+
+    /*
      * The x-ms-tag-count property.
      */
     @Generated
@@ -366,6 +372,8 @@ public final class BlobsGetPropertiesHeaders {
 
     private static final HttpHeaderName X_MS_ENCRYPTION_SCOPE = HttpHeaderName.fromString("x-ms-encryption-scope");
 
+    private static final HttpHeaderName X_MS_SMART_ACCESS_TIER = HttpHeaderName.fromString("x-ms-smart-access-tier");
+
     private static final HttpHeaderName X_MS_TAG_COUNT = HttpHeaderName.fromString("x-ms-tag-count");
 
     private static final HttpHeaderName X_MS_ACCESS_TIER_INFERRED
@@ -502,6 +510,7 @@ public final class BlobsGetPropertiesHeaders {
         this.contentLanguage = rawHeaders.getValue(HttpHeaderName.CONTENT_LANGUAGE);
         this.xMsClientRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
         this.xMsEncryptionScope = rawHeaders.getValue(X_MS_ENCRYPTION_SCOPE);
+        this.xMsSmartAccessTier = rawHeaders.getValue(X_MS_SMART_ACCESS_TIER);
         String xMsTagCount = rawHeaders.getValue(X_MS_TAG_COUNT);
         if (xMsTagCount != null) {
             this.xMsTagCount = Long.parseLong(xMsTagCount);
@@ -1228,6 +1237,28 @@ public final class BlobsGetPropertiesHeaders {
     @Generated
     public BlobsGetPropertiesHeaders setXMsEncryptionScope(String xMsEncryptionScope) {
         this.xMsEncryptionScope = xMsEncryptionScope;
+        return this;
+    }
+
+    /**
+     * Get the xMsSmartAccessTier property: The x-ms-smart-access-tier property.
+     * 
+     * @return the xMsSmartAccessTier value.
+     */
+    @Generated
+    public String getXMsSmartAccessTier() {
+        return this.xMsSmartAccessTier;
+    }
+
+    /**
+     * Set the xMsSmartAccessTier property: The x-ms-smart-access-tier property.
+     * 
+     * @param xMsSmartAccessTier the xMsSmartAccessTier value to set.
+     * @return the BlobsGetPropertiesHeaders object itself.
+     */
+    @Generated
+    public BlobsGetPropertiesHeaders setXMsSmartAccessTier(String xMsSmartAccessTier) {
+        this.xMsSmartAccessTier = xMsSmartAccessTier;
         return this;
     }
 
