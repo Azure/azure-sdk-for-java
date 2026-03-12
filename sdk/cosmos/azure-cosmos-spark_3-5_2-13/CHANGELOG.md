@@ -3,6 +3,7 @@
 ### 4.45.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added `vectorEmbeddingPolicy` support in Spark catalog `TBLPROPERTIES` for creating vector-search-enabled containers. - See [PR 48349](https://github.com/Azure/azure-sdk-for-java/pull/48349)
 
 #### Breaking Changes
 
