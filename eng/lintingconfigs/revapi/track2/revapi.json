@@ -1077,7 +1077,7 @@
           "code": "java.class.removed",
           "old" : {
             "matcher": "regex",
-            "match": "class com\\.azure\\.resourcemanager\\.search\\.models\\..*Result"
+            "match": "class com\\.azure\\.resourcemanager\\.search\\.models\\..*Result$"
           },
           "justification": "Pageable models moved to implementation package. Unlikely used by user."
         },
