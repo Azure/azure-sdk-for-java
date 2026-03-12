@@ -14,27 +14,20 @@ import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.benchmark.Benchmark;
 import com.azure.cosmos.benchmark.BenchmarkHelper;
-import com.azure.cosmos.benchmark.BenchmarkRequestSubscriber;
 import com.azure.cosmos.benchmark.PojoizedJson;
 import com.azure.cosmos.benchmark.TenantWorkloadConfig;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.OperationType;
-import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.ThroughputProperties;
-import com.codahale.metrics.Meter;
-import com.codahale.metrics.MetricRegistry;
-import com.codahale.metrics.Timer;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.mpierce.metrics.reservoir.hdrhistogram.HdrHistogramResetOnSnapshotReservoir;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
+import reactor.core.scheduler.Scheduler;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,37 +35,26 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
-import java.util.concurrent.Semaphore;
+import java.time.Duration;
 import java.util.concurrent.atomic.AtomicLong;
 
 
 public class AsyncCtlWorkload implements Benchmark {
+
+    // Dedicated scheduler for CTL benchmark workload dispatch.
+    // Owned and disposed by the orchestrator (or test harness) that creates the benchmark.
+    private final Scheduler benchmarkScheduler;
+
     private final String PERCENT_PARSING_ERROR = "Unable to parse user provided readWriteQueryReadManyPct ";
     private final String prefixUuidForCreate;
     private final String dataFieldValue;
     private final String partitionKey;
-    private final MetricRegistry metricsRegistry;
     private final Logger logger;
     private final CosmosAsyncClient cosmosClient;
     private final TenantWorkloadConfig workloadConfig;
     private final Map<String, List<PojoizedJson>> docsToRead = new HashMap<>();
     private final Map<String, List<CosmosItemIdentity>> itemIdentityMap = new HashMap<>();
-    private final Semaphore concurrencyControlSemaphore;
     private final Random random;
-
-    private Timer readLatency;
-    private Timer writeLatency;
-    private Timer queryLatency;
-    private Timer readManyLatency;
-
-    private Meter readSuccessMeter;
-    private Meter readFailureMeter;
-    private Meter writeSuccessMeter;
-    private Meter writeFailureMeter;
-    private Meter querySuccessMeter;
-    private Meter queryFailureMeter;
-    private Meter readManySuccessMeter;
-    private Meter readManyFailureMeter;
 
     private CosmosAsyncDatabase cosmosAsyncDatabase;
     private List<CosmosAsyncContainer> containers = new ArrayList<>();
@@ -83,7 +65,9 @@ public class AsyncCtlWorkload implements Benchmark {
     private int queryPct;
     private int readManyPct;
 
-    public AsyncCtlWorkload(TenantWorkloadConfig workloadCfg, MetricRegistry sharedRegistry) {
+    public AsyncCtlWorkload(TenantWorkloadConfig workloadCfg, Scheduler scheduler) {
+        this.benchmarkScheduler = scheduler;
+
         final TokenCredential credential = workloadCfg.isManagedIdentityRequired()
             ? workloadCfg.buildTokenCredential()
             : null;
@@ -107,7 +91,6 @@ public class AsyncCtlWorkload implements Benchmark {
         }
         cosmosClient = cosmosClientBuilder.buildAsyncClient();
         workloadConfig = workloadCfg;
-        metricsRegistry = sharedRegistry;
         logger = LoggerFactory.getLogger(this.getClass());
 
         parsedReadWriteQueryReadManyPct(workloadConfig.getReadWriteQueryReadManyPct());
@@ -116,8 +99,6 @@ public class AsyncCtlWorkload implements Benchmark {
 
         partitionKey = containers.get(0).read().block().getProperties().getPartitionKeyDefinition()
             .getPaths().iterator().next().split("/")[1];
-
-        concurrencyControlSemaphore = new Semaphore(workloadCfg.getConcurrency());
 
         logger.info("PRE-populating {} documents ....", workloadCfg.getNumberOfPreCreatedDocuments());
         dataFieldValue = RandomStringUtils.randomAlphabetic(workloadConfig.getDocumentDataFieldSize());
@@ -143,106 +124,102 @@ public class AsyncCtlWorkload implements Benchmark {
         cosmosClient.close();
     }
 
-    private void performWorkload(BaseSubscriber<Object> documentSubscriber, OperationType type, long i, boolean isReadMany) throws Exception {
-        Flux<? extends Object> obs;
+    private Mono<Object> performWorkload(OperationType type, long i, boolean isReadMany) {
         CosmosAsyncContainer container = containers.get((int) i % containers.size());
         if (type.equals(OperationType.Create)) {
             PojoizedJson data = BenchmarkHelper.generateDocument(prefixUuidForCreate + i,
                 dataFieldValue,
                 partitionKey,
                 workloadConfig.getDocumentDataFieldCount());
-            obs = container.createItem(data).flux();
+            return container.createItem(data).map(r -> (Object) r);
         } else if (type.equals(OperationType.Query) && !isReadMany) {
             CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
             String sqlQuery = "Select top 100 * from c order by c._ts";
-            obs = container.queryItems(sqlQuery, options, PojoizedJson.class).byPage(10);
+            return container.queryItems(sqlQuery, options, PojoizedJson.class).byPage(10).last().map(r -> (Object) r);
         } else if (type.equals(OperationType.Read)){
             int index = random.nextInt(docsToRead.get(container.getId()).size());
-            RequestOptions options = new RequestOptions();
             String partitionKeyValue = docsToRead.get(container.getId()).get(index).getId();
-            options.setPartitionKey(new PartitionKey(partitionKeyValue));
-            obs = container.readItem(docsToRead.get(container.getId()).get(index).getId(),
+            return container.readItem(docsToRead.get(container.getId()).get(index).getId(),
                 new PartitionKey(partitionKeyValue),
                 PojoizedJson.class)
-                .flux();
+                .map(r -> (Object) r);
         } else {
             List<CosmosItemIdentity> itemIdentityList = itemIdentityMap.get(container.getId());
-            obs = container.readMany(itemIdentityList,
-                PojoizedJson.class).flux();
+            return container.readMany(itemIdentityList,
+                PojoizedJson.class).map(r -> (Object) r);
         }
+    }
 
-        concurrencyControlSemaphore.acquire();
+    private Mono<Object> selectAndPerformWorkload(long i) {
+        int index = (int) i % 100;
+        int writeRange = readPct + writePct;
+        int queryRange = readPct + writePct + queryPct;
 
-        obs.subscribeOn(Schedulers.parallel()).subscribe(documentSubscriber);
+        if (index < readPct) {
+            return performWorkload(OperationType.Read, i, false);
+        } else if (index < writeRange) {
+            return performWorkload(OperationType.Create, i, false);
+        } else if (index < queryRange) {
+            return performWorkload(OperationType.Query, i, false);
+        } else {
+            return performWorkload(OperationType.Query, i, true);
+        }
     }
 
     public void run() throws Exception {
-        readSuccessMeter = metricsRegistry.meter("#Read Successful Operations");
-        readFailureMeter = metricsRegistry.meter("#Read Unsuccessful Operations");
-        writeSuccessMeter = metricsRegistry.meter("#Write Successful Operations");
-        writeFailureMeter = metricsRegistry.meter("#Write Unsuccessful Operations");
-        querySuccessMeter = metricsRegistry.meter("#Query Successful Operations");
-        queryFailureMeter = metricsRegistry.meter("#Query Unsuccessful Operations");
-        readManySuccessMeter = metricsRegistry.meter("#Read Many Successful Operations");
-        readManyFailureMeter = metricsRegistry.meter("#Read Many Unsuccessful Operations");
-        readLatency = metricsRegistry.register("Read Latency", new Timer(new HdrHistogramResetOnSnapshotReservoir()));
-        writeLatency = metricsRegistry.register("Write Latency", new Timer(new HdrHistogramResetOnSnapshotReservoir()));
-        queryLatency = metricsRegistry.register("Query Latency", new Timer(new HdrHistogramResetOnSnapshotReservoir()));
-        readManyLatency = metricsRegistry.register("Read Many Latency", new Timer(new HdrHistogramResetOnSnapshotReservoir()));
 
         long startTime = System.currentTimeMillis();
+        int concurrency = workloadConfig.getConcurrency();
 
-        AtomicLong count = new AtomicLong(0);
-        long i;
-        int writeRange = readPct + writePct;
-        int queryRange = readPct + writePct + queryPct;
-        for (i = 0; BenchmarkHelper.shouldContinue(startTime, i, workloadConfig); i++) {
-            int index = (int) i % 100;
-            if (index < readPct) {
-                BenchmarkRequestSubscriber<Object> readSubscriber = new BenchmarkRequestSubscriber<>(readSuccessMeter,
-                    readFailureMeter,
-                    concurrencyControlSemaphore,
-                    count,
-                    workloadConfig.getDiagnosticsThresholdDuration());
-                readSubscriber.context = readLatency.time();
-                performWorkload(readSubscriber, OperationType.Read, i, false);
-            } else if (index < writeRange) {
-                BenchmarkRequestSubscriber<Object> writeSubscriber = new BenchmarkRequestSubscriber<>(writeSuccessMeter,
-                    writeFailureMeter,
-                    concurrencyControlSemaphore,
-                    count,
-                    workloadConfig.getDiagnosticsThresholdDuration());
-                writeSubscriber.context = writeLatency.time();
-                performWorkload(writeSubscriber, OperationType.Create, i, false);
-
-            } else if (index < queryRange){
-                BenchmarkRequestSubscriber<Object> querySubscriber = new BenchmarkRequestSubscriber<>(querySuccessMeter,
-                    queryFailureMeter,
-                    concurrencyControlSemaphore,
-                    count,
-                    workloadConfig.getDiagnosticsThresholdDuration());
-                querySubscriber.context = queryLatency.time();
-                performWorkload(querySubscriber, OperationType.Query, i, false);
-            } else {
-                BenchmarkRequestSubscriber<Object> readManySubscriber = new BenchmarkRequestSubscriber<>(readManySuccessMeter,
-                    readManyFailureMeter,
-                    concurrencyControlSemaphore,
-                    count,
-                    workloadConfig.getDiagnosticsThresholdDuration());
-                readManySubscriber.context = readManyLatency.time();
-                performWorkload(readManySubscriber, OperationType.Query, i, true);
-            }
+        Flux<Long> source;
+        Duration maxDuration = workloadConfig.getMaxRunningTimeDuration();
+        if (maxDuration != null) {
+            final long deadline = startTime + maxDuration.toMillis();
+            source = Flux.generate(
+                AtomicLong::new,
+                (state, sink) -> {
+                    if (System.currentTimeMillis() < deadline) {
+                        sink.next(state.getAndIncrement());
+                    } else {
+                        sink.complete();
+                    }
+                    return state;
+                });
+        } else {
+            // Count-based termination using Flux.generate to avoid long-to-int truncation
+            long numberOfOps = workloadConfig.getNumberOfOperations();
+            source = Flux.generate(
+                AtomicLong::new,
+                (state, sink) -> {
+                    long current = state.getAndIncrement();
+                    if (current < numberOfOps) {
+                        sink.next(current);
+                    } else {
+                        sink.complete();
+                    }
+                    return state;
+                });
         }
 
-        synchronized (count) {
-            while (count.get() < i) {
-                count.wait();
-            }
-        }
+        AtomicLong completedCount = new AtomicLong(0);
+
+        source
+            .flatMap(
+                i -> selectAndPerformWorkload(i)
+                    .subscribeOn(benchmarkScheduler)
+                    .doOnSuccess(v -> completedCount.incrementAndGet())
+                    .doOnError(e -> {
+                        completedCount.incrementAndGet();
+                        logger.error("Encountered failure {} on thread {}",
+                            e.getMessage(), Thread.currentThread().getName(), e);
+                    })
+                    .onErrorResume(e -> Mono.empty()),
+                concurrency)
+            .blockLast();
 
         long endTime = System.currentTimeMillis();
         logger.info("[{}] operations performed in [{}] seconds.",
-            workloadConfig.getNumberOfOperations(), (int) ((endTime - startTime) / 1000));
+            completedCount.get(), (int) ((endTime - startTime) / 1000));
     }
 
     private void parsedReadWriteQueryReadManyPct(String readWriteQueryReadManyPct) {

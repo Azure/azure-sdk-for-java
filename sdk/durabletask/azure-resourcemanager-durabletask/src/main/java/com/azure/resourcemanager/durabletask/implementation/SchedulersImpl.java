@@ -10,8 +10,12 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.durabletask.fluent.SchedulersClient;
+import com.azure.resourcemanager.durabletask.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.durabletask.fluent.models.SchedulerInner;
+import com.azure.resourcemanager.durabletask.fluent.models.SchedulerPrivateLinkResourceInner;
+import com.azure.resourcemanager.durabletask.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.durabletask.models.Scheduler;
+import com.azure.resourcemanager.durabletask.models.SchedulerPrivateLinkResource;
 import com.azure.resourcemanager.durabletask.models.Schedulers;
 
 public final class SchedulersImpl implements Schedulers {
@@ -72,6 +76,87 @@ public final class SchedulersImpl implements Schedulers {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new SchedulerImpl(inner1, this.manager()));
     }
 
+    public Response<SchedulerPrivateLinkResource> getPrivateLinkWithResponse(String resourceGroupName,
+        String schedulerName, String privateLinkResourceName, Context context) {
+        Response<SchedulerPrivateLinkResourceInner> inner = this.serviceClient()
+            .getPrivateLinkWithResponse(resourceGroupName, schedulerName, privateLinkResourceName, context);
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new SchedulerPrivateLinkResourceImpl(inner.getValue(), this.manager()));
+    }
+
+    public SchedulerPrivateLinkResource getPrivateLink(String resourceGroupName, String schedulerName,
+        String privateLinkResourceName) {
+        SchedulerPrivateLinkResourceInner inner
+            = this.serviceClient().getPrivateLink(resourceGroupName, schedulerName, privateLinkResourceName);
+        if (inner != null) {
+            return new SchedulerPrivateLinkResourceImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public PagedIterable<SchedulerPrivateLinkResource> listPrivateLinks(String resourceGroupName,
+        String schedulerName) {
+        PagedIterable<SchedulerPrivateLinkResourceInner> inner
+            = this.serviceClient().listPrivateLinks(resourceGroupName, schedulerName);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new SchedulerPrivateLinkResourceImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<SchedulerPrivateLinkResource> listPrivateLinks(String resourceGroupName, String schedulerName,
+        Context context) {
+        PagedIterable<SchedulerPrivateLinkResourceInner> inner
+            = this.serviceClient().listPrivateLinks(resourceGroupName, schedulerName, context);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new SchedulerPrivateLinkResourceImpl(inner1, this.manager()));
+    }
+
+    public Response<PrivateEndpointConnection> getPrivateEndpointConnectionWithResponse(String resourceGroupName,
+        String schedulerName, String privateEndpointConnectionName, Context context) {
+        Response<PrivateEndpointConnectionInner> inner = this.serviceClient()
+            .getPrivateEndpointConnectionWithResponse(resourceGroupName, schedulerName, privateEndpointConnectionName,
+                context);
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new PrivateEndpointConnectionImpl(inner.getValue(), this.manager()));
+    }
+
+    public PrivateEndpointConnection getPrivateEndpointConnection(String resourceGroupName, String schedulerName,
+        String privateEndpointConnectionName) {
+        PrivateEndpointConnectionInner inner = this.serviceClient()
+            .getPrivateEndpointConnection(resourceGroupName, schedulerName, privateEndpointConnectionName);
+        if (inner != null) {
+            return new PrivateEndpointConnectionImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public void deletePrivateEndpointConnection(String resourceGroupName, String schedulerName,
+        String privateEndpointConnectionName) {
+        this.serviceClient()
+            .deletePrivateEndpointConnection(resourceGroupName, schedulerName, privateEndpointConnectionName);
+    }
+
+    public void deletePrivateEndpointConnection(String resourceGroupName, String schedulerName,
+        String privateEndpointConnectionName, Context context) {
+        this.serviceClient()
+            .deletePrivateEndpointConnection(resourceGroupName, schedulerName, privateEndpointConnectionName, context);
+    }
+
+    public PagedIterable<PrivateEndpointConnection> listPrivateEndpointConnections(String resourceGroupName,
+        String schedulerName) {
+        PagedIterable<PrivateEndpointConnectionInner> inner
+            = this.serviceClient().listPrivateEndpointConnections(resourceGroupName, schedulerName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<PrivateEndpointConnection> listPrivateEndpointConnections(String resourceGroupName,
+        String schedulerName, Context context) {
+        PagedIterable<PrivateEndpointConnectionInner> inner
+            = this.serviceClient().listPrivateEndpointConnections(resourceGroupName, schedulerName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()));
+    }
+
     public Scheduler getById(String id) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
@@ -98,6 +183,51 @@ public final class SchedulersImpl implements Schedulers {
                 String.format("The resource ID '%s' is not valid. Missing path segment 'schedulers'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, schedulerName, context);
+    }
+
+    public PrivateEndpointConnection getPrivateEndpointConnectionById(String id) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String schedulerName = ResourceManagerUtils.getValueFromIdByName(id, "schedulers");
+        if (schedulerName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'schedulers'.", id)));
+        }
+        String privateEndpointConnectionName
+            = ResourceManagerUtils.getValueFromIdByName(id, "privateEndpointConnections");
+        if (privateEndpointConnectionName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'privateEndpointConnections'.", id)));
+        }
+        return this
+            .getPrivateEndpointConnectionWithResponse(resourceGroupName, schedulerName, privateEndpointConnectionName,
+                Context.NONE)
+            .getValue();
+    }
+
+    public Response<PrivateEndpointConnection> getPrivateEndpointConnectionByIdWithResponse(String id,
+        Context context) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String schedulerName = ResourceManagerUtils.getValueFromIdByName(id, "schedulers");
+        if (schedulerName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'schedulers'.", id)));
+        }
+        String privateEndpointConnectionName
+            = ResourceManagerUtils.getValueFromIdByName(id, "privateEndpointConnections");
+        if (privateEndpointConnectionName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'privateEndpointConnections'.", id)));
+        }
+        return this.getPrivateEndpointConnectionWithResponse(resourceGroupName, schedulerName,
+            privateEndpointConnectionName, context);
     }
 
     public void deleteById(String id) {
@@ -128,6 +258,47 @@ public final class SchedulersImpl implements Schedulers {
         this.delete(resourceGroupName, schedulerName, context);
     }
 
+    public void deletePrivateEndpointConnectionById(String id) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String schedulerName = ResourceManagerUtils.getValueFromIdByName(id, "schedulers");
+        if (schedulerName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'schedulers'.", id)));
+        }
+        String privateEndpointConnectionName
+            = ResourceManagerUtils.getValueFromIdByName(id, "privateEndpointConnections");
+        if (privateEndpointConnectionName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'privateEndpointConnections'.", id)));
+        }
+        this.deletePrivateEndpointConnection(resourceGroupName, schedulerName, privateEndpointConnectionName,
+            Context.NONE);
+    }
+
+    public void deletePrivateEndpointConnectionByIdWithResponse(String id, Context context) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String schedulerName = ResourceManagerUtils.getValueFromIdByName(id, "schedulers");
+        if (schedulerName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'schedulers'.", id)));
+        }
+        String privateEndpointConnectionName
+            = ResourceManagerUtils.getValueFromIdByName(id, "privateEndpointConnections");
+        if (privateEndpointConnectionName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'privateEndpointConnections'.", id)));
+        }
+        this.deletePrivateEndpointConnection(resourceGroupName, schedulerName, privateEndpointConnectionName, context);
+    }
+
     private SchedulersClient serviceClient() {
         return this.innerClient;
     }
@@ -138,5 +309,9 @@ public final class SchedulersImpl implements Schedulers {
 
     public SchedulerImpl define(String name) {
         return new SchedulerImpl(name, this.manager());
+    }
+
+    public PrivateEndpointConnectionImpl definePrivateEndpointConnection(String name) {
+        return new PrivateEndpointConnectionImpl(name, this.manager());
     }
 }

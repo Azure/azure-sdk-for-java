@@ -9,7 +9,6 @@ import com.azure.cosmos.benchmark.Benchmark;
 import com.azure.cosmos.benchmark.TenantWorkloadConfig;
 import com.azure.cosmos.benchmark.linkedin.data.EntityConfiguration;
 import com.azure.cosmos.benchmark.linkedin.data.InvitationsEntityConfiguration;
-import com.codahale.metrics.MetricRegistry;
 import com.google.common.base.Preconditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,20 +30,17 @@ public class LICtlWorkload implements Benchmark {
     private final EntityConfiguration _entityConfiguration;
     private final CosmosAsyncClient _client;
     private final CosmosAsyncClient _bulkLoadClient;
-    private final MetricRegistry _metricsRegistry;
     private final ResourceManager _resourceManager;
     private final DataLoader _dataLoader;
     private final TestRunner _testRunner;
 
-    public LICtlWorkload(final TenantWorkloadConfig workloadCfg, final MetricRegistry sharedRegistry) {
+    public LICtlWorkload(final TenantWorkloadConfig workloadCfg) {
         Preconditions.checkNotNull(workloadCfg, "The Workload configuration defining the parameters can not be null");
-        Preconditions.checkNotNull(sharedRegistry, "The shared MetricRegistry can not be null");
 
         _workloadConfig = workloadCfg;
         _entityConfiguration = new InvitationsEntityConfiguration(workloadCfg);
         _client = AsyncClientFactory.buildAsyncClient(workloadCfg);
         _bulkLoadClient = AsyncClientFactory.buildBulkLoadAsyncClient(workloadCfg);
-        _metricsRegistry = sharedRegistry;
         _resourceManager = workloadCfg.shouldManageDatabase()
             ? new DatabaseResourceManager(workloadCfg, _entityConfiguration, _client)
             : new CollectionResourceManager(workloadCfg, _entityConfiguration, _client);
@@ -84,12 +80,12 @@ public class LICtlWorkload implements Benchmark {
         final Scenario scenario = Scenario.valueOf(workloadCfg.getTestScenario());
         switch (scenario) {
             case QUERY:
-                return new QueryTestRunner(workloadCfg, _client, _metricsRegistry, _entityConfiguration);
+                return new QueryTestRunner(workloadCfg, _client, _entityConfiguration);
             case COMPOSITE_READ:
-                return new CompositeReadTestRunner(workloadCfg, _client, _metricsRegistry, _entityConfiguration);
+                return new CompositeReadTestRunner(workloadCfg, _client, _entityConfiguration);
             case GET:
             default:
-                return new GetTestRunner(workloadCfg, _client, _metricsRegistry, _entityConfiguration);
+                return new GetTestRunner(workloadCfg, _client, _entityConfiguration);
         }
     }
 }
