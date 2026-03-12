@@ -8,6 +8,11 @@
 - Added new `OpenApiSync`/`OpenApiAsync` samples demonstrating end-to-end OpenAPI tool integration: loading a spec file, creating an agent with an `OpenApiTool`, and invoking an external API via conversation.
 - Added new tool samples for parity with the Python SDK: `AzureFunctionSync`/`AzureFunctionAsync`, `BingCustomSearchSync`/`BingCustomSearchAsync`, `MemorySearchSync`/`MemorySearchAsync`, `McpWithConnectionSync`/`McpWithConnectionAsync`, and `OpenApiWithConnectionSync`/`OpenApiWithConnectionAsync`.
 - Added `setComparisonFilter(ComparisonFilter)` and `setCompoundFilter(CompoundFilter)` convenience methods on `FileSearchTool`, accepting the openai-java filter types directly.
+- Added streaming response methods to `ResponsesClient` and `ResponsesAsyncClient`:
+  - `createStreamingWithAgent` and `createStreamingWithAgentConversation` on `ResponsesClient` return `IterableStream<ResponseStreamEvent>` for synchronous streaming.
+  - `createStreamingWithAgent` and `createStreamingWithAgentConversation` on `ResponsesAsyncClient` return `Flux<ResponseStreamEvent>` for asynchronous streaming.
+- Added `StreamingUtils` implementation helper that bridges OpenAI `StreamResponse` to `IterableStream` and `AsyncStreamResponse` to `Flux`.
+- Added streaming samples: `SimpleStreamingSync`/`SimpleStreamingAsync`, `FunctionCallStreamingSync`/`FunctionCallStreamingAsync`, and `CodeInterpreterStreamingSync`/`CodeInterpreterStreamingAsync`.
 
 ### Breaking Changes
 
@@ -21,6 +26,7 @@
 ### Other Changes
 
 - Added `ToolsTests` and `ToolsAsyncTests` with recorded end-to-end test coverage for OpenAPI, Code Interpreter, Function Call, Web Search, MCP, and File Search tools.
+- Added `StreamingTests` and `StreamingAsyncTests` with recorded test coverage for streaming responses (simple prompt, function calling, and Code Interpreter scenarios).
 
 ## 2.0.0-beta.2 (2026-03-04)
 
