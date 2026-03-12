@@ -11,6 +11,7 @@ import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -121,6 +122,38 @@ public class StreamingUtilsTest {
         assertEquals("only", iterator.next());
         assertFalse(iterator.hasNext());
         assertThrows(NoSuchElementException.class, iterator::next);
+    }
+
+    @Test
+    public void toIterableStreamThrowsOnSecondIteratorCall() {
+        AtomicBoolean closed = new AtomicBoolean(false);
+        StreamResponse<String> streamResponse = testStreamResponse(Stream.of("a", "b"), closed);
+
+        IterableStream<String> result = StreamingUtils.toIterableStream(streamResponse);
+
+        // First iterator() call should succeed
+        Iterator<String> first = result.iterator();
+        assertEquals("a", first.next());
+
+        // Second iterator() call should throw
+        assertThrows(IllegalStateException.class, result::iterator);
+    }
+
+    @Test
+    public void toIterableStreamSecondIteratorCallAfterFullConsumptionThrows() {
+        AtomicBoolean closed = new AtomicBoolean(false);
+        StreamResponse<String> streamResponse = testStreamResponse(Stream.of("a", "b"), closed);
+
+        IterableStream<String> result = StreamingUtils.toIterableStream(streamResponse);
+
+        // Fully consume the first iterator
+        List<String> items = collect(result);
+        assertEquals(Arrays.asList("a", "b"), items);
+        assertTrue(closed.get());
+
+        // Without the single-use guard, this would silently return an empty iterator
+        // instead of failing. The guard converts that silent bug into a clear error.
+        assertThrows(IllegalStateException.class, result::iterator);
     }
 
     // ========================================================================
