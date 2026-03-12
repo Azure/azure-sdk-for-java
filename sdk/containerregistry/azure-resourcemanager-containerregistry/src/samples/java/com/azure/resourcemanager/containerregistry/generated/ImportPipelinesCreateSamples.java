@@ -26,12 +26,11 @@ public final class ImportPipelinesCreateSamples {
     /**
      * Sample code: ImportPipelineCreate.
      * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
+     * @param manager Entry point to ContainerRegistryManager.
      */
-    public static void importPipelineCreate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.containerRegistries()
-            .manager()
-            .serviceClient()
+    public static void
+        importPipelineCreate(com.azure.resourcemanager.containerregistry.ContainerRegistryManager manager) {
+        manager.serviceClient()
             .getImportPipelines()
             .create("myResourceGroup", "myRegistry", "myImportPipeline", new ImportPipelineInner()
                 .withLocation("westus")

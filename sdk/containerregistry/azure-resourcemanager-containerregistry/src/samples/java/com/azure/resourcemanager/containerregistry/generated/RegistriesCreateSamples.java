@@ -43,12 +43,11 @@ public final class RegistriesCreateSamples {
     /**
      * Sample code: RegistryCreateDomainNameLabelScope.
      * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
+     * @param manager Entry point to ContainerRegistryManager.
      */
-    public static void registryCreateDomainNameLabelScope(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.containerRegistries()
-            .manager()
-            .serviceClient()
+    public static void registryCreateDomainNameLabelScope(
+        com.azure.resourcemanager.containerregistry.ContainerRegistryManager manager) {
+        manager.serviceClient()
             .getRegistries()
             .create("myResourceGroup", "myRegistry",
                 new RegistryInner().withLocation("westus")

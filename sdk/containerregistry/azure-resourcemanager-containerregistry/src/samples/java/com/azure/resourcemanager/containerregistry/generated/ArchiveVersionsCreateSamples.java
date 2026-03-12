@@ -14,12 +14,11 @@ public final class ArchiveVersionsCreateSamples {
     /**
      * Sample code: ArchiveVersionCreate.
      * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
+     * @param manager Entry point to ContainerRegistryManager.
      */
-    public static void archiveVersionCreate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.containerRegistries()
-            .manager()
-            .serviceClient()
+    public static void
+        archiveVersionCreate(com.azure.resourcemanager.containerregistry.ContainerRegistryManager manager) {
+        manager.serviceClient()
             .getArchiveVersions()
             .create("myResourceGroup", "myRegistry", "rpm", "myArchiveName", "myArchiveVersionName",
                 com.azure.core.util.Context.NONE);

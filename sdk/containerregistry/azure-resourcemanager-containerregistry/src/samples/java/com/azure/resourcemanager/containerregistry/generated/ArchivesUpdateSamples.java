@@ -16,12 +16,10 @@ public final class ArchivesUpdateSamples {
     /**
      * Sample code: ArchiveUpdate.
      * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
+     * @param manager Entry point to ContainerRegistryManager.
      */
-    public static void archiveUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.containerRegistries()
-            .manager()
-            .serviceClient()
+    public static void archiveUpdate(com.azure.resourcemanager.containerregistry.ContainerRegistryManager manager) {
+        manager.serviceClient()
             .getArchives()
             .updateWithResponse("myResourceGroup", "myRegistry", "myPackageType", "myArchiveName",
                 new ArchiveUpdateParameters().withPublishedVersion("string"), com.azure.core.util.Context.NONE);

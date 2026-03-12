@@ -14,12 +14,10 @@ public final class PipelineRunsListSamples {
     /**
      * Sample code: PipelineRunList.
      * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
+     * @param manager Entry point to ContainerRegistryManager.
      */
-    public static void pipelineRunList(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.containerRegistries()
-            .manager()
-            .serviceClient()
+    public static void pipelineRunList(com.azure.resourcemanager.containerregistry.ContainerRegistryManager manager) {
+        manager.serviceClient()
             .getPipelineRuns()
             .list("myResourceGroup", "myRegistry", com.azure.core.util.Context.NONE);
     }

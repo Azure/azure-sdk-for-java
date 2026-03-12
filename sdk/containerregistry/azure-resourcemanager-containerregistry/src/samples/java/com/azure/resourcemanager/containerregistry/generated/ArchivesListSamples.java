@@ -14,12 +14,10 @@ public final class ArchivesListSamples {
     /**
      * Sample code: ArchiveList.
      * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
+     * @param manager Entry point to ContainerRegistryManager.
      */
-    public static void archiveList(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.containerRegistries()
-            .manager()
-            .serviceClient()
+    public static void archiveList(com.azure.resourcemanager.containerregistry.ContainerRegistryManager manager) {
+        manager.serviceClient()
             .getArchives()
             .list("myResourceGroup", "myRegistry", "myPackageType", com.azure.core.util.Context.NONE);
     }

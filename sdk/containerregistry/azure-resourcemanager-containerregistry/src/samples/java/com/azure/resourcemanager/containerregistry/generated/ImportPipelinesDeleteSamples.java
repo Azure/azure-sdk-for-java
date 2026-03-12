@@ -14,12 +14,11 @@ public final class ImportPipelinesDeleteSamples {
     /**
      * Sample code: ImportPipelineDelete.
      * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
+     * @param manager Entry point to ContainerRegistryManager.
      */
-    public static void importPipelineDelete(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.containerRegistries()
-            .manager()
-            .serviceClient()
+    public static void
+        importPipelineDelete(com.azure.resourcemanager.containerregistry.ContainerRegistryManager manager) {
+        manager.serviceClient()
             .getImportPipelines()
             .delete("myResourceGroup", "myRegistry", "myImportPipeline", com.azure.core.util.Context.NONE);
     }

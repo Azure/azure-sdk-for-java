@@ -14,12 +14,11 @@ public final class ImportPipelinesListSamples {
     /**
      * Sample code: ImportPipelineList.
      * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
+     * @param manager Entry point to ContainerRegistryManager.
      */
-    public static void importPipelineList(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.containerRegistries()
-            .manager()
-            .serviceClient()
+    public static void
+        importPipelineList(com.azure.resourcemanager.containerregistry.ContainerRegistryManager manager) {
+        manager.serviceClient()
             .getImportPipelines()
             .list("myResourceGroup", "myRegistry", com.azure.core.util.Context.NONE);
     }

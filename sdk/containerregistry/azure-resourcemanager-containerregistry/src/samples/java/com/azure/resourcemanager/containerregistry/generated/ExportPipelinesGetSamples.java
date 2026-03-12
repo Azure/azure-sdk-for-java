@@ -14,12 +14,10 @@ public final class ExportPipelinesGetSamples {
     /**
      * Sample code: ExportPipelineGet.
      * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
+     * @param manager Entry point to ContainerRegistryManager.
      */
-    public static void exportPipelineGet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.containerRegistries()
-            .manager()
-            .serviceClient()
+    public static void exportPipelineGet(com.azure.resourcemanager.containerregistry.ContainerRegistryManager manager) {
+        manager.serviceClient()
             .getExportPipelines()
             .getWithResponse("myResourceGroup", "myRegistry", "myExportPipeline", com.azure.core.util.Context.NONE);
     }

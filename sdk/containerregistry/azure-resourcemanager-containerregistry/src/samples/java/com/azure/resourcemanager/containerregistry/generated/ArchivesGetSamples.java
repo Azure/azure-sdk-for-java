@@ -14,12 +14,10 @@ public final class ArchivesGetSamples {
     /**
      * Sample code: ArchiveGet.
      * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
+     * @param manager Entry point to ContainerRegistryManager.
      */
-    public static void archiveGet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.containerRegistries()
-            .manager()
-            .serviceClient()
+    public static void archiveGet(com.azure.resourcemanager.containerregistry.ContainerRegistryManager manager) {
+        manager.serviceClient()
             .getArchives()
             .getWithResponse("myResourceGroup", "myRegistry", "myPackageType", "myArchiveName",
                 com.azure.core.util.Context.NONE);

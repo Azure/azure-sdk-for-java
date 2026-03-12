@@ -22,12 +22,11 @@ public final class PipelineRunsCreateSamples {
     /**
      * Sample code: PipelineRunCreate_Import.
      * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
+     * @param manager Entry point to ContainerRegistryManager.
      */
-    public static void pipelineRunCreateImport(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.containerRegistries()
-            .manager()
-            .serviceClient()
+    public static void
+        pipelineRunCreateImport(com.azure.resourcemanager.containerregistry.ContainerRegistryManager manager) {
+        manager.serviceClient()
             .getPipelineRuns()
             .create("myResourceGroup", "myRegistry", "myPipelineRun",
                 new PipelineRunInner().withRequest(new PipelineRunRequest().withPipelineResourceId(
@@ -44,12 +43,11 @@ public final class PipelineRunsCreateSamples {
     /**
      * Sample code: PipelineRunCreate_Export.
      * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
+     * @param manager Entry point to ContainerRegistryManager.
      */
-    public static void pipelineRunCreateExport(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.containerRegistries()
-            .manager()
-            .serviceClient()
+    public static void
+        pipelineRunCreateExport(com.azure.resourcemanager.containerregistry.ContainerRegistryManager manager) {
+        manager.serviceClient()
             .getPipelineRuns()
             .create("myResourceGroup", "myRegistry", "myPipelineRun",
                 new PipelineRunInner().withRequest(new PipelineRunRequest().withPipelineResourceId(

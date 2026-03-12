@@ -14,12 +14,11 @@ public final class ArchiveVersionsDeleteSamples {
     /**
      * Sample code: ArchiveVersionDelete.
      * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
+     * @param manager Entry point to ContainerRegistryManager.
      */
-    public static void archiveVersionDelete(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.containerRegistries()
-            .manager()
-            .serviceClient()
+    public static void
+        archiveVersionDelete(com.azure.resourcemanager.containerregistry.ContainerRegistryManager manager) {
+        manager.serviceClient()
             .getArchiveVersions()
             .delete("myResourceGroup", "myRegistry", "myPackageType", "myArchiveName", "myArchiveVersionName",
                 com.azure.core.util.Context.NONE);

@@ -39,13 +39,11 @@ public final class CacheRulesCreateSamples {
     /**
      * Sample code: CacheRuleCreateUserAssignedMIAuthentication.
      * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
+     * @param manager Entry point to ContainerRegistryManager.
      */
-    public static void
-        cacheRuleCreateUserAssignedMIAuthentication(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.containerRegistries()
-            .manager()
-            .serviceClient()
+    public static void cacheRuleCreateUserAssignedMIAuthentication(
+        com.azure.resourcemanager.containerregistry.ContainerRegistryManager manager) {
+        manager.serviceClient()
             .getCacheRules()
             .create("myResourceGroup", "myRegistry", "myCacheRule", new CacheRuleInner()
                 .withIdentity(new IdentityProperties().withType(ResourceIdentityType.USER_ASSIGNED)

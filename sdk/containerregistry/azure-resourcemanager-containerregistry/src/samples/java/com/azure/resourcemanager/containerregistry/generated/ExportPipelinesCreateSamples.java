@@ -22,12 +22,11 @@ public final class ExportPipelinesCreateSamples {
     /**
      * Sample code: ExportPipelineCreate.
      * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
+     * @param manager Entry point to ContainerRegistryManager.
      */
-    public static void exportPipelineCreate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.containerRegistries()
-            .manager()
-            .serviceClient()
+    public static void
+        exportPipelineCreate(com.azure.resourcemanager.containerregistry.ContainerRegistryManager manager) {
+        manager.serviceClient()
             .getExportPipelines()
             .create("myResourceGroup", "myRegistry", "myExportPipeline",
                 new ExportPipelineInner().withLocation("westus")

@@ -18,12 +18,10 @@ public final class ArchivesCreateSamples {
     /**
      * Sample code: ArchiveCreate.
      * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
+     * @param manager Entry point to ContainerRegistryManager.
      */
-    public static void archiveCreate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.containerRegistries()
-            .manager()
-            .serviceClient()
+    public static void archiveCreate(com.azure.resourcemanager.containerregistry.ContainerRegistryManager manager) {
+        manager.serviceClient()
             .getArchives()
             .create("myResourceGroup", "myRegistry", "rpm", "myArchiveName",
                 new ArchiveInner()

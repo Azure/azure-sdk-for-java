@@ -1,6 +1,6 @@
 # Release History
 
-## 2.55.0-beta.2 (Unreleased)
+## 2.55.0-beta.2 (2026-03-12)
 
 ### Breaking Changes
 
@@ -31,11 +31,11 @@
 #### `models.OperationMetricSpecificationDefinition` was modified
 
 * `OperationMetricSpecificationDefinition()` was changed to private access
+* `withDisplayDescription(java.lang.String)` was removed
 * `withAggregationType(java.lang.String)` was removed
 * `withInternalMetricName(java.lang.String)` was removed
-* `withDisplayDescription(java.lang.String)` was removed
-* `withDisplayName(java.lang.String)` was removed
 * `withName(java.lang.String)` was removed
+* `withDisplayName(java.lang.String)` was removed
 * `withUnit(java.lang.String)` was removed
 
 #### `models.TlsProperties` was modified
@@ -52,18 +52,23 @@
 
 * `TlsCertificateProperties()` was changed to private access
 
+#### `models.SourceRegistryCredentials` was modified
+
+* `withIdentity(java.lang.String)` was removed
+* `identity()` was removed
+
 #### `models.Target` was modified
 
 * `Target()` was changed to private access
 * `withDigest(java.lang.String)` was removed
 * `withName(java.lang.String)` was removed
-* `withVersion(java.lang.String)` was removed
-* `withUrl(java.lang.String)` was removed
 * `withTag(java.lang.String)` was removed
-* `withSize(java.lang.Long)` was removed
-* `withRepository(java.lang.String)` was removed
+* `withUrl(java.lang.String)` was removed
 * `withLength(java.lang.Long)` was removed
+* `withRepository(java.lang.String)` was removed
+* `withVersion(java.lang.String)` was removed
 * `withMediaType(java.lang.String)` was removed
+* `withSize(java.lang.Long)` was removed
 
 #### `models.StatusDetailProperties` was modified
 
@@ -76,8 +81,8 @@
 #### `models.OperationServiceSpecificationDefinition` was modified
 
 * `OperationServiceSpecificationDefinition()` was changed to private access
-* `withLogSpecifications(java.util.List)` was removed
 * `withMetricSpecifications(java.util.List)` was removed
+* `withLogSpecifications(java.util.List)` was removed
 
 #### `models.Actor` was modified
 
@@ -87,44 +92,44 @@
 #### `models.Source` was modified
 
 * `Source()` was changed to private access
-* `withAddr(java.lang.String)` was removed
 * `withInstanceId(java.lang.String)` was removed
+* `withAddr(java.lang.String)` was removed
 
 #### `models.RegistryUsage` was modified
 
 * `RegistryUsage()` was changed to private access
 * `withLimit(java.lang.Long)` was removed
-* `withName(java.lang.String)` was removed
-* `withCurrentValue(java.lang.Long)` was removed
 * `withUnit(models.RegistryUsageUnit)` was removed
+* `withCurrentValue(java.lang.Long)` was removed
+* `withName(java.lang.String)` was removed
 
 #### `models.EventResponseMessage` was modified
 
 * `EventResponseMessage()` was changed to private access
-* `withStatusCode(java.lang.String)` was removed
-* `withHeaders(java.util.Map)` was removed
-* `withVersion(java.lang.String)` was removed
 * `withReasonPhrase(java.lang.String)` was removed
+* `withVersion(java.lang.String)` was removed
+* `withHeaders(java.util.Map)` was removed
 * `withContent(java.lang.String)` was removed
+* `withStatusCode(java.lang.String)` was removed
 
 #### `models.EventContent` was modified
 
 * `EventContent()` was changed to private access
+* `withRequest(models.Request)` was removed
+* `withSource(models.Source)` was removed
 * `withAction(java.lang.String)` was removed
 * `withTarget(models.Target)` was removed
-* `withActor(models.Actor)` was removed
 * `withTimestamp(java.time.OffsetDateTime)` was removed
-* `withRequest(models.Request)` was removed
 * `withId(java.lang.String)` was removed
-* `withSource(models.Source)` was removed
+* `withActor(models.Actor)` was removed
 
 #### `models.OperationDisplayDefinition` was modified
 
 * `OperationDisplayDefinition()` was changed to private access
-* `withResource(java.lang.String)` was removed
 * `withDescription(java.lang.String)` was removed
-* `withOperation(java.lang.String)` was removed
+* `withResource(java.lang.String)` was removed
 * `withProvider(java.lang.String)` was removed
+* `withOperation(java.lang.String)` was removed
 
 #### `models.ActivationProperties` was modified
 
@@ -134,33 +139,33 @@
 
 * `EventRequestMessage()` was changed to private access
 * `withMethod(java.lang.String)` was removed
+* `withRequestUri(java.lang.String)` was removed
 * `withContent(models.EventContent)` was removed
 * `withVersion(java.lang.String)` was removed
 * `withHeaders(java.util.Map)` was removed
-* `withRequestUri(java.lang.String)` was removed
 
 #### `models.CredentialHealth` was modified
 
 * `CredentialHealth()` was changed to private access
-* `withErrorCode(java.lang.String)` was removed
 * `withStatus(models.CredentialHealthStatus)` was removed
+* `withErrorCode(java.lang.String)` was removed
 * `withErrorMessage(java.lang.String)` was removed
 
 #### `models.OperationLogSpecificationDefinition` was modified
 
 * `OperationLogSpecificationDefinition()` was changed to private access
-* `withBlobDuration(java.lang.String)` was removed
-* `withName(java.lang.String)` was removed
 * `withDisplayName(java.lang.String)` was removed
+* `withName(java.lang.String)` was removed
+* `withBlobDuration(java.lang.String)` was removed
 
 #### `models.Request` was modified
 
 * `Request()` was changed to private access
+* `withHost(java.lang.String)` was removed
 * `withId(java.lang.String)` was removed
+* `withMethod(java.lang.String)` was removed
 * `withUseragent(java.lang.String)` was removed
 * `withAddr(java.lang.String)` was removed
-* `withHost(java.lang.String)` was removed
-* `withMethod(java.lang.String)` was removed
 
 ### Features Added
 
@@ -223,17 +228,17 @@
 
 #### `models.Policies` was modified
 
-* `softDeletePolicy()` was added
 * `withSoftDeletePolicy(models.SoftDeletePolicy)` was added
+* `softDeletePolicy()` was added
 
 #### `models.RegistryUpdateParameters` was modified
 
-* `endpointProtocol()` was added
 * `metadataSearch()` was added
 * `withRegionalEndpoints(models.RegionalEndpoints)` was added
-* `withEndpointProtocol(models.EndpointProtocol)` was added
-* `regionalEndpoints()` was added
 * `withMetadataSearch(models.MetadataSearch)` was added
+* `endpointProtocol()` was added
+* `regionalEndpoints()` was added
+* `withEndpointProtocol(models.EndpointProtocol)` was added
 
 #### `ContainerRegistryManager` was modified
 
