@@ -53,7 +53,7 @@ public final class CodeInterpreterTool extends Tool {
      *
      * @return the container value.
      */
-    private BinaryData getContainer() {
+    BinaryData getContainer() {
         // AI Tooling: union type
         return this.container;
     }
@@ -117,7 +117,7 @@ public final class CodeInterpreterTool extends Tool {
      * @param container the container value to set.
      * @return the CodeInterpreterTool object itself.
      */
-    private CodeInterpreterTool setContainer(BinaryData container) {
+    CodeInterpreterTool setContainer(BinaryData container) {
         // AI Tooling: union type
         this.container = container;
         return this;

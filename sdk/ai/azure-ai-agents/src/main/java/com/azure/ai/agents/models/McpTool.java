@@ -271,7 +271,7 @@ public final class McpTool extends Tool {
      *
      * @return the allowedTools value.
      */
-    private BinaryData getAllowedTools() {
+    BinaryData getAllowedTools() {
         // AI Tooling: union type
         return this.allowedTools;
     }
@@ -282,7 +282,7 @@ public final class McpTool extends Tool {
      * @param allowedTools the allowedTools value to set.
      * @return the McpTool object itself.
      */
-    private McpTool setAllowedTools(BinaryData allowedTools) {
+    McpTool setAllowedTools(BinaryData allowedTools) {
         // AI Tooling: union type
         this.allowedTools = allowedTools;
         return this;
@@ -344,7 +344,7 @@ public final class McpTool extends Tool {
      *
      * @return the requireApproval value.
      */
-    private BinaryData getRequireApproval() {
+    BinaryData getRequireApproval() {
         // AI Tooling: union type
         return this.requireApproval;
     }
@@ -355,7 +355,7 @@ public final class McpTool extends Tool {
      * @param requireApproval the requireApproval value to set.
      * @return the McpTool object itself.
      */
-    private McpTool setRequireApproval(BinaryData requireApproval) {
+    McpTool setRequireApproval(BinaryData requireApproval) {
         // AI Tooling: union type
         this.requireApproval = requireApproval;
         return this;

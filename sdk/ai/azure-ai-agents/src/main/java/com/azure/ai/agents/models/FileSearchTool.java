@@ -197,7 +197,7 @@ public final class FileSearchTool extends Tool {
      *
      * @return the filters value.
      */
-    private BinaryData getFilters() {
+    BinaryData getFilters() {
         // AI Tooling: union type
         return this.filters;
     }
@@ -208,11 +208,12 @@ public final class FileSearchTool extends Tool {
      * @param filters the filters value to set.
      * @return the FileSearchTool object itself.
      */
-    private FileSearchTool setFilters(BinaryData filters) {
+    FileSearchTool setFilters(BinaryData filters) {
         // AI Tooling: union type
         this.filters = filters;
-    }  
-     
+        return this;
+    }
+
     /**
      * Sets the file search filters using an openai-java {@link ComparisonFilter}.
      * <p>
