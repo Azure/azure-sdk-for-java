@@ -394,16 +394,23 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
             path = StringUtils.EMPTY;
         }
 
-        // allow using http connections if customer opt in to use http for vnext emulator
+        // Build URI string directly to avoid the overhead of URI's multi-arg constructor
+        // which re-parses and re-validates all components.
         String scheme = HTTP_CONNECTION_WITHOUT_TLS_ALLOWED ? rootUri.getScheme() : "https";
+        String host = rootUri.getHost();
+        int port = rootUri.getPort();
+        String slashPath = ensureSlashPrefixed(path);
 
-        return new URI(scheme,
-            null,
-            rootUri.getHost(),
-            rootUri.getPort(),
-            ensureSlashPrefixed(path),
-            null,  // Query string not used.
-            null);
+        StringBuilder sb = new StringBuilder(scheme.length() + host.length() + 16 + (slashPath != null ? slashPath.length() : 0));
+        sb.append(scheme).append("://").append(host);
+        if (port >= 0) {
+            sb.append(':').append(port);
+        }
+        if (slashPath != null) {
+            sb.append(slashPath);
+        }
+
+        return new URI(sb.toString());
     }
 
     private String ensureSlashPrefixed(String path) {

@@ -48,6 +48,7 @@ public class RxDocumentServiceRequest implements Cloneable {
     private final boolean isNameBased;
     private final OperationType operationType;
     private String resourceAddress;
+    private volatile String cachedCollectionName;
     public volatile boolean forceNameCacheRefresh;
     private volatile URI endpointOverride = null;
     private final UUID activityId;
@@ -102,6 +103,22 @@ public class RxDocumentServiceRequest implements Cloneable {
 
     public void setResourceAddress(String newAddress) {
         this.resourceAddress = newAddress;
+        this.cachedCollectionName = null;
+    }
+
+    /**
+     * Gets the collection name extracted from the resource address.
+     * The result is cached to avoid repeated O(n) slash-scanning in Utils.getCollectionName().
+     *
+     * @return the collection name path segment
+     */
+    public String getCollectionName() {
+        String result = this.cachedCollectionName;
+        if (result == null) {
+            result = Utils.getCollectionName(this.resourceAddress);
+            this.cachedCollectionName = result;
+        }
+        return result;
     }
 
     public boolean isReadOnlyScript() {
