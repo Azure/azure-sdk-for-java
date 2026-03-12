@@ -11,7 +11,7 @@ import com.openai.models.conversations.Conversation;
 
 public class CreateConversation {
     public static void main(String[] args) {
-        String endpoint = Configuration.getGlobalConfiguration().get("AZURE_AGENTS_ENDPOINT");
+        String endpoint = Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT");
         // Code sample for creating a conversation
         ConversationsClient conversationsClient = new AgentsClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())

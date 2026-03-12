@@ -8,7 +8,7 @@ import com.azure.cosmos.models.{FeedRange, PartitionKeyDefinitionVersion, SparkM
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.spark.{ContainerFeedRangesCache, CosmosConstants}
 import com.azure.resourcemanager.cosmos.CosmosManager
-import com.azure.resourcemanager.cosmos.models.{AutoscaleSettings, AutoscaleSettingsResource, ContainerPartitionKey, CreateUpdateOptions, ExcludedPath, IncludedPath, IndexingMode, IndexingPolicy, SqlContainerCreateUpdateParameters, SqlContainerGetPropertiesResource, SqlContainerResource, SqlDatabaseCreateUpdateParameters, SqlDatabaseResource, ThroughputSettingsGetPropertiesResource, ThroughputSettingsResource, ThroughputSettingsUpdateParameters}
+import com.azure.resourcemanager.cosmos.models.{AutoscaleSettings, AutoscaleSettingsResource, ContainerPartitionKey, CreateUpdateOptions, ExcludedPath, IncludedPath, IndexingMode, IndexingPolicy, SqlContainerCreateUpdateParameters, SqlContainerGetPropertiesResource, SqlContainerResource, SqlDatabaseCreateUpdateParameters, SqlDatabaseResource, ThroughputSettingsGetPropertiesResource, ThroughputSettingsResource, ThroughputSettingsUpdateParameters, VectorEmbeddingPolicy => MgmtVectorEmbeddingPolicy, VectorIndex, VectorIndexType}
 import com.fasterxml.jackson.annotation.JsonInclude.Include
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.apache.spark.sql.connector.catalog.{NamespaceChange, TableChange}
@@ -113,6 +113,20 @@ private[spark] case class CosmosCatalogManagementSDKClient(resourceGroupName: St
         //setup analytical store ttl
         CosmosContainerProperties.getAnalyticalStoreTtlInSeconds(containerProperties) match {
             case Some(ttl) => sqlContainerResource.withAnalyticalStorageTtl(ttl)
+            case None =>
+        }
+
+        // setup vector embedding policy
+        CosmosContainerProperties.getVectorEmbeddingPolicy(containerProperties) match {
+            case Some(vectorEmbeddingPolicyJson) =>
+                val mgmtVectorEmbeddingPolicy = try {
+                    objectMapper.readValue(vectorEmbeddingPolicyJson, classOf[MgmtVectorEmbeddingPolicy])
+                } catch {
+                    case e: Exception =>
+                        throw new IllegalArgumentException(
+                            s"Failed to parse vectorEmbeddingPolicy JSON. Ensure the JSON is well-formed: ${e.getMessage}", e)
+                }
+                sqlContainerResource.withVectorEmbeddingPolicy(mgmtVectorEmbeddingPolicy)
             case None =>
         }
 
@@ -263,11 +277,19 @@ private[spark] case class CosmosCatalogManagementSDKClient(resourceGroupName: St
                 excludedPathList += new ExcludedPath().withPath(excludedPath.getPath())
             })
 
+            val vectorIndexList = new ListBuffer[VectorIndex]()
+            cosmosIndexingPolicy.getVectorIndexes.forEach(vectorIndex => {
+                vectorIndexList += new VectorIndex()
+                    .withPath(vectorIndex.getPath)
+                    .withType(VectorIndexType.fromString(vectorIndex.getType))
+            })
+
             new IndexingPolicy()
                 .withAutomatic(cosmosIndexingPolicy.isAutomatic)
                 .withIndexingMode(indexingMode)
                 .withIncludedPaths(includedPathList.toList.asJava)
                 .withExcludedPaths(excludedPathList.toList.asJava)
+                .withVectorIndexes(vectorIndexList.toList.asJava)
         }
         //scalastyle:off multiple.string.literals
     }
@@ -309,6 +331,11 @@ private[spark] case class CosmosCatalogManagementSDKClient(resourceGroupName: St
 
         val analyticalStoreTimeToLiveInSecondsSnapshot = Option.apply(containerProperties.analyticalStorageTtl()) match {
             case Some(analyticalStoreTtl) => analyticalStoreTtl.toString
+            case None => "null"
+        }
+
+        val vectorEmbeddingPolicySnapshot = Option.apply(containerProperties.vectorEmbeddingPolicy()) match {
+            case Some(policy) => objectMapper.writeValueAsString(policy)
             case None => "null"
         }
 
@@ -382,6 +409,10 @@ private[spark] case class CosmosCatalogManagementSDKClient(resourceGroupName: St
         tableProperties.put(
             CosmosConstants.TableProperties.IndexingPolicy,
             s"'$indexingPolicySnapshotJson'"
+        )
+        tableProperties.put(
+            CosmosConstants.TableProperties.VectorEmbeddingPolicy,
+            s"'$vectorEmbeddingPolicySnapshot'"
         )
 
         tableProperties

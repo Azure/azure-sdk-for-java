@@ -13,6 +13,12 @@ import java.util.Collection;
 public final class CertificateType extends ExpandableStringEnum<CertificateType> {
 
     /**
+     * If the certificate is stored in an Azure Key Vault.
+     */
+    @Generated
+    public static final CertificateType KEY_VAULT_CERTIFICATE_URI = fromString("AKV_CERT_URI");
+
+    /**
      * Creates a new instance of CertificateType value.
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
@@ -42,10 +48,4 @@ public final class CertificateType extends ExpandableStringEnum<CertificateType>
     public static Collection<CertificateType> values() {
         return values(CertificateType.class);
     }
-
-    /**
-     * If the certificate is stored in an Azure Key Vault.
-     */
-    @Generated
-    public static final CertificateType KEY_VAULT_CERTIFICATE_URI = fromString("AKV_CERT_URI");
 }

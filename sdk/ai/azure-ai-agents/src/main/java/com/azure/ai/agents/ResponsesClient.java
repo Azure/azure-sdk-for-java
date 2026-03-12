@@ -71,7 +71,7 @@ public final class ResponsesClient {
 
         Map<String, JsonValue> additionalBodyProperties = new HashMap<>();
         params.conversation(conversationId);
-        additionalBodyProperties.put("agent", agentRefJsonValue);
+        additionalBodyProperties.put("agent_reference", agentRefJsonValue);
 
         params.additionalBodyProperties(additionalBodyProperties);
         return this.responseService.create(params.build());
@@ -91,7 +91,7 @@ public final class ResponsesClient {
         JsonValue agentRefJsonValue = OpenAIJsonHelper.toJsonValue(agentReference);
 
         Map<String, JsonValue> additionalBodyProperties = new HashMap<>();
-        additionalBodyProperties.put("agent", agentRefJsonValue);
+        additionalBodyProperties.put("agent_reference", agentRefJsonValue);
 
         params.additionalBodyProperties(additionalBodyProperties);
         return this.responseService.create(params.build());

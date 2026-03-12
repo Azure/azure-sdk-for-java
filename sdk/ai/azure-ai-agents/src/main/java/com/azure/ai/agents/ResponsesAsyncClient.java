@@ -72,7 +72,7 @@ public final class ResponsesAsyncClient {
 
         Map<String, JsonValue> additionalBodyProperties = new HashMap<>();
         params.conversation(conversationId);
-        additionalBodyProperties.put("agent", agentRefJsonValue);
+        additionalBodyProperties.put("agent_reference", agentRefJsonValue);
 
         params.additionalBodyProperties(additionalBodyProperties);
         return Mono.fromFuture(this.responseServiceAsync.create(params.build()));
@@ -92,7 +92,7 @@ public final class ResponsesAsyncClient {
         JsonValue agentRefJsonValue = OpenAIJsonHelper.toJsonValue(agentReference);
 
         Map<String, JsonValue> additionalBodyProperties = new HashMap<>();
-        additionalBodyProperties.put("agent", agentRefJsonValue);
+        additionalBodyProperties.put("agent_reference", agentRefJsonValue);
 
         params.additionalBodyProperties(additionalBodyProperties);
         return Mono.fromFuture(this.responseServiceAsync.create(params.build()));

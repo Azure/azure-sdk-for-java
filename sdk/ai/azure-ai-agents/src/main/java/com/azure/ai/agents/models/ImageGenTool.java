@@ -305,6 +305,7 @@ public final class ImageGenTool extends Tool {
             this.inputFidelity == null ? null : this.inputFidelity.toString());
         jsonWriter.writeJsonField("input_image_mask", this.inputImageMask);
         jsonWriter.writeNumberField("partial_images", this.partialImages);
+        jsonWriter.writeStringField("action", this.action == null ? null : this.action.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -345,6 +346,8 @@ public final class ImageGenTool extends Tool {
                     deserializedImageGenTool.inputImageMask = ImageGenToolInputImageMask.fromJson(reader);
                 } else if ("partial_images".equals(fieldName)) {
                     deserializedImageGenTool.partialImages = reader.getNullable(JsonReader::getLong);
+                } else if ("action".equals(fieldName)) {
+                    deserializedImageGenTool.action = ImageGenActionEnum.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
@@ -403,6 +406,34 @@ public final class ImageGenTool extends Tool {
     @Generated
     public ImageGenTool setPartialImages(Long partialImages) {
         this.partialImages = partialImages;
+        return this;
+    }
+
+    /*
+     * Whether to generate a new image or edit an existing image. Default: `auto`.
+     */
+    @Generated
+    private ImageGenActionEnum action;
+
+    /**
+     * Get the action property: Whether to generate a new image or edit an existing image. Default: `auto`.
+     *
+     * @return the action value.
+     */
+    @Generated
+    public ImageGenActionEnum getAction() {
+        return this.action;
+    }
+
+    /**
+     * Set the action property: Whether to generate a new image or edit an existing image. Default: `auto`.
+     *
+     * @param action the action value to set.
+     * @return the ImageGenTool object itself.
+     */
+    @Generated
+    public ImageGenTool setAction(ImageGenActionEnum action) {
+        this.action = action;
         return this;
     }
 }

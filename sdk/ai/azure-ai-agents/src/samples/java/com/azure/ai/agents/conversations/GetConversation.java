@@ -11,7 +11,7 @@ import com.openai.models.conversations.Conversation;
 
 public class GetConversation {
     public static void main(String[] args) {
-        String endpoint = Configuration.getGlobalConfiguration().get("AZURE_AGENTS_ENDPOINT");
+        String endpoint = Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT");
         String conversationId = "your-conversation-id"; // Replace with actual conversation ID
         // Code sample for retrieving a conversation
         ConversationsClient conversationsClient = new AgentsClientBuilder()

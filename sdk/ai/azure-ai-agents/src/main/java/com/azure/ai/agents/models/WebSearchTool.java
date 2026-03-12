@@ -14,7 +14,7 @@ import java.io.IOException;
  * Web search
  *
  * Search the Internet for sources related to the prompt. Learn more about the
- * [web search tool](https://platform.openai.com/docs/guides/tools-web-search).
+ * [web search tool](/docs/guides/tools-web-search).
  */
 @Fluent
 public final class WebSearchTool extends Tool {

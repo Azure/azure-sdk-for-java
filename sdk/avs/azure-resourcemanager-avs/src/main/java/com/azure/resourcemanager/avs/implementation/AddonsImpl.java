@@ -40,12 +40,8 @@ public final class AddonsImpl implements Addons {
         Context context) {
         Response<AddonInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, privateCloudName, addonName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new AddonImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new AddonImpl(inner.getValue(), this.manager()));
     }
 
     public Addon get(String resourceGroupName, String privateCloudName, String addonName) {

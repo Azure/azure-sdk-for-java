@@ -10,6 +10,7 @@
 
 - Fixed an issue where certain `HttpResponseException.getResponse()` calls could cause a `NullPointerException`. ([#47801](https://github.com/Azure/azure-sdk-for-java/issues/47801))
 - Fixed tag comparison in `AesCbcHmacSha2Decryptor.doFinal()` where the computed tag was incorrectly compared with itself.
+- Fixed an issue where cryptographic operation results (`SignResult`, `EncryptResult`, `DecryptResult`, `WrapResult`, `UnwrapResult`) returned a versionless key ID instead of the full versioned key ID returned by the service. This caused issues when attempting roundtrip scenarios, as callers couldn't determine which key version was used for the original operation. ([#47822](https://github.com/Azure/azure-sdk-for-java/issues/47822))
 
 ### Other Changes
 

@@ -31,12 +31,8 @@ public final class BackupsAutomaticAndOnDemandsImpl implements BackupsAutomaticA
         String backupName, Context context) {
         Response<BackupAutomaticAndOnDemandInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, serverName, backupName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new BackupAutomaticAndOnDemandImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new BackupAutomaticAndOnDemandImpl(inner.getValue(), this.manager()));
     }
 
     public BackupAutomaticAndOnDemand get(String resourceGroupName, String serverName, String backupName) {

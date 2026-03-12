@@ -19,7 +19,7 @@ public final class GuestConfigurationInformation implements JsonSerializable<Gue
     /*
      * Indicates whether the service is enabled.
      */
-    private ChangeTrackingInformationEnablementStatus enablementStatus;
+    private EnablementState enablementStatus;
 
     /**
      * Creates an instance of GuestConfigurationInformation class.
@@ -32,7 +32,7 @@ public final class GuestConfigurationInformation implements JsonSerializable<Gue
      * 
      * @return the enablementStatus value.
      */
-    public ChangeTrackingInformationEnablementStatus enablementStatus() {
+    public EnablementState enablementStatus() {
         return this.enablementStatus;
     }
 
@@ -66,7 +66,7 @@ public final class GuestConfigurationInformation implements JsonSerializable<Gue
 
                 if ("enablementStatus".equals(fieldName)) {
                     deserializedGuestConfigurationInformation.enablementStatus
-                        = ChangeTrackingInformationEnablementStatus.fromString(reader.getString());
+                        = EnablementState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

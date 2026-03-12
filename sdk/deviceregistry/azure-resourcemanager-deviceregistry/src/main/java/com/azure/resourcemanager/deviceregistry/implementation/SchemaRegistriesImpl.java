@@ -31,12 +31,8 @@ public final class SchemaRegistriesImpl implements SchemaRegistries {
         Context context) {
         Response<SchemaRegistryInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, schemaRegistryName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new SchemaRegistryImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new SchemaRegistryImpl(inner.getValue(), this.manager()));
     }
 
     public SchemaRegistry getByResourceGroup(String resourceGroupName, String schemaRegistryName) {

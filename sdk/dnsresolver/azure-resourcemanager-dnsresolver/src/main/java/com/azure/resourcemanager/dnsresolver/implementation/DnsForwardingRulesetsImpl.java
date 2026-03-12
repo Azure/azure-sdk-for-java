@@ -33,12 +33,8 @@ public final class DnsForwardingRulesetsImpl implements DnsForwardingRulesets {
         String dnsForwardingRulesetName, Context context) {
         Response<DnsForwardingRulesetInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, dnsForwardingRulesetName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new DnsForwardingRulesetImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new DnsForwardingRulesetImpl(inner.getValue(), this.manager()));
     }
 
     public DnsForwardingRuleset getByResourceGroup(String resourceGroupName, String dnsForwardingRulesetName) {

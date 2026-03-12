@@ -11,7 +11,7 @@ import com.azure.ai.agents.implementation.models.CreateAgentVersionRequest;
 import com.azure.ai.agents.implementation.models.UpdateAgentFromManifestRequest;
 import com.azure.ai.agents.implementation.models.UpdateAgentRequest;
 import com.azure.ai.agents.models.AgentDefinition;
-import com.azure.ai.agents.models.AgentDefinitionFeatureKeys;
+import com.azure.ai.agents.models.AgentDefinitionOptInKeys;
 import com.azure.ai.agents.models.AgentDetails;
 import com.azure.ai.agents.models.AgentKind;
 import com.azure.ai.agents.models.AgentVersionDetails;
@@ -64,7 +64,7 @@ public final class AgentsClient {
      *             description: String (Optional)
      *             created_at: long (Required)
      *             definition (Required): {
-     *                 kind: String(prompt/hosted/container_app/workflow) (Required)
+     *                 kind: String(prompt/hosted/workflow) (Required)
      *                 rai_config (Optional): {
      *                     rai_policy_name: String (Required)
      *                 }
@@ -124,8 +124,8 @@ public final class AgentsClient {
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "ContainerAgents=V1Preview",
-     * "HostedAgents=V1Preview", "WorkflowAgents=V1Preview".</td></tr>
+     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
+     * "WorkflowAgents=V1Preview".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
@@ -138,7 +138,7 @@ public final class AgentsClient {
      *     }
      *     description: String (Optional)
      *     definition (Required): {
-     *         kind: String(prompt/hosted/container_app/workflow) (Required)
+     *         kind: String(prompt/hosted/workflow) (Required)
      *         rai_config (Optional): {
      *             rai_policy_name: String (Required)
      *         }
@@ -162,7 +162,7 @@ public final class AgentsClient {
      *     description: String (Optional)
      *     created_at: long (Required)
      *     definition (Required): {
-     *         kind: String(prompt/hosted/container_app/workflow) (Required)
+     *         kind: String(prompt/hosted/workflow) (Required)
      *         rai_config (Optional): {
      *             rai_policy_name: String (Required)
      *         }
@@ -258,7 +258,7 @@ public final class AgentsClient {
      *     description: String (Optional)
      *     created_at: long (Required)
      *     definition (Required): {
-     *         kind: String(prompt/hosted/container_app/workflow) (Required)
+     *         kind: String(prompt/hosted/workflow) (Required)
      *         rai_config (Optional): {
      *             rai_policy_name: String (Required)
      *         }
@@ -417,8 +417,8 @@ public final class AgentsClient {
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "ContainerAgents=V1Preview",
-     * "HostedAgents=V1Preview", "WorkflowAgents=V1Preview".</td></tr>
+     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
+     * "WorkflowAgents=V1Preview".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
@@ -432,7 +432,7 @@ public final class AgentsClient {
      *     }
      *     description: String (Optional)
      *     definition (Required): {
-     *         kind: String(prompt/hosted/container_app/workflow) (Required)
+     *         kind: String(prompt/hosted/workflow) (Required)
      *         rai_config (Optional): {
      *             rai_policy_name: String (Required)
      *         }
@@ -461,7 +461,7 @@ public final class AgentsClient {
      *             description: String (Optional)
      *             created_at: long (Required)
      *             definition (Required): {
-     *                 kind: String(prompt/hosted/container_app/workflow) (Required)
+     *                 kind: String(prompt/hosted/workflow) (Required)
      *                 rai_config (Optional): {
      *                     rai_policy_name: String (Required)
      *                 }
@@ -494,8 +494,8 @@ public final class AgentsClient {
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "ContainerAgents=V1Preview",
-     * "HostedAgents=V1Preview", "WorkflowAgents=V1Preview".</td></tr>
+     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
+     * "WorkflowAgents=V1Preview".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
@@ -508,7 +508,7 @@ public final class AgentsClient {
      *     }
      *     description: String (Optional)
      *     definition (Required): {
-     *         kind: String(prompt/hosted/container_app/workflow) (Required)
+     *         kind: String(prompt/hosted/workflow) (Required)
      *         rai_config (Optional): {
      *             rai_policy_name: String (Required)
      *         }
@@ -537,7 +537,7 @@ public final class AgentsClient {
      *             description: String (Optional)
      *             created_at: long (Required)
      *             definition (Required): {
-     *                 kind: String(prompt/hosted/container_app/workflow) (Required)
+     *                 kind: String(prompt/hosted/workflow) (Required)
      *                 rai_config (Optional): {
      *                     rai_policy_name: String (Required)
      *                 }
@@ -665,7 +665,7 @@ public final class AgentsClient {
      *             description: String (Optional)
      *             created_at: long (Required)
      *             definition (Required): {
-     *                 kind: String(prompt/hosted/container_app/workflow) (Required)
+     *                 kind: String(prompt/hosted/workflow) (Required)
      *                 rai_config (Optional): {
      *                     rai_policy_name: String (Required)
      *                 }
@@ -731,7 +731,7 @@ public final class AgentsClient {
      *             description: String (Optional)
      *             created_at: long (Required)
      *             definition (Required): {
-     *                 kind: String(prompt/hosted/container_app/workflow) (Required)
+     *                 kind: String(prompt/hosted/workflow) (Required)
      *                 rai_config (Optional): {
      *                     rai_policy_name: String (Required)
      *                 }
@@ -793,7 +793,7 @@ public final class AgentsClient {
      *     description: String (Optional)
      *     created_at: long (Required)
      *     definition (Required): {
-     *         kind: String(prompt/hosted/container_app/workflow) (Required)
+     *         kind: String(prompt/hosted/workflow) (Required)
      *         rai_config (Optional): {
      *             rai_policy_name: String (Required)
      *         }
@@ -1001,7 +1001,7 @@ public final class AgentsClient {
      *     description: String (Optional)
      *     created_at: long (Required)
      *     definition (Required): {
-     *         kind: String(prompt/hosted/container_app/workflow) (Required)
+     *         kind: String(prompt/hosted/workflow) (Required)
      *         rai_config (Optional): {
      *             rai_policy_name: String (Required)
      *         }
@@ -1146,7 +1146,7 @@ public final class AgentsClient {
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>kind</td><td>String</td><td>No</td><td>Filter agents by kind. If not provided, all agents are returned.
-     * Allowed values: "prompt", "hosted", "container_app", "workflow".</td></tr>
+     * Allowed values: "prompt", "hosted", "workflow".</td></tr>
      * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
      * between 1 and 100, and the
      * default is 20.</td></tr>
@@ -1183,7 +1183,7 @@ public final class AgentsClient {
      *             description: String (Optional)
      *             created_at: long (Required)
      *             definition (Required): {
-     *                 kind: String(prompt/hosted/container_app/workflow) (Required)
+     *                 kind: String(prompt/hosted/workflow) (Required)
      *                 rai_config (Optional): {
      *                     rai_policy_name: String (Required)
      *                 }
@@ -1272,7 +1272,7 @@ public final class AgentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AgentDetails createAgent(String agentName, AgentDefinition definition, AgentDefinitionFeatureKeys foundryFeatures,
+    AgentDetails createAgent(String agentName, AgentDefinition definition, AgentDefinitionOptInKeys foundryFeatures,
         Map<String, String> metadata, String description) {
         // Generated convenience method for createAgentWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -1310,7 +1310,7 @@ public final class AgentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AgentDetails updateAgent(String agentName, AgentDefinition definition, AgentDefinitionFeatureKeys foundryFeatures,
+    AgentDetails updateAgent(String agentName, AgentDefinition definition, AgentDefinitionOptInKeys foundryFeatures,
         Map<String, String> metadata, String description) {
         // Generated convenience method for updateAgentWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -1352,7 +1352,7 @@ public final class AgentsClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AgentVersionDetails createAgentVersion(String agentName, AgentDefinition definition,
-        AgentDefinitionFeatureKeys foundryFeatures, Map<String, String> metadata, String description) {
+        AgentDefinitionOptInKeys foundryFeatures, Map<String, String> metadata, String description) {
         // Generated convenience method for createAgentVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
         CreateAgentVersionRequest createAgentVersionRequestObj

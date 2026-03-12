@@ -13,12 +13,12 @@ public final class RetentionPolicyListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RetentionPolicyListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Accepted\",\"retentionPolicies\":[{\"retentionPeriodInDays\":961887193,\"orchestrationState\":\"Canceled\"},{\"retentionPeriodInDays\":590819227,\"orchestrationState\":\"Failed\"}]},\"id\":\"mmnkzsmodmgl\",\"name\":\"ugpbkw\",\"type\":\"mutduqktaps\"},{\"properties\":{\"provisioningState\":\"Failed\",\"retentionPolicies\":[{\"retentionPeriodInDays\":270738088,\"orchestrationState\":\"Canceled\"},{\"retentionPeriodInDays\":913932124,\"orchestrationState\":\"Canceled\"}]},\"id\":\"svqwhbmdgbbjfd\",\"name\":\"gmbmbexppbh\",\"type\":\"q\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"retentionPolicies\":[{\"retentionPeriodInDays\":169600138,\"orchestrationState\":\"Completed\"}]},\"id\":\"lgbquxig\",\"name\":\"yjgzjaoyfhrtxiln\",\"type\":\"rkujy\"},{\"properties\":{\"provisioningState\":\"Updating\",\"retentionPolicies\":[{\"retentionPeriodInDays\":1644570632,\"orchestrationState\":\"Terminated\"},{\"retentionPeriodInDays\":1398747720,\"orchestrationState\":\"Canceled\"},{\"retentionPeriodInDays\":1479576759,\"orchestrationState\":\"Canceled\"}]},\"id\":\"jkcpr\",\"name\":\"nwbxgjvtbvpyssz\",\"type\":\"nruj\"}],\"nextLink\":\"uhmuouqfprwzwbn\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"retentionPolicies\":[{\"retentionPeriodInDays\":904416760,\"orchestrationState\":\"Completed\"}]},\"id\":\"upfh\",\"name\":\"hltrpmopjmcmatuo\",\"type\":\"thfuiuaodsfcpkvx\"},{\"properties\":{\"provisioningState\":\"Accepted\",\"retentionPolicies\":[{\"retentionPeriodInDays\":1447641859,\"orchestrationState\":\"Canceled\"},{\"retentionPeriodInDays\":466984415,\"orchestrationState\":\"Terminated\"},{\"retentionPeriodInDays\":402102325,\"orchestrationState\":\"Canceled\"}]},\"id\":\"xbezyiuokktwh\",\"name\":\"dxwzywqsmbsurexi\",\"type\":\"o\"},{\"properties\":{\"provisioningState\":\"Accepted\",\"retentionPolicies\":[{\"retentionPeriodInDays\":908271116,\"orchestrationState\":\"Completed\"},{\"retentionPeriodInDays\":1510965337,\"orchestrationState\":\"Canceled\"}]},\"id\":\"ys\",\"name\":\"kiiuxhqyudxor\",\"type\":\"qn\"}],\"nextLink\":\"oczvy\"}")
             .toObject(RetentionPolicyListResult.class);
-        Assertions.assertEquals(961887193,
+        Assertions.assertEquals(904416760,
             model.value().get(0).properties().retentionPolicies().get(0).retentionPeriodInDays());
-        Assertions.assertEquals(PurgeableOrchestrationState.CANCELED,
+        Assertions.assertEquals(PurgeableOrchestrationState.COMPLETED,
             model.value().get(0).properties().retentionPolicies().get(0).orchestrationState());
-        Assertions.assertEquals("uhmuouqfprwzwbn", model.nextLink());
+        Assertions.assertEquals("oczvy", model.nextLink());
     }
 }

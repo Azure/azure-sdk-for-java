@@ -17,7 +17,7 @@ import java.util.Map;
  */
 public final class SchedulersUpdateSamples {
     /*
-     * x-ms-original-file: 2025-11-01/Schedulers_Update.json
+     * x-ms-original-file: 2026-02-01/Schedulers_Update.json
      */
     /**
      * Sample code: Schedulers_Update.

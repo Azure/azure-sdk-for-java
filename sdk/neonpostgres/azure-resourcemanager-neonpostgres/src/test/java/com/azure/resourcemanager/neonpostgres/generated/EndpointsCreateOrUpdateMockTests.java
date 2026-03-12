@@ -37,7 +37,7 @@ public final class EndpointsCreateOrUpdateMockTests {
 
         Endpoint response = manager.endpoints()
             .define("wtgntimznupb")
-            .withExistingBranche("dpiov", "lhrwyakzuafapwx", "vdeatjiobnirg", "extqd")
+            .withExistingBranch("dpiov", "lhrwyakzuafapwx", "vdeatjiobnirg", "extqd")
             .withProperties(new EndpointProperties().withEntityName("sqvhe")
                 .withAttributes(Arrays.asList(new Attributes().withName("dhdgdiwmlgstm").withValue("etqjisjm"),
                     new Attributes().withName("lzcaqfkakhgkrvt").withValue("ycvytv"),

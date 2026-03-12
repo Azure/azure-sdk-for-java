@@ -11,7 +11,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.resourcemanager.durabletask.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.durabletask.fluent.models.SchedulerInner;
+import com.azure.resourcemanager.durabletask.fluent.models.SchedulerPrivateLinkResourceInner;
+import com.azure.resourcemanager.durabletask.models.PrivateEndpointConnectionUpdate;
 import com.azure.resourcemanager.durabletask.models.SchedulerUpdate;
 
 /**
@@ -265,4 +268,338 @@ public interface SchedulersClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SchedulerInner> list(Context context);
+
+    /**
+     * Get a private link resource for the durable task scheduler.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param schedulerName The name of the Scheduler.
+     * @param privateLinkResourceName The name of the private link associated with the Azure resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a private link resource for the durable task scheduler along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<SchedulerPrivateLinkResourceInner> getPrivateLinkWithResponse(String resourceGroupName,
+        String schedulerName, String privateLinkResourceName, Context context);
+
+    /**
+     * Get a private link resource for the durable task scheduler.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param schedulerName The name of the Scheduler.
+     * @param privateLinkResourceName The name of the private link associated with the Azure resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a private link resource for the durable task scheduler.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SchedulerPrivateLinkResourceInner getPrivateLink(String resourceGroupName, String schedulerName,
+        String privateLinkResourceName);
+
+    /**
+     * List private link resources for the durable task scheduler.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param schedulerName The name of the Scheduler.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a SchedulerPrivateLinkResource list operation as paginated response with
+     * {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<SchedulerPrivateLinkResourceInner> listPrivateLinks(String resourceGroupName, String schedulerName);
+
+    /**
+     * List private link resources for the durable task scheduler.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param schedulerName The name of the Scheduler.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a SchedulerPrivateLinkResource list operation as paginated response with
+     * {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<SchedulerPrivateLinkResourceInner> listPrivateLinks(String resourceGroupName, String schedulerName,
+        Context context);
+
+    /**
+     * Get a private endpoint connection for the durable task scheduler.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param schedulerName The name of the Scheduler.
+     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
+     * resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a private endpoint connection for the durable task scheduler along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<PrivateEndpointConnectionInner> getPrivateEndpointConnectionWithResponse(String resourceGroupName,
+        String schedulerName, String privateEndpointConnectionName, Context context);
+
+    /**
+     * Get a private endpoint connection for the durable task scheduler.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param schedulerName The name of the Scheduler.
+     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
+     * resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a private endpoint connection for the durable task scheduler.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PrivateEndpointConnectionInner getPrivateEndpointConnection(String resourceGroupName, String schedulerName,
+        String privateEndpointConnectionName);
+
+    /**
+     * Create or update a private endpoint connection for the durable task scheduler.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param schedulerName The name of the Scheduler.
+     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
+     * resource.
+     * @param resource Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a private endpoint connection resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner>
+        beginCreateOrUpdatePrivateEndpointConnection(String resourceGroupName, String schedulerName,
+            String privateEndpointConnectionName, PrivateEndpointConnectionInner resource);
+
+    /**
+     * Create or update a private endpoint connection for the durable task scheduler.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param schedulerName The name of the Scheduler.
+     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
+     * resource.
+     * @param resource Resource create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a private endpoint connection resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner>
+        beginCreateOrUpdatePrivateEndpointConnection(String resourceGroupName, String schedulerName,
+            String privateEndpointConnectionName, PrivateEndpointConnectionInner resource, Context context);
+
+    /**
+     * Create or update a private endpoint connection for the durable task scheduler.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param schedulerName The name of the Scheduler.
+     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
+     * resource.
+     * @param resource Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a private endpoint connection resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PrivateEndpointConnectionInner createOrUpdatePrivateEndpointConnection(String resourceGroupName,
+        String schedulerName, String privateEndpointConnectionName, PrivateEndpointConnectionInner resource);
+
+    /**
+     * Create or update a private endpoint connection for the durable task scheduler.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param schedulerName The name of the Scheduler.
+     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
+     * resource.
+     * @param resource Resource create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a private endpoint connection resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PrivateEndpointConnectionInner createOrUpdatePrivateEndpointConnection(String resourceGroupName,
+        String schedulerName, String privateEndpointConnectionName, PrivateEndpointConnectionInner resource,
+        Context context);
+
+    /**
+     * Update a private endpoint connection for the durable task scheduler.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param schedulerName The name of the Scheduler.
+     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
+     * resource.
+     * @param properties The resource properties to be updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a private endpoint connection resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner>
+        beginUpdatePrivateEndpointConnection(String resourceGroupName, String schedulerName,
+            String privateEndpointConnectionName, PrivateEndpointConnectionUpdate properties);
+
+    /**
+     * Update a private endpoint connection for the durable task scheduler.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param schedulerName The name of the Scheduler.
+     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
+     * resource.
+     * @param properties The resource properties to be updated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a private endpoint connection resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner>
+        beginUpdatePrivateEndpointConnection(String resourceGroupName, String schedulerName,
+            String privateEndpointConnectionName, PrivateEndpointConnectionUpdate properties, Context context);
+
+    /**
+     * Update a private endpoint connection for the durable task scheduler.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param schedulerName The name of the Scheduler.
+     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
+     * resource.
+     * @param properties The resource properties to be updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a private endpoint connection resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PrivateEndpointConnectionInner updatePrivateEndpointConnection(String resourceGroupName, String schedulerName,
+        String privateEndpointConnectionName, PrivateEndpointConnectionUpdate properties);
+
+    /**
+     * Update a private endpoint connection for the durable task scheduler.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param schedulerName The name of the Scheduler.
+     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
+     * resource.
+     * @param properties The resource properties to be updated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a private endpoint connection resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PrivateEndpointConnectionInner updatePrivateEndpointConnection(String resourceGroupName, String schedulerName,
+        String privateEndpointConnectionName, PrivateEndpointConnectionUpdate properties, Context context);
+
+    /**
+     * Delete a private endpoint connection for the durable task scheduler.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param schedulerName The name of the Scheduler.
+     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
+     * resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDeletePrivateEndpointConnection(String resourceGroupName,
+        String schedulerName, String privateEndpointConnectionName);
+
+    /**
+     * Delete a private endpoint connection for the durable task scheduler.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param schedulerName The name of the Scheduler.
+     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
+     * resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDeletePrivateEndpointConnection(String resourceGroupName,
+        String schedulerName, String privateEndpointConnectionName, Context context);
+
+    /**
+     * Delete a private endpoint connection for the durable task scheduler.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param schedulerName The name of the Scheduler.
+     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
+     * resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deletePrivateEndpointConnection(String resourceGroupName, String schedulerName,
+        String privateEndpointConnectionName);
+
+    /**
+     * Delete a private endpoint connection for the durable task scheduler.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param schedulerName The name of the Scheduler.
+     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
+     * resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deletePrivateEndpointConnection(String resourceGroupName, String schedulerName,
+        String privateEndpointConnectionName, Context context);
+
+    /**
+     * List private endpoint connections for the durable task scheduler.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param schedulerName The name of the Scheduler.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a PrivateEndpointConnection list operation as paginated response with
+     * {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<PrivateEndpointConnectionInner> listPrivateEndpointConnections(String resourceGroupName,
+        String schedulerName);
+
+    /**
+     * List private endpoint connections for the durable task scheduler.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param schedulerName The name of the Scheduler.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a PrivateEndpointConnection list operation as paginated response with
+     * {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<PrivateEndpointConnectionInner> listPrivateEndpointConnections(String resourceGroupName,
+        String schedulerName, Context context);
 }

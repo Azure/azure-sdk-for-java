@@ -18,8 +18,9 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.HttpMethod;
-import io.netty.util.ReferenceCountUtil;
 import io.netty.util.ResourceLeakDetector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -35,6 +36,7 @@ import java.util.Map;
  * Used internally to provide functionality to communicate and process response from THINCLIENT in the Azure Cosmos DB database service.
  */
 public class ThinClientStoreModel extends RxGatewayStoreModel {
+    private static final Logger logger = LoggerFactory.getLogger(ThinClientStoreModel.class);
     private static final boolean leakDetectionDebuggingEnabled = ResourceLeakDetector.getLevel().ordinal() >=
         ResourceLeakDetector.Level.ADVANCED.ordinal();
 
@@ -104,9 +106,17 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
             return super.unwrapToStoreResponse(endpoint, request, statusCode, headers, Unpooled.EMPTY_BUFFER);
         }
 
-        if (content.readableBytes() == 0) {
+        if (content.refCnt() == 0) {
+            // ByteBuf was already released (e.g., stream RST due to responseTimeout on HTTP/2).
+            // Treat as empty response to avoid IllegalReferenceCountException during decoding.
+            logger.debug("Content ByteBuf already released (refCnt=0) in unwrapToStoreResponse, treating as empty");
+            return super.unwrapToStoreResponse(endpoint, request, statusCode, headers, Unpooled.EMPTY_BUFFER);
+        }
 
-            ReferenceCountUtil.safeRelease(content);
+        if (content.readableBytes() == 0) {
+            if (content.refCnt() > 0) {
+                safeSilentRelease(content);
+            }
             return super.unwrapToStoreResponse(endpoint, request, statusCode, headers, Unpooled.EMPTY_BUFFER);
         }
 
@@ -135,33 +145,35 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
                             payloadBuf
                         );
 
-                        if (payloadBuf == Unpooled.EMPTY_BUFFER) {
-                            // payload is a slice/derived view; super() owns payload, we still own the container
-                            // this includes scenarios where payloadBuf == EMPTY_BUFFER
-                            ReferenceCountUtil.safeRelease(content);
+                        if (payloadBuf == Unpooled.EMPTY_BUFFER && content.refCnt() > 0) {
+                            safeSilentRelease(content);
                         }
 
                         return storeResponse;
-                    } catch (Throwable t){
-                        if (payloadBuf == Unpooled.EMPTY_BUFFER) {
-                            // payload is a slice/derived view; super() owns payload, we still own the container
-                            // this includes scenarios where payloadBuf == EMPTY_BUFFER
-                            ReferenceCountUtil.safeRelease(content);
+                    } catch (Throwable t) {
+                        if (payloadBuf == Unpooled.EMPTY_BUFFER && content.refCnt() > 0) {
+                            safeSilentRelease(content);
                         }
 
                         throw t;
                     }
                 }
 
-                ReferenceCountUtil.safeRelease(content);
+                if (content.refCnt() > 0) {
+                    safeSilentRelease(content);
+                }
                 return super.unwrapToStoreResponse(endpoint, request, statusCode, headers, Unpooled.EMPTY_BUFFER);
             }
 
-            ReferenceCountUtil.safeRelease(content);
+            if (content.refCnt() > 0) {
+                safeSilentRelease(content);
+            }
             throw new IllegalStateException("Invalid rntbd response");
         } catch (Throwable t) {
             // Ensure container is not leaked on any unexpected path
-            ReferenceCountUtil.safeRelease(content);
+            if (content.refCnt() > 0) {
+                safeSilentRelease(content);
+            }
             throw t;
         }
     }
@@ -223,9 +235,12 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
                 requestUri,
                 requestUri.getPort(),
                 headers,
-                Flux.just(contentAsByteArray));
+                Flux.just(contentAsByteArray))
+                .withThinClientRequest(true);
         } finally {
-            ReferenceCountUtil.safeRelease(byteBuf);
+            if (byteBuf.refCnt() > 0) {
+                safeSilentRelease(byteBuf);
+            }
         }
     }
 

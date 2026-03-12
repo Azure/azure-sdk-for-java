@@ -42,6 +42,7 @@ import static org.awaitility.Awaitility.waitAtMost;
     "spring.cloud.azure.servicebus.entity-type=queue" })
 @Testcontainers
 @EnabledOnOs(OS.LINUX)
+@SuppressWarnings("deprecation") // Link to related issue: https://github.com/testcontainers/testcontainers-java/issues/11554
 class ServiceBusContainerConnectionDetailsFactoryTests {
 
     private static final Network NETWORK = Network.newNetwork();

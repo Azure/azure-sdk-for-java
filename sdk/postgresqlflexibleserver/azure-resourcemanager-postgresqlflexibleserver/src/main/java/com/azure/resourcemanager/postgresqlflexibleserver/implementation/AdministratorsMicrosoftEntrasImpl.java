@@ -31,12 +31,8 @@ public final class AdministratorsMicrosoftEntrasImpl implements AdministratorsMi
         String objectId, Context context) {
         Response<AdministratorMicrosoftEntraInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, serverName, objectId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new AdministratorMicrosoftEntraImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new AdministratorMicrosoftEntraImpl(inner.getValue(), this.manager()));
     }
 
     public AdministratorMicrosoftEntra get(String resourceGroupName, String serverName, String objectId) {

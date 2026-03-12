@@ -10,6 +10,8 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Error details if there is any failure in load test run.
@@ -18,16 +20,39 @@ import java.io.IOException;
 public final class ErrorDetails implements JsonSerializable<ErrorDetails> {
 
     /*
+     * Error code if there is any failure in load test run.
+     */
+    @Generated
+    private String code;
+
+    /*
      * Error details in case test run was not successfully run.
      */
     @Generated
     private String message;
+
+    /*
+     * A dictionary for storing additional error information for better context. Each key is a property name (e.g.,
+     * "Description", "Resolution", "Category", "Region"), and its value is an array of strings with relevant details.
+     */
+    @Generated
+    private Map<String, List<String>> properties;
 
     /**
      * Creates an instance of ErrorDetails class.
      */
     @Generated
     private ErrorDetails() {
+    }
+
+    /**
+     * Get the code property: Error code if there is any failure in load test run.
+     *
+     * @return the code value.
+     */
+    @Generated
+    public String getCode() {
+        return this.code;
     }
 
     /**
@@ -38,6 +63,18 @@ public final class ErrorDetails implements JsonSerializable<ErrorDetails> {
     @Generated
     public String getMessage() {
         return this.message;
+    }
+
+    /**
+     * Get the properties property: A dictionary for storing additional error information for better context. Each key
+     * is a property name (e.g., "Description", "Resolution", "Category", "Region"), and its value is an array of
+     * strings with relevant details.
+     *
+     * @return the properties value.
+     */
+    @Generated
+    public Map<String, List<String>> getProperties() {
+        return this.properties;
     }
 
     /**
@@ -65,8 +102,14 @@ public final class ErrorDetails implements JsonSerializable<ErrorDetails> {
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("message".equals(fieldName)) {
+                if ("code".equals(fieldName)) {
+                    deserializedErrorDetails.code = reader.getString();
+                } else if ("message".equals(fieldName)) {
                     deserializedErrorDetails.message = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    Map<String, List<String>> properties
+                        = reader.readMap(reader1 -> reader1.readArray(reader2 -> reader2.getString()));
+                    deserializedErrorDetails.properties = properties;
                 } else {
                     reader.skipChildren();
                 }

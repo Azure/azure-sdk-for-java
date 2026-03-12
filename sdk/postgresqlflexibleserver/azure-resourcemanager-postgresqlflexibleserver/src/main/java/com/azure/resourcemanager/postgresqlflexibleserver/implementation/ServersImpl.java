@@ -34,12 +34,8 @@ public final class ServersImpl implements Servers {
         Context context) {
         Response<ServerInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, serverName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ServerImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ServerImpl(inner.getValue(), this.manager()));
     }
 
     public Server getByResourceGroup(String resourceGroupName, String serverName) {
