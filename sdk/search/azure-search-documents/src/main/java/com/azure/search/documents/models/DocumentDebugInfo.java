@@ -20,12 +20,6 @@ import java.util.Map;
 public final class DocumentDebugInfo implements JsonSerializable<DocumentDebugInfo> {
 
     /*
-     * Contains debugging information specific to semantic ranking requests.
-     */
-    @Generated
-    private SemanticDebugInfo semantic;
-
-    /*
      * Contains debugging information specific to vector and hybrid search.
      */
     @Generated
@@ -42,16 +36,6 @@ public final class DocumentDebugInfo implements JsonSerializable<DocumentDebugIn
      */
     @Generated
     private DocumentDebugInfo() {
-    }
-
-    /**
-     * Get the semantic property: Contains debugging information specific to semantic ranking requests.
-     *
-     * @return the semantic value.
-     */
-    @Generated
-    public SemanticDebugInfo getSemantic() {
-        return this.semantic;
     }
 
     /**
@@ -100,9 +84,7 @@ public final class DocumentDebugInfo implements JsonSerializable<DocumentDebugIn
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("semantic".equals(fieldName)) {
-                    deserializedDocumentDebugInfo.semantic = SemanticDebugInfo.fromJson(reader);
-                } else if ("vectors".equals(fieldName)) {
+                if ("vectors".equals(fieldName)) {
                     deserializedDocumentDebugInfo.vectors = VectorsDebugInfo.fromJson(reader);
                 } else if ("innerHits".equals(fieldName)) {
                     Map<String, List<QueryResultDocumentInnerHit>> innerHits = reader.readMap(

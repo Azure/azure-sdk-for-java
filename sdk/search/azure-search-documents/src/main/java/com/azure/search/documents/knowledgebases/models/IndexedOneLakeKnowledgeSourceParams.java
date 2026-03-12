@@ -69,16 +69,6 @@ public final class IndexedOneLakeKnowledgeSourceParams extends KnowledgeSourcePa
      */
     @Generated
     @Override
-    public IndexedOneLakeKnowledgeSourceParams setAlwaysQuerySource(Boolean alwaysQuerySource) {
-        super.setAlwaysQuerySource(alwaysQuerySource);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
     public IndexedOneLakeKnowledgeSourceParams setRerankerThreshold(Float rerankerThreshold) {
         super.setRerankerThreshold(rerankerThreshold);
         return this;
@@ -94,7 +84,6 @@ public final class IndexedOneLakeKnowledgeSourceParams extends KnowledgeSourcePa
         jsonWriter.writeStringField("knowledgeSourceName", getKnowledgeSourceName());
         jsonWriter.writeBooleanField("includeReferences", isIncludeReferences());
         jsonWriter.writeBooleanField("includeReferenceSourceData", isIncludeReferenceSourceData());
-        jsonWriter.writeBooleanField("alwaysQuerySource", isAlwaysQuerySource());
         jsonWriter.writeNumberField("rerankerThreshold", getRerankerThreshold());
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         return jsonWriter.writeEndObject();
@@ -115,7 +104,6 @@ public final class IndexedOneLakeKnowledgeSourceParams extends KnowledgeSourcePa
             String knowledgeSourceName = null;
             Boolean includeReferences = null;
             Boolean includeReferenceSourceData = null;
-            Boolean alwaysQuerySource = null;
             Float rerankerThreshold = null;
             KnowledgeSourceKind kind = KnowledgeSourceKind.INDEXED_ONE_LAKE;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -127,8 +115,6 @@ public final class IndexedOneLakeKnowledgeSourceParams extends KnowledgeSourcePa
                     includeReferences = reader.getNullable(JsonReader::getBoolean);
                 } else if ("includeReferenceSourceData".equals(fieldName)) {
                     includeReferenceSourceData = reader.getNullable(JsonReader::getBoolean);
-                } else if ("alwaysQuerySource".equals(fieldName)) {
-                    alwaysQuerySource = reader.getNullable(JsonReader::getBoolean);
                 } else if ("rerankerThreshold".equals(fieldName)) {
                     rerankerThreshold = reader.getNullable(JsonReader::getFloat);
                 } else if ("kind".equals(fieldName)) {
@@ -141,7 +127,6 @@ public final class IndexedOneLakeKnowledgeSourceParams extends KnowledgeSourcePa
                 = new IndexedOneLakeKnowledgeSourceParams(knowledgeSourceName);
             deserializedIndexedOneLakeKnowledgeSourceParams.setIncludeReferences(includeReferences);
             deserializedIndexedOneLakeKnowledgeSourceParams.setIncludeReferenceSourceData(includeReferenceSourceData);
-            deserializedIndexedOneLakeKnowledgeSourceParams.setAlwaysQuerySource(alwaysQuerySource);
             deserializedIndexedOneLakeKnowledgeSourceParams.setRerankerThreshold(rerankerThreshold);
             deserializedIndexedOneLakeKnowledgeSourceParams.kind = kind;
             return deserializedIndexedOneLakeKnowledgeSourceParams;
