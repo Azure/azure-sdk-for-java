@@ -101,28 +101,6 @@ public final class FileSearchTool extends Tool {
     }
 
     /**
-     * Get the filters property: The filters property.
-     *
-     * @return the filters value.
-     */
-    @Generated
-    public BinaryData getFilters() {
-        return this.filters;
-    }
-
-    /**
-     * Set the filters property: The filters property.
-     *
-     * @param filters the filters value to set.
-     * @return the FileSearchTool object itself.
-     */
-    @Generated
-    public FileSearchTool setFilters(BinaryData filters) {
-        this.filters = filters;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -211,6 +189,28 @@ public final class FileSearchTool extends Tool {
     @Generated
     public FileSearchTool setMaxResults(Long maxResults) {
         this.maxResults = maxResults;
+        return this;
+    }
+
+    /**
+     * Get the filters property: The filters property.
+     *
+     * @return the filters value.
+     */
+    BinaryData getFilters() {
+        // AI Tooling: union type
+        return this.filters;
+    }
+
+    /**
+     * Set the filters property: The filters property.
+     *
+     * @param filters the filters value to set.
+     * @return the FileSearchTool object itself.
+     */
+    FileSearchTool setFilters(BinaryData filters) {
+        // AI Tooling: union type
+        this.filters = filters;
         return this;
     }
 

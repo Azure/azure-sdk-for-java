@@ -10,7 +10,6 @@ import com.azure.ai.agents.models.AgentReference;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.McpTool;
 import com.azure.ai.agents.models.PromptAgentDefinition;
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.openai.models.responses.Response;
@@ -56,7 +55,7 @@ public class McpSync {
             // Uses gitmcp.io to expose a GitHub repository as an MCP-compatible server
             McpTool tool = new McpTool("api-specs")
                 .setServerUrl("https://gitmcp.io/Azure/azure-rest-api-specs")
-                .setRequireApproval(BinaryData.fromObject("always"));
+                .setRequireApproval("always");
             // END: com.azure.ai.agents.built_in_mcp
 
             // Create the agent definition with MCP tool enabled
