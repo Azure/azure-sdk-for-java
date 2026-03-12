@@ -16,10 +16,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * The AnalyzeRequest1 model.
+ * The AnalyzeRequest model.
  */
 @Fluent
-public final class AnalyzeRequest1 implements JsonSerializable<AnalyzeRequest1> {
+public final class AnalyzeRequest implements JsonSerializable<AnalyzeRequest> {
     /*
      * Inputs to analyze. Currently, only pro mode supports multiple inputs.
      */
@@ -34,12 +34,12 @@ public final class AnalyzeRequest1 implements JsonSerializable<AnalyzeRequest1> 
     private Map<String, String> modelDeployments;
 
     /**
-     * Creates an instance of AnalyzeRequest1 class.
+     * Creates an instance of AnalyzeRequest class.
      * 
      * @param inputs the inputs value to set.
      */
     @Generated
-    public AnalyzeRequest1(List<AnalysisInput> inputs) {
+    public AnalyzeRequest(List<AnalysisInput> inputs) {
         this.inputs = inputs;
     }
 
@@ -69,10 +69,10 @@ public final class AnalyzeRequest1 implements JsonSerializable<AnalyzeRequest1> 
      * Microsoft Foundry. For details and current semantics, see https://aka.ms/cudoc-quickstart-rest.
      * 
      * @param modelDeployments the modelDeployments value to set.
-     * @return the AnalyzeRequest1 object itself.
+     * @return the AnalyzeRequest object itself.
      */
     @Generated
-    public AnalyzeRequest1 setModelDeployments(Map<String, String> modelDeployments) {
+    public AnalyzeRequest setModelDeployments(Map<String, String> modelDeployments) {
         this.modelDeployments = modelDeployments;
         return this;
     }
@@ -91,16 +91,16 @@ public final class AnalyzeRequest1 implements JsonSerializable<AnalyzeRequest1> 
     }
 
     /**
-     * Reads an instance of AnalyzeRequest1 from the JsonReader.
+     * Reads an instance of AnalyzeRequest from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of AnalyzeRequest1 if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of AnalyzeRequest if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the AnalyzeRequest1.
+     * @throws IOException If an error occurs while reading the AnalyzeRequest.
      */
     @Generated
-    public static AnalyzeRequest1 fromJson(JsonReader jsonReader) throws IOException {
+    public static AnalyzeRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             List<AnalysisInput> inputs = null;
             Map<String, String> modelDeployments = null;
@@ -116,10 +116,10 @@ public final class AnalyzeRequest1 implements JsonSerializable<AnalyzeRequest1> 
                     reader.skipChildren();
                 }
             }
-            AnalyzeRequest1 deserializedAnalyzeRequest1 = new AnalyzeRequest1(inputs);
-            deserializedAnalyzeRequest1.modelDeployments = modelDeployments;
+            AnalyzeRequest deserializedAnalyzeRequest = new AnalyzeRequest(inputs);
+            deserializedAnalyzeRequest.modelDeployments = modelDeployments;
 
-            return deserializedAnalyzeRequest1;
+            return deserializedAnalyzeRequest;
         });
     }
 }

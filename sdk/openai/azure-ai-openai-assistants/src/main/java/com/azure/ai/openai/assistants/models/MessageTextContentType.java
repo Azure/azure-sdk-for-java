@@ -5,35 +5,35 @@
 package com.azure.ai.openai.assistants.models;
 
 /**
- * Defines values for AssistantsApiResponseFormatType.
+ * Defines values for MessageTextContentType.
  */
-public enum AssistantsApiResponseFormatType {
+public enum MessageTextContentType {
     /**
      * Enum value text.
      */
     TEXT("text");
 
     /**
-     * The actual serialized value for a AssistantsApiResponseFormatType instance.
+     * The actual serialized value for a MessageTextContentType instance.
      */
     private final String value;
 
-    AssistantsApiResponseFormatType(String value) {
+    MessageTextContentType(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a AssistantsApiResponseFormatType instance.
+     * Parses a serialized value to a MessageTextContentType instance.
      * 
      * @param value the serialized value to parse.
-     * @return the parsed AssistantsApiResponseFormatType object, or null if unable to parse.
+     * @return the parsed MessageTextContentType object, or null if unable to parse.
      */
-    public static AssistantsApiResponseFormatType fromString(String value) {
+    public static MessageTextContentType fromString(String value) {
         if (value == null) {
             return null;
         }
-        AssistantsApiResponseFormatType[] items = AssistantsApiResponseFormatType.values();
-        for (AssistantsApiResponseFormatType item : items) {
+        MessageTextContentType[] items = MessageTextContentType.values();
+        for (MessageTextContentType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

@@ -36,7 +36,7 @@ public final class InputItemWebSearchToolCall extends InputItem {
      * The status of the web search tool call.
      */
     @Generated
-    private final OutputItemWebSearchToolCallStatus status;
+    private final ItemResourceWebSearchToolCallStatus status;
 
     /*
      * An object describing the specific action taken in this web search call.
@@ -44,20 +44,6 @@ public final class InputItemWebSearchToolCall extends InputItem {
      */
     @Generated
     private final BinaryData action;
-
-    /**
-     * Creates an instance of InputItemWebSearchToolCall class.
-     *
-     * @param id the id value to set.
-     * @param status the status value to set.
-     * @param action the action value to set.
-     */
-    @Generated
-    public InputItemWebSearchToolCall(String id, OutputItemWebSearchToolCallStatus status, BinaryData action) {
-        this.id = id;
-        this.status = status;
-        this.action = action;
-    }
 
     /**
      * Get the type property: The type property.
@@ -86,7 +72,7 @@ public final class InputItemWebSearchToolCall extends InputItem {
      * @return the status value.
      */
     @Generated
-    public OutputItemWebSearchToolCallStatus getStatus() {
+    public ItemResourceWebSearchToolCallStatus getStatus() {
         return this.status;
     }
 
@@ -129,7 +115,7 @@ public final class InputItemWebSearchToolCall extends InputItem {
     public static InputItemWebSearchToolCall fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;
-            OutputItemWebSearchToolCallStatus status = null;
+            ItemResourceWebSearchToolCallStatus status = null;
             BinaryData action = null;
             InputItemType type = InputItemType.WEB_SEARCH_CALL;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -138,7 +124,7 @@ public final class InputItemWebSearchToolCall extends InputItem {
                 if ("id".equals(fieldName)) {
                     id = reader.getString();
                 } else if ("status".equals(fieldName)) {
-                    status = OutputItemWebSearchToolCallStatus.fromString(reader.getString());
+                    status = ItemResourceWebSearchToolCallStatus.fromString(reader.getString());
                 } else if ("action".equals(fieldName)) {
                     action = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
                 } else if ("type".equals(fieldName)) {
@@ -152,5 +138,19 @@ public final class InputItemWebSearchToolCall extends InputItem {
             deserializedInputItemWebSearchToolCall.type = type;
             return deserializedInputItemWebSearchToolCall;
         });
+    }
+
+    /**
+     * Creates an instance of InputItemWebSearchToolCall class.
+     *
+     * @param id the id value to set.
+     * @param status the status value to set.
+     * @param action the action value to set.
+     */
+    @Generated
+    public InputItemWebSearchToolCall(String id, ItemResourceWebSearchToolCallStatus status, BinaryData action) {
+        this.id = id;
+        this.status = status;
+        this.action = action;
     }
 }

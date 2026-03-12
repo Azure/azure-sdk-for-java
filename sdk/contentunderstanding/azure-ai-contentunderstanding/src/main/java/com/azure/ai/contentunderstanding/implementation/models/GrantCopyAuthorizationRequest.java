@@ -13,10 +13,10 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The GrantCopyAuthorizationRequest1 model.
+ * The GrantCopyAuthorizationRequest model.
  */
 @Fluent
-public final class GrantCopyAuthorizationRequest1 implements JsonSerializable<GrantCopyAuthorizationRequest1> {
+public final class GrantCopyAuthorizationRequest implements JsonSerializable<GrantCopyAuthorizationRequest> {
     /*
      * Azure resource ID of the target analyzer location.
      */
@@ -30,12 +30,12 @@ public final class GrantCopyAuthorizationRequest1 implements JsonSerializable<Gr
     private String targetRegion;
 
     /**
-     * Creates an instance of GrantCopyAuthorizationRequest1 class.
+     * Creates an instance of GrantCopyAuthorizationRequest class.
      * 
      * @param targetAzureResourceId the targetAzureResourceId value to set.
      */
     @Generated
-    public GrantCopyAuthorizationRequest1(String targetAzureResourceId) {
+    public GrantCopyAuthorizationRequest(String targetAzureResourceId) {
         this.targetAzureResourceId = targetAzureResourceId;
     }
 
@@ -63,10 +63,10 @@ public final class GrantCopyAuthorizationRequest1 implements JsonSerializable<Gr
      * Set the targetRegion property: Azure region of the target analyzer location. Defaults to current region.
      * 
      * @param targetRegion the targetRegion value to set.
-     * @return the GrantCopyAuthorizationRequest1 object itself.
+     * @return the GrantCopyAuthorizationRequest object itself.
      */
     @Generated
-    public GrantCopyAuthorizationRequest1 setTargetRegion(String targetRegion) {
+    public GrantCopyAuthorizationRequest setTargetRegion(String targetRegion) {
         this.targetRegion = targetRegion;
         return this;
     }
@@ -84,16 +84,16 @@ public final class GrantCopyAuthorizationRequest1 implements JsonSerializable<Gr
     }
 
     /**
-     * Reads an instance of GrantCopyAuthorizationRequest1 from the JsonReader.
+     * Reads an instance of GrantCopyAuthorizationRequest from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of GrantCopyAuthorizationRequest1 if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
+     * @return An instance of GrantCopyAuthorizationRequest if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the GrantCopyAuthorizationRequest1.
+     * @throws IOException If an error occurs while reading the GrantCopyAuthorizationRequest.
      */
     @Generated
-    public static GrantCopyAuthorizationRequest1 fromJson(JsonReader jsonReader) throws IOException {
+    public static GrantCopyAuthorizationRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String targetAzureResourceId = null;
             String targetRegion = null;
@@ -109,11 +109,11 @@ public final class GrantCopyAuthorizationRequest1 implements JsonSerializable<Gr
                     reader.skipChildren();
                 }
             }
-            GrantCopyAuthorizationRequest1 deserializedGrantCopyAuthorizationRequest1
-                = new GrantCopyAuthorizationRequest1(targetAzureResourceId);
-            deserializedGrantCopyAuthorizationRequest1.targetRegion = targetRegion;
+            GrantCopyAuthorizationRequest deserializedGrantCopyAuthorizationRequest
+                = new GrantCopyAuthorizationRequest(targetAzureResourceId);
+            deserializedGrantCopyAuthorizationRequest.targetRegion = targetRegion;
 
-            return deserializedGrantCopyAuthorizationRequest1;
+            return deserializedGrantCopyAuthorizationRequest;
         });
     }
 }
