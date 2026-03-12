@@ -52,6 +52,7 @@ public final class BlobPropertiesInternalConstructorProperties implements BlobPr
     private final String copyDestinationSnapshot;
     private final AccessTier accessTier;
     private final Boolean isAccessTierInferred;
+    private final AccessTier smartAccessTier;
     private final ArchiveStatus archiveStatus;
     private final String encryptionKeySha256;
     private final String encryptionScope;
@@ -129,9 +130,10 @@ public final class BlobPropertiesInternalConstructorProperties implements BlobPr
         final String copyId, final CopyStatusType copyStatus, final String copySource, final String copyProgress,
         final OffsetDateTime copyCompletionTime, final String copyStatusDescription, final Boolean isServerEncrypted,
         final Boolean isIncrementalCopy, final String copyDestinationSnapshot, final AccessTier accessTier,
-        final Boolean isAccessTierInferred, final ArchiveStatus archiveStatus, final String encryptionKeySha256,
-        final String encryptionScope, final OffsetDateTime accessTierChangeTime, final Map<String, String> metadata,
-        final Integer committedBlockCount, final Long tagCount, final String versionId, final Boolean isCurrentVersion,
+        final Boolean isAccessTierInferred, AccessTier smartAccessTier, final ArchiveStatus archiveStatus,
+        final String encryptionKeySha256, final String encryptionScope, final OffsetDateTime accessTierChangeTime,
+        final Map<String, String> metadata, final Integer committedBlockCount, final Long tagCount,
+        final String versionId, final Boolean isCurrentVersion,
         final List<ObjectReplicationPolicy> objectReplicationSourcePolicies,
         final String objectReplicationDestinationPolicyId, final RehydratePriority rehydratePriority,
         final Boolean isSealed, final OffsetDateTime lastAccessedTime, final OffsetDateTime expiresOn,
@@ -162,6 +164,7 @@ public final class BlobPropertiesInternalConstructorProperties implements BlobPr
         this.copyDestinationSnapshot = copyDestinationSnapshot;
         this.accessTier = accessTier;
         this.isAccessTierInferred = isAccessTierInferred;
+        this.smartAccessTier = smartAccessTier;
         this.archiveStatus = archiveStatus;
         this.encryptionKeySha256 = encryptionKeySha256;
         this.encryptionScope = encryptionScope;
@@ -241,9 +244,10 @@ public final class BlobPropertiesInternalConstructorProperties implements BlobPr
         final String copyId, final CopyStatusType copyStatus, final String copySource, final String copyProgress,
         final OffsetDateTime copyCompletionTime, final String copyStatusDescription, final Boolean isServerEncrypted,
         final Boolean isIncrementalCopy, final String copyDestinationSnapshot, final AccessTier accessTier,
-        final Boolean isAccessTierInferred, final ArchiveStatus archiveStatus, final String encryptionKeySha256,
-        final String encryptionScope, final OffsetDateTime accessTierChangeTime, final Map<String, String> metadata,
-        final Integer committedBlockCount, final Long tagCount, final String versionId, final Boolean isCurrentVersion,
+        final Boolean isAccessTierInferred, AccessTier smartAccessTier, final ArchiveStatus archiveStatus,
+        final String encryptionKeySha256, final String encryptionScope, final OffsetDateTime accessTierChangeTime,
+        final Map<String, String> metadata, final Integer committedBlockCount, final Long tagCount,
+        final String versionId, final Boolean isCurrentVersion,
         final List<ObjectReplicationPolicy> objectReplicationSourcePolicies,
         final String objectReplicationDestinationPolicyId, final RehydratePriority rehydratePriority,
         final Boolean isSealed, final OffsetDateTime lastAccessedTime, final OffsetDateTime expiresOn,
@@ -274,6 +278,7 @@ public final class BlobPropertiesInternalConstructorProperties implements BlobPr
         this.copyDestinationSnapshot = copyDestinationSnapshot;
         this.accessTier = accessTier;
         this.isAccessTierInferred = isAccessTierInferred;
+        this.smartAccessTier = smartAccessTier;
         this.archiveStatus = archiveStatus;
         this.encryptionKeySha256 = encryptionKeySha256;
         this.encryptionScope = encryptionScope;
@@ -422,6 +427,11 @@ public final class BlobPropertiesInternalConstructorProperties implements BlobPr
     @Override
     public Boolean isAccessTierInferred() {
         return isAccessTierInferred;
+    }
+
+    @Override
+    public AccessTier getSmartAccessTier() {
+        return smartAccessTier;
     }
 
     @Override

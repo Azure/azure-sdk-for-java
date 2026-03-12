@@ -171,6 +171,8 @@ public interface BlobPropertiesInternal {
      */
     Boolean isAccessTierInferred();
 
+    AccessTier getSmartAccessTier();
+
     /**
      * @return the archive status of the blob. This is only for blobs on a blob storage and general purpose v2 account.
      */

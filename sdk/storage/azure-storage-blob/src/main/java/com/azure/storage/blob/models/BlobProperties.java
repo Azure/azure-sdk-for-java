@@ -83,15 +83,15 @@ public final class BlobProperties {
         final CopyStatusType copyStatus, final String copySource, final String copyProgress,
         final OffsetDateTime copyCompletionTime, final String copyStatusDescription, final Boolean isServerEncrypted,
         final Boolean isIncrementalCopy, final String copyDestinationSnapshot, final AccessTier accessTier,
-        final Boolean isAccessTierInferred, final ArchiveStatus archiveStatus, final String encryptionKeySha256,
-        final OffsetDateTime accessTierChangeTime, final Map<String, String> metadata,
+        final Boolean isAccessTierInferred, final AccessTier smartAccessTier, final ArchiveStatus archiveStatus,
+        final String encryptionKeySha256, final OffsetDateTime accessTierChangeTime, final Map<String, String> metadata,
         final Integer committedBlockCount) {
         this(creationTime, lastModified, eTag, blobSize, contentType, contentMd5, contentEncoding, contentDisposition,
             contentLanguage, cacheControl, blobSequenceNumber, blobType, leaseStatus, leaseState, leaseDuration, copyId,
             copyStatus, copySource, copyProgress, copyCompletionTime, copyStatusDescription, isServerEncrypted,
-            isIncrementalCopy, copyDestinationSnapshot, accessTier, isAccessTierInferred, archiveStatus,
-            encryptionKeySha256, null, accessTierChangeTime, metadata, committedBlockCount, null, null, null, null,
-            null);
+            isIncrementalCopy, copyDestinationSnapshot, accessTier, isAccessTierInferred, smartAccessTier,
+            archiveStatus, encryptionKeySha256, null, accessTierChangeTime, metadata, committedBlockCount, null, null,
+            null, null, null);
     }
 
     /**
@@ -148,16 +148,18 @@ public final class BlobProperties {
         final CopyStatusType copyStatus, final String copySource, final String copyProgress,
         final OffsetDateTime copyCompletionTime, final String copyStatusDescription, final Boolean isServerEncrypted,
         final Boolean isIncrementalCopy, final String copyDestinationSnapshot, final AccessTier accessTier,
-        final Boolean isAccessTierInferred, final ArchiveStatus archiveStatus, final String encryptionKeySha256,
-        final String encryptionScope, final OffsetDateTime accessTierChangeTime, final Map<String, String> metadata,
-        final Integer committedBlockCount, final String versionId, final Boolean isCurrentVersion, final Long tagCount,
-        Map<String, String> objectReplicationStatus, final String rehydratePriority, final Boolean isSealed) {
+        final Boolean isAccessTierInferred, final AccessTier smartAccessTier, final ArchiveStatus archiveStatus,
+        final String encryptionKeySha256, final String encryptionScope, final OffsetDateTime accessTierChangeTime,
+        final Map<String, String> metadata, final Integer committedBlockCount, final String versionId,
+        final Boolean isCurrentVersion, final Long tagCount, Map<String, String> objectReplicationStatus,
+        final String rehydratePriority, final Boolean isSealed) {
         this(creationTime, lastModified, eTag, blobSize, contentType, contentMd5, contentEncoding, contentDisposition,
             contentLanguage, cacheControl, blobSequenceNumber, blobType, leaseStatus, leaseState, leaseDuration, copyId,
             copyStatus, copySource, copyProgress, copyCompletionTime, copyStatusDescription, isServerEncrypted,
-            isIncrementalCopy, copyDestinationSnapshot, accessTier, isAccessTierInferred, archiveStatus,
-            encryptionKeySha256, encryptionScope, accessTierChangeTime, metadata, committedBlockCount, tagCount,
-            versionId, isCurrentVersion, ModelHelper.getObjectReplicationSourcePolicies(objectReplicationStatus),
+            isIncrementalCopy, copyDestinationSnapshot, accessTier, isAccessTierInferred, smartAccessTier,
+            archiveStatus, encryptionKeySha256, encryptionScope, accessTierChangeTime, metadata, committedBlockCount,
+            tagCount, versionId, isCurrentVersion,
+            ModelHelper.getObjectReplicationSourcePolicies(objectReplicationStatus),
             ModelHelper.getObjectReplicationDestinationPolicyId(objectReplicationStatus),
             RehydratePriority.fromString(rehydratePriority), isSealed, null, null);
     }
@@ -215,17 +217,18 @@ public final class BlobProperties {
         final CopyStatusType copyStatus, final String copySource, final String copyProgress,
         final OffsetDateTime copyCompletionTime, final String copyStatusDescription, final Boolean isServerEncrypted,
         final Boolean isIncrementalCopy, final String copyDestinationSnapshot, final AccessTier accessTier,
-        final Boolean isAccessTierInferred, final ArchiveStatus archiveStatus, final String encryptionKeySha256,
-        String encryptionScope, final OffsetDateTime accessTierChangeTime, final Map<String, String> metadata,
-        final Integer committedBlockCount, final Long tagCount, final String versionId, final Boolean isCurrentVersion,
+        final Boolean isAccessTierInferred, final AccessTier smartAccessTier, final ArchiveStatus archiveStatus,
+        final String encryptionKeySha256, String encryptionScope, final OffsetDateTime accessTierChangeTime,
+        final Map<String, String> metadata, final Integer committedBlockCount, final Long tagCount,
+        final String versionId, final Boolean isCurrentVersion,
         List<ObjectReplicationPolicy> objectReplicationSourcePolicies, String objectReplicationDestinationPolicyId) {
         this(creationTime, lastModified, eTag, blobSize, contentType, contentMd5, contentEncoding, contentDisposition,
             contentLanguage, cacheControl, blobSequenceNumber, blobType, leaseStatus, leaseState, leaseDuration, copyId,
             copyStatus, copySource, copyProgress, copyCompletionTime, copyStatusDescription, isServerEncrypted,
-            isIncrementalCopy, copyDestinationSnapshot, accessTier, isAccessTierInferred, archiveStatus,
-            encryptionKeySha256, encryptionScope, accessTierChangeTime, metadata, committedBlockCount, tagCount,
-            versionId, isCurrentVersion, objectReplicationSourcePolicies, objectReplicationDestinationPolicyId, null,
-            null, null, null);
+            isIncrementalCopy, copyDestinationSnapshot, accessTier, isAccessTierInferred, smartAccessTier,
+            archiveStatus, encryptionKeySha256, encryptionScope, accessTierChangeTime, metadata, committedBlockCount,
+            tagCount, versionId, isCurrentVersion, objectReplicationSourcePolicies,
+            objectReplicationDestinationPolicyId, null, null, null, null);
     }
 
     /**
@@ -285,19 +288,21 @@ public final class BlobProperties {
         final CopyStatusType copyStatus, final String copySource, final String copyProgress,
         final OffsetDateTime copyCompletionTime, final String copyStatusDescription, final Boolean isServerEncrypted,
         final Boolean isIncrementalCopy, final String copyDestinationSnapshot, final AccessTier accessTier,
-        final Boolean isAccessTierInferred, final ArchiveStatus archiveStatus, final String encryptionKeySha256,
-        final String encryptionScope, final OffsetDateTime accessTierChangeTime, final Map<String, String> metadata,
-        final Integer committedBlockCount, final Long tagCount, final String versionId, final Boolean isCurrentVersion,
+        final Boolean isAccessTierInferred, final AccessTier smartAccessTier, final ArchiveStatus archiveStatus,
+        final String encryptionKeySha256, final String encryptionScope, final OffsetDateTime accessTierChangeTime,
+        final Map<String, String> metadata, final Integer committedBlockCount, final Long tagCount,
+        final String versionId, final Boolean isCurrentVersion,
         final List<ObjectReplicationPolicy> objectReplicationSourcePolicies,
         final String objectReplicationDestinationPolicyId, final RehydratePriority rehydratePriority,
         final Boolean isSealed, final OffsetDateTime lastAccessedTime, final OffsetDateTime expiresOn) {
         this(creationTime, lastModified, eTag, blobSize, contentType, contentMd5, contentEncoding, contentDisposition,
             contentLanguage, cacheControl, blobSequenceNumber, blobType, leaseStatus, leaseState, leaseDuration, copyId,
             copyStatus, copySource, copyProgress, copyCompletionTime, copyStatusDescription, isServerEncrypted,
-            isIncrementalCopy, copyDestinationSnapshot, accessTier, isAccessTierInferred, archiveStatus,
-            encryptionKeySha256, encryptionScope, accessTierChangeTime, metadata, committedBlockCount, tagCount,
-            versionId, isCurrentVersion, objectReplicationSourcePolicies, objectReplicationDestinationPolicyId,
-            rehydratePriority, isSealed, lastAccessedTime, expiresOn, null, false);
+            isIncrementalCopy, copyDestinationSnapshot, accessTier, isAccessTierInferred, smartAccessTier,
+            archiveStatus, encryptionKeySha256, encryptionScope, accessTierChangeTime, metadata, committedBlockCount,
+            tagCount, versionId, isCurrentVersion, objectReplicationSourcePolicies,
+            objectReplicationDestinationPolicyId, rehydratePriority, isSealed, lastAccessedTime, expiresOn, null,
+            false);
     }
 
     /**
@@ -359,9 +364,10 @@ public final class BlobProperties {
         final CopyStatusType copyStatus, final String copySource, final String copyProgress,
         final OffsetDateTime copyCompletionTime, final String copyStatusDescription, final Boolean isServerEncrypted,
         final Boolean isIncrementalCopy, final String copyDestinationSnapshot, final AccessTier accessTier,
-        final Boolean isAccessTierInferred, final ArchiveStatus archiveStatus, final String encryptionKeySha256,
-        final String encryptionScope, final OffsetDateTime accessTierChangeTime, final Map<String, String> metadata,
-        final Integer committedBlockCount, final Long tagCount, final String versionId, final Boolean isCurrentVersion,
+        final Boolean isAccessTierInferred, final AccessTier smartAccessTier, final ArchiveStatus archiveStatus,
+        final String encryptionKeySha256, final String encryptionScope, final OffsetDateTime accessTierChangeTime,
+        final Map<String, String> metadata, final Integer committedBlockCount, final Long tagCount,
+        final String versionId, final Boolean isCurrentVersion,
         final List<ObjectReplicationPolicy> objectReplicationSourcePolicies,
         final String objectReplicationDestinationPolicyId, final RehydratePriority rehydratePriority,
         final Boolean isSealed, final OffsetDateTime lastAccessedTime, final OffsetDateTime expiresOn,
@@ -369,10 +375,11 @@ public final class BlobProperties {
         this(creationTime, lastModified, eTag, blobSize, contentType, contentMd5, contentEncoding, contentDisposition,
             contentLanguage, cacheControl, blobSequenceNumber, blobType, leaseStatus, leaseState, leaseDuration, copyId,
             copyStatus, copySource, copyProgress, copyCompletionTime, copyStatusDescription, isServerEncrypted,
-            isIncrementalCopy, copyDestinationSnapshot, accessTier, isAccessTierInferred, archiveStatus,
-            encryptionKeySha256, encryptionScope, accessTierChangeTime, metadata, committedBlockCount, tagCount,
-            versionId, isCurrentVersion, objectReplicationSourcePolicies, objectReplicationDestinationPolicyId,
-            rehydratePriority, isSealed, lastAccessedTime, expiresOn, immutabilityPolicy, hasLegalHold, null);
+            isIncrementalCopy, copyDestinationSnapshot, accessTier, isAccessTierInferred, smartAccessTier,
+            archiveStatus, encryptionKeySha256, encryptionScope, accessTierChangeTime, metadata, committedBlockCount,
+            tagCount, versionId, isCurrentVersion, objectReplicationSourcePolicies,
+            objectReplicationDestinationPolicyId, rehydratePriority, isSealed, lastAccessedTime, expiresOn,
+            immutabilityPolicy, hasLegalHold, null);
     }
 
     /**
@@ -406,6 +413,7 @@ public final class BlobProperties {
      * @param accessTier Access tier of the blob.
      * @param isAccessTierInferred Flag indicating if the access tier of the blob was inferred from properties of the
      * blob.
+     * @param smartAccessTier The inferred smart access tier of the blob.
      * @param archiveStatus Archive status of the blob.
      * @param encryptionKeySha256 SHA256 of the customer provided encryption key used to encrypt the blob on the
      * server.
@@ -435,9 +443,10 @@ public final class BlobProperties {
         final CopyStatusType copyStatus, final String copySource, final String copyProgress,
         final OffsetDateTime copyCompletionTime, final String copyStatusDescription, final Boolean isServerEncrypted,
         final Boolean isIncrementalCopy, final String copyDestinationSnapshot, final AccessTier accessTier,
-        final Boolean isAccessTierInferred, final ArchiveStatus archiveStatus, final String encryptionKeySha256,
-        final String encryptionScope, final OffsetDateTime accessTierChangeTime, final Map<String, String> metadata,
-        final Integer committedBlockCount, final Long tagCount, final String versionId, final Boolean isCurrentVersion,
+        final Boolean isAccessTierInferred, final AccessTier smartAccessTier, final ArchiveStatus archiveStatus,
+        final String encryptionKeySha256, final String encryptionScope, final OffsetDateTime accessTierChangeTime,
+        final Map<String, String> metadata, final Integer committedBlockCount, final Long tagCount,
+        final String versionId, final Boolean isCurrentVersion,
         final List<ObjectReplicationPolicy> objectReplicationSourcePolicies,
         final String objectReplicationDestinationPolicyId, final RehydratePriority rehydratePriority,
         final Boolean isSealed, final OffsetDateTime lastAccessedTime, final OffsetDateTime expiresOn,
@@ -446,10 +455,10 @@ public final class BlobProperties {
             contentMd5, contentEncoding, contentDisposition, contentLanguage, cacheControl, blobSequenceNumber,
             blobType, leaseStatus, leaseState, leaseDuration, copyId, copyStatus, copySource, copyProgress,
             copyCompletionTime, copyStatusDescription, isServerEncrypted, isIncrementalCopy, copyDestinationSnapshot,
-            accessTier, isAccessTierInferred, archiveStatus, encryptionKeySha256, encryptionScope, accessTierChangeTime,
-            metadata, committedBlockCount, tagCount, versionId, isCurrentVersion, objectReplicationSourcePolicies,
-            objectReplicationDestinationPolicyId, rehydratePriority, isSealed, lastAccessedTime, expiresOn,
-            immutabilityPolicy, hasLegalHold, requestId));
+            accessTier, isAccessTierInferred, smartAccessTier, archiveStatus, encryptionKeySha256, encryptionScope,
+            accessTierChangeTime, metadata, committedBlockCount, tagCount, versionId, isCurrentVersion,
+            objectReplicationSourcePolicies, objectReplicationDestinationPolicyId, rehydratePriority, isSealed,
+            lastAccessedTime, expiresOn, immutabilityPolicy, hasLegalHold, requestId));
     }
 
     /**
@@ -695,6 +704,16 @@ public final class BlobProperties {
      */
     public Boolean isAccessTierInferred() {
         return internalProperties.isAccessTierInferred();
+    }
+
+    /**
+     * Gets the smart access tier of the blob.
+     *
+     * @return the tier of the blob. This is only set for Page blobs on a premium storage account or for Block blobs on
+     * blob storage or general purpose V2 account.
+     */
+    public AccessTier getSmartAccessTier() {
+        return internalProperties.getSmartAccessTier();
     }
 
     /**

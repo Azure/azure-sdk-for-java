@@ -98,19 +98,19 @@ public class PathProperties {
      * pass {@code null}.
      */
     public PathProperties(final OffsetDateTime creationTime, final OffsetDateTime lastModified, final String eTag,
-                          final long fileSize, final String contentType, final byte[] contentMd5, final String contentEncoding,
-                          final String contentDisposition, final String contentLanguage, final String cacheControl,
-                          final LeaseStatusType leaseStatus, final LeaseStateType leaseState, final LeaseDurationType leaseDuration,
-                          final String copyId, final CopyStatusType copyStatus, final String copySource, final String copyProgress,
-                          final OffsetDateTime copyCompletionTime, final String copyStatusDescription, final Boolean isServerEncrypted,
-                          final Boolean isIncrementalCopy, final AccessTier accessTier, final ArchiveStatus archiveStatus,
-                          final String encryptionKeySha256, final OffsetDateTime accessTierChangeTime,
-                          final Map<String, String> metadata, boolean accessTierInferred, AccessTier smartAccessTier) {
+        final long fileSize, final String contentType, final byte[] contentMd5, final String contentEncoding,
+        final String contentDisposition, final String contentLanguage, final String cacheControl,
+        final LeaseStatusType leaseStatus, final LeaseStateType leaseState, final LeaseDurationType leaseDuration,
+        final String copyId, final CopyStatusType copyStatus, final String copySource, final String copyProgress,
+        final OffsetDateTime copyCompletionTime, final String copyStatusDescription, final Boolean isServerEncrypted,
+        final Boolean isIncrementalCopy, final AccessTier accessTier, final ArchiveStatus archiveStatus,
+        final String encryptionKeySha256, final OffsetDateTime accessTierChangeTime, final Map<String, String> metadata,
+        boolean accessTierInferred, AccessTier smartAccessTier) {
         this(creationTime, lastModified, eTag, fileSize, contentType, contentMd5, contentEncoding, contentDisposition,
             contentLanguage, cacheControl, leaseStatus, leaseState, leaseDuration, copyId, copyStatus, copySource,
-            copyProgress, copyCompletionTime, copyStatusDescription, isServerEncrypted, isIncrementalCopy, accessTier
-            , accessTierInferred, smartAccessTier,
-            archiveStatus, encryptionKeySha256, accessTierChangeTime, metadata, null);
+            copyProgress, copyCompletionTime, copyStatusDescription, isServerEncrypted, isIncrementalCopy, accessTier,
+            accessTierInferred, smartAccessTier, archiveStatus, encryptionKeySha256, accessTierChangeTime, metadata,
+            null);
     }
 
     /**
@@ -146,14 +146,14 @@ public class PathProperties {
      * @param expiresOn the time when the path is going to expire.
      */
     public PathProperties(final OffsetDateTime creationTime, final OffsetDateTime lastModified, final String eTag,
-                          final long fileSize, final String contentType, final byte[] contentMd5, final String contentEncoding,
-                          final String contentDisposition, final String contentLanguage, final String cacheControl,
-                          final LeaseStatusType leaseStatus, final LeaseStateType leaseState, final LeaseDurationType leaseDuration,
-                          final String copyId, final CopyStatusType copyStatus, final String copySource, final String copyProgress,
-                          final OffsetDateTime copyCompletionTime, final String copyStatusDescription, final Boolean isServerEncrypted,
-                          final Boolean isIncrementalCopy, final AccessTier accessTier, boolean accessTierInferred, AccessTier smartAccessTier, final ArchiveStatus archiveStatus,
-                          final String encryptionKeySha256, final OffsetDateTime accessTierChangeTime, final Map<String, String> metadata,
-                          final OffsetDateTime expiresOn) {
+        final long fileSize, final String contentType, final byte[] contentMd5, final String contentEncoding,
+        final String contentDisposition, final String contentLanguage, final String cacheControl,
+        final LeaseStatusType leaseStatus, final LeaseStateType leaseState, final LeaseDurationType leaseDuration,
+        final String copyId, final CopyStatusType copyStatus, final String copySource, final String copyProgress,
+        final OffsetDateTime copyCompletionTime, final String copyStatusDescription, final Boolean isServerEncrypted,
+        final Boolean isIncrementalCopy, final AccessTier accessTier, boolean accessTierInferred,
+        AccessTier smartAccessTier, final ArchiveStatus archiveStatus, final String encryptionKeySha256,
+        final OffsetDateTime accessTierChangeTime, final Map<String, String> metadata, final OffsetDateTime expiresOn) {
         this.creationTime = creationTime;
         this.lastModified = lastModified;
         this.eTag = eTag;
@@ -437,7 +437,7 @@ public class PathProperties {
      *
      * @return the tier of the path.
      */
-    public AccessTier getSmartAccessTier(){
+    public AccessTier getSmartAccessTier() {
         return smartAccessTier;
     }
 
