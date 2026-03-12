@@ -202,6 +202,12 @@ public class TenantWorkloadConfig {
     @JsonProperty("connectionSharingAcrossClientsEnabled")
     private Boolean connectionSharingAcrossClientsEnabled;
 
+    @JsonProperty("http2Enabled")
+    private Boolean http2Enabled;
+
+    @JsonProperty("http2MaxConcurrentStreams")
+    private Integer http2MaxConcurrentStreams;
+
     @JsonProperty("preferredRegionsList")
     private String preferredRegionsList;
 
@@ -336,6 +342,14 @@ public class TenantWorkloadConfig {
 
     public boolean isConnectionSharingAcrossClientsEnabled() {
         return connectionSharingAcrossClientsEnabled != null && connectionSharingAcrossClientsEnabled;
+    }
+
+    public boolean isHttp2Enabled() {
+        return http2Enabled != null && http2Enabled;
+    }
+
+    public Integer getHttp2MaxConcurrentStreams() {
+        return http2MaxConcurrentStreams;
     }
 
     public List<String> getPreferredRegionsList() {
