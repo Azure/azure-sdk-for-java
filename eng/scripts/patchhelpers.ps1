@@ -102,9 +102,8 @@ function UpdateCIInformation($ArtifactInfos) {
 }
 
 # Find all the artifacts that will need to be patched based on dependency analysis.
-# Artifacts are processed in the same order as defined in patch_release_client.txt
-# (dependencies appear before dependents). This guarantees cascading: if a dependency
-# is patched, all its dependents will be included as well.
+# Iterates until no more patches are found (fixed-point), so the result is correct
+# regardless of artifact ordering in patch_release_client.txt.
 # Only dependencies that are themselves in the patch list are checked — external
 # dependencies (reactor-core, jackson, etc.) are ignored.
 function FindArtifactsThatNeedPatching($ArtifactInfos) {
@@ -113,18 +112,23 @@ function FindArtifactsThatNeedPatching($ArtifactInfos) {
         $latestVersions[$arId] = $ArtifactInfos[$arId].LatestGAOrPatchVersion
     }
 
-    foreach ($arId in $ArtifactInfos.Keys) {
-        $arInfo = $ArtifactInfos[$arId]
-        foreach ($depId in $arInfo.Dependencies.Keys) {
-            if (-not $latestVersions.ContainsKey($depId)) { continue }
-            if ($arInfo.Dependencies[$depId] -ne $latestVersions[$depId]) {
-                $patchVersion = GetPatchVersion -ReleaseVersion $arInfo.LatestGAOrPatchVersion
-                $arInfo.FutureReleasePatchVersion = $patchVersion
-                $latestVersions[$arId] = $patchVersion
-                break
+    do {
+        $changed = $false
+        foreach ($arId in $ArtifactInfos.Keys) {
+            $arInfo = $ArtifactInfos[$arId]
+            if ($arInfo.FutureReleasePatchVersion) { continue }
+            foreach ($depId in $arInfo.Dependencies.Keys) {
+                if (-not $latestVersions.ContainsKey($depId)) { continue }
+                if ($arInfo.Dependencies[$depId] -ne $latestVersions[$depId]) {
+                    $patchVersion = GetPatchVersion -ReleaseVersion $arInfo.LatestGAOrPatchVersion
+                    $arInfo.FutureReleasePatchVersion = $patchVersion
+                    $latestVersions[$arId] = $patchVersion
+                    $changed = $true
+                    break
+                }
             }
         }
-    }
+    } while ($changed)
 }
 
 # Update dependencies in the version client file.

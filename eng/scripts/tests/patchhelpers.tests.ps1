@@ -177,6 +177,25 @@ Describe "FindArtifactsThatNeedPatching" {
         # azure-core is flagged once (patch version = 1.41.1, not 1.41.2)
         $infos["azure-core"].FutureReleasePatchVersion | Should -Be "1.41.1"
     }
+
+    It "Handles out-of-order: dependent listed before its dependency (checkpointstore scenario)" {
+        # checkpointstore appears BEFORE blob in the iteration order (alphabetical in patch_release_client.txt).
+        # blob gets patched because its own dep (storage-common) was independently released.
+        # checkpointstore must still be patched even though it's iterated first.
+        $infos = [ordered]@{
+            "azure-storage-common" = (New-TestArtifactInfo -ArtifactId "azure-storage-common" -LatestGAOrPatchVersion "12.32.2" -Dependencies @{})
+            "azure-messaging-eventhubs-checkpointstore-blob" = (New-TestArtifactInfo -ArtifactId "azure-messaging-eventhubs-checkpointstore-blob" -LatestGAOrPatchVersion "1.21.4" -Dependencies @{
+                "azure-storage-blob" = "12.33.2"
+            })
+            "azure-storage-blob" = (New-TestArtifactInfo -ArtifactId "azure-storage-blob" -LatestGAOrPatchVersion "12.33.2" -Dependencies @{
+                "azure-storage-common" = "12.32.1"
+            })
+        }
+        FindArtifactsThatNeedPatching -ArtifactInfos $infos
+        $infos["azure-storage-common"].FutureReleasePatchVersion | Should -BeNullOrEmpty
+        $infos["azure-storage-blob"].FutureReleasePatchVersion | Should -Be "12.33.3"
+        $infos["azure-messaging-eventhubs-checkpointstore-blob"].FutureReleasePatchVersion | Should -Be "1.21.5"
+    }
 }
 
 # ---------------------------------------------------------------------------
