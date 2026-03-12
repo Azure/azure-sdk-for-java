@@ -19,6 +19,9 @@
 #
 # 7. CreateNewBranch        - Whether to create a new branch or use an existing branch. You would want to use an existing branch if you are using the same release tag for multiple libraries.
 #
+# 8. UseCurrentBranch       - When set, creates patch branches from the current branch instead of remote main.
+#                             Useful for local testing and dry-runs without requiring changes to be merged first. This is not a required parameter.
+#
 # Example:  .\eng\scripts\Generate-Patch.ps1 -ArtifactName azure-mixedreality-remoterendering -ServiceDirectory remoterendering -ReleaseVersion 1.0.0 -PatchVersion 1.0.1
 # This creates a remote branch "release/azure-mixedreality-remoterendering" with all the necessary changes.
 
