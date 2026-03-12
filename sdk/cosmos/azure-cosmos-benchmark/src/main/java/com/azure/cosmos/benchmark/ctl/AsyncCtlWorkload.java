@@ -248,22 +248,22 @@ public class AsyncCtlWorkload implements Benchmark {
     private void createPrePopulatedDocs(int numberOfPreCreatedDocuments) {
         for (CosmosAsyncContainer container : containers) {
             List<PojoizedJson> generatedDocs = new ArrayList<>();
-            List<CosmosItemOperation> bulkOperations = new ArrayList<>();
-            for (int i = 0; i < numberOfPreCreatedDocuments; i++) {
-                String uId = UUID.randomUUID().toString();
-                PojoizedJson newDoc = BenchmarkHelper.generateDocument(uId,
-                    dataFieldValue,
-                    partitionKey,
-                    workloadConfig.getDocumentDataFieldCount());
-                generatedDocs.add(newDoc);
-                bulkOperations.add(
-                    CosmosBulkOperations.getCreateItemOperation(newDoc, new PartitionKey(uId)));
-            }
+
+            Flux<CosmosItemOperation> bulkOperationFlux = Flux.range(0, numberOfPreCreatedDocuments)
+                .map(i -> {
+                    String uId = UUID.randomUUID().toString();
+                    PojoizedJson newDoc = BenchmarkHelper.generateDocument(uId,
+                        dataFieldValue,
+                        partitionKey,
+                        workloadConfig.getDocumentDataFieldCount());
+                    generatedDocs.add(newDoc);
+                    return CosmosBulkOperations.getCreateItemOperation(newDoc, new PartitionKey(uId));
+                });
 
             AtomicLong successCount = new AtomicLong(0);
             AtomicLong failureCount = new AtomicLong(0);
             CosmosBulkExecutionOptions bulkExecutionOptions = new CosmosBulkExecutionOptions();
-            container.executeBulkOperations(Flux.fromIterable(bulkOperations), bulkExecutionOptions)
+            container.executeBulkOperations(bulkOperationFlux, bulkExecutionOptions)
                 .doOnNext(response -> {
                     if (response.getResponse() != null && response.getResponse().isSuccessStatusCode()) {
                         successCount.incrementAndGet();

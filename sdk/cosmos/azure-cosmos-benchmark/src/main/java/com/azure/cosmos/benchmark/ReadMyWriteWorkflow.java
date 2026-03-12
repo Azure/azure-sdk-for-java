@@ -138,26 +138,26 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<PojoizedJson> {
     private void populateCache() {
         logger.info("PRE-populating {} documents ....", cacheSize);
         List<PojoizedJson> generatedDocs = new ArrayList<>();
-        List<CosmosItemOperation> bulkOperations = new ArrayList<>();
-        for (int i = 0; i < cacheSize; i++) {
-            String idString = UUID.randomUUID().toString();
-            String randomVal = UUID.randomUUID().toString();
-            PojoizedJson newDoc = new PojoizedJson();
-            newDoc.setProperty("id", idString);
-            newDoc.setProperty(partitionKey, idString);
-            newDoc.setProperty(QUERY_FIELD_NAME, randomVal);
-            newDoc.setProperty("dataField1", randomVal);
-            newDoc.setProperty("dataField2", randomVal);
-            newDoc.setProperty("dataField3", randomVal);
-            newDoc.setProperty("dataField4", randomVal);
-            generatedDocs.add(newDoc);
-            bulkOperations.add(
-                CosmosBulkOperations.getCreateItemOperation(newDoc, new PartitionKey(idString)));
-        }
+
+        Flux<CosmosItemOperation> bulkOperationFlux = Flux.range(0, cacheSize)
+            .map(i -> {
+                String idString = UUID.randomUUID().toString();
+                String randomVal = UUID.randomUUID().toString();
+                PojoizedJson newDoc = new PojoizedJson();
+                newDoc.setProperty("id", idString);
+                newDoc.setProperty(partitionKey, idString);
+                newDoc.setProperty(QUERY_FIELD_NAME, randomVal);
+                newDoc.setProperty("dataField1", randomVal);
+                newDoc.setProperty("dataField2", randomVal);
+                newDoc.setProperty("dataField3", randomVal);
+                newDoc.setProperty("dataField4", randomVal);
+                generatedDocs.add(newDoc);
+                return CosmosBulkOperations.getCreateItemOperation(newDoc, new PartitionKey(idString));
+            });
 
         CosmosBulkExecutionOptions bulkExecutionOptions = new CosmosBulkExecutionOptions();
         cosmosAsyncContainer
-            .executeBulkOperations(Flux.fromIterable(bulkOperations), bulkExecutionOptions)
+            .executeBulkOperations(bulkOperationFlux, bulkExecutionOptions)
             .blockLast(Duration.ofMinutes(10));
 
         for (int i = 0; i < generatedDocs.size(); i++) {

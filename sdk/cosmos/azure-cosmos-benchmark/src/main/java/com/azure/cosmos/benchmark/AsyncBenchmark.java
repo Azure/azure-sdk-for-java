@@ -191,21 +191,21 @@ abstract class AsyncBenchmark<T> implements Benchmark {
             logger.info("PRE-populating {} documents ....", cfg.getNumberOfPreCreatedDocuments());
             String dataFieldValue = RandomStringUtils.randomAlphabetic(cfg.getDocumentDataFieldSize());
             List<PojoizedJson> generatedDocs = new ArrayList<>();
-            List<CosmosItemOperation> bulkOperations = new ArrayList<>();
-            for (int i = 0; i < cfg.getNumberOfPreCreatedDocuments(); i++) {
-                String uuid = UUID.randomUUID().toString();
-                PojoizedJson newDoc = BenchmarkHelper.generateDocument(uuid,
-                    dataFieldValue,
-                    partitionKey,
-                    cfg.getDocumentDataFieldCount());
-                generatedDocs.add(newDoc);
-                bulkOperations.add(
-                    CosmosBulkOperations.getCreateItemOperation(newDoc, new PartitionKey(uuid)));
-            }
+
+            Flux<CosmosItemOperation> bulkOperationFlux = Flux.range(0, cfg.getNumberOfPreCreatedDocuments())
+                .map(i -> {
+                    String uuid = UUID.randomUUID().toString();
+                    PojoizedJson newDoc = BenchmarkHelper.generateDocument(uuid,
+                        dataFieldValue,
+                        partitionKey,
+                        cfg.getDocumentDataFieldCount());
+                    generatedDocs.add(newDoc);
+                    return CosmosBulkOperations.getCreateItemOperation(newDoc, new PartitionKey(uuid));
+                });
 
             CosmosBulkExecutionOptions bulkExecutionOptions = new CosmosBulkExecutionOptions();
             cosmosAsyncContainer
-                .executeBulkOperations(Flux.fromIterable(bulkOperations), bulkExecutionOptions)
+                .executeBulkOperations(bulkOperationFlux, bulkExecutionOptions)
                 .blockLast(Duration.ofMinutes(10));
 
             docsToRead = generatedDocs;
