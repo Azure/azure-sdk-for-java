@@ -98,10 +98,10 @@ Do **not** modify the property declaration. Keep `@Generated`, the block comment
 private BinaryData myField;
 ```
 
-#### 4b. Make the existing getter and setter private
+#### 4b. Make the existing getter and setter package-private
 
 - Remove `@Generated`.
-- Change visibility to `private`.
+- Change visibility to **package-private** (no access modifier). This keeps them hidden from SDK consumers but accessible to unit tests in the same package.
 - **Keep the original method name** — do NOT rename to `*Internal`.
 - **Keep the original javadoc intact.**
 - Add `// AI Tooling: union type` as the **first line inside the method body**.
@@ -112,7 +112,7 @@ private BinaryData myField;
  *
  * @return the myField value.
  */
-private BinaryData getMyField() {
+BinaryData getMyField() {
     // AI Tooling: union type
     return this.myField;
 }
@@ -123,7 +123,7 @@ private BinaryData getMyField() {
  * @param myField the myField value to set.
  * @return the MyClass object itself.
  */
-private MyClass setMyField(BinaryData myField) {
+MyClass setMyField(BinaryData myField) {
     // AI Tooling: union type
     this.myField = myField;
     return this;
@@ -315,7 +315,7 @@ Before reporting completion, verify:
 
 - [ ] Every `BinaryData` property was classified as **union** or **unknown**
 - [ ] Property fields left exactly as generated (no modifications)
-- [ ] Original `BinaryData` getter/setter made private, name kept, `@Generated` removed, javadoc preserved
+- [ ] Original `BinaryData` getter/setter made package-private, name kept, `@Generated` removed, javadoc preserved
 - [ ] `// AI Tooling: union type` placed inside the body of every modified or added getter/setter
 - [ ] Typed setters added for each union variant with javadoc copied from original
 - [ ] Typed getters added for each union variant (`get*As*()`) with javadoc copied from original
