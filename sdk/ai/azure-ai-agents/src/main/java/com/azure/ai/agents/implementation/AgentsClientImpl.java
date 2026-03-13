@@ -109,20 +109,6 @@ public final class AgentsClientImpl {
     }
 
     /**
-     * The ConversationsImpl object to access its operations.
-     */
-    private final ConversationsImpl conversations;
-
-    /**
-     * Gets the ConversationsImpl object to access its operations.
-     * 
-     * @return the ConversationsImpl object.
-     */
-    public ConversationsImpl getConversations() {
-        return this.conversations;
-    }
-
-    /**
      * Initializes an instance of AgentsClient client.
      * 
      * @param endpoint Foundry Project endpoint in the form
@@ -172,6 +158,5 @@ public final class AgentsClientImpl {
         this.serviceVersion = serviceVersion;
         this.agents = new AgentsImpl(this);
         this.memoryStores = new MemoryStoresImpl(this);
-        this.conversations = new ConversationsImpl(this);
     }
 }
