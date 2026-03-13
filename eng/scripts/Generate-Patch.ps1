@@ -228,12 +228,12 @@ function CreatePatchRelease($ArtifactName, $ServiceDirectoryName, $PatchVersion,
       $key = "${groupId}:${artifactId}"
       if ($pomVersion -match '-beta\.|_beta\.|BETA|-alpha\.|_alpha\.|ALPHA|-preview\.|_preview\.|PREVIEW|-SNAPSHOT') {
         if ($versionClientLookup.ContainsKey($key)) {
-          $newDependenciesToVersion[$artifactId] = $versionClientLookup[$key]
+          $newDependenciesToVersion[$key] = $versionClientLookup[$key]
         } else {
-          $newDependenciesToVersion[$artifactId] = $pomVersion
+          $newDependenciesToVersion[$key] = $pomVersion
         }
       } else {
-        $newDependenciesToVersion[$artifactId] = $pomVersion
+        $newDependenciesToVersion[$key] = $pomVersion
       }
     }
   }

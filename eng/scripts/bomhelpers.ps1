@@ -200,9 +200,14 @@ function GetResolvedDependencyVersions($PomFilePath, $VersionClientPath, $PatchV
       $groupId = $dependency.groupId
       $pomVersion = $dependency.version
       $key = "${groupId}:${artifactId}"
+      $patchOverrideKey = $key
 
-      if ($PatchVersionOverrides.ContainsKey($artifactId)) {
-        # Sibling artifact being patched in the same run — use its patch version.
+      if ($PatchVersionOverrides.ContainsKey($patchOverrideKey)) {
+        # Sibling artifact being patched in the same run — use its fully qualified
+        # patch version override (groupId:artifactId) to avoid collisions.
+        $resolvedVersions[$artifactId] = $PatchVersionOverrides[$patchOverrideKey]
+      } elseif ($PatchVersionOverrides.ContainsKey($artifactId)) {
+        # Backward compatibility: fall back to artifactId-only override if present.
         $resolvedVersions[$artifactId] = $PatchVersionOverrides[$artifactId]
       } elseif ($pomVersion -match '-beta\.|_beta\.|BETA|-alpha\.|_alpha\.|ALPHA|-preview\.|_preview\.|PREVIEW|-SNAPSHOT') {
         # Pom has a prerelease version (from {;current} marker) — fall back to

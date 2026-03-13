@@ -55,17 +55,18 @@ try {
     $packagesData = $ymlObject["extends"]["parameters"]["artifacts"]
     $libraryList = $null
 
-    # Build PatchVersionOverrides: map of artifactId → patch version for all artifacts
-    # being patched. This is passed to generatepatch.ps1 so changelogs show the correct
-    # version when a sibling dependency is also being patched in the same run.
+    # Build PatchVersionOverrides: map of "${groupId}:${artifactId}" → patch version for all
+    # artifacts being patched. This is passed to generatepatch.ps1 so changelogs show the
+    # correct version when a sibling dependency is also being patched in the same run.
     $PatchVersionOverrides = @{}
     foreach ($packageData in $packagesData) {
         $pkgArtifactId = $packageData["name"]
         $pkgGroupId = $packageData["groupId"]
+        $pkgKey = "${pkgGroupId}:${pkgArtifactId}"
         try {
             $mavenInfo = GetVersionInfoForAnArtifactId -GroupId $pkgGroupId -ArtifactId $pkgArtifactId
             $patchVersion = GetPatchVersion -ReleaseVersion $mavenInfo.LatestGAOrPatchVersion
-            $PatchVersionOverrides[$pkgArtifactId] = $patchVersion
+            $PatchVersionOverrides[$pkgKey] = $patchVersion
         } catch {
             Write-Warning "Could not determine patch version for ${pkgArtifactId}: $_"
         }
