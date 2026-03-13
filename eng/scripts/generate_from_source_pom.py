@@ -97,9 +97,9 @@ def create_from_source_pom(artifacts_list: str, additional_modules_list: str, se
     source_projects: Set[Project] = set()
 
     # Finally map the project identifiers to projects.
-    add_source_projects(source_projects, artifacts_list_identifiers, projects)
-    add_source_projects(source_projects, dependent_modules, projects)
-    add_source_projects(source_projects, dependency_modules, projects)
+    add_source_projects(source_projects, artifacts_list_identifiers, projects, artifact_identifier_to_version)
+    add_source_projects(source_projects, dependent_modules, projects, artifact_identifier_to_version)
+    add_source_projects(source_projects, dependency_modules, projects, artifact_identifier_to_version)
 
     modules = sorted(list(set([p.module_path for p in source_projects])))
     with open(file=client_from_source_pom_path, mode='w') as fromSourcePom:
@@ -328,7 +328,7 @@ def is_spring_child_pom(tree_root: ET.Element):
            and artifact_id_node.text != 'spring-cloud-azure' \
            and artifact_id_node.text != 'spring-cloud-azure-experimental' # Exclude parent pom to fix this error: "Project is duplicated in the reactor"
 
-def add_source_projects(source_projects: Set[Project], project_identifiers: Iterable[str], projects: Dict[str, Project]):
+def add_source_projects(source_projects: Set[Project], project_identifiers: Iterable[str], projects: Dict[str, Project], artifact_identifier_to_version: Dict[str, ArtifactVersion]):
     for project_identifier in project_identifiers:
         project = projects[project_identifier]
         source_projects.add(project)
@@ -336,7 +336,17 @@ def add_source_projects(source_projects: Set[Project], project_identifiers: Iter
         while project.parent_pom is not None:
             project = projects.get(project.parent_pom, default_project)
             if project.module_path is not None:
-                source_projects.add(project)
+                # Only add parent POMs to the reactor if they need to be built from source.
+                # Parent POMs already released (dependency_version == current_version) and not in
+                # parent_pom_identifiers can be resolved by Maven via relativePath without being in
+                # the reactor. Including them in the reactor causes Maven to validate their declared
+                # <dependencies> (including test-scope unreleased ones), which can fail for PRs in
+                # unrelated service areas.
+                artifact_version = artifact_identifier_to_version.get(project.identifier)
+                if project.identifier in parent_pom_identifiers \
+                        or artifact_version is None \
+                        or artifact_version.dependency_version != artifact_version.current_version:
+                    source_projects.add(project)
 
 def project_uses_client_parent(project: Project, projects: Dict[str, Project]) -> bool:
     while project.parent_pom is not None:

@@ -799,7 +799,7 @@ public final class CertificateClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Purges the deleted certificate from the key vault enabled for soft-delete. Prints out the status code from the
      * server response when a response has been received.</p>
-    
+
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.purgeDeletedCertificate#string -->
      * <pre>
      * certificateClient.purgeDeletedCertificate&#40;&quot;certificateName&quot;&#41;;
@@ -823,7 +823,7 @@ public final class CertificateClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Purges the deleted certificate from the key vault enabled for soft-delete. Prints out the status code from the
      * server response when a response has been received.</p>
-    
+
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.purgeDeletedCertificateWithResponse#string-Context -->
      * <pre>
      * Response&lt;Void&gt; purgeResponse = certificateClient.purgeDeletedCertificateWithResponse&#40;&quot;certificateName&quot;,
