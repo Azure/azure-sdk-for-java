@@ -362,5 +362,53 @@ public class Sample01_AnalyzeBinaryTest extends ContentUnderstandingClientTestBa
         assertTrue(combineDoc.getEndPageNumber() >= 4);
         assertTrue(fullDoc.getMarkdown().length() >= combineDoc.getMarkdown().length());
         // END:Assertion_ContentUnderstandingAnalyzeBinaryWithCombinedPageAndRange
+
+        // ---- Raw string "2" — single page, equivalent to ContentRange.page(2) ----
+        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> rawPage2Operation
+            = contentUnderstandingClient.beginAnalyzeBinary("prebuilt-documentSearch", binaryData,
+                new ContentRange("2"), "application/octet-stream", null);
+        DocumentContent rawPage2Doc = (DocumentContent) rawPage2Operation.getFinalResult().getContents().get(0);
+        assertEquals(1, rawPage2Doc.getPages().size(), "Raw ContentRange('2') should return exactly 1 page");
+        assertEquals(2, rawPage2Doc.getStartPageNumber(), "Raw ContentRange('2') should start at page 2");
+        assertEquals(2, rawPage2Doc.getEndPageNumber(), "Raw ContentRange('2') should end at page 2");
+        assertEquals(page2Doc.getMarkdown().length(), rawPage2Doc.getMarkdown().length(),
+            "Raw ContentRange('2') should return same markdown length as Page(2)");
+
+        // ---- Raw string "1-3" — page range, equivalent to ContentRange.pages(1, 3) ----
+        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> rawPages13Operation
+            = contentUnderstandingClient.beginAnalyzeBinary("prebuilt-documentSearch", binaryData,
+                new ContentRange("1-3"), "application/octet-stream", null);
+        DocumentContent rawPages13Doc = (DocumentContent) rawPages13Operation.getFinalResult().getContents().get(0);
+        assertEquals(3, rawPages13Doc.getPages().size(), "Raw ContentRange('1-3') should return exactly 3 pages");
+        assertEquals(1, rawPages13Doc.getStartPageNumber(), "Raw ContentRange('1-3') should start at page 1");
+        assertEquals(3, rawPages13Doc.getEndPageNumber(), "Raw ContentRange('1-3') should end at page 3");
+        assertEquals(pages13Doc.getMarkdown().length(), rawPages13Doc.getMarkdown().length(),
+            "Raw ContentRange('1-3') should return same markdown length as Pages(1,3)");
+
+        // ---- Raw string "3-" — pages from, equivalent to ContentRange.pagesFrom(3) ----
+        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> rawPagesFrom3Operation
+            = contentUnderstandingClient.beginAnalyzeBinary("prebuilt-documentSearch", binaryData,
+                new ContentRange("3-"), "application/octet-stream", null);
+        DocumentContent rawPagesFrom3Doc
+            = (DocumentContent) rawPagesFrom3Operation.getFinalResult().getContents().get(0);
+        assertEquals(2, rawPagesFrom3Doc.getPages().size(), "Raw ContentRange('3-') should return 2 pages (pages 3-4)");
+        assertEquals(3, rawPagesFrom3Doc.getStartPageNumber(), "Raw ContentRange('3-') should start at page 3");
+        assertEquals(4, rawPagesFrom3Doc.getEndPageNumber(), "Raw ContentRange('3-') should end at page 4");
+        DocumentContent rangeFromDoc = (DocumentContent) rangeOperation.getFinalResult().getContents().get(0);
+        assertEquals(rangeFromDoc.getMarkdown().length(), rawPagesFrom3Doc.getMarkdown().length(),
+            "Raw ContentRange('3-') should return same markdown length as PagesFrom(3)");
+
+        // ---- Raw string "1-3,5,9-" — combine, equivalent to ContentRange.combine(Pages(1,3), Page(5), PagesFrom(9)) ----
+        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> rawRangeOperation
+            = contentUnderstandingClient.beginAnalyzeBinary("prebuilt-documentSearch", binaryData,
+                new ContentRange("1-3,5,9-"), "application/octet-stream", null);
+        DocumentContent rawRangeDoc = (DocumentContent) rawRangeOperation.getFinalResult().getContents().get(0);
+        assertTrue(rawRangeDoc.getPages().size() > 0, "Raw ContentRange should return at least one page");
+        assertEquals(combineRangeDoc.getPages().size(), rawRangeDoc.getPages().size(),
+            "Raw ContentRange('1-3,5,9-') should return same page count as Combine equivalent");
+        assertEquals(combineRangeDoc.getMarkdown().length(), rawRangeDoc.getMarkdown().length(),
+            "Raw ContentRange('1-3,5,9-') should return same markdown length as Combine equivalent");
+        System.out.println("Raw ContentRange('1-3,5,9-'): " + rawRangeDoc.getPages().size() + " pages, "
+            + rawRangeDoc.getMarkdown().length() + " chars");
     }
 }

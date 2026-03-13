@@ -293,6 +293,26 @@ public class Sample01_AnalyzeBinaryAsync {
             .then(pagesMono)
             .then(combineMono)
             .then(bigCombineMono)
+            .then(Mono.defer(() -> {
+                // Raw string "1-3,5,9-" — equivalent to Combine(Pages(1,3), Page(5), PagesFrom(9))
+                return client
+                    .beginAnalyzeBinary("prebuilt-documentSearch", multiPageData,
+                        new ContentRange("1-3,5,9-"), "application/octet-stream", null)
+                    .last()
+                    .flatMap(pollResponse -> {
+                        if (pollResponse.getStatus().isComplete()) {
+                            return pollResponse.getFinalResult();
+                        } else {
+                            return Mono.error(new RuntimeException(
+                                "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+                        }
+                    })
+                    .doOnNext(result -> {
+                        DocumentContent rawRangeDoc = (DocumentContent) result.getContents().get(0);
+                        System.out.println("Raw ContentRange('1-3,5,9-'): " + rawRangeDoc.getPages().size()
+                            + " pages, " + rawRangeDoc.getMarkdown().length() + " chars");
+                    });
+            }))
             .doOnError(error -> System.err.println("Error: " + error.getMessage()))
             .subscribe(
                 result -> {

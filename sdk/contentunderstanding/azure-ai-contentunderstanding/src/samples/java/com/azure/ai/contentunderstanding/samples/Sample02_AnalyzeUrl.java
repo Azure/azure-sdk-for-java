@@ -389,6 +389,24 @@ public class Sample02_AnalyzeUrl {
                 + " ms, End=" + videoContent.getEndTime().toMillis() + " ms");
             segmentIndex++;
         }
+
+        // BEGIN:ContentUnderstandingAnalyzeVideoUrlWithRawContentRange
+        // Analyze the first 5 seconds using a raw range string (milliseconds).
+        // This is equivalent to: ContentRange.timeRange(Duration.ZERO, Duration.ofSeconds(5))
+        AnalysisInput rawRangeInput = new AnalysisInput();
+        rawRangeInput.setUrl(uriSource);
+        rawRangeInput.setContentRange(new ContentRange("0-5000"));
+
+        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> rawRangeOperation
+            = client.beginAnalyze("prebuilt-videoSearch", Arrays.asList(rawRangeInput));
+        AnalysisResult rawRangeResult = rawRangeOperation.getFinalResult();
+
+        for (AnalysisContent rawMedia : rawRangeResult.getContents()) {
+            AudioVisualContent rawVideoContent = (AudioVisualContent) rawMedia;
+            System.out.println("Raw ContentRange segment: " + rawVideoContent.getStartTime().toMillis()
+                + " ms - " + rawVideoContent.getEndTime().toMillis() + " ms");
+        }
+        // END:ContentUnderstandingAnalyzeVideoUrlWithRawContentRange
         // END:ContentUnderstandingAnalyzeVideoUrlWithContentRange
     }
 
@@ -439,6 +457,22 @@ public class Sample02_AnalyzeUrl {
         AudioVisualContent subSecondContent = (AudioVisualContent) subSecondResult.getContents().get(0);
         System.out.println("TimeRange(1200ms, 3651ms): Start=" + subSecondContent.getStartTime().toMillis()
             + " ms, End=" + subSecondContent.getEndTime().toMillis() + " ms");
+
+        // BEGIN:ContentUnderstandingAnalyzeAudioUrlWithRawContentRange
+        // Analyze audio from 5 seconds onward using a raw range string (milliseconds).
+        // This is equivalent to: ContentRange.timeRangeFrom(Duration.ofSeconds(5))
+        AnalysisInput rawRangeInput = new AnalysisInput();
+        rawRangeInput.setUrl(uriSource);
+        rawRangeInput.setContentRange(new ContentRange("5000-"));
+
+        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> rawRangeOperation
+            = client.beginAnalyze("prebuilt-audioSearch", Arrays.asList(rawRangeInput));
+        AnalysisResult rawRangeResult = rawRangeOperation.getFinalResult();
+
+        AudioVisualContent rawAudioContent = (AudioVisualContent) rawRangeResult.getContents().get(0);
+        System.out.println("Raw ContentRange audio analysis: " + rawAudioContent.getStartTime().toMillis()
+            + " ms onward");
+        // END:ContentUnderstandingAnalyzeAudioUrlWithRawContentRange
         // END:ContentUnderstandingAnalyzeAudioUrlWithContentRange
     }
 }

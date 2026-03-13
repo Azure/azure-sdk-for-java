@@ -392,5 +392,83 @@ public class Sample01_AnalyzeBinaryAsyncTest extends ContentUnderstandingClientT
         assertNotNull(bigCombineResult.getContents());
         assertTrue(bigCombineDoc.getPages().size() > 0);
         assertTrue(fullDoc.getMarkdown().length() >= bigCombineDoc.getMarkdown().length());
+
+        // ---- Raw string "2" — single page, equivalent to ContentRange.page(2) ----
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> rawPage2Operation
+            = contentUnderstandingAsyncClient.beginAnalyzeBinary("prebuilt-documentSearch", binaryData,
+                new ContentRange("2"), "application/octet-stream", null);
+        AnalysisResult rawPage2Result = rawPage2Operation.last().flatMap(pollResponse -> {
+            if (pollResponse.getStatus().isComplete()) {
+                return pollResponse.getFinalResult();
+            } else {
+                return Mono.error(
+                    new RuntimeException("Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+            }
+        }).block();
+        DocumentContent rawPage2Doc = (DocumentContent) rawPage2Result.getContents().get(0);
+        assertEquals(1, rawPage2Doc.getPages().size(), "Raw ContentRange('2') should return exactly 1 page");
+        assertEquals(2, rawPage2Doc.getStartPageNumber(), "Raw ContentRange('2') should start at page 2");
+        assertEquals(2, rawPage2Doc.getEndPageNumber(), "Raw ContentRange('2') should end at page 2");
+        assertEquals(page2Doc.getMarkdown().length(), rawPage2Doc.getMarkdown().length(),
+            "Raw ContentRange('2') should return same markdown length as Page(2)");
+
+        // ---- Raw string "1-3" — page range, equivalent to ContentRange.pages(1, 3) ----
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> rawPages13Operation
+            = contentUnderstandingAsyncClient.beginAnalyzeBinary("prebuilt-documentSearch", binaryData,
+                new ContentRange("1-3"), "application/octet-stream", null);
+        AnalysisResult rawPages13Result = rawPages13Operation.last().flatMap(pollResponse -> {
+            if (pollResponse.getStatus().isComplete()) {
+                return pollResponse.getFinalResult();
+            } else {
+                return Mono.error(
+                    new RuntimeException("Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+            }
+        }).block();
+        DocumentContent rawPages13Doc = (DocumentContent) rawPages13Result.getContents().get(0);
+        assertEquals(3, rawPages13Doc.getPages().size(), "Raw ContentRange('1-3') should return exactly 3 pages");
+        assertEquals(1, rawPages13Doc.getStartPageNumber(), "Raw ContentRange('1-3') should start at page 1");
+        assertEquals(3, rawPages13Doc.getEndPageNumber(), "Raw ContentRange('1-3') should end at page 3");
+        assertEquals(pages13Doc.getMarkdown().length(), rawPages13Doc.getMarkdown().length(),
+            "Raw ContentRange('1-3') should return same markdown length as Pages(1,3)");
+
+        // ---- Raw string "3-" — pages from, equivalent to ContentRange.pagesFrom(3) ----
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> rawPagesFrom3Operation
+            = contentUnderstandingAsyncClient.beginAnalyzeBinary("prebuilt-documentSearch", binaryData,
+                new ContentRange("3-"), "application/octet-stream", null);
+        AnalysisResult rawPagesFrom3Result = rawPagesFrom3Operation.last().flatMap(pollResponse -> {
+            if (pollResponse.getStatus().isComplete()) {
+                return pollResponse.getFinalResult();
+            } else {
+                return Mono.error(
+                    new RuntimeException("Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+            }
+        }).block();
+        DocumentContent rawPagesFrom3Doc = (DocumentContent) rawPagesFrom3Result.getContents().get(0);
+        assertEquals(2, rawPagesFrom3Doc.getPages().size(), "Raw ContentRange('3-') should return 2 pages (pages 3-4)");
+        assertEquals(3, rawPagesFrom3Doc.getStartPageNumber(), "Raw ContentRange('3-') should start at page 3");
+        assertEquals(4, rawPagesFrom3Doc.getEndPageNumber(), "Raw ContentRange('3-') should end at page 4");
+        assertEquals(rangeDoc.getMarkdown().length(), rawPagesFrom3Doc.getMarkdown().length(),
+            "Raw ContentRange('3-') should return same markdown length as PagesFrom(3)");
+
+        // ---- Raw string "1-3,5,9-" — combine, equivalent to Combine(Pages(1,3), Page(5), PagesFrom(9)) ----
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> rawRangeOperation
+            = contentUnderstandingAsyncClient.beginAnalyzeBinary("prebuilt-documentSearch", binaryData,
+                new ContentRange("1-3,5,9-"), "application/octet-stream", null);
+        AnalysisResult rawRangeResult = rawRangeOperation.last().flatMap(pollResponse -> {
+            if (pollResponse.getStatus().isComplete()) {
+                return pollResponse.getFinalResult();
+            } else {
+                return Mono.error(
+                    new RuntimeException("Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+            }
+        }).block();
+        DocumentContent rawRangeDoc = (DocumentContent) rawRangeResult.getContents().get(0);
+        assertTrue(rawRangeDoc.getPages().size() > 0, "Raw ContentRange should return at least one page");
+        assertEquals(bigCombineDoc.getPages().size(), rawRangeDoc.getPages().size(),
+            "Raw ContentRange('1-3,5,9-') should return same page count as Combine equivalent");
+        assertEquals(bigCombineDoc.getMarkdown().length(), rawRangeDoc.getMarkdown().length(),
+            "Raw ContentRange('1-3,5,9-') should return same markdown length as Combine equivalent");
+        System.out.println("Raw ContentRange('1-3,5,9-'): " + rawRangeDoc.getPages().size() + " pages, "
+            + rawRangeDoc.getMarkdown().length() + " chars");
     }
 }

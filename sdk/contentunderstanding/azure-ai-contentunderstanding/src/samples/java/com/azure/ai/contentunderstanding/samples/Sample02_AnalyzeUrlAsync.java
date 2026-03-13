@@ -782,6 +782,37 @@ public class Sample02_AnalyzeUrlAsync {
             Thread.currentThread().interrupt();
             throw new RuntimeException("Interrupted while waiting for audio analysis", e);
         }
+        // Raw string "5000-" — equivalent to TimeRangeFrom(5s)
+        AnalysisInput rawInput = new AnalysisInput();
+        rawInput.setUrl(audioUrl);
+        rawInput.setContentRange(new ContentRange("5000-"));
+
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> rawOperation
+            = client.beginAnalyze("prebuilt-audioSearch", Arrays.asList(rawInput));
+
+        CountDownLatch latch4 = new CountDownLatch(1);
+
+        rawOperation.last()
+            .flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
+                    return pollResponse.getFinalResult();
+                } else {
+                    return Mono.error(new RuntimeException(
+                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+                }
+            })
+            .doOnNext(result -> {
+                AudioVisualContent rawAudioContent = (AudioVisualContent) result.getContents().get(0);
+                System.out.println("Raw ContentRange audio analysis: "
+                    + rawAudioContent.getStartTime().toMillis() + " ms onward");
+            })
+            .doOnError(error -> System.err.println("Error occurred: " + error.getMessage()))
+            .subscribe(result -> latch4.countDown(), error -> latch4.countDown());
+
+        try { latch4.await(); } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException("Interrupted while waiting for audio analysis", e);
+        }
         // END:ContentUnderstandingAnalyzeAudioUrlWithContentRangeAsync
     }
 }
