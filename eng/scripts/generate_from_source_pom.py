@@ -307,15 +307,22 @@ def resolve_project_dependencies(pom_identifier: str, dependency_modules: Set[st
                 dependency_modules.add(dependency)
                 dependency_modules = resolve_project_dependencies(dependency, dependency_modules, projects)
 
-        # Add the dependencies of the parent POM.
-        # These are added since From Source the parent POMs are also built.
-        if project.parent_pom is not None and project.parent_pom in projects:
-            parent_project = projects[project.parent_pom]
+        # Add the dependencies of the full parent POM chain.
+        # Modules inherit <dependencies> from their parent hierarchy, so walking only
+        # one level is insufficient. For example, azure-cosmos-spark_3-5_2-12 inherits
+        # test dependencies (including unreleased ones) from its grandparent
+        # azure-cosmos-spark_3. Without walking the full chain those unreleased
+        # dependencies would not be added to the reactor, causing Maven to fail when
+        # it tries to download them from the artifact feed.
+        parent_id = project.parent_pom
+        while parent_id is not None and parent_id in projects:
+            parent_project = projects[parent_id]
             for dependency in parent_project.dependencies:
                 # Only continue if the parent's dependencies haven't already been resolved.
                 if not dependency in dependency_modules:
                     dependency_modules.add(dependency)
                     dependency_modules = resolve_project_dependencies(dependency, dependency_modules, projects)
+            parent_id = parent_project.parent_pom
 
     return dependency_modules
 
