@@ -7,8 +7,6 @@ import io.netty.buffer.ByteBuf;
 import reactor.core.publisher.Mono;
 import reactor.netty.Connection;
 
-import java.util.Map;
-
 /**
  * The type representing response of {@link HttpRequest}.
  */
@@ -36,16 +34,6 @@ public abstract class HttpResponse implements AutoCloseable {
      * @return the response headers
      */
     public abstract HttpHeaders headers();
-
-    /**
-     * Get all response headers as a lowercase-keyed map, avoiding intermediate copies.
-     * Subclasses may override for a more efficient implementation.
-     *
-     * @return the response headers as a map with lowercase keys
-     */
-    public Map<String, String> headerMap() {
-        return headers().toLowerCaseMap();
-    }
 
     /**
      * Get the publisher emitting response content chunks.

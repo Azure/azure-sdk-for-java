@@ -229,10 +229,8 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
             logger.debug("RxGatewayStoreModel.unwrapToStoreResponse before validate - refCnt: {}", retainedContent.refCnt());
         }
 
-        Map<String, String> headerMap = HttpUtils.unescape(headers.toLowerCaseMap());
-
         // If there is any error in the header response this throws exception
-        validateOrThrow(request, HttpResponseStatus.valueOf(statusCode), headerMap, retainedContent);
+        validateOrThrow(request, HttpResponseStatus.valueOf(statusCode), headers, retainedContent);
 
         int size;
         if ((size = retainedContent.readableBytes()) > 0) {
@@ -244,7 +242,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
             return new StoreResponse(
                 endpoint,
                 statusCode,
-                headerMap,
+                HttpUtils.unescape(headers.toLowerCaseMap()),
                 new ByteBufInputStream(retainedContent, true),
                 size);
         } else {
@@ -254,7 +252,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
         return new StoreResponse(
             endpoint,
             statusCode,
-            headerMap,
+            HttpUtils.unescape(headers.toLowerCaseMap()),
             null,
             0);
     }
@@ -743,7 +741,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
 
     private void validateOrThrow(RxDocumentServiceRequest request,
                                  HttpResponseStatus status,
-                                 Map<String, String> headers,
+                                 HttpHeaders headers,
                                  ByteBuf retainedBodyAsByteBuf) {
 
         int statusCode = status.code();
@@ -765,7 +763,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                 String.format("%s, StatusCode: %s", cosmosError.getMessage(), statusCodeString),
                 cosmosError.getPartitionedQueryExecutionInfo());
 
-            CosmosException dce = BridgeInternal.createCosmosException(request.requestContext.resourcePhysicalAddress, statusCode, cosmosError, headers);
+            CosmosException dce = BridgeInternal.createCosmosException(request.requestContext.resourcePhysicalAddress, statusCode, cosmosError, headers.toLowerCaseMap());
             BridgeInternal.setRequestHeaders(dce, request.getHeaders());
             throw dce;
         }
