@@ -156,6 +156,8 @@ function GetDependencyToVersion($PomFilePath) {
 }
 
 # Resolve dependency versions for patch changelog generation.
+# Parses version_client.txt following the same format as utils.load_version_map_from_file
+# (eng/versioning/utils.py), extracting column 2 (CodeModule.dependency) per entry.
 # Uses a layered resolution strategy:
 #   1. PatchVersionOverrides (highest priority) — maps artifactId to the patch version
 #      for sibling artifacts being patched in the same run.
