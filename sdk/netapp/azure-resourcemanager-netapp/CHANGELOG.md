@@ -369,47 +369,47 @@
 
 #### `models.NetAppAccount$Definition` was modified
 
-* `withLdapConfiguration(models.LdapConfiguration)` was added
 * `withEntraIdConfig(models.EntraIdConfig)` was added
+* `withLdapConfiguration(models.LdapConfiguration)` was added
 
 #### `models.Volume$Definition` was modified
 
 * `withBreakthroughMode(models.BreakthroughMode)` was added
 * `withLdapServerType(models.LdapServerType)` was added
-* `withLargeVolumeType(models.LargeVolumeType)` was added
 * `withLanguage(models.VolumeLanguage)` was added
+* `withLargeVolumeType(models.LargeVolumeType)` was added
 
 #### `models.ReplicationObject` was modified
 
-* `externalReplicationSetupStatus()` was added
-* `mirrorState()` was added
-* `relationshipStatus()` was added
 * `externalReplicationSetupInfo()` was added
+* `relationshipStatus()` was added
+* `mirrorState()` was added
+* `externalReplicationSetupStatus()` was added
 
 #### `models.NetAppAccountPatch` was modified
 
-* `ldapConfiguration()` was added
 * `entraIdConfig()` was added
-* `withEntraIdConfig(models.EntraIdConfigPatch)` was added
 * `withLdapConfiguration(models.LdapConfigurationPatch)` was added
+* `ldapConfiguration()` was added
 * `withMultiAdStatus(models.MultiAdStatus)` was added
+* `withEntraIdConfig(models.EntraIdConfigPatch)` was added
 
 #### `models.NetAppAccount$Update` was modified
 
-* `withEntraIdConfig(models.EntraIdConfigPatch)` was added
 * `withLdapConfiguration(models.LdapConfigurationPatch)` was added
+* `withEntraIdConfig(models.EntraIdConfigPatch)` was added
 * `withMultiAdStatus(models.MultiAdStatus)` was added
 
 #### `models.VolumeGroupVolumeProperties` was modified
 
-* `withBreakthroughMode(models.BreakthroughMode)` was added
-* `largeVolumeType()` was added
-* `withLargeVolumeType(models.LargeVolumeType)` was added
-* `language()` was added
-* `withLanguage(models.VolumeLanguage)` was added
-* `ldapServerType()` was added
-* `withLdapServerType(models.LdapServerType)` was added
 * `breakthroughMode()` was added
+* `withBreakthroughMode(models.BreakthroughMode)` was added
+* `withLargeVolumeType(models.LargeVolumeType)` was added
+* `largeVolumeType()` was added
+* `language()` was added
+* `ldapServerType()` was added
+* `withLanguage(models.VolumeLanguage)` was added
+* `withLdapServerType(models.LdapServerType)` was added
 
 #### `models.Volume` was modified
 
@@ -420,22 +420,22 @@
 
 #### `NetAppFilesManager` was modified
 
-* `elasticVolumes()` was added
-* `buckets()` was added
-* `elasticAccounts()` was added
+* `caches()` was added
 * `elasticSnapshotPolicies()` was added
 * `activeDirectoryConfigs()` was added
-* `elasticBackupVaults()` was added
+* `buckets()` was added
 * `elasticCapacityPools()` was added
-* `caches()` was added
+* `elasticVolumes()` was added
 * `elasticSnapshots()` was added
 * `elasticBackups()` was added
+* `elasticBackupVaults()` was added
 * `elasticBackupPolicies()` was added
+* `elasticAccounts()` was added
 
 #### `models.NetAppAccount` was modified
 
-* `entraIdConfig()` was added
 * `ldapConfiguration()` was added
+* `entraIdConfig()` was added
 
 ## 2.1.0 (2026-02-26)
 
