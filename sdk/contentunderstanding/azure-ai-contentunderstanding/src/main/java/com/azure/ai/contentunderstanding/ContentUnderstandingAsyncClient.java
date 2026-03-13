@@ -2137,8 +2137,8 @@ public final class ContentUnderstandingAsyncClient {
         }
         requestOptions.addQueryParam("stringEncoding", "utf16", false);
         AnalyzeRequest analyzeRequestObj = new AnalyzeRequest(inputs).setModelDeployments(modelDeployments);
-        BinaryData analyzeRequest1 = BinaryData.fromObject(analyzeRequestObj);
-        return serviceClient.beginAnalyzeWithModelAsync(analyzerId, analyzeRequest1, requestOptions)
+        BinaryData analyzeRequest = BinaryData.fromObject(analyzeRequestObj);
+        return serviceClient.beginAnalyzeWithModelAsync(analyzerId, analyzeRequest, requestOptions)
             .setPollInterval(Duration.ofSeconds(3));
     }
 }

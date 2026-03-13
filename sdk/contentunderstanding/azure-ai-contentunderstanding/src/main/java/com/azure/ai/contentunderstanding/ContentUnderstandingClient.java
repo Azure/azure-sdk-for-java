@@ -2105,8 +2105,8 @@ public final class ContentUnderstandingClient {
         }
         requestOptions.addQueryParam("stringEncoding", "utf16", false);
         AnalyzeRequest analyzeRequestObj = new AnalyzeRequest(inputs).setModelDeployments(modelDeployments);
-        BinaryData analyzeRequest1 = BinaryData.fromObject(analyzeRequestObj);
-        return serviceClient.beginAnalyzeWithModel(analyzerId, analyzeRequest1, requestOptions)
+        BinaryData analyzeRequest = BinaryData.fromObject(analyzeRequestObj);
+        return serviceClient.beginAnalyzeWithModel(analyzerId, analyzeRequest, requestOptions)
             .setPollInterval(Duration.ofSeconds(3));
     }
 }
