@@ -23,9 +23,12 @@ import com.azure.core.util.paging.ContinuablePagedIterable;
 import com.azure.search.documents.implementation.SearchClientImpl;
 import com.azure.search.documents.implementation.SearchUtils;
 import com.azure.search.documents.implementation.models.AutocompletePostRequest;
+import com.azure.search.documents.implementation.models.CountRequestAccept6;
 import com.azure.search.documents.implementation.models.SuggestPostRequest;
 import com.azure.search.documents.models.AutocompleteOptions;
 import com.azure.search.documents.models.AutocompleteResult;
+import com.azure.search.documents.models.CountRequestAccept;
+import com.azure.search.documents.models.CountRequestAccept3;
 import com.azure.search.documents.models.IndexBatchException;
 import com.azure.search.documents.models.IndexDocumentsBatch;
 import com.azure.search.documents.models.IndexDocumentsOptions;
@@ -99,6 +102,14 @@ public final class SearchClient {
 
     /**
      * Sends a batch of document write actions to the index.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=none".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -163,7 +174,7 @@ public final class SearchClient {
     public long getDocumentCount() {
         // Generated convenience method for hiddenGeneratedGetDocumentCountWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return hiddenGeneratedGetDocumentCountWithResponse(requestOptions).getValue().toObject(Long.class);
+        return Long.parseLong(hiddenGeneratedGetDocumentCountWithResponse(requestOptions).getValue().toString());
     }
 
     /**
@@ -239,48 +250,6 @@ public final class SearchClient {
             }
             return new SearchPagedResponse(response, serviceClient.getServiceVersion());
         });
-    }
-
-    /**
-     * Retrieves a document from the index.
-     *
-     * @param key The key of the document to retrieve.
-     * @param querySourceAuthorization Token identifying the user for which the query is being executed. This token is
-     * used to enforce security restrictions on documents.
-     * @param enableElevatedRead A value that enables elevated read that bypass document level permission checks for the
-     * query operation.
-     * @param selectedFields List of field names to retrieve for the document; Any field not retrieved will be missing
-     * from the returned document.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a document retrieved via a document lookup operation.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public LookupDocument getDocument(String key, String querySourceAuthorization, Boolean enableElevatedRead,
-        List<String> selectedFields) {
-        // Generated convenience method for hiddenGeneratedGetDocumentWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (querySourceAuthorization != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-query-source-authorization"),
-                querySourceAuthorization);
-        }
-        if (enableElevatedRead != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-enable-elevated-read"),
-                String.valueOf(enableElevatedRead));
-        }
-        if (selectedFields != null) {
-            requestOptions.addQueryParam("$select",
-                selectedFields.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
-        }
-        return hiddenGeneratedGetDocumentWithResponse(key, requestOptions).getValue().toObject(LookupDocument.class);
     }
 
     /**
@@ -384,6 +353,8 @@ public final class SearchClient {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=none".</td></tr>
      * <tr><td>x-ms-query-source-authorization</td><td>String</td><td>No</td><td>Token identifying the user for which
      * the query is being executed. This token is used to enforce security restrictions on documents.</td></tr>
      * <tr><td>x-ms-enable-elevated-read</td><td>Boolean</td><td>No</td><td>A value that enables elevated read that
@@ -675,6 +646,14 @@ public final class SearchClient {
 
     /**
      * Suggests documents in the index that match the given partial query text.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=none".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -735,6 +714,14 @@ public final class SearchClient {
 
     /**
      * Autocompletes incomplete query terms based on input text and matching terms in the index.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=none".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -963,6 +950,14 @@ public final class SearchClient {
 
     /**
      * Queries the number of documents in the index.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=none".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -999,6 +994,8 @@ public final class SearchClient {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=none".</td></tr>
      * <tr><td>x-ms-query-source-authorization</td><td>String</td><td>No</td><td>Token identifying the user for which
      * the query is being executed. This token is used to enforce security restrictions on documents.</td></tr>
      * <tr><td>x-ms-enable-elevated-read</td><td>Boolean</td><td>No</td><td>A value that enables elevated read that
@@ -1029,5 +1026,99 @@ public final class SearchClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BinaryData> hiddenGeneratedGetDocumentWithResponse(String key, RequestOptions requestOptions) {
         return this.serviceClient.getDocumentWithResponse(key, requestOptions);
+    }
+
+    /**
+     * Queries the number of documents in the index.
+     *
+     * @param accept The Accept header.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a 64-bit integer.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public long getDocumentCount(CountRequestAccept accept) {
+        // Generated convenience method for hiddenGeneratedGetDocumentCountWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (accept != null) {
+            requestOptions.setHeader(HttpHeaderName.ACCEPT, accept.toString());
+        }
+        return Long.parseLong(hiddenGeneratedGetDocumentCountWithResponse(requestOptions).getValue().toString());
+    }
+
+    /**
+     * Retrieves a document from the index.
+     *
+     * @param key The key of the document to retrieve.
+     * @param accept The Accept header.
+     * @param querySourceAuthorization Token identifying the user for which the query is being executed. This token is
+     * used to enforce security restrictions on documents.
+     * @param enableElevatedRead A value that enables elevated read that bypass document level permission checks for the
+     * query operation.
+     * @param selectedFields List of field names to retrieve for the document; Any field not retrieved will be missing
+     * from the returned document.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a document retrieved via a document lookup operation.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LookupDocument getDocument(String key, CountRequestAccept3 accept, String querySourceAuthorization,
+        Boolean enableElevatedRead, List<String> selectedFields) {
+        // Generated convenience method for hiddenGeneratedGetDocumentWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (accept != null) {
+            requestOptions.setHeader(HttpHeaderName.ACCEPT, accept.toString());
+        }
+        if (querySourceAuthorization != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-query-source-authorization"),
+                querySourceAuthorization);
+        }
+        if (enableElevatedRead != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-enable-elevated-read"),
+                String.valueOf(enableElevatedRead));
+        }
+        if (selectedFields != null) {
+            requestOptions.addQueryParam("$select",
+                selectedFields.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        return hiddenGeneratedGetDocumentWithResponse(key, requestOptions).getValue().toObject(LookupDocument.class);
+    }
+
+    /**
+     * Sends a batch of document write actions to the index.
+     *
+     * @param batch The batch of index actions.
+     * @param accept The Accept header.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing the status of operations for all documents in the indexing request.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    IndexDocumentsResult index(IndexDocumentsBatch batch, CountRequestAccept6 accept) {
+        // Generated convenience method for indexWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (accept != null) {
+            requestOptions.setHeader(HttpHeaderName.ACCEPT, accept.toString());
+        }
+        return indexWithResponse(BinaryData.fromObject(batch), requestOptions).getValue()
+            .toObject(IndexDocumentsResult.class);
     }
 }

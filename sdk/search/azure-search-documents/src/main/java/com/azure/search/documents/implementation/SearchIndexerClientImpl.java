@@ -158,10 +158,9 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createOrUpdateDataSourceConnection(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @HeaderParam("Prefer") String prefer, @PathParam("dataSourceName") String name,
-            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData dataSource,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Prefer") String prefer,
+            @PathParam("dataSourceName") String name, @HeaderParam("Content-Type") String contentType,
+            @BodyParam("application/json") BinaryData dataSource, RequestOptions requestOptions, Context context);
 
         @Put("/datasources('{dataSourceName}')")
         @ExpectedResponses({ 200, 201 })
@@ -170,10 +169,9 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createOrUpdateDataSourceConnectionSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @HeaderParam("Prefer") String prefer, @PathParam("dataSourceName") String name,
-            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData dataSource,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Prefer") String prefer,
+            @PathParam("dataSourceName") String name, @HeaderParam("Content-Type") String contentType,
+            @BodyParam("application/json") BinaryData dataSource, RequestOptions requestOptions, Context context);
 
         @Delete("/datasources('{dataSourceName}')")
         @ExpectedResponses({ 204, 404 })
@@ -181,8 +179,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteDataSourceConnection(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("dataSourceName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("dataSourceName") String name,
+            RequestOptions requestOptions, Context context);
 
         @Delete("/datasources('{dataSourceName}')")
         @ExpectedResponses({ 204, 404 })
@@ -190,8 +188,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteDataSourceConnectionSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("dataSourceName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("dataSourceName") String name,
+            RequestOptions requestOptions, Context context);
 
         @Get("/datasources('{dataSourceName}')")
         @ExpectedResponses({ 200 })
@@ -200,8 +198,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getDataSourceConnection(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("dataSourceName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("dataSourceName") String name,
+            RequestOptions requestOptions, Context context);
 
         @Get("/datasources('{dataSourceName}')")
         @ExpectedResponses({ 200 })
@@ -210,8 +208,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getDataSourceConnectionSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("dataSourceName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("dataSourceName") String name,
+            RequestOptions requestOptions, Context context);
 
         @Get("/datasources")
         @ExpectedResponses({ 200 })
@@ -220,8 +218,7 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getDataSourceConnections(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, RequestOptions requestOptions, Context context);
 
         @Get("/datasources")
         @ExpectedResponses({ 200 })
@@ -230,8 +227,7 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getDataSourceConnectionsSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, RequestOptions requestOptions, Context context);
 
         @Post("/datasources")
         @ExpectedResponses({ 201 })
@@ -240,8 +236,7 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createDataSourceConnection(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
             @BodyParam("application/json") BinaryData dataSourceConnection, RequestOptions requestOptions,
             Context context);
 
@@ -252,8 +247,7 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createDataSourceConnectionSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
             @BodyParam("application/json") BinaryData dataSourceConnection, RequestOptions requestOptions,
             Context context);
 
@@ -264,8 +258,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> resetIndexer(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexerName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("indexerName") String name,
+            RequestOptions requestOptions, Context context);
 
         @Post("/indexers('{indexerName}')/search.reset")
         @ExpectedResponses({ 204 })
@@ -274,8 +268,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> resetIndexerSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexerName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("indexerName") String name,
+            RequestOptions requestOptions, Context context);
 
         @Post("/indexers('{indexerName}')/search.resync")
         @ExpectedResponses({ 204 })
@@ -284,9 +278,9 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> resync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexerName") String name, @HeaderParam("Content-Type") String contentType,
-            @BodyParam("application/json") BinaryData indexerResync, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("indexerName") String name,
+            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData indexerResync,
+            RequestOptions requestOptions, Context context);
 
         @Post("/indexers('{indexerName}')/search.resync")
         @ExpectedResponses({ 204 })
@@ -295,9 +289,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> resyncSync(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, @PathParam("indexerName") String name,
-            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData indexerResync,
-            RequestOptions requestOptions, Context context);
+            @PathParam("indexerName") String name, @HeaderParam("Content-Type") String contentType,
+            @BodyParam("application/json") BinaryData indexerResync, RequestOptions requestOptions, Context context);
 
         @Post("/indexers('{indexerName}')/search.resetdocs")
         @ExpectedResponses({ 204 })
@@ -306,8 +299,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> resetDocuments(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexerName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("indexerName") String name,
+            RequestOptions requestOptions, Context context);
 
         @Post("/indexers('{indexerName}')/search.resetdocs")
         @ExpectedResponses({ 204 })
@@ -316,8 +309,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> resetDocumentsSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexerName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("indexerName") String name,
+            RequestOptions requestOptions, Context context);
 
         @Post("/indexers('{indexerName}')/search.run")
         @ExpectedResponses({ 202 })
@@ -326,8 +319,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> runIndexer(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexerName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("indexerName") String name,
+            RequestOptions requestOptions, Context context);
 
         @Post("/indexers('{indexerName}')/search.run")
         @ExpectedResponses({ 202 })
@@ -336,8 +329,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> runIndexerSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexerName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("indexerName") String name,
+            RequestOptions requestOptions, Context context);
 
         @Put("/indexers('{indexerName}')")
         @ExpectedResponses({ 200, 201 })
@@ -346,10 +339,9 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createOrUpdateIndexer(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @HeaderParam("Prefer") String prefer, @PathParam("indexerName") String name,
-            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData indexer,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Prefer") String prefer,
+            @PathParam("indexerName") String name, @HeaderParam("Content-Type") String contentType,
+            @BodyParam("application/json") BinaryData indexer, RequestOptions requestOptions, Context context);
 
         @Put("/indexers('{indexerName}')")
         @ExpectedResponses({ 200, 201 })
@@ -358,10 +350,9 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createOrUpdateIndexerSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @HeaderParam("Prefer") String prefer, @PathParam("indexerName") String name,
-            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData indexer,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Prefer") String prefer,
+            @PathParam("indexerName") String name, @HeaderParam("Content-Type") String contentType,
+            @BodyParam("application/json") BinaryData indexer, RequestOptions requestOptions, Context context);
 
         @Delete("/indexers('{indexerName}')")
         @ExpectedResponses({ 204, 404 })
@@ -369,8 +360,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteIndexer(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexerName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("indexerName") String name,
+            RequestOptions requestOptions, Context context);
 
         @Delete("/indexers('{indexerName}')")
         @ExpectedResponses({ 204, 404 })
@@ -378,8 +369,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteIndexerSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexerName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("indexerName") String name,
+            RequestOptions requestOptions, Context context);
 
         @Get("/indexers('{indexerName}')")
         @ExpectedResponses({ 200 })
@@ -388,8 +379,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getIndexer(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexerName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("indexerName") String name,
+            RequestOptions requestOptions, Context context);
 
         @Get("/indexers('{indexerName}')")
         @ExpectedResponses({ 200 })
@@ -398,8 +389,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getIndexerSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexerName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("indexerName") String name,
+            RequestOptions requestOptions, Context context);
 
         @Get("/indexers")
         @ExpectedResponses({ 200 })
@@ -408,8 +399,7 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getIndexers(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, RequestOptions requestOptions, Context context);
 
         @Get("/indexers")
         @ExpectedResponses({ 200 })
@@ -418,8 +408,7 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getIndexersSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, RequestOptions requestOptions, Context context);
 
         @Post("/indexers")
         @ExpectedResponses({ 201 })
@@ -428,9 +417,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createIndexer(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData indexer,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @BodyParam("application/json") BinaryData indexer, RequestOptions requestOptions, Context context);
 
         @Post("/indexers")
         @ExpectedResponses({ 201 })
@@ -439,9 +427,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createIndexerSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData indexer,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @BodyParam("application/json") BinaryData indexer, RequestOptions requestOptions, Context context);
 
         @Get("/indexers('{indexerName}')/search.status")
         @ExpectedResponses({ 200 })
@@ -450,8 +437,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getIndexerStatus(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexerName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("indexerName") String name,
+            RequestOptions requestOptions, Context context);
 
         @Get("/indexers('{indexerName}')/search.status")
         @ExpectedResponses({ 200 })
@@ -460,8 +447,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getIndexerStatusSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexerName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("indexerName") String name,
+            RequestOptions requestOptions, Context context);
 
         @Put("/skillsets('{skillsetName}')")
         @ExpectedResponses({ 200, 201 })
@@ -470,10 +457,9 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createOrUpdateSkillset(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @HeaderParam("Prefer") String prefer, @PathParam("skillsetName") String name,
-            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData skillset,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Prefer") String prefer,
+            @PathParam("skillsetName") String name, @HeaderParam("Content-Type") String contentType,
+            @BodyParam("application/json") BinaryData skillset, RequestOptions requestOptions, Context context);
 
         @Put("/skillsets('{skillsetName}')")
         @ExpectedResponses({ 200, 201 })
@@ -482,10 +468,9 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createOrUpdateSkillsetSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @HeaderParam("Prefer") String prefer, @PathParam("skillsetName") String name,
-            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData skillset,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Prefer") String prefer,
+            @PathParam("skillsetName") String name, @HeaderParam("Content-Type") String contentType,
+            @BodyParam("application/json") BinaryData skillset, RequestOptions requestOptions, Context context);
 
         @Delete("/skillsets('{skillsetName}')")
         @ExpectedResponses({ 204, 404 })
@@ -493,8 +478,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteSkillset(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("skillsetName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("skillsetName") String name,
+            RequestOptions requestOptions, Context context);
 
         @Delete("/skillsets('{skillsetName}')")
         @ExpectedResponses({ 204, 404 })
@@ -502,8 +487,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteSkillsetSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("skillsetName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("skillsetName") String name,
+            RequestOptions requestOptions, Context context);
 
         @Get("/skillsets('{skillsetName}')")
         @ExpectedResponses({ 200 })
@@ -512,8 +497,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getSkillset(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("skillsetName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("skillsetName") String name,
+            RequestOptions requestOptions, Context context);
 
         @Get("/skillsets('{skillsetName}')")
         @ExpectedResponses({ 200 })
@@ -522,8 +507,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getSkillsetSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("skillsetName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("skillsetName") String name,
+            RequestOptions requestOptions, Context context);
 
         @Get("/skillsets")
         @ExpectedResponses({ 200 })
@@ -532,8 +517,7 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getSkillsets(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, RequestOptions requestOptions, Context context);
 
         @Get("/skillsets")
         @ExpectedResponses({ 200 })
@@ -542,8 +526,7 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getSkillsetsSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, RequestOptions requestOptions, Context context);
 
         @Post("/skillsets")
         @ExpectedResponses({ 201 })
@@ -552,9 +535,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createSkillset(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData skillset,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @BodyParam("application/json") BinaryData skillset, RequestOptions requestOptions, Context context);
 
         @Post("/skillsets")
         @ExpectedResponses({ 201 })
@@ -563,9 +545,8 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createSkillsetSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData skillset,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @BodyParam("application/json") BinaryData skillset, RequestOptions requestOptions, Context context);
 
         @Post("/skillsets('{skillsetName}')/search.resetskills")
         @ExpectedResponses({ 204 })
@@ -574,9 +555,9 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> resetSkills(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("skillsetName") String name, @HeaderParam("Content-Type") String contentType,
-            @BodyParam("application/json") BinaryData skillNames, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("skillsetName") String name,
+            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData skillNames,
+            RequestOptions requestOptions, Context context);
 
         @Post("/skillsets('{skillsetName}')/search.resetskills")
         @ExpectedResponses({ 204 })
@@ -585,9 +566,9 @@ public final class SearchIndexerClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> resetSkillsSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("skillsetName") String name, @HeaderParam("Content-Type") String contentType,
-            @BodyParam("application/json") BinaryData skillNames, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("skillsetName") String name,
+            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData skillNames,
+            RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -603,6 +584,8 @@ public final class SearchIndexerClientImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
      * performed only if the ETag on the server matches this value.</td></tr>
      * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
@@ -708,12 +691,10 @@ public final class SearchIndexerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateDataSourceConnectionWithResponseAsync(String name,
         BinaryData dataSource, RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         final String prefer = "return=representation";
         final String contentType = "application/json";
         return FluxUtil.withContext(context -> service.createOrUpdateDataSourceConnection(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, prefer, name, contentType, dataSource, requestOptions,
-            context));
+            this.getServiceVersion().getVersion(), prefer, name, contentType, dataSource, requestOptions, context));
     }
 
     /**
@@ -729,6 +710,8 @@ public final class SearchIndexerClientImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
      * performed only if the ETag on the server matches this value.</td></tr>
      * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
@@ -834,11 +817,10 @@ public final class SearchIndexerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateDataSourceConnectionWithResponse(String name, BinaryData dataSource,
         RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         final String prefer = "return=representation";
         final String contentType = "application/json";
         return service.createOrUpdateDataSourceConnectionSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            accept, prefer, name, contentType, dataSource, requestOptions, Context.NONE);
+            prefer, name, contentType, dataSource, requestOptions, Context.NONE);
     }
 
     /**
@@ -847,6 +829,8 @@ public final class SearchIndexerClientImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
      * performed only if the ETag on the server matches this value.</td></tr>
      * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
@@ -864,9 +848,8 @@ public final class SearchIndexerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteDataSourceConnectionWithResponseAsync(String name,
         RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil.withContext(context -> service.deleteDataSourceConnection(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, name, requestOptions, context));
+            this.getServiceVersion().getVersion(), name, requestOptions, context));
     }
 
     /**
@@ -875,6 +858,8 @@ public final class SearchIndexerClientImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
      * performed only if the ETag on the server matches this value.</td></tr>
      * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
@@ -891,13 +876,20 @@ public final class SearchIndexerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteDataSourceConnectionWithResponse(String name, RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
-        return service.deleteDataSourceConnectionSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-            name, requestOptions, Context.NONE);
+        return service.deleteDataSourceConnectionSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name,
+            requestOptions, Context.NONE);
     }
 
     /**
      * Retrieves a datasource definition.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -953,13 +945,20 @@ public final class SearchIndexerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getDataSourceConnectionWithResponseAsync(String name,
         RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil.withContext(context -> service.getDataSourceConnection(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, name, requestOptions, context));
+            this.getServiceVersion().getVersion(), name, requestOptions, context));
     }
 
     /**
      * Retrieves a datasource definition.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -1014,9 +1013,8 @@ public final class SearchIndexerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getDataSourceConnectionWithResponse(String name, RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
-        return service.getDataSourceConnectionSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-            name, requestOptions, Context.NONE);
+        return service.getDataSourceConnectionSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name,
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -1030,6 +1028,14 @@ public final class SearchIndexerClientImpl {
      * properties. In the form of "," separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -1087,9 +1093,8 @@ public final class SearchIndexerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getDataSourceConnectionsWithResponseAsync(RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil.withContext(context -> service.getDataSourceConnections(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, requestOptions, context));
+            this.getServiceVersion().getVersion(), requestOptions, context));
     }
 
     /**
@@ -1103,6 +1108,14 @@ public final class SearchIndexerClientImpl {
      * properties. In the form of "," separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -1159,13 +1172,20 @@ public final class SearchIndexerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getDataSourceConnectionsWithResponse(RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
-        return service.getDataSourceConnectionsSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
+        return service.getDataSourceConnectionsSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
             requestOptions, Context.NONE);
     }
 
     /**
      * Creates a new datasource.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -1264,14 +1284,21 @@ public final class SearchIndexerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createDataSourceConnectionWithResponseAsync(BinaryData dataSourceConnection,
         RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         final String contentType = "application/json";
         return FluxUtil.withContext(context -> service.createDataSourceConnection(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, contentType, dataSourceConnection, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, dataSourceConnection, requestOptions, context));
     }
 
     /**
      * Creates a new datasource.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -1370,14 +1397,21 @@ public final class SearchIndexerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createDataSourceConnectionWithResponse(BinaryData dataSourceConnection,
         RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         final String contentType = "application/json";
-        return service.createDataSourceConnectionSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
+        return service.createDataSourceConnectionSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
             contentType, dataSourceConnection, requestOptions, Context.NONE);
     }
 
     /**
      * Resets the change tracking state associated with an indexer.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * 
      * @param name The name of the indexer.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1389,13 +1423,20 @@ public final class SearchIndexerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> resetIndexerWithResponseAsync(String name, RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil.withContext(context -> service.resetIndexer(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, name, requestOptions, context));
+            this.getServiceVersion().getVersion(), name, requestOptions, context));
     }
 
     /**
      * Resets the change tracking state associated with an indexer.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * 
      * @param name The name of the indexer.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1407,13 +1448,20 @@ public final class SearchIndexerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> resetIndexerWithResponse(String name, RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
-        return service.resetIndexerSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, name,
-            requestOptions, Context.NONE);
+        return service.resetIndexerSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name, requestOptions,
+            Context.NONE);
     }
 
     /**
      * Resync selective options from the datasource to be re-ingested by the indexer.".
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -1438,14 +1486,21 @@ public final class SearchIndexerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> resyncWithResponseAsync(String name, BinaryData indexerResync,
         RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         final String contentType = "application/json";
         return FluxUtil.withContext(context -> service.resync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            accept, name, contentType, indexerResync, requestOptions, context));
+            name, contentType, indexerResync, requestOptions, context));
     }
 
     /**
      * Resync selective options from the datasource to be re-ingested by the indexer.".
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -1469,9 +1524,8 @@ public final class SearchIndexerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> resyncWithResponse(String name, BinaryData indexerResync, RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         final String contentType = "application/json";
-        return service.resyncSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, name, contentType,
+        return service.resyncSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name, contentType,
             indexerResync, requestOptions, Context.NONE);
     }
 
@@ -1491,6 +1545,8 @@ public final class SearchIndexerClientImpl {
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
      * "application/json".</td></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
@@ -1518,7 +1574,6 @@ public final class SearchIndexerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> resetDocumentsWithResponseAsync(String name, RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
             if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
@@ -1526,7 +1581,7 @@ public final class SearchIndexerClientImpl {
             }
         });
         return FluxUtil.withContext(context -> service.resetDocuments(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, name, requestOptionsLocal, context));
+            this.getServiceVersion().getVersion(), name, requestOptionsLocal, context));
     }
 
     /**
@@ -1545,6 +1600,8 @@ public final class SearchIndexerClientImpl {
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
      * "application/json".</td></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
@@ -1572,19 +1629,26 @@ public final class SearchIndexerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> resetDocumentsWithResponse(String name, RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
             if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
                 requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
             }
         });
-        return service.resetDocumentsSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, name,
+        return service.resetDocumentsSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name,
             requestOptionsLocal, Context.NONE);
     }
 
     /**
      * Runs an indexer on-demand.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * 
      * @param name The name of the indexer.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1596,13 +1660,20 @@ public final class SearchIndexerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> runIndexerWithResponseAsync(String name, RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil.withContext(context -> service.runIndexer(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, name, requestOptions, context));
+            this.getServiceVersion().getVersion(), name, requestOptions, context));
     }
 
     /**
      * Runs an indexer on-demand.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * 
      * @param name The name of the indexer.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1614,9 +1685,8 @@ public final class SearchIndexerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> runIndexerWithResponse(String name, RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
-        return service.runIndexerSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, name,
-            requestOptions, Context.NONE);
+        return service.runIndexerSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name, requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -1634,6 +1704,8 @@ public final class SearchIndexerClientImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
      * performed only if the ETag on the server matches this value.</td></tr>
      * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
@@ -1814,12 +1886,10 @@ public final class SearchIndexerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateIndexerWithResponseAsync(String name, BinaryData indexer,
         RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         final String prefer = "return=representation";
         final String contentType = "application/json";
-        return FluxUtil.withContext(
-            context -> service.createOrUpdateIndexer(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-                prefer, name, contentType, indexer, requestOptions, context));
+        return FluxUtil.withContext(context -> service.createOrUpdateIndexer(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), prefer, name, contentType, indexer, requestOptions, context));
     }
 
     /**
@@ -1837,6 +1907,8 @@ public final class SearchIndexerClientImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
      * performed only if the ETag on the server matches this value.</td></tr>
      * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
@@ -2017,11 +2089,10 @@ public final class SearchIndexerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateIndexerWithResponse(String name, BinaryData indexer,
         RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         final String prefer = "return=representation";
         final String contentType = "application/json";
-        return service.createOrUpdateIndexerSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-            prefer, name, contentType, indexer, requestOptions, Context.NONE);
+        return service.createOrUpdateIndexerSync(this.getEndpoint(), this.getServiceVersion().getVersion(), prefer,
+            name, contentType, indexer, requestOptions, Context.NONE);
     }
 
     /**
@@ -2030,6 +2101,8 @@ public final class SearchIndexerClientImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
      * performed only if the ETag on the server matches this value.</td></tr>
      * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
@@ -2046,9 +2119,8 @@ public final class SearchIndexerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteIndexerWithResponseAsync(String name, RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil.withContext(context -> service.deleteIndexer(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, name, requestOptions, context));
+            this.getServiceVersion().getVersion(), name, requestOptions, context));
     }
 
     /**
@@ -2057,6 +2129,8 @@ public final class SearchIndexerClientImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
      * performed only if the ETag on the server matches this value.</td></tr>
      * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
@@ -2073,13 +2147,20 @@ public final class SearchIndexerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteIndexerWithResponse(String name, RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
-        return service.deleteIndexerSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, name,
+        return service.deleteIndexerSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name,
             requestOptions, Context.NONE);
     }
 
     /**
      * Retrieves an indexer definition.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -2171,13 +2252,20 @@ public final class SearchIndexerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getIndexerWithResponseAsync(String name, RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil.withContext(context -> service.getIndexer(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, name, requestOptions, context));
+            this.getServiceVersion().getVersion(), name, requestOptions, context));
     }
 
     /**
      * Retrieves an indexer definition.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -2269,9 +2357,8 @@ public final class SearchIndexerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getIndexerWithResponse(String name, RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
-        return service.getIndexerSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, name,
-            requestOptions, Context.NONE);
+        return service.getIndexerSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name, requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -2285,6 +2372,14 @@ public final class SearchIndexerClientImpl {
      * properties. In the form of "," separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -2380,9 +2475,8 @@ public final class SearchIndexerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getIndexersWithResponseAsync(RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil.withContext(context -> service.getIndexers(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, requestOptions, context));
+            this.getServiceVersion().getVersion(), requestOptions, context));
     }
 
     /**
@@ -2396,6 +2490,14 @@ public final class SearchIndexerClientImpl {
      * properties. In the form of "," separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -2490,13 +2592,20 @@ public final class SearchIndexerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getIndexersWithResponse(RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
-        return service.getIndexersSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-            requestOptions, Context.NONE);
+        return service.getIndexersSync(this.getEndpoint(), this.getServiceVersion().getVersion(), requestOptions,
+            Context.NONE);
     }
 
     /**
      * Creates a new indexer.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -2670,14 +2779,21 @@ public final class SearchIndexerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createIndexerWithResponseAsync(BinaryData indexer,
         RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         final String contentType = "application/json";
         return FluxUtil.withContext(context -> service.createIndexer(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, contentType, indexer, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, indexer, requestOptions, context));
     }
 
     /**
      * Creates a new indexer.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -2850,14 +2966,21 @@ public final class SearchIndexerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createIndexerWithResponse(BinaryData indexer, RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         final String contentType = "application/json";
-        return service.createIndexerSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, contentType,
+        return service.createIndexerSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
             indexer, requestOptions, Context.NONE);
     }
 
     /**
      * Returns the current status and execution history of an indexer.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -2940,13 +3063,20 @@ public final class SearchIndexerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getIndexerStatusWithResponseAsync(String name, RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil.withContext(context -> service.getIndexerStatus(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, name, requestOptions, context));
+            this.getServiceVersion().getVersion(), name, requestOptions, context));
     }
 
     /**
      * Returns the current status and execution history of an indexer.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -3028,8 +3158,7 @@ public final class SearchIndexerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getIndexerStatusWithResponse(String name, RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
-        return service.getIndexerStatusSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, name,
+        return service.getIndexerStatusSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name,
             requestOptions, Context.NONE);
     }
 
@@ -3048,6 +3177,8 @@ public final class SearchIndexerClientImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
      * performed only if the ETag on the server matches this value.</td></tr>
      * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
@@ -3306,12 +3437,10 @@ public final class SearchIndexerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateSkillsetWithResponseAsync(String name, BinaryData skillset,
         RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         final String prefer = "return=representation";
         final String contentType = "application/json";
-        return FluxUtil.withContext(
-            context -> service.createOrUpdateSkillset(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-                prefer, name, contentType, skillset, requestOptions, context));
+        return FluxUtil.withContext(context -> service.createOrUpdateSkillset(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), prefer, name, contentType, skillset, requestOptions, context));
     }
 
     /**
@@ -3329,6 +3458,8 @@ public final class SearchIndexerClientImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
      * performed only if the ETag on the server matches this value.</td></tr>
      * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
@@ -3587,11 +3718,10 @@ public final class SearchIndexerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateSkillsetWithResponse(String name, BinaryData skillset,
         RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         final String prefer = "return=representation";
         final String contentType = "application/json";
-        return service.createOrUpdateSkillsetSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-            prefer, name, contentType, skillset, requestOptions, Context.NONE);
+        return service.createOrUpdateSkillsetSync(this.getEndpoint(), this.getServiceVersion().getVersion(), prefer,
+            name, contentType, skillset, requestOptions, Context.NONE);
     }
 
     /**
@@ -3600,6 +3730,8 @@ public final class SearchIndexerClientImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
      * performed only if the ETag on the server matches this value.</td></tr>
      * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
@@ -3616,9 +3748,8 @@ public final class SearchIndexerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteSkillsetWithResponseAsync(String name, RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil.withContext(context -> service.deleteSkillset(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, name, requestOptions, context));
+            this.getServiceVersion().getVersion(), name, requestOptions, context));
     }
 
     /**
@@ -3627,6 +3758,8 @@ public final class SearchIndexerClientImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
      * performed only if the ETag on the server matches this value.</td></tr>
      * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
@@ -3643,13 +3776,20 @@ public final class SearchIndexerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteSkillsetWithResponse(String name, RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
-        return service.deleteSkillsetSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, name,
+        return service.deleteSkillsetSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name,
             requestOptions, Context.NONE);
     }
 
     /**
      * Retrieves a skillset in a search service.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -3780,13 +3920,20 @@ public final class SearchIndexerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getSkillsetWithResponseAsync(String name, RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil.withContext(context -> service.getSkillset(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, name, requestOptions, context));
+            this.getServiceVersion().getVersion(), name, requestOptions, context));
     }
 
     /**
      * Retrieves a skillset in a search service.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -3917,9 +4064,8 @@ public final class SearchIndexerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getSkillsetWithResponse(String name, RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
-        return service.getSkillsetSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, name,
-            requestOptions, Context.NONE);
+        return service.getSkillsetSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name, requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -3933,6 +4079,14 @@ public final class SearchIndexerClientImpl {
      * properties. In the form of "," separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -4067,9 +4221,8 @@ public final class SearchIndexerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getSkillsetsWithResponseAsync(RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil.withContext(context -> service.getSkillsets(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, requestOptions, context));
+            this.getServiceVersion().getVersion(), requestOptions, context));
     }
 
     /**
@@ -4083,6 +4236,14 @@ public final class SearchIndexerClientImpl {
      * properties. In the form of "," separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -4216,13 +4377,20 @@ public final class SearchIndexerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getSkillsetsWithResponse(RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
-        return service.getSkillsetsSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-            requestOptions, Context.NONE);
+        return service.getSkillsetsSync(this.getEndpoint(), this.getServiceVersion().getVersion(), requestOptions,
+            Context.NONE);
     }
 
     /**
      * Creates a new skillset in a search service.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -4474,14 +4642,21 @@ public final class SearchIndexerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createSkillsetWithResponseAsync(BinaryData skillset,
         RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         final String contentType = "application/json";
         return FluxUtil.withContext(context -> service.createSkillset(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, contentType, skillset, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, skillset, requestOptions, context));
     }
 
     /**
      * Creates a new skillset in a search service.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -4732,14 +4907,21 @@ public final class SearchIndexerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createSkillsetWithResponse(BinaryData skillset, RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         final String contentType = "application/json";
-        return service.createSkillsetSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-            contentType, skillset, requestOptions, Context.NONE);
+        return service.createSkillsetSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
+            skillset, requestOptions, Context.NONE);
     }
 
     /**
      * Reset an existing skillset in a search service.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -4764,14 +4946,21 @@ public final class SearchIndexerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> resetSkillsWithResponseAsync(String name, BinaryData skillNames,
         RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         final String contentType = "application/json";
         return FluxUtil.withContext(context -> service.resetSkills(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, name, contentType, skillNames, requestOptions, context));
+            this.getServiceVersion().getVersion(), name, contentType, skillNames, requestOptions, context));
     }
 
     /**
      * Reset an existing skillset in a search service.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -4795,9 +4984,8 @@ public final class SearchIndexerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> resetSkillsWithResponse(String name, BinaryData skillNames, RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         final String contentType = "application/json";
-        return service.resetSkillsSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, name,
-            contentType, skillNames, requestOptions, Context.NONE);
+        return service.resetSkillsSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name, contentType,
+            skillNames, requestOptions, Context.NONE);
     }
 }

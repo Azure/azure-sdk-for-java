@@ -163,10 +163,9 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createOrUpdateSynonymMap(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @HeaderParam("Prefer") String prefer, @PathParam("synonymMapName") String name,
-            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData synonymMap,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Prefer") String prefer,
+            @PathParam("synonymMapName") String name, @HeaderParam("Content-Type") String contentType,
+            @BodyParam("application/json") BinaryData synonymMap, RequestOptions requestOptions, Context context);
 
         @Put("/synonymmaps('{synonymMapName}')")
         @ExpectedResponses({ 200, 201 })
@@ -175,10 +174,9 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createOrUpdateSynonymMapSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @HeaderParam("Prefer") String prefer, @PathParam("synonymMapName") String name,
-            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData synonymMap,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Prefer") String prefer,
+            @PathParam("synonymMapName") String name, @HeaderParam("Content-Type") String contentType,
+            @BodyParam("application/json") BinaryData synonymMap, RequestOptions requestOptions, Context context);
 
         @Delete("/synonymmaps('{synonymMapName}')")
         @ExpectedResponses({ 204, 404 })
@@ -186,8 +184,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteSynonymMap(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("synonymMapName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("synonymMapName") String name,
+            RequestOptions requestOptions, Context context);
 
         @Delete("/synonymmaps('{synonymMapName}')")
         @ExpectedResponses({ 204, 404 })
@@ -195,8 +193,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteSynonymMapSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("synonymMapName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("synonymMapName") String name,
+            RequestOptions requestOptions, Context context);
 
         @Get("/synonymmaps('{synonymMapName}')")
         @ExpectedResponses({ 200 })
@@ -205,8 +203,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getSynonymMap(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("synonymMapName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("synonymMapName") String name,
+            RequestOptions requestOptions, Context context);
 
         @Get("/synonymmaps('{synonymMapName}')")
         @ExpectedResponses({ 200 })
@@ -215,8 +213,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getSynonymMapSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("synonymMapName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("synonymMapName") String name,
+            RequestOptions requestOptions, Context context);
 
         @Get("/synonymmaps")
         @ExpectedResponses({ 200 })
@@ -225,8 +223,7 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getSynonymMaps(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, RequestOptions requestOptions, Context context);
 
         @Get("/synonymmaps")
         @ExpectedResponses({ 200 })
@@ -235,8 +232,7 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getSynonymMapsSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, RequestOptions requestOptions, Context context);
 
         @Post("/synonymmaps")
         @ExpectedResponses({ 201 })
@@ -245,9 +241,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createSynonymMap(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData synonymMap,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @BodyParam("application/json") BinaryData synonymMap, RequestOptions requestOptions, Context context);
 
         @Post("/synonymmaps")
         @ExpectedResponses({ 201 })
@@ -256,9 +251,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createSynonymMapSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData synonymMap,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @BodyParam("application/json") BinaryData synonymMap, RequestOptions requestOptions, Context context);
 
         @Put("/indexes('{indexName}')")
         @ExpectedResponses({ 200, 201 })
@@ -267,10 +261,9 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createOrUpdateIndex(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @HeaderParam("Prefer") String prefer, @PathParam("indexName") String name,
-            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData index,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Prefer") String prefer,
+            @PathParam("indexName") String name, @HeaderParam("Content-Type") String contentType,
+            @BodyParam("application/json") BinaryData index, RequestOptions requestOptions, Context context);
 
         @Put("/indexes('{indexName}')")
         @ExpectedResponses({ 200, 201 })
@@ -279,10 +272,9 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createOrUpdateIndexSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @HeaderParam("Prefer") String prefer, @PathParam("indexName") String name,
-            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData index,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Prefer") String prefer,
+            @PathParam("indexName") String name, @HeaderParam("Content-Type") String contentType,
+            @BodyParam("application/json") BinaryData index, RequestOptions requestOptions, Context context);
 
         @Delete("/indexes('{indexName}')")
         @ExpectedResponses({ 204, 404 })
@@ -290,8 +282,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteIndex(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("indexName") String name,
+            RequestOptions requestOptions, Context context);
 
         @Delete("/indexes('{indexName}')")
         @ExpectedResponses({ 204, 404 })
@@ -299,8 +291,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteIndexSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("indexName") String name,
+            RequestOptions requestOptions, Context context);
 
         @Get("/indexes('{indexName}')")
         @ExpectedResponses({ 200 })
@@ -309,8 +301,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getIndex(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("indexName") String name,
+            RequestOptions requestOptions, Context context);
 
         @Get("/indexes('{indexName}')")
         @ExpectedResponses({ 200 })
@@ -319,8 +311,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getIndexSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("indexName") String name,
+            RequestOptions requestOptions, Context context);
 
         @Get("/indexes")
         @ExpectedResponses({ 200 })
@@ -329,8 +321,7 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listIndexes(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, RequestOptions requestOptions, Context context);
 
         @Get("/indexes")
         @ExpectedResponses({ 200 })
@@ -339,8 +330,25 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listIndexesSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, RequestOptions requestOptions, Context context);
+
+        @Get("/indexes")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listIndexesWithSelectedProperties(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, RequestOptions requestOptions, Context context);
+
+        @Get("/indexes")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listIndexesWithSelectedPropertiesSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, RequestOptions requestOptions, Context context);
 
         @Post("/indexes")
         @ExpectedResponses({ 201 })
@@ -349,9 +357,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createIndex(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData index,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @BodyParam("application/json") BinaryData index, RequestOptions requestOptions, Context context);
 
         @Post("/indexes")
         @ExpectedResponses({ 201 })
@@ -360,9 +367,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createIndexSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData index,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @BodyParam("application/json") BinaryData index, RequestOptions requestOptions, Context context);
 
         @Get("/indexes('{indexName}')/search.stats")
         @ExpectedResponses({ 200 })
@@ -371,8 +377,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getIndexStatistics(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("indexName") String name,
+            RequestOptions requestOptions, Context context);
 
         @Get("/indexes('{indexName}')/search.stats")
         @ExpectedResponses({ 200 })
@@ -381,8 +387,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getIndexStatisticsSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("indexName") String name,
+            RequestOptions requestOptions, Context context);
 
         @Post("/indexes('{indexName}')/search.analyze")
         @ExpectedResponses({ 200 })
@@ -391,9 +397,9 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> analyzeText(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexName") String name, @HeaderParam("Content-Type") String contentType,
-            @BodyParam("application/json") BinaryData request, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("indexName") String name,
+            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData request,
+            RequestOptions requestOptions, Context context);
 
         @Post("/indexes('{indexName}')/search.analyze")
         @ExpectedResponses({ 200 })
@@ -402,9 +408,9 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> analyzeTextSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexName") String name, @HeaderParam("Content-Type") String contentType,
-            @BodyParam("application/json") BinaryData request, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("indexName") String name,
+            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData request,
+            RequestOptions requestOptions, Context context);
 
         @Put("/aliases('{aliasName}')")
         @ExpectedResponses({ 200, 201 })
@@ -413,10 +419,9 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createOrUpdateAlias(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @HeaderParam("Prefer") String prefer, @PathParam("aliasName") String name,
-            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData alias,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Prefer") String prefer,
+            @PathParam("aliasName") String name, @HeaderParam("Content-Type") String contentType,
+            @BodyParam("application/json") BinaryData alias, RequestOptions requestOptions, Context context);
 
         @Put("/aliases('{aliasName}')")
         @ExpectedResponses({ 200, 201 })
@@ -425,10 +430,9 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createOrUpdateAliasSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @HeaderParam("Prefer") String prefer, @PathParam("aliasName") String name,
-            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData alias,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Prefer") String prefer,
+            @PathParam("aliasName") String name, @HeaderParam("Content-Type") String contentType,
+            @BodyParam("application/json") BinaryData alias, RequestOptions requestOptions, Context context);
 
         @Delete("/aliases('{aliasName}')")
         @ExpectedResponses({ 204, 404 })
@@ -436,8 +440,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteAlias(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("aliasName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("aliasName") String name,
+            RequestOptions requestOptions, Context context);
 
         @Delete("/aliases('{aliasName}')")
         @ExpectedResponses({ 204, 404 })
@@ -445,8 +449,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteAliasSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("aliasName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("aliasName") String name,
+            RequestOptions requestOptions, Context context);
 
         @Get("/aliases('{aliasName}')")
         @ExpectedResponses({ 200 })
@@ -455,8 +459,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getAlias(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("aliasName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("aliasName") String name,
+            RequestOptions requestOptions, Context context);
 
         @Get("/aliases('{aliasName}')")
         @ExpectedResponses({ 200 })
@@ -465,8 +469,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getAliasSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("aliasName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("aliasName") String name,
+            RequestOptions requestOptions, Context context);
 
         @Get("/aliases")
         @ExpectedResponses({ 200 })
@@ -475,8 +479,7 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listAliases(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, RequestOptions requestOptions, Context context);
 
         @Get("/aliases")
         @ExpectedResponses({ 200 })
@@ -485,8 +488,7 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listAliasesSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, RequestOptions requestOptions, Context context);
 
         @Post("/aliases")
         @ExpectedResponses({ 201 })
@@ -495,9 +497,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createAlias(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData alias,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @BodyParam("application/json") BinaryData alias, RequestOptions requestOptions, Context context);
 
         @Post("/aliases")
         @ExpectedResponses({ 201 })
@@ -506,9 +507,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createAliasSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData alias,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @BodyParam("application/json") BinaryData alias, RequestOptions requestOptions, Context context);
 
         @Put("/knowledgebases('{knowledgeBaseName}')")
         @ExpectedResponses({ 200, 201 })
@@ -517,10 +517,9 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createOrUpdateKnowledgeBase(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @HeaderParam("Prefer") String prefer, @PathParam("knowledgeBaseName") String name,
-            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData knowledgeBase,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Prefer") String prefer,
+            @PathParam("knowledgeBaseName") String name, @HeaderParam("Content-Type") String contentType,
+            @BodyParam("application/json") BinaryData knowledgeBase, RequestOptions requestOptions, Context context);
 
         @Put("/knowledgebases('{knowledgeBaseName}')")
         @ExpectedResponses({ 200, 201 })
@@ -529,10 +528,9 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createOrUpdateKnowledgeBaseSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @HeaderParam("Prefer") String prefer, @PathParam("knowledgeBaseName") String name,
-            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData knowledgeBase,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Prefer") String prefer,
+            @PathParam("knowledgeBaseName") String name, @HeaderParam("Content-Type") String contentType,
+            @BodyParam("application/json") BinaryData knowledgeBase, RequestOptions requestOptions, Context context);
 
         @Delete("/knowledgebases('{knowledgeBaseName}')")
         @ExpectedResponses({ 204, 404 })
@@ -540,8 +538,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteKnowledgeBase(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("knowledgeBaseName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("knowledgeBaseName") String name,
+            RequestOptions requestOptions, Context context);
 
         @Delete("/knowledgebases('{knowledgeBaseName}')")
         @ExpectedResponses({ 204, 404 })
@@ -549,8 +547,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteKnowledgeBaseSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("knowledgeBaseName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("knowledgeBaseName") String name,
+            RequestOptions requestOptions, Context context);
 
         @Get("/knowledgebases('{knowledgeBaseName}')")
         @ExpectedResponses({ 200 })
@@ -559,8 +557,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getKnowledgeBase(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("knowledgeBaseName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("knowledgeBaseName") String name,
+            RequestOptions requestOptions, Context context);
 
         @Get("/knowledgebases('{knowledgeBaseName}')")
         @ExpectedResponses({ 200 })
@@ -569,8 +567,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getKnowledgeBaseSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("knowledgeBaseName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("knowledgeBaseName") String name,
+            RequestOptions requestOptions, Context context);
 
         @Get("/knowledgebases")
         @ExpectedResponses({ 200 })
@@ -579,8 +577,7 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listKnowledgeBases(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, RequestOptions requestOptions, Context context);
 
         @Get("/knowledgebases")
         @ExpectedResponses({ 200 })
@@ -589,8 +586,7 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listKnowledgeBasesSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, RequestOptions requestOptions, Context context);
 
         @Post("/knowledgebases")
         @ExpectedResponses({ 201 })
@@ -599,9 +595,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createKnowledgeBase(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData knowledgeBase,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @BodyParam("application/json") BinaryData knowledgeBase, RequestOptions requestOptions, Context context);
 
         @Post("/knowledgebases")
         @ExpectedResponses({ 201 })
@@ -610,9 +605,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createKnowledgeBaseSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData knowledgeBase,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @BodyParam("application/json") BinaryData knowledgeBase, RequestOptions requestOptions, Context context);
 
         @Put("/knowledgesources('{sourceName}')")
         @ExpectedResponses({ 200, 201 })
@@ -621,10 +615,9 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createOrUpdateKnowledgeSource(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @HeaderParam("Prefer") String prefer, @PathParam("sourceName") String name,
-            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData knowledgeSource,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Prefer") String prefer,
+            @PathParam("sourceName") String name, @HeaderParam("Content-Type") String contentType,
+            @BodyParam("application/json") BinaryData knowledgeSource, RequestOptions requestOptions, Context context);
 
         @Put("/knowledgesources('{sourceName}')")
         @ExpectedResponses({ 200, 201 })
@@ -633,10 +626,9 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createOrUpdateKnowledgeSourceSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @HeaderParam("Prefer") String prefer, @PathParam("sourceName") String name,
-            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData knowledgeSource,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Prefer") String prefer,
+            @PathParam("sourceName") String name, @HeaderParam("Content-Type") String contentType,
+            @BodyParam("application/json") BinaryData knowledgeSource, RequestOptions requestOptions, Context context);
 
         @Delete("/knowledgesources('{sourceName}')")
         @ExpectedResponses({ 204, 404 })
@@ -644,8 +636,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteKnowledgeSource(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("sourceName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("sourceName") String name,
+            RequestOptions requestOptions, Context context);
 
         @Delete("/knowledgesources('{sourceName}')")
         @ExpectedResponses({ 204, 404 })
@@ -653,8 +645,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteKnowledgeSourceSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("sourceName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("sourceName") String name,
+            RequestOptions requestOptions, Context context);
 
         @Get("/knowledgesources('{sourceName}')")
         @ExpectedResponses({ 200 })
@@ -663,8 +655,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getKnowledgeSource(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("sourceName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("sourceName") String name,
+            RequestOptions requestOptions, Context context);
 
         @Get("/knowledgesources('{sourceName}')")
         @ExpectedResponses({ 200 })
@@ -673,8 +665,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getKnowledgeSourceSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("sourceName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("sourceName") String name,
+            RequestOptions requestOptions, Context context);
 
         @Get("/knowledgesources")
         @ExpectedResponses({ 200 })
@@ -683,8 +675,7 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listKnowledgeSources(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, RequestOptions requestOptions, Context context);
 
         @Get("/knowledgesources")
         @ExpectedResponses({ 200 })
@@ -693,8 +684,7 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listKnowledgeSourcesSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, RequestOptions requestOptions, Context context);
 
         @Post("/knowledgesources")
         @ExpectedResponses({ 201 })
@@ -703,9 +693,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createKnowledgeSource(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData knowledgeSource,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @BodyParam("application/json") BinaryData knowledgeSource, RequestOptions requestOptions, Context context);
 
         @Post("/knowledgesources")
         @ExpectedResponses({ 201 })
@@ -714,9 +703,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createKnowledgeSourceSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData knowledgeSource,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @BodyParam("application/json") BinaryData knowledgeSource, RequestOptions requestOptions, Context context);
 
         @Get("/knowledgesources('{sourceName}')/status")
         @ExpectedResponses({ 200 })
@@ -725,8 +713,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getKnowledgeSourceStatus(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("sourceName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("sourceName") String name,
+            RequestOptions requestOptions, Context context);
 
         @Get("/knowledgesources('{sourceName}')/status")
         @ExpectedResponses({ 200 })
@@ -735,8 +723,8 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getKnowledgeSourceStatusSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("sourceName") String name, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("sourceName") String name,
+            RequestOptions requestOptions, Context context);
 
         @Get("/servicestats")
         @ExpectedResponses({ 200 })
@@ -745,8 +733,7 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getServiceStatistics(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, RequestOptions requestOptions, Context context);
 
         @Get("/servicestats")
         @ExpectedResponses({ 200 })
@@ -755,8 +742,7 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getServiceStatisticsSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, RequestOptions requestOptions, Context context);
 
         @Get("/indexstats")
         @ExpectedResponses({ 200 })
@@ -765,8 +751,7 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listIndexStatsSummary(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, RequestOptions requestOptions, Context context);
 
         @Get("/indexstats")
         @ExpectedResponses({ 200 })
@@ -775,8 +760,7 @@ public final class SearchIndexClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listIndexStatsSummarySync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -785,6 +769,8 @@ public final class SearchIndexClientImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
      * performed only if the ETag on the server matches this value.</td></tr>
      * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
@@ -857,12 +843,10 @@ public final class SearchIndexClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateSynonymMapWithResponseAsync(String name, BinaryData synonymMap,
         RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         final String prefer = "return=representation";
         final String contentType = "application/json";
-        return FluxUtil.withContext(
-            context -> service.createOrUpdateSynonymMap(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                accept, prefer, name, contentType, synonymMap, requestOptions, context));
+        return FluxUtil.withContext(context -> service.createOrUpdateSynonymMap(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), prefer, name, contentType, synonymMap, requestOptions, context));
     }
 
     /**
@@ -871,6 +855,8 @@ public final class SearchIndexClientImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
      * performed only if the ETag on the server matches this value.</td></tr>
      * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
@@ -943,11 +929,10 @@ public final class SearchIndexClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateSynonymMapWithResponse(String name, BinaryData synonymMap,
         RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         final String prefer = "return=representation";
         final String contentType = "application/json";
-        return service.createOrUpdateSynonymMapSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-            prefer, name, contentType, synonymMap, requestOptions, Context.NONE);
+        return service.createOrUpdateSynonymMapSync(this.getEndpoint(), this.getServiceVersion().getVersion(), prefer,
+            name, contentType, synonymMap, requestOptions, Context.NONE);
     }
 
     /**
@@ -956,6 +941,8 @@ public final class SearchIndexClientImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
      * performed only if the ETag on the server matches this value.</td></tr>
      * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
@@ -972,9 +959,8 @@ public final class SearchIndexClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteSynonymMapWithResponseAsync(String name, RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil.withContext(context -> service.deleteSynonymMap(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, name, requestOptions, context));
+            this.getServiceVersion().getVersion(), name, requestOptions, context));
     }
 
     /**
@@ -983,6 +969,8 @@ public final class SearchIndexClientImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
      * performed only if the ETag on the server matches this value.</td></tr>
      * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
@@ -999,13 +987,20 @@ public final class SearchIndexClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteSynonymMapWithResponse(String name, RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
-        return service.deleteSynonymMapSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, name,
+        return service.deleteSynonymMapSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name,
             requestOptions, Context.NONE);
     }
 
     /**
      * Retrieves a synonym map definition.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -1043,13 +1038,20 @@ public final class SearchIndexClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getSynonymMapWithResponseAsync(String name, RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil.withContext(context -> service.getSynonymMap(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, name, requestOptions, context));
+            this.getServiceVersion().getVersion(), name, requestOptions, context));
     }
 
     /**
      * Retrieves a synonym map definition.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -1087,8 +1089,7 @@ public final class SearchIndexClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getSynonymMapWithResponse(String name, RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
-        return service.getSynonymMapSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, name,
+        return service.getSynonymMapSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name,
             requestOptions, Context.NONE);
     }
 
@@ -1103,6 +1104,14 @@ public final class SearchIndexClientImpl {
      * properties. In the form of "," separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -1144,9 +1153,8 @@ public final class SearchIndexClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getSynonymMapsWithResponseAsync(RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil.withContext(context -> service.getSynonymMaps(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, requestOptions, context));
+            this.getServiceVersion().getVersion(), requestOptions, context));
     }
 
     /**
@@ -1160,6 +1168,14 @@ public final class SearchIndexClientImpl {
      * properties. In the form of "," separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -1200,13 +1216,20 @@ public final class SearchIndexClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getSynonymMapsWithResponse(RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
-        return service.getSynonymMapsSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-            requestOptions, Context.NONE);
+        return service.getSynonymMapsSync(this.getEndpoint(), this.getServiceVersion().getVersion(), requestOptions,
+            Context.NONE);
     }
 
     /**
      * Creates a new synonym map.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -1272,14 +1295,21 @@ public final class SearchIndexClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createSynonymMapWithResponseAsync(BinaryData synonymMap,
         RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         final String contentType = "application/json";
         return FluxUtil.withContext(context -> service.createSynonymMap(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, contentType, synonymMap, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, synonymMap, requestOptions, context));
     }
 
     /**
      * Creates a new synonym map.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -1344,10 +1374,9 @@ public final class SearchIndexClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createSynonymMapWithResponse(BinaryData synonymMap, RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         final String contentType = "application/json";
-        return service.createSynonymMapSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-            contentType, synonymMap, requestOptions, Context.NONE);
+        return service.createSynonymMapSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
+            synonymMap, requestOptions, Context.NONE);
     }
 
     /**
@@ -1366,6 +1395,8 @@ public final class SearchIndexClientImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
      * performed only if the ETag on the server matches this value.</td></tr>
      * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
@@ -1739,11 +1770,10 @@ public final class SearchIndexClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateIndexWithResponseAsync(String name, BinaryData index,
         RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         final String prefer = "return=representation";
         final String contentType = "application/json";
         return FluxUtil.withContext(context -> service.createOrUpdateIndex(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, prefer, name, contentType, index, requestOptions, context));
+            this.getServiceVersion().getVersion(), prefer, name, contentType, index, requestOptions, context));
     }
 
     /**
@@ -1762,6 +1792,8 @@ public final class SearchIndexClientImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
      * performed only if the ETag on the server matches this value.</td></tr>
      * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
@@ -2135,11 +2167,10 @@ public final class SearchIndexClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateIndexWithResponse(String name, BinaryData index,
         RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         final String prefer = "return=representation";
         final String contentType = "application/json";
-        return service.createOrUpdateIndexSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-            prefer, name, contentType, index, requestOptions, Context.NONE);
+        return service.createOrUpdateIndexSync(this.getEndpoint(), this.getServiceVersion().getVersion(), prefer, name,
+            contentType, index, requestOptions, Context.NONE);
     }
 
     /**
@@ -2150,6 +2181,8 @@ public final class SearchIndexClientImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
      * performed only if the ETag on the server matches this value.</td></tr>
      * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
@@ -2166,9 +2199,8 @@ public final class SearchIndexClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteIndexWithResponseAsync(String name, RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil.withContext(context -> service.deleteIndex(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, name, requestOptions, context));
+            this.getServiceVersion().getVersion(), name, requestOptions, context));
     }
 
     /**
@@ -2179,6 +2211,8 @@ public final class SearchIndexClientImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
      * performed only if the ETag on the server matches this value.</td></tr>
      * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
@@ -2195,13 +2229,20 @@ public final class SearchIndexClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteIndexWithResponse(String name, RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
-        return service.deleteIndexSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, name,
-            requestOptions, Context.NONE);
+        return service.deleteIndexSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name, requestOptions,
+            Context.NONE);
     }
 
     /**
      * Retrieves an index definition.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -2390,13 +2431,20 @@ public final class SearchIndexClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getIndexWithResponseAsync(String name, RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil.withContext(context -> service.getIndex(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, name, requestOptions, context));
+            this.getServiceVersion().getVersion(), name, requestOptions, context));
     }
 
     /**
      * Retrieves an index definition.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -2585,22 +2633,20 @@ public final class SearchIndexClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getIndexWithResponse(String name, RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
-        return service.getIndexSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, name,
-            requestOptions, Context.NONE);
+        return service.getIndexSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name, requestOptions,
+            Context.NONE);
     }
 
     /**
      * Lists all indexes available for a search service.
-     * <p><strong>Query Parameters</strong></p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
-     * <caption>Query Parameters</caption>
+     * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>Selects which top-level properties to retrieve.
-     * Specified as a comma-separated list of JSON property names, or '*' for all properties. The default is all
-     * properties. In the form of "," separated string.</td></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
      * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -2788,25 +2834,23 @@ public final class SearchIndexClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listIndexesSinglePageAsync(RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil
             .withContext(context -> service.listIndexes(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                accept, requestOptions, context))
+                requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), null, null));
     }
 
     /**
      * Lists all indexes available for a search service.
-     * <p><strong>Query Parameters</strong></p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
-     * <caption>Query Parameters</caption>
+     * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>Selects which top-level properties to retrieve.
-     * Specified as a comma-separated list of JSON property names, or '*' for all properties. The default is all
-     * properties. In the form of "," separated string.</td></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
      * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -2998,15 +3042,14 @@ public final class SearchIndexClientImpl {
 
     /**
      * Lists all indexes available for a search service.
-     * <p><strong>Query Parameters</strong></p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
-     * <caption>Query Parameters</caption>
+     * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>Selects which top-level properties to retrieve.
-     * Specified as a comma-separated list of JSON property names, or '*' for all properties. The default is all
-     * properties. In the form of "," separated string.</td></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
      * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -3193,24 +3236,22 @@ public final class SearchIndexClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listIndexesSinglePage(RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         Response<BinaryData> res = service.listIndexesSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            accept, requestOptions, Context.NONE);
+            requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), null, null);
     }
 
     /**
      * Lists all indexes available for a search service.
-     * <p><strong>Query Parameters</strong></p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
-     * <caption>Query Parameters</caption>
+     * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>Selects which top-level properties to retrieve.
-     * Specified as a comma-separated list of JSON property names, or '*' for all properties. The default is all
-     * properties. In the form of "," separated string.</td></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
      * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -3401,7 +3442,856 @@ public final class SearchIndexClientImpl {
     }
 
     /**
+     * Lists all indexes available for a search service.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>Selects which top-level properties to retrieve.
+     * Specified as a comma-separated list of JSON property names, or '*' for all properties. The default is all
+     * properties. In the form of "," separated string.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     description: String (Optional)
+     *     fields (Optional): [
+     *          (Optional){
+     *             name: String (Required)
+     *             type: String(Edm.String/Edm.Int32/Edm.Int64/Edm.Double/Edm.Boolean/Edm.DateTimeOffset/Edm.GeographyPoint/Edm.ComplexType/Edm.Single/Edm.Half/Edm.Int16/Edm.SByte/Edm.Byte) (Required)
+     *             key: Boolean (Optional)
+     *             retrievable: Boolean (Optional)
+     *             stored: Boolean (Optional)
+     *             searchable: Boolean (Optional)
+     *             filterable: Boolean (Optional)
+     *             sortable: Boolean (Optional)
+     *             facetable: Boolean (Optional)
+     *             permissionFilter: String(userIds/groupIds/rbacScope) (Optional)
+     *             sensitivityLabel: Boolean (Optional)
+     *             analyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
+     *             searchAnalyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
+     *             indexAnalyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
+     *             normalizer: String(asciifolding/elision/lowercase/standard/uppercase) (Optional)
+     *             dimensions: Integer (Optional)
+     *             vectorSearchProfile: String (Optional)
+     *             vectorEncoding: String(packedBit) (Optional)
+     *             synonymMaps (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             fields (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *         }
+     *     ]
+     *     scoringProfiles (Optional): [
+     *          (Optional){
+     *             name: String (Required)
+     *             text (Optional): {
+     *                 weights (Required): {
+     *                     String: double (Required)
+     *                 }
+     *             }
+     *             functions (Optional): [
+     *                  (Optional){
+     *                     type: String (Required)
+     *                     fieldName: String (Required)
+     *                     boost: double (Required)
+     *                     interpolation: String(linear/constant/quadratic/logarithmic) (Optional)
+     *                 }
+     *             ]
+     *             functionAggregation: String(sum/average/minimum/maximum/firstMatching/product) (Optional)
+     *         }
+     *     ]
+     *     defaultScoringProfile: String (Optional)
+     *     corsOptions (Optional): {
+     *         allowedOrigins (Required): [
+     *             String (Required)
+     *         ]
+     *         maxAgeInSeconds: Long (Optional)
+     *     }
+     *     suggesters (Optional): [
+     *          (Optional){
+     *             name: String (Required)
+     *             searchMode: String (Required)
+     *             sourceFields (Required): [
+     *                 String (Required)
+     *             ]
+     *         }
+     *     ]
+     *     analyzers (Optional): [
+     *          (Optional){
+     *             &#64;odata.type: String (Required)
+     *             name: String (Required)
+     *         }
+     *     ]
+     *     tokenizers (Optional): [
+     *          (Optional){
+     *             &#64;odata.type: String (Required)
+     *             name: String (Required)
+     *         }
+     *     ]
+     *     tokenFilters (Optional): [
+     *          (Optional){
+     *             &#64;odata.type: String (Required)
+     *             name: String (Required)
+     *         }
+     *     ]
+     *     charFilters (Optional): [
+     *          (Optional){
+     *             &#64;odata.type: String (Required)
+     *             name: String (Required)
+     *         }
+     *     ]
+     *     normalizers (Optional): [
+     *          (Optional){
+     *             &#64;odata.type: String (Required)
+     *             name: String (Required)
+     *         }
+     *     ]
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): {
+     *             &#64;odata.type: String (Required)
+     *         }
+     *     }
+     *     similarity (Optional): {
+     *         &#64;odata.type: String (Required)
+     *     }
+     *     semantic (Optional): {
+     *         defaultConfiguration: String (Optional)
+     *         configurations (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 prioritizedFields (Required): {
+     *                     titleField (Optional): {
+     *                         fieldName: String (Required)
+     *                     }
+     *                     prioritizedContentFields (Optional): [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                     prioritizedKeywordsFields (Optional): [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                 }
+     *                 rankingOrder: String(BoostedRerankerScore/RerankerScore) (Optional)
+     *                 flightingOptIn: Boolean (Optional)
+     *             }
+     *         ]
+     *     }
+     *     vectorSearch (Optional): {
+     *         profiles (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 algorithm: String (Required)
+     *                 vectorizer: String (Optional)
+     *                 compression: String (Optional)
+     *             }
+     *         ]
+     *         algorithms (Optional): [
+     *              (Optional){
+     *                 kind: String(hnsw/exhaustiveKnn) (Required)
+     *                 name: String (Required)
+     *             }
+     *         ]
+     *         vectorizers (Optional): [
+     *              (Optional){
+     *                 kind: String(azureOpenAI/customWebApi/aiServicesVision/aml) (Required)
+     *                 name: String (Required)
+     *             }
+     *         ]
+     *         compressions (Optional): [
+     *              (Optional){
+     *                 kind: String(scalarQuantization/binaryQuantization) (Required)
+     *                 name: String (Required)
+     *                 rescoringOptions (Optional): {
+     *                     enableRescoring: Boolean (Optional)
+     *                     defaultOversampling: Double (Optional)
+     *                     rescoreStorageMethod: String(preserveOriginals/discardOriginals) (Optional)
+     *                 }
+     *                 truncationDimension: Integer (Optional)
+     *             }
+     *         ]
+     *     }
+     *     permissionFilterOption: String(enabled/disabled) (Optional)
+     *     purviewEnabled: Boolean (Optional)
+     *     &#64;odata.etag: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response from a List Indexes request along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<BinaryData>>
+        listIndexesWithSelectedPropertiesSinglePageAsync(RequestOptions requestOptions) {
+        return FluxUtil
+            .withContext(context -> service.listIndexesWithSelectedProperties(this.getEndpoint(),
+                this.getServiceVersion().getVersion(), requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), null, null));
+    }
+
+    /**
+     * Lists all indexes available for a search service.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>Selects which top-level properties to retrieve.
+     * Specified as a comma-separated list of JSON property names, or '*' for all properties. The default is all
+     * properties. In the form of "," separated string.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     description: String (Optional)
+     *     fields (Optional): [
+     *          (Optional){
+     *             name: String (Required)
+     *             type: String(Edm.String/Edm.Int32/Edm.Int64/Edm.Double/Edm.Boolean/Edm.DateTimeOffset/Edm.GeographyPoint/Edm.ComplexType/Edm.Single/Edm.Half/Edm.Int16/Edm.SByte/Edm.Byte) (Required)
+     *             key: Boolean (Optional)
+     *             retrievable: Boolean (Optional)
+     *             stored: Boolean (Optional)
+     *             searchable: Boolean (Optional)
+     *             filterable: Boolean (Optional)
+     *             sortable: Boolean (Optional)
+     *             facetable: Boolean (Optional)
+     *             permissionFilter: String(userIds/groupIds/rbacScope) (Optional)
+     *             sensitivityLabel: Boolean (Optional)
+     *             analyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
+     *             searchAnalyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
+     *             indexAnalyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
+     *             normalizer: String(asciifolding/elision/lowercase/standard/uppercase) (Optional)
+     *             dimensions: Integer (Optional)
+     *             vectorSearchProfile: String (Optional)
+     *             vectorEncoding: String(packedBit) (Optional)
+     *             synonymMaps (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             fields (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *         }
+     *     ]
+     *     scoringProfiles (Optional): [
+     *          (Optional){
+     *             name: String (Required)
+     *             text (Optional): {
+     *                 weights (Required): {
+     *                     String: double (Required)
+     *                 }
+     *             }
+     *             functions (Optional): [
+     *                  (Optional){
+     *                     type: String (Required)
+     *                     fieldName: String (Required)
+     *                     boost: double (Required)
+     *                     interpolation: String(linear/constant/quadratic/logarithmic) (Optional)
+     *                 }
+     *             ]
+     *             functionAggregation: String(sum/average/minimum/maximum/firstMatching/product) (Optional)
+     *         }
+     *     ]
+     *     defaultScoringProfile: String (Optional)
+     *     corsOptions (Optional): {
+     *         allowedOrigins (Required): [
+     *             String (Required)
+     *         ]
+     *         maxAgeInSeconds: Long (Optional)
+     *     }
+     *     suggesters (Optional): [
+     *          (Optional){
+     *             name: String (Required)
+     *             searchMode: String (Required)
+     *             sourceFields (Required): [
+     *                 String (Required)
+     *             ]
+     *         }
+     *     ]
+     *     analyzers (Optional): [
+     *          (Optional){
+     *             &#64;odata.type: String (Required)
+     *             name: String (Required)
+     *         }
+     *     ]
+     *     tokenizers (Optional): [
+     *          (Optional){
+     *             &#64;odata.type: String (Required)
+     *             name: String (Required)
+     *         }
+     *     ]
+     *     tokenFilters (Optional): [
+     *          (Optional){
+     *             &#64;odata.type: String (Required)
+     *             name: String (Required)
+     *         }
+     *     ]
+     *     charFilters (Optional): [
+     *          (Optional){
+     *             &#64;odata.type: String (Required)
+     *             name: String (Required)
+     *         }
+     *     ]
+     *     normalizers (Optional): [
+     *          (Optional){
+     *             &#64;odata.type: String (Required)
+     *             name: String (Required)
+     *         }
+     *     ]
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): {
+     *             &#64;odata.type: String (Required)
+     *         }
+     *     }
+     *     similarity (Optional): {
+     *         &#64;odata.type: String (Required)
+     *     }
+     *     semantic (Optional): {
+     *         defaultConfiguration: String (Optional)
+     *         configurations (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 prioritizedFields (Required): {
+     *                     titleField (Optional): {
+     *                         fieldName: String (Required)
+     *                     }
+     *                     prioritizedContentFields (Optional): [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                     prioritizedKeywordsFields (Optional): [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                 }
+     *                 rankingOrder: String(BoostedRerankerScore/RerankerScore) (Optional)
+     *                 flightingOptIn: Boolean (Optional)
+     *             }
+     *         ]
+     *     }
+     *     vectorSearch (Optional): {
+     *         profiles (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 algorithm: String (Required)
+     *                 vectorizer: String (Optional)
+     *                 compression: String (Optional)
+     *             }
+     *         ]
+     *         algorithms (Optional): [
+     *              (Optional){
+     *                 kind: String(hnsw/exhaustiveKnn) (Required)
+     *                 name: String (Required)
+     *             }
+     *         ]
+     *         vectorizers (Optional): [
+     *              (Optional){
+     *                 kind: String(azureOpenAI/customWebApi/aiServicesVision/aml) (Required)
+     *                 name: String (Required)
+     *             }
+     *         ]
+     *         compressions (Optional): [
+     *              (Optional){
+     *                 kind: String(scalarQuantization/binaryQuantization) (Required)
+     *                 name: String (Required)
+     *                 rescoringOptions (Optional): {
+     *                     enableRescoring: Boolean (Optional)
+     *                     defaultOversampling: Double (Optional)
+     *                     rescoreStorageMethod: String(preserveOriginals/discardOriginals) (Optional)
+     *                 }
+     *                 truncationDimension: Integer (Optional)
+     *             }
+     *         ]
+     *     }
+     *     permissionFilterOption: String(enabled/disabled) (Optional)
+     *     purviewEnabled: Boolean (Optional)
+     *     &#64;odata.etag: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response from a List Indexes request as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listIndexesWithSelectedPropertiesAsync(RequestOptions requestOptions) {
+        return new PagedFlux<>(() -> listIndexesWithSelectedPropertiesSinglePageAsync(requestOptions));
+    }
+
+    /**
+     * Lists all indexes available for a search service.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>Selects which top-level properties to retrieve.
+     * Specified as a comma-separated list of JSON property names, or '*' for all properties. The default is all
+     * properties. In the form of "," separated string.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     description: String (Optional)
+     *     fields (Optional): [
+     *          (Optional){
+     *             name: String (Required)
+     *             type: String(Edm.String/Edm.Int32/Edm.Int64/Edm.Double/Edm.Boolean/Edm.DateTimeOffset/Edm.GeographyPoint/Edm.ComplexType/Edm.Single/Edm.Half/Edm.Int16/Edm.SByte/Edm.Byte) (Required)
+     *             key: Boolean (Optional)
+     *             retrievable: Boolean (Optional)
+     *             stored: Boolean (Optional)
+     *             searchable: Boolean (Optional)
+     *             filterable: Boolean (Optional)
+     *             sortable: Boolean (Optional)
+     *             facetable: Boolean (Optional)
+     *             permissionFilter: String(userIds/groupIds/rbacScope) (Optional)
+     *             sensitivityLabel: Boolean (Optional)
+     *             analyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
+     *             searchAnalyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
+     *             indexAnalyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
+     *             normalizer: String(asciifolding/elision/lowercase/standard/uppercase) (Optional)
+     *             dimensions: Integer (Optional)
+     *             vectorSearchProfile: String (Optional)
+     *             vectorEncoding: String(packedBit) (Optional)
+     *             synonymMaps (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             fields (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *         }
+     *     ]
+     *     scoringProfiles (Optional): [
+     *          (Optional){
+     *             name: String (Required)
+     *             text (Optional): {
+     *                 weights (Required): {
+     *                     String: double (Required)
+     *                 }
+     *             }
+     *             functions (Optional): [
+     *                  (Optional){
+     *                     type: String (Required)
+     *                     fieldName: String (Required)
+     *                     boost: double (Required)
+     *                     interpolation: String(linear/constant/quadratic/logarithmic) (Optional)
+     *                 }
+     *             ]
+     *             functionAggregation: String(sum/average/minimum/maximum/firstMatching/product) (Optional)
+     *         }
+     *     ]
+     *     defaultScoringProfile: String (Optional)
+     *     corsOptions (Optional): {
+     *         allowedOrigins (Required): [
+     *             String (Required)
+     *         ]
+     *         maxAgeInSeconds: Long (Optional)
+     *     }
+     *     suggesters (Optional): [
+     *          (Optional){
+     *             name: String (Required)
+     *             searchMode: String (Required)
+     *             sourceFields (Required): [
+     *                 String (Required)
+     *             ]
+     *         }
+     *     ]
+     *     analyzers (Optional): [
+     *          (Optional){
+     *             &#64;odata.type: String (Required)
+     *             name: String (Required)
+     *         }
+     *     ]
+     *     tokenizers (Optional): [
+     *          (Optional){
+     *             &#64;odata.type: String (Required)
+     *             name: String (Required)
+     *         }
+     *     ]
+     *     tokenFilters (Optional): [
+     *          (Optional){
+     *             &#64;odata.type: String (Required)
+     *             name: String (Required)
+     *         }
+     *     ]
+     *     charFilters (Optional): [
+     *          (Optional){
+     *             &#64;odata.type: String (Required)
+     *             name: String (Required)
+     *         }
+     *     ]
+     *     normalizers (Optional): [
+     *          (Optional){
+     *             &#64;odata.type: String (Required)
+     *             name: String (Required)
+     *         }
+     *     ]
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): {
+     *             &#64;odata.type: String (Required)
+     *         }
+     *     }
+     *     similarity (Optional): {
+     *         &#64;odata.type: String (Required)
+     *     }
+     *     semantic (Optional): {
+     *         defaultConfiguration: String (Optional)
+     *         configurations (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 prioritizedFields (Required): {
+     *                     titleField (Optional): {
+     *                         fieldName: String (Required)
+     *                     }
+     *                     prioritizedContentFields (Optional): [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                     prioritizedKeywordsFields (Optional): [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                 }
+     *                 rankingOrder: String(BoostedRerankerScore/RerankerScore) (Optional)
+     *                 flightingOptIn: Boolean (Optional)
+     *             }
+     *         ]
+     *     }
+     *     vectorSearch (Optional): {
+     *         profiles (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 algorithm: String (Required)
+     *                 vectorizer: String (Optional)
+     *                 compression: String (Optional)
+     *             }
+     *         ]
+     *         algorithms (Optional): [
+     *              (Optional){
+     *                 kind: String(hnsw/exhaustiveKnn) (Required)
+     *                 name: String (Required)
+     *             }
+     *         ]
+     *         vectorizers (Optional): [
+     *              (Optional){
+     *                 kind: String(azureOpenAI/customWebApi/aiServicesVision/aml) (Required)
+     *                 name: String (Required)
+     *             }
+     *         ]
+     *         compressions (Optional): [
+     *              (Optional){
+     *                 kind: String(scalarQuantization/binaryQuantization) (Required)
+     *                 name: String (Required)
+     *                 rescoringOptions (Optional): {
+     *                     enableRescoring: Boolean (Optional)
+     *                     defaultOversampling: Double (Optional)
+     *                     rescoreStorageMethod: String(preserveOriginals/discardOriginals) (Optional)
+     *                 }
+     *                 truncationDimension: Integer (Optional)
+     *             }
+     *         ]
+     *     }
+     *     permissionFilterOption: String(enabled/disabled) (Optional)
+     *     purviewEnabled: Boolean (Optional)
+     *     &#64;odata.etag: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response from a List Indexes request along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listIndexesWithSelectedPropertiesSinglePage(RequestOptions requestOptions) {
+        Response<BinaryData> res = service.listIndexesWithSelectedPropertiesSync(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), null, null);
+    }
+
+    /**
+     * Lists all indexes available for a search service.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>Selects which top-level properties to retrieve.
+     * Specified as a comma-separated list of JSON property names, or '*' for all properties. The default is all
+     * properties. In the form of "," separated string.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     description: String (Optional)
+     *     fields (Optional): [
+     *          (Optional){
+     *             name: String (Required)
+     *             type: String(Edm.String/Edm.Int32/Edm.Int64/Edm.Double/Edm.Boolean/Edm.DateTimeOffset/Edm.GeographyPoint/Edm.ComplexType/Edm.Single/Edm.Half/Edm.Int16/Edm.SByte/Edm.Byte) (Required)
+     *             key: Boolean (Optional)
+     *             retrievable: Boolean (Optional)
+     *             stored: Boolean (Optional)
+     *             searchable: Boolean (Optional)
+     *             filterable: Boolean (Optional)
+     *             sortable: Boolean (Optional)
+     *             facetable: Boolean (Optional)
+     *             permissionFilter: String(userIds/groupIds/rbacScope) (Optional)
+     *             sensitivityLabel: Boolean (Optional)
+     *             analyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
+     *             searchAnalyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
+     *             indexAnalyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
+     *             normalizer: String(asciifolding/elision/lowercase/standard/uppercase) (Optional)
+     *             dimensions: Integer (Optional)
+     *             vectorSearchProfile: String (Optional)
+     *             vectorEncoding: String(packedBit) (Optional)
+     *             synonymMaps (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             fields (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *         }
+     *     ]
+     *     scoringProfiles (Optional): [
+     *          (Optional){
+     *             name: String (Required)
+     *             text (Optional): {
+     *                 weights (Required): {
+     *                     String: double (Required)
+     *                 }
+     *             }
+     *             functions (Optional): [
+     *                  (Optional){
+     *                     type: String (Required)
+     *                     fieldName: String (Required)
+     *                     boost: double (Required)
+     *                     interpolation: String(linear/constant/quadratic/logarithmic) (Optional)
+     *                 }
+     *             ]
+     *             functionAggregation: String(sum/average/minimum/maximum/firstMatching/product) (Optional)
+     *         }
+     *     ]
+     *     defaultScoringProfile: String (Optional)
+     *     corsOptions (Optional): {
+     *         allowedOrigins (Required): [
+     *             String (Required)
+     *         ]
+     *         maxAgeInSeconds: Long (Optional)
+     *     }
+     *     suggesters (Optional): [
+     *          (Optional){
+     *             name: String (Required)
+     *             searchMode: String (Required)
+     *             sourceFields (Required): [
+     *                 String (Required)
+     *             ]
+     *         }
+     *     ]
+     *     analyzers (Optional): [
+     *          (Optional){
+     *             &#64;odata.type: String (Required)
+     *             name: String (Required)
+     *         }
+     *     ]
+     *     tokenizers (Optional): [
+     *          (Optional){
+     *             &#64;odata.type: String (Required)
+     *             name: String (Required)
+     *         }
+     *     ]
+     *     tokenFilters (Optional): [
+     *          (Optional){
+     *             &#64;odata.type: String (Required)
+     *             name: String (Required)
+     *         }
+     *     ]
+     *     charFilters (Optional): [
+     *          (Optional){
+     *             &#64;odata.type: String (Required)
+     *             name: String (Required)
+     *         }
+     *     ]
+     *     normalizers (Optional): [
+     *          (Optional){
+     *             &#64;odata.type: String (Required)
+     *             name: String (Required)
+     *         }
+     *     ]
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): {
+     *             &#64;odata.type: String (Required)
+     *         }
+     *     }
+     *     similarity (Optional): {
+     *         &#64;odata.type: String (Required)
+     *     }
+     *     semantic (Optional): {
+     *         defaultConfiguration: String (Optional)
+     *         configurations (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 prioritizedFields (Required): {
+     *                     titleField (Optional): {
+     *                         fieldName: String (Required)
+     *                     }
+     *                     prioritizedContentFields (Optional): [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                     prioritizedKeywordsFields (Optional): [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                 }
+     *                 rankingOrder: String(BoostedRerankerScore/RerankerScore) (Optional)
+     *                 flightingOptIn: Boolean (Optional)
+     *             }
+     *         ]
+     *     }
+     *     vectorSearch (Optional): {
+     *         profiles (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 algorithm: String (Required)
+     *                 vectorizer: String (Optional)
+     *                 compression: String (Optional)
+     *             }
+     *         ]
+     *         algorithms (Optional): [
+     *              (Optional){
+     *                 kind: String(hnsw/exhaustiveKnn) (Required)
+     *                 name: String (Required)
+     *             }
+     *         ]
+     *         vectorizers (Optional): [
+     *              (Optional){
+     *                 kind: String(azureOpenAI/customWebApi/aiServicesVision/aml) (Required)
+     *                 name: String (Required)
+     *             }
+     *         ]
+     *         compressions (Optional): [
+     *              (Optional){
+     *                 kind: String(scalarQuantization/binaryQuantization) (Required)
+     *                 name: String (Required)
+     *                 rescoringOptions (Optional): {
+     *                     enableRescoring: Boolean (Optional)
+     *                     defaultOversampling: Double (Optional)
+     *                     rescoreStorageMethod: String(preserveOriginals/discardOriginals) (Optional)
+     *                 }
+     *                 truncationDimension: Integer (Optional)
+     *             }
+     *         ]
+     *     }
+     *     permissionFilterOption: String(enabled/disabled) (Optional)
+     *     purviewEnabled: Boolean (Optional)
+     *     &#64;odata.etag: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response from a List Indexes request as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listIndexesWithSelectedProperties(RequestOptions requestOptions) {
+        return new PagedIterable<>(() -> listIndexesWithSelectedPropertiesSinglePage(requestOptions));
+    }
+
+    /**
      * Creates a new search index.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -3767,14 +4657,21 @@ public final class SearchIndexClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createIndexWithResponseAsync(BinaryData index, RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         final String contentType = "application/json";
         return FluxUtil.withContext(context -> service.createIndex(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, contentType, index, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, index, requestOptions, context));
     }
 
     /**
      * Creates a new search index.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -4140,14 +5037,21 @@ public final class SearchIndexClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createIndexWithResponse(BinaryData index, RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         final String contentType = "application/json";
-        return service.createIndexSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, contentType,
-            index, requestOptions, Context.NONE);
+        return service.createIndexSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, index,
+            requestOptions, Context.NONE);
     }
 
     /**
      * Returns statistics for the given index, including a document count and storage usage.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -4170,13 +5074,20 @@ public final class SearchIndexClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getIndexStatisticsWithResponseAsync(String name, RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil.withContext(context -> service.getIndexStatistics(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, name, requestOptions, context));
+            this.getServiceVersion().getVersion(), name, requestOptions, context));
     }
 
     /**
      * Returns statistics for the given index, including a document count and storage usage.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -4199,13 +5110,20 @@ public final class SearchIndexClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getIndexStatisticsWithResponse(String name, RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
-        return service.getIndexStatisticsSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, name,
+        return service.getIndexStatisticsSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name,
             requestOptions, Context.NONE);
     }
 
     /**
      * Shows how an analyzer breaks text into tokens.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -4255,14 +5173,21 @@ public final class SearchIndexClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> analyzeTextWithResponseAsync(String name, BinaryData request,
         RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         final String contentType = "application/json";
         return FluxUtil.withContext(context -> service.analyzeText(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, name, contentType, request, requestOptions, context));
+            this.getServiceVersion().getVersion(), name, contentType, request, requestOptions, context));
     }
 
     /**
      * Shows how an analyzer breaks text into tokens.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -4311,10 +5236,9 @@ public final class SearchIndexClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> analyzeTextWithResponse(String name, BinaryData request,
         RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         final String contentType = "application/json";
-        return service.analyzeTextSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, name,
-            contentType, request, requestOptions, Context.NONE);
+        return service.analyzeTextSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name, contentType,
+            request, requestOptions, Context.NONE);
     }
 
     /**
@@ -4323,6 +5247,8 @@ public final class SearchIndexClientImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
      * performed only if the ETag on the server matches this value.</td></tr>
      * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
@@ -4370,11 +5296,10 @@ public final class SearchIndexClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateAliasWithResponseAsync(String name, BinaryData alias,
         RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         final String prefer = "return=representation";
         final String contentType = "application/json";
         return FluxUtil.withContext(context -> service.createOrUpdateAlias(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, prefer, name, contentType, alias, requestOptions, context));
+            this.getServiceVersion().getVersion(), prefer, name, contentType, alias, requestOptions, context));
     }
 
     /**
@@ -4383,6 +5308,8 @@ public final class SearchIndexClientImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
      * performed only if the ETag on the server matches this value.</td></tr>
      * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
@@ -4430,11 +5357,10 @@ public final class SearchIndexClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateAliasWithResponse(String name, BinaryData alias,
         RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         final String prefer = "return=representation";
         final String contentType = "application/json";
-        return service.createOrUpdateAliasSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-            prefer, name, contentType, alias, requestOptions, Context.NONE);
+        return service.createOrUpdateAliasSync(this.getEndpoint(), this.getServiceVersion().getVersion(), prefer, name,
+            contentType, alias, requestOptions, Context.NONE);
     }
 
     /**
@@ -4444,6 +5370,8 @@ public final class SearchIndexClientImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
      * performed only if the ETag on the server matches this value.</td></tr>
      * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
@@ -4460,9 +5388,8 @@ public final class SearchIndexClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteAliasWithResponseAsync(String name, RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil.withContext(context -> service.deleteAlias(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, name, requestOptions, context));
+            this.getServiceVersion().getVersion(), name, requestOptions, context));
     }
 
     /**
@@ -4472,6 +5399,8 @@ public final class SearchIndexClientImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
      * performed only if the ETag on the server matches this value.</td></tr>
      * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
@@ -4488,13 +5417,20 @@ public final class SearchIndexClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteAliasWithResponse(String name, RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
-        return service.deleteAliasSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, name,
-            requestOptions, Context.NONE);
+        return service.deleteAliasSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name, requestOptions,
+            Context.NONE);
     }
 
     /**
      * Retrieves an alias definition.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -4520,13 +5456,20 @@ public final class SearchIndexClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getAliasWithResponseAsync(String name, RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil.withContext(context -> service.getAlias(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, name, requestOptions, context));
+            this.getServiceVersion().getVersion(), name, requestOptions, context));
     }
 
     /**
      * Retrieves an alias definition.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -4552,13 +5495,20 @@ public final class SearchIndexClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getAliasWithResponse(String name, RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
-        return service.getAliasSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, name,
-            requestOptions, Context.NONE);
+        return service.getAliasSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name, requestOptions,
+            Context.NONE);
     }
 
     /**
      * Lists all aliases available for a search service.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -4583,16 +5533,23 @@ public final class SearchIndexClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listAliasesSinglePageAsync(RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil
             .withContext(context -> service.listAliases(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                accept, requestOptions, context))
+                requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), null, null));
     }
 
     /**
      * Lists all aliases available for a search service.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -4621,6 +5578,14 @@ public final class SearchIndexClientImpl {
 
     /**
      * Lists all aliases available for a search service.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -4644,15 +5609,22 @@ public final class SearchIndexClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listAliasesSinglePage(RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         Response<BinaryData> res = service.listAliasesSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            accept, requestOptions, Context.NONE);
+            requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), null, null);
     }
 
     /**
      * Lists all aliases available for a search service.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -4681,6 +5653,14 @@ public final class SearchIndexClientImpl {
 
     /**
      * Creates a new search alias.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -4720,14 +5700,21 @@ public final class SearchIndexClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createAliasWithResponseAsync(BinaryData alias, RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         final String contentType = "application/json";
         return FluxUtil.withContext(context -> service.createAlias(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, contentType, alias, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, alias, requestOptions, context));
     }
 
     /**
      * Creates a new search alias.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -4767,10 +5754,9 @@ public final class SearchIndexClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createAliasWithResponse(BinaryData alias, RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         final String contentType = "application/json";
-        return service.createAliasSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, contentType,
-            alias, requestOptions, Context.NONE);
+        return service.createAliasSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, alias,
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -4779,6 +5765,8 @@ public final class SearchIndexClientImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
      * performed only if the ETag on the server matches this value.</td></tr>
      * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
@@ -4878,12 +5866,10 @@ public final class SearchIndexClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateKnowledgeBaseWithResponseAsync(String name,
         BinaryData knowledgeBase, RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         final String prefer = "return=representation";
         final String contentType = "application/json";
-        return FluxUtil.withContext(
-            context -> service.createOrUpdateKnowledgeBase(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                accept, prefer, name, contentType, knowledgeBase, requestOptions, context));
+        return FluxUtil.withContext(context -> service.createOrUpdateKnowledgeBase(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), prefer, name, contentType, knowledgeBase, requestOptions, context));
     }
 
     /**
@@ -4892,6 +5878,8 @@ public final class SearchIndexClientImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
      * performed only if the ETag on the server matches this value.</td></tr>
      * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
@@ -4990,11 +5978,10 @@ public final class SearchIndexClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateKnowledgeBaseWithResponse(String name, BinaryData knowledgeBase,
         RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         final String prefer = "return=representation";
         final String contentType = "application/json";
         return service.createOrUpdateKnowledgeBaseSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            accept, prefer, name, contentType, knowledgeBase, requestOptions, Context.NONE);
+            prefer, name, contentType, knowledgeBase, requestOptions, Context.NONE);
     }
 
     /**
@@ -5003,6 +5990,8 @@ public final class SearchIndexClientImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
      * performed only if the ETag on the server matches this value.</td></tr>
      * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
@@ -5019,9 +6008,8 @@ public final class SearchIndexClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteKnowledgeBaseWithResponseAsync(String name, RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil.withContext(context -> service.deleteKnowledgeBase(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, name, requestOptions, context));
+            this.getServiceVersion().getVersion(), name, requestOptions, context));
     }
 
     /**
@@ -5030,6 +6018,8 @@ public final class SearchIndexClientImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
      * performed only if the ETag on the server matches this value.</td></tr>
      * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
@@ -5046,13 +6036,20 @@ public final class SearchIndexClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteKnowledgeBaseWithResponse(String name, RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
-        return service.deleteKnowledgeBaseSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, name,
+        return service.deleteKnowledgeBaseSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name,
             requestOptions, Context.NONE);
     }
 
     /**
      * Retrieves a knowledge base definition.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -5104,13 +6101,20 @@ public final class SearchIndexClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getKnowledgeBaseWithResponseAsync(String name, RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil.withContext(context -> service.getKnowledgeBase(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, name, requestOptions, context));
+            this.getServiceVersion().getVersion(), name, requestOptions, context));
     }
 
     /**
      * Retrieves a knowledge base definition.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -5161,13 +6165,20 @@ public final class SearchIndexClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getKnowledgeBaseWithResponse(String name, RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
-        return service.getKnowledgeBaseSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, name,
+        return service.getKnowledgeBaseSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name,
             requestOptions, Context.NONE);
     }
 
     /**
      * Lists all knowledge bases available for a search service.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -5218,16 +6229,23 @@ public final class SearchIndexClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listKnowledgeBasesSinglePageAsync(RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil
             .withContext(context -> service.listKnowledgeBases(this.getEndpoint(),
-                this.getServiceVersion().getVersion(), accept, requestOptions, context))
+                this.getServiceVersion().getVersion(), requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), null, null));
     }
 
     /**
      * Lists all knowledge bases available for a search service.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -5282,6 +6300,14 @@ public final class SearchIndexClientImpl {
 
     /**
      * Lists all knowledge bases available for a search service.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -5331,15 +6357,22 @@ public final class SearchIndexClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listKnowledgeBasesSinglePage(RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         Response<BinaryData> res = service.listKnowledgeBasesSync(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+            this.getServiceVersion().getVersion(), requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), null, null);
     }
 
     /**
      * Lists all knowledge bases available for a search service.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -5394,6 +6427,14 @@ public final class SearchIndexClientImpl {
 
     /**
      * Creates a new knowledge base.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -5486,14 +6527,21 @@ public final class SearchIndexClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createKnowledgeBaseWithResponseAsync(BinaryData knowledgeBase,
         RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         final String contentType = "application/json";
         return FluxUtil.withContext(context -> service.createKnowledgeBase(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, contentType, knowledgeBase, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, knowledgeBase, requestOptions, context));
     }
 
     /**
      * Creates a new knowledge base.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -5585,10 +6633,9 @@ public final class SearchIndexClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createKnowledgeBaseWithResponse(BinaryData knowledgeBase,
         RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         final String contentType = "application/json";
-        return service.createKnowledgeBaseSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-            contentType, knowledgeBase, requestOptions, Context.NONE);
+        return service.createKnowledgeBaseSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
+            knowledgeBase, requestOptions, Context.NONE);
     }
 
     /**
@@ -5597,6 +6644,8 @@ public final class SearchIndexClientImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
      * performed only if the ETag on the server matches this value.</td></tr>
      * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
@@ -5666,12 +6715,11 @@ public final class SearchIndexClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateKnowledgeSourceWithResponseAsync(String name,
         BinaryData knowledgeSource, RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         final String prefer = "return=representation";
         final String contentType = "application/json";
         return FluxUtil.withContext(
             context -> service.createOrUpdateKnowledgeSource(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                accept, prefer, name, contentType, knowledgeSource, requestOptions, context));
+                prefer, name, contentType, knowledgeSource, requestOptions, context));
     }
 
     /**
@@ -5680,6 +6728,8 @@ public final class SearchIndexClientImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
      * performed only if the ETag on the server matches this value.</td></tr>
      * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
@@ -5748,11 +6798,10 @@ public final class SearchIndexClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateKnowledgeSourceWithResponse(String name, BinaryData knowledgeSource,
         RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         final String prefer = "return=representation";
         final String contentType = "application/json";
         return service.createOrUpdateKnowledgeSourceSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            accept, prefer, name, contentType, knowledgeSource, requestOptions, Context.NONE);
+            prefer, name, contentType, knowledgeSource, requestOptions, Context.NONE);
     }
 
     /**
@@ -5761,6 +6810,8 @@ public final class SearchIndexClientImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
      * performed only if the ETag on the server matches this value.</td></tr>
      * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
@@ -5777,9 +6828,8 @@ public final class SearchIndexClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteKnowledgeSourceWithResponseAsync(String name, RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil.withContext(context -> service.deleteKnowledgeSource(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, name, requestOptions, context));
+            this.getServiceVersion().getVersion(), name, requestOptions, context));
     }
 
     /**
@@ -5788,6 +6838,8 @@ public final class SearchIndexClientImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
      * performed only if the ETag on the server matches this value.</td></tr>
      * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
@@ -5804,13 +6856,20 @@ public final class SearchIndexClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteKnowledgeSourceWithResponse(String name, RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
-        return service.deleteKnowledgeSourceSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-            name, requestOptions, Context.NONE);
+        return service.deleteKnowledgeSourceSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name,
+            requestOptions, Context.NONE);
     }
 
     /**
      * Retrieves a knowledge source definition.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -5847,13 +6906,20 @@ public final class SearchIndexClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getKnowledgeSourceWithResponseAsync(String name, RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil.withContext(context -> service.getKnowledgeSource(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, name, requestOptions, context));
+            this.getServiceVersion().getVersion(), name, requestOptions, context));
     }
 
     /**
      * Retrieves a knowledge source definition.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -5889,13 +6955,20 @@ public final class SearchIndexClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getKnowledgeSourceWithResponse(String name, RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
-        return service.getKnowledgeSourceSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, name,
+        return service.getKnowledgeSourceSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name,
             requestOptions, Context.NONE);
     }
 
     /**
      * Lists all knowledge sources available for a search service.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -5931,16 +7004,23 @@ public final class SearchIndexClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listKnowledgeSourcesSinglePageAsync(RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil
             .withContext(context -> service.listKnowledgeSources(this.getEndpoint(),
-                this.getServiceVersion().getVersion(), accept, requestOptions, context))
+                this.getServiceVersion().getVersion(), requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), null, null));
     }
 
     /**
      * Lists all knowledge sources available for a search service.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -5980,6 +7060,14 @@ public final class SearchIndexClientImpl {
 
     /**
      * Lists all knowledge sources available for a search service.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -6014,15 +7102,22 @@ public final class SearchIndexClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listKnowledgeSourcesSinglePage(RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         Response<BinaryData> res = service.listKnowledgeSourcesSync(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+            this.getServiceVersion().getVersion(), requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), null, null);
     }
 
     /**
      * Lists all knowledge sources available for a search service.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -6062,6 +7157,14 @@ public final class SearchIndexClientImpl {
 
     /**
      * Creates a new knowledge source.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -6124,14 +7227,21 @@ public final class SearchIndexClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createKnowledgeSourceWithResponseAsync(BinaryData knowledgeSource,
         RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         final String contentType = "application/json";
         return FluxUtil.withContext(context -> service.createKnowledgeSource(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, contentType, knowledgeSource, requestOptions, context));
+            this.getServiceVersion().getVersion(), contentType, knowledgeSource, requestOptions, context));
     }
 
     /**
      * Creates a new knowledge source.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -6193,14 +7303,21 @@ public final class SearchIndexClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createKnowledgeSourceWithResponse(BinaryData knowledgeSource,
         RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         final String contentType = "application/json";
-        return service.createKnowledgeSourceSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-            contentType, knowledgeSource, requestOptions, Context.NONE);
+        return service.createKnowledgeSourceSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
+            knowledgeSource, requestOptions, Context.NONE);
     }
 
     /**
      * Retrieves the status of a knowledge source.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -6242,13 +7359,20 @@ public final class SearchIndexClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getKnowledgeSourceStatusWithResponseAsync(String name,
         RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil.withContext(context -> service.getKnowledgeSourceStatus(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, name, requestOptions, context));
+            this.getServiceVersion().getVersion(), name, requestOptions, context));
     }
 
     /**
      * Retrieves the status of a knowledge source.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -6288,13 +7412,20 @@ public final class SearchIndexClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getKnowledgeSourceStatusWithResponse(String name, RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
-        return service.getKnowledgeSourceStatusSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-            name, requestOptions, Context.NONE);
+        return service.getKnowledgeSourceStatusSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name,
+            requestOptions, Context.NONE);
     }
 
     /**
      * Gets service level statistics for a search service.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -6342,13 +7473,20 @@ public final class SearchIndexClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getServiceStatisticsWithResponseAsync(RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil.withContext(context -> service.getServiceStatistics(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, requestOptions, context));
+            this.getServiceVersion().getVersion(), requestOptions, context));
     }
 
     /**
      * Gets service level statistics for a search service.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -6395,13 +7533,20 @@ public final class SearchIndexClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getServiceStatisticsWithResponse(RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
-        return service.getServiceStatisticsSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
+        return service.getServiceStatisticsSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
             requestOptions, Context.NONE);
     }
 
     /**
      * Retrieves a summary of statistics for all indexes in the search service.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -6425,16 +7570,23 @@ public final class SearchIndexClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listIndexStatsSummarySinglePageAsync(RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         return FluxUtil
             .withContext(context -> service.listIndexStatsSummary(this.getEndpoint(),
-                this.getServiceVersion().getVersion(), accept, requestOptions, context))
+                this.getServiceVersion().getVersion(), requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), null, null));
     }
 
     /**
      * Retrieves a summary of statistics for all indexes in the search service.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -6463,6 +7615,14 @@ public final class SearchIndexClientImpl {
 
     /**
      * Retrieves a summary of statistics for all indexes in the search service.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -6485,15 +7645,22 @@ public final class SearchIndexClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listIndexStatsSummarySinglePage(RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         Response<BinaryData> res = service.listIndexStatsSummarySync(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+            this.getServiceVersion().getVersion(), requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), null, null);
     }
 
     /**
      * Retrieves a summary of statistics for all indexes in the search service.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>

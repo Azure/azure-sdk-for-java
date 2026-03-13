@@ -13,20 +13,6 @@ import java.util.Collection;
 public final class AIFoundryModelCatalogName extends ExpandableStringEnum<AIFoundryModelCatalogName> {
 
     /**
-     * OpenAI-CLIP-Image-Text-Embeddings-vit-base-patch32.
-     */
-    @Generated
-    public static final AIFoundryModelCatalogName OPEN_AICLIPIMAGE_TEXT_EMBEDDINGS_VIT_BASE_PATCH32
-        = fromString("OpenAI-CLIP-Image-Text-Embeddings-vit-base-patch32");
-
-    /**
-     * OpenAI-CLIP-Image-Text-Embeddings-ViT-Large-Patch14-336.
-     */
-    @Generated
-    public static final AIFoundryModelCatalogName OPEN_AICLIPIMAGE_TEXT_EMBEDDINGS_VI_TLARGE_PATCH14336
-        = fromString("OpenAI-CLIP-Image-Text-Embeddings-ViT-Large-Patch14-336");
-
-    /**
      * Facebook-DinoV2-Image-Embeddings-ViT-Base.
      */
     @Generated
@@ -89,4 +75,18 @@ public final class AIFoundryModelCatalogName extends ExpandableStringEnum<AIFoun
     public static Collection<AIFoundryModelCatalogName> values() {
         return values(AIFoundryModelCatalogName.class);
     }
+
+    /**
+     * OpenAI-CLIP-Image-Text-Embeddings-vit-base-patch32.
+     */
+    @Generated
+    public static final AIFoundryModelCatalogName OPEN_AI_CLIP_IMAGE_TEXT_EMBEDDINGS_VIT_BASE_PATCH32
+        = fromString("OpenAI-CLIP-Image-Text-Embeddings-vit-base-patch32");
+
+    /**
+     * OpenAI-CLIP-Image-Text-Embeddings-ViT-Large-Patch14-336.
+     */
+    @Generated
+    public static final AIFoundryModelCatalogName OPEN_AI_CLIP_IMAGE_TEXT_EMBEDDINGS_VI_TLARGE_PATCH14_336
+        = fromString("OpenAI-CLIP-Image-Text-Embeddings-ViT-Large-Patch14-336");
 }

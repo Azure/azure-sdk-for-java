@@ -172,8 +172,8 @@ public final class SearchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getDocumentCount(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexName") String indexName, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("indexName") String indexName,
+            RequestOptions requestOptions, Context context);
 
         @Get("/indexes('{indexName}')/docs/$count")
         @ExpectedResponses({ 200 })
@@ -182,8 +182,8 @@ public final class SearchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getDocumentCountSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexName") String indexName, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("indexName") String indexName,
+            RequestOptions requestOptions, Context context);
 
         @Get("/indexes('{indexName}')/docs")
         @ExpectedResponses({ 200, 206 })
@@ -192,8 +192,8 @@ public final class SearchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> searchGet(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexName") String indexName, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("indexName") String indexName,
+            RequestOptions requestOptions, Context context);
 
         @Get("/indexes('{indexName}')/docs")
         @ExpectedResponses({ 200, 206 })
@@ -202,8 +202,8 @@ public final class SearchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> searchGetSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexName") String indexName, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("indexName") String indexName,
+            RequestOptions requestOptions, Context context);
 
         @Post("/indexes('{indexName}')/docs/search.post.search")
         @ExpectedResponses({ 200, 206 })
@@ -212,8 +212,8 @@ public final class SearchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> search(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexName") String indexName, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @PathParam("indexName") String indexName,
+            @HeaderParam("Content-Type") String contentType,
             @BodyParam("application/json") BinaryData searchPostRequest, RequestOptions requestOptions,
             Context context);
 
@@ -224,8 +224,8 @@ public final class SearchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> searchSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexName") String indexName, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @PathParam("indexName") String indexName,
+            @HeaderParam("Content-Type") String contentType,
             @BodyParam("application/json") BinaryData searchPostRequest, RequestOptions requestOptions,
             Context context);
 
@@ -236,9 +236,8 @@ public final class SearchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getDocument(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("key") String key, @PathParam("indexName") String indexName, RequestOptions requestOptions,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("key") String key,
+            @PathParam("indexName") String indexName, RequestOptions requestOptions, Context context);
 
         @Get("/indexes('{indexName}')/docs('{key}')")
         @ExpectedResponses({ 200 })
@@ -247,9 +246,8 @@ public final class SearchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getDocumentSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("key") String key, @PathParam("indexName") String indexName, RequestOptions requestOptions,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("key") String key,
+            @PathParam("indexName") String indexName, RequestOptions requestOptions, Context context);
 
         @Get("/indexes('{indexName}')/docs/search.suggest")
         @ExpectedResponses({ 200 })
@@ -258,9 +256,9 @@ public final class SearchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> suggestGet(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @QueryParam("search") String searchText, @QueryParam("suggesterName") String suggesterName,
-            @PathParam("indexName") String indexName, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @QueryParam("search") String searchText,
+            @QueryParam("suggesterName") String suggesterName, @PathParam("indexName") String indexName,
+            RequestOptions requestOptions, Context context);
 
         @Get("/indexes('{indexName}')/docs/search.suggest")
         @ExpectedResponses({ 200 })
@@ -269,9 +267,9 @@ public final class SearchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> suggestGetSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @QueryParam("search") String searchText, @QueryParam("suggesterName") String suggesterName,
-            @PathParam("indexName") String indexName, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @QueryParam("search") String searchText,
+            @QueryParam("suggesterName") String suggesterName, @PathParam("indexName") String indexName,
+            RequestOptions requestOptions, Context context);
 
         @Post("/indexes('{indexName}')/docs/search.post.suggest")
         @ExpectedResponses({ 200 })
@@ -280,8 +278,8 @@ public final class SearchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> suggest(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexName") String indexName, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @PathParam("indexName") String indexName,
+            @HeaderParam("Content-Type") String contentType,
             @BodyParam("application/json") BinaryData suggestPostRequest, RequestOptions requestOptions,
             Context context);
 
@@ -292,8 +290,8 @@ public final class SearchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> suggestSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexName") String indexName, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @PathParam("indexName") String indexName,
+            @HeaderParam("Content-Type") String contentType,
             @BodyParam("application/json") BinaryData suggestPostRequest, RequestOptions requestOptions,
             Context context);
 
@@ -304,9 +302,9 @@ public final class SearchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> index(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexName") String indexName, @HeaderParam("Content-Type") String contentType,
-            @BodyParam("application/json") BinaryData batch, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("indexName") String indexName,
+            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData batch,
+            RequestOptions requestOptions, Context context);
 
         @Post("/indexes('{indexName}')/docs/search.index")
         @ExpectedResponses({ 200, 207 })
@@ -315,9 +313,9 @@ public final class SearchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> indexSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexName") String indexName, @HeaderParam("Content-Type") String contentType,
-            @BodyParam("application/json") BinaryData batch, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("indexName") String indexName,
+            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData batch,
+            RequestOptions requestOptions, Context context);
 
         @Get("/indexes('{indexName}')/docs/search.autocomplete")
         @ExpectedResponses({ 200 })
@@ -326,9 +324,9 @@ public final class SearchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> autocompleteGet(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @QueryParam("search") String searchText, @QueryParam("suggesterName") String suggesterName,
-            @PathParam("indexName") String indexName, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @QueryParam("search") String searchText,
+            @QueryParam("suggesterName") String suggesterName, @PathParam("indexName") String indexName,
+            RequestOptions requestOptions, Context context);
 
         @Get("/indexes('{indexName}')/docs/search.autocomplete")
         @ExpectedResponses({ 200 })
@@ -337,9 +335,9 @@ public final class SearchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> autocompleteGetSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @QueryParam("search") String searchText, @QueryParam("suggesterName") String suggesterName,
-            @PathParam("indexName") String indexName, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @QueryParam("search") String searchText,
+            @QueryParam("suggesterName") String suggesterName, @PathParam("indexName") String indexName,
+            RequestOptions requestOptions, Context context);
 
         @Post("/indexes('{indexName}')/docs/search.post.autocomplete")
         @ExpectedResponses({ 200 })
@@ -348,8 +346,8 @@ public final class SearchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> autocomplete(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexName") String indexName, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @PathParam("indexName") String indexName,
+            @HeaderParam("Content-Type") String contentType,
             @BodyParam("application/json") BinaryData autocompletePostRequest, RequestOptions requestOptions,
             Context context);
 
@@ -360,14 +358,22 @@ public final class SearchClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> autocompleteSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("indexName") String indexName, @HeaderParam("Content-Type") String contentType,
+            @QueryParam("api-version") String apiVersion, @PathParam("indexName") String indexName,
+            @HeaderParam("Content-Type") String contentType,
             @BodyParam("application/json") BinaryData autocompletePostRequest, RequestOptions requestOptions,
             Context context);
     }
 
     /**
      * Queries the number of documents in the index.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=none".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -385,13 +391,20 @@ public final class SearchClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getDocumentCountWithResponseAsync(RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=none";
         return FluxUtil.withContext(context -> service.getDocumentCount(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, this.getIndexName(), requestOptions, context));
+            this.getServiceVersion().getVersion(), this.getIndexName(), requestOptions, context));
     }
 
     /**
      * Queries the number of documents in the index.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=none".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -409,8 +422,7 @@ public final class SearchClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getDocumentCountWithResponse(RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=none";
-        return service.getDocumentCountSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
+        return service.getDocumentCountSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
             this.getIndexName(), requestOptions, Context.NONE);
     }
 
@@ -530,6 +542,8 @@ public final class SearchClientImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=none".</td></tr>
      * <tr><td>x-ms-query-source-authorization</td><td>String</td><td>No</td><td>Token identifying the user for which
      * the query is being executed. This token is used to enforce security restrictions on documents.</td></tr>
      * <tr><td>x-ms-enable-elevated-read</td><td>Boolean</td><td>No</td><td>A value that enables elevated read that
@@ -742,9 +756,8 @@ public final class SearchClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> searchGetWithResponseAsync(RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=none";
         return FluxUtil.withContext(context -> service.searchGet(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, this.getIndexName(), requestOptions, context));
+            this.getServiceVersion().getVersion(), this.getIndexName(), requestOptions, context));
     }
 
     /**
@@ -863,6 +876,8 @@ public final class SearchClientImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=none".</td></tr>
      * <tr><td>x-ms-query-source-authorization</td><td>String</td><td>No</td><td>Token identifying the user for which
      * the query is being executed. This token is used to enforce security restrictions on documents.</td></tr>
      * <tr><td>x-ms-enable-elevated-read</td><td>Boolean</td><td>No</td><td>A value that enables elevated read that
@@ -1074,9 +1089,8 @@ public final class SearchClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> searchGetWithResponse(RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=none";
-        return service.searchGetSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-            this.getIndexName(), requestOptions, Context.NONE);
+        return service.searchGetSync(this.getEndpoint(), this.getServiceVersion().getVersion(), this.getIndexName(),
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -1085,6 +1099,8 @@ public final class SearchClientImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=none".</td></tr>
      * <tr><td>x-ms-query-source-authorization</td><td>String</td><td>No</td><td>Token identifying the user for which
      * the query is being executed. This token is used to enforce security restrictions on documents.</td></tr>
      * <tr><td>x-ms-enable-elevated-read</td><td>Boolean</td><td>No</td><td>A value that enables elevated read that
@@ -1372,10 +1388,9 @@ public final class SearchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> searchWithResponseAsync(BinaryData searchPostRequest,
         RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=none";
         final String contentType = "application/json";
         return FluxUtil.withContext(context -> service.search(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            accept, this.getIndexName(), contentType, searchPostRequest, requestOptions, context));
+            this.getIndexName(), contentType, searchPostRequest, requestOptions, context));
     }
 
     /**
@@ -1384,6 +1399,8 @@ public final class SearchClientImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=none".</td></tr>
      * <tr><td>x-ms-query-source-authorization</td><td>String</td><td>No</td><td>Token identifying the user for which
      * the query is being executed. This token is used to enforce security restrictions on documents.</td></tr>
      * <tr><td>x-ms-enable-elevated-read</td><td>Boolean</td><td>No</td><td>A value that enables elevated read that
@@ -1669,10 +1686,9 @@ public final class SearchClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> searchWithResponse(BinaryData searchPostRequest, RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=none";
         final String contentType = "application/json";
-        return service.searchSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-            this.getIndexName(), contentType, searchPostRequest, requestOptions, Context.NONE);
+        return service.searchSync(this.getEndpoint(), this.getServiceVersion().getVersion(), this.getIndexName(),
+            contentType, searchPostRequest, requestOptions, Context.NONE);
     }
 
     /**
@@ -1690,6 +1706,8 @@ public final class SearchClientImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=none".</td></tr>
      * <tr><td>x-ms-query-source-authorization</td><td>String</td><td>No</td><td>Token identifying the user for which
      * the query is being executed. This token is used to enforce security restrictions on documents.</td></tr>
      * <tr><td>x-ms-enable-elevated-read</td><td>Boolean</td><td>No</td><td>A value that enables elevated read that
@@ -1719,9 +1737,8 @@ public final class SearchClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getDocumentWithResponseAsync(String key, RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=none";
         return FluxUtil.withContext(context -> service.getDocument(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, key, this.getIndexName(), requestOptions, context));
+            this.getServiceVersion().getVersion(), key, this.getIndexName(), requestOptions, context));
     }
 
     /**
@@ -1739,6 +1756,8 @@ public final class SearchClientImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=none".</td></tr>
      * <tr><td>x-ms-query-source-authorization</td><td>String</td><td>No</td><td>Token identifying the user for which
      * the query is being executed. This token is used to enforce security restrictions on documents.</td></tr>
      * <tr><td>x-ms-enable-elevated-read</td><td>Boolean</td><td>No</td><td>A value that enables elevated read that
@@ -1767,8 +1786,7 @@ public final class SearchClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getDocumentWithResponse(String key, RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=none";
-        return service.getDocumentSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, key,
+        return service.getDocumentSync(this.getEndpoint(), this.getServiceVersion().getVersion(), key,
             this.getIndexName(), requestOptions, Context.NONE);
     }
 
@@ -1807,6 +1825,14 @@ public final class SearchClientImpl {
      * between 1 and 100. The default is 5.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=none".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -1840,10 +1866,9 @@ public final class SearchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> suggestGetWithResponseAsync(String searchText, String suggesterName,
         RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=none";
         return FluxUtil
             .withContext(context -> service.suggestGet(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                accept, searchText, suggesterName, this.getIndexName(), requestOptions, context));
+                searchText, suggesterName, this.getIndexName(), requestOptions, context));
     }
 
     /**
@@ -1881,6 +1906,14 @@ public final class SearchClientImpl {
      * between 1 and 100. The default is 5.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=none".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -1913,13 +1946,20 @@ public final class SearchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> suggestGetWithResponse(String searchText, String suggesterName,
         RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=none";
-        return service.suggestGetSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, searchText,
+        return service.suggestGetSync(this.getEndpoint(), this.getServiceVersion().getVersion(), searchText,
             suggesterName, this.getIndexName(), requestOptions, Context.NONE);
     }
 
     /**
      * Suggests documents in the index that match the given partial query text.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=none".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -1976,15 +2016,22 @@ public final class SearchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> suggestWithResponseAsync(BinaryData suggestPostRequest,
         RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=none";
         final String contentType = "application/json";
         return FluxUtil
-            .withContext(context -> service.suggest(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
+            .withContext(context -> service.suggest(this.getEndpoint(), this.getServiceVersion().getVersion(),
                 this.getIndexName(), contentType, suggestPostRequest, requestOptions, context));
     }
 
     /**
      * Suggests documents in the index that match the given partial query text.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=none".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -2039,14 +2086,21 @@ public final class SearchClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> suggestWithResponse(BinaryData suggestPostRequest, RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=none";
         final String contentType = "application/json";
-        return service.suggestSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-            this.getIndexName(), contentType, suggestPostRequest, requestOptions, Context.NONE);
+        return service.suggestSync(this.getEndpoint(), this.getServiceVersion().getVersion(), this.getIndexName(),
+            contentType, suggestPostRequest, requestOptions, Context.NONE);
     }
 
     /**
      * Sends a batch of document write actions to the index.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=none".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -2092,14 +2146,21 @@ public final class SearchClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> indexWithResponseAsync(BinaryData batch, RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=none";
         final String contentType = "application/json";
         return FluxUtil.withContext(context -> service.index(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            accept, this.getIndexName(), contentType, batch, requestOptions, context));
+            this.getIndexName(), contentType, batch, requestOptions, context));
     }
 
     /**
      * Sends a batch of document write actions to the index.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=none".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -2145,9 +2206,8 @@ public final class SearchClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> indexWithResponse(BinaryData batch, RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=none";
         final String contentType = "application/json";
-        return service.indexSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, this.getIndexName(),
+        return service.indexSync(this.getEndpoint(), this.getServiceVersion().getVersion(), this.getIndexName(),
             contentType, batch, requestOptions, Context.NONE);
     }
 
@@ -2181,6 +2241,14 @@ public final class SearchClientImpl {
      * value between 1 and 100. The default is 5.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=none".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -2210,10 +2278,9 @@ public final class SearchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> autocompleteGetWithResponseAsync(String searchText, String suggesterName,
         RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=none";
         return FluxUtil
             .withContext(context -> service.autocompleteGet(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                accept, searchText, suggesterName, this.getIndexName(), requestOptions, context));
+                searchText, suggesterName, this.getIndexName(), requestOptions, context));
     }
 
     /**
@@ -2246,6 +2313,14 @@ public final class SearchClientImpl {
      * value between 1 and 100. The default is 5.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=none".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -2275,13 +2350,20 @@ public final class SearchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> autocompleteGetWithResponse(String searchText, String suggesterName,
         RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=none";
-        return service.autocompleteGetSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-            searchText, suggesterName, this.getIndexName(), requestOptions, Context.NONE);
+        return service.autocompleteGetSync(this.getEndpoint(), this.getServiceVersion().getVersion(), searchText,
+            suggesterName, this.getIndexName(), requestOptions, Context.NONE);
     }
 
     /**
      * Autocompletes incomplete query terms based on input text and matching terms in the index.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=none".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -2330,15 +2412,22 @@ public final class SearchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> autocompleteWithResponseAsync(BinaryData autocompletePostRequest,
         RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=none";
         final String contentType = "application/json";
         return FluxUtil
             .withContext(context -> service.autocomplete(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                accept, this.getIndexName(), contentType, autocompletePostRequest, requestOptions, context));
+                this.getIndexName(), contentType, autocompletePostRequest, requestOptions, context));
     }
 
     /**
      * Autocompletes incomplete query terms based on input text and matching terms in the index.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=none".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -2387,9 +2476,8 @@ public final class SearchClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> autocompleteWithResponse(BinaryData autocompletePostRequest,
         RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=none";
         final String contentType = "application/json";
-        return service.autocompleteSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-            this.getIndexName(), contentType, autocompletePostRequest, requestOptions, Context.NONE);
+        return service.autocompleteSync(this.getEndpoint(), this.getServiceVersion().getVersion(), this.getIndexName(),
+            contentType, autocompletePostRequest, requestOptions, Context.NONE);
     }
 }

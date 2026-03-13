@@ -26,6 +26,7 @@ import com.azure.search.documents.SearchClientBuilder;
 import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.implementation.FieldBuilder;
 import com.azure.search.documents.implementation.SearchIndexClientImpl;
+import com.azure.search.documents.implementation.models.CreateOrUpdateRequestAccept3;
 import com.azure.search.documents.indexes.models.AnalyzeResult;
 import com.azure.search.documents.indexes.models.AnalyzeTextOptions;
 import com.azure.search.documents.indexes.models.GetIndexStatisticsResult;
@@ -37,9 +38,25 @@ import com.azure.search.documents.indexes.models.SearchAlias;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
+import com.azure.search.documents.indexes.models.SearchIndexResponse;
 import com.azure.search.documents.indexes.models.SearchServiceStatistics;
 import com.azure.search.documents.indexes.models.SynonymMap;
 import com.azure.search.documents.knowledgebases.models.KnowledgeSourceStatus;
+import com.azure.search.documents.models.CreateOrUpdateRequestAccept10;
+import com.azure.search.documents.models.CreateOrUpdateRequestAccept11;
+import com.azure.search.documents.models.CreateOrUpdateRequestAccept12;
+import com.azure.search.documents.models.CreateOrUpdateRequestAccept15;
+import com.azure.search.documents.models.CreateOrUpdateRequestAccept17;
+import com.azure.search.documents.models.CreateOrUpdateRequestAccept2;
+import com.azure.search.documents.models.CreateOrUpdateRequestAccept20;
+import com.azure.search.documents.models.CreateOrUpdateRequestAccept22;
+import com.azure.search.documents.models.CreateOrUpdateRequestAccept25;
+import com.azure.search.documents.models.CreateOrUpdateRequestAccept27;
+import com.azure.search.documents.models.CreateOrUpdateRequestAccept28;
+import com.azure.search.documents.models.CreateOrUpdateRequestAccept29;
+import com.azure.search.documents.models.CreateOrUpdateRequestAccept4;
+import com.azure.search.documents.models.CreateOrUpdateRequestAccept7;
+import com.azure.search.documents.models.CreateOrUpdateRequestAccept9;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.time.OffsetDateTime;
@@ -208,6 +225,8 @@ public final class SearchIndexClient {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
      * performed only if the ETag on the server matches this value.</td></tr>
      * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
@@ -318,6 +337,8 @@ public final class SearchIndexClient {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
      * performed only if the ETag on the server matches this value.</td></tr>
      * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
@@ -349,6 +370,14 @@ public final class SearchIndexClient {
      * properties. In the form of "," separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -409,6 +438,8 @@ public final class SearchIndexClient {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
      * performed only if the ETag on the server matches this value.</td></tr>
      * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
@@ -831,6 +862,8 @@ public final class SearchIndexClient {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
      * performed only if the ETag on the server matches this value.</td></tr>
      * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
@@ -857,6 +890,8 @@ public final class SearchIndexClient {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
      * performed only if the ETag on the server matches this value.</td></tr>
      * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
@@ -942,6 +977,8 @@ public final class SearchIndexClient {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
      * performed only if the ETag on the server matches this value.</td></tr>
      * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
@@ -968,6 +1005,8 @@ public final class SearchIndexClient {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
      * performed only if the ETag on the server matches this value.</td></tr>
      * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
@@ -1104,6 +1143,8 @@ public final class SearchIndexClient {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
      * performed only if the ETag on the server matches this value.</td></tr>
      * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
@@ -1130,6 +1171,8 @@ public final class SearchIndexClient {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
      * performed only if the ETag on the server matches this value.</td></tr>
      * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
@@ -1236,6 +1279,8 @@ public final class SearchIndexClient {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
      * performed only if the ETag on the server matches this value.</td></tr>
      * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
@@ -1389,34 +1434,6 @@ public final class SearchIndexClient {
         // Generated convenience method for hiddenGeneratedGetSynonymMapWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return hiddenGeneratedGetSynonymMapWithResponse(name, requestOptions).getValue().toObject(SynonymMap.class);
-    }
-
-    /**
-     * Lists all synonym maps available for a search service.
-     *
-     * @param select Selects which top-level properties to retrieve. Specified as a comma-separated list of JSON
-     * property names, or '*' for all properties. The default is all properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a List SynonymMaps request.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ListSynonymMapsResult getSynonymMaps(List<String> select) {
-        // Generated convenience method for getSynonymMapsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (select != null) {
-            requestOptions.addQueryParam("$select",
-                select.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
-        }
-        return getSynonymMapsWithResponse(requestOptions).getValue().toObject(ListSynonymMapsResult.class);
     }
 
     /**
@@ -1676,35 +1693,6 @@ public final class SearchIndexClient {
         // Generated convenience method for hiddenGeneratedGetIndexWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return hiddenGeneratedGetIndexWithResponse(name, requestOptions).getValue().toObject(SearchIndex.class);
-    }
-
-    /**
-     * Lists all indexes available for a search service.
-     *
-     * @param select Selects which top-level properties to retrieve. Specified as a comma-separated list of JSON
-     * property names, or '*' for all properties. The default is all properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a List Indexes request as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SearchIndex> listIndexes(List<String> select) {
-        // Generated convenience method for listIndexes
-        RequestOptions requestOptions = new RequestOptions();
-        if (select != null) {
-            requestOptions.addQueryParam("$select",
-                select.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
-        }
-        return serviceClient.listIndexes(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(SearchIndex.class));
     }
 
     /**
@@ -2741,6 +2729,14 @@ public final class SearchIndexClient {
 
     /**
      * Retrieves a synonym map definition.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -2784,6 +2780,14 @@ public final class SearchIndexClient {
 
     /**
      * Creates a new synonym map.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -2855,6 +2859,14 @@ public final class SearchIndexClient {
 
     /**
      * Retrieves an index definition.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -3049,15 +3061,14 @@ public final class SearchIndexClient {
 
     /**
      * Lists all indexes available for a search service.
-     * <p><strong>Query Parameters</strong></p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
-     * <caption>Query Parameters</caption>
+     * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>Selects which top-level properties to retrieve.
-     * Specified as a comma-separated list of JSON property names, or '*' for all properties. The default is all
-     * properties. In the form of "," separated string.</td></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
      * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -3250,6 +3261,14 @@ public final class SearchIndexClient {
 
     /**
      * Creates a new search index.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -3621,6 +3640,14 @@ public final class SearchIndexClient {
 
     /**
      * Returns statistics for the given index, including a document count and storage usage.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -3649,6 +3676,14 @@ public final class SearchIndexClient {
 
     /**
      * Shows how an analyzer breaks text into tokens.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -3703,6 +3738,14 @@ public final class SearchIndexClient {
 
     /**
      * Retrieves an alias definition.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -3734,6 +3777,14 @@ public final class SearchIndexClient {
 
     /**
      * Lists all aliases available for a search service.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -3763,6 +3814,14 @@ public final class SearchIndexClient {
 
     /**
      * Creates a new search alias.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -3808,6 +3867,14 @@ public final class SearchIndexClient {
 
     /**
      * Retrieves a knowledge base definition.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -3864,6 +3931,14 @@ public final class SearchIndexClient {
 
     /**
      * Lists all knowledge bases available for a search service.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -3919,6 +3994,14 @@ public final class SearchIndexClient {
 
     /**
      * Creates a new knowledge base.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -4016,6 +4099,14 @@ public final class SearchIndexClient {
 
     /**
      * Retrieves a knowledge source definition.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -4057,6 +4148,14 @@ public final class SearchIndexClient {
 
     /**
      * Lists all knowledge sources available for a search service.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -4097,6 +4196,14 @@ public final class SearchIndexClient {
 
     /**
      * Creates a new knowledge source.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -4164,6 +4271,14 @@ public final class SearchIndexClient {
 
     /**
      * Retrieves the status of a knowledge source.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -4210,6 +4325,14 @@ public final class SearchIndexClient {
 
     /**
      * Gets service level statistics for a search service.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -4262,6 +4385,14 @@ public final class SearchIndexClient {
 
     /**
      * Retrieves a summary of statistics for all indexes in the search service.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -4287,5 +4418,649 @@ public final class SearchIndexClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BinaryData> hiddenGeneratedListIndexStatsSummary(RequestOptions requestOptions) {
         return this.serviceClient.listIndexStatsSummary(requestOptions);
+    }
+
+    /**
+     * Lists all indexes available for a search service.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>Selects which top-level properties to retrieve.
+     * Specified as a comma-separated list of JSON property names, or '*' for all properties. The default is all
+     * properties. In the form of "," separated string.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     description: String (Optional)
+     *     fields (Optional): [
+     *          (Optional){
+     *             name: String (Required)
+     *             type: String(Edm.String/Edm.Int32/Edm.Int64/Edm.Double/Edm.Boolean/Edm.DateTimeOffset/Edm.GeographyPoint/Edm.ComplexType/Edm.Single/Edm.Half/Edm.Int16/Edm.SByte/Edm.Byte) (Required)
+     *             key: Boolean (Optional)
+     *             retrievable: Boolean (Optional)
+     *             stored: Boolean (Optional)
+     *             searchable: Boolean (Optional)
+     *             filterable: Boolean (Optional)
+     *             sortable: Boolean (Optional)
+     *             facetable: Boolean (Optional)
+     *             permissionFilter: String(userIds/groupIds/rbacScope) (Optional)
+     *             sensitivityLabel: Boolean (Optional)
+     *             analyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
+     *             searchAnalyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
+     *             indexAnalyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
+     *             normalizer: String(asciifolding/elision/lowercase/standard/uppercase) (Optional)
+     *             dimensions: Integer (Optional)
+     *             vectorSearchProfile: String (Optional)
+     *             vectorEncoding: String(packedBit) (Optional)
+     *             synonymMaps (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             fields (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *         }
+     *     ]
+     *     scoringProfiles (Optional): [
+     *          (Optional){
+     *             name: String (Required)
+     *             text (Optional): {
+     *                 weights (Required): {
+     *                     String: double (Required)
+     *                 }
+     *             }
+     *             functions (Optional): [
+     *                  (Optional){
+     *                     type: String (Required)
+     *                     fieldName: String (Required)
+     *                     boost: double (Required)
+     *                     interpolation: String(linear/constant/quadratic/logarithmic) (Optional)
+     *                 }
+     *             ]
+     *             functionAggregation: String(sum/average/minimum/maximum/firstMatching/product) (Optional)
+     *         }
+     *     ]
+     *     defaultScoringProfile: String (Optional)
+     *     corsOptions (Optional): {
+     *         allowedOrigins (Required): [
+     *             String (Required)
+     *         ]
+     *         maxAgeInSeconds: Long (Optional)
+     *     }
+     *     suggesters (Optional): [
+     *          (Optional){
+     *             name: String (Required)
+     *             searchMode: String (Required)
+     *             sourceFields (Required): [
+     *                 String (Required)
+     *             ]
+     *         }
+     *     ]
+     *     analyzers (Optional): [
+     *          (Optional){
+     *             &#64;odata.type: String (Required)
+     *             name: String (Required)
+     *         }
+     *     ]
+     *     tokenizers (Optional): [
+     *          (Optional){
+     *             &#64;odata.type: String (Required)
+     *             name: String (Required)
+     *         }
+     *     ]
+     *     tokenFilters (Optional): [
+     *          (Optional){
+     *             &#64;odata.type: String (Required)
+     *             name: String (Required)
+     *         }
+     *     ]
+     *     charFilters (Optional): [
+     *          (Optional){
+     *             &#64;odata.type: String (Required)
+     *             name: String (Required)
+     *         }
+     *     ]
+     *     normalizers (Optional): [
+     *          (Optional){
+     *             &#64;odata.type: String (Required)
+     *             name: String (Required)
+     *         }
+     *     ]
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): {
+     *             &#64;odata.type: String (Required)
+     *         }
+     *     }
+     *     similarity (Optional): {
+     *         &#64;odata.type: String (Required)
+     *     }
+     *     semantic (Optional): {
+     *         defaultConfiguration: String (Optional)
+     *         configurations (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 prioritizedFields (Required): {
+     *                     titleField (Optional): {
+     *                         fieldName: String (Required)
+     *                     }
+     *                     prioritizedContentFields (Optional): [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                     prioritizedKeywordsFields (Optional): [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                 }
+     *                 rankingOrder: String(BoostedRerankerScore/RerankerScore) (Optional)
+     *                 flightingOptIn: Boolean (Optional)
+     *             }
+     *         ]
+     *     }
+     *     vectorSearch (Optional): {
+     *         profiles (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 algorithm: String (Required)
+     *                 vectorizer: String (Optional)
+     *                 compression: String (Optional)
+     *             }
+     *         ]
+     *         algorithms (Optional): [
+     *              (Optional){
+     *                 kind: String(hnsw/exhaustiveKnn) (Required)
+     *                 name: String (Required)
+     *             }
+     *         ]
+     *         vectorizers (Optional): [
+     *              (Optional){
+     *                 kind: String(azureOpenAI/customWebApi/aiServicesVision/aml) (Required)
+     *                 name: String (Required)
+     *             }
+     *         ]
+     *         compressions (Optional): [
+     *              (Optional){
+     *                 kind: String(scalarQuantization/binaryQuantization) (Required)
+     *                 name: String (Required)
+     *                 rescoringOptions (Optional): {
+     *                     enableRescoring: Boolean (Optional)
+     *                     defaultOversampling: Double (Optional)
+     *                     rescoreStorageMethod: String(preserveOriginals/discardOriginals) (Optional)
+     *                 }
+     *                 truncationDimension: Integer (Optional)
+     *             }
+     *         ]
+     *     }
+     *     permissionFilterOption: String(enabled/disabled) (Optional)
+     *     purviewEnabled: Boolean (Optional)
+     *     &#64;odata.etag: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response from a List Indexes request as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<BinaryData> hiddenGeneratedListIndexesWithSelectedProperties(RequestOptions requestOptions) {
+        return this.serviceClient.listIndexesWithSelectedProperties(requestOptions);
+    }
+
+    /**
+     * Retrieves a synonym map definition.
+     *
+     * @param name The name of the synonym map.
+     * @param accept The Accept header.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a synonym map definition.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SynonymMap getSynonymMap(String name, CreateOrUpdateRequestAccept2 accept) {
+        // Generated convenience method for hiddenGeneratedGetSynonymMapWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (accept != null) {
+            requestOptions.setHeader(HttpHeaderName.ACCEPT, accept.toString());
+        }
+        return hiddenGeneratedGetSynonymMapWithResponse(name, requestOptions).getValue().toObject(SynonymMap.class);
+    }
+
+    /**
+     * Lists all synonym maps available for a search service.
+     *
+     * @param accept The Accept header.
+     * @param select Selects which top-level properties to retrieve. Specified as a comma-separated list of JSON
+     * property names, or '*' for all properties. The default is all properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from a List SynonymMaps request.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ListSynonymMapsResult getSynonymMaps(CreateOrUpdateRequestAccept3 accept, List<String> select) {
+        // Generated convenience method for getSynonymMapsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (accept != null) {
+            requestOptions.setHeader(HttpHeaderName.ACCEPT, accept.toString());
+        }
+        if (select != null) {
+            requestOptions.addQueryParam("$select",
+                select.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        return getSynonymMapsWithResponse(requestOptions).getValue().toObject(ListSynonymMapsResult.class);
+    }
+
+    /**
+     * Creates a new synonym map.
+     *
+     * @param synonymMap The definition of the synonym map to create.
+     * @param accept The Accept header.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a synonym map definition.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SynonymMap createSynonymMap(SynonymMap synonymMap, CreateOrUpdateRequestAccept4 accept) {
+        // Generated convenience method for hiddenGeneratedCreateSynonymMapWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (accept != null) {
+            requestOptions.setHeader(HttpHeaderName.ACCEPT, accept.toString());
+        }
+        return hiddenGeneratedCreateSynonymMapWithResponse(BinaryData.fromObject(synonymMap), requestOptions).getValue()
+            .toObject(SynonymMap.class);
+    }
+
+    /**
+     * Retrieves an index definition.
+     *
+     * @param name The name of the index.
+     * @param accept The Accept header.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a search index definition, which describes the fields and search behavior of an index.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SearchIndex getIndex(String name, CreateOrUpdateRequestAccept7 accept) {
+        // Generated convenience method for hiddenGeneratedGetIndexWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (accept != null) {
+            requestOptions.setHeader(HttpHeaderName.ACCEPT, accept.toString());
+        }
+        return hiddenGeneratedGetIndexWithResponse(name, requestOptions).getValue().toObject(SearchIndex.class);
+    }
+
+    /**
+     * Lists all indexes available for a search service.
+     *
+     * @param accept The Accept header.
+     * @param select Selects which top-level properties to retrieve. Specified as a comma-separated list of JSON
+     * property names, or '*' for all properties. The default is all properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from a List Indexes request as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<SearchIndexResponse> listIndexesWithSelectedProperties(CreateOrUpdateRequestAccept9 accept,
+        List<String> select) {
+        // Generated convenience method for listIndexesWithSelectedProperties
+        RequestOptions requestOptions = new RequestOptions();
+        if (accept != null) {
+            requestOptions.setHeader(HttpHeaderName.ACCEPT, accept.toString());
+        }
+        if (select != null) {
+            requestOptions.addQueryParam("$select",
+                select.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        return serviceClient.listIndexesWithSelectedProperties(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(SearchIndexResponse.class));
+    }
+
+    /**
+     * Lists all indexes available for a search service.
+     *
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from a List Indexes request as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<SearchIndexResponse> listIndexesWithSelectedProperties() {
+        // Generated convenience method for listIndexesWithSelectedProperties
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient.listIndexesWithSelectedProperties(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(SearchIndexResponse.class));
+    }
+
+    /**
+     * Creates a new search index.
+     *
+     * @param index The definition of the index to create.
+     * @param accept The Accept header.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a search index definition, which describes the fields and search behavior of an index.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SearchIndex createIndex(SearchIndex index, CreateOrUpdateRequestAccept10 accept) {
+        // Generated convenience method for hiddenGeneratedCreateIndexWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (accept != null) {
+            requestOptions.setHeader(HttpHeaderName.ACCEPT, accept.toString());
+        }
+        return hiddenGeneratedCreateIndexWithResponse(BinaryData.fromObject(index), requestOptions).getValue()
+            .toObject(SearchIndex.class);
+    }
+
+    /**
+     * Returns statistics for the given index, including a document count and storage usage.
+     *
+     * @param name The name of the index.
+     * @param accept The Accept header.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return statistics for a given index.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GetIndexStatisticsResult getIndexStatistics(String name, CreateOrUpdateRequestAccept11 accept) {
+        // Generated convenience method for hiddenGeneratedGetIndexStatisticsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (accept != null) {
+            requestOptions.setHeader(HttpHeaderName.ACCEPT, accept.toString());
+        }
+        return hiddenGeneratedGetIndexStatisticsWithResponse(name, requestOptions).getValue()
+            .toObject(GetIndexStatisticsResult.class);
+    }
+
+    /**
+     * Shows how an analyzer breaks text into tokens.
+     *
+     * @param name The name of the index.
+     * @param request The text and analyzer or analysis components to test.
+     * @param accept The Accept header.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of testing an analyzer on text.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AnalyzeResult analyzeText(String name, AnalyzeTextOptions request, CreateOrUpdateRequestAccept12 accept) {
+        // Generated convenience method for hiddenGeneratedAnalyzeTextWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (accept != null) {
+            requestOptions.setHeader(HttpHeaderName.ACCEPT, accept.toString());
+        }
+        return hiddenGeneratedAnalyzeTextWithResponse(name, BinaryData.fromObject(request), requestOptions).getValue()
+            .toObject(AnalyzeResult.class);
+    }
+
+    /**
+     * Retrieves an alias definition.
+     *
+     * @param name The name of the alias.
+     * @param accept The Accept header.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents an index alias, which describes a mapping from the alias name to an index.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SearchAlias getAlias(String name, CreateOrUpdateRequestAccept15 accept) {
+        // Generated convenience method for hiddenGeneratedGetAliasWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (accept != null) {
+            requestOptions.setHeader(HttpHeaderName.ACCEPT, accept.toString());
+        }
+        return hiddenGeneratedGetAliasWithResponse(name, requestOptions).getValue().toObject(SearchAlias.class);
+    }
+
+    /**
+     * Creates a new search alias.
+     *
+     * @param alias The definition of the alias to create.
+     * @param accept The Accept header.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents an index alias, which describes a mapping from the alias name to an index.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SearchAlias createAlias(SearchAlias alias, CreateOrUpdateRequestAccept17 accept) {
+        // Generated convenience method for hiddenGeneratedCreateAliasWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (accept != null) {
+            requestOptions.setHeader(HttpHeaderName.ACCEPT, accept.toString());
+        }
+        return hiddenGeneratedCreateAliasWithResponse(BinaryData.fromObject(alias), requestOptions).getValue()
+            .toObject(SearchAlias.class);
+    }
+
+    /**
+     * Retrieves a knowledge base definition.
+     *
+     * @param name The name of the knowledge base.
+     * @param accept The Accept header.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a knowledge base definition.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public KnowledgeBase getKnowledgeBase(String name, CreateOrUpdateRequestAccept20 accept) {
+        // Generated convenience method for hiddenGeneratedGetKnowledgeBaseWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (accept != null) {
+            requestOptions.setHeader(HttpHeaderName.ACCEPT, accept.toString());
+        }
+        return hiddenGeneratedGetKnowledgeBaseWithResponse(name, requestOptions).getValue()
+            .toObject(KnowledgeBase.class);
+    }
+
+    /**
+     * Creates a new knowledge base.
+     *
+     * @param knowledgeBase The definition of the knowledge base to create.
+     * @param accept The Accept header.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a knowledge base definition.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public KnowledgeBase createKnowledgeBase(KnowledgeBase knowledgeBase, CreateOrUpdateRequestAccept22 accept) {
+        // Generated convenience method for hiddenGeneratedCreateKnowledgeBaseWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (accept != null) {
+            requestOptions.setHeader(HttpHeaderName.ACCEPT, accept.toString());
+        }
+        return hiddenGeneratedCreateKnowledgeBaseWithResponse(BinaryData.fromObject(knowledgeBase), requestOptions)
+            .getValue()
+            .toObject(KnowledgeBase.class);
+    }
+
+    /**
+     * Retrieves a knowledge source definition.
+     *
+     * @param name The name of the knowledge source.
+     * @param accept The Accept header.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a knowledge source definition.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public KnowledgeSource getKnowledgeSource(String name, CreateOrUpdateRequestAccept25 accept) {
+        // Generated convenience method for hiddenGeneratedGetKnowledgeSourceWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (accept != null) {
+            requestOptions.setHeader(HttpHeaderName.ACCEPT, accept.toString());
+        }
+        return hiddenGeneratedGetKnowledgeSourceWithResponse(name, requestOptions).getValue()
+            .toObject(KnowledgeSource.class);
+    }
+
+    /**
+     * Creates a new knowledge source.
+     *
+     * @param knowledgeSource The definition of the knowledge source to create.
+     * @param accept The Accept header.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a knowledge source definition.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public KnowledgeSource createKnowledgeSource(KnowledgeSource knowledgeSource,
+        CreateOrUpdateRequestAccept27 accept) {
+        // Generated convenience method for hiddenGeneratedCreateKnowledgeSourceWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (accept != null) {
+            requestOptions.setHeader(HttpHeaderName.ACCEPT, accept.toString());
+        }
+        return hiddenGeneratedCreateKnowledgeSourceWithResponse(BinaryData.fromObject(knowledgeSource), requestOptions)
+            .getValue()
+            .toObject(KnowledgeSource.class);
+    }
+
+    /**
+     * Retrieves the status of a knowledge source.
+     *
+     * @param name The name of the knowledge source.
+     * @param accept The Accept header.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents the status and synchronization history of a knowledge source.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public KnowledgeSourceStatus getKnowledgeSourceStatus(String name, CreateOrUpdateRequestAccept28 accept) {
+        // Generated convenience method for hiddenGeneratedGetKnowledgeSourceStatusWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (accept != null) {
+            requestOptions.setHeader(HttpHeaderName.ACCEPT, accept.toString());
+        }
+        return hiddenGeneratedGetKnowledgeSourceStatusWithResponse(name, requestOptions).getValue()
+            .toObject(KnowledgeSourceStatus.class);
+    }
+
+    /**
+     * Gets service level statistics for a search service.
+     *
+     * @param accept The Accept header.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return service level statistics for a search service.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SearchServiceStatistics getServiceStatistics(CreateOrUpdateRequestAccept29 accept) {
+        // Generated convenience method for hiddenGeneratedGetServiceStatisticsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (accept != null) {
+            requestOptions.setHeader(HttpHeaderName.ACCEPT, accept.toString());
+        }
+        return hiddenGeneratedGetServiceStatisticsWithResponse(requestOptions).getValue()
+            .toObject(SearchServiceStatistics.class);
     }
 }

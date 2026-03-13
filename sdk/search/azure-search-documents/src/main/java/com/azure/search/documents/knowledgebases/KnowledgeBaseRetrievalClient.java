@@ -21,6 +21,7 @@ import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.implementation.KnowledgeBaseRetrievalClientImpl;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalRequest;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalResponse;
+import com.azure.search.documents.models.CreateOrUpdateRequestAccept52;
 
 /**
  * Initializes a new instance of the synchronous KnowledgeBaseRetrievalClient type.
@@ -66,35 +67,6 @@ public final class KnowledgeBaseRetrievalClient {
      */
     public SearchServiceVersion getServiceVersion() {
         return serviceClient.getServiceVersion();
-    }
-
-    /**
-     * KnowledgeBase retrieves relevant data from backing stores.
-     *
-     * @param knowledgeBaseName The name of the knowledge base.
-     * @param retrievalRequest The retrieval request to process.
-     * @param querySourceAuthorization Token identifying the user for which the query is being executed. This token is
-     * used to enforce security restrictions on documents.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the output contract for the retrieval response.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public KnowledgeBaseRetrievalResponse retrieve(String knowledgeBaseName,
-        KnowledgeBaseRetrievalRequest retrievalRequest, String querySourceAuthorization) {
-        // Generated convenience method for hiddenGeneratedRetrieveWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (querySourceAuthorization != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-query-source-authorization"),
-                querySourceAuthorization);
-        }
-        return hiddenGeneratedRetrieveWithResponse(knowledgeBaseName, BinaryData.fromObject(retrievalRequest),
-            requestOptions).getValue().toObject(KnowledgeBaseRetrievalResponse.class);
     }
 
     /**
@@ -153,6 +125,8 @@ public final class KnowledgeBaseRetrievalClient {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
      * <tr><td>x-ms-query-source-authorization</td><td>String</td><td>No</td><td>Token identifying the user for which
      * the query is being executed. This token is used to enforce security restrictions on documents.</td></tr>
      * </table>
@@ -265,5 +239,39 @@ public final class KnowledgeBaseRetrievalClient {
     Response<BinaryData> hiddenGeneratedRetrieveWithResponse(String knowledgeBaseName, BinaryData retrievalRequest,
         RequestOptions requestOptions) {
         return this.serviceClient.retrieveWithResponse(knowledgeBaseName, retrievalRequest, requestOptions);
+    }
+
+    /**
+     * KnowledgeBase retrieves relevant data from backing stores.
+     *
+     * @param knowledgeBaseName The name of the knowledge base.
+     * @param retrievalRequest The retrieval request to process.
+     * @param accept The Accept header.
+     * @param querySourceAuthorization Token identifying the user for which the query is being executed. This token is
+     * used to enforce security restrictions on documents.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the output contract for the retrieval response.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public KnowledgeBaseRetrievalResponse retrieve(String knowledgeBaseName,
+        KnowledgeBaseRetrievalRequest retrievalRequest, CreateOrUpdateRequestAccept52 accept,
+        String querySourceAuthorization) {
+        // Generated convenience method for hiddenGeneratedRetrieveWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (accept != null) {
+            requestOptions.setHeader(HttpHeaderName.ACCEPT, accept.toString());
+        }
+        if (querySourceAuthorization != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-query-source-authorization"),
+                querySourceAuthorization);
+        }
+        return hiddenGeneratedRetrieveWithResponse(knowledgeBaseName, BinaryData.fromObject(retrievalRequest),
+            requestOptions).getValue().toObject(KnowledgeBaseRetrievalResponse.class);
     }
 }

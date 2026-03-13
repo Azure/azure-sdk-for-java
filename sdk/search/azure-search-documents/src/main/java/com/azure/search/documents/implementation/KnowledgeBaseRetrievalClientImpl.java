@@ -148,27 +148,27 @@ public final class KnowledgeBaseRetrievalClientImpl {
     @Host("{endpoint}")
     @ServiceInterface(name = "KnowledgeBaseRetrievalClient")
     public interface KnowledgeBaseRetrievalClientService {
-        @Post("/retrieve/{knowledgeBaseName}")
+        @Post("/knowledgebases('{knowledgeBaseName}')/retrieve")
         @ExpectedResponses({ 200, 206 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> retrieve(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("knowledgeBaseName") String knowledgeBaseName, @HeaderParam("Content-Type") String contentType,
-            @BodyParam("application/json") BinaryData retrievalRequest, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("knowledgeBaseName") String knowledgeBaseName,
+            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData retrievalRequest,
+            RequestOptions requestOptions, Context context);
 
-        @Post("/retrieve/{knowledgeBaseName}")
+        @Post("/knowledgebases('{knowledgeBaseName}')/retrieve")
         @ExpectedResponses({ 200, 206 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> retrieveSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            @PathParam("knowledgeBaseName") String knowledgeBaseName, @HeaderParam("Content-Type") String contentType,
-            @BodyParam("application/json") BinaryData retrievalRequest, RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("knowledgeBaseName") String knowledgeBaseName,
+            @HeaderParam("Content-Type") String contentType, @BodyParam("application/json") BinaryData retrievalRequest,
+            RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -177,6 +177,8 @@ public final class KnowledgeBaseRetrievalClientImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
      * <tr><td>x-ms-query-source-authorization</td><td>String</td><td>No</td><td>Token identifying the user for which
      * the query is being executed. This token is used to enforce security restrictions on documents.</td></tr>
      * </table>
@@ -288,10 +290,9 @@ public final class KnowledgeBaseRetrievalClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> retrieveWithResponseAsync(String knowledgeBaseName, BinaryData retrievalRequest,
         RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         final String contentType = "application/json";
         return FluxUtil
-            .withContext(context -> service.retrieve(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
+            .withContext(context -> service.retrieve(this.getEndpoint(), this.getServiceVersion().getVersion(),
                 knowledgeBaseName, contentType, retrievalRequest, requestOptions, context));
     }
 
@@ -301,6 +302,8 @@ public final class KnowledgeBaseRetrievalClientImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Accept</td><td>String</td><td>No</td><td>The Accept header. Allowed values:
+     * "application/json;odata.metadata=minimal".</td></tr>
      * <tr><td>x-ms-query-source-authorization</td><td>String</td><td>No</td><td>Token identifying the user for which
      * the query is being executed. This token is used to enforce security restrictions on documents.</td></tr>
      * </table>
@@ -411,9 +414,8 @@ public final class KnowledgeBaseRetrievalClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> retrieveWithResponse(String knowledgeBaseName, BinaryData retrievalRequest,
         RequestOptions requestOptions) {
-        final String accept = "application/json;odata.metadata=minimal";
         final String contentType = "application/json";
-        return service.retrieveSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-            knowledgeBaseName, contentType, retrievalRequest, requestOptions, Context.NONE);
+        return service.retrieveSync(this.getEndpoint(), this.getServiceVersion().getVersion(), knowledgeBaseName,
+            contentType, retrievalRequest, requestOptions, Context.NONE);
     }
 }
