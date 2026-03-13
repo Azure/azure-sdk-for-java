@@ -11,8 +11,6 @@ import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.BlobCopyInfo;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.ParallelTransferOptions;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -171,6 +169,8 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     public static final String CACHE_CONTROL = "Cache-Control";
 
     private static final String ENDPOINT_QUERY_KEY = "endpoint";
+    private static final String UID_QUERY_KEY = "uid";
+
     private static final int COPY_TIMEOUT_SECONDS = 30;
     private static final Set<OpenOption> OUTPUT_STREAM_DEFAULT_OPTIONS = Collections.unmodifiableSet(new HashSet<>(
         Arrays.asList(StandardOpenOption.CREATE, StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING)));
@@ -217,15 +217,15 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      */
     @Override
     public FileSystem newFileSystem(URI uri, Map<String, ?> config) throws IOException {
-        String endpoint = extractAccountEndpoint(uri);
+        FileSystemUriParameters parameters = parseFileSystemParameters(uri);
 
-        if (this.openFileSystems.containsKey(endpoint)) {
+        if (this.openFileSystems.containsKey(parameters.uid())) {
             throw LoggingUtility.logError(ClientLoggerHolder.LOGGER,
-                new FileSystemAlreadyExistsException("Name: " + endpoint));
+                new FileSystemAlreadyExistsException("Name: " + parameters.endpoint() + " UID: " + parameters.uid()));
         }
 
-        AzureFileSystem afs = new AzureFileSystem(this, endpoint, config);
-        this.openFileSystems.put(endpoint, afs);
+        AzureFileSystem afs = new AzureFileSystem(this, parameters.endpoint(), config);
+        this.openFileSystems.put(parameters.uid(), afs);
 
         return afs;
     }
@@ -246,12 +246,12 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      */
     @Override
     public FileSystem getFileSystem(URI uri) {
-        String endpoint = extractAccountEndpoint(uri);
-        if (!this.openFileSystems.containsKey(endpoint)) {
+        FileSystemUriParameters parameters = parseFileSystemParameters(uri);
+        if (!this.openFileSystems.containsKey(parameters.uid())) {
             throw LoggingUtility.logError(ClientLoggerHolder.LOGGER,
-                new FileSystemNotFoundException("Name: " + endpoint));
+                new FileSystemNotFoundException("Name: " + parameters.endpoint()));
         }
-        return this.openFileSystems.get(endpoint);
+        return this.openFileSystems.get(parameters.uid());
     }
 
     /**
@@ -1144,7 +1144,12 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         this.openFileSystems.remove(fileSystemName);
     }
 
-    private String extractAccountEndpoint(URI uri) {
+    /**
+     * Uses azure blob file system uri to extract the file system parameters.
+     * @param uri The URI to extract the file system details from. Format: {@code azb://?endpoint=<account_endpoint>&uid=<unique_id>}
+     * @return The file system details.
+     */
+    private FileSystemUriParameters parseFileSystemParameters(URI uri) {
         if (!uri.getScheme().equals(this.getScheme())) {
             throw LoggingUtility.logError(ClientLoggerHolder.LOGGER,
                 new IllegalArgumentException("URI scheme does not match this provider"));
@@ -1155,19 +1160,50 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
                     + "the format \"azb://?endpoint=<account_endpoint>\"."));
         }
 
-        String endpoint = Flux.fromArray(uri.getQuery().split("&"))
-            .filter(s -> s.startsWith(ENDPOINT_QUERY_KEY + "="))
-            .switchIfEmpty(Mono.defer(() -> Mono.error(LoggingUtility.logError(ClientLoggerHolder.LOGGER,
-                new IllegalArgumentException("URI does not contain an \"" + ENDPOINT_QUERY_KEY + "=\" parameter. "
-                    + "FileSystems require a URI of the format \"azb://?endpoint=<endpoint>\"")))))
-            .map(s -> s.substring(ENDPOINT_QUERY_KEY.length() + 1)) // Trim the query key and =
-            .blockLast();
+        String endpoint = "", uid = "";
+        for (String queryPart : uri.getQuery().split("&")) {
+            String[] parts = queryPart.split("=");
+            switch (parts[0]) {
+                case ENDPOINT_QUERY_KEY:
+                    endpoint = parts.length > 1 ? parts[1] : "";
+                    break;
 
+                case UID_QUERY_KEY:
+                    uid = parts.length > 1 ? parts[1] : "";
+                    break;
+            }
+        }
+        uid = CoreUtils.isNullOrEmpty(uid) ? endpoint : uid;
+
+        String expectedFormat
+            = "FileSystems require a URI of the format \"azb://?endpoint=<endpoint>&uid=<unique_id>\"";
+        if (CoreUtils.isNullOrEmpty(uid)) {
+            throw LoggingUtility.logError(ClientLoggerHolder.LOGGER, new IllegalArgumentException(
+                "URI does not contain an \"" + UID_QUERY_KEY + "=\" parameter. " + expectedFormat));
+        }
         if (CoreUtils.isNullOrEmpty(endpoint)) {
             throw LoggingUtility.logError(ClientLoggerHolder.LOGGER,
-                new IllegalArgumentException("No account endpoint provided in URI query."));
+                new IllegalArgumentException("No account endpoint provided in URI query. " + expectedFormat));
         }
 
-        return endpoint;
+        return new FileSystemUriParameters(endpoint, uid);
+    }
+
+    static class FileSystemUriParameters {
+        private final String endpoint;
+        private final String uid;
+
+        public FileSystemUriParameters(String endpoint, String uid) {
+            this.endpoint = Objects.requireNonNull(endpoint);
+            this.uid = Objects.requireNonNull(uid);
+        }
+
+        public String endpoint() {
+            return endpoint;
+        }
+
+        public String uid() {
+            return uid;
+        }
     }
 }

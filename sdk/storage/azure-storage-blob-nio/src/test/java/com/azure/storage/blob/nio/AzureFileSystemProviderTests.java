@@ -80,6 +80,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -109,9 +110,30 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
         URI uri = getFileSystemUri();
         provider.newFileSystem(uri, config);
 
-        assertTrue(provider.getFileSystem(uri).isOpen());
-        assertEquals(primaryBlobServiceClient.getAccountUrl(),
-            ((AzureFileSystem) provider.getFileSystem(uri)).getFileSystemUrl());
+        verifyFileSystem((AzureFileSystem) provider.getFileSystem(uri));
+    }
+
+    @Test
+    public void createFileSystemDifferentUid() throws IOException {
+        config.put(AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL, ENV.getPrimaryAccount().getCredential());
+        config.put(AzureFileSystem.AZURE_STORAGE_FILE_STORES, generateContainerName());
+        URI uri1 = getFileSystemUri("uid1");
+        URI uri2 = getFileSystemUri("uid2");
+
+        provider.newFileSystem(uri1, config);
+        provider.newFileSystem(uri2, config);
+
+        AzureFileSystem fs1 = (AzureFileSystem) provider.getFileSystem(uri1);
+        AzureFileSystem fs2 = (AzureFileSystem) provider.getFileSystem(uri2);
+
+        assertNotSame(fs1, fs2);
+        verifyFileSystem(fs1);
+        verifyFileSystem(fs2);
+    }
+
+    private void verifyFileSystem(AzureFileSystem fileSystem) {
+        assertTrue(fileSystem.isOpen());
+        assertEquals(primaryBlobServiceClient.getAccountUrl(), fileSystem.getFileSystemUrl());
     }
 
     @ParameterizedTest
@@ -120,13 +142,16 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
         assertThrows(IllegalArgumentException.class, () -> provider.newFileSystem(new URI(uri), config));
     }
 
-    @Test
-    public void createFileSystemDuplicate() throws IOException {
+    @ParameterizedTest
+    @ValueSource(strings = { "", "test-uid" })
+    public void createFileSystemDuplicate(String uid) throws IOException {
+        URI uri = getFileSystemUri(uid == "" ? null : uid);
+
         config.put(AzureFileSystem.AZURE_STORAGE_FILE_STORES, generateContainerName());
         config.put(AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL, ENV.getPrimaryAccount().getCredential());
-        provider.newFileSystem(getFileSystemUri(), config);
+        provider.newFileSystem(uri, config);
 
-        assertThrows(FileSystemAlreadyExistsException.class, () -> provider.newFileSystem(getFileSystemUri(), config));
+        assertThrows(FileSystemAlreadyExistsException.class, () -> provider.newFileSystem(uri, config));
     }
 
     @Test

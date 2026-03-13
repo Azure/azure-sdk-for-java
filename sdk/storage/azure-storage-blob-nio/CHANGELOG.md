@@ -1,6 +1,7 @@
 # Release History
 
 ## 12.0.0-beta.37 (Unreleased)
+- Extend azure nio filesystem url to support a unique identifer: `azb://?endpoint=<account_endpoint>&uid=<unique_id>`
 
 ### Features Added
 
