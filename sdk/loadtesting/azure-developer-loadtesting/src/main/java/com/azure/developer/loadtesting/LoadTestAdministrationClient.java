@@ -19,7 +19,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.developer.loadtesting.implementation.JsonMergePatchHelper;
 import com.azure.developer.loadtesting.implementation.LoadTestAdministrationClientImpl;
-import com.azure.developer.loadtesting.implementation.models.CloneTestRequest1;
+import com.azure.developer.loadtesting.implementation.models.CloneTestRequest;
 import com.azure.developer.loadtesting.models.LoadTest;
 import com.azure.developer.loadtesting.models.LoadTestingFileType;
 import com.azure.developer.loadtesting.models.NotificationRule;
@@ -2057,7 +2057,7 @@ public final class LoadTestAdministrationClient {
      *
      * @param testId Unique test identifier for the load test, must contain only lower-case alphabetic, numeric,
      * underscore or hyphen characters.
-     * @param cloneTestRequest1 The cloneTestRequest1 parameter.
+     * @param cloneTestRequest The cloneTestRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2067,9 +2067,9 @@ public final class LoadTestAdministrationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginCloneTest(String testId, BinaryData cloneTestRequest1,
+    public SyncPoller<BinaryData, BinaryData> beginCloneTest(String testId, BinaryData cloneTestRequest,
         RequestOptions requestOptions) {
-        return this.serviceClient.beginCloneTest(testId, cloneTestRequest1, requestOptions);
+        return this.serviceClient.beginCloneTest(testId, cloneTestRequest, requestOptions);
     }
 
     /**
@@ -2411,10 +2411,10 @@ public final class LoadTestAdministrationClient {
         String description) {
         // Generated convenience method for beginCloneTestWithModel
         RequestOptions requestOptions = new RequestOptions();
-        CloneTestRequest1 cloneTestRequest1Obj
-            = new CloneTestRequest1(newTestId).setDisplayName(displayName).setDescription(description);
-        BinaryData cloneTestRequest1 = BinaryData.fromObject(cloneTestRequest1Obj);
-        return serviceClient.beginCloneTestWithModel(testId, cloneTestRequest1, requestOptions);
+        CloneTestRequest cloneTestRequestObj
+            = new CloneTestRequest(newTestId).setDisplayName(displayName).setDescription(description);
+        BinaryData cloneTestRequest = BinaryData.fromObject(cloneTestRequestObj);
+        return serviceClient.beginCloneTestWithModel(testId, cloneTestRequest, requestOptions);
     }
 
     /**
@@ -2438,9 +2438,9 @@ public final class LoadTestAdministrationClient {
     public SyncPoller<OperationStatus, LoadTest> beginCloneTest(String testId, String newTestId) {
         // Generated convenience method for beginCloneTestWithModel
         RequestOptions requestOptions = new RequestOptions();
-        CloneTestRequest1 cloneTestRequest1Obj = new CloneTestRequest1(newTestId);
-        BinaryData cloneTestRequest1 = BinaryData.fromObject(cloneTestRequest1Obj);
-        return serviceClient.beginCloneTestWithModel(testId, cloneTestRequest1, requestOptions);
+        CloneTestRequest cloneTestRequestObj = new CloneTestRequest(newTestId);
+        BinaryData cloneTestRequest = BinaryData.fromObject(cloneTestRequestObj);
+        return serviceClient.beginCloneTestWithModel(testId, cloneTestRequest, requestOptions);
     }
 
     /**
