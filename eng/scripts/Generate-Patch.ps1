@@ -202,9 +202,10 @@ function CreatePatchRelease($ArtifactName, $ServiceDirectoryName, $PatchVersion,
     exit 1
   }
 
-  # Resolve new dependency versions from version_client.txt column 2 (GA/released version)
-  # instead of reading from the pom.xml, to avoid picking up beta versions written by
-  # update_versions.py for {x-version-update;...;current} markers.
+  # Resolve new dependency versions for the changelog. Uses pom.xml versions
+  # (post update_versions.py) but substitutes prerelease versions with
+  # version_client.txt column 2 (GA/released version) to avoid showing beta
+  # versions in the changelog.
   # Key by groupId:artifactId to avoid collisions (e.g., com.azure vs com.azure.v2).
   $versionClientLookup = @{}
   foreach ($line in Get-Content -Path $VersionClientPath) {
@@ -223,11 +224,16 @@ function CreatePatchRelease($ArtifactName, $ServiceDirectoryName, $PatchVersion,
     if ($scope -ne 'test') {
       $artifactId = $dependency.artifactId
       $groupId = $dependency.groupId
+      $pomVersion = $dependency.version
       $key = "${groupId}:${artifactId}"
-      if ($versionClientLookup.ContainsKey($key)) {
-        $newDependenciesToVersion[$artifactId] = $versionClientLookup[$key]
+      if ($pomVersion -match '-beta\.|_beta\.|BETA|-alpha\.|_alpha\.|ALPHA|-preview\.|_preview\.|PREVIEW|-SNAPSHOT') {
+        if ($versionClientLookup.ContainsKey($key)) {
+          $newDependenciesToVersion[$artifactId] = $versionClientLookup[$key]
+        } else {
+          $newDependenciesToVersion[$artifactId] = $pomVersion
+        }
       } else {
-        $newDependenciesToVersion[$artifactId] = $dependency.version
+        $newDependenciesToVersion[$artifactId] = $pomVersion
       }
     }
   }

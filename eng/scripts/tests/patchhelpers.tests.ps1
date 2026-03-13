@@ -245,10 +245,9 @@ Describe "GetResolvedDependencyVersions" {
         }
     }
 
-    It "Uses version_client.txt column 2 (GA) instead of pom.xml beta version" {
+    It "Uses pom.xml GA version for dependency marker deps" {
         $versionClientFile = Join-Path $script:testDir "version_client.txt"
         Set-Content -Path $versionClientFile -Value @(
-            "com.azure:azure-messaging-eventhubs;5.21.3;5.22.0-beta.1"
             "com.azure:azure-storage-blob;12.33.2;12.34.0-beta.2"
         )
 
@@ -259,13 +258,32 @@ Describe "GetResolvedDependencyVersions" {
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-messaging-eventhubs</artifactId>
-      <version>5.22.0-beta.1</version>
+      <artifactId>azure-storage-blob</artifactId>
+      <version>12.33.2</version>
     </dependency>
+  </dependencies>
+</project>
+'@
+
+        $result = GetResolvedDependencyVersions -PomFilePath $pomFile -VersionClientPath $versionClientFile
+        $result["azure-storage-blob"] | Should -Be "12.33.2"
+    }
+
+    It "Substitutes beta pom version with version_client.txt column 2 (GA)" {
+        $versionClientFile = Join-Path $script:testDir "version_client_beta.txt"
+        Set-Content -Path $versionClientFile -Value @(
+            "com.azure:azure-messaging-eventhubs;5.21.3;5.22.0-beta.1"
+        )
+
+        $pomFile = Join-Path $script:testDir "pom_beta.xml"
+        Set-Content -Path $pomFile -Value @'
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-storage-blob</artifactId>
-      <version>12.34.0-beta.2</version>
+      <artifactId>azure-messaging-eventhubs</artifactId>
+      <version>5.22.0-beta.1</version>
     </dependency>
   </dependencies>
 </project>
@@ -273,7 +291,56 @@ Describe "GetResolvedDependencyVersions" {
 
         $result = GetResolvedDependencyVersions -PomFilePath $pomFile -VersionClientPath $versionClientFile
         $result["azure-messaging-eventhubs"] | Should -Be "5.21.3"
-        $result["azure-storage-blob"] | Should -Be "12.33.2"
+    }
+
+    It "PatchVersionOverrides take precedence over pom and version_client.txt" {
+        $versionClientFile = Join-Path $script:testDir "version_client_ovr.txt"
+        Set-Content -Path $versionClientFile -Value @(
+            "com.azure:azure-storage-blob;12.33.2;12.34.0-beta.2"
+        )
+
+        $pomFile = Join-Path $script:testDir "pom_ovr.xml"
+        Set-Content -Path $pomFile -Value @'
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <dependencies>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-storage-blob</artifactId>
+      <version>12.33.2</version>
+    </dependency>
+  </dependencies>
+</project>
+'@
+
+        $overrides = @{ "azure-storage-blob" = "12.33.3" }
+        $result = GetResolvedDependencyVersions -PomFilePath $pomFile -VersionClientPath $versionClientFile -PatchVersionOverrides $overrides
+        $result["azure-storage-blob"] | Should -Be "12.33.3"
+    }
+
+    It "PatchVersionOverrides also override beta pom versions" {
+        $versionClientFile = Join-Path $script:testDir "version_client_ovr2.txt"
+        Set-Content -Path $versionClientFile -Value @(
+            "com.azure:azure-messaging-eventhubs;5.21.3;5.22.0-beta.1"
+        )
+
+        $pomFile = Join-Path $script:testDir "pom_ovr2.xml"
+        Set-Content -Path $pomFile -Value @'
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <dependencies>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-messaging-eventhubs</artifactId>
+      <version>5.22.0-beta.1</version>
+    </dependency>
+  </dependencies>
+</project>
+'@
+
+        $overrides = @{ "azure-messaging-eventhubs" = "5.21.4" }
+        $result = GetResolvedDependencyVersions -PomFilePath $pomFile -VersionClientPath $versionClientFile -PatchVersionOverrides $overrides
+        $result["azure-messaging-eventhubs"] | Should -Be "5.21.4"
     }
 
     It "Falls back to pom.xml version for external dependencies not in version_client.txt" {
@@ -337,38 +404,6 @@ Describe "GetResolvedDependencyVersions" {
         $result = GetResolvedDependencyVersions -PomFilePath $pomFile -VersionClientPath $versionClientFile
         $result.ContainsKey("azure-core") | Should -BeTrue
         $result.ContainsKey("azure-core-test") | Should -BeFalse
-    }
-
-    It "Handles patched dependency with updated column 2" {
-        $versionClientFile = Join-Path $script:testDir "version_client4.txt"
-        Set-Content -Path $versionClientFile -Value @(
-            "# Patched artifact — column 2 updated by UpdateDependenciesInVersionClient"
-            "com.azure:azure-storage-blob;12.33.3;12.34.0-beta.2"
-            "com.azure:azure-storage-common;12.32.2;12.33.0-beta.2"
-        )
-
-        $pomFile = Join-Path $script:testDir "pom4.xml"
-        Set-Content -Path $pomFile -Value @'
-<?xml version="1.0" encoding="UTF-8"?>
-<project>
-  <dependencies>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-storage-blob</artifactId>
-      <version>12.34.0-beta.2</version>
-    </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-storage-common</artifactId>
-      <version>12.33.0-beta.2</version>
-    </dependency>
-  </dependencies>
-</project>
-'@
-
-        $result = GetResolvedDependencyVersions -PomFilePath $pomFile -VersionClientPath $versionClientFile
-        $result["azure-storage-blob"] | Should -Be "12.33.3"
-        $result["azure-storage-common"] | Should -Be "12.32.2"
     }
 
     It "Skips comment and empty lines in version_client.txt" {

@@ -74,6 +74,20 @@ $bomPatchVersion = GetNextBomVersion
 $bomBranchName = "bom_$bomPatchVersion"
 $ArtifactPatchInfos = @()
 Write-Output "Preparing patch releases for BOM updates."
+
+# Build a map of artifactId → patch version for all artifacts being patched.
+# This is passed to GeneratePatches so changelogs can show the correct version
+# when a sibling dependency is being patched in the same run.
+$PatchVersionOverrides = @{}
+foreach ($artifactId in $ArtifactInfos.Keys) {
+    $patchVersion = $ArtifactInfos[$artifactId].FutureReleasePatchVersion
+    if ($patchVersion) {
+        $PatchVersionOverrides[$artifactId] = $patchVersion
+    } else {
+        $PatchVersionOverrides[$artifactId] = $ArtifactInfos[$artifactId].LatestGAOrPatchVersion
+    }
+}
+
 try {
     $patchBranchName = "PatchSet_$bomPatchVersion"
     $base = if ($UseCurrentBranch) { "HEAD" } else { "$RemoteName/main" }
@@ -86,7 +100,7 @@ try {
         $patchInfo = [ArtifactPatchInfo]::new()
         $patchInfo = ConvertToPatchInfo -ArInfo $arInfo
         $ArtifactPatchInfos += $patchInfo
-        GeneratePatches -ArtifactPatchInfos $patchInfo -BranchName $patchBranchName -RemoteName $RemoteName -GroupId $GroupId -UseCurrentBranch $UseCurrentBranch
+        GeneratePatches -ArtifactPatchInfos $patchInfo -BranchName $patchBranchName -RemoteName $RemoteName -GroupId $GroupId -UseCurrentBranch $UseCurrentBranch -PatchVersionOverrides $PatchVersionOverrides
     }
 
     Write-Host "git -c user.name=`"azure-sdk`" -c user.email=`"azuresdk@microsoft.com`" push $RemoteName $patchBranchName"

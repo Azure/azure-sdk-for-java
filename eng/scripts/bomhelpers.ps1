@@ -155,14 +155,22 @@ function GetDependencyToVersion($PomFilePath) {
   return $dependencyNameToVersion
 }
 
-# Resolve dependency versions using version_client.txt column 2 (dependency/released version)
-# instead of reading from the pom.xml. This avoids picking up beta/preview versions written by
-# update_versions.py for {x-version-update;...;current} markers. Falls back to the pom.xml
-# value for dependencies not found in version_client.txt (e.g., external dependencies).
-function GetResolvedDependencyVersions($PomFilePath, $VersionClientPath) {
+# Resolve dependency versions for patch changelog generation.
+# Uses a layered resolution strategy:
+#   1. PatchVersionOverrides (highest priority) — maps artifactId to the patch version
+#      for sibling artifacts being patched in the same run.
+#   2. version_client.txt column 2 — the released/GA version. Used as a fallback for
+#      dependencies whose pom.xml version is a prerelease (beta/alpha), which happens
+#      when update_versions.py writes column 3 for {x-version-update;...;current} markers.
+#   3. pom.xml version (lowest priority) — used for external dependencies not in
+#      version_client.txt and for GA versions that are already correct.
+function GetResolvedDependencyVersions($PomFilePath, $VersionClientPath, $PatchVersionOverrides) {
   if (-not $VersionClientPath) {
     $repoRoot = Resolve-Path "${PSScriptRoot}../../.."
     $VersionClientPath = Join-Path $repoRoot "eng" "versioning" "version_client.txt"
+  }
+  if (-not $PatchVersionOverrides) {
+    $PatchVersionOverrides = @{}
   }
 
   # Build lookup: groupId:artifactId → dependency version (column 2) from version_client.txt
@@ -180,7 +188,7 @@ function GetResolvedDependencyVersions($PomFilePath, $VersionClientPath) {
     }
   }
 
-  # Read non-test dependencies from pom.xml, resolve each against version_client.txt
+  # Read non-test dependencies from pom.xml, resolve each version using the layered strategy.
   $resolvedVersions = @{}
   $pomFileContent = [xml](Get-Content -Path $PomFilePath)
   foreach ($dependency in $pomFileContent.project.dependencies.dependency) {
@@ -188,11 +196,24 @@ function GetResolvedDependencyVersions($PomFilePath, $VersionClientPath) {
     if ($scope -ne 'test') {
       $artifactId = $dependency.artifactId
       $groupId = $dependency.groupId
+      $pomVersion = $dependency.version
       $key = "${groupId}:${artifactId}"
-      if ($versionClientLookup.ContainsKey($key)) {
-        $resolvedVersions[$artifactId] = $versionClientLookup[$key]
+
+      if ($PatchVersionOverrides.ContainsKey($artifactId)) {
+        # Sibling artifact being patched in the same run — use its patch version.
+        $resolvedVersions[$artifactId] = $PatchVersionOverrides[$artifactId]
+      } elseif ($pomVersion -match '-beta\.|_beta\.|BETA|-alpha\.|_alpha\.|ALPHA|-preview\.|_preview\.|PREVIEW|-SNAPSHOT') {
+        # Pom has a prerelease version (from {;current} marker) — fall back to
+        # version_client.txt column 2 (GA/released version) to avoid showing
+        # beta versions in the changelog.
+        if ($versionClientLookup.ContainsKey($key)) {
+          $resolvedVersions[$artifactId] = $versionClientLookup[$key]
+        } else {
+          $resolvedVersions[$artifactId] = $pomVersion
+        }
       } else {
-        $resolvedVersions[$artifactId] = $dependency.version
+        # GA version from pom (e.g., {;dependency} marker or external dep) — use as-is.
+        $resolvedVersions[$artifactId] = $pomVersion
       }
     }
   }
@@ -276,9 +297,9 @@ function GitCommit($Message) {
 }
 
 # Generate patches for given artifact patch infos.
-function GeneratePatches($ArtifactPatchInfos, [string]$BranchName, [string]$RemoteName, [string]$GroupId = "com.azure", [bool]$UseCurrentBranch = $false) {
+function GeneratePatches($ArtifactPatchInfos, [string]$BranchName, [string]$RemoteName, [string]$GroupId = "com.azure", [bool]$UseCurrentBranch = $false, $PatchVersionOverrides = @{}) {
   foreach ($patchInfo in $ArtifactPatchInfos) {
-    GeneratePatch -PatchInfo $patchInfo -BranchName $BranchName -RemoteName $RemoteName -GroupId $GroupId -UseCurrentBranch $UseCurrentBranch
+    GeneratePatch -PatchInfo $patchInfo -BranchName $BranchName -RemoteName $RemoteName -GroupId $GroupId -UseCurrentBranch $UseCurrentBranch -PatchVersionOverrides $PatchVersionOverrides
   }
 
   #TriggerPipeline  -PatchInfos $ArtifactPatchInfos -BranchName $BranchName
@@ -296,7 +317,7 @@ function GetCurrentBranchName() {
    3. Updating the changelog and readme's to update the dependency information.
    4. Committing these changes.
 #>
-function GeneratePatch($PatchInfo, [string]$BranchName, [string]$RemoteName, [string]$GroupId = "com.azure", [bool]$UseCurrentBranch = $false) {
+function GeneratePatch($PatchInfo, [string]$BranchName, [string]$RemoteName, [string]$GroupId = "com.azure", [bool]$UseCurrentBranch = $false, $PatchVersionOverrides = @{}) {
   $artifactId = $PatchInfo.ArtifactId
   $releaseVersion = $PatchInfo.LatestGAOrPatchVersion
   $serviceDirectoryName = $PatchInfo.ServiceDirectoryName
@@ -415,7 +436,7 @@ function GeneratePatch($PatchInfo, [string]$BranchName, [string]$RemoteName, [st
     exit $LASTEXITCODE
   }
 
-  $newDependenciesToVersion = GetResolvedDependencyVersions -PomFilePath $pomFilePath
+  $newDependenciesToVersion = GetResolvedDependencyVersions -PomFilePath $pomFilePath -PatchVersionOverrides $PatchVersionOverrides
   $releaseStatus = "$(Get-Date -Format $CHANGELOG_DATE_FORMAT)"
   $releaseStatus = "($releaseStatus)"
   $changeLogEntries = Get-ChangeLogEntries -ChangeLogLocation $changelogPath
