@@ -215,7 +215,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
         String endpoint,
         RxDocumentServiceRequest request,
         int statusCode,
-        Map<String, String> headers,
+        HttpHeaders headers,
         ByteBuf retainedContent) {
 
         checkNotNull(headers, "Argument 'headers' must not be null.");
@@ -229,8 +229,10 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
             logger.debug("RxGatewayStoreModel.unwrapToStoreResponse before validate - refCnt: {}", retainedContent.refCnt());
         }
 
+        Map<String, String> headerMap = HttpUtils.unescape(headers.toLowerCaseMap());
+
         // If there is any error in the header response this throws exception
-        validateOrThrow(request, HttpResponseStatus.valueOf(statusCode), headers, retainedContent);
+        validateOrThrow(request, HttpResponseStatus.valueOf(statusCode), headerMap, retainedContent);
 
         int size;
         if ((size = retainedContent.readableBytes()) > 0) {
@@ -242,7 +244,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
             return new StoreResponse(
                 endpoint,
                 statusCode,
-                HttpUtils.unescape(headers),
+                headerMap,
                 new ByteBufInputStream(retainedContent, true),
                 size);
         } else {
@@ -252,7 +254,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
         return new StoreResponse(
             endpoint,
             statusCode,
-            HttpUtils.unescape(headers),
+            headerMap,
             null,
             0);
     }
@@ -471,9 +473,8 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
             .publishOn(CosmosSchedulers.TRANSPORT_RESPONSE_BOUNDED_ELASTIC)
             .flatMap(httpResponse -> {
 
-                // header key/value pairs — get as lowercase map directly from Netty,
-                // skipping the intermediate HttpHeaders copy
-                Map<String, String> httpResponseHeaders = httpResponse.headerMap();
+                // header key/value pairs
+                HttpHeaders httpResponseHeaders = httpResponse.headers();
                 int httpResponseStatus = httpResponse.statusCode();
 
                 // Track the retained ByteBuf so we can release it as a safety net in doFinally

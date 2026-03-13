@@ -5,7 +5,6 @@ import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import io.netty.buffer.ByteBuf;
 
 import java.net.URI;
-import java.util.Map;
 
 public interface HttpTransportSerializer {
     HttpRequest wrapInHttpRequest(RxDocumentServiceRequest request, URI requestUri) throws Exception;
@@ -14,6 +13,6 @@ public interface HttpTransportSerializer {
         String endpoint,
         RxDocumentServiceRequest request,
         int statusCode,
-        Map<String, String> headers,
+        HttpHeaders headers,
         ByteBuf retainedContent);
 }
