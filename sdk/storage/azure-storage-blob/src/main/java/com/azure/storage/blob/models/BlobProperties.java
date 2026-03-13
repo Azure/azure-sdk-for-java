@@ -67,6 +67,7 @@ public final class BlobProperties {
      * @param accessTier Access tier of the blob.
      * @param isAccessTierInferred Flag indicating if the access tier of the blob was inferred from properties of the
      * blob.
+     * @param smartAccessTier The inferred smart access tier of the blob.
      * @param archiveStatus Archive status of the blob.
      * @param encryptionKeySha256 SHA256 of the customer provided encryption key used to encrypt the blob on the
      * server.
@@ -125,6 +126,7 @@ public final class BlobProperties {
      * @param accessTier Access tier of the blob.
      * @param isAccessTierInferred Flag indicating if the access tier of the blob was inferred from properties of the
      * blob.
+     * @param smartAccessTier The inferred smart access tier of the blob.
      * @param archiveStatus Archive status of the blob.
      * @param encryptionKeySha256 SHA256 of the customer provided encryption key used to encrypt the blob on the
      * server.
@@ -195,6 +197,7 @@ public final class BlobProperties {
      * @param accessTier Access tier of the blob.
      * @param isAccessTierInferred Flag indicating if the access tier of the blob was inferred from properties of the
      * blob.
+     * @param smartAccessTier The inferred smart access tier of the blob.
      * @param archiveStatus Archive status of the blob.
      * @param encryptionKeySha256 SHA256 of the customer provided encryption key used to encrypt the blob on the
      * server.
@@ -262,6 +265,7 @@ public final class BlobProperties {
      * @param accessTier Access tier of the blob.
      * @param isAccessTierInferred Flag indicating if the access tier of the blob was inferred from properties of the
      * blob.
+     * @param smartAccessTier The inferred smart access tier of the blob.
      * @param archiveStatus Archive status of the blob.
      * @param encryptionKeySha256 SHA256 of the customer provided encryption key used to encrypt the blob on the
      * server.
@@ -336,6 +340,7 @@ public final class BlobProperties {
      * @param accessTier Access tier of the blob.
      * @param isAccessTierInferred Flag indicating if the access tier of the blob was inferred from properties of the
      * blob.
+     * @param smartAccessTier The inferred smart access tier of the blob.
      * @param archiveStatus Archive status of the blob.
      * @param encryptionKeySha256 SHA256 of the customer provided encryption key used to encrypt the blob on the
      * server.
