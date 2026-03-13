@@ -137,6 +137,7 @@ public class ReactorNettyClient implements HttpClient {
                     httpResponseDecoderSpec.maxInitialLineLength(this.httpClientConfig.getMaxInitialLineLength())
                                            .maxHeaderSize(this.httpClientConfig.getMaxHeaderSize())
                                            .maxChunkSize(this.httpClientConfig.getMaxChunkSize())
+                                           .initialBufferSize(16384)
                                            .validateHeaders(true));
 
         ImplementationBridgeHelpers.Http2ConnectionConfigHelper.Http2ConnectionConfigAccessor http2CfgAccessor =
