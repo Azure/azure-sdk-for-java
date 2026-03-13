@@ -470,7 +470,7 @@ com.azure.resourcemanager:azure-resourcemanager-oracledatabase;1.2.0;1.3.0-beta.
 com.azure.resourcemanager:azure-resourcemanager-informaticadatamanagement;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-mongocluster;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-computefleet;1.0.0;1.1.0-beta.3
-com.azure.resourcemanager:azure-resourcemanager-servicefabricmanagedclusters;1.0.0;1.1.0
+com.azure.resourcemanager:azure-resourcemanager-servicefabricmanagedclusters;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-healthdataaiservices;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-redhatopenshift;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-fabric;1.0.0;1.1.0-beta.1
@@ -485,7 +485,7 @@ com.azure.resourcemanager:azure-resourcemanager-pineconevectordb;1.0.0-beta.2;1.
 com.azure.resourcemanager:azure-resourcemanager-impactreporting;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-migration-assessment;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-databasewatcher;1.0.0-beta.1;1.0.0-beta.2
-com.azure.resourcemanager:azure-resourcemanager-durabletask;1.0.0;1.1.0
+com.azure.resourcemanager:azure-resourcemanager-durabletask;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-arizeaiobservabilityeval;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-weightsandbiases;1.0.0-beta.1;1.0.0
 com.azure.resourcemanager:azure-resourcemanager-carbonoptimization;1.0.0;1.1.0-beta.1

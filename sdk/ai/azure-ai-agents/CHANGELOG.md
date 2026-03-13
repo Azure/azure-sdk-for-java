@@ -12,6 +12,11 @@
 - Added type-safe accessors on `McpTool` for the `requireApproval` property: `setRequireApproval(String)`, `setRequireApproval(McpToolRequireApproval)`, `getRequireApprovalAsString()`, and `getRequireApprovalAsMcpToolRequireApproval()`.
 - Added `setComparisonFilter(ComparisonFilter)` and `setCompoundFilter(CompoundFilter)` convenience methods on `FileSearchTool`, accepting the openai-java filter types directly.
 - Added `listConversations` operation to `ConversationsClient` and `ConversationsAsyncClient` for listing all conversations. Returns `PagedIterable<Conversation>` / `PagedFlux<Conversation>` using `com.openai.models.conversations.Conversation` from the openai-java library. Supports optional filtering by `limit`, `order`, `after`, `before`, `agentName`, and `agentId`.
+- Added streaming response methods to `ResponsesClient` and `ResponsesAsyncClient`:
+  - `createStreamingWithAgent` and `createStreamingWithAgentConversation` on `ResponsesClient` return `IterableStream<ResponseStreamEvent>` for synchronous streaming.
+  - `createStreamingWithAgent` and `createStreamingWithAgentConversation` on `ResponsesAsyncClient` return `Flux<ResponseStreamEvent>` for asynchronous streaming.
+- Added `StreamingUtils` implementation helper that bridges OpenAI `StreamResponse` to `IterableStream` and `AsyncStreamResponse` to `Flux`.
+- Added streaming samples: `SimpleStreamingSync`/`SimpleStreamingAsync`, `FunctionCallStreamingSync`/`FunctionCallStreamingAsync`, and `CodeInterpreterStreamingSync`/`CodeInterpreterStreamingAsync`.
 
 ### Breaking Changes
 
@@ -28,6 +33,7 @@
 ### Other Changes
 
 - Added `ToolsTests` and `ToolsAsyncTests` with recorded end-to-end test coverage for OpenAPI, Code Interpreter, Function Call, Web Search, MCP, and File Search tools.
+- Added `StreamingTests` and `StreamingAsyncTests` with recorded test coverage for streaming responses (simple prompt, function calling, and Code Interpreter scenarios).
 
 ## 2.0.0-beta.2 (2026-03-04)
 
