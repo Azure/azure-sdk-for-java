@@ -11,6 +11,7 @@
 - Added type-safe accessors on `McpTool` for the `allowedTools` property: `setAllowedTools(List<String>)`, `setAllowedTools(McpToolFilter)`, `getAllowedToolsAsStringList()`, and `getAllowedToolsAsMcpToolFilter()`.
 - Added type-safe accessors on `McpTool` for the `requireApproval` property: `setRequireApproval(String)`, `setRequireApproval(McpToolRequireApproval)`, `getRequireApprovalAsString()`, and `getRequireApprovalAsMcpToolRequireApproval()`.
 - Added `setComparisonFilter(ComparisonFilter)` and `setCompoundFilter(CompoundFilter)` convenience methods on `FileSearchTool`, accepting the openai-java filter types directly.
+- Added `listConversations` operation to `ConversationsClient` and `ConversationsAsyncClient` for listing all conversations. Returns `PagedIterable<Conversation>` / `PagedFlux<Conversation>` using `com.openai.models.conversations.Conversation` from the openai-java library. Supports optional filtering by `limit`, `order`, `after`, `before`, `agentName`, and `agentId`.
 
 ### Breaking Changes
 

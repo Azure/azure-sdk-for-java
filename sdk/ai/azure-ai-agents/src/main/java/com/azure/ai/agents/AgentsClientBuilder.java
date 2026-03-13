@@ -53,8 +53,10 @@ import java.util.Objects;
     serviceClients = {
         AgentsClient.class,
         MemoryStoresClient.class,
+        ConversationsClient.class,
         AgentsAsyncClient.class,
-        MemoryStoresAsyncClient.class })
+        MemoryStoresAsyncClient.class,
+        ConversationsAsyncClient.class })
 public final class AgentsClientBuilder
     implements HttpTrait<AgentsClientBuilder>, ConfigurationTrait<AgentsClientBuilder>,
     TokenCredentialTrait<AgentsClientBuilder>, EndpointTrait<AgentsClientBuilder> {
