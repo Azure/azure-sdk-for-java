@@ -155,6 +155,51 @@ function GetDependencyToVersion($PomFilePath) {
   return $dependencyNameToVersion
 }
 
+# Resolve dependency versions using version_client.txt column 2 (dependency/released version)
+# instead of reading from the pom.xml. This avoids picking up beta/preview versions written by
+# update_versions.py for {x-version-update;...;current} markers. Falls back to the pom.xml
+# value for dependencies not found in version_client.txt (e.g., external dependencies).
+function GetResolvedDependencyVersions($PomFilePath, $VersionClientPath) {
+  if (-not $VersionClientPath) {
+    $repoRoot = Resolve-Path "${PSScriptRoot}../../.."
+    $VersionClientPath = Join-Path $repoRoot "eng" "versioning" "version_client.txt"
+  }
+
+  # Build lookup: groupId:artifactId → dependency version (column 2) from version_client.txt
+  # Key must include groupId because the same artifactId can appear under different groups
+  # (e.g., com.azure:azure-storage-blob vs com.azure.v2:azure-storage-blob).
+  $versionClientLookup = @{}
+  foreach ($line in Get-Content -Path $VersionClientPath) {
+    $trimmed = $line.Trim()
+    if ($trimmed.StartsWith('#') -or [string]::IsNullOrWhiteSpace($trimmed)) { continue }
+    $parts = $trimmed.Split(';')
+    if ($parts.Length -ge 2) {
+      $key = $parts[0].Trim()
+      $dependencyVersion = $parts[1].Trim()
+      $versionClientLookup[$key] = $dependencyVersion
+    }
+  }
+
+  # Read non-test dependencies from pom.xml, resolve each against version_client.txt
+  $resolvedVersions = @{}
+  $pomFileContent = [xml](Get-Content -Path $PomFilePath)
+  foreach ($dependency in $pomFileContent.project.dependencies.dependency) {
+    $scope = $dependency.scope
+    if ($scope -ne 'test') {
+      $artifactId = $dependency.artifactId
+      $groupId = $dependency.groupId
+      $key = "${groupId}:${artifactId}"
+      if ($versionClientLookup.ContainsKey($key)) {
+        $resolvedVersions[$artifactId] = $versionClientLookup[$key]
+      } else {
+        $resolvedVersions[$artifactId] = $dependency.version
+      }
+    }
+  }
+
+  return $resolvedVersions
+}
+
 # Create the changelog content from a message.
 function GetChangeLogContentFromMessage($ContentMessage) {
   $content = @()
@@ -370,7 +415,7 @@ function GeneratePatch($PatchInfo, [string]$BranchName, [string]$RemoteName, [st
     exit $LASTEXITCODE
   }
 
-  $newDependenciesToVersion = GetDependencyToVersion -PomFilePath $pomFilePath
+  $newDependenciesToVersion = GetResolvedDependencyVersions -PomFilePath $pomFilePath
   $releaseStatus = "$(Get-Date -Format $CHANGELOG_DATE_FORMAT)"
   $releaseStatus = "($releaseStatus)"
   $changeLogEntries = Get-ChangeLogEntries -ChangeLogLocation $changelogPath

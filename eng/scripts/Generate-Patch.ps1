@@ -176,6 +176,7 @@ function CreatePatchRelease($ArtifactName, $ServiceDirectoryName, $PatchVersion,
   $EngVersioningDir = Join-Path $EngDir "versioning"
   $SetVersionFilePath = Join-Path $EngVersioningDir "set_versions.py"
   $UpdateVersionFilePath = Join-Path $EngVersioningDir "update_versions.py"
+  $VersionClientPath = Join-Path $EngVersioningDir "version_client.txt"
   $pkgProperties = Get-PkgProperties -PackageName $ArtifactName -ServiceDirectory $ServiceDirectoryName -GroupId $GroupId
   $ChangelogPath = $pkgProperties.ChangeLogPath
   $PomFilePath = Join-Path $pkgProperties.DirectoryPath "pom.xml"
@@ -201,8 +202,35 @@ function CreatePatchRelease($ArtifactName, $ServiceDirectoryName, $PatchVersion,
     exit 1
   }
 
+  # Resolve new dependency versions from version_client.txt column 2 (GA/released version)
+  # instead of reading from the pom.xml, to avoid picking up beta versions written by
+  # update_versions.py for {x-version-update;...;current} markers.
+  # Key by groupId:artifactId to avoid collisions (e.g., com.azure vs com.azure.v2).
+  $versionClientLookup = @{}
+  foreach ($line in Get-Content -Path $VersionClientPath) {
+    $trimmed = $line.Trim()
+    if ($trimmed.StartsWith('#') -or [string]::IsNullOrWhiteSpace($trimmed)) { continue }
+    $parts = $trimmed.Split(';')
+    if ($parts.Length -ge 2) {
+      $versionClientLookup[$parts[0].Trim()] = $parts[1].Trim()
+    }
+  }
+
   $newDependenciesToVersion = New-Object "System.Collections.Generic.Dictionary``2[System.String,System.String]"
-  parsePomFileDependencies -PomFilePath $PomFilePath -DependencyToVersion $newDependenciesToVersion
+  $pomFileContent = [xml](Get-Content -Path $PomFilePath)
+  foreach ($dependency in $pomFileContent.project.dependencies.dependency) {
+    $scope = $dependency.scope
+    if ($scope -ne 'test') {
+      $artifactId = $dependency.artifactId
+      $groupId = $dependency.groupId
+      $key = "${groupId}:${artifactId}"
+      if ($versionClientLookup.ContainsKey($key)) {
+        $newDependenciesToVersion[$artifactId] = $versionClientLookup[$key]
+      } else {
+        $newDependenciesToVersion[$artifactId] = $dependency.version
+      }
+    }
+  }
 
 
   $releaseStatus = "$(Get-Date -Format $CHANGELOG_DATE_FORMAT)"
