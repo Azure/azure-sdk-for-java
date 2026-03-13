@@ -166,7 +166,7 @@ public class ContentUnderstandingCustomizations extends Customization {
 
         // Strip trailing numeric suffixes from emitter-generated parameter names
         // e.g., analyzeRequest1 -> analyzeRequest, grantCopyAuthorizationRequest1 -> grantCopyAuthorizationRequest
-        // This should no longer needed, after the fixes in TCGC.
+        // This should no longer needed, after the fixes in emitter dependency lib.
         // renameRequestParameters(customization, logger);
 
         // Default LRO polling interval to 3 seconds for Content Understanding operations
