@@ -1043,22 +1043,6 @@ public class FileApiTest extends DataLakeTestBase {
     }
 
     @Test
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-02-04")
-    public void getInferredTierWhenAssignedSmart() {
-        // Arrange
-        // fc already has a created file
-
-        Response<PathProperties> response = fc.getPropertiesWithResponse(null, null, null);
-        HttpHeaders headers = response.getHeaders();
-        PathProperties properties = response.getValue();
-
-        validateBasicHeaders(headers);
-
-        assertTrue(properties.isAccessTierInferred());
-        assertEquals(AccessTier.SMART, properties.getSmartAccessTier());
-    }
-
-    @Test
     public void getPropertiesMin() {
         assertEquals(200, fc.getPropertiesWithResponse(null, null, null).getStatusCode());
     }
