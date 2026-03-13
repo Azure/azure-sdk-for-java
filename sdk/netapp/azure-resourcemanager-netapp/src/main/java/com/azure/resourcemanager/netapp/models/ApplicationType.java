@@ -22,11 +22,6 @@ public final class ApplicationType extends ExpandableStringEnum<ApplicationType>
     public static final ApplicationType ORACLE = fromString("ORACLE");
 
     /**
-     * Custom application type allows min 2 and max 12 data volumes in a volume group.
-     */
-    public static final ApplicationType CUSTOM = fromString("CUSTOM");
-
-    /**
      * Creates a new instance of ApplicationType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

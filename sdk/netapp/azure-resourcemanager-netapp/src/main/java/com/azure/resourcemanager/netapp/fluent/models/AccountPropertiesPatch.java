@@ -41,7 +41,7 @@ public final class AccountPropertiesPatch implements JsonSerializable<AccountPro
      * Domain for NFSv4 user ID mapping. This property will be set for all NetApp accounts in the subscription and
      * region and only affect non ldap NFSv4 volumes.
      */
-    private String nfsV4IDDomain;
+    private String nfsV4IdDomain;
 
     /*
      * MultiAD Status for the account
@@ -120,24 +120,24 @@ public final class AccountPropertiesPatch implements JsonSerializable<AccountPro
     }
 
     /**
-     * Get the nfsV4IDDomain property: Domain for NFSv4 user ID mapping. This property will be set for all NetApp
+     * Get the nfsV4IdDomain property: Domain for NFSv4 user ID mapping. This property will be set for all NetApp
      * accounts in the subscription and region and only affect non ldap NFSv4 volumes.
      * 
-     * @return the nfsV4IDDomain value.
+     * @return the nfsV4IdDomain value.
      */
-    public String nfsV4IDDomain() {
-        return this.nfsV4IDDomain;
+    public String nfsV4IdDomain() {
+        return this.nfsV4IdDomain;
     }
 
     /**
-     * Set the nfsV4IDDomain property: Domain for NFSv4 user ID mapping. This property will be set for all NetApp
+     * Set the nfsV4IdDomain property: Domain for NFSv4 user ID mapping. This property will be set for all NetApp
      * accounts in the subscription and region and only affect non ldap NFSv4 volumes.
      * 
-     * @param nfsV4IDDomain the nfsV4IDDomain value to set.
+     * @param nfsV4IdDomain the nfsV4IdDomain value to set.
      * @return the AccountPropertiesPatch object itself.
      */
-    public AccountPropertiesPatch withNfsV4IDDomain(String nfsV4IDDomain) {
-        this.nfsV4IDDomain = nfsV4IDDomain;
+    public AccountPropertiesPatch withNfsV4IdDomain(String nfsV4IdDomain) {
+        this.nfsV4IdDomain = nfsV4IdDomain;
         return this;
     }
 
@@ -211,7 +211,7 @@ public final class AccountPropertiesPatch implements JsonSerializable<AccountPro
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("entraIdConfig", this.entraIdConfig);
         jsonWriter.writeJsonField("encryption", this.encryption);
-        jsonWriter.writeStringField("nfsV4IDDomain", this.nfsV4IDDomain);
+        jsonWriter.writeStringField("nfsV4IDDomain", this.nfsV4IdDomain);
         jsonWriter.writeStringField("multiAdStatus", this.multiAdStatus == null ? null : this.multiAdStatus.toString());
         jsonWriter.writeJsonField("ldapConfiguration", this.ldapConfiguration);
         return jsonWriter.writeEndObject();
@@ -241,7 +241,7 @@ public final class AccountPropertiesPatch implements JsonSerializable<AccountPro
                 } else if ("encryption".equals(fieldName)) {
                     deserializedAccountPropertiesPatch.encryption = AccountEncryption.fromJson(reader);
                 } else if ("nfsV4IDDomain".equals(fieldName)) {
-                    deserializedAccountPropertiesPatch.nfsV4IDDomain = reader.getString();
+                    deserializedAccountPropertiesPatch.nfsV4IdDomain = reader.getString();
                 } else if ("multiAdStatus".equals(fieldName)) {
                     deserializedAccountPropertiesPatch.multiAdStatus = MultiAdStatus.fromString(reader.getString());
                 } else if ("ldapConfiguration".equals(fieldName)) {

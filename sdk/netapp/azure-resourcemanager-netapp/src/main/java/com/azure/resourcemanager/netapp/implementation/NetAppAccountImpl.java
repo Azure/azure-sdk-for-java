@@ -285,8 +285,13 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
     }
 
     public NetAppAccountImpl withNfsV4IdDomain(String nfsV4IdDomain) {
-        this.innerModel().withNfsV4IdDomain(nfsV4IdDomain);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withNfsV4IdDomain(nfsV4IdDomain);
+            return this;
+        } else {
+            this.updateBody.withNfsV4IdDomain(nfsV4IdDomain);
+            return this;
+        }
     }
 
     public NetAppAccountImpl withLdapConfiguration(LdapConfiguration ldapConfiguration) {
@@ -296,11 +301,6 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
 
     public NetAppAccountImpl withEntraIdConfig(EntraIdConfigPatch entraIdConfig) {
         this.updateBody.withEntraIdConfig(entraIdConfig);
-        return this;
-    }
-
-    public NetAppAccountImpl withNfsV4IDDomain(String nfsV4IDDomain) {
-        this.updateBody.withNfsV4IDDomain(nfsV4IDDomain);
         return this;
     }
 

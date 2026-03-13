@@ -1,6 +1,6 @@
 # Release History
 
-## 2.2.0-beta.1 (2026-03-10)
+## 2.2.0-beta.1 (2026-03-13)
 
 - Azure Resource Manager NetAppFiles client library for Java. This package contains Microsoft Azure SDK for NetAppFiles Management SDK. Microsoft NetApp Files Azure Resource Provider specification. Package api-version 2025-12-15-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
@@ -9,13 +9,7 @@
 #### `models.NetAppAccountPatch` was modified
 
 * `provisioningState()` was removed
-* `withNfsV4IdDomain(java.lang.String)` was removed
 * `disableShowmount()` was removed
-* `nfsV4IdDomain()` was removed
-
-#### `models.NetAppAccount$Update` was modified
-
-* `withNfsV4IdDomain(java.lang.String)` was removed
 
 ### Features Added
 
@@ -375,80 +369,73 @@
 
 #### `models.NetAppAccount$Definition` was modified
 
-* `withEntraIdConfig(models.EntraIdConfig)` was added
 * `withLdapConfiguration(models.LdapConfiguration)` was added
+* `withEntraIdConfig(models.EntraIdConfig)` was added
 
 #### `models.Volume$Definition` was modified
 
 * `withBreakthroughMode(models.BreakthroughMode)` was added
 * `withLdapServerType(models.LdapServerType)` was added
-* `withLanguage(models.VolumeLanguage)` was added
 * `withLargeVolumeType(models.LargeVolumeType)` was added
+* `withLanguage(models.VolumeLanguage)` was added
 
 #### `models.ReplicationObject` was modified
 
+* `externalReplicationSetupStatus()` was added
+* `mirrorState()` was added
 * `relationshipStatus()` was added
 * `externalReplicationSetupInfo()` was added
-* `mirrorState()` was added
-* `externalReplicationSetupStatus()` was added
 
 #### `models.NetAppAccountPatch` was modified
 
-* `nfsV4IDDomain()` was added
 * `ldapConfiguration()` was added
-* `withNfsV4IDDomain(java.lang.String)` was added
+* `entraIdConfig()` was added
 * `withEntraIdConfig(models.EntraIdConfigPatch)` was added
 * `withLdapConfiguration(models.LdapConfigurationPatch)` was added
 * `withMultiAdStatus(models.MultiAdStatus)` was added
-* `entraIdConfig()` was added
 
 #### `models.NetAppAccount$Update` was modified
 
+* `withEntraIdConfig(models.EntraIdConfigPatch)` was added
 * `withLdapConfiguration(models.LdapConfigurationPatch)` was added
 * `withMultiAdStatus(models.MultiAdStatus)` was added
-* `withNfsV4IDDomain(java.lang.String)` was added
-* `withEntraIdConfig(models.EntraIdConfigPatch)` was added
 
 #### `models.VolumeGroupVolumeProperties` was modified
 
-* `withLanguage(models.VolumeLanguage)` was added
 * `withBreakthroughMode(models.BreakthroughMode)` was added
 * `largeVolumeType()` was added
-* `language()` was added
-* `breakthroughMode()` was added
 * `withLargeVolumeType(models.LargeVolumeType)` was added
+* `language()` was added
+* `withLanguage(models.VolumeLanguage)` was added
 * `ldapServerType()` was added
 * `withLdapServerType(models.LdapServerType)` was added
-
-#### `models.ApplicationType` was modified
-
-* `CUSTOM` was added
+* `breakthroughMode()` was added
 
 #### `models.Volume` was modified
 
-* `breakthroughMode()` was added
-* `largeVolumeType()` was added
 * `language()` was added
 * `ldapServerType()` was added
+* `largeVolumeType()` was added
+* `breakthroughMode()` was added
 
 #### `NetAppFilesManager` was modified
 
-* `elasticBackupPolicies()` was added
-* `buckets()` was added
-* `activeDirectoryConfigs()` was added
-* `caches()` was added
-* `elasticSnapshotPolicies()` was added
 * `elasticVolumes()` was added
+* `buckets()` was added
+* `elasticAccounts()` was added
+* `elasticSnapshotPolicies()` was added
+* `activeDirectoryConfigs()` was added
+* `elasticBackupVaults()` was added
+* `elasticCapacityPools()` was added
+* `caches()` was added
 * `elasticSnapshots()` was added
 * `elasticBackups()` was added
-* `elasticBackupVaults()` was added
-* `elasticAccounts()` was added
-* `elasticCapacityPools()` was added
+* `elasticBackupPolicies()` was added
 
 #### `models.NetAppAccount` was modified
 
-* `ldapConfiguration()` was added
 * `entraIdConfig()` was added
+* `ldapConfiguration()` was added
 
 ## 2.1.0 (2026-02-26)
 

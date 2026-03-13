@@ -226,27 +226,27 @@ public final class NetAppAccountPatch implements JsonSerializable<NetAppAccountP
     }
 
     /**
-     * Get the nfsV4IDDomain property: Domain for NFSv4 user ID mapping. This property will be set for all NetApp
+     * Get the nfsV4IdDomain property: Domain for NFSv4 user ID mapping. This property will be set for all NetApp
      * accounts in the subscription and region and only affect non ldap NFSv4 volumes.
      * 
-     * @return the nfsV4IDDomain value.
+     * @return the nfsV4IdDomain value.
      */
-    public String nfsV4IDDomain() {
-        return this.innerProperties() == null ? null : this.innerProperties().nfsV4IDDomain();
+    public String nfsV4IdDomain() {
+        return this.innerProperties() == null ? null : this.innerProperties().nfsV4IdDomain();
     }
 
     /**
-     * Set the nfsV4IDDomain property: Domain for NFSv4 user ID mapping. This property will be set for all NetApp
+     * Set the nfsV4IdDomain property: Domain for NFSv4 user ID mapping. This property will be set for all NetApp
      * accounts in the subscription and region and only affect non ldap NFSv4 volumes.
      * 
-     * @param nfsV4IDDomain the nfsV4IDDomain value to set.
+     * @param nfsV4IdDomain the nfsV4IdDomain value to set.
      * @return the NetAppAccountPatch object itself.
      */
-    public NetAppAccountPatch withNfsV4IDDomain(String nfsV4IDDomain) {
+    public NetAppAccountPatch withNfsV4IdDomain(String nfsV4IdDomain) {
         if (this.innerProperties() == null) {
             this.innerProperties = new AccountPropertiesPatch();
         }
-        this.innerProperties().withNfsV4IDDomain(nfsV4IDDomain);
+        this.innerProperties().withNfsV4IdDomain(nfsV4IdDomain);
         return this;
     }
 

@@ -9,18 +9,6 @@ package com.azure.resourcemanager.netapp.generated;
  */
 public final class VolumeGroupsListByNetAppAccountSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/VolumeGroups_List_Custom.json
-     */
-    /**
-     * Sample code: VolumeGroups_List_Custom.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void volumeGroupsListCustom(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.volumeGroups().listByNetAppAccount("myRG", "account1", com.azure.core.util.Context.NONE);
-    }
-
-    /*
      * x-ms-original-file: 2025-12-15-preview/VolumeGroups_List_Oracle.json
      */
     /**

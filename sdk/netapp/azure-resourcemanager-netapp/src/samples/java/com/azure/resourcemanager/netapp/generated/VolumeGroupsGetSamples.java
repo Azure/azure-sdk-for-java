@@ -9,18 +9,6 @@ package com.azure.resourcemanager.netapp.generated;
  */
 public final class VolumeGroupsGetSamples {
     /*
-     * x-ms-original-file: 2025-12-15-preview/VolumeGroups_Get_Custom.json
-     */
-    /**
-     * Sample code: VolumeGroups_Get_Custom.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void volumeGroupsGetCustom(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.volumeGroups().getWithResponse("myRG", "account1", "group1", com.azure.core.util.Context.NONE);
-    }
-
-    /*
      * x-ms-original-file: 2025-12-15-preview/VolumeGroups_Get_SapHana.json
      */
     /**
@@ -29,18 +17,6 @@ public final class VolumeGroupsGetSamples {
      * @param manager Entry point to NetAppFilesManager.
      */
     public static void volumeGroupsGetSapHana(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.volumeGroups().getWithResponse("myRG", "account1", "group1", com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2025-12-15-preview/VolumeGroups_Get_Custom_SMB.json
-     */
-    /**
-     * Sample code: VolumeGroups_Get_Custom_SMB.
-     * 
-     * @param manager Entry point to NetAppFilesManager.
-     */
-    public static void volumeGroupsGetCustomSMB(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
         manager.volumeGroups().getWithResponse("myRG", "account1", "group1", com.azure.core.util.Context.NONE);
     }
 
