@@ -32,7 +32,6 @@ import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.models.BlockLookupList;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
-import com.azure.storage.blob.models.EncryptionAlgorithmType;
 import com.azure.storage.blob.options.BlobUploadFromUrlOptions;
 import com.azure.storage.blob.options.BlockBlobCommitBlockListOptions;
 import com.azure.storage.blob.options.BlockBlobListBlocksOptions;
@@ -573,13 +572,6 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         String sourceAuth
             = options.getSourceAuthorization() == null ? null : options.getSourceAuthorization().toString();
 
-        // Extract source CPK properties only if non-null
-        CustomerProvidedKey sourceCustomerProvidedKey = options.getSourceCustomerProvidedKey();
-        String sourceCpkKey = sourceCustomerProvidedKey != null ? sourceCustomerProvidedKey.getKey() : null;
-        String sourceCpkKeySha256 = sourceCustomerProvidedKey != null ? sourceCustomerProvidedKey.getKeySha256() : null;
-        EncryptionAlgorithmType sourceCpkAlgorithm
-            = sourceCustomerProvidedKey != null ? sourceCustomerProvidedKey.getEncryptionAlgorithm() : null;
-
         try {
             new URL(options.getSourceUrl());
         } catch (MalformedURLException ex) {
@@ -597,8 +589,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
                 sourceRequestConditions.getIfNoneMatch(), sourceRequestConditions.getTagsConditions(), null,
                 options.getContentMd5(), ModelHelper.tagsToString(options.getTags()),
                 options.isCopySourceBlobProperties(), sourceAuth, options.getCopySourceTagsMode(),
-                options.getSourceShareTokenIntent(), sourceCpkKey, sourceCpkKeySha256, sourceCpkAlgorithm,
-                options.getHeaders(), getCustomerProvidedKey(), encryptionScope, context)
+                options.getSourceShareTokenIntent(), options.getHeaders(), getCustomerProvidedKey(), encryptionScope,
+                context)
             .map(rb -> {
                 BlockBlobsPutBlobFromUrlHeaders hd = rb.getDeserializedHeaders();
                 BlockBlobItem item = new BlockBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
@@ -889,21 +881,13 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         String sourceAuth
             = options.getSourceAuthorization() == null ? null : options.getSourceAuthorization().toString();
 
-        // Extract source CPK properties only if non-null
-        CustomerProvidedKey sourceCustomerProvidedKey = options.getSourceCustomerProvidedKey();
-        String sourceCpkKey = sourceCustomerProvidedKey != null ? sourceCustomerProvidedKey.getKey() : null;
-        String sourceCpkKeySha256 = sourceCustomerProvidedKey != null ? sourceCustomerProvidedKey.getKeySha256() : null;
-        EncryptionAlgorithmType sourceCpkAlgorithm
-            = sourceCustomerProvidedKey != null ? sourceCustomerProvidedKey.getEncryptionAlgorithm() : null;
-
         return this.azureBlobStorage.getBlockBlobs()
             .stageBlockFromURLNoCustomHeadersWithResponseAsync(containerName, blobName, options.getBase64BlockId(), 0,
                 options.getSourceUrl(), sourceRange.toHeaderValue(), options.getSourceContentMd5(), null, null,
                 options.getLeaseId(), sourceRequestConditions.getIfModifiedSince(),
                 sourceRequestConditions.getIfUnmodifiedSince(), sourceRequestConditions.getIfMatch(),
                 sourceRequestConditions.getIfNoneMatch(), null, sourceAuth, options.getSourceShareTokenIntent(),
-                sourceCpkKey, sourceCpkKeySha256, sourceCpkAlgorithm, getCustomerProvidedKey(), encryptionScope,
-                context);
+                getCustomerProvidedKey(), encryptionScope, context);
     }
 
     /**
