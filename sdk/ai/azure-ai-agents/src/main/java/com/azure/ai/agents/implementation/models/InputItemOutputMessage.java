@@ -48,21 +48,7 @@ public final class InputItemOutputMessage extends InputItem {
      * `incomplete`. Populated when input items are returned via API.
      */
     @Generated
-    private final OutputItemOutputMessageStatus status;
-
-    /**
-     * Creates an instance of InputItemOutputMessage class.
-     *
-     * @param id the id value to set.
-     * @param content the content value to set.
-     * @param status the status value to set.
-     */
-    @Generated
-    public InputItemOutputMessage(String id, List<OutputMessageContent> content, OutputItemOutputMessageStatus status) {
-        this.id = id;
-        this.content = content;
-        this.status = status;
-    }
+    private final ItemResourceOutputMessageStatus status;
 
     /**
      * Get the type property: The type property.
@@ -112,7 +98,7 @@ public final class InputItemOutputMessage extends InputItem {
      * @return the status value.
      */
     @Generated
-    public OutputItemOutputMessageStatus getStatus() {
+    public ItemResourceOutputMessageStatus getStatus() {
         return this.status;
     }
 
@@ -145,7 +131,7 @@ public final class InputItemOutputMessage extends InputItem {
         return jsonReader.readObject(reader -> {
             String id = null;
             List<OutputMessageContent> content = null;
-            OutputItemOutputMessageStatus status = null;
+            ItemResourceOutputMessageStatus status = null;
             InputItemType type = InputItemType.OUTPUT_MESSAGE;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -155,7 +141,7 @@ public final class InputItemOutputMessage extends InputItem {
                 } else if ("content".equals(fieldName)) {
                     content = reader.readArray(reader1 -> OutputMessageContent.fromJson(reader1));
                 } else if ("status".equals(fieldName)) {
-                    status = OutputItemOutputMessageStatus.fromString(reader.getString());
+                    status = ItemResourceOutputMessageStatus.fromString(reader.getString());
                 } else if ("type".equals(fieldName)) {
                     type = InputItemType.fromString(reader.getString());
                 } else {
@@ -166,5 +152,20 @@ public final class InputItemOutputMessage extends InputItem {
             deserializedInputItemOutputMessage.type = type;
             return deserializedInputItemOutputMessage;
         });
+    }
+
+    /**
+     * Creates an instance of InputItemOutputMessage class.
+     *
+     * @param id the id value to set.
+     * @param content the content value to set.
+     * @param status the status value to set.
+     */
+    @Generated
+    public InputItemOutputMessage(String id, List<OutputMessageContent> content,
+        ItemResourceOutputMessageStatus status) {
+        this.id = id;
+        this.content = content;
+        this.status = status;
     }
 }

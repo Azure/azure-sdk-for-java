@@ -5,9 +5,10 @@ package com.azure.ai.contentunderstanding;
 
 import com.azure.ai.contentunderstanding.implementation.ContentUnderstandingClientImpl;
 import com.azure.ai.contentunderstanding.implementation.JsonMergePatchHelper;
+import com.azure.ai.contentunderstanding.implementation.models.AnalyzeRequest;
 import com.azure.ai.contentunderstanding.implementation.models.AnalyzeRequest1;
 import com.azure.ai.contentunderstanding.implementation.models.CopyAnalyzerRequest;
-import com.azure.ai.contentunderstanding.implementation.models.GrantCopyAuthorizationRequest1;
+import com.azure.ai.contentunderstanding.implementation.models.GrantCopyAuthorizationRequest;
 import com.azure.ai.contentunderstanding.models.AnalysisInput;
 import com.azure.ai.contentunderstanding.models.AnalysisResult;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzer;
@@ -1555,13 +1556,13 @@ public final class ContentUnderstandingAsyncClient {
         ProcessingLocation processingLocation) {
         // Generated convenience method for beginAnalyzeWithModel
         RequestOptions requestOptions = new RequestOptions();
-        AnalyzeRequest1 analyzeRequest1Obj = new AnalyzeRequest1(inputs).setModelDeployments(modelDeployments);
-        BinaryData analyzeRequest1 = BinaryData.fromObject(analyzeRequest1Obj);
+        AnalyzeRequest analyzeRequestObj = new AnalyzeRequest(inputs).setModelDeployments(modelDeployments);
+        BinaryData analyzeRequest = BinaryData.fromObject(analyzeRequestObj);
         requestOptions.addQueryParam("stringEncoding", stringEncoding, false);
         if (processingLocation != null) {
             requestOptions.addQueryParam("processingLocation", processingLocation.toString(), false);
         }
-        return serviceClient.beginAnalyzeWithModelAsync(analyzerId, analyzeRequest1, requestOptions);
+        return serviceClient.beginAnalyzeWithModelAsync(analyzerId, analyzeRequest, requestOptions);
     }
 
     /**
@@ -1585,10 +1586,10 @@ public final class ContentUnderstandingAsyncClient {
         List<AnalysisInput> inputs, String stringEncoding) {
         // Generated convenience method for beginAnalyzeWithModel
         RequestOptions requestOptions = new RequestOptions();
-        AnalyzeRequest1 analyzeRequest1Obj = new AnalyzeRequest1(inputs);
-        BinaryData analyzeRequest1 = BinaryData.fromObject(analyzeRequest1Obj);
+        AnalyzeRequest analyzeRequestObj = new AnalyzeRequest(inputs);
+        BinaryData analyzeRequest = BinaryData.fromObject(analyzeRequestObj);
         requestOptions.addQueryParam("stringEncoding", stringEncoding, false);
-        return serviceClient.beginAnalyzeWithModelAsync(analyzerId, analyzeRequest1, requestOptions);
+        return serviceClient.beginAnalyzeWithModelAsync(analyzerId, analyzeRequest, requestOptions);
     }
 
     /**
@@ -1927,10 +1928,10 @@ public final class ContentUnderstandingAsyncClient {
         String targetRegion) {
         // Generated convenience method for grantCopyAuthorizationWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        GrantCopyAuthorizationRequest1 grantCopyAuthorizationRequest1Obj
-            = new GrantCopyAuthorizationRequest1(targetAzureResourceId).setTargetRegion(targetRegion);
-        BinaryData grantCopyAuthorizationRequest1 = BinaryData.fromObject(grantCopyAuthorizationRequest1Obj);
-        return grantCopyAuthorizationWithResponse(analyzerId, grantCopyAuthorizationRequest1, requestOptions)
+        GrantCopyAuthorizationRequest grantCopyAuthorizationRequestObj
+            = new GrantCopyAuthorizationRequest(targetAzureResourceId).setTargetRegion(targetRegion);
+        BinaryData grantCopyAuthorizationRequest = BinaryData.fromObject(grantCopyAuthorizationRequestObj);
+        return grantCopyAuthorizationWithResponse(analyzerId, grantCopyAuthorizationRequest, requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(CopyAuthorization.class));
     }
@@ -1953,10 +1954,10 @@ public final class ContentUnderstandingAsyncClient {
     public Mono<CopyAuthorization> grantCopyAuthorization(String analyzerId, String targetAzureResourceId) {
         // Generated convenience method for grantCopyAuthorizationWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        GrantCopyAuthorizationRequest1 grantCopyAuthorizationRequest1Obj
-            = new GrantCopyAuthorizationRequest1(targetAzureResourceId);
-        BinaryData grantCopyAuthorizationRequest1 = BinaryData.fromObject(grantCopyAuthorizationRequest1Obj);
-        return grantCopyAuthorizationWithResponse(analyzerId, grantCopyAuthorizationRequest1, requestOptions)
+        GrantCopyAuthorizationRequest grantCopyAuthorizationRequestObj
+            = new GrantCopyAuthorizationRequest(targetAzureResourceId);
+        BinaryData grantCopyAuthorizationRequest = BinaryData.fromObject(grantCopyAuthorizationRequestObj);
+        return grantCopyAuthorizationWithResponse(analyzerId, grantCopyAuthorizationRequest, requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(CopyAuthorization.class));
     }
