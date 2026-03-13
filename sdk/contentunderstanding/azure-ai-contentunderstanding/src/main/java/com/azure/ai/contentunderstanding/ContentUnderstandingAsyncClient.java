@@ -6,7 +6,6 @@ package com.azure.ai.contentunderstanding;
 import com.azure.ai.contentunderstanding.implementation.ContentUnderstandingClientImpl;
 import com.azure.ai.contentunderstanding.implementation.JsonMergePatchHelper;
 import com.azure.ai.contentunderstanding.implementation.models.AnalyzeRequest;
-import com.azure.ai.contentunderstanding.implementation.models.AnalyzeRequest1;
 import com.azure.ai.contentunderstanding.implementation.models.CopyAnalyzerRequest;
 import com.azure.ai.contentunderstanding.implementation.models.GrantCopyAuthorizationRequest;
 import com.azure.ai.contentunderstanding.models.AnalysisInput;
@@ -2137,8 +2136,8 @@ public final class ContentUnderstandingAsyncClient {
             requestOptions.addQueryParam("processingLocation", processingLocation.toString(), false);
         }
         requestOptions.addQueryParam("stringEncoding", "utf16", false);
-        AnalyzeRequest1 analyzeRequest1Obj = new AnalyzeRequest1(inputs).setModelDeployments(modelDeployments);
-        BinaryData analyzeRequest1 = BinaryData.fromObject(analyzeRequest1Obj);
+        AnalyzeRequest analyzeRequestObj = new AnalyzeRequest(inputs).setModelDeployments(modelDeployments);
+        BinaryData analyzeRequest1 = BinaryData.fromObject(analyzeRequestObj);
         return serviceClient.beginAnalyzeWithModelAsync(analyzerId, analyzeRequest1, requestOptions)
             .setPollInterval(Duration.ofSeconds(3));
     }
