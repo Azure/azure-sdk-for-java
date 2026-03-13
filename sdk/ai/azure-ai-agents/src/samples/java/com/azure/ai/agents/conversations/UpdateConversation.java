@@ -4,22 +4,23 @@
 package com.azure.ai.agents.conversations;
 
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.ConversationsClient;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.openai.core.JsonValue;
 import com.openai.models.conversations.Conversation;
 import com.openai.models.conversations.ConversationUpdateParams;
+import com.openai.services.blocking.ConversationService;
 
 public class UpdateConversation {
     public static void main(String[] args) {
         String endpoint = Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT");
         String conversationId = "your-conversation-id"; // Replace with actual conversation ID
         // Code sample for updating a conversation
-        ConversationsClient conversationsClient = new AgentsClientBuilder()
+        ConversationService conversationService = new AgentsClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(endpoint)
-                .buildConversationsClient();
+                .buildOpenAIClient()
+                .conversations();
 
         // Create metadata for the update
         ConversationUpdateParams.Metadata metadata = ConversationUpdateParams.Metadata.builder()
@@ -31,7 +32,7 @@ public class UpdateConversation {
                 .metadata(metadata)
                 .build();
 
-        Conversation updatedConversation = conversationsClient.getConversationService().update(conversationId, updateParams);
+        Conversation updatedConversation = conversationService.update(conversationId, updateParams);
 
         System.out.println("Updated Conversation ID: " + updatedConversation.id());
         System.out.println("Updated Conversation Metadata: " + updatedConversation._metadata());

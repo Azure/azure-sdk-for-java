@@ -29,6 +29,7 @@ import com.openai.models.responses.ResponseOutputItem;
 import com.openai.models.responses.ResponseStatus;
 import com.openai.models.vectorstores.VectorStore;
 import com.openai.models.vectorstores.VectorStoreCreateParams;
+import com.openai.services.blocking.ConversationService;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -58,7 +59,7 @@ public class ToolsTests extends ClientTestBase {
     public void openApiToolEndToEnd(HttpClient httpClient, AgentsServiceVersion serviceVersion) throws IOException {
         AgentsClient agentsClient = getAgentsSyncClient(httpClient, serviceVersion);
         ResponsesClient responsesClient = getResponsesSyncClient(httpClient, serviceVersion);
-        ConversationsClient conversationsClient = getConversationsSyncClient(httpClient, serviceVersion);
+        ConversationService conversationService = getConversationsSyncClient(httpClient, serviceVersion);
 
         Map<String, BinaryData> spec
             = OpenApiFunctionDefinition.readSpecFromFile(TestUtils.getTestResourcePath("assets/httpbin_openapi.json"));
@@ -76,11 +77,10 @@ public class ToolsTests extends ClientTestBase {
         assertNotNull(agent.getId());
 
         try {
-            Conversation conversation = conversationsClient.getConversationService().create();
+            Conversation conversation = conversationService.create();
             assertNotNull(conversation);
 
-            conversationsClient.getConversationService()
-                .items()
+            conversationService.items()
                 .create(ItemCreateParams.builder()
                     .conversationId(conversation.id())
                     .addItem(EasyInputMessage.builder()
@@ -307,7 +307,7 @@ public class ToolsTests extends ClientTestBase {
     public void fileSearchToolEndToEnd(HttpClient httpClient, AgentsServiceVersion serviceVersion) throws Exception {
         AgentsClient agentsClient = getAgentsSyncClient(httpClient, serviceVersion);
         ResponsesClient responsesClient = getResponsesSyncClient(httpClient, serviceVersion);
-        ConversationsClient conversationsClient = getConversationsSyncClient(httpClient, serviceVersion);
+        ConversationService conversationService = getConversationsSyncClient(httpClient, serviceVersion);
 
         AgentsClientBuilder openAIBuilder = getClientBuilder(httpClient, serviceVersion);
         com.openai.client.OpenAIClient openAIClient = openAIBuilder.buildOpenAIClient();
@@ -351,7 +351,7 @@ public class ToolsTests extends ClientTestBase {
 
             AgentReference agentReference = new AgentReference(agent.getName()).setVersion(agent.getVersion());
 
-            Conversation conversation = conversationsClient.getConversationService().create();
+            Conversation conversation = conversationService.create();
             assertNotNull(conversation);
 
             Response response = responsesClient.createWithAgentConversation(agentReference, conversation.id(),

@@ -18,9 +18,7 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
-import com.openai.client.OpenAIClientAsync;
 import com.openai.models.conversations.Conversation;
-import com.openai.services.async.ConversationServiceAsync;
 import java.util.stream.Collectors;
 import reactor.core.publisher.Flux;
 
@@ -29,29 +27,6 @@ import reactor.core.publisher.Flux;
  */
 @ServiceClient(builder = AgentsClientBuilder.class, isAsync = true)
 public final class ConversationsAsyncClient {
-
-    private final ConversationServiceAsync conversationServiceAsync;
-
-    /**
-     * Initializes an instance of ConversationsAsyncClient class.
-     *
-     * @param openAIClientAsync the service client implementation.
-     */
-    ConversationsAsyncClient(OpenAIClientAsync openAIClientAsync) {
-        this.conversationServiceAsync = openAIClientAsync.conversations();
-    }
-
-    /**
-     * Get the OpenAI client for conversations.
-     *
-     * @return the OpenAI conversation service client.
-     */
-    public ConversationServiceAsync getConversationServiceAsync() {
-        return this.conversationServiceAsync;
-    }
-
-    @Generated
-    private final ConversationsImpl serviceClient;
 
     /**
      * Returns the list of all conversations.
@@ -201,5 +176,18 @@ public final class ConversationsAsyncClient {
                     .collect(Collectors.toList()),
                 pagedResponse.getContinuationToken(), null));
         });
+    }
+
+    @Generated
+    private final ConversationsImpl serviceClient;
+
+    /**
+     * Initializes an instance of ConversationsAsyncClient class.
+     *
+     * @param serviceClient the service client implementation.
+     */
+    @Generated
+    ConversationsAsyncClient(ConversationsImpl serviceClient) {
+        this.serviceClient = serviceClient;
     }
 }

@@ -5,7 +5,6 @@ package com.azure.ai.agents.tools;
 
 import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.ConversationsAsyncClient;
 import com.azure.ai.agents.ResponsesAsyncClient;
 import com.azure.ai.agents.models.AgentReference;
 import com.azure.ai.agents.models.AgentVersionDetails;
@@ -25,6 +24,7 @@ import com.openai.models.responses.ResponseOutputItem;
 import com.openai.models.responses.ResponseOutputMessage;
 import com.openai.models.vectorstores.VectorStore;
 import com.openai.models.vectorstores.VectorStoreCreateParams;
+import com.openai.services.async.ConversationServiceAsync;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
@@ -58,7 +58,7 @@ public class FileSearchAsync {
 
         AgentsAsyncClient agentsAsyncClient = builder.buildAgentsAsyncClient();
         ResponsesAsyncClient responsesAsyncClient = builder.buildResponsesAsyncClient();
-        ConversationsAsyncClient conversationsAsyncClient = builder.buildConversationsAsyncClient();
+        ConversationServiceAsync conversationServiceAsync = builder.buildOpenAIAsyncClient().conversations();
         // Vector store and file operations use the sync OpenAI client for setup
         OpenAIClient openAIClient = builder.buildOpenAIClient();
 
@@ -102,7 +102,7 @@ public class FileSearchAsync {
                 AgentReference agentReference = new AgentReference(agent.getName())
                     .setVersion(agent.getVersion());
 
-                return Mono.fromFuture(conversationsAsyncClient.getConversationServiceAsync().create())
+                return Mono.fromFuture(conversationServiceAsync.create())
                     .<Response>flatMap(conversation -> {
                         conversationIdRef.set(conversation.id());
                         System.out.println("Created conversation: " + conversation.id());
@@ -142,7 +142,7 @@ public class FileSearchAsync {
             .then(Mono.defer(() -> {
                 String convId = conversationIdRef.get();
                 if (convId != null) {
-                    return Mono.fromFuture(conversationsAsyncClient.getConversationServiceAsync().delete(convId))
+                    return Mono.fromFuture(conversationServiceAsync.delete(convId))
                         .then();
                 }
                 return Mono.empty();

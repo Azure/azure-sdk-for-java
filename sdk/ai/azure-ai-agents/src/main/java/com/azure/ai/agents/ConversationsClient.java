@@ -16,38 +16,13 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
-import com.openai.client.OpenAIClient;
 import com.openai.models.conversations.Conversation;
-import com.openai.services.blocking.ConversationService;
 
 /**
  * Initializes a new instance of the synchronous AgentsClient type.
  */
 @ServiceClient(builder = AgentsClientBuilder.class)
 public final class ConversationsClient {
-
-    private final ConversationService conversationService;
-
-    /**
-     * Initializes an instance of ConversationsClient class.
-     *
-     * @param openAIClient the service client implementation.
-     */
-    ConversationsClient(OpenAIClient openAIClient) {
-        this.conversationService = openAIClient.conversations();
-    }
-
-    /**
-     * Get the OpenAI client for conversations.
-     *
-     * @return the OpenAI conversation service client.
-     */
-    public ConversationService getConversationService() {
-        return this.conversationService;
-    }
-
-    @Generated
-    private final ConversationsImpl serviceClient;
 
     /**
      * Returns the list of all conversations.
@@ -175,5 +150,18 @@ public final class ConversationsClient {
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.listConversations(requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(Conversation.class));
+    }
+
+    @Generated
+    private final ConversationsImpl serviceClient;
+
+    /**
+     * Initializes an instance of ConversationsClient class.
+     *
+     * @param serviceClient the service client implementation.
+     */
+    @Generated
+    ConversationsClient(ConversationsImpl serviceClient) {
+        this.serviceClient = serviceClient;
     }
 }

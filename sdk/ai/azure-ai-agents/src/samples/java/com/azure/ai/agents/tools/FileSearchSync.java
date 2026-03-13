@@ -5,7 +5,6 @@ package com.azure.ai.agents.tools;
 
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.ConversationsClient;
 import com.azure.ai.agents.ResponsesClient;
 import com.azure.ai.agents.models.AgentReference;
 import com.azure.ai.agents.models.AgentVersionDetails;
@@ -26,6 +25,7 @@ import com.openai.models.responses.ResponseOutputItem;
 import com.openai.models.responses.ResponseOutputMessage;
 import com.openai.models.vectorstores.VectorStore;
 import com.openai.models.vectorstores.VectorStoreCreateParams;
+import com.openai.services.blocking.ConversationService;
 
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -56,7 +56,7 @@ public class FileSearchSync {
 
         AgentsClient agentsClient = builder.buildAgentsClient();
         ResponsesClient responsesClient = builder.buildResponsesClient();
-        ConversationsClient conversationsClient = builder.buildConversationsClient();
+        ConversationService conversationService = builder.buildOpenAIClient().conversations();
         OpenAIClient openAIClient = builder.buildOpenAIClient();
 
         AgentVersionDetails agent = null;
@@ -108,7 +108,7 @@ public class FileSearchSync {
                 .setVersion(agent.getVersion());
 
             // Create a conversation and ask the agent
-            conversation = conversationsClient.getConversationService().create();
+            conversation = conversationService.create();
             System.out.println("Created conversation: " + conversation.id());
 
             Response response = responsesClient.createWithAgentConversation(agentReference, conversation.id(),
@@ -154,7 +154,7 @@ public class FileSearchSync {
                 }
             }
             if (conversation != null) {
-                conversationsClient.getConversationService().delete(conversation.id());
+                conversationService.delete(conversation.id());
             }
             if (agent != null) {
                 agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion());
