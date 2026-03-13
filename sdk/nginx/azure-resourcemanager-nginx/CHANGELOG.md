@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0 (2026-03-12)
+## 1.1.0 (2026-03-13)
 
 - Azure Resource Manager Nginx client library for Java. This package contains Microsoft Azure SDK for Nginx Management SDK.  Package api-version 2025-11-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
@@ -47,10 +47,10 @@
 #### `models.OperationDisplay` was modified
 
 * `OperationDisplay()` was changed to private access
-* `withOperation(java.lang.String)` was removed
-* `validate()` was removed
 * `withProvider(java.lang.String)` was removed
+* `validate()` was removed
 * `withDescription(java.lang.String)` was removed
+* `withOperation(java.lang.String)` was removed
 * `withResource(java.lang.String)` was removed
 
 #### `models.NginxDeploymentUserProfile` was modified
@@ -67,9 +67,9 @@
 
 #### `models.NginxDeploymentProperties` was modified
 
-* `validate()` was removed
 * `withManagedResourceGroup(java.lang.String)` was removed
 * `managedResourceGroup()` was removed
+* `validate()` was removed
 
 #### `models.NginxCertificateProperties` was modified
 
@@ -93,8 +93,8 @@
 
 #### `models.Configurations` was modified
 
-* `models.NginxConfiguration getById(java.lang.String)` -> `models.NginxConfigurationResponse getById(java.lang.String)`
 * `models.NginxConfiguration get(java.lang.String,java.lang.String,java.lang.String)` -> `models.NginxConfigurationResponse get(java.lang.String,java.lang.String,java.lang.String)`
+* `models.NginxConfiguration getById(java.lang.String)` -> `models.NginxConfigurationResponse getById(java.lang.String)`
 * `models.NginxConfiguration$DefinitionStages$Blank define(java.lang.String)` -> `models.NginxConfigurationResponse$DefinitionStages$Blank define(java.lang.String)`
 
 #### `models.NginxPublicIpAddress` was modified
@@ -237,8 +237,8 @@
 
 #### `models.UserIdentityProperties` was modified
 
-* `toJson(com.azure.json.JsonWriter)` was added
 * `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
 
 #### `models.NginxNetworkInterfaceConfiguration` was modified
 
@@ -247,15 +247,15 @@
 
 #### `models.NginxDeploymentScalingProperties` was modified
 
-* `withProfiles(java.util.List)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
-* `profiles()` was added
 * `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `withProfiles(java.util.List)` was added
+* `profiles()` was added
 
 #### `models.NginxFrontendIpConfiguration` was modified
 
-* `toJson(com.azure.json.JsonWriter)` was added
 * `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
 
 #### `models.OperationDisplay` was modified
 
@@ -264,19 +264,19 @@
 
 #### `models.NginxDeploymentUserProfile` was modified
 
-* `toJson(com.azure.json.JsonWriter)` was added
 * `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
 
 #### `models.NginxDeploymentUpdateProperties` was modified
 
-* `fromJson(com.azure.json.JsonReader)` was added
-* `withNetworkProfile(models.NginxNetworkProfile)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
 * `withWebApplicationFirewallSettings(models.WebApplicationFirewallSettings)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
 * `withAutoUpgradeProfile(models.AutoUpgradeProfile)` was added
-* `networkProfile()` was added
-* `autoUpgradeProfile()` was added
+* `withNetworkProfile(models.NginxNetworkProfile)` was added
 * `webApplicationFirewallSettings()` was added
+* `autoUpgradeProfile()` was added
+* `networkProfile()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
 
 #### `models.NginxLogging` was modified
 
@@ -287,10 +287,10 @@
 
 * `nginxAppProtect()` was added
 * `autoUpgradeProfile()` was added
-* `withAutoUpgradeProfile(models.AutoUpgradeProfile)` was added
 * `withNginxAppProtect(models.NginxDeploymentPropertiesNginxAppProtect)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
+* `withAutoUpgradeProfile(models.AutoUpgradeProfile)` was added
 * `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
 * `dataplaneApiEndpoint()` was added
 
 #### `models.NginxCertificateProperties` was modified
@@ -298,10 +298,10 @@
 * `sha1Thumbprint()` was added
 * `fromJson(com.azure.json.JsonReader)` was added
 * `withCertificateError(models.NginxCertificateErrorResponseBody)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
 * `certificateError()` was added
-* `keyVaultSecretCreated()` was added
 * `keyVaultSecretVersion()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `keyVaultSecretCreated()` was added
 
 #### `models.NginxNetworkProfile` was modified
 
@@ -310,35 +310,35 @@
 
 #### `models.IdentityProperties` was modified
 
-* `toJson(com.azure.json.JsonWriter)` was added
 * `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
 
 #### `models.NginxConfigurationFile` was modified
 
-* `toJson(com.azure.json.JsonWriter)` was added
 * `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
 
 #### `models.NginxDeploymentUpdateParameters` was modified
 
-* `toJson(com.azure.json.JsonWriter)` was added
 * `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
 
 #### `NginxManager` was modified
 
-* `wafPolicies()` was added
-* `apiKeys()` was added
 * `defaultWafPolicies()` was added
 * `nginxDeploymentWafPolicies()` was added
+* `apiKeys()` was added
+* `wafPolicies()` was added
 
 #### `models.Configurations` was modified
 
-* `analysisWithResponse(java.lang.String,java.lang.String,java.lang.String,models.AnalysisCreate,com.azure.core.util.Context)` was added
 * `analysis(java.lang.String,java.lang.String,java.lang.String)` was added
+* `analysisWithResponse(java.lang.String,java.lang.String,java.lang.String,models.AnalysisCreate,com.azure.core.util.Context)` was added
 
 #### `models.NginxPublicIpAddress` was modified
 
-* `toJson(com.azure.json.JsonWriter)` was added
 * `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
 
 #### `models.NginxConfigurationPackage` was modified
 
@@ -347,8 +347,8 @@
 
 #### `models.ResourceSku` was modified
 
-* `fromJson(com.azure.json.JsonReader)` was added
 * `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
 
 #### `models.NginxStorageAccount` was modified
 
@@ -357,8 +357,8 @@
 
 #### `models.NginxPrivateIpAddress` was modified
 
-* `fromJson(com.azure.json.JsonReader)` was added
 * `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
 
 ## 1.1.0-beta.4 (2026-02-10)
 
