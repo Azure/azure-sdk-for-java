@@ -5,18 +5,13 @@
 package com.azure.ai.agents.implementation.models;
 
 /**
- * Defines values for OutputItemWebSearchToolCallStatus.
+ * Defines values for ItemResourceOutputMessageStatus.
  */
-public enum OutputItemWebSearchToolCallStatus {
+public enum ItemResourceOutputMessageStatus {
     /**
      * Enum value in_progress.
      */
     IN_PROGRESS("in_progress"),
-
-    /**
-     * Enum value searching.
-     */
-    SEARCHING("searching"),
 
     /**
      * Enum value completed.
@@ -24,31 +19,31 @@ public enum OutputItemWebSearchToolCallStatus {
     COMPLETED("completed"),
 
     /**
-     * Enum value failed.
+     * Enum value incomplete.
      */
-    FAILED("failed");
+    INCOMPLETE("incomplete");
 
     /**
-     * The actual serialized value for a OutputItemWebSearchToolCallStatus instance.
+     * The actual serialized value for a ItemResourceOutputMessageStatus instance.
      */
     private final String value;
 
-    OutputItemWebSearchToolCallStatus(String value) {
+    ItemResourceOutputMessageStatus(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a OutputItemWebSearchToolCallStatus instance.
+     * Parses a serialized value to a ItemResourceOutputMessageStatus instance.
      * 
      * @param value the serialized value to parse.
-     * @return the parsed OutputItemWebSearchToolCallStatus object, or null if unable to parse.
+     * @return the parsed ItemResourceOutputMessageStatus object, or null if unable to parse.
      */
-    public static OutputItemWebSearchToolCallStatus fromString(String value) {
+    public static ItemResourceOutputMessageStatus fromString(String value) {
         if (value == null) {
             return null;
         }
-        OutputItemWebSearchToolCallStatus[] items = OutputItemWebSearchToolCallStatus.values();
-        for (OutputItemWebSearchToolCallStatus item : items) {
+        ItemResourceOutputMessageStatus[] items = ItemResourceOutputMessageStatus.values();
+        for (ItemResourceOutputMessageStatus item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
