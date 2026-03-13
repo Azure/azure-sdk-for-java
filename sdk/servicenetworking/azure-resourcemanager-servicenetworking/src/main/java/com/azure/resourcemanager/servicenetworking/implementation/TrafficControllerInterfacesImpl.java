@@ -31,12 +31,8 @@ public final class TrafficControllerInterfacesImpl implements TrafficControllerI
         String trafficControllerName, Context context) {
         Response<TrafficControllerInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, trafficControllerName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new TrafficControllerImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new TrafficControllerImpl(inner.getValue(), this.manager()));
     }
 
     public TrafficController getByResourceGroup(String resourceGroupName, String trafficControllerName) {

@@ -6520,6 +6520,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         if (useThinClientStoreModel(request)) {
+            request.useThinClientMode = true;
             return this.thinProxy;
         }
 

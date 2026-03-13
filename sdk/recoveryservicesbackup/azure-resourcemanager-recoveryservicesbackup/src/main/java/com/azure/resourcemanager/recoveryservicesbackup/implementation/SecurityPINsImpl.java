@@ -31,12 +31,8 @@ public final class SecurityPINsImpl implements SecurityPINs {
         SecurityPinBase parameters, Context context) {
         Response<TokenInformationInner> inner
             = this.serviceClient().getWithResponse(vaultName, resourceGroupName, parameters, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new TokenInformationImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new TokenInformationImpl(inner.getValue(), this.manager()));
     }
 
     public TokenInformation get(String vaultName, String resourceGroupName) {

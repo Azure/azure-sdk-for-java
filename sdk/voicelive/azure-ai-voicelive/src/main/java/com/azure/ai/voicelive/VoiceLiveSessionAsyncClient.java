@@ -168,85 +168,92 @@ public final class VoiceLiveSessionAsyncClient implements AsyncCloseable, AutoCl
             = getAuthorizationHeaders().map(authHeaders -> buildConnectionHeaders(authHeaders, additionalHeaders))
                 .flatMap(requestHeaders -> {
                     logConnectionDetails(requestHeaders);
-                    return HttpClient.create().followRedirect(true).headers(nettyHeaders -> {
-                        for (HttpHeader header : requestHeaders) {
-                            nettyHeaders.set(header.getName(), header.getValue());
-                        }
-                    }).websocket(WEBSOCKET_CLIENT_SPEC).uri(endpoint.toString()).handle((inbound, outbound) -> {
-                        inboundRef.set(inbound);
-                        outboundRef.set(outbound);
-                        isConnected.set(true);
+                    return HttpClient.create()
+                        .resolver(io.netty.resolver.DefaultAddressResolverGroup.INSTANCE)
+                        .followRedirect(true)
+                        .headers(nettyHeaders -> {
+                            for (HttpHeader header : requestHeaders) {
+                                nettyHeaders.set(header.getName(), header.getValue());
+                            }
+                        })
+                        .websocket(WEBSOCKET_CLIENT_SPEC)
+                        .uri(endpoint.toString())
+                        .handle((inbound, outbound) -> {
+                            inboundRef.set(inbound);
+                            outboundRef.set(outbound);
+                            isConnected.set(true);
 
-                        LOGGER.info("WebSocket connection established");
+                            LOGGER.info("WebSocket connection established");
 
-                        // CRITICAL FIX: Set frame aggregation to handle large audio delta messages
-                        // Without this, Netty's default 64KB limit causes "content length exceeded 65536 bytes" errors
-                        inbound.aggregateFrames(FRAME_AGGREGATION_SIZE_BYTES);
-                        Flux<BinaryData> receiveFlux = inbound.receive()
-                            .retain()
-                            .doOnSubscribe(s -> LOGGER.info("Receive flux subscribed"))
-                            .map(this::byteBufToBinaryData)
-                            .doOnNext(data -> {
-                                receiveSink.tryEmitNext(data);
-                            })
-                            .doOnError(error -> {
-                                LOGGER.error("Error receiving message", error);
-                                receiveSink.tryEmitError(error);
-                                closeSignal.tryEmitError(error);
-                            })
-                            .doOnComplete(() -> {
-                                LOGGER.info("Receive flux completed normally");
-                            })
-                            .doOnCancel(() -> {
-                                LOGGER.info("Receive flux cancelled");
-                            })
-                            .doFinally(signalType -> {
-                                LOGGER.info("WebSocket receive stream completed: {}", signalType);
-                                isConnected.set(false);
-                                receiveSink.tryEmitComplete();
-                                closeSignal.tryEmitEmpty();
+                            // CRITICAL FIX: Set frame aggregation to handle large audio delta messages
+                            // Without this, Netty's default 64KB limit causes "content length exceeded 65536 bytes" errors
+                            inbound.aggregateFrames(FRAME_AGGREGATION_SIZE_BYTES);
+                            Flux<BinaryData> receiveFlux = inbound.receive()
+                                .retain()
+                                .doOnSubscribe(s -> LOGGER.info("Receive flux subscribed"))
+                                .map(this::byteBufToBinaryData)
+                                .doOnNext(data -> {
+                                    receiveSink.tryEmitNext(data);
+                                })
+                                .doOnError(error -> {
+                                    LOGGER.error("Error receiving message", error);
+                                    receiveSink.tryEmitError(error);
+                                    closeSignal.tryEmitError(error);
+                                })
+                                .doOnComplete(() -> {
+                                    LOGGER.info("Receive flux completed normally");
+                                })
+                                .doOnCancel(() -> {
+                                    LOGGER.info("Receive flux cancelled");
+                                })
+                                .doFinally(signalType -> {
+                                    LOGGER.info("WebSocket receive stream completed: {}", signalType);
+                                    isConnected.set(false);
+                                    receiveSink.tryEmitComplete();
+                                    closeSignal.tryEmitEmpty();
+                                });
+
+                            Disposable receiveSubscription = receiveFlux.subscribe();
+                            receiveSubscriptionRef.set(receiveSubscription);
+
+                            Disposable closeStatusSubscription = inbound.receiveCloseStatus()
+                                .subscribe(
+                                    status -> LOGGER.info("WebSocket close status received: code={} reason={}",
+                                        status.code(), status.reasonText()),
+                                    error -> LOGGER.warning("Failed to read WebSocket close status", error));
+                            closeStatusSubscriptionRef.set(closeStatusSubscription);
+
+                            Flux<WebSocketFrame> sendFlux = sendSink.asFlux()
+                                .doOnSubscribe(subscription -> LOGGER.info("Send stream subscribed"))
+                                .doOnCancel(() -> LOGGER.info("Send stream cancelled"))
+                                .doOnComplete(() -> LOGGER.info("Send stream completed"))
+                                .doOnError(error -> LOGGER.error("Error in send stream", error))
+                                .concatWith(Mono.never());  // Keep flux alive - never complete until cancelled
+
+                            // Send frames without completing when the flux completes
+                            // The connection stays open until closeSignal triggers
+                            outbound.sendObject(sendFlux).then().subscribe();
+
+                            readySink.tryEmitEmpty();
+
+                            return closeSignal.asMono().doFinally(signalType -> {
+                                LOGGER.info("WebSocket handler closing: {}", signalType);
+                                Disposable send = sendSubscriptionRef.getAndSet(null);
+                                if (send != null && !send.isDisposed()) {
+                                    send.dispose();
+                                }
+                                Disposable receive = receiveSubscriptionRef.getAndSet(null);
+                                if (receive != null && !receive.isDisposed()) {
+                                    receive.dispose();
+                                }
+                                Disposable closeStatus = closeStatusSubscriptionRef.getAndSet(null);
+                                if (closeStatus != null && !closeStatus.isDisposed()) {
+                                    closeStatus.dispose();
+                                }
+                                connectionCloseSignalRef.compareAndSet(closeSignal, null);
                             });
-
-                        Disposable receiveSubscription = receiveFlux.subscribe();
-                        receiveSubscriptionRef.set(receiveSubscription);
-
-                        Disposable closeStatusSubscription = inbound.receiveCloseStatus()
-                            .subscribe(
-                                status -> LOGGER.info("WebSocket close status received: code={} reason={}",
-                                    status.code(), status.reasonText()),
-                                error -> LOGGER.warning("Failed to read WebSocket close status", error));
-                        closeStatusSubscriptionRef.set(closeStatusSubscription);
-
-                        Flux<WebSocketFrame> sendFlux = sendSink.asFlux()
-                            .doOnSubscribe(subscription -> LOGGER.info("Send stream subscribed"))
-                            .doOnCancel(() -> LOGGER.info("Send stream cancelled"))
-                            .doOnComplete(() -> LOGGER.info("Send stream completed"))
-                            .doOnError(error -> LOGGER.error("Error in send stream", error))
-                            .concatWith(Mono.never());  // Keep flux alive - never complete until cancelled
-
-                        // Send frames without completing when the flux completes
-                        // The connection stays open until closeSignal triggers
-                        outbound.sendObject(sendFlux).then().subscribe();
-
-                        readySink.tryEmitEmpty();
-
-                        return closeSignal.asMono().doFinally(signalType -> {
-                            LOGGER.info("WebSocket handler closing: {}", signalType);
-                            Disposable send = sendSubscriptionRef.getAndSet(null);
-                            if (send != null && !send.isDisposed()) {
-                                send.dispose();
-                            }
-                            Disposable receive = receiveSubscriptionRef.getAndSet(null);
-                            if (receive != null && !receive.isDisposed()) {
-                                receive.dispose();
-                            }
-                            Disposable closeStatus = closeStatusSubscriptionRef.getAndSet(null);
-                            if (closeStatus != null && !closeStatus.isDisposed()) {
-                                closeStatus.dispose();
-                            }
-                            connectionCloseSignalRef.compareAndSet(closeSignal, null);
-                        });
-                    }).then();
+                        })
+                        .then();
                 });
 
         Disposable lifecycle = connectionMono.subscribe(unused -> {

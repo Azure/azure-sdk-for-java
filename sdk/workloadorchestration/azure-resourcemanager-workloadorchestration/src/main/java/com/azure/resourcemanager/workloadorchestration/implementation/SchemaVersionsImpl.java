@@ -31,12 +31,8 @@ public final class SchemaVersionsImpl implements SchemaVersions {
         String schemaVersionName, Context context) {
         Response<SchemaVersionInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, schemaName, schemaVersionName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new SchemaVersionImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new SchemaVersionImpl(inner.getValue(), this.manager()));
     }
 
     public SchemaVersion get(String resourceGroupName, String schemaName, String schemaVersionName) {

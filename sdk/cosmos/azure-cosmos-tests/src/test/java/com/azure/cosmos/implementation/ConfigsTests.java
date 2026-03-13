@@ -180,6 +180,72 @@ public class ConfigsTests {
         }
     }
 
+    @Test(groups = { "unit" })
+    public void thinClientConnectionTimeoutDefaultTest() {
+        // Default thin client connection timeout should be 5 seconds
+        System.clearProperty("COSMOS.THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS");
+        try {
+            assertThat(Configs.getThinClientConnectionTimeoutInSeconds()).isEqualTo(5);
+        } finally {
+            System.clearProperty("COSMOS.THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS");
+        }
+    }
+
+    @Test(groups = { "unit" })
+    public void thinClientConnectionTimeoutOverrideTest() {
+        System.clearProperty("COSMOS.THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS");
+        System.setProperty("COSMOS.THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS", "3");
+        try {
+            assertThat(Configs.getThinClientConnectionTimeoutInSeconds()).isEqualTo(3);
+        } finally {
+            System.clearProperty("COSMOS.THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS");
+        }
+    }
+
+    @Test(groups = { "unit" })
+    public void thinClientConnectionTimeoutRejectsZeroAndNegative() {
+        // Zero should fall back to default (5s)
+        System.setProperty("COSMOS.THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS", "0");
+        try {
+            assertThat(Configs.getThinClientConnectionTimeoutInSeconds()).isEqualTo(5);
+        } finally {
+            System.clearProperty("COSMOS.THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS");
+        }
+
+        // Negative should fall back to default (5s)
+        System.setProperty("COSMOS.THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS", "-1");
+        try {
+            assertThat(Configs.getThinClientConnectionTimeoutInSeconds()).isEqualTo(5);
+        } finally {
+            System.clearProperty("COSMOS.THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS");
+        }
+    }
+
+    @Test(groups = { "unit" })
+    public void httpRequestThinClientFlagDefaultFalse() throws Exception {
+        // HttpRequest should default to isThinClientRequest=false
+        com.azure.cosmos.implementation.http.HttpRequest httpRequest =
+            new com.azure.cosmos.implementation.http.HttpRequest(
+                io.netty.handler.codec.http.HttpMethod.GET,
+                new java.net.URI("https://test.documents.azure.com:443/"),
+                443,
+                new com.azure.cosmos.implementation.http.HttpHeaders());
+        assertThat(httpRequest.isThinClientRequest()).isFalse();
+    }
+
+    @Test(groups = { "unit" })
+    public void httpRequestThinClientFlagSetTrue() throws Exception {
+        // ThinClientStoreModel sets isThinClientRequest=true via withThinClientRequest()
+        com.azure.cosmos.implementation.http.HttpRequest httpRequest =
+            new com.azure.cosmos.implementation.http.HttpRequest(
+                io.netty.handler.codec.http.HttpMethod.POST,
+                new java.net.URI("https://test.documents.azure.com:10250/"),
+                10250,
+                new com.azure.cosmos.implementation.http.HttpHeaders())
+                .withThinClientRequest(true);
+        assertThat(httpRequest.isThinClientRequest()).isTrue();
+    }
+
     @Test(groups = { "emulator" })
     public void thinClientEndpointTest() {
         Configs config = new Configs();

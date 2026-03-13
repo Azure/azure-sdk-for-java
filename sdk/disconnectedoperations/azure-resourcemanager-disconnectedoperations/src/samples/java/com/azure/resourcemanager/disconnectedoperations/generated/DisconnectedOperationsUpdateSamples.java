@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public final class DisconnectedOperationsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-06-01-preview/DisconnectedOperations_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-15/DisconnectedOperations_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: DisconnectedOperations_Update.

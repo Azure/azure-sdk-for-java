@@ -52,6 +52,7 @@
     <scalactic.version>3.2.3</scalactic.version> <!-- {x-version-update;cosmos_org.scalactic:scalactic_2.12;external_dependency} -->
     <scalamock.version>5.0.0</scalamock.version> <!-- {x-version-update;cosmos_org.scalamock:scalamock_2.12;external_dependency} -->
     <scala-jackson.version>2.18.4</scala-jackson.version> <!-- {x-version-update;com.fasterxml.jackson.module:jackson-module-scala_2.12;external_dependency} -->
+    <pinned-resourcemanager-cosmos.version>2.53.4</pinned-resourcemanager-cosmos.version> <!-- This should not exceed the latest stable version that has been deployed across all clouds - including non-public clouds -->
   </properties>
 
   <developers>
@@ -107,7 +108,7 @@
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-cosmos</artifactId>
-      <version>2.54.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-cosmos;dependency} -->
+      <version>${pinned-resourcemanager-cosmos.version}</version>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>

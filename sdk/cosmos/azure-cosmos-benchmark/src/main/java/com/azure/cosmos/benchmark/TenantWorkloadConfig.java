@@ -29,7 +29,7 @@ import java.util.Map;
  * Fully-resolved configuration for a single tenant workload.
  * Contains account connection info, AAD auth, workload params, and connection
  * settings. Each instance is the effective config after merging
- * globalDefaults with per-tenant overrides at parse time.
+ * tenantDefaults with per-tenant overrides at parse time.
  *
  * <p>This is the single config object passed to {@link AsyncBenchmark} --
  * no intermediate Configuration conversion needed.</p>
@@ -37,14 +37,20 @@ import java.util.Map;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TenantWorkloadConfig {
 
+    /**
+     * Benchmark execution environment.
+     */
+    public enum Environment {
+        Daily,   // CTL environment where we run the workload for a fixed number of hours
+        Staging  // CTL environment where the workload runs as a long running job
+    }
+
     private static final Logger logger = LoggerFactory.getLogger(TenantWorkloadConfig.class);
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     // ======== Meter name constants (used by AsyncBenchmark + CosmosTotalResultReporter) ========
 
-    public static final String SUCCESS_COUNTER_METER_NAME = "#Successful Operations";
-    public static final String FAILURE_COUNTER_METER_NAME = "#Unsuccessful Operations";
-    public static final String LATENCY_METER_NAME = "Latency";
+
     public static final String DEFAULT_PARTITION_KEY_PATH = "/pk";
 
     // ======== Account connection ========
@@ -95,9 +101,6 @@ public class TenantWorkloadConfig {
     @JsonProperty("throughput")
     private Integer throughput;
 
-    @JsonProperty("skipWarmUpOperations")
-    private Integer skipWarmUpOperations;
-
     @JsonProperty("documentDataFieldSize")
     private Integer documentDataFieldSize;
 
@@ -137,6 +140,9 @@ public class TenantWorkloadConfig {
     @JsonProperty("maxRunningTimeDuration")
     private String maxRunningTimeDuration;
 
+    @JsonProperty("diagnosticsThresholdDuration")
+    private String diagnosticsThresholdDuration;
+
     @JsonProperty("sparsityWaitTime")
     private String sparsityWaitTime;
 
@@ -145,6 +151,36 @@ public class TenantWorkloadConfig {
 
     @JsonProperty("isUseUnWarmedUpContainer")
     private Boolean isUseUnWarmedUpContainer;
+
+    @JsonProperty("numberOfCollectionForCtl")
+    private Integer numberOfCollectionForCtl;
+
+    @JsonProperty("readWriteQueryReadManyPct")
+    private String readWriteQueryReadManyPct;
+
+    @JsonProperty("encryptedStringFieldCount")
+    private Integer encryptedStringFieldCount;
+
+    @JsonProperty("encryptedLongFieldCount")
+    private Integer encryptedLongFieldCount;
+
+    @JsonProperty("encryptedDoubleFieldCount")
+    private Integer encryptedDoubleFieldCount;
+
+    @JsonProperty("encryptionEnabled")
+    private Boolean encryptionEnabled;
+
+    @JsonProperty("bulkloadBatchSize")
+    private Integer bulkloadBatchSize;
+
+    @JsonProperty("testScenario")
+    private String testScenario;
+
+    @JsonProperty("environment")
+    private String environment;
+
+    @JsonProperty("useSync")
+    private Boolean useSync;
 
     @JsonProperty("proactiveConnectionRegionsCount")
     private Integer proactiveConnectionRegionsCount;
@@ -213,7 +249,6 @@ public class TenantWorkloadConfig {
     public int getNumberOfOperations() { return numberOfOperations != null ? numberOfOperations : 100000; }
     public int getNumberOfPreCreatedDocuments() { return numberOfPreCreatedDocuments != null ? numberOfPreCreatedDocuments : 1000; }
     public int getThroughput() { return throughput != null ? throughput : 100000; }
-    public int getSkipWarmUpOperations() { return skipWarmUpOperations != null ? skipWarmUpOperations : 0; }
     public int getDocumentDataFieldSize() { return documentDataFieldSize != null ? documentDataFieldSize : 20; }
     public int getDocumentDataFieldCount() { return documentDataFieldCount != null ? documentDataFieldCount : 5; }
     public boolean isContentResponseOnWriteEnabled() { return contentResponseOnWriteEnabled != null ? contentResponseOnWriteEnabled : true; }
@@ -239,6 +274,11 @@ public class TenantWorkloadConfig {
 
     public boolean isDefaultLog4jLoggerEnabled() {
         return isDefaultLog4jLoggerEnabled != null && isDefaultLog4jLoggerEnabled;
+    }
+
+    public Duration getDiagnosticsThresholdDuration() {
+        if (diagnosticsThresholdDuration == null) return Duration.ofSeconds(60);
+        return Duration.parse(diagnosticsThresholdDuration);
     }
 
     public Duration getMaxRunningTimeDuration() {
@@ -267,6 +307,20 @@ public class TenantWorkloadConfig {
         if (aggressiveWarmupDuration == null) return Duration.ZERO;
         return Duration.parse(aggressiveWarmupDuration);
     }
+
+    public int getNumberOfCollectionForCtl() { return numberOfCollectionForCtl != null ? numberOfCollectionForCtl : 4; }
+    public String getReadWriteQueryReadManyPct() { return readWriteQueryReadManyPct != null ? readWriteQueryReadManyPct : "90,8,1,1"; }
+    public int getEncryptedStringFieldCount() { return encryptedStringFieldCount != null ? encryptedStringFieldCount : 1; }
+    public int getEncryptedLongFieldCount() { return encryptedLongFieldCount != null ? encryptedLongFieldCount : 0; }
+    public int getEncryptedDoubleFieldCount() { return encryptedDoubleFieldCount != null ? encryptedDoubleFieldCount : 0; }
+    public boolean isEncryptionEnabled() { return encryptionEnabled != null && encryptionEnabled; }
+    public int getBulkloadBatchSize() { return bulkloadBatchSize != null ? bulkloadBatchSize : 200000; }
+    public String getTestScenario() { return testScenario != null ? testScenario : "GET"; }
+    public Environment getEnvironment() {
+        if (environment == null) return Environment.Daily;
+        return Environment.valueOf(environment);
+    }
+    public boolean isSync() { return useSync != null && useSync; }
 
     public ConnectionMode getConnectionMode() {
         if (connectionMode == null) return ConnectionMode.DIRECT;
@@ -386,8 +440,6 @@ public class TenantWorkloadConfig {
                     if (overwrite || numberOfOperations == null) numberOfOperations = Integer.parseInt(value); break;
                 case "numberOfPreCreatedDocuments":
                     if (overwrite || numberOfPreCreatedDocuments == null) numberOfPreCreatedDocuments = Integer.parseInt(value); break;
-                case "skipWarmUpOperations":
-                    if (overwrite || skipWarmUpOperations == null) skipWarmUpOperations = Integer.parseInt(value); break;
                 case "throughput":
                     if (overwrite || throughput == null) throughput = Integer.parseInt(value); break;
                 case "documentDataFieldSize":
@@ -412,6 +464,8 @@ public class TenantWorkloadConfig {
                     if (overwrite || isDefaultLog4jLoggerEnabled == null) isDefaultLog4jLoggerEnabled = Boolean.parseBoolean(value); break;
                 case "maxRunningTimeDuration":
                     if (overwrite || maxRunningTimeDuration == null) maxRunningTimeDuration = value; break;
+                case "diagnosticsThresholdDuration":
+                    if (overwrite || diagnosticsThresholdDuration == null) diagnosticsThresholdDuration = value; break;
                 case "sparsityWaitTime":
                     if (overwrite || sparsityWaitTime == null) sparsityWaitTime = value; break;
                 case "isProactiveConnectionManagementEnabled":
@@ -434,6 +488,26 @@ public class TenantWorkloadConfig {
                     if (overwrite || preferredRegionsList == null) preferredRegionsList = value; break;
                 case "manageDatabase":
                     if (overwrite || manageDatabase == null) manageDatabase = Boolean.parseBoolean(value); break;
+                case "numberOfCollectionForCtl":
+                    if (overwrite || numberOfCollectionForCtl == null) numberOfCollectionForCtl = Integer.parseInt(value); break;
+                case "readWriteQueryReadManyPct":
+                    if (overwrite || readWriteQueryReadManyPct == null) readWriteQueryReadManyPct = value; break;
+                case "encryptedStringFieldCount":
+                    if (overwrite || encryptedStringFieldCount == null) encryptedStringFieldCount = Integer.parseInt(value); break;
+                case "encryptedLongFieldCount":
+                    if (overwrite || encryptedLongFieldCount == null) encryptedLongFieldCount = Integer.parseInt(value); break;
+                case "encryptedDoubleFieldCount":
+                    if (overwrite || encryptedDoubleFieldCount == null) encryptedDoubleFieldCount = Integer.parseInt(value); break;
+                case "encryptionEnabled":
+                    if (overwrite || encryptionEnabled == null) encryptionEnabled = Boolean.parseBoolean(value); break;
+                case "bulkloadBatchSize":
+                    if (overwrite || bulkloadBatchSize == null) bulkloadBatchSize = Integer.parseInt(value); break;
+                case "testScenario":
+                    if (overwrite || testScenario == null) testScenario = value; break;
+                case "environment":
+                    if (overwrite || environment == null) environment = value; break;
+                case "useSync":
+                    if (overwrite || useSync == null) useSync = Boolean.parseBoolean(value); break;
                 // JVM-global properties (minConnectionPoolSizePerEndpoint, isPartitionLevelCircuitBreakerEnabled,
                 // isPerPartitionAutomaticFailoverRequired) are handled in BenchmarkConfig, not per-tenant.
                 case "minConnectionPoolSizePerEndpoint":
@@ -449,95 +523,24 @@ public class TenantWorkloadConfig {
         }
     }
 
-    // ======== Factory from Configuration (for tests and legacy paths) ========
-
-    /**
-     * Build a TenantWorkloadConfig from a legacy Configuration object.
-     * Used by tests and CLI paths that still parse via JCommander.
-     */
-    public static TenantWorkloadConfig fromConfiguration(Configuration cfg) {
-        TenantWorkloadConfig t = new TenantWorkloadConfig();
-        t.id = "cli-tenant";
-        t.serviceEndpoint = cfg.getServiceEndpoint();
-        t.masterKey = cfg.getMasterKey();
-        t.databaseId = cfg.getDatabaseId();
-        t.containerId = cfg.getCollectionId();
-        t.operation = cfg.getOperationType().name();
-        t.concurrency = cfg.getConcurrency();
-        t.numberOfOperations = cfg.getNumberOfOperations();
-        t.numberOfPreCreatedDocuments = cfg.getNumberOfPreCreatedDocuments();
-        t.throughput = cfg.getThroughput();
-        t.skipWarmUpOperations = cfg.getSkipWarmUpOperations();
-        t.documentDataFieldSize = cfg.getDocumentDataFieldSize();
-        t.documentDataFieldCount = cfg.getDocumentDataFieldCount();
-        t.contentResponseOnWriteEnabled = cfg.isContentResponseOnWriteEnabled();
-        t.disablePassingPartitionKeyAsOptionOnWrite = cfg.isDisablePassingPartitionKeyAsOptionOnWrite();
-        t.useNameLink = cfg.isUseNameLink();
-        t.connectionMode = cfg.getConnectionMode().name();
-        t.consistencyLevel = cfg.getConsistencyLevel().name();
-        t.maxConnectionPoolSize = cfg.getMaxConnectionPoolSize();
-        t.connectionSharingAcrossClientsEnabled = cfg.isConnectionSharingAcrossClientsEnabled();
-        t.manageDatabase = cfg.shouldManageDatabase();
-        t.applicationName = cfg.getApplicationName();
-        t.isManagedIdentityRequired = cfg.isManagedIdentityRequired();
-
-        // AAD auth
-        t.aadLoginEndpoint = cfg.getInstanceAadLoginEndpoint();
-        t.aadTenantId = cfg.getInstanceAadTenantId();
-        t.aadManagedIdentityClientId = cfg.getInstanceAadManagedIdentityClientId();
-
-        // Workload details
-        t.tupleSize = cfg.getTupleSize();
-        if (cfg.getMaxRunningTimeDuration() != null) {
-            t.maxRunningTimeDuration = cfg.getMaxRunningTimeDuration().toString();
-        }
-        if (cfg.getSparsityWaitTime() != null) {
-            t.sparsityWaitTime = cfg.getSparsityWaitTime().toString();
-        }
-
-        // Diagnostics thresholds
-        t.pointOperationLatencyThresholdMs = cfg.getPointOperationThreshold().toMillis() < Duration.ofDays(100).toMillis()
-            ? (int) cfg.getPointOperationThreshold().toMillis() : null;
-        t.nonPointOperationLatencyThresholdMs = cfg.getNonPointOperationThreshold().toMillis() < Duration.ofDays(100).toMillis()
-            ? (int) cfg.getNonPointOperationThreshold().toMillis() : null;
-
-        // Feature flags
-        t.isRegionScopedSessionContainerEnabled = cfg.isRegionScopedSessionContainerEnabled();
-        t.isDefaultLog4jLoggerEnabled = cfg.isDefaultLog4jLoggerEnabled();
-
-        // Proactive connection management
-        t.isProactiveConnectionManagementEnabled = cfg.isProactiveConnectionManagementEnabled();
-        t.isUseUnWarmedUpContainer = cfg.isUseUnWarmedUpContainer();
-        t.proactiveConnectionRegionsCount = cfg.getProactiveConnectionRegionsCount();
-        if (cfg.getAggressiveWarmupDuration() != null) {
-            t.aggressiveWarmupDuration = cfg.getAggressiveWarmupDuration().toString();
-        }
-
-        // Connection
-        t.preferredRegionsList = cfg.getPreferredRegionsList() != null
-            ? String.join(",", cfg.getPreferredRegionsList()) : null;
-
-        return t;
-    }
-
     // ======== Static parsing ========
 
-    public static List<TenantWorkloadConfig> parseTenantsFile(File tenantsFile) throws IOException {
-        JsonNode root = OBJECT_MAPPER.readTree(tenantsFile);
+    public static List<TenantWorkloadConfig> parseWorkloadConfig(File workloadConfigFile) throws IOException {
+        JsonNode root = OBJECT_MAPPER.readTree(workloadConfigFile);
 
-        Map<String, String> globalDefaults = new HashMap<>();
-        JsonNode defaultsNode = root.get("globalDefaults");
+        Map<String, String> tenantDefaults = new HashMap<>();
+        JsonNode defaultsNode = root.get("tenantDefaults");
         if (defaultsNode != null && defaultsNode.isObject()) {
             Iterator<Map.Entry<String, JsonNode>> fields = defaultsNode.fields();
             while (fields.hasNext()) {
                 Map.Entry<String, JsonNode> entry = fields.next();
-                globalDefaults.put(entry.getKey(), entry.getValue().asText());
+                tenantDefaults.put(entry.getKey(), entry.getValue().asText());
             }
         }
 
-        if (!globalDefaults.isEmpty()) {
-            logger.info("tenants.json globalDefaults applied to all tenants (per-tenant values take priority): {}",
-                globalDefaults.keySet());
+        if (!tenantDefaults.isEmpty()) {
+            logger.info("tenantDefaults applied to all tenants (per-tenant values take priority): {}",
+                tenantDefaults.keySet());
         }
 
         List<TenantWorkloadConfig> tenants = new ArrayList<>();
@@ -546,13 +549,13 @@ public class TenantWorkloadConfig {
         if (tenantsNode != null && tenantsNode.isArray()) {
             for (JsonNode tenantNode : tenantsNode) {
                 TenantWorkloadConfig tenant = OBJECT_MAPPER.treeToValue(tenantNode, TenantWorkloadConfig.class);
-                tenant.applyMap(globalDefaults, false);
+                tenant.applyMap(tenantDefaults, false);
                 validateTenantConfig(tenant);
                 tenants.add(tenant);
             }
         }
 
-        logger.info("Parsed {} tenants from {}", tenants.size(), tenantsFile.getName());
+        logger.info("Parsed {} tenants from {}", tenants.size(), workloadConfigFile.getName());
         return tenants;
     }
 

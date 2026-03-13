@@ -61,7 +61,8 @@ extends:
             MatrixReplace:
               - AZURE_TEST.*=.*/
               - .*Version=1.2(1|5)/1.17
-            BuildParallelization: 1
+            BuildParallelization: 2
+            BuildOptions: '-Dshade.skip=true -Dmaven.antrun.skip=true'
             TestOptions: '-Punit'
 
       - stage: TestEmulator
@@ -80,18 +81,21 @@ extends:
             JobTemplatePath: /eng/pipelines/templates/jobs/live.tests.yml
             MatrixConfigs:
               - Name: Cosmos_emulator_integration
-                Path: eng/pipelines/templates/stages/cosmos-emulator-matrix.json
+                # Use reduced matrix for PRs (11 jobs) vs full matrix for CI/main (16 jobs)
+                ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
+                  Path: eng/pipelines/templates/stages/cosmos-emulator-matrix-pr.json
+                ${{ else }}:
+                  Path: eng/pipelines/templates/stages/cosmos-emulator-matrix.json
                 Selection: all
                 GenerateVMJobs: true
             MatrixFilters:
               - ${{ parameters.LanguageFilter }}
               - ${{ parameters.MatrixFilters }}
             AdditionalParameters:
-              BuildParallelization: 1
+              BuildParallelization: 2
+              BuildOptions: '$(BuildOptions)'
               DisableAzureResourceCreation: true
               ServiceDirectory: cosmos
-              # Increased timeout to 120 because of cosmos emulator taking 25-30 mins to download emulator
-              # Issue filed to improve download speed: https://github.com/Azure/azure-sdk-for-java/issues/12970
               TimeoutInMinutes: 120
               TestOptions: '$(ProfileFlag) $(AdditionalArgs)'
               PreSteps:
@@ -179,7 +183,7 @@ extends:
                     - ${{ parameters.LanguageFilter }}
                     - ${{ parameters.MatrixFilters }}
                   AdditionalParameters:
-                    BuildParallelization: 1
+                    BuildParallelization: 2
                     DisableAzureResourceCreation: true
                     ServiceDirectory: cosmos
                     TimeoutInMinutes: 120

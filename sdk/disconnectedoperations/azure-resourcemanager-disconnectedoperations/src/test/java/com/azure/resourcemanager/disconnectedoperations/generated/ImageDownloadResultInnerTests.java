@@ -11,7 +11,7 @@ public final class ImageDownloadResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ImageDownloadResultInner model = BinaryData.fromString(
-            "{\"provisioningState\":\"Succeeded\",\"releaseVersion\":\"zgcwrw\",\"releaseDisplayName\":\"lxxwrljdouskc\",\"releaseNotes\":\"vkocrcjdkwtn\",\"releaseType\":\"Update\",\"compatibleVersions\":[\"jbiksqrglssai\",\"qpjwnzlljfm\",\"pee\",\"vmgxsab\"],\"transactionId\":\"yqduujit\",\"downloadLink\":\"jczdzevndh\",\"linkExpiry\":\"2021-03-12T14:36:36Z\"}")
+            "{\"provisioningState\":\"Succeeded\",\"releaseVersion\":\"adgakeqsrxybz\",\"releaseDisplayName\":\"qedqytbciqfoufl\",\"releaseNotes\":\"mnkzsmod\",\"releaseType\":\"Install\",\"compatibleVersions\":[\"ugpbkw\",\"mutduqktaps\"],\"updateProperties\":{\"systemReboot\":\"Required\",\"securityUpdates\":\"cuertu\",\"osVersion\":\"kdosvqw\",\"agentVersion\":\"bmdg\",\"featureUpdates\":\"bjf\"},\"transactionId\":\"dgmb\",\"downloadLink\":\"bexppb\",\"linkExpiry\":\"2021-04-11T05:58:57Z\"}")
             .toObject(ImageDownloadResultInner.class);
     }
 }

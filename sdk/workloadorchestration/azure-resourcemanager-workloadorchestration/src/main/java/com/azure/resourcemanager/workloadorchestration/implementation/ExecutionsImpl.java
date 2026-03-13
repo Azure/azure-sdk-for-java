@@ -31,12 +31,8 @@ public final class ExecutionsImpl implements Executions {
         String versionName, String executionName, Context context) {
         Response<ExecutionInner> inner = this.serviceClient()
             .getWithResponse(resourceGroupName, contextName, workflowName, versionName, executionName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ExecutionImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ExecutionImpl(inner.getValue(), this.manager()));
     }
 
     public Execution get(String resourceGroupName, String contextName, String workflowName, String versionName,

@@ -18,7 +18,7 @@ import java.util.List;
  * Contains lifecycle params, reporting config, and fully-resolved tenant workloads.
  *
  * <p>Each {@link TenantWorkloadConfig} carries its complete effective config
- * (account info + workload params), so no separate globalDefaults map is needed.</p>
+ * (account info + workload params), so no separate tenantDefaults map is needed.</p>
  *
  * <p>When {@code cycles > 1}, sensible defaults are applied automatically
  * unless explicitly overridden (settleTimeMs=90s, suppressCleanup=true).</p>
@@ -37,17 +37,12 @@ public class BenchmarkConfig {
     private boolean enableNettyHttpMetrics = false;
 
     // -- Reporting --
-    private String reportingDirectory;
     private int printingInterval = 10;
-    private String resultUploadEndpoint;
-    private String resultUploadKey;
-    private String resultUploadDatabase;
-    private String resultUploadContainer;
 
-    // -- Run metadata (for result reporting) --
-    private String testVariationName = "";
-    private String branchName = "";
-    private String commitId = "";
+    // At most one destination is configured (null = console-only)
+    private CsvReporterConfig csvReporterConfig;
+    private CosmosReporterConfig cosmosReporterConfig;
+    private AppInsightsReporterConfig appInsightsReporterConfig;
 
     // -- JVM-global system properties (apply to all tenants, set once at startup) --
     private boolean isPartitionLevelCircuitBreakerEnabled = true;
@@ -81,43 +76,19 @@ public class BenchmarkConfig {
         }
 
         config.gcBetweenCycles = cfg.isGcBetweenCycles();
-        config.enableJvmStats = cfg.isEnableJvmStats();
-        config.enableNettyHttpMetrics = cfg.isEnableNettyHttpMetrics();
 
-        // Reporting
-        config.reportingDirectory = cfg.getReportingDirectory() != null
-            ? cfg.getReportingDirectory().getPath() : null;
-        config.printingInterval = cfg.getPrintingInterval();
-        config.resultUploadEndpoint = cfg.getServiceEndpointForRunResultsUploadAccount();
-        config.resultUploadKey = cfg.getMasterKeyForRunResultsUploadAccount();
-        config.resultUploadDatabase = cfg.getResultUploadDatabase();
-        config.resultUploadContainer = cfg.getResultUploadContainer();
-
-        // Run metadata
-        config.testVariationName = cfg.getTestVariationName();
-        config.branchName = cfg.getBranchName();
-        config.commitId = cfg.getCommitId();
-
-        // Tenants
-        String tenantsFile = cfg.getTenantsFile();
-        if (tenantsFile != null && new File(tenantsFile).exists()) {
-            // tenants.json takes priority over CLI workload args (operation, concurrency, etc.)
-            logger.info("Loading tenant configs from {}. " +
-                "Workload parameters from tenants.json will take priority over CLI args.", tenantsFile);
-            config.tenantWorkloads = TenantWorkloadConfig.parseTenantsFile(new File(tenantsFile));
-
-            // Extract JVM-global system properties from globalDefaults
-            config.loadGlobalSystemPropertiesFromTenantsFile(new File(tenantsFile));
-        } else {
-            // Single tenant from CLI args - use fromConfiguration() to copy ALL fields
-            config.tenantWorkloads = Collections.singletonList(
-                TenantWorkloadConfig.fromConfiguration(cfg));
-
-            // JVM-global system properties from CLI
-            config.isPartitionLevelCircuitBreakerEnabled = cfg.isPartitionLevelCircuitBreakerEnabled();
-            config.isPerPartitionAutomaticFailoverRequired = cfg.isPerPartitionAutomaticFailoverRequired();
-            config.minConnectionPoolSizePerEndpoint = cfg.getMinConnectionPoolSizePerEndpoint();
+        // Workload config - ALWAYS from config file
+        String workloadConfigPath = cfg.getWorkloadConfig();
+        if (workloadConfigPath == null || !new File(workloadConfigPath).exists()) {
+            throw new IllegalArgumentException(
+                "A workload configuration file is required. Use -workloadConfig to specify the path."
+                + (workloadConfigPath != null ? " File not found: " + workloadConfigPath : ""));
         }
+
+        logger.info("Loading workload configs from {}.", workloadConfigPath);
+        File workloadFile = new File(workloadConfigPath);
+        config.tenantWorkloads = TenantWorkloadConfig.parseWorkloadConfig(workloadFile);
+        config.loadWorkloadConfigSections(workloadFile);
 
         return config;
     }
@@ -131,16 +102,20 @@ public class BenchmarkConfig {
     public boolean isEnableJvmStats() { return enableJvmStats; }
     public boolean isEnableNettyHttpMetrics() { return enableNettyHttpMetrics; }
 
-    public String getReportingDirectory() { return reportingDirectory; }
     public int getPrintingInterval() { return printingInterval; }
-    public String getResultUploadEndpoint() { return resultUploadEndpoint; }
-    public String getResultUploadKey() { return resultUploadKey; }
-    public String getResultUploadDatabase() { return resultUploadDatabase; }
-    public String getResultUploadContainer() { return resultUploadContainer; }
+    public CsvReporterConfig getCsvReporterConfig() { return csvReporterConfig; }
+    public CosmosReporterConfig getCosmosReporterConfig() { return cosmosReporterConfig; }
+    public AppInsightsReporterConfig getAppInsightsReporterConfig() { return appInsightsReporterConfig; }
 
-    public String getTestVariationName() { return testVariationName; }
-    public String getBranchName() { return branchName; }
-    public String getCommitId() { return commitId; }
+    /**
+     * Determine the reporting destination from which config is present.
+     */
+    public ReportingDestination getReportingDestination() {
+        if (csvReporterConfig != null) return ReportingDestination.CSV;
+        if (cosmosReporterConfig != null) return ReportingDestination.COSMOSDB;
+        if (appInsightsReporterConfig != null) return ReportingDestination.APPLICATION_INSIGHTS;
+        return null;
+    }
 
     public boolean isPartitionLevelCircuitBreakerEnabled() { return isPartitionLevelCircuitBreakerEnabled; }
     public boolean isPerPartitionAutomaticFailoverRequired() { return isPerPartitionAutomaticFailoverRequired; }
@@ -152,37 +127,110 @@ public class BenchmarkConfig {
     public String toString() {
         return String.format(
             "BenchmarkConfig{cycles=%d, settleTimeMs=%d, suppressCleanup=%s, " +
-            "gcBetweenCycles=%s, tenants=%d, reportingDirectory=%s, " +
+            "gcBetweenCycles=%s, tenants=%d, reportingDestination=%s, " +
             "circuitBreaker=%s, ppaf=%s, minConnPoolSize=%d}",
             cycles, settleTimeMs, suppressCleanup, gcBetweenCycles,
-            tenantWorkloads.size(), reportingDirectory,
+            tenantWorkloads.size(), getReportingDestination(),
             isPartitionLevelCircuitBreakerEnabled, isPerPartitionAutomaticFailoverRequired,
             minConnectionPoolSizePerEndpoint);
     }
 
     /**
-     * Reads JVM-global system properties from the globalDefaults section of a tenants.json file.
-     * These properties are JVM-wide and cannot vary per tenant.
+     * Loads all non-tenant sections from the workload config file:
+     * JVM system properties, metrics config, result upload, and run metadata.
      */
-    private void loadGlobalSystemPropertiesFromTenantsFile(File tenantsFile) throws IOException {
+    private void loadWorkloadConfigSections(File workloadConfigFile) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        JsonNode root = mapper.readTree(tenantsFile);
-        JsonNode defaults = root.get("globalDefaults");
-        if (defaults == null || !defaults.isObject()) {
+        JsonNode root = mapper.readTree(workloadConfigFile);
+
+        loadJvmSystemProperties(root);
+        loadMetricsConfig(root);
+    }
+
+    /**
+     * JVM-global system properties from the tenantDefaults section.
+     * These are JVM-wide and cannot vary per tenant.
+     */
+    private void loadJvmSystemProperties(JsonNode root) {
+        JsonNode defaults = root.get("tenantDefaults");
+        if (defaults != null && defaults.isObject()) {
+            if (defaults.has("isPartitionLevelCircuitBreakerEnabled")) {
+                isPartitionLevelCircuitBreakerEnabled =
+                    Boolean.parseBoolean(defaults.get("isPartitionLevelCircuitBreakerEnabled").asText());
+            }
+            if (defaults.has("isPerPartitionAutomaticFailoverRequired")) {
+                isPerPartitionAutomaticFailoverRequired =
+                    Boolean.parseBoolean(defaults.get("isPerPartitionAutomaticFailoverRequired").asText());
+            }
+            if (defaults.has("minConnectionPoolSizePerEndpoint")) {
+                minConnectionPoolSizePerEndpoint =
+                    Integer.parseInt(defaults.get("minConnectionPoolSizePerEndpoint").asText());
+            }
+        }
+    }
+
+    /**
+     * Metrics and reporting settings from the top-level "metrics" section.
+     * Reporter destination is determined by which key is present under "metrics.destination":
+     * "csv", "cosmos", or "applicationInsights". At most one should be configured.
+     */
+    private void loadMetricsConfig(JsonNode root) {
+        JsonNode metrics = root.get("metrics");
+        if (metrics == null || !metrics.isObject()) {
             return;
         }
 
-        if (defaults.has("isPartitionLevelCircuitBreakerEnabled")) {
-            isPartitionLevelCircuitBreakerEnabled =
-                Boolean.parseBoolean(defaults.get("isPartitionLevelCircuitBreakerEnabled").asText());
+        if (metrics.has("enableJvmStats")) {
+            enableJvmStats = Boolean.parseBoolean(metrics.get("enableJvmStats").asText());
         }
-        if (defaults.has("isPerPartitionAutomaticFailoverRequired")) {
-            isPerPartitionAutomaticFailoverRequired =
-                Boolean.parseBoolean(defaults.get("isPerPartitionAutomaticFailoverRequired").asText());
+        if (metrics.has("enableNettyHttpMetrics")) {
+            enableNettyHttpMetrics = Boolean.parseBoolean(metrics.get("enableNettyHttpMetrics").asText());
         }
-        if (defaults.has("minConnectionPoolSizePerEndpoint")) {
-            minConnectionPoolSizePerEndpoint =
-                Integer.parseInt(defaults.get("minConnectionPoolSizePerEndpoint").asText());
+        if (metrics.has("printingInterval")) {
+            printingInterval = Integer.parseInt(metrics.get("printingInterval").asText());
+        }
+
+        JsonNode destination = metrics.get("destination");
+        if (destination == null || !destination.isObject()) {
+            return;
+        }
+
+        // CSV
+        JsonNode csv = destination.get("csv");
+        if (csv != null && csv.isObject()) {
+            csvReporterConfig = new CsvReporterConfig(
+                csv.has("reportingDirectory") ? csv.get("reportingDirectory").asText() : null);
+        }
+
+        // Cosmos DB
+        JsonNode cosmos = destination.get("cosmos");
+        if (cosmos != null && cosmos.isObject()) {
+            cosmosReporterConfig = new CosmosReporterConfig(
+                cosmos.has("serviceEndpoint") ? cosmos.get("serviceEndpoint").asText() : null,
+                cosmos.has("masterKey") ? cosmos.get("masterKey").asText() : null,
+                cosmos.has("database") ? cosmos.get("database").asText() : null,
+                cosmos.has("container") ? cosmos.get("container").asText() : null,
+                cosmos.has("testVariationName") ? cosmos.get("testVariationName").asText() : null,
+                cosmos.has("branchName") ? cosmos.get("branchName").asText() : null,
+                cosmos.has("commitId") ? cosmos.get("commitId").asText() : null);
+        }
+
+        // Application Insights
+        JsonNode appInsights = destination.get("applicationInsights");
+        if (appInsights != null && appInsights.isObject()) {
+            appInsightsReporterConfig = new AppInsightsReporterConfig(
+                appInsights.has("connectionString") ? appInsights.get("connectionString").asText() : null,
+                appInsights.has("stepSeconds") ? Integer.parseInt(appInsights.get("stepSeconds").asText()) : 10,
+                appInsights.has("testCategory") ? appInsights.get("testCategory").asText() : null);
+        }
+
+        // Warn if multiple destinations are configured — only the first match is used
+        int configuredCount = (csvReporterConfig != null ? 1 : 0)
+            + (cosmosReporterConfig != null ? 1 : 0)
+            + (appInsightsReporterConfig != null ? 1 : 0);
+        if (configuredCount > 1) {
+            logger.warn("Multiple reporting destinations configured; only '{}' will be used. "
+                + "Destinations are mutually exclusive.", getReportingDestination());
         }
     }
 }

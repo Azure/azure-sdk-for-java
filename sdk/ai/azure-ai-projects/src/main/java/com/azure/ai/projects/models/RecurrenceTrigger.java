@@ -12,6 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.TimeZone;
 
 /**
  * Recurrence based trigger.
@@ -41,7 +42,7 @@ public final class RecurrenceTrigger extends Trigger {
      * Time zone for the recurrence schedule.
      */
     @Generated
-    private String timeZone;
+    private TimeZone timeZone;
 
     /*
      * Interval for the recurrence schedule.
@@ -92,20 +93,8 @@ public final class RecurrenceTrigger extends Trigger {
      * @return the timeZone value.
      */
     @Generated
-    public String getTimeZone() {
+    public TimeZone getTimeZone() {
         return this.timeZone;
-    }
-
-    /**
-     * Set the timeZone property: Time zone for the recurrence schedule.
-     *
-     * @param timeZone the timeZone value to set.
-     * @return the RecurrenceTrigger object itself.
-     */
-    @Generated
-    public RecurrenceTrigger setTimeZone(String timeZone) {
-        this.timeZone = timeZone;
-        return this;
     }
 
     /**
@@ -131,7 +120,6 @@ public final class RecurrenceTrigger extends Trigger {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -142,7 +130,7 @@ public final class RecurrenceTrigger extends Trigger {
             this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
         jsonWriter.writeStringField("endTime",
             this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
-        jsonWriter.writeStringField("timeZone", this.timeZone);
+        jsonWriter.writeStringField("timeZone", this.timeZone != null ? this.timeZone.getID() : null);
         return jsonWriter.writeEndObject();
     }
 
@@ -155,7 +143,6 @@ public final class RecurrenceTrigger extends Trigger {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the RecurrenceTrigger.
      */
-    @Generated
     public static RecurrenceTrigger fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             int interval = 0;
@@ -163,7 +150,7 @@ public final class RecurrenceTrigger extends Trigger {
             TriggerType type = TriggerType.RECURRENCE;
             OffsetDateTime startTime = null;
             OffsetDateTime endTime = null;
-            String timeZone = null;
+            TimeZone timeZone = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -180,7 +167,8 @@ public final class RecurrenceTrigger extends Trigger {
                     endTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("timeZone".equals(fieldName)) {
-                    timeZone = reader.getString();
+                    String timeZoneId = reader.getString();
+                    timeZone = parseTimeZone(timeZoneId);
                 } else {
                     reader.skipChildren();
                 }
@@ -228,5 +216,37 @@ public final class RecurrenceTrigger extends Trigger {
     public RecurrenceTrigger setEndTime(OffsetDateTime endTime) {
         this.endTime = endTime;
         return this;
+    }
+
+    /**
+     * Set the timeZone property: Time zone for the recurrence schedule.
+     *
+     * @param timeZone the timeZone value to set.
+     * @return the RecurrenceTrigger object itself.
+     */
+    @Generated
+    public RecurrenceTrigger setTimeZone(TimeZone timeZone) {
+        this.timeZone = timeZone;
+        return this;
+    }
+
+    /**
+     * Parses a timezone ID string into a {@link TimeZone}, returning {@code null} for unknown IDs.
+     * <p>
+     * {@link TimeZone#getTimeZone(String)} silently falls back to GMT for unrecognized IDs.
+     * This method detects that fallback and returns {@code null} instead, to avoid silent data corruption.
+     *
+     * @param timeZoneId the timezone ID to parse, or {@code null}.
+     * @return the corresponding {@link TimeZone}, or {@code null} if the ID is {@code null} or unrecognized.
+     */
+    private static TimeZone parseTimeZone(String timeZoneId) {
+        if (timeZoneId == null) {
+            return null;
+        }
+        TimeZone tz = TimeZone.getTimeZone(timeZoneId);
+        if ("GMT".equals(tz.getID()) && !"GMT".equalsIgnoreCase(timeZoneId)) {
+            return null;
+        }
+        return tz;
     }
 }
