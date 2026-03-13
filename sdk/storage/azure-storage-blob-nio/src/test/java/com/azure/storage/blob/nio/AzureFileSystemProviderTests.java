@@ -113,6 +113,19 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
         verifyFileSystem((AzureFileSystem) provider.getFileSystem(uri));
     }
 
+    @ParameterizedTest
+    @ValueSource(strings = { "", "test-uid" })
+    public void getFileSystemNotFoundAfterFileSystemIsClosed(String uid) throws IOException {
+        URI uri = getFileSystemUri(uid == "" ? null : uid);
+
+        config.put(AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL, ENV.getPrimaryAccount().getCredential());
+        config.put(AzureFileSystem.AZURE_STORAGE_FILE_STORES, generateContainerName());
+        provider.newFileSystem(uri, config);
+
+        provider.getFileSystem(uri).close();
+        assertThrows(FileSystemNotFoundException.class, () -> provider.getFileSystem(uri));
+    }
+
     @Test
     public void createFileSystemDifferentUid() throws IOException {
         config.put(AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL, ENV.getPrimaryAccount().getCredential());

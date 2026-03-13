@@ -224,7 +224,10 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
                 new FileSystemAlreadyExistsException("Name: " + parameters.endpoint() + " UID: " + parameters.uid()));
         }
 
-        AzureFileSystem afs = new AzureFileSystem(this, parameters.endpoint(), config);
+        Map<String, Object> configCopy = new HashMap<>(config);
+        configCopy.put(AzureFileSystem.AZURE_STORAGE_FILESYSTEM_UID, parameters.uid());
+
+        AzureFileSystem afs = new AzureFileSystem(this, parameters.endpoint(), configCopy);
         this.openFileSystems.put(parameters.uid(), afs);
 
         return afs;

@@ -135,6 +135,11 @@ public final class AzureFileSystem extends FileSystem {
      */
     public static final String AZURE_STORAGE_SKIP_INITIAL_CONTAINER_CHECK = "AzureStorageSkipInitialContainerCheck";
 
+    /**
+     * Expected type: String
+     */
+    public static final String AZURE_STORAGE_FILESYSTEM_UID = "AzureStorageFileSystemUid";
+
     static final String PATH_SEPARATOR = "/";
 
     private static final Map<String, String> PROPERTIES = CoreUtils.getProperties("azure-storage-blob-nio.properties");
@@ -161,6 +166,7 @@ public final class AzureFileSystem extends FileSystem {
     private final AzureSasCredential sasCredential;
     private FileStore defaultFileStore;
     private boolean closed;
+    private String uid;
 
     AzureFileSystem(AzureFileSystemProvider parentFileSystemProvider, String endpoint, Map<String, ?> config)
         throws IOException {
@@ -178,6 +184,9 @@ public final class AzureFileSystem extends FileSystem {
             this.putBlobThreshold = (Long) config.get(AZURE_STORAGE_PUT_BLOB_THRESHOLD);
             this.maxConcurrencyPerRequest = (Integer) config.get(AZURE_STORAGE_MAX_CONCURRENCY_PER_REQUEST);
             this.sasCredential = (AzureSasCredential) config.get(AZURE_STORAGE_SAS_TOKEN_CREDENTIAL);
+            this.uid = config.containsKey(AZURE_STORAGE_FILESYSTEM_UID)
+                ? (String) config.get(AZURE_STORAGE_FILESYSTEM_UID)
+                : endpoint;
 
             // Initialize and ensure access to FileStores.
             this.fileStores = this.initializeFileStores(config);
@@ -223,7 +232,7 @@ public final class AzureFileSystem extends FileSystem {
     @Override
     public void close() throws IOException {
         this.closed = true;
-        this.parentFileSystemProvider.closeFileSystem(this.getFileSystemUrl());
+        this.parentFileSystemProvider.closeFileSystem(this.uid);
     }
 
     /**
