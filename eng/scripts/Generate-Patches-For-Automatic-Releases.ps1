@@ -55,9 +55,25 @@ try {
     $packagesData = $ymlObject["extends"]["parameters"]["artifacts"]
     $libraryList = $null
 
+    # Build PatchVersionOverrides: map of artifactId → patch version for all artifacts
+    # being patched. This is passed to generatepatch.ps1 so changelogs show the correct
+    # version when a sibling dependency is also being patched in the same run.
+    $PatchVersionOverrides = @{}
+    foreach ($packageData in $packagesData) {
+        $pkgArtifactId = $packageData["name"]
+        $pkgGroupId = $packageData["groupId"]
+        try {
+            $mavenInfo = GetVersionInfoForAnArtifactId -GroupId $pkgGroupId -ArtifactId $pkgArtifactId
+            $patchVersion = GetPatchVersion -ReleaseVersion $mavenInfo.LatestGAOrPatchVersion
+            $PatchVersionOverrides[$pkgArtifactId] = $patchVersion
+        } catch {
+            Write-Warning "Could not determine patch version for ${pkgArtifactId}: $_"
+        }
+    }
+
     # Reset each package to the latest stable release and update CHANGELOG, POM and README for patch release.
     foreach ($packageData in $packagesData) {
-        . "${PSScriptRoot}/generatepatch.ps1" -ArtifactIds $packageData["name"] -ServiceDirectoryName $packageData["ServiceDirectory"] -BranchName $branchName -GroupId $packageData["groupId"] -UseCurrentBranch:$UseCurrentBranch
+        . "${PSScriptRoot}/generatepatch.ps1" -ArtifactIds $packageData["name"] -ServiceDirectoryName $packageData["ServiceDirectory"] -BranchName $branchName -GroupId $packageData["groupId"] -UseCurrentBranch:$UseCurrentBranch -PatchVersionOverrides $PatchVersionOverrides
         $libraryList += $packageData["groupId"] + ":" + $packageData["name"] + ","
     }
 
