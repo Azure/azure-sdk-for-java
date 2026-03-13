@@ -5,9 +5,9 @@
 package com.azure.ai.agents.implementation.models;
 
 /**
- * Defines values for OutputItemFunctionToolCallStatus.
+ * Defines values for ItemResourceImageGenToolCallStatus.
  */
-public enum OutputItemFunctionToolCallStatus {
+public enum ItemResourceImageGenToolCallStatus {
     /**
      * Enum value in_progress.
      */
@@ -19,31 +19,36 @@ public enum OutputItemFunctionToolCallStatus {
     COMPLETED("completed"),
 
     /**
-     * Enum value incomplete.
+     * Enum value generating.
      */
-    INCOMPLETE("incomplete");
+    GENERATING("generating"),
 
     /**
-     * The actual serialized value for a OutputItemFunctionToolCallStatus instance.
+     * Enum value failed.
+     */
+    FAILED("failed");
+
+    /**
+     * The actual serialized value for a ItemResourceImageGenToolCallStatus instance.
      */
     private final String value;
 
-    OutputItemFunctionToolCallStatus(String value) {
+    ItemResourceImageGenToolCallStatus(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a OutputItemFunctionToolCallStatus instance.
+     * Parses a serialized value to a ItemResourceImageGenToolCallStatus instance.
      * 
      * @param value the serialized value to parse.
-     * @return the parsed OutputItemFunctionToolCallStatus object, or null if unable to parse.
+     * @return the parsed ItemResourceImageGenToolCallStatus object, or null if unable to parse.
      */
-    public static OutputItemFunctionToolCallStatus fromString(String value) {
+    public static ItemResourceImageGenToolCallStatus fromString(String value) {
         if (value == null) {
             return null;
         }
-        OutputItemFunctionToolCallStatus[] items = OutputItemFunctionToolCallStatus.values();
-        for (OutputItemFunctionToolCallStatus item : items) {
+        ItemResourceImageGenToolCallStatus[] items = ItemResourceImageGenToolCallStatus.values();
+        for (ItemResourceImageGenToolCallStatus item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
