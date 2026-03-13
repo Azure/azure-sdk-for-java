@@ -841,7 +841,7 @@ public final class CertificateClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> purgeDeletedCertificateWithResponse(String certificateName, Context context) {
         return implClient.purgeDeletedCertificateWithResponse(certificateName,
-            new RequestOptions().setContext(context));
+            new RequestOptions().setContext(context).addHeader("Accept", "application/json"));
     }
 
     /**
