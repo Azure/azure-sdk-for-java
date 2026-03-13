@@ -37,7 +37,7 @@ public class PathProperties {
     private final Boolean isServerEncrypted;
     private final Boolean isIncrementalCopy;
     private final AccessTier accessTier;
-    private final boolean accessTierInferred;
+    private final Boolean accessTierInferred;
     private final AccessTier smartAccessTier;
     private final ArchiveStatus archiveStatus;
     private final String encryptionKeySha256;
@@ -105,7 +105,7 @@ public class PathProperties {
         final OffsetDateTime copyCompletionTime, final String copyStatusDescription, final Boolean isServerEncrypted,
         final Boolean isIncrementalCopy, final AccessTier accessTier, final ArchiveStatus archiveStatus,
         final String encryptionKeySha256, final OffsetDateTime accessTierChangeTime, final Map<String, String> metadata,
-        boolean accessTierInferred, AccessTier smartAccessTier) {
+        final Boolean accessTierInferred, final AccessTier smartAccessTier) {
         this(creationTime, lastModified, eTag, fileSize, contentType, contentMd5, contentEncoding, contentDisposition,
             contentLanguage, cacheControl, leaseStatus, leaseState, leaseDuration, copyId, copyStatus, copySource,
             copyProgress, copyCompletionTime, copyStatusDescription, isServerEncrypted, isIncrementalCopy, accessTier,
@@ -151,8 +151,8 @@ public class PathProperties {
         final LeaseStatusType leaseStatus, final LeaseStateType leaseState, final LeaseDurationType leaseDuration,
         final String copyId, final CopyStatusType copyStatus, final String copySource, final String copyProgress,
         final OffsetDateTime copyCompletionTime, final String copyStatusDescription, final Boolean isServerEncrypted,
-        final Boolean isIncrementalCopy, final AccessTier accessTier, boolean accessTierInferred,
-        AccessTier smartAccessTier, final ArchiveStatus archiveStatus, final String encryptionKeySha256,
+        final Boolean isIncrementalCopy, final AccessTier accessTier, final Boolean accessTierInferred,
+        final AccessTier smartAccessTier, final ArchiveStatus archiveStatus, final String encryptionKeySha256,
         final OffsetDateTime accessTierChangeTime, final Map<String, String> metadata, final OffsetDateTime expiresOn) {
         this.creationTime = creationTime;
         this.lastModified = lastModified;
@@ -399,9 +399,10 @@ public class PathProperties {
     /**
      * Gets whether the access tier of the path was inferred by the service.
      *
-     * @return whether the access tier of the path was inferred by the service.
+     * @return whether the access tier of the path was inferred by the service, or {@code null} when the service does
+     * not return an inferred value, such as for Smart tier blobs.
      */
-    public boolean isAccessTierInferred() {
+    public Boolean isAccessTierInferred() {
         return accessTierInferred;
     }
 
