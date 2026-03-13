@@ -11,6 +11,10 @@
 * `getUniformResourceIdentifiers()` was added
 * `getIpAddresses()` was added
 
+### Bugs Fixed
+
+- Fixed an issue where certain `HttpResponseException.getResponse()` calls could cause a `NullPointerException`. ([#47801](https://github.com/Azure/azure-sdk-for-java/issues/47801))
+
 ## 4.8.5 (2026-01-29)
 
 ### Other Changes
