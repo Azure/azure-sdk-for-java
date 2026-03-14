@@ -95,12 +95,14 @@ public class Http2PingHealthHandler extends ChannelDuplexHandler {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        logger.info("channelRead on parent {}: {}", ctx.channel().id().asShortText(), msg.getClass().getSimpleName());
         if (msg instanceof Http2PingFrame) {
             Http2PingFrame pingFrame = (Http2PingFrame) msg;
             if (pingFrame.ack()) {
                 ctx.channel().attr(LAST_PING_ACK_NANOS).set(System.nanoTime());
-                logger.info("HTTP/2 PING ACK on channel {}", ctx.channel().id().asShortText());
+                if (logger.isDebugEnabled()) {
+                    logger.debug("HTTP/2 PING ACK received on channel {}",
+                        ctx.channel().id().asShortText());
+                }
             }
         }
         // Always propagate — don't consume frames
@@ -176,7 +178,9 @@ public class Http2PingHealthHandler extends ChannelDuplexHandler {
         targetChannel.attr(HANDLER_INSTALLED).set(Boolean.TRUE);
         targetChannel.pipeline().addLast(HANDLER_NAME, new Http2PingHealthHandler(pingIntervalMs));
 
-        logger.info("Installed Http2PingHealthHandler on channel {} with {}ms interval. Pipeline: {}",
-            targetChannel.id().asShortText(), pingIntervalMs, targetChannel.pipeline().names());
+        if (logger.isDebugEnabled()) {
+            logger.debug("Installed Http2PingHealthHandler on channel {} with {}ms interval",
+                targetChannel.id().asShortText(), pingIntervalMs);
+        }
     }
 }

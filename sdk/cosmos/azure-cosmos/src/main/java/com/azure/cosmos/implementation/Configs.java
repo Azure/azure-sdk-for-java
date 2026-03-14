@@ -145,7 +145,6 @@ public class Configs {
     // HTTP connection max lifetime — forces periodic connection rotation for DNS re-resolution and load redistribution.
     private static final int DEFAULT_HTTP_CONNECTION_MAX_LIFETIME_IN_SECONDS = 300; // 5 minutes
     private static final String HTTP_CONNECTION_MAX_LIFETIME_IN_SECONDS = "COSMOS.HTTP_CONNECTION_MAX_LIFETIME_IN_SECONDS";
-    private static final String HTTP_CONNECTION_MAX_LIFETIME_IN_SECONDS_VARIABLE = "COSMOS_HTTP_CONNECTION_MAX_LIFETIME_IN_SECONDS";
     public static final int HTTP_CONNECTION_MAX_LIFETIME_JITTER_IN_SECONDS = 30;
 
     // HTTP/2 PING health check — detects silently degraded connections (packet black-hole, half-open TCP).
@@ -153,10 +152,8 @@ public class Configs {
     // Timeout: if no PING ACK is received within this duration, the connection is considered unhealthy.
     private static final int DEFAULT_HTTP2_PING_INTERVAL_IN_SECONDS = 10;
     private static final String HTTP2_PING_INTERVAL_IN_SECONDS = "COSMOS.HTTP2_PING_INTERVAL_IN_SECONDS";
-    private static final String HTTP2_PING_INTERVAL_IN_SECONDS_VARIABLE = "COSMOS_HTTP2_PING_INTERVAL_IN_SECONDS";
     private static final int DEFAULT_HTTP2_PING_ACK_TIMEOUT_IN_SECONDS = 30;
     private static final String HTTP2_PING_ACK_TIMEOUT_IN_SECONDS = "COSMOS.HTTP2_PING_ACK_TIMEOUT_IN_SECONDS";
-    private static final String HTTP2_PING_ACK_TIMEOUT_IN_SECONDS_VARIABLE = "COSMOS_HTTP2_PING_ACK_TIMEOUT_IN_SECONDS";
 
     private static final int DEFAULT_HTTP_RESPONSE_TIMEOUT_IN_SECONDS = 60;
     private static final int DEFAULT_QUERY_PLAN_RESPONSE_TIMEOUT_IN_SECONDS = 5;

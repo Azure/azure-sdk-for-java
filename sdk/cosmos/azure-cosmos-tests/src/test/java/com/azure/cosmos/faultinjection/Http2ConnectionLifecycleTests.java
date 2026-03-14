@@ -914,13 +914,6 @@ public class Http2ConnectionLifecycleTests extends FaultInjectionTestBase {
             String initialParentChannelId = establishH2ConnectionAndGetParentChannelId();
             logger.info("Initial parentChannelId: {}", initialParentChannelId);
 
-            // Diagnostic: check if PING handler installed on parent channel
-            // Use reflection or diagnostics to verify H2 config
-            logger.info("PING_DIAG: HTTP2_ENABLED={}, PING_INTERVAL={}, PING_ACK_TIMEOUT={}",
-                System.getProperty("COSMOS.HTTP2_ENABLED"),
-                System.getProperty("COSMOS.HTTP2_PING_INTERVAL_IN_SECONDS"),
-                System.getProperty("COSMOS.HTTP2_PING_ACK_TIMEOUT_IN_SECONDS"));
-
             // Blackhole traffic — PINGs sent but no ACKs return
             addPacketDrop();
             logger.info("Waiting 25s for PING ACK timeout (10s) + background sweep (5s) + margin...");
