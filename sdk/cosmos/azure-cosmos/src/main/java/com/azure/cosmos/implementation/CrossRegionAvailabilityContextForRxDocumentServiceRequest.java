@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.perPartitionAutomaticFailover.PartitionLe
 import com.azure.cosmos.implementation.perPartitionAutomaticFailover.PerPartitionAutomaticFailoverInfoHolder;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.LocationSpecificHealthContext;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.PerPartitionCircuitBreakerInfoHolder;
+import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -95,5 +96,22 @@ public class CrossRegionAvailabilityContextForRxDocumentServiceRequest {
 
     public PerPartitionAutomaticFailoverInfoHolder getPerPartitionAutomaticFailoverInfoHolder() {
         return this.perPartitionAutomaticFailoverInfoHolder;
+    }
+
+    /**
+     * For PPAF write hedging on single-writer accounts, this field holds the target
+     * read region that the hedged write should be routed to. When set, {@code ClientRetryPolicy}
+     * uses {@code routeToLocation(RegionalRoutingContext)} to force-route the request
+     * to this region, bypassing the excluded-regions mechanism which cannot route writes
+     * to read regions on single-writer accounts.
+     */
+    private volatile RegionalRoutingContext ppafWriteHedgeTargetRegion;
+
+    public RegionalRoutingContext getPpafWriteHedgeTargetRegion() {
+        return this.ppafWriteHedgeTargetRegion;
+    }
+
+    public void setPpafWriteHedgeTargetRegion(RegionalRoutingContext ppafWriteHedgeTargetRegion) {
+        this.ppafWriteHedgeTargetRegion = ppafWriteHedgeTargetRegion;
     }
 }

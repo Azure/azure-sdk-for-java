@@ -172,6 +172,39 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
             return true;
         }
 
+        // For PPAF write hedging: when the availability strategy has set a target read region
+        // for a hedged write and no existing failover entry exists, create the entry and route there.
+        // This is the synchronous, deterministic path — the conchashmap is updated in the same
+        // request pipeline so subsequent requests for this partition route directly to the target.
+        CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionCtx =
+            request.requestContext.getCrossRegionAvailabilityContext();
+
+        if (crossRegionCtx != null && crossRegionCtx.getPpafWriteHedgeTargetRegion() != null) {
+            RegionalRoutingContext hedgeTarget = crossRegionCtx.getPpafWriteHedgeTargetRegion();
+
+            // computeIfAbsent is atomic on ConcurrentHashMap — if the retry-based path already
+            // created an entry for this partition (with a potentially different region), we get
+            // that entry back. We route to the entry's current region (not blindly to hedgeTarget)
+            // to avoid routing to a region the retry path may have already marked as failed.
+            PartitionLevelAutomaticFailoverInfo hedgeFailoverInfo =
+                this.partitionKeyRangeToFailoverInfo.computeIfAbsent(
+                    partitionKeyRangeWrapper,
+                    k -> new PartitionLevelAutomaticFailoverInfo(hedgeTarget, this.globalEndpointManager));
+
+            request.requestContext.routeToLocation(hedgeFailoverInfo.getCurrent());
+            request.requestContext.setPerPartitionAutomaticFailoverInfoHolder(hedgeFailoverInfo);
+
+            if (logger.isInfoEnabled()) {
+                logger.info(
+                    "PPAF write hedge: routing write for partition key range {} and collection rid {} to target region {}",
+                    partitionKeyRangeWrapper.getPartitionKeyRange(),
+                    partitionKeyRangeWrapper.getCollectionResourceId(),
+                    hedgeTarget.getGatewayRegionalEndpoint());
+            }
+
+            return true;
+        }
+
         return false;
     }
 

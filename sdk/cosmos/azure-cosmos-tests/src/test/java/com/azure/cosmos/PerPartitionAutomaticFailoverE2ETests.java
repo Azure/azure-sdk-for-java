@@ -36,6 +36,9 @@ import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
+import com.azure.cosmos.implementation.perPartitionAutomaticFailover.GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover;
+import com.azure.cosmos.implementation.perPartitionAutomaticFailover.PartitionLevelAutomaticFailoverInfo;
+import com.azure.cosmos.implementation.PartitionKeyRangeWrapper;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import com.azure.cosmos.models.CosmosBatch;
@@ -229,7 +232,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
 
     private static final CosmosEndToEndOperationLatencyPolicyConfig THREE_SEC_E2E_TIMEOUT_POLICY = new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(3)).build();
 
-    BiConsumer<ResponseWrapper<?>, ExpectedResponseCharacteristics> validateExpectedResponseCharacteristics = (responseWrapper, expectedResponseCharacteristics) -> {
+    BiConsumer<ResponseWrapper<?>, ExpectedResponseCharacteristics> validateExpectedResponseCharacteristics= (responseWrapper, expectedResponseCharacteristics) -> {
         assertThat(responseWrapper).isNotNull();
 
         Utils.ValueHolder<CosmosDiagnostics> cosmosDiagnosticsValueHolder = new Utils.ValueHolder<>();
@@ -2068,9 +2071,663 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
         }
     }
 
+    // region: Write Availability Strategy for PPAF tests
+
     /**
-     * Helper: Executes the hedging window (multiple consecutive fault attempts) followed by a single post-window verification.
+     * Data provider for write availability strategy with PPAF scenarios.
+     *
+     * <p>Covers: Create, Replace, Upsert, Delete, Patch — all point write operations that go
+     * through {@code wrapPointOperationWithAvailabilityStrategy}. Batch is intentionally excluded
+     * because it bypasses the availability strategy path.
+     *
+     * <p>Fault: GONE/SERVER_GENERATED_410 (sub-status 21005) injected in the write region.
+     * This simulates a partition-level failure in DIRECT mode. The hedged write should succeed
+     * at a read region via the availability strategy.
      */
+    @DataProvider(name = "ppafWriteAvailabilityStrategyConfigs")
+    public Object[][] ppafWriteAvailabilityStrategyConfigs() {
+
+        // Before failover: write goes to write region (fails) + hedge to read region (succeeds).
+        // Exactly 2 regions contacted, success.
+        ExpectedResponseCharacteristics expectedResponseBeforeFailover = new ExpectedResponseCharacteristics()
+            .setExpectedMinRetryCount(0)
+            .setShouldFinalResponseHaveSuccess(true)
+            .setExpectedRegionsContactedCount(2);
+
+        // After failover: PPAF conchashmap routes directly to failover region.
+        // Write goes directly there — 1 region contacted, 0 retries, success.
+        ExpectedResponseCharacteristics expectedResponseAfterFailover = new ExpectedResponseCharacteristics()
+            .setExpectedMinRetryCount(0)
+            .setExpectedMaxRetryCount(0)
+            .setShouldFinalResponseHaveSuccess(true)
+            .setExpectedRegionsContactedCount(1);
+
+        return new Object[][]{
+            {
+                "Test write availability strategy hedging for CREATE with GONE / SERVER_GENERATED_410 in write region under PPAF.",
+                OperationType.Create,
+                HttpConstants.StatusCodes.GONE,
+                HttpConstants.SubStatusCodes.SERVER_GENERATED_410,
+                HttpConstants.StatusCodes.CREATED,
+                expectedResponseBeforeFailover,
+                expectedResponseAfterFailover,
+            },
+            {
+                "Test write availability strategy hedging for REPLACE with GONE / SERVER_GENERATED_410 in write region under PPAF.",
+                OperationType.Replace,
+                HttpConstants.StatusCodes.GONE,
+                HttpConstants.SubStatusCodes.SERVER_GENERATED_410,
+                HttpConstants.StatusCodes.OK,
+                expectedResponseBeforeFailover,
+                expectedResponseAfterFailover,
+            },
+            {
+                "Test write availability strategy hedging for UPSERT with GONE / SERVER_GENERATED_410 in write region under PPAF.",
+                OperationType.Upsert,
+                HttpConstants.StatusCodes.GONE,
+                HttpConstants.SubStatusCodes.SERVER_GENERATED_410,
+                HttpConstants.StatusCodes.OK,
+                expectedResponseBeforeFailover,
+                expectedResponseAfterFailover,
+            },
+            {
+                "Test write availability strategy hedging for DELETE with GONE / SERVER_GENERATED_410 in write region under PPAF.",
+                OperationType.Delete,
+                HttpConstants.StatusCodes.GONE,
+                HttpConstants.SubStatusCodes.SERVER_GENERATED_410,
+                HttpConstants.StatusCodes.NOT_MODIFIED,
+                expectedResponseBeforeFailover,
+                expectedResponseAfterFailover,
+            },
+            {
+                "Test write availability strategy hedging for PATCH with GONE / SERVER_GENERATED_410 in write region under PPAF.",
+                OperationType.Patch,
+                HttpConstants.StatusCodes.GONE,
+                HttpConstants.SubStatusCodes.SERVER_GENERATED_410,
+                HttpConstants.StatusCodes.OK,
+                expectedResponseBeforeFailover,
+                expectedResponseAfterFailover,
+            },
+            {
+                "Test write availability strategy hedging for CREATE with SERVICE_UNAVAILABLE / SERVER_GENERATED_503 in write region under PPAF.",
+                OperationType.Create,
+                HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
+                HttpConstants.StatusCodes.CREATED,
+                expectedResponseBeforeFailover,
+                expectedResponseAfterFailover,
+            },
+        };
+    }
+
+    /**
+     * Validates that the write availability strategy (hedging) works correctly for PPAF-enabled
+     * single-writer accounts in DIRECT mode.
+     *
+     * <p><strong>Scenario</strong>:
+     * <ol>
+     *   <li>A fault (GONE/410 with sub-status 21005 or SERVICE_UNAVAILABLE/503) is injected into the
+     *       write region for a specific partition key range.</li>
+     *   <li>The availability strategy should hedge the write to a read region, which returns success.</li>
+     *   <li>After the hedged write succeeds, the PPAF manager should record the successful read region
+     *       as the new write target for that partition.</li>
+     *   <li>Subsequent writes should route directly to the new region (1 region contacted, 0 retries).</li>
+     * </ol>
+     *
+     * <p><strong>Design rationale</strong>: This test validates the fast-path failover via availability
+     * strategy, which complements the slower retry-based failover (60-120s). By hedging writes to read
+     * regions, we reduce the time-to-recovery for partition-level failures from minutes to the hedging
+     * threshold (typically a few seconds).
+     *
+     * <p><strong>Why DIRECT mode only</strong>: In DIRECT mode, we can precisely mock the transport
+     * client to return errors for a specific (region, partition) combination while returning success
+     * for all other combinations. This level of control is required to validate the hedging behavior.
+     */
+    @Test(groups = {"multi-region"}, dataProvider = "ppafWriteAvailabilityStrategyConfigs")
+    public void testPpafWriteAvailabilityStrategyHedgingInDirectMode(
+        String testType,
+        OperationType operationType,
+        int errorStatusCodeToMock,
+        int errorSubStatusCodeToMock,
+        int successStatusCode,
+        ExpectedResponseCharacteristics expectedBeforeFailover,
+        ExpectedResponseCharacteristics expectedAfterFailover) {
+
+        ConnectionPolicy connectionPolicy = COSMOS_CLIENT_BUILDER_ACCESSOR.getConnectionPolicy(getClientBuilder());
+        ConnectionMode connectionMode = connectionPolicy.getConnectionMode();
+
+        if (connectionMode != ConnectionMode.DIRECT) {
+            throw new SkipException(String.format("Test with type: %s not eligible for connection mode %s.", testType, connectionMode));
+        }
+
+        TransportClient transportClientMock = Mockito.mock(TransportClient.class);
+        List<String> preferredRegions = this.accountLevelLocationReadableLocationContext.serviceOrderedReadableRegions;
+        Map<String, String> readableRegionNameToEndpoint = this.accountLevelLocationReadableLocationContext.regionNameToEndpoint;
+        Utils.ValueHolder<CosmosAsyncClient> cosmosAsyncClientValueHolder = new Utils.ValueHolder<>();
+
+        try {
+
+            // Reset any client-level E2E policy that a prior test may have set on the shared builder
+            CosmosAsyncClient asyncClient = getClientBuilder()
+                .endToEndOperationLatencyPolicyConfig(null)
+                .buildAsyncClient();
+            cosmosAsyncClientValueHolder.v = asyncClient;
+
+            CosmosAsyncContainer asyncContainer = asyncClient
+                .getDatabase(this.sharedDatabase.getId())
+                .getContainer(this.sharedSinglePartitionContainer.getId());
+
+            RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(asyncClient);
+
+            StoreClient storeClient = ReflectionUtils.getStoreClient(rxDocumentClient);
+            ReplicatedResourceClient replicatedResourceClient = ReflectionUtils.getReplicatedResourceClient(storeClient);
+            ConsistencyReader consistencyReader = ReflectionUtils.getConsistencyReader(replicatedResourceClient);
+            StoreReader storeReader = ReflectionUtils.getStoreReader(consistencyReader);
+            ConsistencyWriter consistencyWriter = ReflectionUtils.getConsistencyWriter(replicatedResourceClient);
+
+            Utils.ValueHolder<List<PartitionKeyRange>> partitionKeyRangesForContainer
+                = getPartitionKeyRangesForContainer(asyncContainer, rxDocumentClient).block();
+
+            assertThat(partitionKeyRangesForContainer).isNotNull();
+            assertThat(partitionKeyRangesForContainer.v).isNotNull();
+            assertThat(partitionKeyRangesForContainer.v.size()).isGreaterThanOrEqualTo(1);
+
+            PartitionKeyRange partitionKeyRangeWithIssues = partitionKeyRangesForContainer.v.get(0);
+
+            assertThat(preferredRegions).isNotNull();
+            assertThat(preferredRegions.size()).isGreaterThanOrEqualTo(2);
+
+            // The first preferred read region is used as the write region in single-writer accounts
+            String regionWithIssues = preferredRegions.get(0);
+            RegionalRoutingContext regionalRoutingContextWithIssues = new RegionalRoutingContext(new URI(readableRegionNameToEndpoint.get(regionWithIssues)));
+
+            ReflectionUtils.setTransportClient(storeReader, transportClientMock);
+            ReflectionUtils.setTransportClient(consistencyWriter, transportClientMock);
+
+            // Default: all requests succeed
+            setupTransportClientToReturnSuccessResponse(transportClientMock, constructStoreResponse(operationType, successStatusCode));
+
+            // Override: fault injected for the write region + specific partition
+            CosmosException cosmosException = createCosmosException(errorStatusCodeToMock, errorSubStatusCodeToMock);
+            setupTransportClientToThrowCosmosException(
+                transportClientMock,
+                partitionKeyRangeWithIssues,
+                regionalRoutingContextWithIssues,
+                cosmosException);
+
+            // Enable PPAF via delegating DatabaseAccountManagerInternal
+            GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
+            DatabaseAccountManagerInternal originalOwner = ReflectionUtils.getGlobalEndpointManagerOwner(globalEndpointManager);
+
+            AtomicReference<Boolean> ppafEnabledRef = new AtomicReference<>(Boolean.TRUE);
+            DatabaseAccountManagerInternal overridingOwner = new DelegatingDatabaseAccountManagerInternal(originalOwner, ppafEnabledRef);
+            ReflectionUtils.setGlobalEndpointManagerOwner(globalEndpointManager, overridingOwner);
+
+            DatabaseAccount latestDatabaseAccountSnapshot = globalEndpointManager.getLatestDatabaseAccount();
+            globalEndpointManager.refreshLocationAsync(latestDatabaseAccountSnapshot, true).block();
+
+            TestObject testItem = TestObject.create();
+
+            Function<OperationInvocationParamsWrapper, ResponseWrapper<?>> dataPlaneOperation = resolveDataPlaneOperation(operationType);
+
+            OperationInvocationParamsWrapper operationInvocationParamsWrapper = new OperationInvocationParamsWrapper();
+            operationInvocationParamsWrapper.asyncContainer = asyncContainer;
+            operationInvocationParamsWrapper.createdTestItem = testItem;
+            // No per-request E2E policy — the PPAF default write E2E policy applies automatically
+            operationInvocationParamsWrapper.itemRequestOptions = new CosmosItemRequestOptions();
+            operationInvocationParamsWrapper.patchItemRequestOptions = new CosmosPatchItemRequestOptions();
+
+            // Phase 1: Initial write — should hedge to read region and succeed
+            // The availability strategy should fire the hedged request after the threshold
+            ResponseWrapper<?> responseDuringHedging = dataPlaneOperation.apply(operationInvocationParamsWrapper);
+            this.validateExpectedResponseCharacteristics.accept(responseDuringHedging, expectedBeforeFailover);
+
+            // Verify PPAF conchashmap: after successful hedge, the partition should be tracked
+            // with the failover region (read region) as the current target.
+            GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover ppafManager =
+                rxDocumentClient.getGlobalPartitionEndpointManagerForPerPartitionAutomaticFailover();
+
+            @SuppressWarnings("unchecked")
+            ConcurrentHashMap<PartitionKeyRangeWrapper, PartitionLevelAutomaticFailoverInfo> failoverInfoMap =
+                (ConcurrentHashMap<PartitionKeyRangeWrapper, PartitionLevelAutomaticFailoverInfo>)
+                    ReflectionUtils.get(
+                        ConcurrentHashMap.class,
+                        ppafManager,
+                        "partitionKeyRangeToFailoverInfo");
+
+            assertThat(failoverInfoMap).isNotNull();
+            assertThat(failoverInfoMap).isNotEmpty();
+            // The partition should be tracked with a failover region that is NOT the write region
+            PartitionLevelAutomaticFailoverInfo failoverInfo = failoverInfoMap.values().iterator().next();
+            assertThat(failoverInfo).isNotNull();
+            assertThat(failoverInfo.getCurrent()).isNotNull();
+            assertThat(failoverInfo.getCurrent()).isNotEqualTo(regionalRoutingContextWithIssues);
+
+            // Phase 2: Post-stabilization — subsequent writes should route directly to the failover region
+            ResponseWrapper<?> responseAfterStabilization = dataPlaneOperation.apply(operationInvocationParamsWrapper);
+            this.validateExpectedResponseCharacteristics.accept(responseAfterStabilization, expectedAfterFailover);
+
+        } catch (Exception e) {
+            Assertions.fail("The test ran into an exception {}", e);
+        } finally {
+            System.clearProperty("COSMOS.IS_WRITE_AVAILABILITY_STRATEGY_ENABLED_WITH_PPAF");
+            safeClose(cosmosAsyncClientValueHolder.v);
+        }
+    }
+
+    /**
+     * Validates that write availability strategy hedging for PPAF can be disabled via the
+     * system property {@code COSMOS.IS_WRITE_AVAILABILITY_STRATEGY_ENABLED_WITH_PPAF=false}.
+     *
+     * <p>When disabled, write operations should fall back to the slower retry-based failover path
+     * (contacting 2 regions with retries), matching the pre-feature behavior.
+     *
+     * <p><strong>Why this matters</strong>: Provides a safety valve for customers who experience
+     * regressions from the write availability strategy. By disabling this config, the SDK reverts
+     * to the original PPAF retry-based failover for writes without requiring a code change.
+     */
+    @Test(groups = {"multi-region"})
+    public void testPpafWriteAvailabilityStrategyOptOutViaConfig() {
+
+        ConnectionPolicy connectionPolicy = COSMOS_CLIENT_BUILDER_ACCESSOR.getConnectionPolicy(getClientBuilder());
+        ConnectionMode connectionMode = connectionPolicy.getConnectionMode();
+
+        if (connectionMode != ConnectionMode.DIRECT) {
+            throw new SkipException("Test not eligible for gateway mode.");
+        }
+
+        TransportClient transportClientMock = Mockito.mock(TransportClient.class);
+        List<String> preferredRegions = this.accountLevelLocationReadableLocationContext.serviceOrderedReadableRegions;
+        Map<String, String> readableRegionNameToEndpoint = this.accountLevelLocationReadableLocationContext.regionNameToEndpoint;
+        Utils.ValueHolder<CosmosAsyncClient> cosmosAsyncClientValueHolder = new Utils.ValueHolder<>();
+
+        try {
+            // Disable write availability strategy for PPAF
+            System.setProperty("COSMOS.IS_WRITE_AVAILABILITY_STRATEGY_ENABLED_WITH_PPAF", "false");
+
+            // Reset any client-level E2E policy that a prior test may have set on the shared builder
+            CosmosAsyncClient asyncClient = getClientBuilder()
+                .endToEndOperationLatencyPolicyConfig(null)
+                .buildAsyncClient();
+            cosmosAsyncClientValueHolder.v = asyncClient;
+
+            CosmosAsyncContainer asyncContainer = asyncClient
+                .getDatabase(this.sharedDatabase.getId())
+                .getContainer(this.sharedSinglePartitionContainer.getId());
+
+            RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(asyncClient);
+
+            StoreClient storeClient = ReflectionUtils.getStoreClient(rxDocumentClient);
+            ReplicatedResourceClient replicatedResourceClient = ReflectionUtils.getReplicatedResourceClient(storeClient);
+            ConsistencyReader consistencyReader = ReflectionUtils.getConsistencyReader(replicatedResourceClient);
+            StoreReader storeReader = ReflectionUtils.getStoreReader(consistencyReader);
+            ConsistencyWriter consistencyWriter = ReflectionUtils.getConsistencyWriter(replicatedResourceClient);
+
+            Utils.ValueHolder<List<PartitionKeyRange>> partitionKeyRangesForContainer
+                = getPartitionKeyRangesForContainer(asyncContainer, rxDocumentClient).block();
+
+            assertThat(partitionKeyRangesForContainer).isNotNull();
+            assertThat(partitionKeyRangesForContainer.v).isNotNull();
+
+            PartitionKeyRange partitionKeyRangeWithIssues = partitionKeyRangesForContainer.v.get(0);
+
+            assertThat(preferredRegions).isNotNull();
+            assertThat(preferredRegions.size()).isGreaterThanOrEqualTo(2);
+
+            String regionWithIssues = preferredRegions.get(0);
+            RegionalRoutingContext regionalRoutingContextWithIssues = new RegionalRoutingContext(new URI(readableRegionNameToEndpoint.get(regionWithIssues)));
+
+            ReflectionUtils.setTransportClient(storeReader, transportClientMock);
+            ReflectionUtils.setTransportClient(consistencyWriter, transportClientMock);
+
+            setupTransportClientToReturnSuccessResponse(transportClientMock, constructStoreResponse(OperationType.Create, HttpConstants.StatusCodes.CREATED));
+
+            CosmosException cosmosException = createCosmosException(
+                HttpConstants.StatusCodes.GONE,
+                HttpConstants.SubStatusCodes.SERVER_GENERATED_410);
+
+            setupTransportClientToThrowCosmosException(
+                transportClientMock,
+                partitionKeyRangeWithIssues,
+                regionalRoutingContextWithIssues,
+                cosmosException);
+
+            // Enable PPAF
+            GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
+            DatabaseAccountManagerInternal originalOwner = ReflectionUtils.getGlobalEndpointManagerOwner(globalEndpointManager);
+
+            AtomicReference<Boolean> ppafEnabledRef = new AtomicReference<>(Boolean.TRUE);
+            DatabaseAccountManagerInternal overridingOwner = new DelegatingDatabaseAccountManagerInternal(originalOwner, ppafEnabledRef);
+            ReflectionUtils.setGlobalEndpointManagerOwner(globalEndpointManager, overridingOwner);
+
+            DatabaseAccount latestDatabaseAccountSnapshot = globalEndpointManager.getLatestDatabaseAccount();
+            globalEndpointManager.refreshLocationAsync(latestDatabaseAccountSnapshot, true).block();
+
+            TestObject testItem = TestObject.create();
+
+            Function<OperationInvocationParamsWrapper, ResponseWrapper<?>> dataPlaneOperation = resolveDataPlaneOperation(OperationType.Create);
+
+            OperationInvocationParamsWrapper operationInvocationParamsWrapper = new OperationInvocationParamsWrapper();
+            operationInvocationParamsWrapper.asyncContainer = asyncContainer;
+            operationInvocationParamsWrapper.createdTestItem = testItem;
+            operationInvocationParamsWrapper.itemRequestOptions = new CosmosItemRequestOptions();
+            operationInvocationParamsWrapper.patchItemRequestOptions = new CosmosPatchItemRequestOptions();
+
+            // With write availability strategy disabled, the write falls back to retry-based PPAF failover.
+            // Expect: success, 1-2 regions contacted, retries vary.
+            // With write availability strategy disabled, retry-based PPAF failover kicks in.
+            // Exactly 2 regions contacted: write region fails, retry routes to read region.
+            ExpectedResponseCharacteristics expectedWithOptOut = new ExpectedResponseCharacteristics()
+                .setExpectedMinRetryCount(1)
+                .setShouldFinalResponseHaveSuccess(true)
+                .setExpectedRegionsContactedCount(2);
+
+            ResponseWrapper<?> response = dataPlaneOperation.apply(operationInvocationParamsWrapper);
+            this.validateExpectedResponseCharacteristics.accept(response, expectedWithOptOut);
+
+        } catch (Exception e) {
+            Assertions.fail("The test ran into an exception {}", e);
+        } finally {
+            System.clearProperty("COSMOS.IS_WRITE_AVAILABILITY_STRATEGY_ENABLED_WITH_PPAF");
+            safeClose(cosmosAsyncClientValueHolder.v);
+        }
+    }
+
+    /**
+     * Validates that Batch operations are NOT affected by the write availability strategy for PPAF.
+     * Batch bypasses {@code wrapPointOperationWithAvailabilityStrategy} and uses the batch transport
+     * path directly. This test ensures that Batch continues to use the retry-based failover path.
+     */
+    @Test(groups = {"multi-region"})
+    public void testPpafWriteAvailabilityStrategyDoesNotAffectBatch() {
+
+        ConnectionPolicy connectionPolicy = COSMOS_CLIENT_BUILDER_ACCESSOR.getConnectionPolicy(getClientBuilder());
+        ConnectionMode connectionMode = connectionPolicy.getConnectionMode();
+
+        if (connectionMode != ConnectionMode.DIRECT) {
+            throw new SkipException("Test not eligible for gateway mode.");
+        }
+
+        TransportClient transportClientMock = Mockito.mock(TransportClient.class);
+        List<String> preferredRegions = this.accountLevelLocationReadableLocationContext.serviceOrderedReadableRegions;
+        Map<String, String> readableRegionNameToEndpoint = this.accountLevelLocationReadableLocationContext.regionNameToEndpoint;
+        Utils.ValueHolder<CosmosAsyncClient> cosmosAsyncClientValueHolder = new Utils.ValueHolder<>();
+
+        try {
+
+            // Reset any client-level E2E policy that a prior test may have set on the shared builder
+            CosmosAsyncClient asyncClient = getClientBuilder()
+                .endToEndOperationLatencyPolicyConfig(null)
+                .buildAsyncClient();
+            cosmosAsyncClientValueHolder.v = asyncClient;
+
+            CosmosAsyncContainer asyncContainer = asyncClient
+                .getDatabase(this.sharedDatabase.getId())
+                .getContainer(this.sharedSinglePartitionContainer.getId());
+
+            RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(asyncClient);
+
+            StoreClient storeClient = ReflectionUtils.getStoreClient(rxDocumentClient);
+            ReplicatedResourceClient replicatedResourceClient = ReflectionUtils.getReplicatedResourceClient(storeClient);
+            ConsistencyReader consistencyReader = ReflectionUtils.getConsistencyReader(replicatedResourceClient);
+            StoreReader storeReader = ReflectionUtils.getStoreReader(consistencyReader);
+            ConsistencyWriter consistencyWriter = ReflectionUtils.getConsistencyWriter(replicatedResourceClient);
+
+            Utils.ValueHolder<List<PartitionKeyRange>> partitionKeyRangesForContainer
+                = getPartitionKeyRangesForContainer(asyncContainer, rxDocumentClient).block();
+
+            assertThat(partitionKeyRangesForContainer).isNotNull();
+            assertThat(partitionKeyRangesForContainer.v).isNotNull();
+
+            PartitionKeyRange partitionKeyRangeWithIssues = partitionKeyRangesForContainer.v.get(0);
+
+            assertThat(preferredRegions).isNotNull();
+            assertThat(preferredRegions.size()).isGreaterThanOrEqualTo(2);
+
+            String regionWithIssues = preferredRegions.get(0);
+            RegionalRoutingContext regionalRoutingContextWithIssues = new RegionalRoutingContext(new URI(readableRegionNameToEndpoint.get(regionWithIssues)));
+
+            ReflectionUtils.setTransportClient(storeReader, transportClientMock);
+            ReflectionUtils.setTransportClient(consistencyWriter, transportClientMock);
+
+            setupTransportClientToReturnSuccessResponse(transportClientMock, constructStoreResponse(OperationType.Batch, HttpConstants.StatusCodes.OK));
+
+            CosmosException cosmosException = createCosmosException(
+                HttpConstants.StatusCodes.GONE,
+                HttpConstants.SubStatusCodes.SERVER_GENERATED_410);
+
+            setupTransportClientToThrowCosmosException(
+                transportClientMock,
+                partitionKeyRangeWithIssues,
+                regionalRoutingContextWithIssues,
+                cosmosException);
+
+            // Enable PPAF
+            GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
+            DatabaseAccountManagerInternal originalOwner = ReflectionUtils.getGlobalEndpointManagerOwner(globalEndpointManager);
+
+            AtomicReference<Boolean> ppafEnabledRef = new AtomicReference<>(Boolean.TRUE);
+            DatabaseAccountManagerInternal overridingOwner = new DelegatingDatabaseAccountManagerInternal(originalOwner, ppafEnabledRef);
+            ReflectionUtils.setGlobalEndpointManagerOwner(globalEndpointManager, overridingOwner);
+
+            DatabaseAccount latestDatabaseAccountSnapshot = globalEndpointManager.getLatestDatabaseAccount();
+            globalEndpointManager.refreshLocationAsync(latestDatabaseAccountSnapshot, true).block();
+
+            // Batch uses retry-based PPAF failover, NOT availability strategy hedging.
+            // Exactly 2 regions contacted: write region fails, retry routes to read region.
+            ExpectedResponseCharacteristics expectedForBatch = new ExpectedResponseCharacteristics()
+                .setExpectedMinRetryCount(1)
+                .setShouldFinalResponseHaveSuccess(true)
+                .setExpectedRegionsContactedCount(2);
+
+            Function<OperationInvocationParamsWrapper, ResponseWrapper<?>> dataPlaneOperation = resolveDataPlaneOperation(OperationType.Batch);
+
+            TestObject testItem = TestObject.create();
+
+            OperationInvocationParamsWrapper operationInvocationParamsWrapper = new OperationInvocationParamsWrapper();
+            operationInvocationParamsWrapper.asyncContainer = asyncContainer;
+            operationInvocationParamsWrapper.createdTestItem = testItem;
+            operationInvocationParamsWrapper.itemRequestOptions = new CosmosItemRequestOptions();
+            operationInvocationParamsWrapper.patchItemRequestOptions = new CosmosPatchItemRequestOptions();
+
+            ResponseWrapper<?> response = dataPlaneOperation.apply(operationInvocationParamsWrapper);
+            this.validateExpectedResponseCharacteristics.accept(response, expectedForBatch);
+
+        } catch (Exception e) {
+            Assertions.fail("The test ran into an exception {}", e);
+        } finally {
+            System.clearProperty("COSMOS.IS_WRITE_AVAILABILITY_STRATEGY_ENABLED_WITH_PPAF");
+            safeClose(cosmosAsyncClientValueHolder.v);
+        }
+    }
+
+    /**
+     * Data provider for write availability strategy with PPAF in GATEWAY mode.
+     *
+     * <p>Uses a mocked {@code HttpClient} to simulate a delayed write region response
+     * while returning success from the read region. This approach ensures deterministic
+     * behavior for all 5 write operation types (Create, Replace, Upsert, Delete, Patch).
+     */
+    @DataProvider(name = "ppafWriteAvailabilityStrategyGatewayConfigs")
+    public Object[][] ppafWriteAvailabilityStrategyGatewayConfigs() {
+
+        // Before failover: write goes to write region (delayed 10s by mock) →
+        // availability strategy hedges to read region (mock returns success) → succeeds.
+        // Before failover: write goes to write region (delayed 10s) + hedge to read region (success).
+        // Exactly 2 regions contacted.
+        ExpectedResponseCharacteristics expectedBeforeFailover = new ExpectedResponseCharacteristics()
+            .setExpectedMinRetryCount(0)
+            .setShouldFinalResponseHaveSuccess(true)
+            .setExpectedRegionsContactedCount(2);
+
+        // After failover: PPAF conchashmap routes directly to failover region.
+        // Exactly 1 region contacted.
+        ExpectedResponseCharacteristics expectedAfterFailover = new ExpectedResponseCharacteristics()
+            .setExpectedMinRetryCount(0)
+            .setExpectedMaxRetryCount(0)
+            .setShouldFinalResponseHaveSuccess(true)
+            .setExpectedRegionsContactedCount(1);
+
+        return new Object[][]{
+            {
+                "GATEWAY: Write availability strategy hedging for CREATE with delayed write region under PPAF.",
+                OperationType.Create,
+                HttpConstants.StatusCodes.CREATED,
+                expectedBeforeFailover,
+                expectedAfterFailover,
+            },
+            {
+                "GATEWAY: Write availability strategy hedging for REPLACE with delayed write region under PPAF.",
+                OperationType.Replace,
+                HttpConstants.StatusCodes.OK,
+                expectedBeforeFailover,
+                expectedAfterFailover,
+            },
+            {
+                "GATEWAY: Write availability strategy hedging for UPSERT with delayed write region under PPAF.",
+                OperationType.Upsert,
+                HttpConstants.StatusCodes.OK,
+                expectedBeforeFailover,
+                expectedAfterFailover,
+            },
+            {
+                "GATEWAY: Write availability strategy hedging for DELETE with delayed write region under PPAF.",
+                OperationType.Delete,
+                HttpConstants.StatusCodes.NOT_MODIFIED,
+                expectedBeforeFailover,
+                expectedAfterFailover,
+            },
+            {
+                "GATEWAY: Write availability strategy hedging for PATCH with delayed write region under PPAF.",
+                OperationType.Patch,
+                HttpConstants.StatusCodes.OK,
+                expectedBeforeFailover,
+                expectedAfterFailover,
+            },
+        };
+    }
+
+    /**
+     * Validates write availability strategy hedging in GATEWAY mode for PPAF-enabled single-writer accounts.
+     *
+     * <p><strong>Approach</strong>: Uses a mocked {@code HttpClient} (same pattern as existing GATEWAY
+     * write failover tests) to control responses from both write and read regions:
+     * <ul>
+     *   <li>Default: all requests return mocked success.</li>
+     *   <li>Override: requests to the write region endpoint are delayed by 10s before returning an error,
+     *       simulating an unresponsive write region.</li>
+     *   <li>The hedged request to the read region hits the default success mock and completes immediately.</li>
+     * </ul>
+     *
+     * <p>This gives deterministic control over both regions for all 5 write operation types.
+     */
+    @Test(groups = {"multi-region"}, dataProvider = "ppafWriteAvailabilityStrategyGatewayConfigs")
+    public void testPpafWriteAvailabilityStrategyHedgingInGatewayMode(
+        String testType,
+        OperationType operationType,
+        int successStatusCode,
+        ExpectedResponseCharacteristics expectedBeforeFailover,
+        ExpectedResponseCharacteristics expectedAfterFailover) {
+
+        ConnectionPolicy connectionPolicy = COSMOS_CLIENT_BUILDER_ACCESSOR.getConnectionPolicy(getClientBuilder());
+        ConnectionMode connectionMode = connectionPolicy.getConnectionMode();
+
+        if (connectionMode != ConnectionMode.GATEWAY) {
+            throw new SkipException(String.format("Test with type: %s not eligible for connection mode %s.", testType, connectionMode));
+        }
+
+        HttpClient mockedHttpClient = Mockito.mock(HttpClient.class);
+        List<String> preferredRegions = this.accountLevelLocationReadableLocationContext.serviceOrderedReadableRegions;
+        Map<String, String> readableRegionNameToEndpoint = this.accountLevelLocationReadableLocationContext.regionNameToEndpoint;
+        Utils.ValueHolder<CosmosAsyncClient> cosmosAsyncClientValueHolder = new Utils.ValueHolder<>();
+
+        try {
+            // Reset any client-level E2E policy that a prior test may have set on the shared builder
+            CosmosAsyncClient asyncClient = getClientBuilder()
+                .endToEndOperationLatencyPolicyConfig(null)
+                .buildAsyncClient();
+            cosmosAsyncClientValueHolder.v = asyncClient;
+
+            CosmosAsyncContainer asyncContainer = asyncClient
+                .getDatabase(this.sharedDatabase.getId())
+                .getContainer(this.sharedSinglePartitionContainer.getId());
+
+            // Warm caches before mocking
+            asyncContainer.getFeedRanges().block();
+
+            RxDocumentClientImpl rxDocumentClient =
+                (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(asyncClient);
+
+            RxStoreModel rxStoreModel = ReflectionUtils.getGatewayProxy(rxDocumentClient);
+
+            GlobalEndpointManager globalEndpointManager =
+                ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
+            DatabaseAccount databaseAccount = globalEndpointManager.getLatestDatabaseAccount();
+
+            // Enable PPAF dynamically
+            DatabaseAccountManagerInternal originalOwner =
+                ReflectionUtils.getGlobalEndpointManagerOwner(globalEndpointManager);
+            AtomicReference<Boolean> ppafEnabledRef = new AtomicReference<>(Boolean.TRUE);
+            DatabaseAccountManagerInternal overridingOwner =
+                new DelegatingDatabaseAccountManagerInternal(originalOwner, ppafEnabledRef);
+            ReflectionUtils.setGlobalEndpointManagerOwner(globalEndpointManager, overridingOwner);
+
+            DatabaseAccount latestDatabaseAccountSnapshot = globalEndpointManager.getLatestDatabaseAccount();
+            globalEndpointManager.refreshLocationAsync(latestDatabaseAccountSnapshot, true).block();
+
+            assertThat(preferredRegions).isNotNull();
+            assertThat(preferredRegions.size()).isGreaterThanOrEqualTo(2);
+
+            String regionWithIssues = preferredRegions.get(0);
+
+            // Replace the gateway HttpClient with our mock
+            ReflectionUtils.setGatewayHttpClient(rxStoreModel, mockedHttpClient);
+
+            // Default: all requests return success (including hedged requests to read region)
+            setupHttpClientToReturnSuccessResponse(mockedHttpClient, operationType, databaseAccount, successStatusCode);
+
+            // Override: write region requests are delayed by 10s then error — simulates unresponsive write region
+            CosmosException cosmosException = createCosmosException(
+                HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                HttpConstants.SubStatusCodes.SERVER_GENERATED_503);
+
+            // shouldForceE2ETimeout=true triggers the Mono.delay(10s) pattern
+            setupHttpClientToThrowCosmosException(
+                mockedHttpClient,
+                new URI(readableRegionNameToEndpoint.get(regionWithIssues)),
+                cosmosException,
+                false,  // shouldThrowNetworkError
+                false,  // shouldThrowReadTimeoutExceptionWhenNetworkError
+                true);  // shouldForceE2ETimeout — delays response by 10s
+
+            TestObject testItem = TestObject.create();
+
+            Function<OperationInvocationParamsWrapper, ResponseWrapper<?>> dataPlaneOperation =
+                resolveDataPlaneOperation(operationType);
+
+            OperationInvocationParamsWrapper params = new OperationInvocationParamsWrapper();
+            params.asyncContainer = asyncContainer;
+            params.createdTestItem = testItem;
+            params.itemRequestOptions = new CosmosItemRequestOptions();
+            params.patchItemRequestOptions = new CosmosPatchItemRequestOptions();
+
+            // Phase 1: Write to the delayed region should hedge to the read region (mocked success)
+            ResponseWrapper<?> responseDuringHedging = dataPlaneOperation.apply(params);
+            this.validateExpectedResponseCharacteristics.accept(responseDuringHedging, expectedBeforeFailover);
+
+            // Phase 2: Post-stabilization — should route directly to the new region
+            ResponseWrapper<?> responseAfterStabilization = dataPlaneOperation.apply(params);
+            this.validateExpectedResponseCharacteristics.accept(responseAfterStabilization, expectedAfterFailover);
+
+        } catch (Exception e) {
+            Assertions.fail("The test ran into an exception {}", e);
+        } finally {
+            System.clearProperty("COSMOS.IS_WRITE_AVAILABILITY_STRATEGY_ENABLED_WITH_PPAF");
+            safeClose(cosmosAsyncClientValueHolder.v);
+        }
+    }
+
+    // endregion
     private void runHedgingPhasesForNonWrite(
         int consecutiveFaults,
         Function<OperationInvocationParamsWrapper, ResponseWrapper<?>> dataPlaneOperation,

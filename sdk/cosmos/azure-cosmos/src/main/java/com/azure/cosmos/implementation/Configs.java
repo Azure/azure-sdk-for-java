@@ -330,6 +330,10 @@ public class Configs {
     private static final String IS_READ_AVAILABILITY_STRATEGY_ENABLED_WITH_PPAF = "COSMOS.IS_READ_AVAILABILITY_STRATEGY_ENABLED_WITH_PPAF";
     private static final String IS_READ_AVAILABILITY_STRATEGY_ENABLED_WITH_PPAF_VARIABLE = "COSMOS_IS_READ_AVAILABILITY_STRATEGY_ENABLED_WITH_PPAF";
 
+    private static final String DEFAULT_IS_WRITE_AVAILABILITY_STRATEGY_ENABLED_WITH_PPAF = "true";
+    private static final String IS_WRITE_AVAILABILITY_STRATEGY_ENABLED_WITH_PPAF = "COSMOS.IS_WRITE_AVAILABILITY_STRATEGY_ENABLED_WITH_PPAF";
+    private static final String IS_WRITE_AVAILABILITY_STRATEGY_ENABLED_WITH_PPAF_VARIABLE = "COSMOS_IS_WRITE_AVAILABILITY_STRATEGY_ENABLED_WITH_PPAF";
+
     private static final int DEFAULT_WARN_LEVEL_LOGGING_THRESHOLD_FOR_PPAF = 25;
     private static final String WARN_LEVEL_LOGGING_THRESHOLD_FOR_PPAF = "COSMOS.WARN_LEVEL_LOGGING_THRESHOLD_FOR_PPAF";
     private static final String WARN_LEVEL_LOGGING_THRESHOLD_FOR_PPAF_VARIABLE = "COSMOS_WARN_LEVEL_LOGGING_THRESHOLD_FOR_PPAF_VARIABLE";
@@ -1342,6 +1346,16 @@ public class Configs {
                 DEFAULT_IS_READ_AVAILABILITY_STRATEGY_ENABLED_WITH_PPAF));
 
         return Boolean.parseBoolean(isReadAvailabilityStrategyEnabledWithPpaf);
+    }
+
+    public static boolean isWriteAvailabilityStrategyEnabledWithPpaf() {
+        String isWriteAvailabilityStrategyEnabledWithPpaf = System.getProperty(
+            IS_WRITE_AVAILABILITY_STRATEGY_ENABLED_WITH_PPAF,
+            firstNonNull(
+                emptyToNull(System.getenv().get(IS_WRITE_AVAILABILITY_STRATEGY_ENABLED_WITH_PPAF_VARIABLE)),
+                DEFAULT_IS_WRITE_AVAILABILITY_STRATEGY_ENABLED_WITH_PPAF));
+
+        return Boolean.parseBoolean(isWriteAvailabilityStrategyEnabledWithPpaf);
     }
 
     public static String getAadScopeOverride() {
