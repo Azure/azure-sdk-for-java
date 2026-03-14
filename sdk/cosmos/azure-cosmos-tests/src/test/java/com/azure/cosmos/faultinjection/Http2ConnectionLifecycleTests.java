@@ -336,7 +336,7 @@ public class Http2ConnectionLifecycleTests extends FaultInjectionTestBase {
      * Does not fail the test on error — the priority is cleanup, not assertion.</p>
      */
     private void removeNetworkDelay() {
-        String cmd = String.format("%stc qdisc del dev %s root netem", sudoPrefix, networkInterface);
+        String cmd = String.format("%stc qdisc del dev %s root", sudoPrefix, networkInterface);
         logger.info(">>> Removing network delay: {}", cmd);
         try {
             Process p = Runtime.getRuntime().exec(new String[]{"sh", "-c", cmd});
@@ -344,7 +344,10 @@ public class Http2ConnectionLifecycleTests extends FaultInjectionTestBase {
             if (exit == 0) {
                 logger.info(">>> Network delay removed");
             } else {
-                logger.warn("tc del returned exit={} (may already be removed)", exit);
+                try (BufferedReader err = new BufferedReader(new InputStreamReader(p.getErrorStream()))) {
+                    String errMsg = err.readLine();
+                    logger.warn("tc del returned exit={}: {} (may already be removed)", exit, errMsg);
+                }
             }
         } catch (Exception e) {
             logger.warn("Failed to remove network delay: {}", e.getMessage());
@@ -395,10 +398,9 @@ public class Http2ConnectionLifecycleTests extends FaultInjectionTestBase {
         assertContainsGatewayTimeout(delayedDiagnostics, "delayed read");
 
         // Brief pause to let TCP retransmission settle after netem qdisc deletion.
-        // On CI VMs, kernel queue draining may take longer than in Docker.
         Thread.sleep(3000);
 
-        // Recovery read — assert no timeout, low latency, and same parent channel
+        // Recovery read — delay is removed, should succeed cleanly
         CosmosDiagnostics recoveryDiagnostics = this.performDocumentOperation(
             this.cosmosAsyncContainer, OperationType.Read, seedItem, false);
         CosmosDiagnosticsContext recoveryCtx = recoveryDiagnostics.getDiagnosticsContext();
@@ -410,7 +412,7 @@ public class Http2ConnectionLifecycleTests extends FaultInjectionTestBase {
             h2ParentChannelIdBeforeDelay.equals(h2ParentChannelIdAfterDelay),
             recoveryCtx.getDuration().toMillis());
         AssertionsForClassTypes.assertThat(recoveryCtx.getDuration())
-            .as("Recovery read should complete within 10s (allows one 6s ReadTimeout retry + TCP stabilization)")
+            .as("Recovery read should complete within 10s (delay removed, no retries expected)")
             .isLessThan(Duration.ofSeconds(10));
         assertThat(h2ParentChannelIdAfterDelay)
             .as("H2 parent NioSocketChannel should survive ReadTimeoutException on Http2StreamChannel")
