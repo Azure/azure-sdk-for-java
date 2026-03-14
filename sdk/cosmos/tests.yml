@@ -163,15 +163,22 @@ extends:
             - name: AdditionalArgs
               value: '-DCOSMOS.CLIENT_LEAK_DETECTION_ENABLED=true -DACCOUNT_HOST=$(thin-client-canary-multi-writer-session-endpoint) -DACCOUNT_KEY=$(thin-client-canary-multi-writer-session-key)  -DCOSMOS.THINCLIENT_ENABLED=true'
 
-      # Network fault injection tests (tc netem, iptables) — requires Linux VM with NET_ADMIN.
+      # Network fault injection tests (tc netem, iptables) — runs natively on Linux CI VMs.
+      # PreSteps ensure iproute2 (tc) and iptables are installed and sch_netem kernel module is loaded.
+      # Tests use sudo for tc/iptables commands. Self-skip if tc is not available.
       # Tests run sequentially (MaxParallel: 1) to avoid tc/iptables interference between tests.
-      # No Docker needed — tc and iptables are native on the Linux CI VM.
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
           TestName: 'Cosmos_Live_Test_HttpNetworkFault'
           CloudConfig:
             Public:
               ServiceConnection: azure-sdk-tests-cosmos
+          PreSteps:
+            - script: |
+                sudo apt-get update -qq && sudo apt-get install -y -qq iproute2 iptables
+                sudo modprobe sch_netem || true
+                tc -Version && echo "tc available" || echo "tc not found"
+              displayName: 'Install tc (iproute2) and iptables for network fault injection'
           MatrixConfigs:
             - Name: Cosmos_live_test_http_network_fault
               Path: sdk/cosmos/live-http-network-fault-platform-matrix.json

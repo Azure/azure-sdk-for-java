@@ -53,10 +53,11 @@ import static org.testng.AssertJUnit.fail;
  * does NOT close the parent TCP connection.
  * <p>
  * HOW TO RUN:
- * 1. Group "manual-http-network-fault" — NOT included in CI.
- * 2. Docker container with --cap-add=NET_ADMIN, JDK 21, .m2 mounted.
+ * 1. Group "manual-http-network-fault" — NOT included in standard CI test suites.
+ * 2. Runs natively on Linux VMs (with sudo) or in Docker (with --cap-add=NET_ADMIN).
  * 3. Tests self-manage tc netem (add/remove delay) — no manual intervention.
- * 4. See NETWORK_DELAY_TESTING_README.md for full setup and run instructions.
+ * 4. Tests self-skip if tc is not available (e.g., on Windows or non-privileged Linux).
+ * 5. See NETWORK_DELAY_TESTING_README.md for full setup and run instructions.
  * <p>
  * DESIGN:
  * - No creates during tests. One seed item created in beforeClass (via shared container).
@@ -73,9 +74,10 @@ public class Http2ConnectionLifecycleTests extends FaultInjectionTestBase {
     private static final String TEST_GROUP = "manual-http-network-fault";
     // 3 minutes per test — enough for warmup + delay + retries + cross-region failover + recovery read
     private static final long TEST_TIMEOUT = 180_000;
-    // Hardcode eth0 — Docker always uses eth0. detectNetworkInterface() fails during active delay
-    // because `tc qdisc show dev eth0` hangs, and the fallback returns `eth0@if23` which tc rejects.
-    private static final String NETWORK_INTERFACE = "eth0";
+    // Network interface detected at runtime — eth0 for Docker, or the default route interface on CI VMs.
+    private String networkInterface;
+    // Prefix for privileged commands: empty string in Docker (runs as root), "sudo " on CI VMs.
+    private String sudoPrefix;
 
     @Factory(dataProvider = "clientBuildersWithGatewayAndHttp2")
     public Http2ConnectionLifecycleTests(CosmosClientBuilder clientBuilder) {
@@ -85,6 +87,29 @@ public class Http2ConnectionLifecycleTests extends FaultInjectionTestBase {
 
     @BeforeClass(groups = {TEST_GROUP}, timeOut = TIMEOUT)
     public void beforeClass() {
+        // Detect whether we're running as root (Docker) or need sudo (CI VM)
+        this.sudoPrefix = "root".equals(System.getProperty("user.name")) ? "" : "sudo ";
+
+        // Detect the default-route network interface
+        this.networkInterface = detectNetworkInterface();
+        logger.info("Network interface: {}, sudo: {}", this.networkInterface, !this.sudoPrefix.isEmpty());
+
+        // Verify tc (traffic control) is available — fail-fast if not
+        try {
+            Process p = Runtime.getRuntime().exec(new String[]{"sh", "-c", sudoPrefix + "tc qdisc show dev " + networkInterface});
+            int exit = p.waitFor();
+            if (exit != 0) {
+                try (BufferedReader err = new BufferedReader(new InputStreamReader(p.getErrorStream()))) {
+                    String errMsg = err.readLine();
+                    fail("tc not available on " + networkInterface + " (exit=" + exit + "): " + errMsg);
+                }
+            }
+        } catch (AssertionError e) {
+            throw e;
+        } catch (Exception e) {
+            fail("tc not available: " + e.getMessage());
+        }
+
         System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
 
         // Seed one item using a temporary client. The shared container is created by @BeforeSuite.
@@ -118,8 +143,10 @@ public class Http2ConnectionLifecycleTests extends FaultInjectionTestBase {
      */
     @AfterMethod(groups = {TEST_GROUP}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterMethod() {
-        removeNetworkDelay();
-        removePacketDrop();
+        if (sudoPrefix != null) {
+            removeNetworkDelay();
+            removePacketDrop();
+        }
         safeClose(this.client);
         this.client = null;
         this.cosmosAsyncContainer = null;
@@ -128,8 +155,10 @@ public class Http2ConnectionLifecycleTests extends FaultInjectionTestBase {
 
     @AfterClass(groups = {TEST_GROUP}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        removeNetworkDelay();
-        removePacketDrop();
+        if (sudoPrefix != null) {
+            removeNetworkDelay();
+            removePacketDrop();
+        }
         System.clearProperty("COSMOS.THINCLIENT_ENABLED");
         System.clearProperty("COSMOS.HTTP_CONNECTION_MAX_LIFETIME_IN_SECONDS");
     }
@@ -268,19 +297,18 @@ public class Http2ConnectionLifecycleTests extends FaultInjectionTestBase {
     }
 
     /**
-     * Applies a tc netem delay to all outbound traffic on the Docker container's network interface.
+     * Applies a tc netem delay to all outbound traffic on the network interface.
      * This delays ALL packets (including TCP handshake, HTTP/2 frames, and TLS records) by the
      * specified duration, causing reactor-netty's ReadTimeoutHandler to fire on H2 stream channels
      * when the delay exceeds the configured responseTimeout.
      *
-     * <p>Requires {@code --cap-add=NET_ADMIN} on the Docker container. Fails the test immediately
-     * if the {@code tc} command is not available or returns a non-zero exit code.</p>
+     * <p>Requires root (Docker with {@code --cap-add=NET_ADMIN}) or passwordless sudo (CI VM).
+     * Fails the test immediately if {@code tc} command fails.</p>
      *
      * @param delayMs the delay in milliseconds to inject (e.g., 8000 for an 8-second delay)
      */
     private void addNetworkDelay(int delayMs) {
-        String iface = NETWORK_INTERFACE;
-        String cmd = String.format("tc qdisc add dev %s root netem delay %dms", iface, delayMs);
+        String cmd = String.format("%stc qdisc add dev %s root netem delay %dms", sudoPrefix, networkInterface, delayMs);
         logger.info(">>> Adding network delay: {}", cmd);
         try {
             Process p = Runtime.getRuntime().exec(new String[]{"sh", "-c", cmd});
@@ -288,10 +316,10 @@ public class Http2ConnectionLifecycleTests extends FaultInjectionTestBase {
             if (exit != 0) {
                 try (BufferedReader err = new BufferedReader(new InputStreamReader(p.getErrorStream()))) {
                     String errMsg = err.readLine();
-                    logger.warn("tc add failed (exit={}): {}", exit, errMsg);
+                    fail("tc add failed (exit=" + exit + "): " + errMsg);
                 }
             } else {
-                logger.info(">>> Network delay active: {}ms on {}", delayMs, iface);
+                logger.info(">>> Network delay active: {}ms on {}", delayMs, networkInterface);
             }
         } catch (Exception e) {
             logger.error("Failed to add network delay", e);
@@ -300,7 +328,7 @@ public class Http2ConnectionLifecycleTests extends FaultInjectionTestBase {
     }
 
     /**
-     * Removes any tc netem qdisc from the Docker container's network interface, restoring
+     * Removes any tc netem qdisc from the network interface, restoring
      * normal network behavior. This is called in {@code finally} blocks after each test and
      * in {@code @AfterMethod} and {@code @AfterClass} as a safety net.
      *
@@ -308,8 +336,7 @@ public class Http2ConnectionLifecycleTests extends FaultInjectionTestBase {
      * Does not fail the test on error — the priority is cleanup, not assertion.</p>
      */
     private void removeNetworkDelay() {
-        String iface = NETWORK_INTERFACE;
-        String cmd = String.format("tc qdisc del dev %s root netem", iface);
+        String cmd = String.format("%stc qdisc del dev %s root netem", sudoPrefix, networkInterface);
         logger.info(">>> Removing network delay: {}", cmd);
         try {
             Process p = Runtime.getRuntime().exec(new String[]{"sh", "-c", cmd});
@@ -1006,7 +1033,7 @@ public class Http2ConnectionLifecycleTests extends FaultInjectionTestBase {
     // ========================================================================
 
     private void addPacketDrop() {
-        String cmd = "iptables -A OUTPUT -p tcp --dport 10250 -j DROP";
+        String cmd = String.format("%siptables -A OUTPUT -p tcp --dport 10250 -j DROP", sudoPrefix);
         logger.info(">>> Adding packet drop: {}", cmd);
         try {
             Process p = Runtime.getRuntime().exec(new String[]{"sh", "-c", cmd});
@@ -1014,7 +1041,7 @@ public class Http2ConnectionLifecycleTests extends FaultInjectionTestBase {
             if (exit != 0) {
                 try (BufferedReader err = new BufferedReader(new InputStreamReader(p.getErrorStream()))) {
                     String errMsg = err.readLine();
-                    logger.warn("iptables add failed (exit={}): {}", exit, errMsg);
+                    fail("iptables add failed (exit=" + exit + "): " + errMsg);
                 }
             } else {
                 logger.info(">>> Packet drop active on port 10250");
@@ -1026,7 +1053,7 @@ public class Http2ConnectionLifecycleTests extends FaultInjectionTestBase {
     }
 
     private void removePacketDrop() {
-        String cmd = "iptables -D OUTPUT -p tcp --dport 10250 -j DROP";
+        String cmd = String.format("%siptables -D OUTPUT -p tcp --dport 10250 -j DROP", sudoPrefix);
         logger.info(">>> Removing packet drop: {}", cmd);
         try {
             Process p = Runtime.getRuntime().exec(new String[]{"sh", "-c", cmd});
@@ -1039,5 +1066,27 @@ public class Http2ConnectionLifecycleTests extends FaultInjectionTestBase {
         } catch (Exception e) {
             logger.warn("Failed to remove packet drop: {}", e.getMessage());
         }
+    }
+
+    /**
+     * Detects the default-route network interface.
+     * In Docker this is typically eth0. On CI VMs it may be eth0, ens5, etc.
+     * Falls back to "eth0" if detection fails.
+     */
+    private static String detectNetworkInterface() {
+        try {
+            Process p = Runtime.getRuntime().exec(new String[]{"sh", "-c",
+                "ip route show default | awk '{print $5}' | head -1"});
+            p.waitFor();
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()))) {
+                String iface = reader.readLine();
+                if (iface != null && !iface.isEmpty() && !iface.contains("@")) {
+                    return iface.trim();
+                }
+            }
+        } catch (Exception e) {
+            // fall through
+        }
+        return "eth0";
     }
 }
