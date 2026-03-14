@@ -45,7 +45,7 @@ import static org.testng.AssertJUnit.fail;
  * - Metadata requests → GW V1 endpoint (port 443) → CONNECT_TIMEOUT_MILLIS = 45s (unchanged)
  *
  * HOW TO RUN:
- * 1. Group "manual-thinclient-network-delay" — NOT included in CI.
+ * 1. Group "manual-http-network-fault" — NOT included in CI.
  * 2. Docker container with --cap-add=NET_ADMIN, JDK 21, .m2 mounted.
  * 3. Tests self-manage iptables rules (add/remove) — no manual intervention.
  * 4. See CONNECT_TIMEOUT_TESTING_README.md for full setup and run instructions.
@@ -61,7 +61,7 @@ public class Http2ConnectTimeoutBifurcationTests extends FaultInjectionTestBase 
     private CosmosAsyncContainer cosmosAsyncContainer;
     private TestObject seedItem;
 
-    private static final String TEST_GROUP = "manual-thinclient-network-delay";
+    private static final String TEST_GROUP = "manual-http-network-fault";
     private static final long TEST_TIMEOUT = 180_000;
 
     @Factory(dataProvider = "clientBuildersWithGatewayAndHttp2")

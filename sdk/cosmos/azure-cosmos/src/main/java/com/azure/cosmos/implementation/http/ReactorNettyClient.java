@@ -164,6 +164,19 @@ public class ReactorNettyClient implements HttpClient {
                             "customHeaderCleaner",
                             new Http2ResponseHeaderCleanerHandler());
                     }
+
+                    // Install HTTP/2 PING health checker on the parent TCP channel.
+                    // doOnConnected fires for each child H2 stream; installOnParentIfAbsent
+                    // ensures the handler is added exactly once per parent connection.
+                    int pingIntervalSeconds = Configs.getHttp2PingIntervalInSeconds();
+                    logger.info("doOnConnected: channel={}, parent={}, pingInterval={}s",
+                        connection.channel().id().asShortText(),
+                        connection.channel().parent() != null ? connection.channel().parent().id().asShortText() : "null",
+                        pingIntervalSeconds);
+                    if (pingIntervalSeconds > 0) {
+                        Http2PingHealthHandler.installOnParentIfAbsent(
+                            connection.channel(), pingIntervalSeconds * 1000L);
+                    }
                 }));
         }
     }

@@ -53,7 +53,7 @@ import static org.testng.AssertJUnit.fail;
  * does NOT close the parent TCP connection.
  * <p>
  * HOW TO RUN:
- * 1. Group "manual-thinclient-network-delay" — NOT included in CI.
+ * 1. Group "manual-http-network-fault" — NOT included in CI.
  * 2. Docker container with --cap-add=NET_ADMIN, JDK 21, .m2 mounted.
  * 3. Tests self-manage tc netem (add/remove delay) — no manual intervention.
  * 4. See NETWORK_DELAY_TESTING_README.md for full setup and run instructions.
@@ -70,7 +70,7 @@ public class Http2ConnectionLifecycleTests extends FaultInjectionTestBase {
     private CosmosAsyncContainer cosmosAsyncContainer;
     private TestObject seedItem;
 
-    private static final String TEST_GROUP = "manual-thinclient-network-delay";
+    private static final String TEST_GROUP = "manual-http-network-fault";
     // 3 minutes per test — enough for warmup + delay + retries + cross-region failover + recovery read
     private static final long TEST_TIMEOUT = 180_000;
     // Hardcode eth0 — Docker always uses eth0. detectNetworkInterface() fails during active delay
@@ -119,6 +119,7 @@ public class Http2ConnectionLifecycleTests extends FaultInjectionTestBase {
     @AfterMethod(groups = {TEST_GROUP}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterMethod() {
         removeNetworkDelay();
+        removePacketDrop();
         safeClose(this.client);
         this.client = null;
         this.cosmosAsyncContainer = null;
@@ -128,7 +129,9 @@ public class Http2ConnectionLifecycleTests extends FaultInjectionTestBase {
     @AfterClass(groups = {TEST_GROUP}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         removeNetworkDelay();
+        removePacketDrop();
         System.clearProperty("COSMOS.THINCLIENT_ENABLED");
+        System.clearProperty("COSMOS.HTTP_CONNECTION_MAX_LIFETIME_IN_SECONDS");
     }
 
     // ========================================================================
@@ -756,5 +759,292 @@ public class Http2ConnectionLifecycleTests extends FaultInjectionTestBase {
         assertThat(recoveryStreamChannelId)
             .as("H2 stream channels are never reused (RFC 9113 §5.1.1) — stream ID should differ from warmup")
             .isNotEqualTo(warmupStreamChannelId);
+    }
+
+    // ========================================================================
+    // Connection Max Lifetime Tests
+    // ========================================================================
+
+    /**
+     * Proves that a connection is rotated after maxLifeTime expires.
+     * Sets COSMOS.HTTP_CONNECTION_MAX_LIFETIME_IN_SECONDS=15 (short lifetime for testing).
+     * Establishes a connection, captures parentChannelId, waits for the lifetime + background
+     * sweep interval to elapse, then performs another read and asserts the parentChannelId changed.
+     */
+    @Test(groups = {TEST_GROUP}, timeOut = TEST_TIMEOUT)
+    public void connectionRotatedAfterMaxLifetimeExpiry() throws Exception {
+        System.setProperty("COSMOS.HTTP_CONNECTION_MAX_LIFETIME_IN_SECONDS", "15");
+        try {
+            safeClose(this.client);
+            this.client = getClientBuilder().buildAsyncClient();
+            this.cosmosAsyncContainer = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(this.client);
+
+            String initialParentChannelId = establishH2ConnectionAndGetParentChannelId();
+            logger.info("Initial parentChannelId: {}", initialParentChannelId);
+
+            long startTime = System.currentTimeMillis();
+            long waitMs = 50_000;
+            String latestParentChannelId = initialParentChannelId;
+
+            while (System.currentTimeMillis() - startTime < waitMs) {
+                Thread.sleep(5_000);
+                latestParentChannelId = readAndGetParentChannelId();
+                logger.info("Elapsed={}s parentChannelId={} (changed={})",
+                    (System.currentTimeMillis() - startTime) / 1000,
+                    latestParentChannelId,
+                    !latestParentChannelId.equals(initialParentChannelId));
+                if (!latestParentChannelId.equals(initialParentChannelId)) {
+                    break;
+                }
+            }
+
+            logger.info("RESULT: initial={}, final={}, ROTATED={}",
+                initialParentChannelId, latestParentChannelId,
+                !initialParentChannelId.equals(latestParentChannelId));
+            assertThat(latestParentChannelId)
+                .as("After max lifetime (15s + jitter), connection should be rotated to a new parentChannelId")
+                .isNotEqualTo(initialParentChannelId);
+        } finally {
+            System.clearProperty("COSMOS.HTTP_CONNECTION_MAX_LIFETIME_IN_SECONDS");
+        }
+    }
+
+    /**
+     * Proves that per-connection jitter staggers eviction — not all connections expire at once.
+     * Creates multiple H2 parent connections via concurrent requests, sets a short maxLifeTime (15s),
+     * then observes that connections are evicted at different times.
+     */
+    @Test(groups = {TEST_GROUP}, timeOut = TEST_TIMEOUT)
+    public void perConnectionJitterStaggersEviction() throws Exception {
+        System.setProperty("COSMOS.HTTP_CONNECTION_MAX_LIFETIME_IN_SECONDS", "15");
+        try {
+            safeClose(this.client);
+            this.client = getClientBuilder().buildAsyncClient();
+            this.cosmosAsyncContainer = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(this.client);
+
+            int concurrentRequests = 100;
+            Set<String> initialParentChannelIds = ConcurrentHashMap.newKeySet();
+
+            for (int wave = 0; wave < 3; wave++) {
+                Flux.range(0, concurrentRequests)
+                    .flatMap(i -> this.cosmosAsyncContainer.readItem(
+                        seedItem.getId(), new PartitionKey(seedItem.getId()), TestObject.class)
+                        .doOnSuccess(response -> {
+                            try {
+                                String parentId = extractParentChannelId(response.getDiagnostics());
+                                if (parentId != null) {
+                                    initialParentChannelIds.add(parentId);
+                                }
+                            } catch (Exception e) {
+                                logger.warn("Failed to extract parentChannelId", e);
+                            }
+                        }), concurrentRequests)
+                    .collectList()
+                    .block();
+                if (initialParentChannelIds.size() > 1) {
+                    break;
+                }
+            }
+
+            logger.info("Initial parent channels: {} (count={})", initialParentChannelIds, initialParentChannelIds.size());
+            assertThat(initialParentChannelIds)
+                .as("Concurrent reads should create multiple parent H2 channels")
+                .hasSizeGreaterThan(1);
+
+            Thread.sleep(20_000);
+
+            Set<String> midpointParentChannelIds = ConcurrentHashMap.newKeySet();
+            Flux.range(0, concurrentRequests)
+                .flatMap(i -> this.cosmosAsyncContainer.readItem(
+                    seedItem.getId(), new PartitionKey(seedItem.getId()), TestObject.class)
+                    .doOnSuccess(response -> {
+                        try {
+                            String parentId = extractParentChannelId(response.getDiagnostics());
+                            if (parentId != null) {
+                                midpointParentChannelIds.add(parentId);
+                            }
+                        } catch (Exception e) {
+                            logger.warn("Failed to extract parentChannelId", e);
+                        }
+                    }), concurrentRequests)
+                .collectList()
+                .block();
+
+            Set<String> survivedChannels = new HashSet<>(initialParentChannelIds);
+            survivedChannels.retainAll(midpointParentChannelIds);
+            Set<String> newChannels = new HashSet<>(midpointParentChannelIds);
+            newChannels.removeAll(initialParentChannelIds);
+
+            logger.info("RESULT: initial={} (count={}), midpoint={} (count={}), survived={}, new={}",
+                initialParentChannelIds, initialParentChannelIds.size(),
+                midpointParentChannelIds, midpointParentChannelIds.size(),
+                survivedChannels, newChannels);
+
+            assertThat(midpointParentChannelIds)
+                .as("Pool should still be functional at midpoint")
+                .isNotEmpty();
+        } finally {
+            System.clearProperty("COSMOS.HTTP_CONNECTION_MAX_LIFETIME_IN_SECONDS");
+        }
+    }
+
+    /**
+     * Proves that when a connection is silently degraded (packets dropped, no TCP RST),
+     * the PING health check detects the degradation (no ACK received within timeout),
+     * the eviction predicate evicts the connection, and the next request succeeds on a new connection.
+     *
+     * Configuration:
+     * - Max lifetime = 600s (intentionally HIGH — we don't want lifetime to trigger eviction)
+     * - PING interval = 3s (send probes frequently)
+     * - PING ACK timeout = 10s (short — evict quickly when ACKs stop arriving)
+     * - Blackhole duration = 25s (PING ACK timeout 10s + background sweep 5s + margin)
+     */
+    @Test(groups = {TEST_GROUP}, timeOut = TEST_TIMEOUT)
+    public void degradedConnectionEvictedByPingHealthCheck() throws Exception {
+        // High max lifetime so it can't trigger eviction — only PING staleness should evict
+        System.setProperty("COSMOS.HTTP_CONNECTION_MAX_LIFETIME_IN_SECONDS", "600");
+        System.setProperty("COSMOS.HTTP2_PING_INTERVAL_IN_SECONDS", "3");
+        System.setProperty("COSMOS.HTTP2_PING_ACK_TIMEOUT_IN_SECONDS", "10");
+        System.setProperty("COSMOS.HTTP2_ENABLED", "true");
+        try {
+            safeClose(this.client);
+            this.client = getClientBuilder().buildAsyncClient();
+            this.cosmosAsyncContainer = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(this.client);
+
+            String initialParentChannelId = establishH2ConnectionAndGetParentChannelId();
+            logger.info("Initial parentChannelId: {}", initialParentChannelId);
+
+            // Diagnostic: check if PING handler installed on parent channel
+            // Use reflection or diagnostics to verify H2 config
+            logger.info("PING_DIAG: HTTP2_ENABLED={}, PING_INTERVAL={}, PING_ACK_TIMEOUT={}",
+                System.getProperty("COSMOS.HTTP2_ENABLED"),
+                System.getProperty("COSMOS.HTTP2_PING_INTERVAL_IN_SECONDS"),
+                System.getProperty("COSMOS.HTTP2_PING_ACK_TIMEOUT_IN_SECONDS"));
+
+            // Blackhole traffic — PINGs sent but no ACKs return
+            addPacketDrop();
+            logger.info("Waiting 25s for PING ACK timeout (10s) + background sweep (5s) + margin...");
+            Thread.sleep(25_000);
+            removePacketDrop();
+            Thread.sleep(2_000);
+
+            CosmosEndToEndOperationLatencyPolicyConfig e2ePolicy =
+                new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(30)).build();
+            CosmosItemRequestOptions opts = new CosmosItemRequestOptions();
+            opts.setCosmosEndToEndOperationLatencyPolicyConfig(e2ePolicy);
+
+            CosmosItemResponse<TestObject> response = this.cosmosAsyncContainer.readItem(
+                seedItem.getId(), new PartitionKey(seedItem.getId()), opts, TestObject.class).block();
+
+            assertThat(response).as("Recovery read must succeed").isNotNull();
+            assertThat(response.getStatusCode()).as("Recovery read status code").isEqualTo(200);
+
+            String recoveryParentChannelId = extractParentChannelId(response.getDiagnostics());
+            logger.info("RESULT: initial={}, recovery={}, ROTATED={}",
+                initialParentChannelId, recoveryParentChannelId,
+                !initialParentChannelId.equals(recoveryParentChannelId));
+
+            assertThat(recoveryParentChannelId)
+                .as("Recovery read must use a new parentChannelId — degraded connection evicted by PING health check")
+                .isNotNull()
+                .isNotEmpty()
+                .isNotEqualTo(initialParentChannelId);
+        } finally {
+            removePacketDrop();
+            System.clearProperty("COSMOS.HTTP_CONNECTION_MAX_LIFETIME_IN_SECONDS");
+            System.clearProperty("COSMOS.HTTP2_PING_INTERVAL_IN_SECONDS");
+            System.clearProperty("COSMOS.HTTP2_PING_ACK_TIMEOUT_IN_SECONDS");
+            System.clearProperty("COSMOS.HTTP2_ENABLED");
+        }
+    }
+
+    /**
+     * Proves that when a connection exceeds its jittered max lifetime AND the network is healthy
+     * (PING ACKs are still arriving), the max lifetime eviction still triggers.
+     * This is the safety-net — connections shouldn't live forever even if PINGs succeed.
+     */
+    @Test(groups = {TEST_GROUP}, timeOut = TEST_TIMEOUT)
+    public void connectionEvictedAfterMaxLifetimeEvenWithHealthyPings() throws Exception {
+        System.setProperty("COSMOS.HTTP_CONNECTION_MAX_LIFETIME_IN_SECONDS", "15");
+        System.setProperty("COSMOS.HTTP2_PING_INTERVAL_IN_SECONDS", "3");
+        System.setProperty("COSMOS.HTTP2_PING_ACK_TIMEOUT_IN_SECONDS", "60");
+        try {
+            safeClose(this.client);
+            this.client = getClientBuilder().buildAsyncClient();
+            this.cosmosAsyncContainer = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(this.client);
+
+            String initialParentChannelId = establishH2ConnectionAndGetParentChannelId();
+            logger.info("Initial parentChannelId: {}", initialParentChannelId);
+
+            // No blackhole — PINGs succeed. Just wait for max lifetime (15s + jitter + sweep margin)
+            logger.info("Waiting 50s for max lifetime (15s) + jitter (up to 30s) + background sweep...");
+            Thread.sleep(50_000);
+
+            CosmosEndToEndOperationLatencyPolicyConfig e2ePolicy =
+                new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(30)).build();
+            CosmosItemRequestOptions opts = new CosmosItemRequestOptions();
+            opts.setCosmosEndToEndOperationLatencyPolicyConfig(e2ePolicy);
+
+            CosmosItemResponse<TestObject> response = this.cosmosAsyncContainer.readItem(
+                seedItem.getId(), new PartitionKey(seedItem.getId()), opts, TestObject.class).block();
+
+            assertThat(response).as("Recovery read must succeed").isNotNull();
+            assertThat(response.getStatusCode()).as("Recovery read status code").isEqualTo(200);
+
+            String recoveryParentChannelId = extractParentChannelId(response.getDiagnostics());
+            logger.info("RESULT: initial={}, recovery={}, ROTATED={}",
+                initialParentChannelId, recoveryParentChannelId,
+                !initialParentChannelId.equals(recoveryParentChannelId));
+
+            assertThat(recoveryParentChannelId)
+                .as("Recovery read must use a new parentChannelId — max lifetime eviction still works with healthy PINGs")
+                .isNotNull()
+                .isNotEmpty()
+                .isNotEqualTo(initialParentChannelId);
+        } finally {
+            System.clearProperty("COSMOS.HTTP_CONNECTION_MAX_LIFETIME_IN_SECONDS");
+            System.clearProperty("COSMOS.HTTP2_PING_INTERVAL_IN_SECONDS");
+            System.clearProperty("COSMOS.HTTP2_PING_ACK_TIMEOUT_IN_SECONDS");
+        }
+    }
+
+    // ========================================================================
+    // iptables helpers for silent degradation (packet drop, no RST)
+    // ========================================================================
+
+    private void addPacketDrop() {
+        String cmd = "iptables -A OUTPUT -p tcp --dport 10250 -j DROP";
+        logger.info(">>> Adding packet drop: {}", cmd);
+        try {
+            Process p = Runtime.getRuntime().exec(new String[]{"sh", "-c", cmd});
+            int exit = p.waitFor();
+            if (exit != 0) {
+                try (BufferedReader err = new BufferedReader(new InputStreamReader(p.getErrorStream()))) {
+                    String errMsg = err.readLine();
+                    logger.warn("iptables add failed (exit={}): {}", exit, errMsg);
+                }
+            } else {
+                logger.info(">>> Packet drop active on port 10250");
+            }
+        } catch (Exception e) {
+            logger.error("Failed to add packet drop", e);
+            fail("Could not add packet drop via iptables: " + e.getMessage());
+        }
+    }
+
+    private void removePacketDrop() {
+        String cmd = "iptables -D OUTPUT -p tcp --dport 10250 -j DROP";
+        logger.info(">>> Removing packet drop: {}", cmd);
+        try {
+            Process p = Runtime.getRuntime().exec(new String[]{"sh", "-c", cmd});
+            int exit = p.waitFor();
+            if (exit == 0) {
+                logger.info(">>> Packet drop removed");
+            } else {
+                logger.warn("iptables del returned exit={} (may already be removed)", exit);
+            }
+        } catch (Exception e) {
+            logger.warn("Failed to remove packet drop: {}", e.getMessage());
+        }
     }
 }

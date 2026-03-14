@@ -141,6 +141,23 @@ public class Configs {
     private static final Duration MAX_IDLE_CONNECTION_TIMEOUT = Duration.ofSeconds(60);
     private static final Duration CONNECTION_ACQUIRE_TIMEOUT = Duration.ofSeconds(45);
     private static final String REACTOR_NETTY_CONNECTION_POOL_NAME = "reactor-netty-connection-pool";
+
+    // HTTP connection max lifetime — forces periodic connection rotation for DNS re-resolution and load redistribution.
+    private static final int DEFAULT_HTTP_CONNECTION_MAX_LIFETIME_IN_SECONDS = 300; // 5 minutes
+    private static final String HTTP_CONNECTION_MAX_LIFETIME_IN_SECONDS = "COSMOS.HTTP_CONNECTION_MAX_LIFETIME_IN_SECONDS";
+    private static final String HTTP_CONNECTION_MAX_LIFETIME_IN_SECONDS_VARIABLE = "COSMOS_HTTP_CONNECTION_MAX_LIFETIME_IN_SECONDS";
+    public static final int HTTP_CONNECTION_MAX_LIFETIME_JITTER_IN_SECONDS = 30;
+
+    // HTTP/2 PING health check — detects silently degraded connections (packet black-hole, half-open TCP).
+    // Interval: how often to send PING frames on each parent H2 connection.
+    // Timeout: if no PING ACK is received within this duration, the connection is considered unhealthy.
+    private static final int DEFAULT_HTTP2_PING_INTERVAL_IN_SECONDS = 10;
+    private static final String HTTP2_PING_INTERVAL_IN_SECONDS = "COSMOS.HTTP2_PING_INTERVAL_IN_SECONDS";
+    private static final String HTTP2_PING_INTERVAL_IN_SECONDS_VARIABLE = "COSMOS_HTTP2_PING_INTERVAL_IN_SECONDS";
+    private static final int DEFAULT_HTTP2_PING_ACK_TIMEOUT_IN_SECONDS = 30;
+    private static final String HTTP2_PING_ACK_TIMEOUT_IN_SECONDS = "COSMOS.HTTP2_PING_ACK_TIMEOUT_IN_SECONDS";
+    private static final String HTTP2_PING_ACK_TIMEOUT_IN_SECONDS_VARIABLE = "COSMOS_HTTP2_PING_ACK_TIMEOUT_IN_SECONDS";
+
     private static final int DEFAULT_HTTP_RESPONSE_TIMEOUT_IN_SECONDS = 60;
     private static final int DEFAULT_QUERY_PLAN_RESPONSE_TIMEOUT_IN_SECONDS = 5;
     private static final int DEFAULT_ADDRESS_REFRESH_RESPONSE_TIMEOUT_IN_SECONDS = 5;
@@ -637,6 +654,24 @@ public class Configs {
 
     public static int getHttpResponseTimeoutInSeconds() {
         return getJVMConfigAsInt(HTTP_RESPONSE_TIMEOUT_IN_SECONDS, DEFAULT_HTTP_RESPONSE_TIMEOUT_IN_SECONDS);
+    }
+
+    public static int getHttpConnectionMaxLifetimeInSeconds() {
+        return getJVMConfigAsInt(
+            HTTP_CONNECTION_MAX_LIFETIME_IN_SECONDS,
+            DEFAULT_HTTP_CONNECTION_MAX_LIFETIME_IN_SECONDS);
+    }
+
+    public static int getHttp2PingIntervalInSeconds() {
+        return getJVMConfigAsInt(
+            HTTP2_PING_INTERVAL_IN_SECONDS,
+            DEFAULT_HTTP2_PING_INTERVAL_IN_SECONDS);
+    }
+
+    public static int getHttp2PingAckTimeoutInSeconds() {
+        return getJVMConfigAsInt(
+            HTTP2_PING_ACK_TIMEOUT_IN_SECONDS,
+            DEFAULT_HTTP2_PING_ACK_TIMEOUT_IN_SECONDS);
     }
 
     public static int getQueryPlanResponseTimeoutInSeconds() {
