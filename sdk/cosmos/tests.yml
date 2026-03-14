@@ -165,7 +165,7 @@ extends:
 
       # Network fault injection tests (tc netem, iptables) — runs natively on Linux CI VMs.
       # PreSteps ensure iproute2 (tc) and iptables are installed and sch_netem kernel module is loaded.
-      # Tests use sudo for tc/iptables commands. Self-skip if tc is not available.
+      # Tests use sudo for tc/iptables commands. Fail-fast if tc is not available.
       # Tests run sequentially (MaxParallel: 1) to avoid tc/iptables interference between tests.
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:

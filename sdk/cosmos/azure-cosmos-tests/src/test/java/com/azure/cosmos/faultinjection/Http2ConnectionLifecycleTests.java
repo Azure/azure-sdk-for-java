@@ -394,8 +394,9 @@ public class Http2ConnectionLifecycleTests extends FaultInjectionTestBase {
             .isNotNull();
         assertContainsGatewayTimeout(delayedDiagnostics, "delayed read");
 
-        // Brief pause to let TCP retransmission settle after netem qdisc deletion
-        Thread.sleep(1000);
+        // Brief pause to let TCP retransmission settle after netem qdisc deletion.
+        // On CI VMs, kernel queue draining may take longer than in Docker.
+        Thread.sleep(3000);
 
         // Recovery read — assert no timeout, low latency, and same parent channel
         CosmosDiagnostics recoveryDiagnostics = this.performDocumentOperation(
