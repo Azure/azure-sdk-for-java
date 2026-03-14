@@ -78,11 +78,11 @@ public interface HttpClient {
                 // Phase 2: PING liveness — if PING ACK is stale, connection is silently degraded
                 if (pingAckTimeoutNanos > 0) {
                     Channel parentChannel = connection.channel();
-                    if (parentChannel.hasAttr(Http2PingHealthHandler.LAST_PING_ACK_NANOS)) {
-                        long lastAckNanos = parentChannel.attr(Http2PingHealthHandler.LAST_PING_ACK_NANOS).get();
-                        if (System.nanoTime() - lastAckNanos > pingAckTimeoutNanos) {
-                            return true;
-                        }
+                    Long lastAckNanos = parentChannel.hasAttr(Http2PingHealthHandler.LAST_PING_ACK_NANOS)
+                        ? parentChannel.attr(Http2PingHealthHandler.LAST_PING_ACK_NANOS).get()
+                        : null;
+                    if (lastAckNanos != null && System.nanoTime() - lastAckNanos > pingAckTimeoutNanos) {
+                        return true;
                     }
                 }
 

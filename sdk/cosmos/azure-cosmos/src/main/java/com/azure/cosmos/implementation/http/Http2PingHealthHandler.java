@@ -171,11 +171,11 @@ public class Http2PingHealthHandler extends ChannelDuplexHandler {
         // For child streams (if they ever fire), navigate to parent.
         Channel targetChannel = channel.parent() != null ? channel.parent() : channel;
 
-        if (Boolean.TRUE.equals(targetChannel.attr(HANDLER_INSTALLED).get())) {
+        // Atomic check-and-set to prevent duplicate installation from concurrent doOnConnected callbacks
+        if (Boolean.TRUE.equals(targetChannel.attr(HANDLER_INSTALLED).getAndSet(Boolean.TRUE))) {
             return; // already installed
         }
 
-        targetChannel.attr(HANDLER_INSTALLED).set(Boolean.TRUE);
         targetChannel.pipeline().addLast(HANDLER_NAME, new Http2PingHealthHandler(pingIntervalMs));
 
         if (logger.isDebugEnabled()) {
