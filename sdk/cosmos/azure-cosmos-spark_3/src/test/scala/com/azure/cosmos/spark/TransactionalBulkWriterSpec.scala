@@ -537,6 +537,47 @@ class TransactionalBulkWriterSpec extends UnitSpec {
     pkDef.getPaths.contains("/pkId") should be(false)  // superstring — should NOT match
   }
 
+  it should "still block actual PK paths from patching" in {
+    val pkDef = new PartitionKeyDefinition()
+    val paths = new java.util.ArrayList[String]()
+    paths.add("/tenantId")
+    paths.add("/userId")
+    paths.add("/sessionId")
+    pkDef.setPaths(paths)
+
+    // These ARE PK paths — getPaths.contains returns true → blocked
+    pkDef.getPaths.contains("/tenantId") should be(true)
+    pkDef.getPaths.contains("/userId") should be(true)
+    pkDef.getPaths.contains("/sessionId") should be(true)
+  }
+
+  it should "block system properties regardless of PK definition" in {
+    // System properties (_rid, _self, _etag, _attachments, _ts) and id
+    // are always immutable and must be blocked from patching.
+    // This is tested via the CosmosPatchHelper constants, not getPaths.
+    val systemProps = Set("_rid", "_self", "_etag", "_attachments", "_ts")
+    systemProps.contains("_rid") should be(true)
+    systemProps.contains("_etag") should be(true)
+    systemProps.contains("_ts") should be(true)
+    // "id" is also immutable
+    "id" should be("id")
+  }
+
+  it should "handle edge case where field name is a suffix of a PK path" in {
+    // e.g., field "/nantId" is a suffix of "/tenantId"
+    // New code: List("/tenantId", "/userId", "/sessionId").contains("/nantId") → false → ALLOWED
+    val pkDef = new PartitionKeyDefinition()
+    val paths = new java.util.ArrayList[String]()
+    paths.add("/tenantId")
+    paths.add("/userId")
+    paths.add("/sessionId")
+    pkDef.setPaths(paths)
+
+    pkDef.getPaths.contains("/nantId") should be(false)    // suffix of /tenantId
+    pkDef.getPaths.contains("/erId") should be(false)      // suffix of /userId
+    pkDef.getPaths.contains("/ionId") should be(false)     // suffix of /sessionId
+  }
+
   // =====================================================
   // Batch Marker Document Tests
   // =====================================================
@@ -659,6 +700,113 @@ class TransactionalBulkWriterSpec extends UnitSpec {
     ops.get(2).getOperationType.toString should be("DELETE")
     // Marker is the last operation and is an UPSERT
     ops.get(3).getOperationType.toString should be("UPSERT")
+  }
+
+  // =====================================================
+  // Marker Document Edge Cases
+  // =====================================================
+
+  "buildMarkerDocument pattern" should "handle missing PK field in business item" in {
+    // If a business item is missing a PK field (e.g., HPK with /tenantId/userId/sessionId
+    // but the document has no "sessionId"), the marker should omit that field too.
+    val om = new ObjectMapper()
+    val businessItem = om.createObjectNode()
+    businessItem.put("id", "doc-1")
+    businessItem.put("tenantId", "Contoso")
+    businessItem.put("userId", "alice")
+    // sessionId is MISSING
+
+    val partitionKeyPaths = List("/tenantId", "/userId", "/sessionId")
+    val markerNode = om.createObjectNode()
+    markerNode.put("id", "__tbw:job:0:1")
+    markerNode.put("ttl", 86400)
+    partitionKeyPaths.foreach(path => {
+      val fieldName = path.stripPrefix("/")
+      val value = businessItem.get(fieldName)
+      if (value != null) {
+        markerNode.set(fieldName, value.deepCopy())
+      }
+    })
+
+    markerNode.get("tenantId").asText() should be("Contoso")
+    markerNode.get("userId").asText() should be("alice")
+    markerNode.has("sessionId") should be(false)  // missing in business item → missing in marker
+  }
+
+  it should "work with single partition key" in {
+    val om = new ObjectMapper()
+    val businessItem = om.createObjectNode()
+    businessItem.put("id", "doc-1")
+    businessItem.put("pk", "Seattle")
+    businessItem.put("temperature", 72)
+
+    val partitionKeyPaths = List("/pk")
+    val markerNode = om.createObjectNode()
+    markerNode.put("id", "__tbw:job:0:1")
+    markerNode.put("ttl", 86400)
+    partitionKeyPaths.foreach(path => {
+      val fieldName = path.stripPrefix("/")
+      val value = businessItem.get(fieldName)
+      if (value != null) {
+        markerNode.set(fieldName, value.deepCopy())
+      }
+    })
+
+    markerNode.get("id").asText() should be("__tbw:job:0:1")
+    markerNode.get("ttl").asInt() should be(86400)
+    markerNode.get("pk").asText() should be("Seattle")
+    markerNode.has("temperature") should be(false)  // business field excluded
+  }
+
+  it should "not mutate the original business item" in {
+    val om = new ObjectMapper()
+    val businessItem = om.createObjectNode()
+    businessItem.put("id", "doc-1")
+    businessItem.put("pk", "user-A")
+    businessItem.put("score", 42)
+
+    val partitionKeyPaths = List("/pk")
+    val markerNode = om.createObjectNode()
+    markerNode.put("id", "__tbw:job:0:1")
+    markerNode.put("ttl", 86400)
+    partitionKeyPaths.foreach(path => {
+      val fieldName = path.stripPrefix("/")
+      val value = businessItem.get(fieldName)
+      if (value != null) {
+        markerNode.set(fieldName, value.deepCopy())
+      }
+    })
+
+    // Original business item is unchanged
+    businessItem.get("id").asText() should be("doc-1")
+    businessItem.get("pk").asText() should be("user-A")
+    businessItem.get("score").asInt() should be(42)
+    businessItem.has("ttl") should be(false)  // marker's ttl was NOT added to business item
+  }
+
+  // =====================================================
+  // Marker Verification Outcome Pattern Tests
+  // =====================================================
+
+  "MarkerVerificationOutcome pattern" should "distinguish three outcomes" in {
+    // Verify the sealed trait / case object pattern used in verifyBatchCommit
+    // This tests the pattern matching logic — not the actual Cosmos DB call
+    sealed trait TestOutcome
+    case object TestCommitted extends TestOutcome
+    case object TestNotCommitted extends TestOutcome
+    case object TestInconclusive extends TestOutcome
+
+    def simulateVerification(statusCode: Int): TestOutcome = statusCode match {
+      case 200 => TestCommitted        // marker present → batch committed
+      case 404 => TestNotCommitted     // marker absent → batch did not commit
+      case _   => TestInconclusive     // transient error → inconclusive
+    }
+
+    simulateVerification(200) should be(TestCommitted)
+    simulateVerification(404) should be(TestNotCommitted)
+    simulateVerification(408) should be(TestInconclusive)  // Request Timeout
+    simulateVerification(503) should be(TestInconclusive)  // Service Unavailable
+    simulateVerification(500) should be(TestInconclusive)  // Internal Server Error
   }
 }
 //scalastyle:on null

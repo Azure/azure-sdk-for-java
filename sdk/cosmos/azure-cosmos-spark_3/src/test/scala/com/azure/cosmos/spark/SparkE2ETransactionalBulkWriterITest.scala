@@ -3,7 +3,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.{TestConfigurations, Utils}
-import com.azure.cosmos.models.PartitionKey
+import com.azure.cosmos.models.{PartitionKey, PartitionKeyBuilder}
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.sql.types._
 import org.apache.spark.sql.{Row, SaveMode}
@@ -290,6 +290,179 @@ class SparkE2ETransactionalBulkWriterITest extends IntegrationSpec
       .collectList()
       .block()
     pk2Count.size() shouldBe 2
+  }
+
+  // =====================================================
+  // HPK-Specific E2E Tests
+  // =====================================================
+
+  "transactional write with HPK ItemOverwrite" should "upsert documents with 2-level partition key" in {
+    // Create container with hierarchical partition keys
+    val containerName = s"test-hpk-upsert-${UUID.randomUUID()}"
+    val containerProperties = new com.azure.cosmos.models.CosmosContainerProperties(
+      containerName,
+      new com.azure.cosmos.models.PartitionKeyDefinition()
+    )
+    val paths = new java.util.ArrayList[String]()
+    paths.add("/tenantId")
+    paths.add("/userId")
+    containerProperties.getPartitionKeyDefinition.setPaths(paths)
+    containerProperties.getPartitionKeyDefinition.setKind(com.azure.cosmos.models.PartitionKind.MULTI_HASH)
+    containerProperties.getPartitionKeyDefinition.setVersion(com.azure.cosmos.models.PartitionKeyDefinitionVersion.V2)
+    cosmosClient.getDatabase(cosmosDatabase).createContainer(containerProperties).block()
+    val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(containerName)
+
+    try {
+      val writeConfig = Map(
+        "spark.cosmos.accountEndpoint" -> TestConfigurations.HOST,
+        "spark.cosmos.accountKey" -> TestConfigurations.MASTER_KEY,
+        "spark.cosmos.database" -> cosmosDatabase,
+        "spark.cosmos.container" -> containerName,
+        "spark.cosmos.write.bulk.enabled" -> "true",
+        "spark.cosmos.write.bulk.transactional" -> "true",
+        "spark.cosmos.write.strategy" -> "ItemOverwrite"
+      )
+
+      val schema = StructType(Seq(
+        StructField("id", StringType, nullable = false),
+        StructField("tenantId", StringType, nullable = false),
+        StructField("userId", StringType, nullable = false),
+        StructField("score", IntegerType, nullable = false)
+      ))
+
+      val batchOperations = Seq(
+        Row(s"doc-1-${UUID.randomUUID()}", "Contoso", "alice", 100),
+        Row(s"doc-2-${UUID.randomUUID()}", "Contoso", "alice", 200),
+        Row(s"doc-3-${UUID.randomUUID()}", "Contoso", "alice", 300)
+      )
+      val operationsDf = spark.createDataFrame(batchOperations.asJava, schema)
+
+      operationsDf.write
+        .format("cosmos.oltp")
+        .options(writeConfig)
+        .mode(SaveMode.Append)
+        .save()
+
+      // Verify all 3 docs exist via query
+      val queryResult = container
+        .queryItems(s"SELECT * FROM c WHERE c.tenantId = 'Contoso' AND c.userId = 'alice'", classOf[ObjectNode])
+        .collectList()
+        .block()
+      // Should have 3 business docs (marker is actively deleted after success)
+      queryResult.size() should be >= 3
+    } finally {
+      container.delete().block()
+    }
+  }
+
+  "transactional write with HPK batch grouping" should "create separate batches per full HPK value (C10)" in {
+    // This test verifies that the String-based PK comparison correctly
+    // distinguishes different HPK values that share a common prefix.
+    val containerName = s"test-hpk-grouping-${UUID.randomUUID()}"
+    val containerProperties = new com.azure.cosmos.models.CosmosContainerProperties(
+      containerName,
+      new com.azure.cosmos.models.PartitionKeyDefinition()
+    )
+    val paths = new java.util.ArrayList[String]()
+    paths.add("/tenantId")
+    paths.add("/userId")
+    containerProperties.getPartitionKeyDefinition.setPaths(paths)
+    containerProperties.getPartitionKeyDefinition.setKind(com.azure.cosmos.models.PartitionKind.MULTI_HASH)
+    containerProperties.getPartitionKeyDefinition.setVersion(com.azure.cosmos.models.PartitionKeyDefinitionVersion.V2)
+    cosmosClient.getDatabase(cosmosDatabase).createContainer(containerProperties).block()
+    val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(containerName)
+
+    try {
+      val writeConfig = Map(
+        "spark.cosmos.accountEndpoint" -> TestConfigurations.HOST,
+        "spark.cosmos.accountKey" -> TestConfigurations.MASTER_KEY,
+        "spark.cosmos.database" -> cosmosDatabase,
+        "spark.cosmos.container" -> containerName,
+        "spark.cosmos.write.bulk.enabled" -> "true",
+        "spark.cosmos.write.bulk.transactional" -> "true",
+        "spark.cosmos.write.strategy" -> "ItemOverwrite"
+      )
+
+      val schema = StructType(Seq(
+        StructField("id", StringType, nullable = false),
+        StructField("tenantId", StringType, nullable = false),
+        StructField("userId", StringType, nullable = false),
+        StructField("name", StringType, nullable = false)
+      ))
+
+      // Two different HPK values — must produce separate batches
+      val batchOperations = Seq(
+        Row(s"alice-1-${UUID.randomUUID()}", "Contoso", "alice", "A1"),
+        Row(s"alice-2-${UUID.randomUUID()}", "Contoso", "alice", "A2"),
+        Row(s"bob-1-${UUID.randomUUID()}", "Contoso", "bob", "B1"),
+        Row(s"bob-2-${UUID.randomUUID()}", "Contoso", "bob", "B2")
+      )
+      val operationsDf = spark.createDataFrame(batchOperations.asJava, schema)
+
+      operationsDf.write
+        .format("cosmos.oltp")
+        .options(writeConfig)
+        .mode(SaveMode.Append)
+        .save()
+
+      // Verify docs in alice's partition
+      val aliceCount = container
+        .queryItems(s"SELECT * FROM c WHERE c.tenantId = 'Contoso' AND c.userId = 'alice'", classOf[ObjectNode])
+        .collectList()
+        .block()
+      aliceCount.size() should be >= 2
+
+      // Verify docs in bob's partition
+      val bobCount = container
+        .queryItems(s"SELECT * FROM c WHERE c.tenantId = 'Contoso' AND c.userId = 'bob'", classOf[ObjectNode])
+        .collectList()
+        .block()
+      bobCount.size() should be >= 2
+    } finally {
+      container.delete().block()
+    }
+  }
+
+  // =====================================================
+  // Marker Cleanup Verification
+  // =====================================================
+
+  "transactional write marker cleanup" should "not leave marker documents after successful write" in {
+    val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainersWithPkAsPartitionKey)
+    val partitionKeyValue = UUID.randomUUID().toString
+    val writeConfig = getBaseWriteConfig(cosmosContainersWithPkAsPartitionKey) +
+      ("spark.cosmos.write.strategy" -> "ItemOverwrite")
+
+    val batchOperations = Seq(
+      Row(s"marker-test-1-${UUID.randomUUID()}", partitionKeyValue, "Doc1"),
+      Row(s"marker-test-2-${UUID.randomUUID()}", partitionKeyValue, "Doc2")
+    )
+    val operationsDf = spark.createDataFrame(batchOperations.asJava, simpleSchema)
+
+    operationsDf.write
+      .format("cosmos.oltp")
+      .options(writeConfig)
+      .mode(SaveMode.Append)
+      .save()
+
+    // Small delay to allow async marker deletion to complete
+    Thread.sleep(2000)
+
+    // Query all docs for this partition key
+    val allDocs = container
+      .queryItems(s"SELECT * FROM c WHERE c.pk = '$partitionKeyValue'", classOf[ObjectNode])
+      .collectList()
+      .block()
+
+    // Should have only business docs — marker should be actively deleted
+    val markerDocs = allDocs.asScala.filter(doc =>
+      doc.has("id") && doc.get("id").asText().startsWith("__tbw:"))
+
+    markerDocs.size shouldBe 0  // marker was actively deleted after success
+    // Business docs should exist
+    val businessDocs = allDocs.asScala.filter(doc =>
+      doc.has("id") && !doc.get("id").asText().startsWith("__tbw:"))
+    businessDocs.size shouldBe 2
   }
 }
 //scalastyle:on magic.number

@@ -156,7 +156,9 @@ private class TransactionalBulkWriter
   // it is written as the last upsert in every batch, and on ambiguous retry, a point-read of the
   // marker determines whether the original batch committed. After the outcome is determined,
   // the marker is actively deleted. TTL is defense-in-depth for orphan cleanup from crashed runs.
-  private val markerTtlSeconds = TransactionalBulkWriter.DefaultMarkerTtlSeconds
+  // Configurable via spark.cosmos.write.bulk.transactional.marker.ttlSeconds (default 86400 = 24 hours).
+  private val markerTtlSeconds = transactionalBulkExecutionConfigs.markerTtlSeconds
+    .getOrElse(TransactionalBulkWriter.DefaultMarkerTtlSeconds)
   private val batchSequenceCounter = new AtomicLong(0)
   // jobRunId + sparkPartitionId + batchSeq make each marker ID globally unique.
   // Use a single TaskContext.get call to extract both values.
