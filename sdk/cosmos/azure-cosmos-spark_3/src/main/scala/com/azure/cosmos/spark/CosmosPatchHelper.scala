@@ -42,9 +42,11 @@ private class CosmosPatchHelper(diagnosticsConfig: DiagnosticsConfig,
   // There are some properties are immutable, these kind properties include:
   // 1. System properties : _ts, _rid, _etag
   // 2. id, and partitionKeyPath
-  if ((path.startsWith("/") && !systemProperties.contains(path.substring(1)) && IdAttributeName != path.substring(1))
-   && !StringUtils.join(partitionKeyDefinition.getPaths, "").contains(path)) {
-   true
+  if (path.startsWith("/") && !systemProperties.contains(path.substring(1)) && IdAttributeName != path.substring(1)) {
+   // Check each partition key path individually with exact match to avoid false positives.
+   // e.g., "/tenant" was blocked because it's
+   // a substring of "/tenantId" in the joined string "/tenantId/userId/sessionId".
+   !partitionKeyDefinition.getPaths.contains(path)
   } else {
    false
   }
