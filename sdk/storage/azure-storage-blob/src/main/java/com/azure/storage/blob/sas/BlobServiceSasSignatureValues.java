@@ -86,6 +86,7 @@ public final class BlobServiceSasSignatureValues {
     private String delegatedUserObjectId;
     private Map<String, String> requestHeaders;
     private Map<String, String> requestQueryParameters;
+    private Boolean isDirectory;
 
     /**
      * Creates an object with empty values for all fields.
@@ -652,6 +653,27 @@ public final class BlobServiceSasSignatureValues {
      */
     public BlobServiceSasSignatureValues setRequestQueryParameters(Map<String, String> requestQueryParameters) {
         this.requestQueryParameters = requestQueryParameters;
+        return this;
+    }
+
+    /**
+    * Gets whether the {@code blobName} is a virtual directory. Required when the {@code resource} is set to "d".
+    *
+    * @return Whether the {@code blobName} is a virtual directory. Required when the resource is set to "d".
+    */
+    public Boolean isDirectory() {
+        return isDirectory;
+    }
+
+    /**
+     * Beginning in version 2020-02-10, this value defines whether the {@code blobName} is a virtual directory.
+     * Required when the {@code resource} is set to "d".
+     *
+     * @param isDirectory Whether the {@code blobName} is a virtual directory. Required when the resource is set to "d".
+     * @return the updated BlobServiceSasSignatureValues object
+     */
+    public BlobServiceSasSignatureValues setDirectory(Boolean isDirectory) {
+        this.isDirectory = isDirectory;
         return this;
     }
 

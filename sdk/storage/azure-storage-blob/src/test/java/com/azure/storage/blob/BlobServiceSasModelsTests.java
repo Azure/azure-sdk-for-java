@@ -188,29 +188,40 @@ public class BlobServiceSasModelsTests extends BlobTestBase {
     @ParameterizedTest
     @MethodSource("ensureStateResourceAndPermissionSupplier")
     public void ensureStateResourceAndPermission(String container, String blob, String snapshot, String versionId,
-        BlobContainerSasPermission blobContainerSasPermission, BlobSasPermission blobSasPermission, String resource,
-        String permissionString) {
+        boolean isDirectory, Integer directoryDepth, BlobContainerSasPermission blobContainerSasPermission, BlobSasPermission blobSasPermission,
+        String resource, String permissionString) {
         OffsetDateTime expiryTime = testResourceNamer.now().plusDays(1);
 
         BlobServiceSasSignatureValues values = blobContainerSasPermission != null
-            ? new BlobServiceSasSignatureValues(expiryTime, blobContainerSasPermission)
-            : new BlobServiceSasSignatureValues(expiryTime, blobSasPermission);
+            ? new BlobServiceSasSignatureValues(expiryTime, blobContainerSasPermission).setDirectory(isDirectory)
+            : new BlobServiceSasSignatureValues(expiryTime, blobSasPermission).setDirectory(isDirectory);
 
         BlobSasImplUtil implUtil = new BlobSasImplUtil(values, container, blob, snapshot, versionId, null);
         implUtil.ensureState();
+
         assertEquals(resource, implUtil.getResource());
         assertEquals(permissionString, implUtil.getPermissions());
+        assertEquals(directoryDepth, implUtil.getDirectoryDepth());
     }
 
     private static Stream<Arguments> ensureStateResourceAndPermissionSupplier() {
         return Stream.of(
-            Arguments.of("container", null, null, null,
+            // container , blob , snapshot , versionId , isDirectory , directoryDepth , containerSasPermission , blobSasPermission , resource , permissionString
+            Arguments.of("container", null, null, null, false, null,
                 new BlobContainerSasPermission().setReadPermission(true).setListPermission(true), null, "c", "rl"),
-            Arguments.of("container", "blob", null, null, null, new BlobSasPermission().setReadPermission(true), "b",
-                "r"),
-            Arguments.of("container", "blob", "snapshot", null, null, new BlobSasPermission().setReadPermission(true),
-                "bs", "r"),
-            Arguments.of("container", "blob", null, "version", null, new BlobSasPermission().setReadPermission(true),
-                "bv", "r"));
+            Arguments.of("container", "blob", null, null, false, null, null, new BlobSasPermission().setReadPermission(true),
+                "b", "r"),
+            Arguments.of("container", "blob", "snapshot", null, false, null, null,
+                new BlobSasPermission().setReadPermission(true), "bs", "r"),
+            Arguments.of("container", "blob", null, "version", false, null, null,
+                new BlobSasPermission().setReadPermission(true), "bv", "r"),
+            Arguments.of("container", "foo/bar/hello", null, null, true, 3, null,
+                new BlobSasPermission().setReadPermission(true), "d", "r"),
+            Arguments.of("container", "foo/bar", null, null, true, 2, null,
+                new BlobSasPermission().setReadPermission(true), "d", "r"),
+            Arguments.of("container", "foo/", null, null, true, 1, null,
+                new BlobSasPermission().setReadPermission(true), "d", "r"),
+            Arguments.of("container", "/", null, null, true, 0, null,
+                new BlobSasPermission().setReadPermission(true), "d", "r"));
     }
 }

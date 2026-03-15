@@ -1114,6 +1114,12 @@ public class SasClientTests extends BlobTestBase {
                 .getProperties());
     }
 
+    @Test
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-02-10")
+    public void sasQueryParametersDirectory() {
+
+    }
+
     // RBAC replication lag
     @Test
     @LiveOnly
@@ -1283,17 +1289,21 @@ public class SasClientTests extends BlobTestBase {
     @ParameterizedTest
     @MethodSource("blobSasImplUtilCanonicalizedResourceSupplier")
     public void blobSasImplUtilCanonicalizedResource(String containerName, String blobName, String snapId,
-        OffsetDateTime expiryTime, String expectedResource, String expectedStringToSign) {
-        BlobServiceSasSignatureValues v = new BlobServiceSasSignatureValues(expiryTime, new BlobSasPermission());
+        OffsetDateTime expiryTime, Boolean isDirectory, String expectedResource, String expectedStringToSign) {
+        BlobServiceSasSignatureValues v
+            = new BlobServiceSasSignatureValues(expiryTime, new BlobSasPermission()).setDirectory(isDirectory);
         BlobSasImplUtil implUtil = new BlobSasImplUtil(v, containerName, blobName, snapId, null, null);
 
         expectedStringToSign = String.format(expectedStringToSign,
             Constants.ISO_8601_UTC_DATE_FORMATTER.format(expiryTime), ENVIRONMENT.getPrimaryAccount().getName());
 
-        String token = implUtil.generateSas(ENVIRONMENT.getPrimaryAccount().getCredential(), Context.NONE);
+        ArrayList<String> stringToSign = new ArrayList<>();
+        String token
+            = implUtil.generateSas(ENVIRONMENT.getPrimaryAccount().getCredential(), stringToSign::add, Context.NONE);
 
         CommonSasQueryParameters queryParams = new CommonSasQueryParameters(SasImplUtils.parseQueryString(token), true);
 
+        assertEquals(expectedStringToSign, stringToSign.get(0), "String-to-sign mismatch");
         assertEquals(queryParams.getSignature(),
             ENVIRONMENT.getPrimaryAccount().getCredential().computeHmac256(expectedStringToSign));
         assertEquals(expectedResource, queryParams.getResource());
@@ -1410,12 +1420,14 @@ public class SasClientTests extends BlobTestBase {
 
     private static Stream<Arguments> blobSasImplUtilCanonicalizedResourceSupplier() {
         return Stream.of(
-            Arguments.of("c", "b", "id", OffsetDateTime.now(), "bs",
+            Arguments.of("c", "b", "id", OffsetDateTime.now(), false, "bs",
                 "\n\n%s\n" + "/blob/%s/c/b\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nbs\nid\n\n\n\n\n\n"),
-            Arguments.of("c", "b", null, OffsetDateTime.now(), "b",
+            Arguments.of("c", "b", null, OffsetDateTime.now(), false, "b",
                 "\n\n%s\n" + "/blob/%s/c/b\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n"),
-            Arguments.of("c", null, null, OffsetDateTime.now(), "c",
-                "\n\n%s\n" + "/blob/%s/c\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nc\n\n\n\n\n\n\n"));
+            Arguments.of("c", null, null, OffsetDateTime.now(), false, "c",
+                "\n\n%s\n" + "/blob/%s/c\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nc\n\n\n\n\n\n\n"),
+            Arguments.of("c", "foo/bar/hello", null, OffsetDateTime.now(), true, "d",
+                "\n\n%s\n" + "/blob/%s/c/foo/bar/hello\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nd\n\n\n\n\n\n\n"));
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-12-06")
@@ -1473,4 +1485,12 @@ public class SasClientTests extends BlobTestBase {
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
                     + "\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nencryptionScope\n"));
     }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-02-10")
+    @ParameterizedTest
+    @ValueSource(strings = { "foo", "foo/bar", "foo/bar/hello" })
+    public void directorySasAllPermissions(String blobName) {
+        //wip
+    }
+
 }
