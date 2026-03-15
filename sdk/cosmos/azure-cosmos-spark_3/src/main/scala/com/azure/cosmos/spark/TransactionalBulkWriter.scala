@@ -25,6 +25,7 @@ import com.azure.cosmos.implementation.guava25.base.Preconditions
 import com.azure.cosmos.implementation.spark.{OperationContextAndListenerTuple, OperationListener}
 import com.azure.cosmos.models.PartitionKey
 import com.azure.cosmos.spark.diagnostics.{DiagnosticsContext, DiagnosticsLoader, LoggerHelper, SparkTaskContext}
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.TaskContext
 import reactor.core.Disposable
@@ -98,7 +99,7 @@ private class TransactionalBulkWriter
   private val transactionalBatchInputEmitter: Sinks.Many[CosmosBatchBulkOperation] = Sinks.many().unicast().onBackpressureBuffer()
 
   // for transactional batch, all rows/items from the dataframe should be grouped as one cosmos batch
-  private val transactionalBatchPartitionKeyScheduled = java.util.concurrent.ConcurrentHashMap.newKeySet[PartitionKey]().asScala
+  private val transactionalBatchPartitionKeyScheduled = java.util.concurrent.ConcurrentHashMap.newKeySet[String]().asScala
 
   private val semaphore = new Semaphore(maxPendingBatches)
 
@@ -147,6 +148,29 @@ private class TransactionalBulkWriter
       Some(new CosmosPatchHelper(diagnosticsConfig, writeConfig.patchConfigs.get))
     case _ => None
   }
+
+  // --- Batch Marker
+  // Without the marker, retry ambiguity causes false positives (inferring SUCCESS when the batch
+  // never committed — silently losing N-1 items) and false negatives (inferring FAIL when the
+  // batch actually committed — producing spurious errors). The marker is an atomic proof-of-commit:
+  // it is written as the last upsert in every batch, and on ambiguous retry, a point-read of the
+  // marker determines whether the original batch committed. After the outcome is determined,
+  // the marker is actively deleted. TTL is defense-in-depth for orphan cleanup from crashed runs.
+  private val markerTtlSeconds = TransactionalBulkWriter.DefaultMarkerTtlSeconds
+  private val batchSequenceCounter = new AtomicLong(0)
+  // jobRunId + sparkPartitionId + batchSeq make each marker ID globally unique.
+  // Use a single TaskContext.get call to extract both values.
+  private val (sparkPartitionId: Int, jobRunId: String) = {
+    val tc = TaskContext.get
+    if (tc != null) {
+      (tc.partitionId(), tc.taskAttemptId().toString)
+    } else {
+      (-1, UUIDs.nonBlockingRandomUUID().toString)
+    }
+  }
+  // Partition key paths (e.g., List("/tenantId", "/userId", "/sessionId"))
+  // needed to populate PK fields in marker documents
+  private val partitionKeyPaths: List[String] = partitionKeyDefinition.getPaths.asScala.toList
 
   private val operationContext = initializeOperationContext()
 
@@ -275,7 +299,23 @@ private class TransactionalBulkWriter
             }
           })
 
-          scheduleBatch(cosmosBatch, bulkItemsList.asScala.toList)
+          // Append marker as the last upsert in the batch for retry ambiguity resolution.
+          // Skip marker if batch already has 100 items (C15: server limit).
+          val markerId = if (bulkItemsList.size() < TransactionalBulkWriter.MaxOperationsPerBatch) {
+            val batchSeq = batchSequenceCounter.incrementAndGet()
+            val id = s"__tbw:$jobRunId:$sparkPartitionId:$batchSeq"
+            val markerNode = buildMarkerDocument(id, bulkItemsList.get(0).objectNode)
+            cosmosBatch.upsertItemOperation(markerNode)
+            Some(id)
+          } else {
+            // C15: batch has 100 business items — skip marker, fall back to shouldIgnore-only
+            log.logInfo(s"Batch for PK '${bulkItemsList.get(0).partitionKey}' has " +
+              s"${bulkItemsList.size()} items (server limit). Marker skipped — using shouldIgnore-only inference. " +
+              s"Context: ${operationContext.toString} $getThreadInfo")
+            None
+          }
+
+          scheduleBatch(cosmosBatch, bulkItemsList.asScala.toList, markerId)
           SMono.empty
         }
       })
@@ -338,7 +378,8 @@ private class TransactionalBulkWriter
                     None,
                     isGettingRetried,
                     Some(cosmosException),
-                    batchOperation.originalItems)
+                    batchOperation.originalItems,
+                    batchOperation.markerId)
                 case _ =>
                   log.logWarning(
                     s"unexpected failure: partitionKeyValue=[" +
@@ -355,11 +396,16 @@ private class TransactionalBulkWriter
                 Some(resp.getResponse),
                 isGettingRetried,
                 None,
-                batchOperation.originalItems)
+                batchOperation.originalItems,
+                batchOperation.markerId)
             } else {
-              // no error case
+              // Happy path: batch succeeded on first attempt
               outputMetricsPublisher.trackWriteOperation(resp.getResponse.size(), None)
               totalSuccessfulIngestionMetrics.addAndGet(resp.getResponse.size())
+              // Best-effort marker cleanup — marker is no longer needed
+              deleteMarkerBestEffort(
+                batchOperation.markerId,
+                batchOperation.cosmosBatchBulkOperation.getPartitionKeyValue)
             }
           }
         }
@@ -408,7 +454,7 @@ private class TransactionalBulkWriter
     idField.textValue()
   }
 
-  private def scheduleBatch(cosmosBatch: CosmosBatch, originalItems: List[TransactionalBulkItem]): Unit = {
+  private def scheduleBatch(cosmosBatch: CosmosBatch, originalItems: List[TransactionalBulkItem], markerId: Option[String]): Unit = {
     Preconditions.checkState(!closed.get())
     throwIfCapturedExceptionExists()
 
@@ -457,7 +503,7 @@ private class TransactionalBulkWriter
     val cnt = totalScheduledMetrics.getAndAdd(cosmosBatch.getOperations.size())
     log.logTrace(s"total scheduled $cnt, Context: ${operationContext.toString} $getThreadInfo")
 
-    scheduleBatchInternal(CosmosBatchOperation(cosmosBatchBulkOperation, operationContext, originalItems))
+    scheduleBatchInternal(CosmosBatchOperation(cosmosBatchBulkOperation, operationContext, originalItems, markerId))
   }
 
   private def scheduleBatchInternal(cosmosBatchOperation: CosmosBatchOperation): Unit = {
@@ -483,7 +529,8 @@ private class TransactionalBulkWriter
     cosmosBatchResponse: Option[CosmosBatchResponse],
     isGettingRetried: AtomicBoolean,
     responseException: Option[CosmosException],
-    originalItems: List[TransactionalBulkItem]
+    originalItems: List[TransactionalBulkItem],
+    markerId: Option[String]
   ) : Unit = {
 
     val exceptionMessage = cosmosBatchResponse match {
@@ -526,6 +573,8 @@ private class TransactionalBulkWriter
         cosmosBatchBulkOperation.getCosmosBatch.getOperations.size(), None)
       totalSuccessfulIngestionMetrics.addAndGet(
         cosmosBatchBulkOperation.getCosmosBatch.getOperations.size())
+      // Best-effort marker cleanup — inferred SUCCESS via shouldIgnore
+      deleteMarkerBestEffort(markerId, cosmosBatchBulkOperation.getPartitionKeyValue)
     } else if (shouldRetry(effectiveStatusCode, effectiveSubStatusCode, operationContext)) {
       // requeue
       log.logWarning(s"for partitionKeyValue=[${operationContext.partitionKeyValueInput}], " +
@@ -540,7 +589,8 @@ private class TransactionalBulkWriter
           operationContext.attemptNumber + 1,
           operationContext.sequenceNumber,
           operationContext.isIdempotent),
-        originalItems
+        originalItems,
+        markerId
       )
 
       this.scheduleRetry(
@@ -901,6 +951,50 @@ private class TransactionalBulkWriter
     batchSubscriptionDisposable.dispose()
   }
 
+  // Builds a minimal marker document with id + ttl + partition key fields.
+  // The marker's PK field values are copied from the first business item in the batch
+  // so the marker lands in the same logical partition.
+  private def buildMarkerDocument(markerId: String, firstBusinessItem: ObjectNode): ObjectNode = {
+    val markerNode = TransactionalBulkWriter.markerObjectMapper.createObjectNode()
+    markerNode.put("id", markerId)
+    markerNode.put("ttl", markerTtlSeconds)
+    partitionKeyPaths.foreach(path => {
+      val fieldName = path.stripPrefix("/")
+      val value = firstBusinessItem.get(fieldName)
+      if (value != null) {
+        markerNode.set(fieldName, value.deepCopy())
+      }
+    })
+    markerNode
+  }
+
+  // Best-effort marker cleanup — single attempt, no retry.
+  // The batch outcome is already determined before this is called —
+  // the delete is purely cleanup, not a correctness operation.
+  private def deleteMarkerBestEffort(markerId: Option[String], partitionKeyValue: PartitionKey): Unit = {
+    markerId match {
+      case Some(id) =>
+        // Fire-and-forget: do not block the response handler thread.
+        // The batch outcome is already determined — this is purely cleanup.
+        container.deleteItem(id, partitionKeyValue)
+          .doOnSuccess((_: Any) =>
+            log.logDebug(s"Marker '$id' deleted successfully. " +
+              s"Context: ${operationContext.toString} $getThreadInfo"))
+          .doOnError((ex: Throwable) =>
+            // Best-effort: log warning, do not retry, do not propagate.
+            // If TTL is enabled, the marker will eventually expire.
+            // If TTL is disabled, the marker stays as a ~100-byte orphan — no correctness impact.
+            log.logWarning(s"Failed to delete marker '$id' (best-effort cleanup). " +
+              s"Marker is inert and will not be read again. " +
+              s"Exception: ${ex.getMessage}, " +
+              s"Context: ${operationContext.toString} $getThreadInfo"))
+          .onErrorResume((_: Throwable) => reactor.core.publisher.Mono.empty())
+          .subscribeOn(Schedulers.boundedElastic())
+          .subscribe()
+      case None => // No marker — nothing to delete
+    }
+  }
+
   // Restricted subset of BulkWriter's shouldIgnore — excludes 412 (Precondition Failed)
   // because 412 is ambiguous on retry for batch operations.
   // See DESIGN.md § shouldIgnore in TransactionalBulkWriter vs BulkWriter
@@ -1026,7 +1120,8 @@ private class TransactionalBulkWriter
   private case class CosmosBatchOperation(
     cosmosBatchBulkOperation: CosmosBatchBulkOperation,
     operationContext: OperationContext,
-    originalItems: List[TransactionalBulkItem])
+    originalItems: List[TransactionalBulkItem],
+    markerId: Option[String] = None)
   private case class TransactionalBulkItem(
     partitionKey: PartitionKey,
     objectNode: ObjectNode,
@@ -1040,6 +1135,13 @@ private object TransactionalBulkWriter {
   private val maxDelayOn408RequestTimeoutInMs = 3000
   private val minDelayOn408RequestTimeoutInMs = 500
   private val maxItemOperationsToShowInErrorMessage = 10
+  // Cosmos DB server limit: maximum 100 operations per transactional batch
+  val MaxOperationsPerBatch = 100
+  // Default TTL for marker documents (defense-in-depth for orphan cleanup from crashed runs)
+  // 24 hours = 86400 seconds. Primary cleanup is active deletion, not TTL.
+  val DefaultMarkerTtlSeconds = 86400
+  // Shared ObjectMapper for building marker documents — thread-safe, reused across all instances
+  private[spark] val markerObjectMapper = new ObjectMapper()
   private val TRANSACTIONAL_BULK_WRITER_REQUESTS_BOUNDED_ELASTIC_THREAD_NAME = "transactional-bulk-writer-requests-bounded-elastic"
   private val TRANSACTIONAL_BULK_WRITER_INPUT_BOUNDED_ELASTIC_THREAD_NAME = "transactional-bulk-writer-input-bounded-elastic"
   private val TRANSACTIONAL_BATCH_INPUT_BOUNDED_ELASTIC_THREAD_NAME = "transactional-batch-input-bounded-elastic"
