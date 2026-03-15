@@ -37,8 +37,6 @@ public class PathProperties {
     private final Boolean isServerEncrypted;
     private final Boolean isIncrementalCopy;
     private final AccessTier accessTier;
-    private final Boolean accessTierInferred;
-    private final AccessTier smartAccessTier;
     private final ArchiveStatus archiveStatus;
     private final String encryptionKeySha256;
     private final OffsetDateTime accessTierChangeTime;
@@ -51,19 +49,23 @@ public class PathProperties {
     private String group;
     private String permissions;
     private List<PathAccessControlEntry> accessControlList;
+    private Boolean accessTierInferred;
+    private AccessTier smartAccessTier;
 
     static {
-        AccessorUtility.setPathPropertiesAccessor(
-            (properties, encryptionScope, encryptionContext, owner, group, permissions, AccessControlList) -> {
-                properties.encryptionScope = encryptionScope;
-                properties.encryptionContext = encryptionContext;
-                properties.owner = owner;
-                properties.group = group;
-                properties.permissions = permissions;
-                properties.accessControlList = PathAccessControlEntry.parseList(AccessControlList);
+        AccessorUtility.setPathPropertiesAccessor((properties, encryptionScope, encryptionContext, owner, group,
+            permissions, AccessControlList, accessTierInferred, smartAccessTier) -> {
+            properties.encryptionScope = encryptionScope;
+            properties.encryptionContext = encryptionContext;
+            properties.owner = owner;
+            properties.group = group;
+            properties.permissions = permissions;
+            properties.accessControlList = PathAccessControlEntry.parseList(AccessControlList);
+            properties.accessTierInferred = accessTierInferred;
+            properties.smartAccessTier = smartAccessTier;
 
-                return properties;
-            });
+            return properties;
+        });
     }
 
     /**
@@ -104,13 +106,12 @@ public class PathProperties {
         final String copyId, final CopyStatusType copyStatus, final String copySource, final String copyProgress,
         final OffsetDateTime copyCompletionTime, final String copyStatusDescription, final Boolean isServerEncrypted,
         final Boolean isIncrementalCopy, final AccessTier accessTier, final ArchiveStatus archiveStatus,
-        final String encryptionKeySha256, final OffsetDateTime accessTierChangeTime, final Map<String, String> metadata,
-        final Boolean accessTierInferred, final AccessTier smartAccessTier) {
+        final String encryptionKeySha256, final OffsetDateTime accessTierChangeTime,
+        final Map<String, String> metadata) {
         this(creationTime, lastModified, eTag, fileSize, contentType, contentMd5, contentEncoding, contentDisposition,
             contentLanguage, cacheControl, leaseStatus, leaseState, leaseDuration, copyId, copyStatus, copySource,
             copyProgress, copyCompletionTime, copyStatusDescription, isServerEncrypted, isIncrementalCopy, accessTier,
-            accessTierInferred, smartAccessTier, archiveStatus, encryptionKeySha256, accessTierChangeTime, metadata,
-            null);
+            archiveStatus, encryptionKeySha256, accessTierChangeTime, metadata, null);
     }
 
     /**
@@ -151,9 +152,9 @@ public class PathProperties {
         final LeaseStatusType leaseStatus, final LeaseStateType leaseState, final LeaseDurationType leaseDuration,
         final String copyId, final CopyStatusType copyStatus, final String copySource, final String copyProgress,
         final OffsetDateTime copyCompletionTime, final String copyStatusDescription, final Boolean isServerEncrypted,
-        final Boolean isIncrementalCopy, final AccessTier accessTier, final Boolean accessTierInferred,
-        final AccessTier smartAccessTier, final ArchiveStatus archiveStatus, final String encryptionKeySha256,
-        final OffsetDateTime accessTierChangeTime, final Map<String, String> metadata, final OffsetDateTime expiresOn) {
+        final Boolean isIncrementalCopy, final AccessTier accessTier, final ArchiveStatus archiveStatus,
+        final String encryptionKeySha256, final OffsetDateTime accessTierChangeTime, final Map<String, String> metadata,
+        final OffsetDateTime expiresOn) {
         this.creationTime = creationTime;
         this.lastModified = lastModified;
         this.eTag = eTag;
@@ -176,8 +177,6 @@ public class PathProperties {
         this.isServerEncrypted = isServerEncrypted;
         this.isIncrementalCopy = isIncrementalCopy;
         this.accessTier = accessTier;
-        this.accessTierInferred = accessTierInferred;
-        this.smartAccessTier = smartAccessTier;
         this.archiveStatus = archiveStatus;
         this.encryptionKeySha256 = encryptionKeySha256;
         this.accessTierChangeTime = accessTierChangeTime;
