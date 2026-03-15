@@ -130,6 +130,8 @@ class Transforms {
     static final HttpHeaderName X_MS_PERMISSIONS = HttpHeaderName.fromString("x-ms-permissions");
     static final HttpHeaderName X_MS_CONTINUATION = HttpHeaderName.fromString("x-ms-continuation");
     static final HttpHeaderName X_MS_ACL = HttpHeaderName.fromString("x-ms-acl");
+    static final HttpHeaderName X_MS_ACCESS_TIER_INFERRED = HttpHeaderName.fromString("x-ms-access-tier-inferred");
+    static final HttpHeaderName X_MS_SMART_ACCESS_TIER = HttpHeaderName.fromString("x-ms-smart-access-tier");
 
     static {
         // https://docs.oracle.com/javase/8/docs/api/java/util/Date.html#getTime--
@@ -341,8 +343,7 @@ class Transforms {
                 Transforms.toDataLakeCopyStatusType(properties.getCopyStatus()), properties.getCopySource(),
                 properties.getCopyProgress(), properties.getCopyCompletionTime(), properties.getCopyStatusDescription(),
                 properties.isServerEncrypted(), properties.isIncrementalCopy(),
-                Transforms.toDataLakeAccessTier(properties.getAccessTier()), properties.isAccessTierInferred(),
-                Transforms.toDataLakeAccessTier(properties.getSmartAccessTier()),
+                Transforms.toDataLakeAccessTier(properties.getAccessTier()),
                 Transforms.toDataLakeArchiveStatus(properties.getArchiveStatus()), properties.getEncryptionKeySha256(),
                 properties.getAccessTierChangeTime(), properties.getMetadata(), properties.getExpiresOn());
 
@@ -354,10 +355,12 @@ class Transforms {
                 String group = r.getHeaders().getValue(X_MS_GROUP);
                 String permissions = r.getHeaders().getValue(X_MS_PERMISSIONS);
                 String acl = r.getHeaders().getValue(X_MS_ACL);
+                Boolean accessTierInferred = properties.isAccessTierInferred();
+                AccessTier smartAccessTier = Transforms.toDataLakeAccessTier(properties.getSmartAccessTier());
 
                 return AccessorUtility.getPathPropertiesAccessor()
                     .setPathProperties(pathProperties, properties.getEncryptionScope(), encryptionContext, owner, group,
-                        permissions, acl);
+                        permissions, acl, accessTierInferred, smartAccessTier);
             }
         }
     }

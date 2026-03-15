@@ -156,7 +156,6 @@ public class DataLakeTestBase extends TestProxyTestBase {
             .setIgnoredQueryParameters(Arrays.asList("sv"))));
 
         primaryDataLakeServiceClient = getServiceClient(ENVIRONMENT.getDataLakeAccount());
-        premiumDataLakeServiceClient = getServiceClient(ENVIRONMENT.getPremiumFileAccount());
         primaryDataLakeServiceAsyncClient = getServiceAsyncClient(ENVIRONMENT.getDataLakeAccount());
 
         fileSystemName = generateFileSystemName();
