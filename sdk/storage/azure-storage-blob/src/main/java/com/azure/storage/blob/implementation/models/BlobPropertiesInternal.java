@@ -171,6 +171,10 @@ public interface BlobPropertiesInternal {
      */
     Boolean isAccessTierInferred();
 
+    /**
+     * @return the tier of the blob. This is only set for Page blobs on a premium storage account or for Block blobs on
+     * blob storage or general purpose V2 account.
+     */
     AccessTier getSmartAccessTier();
 
     /**

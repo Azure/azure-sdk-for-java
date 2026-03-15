@@ -30,7 +30,7 @@ public final class BlobPropertiesConstructorProxy {
     }
 
     /**
-     * The method called from the static initializer of {@link BlobProperties} to set it's accessor.
+     * The method called from the static initializer of {@link BlobProperties} to set its accessor.
      *
      * @param accessor The {@link BlobProperties} accessor.
      */
@@ -51,7 +51,7 @@ public final class BlobPropertiesConstructorProxy {
         // is null this effectively pokes the class to set up the accessor.
         if (accessor == null) {
             new BlobProperties(null, null, null, 0, null, null, null, null, null, null, null, null, null, null, null,
-                null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+                null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
         }
 
         assert accessor != null;
