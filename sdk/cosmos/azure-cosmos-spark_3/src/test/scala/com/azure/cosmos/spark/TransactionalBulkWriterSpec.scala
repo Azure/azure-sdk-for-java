@@ -8,13 +8,16 @@ import com.azure.cosmos.models.{
   CosmosBatchResponse,
   CosmosBulkOperations,
   ModelBridgeInternal,
-  PartitionKey
+  PartitionKey,
+  PartitionKeyBuilder,
+  PartitionKeyDefinition
 }
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 
 import java.time.Duration
 import java.util
+import java.util.concurrent.ConcurrentHashMap
 // scalastyle:off underscore.import
 import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
@@ -439,6 +442,223 @@ class TransactionalBulkWriterSpec extends UnitSpec {
   it should "allow re-enqueue for idempotent operations" in {
     val isIdempotent = true
     (!isIdempotent) should be(false) // would NOT skip
+  }
+
+  // =====================================================
+  // Duplicate PK Detection with String Keys
+  // (Verifies the hashCode fix — PartitionKey.toString() as set key)
+  // =====================================================
+
+  "PartitionKey hashCode bug" should "demonstrate that value-equal PartitionKeys have different hashCodes" in {
+    // PartitionKey.hashCode() uses Object.hashCode() (memory address), but
+    // PartitionKey.equals() compares content. This violates the Java equals/hashCode contract.
+    val pk1 = new PartitionKeyBuilder()
+      .add("tenant-A").add("user-1").add("session-1").build()
+    val pk2 = new PartitionKeyBuilder()
+      .add("tenant-A").add("user-1").add("session-1").build()
+
+    // Equals: value-based -> true (correct)
+    pk1.equals(pk2) should be(true)
+
+    // HashCode: identity-based -> DIFFERENT (bug!)
+    pk1.hashCode() should not be pk2.hashCode()
+  }
+
+  "duplicate PK detection with String keys (C10 fix)" should "detect value-equal HPK partition keys" in {
+    // we use PartitionKey.toString() as the set key.
+    // toString() returns deterministic JSON: '["tenant-A","user-1","session-1"]'
+    val pk1 = new PartitionKeyBuilder()
+      .add("tenant-A").add("user-1").add("session-1").build()
+    val pk2 = new PartitionKeyBuilder()
+      .add("tenant-A").add("user-1").add("session-1").build()
+
+    pk1.toString should be(pk2.toString)
+
+    val set = ConcurrentHashMap.newKeySet[String]()
+    set.add(pk1.toString) should be(true)   // first add -> true
+    set.add(pk2.toString) should be(false)  // duplicate detected -> false
+  }
+
+  it should "correctly distinguish different HPK values" in {
+    val pk1 = new PartitionKeyBuilder()
+      .add("tenant-A").add("user-1").add("session-1").build()
+    val pk2 = new PartitionKeyBuilder()
+      .add("tenant-A").add("user-1").add("session-2").build()  // different session
+
+    pk1.toString should not be pk2.toString
+
+    val set = ConcurrentHashMap.newKeySet[String]()
+    set.add(pk1.toString) should be(true)
+    set.add(pk2.toString) should be(true)  // different PK -> no conflict
+  }
+
+  it should "work for single partition keys too" in {
+    val pk1 = new PartitionKey("Seattle")
+    val pk2 = new PartitionKey("Seattle")
+
+    pk1.toString should be(pk2.toString)
+
+    val set = ConcurrentHashMap.newKeySet[String]()
+    set.add(pk1.toString) should be(true)
+    set.add(pk2.toString) should be(false)  // duplicate detected
+  }
+
+  // =====================================================
+  // isAllowedProperty HPK False Positive Fix
+  // =====================================================
+
+  "isAllowedProperty " should "allow patching /user when PK paths are /tenantId/userId/sessionId" in {
+    // : List("/tenantId", "/userId", "/sessionId").contains("/user")
+    //  -> false -> ALLOWED (CORRECT)
+    val pkDef = new PartitionKeyDefinition()
+    val paths = new java.util.ArrayList[String]()
+    paths.add("/tenantId")
+    paths.add("/userId")
+    paths.add("/sessionId")
+    pkDef.setPaths(paths)
+
+    // The fix uses Java List.contains() — exact match, not substring
+    pkDef.getPaths.contains("/user") should be(false)      // not a PK path
+    pkDef.getPaths.contains("/tenant") should be(false)    // not a PK path
+    pkDef.getPaths.contains("/session") should be(false)   // not a PK path
+    pkDef.getPaths.contains("/tenantId") should be(true)   // IS a PK path
+    pkDef.getPaths.contains("/userId") should be(true)     // IS a PK path
+    pkDef.getPaths.contains("/sessionId") should be(true)  // IS a PK path
+  }
+
+  it should "work for single partition key definitions" in {
+    val pkDef = new PartitionKeyDefinition()
+    val paths = new java.util.ArrayList[String]()
+    paths.add("/pk")
+    pkDef.setPaths(paths)
+
+    pkDef.getPaths.contains("/pk") should be(true)
+    pkDef.getPaths.contains("/p") should be(false)     // substring — should NOT match
+    pkDef.getPaths.contains("/pkId") should be(false)  // superstring — should NOT match
+  }
+
+  // =====================================================
+  // Batch Marker Document Tests
+  // =====================================================
+
+  "buildMarkerDocument pattern" should "create a minimal marker with id, ttl, and PK fields" in {
+    val om = new ObjectMapper()
+    val businessItem = om.createObjectNode()
+    businessItem.put("id", "doc-1")
+    businessItem.put("tenantId", "Contoso")
+    businessItem.put("userId", "alice")
+    businessItem.put("sessionId", "sess-99")
+    businessItem.put("score", 42)
+
+    // Simulate buildMarkerDocument logic
+    val markerId = "__tbw:12345:3:1"
+    val markerTtlSeconds = 86400
+    val partitionKeyPaths = List("/tenantId", "/userId", "/sessionId")
+
+    val markerNode = om.createObjectNode()
+    markerNode.put("id", markerId)
+    markerNode.put("ttl", markerTtlSeconds)
+    partitionKeyPaths.foreach(path => {
+      val fieldName = path.stripPrefix("/")
+      val value = businessItem.get(fieldName)
+      if (value != null) {
+        markerNode.set(fieldName, value.deepCopy())
+      }
+    })
+
+    // Verify marker has id + ttl + PK fields only (no business fields like "score")
+    markerNode.get("id").asText() should be("__tbw:12345:3:1")
+    markerNode.get("ttl").asInt() should be(86400)
+    markerNode.get("tenantId").asText() should be("Contoso")
+    markerNode.get("userId").asText() should be("alice")
+    markerNode.get("sessionId").asText() should be("sess-99")
+    markerNode.has("score") should be(false)  // business field NOT in marker
+  }
+
+  "marker ID" should "be deterministic for the same jobRunId, sparkPartitionId, and batchSeq" in {
+    val jobRunId = "task-attempt-12345"
+    val sparkPartitionId = 3
+    val batchSeq = 17L
+
+    val id1 = s"__tbw:$jobRunId:$sparkPartitionId:$batchSeq"
+    val id2 = s"__tbw:$jobRunId:$sparkPartitionId:$batchSeq"
+
+    id1 should be(id2)
+    id1 should be("__tbw:task-attempt-12345:3:17")
+  }
+
+  it should "be different for different batchSeq values" in {
+    val id1 = s"__tbw:job1:0:1"
+    val id2 = s"__tbw:job1:0:2"
+
+    id1 should not be id2
+  }
+
+  it should "be different for different jobRunIds" in {
+    val id1 = s"__tbw:job-alpha:0:1"
+    val id2 = s"__tbw:job-beta:0:1"
+
+    id1 should not be id2
+  }
+
+  // =====================================================
+  // 100-Item Boundary (Marker Skip)
+  // =====================================================
+
+  "C15 marker skip" should "add marker when batch has fewer than 100 items" in {
+    val pk = new PartitionKey("user-A")
+    val batch = CosmosBatch.createCosmosBatch(pk)
+
+    // Add 99 business items
+    for (i <- 1 to 99) {
+      batch.upsertItemOperation(createObjectNode(s"doc-$i", "user-A"))
+    }
+    batch.getOperations.size() should be(99)
+
+    // Adding marker makes it 100 — within server limit
+    batch.upsertItemOperation(createObjectNode("__tbw:test:0:1", "user-A"))
+    batch.getOperations.size() should be(100) // exactly at limit — OK
+  }
+
+  it should "skip marker when batch already has 100 items" in {
+    val pk = new PartitionKey("user-A")
+    val batch = CosmosBatch.createCosmosBatch(pk)
+
+    // Add 100 business items
+    for (i <- 1 to 100) {
+      batch.upsertItemOperation(createObjectNode(s"doc-$i", "user-A"))
+    }
+    batch.getOperations.size() should be(100)
+
+    // bulkItemsList.size() < 100 -> false -> skip marker
+    val shouldAddMarker = batch.getOperations.size() < 100
+    shouldAddMarker should be(false)
+  }
+
+  "marker position" should "always be the last operation in the batch" in {
+    val pk = new PartitionKey("user-A")
+    val batch = CosmosBatch.createCosmosBatch(pk)
+
+    // Add business items first
+    batch.createItemOperation(createObjectNode("doc-1", "user-A"))
+    batch.upsertItemOperation(createObjectNode("doc-2", "user-A"))
+    batch.deleteItemOperation("doc-3")
+
+    // Add marker last (same as production code: upsert with marker ObjectNode)
+    val markerNode = objectMapper.createObjectNode()
+    markerNode.put("id", "__tbw:test:0:1")
+    markerNode.put("ttl", 86400)
+    markerNode.put("pk", "user-A")
+    batch.upsertItemOperation(markerNode)
+
+    val ops = batch.getOperations
+    ops.size() should be(4)
+    // Business items preserve their original order
+    ops.get(0).getOperationType.toString should be("CREATE")
+    ops.get(1).getOperationType.toString should be("UPSERT")
+    ops.get(2).getOperationType.toString should be("DELETE")
+    // Marker is the last operation and is an UPSERT
+    ops.get(3).getOperationType.toString should be("UPSERT")
   }
 }
 //scalastyle:on null

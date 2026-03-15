@@ -10,7 +10,7 @@ import com.azure.cosmos.models.{CosmosBatch, CosmosBatchItemRequestOptions, Cosm
 import com.azure.cosmos.spark.BulkWriter.getThreadInfo
 import com.azure.cosmos.spark.TransactionalBulkWriter.{BulkOperationFailedException, DefaultMaxPendingOperationPerCore, emitFailureHandler, transactionalBatchInputBoundedElastic, transactionalBulkWriterInputBoundedElastic, transactionalBulkWriterRequestsBoundedElastic}
 import com.azure.cosmos.spark.diagnostics.DefaultDiagnostics
-import com.azure.cosmos.{BridgeInternal, CosmosAsyncContainer, CosmosDiagnosticsContext, CosmosEndToEndOperationLatencyPolicyConfigBuilder, CosmosException}
+import com.azure.cosmos.{BridgeInternal, CosmosAsyncContainer, CosmosDiagnosticsContext, CosmosEndToEndOperationLatencyPolicyConfigBuilder, CosmosException, SparkBridgeInternal}
 import reactor.core.Scannable
 import reactor.core.scala.publisher.SMono.PimpJFlux
 import reactor.core.scheduler.Scheduler
@@ -171,6 +171,23 @@ private class TransactionalBulkWriter
   // Partition key paths (e.g., List("/tenantId", "/userId", "/sessionId"))
   // needed to populate PK fields in marker documents
   private val partitionKeyPaths: List[String] = partitionKeyDefinition.getPaths.asScala.toList
+
+  // Container TTL startup check — log INFO if TTL is not enabled.
+  // Active deletion is the primary cleanup mechanism; TTL is defense-in-depth only.
+  {
+    try {
+      val containerProperties = SparkBridgeInternal.getContainerPropertiesFromCollectionCache(container)
+      val defaultTtl = containerProperties.getDefaultTimeToLiveInSeconds
+      if (defaultTtl == null) {
+        log.logInfo(s"Container TTL is not enabled. Marker documents will be cleaned up via active deletion. " +
+          s"Enable TTL (defaultTimeToLive = -1) for defense-in-depth cleanup of orphaned markers.")
+      }
+    } catch {
+      case ex: Exception =>
+        log.logDebug(s"Unable to check container TTL setting: ${ex.getMessage}. " +
+          s"Marker cleanup will rely on active deletion.")
+    }
+  }
 
   private val operationContext = initializeOperationContext()
 
@@ -1240,12 +1257,12 @@ private object TransactionalBulkWriter {
   private val minDelayOn408RequestTimeoutInMs = 500
   private val maxItemOperationsToShowInErrorMessage = 10
   // Cosmos DB server limit: maximum 100 operations per transactional batch
-  val MaxOperationsPerBatch = 100
-  // Default TTL for marker documents (defense-in-depth for orphan cleanup from crashed runs)
+  private val MaxOperationsPerBatch = 100
+  // Default TTL for marker documents (orphan cleanup from crashed runs)
   // 24 hours = 86400 seconds. Primary cleanup is active deletion, not TTL.
-  val DefaultMarkerTtlSeconds = 86400
+  private val DefaultMarkerTtlSeconds = 86400
   // Shared ObjectMapper for building marker documents — thread-safe, reused across all instances
-  private[spark] val markerObjectMapper = new ObjectMapper()
+  private val markerObjectMapper = new ObjectMapper()
   private val TRANSACTIONAL_BULK_WRITER_REQUESTS_BOUNDED_ELASTIC_THREAD_NAME = "transactional-bulk-writer-requests-bounded-elastic"
   private val TRANSACTIONAL_BULK_WRITER_INPUT_BOUNDED_ELASTIC_THREAD_NAME = "transactional-bulk-writer-input-bounded-elastic"
   private val TRANSACTIONAL_BATCH_INPUT_BOUNDED_ELASTIC_THREAD_NAME = "transactional-batch-input-bounded-elastic"
