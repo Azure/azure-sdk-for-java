@@ -11,7 +11,7 @@ import com.azure.resourcemanager.netapp.models.ReestablishReplicationRequest;
  */
 public final class VolumesReestablishReplicationSamples {
     /*
-     * x-ms-original-file: 2025-12-01/Volumes_ReestablishReplication.json
+     * x-ms-original-file: 2026-01-01/Volumes_ReestablishReplication.json
      */
     /**
      * Sample code: Volumes_ReestablishReplication.

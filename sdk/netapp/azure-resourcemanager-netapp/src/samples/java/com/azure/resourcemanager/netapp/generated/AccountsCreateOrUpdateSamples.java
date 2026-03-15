@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class AccountsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-12-01/Accounts_CreateOrUpdate.json
+     * x-ms-original-file: 2026-01-01/Accounts_CreateOrUpdate.json
      */
     /**
      * Sample code: Accounts_CreateOrUpdate.
@@ -24,7 +24,7 @@ public final class AccountsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-12-01/Accounts_CreateOrUpdateAD.json
+     * x-ms-original-file: 2026-01-01/Accounts_CreateOrUpdateAD.json
      */
     /**
      * Sample code: Accounts_CreateOrUpdateWithActiveDirectory.
