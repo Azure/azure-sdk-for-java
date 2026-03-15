@@ -465,10 +465,12 @@ private class TransactionalBulkWriter
         cosmosBatch.getPartitionKeyValue,
         1,
         monotonicOperationCounter.incrementAndGet())
-    if (!transactionalBatchPartitionKeyScheduled.add(cosmosBatch.getPartitionKeyValue)) {
-      log.logError(s"There are already existing cosmos batch operation scheduled for partition key ${cosmosBatch.getPartitionKeyValue}," +
-        s" transactional is not guaranteed, fail")
-      SMono.error(new IllegalStateException(s"Transactional is not guaranteed for partition key ${cosmosBatch.getPartitionKeyValue}"))
+    val partitionKeyString = cosmosBatch.getPartitionKeyValue.toString
+    if (!transactionalBatchPartitionKeyScheduled.add(partitionKeyString)) {
+      log.logError(s"Partition key value '$partitionKeyString' has already been scheduled in this writer instance. " +
+        s"This indicates a bug in the data distribution or ordering pipeline. " +
+        s"Atomicity guarantee may be violated for this partition key value. " +
+        s"Context: ${operationContext.toString} $getThreadInfo")
     }
 
     val numberOfIntervalsWithIdenticalActiveOperationSnapshots = new AtomicLong(0)
@@ -562,19 +564,84 @@ private class TransactionalBulkWriter
       s"Context: ${operationContext.toString} $getThreadInfo")
 
     if (shouldIgnoreOnRetry(operationContext, cosmosBatchResponse)) {
-      // Infer SUCCESS: the original batch committed, this retry confirms it
-      // See DESIGN.md § shouldIgnore in TransactionalBulkWriter vs BulkWriter
-      log.logInfo(s"for partitionKeyValue=[${operationContext.partitionKeyValueInput}], " +
-        s"inferred SUCCESS on retry via shouldIgnore. " +
-        s"statusCode='$effectiveStatusCode:$effectiveSubStatusCode', " +
-        s"attemptNumber=${operationContext.attemptNumber}, " +
-        s"Context: {${operationContext.toString}} $getThreadInfo")
-      outputMetricsPublisher.trackWriteOperation(
-        cosmosBatchBulkOperation.getCosmosBatch.getOperations.size(), None)
-      totalSuccessfulIngestionMetrics.addAndGet(
-        cosmosBatchBulkOperation.getCosmosBatch.getOperations.size())
-      // Best-effort marker cleanup — inferred SUCCESS via shouldIgnore
-      deleteMarkerBestEffort(markerId, cosmosBatchBulkOperation.getPartitionKeyValue)
+      // shouldIgnore matched — but we need to verify before inferring SUCCESS.
+      markerId match {
+        case Some(id) =>
+          // Normal batch (has marker) -> verify via marker point-read
+          val verificationOutcome = verifyBatchCommit(id, cosmosBatchBulkOperation.getPartitionKeyValue)
+          verificationOutcome match {
+            case Committed =>
+              log.logInfo(s"for partitionKeyValue=[${operationContext.partitionKeyValueInput}], " +
+                s"marker verification confirmed COMMITTED. markerId='$id', " +
+                s"statusCode='$effectiveStatusCode:$effectiveSubStatusCode', " +
+                s"attemptNumber=${operationContext.attemptNumber}, " +
+                s"Context: {${operationContext.toString}} $getThreadInfo")
+              outputMetricsPublisher.trackWriteOperation(
+                cosmosBatchBulkOperation.getCosmosBatch.getOperations.size(), None)
+              totalSuccessfulIngestionMetrics.addAndGet(
+                cosmosBatchBulkOperation.getCosmosBatch.getOperations.size())
+              deleteMarkerBestEffort(markerId, cosmosBatchBulkOperation.getPartitionKeyValue)
+
+            case NotCommitted =>
+              log.logInfo(s"for partitionKeyValue=[${operationContext.partitionKeyValueInput}], " +
+                s"marker verification found NOT COMMITTED (marker absent). " +
+                s"shouldIgnore error was from external process, not our batch. markerId='$id', " +
+                s"statusCode='$effectiveStatusCode:$effectiveSubStatusCode', " +
+                s"attemptNumber=${operationContext.attemptNumber}, " +
+                s"Context: {${operationContext.toString}} $getThreadInfo")
+              // FAIL — the original batch did not commit
+              val message = s"Batch not committed (marker absent after shouldIgnore match) - " +
+                s"statusCode=[$effectiveStatusCode:$effectiveSubStatusCode] " +
+                s"partitionKeyValue=[${operationContext.partitionKeyValueInput}]"
+              captureIfFirstFailure(
+                new BulkOperationFailedException(effectiveStatusCode, effectiveSubStatusCode, message, null))
+              cancelWork()
+
+            case Inconclusive =>
+              // Verification read itself failed — consume one retry attempt
+              log.logWarning(s"for partitionKeyValue=[${operationContext.partitionKeyValueInput}], " +
+                s"marker verification inconclusive (read failed). Will retry. markerId='$id', " +
+                s"attemptNumber=${operationContext.attemptNumber}, " +
+                s"Context: {${operationContext.toString}} $getThreadInfo")
+              if (shouldRetry(effectiveStatusCode, effectiveSubStatusCode, operationContext)) {
+                val batchOperationRetry = CosmosBatchOperation(
+                  cosmosBatchBulkOperation,
+                  new OperationContext(
+                    operationContext.partitionKeyValueInput,
+                    operationContext.attemptNumber + 1,
+                    operationContext.sequenceNumber,
+                    operationContext.isIdempotent),
+                  originalItems,
+                  markerId
+                )
+                this.scheduleRetry(
+                  trackPendingRetryAction = () => pendingBatchRetries.put(cosmosBatchBulkOperation.getPartitionKeyValue, batchOperationRetry).isEmpty,
+                  clearPendingRetryAction = () => pendingBatchRetries.remove(cosmosBatchBulkOperation.getPartitionKeyValue).isDefined,
+                  batchOperationRetry,
+                  effectiveStatusCode)
+                isGettingRetried.set(true)
+              } else {
+                val message = s"Marker verification inconclusive and retries exhausted - " +
+                  s"statusCode=[$effectiveStatusCode:$effectiveSubStatusCode] " +
+                  s"partitionKeyValue=[${operationContext.partitionKeyValueInput}]"
+                captureIfFirstFailure(
+                  new BulkOperationFailedException(effectiveStatusCode, effectiveSubStatusCode, message, null))
+                cancelWork()
+              }
+          }
+
+        case None =>
+          // C15 batch (100 items, marker skipped) → shouldIgnore-only inference
+          log.logInfo(s"for partitionKeyValue=[${operationContext.partitionKeyValueInput}], " +
+            s"inferred SUCCESS on retry via shouldIgnore (C15 batch, no marker). " +
+            s"statusCode='$effectiveStatusCode:$effectiveSubStatusCode', " +
+            s"attemptNumber=${operationContext.attemptNumber}, " +
+            s"Context: {${operationContext.toString}} $getThreadInfo")
+          outputMetricsPublisher.trackWriteOperation(
+            cosmosBatchBulkOperation.getCosmosBatch.getOperations.size(), None)
+          totalSuccessfulIngestionMetrics.addAndGet(
+            cosmosBatchBulkOperation.getCosmosBatch.getOperations.size())
+      }
     } else if (shouldRetry(effectiveStatusCode, effectiveSubStatusCode, operationContext)) {
       // requeue
       log.logWarning(s"for partitionKeyValue=[${operationContext.partitionKeyValueInput}], " +
@@ -992,6 +1059,43 @@ private class TransactionalBulkWriter
           .subscribeOn(Schedulers.boundedElastic())
           .subscribe()
       case None => // No marker — nothing to delete
+    }
+  }
+
+  // Marker verification outcomes — see DESIGN.md § Verification on Ambiguity
+  private sealed trait MarkerVerificationOutcome
+  private case object Committed extends MarkerVerificationOutcome     // Marker present → batch committed
+  private case object NotCommitted extends MarkerVerificationOutcome  // Marker absent → batch did not commit
+  private case object Inconclusive extends MarkerVerificationOutcome  // Verification read itself failed
+
+  // Marker verification — the ONLY decision signal for ambiguous retries.
+  // Returns Committed (marker present), NotCommitted (marker absent), or
+  // Inconclusive (verification read itself failed with a transient error).
+  private def verifyBatchCommit(
+    markerId: String,
+    partitionKeyValue: PartitionKey
+  ): MarkerVerificationOutcome = {
+    try {
+      container.readItem(markerId, partitionKeyValue, classOf[ObjectNode]).block()
+      // 200 OK — marker exists → batch committed
+      Committed
+    } catch {
+      case cosmosEx: CosmosException if cosmosEx.getStatusCode == 404 =>
+        // 404 Not Found — marker does not exist → batch did NOT commit
+        NotCommitted
+      case cosmosEx: CosmosException
+        if Exceptions.canBeTransientFailure(cosmosEx.getStatusCode, cosmosEx.getSubStatusCode) =>
+        // Transient error on the verification read itself — inconclusive
+        log.logWarning(s"Marker verification read failed with transient error " +
+          s"${cosmosEx.getStatusCode}:${cosmosEx.getSubStatusCode} for marker '$markerId'. " +
+          s"Context: ${operationContext.toString} $getThreadInfo")
+        Inconclusive
+      case ex: Exception =>
+        // Unexpected error — treat as inconclusive (conservative)
+        log.logWarning(s"Marker verification read failed unexpectedly for marker '$markerId'. " +
+          s"Exception: ${ex.getMessage}, " +
+          s"Context: ${operationContext.toString} $getThreadInfo")
+        Inconclusive
     }
   }
 
