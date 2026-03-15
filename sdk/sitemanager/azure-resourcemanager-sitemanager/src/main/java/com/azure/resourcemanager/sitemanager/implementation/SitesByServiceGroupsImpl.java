@@ -40,12 +40,8 @@ public final class SitesByServiceGroupsImpl implements SitesByServiceGroups {
 
     public Response<Site> getWithResponse(String servicegroupName, String siteName, Context context) {
         Response<SiteInner> inner = this.serviceClient().getWithResponse(servicegroupName, siteName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new SiteImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new SiteImpl(inner.getValue(), this.manager()));
     }
 
     public Site get(String servicegroupName, String siteName) {
@@ -79,12 +75,8 @@ public final class SitesByServiceGroupsImpl implements SitesByServiceGroups {
         Context context) {
         Response<SiteInner> inner
             = this.serviceClient().updateWithResponse(servicegroupName, siteName, properties, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new SiteImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new SiteImpl(inner.getValue(), this.manager()));
     }
 
     public Site update(String servicegroupName, String siteName, SiteUpdate properties) {

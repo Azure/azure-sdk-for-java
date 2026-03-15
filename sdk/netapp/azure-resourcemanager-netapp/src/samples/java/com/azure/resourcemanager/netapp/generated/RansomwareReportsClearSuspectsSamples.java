@@ -13,7 +13,7 @@ import java.util.Arrays;
  */
 public final class RansomwareReportsClearSuspectsSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/RansomwareReports_ClearSuspects.json
+     * x-ms-original-file: 2025-12-01/RansomwareReports_ClearSuspects.json
      */
     /**
      * Sample code: RansomwareReports_ClearSuspects.

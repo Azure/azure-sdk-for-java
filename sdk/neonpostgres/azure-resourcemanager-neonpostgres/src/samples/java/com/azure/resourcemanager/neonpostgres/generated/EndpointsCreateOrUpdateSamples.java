@@ -26,7 +26,7 @@ public final class EndpointsCreateOrUpdateSamples {
         endpointsCreateOrUpdateMaximumSet(com.azure.resourcemanager.neonpostgres.NeonPostgresManager manager) {
         manager.endpoints()
             .define("primary-endpoint")
-            .withExistingBranche("rgneon", "myOrganization", "myProject", "feature")
+            .withExistingBranch("rgneon", "myOrganization", "myProject", "feature")
             .withProperties(new EndpointProperties().withEntityName("PrimaryEndpoint")
                 .withAttributes(Arrays.asList(new Attributes().withName("on").withValue("qzp")))
                 .withProjectId("vwwhykqyr")

@@ -27,7 +27,7 @@ public class EvaluationsClientTest extends ClientTestBase {
         RequestOptions requestOptions
             = RequestOptions.builder().timeout(Timeout.builder().read(Duration.ofMillis(1)).build()).build();
         RuntimeException thrown = assertThrows(RuntimeException.class,
-            () -> client.getOpenAIClient().retrieve("I probably don't exist", requestOptions));
+            () -> client.getEvalService().retrieve("I probably don't exist", requestOptions));
         assertInstanceOf(TimeoutException.class, thrown.getCause());
     }
 

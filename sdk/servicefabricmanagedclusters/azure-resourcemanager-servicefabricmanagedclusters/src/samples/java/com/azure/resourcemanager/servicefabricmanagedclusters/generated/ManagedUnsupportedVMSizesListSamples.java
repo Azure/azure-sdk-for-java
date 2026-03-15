@@ -9,7 +9,7 @@ package com.azure.resourcemanager.servicefabricmanagedclusters.generated;
  */
 public final class ManagedUnsupportedVMSizesListSamples {
     /*
-     * x-ms-original-file: 2025-10-01-preview/managedUnsupportedVMSizesList_example.json
+     * x-ms-original-file: 2026-02-01/managedUnsupportedVMSizesList_example.json
      */
     /**
      * Sample code: List unsupported vm sizes.

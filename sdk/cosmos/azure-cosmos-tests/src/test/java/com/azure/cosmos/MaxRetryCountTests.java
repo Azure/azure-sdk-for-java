@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
+import com.azure.cosmos.FlakyTestRetryAnalyzer;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.Configs;
@@ -1327,7 +1328,7 @@ public class MaxRetryCountTests extends TestSuiteBase {
         return addBooleanFlagsToAllTestConfigs(testConfigs_readMaxRetryCount_serverInternalServerError);
     }
 
-    @Test(groups = {"multi-master"}, dataProvider = "readMaxRetryCount_readSessionNotAvailable")
+    @Test(groups = {"multi-master"}, dataProvider = "readMaxRetryCount_readSessionNotAvailable", retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void readMaxRetryCount_readSessionNotAvailable(
         String testCaseId,
         Duration endToEndTimeout,

@@ -13,7 +13,7 @@ import com.openai.services.async.ConversationServiceAsync;
 @ServiceClient(builder = AgentsClientBuilder.class, isAsync = true)
 public final class ConversationsAsyncClient {
 
-    private final ConversationServiceAsync openAIConversationsClientAsync;
+    private final ConversationServiceAsync conversationServiceAsync;
 
     /**
      * Initializes an instance of ConversationsAsyncClient class.
@@ -21,7 +21,7 @@ public final class ConversationsAsyncClient {
      * @param openAIClientAsync the service client implementation.
      */
     ConversationsAsyncClient(OpenAIClientAsync openAIClientAsync) {
-        this.openAIConversationsClientAsync = openAIClientAsync.conversations();
+        this.conversationServiceAsync = openAIClientAsync.conversations();
     }
 
     /**
@@ -30,6 +30,6 @@ public final class ConversationsAsyncClient {
      * @return the OpenAI conversation service client.
      */
     public ConversationServiceAsync getConversationServiceAsync() {
-        return this.openAIConversationsClientAsync;
+        return this.conversationServiceAsync;
     }
 }

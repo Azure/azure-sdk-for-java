@@ -9,18 +9,19 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.developer.loadtesting.models.LoadTest;
 import com.azure.developer.loadtesting.models.LoadTestRun;
 import com.azure.developer.loadtesting.models.LoadTestingFileType;
+import com.azure.developer.loadtesting.models.NotificationRule;
 import com.azure.developer.loadtesting.models.TestFileInfo;
-import com.azure.developer.loadtesting.models.TestProfile;
-import com.azure.developer.loadtesting.models.TestProfileRun;
+import com.azure.developer.loadtesting.models.Trigger;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 /**
- * Sample demonstrates how to list tests, test files, test runs, test profiles and test profile runs for a given resource.
+ * Sample demonstrates how to list tests, test files, test runs, triggers
+ * and notification rules for a given resource.
  */
 public final class ListOperations {
     /**
-     * Authenticates with the load testing resource and shows how to list tests, test files and test runs
-     * for a given resource.
+     * Authenticates with the load testing resource and shows how to list tests, test files, test runs, triggers
+     * and notification rules for a given resource.
      *
      * @param args Unused. Arguments to the program.
      *
@@ -31,8 +32,8 @@ public final class ListOperations {
         listTests();
         listTestRuns();
         listTestFiles();
-        listTestProfiles();
-        listTestProfileRuns();
+        listTriggers();
+        listNotificationRules();
     }
 
     public static void listTests() {
@@ -72,6 +73,7 @@ public final class ListOperations {
             null,
             null,
             "EXECUTING,DONE",
+            null,
             null
         );
 
@@ -105,33 +107,39 @@ public final class ListOperations {
         // END: java-listOperations-sample-listTestFiles
     }
 
-    public static void listTestProfiles() {
-        // BEGIN: java-listOperations-sample-listTestProfiles
+    public static void listTriggers() {
+        // BEGIN: java-listOperations-sample-listTriggers
         LoadTestAdministrationClient client = new LoadTestAdministrationClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint("<endpoint>")
             .buildClient();
 
-        PagedIterable<TestProfile> testProfiles = client.listTestProfiles();
+        PagedIterable<Trigger> triggers = client.listTriggers();
 
-        testProfiles.forEach((TestProfile testProfile) -> {
-            System.out.println(String.format("%s:\t%s", testProfile.getTestProfileId(), testProfile.getDisplayName()));
+        triggers.forEach(trigger -> {
+            String triggerId = trigger.getTriggerId();
+            String displayName = trigger.getDisplayName();
+
+            System.out.println(String.format("%s\t%s", triggerId, displayName));
         });
-        // END: java-listOperations-sample-listTestProfiles
+        // END: java-listOperations-sample-listTriggers
     }
 
-    public static void listTestProfileRuns() {
-        // BEGIN: java-listOperations-sample-listTestProfileRuns
-        LoadTestRunClient client = new LoadTestRunClientBuilder()
+    public static void listNotificationRules() {
+        // BEGIN: java-listOperations-sample-listNotificationRules
+        LoadTestAdministrationClient client = new LoadTestAdministrationClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint("<endpoint>")
             .buildClient();
 
-        PagedIterable<TestProfileRun> testProfileRuns = client.listTestProfileRuns();
+        PagedIterable<NotificationRule> notificationRules = client.listNotificationRules();
 
-        testProfileRuns.forEach((TestProfileRun testProfileRun) -> {
-            System.out.println(String.format("%s:\t%s", testProfileRun.getTestProfileRunId(), testProfileRun.getDisplayName()));
+        notificationRules.forEach(rule -> {
+            String notificationRuleId = rule.getNotificationRuleId();
+            String displayName = rule.getDisplayName();
+
+            System.out.println(String.format("%s\t%s", notificationRuleId, displayName));
         });
-        // END: java-listOperations-sample-listTestProfileRuns
+        // END: java-listOperations-sample-listNotificationRules
     }
 }

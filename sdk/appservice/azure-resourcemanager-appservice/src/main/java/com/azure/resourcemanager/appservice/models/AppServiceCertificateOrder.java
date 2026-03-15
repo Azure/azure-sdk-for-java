@@ -16,7 +16,11 @@ import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 import java.time.OffsetDateTime;
 import reactor.core.publisher.Mono;
 
-/** An immutable client-side representation of an Azure App Service certificate order. */
+/**
+ * An immutable client-side representation of an Azure App Service certificate order.
+ * @deprecated Use azure-resourcemanager-certificateregistration lib.
+ */
+@Deprecated
 @Fluent
 public interface AppServiceCertificateOrder
     extends GroupableResource<AppServiceManager, AppServiceCertificateOrderInner>,

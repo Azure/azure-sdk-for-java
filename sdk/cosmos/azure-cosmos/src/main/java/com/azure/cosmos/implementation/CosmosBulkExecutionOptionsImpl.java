@@ -271,6 +271,11 @@ public class CosmosBulkExecutionOptionsImpl implements OverridableRequestOptions
     }
 
     @Override
+    public Boolean isQueryAdviceEnabled() {
+        return null;
+    }
+
+    @Override
     public Integer getMaxPrefetchPageCount() {
         return null;
     }

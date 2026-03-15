@@ -37,12 +37,8 @@ public final class CloudHsmClustersImpl implements CloudHsmClusters {
         String cloudHsmClusterName, Context context) {
         Response<CloudHsmClusterInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, cloudHsmClusterName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new CloudHsmClusterImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new CloudHsmClusterImpl(inner.getValue(), this.manager()));
     }
 
     public CloudHsmCluster getByResourceGroup(String resourceGroupName, String cloudHsmClusterName) {

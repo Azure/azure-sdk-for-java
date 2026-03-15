@@ -42,12 +42,8 @@ public final class PureStoragePoliciesImpl implements PureStoragePolicies {
         String storagePolicyName, Context context) {
         Response<PureStoragePolicyInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, privateCloudName, storagePolicyName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new PureStoragePolicyImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new PureStoragePolicyImpl(inner.getValue(), this.manager()));
     }
 
     public PureStoragePolicy get(String resourceGroupName, String privateCloudName, String storagePolicyName) {

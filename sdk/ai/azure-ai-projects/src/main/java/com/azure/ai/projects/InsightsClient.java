@@ -103,8 +103,8 @@ public final class InsightsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> generateWithResponse(BinaryData insight, RequestOptions requestOptions) {
-        return this.serviceClient.generateWithResponse(insight, requestOptions);
+    public Response<BinaryData> generateInsightWithResponse(BinaryData insight, RequestOptions requestOptions) {
+        return this.serviceClient.generateInsightWithResponse(insight, requestOptions);
     }
 
     /**
@@ -149,8 +149,8 @@ public final class InsightsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getWithResponse(String id, RequestOptions requestOptions) {
-        return this.serviceClient.getWithResponse(id, requestOptions);
+    public Response<BinaryData> getInsightWithResponse(String id, RequestOptions requestOptions) {
+        return this.serviceClient.getInsightWithResponse(id, requestOptions);
     }
 
     /**
@@ -199,8 +199,8 @@ public final class InsightsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> list(RequestOptions requestOptions) {
-        return this.serviceClient.list(requestOptions);
+    public PagedIterable<BinaryData> listInsights(RequestOptions requestOptions) {
+        return this.serviceClient.listInsights(requestOptions);
     }
 
     /**
@@ -217,10 +217,11 @@ public final class InsightsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Insight generate(Insight insight) {
-        // Generated convenience method for generateWithResponse
+    public Insight generateInsight(Insight insight) {
+        // Generated convenience method for generateInsightWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return generateWithResponse(BinaryData.fromObject(insight), requestOptions).getValue().toObject(Insight.class);
+        return generateInsightWithResponse(BinaryData.fromObject(insight), requestOptions).getValue()
+            .toObject(Insight.class);
     }
 
     /**
@@ -238,13 +239,13 @@ public final class InsightsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Insight get(String id, Boolean includeCoordinates) {
-        // Generated convenience method for getWithResponse
+    public Insight getInsight(String id, Boolean includeCoordinates) {
+        // Generated convenience method for getInsightWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (includeCoordinates != null) {
             requestOptions.addQueryParam("includeCoordinates", String.valueOf(includeCoordinates), false);
         }
-        return getWithResponse(id, requestOptions).getValue().toObject(Insight.class);
+        return getInsightWithResponse(id, requestOptions).getValue().toObject(Insight.class);
     }
 
     /**
@@ -261,10 +262,10 @@ public final class InsightsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Insight get(String id) {
-        // Generated convenience method for getWithResponse
+    public Insight getInsight(String id) {
+        // Generated convenience method for getInsightWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getWithResponse(id, requestOptions).getValue().toObject(Insight.class);
+        return getInsightWithResponse(id, requestOptions).getValue().toObject(Insight.class);
     }
 
     /**
@@ -285,9 +286,9 @@ public final class InsightsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Insight> list(InsightType type, String evalId, String runId, String agentName,
+    public PagedIterable<Insight> listInsights(InsightType type, String evalId, String runId, String agentName,
         Boolean includeCoordinates) {
-        // Generated convenience method for list
+        // Generated convenience method for listInsights
         RequestOptions requestOptions = new RequestOptions();
         if (type != null) {
             requestOptions.addQueryParam("type", type.toString(), false);
@@ -304,7 +305,8 @@ public final class InsightsClient {
         if (includeCoordinates != null) {
             requestOptions.addQueryParam("includeCoordinates", String.valueOf(includeCoordinates), false);
         }
-        return serviceClient.list(requestOptions).mapPage(bodyItemValue -> bodyItemValue.toObject(Insight.class));
+        return serviceClient.listInsights(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(Insight.class));
     }
 
     /**
@@ -319,9 +321,10 @@ public final class InsightsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Insight> list() {
-        // Generated convenience method for list
+    public PagedIterable<Insight> listInsights() {
+        // Generated convenience method for listInsights
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.list(requestOptions).mapPage(bodyItemValue -> bodyItemValue.toObject(Insight.class));
+        return serviceClient.listInsights(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(Insight.class));
     }
 }
