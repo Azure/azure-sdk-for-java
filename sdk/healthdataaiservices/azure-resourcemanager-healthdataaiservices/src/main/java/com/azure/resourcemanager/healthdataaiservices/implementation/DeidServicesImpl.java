@@ -31,12 +31,8 @@ public final class DeidServicesImpl implements DeidServices {
         Context context) {
         Response<DeidServiceInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, deidServiceName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new DeidServiceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new DeidServiceImpl(inner.getValue(), this.manager()));
     }
 
     public DeidService getByResourceGroup(String resourceGroupName, String deidServiceName) {

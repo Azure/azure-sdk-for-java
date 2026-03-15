@@ -29,12 +29,8 @@ public final class ConnectorsImpl implements Connectors {
 
     public Response<Connector> getWithResponse(String connectorName, Context context) {
         Response<ConnectorInner> inner = this.serviceClient().getWithResponse(connectorName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ConnectorImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ConnectorImpl(inner.getValue(), this.manager()));
     }
 
     public Connector get(String connectorName) {

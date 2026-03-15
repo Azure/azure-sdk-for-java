@@ -17,6 +17,7 @@ import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResult;
 import com.azure.cosmos.implementation.directconnectivity.TimeoutHelper;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
+import com.azure.cosmos.implementation.http.ReactorNettyRequestRecord;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlRequestContext;
@@ -60,6 +61,7 @@ public class DocumentServiceRequestContext implements Cloneable {
     public volatile boolean replicaAddressValidationEnabled = Configs.isReplicaAddressValidationEnabled();
     private final Set<Uri> failedEndpoints = ConcurrentHashMap.newKeySet();
     private CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig;
+    public volatile ReactorNettyRequestRecord reactorNettyRequestRecord;
     private AtomicBoolean isRequestCancelledOnTimeout = null;
     private volatile List<String> excludeRegions;
     private volatile Set<String> keywordIdentifiers;

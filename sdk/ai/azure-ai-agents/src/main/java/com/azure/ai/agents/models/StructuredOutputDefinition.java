@@ -11,6 +11,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * A structured output that can be produced by the agent.
@@ -34,7 +35,7 @@ public final class StructuredOutputDefinition implements JsonSerializable<Struct
      * The JSON schema for the structured output.
      */
     @Generated
-    private final BinaryData schema;
+    private final Map<String, BinaryData> schema;
 
     /*
      * Whether to enforce strict validation. Default `true`.
@@ -69,7 +70,7 @@ public final class StructuredOutputDefinition implements JsonSerializable<Struct
      * @return the schema value.
      */
     @Generated
-    public BinaryData getSchema() {
+    public Map<String, BinaryData> getSchema() {
         return this.schema;
     }
 
@@ -92,8 +93,13 @@ public final class StructuredOutputDefinition implements JsonSerializable<Struct
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("description", this.description);
-        jsonWriter.writeFieldName("schema");
-        this.schema.writeTo(jsonWriter);
+        jsonWriter.writeMapField("schema", this.schema, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
         jsonWriter.writeBooleanField("strict", this.strict);
         return jsonWriter.writeEndObject();
     }
@@ -112,7 +118,7 @@ public final class StructuredOutputDefinition implements JsonSerializable<Struct
         return jsonReader.readObject(reader -> {
             String name = null;
             String description = null;
-            BinaryData schema = null;
+            Map<String, BinaryData> schema = null;
             Boolean strict = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -122,7 +128,8 @@ public final class StructuredOutputDefinition implements JsonSerializable<Struct
                 } else if ("description".equals(fieldName)) {
                     description = reader.getString();
                 } else if ("schema".equals(fieldName)) {
-                    schema = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                    schema = reader.readMap(reader1 -> reader1
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                 } else if ("strict".equals(fieldName)) {
                     strict = reader.getNullable(JsonReader::getBoolean);
                 } else {
@@ -142,7 +149,7 @@ public final class StructuredOutputDefinition implements JsonSerializable<Struct
      * @param strict the strict value to set.
      */
     @Generated
-    public StructuredOutputDefinition(String name, String description, BinaryData schema, Boolean strict) {
+    public StructuredOutputDefinition(String name, String description, Map<String, BinaryData> schema, Boolean strict) {
         this.name = name;
         this.description = description;
         this.schema = schema;

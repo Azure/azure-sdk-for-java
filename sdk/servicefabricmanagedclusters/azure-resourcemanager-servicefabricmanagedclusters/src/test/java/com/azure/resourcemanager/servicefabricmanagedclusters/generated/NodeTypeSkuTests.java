@@ -11,19 +11,20 @@ import org.junit.jupiter.api.Assertions;
 public final class NodeTypeSkuTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NodeTypeSku model = BinaryData.fromString("{\"name\":\"kjprvk\",\"tier\":\"fz\",\"capacity\":497380476}")
-            .toObject(NodeTypeSku.class);
-        Assertions.assertEquals("kjprvk", model.name());
-        Assertions.assertEquals("fz", model.tier());
-        Assertions.assertEquals(497380476, model.capacity());
+        NodeTypeSku model
+            = BinaryData.fromString("{\"name\":\"ibreb\",\"tier\":\"aysjkixqtnqttez\",\"capacity\":880648467}")
+                .toObject(NodeTypeSku.class);
+        Assertions.assertEquals("ibreb", model.name());
+        Assertions.assertEquals("aysjkixqtnqttez", model.tier());
+        Assertions.assertEquals(880648467, model.capacity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NodeTypeSku model = new NodeTypeSku().withName("kjprvk").withTier("fz").withCapacity(497380476);
+        NodeTypeSku model = new NodeTypeSku().withName("ibreb").withTier("aysjkixqtnqttez").withCapacity(880648467);
         model = BinaryData.fromObject(model).toObject(NodeTypeSku.class);
-        Assertions.assertEquals("kjprvk", model.name());
-        Assertions.assertEquals("fz", model.tier());
-        Assertions.assertEquals(497380476, model.capacity());
+        Assertions.assertEquals("ibreb", model.name());
+        Assertions.assertEquals("aysjkixqtnqttez", model.tier());
+        Assertions.assertEquals(880648467, model.capacity());
     }
 }

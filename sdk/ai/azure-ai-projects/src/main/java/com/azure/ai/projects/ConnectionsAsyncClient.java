@@ -53,11 +53,11 @@ public final class ConnectionsAsyncClient {
      * {
      *     name: String (Required)
      *     id: String (Required)
-     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys/RemoteTool) (Required)
+     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys/RemoteTool_Preview) (Required)
      *     target: String (Required)
      *     isDefault: boolean (Required)
      *     credentials (Required): {
-     *         type: String(ApiKey/AAD/SAS/CustomKeys/None/AgenticIdentityToken) (Required)
+     *         type: String(ApiKey/AAD/SAS/CustomKeys/None/AgenticIdentityToken_Preview) (Required)
      *     }
      *     metadata (Required): {
      *         String: String (Required)
@@ -90,11 +90,11 @@ public final class ConnectionsAsyncClient {
      * {
      *     name: String (Required)
      *     id: String (Required)
-     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys/RemoteTool) (Required)
+     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys/RemoteTool_Preview) (Required)
      *     target: String (Required)
      *     isDefault: boolean (Required)
      *     credentials (Required): {
-     *         type: String(ApiKey/AAD/SAS/CustomKeys/None/AgenticIdentityToken) (Required)
+     *         type: String(ApiKey/AAD/SAS/CustomKeys/None/AgenticIdentityToken_Preview) (Required)
      *     }
      *     metadata (Required): {
      *         String: String (Required)
@@ -126,7 +126,7 @@ public final class ConnectionsAsyncClient {
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>connectionType</td><td>String</td><td>No</td><td>List connections of this specific type. Allowed values:
      * "AzureOpenAI", "AzureBlob", "AzureStorageAccount", "CognitiveSearch", "CosmosDB", "ApiKey", "AppConfig",
-     * "AppInsights", "CustomKeys", "RemoteTool".</td></tr>
+     * "AppInsights", "CustomKeys", "RemoteTool_Preview".</td></tr>
      * <tr><td>defaultConnection</td><td>Boolean</td><td>No</td><td>List connections that are default
      * connections</td></tr>
      * </table>
@@ -138,11 +138,11 @@ public final class ConnectionsAsyncClient {
      * {
      *     name: String (Required)
      *     id: String (Required)
-     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys/RemoteTool) (Required)
+     *     type: String(AzureOpenAI/AzureBlob/AzureStorageAccount/CognitiveSearch/CosmosDB/ApiKey/AppConfig/AppInsights/CustomKeys/RemoteTool_Preview) (Required)
      *     target: String (Required)
      *     isDefault: boolean (Required)
      *     credentials (Required): {
-     *         type: String(ApiKey/AAD/SAS/CustomKeys/None/AgenticIdentityToken) (Required)
+     *         type: String(ApiKey/AAD/SAS/CustomKeys/None/AgenticIdentityToken_Preview) (Required)
      *     }
      *     metadata (Required): {
      *         String: String (Required)

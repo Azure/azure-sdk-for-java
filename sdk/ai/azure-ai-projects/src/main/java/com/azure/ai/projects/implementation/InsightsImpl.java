@@ -87,10 +87,10 @@ public final class InsightsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> generate(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData insight,
-            RequestOptions requestOptions, Context context);
+        Mono<Response<BinaryData>> generateInsight(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Foundry-Features") String foundryFeatures,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData insight, RequestOptions requestOptions, Context context);
 
         @Post("/insights")
         @ExpectedResponses({ 201 })
@@ -98,9 +98,20 @@ public final class InsightsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> generateSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData insight,
+        Response<BinaryData> generateInsightSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Foundry-Features") String foundryFeatures,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData insight, RequestOptions requestOptions, Context context);
+
+        @Get("/insights/{id}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getInsight(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("id") String id,
+            @HeaderParam("Foundry-Features") String foundryFeatures, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/insights/{id}")
@@ -109,28 +120,9 @@ public final class InsightsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> get(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> getInsightSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("id") String id,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Get("/insights/{id}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("id") String id,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
-
-        @Get("/insights")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> list(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            @HeaderParam("Foundry-Features") String foundryFeatures, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/insights")
@@ -139,9 +131,19 @@ public final class InsightsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions, Context context);
+        Mono<Response<BinaryData>> listInsights(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Foundry-Features") String foundryFeatures,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/insights")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listInsightsSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Foundry-Features") String foundryFeatures,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -149,9 +151,9 @@ public final class InsightsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
-            Context context);
+        Mono<Response<BinaryData>> listInsightsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Foundry-Features") String foundryFeatures,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -159,9 +161,9 @@ public final class InsightsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
-            Context context);
+        Response<BinaryData> listInsightsNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Foundry-Features") String foundryFeatures,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -229,7 +231,9 @@ public final class InsightsImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> generateWithResponseAsync(BinaryData insight, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> generateInsightWithResponseAsync(BinaryData insight,
+        RequestOptions requestOptions) {
+        final String foundryFeatures = "Insights=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
@@ -246,8 +250,9 @@ public final class InsightsImpl {
                         DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()));
             }
         });
-        return FluxUtil.withContext(context -> service.generate(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), contentType, accept, insight, requestOptionsLocal, context));
+        return FluxUtil.withContext(
+            context -> service.generateInsight(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
+                foundryFeatures, contentType, accept, insight, requestOptionsLocal, context));
     }
 
     /**
@@ -314,7 +319,8 @@ public final class InsightsImpl {
      * @return the response body for cluster insights along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> generateWithResponse(BinaryData insight, RequestOptions requestOptions) {
+    public Response<BinaryData> generateInsightWithResponse(BinaryData insight, RequestOptions requestOptions) {
+        final String foundryFeatures = "Insights=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
@@ -331,8 +337,8 @@ public final class InsightsImpl {
                         DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()));
             }
         });
-        return service.generateSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            contentType, accept, insight, requestOptionsLocal, Context.NONE);
+        return service.generateInsightSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
+            foundryFeatures, contentType, accept, insight, requestOptionsLocal, Context.NONE);
     }
 
     /**
@@ -376,10 +382,11 @@ public final class InsightsImpl {
      * @return a specific insight by Id along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getWithResponseAsync(String id, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getInsightWithResponseAsync(String id, RequestOptions requestOptions) {
+        final String foundryFeatures = "Insights=V1Preview";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), id, accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.getInsight(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), id, foundryFeatures, accept, requestOptions, context));
     }
 
     /**
@@ -423,10 +430,11 @@ public final class InsightsImpl {
      * @return a specific insight by Id along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getWithResponse(String id, RequestOptions requestOptions) {
+    public Response<BinaryData> getInsightWithResponse(String id, RequestOptions requestOptions) {
+        final String foundryFeatures = "Insights=V1Preview";
         final String accept = "application/json";
-        return service.getSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), id, accept,
-            requestOptions, Context.NONE);
+        return service.getInsightSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), id,
+            foundryFeatures, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -475,11 +483,12 @@ public final class InsightsImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listSinglePageAsync(RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listInsightsSinglePageAsync(RequestOptions requestOptions) {
+        final String foundryFeatures = "Insights=V1Preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(),
-                this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
+            .withContext(context -> service.listInsights(this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(), foundryFeatures, accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
@@ -529,12 +538,12 @@ public final class InsightsImpl {
      * @return paged collection of Insight items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listAsync(RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listInsightsAsync(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
-        return new PagedFlux<>(() -> listSinglePageAsync(requestOptions),
-            nextLink -> listNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+        return new PagedFlux<>(() -> listInsightsSinglePageAsync(requestOptions),
+            nextLink -> listInsightsNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -582,10 +591,11 @@ public final class InsightsImpl {
      * @return paged collection of Insight items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listSinglePage(RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listInsightsSinglePage(RequestOptions requestOptions) {
+        final String foundryFeatures = "Insights=V1Preview";
         final String accept = "application/json";
-        Response<BinaryData> res = service.listSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        Response<BinaryData> res = service.listInsightsSync(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), foundryFeatures, accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
@@ -635,12 +645,12 @@ public final class InsightsImpl {
      * @return paged collection of Insight items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> list(RequestOptions requestOptions) {
+    public PagedIterable<BinaryData> listInsights(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
             requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
-        return new PagedIterable<>(() -> listSinglePage(requestOptions),
-            nextLink -> listNextSinglePage(nextLink, requestOptionsForNextPage));
+        return new PagedIterable<>(() -> listInsightsSinglePage(requestOptions),
+            nextLink -> listInsightsNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -677,11 +687,13 @@ public final class InsightsImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listNextSinglePageAsync(String nextLink, RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listInsightsNextSinglePageAsync(String nextLink,
+        RequestOptions requestOptions) {
+        final String foundryFeatures = "Insights=V1Preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.listNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context))
+            .withContext(context -> service.listInsightsNext(nextLink, this.client.getEndpoint(), foundryFeatures,
+                accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
@@ -719,10 +731,11 @@ public final class InsightsImpl {
      * @return paged collection of Insight items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listNextSinglePage(String nextLink, RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listInsightsNextSinglePage(String nextLink, RequestOptions requestOptions) {
+        final String foundryFeatures = "Insights=V1Preview";
         final String accept = "application/json";
-        Response<BinaryData> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
+        Response<BinaryData> res = service.listInsightsNextSync(nextLink, this.client.getEndpoint(), foundryFeatures,
+            accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }

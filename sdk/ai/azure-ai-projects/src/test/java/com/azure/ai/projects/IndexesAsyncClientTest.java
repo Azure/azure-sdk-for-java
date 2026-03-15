@@ -3,7 +3,7 @@
 package com.azure.ai.projects;
 
 import com.azure.ai.projects.models.AzureAISearchIndex;
-import com.azure.ai.projects.models.Index;
+import com.azure.ai.projects.models.AIProjectIndex;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.Configuration;
 import org.junit.jupiter.api.Assertions;
@@ -28,7 +28,7 @@ public class IndexesAsyncClientTest extends ClientTestBase {
         IndexesAsyncClient indexesAsyncClient = getIndexesAsyncClient(httpClient, serviceVersion);
 
         // Collect indexes into a list for verification
-        List<Index> indexList = new ArrayList<>();
+        List<AIProjectIndex> indexList = new ArrayList<>();
 
         // Verify that listing indexes returns results
         StepVerifier.create(indexesAsyncClient.listLatest().doOnNext(index -> {
@@ -47,7 +47,7 @@ public class IndexesAsyncClientTest extends ClientTestBase {
         IndexesAsyncClient indexesAsyncClient = getIndexesAsyncClient(httpClient, serviceVersion);
 
         String indexName = Configuration.getGlobalConfiguration().get("TEST_INDEX_NAME", "test-index");
-        List<Index> versionList = new ArrayList<>();
+        List<AIProjectIndex> versionList = new ArrayList<>();
 
         // Verify that listing index versions returns results or appropriate error
         StepVerifier.create(indexesAsyncClient.listVersions(indexName).doOnNext(index -> {
@@ -106,8 +106,8 @@ public class IndexesAsyncClientTest extends ClientTestBase {
         AzureAISearchIndex searchIndex
             = new AzureAISearchIndex().setConnectionName(aiSearchConnectionName).setIndexName(aiSearchIndexName);
 
-        StepVerifier
-            .create(indexesAsyncClient.createOrUpdate(indexName, indexVersion, searchIndex).doOnNext(createdIndex -> {
+        StepVerifier.create(
+            indexesAsyncClient.createOrUpdateVersion(indexName, indexVersion, searchIndex).doOnNext(createdIndex -> {
                 // Verify the created/updated index
                 assertValidIndex(createdIndex, indexName, indexVersion);
 
@@ -119,10 +119,7 @@ public class IndexesAsyncClientTest extends ClientTestBase {
 
                 System.out.println("Index created/updated successfully: " + createdIndex.getName() + " (version "
                     + createdIndex.getVersion() + ")");
-            }))
-            .expectNextCount(1)
-            .expectComplete()
-            .verify(Duration.ofMinutes(1));
+            })).expectNextCount(1).expectComplete().verify(Duration.ofMinutes(1));
     }
 
     @Disabled

@@ -111,6 +111,10 @@ scalastyle-output.xml
 # Flatten-pom
 .flattened-pom.xml
 flatter.pom
+
+# Local Maven extensions (credential provider for Azure Artifacts)
+.mvn/extensions.xml
+
 /.vs/
 
 

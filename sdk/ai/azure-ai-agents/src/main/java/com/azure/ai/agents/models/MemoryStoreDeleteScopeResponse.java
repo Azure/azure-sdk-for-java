@@ -21,7 +21,7 @@ public final class MemoryStoreDeleteScopeResponse implements JsonSerializable<Me
      * The object type. Always 'memory_store.scope.deleted'.
      */
     @Generated
-    private final String object = "memory_store.scope.deleted";
+    private final MemoryStoreObjectType object = MemoryStoreObjectType.MEMORY_STORE_SCOPE_DELETED;
 
     /*
      * The name of the memory store.
@@ -61,7 +61,7 @@ public final class MemoryStoreDeleteScopeResponse implements JsonSerializable<Me
      * @return the object value.
      */
     @Generated
-    public String getObject() {
+    public MemoryStoreObjectType getObject() {
         return this.object;
     }
 
@@ -102,7 +102,7 @@ public final class MemoryStoreDeleteScopeResponse implements JsonSerializable<Me
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("object", this.object);
+        jsonWriter.writeStringField("object", this.object == null ? null : this.object.toString());
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("scope", this.scope);
         jsonWriter.writeBooleanField("deleted", this.deleted);

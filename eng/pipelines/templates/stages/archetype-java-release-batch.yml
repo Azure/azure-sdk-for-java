@@ -241,6 +241,8 @@ stages:
           timeoutInMinutes: 120
           ${{ if eq(parameters.PublicFeedUrl, 'maven.org') }}:
             dependsOn: PublishESRPPackage
+          ${{ else }}:
+            dependsOn: TagRepository
           pool:
             name: $(WINDOWSPOOL)
             image: $(WINDOWSVMIMAGE)
@@ -342,7 +344,7 @@ stages:
         - ${{ if eq(parameters.PublicFeedUrl, 'maven.org') }}:
           - job: PublishDocsMs
             displayName: Docs.MS Release
-            condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'))
+            condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'), ne(variables['Build.Repository.Name'], 'Azure/azure-sdk-for-java-pr'))
             dependsOn: PublishDevFeedPackage
 
             pool:
@@ -380,7 +382,7 @@ stages:
 
           - job: PublishDocs
             displayName: Publish Docs to GitHubIO Blob Storage
-            condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'))
+            condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'), ne(variables['Build.Repository.Name'], 'Azure/azure-sdk-for-java-pr'))
             dependsOn: PublishDevFeedPackage
             pool:
               name: $(WINDOWSPOOL)
@@ -463,7 +465,7 @@ stages:
 
       - job: PublishDocsToNightlyBranch
         dependsOn: PublishPackages
-        condition: and(succeeded(), or(eq(variables['SetDevVersion'], 'true'), and(eq(variables['Build.Reason'],'Schedule'), eq(variables['System.TeamProject'], 'internal'))))
+        condition: and(succeeded(), ne(variables['Build.Repository.Name'], 'Azure/azure-sdk-for-java-pr'), or(eq(variables['SetDevVersion'], 'true'), and(eq(variables['Build.Reason'],'Schedule'), eq(variables['System.TeamProject'], 'internal'))))
         pool:
           name: $(LINUXPOOL)
           image: $(LINUXVMIMAGE)

@@ -31,12 +31,8 @@ public final class EdgeActionExecutionFiltersImpl implements EdgeActionExecution
         String executionFilter, Context context) {
         Response<EdgeActionExecutionFilterInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, edgeActionName, executionFilter, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new EdgeActionExecutionFilterImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new EdgeActionExecutionFilterImpl(inner.getValue(), this.manager()));
     }
 
     public EdgeActionExecutionFilter get(String resourceGroupName, String edgeActionName, String executionFilter) {

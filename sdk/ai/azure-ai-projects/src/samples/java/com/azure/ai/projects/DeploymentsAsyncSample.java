@@ -24,7 +24,7 @@ public class DeploymentsAsyncSample {
     public static Flux<Deployment> listDeployments() {
         // BEGIN:com.azure.ai.projects.DeploymentsAsyncSample.listDeployments
 
-        return deploymentsAsyncClient.list()
+        return deploymentsAsyncClient.listDeployments()
             .doOnNext(deployment -> System.out.printf("Deployment name: %s%n", deployment.getName()));
 
         // END:com.azure.ai.projects.DeploymentsAsyncSample.listDeployments
@@ -34,7 +34,7 @@ public class DeploymentsAsyncSample {
         // BEGIN:com.azure.ai.projects.DeploymentsAsyncSample.getDeployment
 
         String deploymentName = Configuration.getGlobalConfiguration().get("DEPLOYMENT_NAME", "");
-        return deploymentsAsyncClient.get(deploymentName)
+        return deploymentsAsyncClient.getDeployment(deploymentName)
             .doOnNext(deployment -> {
                 System.out.printf("Deployment name: %s%n", deployment.getName());
                 System.out.printf("Deployment type: %s%n", deployment.getType().getValue());

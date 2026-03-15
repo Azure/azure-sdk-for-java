@@ -3,7 +3,13 @@
 
 package com.azure.ai.agents;
 
-import com.azure.ai.agents.models.*;
+import com.azure.ai.agents.models.AgentDefinition;
+import com.azure.ai.agents.models.AgentDetails;
+import com.azure.ai.agents.models.AgentReference;
+import com.azure.ai.agents.models.AgentVersionDetails;
+import com.azure.ai.agents.models.DeleteAgentResponse;
+import com.azure.ai.agents.models.DeleteAgentVersionResponse;
+import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.http.HttpClient;
 import com.openai.models.conversations.Conversation;
 import com.openai.models.responses.EasyInputMessage;
@@ -20,7 +26,6 @@ import java.util.*;
 import static com.azure.ai.agents.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.*;
 
-@Disabled("Disabled for lack of recordings. Needs to be enabled on the Public Preview release.")
 public class AgentsTests extends ClientTestBase {
 
     private static final String AGENT_NAME = "test-agent-java";
@@ -103,6 +108,7 @@ public class AgentsTests extends ClientTestBase {
         assertTrue(deletedAgent.isDeleted());
     }
 
+    @Disabled("Disabled due to service errors (api-version + responses endpoint).")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.agents.TestUtils#getTestParameters")
     public void promptAgentTest(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
