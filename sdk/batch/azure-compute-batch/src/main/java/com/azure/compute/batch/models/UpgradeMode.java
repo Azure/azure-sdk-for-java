@@ -13,7 +13,7 @@ import java.util.Collection;
 public final class UpgradeMode extends ExpandableStringEnum<UpgradeMode> {
 
     /**
-     * TAll virtual machines in the scale set are automatically updated at the same time.
+     * All virtual machines in the scale set are automatically updated at the same time.
      */
     @Generated
     public static final UpgradeMode AUTOMATIC = fromString("automatic");

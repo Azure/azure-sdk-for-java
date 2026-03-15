@@ -6,6 +6,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.SuperFlakyTestRetryAnalyzer;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.OverridableRequestOptions;
@@ -546,7 +547,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
             }).blockLast();
     }
 
-    @Test(groups = { "fast" }, dataProvider = "changedOptions", timeOut = TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    @Test(groups = { "fast" }, dataProvider = "changedOptions", timeOut = TIMEOUT, retryAnalyzer = SuperFlakyTestRetryAnalyzer.class)
     public void readAllItems(String[] changedOptions) throws Exception {
         String id = UUID.randomUUID().toString();
         container.createItem(getDocumentDefinition(id)).block();

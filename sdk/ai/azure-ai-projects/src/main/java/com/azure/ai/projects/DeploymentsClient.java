@@ -61,8 +61,8 @@ public final class DeploymentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getWithResponse(String name, RequestOptions requestOptions) {
-        return this.serviceClient.getWithResponse(name, requestOptions);
+    public Response<BinaryData> getDeploymentWithResponse(String name, RequestOptions requestOptions) {
+        return this.serviceClient.getDeploymentWithResponse(name, requestOptions);
     }
 
     /**
@@ -98,8 +98,8 @@ public final class DeploymentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> list(RequestOptions requestOptions) {
-        return this.serviceClient.list(requestOptions);
+    public PagedIterable<BinaryData> listDeployments(RequestOptions requestOptions) {
+        return this.serviceClient.listDeployments(requestOptions);
     }
 
     /**
@@ -116,10 +116,10 @@ public final class DeploymentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Deployment get(String name) {
-        // Generated convenience method for getWithResponse
+    public Deployment getDeployment(String name) {
+        // Generated convenience method for getDeploymentWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getWithResponse(name, requestOptions).getValue().toObject(Deployment.class);
+        return getDeploymentWithResponse(name, requestOptions).getValue().toObject(Deployment.class);
     }
 
     /**
@@ -138,8 +138,9 @@ public final class DeploymentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Deployment> list(String modelPublisher, String modelName, DeploymentType deploymentType) {
-        // Generated convenience method for list
+    public PagedIterable<Deployment> listDeployments(String modelPublisher, String modelName,
+        DeploymentType deploymentType) {
+        // Generated convenience method for listDeployments
         RequestOptions requestOptions = new RequestOptions();
         if (modelPublisher != null) {
             requestOptions.addQueryParam("modelPublisher", modelPublisher, false);
@@ -150,7 +151,8 @@ public final class DeploymentsClient {
         if (deploymentType != null) {
             requestOptions.addQueryParam("deploymentType", deploymentType.toString(), false);
         }
-        return serviceClient.list(requestOptions).mapPage(bodyItemValue -> bodyItemValue.toObject(Deployment.class));
+        return serviceClient.listDeployments(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(Deployment.class));
     }
 
     /**
@@ -165,9 +167,10 @@ public final class DeploymentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Deployment> list() {
-        // Generated convenience method for list
+    public PagedIterable<Deployment> listDeployments() {
+        // Generated convenience method for listDeployments
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.list(requestOptions).mapPage(bodyItemValue -> bodyItemValue.toObject(Deployment.class));
+        return serviceClient.listDeployments(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(Deployment.class));
     }
 }

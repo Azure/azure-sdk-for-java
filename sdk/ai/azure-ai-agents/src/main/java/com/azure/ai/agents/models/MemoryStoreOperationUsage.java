@@ -27,53 +27,31 @@ public final class MemoryStoreOperationUsage implements JsonSerializable<MemoryS
      * The number of input tokens.
      */
     @Generated
-    private final int inputTokens;
+    private final long inputTokens;
 
     /*
      * A detailed breakdown of the input tokens.
      */
     @Generated
-    private final MemoryStoreOperationUsageInputTokensDetails inputTokensDetails;
+    private final ResponseUsageInputTokensDetails inputTokensDetails;
 
     /*
      * The number of output tokens.
      */
     @Generated
-    private final int outputTokens;
+    private final long outputTokens;
 
     /*
      * A detailed breakdown of the output tokens.
      */
     @Generated
-    private final MemoryStoreOperationUsageOutputTokensDetails outputTokensDetails;
+    private final ResponseUsageOutputTokensDetails outputTokensDetails;
 
     /*
      * The total number of tokens used.
      */
     @Generated
-    private final int totalTokens;
-
-    /**
-     * Creates an instance of MemoryStoreOperationUsage class.
-     *
-     * @param embeddingTokens the embeddingTokens value to set.
-     * @param inputTokens the inputTokens value to set.
-     * @param inputTokensDetails the inputTokensDetails value to set.
-     * @param outputTokens the outputTokens value to set.
-     * @param outputTokensDetails the outputTokensDetails value to set.
-     * @param totalTokens the totalTokens value to set.
-     */
-    @Generated
-    private MemoryStoreOperationUsage(int embeddingTokens, int inputTokens,
-        MemoryStoreOperationUsageInputTokensDetails inputTokensDetails, int outputTokens,
-        MemoryStoreOperationUsageOutputTokensDetails outputTokensDetails, int totalTokens) {
-        this.embeddingTokens = embeddingTokens;
-        this.inputTokens = inputTokens;
-        this.inputTokensDetails = inputTokensDetails;
-        this.outputTokens = outputTokens;
-        this.outputTokensDetails = outputTokensDetails;
-        this.totalTokens = totalTokens;
-    }
+    private final long totalTokens;
 
     /**
      * Get the embeddingTokens property: The number of embedding tokens.
@@ -91,7 +69,7 @@ public final class MemoryStoreOperationUsage implements JsonSerializable<MemoryS
      * @return the inputTokens value.
      */
     @Generated
-    public int getInputTokens() {
+    public long getInputTokens() {
         return this.inputTokens;
     }
 
@@ -101,7 +79,7 @@ public final class MemoryStoreOperationUsage implements JsonSerializable<MemoryS
      * @return the inputTokensDetails value.
      */
     @Generated
-    public MemoryStoreOperationUsageInputTokensDetails getInputTokensDetails() {
+    public ResponseUsageInputTokensDetails getInputTokensDetails() {
         return this.inputTokensDetails;
     }
 
@@ -111,7 +89,7 @@ public final class MemoryStoreOperationUsage implements JsonSerializable<MemoryS
      * @return the outputTokens value.
      */
     @Generated
-    public int getOutputTokens() {
+    public long getOutputTokens() {
         return this.outputTokens;
     }
 
@@ -121,7 +99,7 @@ public final class MemoryStoreOperationUsage implements JsonSerializable<MemoryS
      * @return the outputTokensDetails value.
      */
     @Generated
-    public MemoryStoreOperationUsageOutputTokensDetails getOutputTokensDetails() {
+    public ResponseUsageOutputTokensDetails getOutputTokensDetails() {
         return this.outputTokensDetails;
     }
 
@@ -131,7 +109,7 @@ public final class MemoryStoreOperationUsage implements JsonSerializable<MemoryS
      * @return the totalTokens value.
      */
     @Generated
-    public int getTotalTokens() {
+    public long getTotalTokens() {
         return this.totalTokens;
     }
 
@@ -143,11 +121,11 @@ public final class MemoryStoreOperationUsage implements JsonSerializable<MemoryS
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeIntField("embedding_tokens", this.embeddingTokens);
-        jsonWriter.writeIntField("input_tokens", this.inputTokens);
+        jsonWriter.writeLongField("input_tokens", this.inputTokens);
         jsonWriter.writeJsonField("input_tokens_details", this.inputTokensDetails);
-        jsonWriter.writeIntField("output_tokens", this.outputTokens);
+        jsonWriter.writeLongField("output_tokens", this.outputTokens);
         jsonWriter.writeJsonField("output_tokens_details", this.outputTokensDetails);
-        jsonWriter.writeIntField("total_tokens", this.totalTokens);
+        jsonWriter.writeLongField("total_tokens", this.totalTokens);
         return jsonWriter.writeEndObject();
     }
 
@@ -164,26 +142,26 @@ public final class MemoryStoreOperationUsage implements JsonSerializable<MemoryS
     public static MemoryStoreOperationUsage fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             int embeddingTokens = 0;
-            int inputTokens = 0;
-            MemoryStoreOperationUsageInputTokensDetails inputTokensDetails = null;
-            int outputTokens = 0;
-            MemoryStoreOperationUsageOutputTokensDetails outputTokensDetails = null;
-            int totalTokens = 0;
+            long inputTokens = 0L;
+            ResponseUsageInputTokensDetails inputTokensDetails = null;
+            long outputTokens = 0L;
+            ResponseUsageOutputTokensDetails outputTokensDetails = null;
+            long totalTokens = 0L;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("embedding_tokens".equals(fieldName)) {
                     embeddingTokens = reader.getInt();
                 } else if ("input_tokens".equals(fieldName)) {
-                    inputTokens = reader.getInt();
+                    inputTokens = reader.getLong();
                 } else if ("input_tokens_details".equals(fieldName)) {
-                    inputTokensDetails = MemoryStoreOperationUsageInputTokensDetails.fromJson(reader);
+                    inputTokensDetails = ResponseUsageInputTokensDetails.fromJson(reader);
                 } else if ("output_tokens".equals(fieldName)) {
-                    outputTokens = reader.getInt();
+                    outputTokens = reader.getLong();
                 } else if ("output_tokens_details".equals(fieldName)) {
-                    outputTokensDetails = MemoryStoreOperationUsageOutputTokensDetails.fromJson(reader);
+                    outputTokensDetails = ResponseUsageOutputTokensDetails.fromJson(reader);
                 } else if ("total_tokens".equals(fieldName)) {
-                    totalTokens = reader.getInt();
+                    totalTokens = reader.getLong();
                 } else {
                     reader.skipChildren();
                 }
@@ -191,5 +169,27 @@ public final class MemoryStoreOperationUsage implements JsonSerializable<MemoryS
             return new MemoryStoreOperationUsage(embeddingTokens, inputTokens, inputTokensDetails, outputTokens,
                 outputTokensDetails, totalTokens);
         });
+    }
+
+    /**
+     * Creates an instance of MemoryStoreOperationUsage class.
+     *
+     * @param embeddingTokens the embeddingTokens value to set.
+     * @param inputTokens the inputTokens value to set.
+     * @param inputTokensDetails the inputTokensDetails value to set.
+     * @param outputTokens the outputTokens value to set.
+     * @param outputTokensDetails the outputTokensDetails value to set.
+     * @param totalTokens the totalTokens value to set.
+     */
+    @Generated
+    private MemoryStoreOperationUsage(int embeddingTokens, long inputTokens,
+        ResponseUsageInputTokensDetails inputTokensDetails, long outputTokens,
+        ResponseUsageOutputTokensDetails outputTokensDetails, long totalTokens) {
+        this.embeddingTokens = embeddingTokens;
+        this.inputTokens = inputTokens;
+        this.inputTokensDetails = inputTokensDetails;
+        this.outputTokens = outputTokens;
+        this.outputTokensDetails = outputTokensDetails;
+        this.totalTokens = totalTokens;
     }
 }

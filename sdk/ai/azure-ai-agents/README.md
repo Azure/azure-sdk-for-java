@@ -2,6 +2,8 @@
 
 Develop Agents using the Azure AI Foundry platform, leveraging an extensive ecosystem of models, tools, and capabilities from OpenAI, Microsoft, and other LLM providers.
 
+The client library uses a single service version `v1` of the AI Foundry [data plane REST APIs](https://aka.ms/azsdk/azure-ai-projects/ga-rest-api-reference).
+
 ## Documentation
 
 Various documentation is available to help you get started
@@ -23,7 +25,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-agents</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>2.0.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -58,6 +60,7 @@ The Agents client library has 3 sub-clients which group the different operations
 - `AgentsClient` / `AgentsAsyncClient`: Perform operations related to agents, such as creating, retrieving, updating, and deleting agents.
 - `ConversationsClient` / `ConversationsAsyncClient`: Handle conversation operations. See the [OpenAI's Conversation API documentation][openai_conversations_api_docs] for more information.
 - `ResponsesClient` / `ResponsesAsyncClient`: Handle responses operations. See the [OpenAI's Responses API documentation][openai_responses_api_docs] for more information.
+- `MemoryStoresClient` / `MemoryStoresAsyncClient` **(preview)**: Manage memory stores for agents. This operation group requires the `MemoryStores=V1Preview` feature opt-in flag and is automatically set by the SDK on every request.
 
 To access each sub-client you need to use your `AgentsClientBuilder()`. The Agents client library takes the [Official OpenAI SDK][openai_java_sdk] as a dependency, which is used for all operations, except the ones corresponding to direct Agent management.
 
@@ -77,7 +80,52 @@ ResponsesClient responsesClient = builder.buildResponsesClient();
 ResponsesAsyncClient responsesAsyncClient = builder.buildResponsesAsyncClient();
 ```
 
-The [OpenAI Official Java SDK][openai_java_sdk] is imported transitively and can be accessed from either the `ResponsesClient` or the `ConversationsClient` using the `getOpenAIClient()` method.
+The [OpenAI Official Java SDK][openai_java_sdk] is imported transitively and can be accessed from either the `ResponsesClient` or the `ConversationsClient` using the `getOpenAIClient()` method. Alternatively, you can build an `OpenAIClient` or `OpenAIClientAsync` directly from the `AgentsClientBuilder`:
+
+```java
+OpenAIClient openAIClient = builder.buildOpenAIClient();
+OpenAIClientAsync openAIAsyncClient = builder.buildOpenAIAsyncClient();
+```
+
+### Agent tools
+
+The SDK supports a variety of tools that can be attached to agent definitions. Some tools are generally available, while others are in **preview** and may change in future releases.
+
+**Generally available tools:**
+
+| Tool class | Description |
+|---|---|
+| `AzureAISearchTool` | Azure AI Search |
+| `AzureFunctionTool` | Azure Functions |
+| `BingGroundingTool` | Bing grounding |
+| `CodeInterpreterTool` | Code interpreter |
+| `FileSearchTool` | File search |
+| `FunctionTool` | Custom function calling |
+| `ImageGenTool` | Image generation |
+| `OpenApiTool` | OpenAPI spec-based tools |
+
+**Preview tools:**
+
+| Tool class | Description |
+|---|---|
+| `A2APreviewTool` | Agent-to-agent communication |
+| `BingCustomSearchPreviewTool` | Bing custom search |
+| `BrowserAutomationPreviewTool` | Browser automation |
+| `ComputerUsePreviewTool` | Computer use |
+| `McpTool` | Model Context Protocol (MCP) |
+| `MemorySearchPreviewTool` | Memory search |
+| `MicrosoftFabricPreviewTool` | Microsoft Fabric |
+| `SharepointPreviewTool` | SharePoint grounding |
+| `WebSearchPreviewTool` | Web search |
+
+### Experimental features and opt-in flags
+
+Some features require an opt-in via the `Foundry-Features` HTTP header. The SDK provides two enums for these flags:
+
+- **`AgentDefinitionFeatureKeys`** — Used when creating or updating agents. Passed as a parameter to `createAgent`, `updateAgent`, `createAgentVersion`, and related methods. Available keys: `HOSTED_AGENTS_V1_PREVIEW`, `WORKFLOW_AGENTS_V1_PREVIEW`.
+- **`FoundryFeaturesOptInKeys`** — Defines all known opt-in keys, including: `HOSTED_AGENTS_V1_PREVIEW`, `WORKFLOW_AGENTS_V1_PREVIEW`, `EVALUATIONS_V1_PREVIEW`, `SCHEDULES_V1_PREVIEW`, `RED_TEAMS_V1_PREVIEW`, `INSIGHTS_V1_PREVIEW`, `MEMORY_STORES_V1_PREVIEW`.
+
+> **Note:** The `MemoryStoresClient` automatically sets the `MemoryStores=V1Preview` opt-in flag on every request.
 
 ```java
 // OpenAI SDK ResponsesService accessed from ResponsesClient
@@ -95,11 +143,9 @@ If you prefer using the [OpenAI official Java client library][openai_java_sdk] i
 
 ```java com.azure.ai.agents.openai_official_library
 OpenAIClient client = OpenAIOkHttpClient.builder()
-    .baseUrl(endpoint.endsWith("/") ? endpoint + "openai" : endpoint + "/openai")
-    .azureUrlPathMode(AzureUrlPathMode.UNIFIED)
+    .baseUrl(endpoint.endsWith("/") ? endpoint + "openai/v1" : endpoint + "/openai/v1")
     .credential(BearerTokenCredential.create(AuthenticationUtil.getBearerTokenSupplier(
-            new DefaultAzureCredentialBuilder().build(), "https://ai.azure.com/.default")))
-    .azureServiceVersion(AzureOpenAIServiceVersion.fromString("2025-11-15-preview"))
+        new DefaultAzureCredentialBuilder().build(), "https://ai.azure.com/.default")))
     .build();
 
 ResponseCreateParams responseRequest = new ResponseCreateParams.Builder()
@@ -110,7 +156,7 @@ ResponseCreateParams responseRequest = new ResponseCreateParams.Builder()
 Response result = client.responses().create(responseRequest);
 ```
 
-Remember to adjust your value for the `AzureOpenAIServiceVersion` in the builder and to postpend to your `endpoint`'s path `openai` (if it's not already there) like it's shown in the above code snippet.
+Remember to adjust your base URL so that your AI Foundry project `endpoint`'s path ends with `openai/v1` like it's shown in the above code snippet.
 
 ## Examples
 
@@ -163,6 +209,419 @@ And the final step that ties everything together, we pass the `AgentReference` a
 AgentReference agentReference = new AgentReference(agent.getName()).setVersion(agent.getVersion());
 Response response = responsesClient.createWithAgentConversation(agentReference, conversation.id());
 ```
+
+### Using Agent tools
+
+Agents can be enhanced with specialized tools for various capabilities. For complete working examples, see the `tools/` folder under [samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools).
+
+In the description below, tools are organized by their Foundry connection requirements: "Built-in Tools" (which do not require a Foundry connection) and "Connection-based Tools" (which require a Foundry connection).
+
+#### Built-in Tools
+
+These tools work immediately without requiring external connections.
+
+---
+
+##### **Code Interpreter** ([documentation](https://learn.microsoft.com/azure/foundry/agents/how-to/tools/code-interpreter?pivots=java))
+
+Write and run Python code in a sandboxed environment, process files and work with diverse data formats.
+
+```java com.azure.ai.agents.define_code_interpreter
+// Create a CodeInterpreterTool with default auto container configuration
+CodeInterpreterTool tool = new CodeInterpreterTool();
+```
+
+See the full sample in [CodeInterpreterSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/CodeInterpreterSync.java).
+
+---
+
+##### **File Search** ([documentation](https://learn.microsoft.com/azure/foundry/agents/how-to/tools/file-search?pivots=java))
+
+Search through files in a vector store for knowledge retrieval:
+
+```java com.azure.ai.agents.define_file_search
+// Create a FileSearchTool with the vector store ID
+FileSearchTool tool = new FileSearchTool(Collections.singletonList(vectorStore.id()));
+```
+
+See the full sample in [FileSearchSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/FileSearchSync.java).
+
+---
+
+##### **Image Generation** ([documentation](https://learn.microsoft.com/azure/foundry/agents/how-to/tools/image-generation?pivots=java))
+
+Generate images from text descriptions:
+
+```java com.azure.ai.agents.define_image_generation
+// Create image generation tool with model, quality, and size
+ImageGenTool imageGenTool = new ImageGenTool()
+    .setModel(ImageGenToolModel.fromString(imageModel))
+    .setQuality(ImageGenToolQuality.LOW)
+    .setSize(ImageGenToolSize.fromString("1024x1024"));
+```
+
+See the full sample in [ImageGenerationSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/ImageGenerationSync.java).
+
+---
+
+##### **Web Search (Preview)** ([documentation](https://learn.microsoft.com/azure/foundry/agents/how-to/tools/web-search?pivots=java))
+
+Search the web for current information:
+
+```java com.azure.ai.agents.define_web_search
+// Create a WebSearchPreviewTool
+WebSearchPreviewTool tool = new WebSearchPreviewTool();
+```
+
+See the full sample in [WebSearchSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/WebSearchSync.java).
+
+---
+
+##### **Computer Use (Preview)** ([documentation](https://learn.microsoft.com/azure/foundry/agents/how-to/tools/computer-use?pivots=java))
+
+Interact with computer interfaces through simulated actions and screenshots:
+
+```java com.azure.ai.agents.define_computer_use
+ComputerUsePreviewTool tool = new ComputerUsePreviewTool(
+    ComputerEnvironment.WINDOWS,
+    1026,
+    769
+);
+```
+
+See the full sample in [ComputerUseSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/ComputerUseSync.java).
+
+---
+
+##### **Model Context Protocol (MCP)** ([documentation](https://learn.microsoft.com/azure/foundry/agents/how-to/tools/model-context-protocol?pivots=java))
+
+Connect agents to external MCP servers:
+
+```java com.azure.ai.agents.built_in_mcp
+// Uses gitmcp.io to expose a GitHub repository as an MCP-compatible server
+McpTool tool = new McpTool("api-specs")
+    .setServerUrl("https://gitmcp.io/Azure/azure-rest-api-specs")
+    .setRequireApproval("always");
+```
+
+See the full sample in [McpSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/McpSync.java).
+
+---
+
+##### **OpenAPI** ([documentation](https://learn.microsoft.com/azure/foundry/agents/how-to/tools/openapi?pivots=java))
+
+Call external APIs defined by OpenAPI specifications without additional client-side code:
+
+```java com.azure.ai.agents.define_openapi
+// Load the OpenAPI spec from a JSON file
+Map<String, BinaryData> spec = OpenApiFunctionDefinition.readSpecFromFile(
+    SampleUtils.getResourcePath("assets/httpbin_openapi.json"));
+
+OpenApiTool tool = new OpenApiTool(
+    new OpenApiFunctionDefinition(
+        "httpbin_get",
+        spec,
+        new OpenApiAnonymousAuthDetails())
+        .setDescription("Get request metadata from an OpenAPI endpoint."));
+```
+
+See the full sample in [OpenApiSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/OpenApiSync.java).
+
+---
+
+##### **Function Tool** ([documentation](https://learn.microsoft.com/azure/foundry/agents/how-to/tools/function-calling?pivots=java))
+
+Define custom functions that allow agents to interact with external APIs, databases, or application logic:
+
+```java  com.azure.ai.agents.define_function_call
+Map<String, Object> locationProp = new LinkedHashMap<String, Object>();
+locationProp.put("type", "string");
+locationProp.put("description", "The city and state, e.g. Seattle, WA");
+
+Map<String, Object> unitProp = new LinkedHashMap<String, Object>();
+unitProp.put("type", "string");
+unitProp.put("enum", Arrays.asList("celsius", "fahrenheit"));
+
+Map<String, Object> properties = new LinkedHashMap<String, Object>();
+properties.put("location", locationProp);
+properties.put("unit", unitProp);
+
+Map<String, BinaryData> parameters = new HashMap<String, BinaryData>();
+parameters.put("type", BinaryData.fromObject("object"));
+parameters.put("properties", BinaryData.fromObject(properties));
+parameters.put("required", BinaryData.fromObject(Arrays.asList("location", "unit")));
+parameters.put("additionalProperties", BinaryData.fromObject(false));
+
+FunctionTool tool = new FunctionTool("get_weather", parameters, true)
+    .setDescription("Get the current weather in a given location");
+```
+
+See the full sample in [FunctionCallSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/FunctionCallSync.java).
+
+---
+
+##### **Azure Functions**
+
+Integrate Azure Functions with agents to extend capabilities via serverless compute. Functions are invoked through Azure Storage Queue triggers, allowing asynchronous execution of custom logic:
+
+```java com.azure.ai.agents.define_azure_function
+// Create Azure Function tool with Storage Queue bindings
+AzureFunctionTool azureFunctionTool = new AzureFunctionTool(
+    new AzureFunctionDefinition(
+        new AzureFunctionDefinitionDetails("queue_trigger", parameters)
+            .setDescription("Get weather for a given location"),
+        new AzureFunctionBinding(
+            new AzureFunctionStorageQueue(queueServiceEndpoint, inputQueueName)),
+        new AzureFunctionBinding(
+            new AzureFunctionStorageQueue(queueServiceEndpoint, outputQueueName))
+    )
+);
+```
+
+*After calling `responsesClient.createWithAgent()`, the agent enqueues function arguments to the input queue. Your Azure Function processes the request and returns results via the output queue.*
+
+See the full sample in [AzureFunctionSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/AzureFunctionSync.java).
+
+---
+
+##### **Memory Search (Preview)** ([documentation](https://learn.microsoft.com/azure/foundry/agents/concepts/what-is-memory))
+
+The Memory Search tool adds memory to an agent, allowing the agent's AI model to search for past information related to the current user prompt:
+
+```java com.azure.ai.agents.define_memory_search
+// Create memory search tool
+MemorySearchPreviewTool tool = new MemorySearchPreviewTool(memoryStore.getName(), scope)
+    .setUpdateDelaySeconds(1);
+```
+
+See the full sample in [MemorySearchSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/MemorySearchSync.java) showing how to create an agent with a memory store and use it across multiple conversations.
+
+---
+
+#### Connection-Based Tools
+
+These tools require configuring connections in your Microsoft Foundry project and use a `projectConnectionId`.
+
+---
+
+##### **Azure AI Search** ([documentation](https://learn.microsoft.com/azure/foundry/agents/how-to/tools/ai-search?pivots=java))
+
+Integrate with Azure AI Search indexes for powerful knowledge retrieval and semantic search capabilities:
+
+```java com.azure.ai.agents.define_azure_ai_search
+// Create Azure AI Search tool with index configuration
+AzureAISearchTool aiSearchTool = new AzureAISearchTool(
+    new AzureAISearchToolResource(Arrays.asList(
+        new AISearchIndexResource()
+            .setProjectConnectionId(connectionId)
+            .setIndexName(indexName)
+            .setQueryType(AzureAISearchQueryType.SIMPLE)
+    ))
+);
+```
+
+See the full sample in [AzureAISearchSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/AzureAISearchSync.java).
+
+---
+
+##### **Bing Grounding** ([documentation](https://learn.microsoft.com/azure/foundry/agents/how-to/tools/bing-tools?pivots=java))
+
+Ground agent responses with real-time web search results from Bing to provide up-to-date information:
+
+```java com.azure.ai.agents.define_bing_grounding
+// Create Bing grounding tool with connection configuration
+BingGroundingTool bingTool = new BingGroundingTool(
+    new BingGroundingSearchToolParameters(Arrays.asList(
+        new BingGroundingSearchConfiguration(bingConnectionId)
+    ))
+);
+```
+
+See the full sample in [BingGroundingSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/BingGroundingSync.java).
+
+---
+
+##### **Bing Custom Search (Preview)** ([documentation](https://learn.microsoft.com/azure/foundry/agents/how-to/tools/bing-tools?pivots=java))
+
+**Warning**: Grounding with Bing Custom Search uses Grounding with Bing, which has additional costs and terms: [terms of use](https://www.microsoft.com/bing/apis/grounding-legal-enterprise) and [privacy statement](https://go.microsoft.com/fwlink/?LinkId=521839&clcid=0x409). Customer data will flow outside the Azure compliance boundary.
+
+Use custom-configured Bing search instances for domain-specific or filtered web search results:
+
+```java com.azure.ai.agents.define_bing_custom_search
+// Create Bing Custom Search tool with connection and instance configuration
+BingCustomSearchPreviewTool bingCustomSearchTool = new BingCustomSearchPreviewTool(
+    new BingCustomSearchToolParameters(Arrays.asList(
+        new BingCustomSearchConfiguration(connectionId, instanceName)
+    ))
+);
+```
+
+See the full sample in [BingCustomSearchSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/BingCustomSearchSync.java).
+
+---
+
+##### **Microsoft Fabric (Preview)** ([documentation](https://learn.microsoft.com/azure/foundry/agents/how-to/tools/fabric?pivots=java))
+
+Query data from Microsoft Fabric data sources:
+
+```java com.azure.ai.agents.define_fabric
+// Create Microsoft Fabric tool with connection configuration
+MicrosoftFabricPreviewTool fabricTool = new MicrosoftFabricPreviewTool(
+    new FabricDataAgentToolParameters()
+        .setProjectConnections(Arrays.asList(
+            new ToolProjectConnection(fabricConnectionId)
+        ))
+);
+```
+
+See the full sample in [FabricSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/FabricSync.java).
+
+---
+
+##### **Microsoft SharePoint (Preview)** ([documentation](https://learn.microsoft.com/azure/foundry/agents/how-to/tools/sharepoint?pivots=java))
+
+Search through SharePoint documents for grounding:
+
+```java com.azure.ai.agents.define_sharepoint
+// Create SharePoint grounding tool with connection configuration
+SharepointPreviewTool sharepointTool = new SharepointPreviewTool(
+    new SharepointGroundingToolParameters()
+        .setProjectConnections(Arrays.asList(
+            new ToolProjectConnection(sharepointConnectionId)
+        ))
+);
+```
+
+See the full sample in [SharePointGroundingSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/SharePointGroundingSync.java).
+
+---
+
+##### **Browser Automation (Preview)** ([documentation](https://learn.microsoft.com/azure/foundry/agents/how-to/tools/browser-automation?pivots=java))
+
+Interact with web pages through browser automation:
+
+```java com.azure.ai.agents.define_browser_automation
+// Create browser automation tool with connection configuration
+BrowserAutomationPreviewTool browserTool = new BrowserAutomationPreviewTool(
+    new BrowserAutomationToolParameters(
+        new BrowserAutomationToolConnectionParameters(connectionId)
+    )
+);
+```
+
+See the full sample in [BrowserAutomationSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/BrowserAutomationSync.java).
+
+---
+
+##### **Agent-to-Agent (A2A) (Preview)** ([documentation](https://learn.microsoft.com/azure/foundry/agents/how-to/tools/agent-to-agent?pivots=java))
+
+Enable agent-to-agent communication with remote A2A endpoints:
+
+```java com.azure.ai.agents.define_agent_to_agent
+// Create agent-to-agent tool with connection ID
+A2APreviewTool a2aTool = new A2APreviewTool()
+    .setProjectConnectionId(a2aConnectionId);
+```
+
+See the full sample in [AgentToAgentSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/AgentToAgentSync.java).
+
+---
+
+##### **MCP with Project Connection** ([documentation](https://learn.microsoft.com/azure/foundry/agents/how-to/tools/model-context-protocol?pivots=java))
+
+MCP integration using project-specific connections for accessing connected MCP servers:
+
+```java com.azure.ai.agents.define_mcp_with_connection
+// Create MCP tool with project connection authentication
+McpTool mcpTool = new McpTool("api-specs")
+    .setServerUrl("https://api.githubcopilot.com/mcp")
+    .setProjectConnectionId(mcpConnectionId)
+    .setRequireApproval("always");
+```
+
+See the full sample in [McpWithConnectionSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/McpWithConnectionSync.java).
+
+---
+
+##### **OpenAPI with Project Connection** ([documentation](https://learn.microsoft.com/azure/foundry/agents/how-to/tools/openapi?pivots=java))
+
+Call external APIs defined by OpenAPI specifications using project connection authentication:
+
+```java com.azure.ai.agents.define_openapi_with_connection
+// Create OpenAPI tool with project connection authentication
+OpenApiTool openApiTool = new OpenApiTool(
+    new OpenApiFunctionDefinition(
+        "httpbin_get",
+        spec,
+        new OpenApiProjectConnectionAuthDetails(
+            new OpenApiProjectConnectionSecurityScheme(connectionId)))
+        .setDescription("Get request metadata from an OpenAPI endpoint."));
+```
+
+See the full sample in [OpenApiWithConnectionSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/OpenApiWithConnectionSync.java).
+
+---
+
+### Streaming responses
+
+The `ResponsesClient` and `ResponsesAsyncClient` support streaming, which allows you to process response events as they arrive rather than waiting for the full response. This is useful for displaying text to users in real time and observing tool execution progress.
+
+#### Synchronous streaming
+
+The synchronous streaming methods return `IterableStream<ResponseStreamEvent>`, which can be consumed with a standard for-each loop. Use the `ResponseAccumulator` from the OpenAI SDK to collect events into a final `Response`:
+
+```java com.azure.ai.agents.streaming.simple_sync
+// Use ResponseAccumulator to collect streamed events into a final Response
+ResponseAccumulator responseAccumulator = ResponseAccumulator.create();
+
+// Stream response - text is printed as it arrives
+IterableStream<ResponseStreamEvent> events =
+    responsesClient.createStreamingWithAgent(agentReference,
+        ResponseCreateParams.builder()
+            .input("Tell me a short story about a brave explorer."));
+
+for (ResponseStreamEvent event : events) {
+    responseAccumulator.accumulate(event);
+    event.outputTextDelta()
+        .ifPresent(textEvent -> System.out.print(textEvent.delta()));
+}
+System.out.println(); // newline after streamed text
+
+// Access the complete accumulated response
+Response response = responseAccumulator.response();
+System.out.println("\nResponse ID: " + response.id());
+```
+
+See the full samples in [SimpleStreamingSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/streaming/SimpleStreamingSync.java), [FunctionCallStreamingSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/streaming/FunctionCallStreamingSync.java), and [CodeInterpreterStreamingSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/streaming/CodeInterpreterStreamingSync.java).
+
+#### Asynchronous streaming
+
+The asynchronous streaming methods return `Flux<ResponseStreamEvent>`, integrating naturally with Reactor pipelines:
+
+```java com.azure.ai.agents.streaming.simple_async
+// Use ResponseAccumulator to collect streamed events into a final Response
+ResponseAccumulator responseAccumulator = ResponseAccumulator.create();
+
+// Stream response asynchronously - text is printed as each chunk arrives
+return responsesAsyncClient.createStreamingWithAgent(agentReference,
+        ResponseCreateParams.builder()
+            .input("Tell me a short story about a brave explorer."))
+    .doOnNext(event -> {
+        responseAccumulator.accumulate(event);
+        event.outputTextDelta()
+            .ifPresent(textEvent -> System.out.print(textEvent.delta()));
+    })
+    .then(Mono.fromCallable(() -> {
+        System.out.println(); // newline after streamed text
+
+        // Access the complete accumulated response
+        Response response = responseAccumulator.response();
+        System.out.println("\nResponse ID: " + response.id());
+```
+
+See the full samples in [SimpleStreamingAsync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/streaming/SimpleStreamingAsync.java), [FunctionCallStreamingAsync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/streaming/FunctionCallStreamingAsync.java), and [CodeInterpreterStreamingAsync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/streaming/CodeInterpreterStreamingAsync.java).
+
+---
 
 ### Service API versions
 

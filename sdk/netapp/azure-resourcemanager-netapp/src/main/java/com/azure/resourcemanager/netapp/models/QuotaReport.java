@@ -19,7 +19,7 @@ public final class QuotaReport implements JsonSerializable<QuotaReport> {
     /*
      * Type of quota
      */
-    private Type quotaType;
+    private QuotaType quotaType;
 
     /*
      * UserID/GroupID/SID based on the quota target type. UserID and groupID can be found by running ‘id’ or ‘getent’
@@ -58,7 +58,7 @@ public final class QuotaReport implements JsonSerializable<QuotaReport> {
      * 
      * @return the quotaType value.
      */
-    public Type quotaType() {
+    public QuotaType quotaType() {
         return this.quotaType;
     }
 
@@ -148,7 +148,7 @@ public final class QuotaReport implements JsonSerializable<QuotaReport> {
                 reader.nextToken();
 
                 if ("quotaType".equals(fieldName)) {
-                    deserializedQuotaReport.quotaType = Type.fromString(reader.getString());
+                    deserializedQuotaReport.quotaType = QuotaType.fromString(reader.getString());
                 } else if ("quotaTarget".equals(fieldName)) {
                     deserializedQuotaReport.quotaTarget = reader.getString();
                 } else if ("quotaLimitUsedInKiBs".equals(fieldName)) {

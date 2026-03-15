@@ -21,7 +21,7 @@ public final class SubvolumesGetMetadataMockTests {
     @Test
     public void testGetMetadata() throws Exception {
         String responseStr
-            = "{\"id\":\"rfgxkyd\",\"name\":\"yp\",\"type\":\"qvmtywhlakx\",\"properties\":{\"path\":\"pewpyj\",\"parentPath\":\"xampqcr\",\"size\":4390890768569409164,\"bytesUsed\":6349530997487415939,\"permissions\":\"iatwfaujegqdtadr\",\"creationTimeStamp\":\"2021-10-11T00:31:24Z\",\"accessedTimeStamp\":\"2021-10-15T09:11:57Z\",\"modifiedTimeStamp\":\"2021-11-26T23:11:17Z\",\"changedTimeStamp\":\"2021-10-12T17:44:39Z\",\"provisioningState\":\"Succeeded\"}}";
+            = "{\"id\":\"iiovgqcgxu\",\"name\":\"qkctotiowlxte\",\"type\":\"ptjgwdt\",\"properties\":{\"path\":\"ranblwphqlkccu\",\"parentPath\":\"ygqwahoiu\",\"size\":2999690954103498084,\"bytesUsed\":496876540671347665,\"permissions\":\"glvawuwzdufypivl\",\"creationTimeStamp\":\"2021-10-20T13:21:17Z\",\"accessedTimeStamp\":\"2021-03-20T16:30:31Z\",\"modifiedTimeStamp\":\"2021-12-09T01:16:52Z\",\"changedTimeStamp\":\"2021-09-09T11:28:08Z\",\"provisioningState\":\"Succeeded\"}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,17 +31,17 @@ public final class SubvolumesGetMetadataMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SubvolumeModel response = manager.subvolumes()
-            .getMetadata("ozsyvrm", "jmyitrchwudl", "eeih", "pmnoejhqlf", "sibz", com.azure.core.util.Context.NONE);
+            .getMetadata("j", "emmucfxh", "kkflrmymyincqlhr", "s", "sl", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("pewpyj", response.path());
-        Assertions.assertEquals("xampqcr", response.parentPath());
-        Assertions.assertEquals(4390890768569409164L, response.size());
-        Assertions.assertEquals(6349530997487415939L, response.bytesUsed());
-        Assertions.assertEquals("iatwfaujegqdtadr", response.permissions());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-11T00:31:24Z"), response.creationTimestamp());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-15T09:11:57Z"), response.accessedTimestamp());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-26T23:11:17Z"), response.modifiedTimestamp());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-12T17:44:39Z"), response.changedTimestamp());
+        Assertions.assertEquals("ranblwphqlkccu", response.path());
+        Assertions.assertEquals("ygqwahoiu", response.parentPath());
+        Assertions.assertEquals(2999690954103498084L, response.size());
+        Assertions.assertEquals(496876540671347665L, response.bytesUsed());
+        Assertions.assertEquals("glvawuwzdufypivl", response.permissions());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-20T13:21:17Z"), response.creationTimestamp());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-20T16:30:31Z"), response.accessedTimestamp());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-12-09T01:16:52Z"), response.modifiedTimestamp());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-09T11:28:08Z"), response.changedTimestamp());
         Assertions.assertEquals("Succeeded", response.provisioningState());
     }
 }

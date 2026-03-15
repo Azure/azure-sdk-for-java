@@ -44,7 +44,7 @@ public class DatasetsAsyncSample {
         Path filePath = getPath("product_info.md");
 
         return datasetsAsyncClient.createDatasetWithFile(datasetName, datasetVersionString, filePath)
-            .doOnNext(createdDatasetVersion -> 
+            .doOnNext(createdDatasetVersion ->
                 System.out.println("Created dataset version: " + createdDatasetVersion.getId()));
 
         // END:com.azure.ai.projects.DatasetsAsyncSample.createDatasetWithFile
@@ -54,7 +54,7 @@ public class DatasetsAsyncSample {
         // BEGIN:com.azure.ai.projects.DatasetsAsyncSample.listDatasets
 
         System.out.println("Listing all datasets (latest versions):");
-        return datasetsAsyncClient.listLatest()
+        return datasetsAsyncClient.listLatestVersion()
             .doOnNext(dataset -> {
                 System.out.println("\nDataset name: " + dataset.getName());
                 System.out.println("Dataset Id: " + dataset.getId());
@@ -118,7 +118,7 @@ public class DatasetsAsyncSample {
 
         // Delete the specific version of the dataset
         return datasetsAsyncClient.deleteVersion(datasetName, datasetVersion)
-            .doOnSuccess(unused -> 
+            .doOnSuccess(unused ->
                 System.out.println("Deleted dataset: " + datasetName + ", version: " + datasetVersion));
 
         // END:com.azure.ai.projects.DatasetsAsyncSample.deleteDataset
@@ -138,8 +138,8 @@ public class DatasetsAsyncSample {
 
         // Create or update the dataset
         return datasetsAsyncClient.createOrUpdateVersion(
-            datasetName, 
-            datasetVersion, 
+            datasetName,
+            datasetVersion,
             fileDataset
         ).doOnNext(createdDataset -> {
             FileDatasetVersion fileDatasetVersion = (FileDatasetVersion) createdDataset;
@@ -160,12 +160,12 @@ public class DatasetsAsyncSample {
 
         // Create a pending upload request for the dataset
         PendingUploadRequest request = new PendingUploadRequest();
-        
+
         // Get the pending upload response with blob reference
         return datasetsAsyncClient.pendingUpload(datasetName, datasetVersion, request)
             .doOnNext(response -> {
                 System.out.println("Pending upload initiated with ID: " + response.getPendingUploadId());
-                System.out.println("Blob URI: " + response.getBlobReference().getBlobUri());
+                System.out.println("Blob URI: " + response.getBlobReference().getBlobUrl());
             });
 
         // END:com.azure.ai.projects.DatasetsAsyncSample.pendingUploadSample

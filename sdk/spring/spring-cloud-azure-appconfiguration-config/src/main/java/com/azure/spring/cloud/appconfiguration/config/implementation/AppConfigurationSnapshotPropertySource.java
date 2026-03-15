@@ -32,7 +32,7 @@ final class AppConfigurationSnapshotPropertySource extends AppConfigurationAppli
         FeatureFlagClient featureFlagClient) {
         // The context alone does not uniquely define a PropertySource, append storeName
         // and label to uniquely define a PropertySource
-        super(name, replicaClient, keyVaultClientFactory, null, null);
+        super(name, replicaClient, keyVaultClientFactory, null, null, null);
         this.snapshotName = snapshotName;
         this.featureFlagClient = featureFlagClient;
     }

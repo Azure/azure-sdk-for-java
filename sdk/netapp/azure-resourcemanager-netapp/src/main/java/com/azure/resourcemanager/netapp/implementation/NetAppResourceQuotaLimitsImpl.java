@@ -30,12 +30,8 @@ public final class NetAppResourceQuotaLimitsImpl implements NetAppResourceQuotaL
     public Response<SubscriptionQuotaItem> getWithResponse(String location, String quotaLimitName, Context context) {
         Response<SubscriptionQuotaItemInner> inner
             = this.serviceClient().getWithResponse(location, quotaLimitName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new SubscriptionQuotaItemImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new SubscriptionQuotaItemImpl(inner.getValue(), this.manager()));
     }
 
     public SubscriptionQuotaItem get(String location, String quotaLimitName) {

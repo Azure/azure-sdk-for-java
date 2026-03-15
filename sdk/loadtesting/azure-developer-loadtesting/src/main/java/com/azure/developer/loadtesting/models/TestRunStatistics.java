@@ -36,165 +36,6 @@ public final class TestRunStatistics implements JsonSerializable<TestRunStatisti
     private Double errorCount;
 
     /*
-     * Throughput.
-     */
-    @Generated
-    private Double throughput;
-
-    /*
-     * Received network bytes.
-     */
-    @Generated
-    private Double receivedKBytesPerSec;
-
-    /*
-     * Send network bytes.
-     */
-    @Generated
-    private Double sentKBytesPerSec;
-
-    /**
-     * Creates an instance of TestRunStatistics class.
-     */
-    @Generated
-    private TestRunStatistics() {
-    }
-
-    /**
-     * Get the transaction property: Transaction name.
-     *
-     * @return the transaction value.
-     */
-    @Generated
-    public String getTransaction() {
-        return this.transaction;
-    }
-
-    /**
-     * Get the sampleCount property: Sampler count.
-     *
-     * @return the sampleCount value.
-     */
-    @Generated
-    public Double getSampleCount() {
-        return this.sampleCount;
-    }
-
-    /**
-     * Get the errorCount property: Error count.
-     *
-     * @return the errorCount value.
-     */
-    @Generated
-    public Double getErrorCount() {
-        return this.errorCount;
-    }
-
-    /**
-     * Get the throughput property: Throughput.
-     *
-     * @return the throughput value.
-     */
-    @Generated
-    public Double getThroughput() {
-        return this.throughput;
-    }
-
-    /**
-     * Get the receivedKBytesPerSec property: Received network bytes.
-     *
-     * @return the receivedKBytesPerSec value.
-     */
-    @Generated
-    public Double getReceivedKBytesPerSec() {
-        return this.receivedKBytesPerSec;
-    }
-
-    /**
-     * Get the sentKBytesPerSec property: Send network bytes.
-     *
-     * @return the sentKBytesPerSec value.
-     */
-    @Generated
-    public Double getSentKBytesPerSec() {
-        return this.sentKBytesPerSec;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of TestRunStatistics from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of TestRunStatistics if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the TestRunStatistics.
-     */
-    @Generated
-    public static TestRunStatistics fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            TestRunStatistics deserializedTestRunStatistics = new TestRunStatistics();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("transaction".equals(fieldName)) {
-                    deserializedTestRunStatistics.transaction = reader.getString();
-                } else if ("sampleCount".equals(fieldName)) {
-                    deserializedTestRunStatistics.sampleCount = reader.getNullable(JsonReader::getDouble);
-                } else if ("errorCount".equals(fieldName)) {
-                    deserializedTestRunStatistics.errorCount = reader.getNullable(JsonReader::getDouble);
-                } else if ("errorPct".equals(fieldName)) {
-                    deserializedTestRunStatistics.errorPercentage = reader.getNullable(JsonReader::getDouble);
-                } else if ("meanResTime".equals(fieldName)) {
-                    deserializedTestRunStatistics.meanResponseTime = reader.getNullable(JsonReader::getDouble);
-                } else if ("medianResTime".equals(fieldName)) {
-                    deserializedTestRunStatistics.medianResponseTime = reader.getNullable(JsonReader::getDouble);
-                } else if ("maxResTime".equals(fieldName)) {
-                    deserializedTestRunStatistics.maxResponseTime = reader.getNullable(JsonReader::getDouble);
-                } else if ("minResTime".equals(fieldName)) {
-                    deserializedTestRunStatistics.minResponseTime = reader.getNullable(JsonReader::getDouble);
-                } else if ("pct1ResTime".equals(fieldName)) {
-                    deserializedTestRunStatistics.percentile90ResponseTime = reader.getNullable(JsonReader::getDouble);
-                } else if ("pct2ResTime".equals(fieldName)) {
-                    deserializedTestRunStatistics.percentile95ResponseTime = reader.getNullable(JsonReader::getDouble);
-                } else if ("pct3ResTime".equals(fieldName)) {
-                    deserializedTestRunStatistics.percentile99ResponseTime = reader.getNullable(JsonReader::getDouble);
-                } else if ("pct75ResTime".equals(fieldName)) {
-                    deserializedTestRunStatistics.percentile75ResponseTime = reader.getNullable(JsonReader::getDouble);
-                } else if ("pct96ResTime".equals(fieldName)) {
-                    deserializedTestRunStatistics.percentile96ResponseTime = reader.getNullable(JsonReader::getDouble);
-                } else if ("pct97ResTime".equals(fieldName)) {
-                    deserializedTestRunStatistics.percentile97ResponseTime = reader.getNullable(JsonReader::getDouble);
-                } else if ("pct98ResTime".equals(fieldName)) {
-                    deserializedTestRunStatistics.percentile98ResponseTime = reader.getNullable(JsonReader::getDouble);
-                } else if ("pct999ResTime".equals(fieldName)) {
-                    deserializedTestRunStatistics.percentile999ResponseTime = reader.getNullable(JsonReader::getDouble);
-                } else if ("pct9999ResTime".equals(fieldName)) {
-                    deserializedTestRunStatistics.percentile9999ResponseTime
-                        = reader.getNullable(JsonReader::getDouble);
-                } else if ("throughput".equals(fieldName)) {
-                    deserializedTestRunStatistics.throughput = reader.getNullable(JsonReader::getDouble);
-                } else if ("receivedKBytesPerSec".equals(fieldName)) {
-                    deserializedTestRunStatistics.receivedKBytesPerSec = reader.getNullable(JsonReader::getDouble);
-                } else if ("sentKBytesPerSec".equals(fieldName)) {
-                    deserializedTestRunStatistics.sentKBytesPerSec = reader.getNullable(JsonReader::getDouble);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            return deserializedTestRunStatistics;
-        });
-    }
-
-    /*
      * Error percentage.
      */
     @Generated
@@ -277,6 +118,61 @@ public final class TestRunStatistics implements JsonSerializable<TestRunStatisti
      */
     @Generated
     private Double percentile9999ResponseTime;
+
+    /*
+     * Throughput.
+     */
+    @Generated
+    private Double throughput;
+
+    /*
+     * Received network bytes.
+     */
+    @Generated
+    private Double receivedKBytesPerSec;
+
+    /*
+     * Send network bytes.
+     */
+    @Generated
+    private Double sentKBytesPerSec;
+
+    /**
+     * Creates an instance of TestRunStatistics class.
+     */
+    @Generated
+    private TestRunStatistics() {
+    }
+
+    /**
+     * Get the transaction property: Transaction name.
+     *
+     * @return the transaction value.
+     */
+    @Generated
+    public String getTransaction() {
+        return this.transaction;
+    }
+
+    /**
+     * Get the sampleCount property: Sampler count.
+     *
+     * @return the sampleCount value.
+     */
+    @Generated
+    public Double getSampleCount() {
+        return this.sampleCount;
+    }
+
+    /**
+     * Get the errorCount property: Error count.
+     *
+     * @return the errorCount value.
+     */
+    @Generated
+    public Double getErrorCount() {
+        return this.errorCount;
+    }
 
     /**
      * Get the errorPercentage property: Error percentage.
@@ -416,5 +312,109 @@ public final class TestRunStatistics implements JsonSerializable<TestRunStatisti
     @Generated
     public Double getPercentile9999ResponseTime() {
         return this.percentile9999ResponseTime;
+    }
+
+    /**
+     * Get the throughput property: Throughput.
+     *
+     * @return the throughput value.
+     */
+    @Generated
+    public Double getThroughput() {
+        return this.throughput;
+    }
+
+    /**
+     * Get the receivedKBytesPerSec property: Received network bytes.
+     *
+     * @return the receivedKBytesPerSec value.
+     */
+    @Generated
+    public Double getReceivedKBytesPerSec() {
+        return this.receivedKBytesPerSec;
+    }
+
+    /**
+     * Get the sentKBytesPerSec property: Send network bytes.
+     *
+     * @return the sentKBytesPerSec value.
+     */
+    @Generated
+    public Double getSentKBytesPerSec() {
+        return this.sentKBytesPerSec;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TestRunStatistics from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TestRunStatistics if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TestRunStatistics.
+     */
+    @Generated
+    public static TestRunStatistics fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TestRunStatistics deserializedTestRunStatistics = new TestRunStatistics();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("transaction".equals(fieldName)) {
+                    deserializedTestRunStatistics.transaction = reader.getString();
+                } else if ("sampleCount".equals(fieldName)) {
+                    deserializedTestRunStatistics.sampleCount = reader.getNullable(JsonReader::getDouble);
+                } else if ("errorCount".equals(fieldName)) {
+                    deserializedTestRunStatistics.errorCount = reader.getNullable(JsonReader::getDouble);
+                } else if ("errorPct".equals(fieldName)) {
+                    deserializedTestRunStatistics.errorPercentage = reader.getNullable(JsonReader::getDouble);
+                } else if ("meanResTime".equals(fieldName)) {
+                    deserializedTestRunStatistics.meanResponseTime = reader.getNullable(JsonReader::getDouble);
+                } else if ("medianResTime".equals(fieldName)) {
+                    deserializedTestRunStatistics.medianResponseTime = reader.getNullable(JsonReader::getDouble);
+                } else if ("maxResTime".equals(fieldName)) {
+                    deserializedTestRunStatistics.maxResponseTime = reader.getNullable(JsonReader::getDouble);
+                } else if ("minResTime".equals(fieldName)) {
+                    deserializedTestRunStatistics.minResponseTime = reader.getNullable(JsonReader::getDouble);
+                } else if ("pct1ResTime".equals(fieldName)) {
+                    deserializedTestRunStatistics.percentile90ResponseTime = reader.getNullable(JsonReader::getDouble);
+                } else if ("pct2ResTime".equals(fieldName)) {
+                    deserializedTestRunStatistics.percentile95ResponseTime = reader.getNullable(JsonReader::getDouble);
+                } else if ("pct3ResTime".equals(fieldName)) {
+                    deserializedTestRunStatistics.percentile99ResponseTime = reader.getNullable(JsonReader::getDouble);
+                } else if ("pct75ResTime".equals(fieldName)) {
+                    deserializedTestRunStatistics.percentile75ResponseTime = reader.getNullable(JsonReader::getDouble);
+                } else if ("pct96ResTime".equals(fieldName)) {
+                    deserializedTestRunStatistics.percentile96ResponseTime = reader.getNullable(JsonReader::getDouble);
+                } else if ("pct97ResTime".equals(fieldName)) {
+                    deserializedTestRunStatistics.percentile97ResponseTime = reader.getNullable(JsonReader::getDouble);
+                } else if ("pct98ResTime".equals(fieldName)) {
+                    deserializedTestRunStatistics.percentile98ResponseTime = reader.getNullable(JsonReader::getDouble);
+                } else if ("pct999ResTime".equals(fieldName)) {
+                    deserializedTestRunStatistics.percentile999ResponseTime = reader.getNullable(JsonReader::getDouble);
+                } else if ("pct9999ResTime".equals(fieldName)) {
+                    deserializedTestRunStatistics.percentile9999ResponseTime
+                        = reader.getNullable(JsonReader::getDouble);
+                } else if ("throughput".equals(fieldName)) {
+                    deserializedTestRunStatistics.throughput = reader.getNullable(JsonReader::getDouble);
+                } else if ("receivedKBytesPerSec".equals(fieldName)) {
+                    deserializedTestRunStatistics.receivedKBytesPerSec = reader.getNullable(JsonReader::getDouble);
+                } else if ("sentKBytesPerSec".equals(fieldName)) {
+                    deserializedTestRunStatistics.sentKBytesPerSec = reader.getNullable(JsonReader::getDouble);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedTestRunStatistics;
+        });
     }
 }

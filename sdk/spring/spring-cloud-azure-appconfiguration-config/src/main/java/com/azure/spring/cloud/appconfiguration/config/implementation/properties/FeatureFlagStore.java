@@ -8,45 +8,58 @@ import java.util.List;
 import jakarta.annotation.PostConstruct;
 
 /**
- * Properties for what needs to be requested from Azure App Configuration for Feature Flags.
+ * Configuration properties for loading feature flags from an Azure App
+ * Configuration store.
  */
 public final class FeatureFlagStore {
 
     /**
-     * Boolean for if feature flag loading is enabled.
+     * Enables or disables feature flag loading from the store.
      */
     private Boolean enabled = false;
 
     private List<FeatureFlagKeyValueSelector> selects = new ArrayList<>();
 
     /**
-     * @return the enabled
+     * Returns whether feature flag loading is enabled.
+     *
+     * @return {@code true} if enabled, {@code false} otherwise
      */
     public Boolean getEnabled() {
         return enabled;
     }
 
     /**
-     * @param enabled the enabled to set
+     * Sets whether feature flag loading is enabled.
+     *
+     * @param enabled {@code true} to enable, {@code false} to disable
      */
     public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
     }
 
     /**
-     * @return the selects
+     * Returns the feature flag selectors.
+     *
+     * @return the list of {@link FeatureFlagKeyValueSelector} instances
      */
     public List<FeatureFlagKeyValueSelector> getSelects() {
         return selects;
     }
 
     /**
-     * @param selects the selects to set
+     * Sets the feature flag selectors.
+     *
+     * @param selects the list of {@link FeatureFlagKeyValueSelector} instances
      */
     public void setSelects(List<FeatureFlagKeyValueSelector> selects) {
         this.selects = selects;
     }
     
+    /**
+     * Adds a default selector when enabled with none configured, then
+     * validates all selectors.
+     */
     @PostConstruct
     void validateAndInit() {
         if (enabled && selects.size() == 0) {

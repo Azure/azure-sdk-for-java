@@ -12,18 +12,18 @@ public final class BreakFileLocksRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BreakFileLocksRequest model
-            = BinaryData.fromString("{\"clientIp\":\"dnbbglzps\",\"confirmRunningDisruptiveOperation\":true}")
+            = BinaryData.fromString("{\"clientIp\":\"gylgqgitxmedjvcs\",\"confirmRunningDisruptiveOperation\":false}")
                 .toObject(BreakFileLocksRequest.class);
-        Assertions.assertEquals("dnbbglzps", model.clientIp());
-        Assertions.assertTrue(model.confirmRunningDisruptiveOperation());
+        Assertions.assertEquals("gylgqgitxmedjvcs", model.clientIp());
+        Assertions.assertFalse(model.confirmRunningDisruptiveOperation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BreakFileLocksRequest model
-            = new BreakFileLocksRequest().withClientIp("dnbbglzps").withConfirmRunningDisruptiveOperation(true);
+            = new BreakFileLocksRequest().withClientIp("gylgqgitxmedjvcs").withConfirmRunningDisruptiveOperation(false);
         model = BinaryData.fromObject(model).toObject(BreakFileLocksRequest.class);
-        Assertions.assertEquals("dnbbglzps", model.clientIp());
-        Assertions.assertTrue(model.confirmRunningDisruptiveOperation());
+        Assertions.assertEquals("gylgqgitxmedjvcs", model.clientIp());
+        Assertions.assertFalse(model.confirmRunningDisruptiveOperation());
     }
 }

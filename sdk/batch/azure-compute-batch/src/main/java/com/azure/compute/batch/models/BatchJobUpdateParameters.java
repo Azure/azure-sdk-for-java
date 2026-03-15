@@ -26,18 +26,19 @@ public final class BatchJobUpdateParameters implements JsonSerializable<BatchJob
     private Integer priority;
 
     /*
-     * Whether Tasks in this job can be preempted by other high priority jobs. If the value is set to True, other high
-     * priority jobs submitted to the system will take precedence and will be able requeue tasks from this job. You can
-     * update a job's allowTaskPreemption after it has been created using the update job API.
+     * Whether Tasks in this job can be preempted by other high priority jobs. (This property is not available by
+     * default. Please contact support for more information) If the value is set to True, other high priority jobs
+     * submitted to the system will take precedence and will be able requeue tasks from this job. You can update a job's
+     * allowTaskPreemption after it has been created using the update job API.
      */
     @Generated
     private Boolean allowTaskPreemption;
 
     /*
-     * The maximum number of tasks that can be executed in parallel for the job. The value of maxParallelTasks must be
-     * -1 or greater than 0 if specified. If not specified, the default value is -1, which means there's no limit to the
-     * number of tasks that can be run at once. You can update a job's maxParallelTasks after it has been created using
-     * the update job API.
+     * The maximum number of tasks that can be executed in parallel for the job. (This property is not available by
+     * default. Please contact support for more information) The value of maxParallelTasks must be -1 or greater than 0
+     * if specified. If not specified, the default value is -1, which means there's no limit to the number of tasks that
+     * can be run at once. You can update a job's maxParallelTasks after it has been created using the update job API.
      */
     @Generated
     private Integer maxParallelTasks;
@@ -76,7 +77,8 @@ public final class BatchJobUpdateParameters implements JsonSerializable<BatchJob
     private List<BatchMetadataItem> metadata;
 
     /*
-     * The network configuration for the Job.
+     * (This property is not available by default. Please contact support for more information) The network
+     * configuration for the Job.
      */
     @Generated
     private BatchJobNetworkConfiguration networkConfiguration;
@@ -115,10 +117,10 @@ public final class BatchJobUpdateParameters implements JsonSerializable<BatchJob
     }
 
     /**
-     * Get the allowTaskPreemption property: Whether Tasks in this job can be preempted by other high priority jobs. If
-     * the value is set to True, other high priority jobs submitted to the system will take precedence and will be able
-     * requeue tasks from this job. You can update a job's allowTaskPreemption after it has been created using the
-     * update job API.
+     * Get the allowTaskPreemption property: Whether Tasks in this job can be preempted by other high priority jobs.
+     * (This property is not available by default. Please contact support for more information) If the value is set to
+     * True, other high priority jobs submitted to the system will take precedence and will be able requeue tasks from
+     * this job. You can update a job's allowTaskPreemption after it has been created using the update job API.
      *
      * @return the allowTaskPreemption value.
      */
@@ -128,10 +130,10 @@ public final class BatchJobUpdateParameters implements JsonSerializable<BatchJob
     }
 
     /**
-     * Set the allowTaskPreemption property: Whether Tasks in this job can be preempted by other high priority jobs. If
-     * the value is set to True, other high priority jobs submitted to the system will take precedence and will be able
-     * requeue tasks from this job. You can update a job's allowTaskPreemption after it has been created using the
-     * update job API.
+     * Set the allowTaskPreemption property: Whether Tasks in this job can be preempted by other high priority jobs.
+     * (This property is not available by default. Please contact support for more information) If the value is set to
+     * True, other high priority jobs submitted to the system will take precedence and will be able requeue tasks from
+     * this job. You can update a job's allowTaskPreemption after it has been created using the update job API.
      *
      * @param allowTaskPreemption the allowTaskPreemption value to set.
      * @return the BatchJobUpdateParameters object itself.
@@ -143,10 +145,11 @@ public final class BatchJobUpdateParameters implements JsonSerializable<BatchJob
     }
 
     /**
-     * Get the maxParallelTasks property: The maximum number of tasks that can be executed in parallel for the job. The
-     * value of maxParallelTasks must be -1 or greater than 0 if specified. If not specified, the default value is -1,
-     * which means there's no limit to the number of tasks that can be run at once. You can update a job's
-     * maxParallelTasks after it has been created using the update job API.
+     * Get the maxParallelTasks property: The maximum number of tasks that can be executed in parallel for the job.
+     * (This property is not available by default. Please contact support for more information) The value of
+     * maxParallelTasks must be -1 or greater than 0 if specified. If not specified, the default value is -1, which
+     * means there's no limit to the number of tasks that can be run at once. You can update a job's maxParallelTasks
+     * after it has been created using the update job API.
      *
      * @return the maxParallelTasks value.
      */
@@ -156,10 +159,11 @@ public final class BatchJobUpdateParameters implements JsonSerializable<BatchJob
     }
 
     /**
-     * Set the maxParallelTasks property: The maximum number of tasks that can be executed in parallel for the job. The
-     * value of maxParallelTasks must be -1 or greater than 0 if specified. If not specified, the default value is -1,
-     * which means there's no limit to the number of tasks that can be run at once. You can update a job's
-     * maxParallelTasks after it has been created using the update job API.
+     * Set the maxParallelTasks property: The maximum number of tasks that can be executed in parallel for the job.
+     * (This property is not available by default. Please contact support for more information) The value of
+     * maxParallelTasks must be -1 or greater than 0 if specified. If not specified, the default value is -1, which
+     * means there's no limit to the number of tasks that can be run at once. You can update a job's maxParallelTasks
+     * after it has been created using the update job API.
      *
      * @param maxParallelTasks the maxParallelTasks value to set.
      * @return the BatchJobUpdateParameters object itself.
@@ -279,7 +283,8 @@ public final class BatchJobUpdateParameters implements JsonSerializable<BatchJob
     }
 
     /**
-     * Get the networkConfiguration property: The network configuration for the Job.
+     * Get the networkConfiguration property: (This property is not available by default. Please contact support for
+     * more information) The network configuration for the Job.
      *
      * @return the networkConfiguration value.
      */
@@ -289,7 +294,8 @@ public final class BatchJobUpdateParameters implements JsonSerializable<BatchJob
     }
 
     /**
-     * Set the networkConfiguration property: The network configuration for the Job.
+     * Set the networkConfiguration property: (This property is not available by default. Please contact support for
+     * more information) The network configuration for the Job.
      *
      * @param networkConfiguration the networkConfiguration value to set.
      * @return the BatchJobUpdateParameters object itself.

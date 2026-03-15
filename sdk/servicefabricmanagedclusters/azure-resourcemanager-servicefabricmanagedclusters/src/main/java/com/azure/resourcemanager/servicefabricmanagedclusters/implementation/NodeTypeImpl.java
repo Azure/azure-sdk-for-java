@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.servicefabricmanagedclusters.implementation;
 
-import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.Response;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.models.NodeTypeInner;
@@ -13,9 +11,6 @@ import com.azure.resourcemanager.servicefabricmanagedclusters.models.AdditionalN
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.DiskType;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.EndpointRangeDescription;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.EvictionPolicyType;
-import com.azure.resourcemanager.servicefabricmanagedclusters.models.FaultSimulation;
-import com.azure.resourcemanager.servicefabricmanagedclusters.models.FaultSimulationContentWrapper;
-import com.azure.resourcemanager.servicefabricmanagedclusters.models.FaultSimulationIdContent;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.FrontendConfiguration;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.ManagedResourceProvisioningState;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.NetworkSecurityRule;
@@ -344,6 +339,10 @@ public final class NodeTypeImpl implements NodeType, NodeType.Definition, NodeTy
         return this.innerModel().isOutboundOnly();
     }
 
+    public Boolean enableResilientEphemeralOsDisk() {
+        return this.innerModel().enableResilientEphemeralOsDisk();
+    }
+
     public String resourceGroupName() {
         return resourceGroupName;
     }
@@ -481,43 +480,6 @@ public final class NodeTypeImpl implements NodeType, NodeType.Definition, NodeTy
 
     public void start(NodeTypeActionParameters parameters, Context context) {
         serviceManager.nodeTypes().start(resourceGroupName, clusterName, nodeTypeName, parameters, context);
-    }
-
-    public FaultSimulation startFaultSimulation(FaultSimulationContentWrapper parameters) {
-        return serviceManager.nodeTypes()
-            .startFaultSimulation(resourceGroupName, clusterName, nodeTypeName, parameters);
-    }
-
-    public FaultSimulation startFaultSimulation(FaultSimulationContentWrapper parameters, Context context) {
-        return serviceManager.nodeTypes()
-            .startFaultSimulation(resourceGroupName, clusterName, nodeTypeName, parameters, context);
-    }
-
-    public FaultSimulation stopFaultSimulation(FaultSimulationIdContent parameters) {
-        return serviceManager.nodeTypes().stopFaultSimulation(resourceGroupName, clusterName, nodeTypeName, parameters);
-    }
-
-    public FaultSimulation stopFaultSimulation(FaultSimulationIdContent parameters, Context context) {
-        return serviceManager.nodeTypes()
-            .stopFaultSimulation(resourceGroupName, clusterName, nodeTypeName, parameters, context);
-    }
-
-    public Response<FaultSimulation> getFaultSimulationWithResponse(FaultSimulationIdContent parameters,
-        Context context) {
-        return serviceManager.nodeTypes()
-            .getFaultSimulationWithResponse(resourceGroupName, clusterName, nodeTypeName, parameters, context);
-    }
-
-    public FaultSimulation getFaultSimulation(FaultSimulationIdContent parameters) {
-        return serviceManager.nodeTypes().getFaultSimulation(resourceGroupName, clusterName, nodeTypeName, parameters);
-    }
-
-    public PagedIterable<FaultSimulation> listFaultSimulation() {
-        return serviceManager.nodeTypes().listFaultSimulation(resourceGroupName, clusterName, nodeTypeName);
-    }
-
-    public PagedIterable<FaultSimulation> listFaultSimulation(Context context) {
-        return serviceManager.nodeTypes().listFaultSimulation(resourceGroupName, clusterName, nodeTypeName, context);
     }
 
     public NodeTypeImpl withTags(Map<String, String> tags) {
@@ -798,6 +760,11 @@ public final class NodeTypeImpl implements NodeType, NodeType.Definition, NodeTy
 
     public NodeTypeImpl withIsOutboundOnly(Boolean isOutboundOnly) {
         this.innerModel().withIsOutboundOnly(isOutboundOnly);
+        return this;
+    }
+
+    public NodeTypeImpl withEnableResilientEphemeralOsDisk(Boolean enableResilientEphemeralOsDisk) {
+        this.innerModel().withEnableResilientEphemeralOsDisk(enableResilientEphemeralOsDisk);
         return this;
     }
 

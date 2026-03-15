@@ -10,7 +10,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.netapp.NetAppFilesManager;
-import com.azure.resourcemanager.netapp.models.Type;
+import com.azure.resourcemanager.netapp.models.QuotaType;
 import com.azure.resourcemanager.netapp.models.VolumeQuotaRule;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -24,7 +24,7 @@ public final class VolumeQuotaRulesCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"quotaSizeInKiBs\":5182119444318213276,\"quotaType\":\"DefaultUserQuota\",\"quotaTarget\":\"zevxoqein\"},\"location\":\"waljglzoblqwaaf\",\"tags\":{\"yqbhd\":\"lhm\",\"xwmzwdfkbnrz\":\"afjrqpjiyrqjcrg\"},\"id\":\"rpdltbq\",\"name\":\"tqjfgxxsaet\",\"type\":\"zdgvpyigdaqqilz\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"quotaSizeInKiBs\":604890469823366045,\"quotaType\":\"IndividualGroupQuota\",\"quotaTarget\":\"fgkmtdhern\"},\"location\":\"tcjuahokqto\",\"tags\":{\"wzejywhslw\":\"uxofshfphwpnulai\",\"fugsnnfhyetefy\":\"ojpllndnpdwrpqaf\",\"ctfjgtixr\":\"oc\"},\"id\":\"vzuyturmlmu\",\"name\":\"wolba\",\"type\":\"iropionszon\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,21 +34,21 @@ public final class VolumeQuotaRulesCreateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         VolumeQuotaRule response = manager.volumeQuotaRules()
-            .define("ji")
-            .withRegion("hcekxgnlykm")
-            .withExistingVolume("rclsso", "jomevtfycnlb", "gjco", "kk")
-            .withTags(mapOf("iw", "wzvmdoksqd", "hygtv", "wxlboncqbazqicq", "bdpkxyqvgx", "byjanep", "hkxdxuwsaifmc",
-                "aodetv"))
-            .withQuotaSizeInKiBs(7098796391697197693L)
-            .withQuotaType(Type.DEFAULT_USER_QUOTA)
-            .withQuotaTarget("cufqbvntnrgmqs")
+            .define("vqylkmqpzoyhl")
+            .withRegion("fujqlafcba")
+            .withExistingVolume("xgjiuqh", "btozipqwje", "mur", "xxgewpk")
+            .withTags(
+                mapOf("kkholvdndvia", "zpofoiyjwpfilk", "yefchnm", "ogphuartvtiu", "weooxffifhxwrs", "ahmnxhkxjqirw"))
+            .withQuotaSizeInKiBs(3326009979398188569L)
+            .withQuotaType(QuotaType.DEFAULT_GROUP_QUOTA)
+            .withQuotaTarget("oebqinjipn")
             .create();
 
-        Assertions.assertEquals("waljglzoblqwaaf", response.location());
-        Assertions.assertEquals("lhm", response.tags().get("yqbhd"));
-        Assertions.assertEquals(5182119444318213276L, response.quotaSizeInKiBs());
-        Assertions.assertEquals(Type.DEFAULT_USER_QUOTA, response.quotaType());
-        Assertions.assertEquals("zevxoqein", response.quotaTarget());
+        Assertions.assertEquals("tcjuahokqto", response.location());
+        Assertions.assertEquals("uxofshfphwpnulai", response.tags().get("wzejywhslw"));
+        Assertions.assertEquals(604890469823366045L, response.quotaSizeInKiBs());
+        Assertions.assertEquals(QuotaType.INDIVIDUAL_GROUP_QUOTA, response.quotaType());
+        Assertions.assertEquals("fgkmtdhern", response.quotaTarget());
     }
 
     // Use "Map.of" if available

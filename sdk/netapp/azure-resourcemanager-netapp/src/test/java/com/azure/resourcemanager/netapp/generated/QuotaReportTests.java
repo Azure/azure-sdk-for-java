@@ -6,20 +6,20 @@ package com.azure.resourcemanager.netapp.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.netapp.models.QuotaReport;
-import com.azure.resourcemanager.netapp.models.Type;
+import com.azure.resourcemanager.netapp.models.QuotaType;
 import org.junit.jupiter.api.Assertions;
 
 public final class QuotaReportTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         QuotaReport model = BinaryData.fromString(
-            "{\"quotaType\":\"DefaultGroupQuota\",\"quotaTarget\":\"btbhjpglkfgohd\",\"quotaLimitUsedInKiBs\":3210432700680479776,\"quotaLimitTotalInKiBs\":8814902038888583315,\"percentageUsed\":91.37615,\"isDerivedQuota\":true}")
+            "{\"quotaType\":\"DefaultGroupQuota\",\"quotaTarget\":\"hqlkthumaqo\",\"quotaLimitUsedInKiBs\":5649591766559477880,\"quotaLimitTotalInKiBs\":170558688297109091,\"percentageUsed\":56.28764,\"isDerivedQuota\":true}")
             .toObject(QuotaReport.class);
-        Assertions.assertEquals(Type.DEFAULT_GROUP_QUOTA, model.quotaType());
-        Assertions.assertEquals("btbhjpglkfgohd", model.quotaTarget());
-        Assertions.assertEquals(3210432700680479776L, model.quotaLimitUsedInKiBs());
-        Assertions.assertEquals(8814902038888583315L, model.quotaLimitTotalInKiBs());
-        Assertions.assertEquals(91.37615F, model.percentageUsed());
+        Assertions.assertEquals(QuotaType.DEFAULT_GROUP_QUOTA, model.quotaType());
+        Assertions.assertEquals("hqlkthumaqo", model.quotaTarget());
+        Assertions.assertEquals(5649591766559477880L, model.quotaLimitUsedInKiBs());
+        Assertions.assertEquals(170558688297109091L, model.quotaLimitTotalInKiBs());
+        Assertions.assertEquals(56.28764F, model.percentageUsed());
         Assertions.assertTrue(model.isDerivedQuota());
     }
 }

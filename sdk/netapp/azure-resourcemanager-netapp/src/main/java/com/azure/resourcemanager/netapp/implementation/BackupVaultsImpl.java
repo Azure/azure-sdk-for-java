@@ -31,12 +31,8 @@ public final class BackupVaultsImpl implements BackupVaults {
         Context context) {
         Response<BackupVaultInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, accountName, backupVaultName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new BackupVaultImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new BackupVaultImpl(inner.getValue(), this.manager()));
     }
 
     public BackupVault get(String resourceGroupName, String accountName, String backupVaultName) {

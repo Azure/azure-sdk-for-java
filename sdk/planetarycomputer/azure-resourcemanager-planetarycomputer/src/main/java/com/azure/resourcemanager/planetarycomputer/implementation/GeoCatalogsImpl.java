@@ -31,12 +31,8 @@ public final class GeoCatalogsImpl implements GeoCatalogs {
         Context context) {
         Response<GeoCatalogInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, catalogName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new GeoCatalogImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new GeoCatalogImpl(inner.getValue(), this.manager()));
     }
 
     public GeoCatalog getByResourceGroup(String resourceGroupName, String catalogName) {
