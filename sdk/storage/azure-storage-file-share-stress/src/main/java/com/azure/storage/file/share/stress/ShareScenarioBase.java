@@ -12,6 +12,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.perf.test.core.PerfStressTest;
 import com.azure.storage.file.share.ShareAsyncClient;
 import com.azure.storage.file.share.ShareClient;
+import com.azure.storage.file.share.ShareDirectoryAsyncClient;
 import com.azure.storage.file.share.ShareServiceAsyncClient;
 import com.azure.storage.file.share.ShareServiceClient;
 import com.azure.storage.file.share.ShareServiceClientBuilder;
@@ -115,10 +116,7 @@ public abstract class ShareScenarioBase<TOptions extends StorageStressOptions> e
      * Delete all files in the share to help with cleanup.
      */
     private Mono<Void> deleteAllFilesInShare() {
-        return asyncNoFaultShareClient.getDirectoryClient("").listFilesAndDirectories()
-            .flatMap(fileRef ->
-                asyncNoFaultShareClient.getFileClient(fileRef.getName()).delete())
-            .then()
+        return deleteDirectoryContentsRecursively(asyncNoFaultShareClient.getDirectoryClient(""))
             .timeout(java.time.Duration.ofSeconds(60))
             .onErrorResume(error -> {
                 // Log but continue - some files might have been deleted
@@ -127,6 +125,27 @@ public abstract class ShareScenarioBase<TOptions extends StorageStressOptions> e
                     .log("File cleanup partially failed");
                 return Mono.empty();
             });
+    }
+
+    /**
+     * Recursively delete all contents of a directory (files first, then subdirectories).
+     */
+    private Mono<Void> deleteDirectoryContentsRecursively(
+            ShareDirectoryAsyncClient directoryClient) {
+        return directoryClient.listFilesAndDirectories()
+            // Use concatMap to ensure we process each file/directory sequentially, which is important for correct deletion order
+            .concatMap(fileRef -> {
+                if (fileRef.isDirectory()) {
+                    ShareDirectoryAsyncClient subDirClient =
+                        directoryClient.getSubdirectoryClient(fileRef.getName());
+                    // First delete all contents recursively, then delete the directory itself
+                    return deleteDirectoryContentsRecursively(subDirClient)
+                        .then(subDirClient.delete());
+                } else {
+                    return directoryClient.getFileClient(fileRef.getName()).delete();
+                }
+            })
+            .then();
     }
 
     @SuppressWarnings("try")
