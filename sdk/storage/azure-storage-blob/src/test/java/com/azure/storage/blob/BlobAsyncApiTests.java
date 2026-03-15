@@ -13,6 +13,7 @@ import com.azure.core.test.TestMode;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.ProgressListener;
@@ -88,8 +89,10 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 import reactor.util.function.Tuple2;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.net.URL;
 import java.nio.ByteBuffer;
@@ -2574,6 +2577,36 @@ public class BlobAsyncApiTests extends BlobTestBase {
 
         StepVerifier.create(response)
             .assertNext(r -> assertEquals(AccessTier.COLD, r.getProperties().getAccessTier()))
+            .verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
+    @Test
+    public void uploadStreamAccessTierSmart() {
+
+        Flux<BlobItem> response
+            = primaryBlobServiceAsyncClient.createBlobContainer(generateContainerName()).flatMapMany(cc -> {
+                BlockBlobAsyncClient bc = cc.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
+                return bc.upload(DATA.getDefaultFlux(), DATA.getDefaultData().remaining())
+                    .then(bc.setAccessTierWithResponse(AccessTier.SMART, null, null))
+                    .flatMap(r -> {
+                        HttpHeaders headers = r.getHeaders();
+
+                        assertTrue(r.getStatusCode() == 200 || r.getStatusCode() == 202);
+                        assertNotNull(headers.getValue(X_MS_VERSION));
+                        assertNotNull(headers.getValue(X_MS_REQUEST_ID));
+                        return Mono.empty();
+                    })
+                    .then(bc.getProperties())
+                    .flatMap(r -> {
+                        assertEquals(AccessTier.SMART, r.getAccessTier());
+                        return Mono.empty();
+                    })
+                    .thenMany(cc.listBlobs());
+            });
+
+        StepVerifier.create(response)
+            .assertNext(r -> assertEquals(AccessTier.SMART, r.getProperties().getAccessTier()))
             .verifyComplete();
     }
 
