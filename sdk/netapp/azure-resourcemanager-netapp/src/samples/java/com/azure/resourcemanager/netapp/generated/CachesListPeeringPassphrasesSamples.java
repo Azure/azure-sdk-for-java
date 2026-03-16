@@ -9,7 +9,7 @@ package com.azure.resourcemanager.netapp.generated;
  */
 public final class CachesListPeeringPassphrasesSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/Caches_ListPeeringPassphrases.json
+     * x-ms-original-file: 2025-12-15-preview/Caches_ListPeeringPassphrases.json
      */
     /**
      * Sample code: Caches_ListPeeringPassphrases.

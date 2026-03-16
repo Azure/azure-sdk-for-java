@@ -6,7 +6,7 @@ package com.azure.resourcemanager.managedops.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.managedops.models.ChangeTrackingInformation;
-import com.azure.resourcemanager.managedops.models.ChangeTrackingInformationEnablementStatus;
+import com.azure.resourcemanager.managedops.models.EnablementState;
 import org.junit.jupiter.api.Assertions;
 
 public final class ChangeTrackingInformationTests {
@@ -16,6 +16,6 @@ public final class ChangeTrackingInformationTests {
             = BinaryData.fromString("{\"dcrId\":\"lluwfzitonpeq\",\"enablementStatus\":\"Failed\"}")
                 .toObject(ChangeTrackingInformation.class);
         Assertions.assertEquals("lluwfzitonpeq", model.dcrId());
-        Assertions.assertEquals(ChangeTrackingInformationEnablementStatus.FAILED, model.enablementStatus());
+        Assertions.assertEquals(EnablementState.FAILED, model.enablementStatus());
     }
 }

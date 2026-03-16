@@ -8,6 +8,9 @@ import com.azure.compute.batch.models.BatchTaskBulkCreateOptions;
 import com.azure.compute.batch.models.BatchTaskCreateParameters;
 import com.azure.compute.batch.models.CreateTasksErrorException;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
+import org.junit.jupiter.api.parallel.Isolated;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -15,6 +18,8 @@ import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Execution(ExecutionMode.SAME_THREAD)
+@Isolated
 public class TaskManagerTests {
 
     private static List<BatchTaskCreateParameters> makeTasks(String prefix, int count) {

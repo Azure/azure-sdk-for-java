@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class ElasticAccountsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/ElasticAccounts_Update.json
+     * x-ms-original-file: 2025-12-15-preview/ElasticAccounts_Update.json
      */
     /**
      * Sample code: ElasticAccounts_Update.

@@ -10,7 +10,7 @@ import com.azure.resourcemanager.netapp.fluent.models.BackupVaultProperties;
 public final class BackupVaultPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BackupVaultProperties model = BinaryData.fromString("{\"provisioningState\":\"twqmsniffcdmqnr\"}")
+        BackupVaultProperties model = BinaryData.fromString("{\"provisioningState\":\"mrsreuzvxurisjnh\"}")
             .toObject(BackupVaultProperties.class);
     }
 

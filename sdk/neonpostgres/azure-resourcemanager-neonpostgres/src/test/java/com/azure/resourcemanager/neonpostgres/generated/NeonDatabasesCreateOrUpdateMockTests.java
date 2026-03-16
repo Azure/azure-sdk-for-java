@@ -35,7 +35,7 @@ public final class NeonDatabasesCreateOrUpdateMockTests {
 
         NeonDatabase response = manager.neonDatabases()
             .define("vkjcim")
-            .withExistingBranche("bio", "gwviqehmdq", "aolid", "dfs")
+            .withExistingBranch("bio", "gwviqehmdq", "aolid", "dfs")
             .withProperties(new NeonDatabaseProperties().withEntityName("himmydtdtftmi")
                 .withAttributes(Arrays.asList(new Attributes().withName("prk").withValue("oyimxpggktteag"),
                     new Attributes().withName("gacnqp").withValue("uytv"),

@@ -22,7 +22,7 @@ public final class ElasticBackupVaultsListByElasticAccountMockTests {
     @Test
     public void testListByElasticAccount() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Patching\"},\"eTag\":\"xx\",\"location\":\"wzkyf\",\"tags\":{\"eiicrmpepkl\":\"piw\",\"acwras\":\"maxxijvskwsdgkjg\",\"o\":\"kwefc\",\"qicladv\":\"nwoqartwy\"},\"id\":\"tdavuqmcbymsfobj\",\"name\":\"quvjez\",\"type\":\"j\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Patching\"},\"eTag\":\"zinzabwmvogljsvl\",\"location\":\"idnwceha\",\"tags\":{\"iomqoqpepiaea\":\"oyzlt\"},\"id\":\"fsergdtpeqnacy\",\"name\":\"eqwbpqqncjubkhj\",\"type\":\"zfymcwmbupyvqyvl\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class ElasticBackupVaultsListByElasticAccountMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<ElasticBackupVault> response
-            = manager.elasticBackupVaults().listByElasticAccount("nfee", "gpkrie", com.azure.core.util.Context.NONE);
+        PagedIterable<ElasticBackupVault> response = manager.elasticBackupVaults()
+            .listByElasticAccount("tcyilbvz", "mxcjzlquzexokjx", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("wzkyf", response.iterator().next().location());
-        Assertions.assertEquals("piw", response.iterator().next().tags().get("eiicrmpepkl"));
+        Assertions.assertEquals("idnwceha", response.iterator().next().location());
+        Assertions.assertEquals("oyzlt", response.iterator().next().tags().get("iomqoqpepiaea"));
     }
 }

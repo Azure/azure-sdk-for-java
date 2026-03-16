@@ -213,6 +213,26 @@ public final class CachesClientImpl implements CachesClient {
             @BodyParam("application/json") PoolChangeRequest body, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/caches/{cacheName}/resetSmbPassword")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> resetSmbPassword(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName, @PathParam("cacheName") String cacheName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/caches/{cacheName}/resetSmbPassword")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> resetSmbPasswordSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName, @PathParam("cacheName") String cacheName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -1766,6 +1786,257 @@ public final class CachesClientImpl implements CachesClient {
     public void poolChange(String resourceGroupName, String accountName, String poolName, String cacheName,
         PoolChangeRequest body, Context context) {
         beginPoolChange(resourceGroupName, accountName, poolName, cacheName, body, context).getFinalResult();
+    }
+
+    /**
+     * Resets the SMB password for the cache.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param cacheName The name of the cache resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> resetSmbPasswordWithResponseAsync(String resourceGroupName,
+        String accountName, String poolName, String cacheName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        if (cacheName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.resetSmbPassword(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, accountName, poolName, cacheName, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Resets the SMB password for the cache.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param cacheName The name of the cache resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> resetSmbPasswordWithResponse(String resourceGroupName, String accountName,
+        String poolName, String cacheName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        if (cacheName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.resetSmbPasswordSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, accountName, poolName, cacheName, accept, Context.NONE);
+    }
+
+    /**
+     * Resets the SMB password for the cache.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param cacheName The name of the cache resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> resetSmbPasswordWithResponse(String resourceGroupName, String accountName,
+        String poolName, String cacheName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        if (cacheName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter cacheName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.resetSmbPasswordSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, accountName, poolName, cacheName, accept, context);
+    }
+
+    /**
+     * Resets the SMB password for the cache.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param cacheName The name of the cache resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginResetSmbPasswordAsync(String resourceGroupName, String accountName,
+        String poolName, String cacheName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = resetSmbPasswordWithResponseAsync(resourceGroupName, accountName, poolName, cacheName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Resets the SMB password for the cache.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param cacheName The name of the cache resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginResetSmbPassword(String resourceGroupName, String accountName,
+        String poolName, String cacheName) {
+        Response<BinaryData> response
+            = resetSmbPasswordWithResponse(resourceGroupName, accountName, poolName, cacheName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+    }
+
+    /**
+     * Resets the SMB password for the cache.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param cacheName The name of the cache resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginResetSmbPassword(String resourceGroupName, String accountName,
+        String poolName, String cacheName, Context context) {
+        Response<BinaryData> response
+            = resetSmbPasswordWithResponse(resourceGroupName, accountName, poolName, cacheName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
+    }
+
+    /**
+     * Resets the SMB password for the cache.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param cacheName The name of the cache resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> resetSmbPasswordAsync(String resourceGroupName, String accountName, String poolName,
+        String cacheName) {
+        return beginResetSmbPasswordAsync(resourceGroupName, accountName, poolName, cacheName).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Resets the SMB password for the cache.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param cacheName The name of the cache resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void resetSmbPassword(String resourceGroupName, String accountName, String poolName, String cacheName) {
+        beginResetSmbPassword(resourceGroupName, accountName, poolName, cacheName).getFinalResult();
+    }
+
+    /**
+     * Resets the SMB password for the cache.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param cacheName The name of the cache resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void resetSmbPassword(String resourceGroupName, String accountName, String poolName, String cacheName,
+        Context context) {
+        beginResetSmbPassword(resourceGroupName, accountName, poolName, cacheName, context).getFinalResult();
     }
 
     /**

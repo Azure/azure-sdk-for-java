@@ -29,6 +29,7 @@ import com.azure.cosmos.implementation.batch.BatchResponseParser;
 import com.azure.cosmos.implementation.batch.PartitionKeyRangeServerBatchRequest;
 import com.azure.cosmos.implementation.batch.ServerBatchRequest;
 import com.azure.cosmos.implementation.batch.SinglePartitionKeyServerBatchRequest;
+import com.azure.cosmos.implementation.caches.AsyncCache;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
@@ -829,14 +830,25 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.resetSessionContainerIfNeeded(databaseAccountSnapshot);
 
             if (metadataCachesSnapshot != null) {
-                this.collectionCache = new RxClientCollectionCache(this,
-                    this.sessionContainer,
-                    this.gatewayProxy,
-                    this,
-                    this.retryPolicy,
-                    metadataCachesSnapshot.getCollectionInfoByNameCache(),
-                    metadataCachesSnapshot.getCollectionInfoByIdCache()
-                );
+                AsyncCache<String, DocumentCollection> nameCache = metadataCachesSnapshot.getCollectionInfoByNameCache();
+                AsyncCache<String, DocumentCollection> idCache = metadataCachesSnapshot.getCollectionInfoByIdCache();
+                if (nameCache != null && idCache != null) {
+                    this.collectionCache = new RxClientCollectionCache(this,
+                        this.sessionContainer,
+                        this.gatewayProxy,
+                        this,
+                        this.retryPolicy,
+                        nameCache,
+                        idCache
+                    );
+                } else {
+                    // Cache data could not be deserialized (e.g., old format); fall back to fresh fetch
+                    this.collectionCache = new RxClientCollectionCache(this,
+                        this.sessionContainer,
+                        this.gatewayProxy,
+                        this,
+                        this.retryPolicy);
+                }
             } else {
                 this.collectionCache = new RxClientCollectionCache(this,
                     this.sessionContainer,
@@ -6508,6 +6520,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         if (useThinClientStoreModel(request)) {
+            request.useThinClientMode = true;
             return this.thinProxy;
         }
 
@@ -6593,6 +6606,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             if (this.throughputControlEnabled.get()) {
                 logger.info("Closing ThroughputControlStore ...");
                 this.throughputControlStore.close();
+            }
+
+            if (this.clientTelemetry != null) {
+                logger.info("Closing ClientTelemetry ...");
+                this.clientTelemetry.close();
             }
 
             this.perPartitionFailoverConfigModifier = null;

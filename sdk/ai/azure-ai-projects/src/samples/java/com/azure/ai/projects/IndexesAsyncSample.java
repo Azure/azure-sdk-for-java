@@ -3,7 +3,7 @@
 package com.azure.ai.projects;
 
 import com.azure.ai.projects.models.AzureAISearchIndex;
-import com.azure.ai.projects.models.Index;
+import com.azure.ai.projects.models.AIProjectIndex;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import reactor.core.publisher.Flux;
@@ -25,7 +25,7 @@ public class IndexesAsyncSample {
         listIndexes().blockLast();
     }
 
-    public static Mono<Index> createOrUpdateIndex() {
+    public static Mono<AIProjectIndex> createOrUpdateIndex() {
         // BEGIN:com.azure.ai.projects.IndexesAsyncSample.createOrUpdateIndex
 
         String indexName = Configuration.getGlobalConfiguration().get("INDEX_NAME", "my-index");
@@ -44,7 +44,7 @@ public class IndexesAsyncSample {
         // END:com.azure.ai.projects.IndexesAsyncSample.createOrUpdateIndex
     }
 
-    public static Flux<Index> listIndexes() {
+    public static Flux<AIProjectIndex> listIndexes() {
         // BEGIN:com.azure.ai.projects.IndexesAsyncSample.listIndexes
 
         return indexesAsyncClient.listLatest()
@@ -56,7 +56,7 @@ public class IndexesAsyncSample {
         // END:com.azure.ai.projects.IndexesAsyncSample.listIndexes
     }
 
-    public static Flux<Index> listIndexVersions() {
+    public static Flux<AIProjectIndex> listIndexVersions() {
         // BEGIN:com.azure.ai.projects.IndexesAsyncSample.listIndexVersions
 
         String indexName = Configuration.getGlobalConfiguration().get("INDEX_NAME", "my-index");
@@ -71,7 +71,7 @@ public class IndexesAsyncSample {
         // END:com.azure.ai.projects.IndexesAsyncSample.listIndexVersions
     }
 
-    public static Mono<Index> getIndex() {
+    public static Mono<AIProjectIndex> getIndex() {
         // BEGIN:com.azure.ai.projects.IndexesAsyncSample.getIndex
 
         String indexName = Configuration.getGlobalConfiguration().get("INDEX_NAME", "my-index");

@@ -30,12 +30,8 @@ public final class DeploymentsImpl implements Deployments {
         Context context) {
         Response<NginxDeploymentInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, deploymentName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new NginxDeploymentImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new NginxDeploymentImpl(inner.getValue(), this.manager()));
     }
 
     public NginxDeployment getByResourceGroup(String resourceGroupName, String deploymentName) {

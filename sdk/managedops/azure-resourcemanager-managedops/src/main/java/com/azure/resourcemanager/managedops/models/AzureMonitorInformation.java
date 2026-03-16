@@ -24,7 +24,7 @@ public final class AzureMonitorInformation implements JsonSerializable<AzureMoni
     /*
      * Indicates whether the service is enabled.
      */
-    private ChangeTrackingInformationEnablementStatus enablementStatus;
+    private EnablementState enablementStatus;
 
     /**
      * Creates an instance of AzureMonitorInformation class.
@@ -46,7 +46,7 @@ public final class AzureMonitorInformation implements JsonSerializable<AzureMoni
      * 
      * @return the enablementStatus value.
      */
-    public ChangeTrackingInformationEnablementStatus enablementStatus() {
+    public EnablementState enablementStatus() {
         return this.enablementStatus;
     }
 
@@ -82,7 +82,7 @@ public final class AzureMonitorInformation implements JsonSerializable<AzureMoni
                     deserializedAzureMonitorInformation.dcrId = reader.getString();
                 } else if ("enablementStatus".equals(fieldName)) {
                     deserializedAzureMonitorInformation.enablementStatus
-                        = ChangeTrackingInformationEnablementStatus.fromString(reader.getString());
+                        = EnablementState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

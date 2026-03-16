@@ -9,7 +9,7 @@ package com.azure.resourcemanager.netapp.generated;
  */
 public final class ElasticCapacityPoolsDeleteSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/ElasticCapacityPools_Delete.json
+     * x-ms-original-file: 2025-12-15-preview/ElasticCapacityPools_Delete.json
      */
     /**
      * Sample code: ElasticCapacityPools_Delete.

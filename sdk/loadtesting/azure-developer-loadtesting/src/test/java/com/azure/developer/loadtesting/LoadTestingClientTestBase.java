@@ -44,29 +44,19 @@ class LoadTestingClientTestBase extends TestProxyTestBase {
     private final String defaultEndpoint = "REDACTED.eastus.cnt-prod.loadtesting.azure.com";
 
     protected final String existingTestId
-        = Configuration.getGlobalConfiguration().get("EXISTING_TEST_ID", "11111111-1234-1234-1234-123456789012");
-    protected final String existingTestProfileId = Configuration.getGlobalConfiguration()
-        .get("EXISTING_TEST_PROFILE_ID", "11112222-1234-1234-1234-123456789012");
-    protected final String existingTestProfileIdAsync = Configuration.getGlobalConfiguration()
-        .get("EXISTING_TEST_PROFILE_ID_ASYNC", "11112222-1234-1234-1234-123456789012");
+        = Configuration.getGlobalConfiguration().get("EXISTING_TEST_ID", "f361b35a-f828-4969-8e81-ba3466913030");
     protected final String newTestId
-        = Configuration.getGlobalConfiguration().get("NEW_TEST_ID", "22222222-1234-1234-1234-123456789012");
+        = Configuration.getGlobalConfiguration().get("NEW_TEST_ID", "22220000-1234-1234-1234-123456789012");
     protected final String newTestIdAsync
-        = Configuration.getGlobalConfiguration().get("NEW_TEST_ID_ASYNC", "22222222-1234-1234-1234-123456789012");
-    protected final String newTestProfileId
-        = Configuration.getGlobalConfiguration().get("NEW_TEST_PROFILE_ID", "22224444-1234-1234-1234-123456789012");
-    protected final String newTestProfileIdAsync = Configuration.getGlobalConfiguration()
-        .get("NEW_TEST_PROFILE_ID_ASYNC", "22224444-1234-1234-1234-123456789012");
+        = Configuration.getGlobalConfiguration().get("NEW_TEST_ID_ASYNC", "22221111-1234-1234-1234-123456789012");
     protected final String newTestRunId
-        = Configuration.getGlobalConfiguration().get("NEW_TEST_RUN_ID", "33333333-1234-1234-1234-123456789012");
+        = Configuration.getGlobalConfiguration().get("NEW_TEST_RUN_ID", "33337777-1234-1234-1234-123456789012");
     protected final String newTestRunIdAsync
-        = Configuration.getGlobalConfiguration().get("NEW_TEST_RUN_ID_ASYNC", "44444444-1234-1234-1234-123456789012");
-    protected final String newTestProfileRunId
-        = Configuration.getGlobalConfiguration().get("NEW_TEST_PROFILE_RUN_ID", "55555555-1234-1234-1234-123456789012");
-    protected final String newTestProfileRunIdAsync = Configuration.getGlobalConfiguration()
-        .get("NEW_TEST_PROFILE_RUN_ID_ASYNC", "66666666-1234-1234-1234-123456789012");
+        = Configuration.getGlobalConfiguration().get("NEW_TEST_RUN_ID_ASYNC", "44448888-1234-1234-1234-123456789012");
     protected final String uploadJmxFileName
         = Configuration.getGlobalConfiguration().get("UPLOAD_JMX_FILE_NAME", "sample.jmx");
+    protected final String existingJmxFileName
+        = Configuration.getGlobalConfiguration().get("EXISTING_JMX_FILE_NAME", "quick_test.jmx");
     protected final String uploadCsvFileName
         = Configuration.getGlobalConfiguration().get("UPLOAD_CSV_FILE_NAME", "additional-data.csv");
     protected final String defaultAppComponentResourceId = Configuration.getGlobalConfiguration()
@@ -78,6 +68,26 @@ class LoadTestingClientTestBase extends TestProxyTestBase {
     protected final String targetResourceId = Configuration.getGlobalConfiguration()
         .get("TARGET_RESOURCE_ID",
             "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/samplerg/providers/microsoft.insights/components/appcomponentresource/providers/microsoft.insights/metricdefinitions/requests/duration");
+    protected final String recordingTestId
+        = Configuration.getGlobalConfiguration().get("RECORDING_TEST_ID", "bb2899bf-e78c-4f72-ac34-0051d8d8d7db");
+    protected final String triggerId
+        = Configuration.getGlobalConfiguration().get("TRIGGER_ID", "66668888-1234-1234-1234-123456789012");
+    protected final String notificationRuleId
+        = Configuration.getGlobalConfiguration().get("NOTIFICATION_RULE_ID", "77778888-1234-1234-1234-123456789012");
+    protected final String triggerIdAsync
+        = Configuration.getGlobalConfiguration().get("TRIGGER_ID_ASYNC", "66661111-1234-1234-1234-123456789012");
+    protected final String notificationRuleIdAsync = Configuration.getGlobalConfiguration()
+        .get("NOTIFICATION_RULE_ID_ASYNC", "77779999-1234-1234-1234-123456789012");
+
+    protected final String actionGroupId = Configuration.getGlobalConfiguration()
+        .get("ACTION_GROUP_ID",
+            "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/samplerg/providers/microsoft.insights/actionGroups/sampleactiongroup");
+    protected final String cloneTestId
+        = Configuration.getGlobalConfiguration().get("CLONE_TEST_ID", "88882222-1234-1234-1234-123456789012");
+    protected final String cloneTestIdAsync
+        = Configuration.getGlobalConfiguration().get("CLONE_TEST_ID_ASYNC", "88881111-1234-1234-1234-123456789012");
+    protected final String completedTestRunId
+        = Configuration.getGlobalConfiguration().get("COMPLETED_TEST_RUN_ID", "33334444-1234-1234-1234-123456789012");
 
     @Override
     protected void beforeTest() {
@@ -88,7 +98,8 @@ class LoadTestingClientTestBase extends TestProxyTestBase {
                 "https://REDACTED", TestProxySanitizerType.HEADER));
             sanitizers.add(new TestProxySanitizer(URL_REGEX, "REDACTED", TestProxySanitizerType.BODY_REGEX));
             interceptorManager.addSanitizers(sanitizers);
-            // Remove `operation-location`, `id` and `name` sanitizers from the list of common sanitizers.
+            // Remove `operation-location`, `id` and `name` sanitizers from the list of
+            // common sanitizers.
             interceptorManager.removeSanitizers("AZSDK2030", "AZSDK3430", "AZSDK3493");
         }
 

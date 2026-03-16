@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class NodeTypesRestartSamples {
     /*
-     * x-ms-original-file: 2025-10-01-preview/RestartNodes_example.json
+     * x-ms-original-file: 2026-02-01/RestartNodes_example.json
      */
     /**
      * Sample code: Restart nodes.
