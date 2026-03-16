@@ -140,9 +140,23 @@ public abstract class ShareScenarioBase<TOptions extends StorageStressOptions> e
                         directoryClient.getSubdirectoryClient(fileRef.getName());
                     // First delete all contents recursively, then delete the directory itself
                     return deleteDirectoryContentsRecursively(subDirClient)
-                        .then(subDirClient.delete());
+                        .then(subDirClient.deleteIfExists())
+                        .onErrorResume(error -> {
+                            LOGGER.atWarning()
+                                .addKeyValue("directory", fileRef.getName())
+                                .addKeyValue("error", error.getMessage())
+                                .log("Failed to delete directory during share cleanup; continuing with remaining items.");
+                            return Mono.empty();
+                        });
                 } else {
-                    return directoryClient.getFileClient(fileRef.getName()).delete();
+                    return directoryClient.getFileClient(fileRef.getName())
+                        .deleteIfExists()
+                        .onErrorResume(error -> {
+                            LOGGER.atWarning()
+                                .addKeyValue("file", fileRef.getName())
+                                .addKeyValue("error", error.getMessage())
+                                .log("Failed to delete file during share cleanup; continuing with remaining items.");
+                            return Mono.empty();
                 }
             })
             .then();
