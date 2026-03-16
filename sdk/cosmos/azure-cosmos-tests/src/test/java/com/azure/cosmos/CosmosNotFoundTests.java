@@ -602,30 +602,4 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
             // System.clearProperty("COSMOS.THINCLIENT_ENABLED");
         }
     }
-
-    private static void assertThinClientEndpointUsed(CosmosDiagnostics diagnostics) {
-        AssertionsForClassTypes.assertThat(diagnostics).isNotNull();
-
-        CosmosDiagnosticsContext ctx = diagnostics.getDiagnosticsContext();
-        AssertionsForClassTypes.assertThat(ctx).isNotNull();
-
-        Collection<CosmosDiagnosticsRequestInfo> requests = ctx.getRequestInfo();
-        AssertionsForClassTypes.assertThat(requests).isNotNull();
-        AssertionsForClassTypes.assertThat(requests.size()).isPositive();
-
-        for (CosmosDiagnosticsRequestInfo requestInfo : requests) {
-            logger.info(
-                "Endpoint: {}, RequestType: {}, Partition: {}/{}, ActivityId: {}",
-                requestInfo.getEndpoint(),
-                requestInfo.getRequestType(),
-                requestInfo.getPartitionId(),
-                requestInfo.getPartitionKeyRangeId(),
-                requestInfo.getActivityId());
-            if (requestInfo.getEndpoint().contains(thinClientEndpointIndicator)) {
-                return;
-            }
-        }
-
-        fail("No request targeting thin client proxy endpoint.");
-    }
 }

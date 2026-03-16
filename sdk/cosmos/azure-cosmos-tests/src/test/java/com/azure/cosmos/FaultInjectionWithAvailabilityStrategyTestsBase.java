@@ -204,7 +204,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
         return (String)row[0];
     }
 
-    @BeforeClass(groups = { "fi-multi-master" })
+    @BeforeClass(groups = { "fi-multi-master", "fi-thinclient-multi-master" })
     public void beforeClass() {
         CosmosClientBuilder clientBuilder = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
@@ -337,7 +337,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             safeClose(dummyClient);
         }
     }
-    @AfterClass(groups = { "fi-multi-master" })
+    @AfterClass(groups = { "fi-multi-master", "fi-thinclient-multi-master" })
     public void afterClass() {
         CosmosClientBuilder clientBuilder = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
@@ -5015,6 +5015,14 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
 
                         for (Consumer<CosmosDiagnosticsContext> ctxValidation : otherDiagnosticsContextValidations) {
                             ctxValidation.accept(currentCtx);
+                        }
+                    }
+
+                    // When thin client + HTTP/2 are enabled (fi-thinclient-multi-master / fi-thinclient-multi-region)
+                    // and connection mode is GATEWAY, validate that requests targeted the thin client proxy endpoint
+                    if (Configs.isThinClientEnabled() && Configs.isHttp2Enabled() && connectionMode == ConnectionMode.GATEWAY) {
+                        for (CosmosDiagnosticsContext diagnosticsContext : diagnosticsContexts) {
+                            assertThinClientEndpointUsed(diagnosticsContext);
                         }
                     }
                 } catch (Exception e) {
