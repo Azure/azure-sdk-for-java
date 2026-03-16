@@ -10,7 +10,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.managedops.ManagedOpsManager;
-import com.azure.resourcemanager.managedops.models.DesiredConfigurationDefenderForServers;
+import com.azure.resourcemanager.managedops.models.DesiredEnablementState;
 import com.azure.resourcemanager.managedops.models.ManagedOp;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -40,9 +40,9 @@ public final class ManagedOpsGetWithResponseMockTests {
             response.properties().desiredConfiguration().azureMonitorInsights().azureMonitorWorkspaceId());
         Assertions.assertEquals("hbmdgbbjfdd",
             response.properties().desiredConfiguration().userAssignedManagedIdentityId());
-        Assertions.assertEquals(DesiredConfigurationDefenderForServers.DISABLE,
+        Assertions.assertEquals(DesiredEnablementState.DISABLE,
             response.properties().desiredConfiguration().defenderForServers());
-        Assertions.assertEquals(DesiredConfigurationDefenderForServers.ENABLE,
+        Assertions.assertEquals(DesiredEnablementState.ENABLE,
             response.properties().desiredConfiguration().defenderCspm());
     }
 }

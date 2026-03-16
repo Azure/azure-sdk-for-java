@@ -31,12 +31,8 @@ public final class ActiveDirectoryConfigsImpl implements ActiveDirectoryConfigs 
         String activeDirectoryConfigName, Context context) {
         Response<ActiveDirectoryConfigInner> inner = this.serviceClient()
             .getByResourceGroupWithResponse(resourceGroupName, activeDirectoryConfigName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ActiveDirectoryConfigImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ActiveDirectoryConfigImpl(inner.getValue(), this.manager()));
     }
 
     public ActiveDirectoryConfig getByResourceGroup(String resourceGroupName, String activeDirectoryConfigName) {

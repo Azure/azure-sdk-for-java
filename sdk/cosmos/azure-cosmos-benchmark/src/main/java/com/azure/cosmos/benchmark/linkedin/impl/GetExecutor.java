@@ -6,7 +6,6 @@ package com.azure.cosmos.benchmark.linkedin.impl;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.benchmark.linkedin.impl.exceptions.CosmosDBDataAccessorException;
 import com.azure.cosmos.benchmark.linkedin.impl.keyextractor.KeyExtractor;
-import com.azure.cosmos.benchmark.linkedin.impl.metrics.MetricsFactory;
 import com.azure.cosmos.benchmark.linkedin.impl.models.CollectionKey;
 import com.azure.cosmos.benchmark.linkedin.impl.models.GetRequestOptions;
 import com.azure.cosmos.benchmark.linkedin.impl.models.Result;
@@ -34,7 +33,6 @@ class GetExecutor<K, V> {
     private final DataLocator _dataLocator;
     private final KeyExtractor<K> _keyExtractor;
     private final ResponseHandler<K, V> _responseHandler;
-    private final Metrics _metrics;
     private final Clock _clock;
     private final OperationsLogger _logger;
 
@@ -45,25 +43,19 @@ class GetExecutor<K, V> {
     GetExecutor(final DataLocator dataLocator,
         final KeyExtractor<K> keyExtractor,
         final ResponseHandler<K, V> responseHandler,
-        final MetricsFactory metricsFactory,
         final Clock clock,
         final OperationsLogger logger) {
-        Preconditions.checkNotNull(metricsFactory, "The MetricsFactory is null!");
         _dataLocator = Preconditions.checkNotNull(dataLocator, "The DataLocator for this entity is null!");
         _keyExtractor = Preconditions.checkNotNull(keyExtractor, "The CosmosDBKeyExtractorV3 is null!");
         _responseHandler = Preconditions.checkNotNull(responseHandler, "The CosmosDBResponseHandler is null!");
         _clock = Preconditions.checkNotNull(clock, "The Clock is null!");
         _logger = Preconditions.checkNotNull(logger, "The Logger is null!");
-        // Initialize the metrics prior to the first operation
-        final CollectionKey activeCollection = _dataLocator.getCollection();
-        _metrics = metricsFactory.getMetrics(activeCollection, Constants.METHOD_GET);
     }
 
     Result<K, V> get(final K key, final GetRequestOptions requestOptions) throws CosmosDBDataAccessorException {
         final String id = _keyExtractor.getId(key);
         final PartitionKey partitioningKey = new PartitionKey(_keyExtractor.getPartitioningKey(key));
         final CollectionKey activeCollection = _dataLocator.getCollection();
-        _metrics.logCounterMetric(Metrics.Type.CALL_COUNT);
         final long startTime = _clock.millis();
 
         try {
@@ -71,8 +63,6 @@ class GetExecutor<K, V> {
                 .readItem(id, partitioningKey, ObjectNode.class)
                 .block();
 
-            // Usually we get an Exception when the document does not exist. But in the new SDK,
-            // with the use of Flux/Mono, adding conditions to handle null responses.
             if (Objects.nonNull(response)) {
                 _logger.logDebugInfo(Constants.METHOD_GET, key, activeCollection, _clock.millis() - startTime,
                     response.getActivityId(), response.getDiagnostics().toString());
@@ -81,22 +71,17 @@ class GetExecutor<K, V> {
             return _responseHandler.convertResponse(key, response, requestOptions.shouldFetchTombstone());
         } catch (CosmosException ex) {
             if (ex.getStatusCode() == HttpStatus.SC_NOT_FOUND) {
-                _metrics.logCounterMetric(Metrics.Type.NOT_FOUND);
                 return _responseHandler.convertException(key, ex);
             }
 
-            _metrics.error(startTime);
             final String errorMessage = String.format(ERROR_MESSAGE_FORMAT, id, activeCollection.getCollectionName());
             throw _responseHandler.createException(errorMessage, ex);
         } catch (Exception ex) {
-            _metrics.error(startTime);
             final String errorMessage = String.format(ERROR_MESSAGE_FORMAT, id, activeCollection.getCollectionName());
             throw new CosmosDBDataAccessorException.Builder()
                 .setMessage(errorMessage)
                 .setCause(ex.getCause())
                 .build();
-        } finally {
-            _metrics.completed(startTime);
         }
     }
 }

@@ -15,25 +15,25 @@ public final class ElasticVolumeDataProtectionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ElasticVolumeDataProtectionProperties model = BinaryData.fromString(
-            "{\"snapshot\":{\"snapshotPolicyResourceId\":\"lnwiaaomylwe\"},\"backup\":{\"elasticBackupPolicyResourceId\":\"lcsethwwnpj\",\"policyEnforcement\":\"Enforced\",\"elasticBackupVaultResourceId\":\"swpchwahfbousn\"}}")
+            "{\"snapshot\":{\"snapshotPolicyResourceId\":\"ecdmdqbwpy\"},\"backup\":{\"elasticBackupPolicyResourceId\":\"gsfjac\",\"policyEnforcement\":\"NotEnforced\",\"elasticBackupVaultResourceId\":\"hxudbxvodht\"}}")
             .toObject(ElasticVolumeDataProtectionProperties.class);
-        Assertions.assertEquals("lnwiaaomylwe", model.snapshot().snapshotPolicyResourceId());
-        Assertions.assertEquals("lcsethwwnpj", model.backup().elasticBackupPolicyResourceId());
-        Assertions.assertEquals(ElasticVolumePolicyEnforcement.ENFORCED, model.backup().policyEnforcement());
-        Assertions.assertEquals("swpchwahfbousn", model.backup().elasticBackupVaultResourceId());
+        Assertions.assertEquals("ecdmdqbwpy", model.snapshot().snapshotPolicyResourceId());
+        Assertions.assertEquals("gsfjac", model.backup().elasticBackupPolicyResourceId());
+        Assertions.assertEquals(ElasticVolumePolicyEnforcement.NOT_ENFORCED, model.backup().policyEnforcement());
+        Assertions.assertEquals("hxudbxvodht", model.backup().elasticBackupVaultResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ElasticVolumeDataProtectionProperties model = new ElasticVolumeDataProtectionProperties()
-            .withSnapshot(new ElasticVolumeSnapshotProperties().withSnapshotPolicyResourceId("lnwiaaomylwe"))
-            .withBackup(new ElasticVolumeBackupProperties().withElasticBackupPolicyResourceId("lcsethwwnpj")
-                .withPolicyEnforcement(ElasticVolumePolicyEnforcement.ENFORCED)
-                .withElasticBackupVaultResourceId("swpchwahfbousn"));
+            .withSnapshot(new ElasticVolumeSnapshotProperties().withSnapshotPolicyResourceId("ecdmdqbwpy"))
+            .withBackup(new ElasticVolumeBackupProperties().withElasticBackupPolicyResourceId("gsfjac")
+                .withPolicyEnforcement(ElasticVolumePolicyEnforcement.NOT_ENFORCED)
+                .withElasticBackupVaultResourceId("hxudbxvodht"));
         model = BinaryData.fromObject(model).toObject(ElasticVolumeDataProtectionProperties.class);
-        Assertions.assertEquals("lnwiaaomylwe", model.snapshot().snapshotPolicyResourceId());
-        Assertions.assertEquals("lcsethwwnpj", model.backup().elasticBackupPolicyResourceId());
-        Assertions.assertEquals(ElasticVolumePolicyEnforcement.ENFORCED, model.backup().policyEnforcement());
-        Assertions.assertEquals("swpchwahfbousn", model.backup().elasticBackupVaultResourceId());
+        Assertions.assertEquals("ecdmdqbwpy", model.snapshot().snapshotPolicyResourceId());
+        Assertions.assertEquals("gsfjac", model.backup().elasticBackupPolicyResourceId());
+        Assertions.assertEquals(ElasticVolumePolicyEnforcement.NOT_ENFORCED, model.backup().policyEnforcement());
+        Assertions.assertEquals("hxudbxvodht", model.backup().elasticBackupVaultResourceId());
     }
 }

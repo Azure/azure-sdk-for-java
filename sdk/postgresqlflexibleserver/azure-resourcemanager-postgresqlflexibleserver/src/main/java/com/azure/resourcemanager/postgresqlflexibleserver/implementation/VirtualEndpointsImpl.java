@@ -31,12 +31,8 @@ public final class VirtualEndpointsImpl implements VirtualEndpoints {
         String virtualEndpointName, Context context) {
         Response<VirtualEndpointInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, serverName, virtualEndpointName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new VirtualEndpointImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new VirtualEndpointImpl(inner.getValue(), this.manager()));
     }
 
     public VirtualEndpoint get(String resourceGroupName, String serverName, String virtualEndpointName) {

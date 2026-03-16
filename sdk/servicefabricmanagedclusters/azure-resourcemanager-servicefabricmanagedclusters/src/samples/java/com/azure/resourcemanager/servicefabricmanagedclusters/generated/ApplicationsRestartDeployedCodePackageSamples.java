@@ -11,7 +11,7 @@ import com.azure.resourcemanager.servicefabricmanagedclusters.models.RestartDepl
  */
 public final class ApplicationsRestartDeployedCodePackageSamples {
     /*
-     * x-ms-original-file: 2025-10-01-preview/ApplicationActionRestartDeployedCodePackage_example.json
+     * x-ms-original-file: 2026-02-01/ApplicationActionRestartDeployedCodePackage_example.json
      */
     /**
      * Sample code: Restart deployed code package.

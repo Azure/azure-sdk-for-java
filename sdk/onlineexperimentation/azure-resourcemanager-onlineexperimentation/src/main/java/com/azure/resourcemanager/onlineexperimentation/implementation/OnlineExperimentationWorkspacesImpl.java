@@ -31,12 +31,8 @@ public final class OnlineExperimentationWorkspacesImpl implements OnlineExperime
         String workspaceName, Context context) {
         Response<OnlineExperimentationWorkspaceInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, workspaceName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new OnlineExperimentationWorkspaceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new OnlineExperimentationWorkspaceImpl(inner.getValue(), this.manager()));
     }
 
     public OnlineExperimentationWorkspace getByResourceGroup(String resourceGroupName, String workspaceName) {

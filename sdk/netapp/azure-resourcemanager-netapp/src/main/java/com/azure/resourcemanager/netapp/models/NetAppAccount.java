@@ -89,6 +89,13 @@ public interface NetAppAccount {
     List<ActiveDirectory> activeDirectories();
 
     /**
+     * Gets the entraIdConfig property: Entra ID configuration for the account.
+     * 
+     * @return the entraIdConfig value.
+     */
+    EntraIdConfig entraIdConfig();
+
+    /**
      * Gets the encryption property: Encryption settings.
      * 
      * @return the encryption value.
@@ -209,8 +216,8 @@ public interface NetAppAccount {
          * to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithIdentity,
-            DefinitionStages.WithActiveDirectories, DefinitionStages.WithEncryption, DefinitionStages.WithNfsV4IdDomain,
-            DefinitionStages.WithLdapConfiguration {
+            DefinitionStages.WithActiveDirectories, DefinitionStages.WithEntraIdConfig, DefinitionStages.WithEncryption,
+            DefinitionStages.WithNfsV4IdDomain, DefinitionStages.WithLdapConfiguration {
             /**
              * Executes the create request.
              * 
@@ -267,6 +274,19 @@ public interface NetAppAccount {
         }
 
         /**
+         * The stage of the NetAppAccount definition allowing to specify entraIdConfig.
+         */
+        interface WithEntraIdConfig {
+            /**
+             * Specifies the entraIdConfig property: Entra ID configuration for the account..
+             * 
+             * @param entraIdConfig Entra ID configuration for the account.
+             * @return the next definition stage.
+             */
+            WithCreate withEntraIdConfig(EntraIdConfig entraIdConfig);
+        }
+
+        /**
          * The stage of the NetAppAccount definition allowing to specify encryption.
          */
         interface WithEncryption {
@@ -319,7 +339,8 @@ public interface NetAppAccount {
      * The template for NetAppAccount update.
      */
     interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity, UpdateStages.WithActiveDirectories,
-        UpdateStages.WithEncryption, UpdateStages.WithNfsV4IdDomain, UpdateStages.WithLdapConfiguration {
+        UpdateStages.WithEntraIdConfig, UpdateStages.WithEncryption, UpdateStages.WithNfsV4IdDomain,
+        UpdateStages.WithMultiAdStatus, UpdateStages.WithLdapConfiguration {
         /**
          * Executes the update request.
          * 
@@ -380,6 +401,19 @@ public interface NetAppAccount {
         }
 
         /**
+         * The stage of the NetAppAccount update allowing to specify entraIdConfig.
+         */
+        interface WithEntraIdConfig {
+            /**
+             * Specifies the entraIdConfig property: Entra ID configuration for the account..
+             * 
+             * @param entraIdConfig Entra ID configuration for the account.
+             * @return the next definition stage.
+             */
+            Update withEntraIdConfig(EntraIdConfigPatch entraIdConfig);
+        }
+
+        /**
          * The stage of the NetAppAccount update allowing to specify encryption.
          */
         interface WithEncryption {
@@ -408,6 +442,19 @@ public interface NetAppAccount {
         }
 
         /**
+         * The stage of the NetAppAccount update allowing to specify multiAdStatus.
+         */
+        interface WithMultiAdStatus {
+            /**
+             * Specifies the multiAdStatus property: MultiAD Status for the account.
+             * 
+             * @param multiAdStatus MultiAD Status for the account.
+             * @return the next definition stage.
+             */
+            Update withMultiAdStatus(MultiAdStatus multiAdStatus);
+        }
+
+        /**
          * The stage of the NetAppAccount update allowing to specify ldapConfiguration.
          */
         interface WithLdapConfiguration {
@@ -417,7 +464,7 @@ public interface NetAppAccount {
              * @param ldapConfiguration LDAP Configuration for the account.
              * @return the next definition stage.
              */
-            Update withLdapConfiguration(LdapConfiguration ldapConfiguration);
+            Update withLdapConfiguration(LdapConfigurationPatch ldapConfiguration);
         }
     }
 

@@ -20,7 +20,7 @@ public final class RansomwareReportsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"eventTime\":\"2021-09-27T06:46:36Z\",\"state\":\"Resolved\",\"severity\":\"Moderate\",\"clearedCount\":67838372,\"reportedCount\":928179611,\"suspects\":[{\"extension\":\"cdsiwdfmmpzhzzwv\",\"resolution\":\"FalsePositive\",\"fileCount\":1475743348,\"suspectFiles\":[{},{},{},{}]},{\"extension\":\"dgrpx\",\"resolution\":\"PotentialThreat\",\"fileCount\":938896992,\"suspectFiles\":[{},{},{},{}]},{\"extension\":\"ndjrkclamggl\",\"resolution\":\"FalsePositive\",\"fileCount\":125559187,\"suspectFiles\":[{},{}]},{\"extension\":\"qey\",\"resolution\":\"FalsePositive\",\"fileCount\":528509838,\"suspectFiles\":[{}]}],\"provisioningState\":\"qfgqkayejsxtlg\"},\"id\":\"wf\",\"name\":\"ziiucij\",\"type\":\"ceatlijjjrtvamca\"}";
+            = "{\"properties\":{\"eventTime\":\"2021-07-22T22:20:06Z\",\"state\":\"Resolved\",\"severity\":\"None\",\"clearedCount\":1650672637,\"reportedCount\":1355711907,\"suspects\":[{\"extension\":\"sbrcary\",\"resolution\":\"FalsePositive\",\"fileCount\":1833029555,\"suspectFiles\":[{},{},{},{}]},{\"extension\":\"aqaj\",\"resolution\":\"PotentialThreat\",\"fileCount\":359395235,\"suspectFiles\":[{},{},{},{}]},{\"extension\":\"mk\",\"resolution\":\"FalsePositive\",\"fileCount\":1031224807,\"suspectFiles\":[{},{}]}],\"provisioningState\":\"lubefgybpmfbfu\"},\"id\":\"nmpzk\",\"name\":\"vfy\",\"type\":\"fkd\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,8 +30,7 @@ public final class RansomwareReportsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RansomwareReport response = manager.ransomwareReports()
-            .getWithResponse("cduwjoedx", "gucaif", "aurwwgilfjq", "a", "dmkxwxdcvjwcy",
-                com.azure.core.util.Context.NONE)
+            .getWithResponse("xvztpbnfnqtxj", "omals", "bnfddep", "dwq", "ns", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

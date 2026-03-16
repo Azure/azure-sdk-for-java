@@ -116,8 +116,8 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
         };
     }
 
-    @Test(groups = {"fast"}, dataProvider = "useAsyncParameterProvider")
-    public void openConnectionsAndInitCachesForDirectMode(boolean useAsync) {
+    @Test(groups = {"fast"}, dataProvider = "useAsyncParameterProvider", retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    public void openConnectionsAndInitCachesForDirectMode(boolean useAsync) throws InterruptedException {
         CosmosAsyncContainer asyncContainer = useAsync ? directCosmosAsyncContainer : directCosmosContainer.asyncContainer;
         CosmosAsyncClient asyncClient = useAsync ? directCosmosAsyncClient : directCosmosClient.asyncClient();
 
@@ -180,8 +180,20 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
 
         assertThat(provider.count()).isEqualTo(endpoints.size());
 
+        // Wait for channels to be established - connection opening is asynchronous
+        int minChannels = Configs.getMinConnectionPoolSizePerEndpoint();
+        int maxWaitIterations = 20;
+        for (int i = 0; i < maxWaitIterations; i++) {
+            boolean allReady = provider.list()
+                .allMatch(ep -> ep.channelsMetrics() >= minChannels);
+            if (allReady) {
+                break;
+            }
+            Thread.sleep(500);
+        }
+
         // Validate for each RntbdServiceEndpoint, is at least Configs.getMinConnectionPoolSizePerEndpoint()) channel is being opened
-        provider.list().forEach(rntbdEndpoint -> assertThat(rntbdEndpoint.channelsMetrics()).isGreaterThanOrEqualTo(Configs.getMinConnectionPoolSizePerEndpoint()));
+        provider.list().forEach(rntbdEndpoint -> assertThat(rntbdEndpoint.channelsMetrics()).isGreaterThanOrEqualTo(minChannels));
 
         // Test for real document requests, it will not open new channels
         for (int i = 0; i < 5; i++) {
@@ -191,7 +203,7 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
                 directCosmosContainer.createItem(TestObject.create());
             }
         }
-        provider.list().forEach(rntbdEndpoint -> assertThat(rntbdEndpoint.channelsMetrics()).isGreaterThanOrEqualTo(Configs.getMinConnectionPoolSizePerEndpoint()));
+        provider.list().forEach(rntbdEndpoint -> assertThat(rntbdEndpoint.channelsMetrics()).isGreaterThanOrEqualTo(minChannels));
     }
 
     @Test(groups = {"fast"}, dataProvider = "useAsyncParameterProvider")

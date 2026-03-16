@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.6 (Unreleased)
+## 1.1.0-beta.7 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,294 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.0-beta.6 (2026-03-03)
+
+- Azure Resource Manager Self Help client library for Java. This package contains Microsoft Azure SDK for Self Help Management SDK. Help RP provider. Package api-version 2024-03-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.DiscoveryResponse` was removed
+
+#### `models.OperationListResult` was removed
+
+#### `models.DiscoveryNlpRequest` was modified
+
+* `validate()` was removed
+
+#### `models.MetricsBasedChart` was modified
+
+* `MetricsBasedChart()` was changed to private access
+* `withFilterGroup(models.FilterGroup)` was removed
+* `withName(java.lang.String)` was removed
+* `withAggregationType(models.AggregationType)` was removed
+* `withTimeSpanDuration(java.lang.String)` was removed
+* `withTitle(java.lang.String)` was removed
+* `validate()` was removed
+* `withReplacementKey(java.lang.String)` was removed
+
+#### `models.TriggerCriterion` was modified
+
+* `validate()` was removed
+
+#### `models.SolutionMetadataProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ResponseValidationProperties` was modified
+
+* `ResponseValidationProperties()` was changed to private access
+* `withValidationErrorMessage(java.lang.String)` was removed
+* `withValidationScope(models.ValidationScope)` was removed
+* `withIsRequired(java.lang.Boolean)` was removed
+* `validate()` was removed
+* `withMaxLength(java.lang.Long)` was removed
+* `withRegex(java.lang.String)` was removed
+
+#### `models.TroubleshootersRestartHeaders` was modified
+
+* `validate()` was removed
+* `withLocation(java.lang.String)` was removed
+
+#### `models.SolutionWarmUpRequestBody` was modified
+
+* `validate()` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `OperationDisplay()` was changed to private access
+* `validate()` was removed
+
+#### `models.Video` was modified
+
+* `Video()` was changed to private access
+* `withReplacementKey(java.lang.String)` was removed
+* `withSrc(java.lang.String)` was removed
+* `withTitle(java.lang.String)` was removed
+* `validate()` was removed
+
+#### `models.DiagnosticInvocation` was modified
+
+* `validate()` was removed
+
+#### `models.StepInput` was modified
+
+* `StepInput()` was changed to private access
+* `validate()` was removed
+* `withResponseValidationProperties(models.ResponseValidationProperties)` was removed
+* `withResponseHint(java.lang.String)` was removed
+* `withQuestionContent(java.lang.String)` was removed
+* `withRecommendedOption(java.lang.String)` was removed
+* `withQuestionContentType(models.QuestionContentType)` was removed
+* `withQuestionTitle(java.lang.String)` was removed
+* `withResponseOptions(java.util.List)` was removed
+* `withQuestionId(java.lang.String)` was removed
+* `withQuestionType(models.QuestionType)` was removed
+* `withSelectedOptionValue(java.lang.String)` was removed
+
+#### `models.Insight` was modified
+
+* `Insight()` was changed to private access
+* `validate()` was removed
+* `withId(java.lang.String)` was removed
+* `withResults(java.lang.String)` was removed
+* `withImportanceLevel(models.ImportanceLevel)` was removed
+* `withTitle(java.lang.String)` was removed
+
+#### `models.VideoGroup` was modified
+
+* `VideoGroup()` was changed to private access
+* `withReplacementKey(java.lang.String)` was removed
+* `validate()` was removed
+* `withVideos(java.util.List)` was removed
+
+#### `models.ResponseOption` was modified
+
+* `ResponseOption()` was changed to private access
+* `withValue(java.lang.String)` was removed
+* `withKey(java.lang.String)` was removed
+* `validate()` was removed
+
+#### `models.Error` was modified
+
+* `Error()` was changed to private access
+* `validate()` was removed
+* `withDetails(java.util.List)` was removed
+
+#### `models.ClassificationService` was modified
+
+* `validate()` was removed
+
+#### `models.ContinueRequestBody` was modified
+
+* `validate()` was removed
+
+#### `models.SolutionPatchRequestBody` was modified
+
+* `validate()` was removed
+
+#### `models.Section` was modified
+
+* `Section()` was changed to private access
+* `withContent(java.lang.String)` was removed
+* `withReplacementMaps(models.ReplacementMaps)` was removed
+* `validate()` was removed
+* `withTitle(java.lang.String)` was removed
+
+#### `models.SectionSelfHelp` was modified
+
+* `SectionSelfHelp()` was changed to private access
+* `withContent(java.lang.String)` was removed
+* `validate()` was removed
+* `withReplacementMaps(models.ReplacementMapsSelfHelp)` was removed
+* `withTitle(java.lang.String)` was removed
+
+#### `models.AutomatedCheckResult` was modified
+
+* `AutomatedCheckResult()` was changed to private access
+* `withResult(java.lang.String)` was removed
+* `validate()` was removed
+* `withStatus(java.lang.String)` was removed
+* `withType(models.AutomatedCheckResultType)` was removed
+* `withVersion(java.lang.String)` was removed
+
+#### `models.TroubleshootersContinueMethodHeaders` was modified
+
+* `validate()` was removed
+* `withLocation(java.lang.String)` was removed
+
+#### `models.SolutionNlpMetadataResource` was modified
+
+* `validate()` was removed
+
+#### `models.FilterGroup` was modified
+
+* `FilterGroup()` was changed to private access
+* `withFilter(java.util.List)` was removed
+* `validate()` was removed
+
+#### `models.SolutionsDiagnostic` was modified
+
+* `SolutionsDiagnostic()` was changed to private access
+* `validate()` was removed
+* `withRequiredParameters(java.util.List)` was removed
+* `withReplacementKey(java.lang.String)` was removed
+* `withStatusDetails(java.lang.String)` was removed
+* `withSolutionId(java.lang.String)` was removed
+* `withEstimatedCompletionTime(java.lang.String)` was removed
+* `withStatus(models.Status)` was removed
+* `withInsights(java.util.List)` was removed
+
+#### `models.TroubleshootersEndHeaders` was modified
+
+* `withLocation(java.lang.String)` was removed
+* `validate()` was removed
+
+#### `models.Diagnostic` was modified
+
+* `Diagnostic()` was changed to private access
+* `validate()` was removed
+* `withError(models.Error)` was removed
+* `withInsights(java.util.List)` was removed
+* `withSolutionId(java.lang.String)` was removed
+* `withStatus(models.Status)` was removed
+
+#### `models.WebResult` was modified
+
+* `WebResult()` was changed to private access
+* `withReplacementKey(java.lang.String)` was removed
+* `withSearchResults(java.util.List)` was removed
+* `validate()` was removed
+
+#### `models.ReplacementMapsSelfHelp` was modified
+
+* `ReplacementMapsSelfHelp()` was changed to private access
+* `validate()` was removed
+* `withWebResults(java.util.List)` was removed
+* `withVideos(java.util.List)` was removed
+* `withVideoGroups(java.util.List)` was removed
+
+#### `models.SolutionsTroubleshooters` was modified
+
+* `SolutionsTroubleshooters()` was changed to private access
+* `validate()` was removed
+* `withSolutionId(java.lang.String)` was removed
+* `withSummary(java.lang.String)` was removed
+* `withTitle(java.lang.String)` was removed
+
+#### `models.ReplacementMaps` was modified
+
+* `ReplacementMaps()` was changed to private access
+* `withVideoGroups(java.util.List)` was removed
+* `validate()` was removed
+* `withMetricsBasedCharts(java.util.List)` was removed
+* `withWebResults(java.util.List)` was removed
+* `withTroubleshooters(java.util.List)` was removed
+* `withVideos(java.util.List)` was removed
+* `withDiagnostics(java.util.List)` was removed
+
+#### `models.CheckNameAvailabilityRequest` was modified
+
+* `validate()` was removed
+
+#### `models.SearchResult` was modified
+
+* `SearchResult()` was changed to private access
+* `withResultType(models.ResultType)` was removed
+* `withRank(java.lang.Integer)` was removed
+* `withSolutionId(java.lang.String)` was removed
+* `validate()` was removed
+* `withContent(java.lang.String)` was removed
+* `withSource(java.lang.String)` was removed
+* `withLink(java.lang.String)` was removed
+* `withConfidence(models.Confidence)` was removed
+* `withTitle(java.lang.String)` was removed
+
+#### `models.TroubleshooterResponse` was modified
+
+* `validate()` was removed
+
+#### `models.Step` was modified
+
+* `Step()` was changed to private access
+* `withDescription(java.lang.String)` was removed
+* `withGuidance(java.lang.String)` was removed
+* `validate()` was removed
+* `withExecutionStatusDescription(java.lang.String)` was removed
+* `withIsLastStep(java.lang.Boolean)` was removed
+* `withId(java.lang.String)` was removed
+* `withInputs(java.util.List)` was removed
+* `withAutomatedCheckResults(models.AutomatedCheckResult)` was removed
+* `withExecutionStatus(models.ExecutionStatus)` was removed
+* `withType(models.Type)` was removed
+* `withError(com.azure.core.management.exception.ManagementError)` was removed
+* `withInsights(java.util.List)` was removed
+* `withTitle(java.lang.String)` was removed
+
+#### `models.VideoGroupVideo` was modified
+
+* `validate()` was removed
+* `models.VideoGroupVideo withSrc(java.lang.String)` -> `models.VideoGroupVideo withSrc(java.lang.String)`
+* `models.VideoGroupVideo withTitle(java.lang.String)` -> `models.VideoGroupVideo withTitle(java.lang.String)`
+
+#### `models.Filter` was modified
+
+* `Filter()` was changed to private access
+* `withOperator(java.lang.String)` was removed
+* `withValues(java.lang.String)` was removed
+* `withName(java.lang.String)` was removed
+* `validate()` was removed
+
+#### `SelfHelpManager` was modified
+
+* `fluent.HelpRP serviceClient()` -> `fluent.SelfHelpManagementClient serviceClient()`
+
+### Features Added
+
+#### `models.Video` was modified
+
+* `src()` was added
+* `title()` was added
 
 ## 1.1.0-beta.5 (2024-06-21)
 

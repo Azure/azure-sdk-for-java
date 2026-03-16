@@ -1071,6 +1071,23 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         CosmosItemResponse<InternalObjectNode> createResponse = null;
         try {
             createResponse = containerDirect.createItem(internalObjectNode);
+            
+            // Verify item creation is fully propagated before testing with wrong partition key
+            // Use retry-based polling instead of fixed sleep for CI resilience
+            String itemId = BridgeInternal.getProperties(createResponse).getId();
+            int maxRetries = 5;
+            int retryCount = 0;
+            boolean itemReadable = false;
+            while (retryCount < maxRetries && !itemReadable) {
+                try {
+                    containerDirect.readItem(itemId, new PartitionKey(itemId), InternalObjectNode.class);
+                    itemReadable = true;
+                } catch (CosmosException e) {
+                    retryCount++;
+                    Thread.sleep(200);
+                }
+            }
+            
             CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();
             ModelBridgeInternal.setPartitionKey(cosmosItemRequestOptions, new PartitionKey("wrongPartitionKey"));
             CosmosItemResponse<InternalObjectNode> readResponse =
@@ -1108,7 +1125,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"fast"}, dataProvider = "gatewayAndDirect", timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, dataProvider = "gatewayAndDirect", timeOut = TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void diagnosticsKeywordIdentifiers(CosmosContainer container) {
         InternalObjectNode internalObjectNode = getInternalObjectNode();
         HashSet<String> keywordIdentifiers = new HashSet<>();

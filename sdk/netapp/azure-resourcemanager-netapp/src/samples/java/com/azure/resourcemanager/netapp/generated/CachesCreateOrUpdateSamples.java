@@ -16,7 +16,7 @@ import java.util.Arrays;
  */
 public final class CachesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/Caches_CreateOrUpdate.json
+     * x-ms-original-file: 2025-12-15-preview/Caches_CreateOrUpdate.json
      */
     /**
      * Sample code: Caches_CreateOrUpdate.
@@ -28,7 +28,7 @@ public final class CachesCreateOrUpdateSamples {
             .define("cache1")
             .withRegion("eastus")
             .withExistingCapacityPool("myRG", "account1", "pool1")
-            .withProperties(new CacheProperties().withFilepath("cache-west-us2-01")
+            .withProperties(new CacheProperties().withFilePath("cache-west-us2-01")
                 .withSize(107374182400L)
                 .withCacheSubnetResourceId(
                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/cacheVnet/subnets/cacheSubnet1")

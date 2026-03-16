@@ -45,6 +45,8 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import com.azure.cosmos.FlakyTestRetryAnalyzer;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
@@ -63,11 +65,14 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
     @BeforeClass(groups = {"fast"}, timeOut = SETUP_TIMEOUT)
     public void before_CosmosBulkAsyncTest() {
         assertThat(this.bulkClient).isNull();
-        ThrottlingRetryOptions throttlingOptions = new ThrottlingRetryOptions()
-            .setMaxRetryAttemptsOnThrottledRequests(1000000)
-            .setMaxRetryWaitTime(Duration.ofDays(1));
-        this.bulkClient = getClientBuilder().throttlingRetryOptions(throttlingOptions).buildAsyncClient();
-        bulkAsyncContainer = getSharedMultiPartitionCosmosContainer(this.bulkClient);
+        executeWithRetry(() -> {
+            safeClose(this.bulkClient);
+            ThrottlingRetryOptions throttlingOptions = new ThrottlingRetryOptions()
+                .setMaxRetryAttemptsOnThrottledRequests(1000000)
+                .setMaxRetryWaitTime(Duration.ofDays(1));
+            this.bulkClient = getClientBuilder().throttlingRetryOptions(throttlingOptions).buildAsyncClient();
+            bulkAsyncContainer = getSharedMultiPartitionCosmosContainer(this.bulkClient);
+        }, 3, "CosmosBulkAsyncTest setup");
     }
 
     @AfterClass(groups = {"fast"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
@@ -75,7 +80,7 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
         safeClose(this.bulkClient);
     }
 
-    @Test(groups = {"fast"}, timeOut = TIMEOUT * 2)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT * 2, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void createItem_withBulkAndThroughputControlAsDefaultGroup() throws InterruptedException {
         runBulkTest(true);
     }

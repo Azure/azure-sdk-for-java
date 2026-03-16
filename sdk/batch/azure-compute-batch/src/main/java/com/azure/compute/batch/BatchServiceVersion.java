@@ -11,9 +11,9 @@ import com.azure.core.util.ServiceVersion;
  */
 public enum BatchServiceVersion implements ServiceVersion {
     /**
-     * Enum value 2024-07-01.20.0.
+     * Enum value 2025-06-01.
      */
-    V2024_07_01_20_0("2024-07-01.20.0");
+    V2025_06_01("2025-06-01");
 
     private final String version;
 
@@ -35,6 +35,6 @@ public enum BatchServiceVersion implements ServiceVersion {
      * @return The latest {@link BatchServiceVersion}.
      */
     public static BatchServiceVersion getLatest() {
-        return V2024_07_01_20_0;
+        return V2025_06_01;
     }
 }

@@ -54,6 +54,18 @@ public class Configs {
     private static final String THINCLIENT_ENABLED = "COSMOS.THINCLIENT_ENABLED";
     private static final String THINCLIENT_ENABLED_VARIABLE = "COSMOS_THINCLIENT_ENABLED";
 
+    private static final boolean DEFAULT_NETTY_HTTP_CLIENT_METRICS_ENABLED = false;
+    private static final String NETTY_HTTP_CLIENT_METRICS_ENABLED = "COSMOS.NETTY_HTTP_CLIENT_METRICS_ENABLED";
+    private static final String NETTY_HTTP_CLIENT_METRICS_ENABLED_VARIABLE = "COSMOS_NETTY_HTTP_CLIENT_METRICS_ENABLED";
+
+    // Thin client connect/acquire timeout — controls CONNECT_TIMEOUT_MILLIS for Gateway V2 data plane endpoints.
+    // Data plane requests are routed to the thin client regional endpoint (from RegionalRoutingContext)
+    // which uses a non-443 port. These get a shorter 5s connect/acquire timeout.
+    // Metadata requests target Gateway V1 endpoint (port 443) and retain the full 45s/60s timeout (unchanged).
+    private static final int DEFAULT_THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS = 5;
+    private static final String THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS = "COSMOS.THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS";
+    private static final String THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS_VARIABLE = "COSMOS_THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS";
+
     private static final String MAX_HTTP_BODY_LENGTH_IN_BYTES = "COSMOS.MAX_HTTP_BODY_LENGTH_IN_BYTES";
     private static final String MAX_HTTP_INITIAL_LINE_LENGTH_IN_BYTES = "COSMOS.MAX_HTTP_INITIAL_LINE_LENGTH_IN_BYTES";
     private static final String MAX_HTTP_CHUNK_SIZE_IN_BYTES = "COSMOS.MAX_HTTP_CHUNK_SIZE_IN_BYTES";
@@ -517,6 +529,14 @@ public class Configs {
         return DEFAULT_THINCLIENT_ENABLED;
     }
 
+    public static boolean isNettyHttpClientMetricsEnabled() {
+        return Boolean.parseBoolean(
+            System.getProperty(NETTY_HTTP_CLIENT_METRICS_ENABLED,
+            firstNonNull(
+                emptyToNull(System.getenv().get(NETTY_HTTP_CLIENT_METRICS_ENABLED_VARIABLE)),
+                String.valueOf(DEFAULT_NETTY_HTTP_CLIENT_METRICS_ENABLED))));
+    }
+
     public static boolean isClientLeakDetectionEnabled() {
         String valueFromSystemProperty = System.getProperty(CLIENT_LEAK_DETECTION_ENABLED);
         if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
@@ -560,6 +580,59 @@ public class Configs {
 
     public static Duration getConnectionAcquireTimeout() {
         return CONNECTION_ACQUIRE_TIMEOUT;
+    }
+
+    /**
+     * Returns the TCP connect timeout for thin client data plane endpoints.
+     * Data plane requests routed via thinclientRegionalEndpoint (from RegionalRoutingContext)
+     * use this aggressive timeout to fail fast when the proxy is unreachable.
+     * Metadata requests on port 443 are unaffected and retain the full 45s timeout.
+     *
+     * Configurable via system property COSMOS.THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS
+     * or environment variable COSMOS_THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS.
+     * Default: 5 seconds.
+     */
+    public static int getThinClientConnectionTimeoutInSeconds() {
+        int value = DEFAULT_THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS;
+
+        String valueFromSystemProperty = System.getProperty(THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS);
+        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
+            try {
+                value = Integer.parseInt(valueFromSystemProperty);
+            } catch (NumberFormatException e) {
+                logger.warn(
+                    "Invalid non-numeric value '{}' for system property {}. Falling back to environment variable or default.",
+                    valueFromSystemProperty,
+                    THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS);
+                valueFromSystemProperty = null;
+            }
+        }
+
+        if (valueFromSystemProperty == null || valueFromSystemProperty.isEmpty()) {
+            String valueFromEnvVariable = System.getenv(THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS_VARIABLE);
+            if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
+                try {
+                    value = Integer.parseInt(valueFromEnvVariable);
+                } catch (NumberFormatException e) {
+                    logger.warn(
+                        "Invalid non-numeric value '{}' for environment variable {}. Falling back to default: {}s.",
+                        valueFromEnvVariable,
+                        THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS_VARIABLE,
+                        DEFAULT_THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS);
+                }
+            }
+        }
+
+        // Guard against invalid values — timeout must be at least 1 second
+        if (value <= 0) {
+            logger.warn(
+                "Invalid thin client connection timeout: {}s. Must be > 0. Falling back to default: {}s.",
+                value,
+                DEFAULT_THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS);
+            return DEFAULT_THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS;
+        }
+
+        return value;
     }
 
     public static int getHttpResponseTimeoutInSeconds() {

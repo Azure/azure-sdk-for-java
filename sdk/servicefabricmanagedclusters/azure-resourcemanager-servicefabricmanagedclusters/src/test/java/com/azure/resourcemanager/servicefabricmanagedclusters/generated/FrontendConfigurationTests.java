@@ -13,24 +13,24 @@ public final class FrontendConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FrontendConfiguration model = BinaryData.fromString(
-            "{\"ipAddressType\":\"IPv6\",\"loadBalancerBackendAddressPoolId\":\"coolsttpkiwkkb\",\"loadBalancerInboundNatPoolId\":\"jrywvtylbfpnc\",\"applicationGatewayBackendAddressPoolId\":\"doiwi\"}")
+            "{\"ipAddressType\":\"IPv4\",\"loadBalancerBackendAddressPoolId\":\"frl\",\"loadBalancerInboundNatPoolId\":\"szrnwo\",\"applicationGatewayBackendAddressPoolId\":\"ndfpwpj\"}")
             .toObject(FrontendConfiguration.class);
-        Assertions.assertEquals(IpAddressType.IPV6, model.ipAddressType());
-        Assertions.assertEquals("coolsttpkiwkkb", model.loadBalancerBackendAddressPoolId());
-        Assertions.assertEquals("jrywvtylbfpnc", model.loadBalancerInboundNatPoolId());
-        Assertions.assertEquals("doiwi", model.applicationGatewayBackendAddressPoolId());
+        Assertions.assertEquals(IpAddressType.IPV4, model.ipAddressType());
+        Assertions.assertEquals("frl", model.loadBalancerBackendAddressPoolId());
+        Assertions.assertEquals("szrnwo", model.loadBalancerInboundNatPoolId());
+        Assertions.assertEquals("ndfpwpj", model.applicationGatewayBackendAddressPoolId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FrontendConfiguration model = new FrontendConfiguration().withIpAddressType(IpAddressType.IPV6)
-            .withLoadBalancerBackendAddressPoolId("coolsttpkiwkkb")
-            .withLoadBalancerInboundNatPoolId("jrywvtylbfpnc")
-            .withApplicationGatewayBackendAddressPoolId("doiwi");
+        FrontendConfiguration model = new FrontendConfiguration().withIpAddressType(IpAddressType.IPV4)
+            .withLoadBalancerBackendAddressPoolId("frl")
+            .withLoadBalancerInboundNatPoolId("szrnwo")
+            .withApplicationGatewayBackendAddressPoolId("ndfpwpj");
         model = BinaryData.fromObject(model).toObject(FrontendConfiguration.class);
-        Assertions.assertEquals(IpAddressType.IPV6, model.ipAddressType());
-        Assertions.assertEquals("coolsttpkiwkkb", model.loadBalancerBackendAddressPoolId());
-        Assertions.assertEquals("jrywvtylbfpnc", model.loadBalancerInboundNatPoolId());
-        Assertions.assertEquals("doiwi", model.applicationGatewayBackendAddressPoolId());
+        Assertions.assertEquals(IpAddressType.IPV4, model.ipAddressType());
+        Assertions.assertEquals("frl", model.loadBalancerBackendAddressPoolId());
+        Assertions.assertEquals("szrnwo", model.loadBalancerInboundNatPoolId());
+        Assertions.assertEquals("ndfpwpj", model.applicationGatewayBackendAddressPoolId());
     }
 }
