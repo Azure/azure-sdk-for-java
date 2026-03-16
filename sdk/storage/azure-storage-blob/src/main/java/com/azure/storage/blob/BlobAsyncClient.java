@@ -92,19 +92,19 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
     /**
      * The block size to use if none is specified in parallel operations.
      */
-    static final int BLOB_DEFAULT_UPLOAD_BLOCK_SIZE = BlobConstants.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE;
+    public static final int BLOB_DEFAULT_UPLOAD_BLOCK_SIZE = BlobConstants.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE;
 
     /**
      * The number of buffers to use if none is specified on the buffered upload method.
      */
-    static final int BLOB_DEFAULT_NUMBER_OF_BUFFERS = BlobConstants.BLOB_DEFAULT_NUMBER_OF_BUFFERS;
+    public static final int BLOB_DEFAULT_NUMBER_OF_BUFFERS = BlobConstants.BLOB_DEFAULT_NUMBER_OF_BUFFERS;
 
     /**
      * If a blob is known to be greater than 100MB, using a larger block size will trigger some server-side
      * optimizations. If the block size is not set and the size of the blob is known to be greater than 100MB, this
      * value will be used.
      */
-    static final int BLOB_DEFAULT_HTBB_UPLOAD_BLOCK_SIZE = BlobConstants.BLOB_DEFAULT_HTBB_UPLOAD_BLOCK_SIZE;
+    public static final int BLOB_DEFAULT_HTBB_UPLOAD_BLOCK_SIZE = BlobConstants.BLOB_DEFAULT_HTBB_UPLOAD_BLOCK_SIZE;
 
     static final long BLOB_MAX_UPLOAD_BLOCK_SIZE = 4000L * Constants.MB;
 

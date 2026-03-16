@@ -73,25 +73,25 @@ public final class BlockBlobClient extends BlobClientBase {
      * @deprecated Use {@link #MAX_STAGE_BLOCK_BYTES_LONG}.
      */
     @Deprecated
-    static final int MAX_UPLOAD_BLOB_BYTES = 256 * Constants.MB;
+    public static final int MAX_UPLOAD_BLOB_BYTES = 256 * Constants.MB;
     /**
      * Indicates the maximum number of bytes that can be sent in a call to upload.
      */
-    static final long MAX_UPLOAD_BLOB_BYTES_LONG = BlobConstants.MAX_UPLOAD_BLOB_BYTES_LONG;
+    public static final long MAX_UPLOAD_BLOB_BYTES_LONG = BlobConstants.MAX_UPLOAD_BLOB_BYTES_LONG;
     /**
      * Indicates the maximum number of bytes that can be sent in a call to stageBlock.
      * @deprecated Use {@link #MAX_STAGE_BLOCK_BYTES_LONG}
      */
     @Deprecated
-    static final int MAX_STAGE_BLOCK_BYTES = 100 * Constants.MB;
+    public static final int MAX_STAGE_BLOCK_BYTES = 100 * Constants.MB;
     /**
      * Indicates the maximum number of bytes that can be sent in a call to stageBlock.
      */
-    static final long MAX_STAGE_BLOCK_BYTES_LONG = BlobConstants.MAX_STAGE_BLOCK_BYTES_LONG;
+    public static final long MAX_STAGE_BLOCK_BYTES_LONG = BlobConstants.MAX_STAGE_BLOCK_BYTES_LONG;
     /**
      * Indicates the maximum number of blocks allowed in a block blob.
      */
-    static final int MAX_BLOCKS = BlobConstants.MAX_BLOCKS;
+    public static final int MAX_BLOCKS = BlobConstants.MAX_BLOCKS;
 
     /**
      * Package-private constructor for use by {@link SpecializedBlobClientBuilder}.
