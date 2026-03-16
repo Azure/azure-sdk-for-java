@@ -640,6 +640,7 @@ public class SasAsyncClientTests extends BlobTestBase {
             Mono<Void> response = oauthService.getUserDelegationKey(null, expiryTime).flatMap(key -> {
 
                 key.setSignedTenantId(testResourceNamer.recordValueFromConfig(key.getSignedTenantId()));
+                key.setSignedObjectId(testResourceNamer.recordValueFromConfig(key.getSignedObjectId()));
                 String saoid = testResourceNamer.randomUuid();
 
                 // Create-only permission for destination blob
