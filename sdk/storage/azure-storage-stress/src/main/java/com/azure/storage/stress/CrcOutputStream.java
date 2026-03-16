@@ -14,7 +14,7 @@ public class CrcOutputStream extends OutputStream {
     private final CRC32 crc = new CRC32();
     private long length = 0;
     private final ByteBuffer head = ByteBuffer.allocate(1024);
-    private final static ClientLogger LOGGER = new ClientLogger(CrcOutputStream.class);
+    private static final ClientLogger LOGGER = new ClientLogger(CrcOutputStream.class);
 
     @Override
     public synchronized void write(int b) {
@@ -40,9 +40,10 @@ public class CrcOutputStream extends OutputStream {
         String baseErrorMessage = "Failed to emit content because ";
         Sinks.EmitResult emitResult = sink.tryEmitValue(new ContentInfo(crc.getValue(), length, head));
         switch (emitResult) {
-            // OK and FAIL_TERMINATED are expected results and not logged as errors. OK means the content info was
-            // emitted successfully. FAIL_TERMINATED means the content info was already emitted and the sink was terminated,
-            // which can happen if the stream is read to completion multiple times on things like retries
+            case OK:
+            case FAIL_TERMINATED:
+                // Expected successful outcomes; nothing further to do.
+                break;
             case FAIL_CANCELLED:
                 throw LOGGER.logExceptionAsError(new RuntimeException(baseErrorMessage +
                     " the sink was previously interrupted by its consumer: " + emitResult));
@@ -54,6 +55,9 @@ public class CrcOutputStream extends OutputStream {
             case FAIL_ZERO_SUBSCRIBER:
                 throw LOGGER.logExceptionAsError(new RuntimeException(baseErrorMessage + "the sink requires a " +
                     "subscriber:" + emitResult));
+            default:
+                throw LOGGER.logExceptionAsError(new RuntimeException(baseErrorMessage +
+                    "an unexpected emit result was returned: " + emitResult));
         }
         super.close();
     }

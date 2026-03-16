@@ -155,13 +155,12 @@ public abstract class BlobScenarioBase<TOptions extends StorageStressOptions> ex
         return telemetryHelper.instrumentRunAsync(ctx -> runInternalAsync(ctx))
             .retryWhen(reactor.util.retry.Retry.max(3)
                 .filter(e -> !(reactor.core.Exceptions.unwrap(e) instanceof com.azure.storage.stress.ContentMismatchException)))
-            .onErrorMap(e -> {
+            .doOnError(e -> {
                 // Log the error for debugging but let legitimate failures propagate
                 LOGGER.atError()
                     .addKeyValue("error", e.getMessage())
                     .addKeyValue("errorType", e.getClass().getSimpleName())
                     .log("Test operation failed after retries");
-                return e;
             });
     }
 

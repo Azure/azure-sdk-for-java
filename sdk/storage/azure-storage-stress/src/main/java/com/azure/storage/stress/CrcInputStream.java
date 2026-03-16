@@ -78,9 +78,10 @@ public class CrcInputStream extends InputStream {
         String baseErrorMessage = "Failed to emit content because ";
         Sinks.EmitResult emitResult = sink.tryEmitValue(new ContentInfo(crc.getValue(), length, head));
         switch (emitResult) {
-            // OK and FAIL_TERMINATED are expected results and not logged as errors. OK means the content info was
-            // emitted successfully. FAIL_TERMINATED means the content info was already emitted and the sink was terminated,
-            // which can happen if the stream is read to completion multiple times on things like retries
+            case OK:
+            case FAIL_TERMINATED:
+                // No action needed for successful or already-terminated emissions.
+                break;
             case FAIL_CANCELLED:
                 throw LOGGER.logExceptionAsError(new RuntimeException(baseErrorMessage +
                     " the sink was previously interrupted by its consumer: " + emitResult));
@@ -92,6 +93,9 @@ public class CrcInputStream extends InputStream {
             case FAIL_ZERO_SUBSCRIBER:
                 throw LOGGER.logExceptionAsError(new RuntimeException(baseErrorMessage + "the sink requires a " +
                     "subscriber:" + emitResult));
+            default:
+                throw LOGGER.logExceptionAsError(new RuntimeException(baseErrorMessage + "unexpected emit result: "
+                    + emitResult));
         }
     }
 
