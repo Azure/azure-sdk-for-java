@@ -195,13 +195,17 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
 
     @Override
     public HttpRequest wrapInHttpRequest(RxDocumentServiceRequest request, URI requestUri) throws Exception {
+        return wrapInHttpRequest(request, requestUri.toString(), requestUri.getPort());
+    }
+
+    private HttpRequest wrapInHttpRequest(RxDocumentServiceRequest request, String requestUriString, int port) throws Exception {
         HttpMethod method = getHttpMethod(request);
         HttpHeaders httpHeaders = this.getHttpRequestHeaders(request.getHeaders());
 
         Flux<byte[]> contentAsByteArray = request.getContentAsByteArrayFlux();
         return new HttpRequest(method,
-            requestUri,
-            requestUri.getPort(),
+            requestUriString,
+            port,
             httpHeaders,
             contentAsByteArray);
     }
@@ -279,8 +283,8 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                 request.requestContext.cosmosDiagnostics = clientContext.createDiagnostics();
             }
 
-            URI uri = getUri(request);
-            request.requestContext.resourcePhysicalAddress = uri.toString();
+            String uri = getUri(request);
+            request.requestContext.resourcePhysicalAddress = uri;
 
             if (this.throughputControlStore != null) {
                 return this.throughputControlStore.processRequest(request, Mono.defer(() -> this.performRequestInternal(request, uri)));
@@ -303,7 +307,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
      * @param requestUri
      * @return Flux<RxDocumentServiceResponse>
      */
-    public Mono<RxDocumentServiceResponse> performRequestInternal(RxDocumentServiceRequest request, URI requestUri) {
+    public Mono<RxDocumentServiceResponse> performRequestInternal(RxDocumentServiceRequest request, String requestUri) {
         if (!partitionKeyRangeResolutionNeeded(request)) {
             return this.performRequestInternalCore(request, requestUri);
         }
@@ -316,12 +320,23 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
             });
     }
 
-    private Mono<RxDocumentServiceResponse> performRequestInternalCore(RxDocumentServiceRequest request, URI requestUri) {
+    // Overload for callers that still pass URI
+    public Mono<RxDocumentServiceResponse> performRequestInternal(RxDocumentServiceRequest request, URI requestUri) {
+        return performRequestInternal(request, requestUri.toString());
+    }
+
+    private Mono<RxDocumentServiceResponse> performRequestInternalCore(RxDocumentServiceRequest request, String requestUri) {
 
         try {
-            HttpRequest httpRequest = request
-                .getEffectiveHttpTransportSerializer(this)
-                .wrapInHttpRequest(request, requestUri);
+            HttpRequest httpRequest;
+            HttpTransportSerializer effectiveSerializer = request.getEffectiveHttpTransportSerializer(this);
+            if (effectiveSerializer == this) {
+                // Fast path: use the string-based overload to avoid URI parsing
+                httpRequest = this.wrapInHttpRequest(request, requestUri, this.resolvePort(request));
+            } else {
+                // Fallback for custom serializers (e.g., ThinClientStoreModel)
+                httpRequest = effectiveSerializer.wrapInHttpRequest(request, new URI(requestUri));
+            }
 
             // Capture the request record early so it's available on both success and error paths.
             // Each retry creates a new HttpRequest with a new record, so this is per-attempt.
@@ -378,7 +393,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
         return this.globalEndpointManager.resolveServiceEndpoint(request).getGatewayRegionalEndpoint();
     }
 
-    private URI getUri(RxDocumentServiceRequest request) throws URISyntaxException {
+    private String getUri(RxDocumentServiceRequest request) throws URISyntaxException {
         URI rootUri = request.getEndpointOverride();
         if (rootUri == null) {
             if (request.getIsMedia()) {
@@ -402,8 +417,20 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
             rootUri.getHost(),
             rootUri.getPort(),
             ensureSlashPrefixed(path),
-            null,  // Query string not used.
-            null);
+            null,
+            null).toASCIIString();
+    }
+
+    private int resolvePort(RxDocumentServiceRequest request) {
+        URI rootUri = request.getEndpointOverride();
+        if (rootUri == null) {
+            if (request.getIsMedia()) {
+                rootUri = this.globalEndpointManager.getWriteEndpoints().get(0).getGatewayRegionalEndpoint();
+            } else {
+                rootUri = getRootUri(request);
+            }
+        }
+        return rootUri.getPort();
     }
 
     private String ensureSlashPrefixed(String path) {
@@ -503,7 +530,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                         }
                         StoreResponse rsp = request
                             .getEffectiveHttpTransportSerializer(this)
-                            .unwrapToStoreResponse(httpRequest.uri().toString(), request, httpResponseStatus, httpResponseHeaders, content);
+                            .unwrapToStoreResponse(httpRequest.uriString(), request, httpResponseStatus, httpResponseHeaders, content);
 
                         // Only clear retainedBufRef AFTER StoreResponse successfully takes ownership.
                         // If unwrapToStoreResponse throws, retainedBufRef remains set so doFinally
@@ -619,7 +646,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                 ImplementationBridgeHelpers
                     .CosmosExceptionHelper
                     .getCosmosExceptionAccessor()
-                    .setRequestUri(dce, Uri.create(httpRequest.uri().toString()));
+                    .setRequestUri(dce, Uri.create(httpRequest.uriString()));
 
                 if (request.requestContext.cosmosDiagnostics != null) {
                     if (httpRequest.reactorNettyRequestRecord() != null) {
@@ -671,7 +698,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                     ImplementationBridgeHelpers
                         .CosmosExceptionHelper
                         .getCosmosExceptionAccessor()
-                        .setRequestUri(oce, Uri.create(httpRequest.uri().toString()));
+                        .setRequestUri(oce, Uri.create(httpRequest.uriString()));
 
                     if (request.requestContext.getCrossRegionAvailabilityContext() != null) {
 
