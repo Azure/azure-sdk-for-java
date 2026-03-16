@@ -674,7 +674,7 @@ private class TransactionalBulkWriter
         case None =>
           // batch (100 items, marker skipped) -> shouldIgnore-only inference
           log.logInfo(s"for partitionKeyValue=[${operationContext.partitionKeyValueInput}], " +
-            s"inferred SUCCESS on retry via shouldIgnore (C15 batch, no marker). " +
+            s"inferred SUCCESS on retry via shouldIgnore. " +
             s"statusCode='$effectiveStatusCode:$effectiveSubStatusCode', " +
             s"attemptNumber=${operationContext.attemptNumber}, " +
             s"Context: {${operationContext.toString}} $getThreadInfo")
@@ -1147,7 +1147,6 @@ private class TransactionalBulkWriter
 
   // Restricted subset of BulkWriter's shouldIgnore — excludes 412 (Precondition Failed)
   // because 412 is ambiguous on retry for batch operations.
-  // See DESIGN.md § shouldIgnore in TransactionalBulkWriter vs BulkWriter
   private def shouldIgnore(statusCode: Int, subStatusCode: Int): Boolean = {
     writeConfig.itemWriteStrategy match {
       case ItemWriteStrategy.ItemAppend => Exceptions.isResourceExistsException(statusCode)
@@ -1169,7 +1168,6 @@ private class TransactionalBulkWriter
   //   3. The first non-424 result is on the FIRST operation (index 0)
   //   4. shouldIgnore returns true for that operation's status code
   //   5. Strategy is NOT ItemBulkUpdate (retries rebuild the batch)
-  // See DESIGN.md § Response Handling Flow
   private def shouldIgnoreOnRetry(
     operationContext: OperationContext,
     cosmosBatchResponse: Option[CosmosBatchResponse]
