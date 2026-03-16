@@ -11,7 +11,7 @@ import com.azure.resourcemanager.netapp.models.QuotaType;
  */
 public final class VolumeQuotaRulesCreateSamples {
     /*
-     * x-ms-original-file: 2025-12-01/VolumeQuotaRules_Create.json
+     * x-ms-original-file: 2025-12-15-preview/VolumeQuotaRules_Create.json
      */
     /**
      * Sample code: VolumeQuotaRules_Create.
