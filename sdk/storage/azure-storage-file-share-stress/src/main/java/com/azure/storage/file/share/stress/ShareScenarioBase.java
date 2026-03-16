@@ -84,8 +84,9 @@ public abstract class ShareScenarioBase<TOptions extends StorageStressOptions> e
                 LOGGER.atWarning()
                     .addKeyValue("error", error.getMessage())
                     .log("Share cleanup failed");
-                return super.globalCleanupAsync();
-            });
+                return Mono.empty();
+            })
+            .then(super.globalCleanupAsync());
     }
 
     /**
