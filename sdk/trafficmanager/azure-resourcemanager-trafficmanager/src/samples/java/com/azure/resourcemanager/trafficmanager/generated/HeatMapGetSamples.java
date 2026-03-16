@@ -16,10 +16,9 @@ public final class HeatMapGetSamples {
     /**
      * Sample code: HeatMap-GET-With-TopLeft-BotRight.
      * 
-     * @param manager Entry point to TrafficManagerManager.
+     * @param manager Entry point to TrafficManager.
      */
-    public static void
-        heatMapGETWithTopLeftBotRight(com.azure.resourcemanager.trafficmanager.TrafficManagerManager manager) {
+    public static void heatMapGETWithTopLeftBotRight(com.azure.resourcemanager.trafficmanager.TrafficManager manager) {
         manager.serviceClient()
             .getHeatMaps()
             .getWithResponse("azuresdkfornetautoresttrafficmanager1323", "azuresdkfornetautoresttrafficmanager3880",
@@ -32,9 +31,9 @@ public final class HeatMapGetSamples {
     /**
      * Sample code: HeatMap-GET.
      * 
-     * @param manager Entry point to TrafficManagerManager.
+     * @param manager Entry point to TrafficManager.
      */
-    public static void heatMapGET(com.azure.resourcemanager.trafficmanager.TrafficManagerManager manager) {
+    public static void heatMapGET(com.azure.resourcemanager.trafficmanager.TrafficManager manager) {
         manager.serviceClient()
             .getHeatMaps()
             .getWithResponse("azuresdkfornetautoresttrafficmanager1323", "azuresdkfornetautoresttrafficmanager3880",
@@ -47,10 +46,9 @@ public final class HeatMapGetSamples {
     /**
      * Sample code: HeatMap-GET-With-Null-Values.
      * 
-     * @param manager Entry point to TrafficManagerManager.
+     * @param manager Entry point to TrafficManager.
      */
-    public static void
-        heatMapGETWithNullValues(com.azure.resourcemanager.trafficmanager.TrafficManagerManager manager) {
+    public static void heatMapGETWithNullValues(com.azure.resourcemanager.trafficmanager.TrafficManager manager) {
         manager.serviceClient()
             .getHeatMaps()
             .getWithResponse("azuresdkfornetautoresttrafficmanager1323", "azuresdkfornetautoresttrafficmanager3880",

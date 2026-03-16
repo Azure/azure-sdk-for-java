@@ -14,10 +14,10 @@ public final class TrafficManagerUserMetricsKeysCreateOrUpdateSamples {
     /**
      * Sample code: TrafficManagerUserMetricsKeys-PUT.
      * 
-     * @param manager Entry point to TrafficManagerManager.
+     * @param manager Entry point to TrafficManager.
      */
     public static void
-        trafficManagerUserMetricsKeysPUT(com.azure.resourcemanager.trafficmanager.TrafficManagerManager manager) {
+        trafficManagerUserMetricsKeysPUT(com.azure.resourcemanager.trafficmanager.TrafficManager manager) {
         manager.serviceClient()
             .getTrafficManagerUserMetricsKeys()
             .createOrUpdateWithResponse(com.azure.core.util.Context.NONE);

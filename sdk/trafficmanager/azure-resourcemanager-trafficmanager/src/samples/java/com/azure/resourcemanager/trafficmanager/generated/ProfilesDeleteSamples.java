@@ -14,9 +14,9 @@ public final class ProfilesDeleteSamples {
     /**
      * Sample code: Profile-DELETE.
      * 
-     * @param manager Entry point to TrafficManagerManager.
+     * @param manager Entry point to TrafficManager.
      */
-    public static void profileDELETE(com.azure.resourcemanager.trafficmanager.TrafficManagerManager manager) {
+    public static void profileDELETE(com.azure.resourcemanager.trafficmanager.TrafficManager manager) {
         manager.serviceClient()
             .getProfiles()
             .deleteWithResponse("azuresdkfornetautoresttrafficmanager1323", "azuresdkfornetautoresttrafficmanager3880",

@@ -14,10 +14,10 @@ public final class TrafficManagerUserMetricsKeysGetSamples {
     /**
      * Sample code: TrafficManagerUserMetricsKeys-GET.
      * 
-     * @param manager Entry point to TrafficManagerManager.
+     * @param manager Entry point to TrafficManager.
      */
     public static void
-        trafficManagerUserMetricsKeysGET(com.azure.resourcemanager.trafficmanager.TrafficManagerManager manager) {
+        trafficManagerUserMetricsKeysGET(com.azure.resourcemanager.trafficmanager.TrafficManager manager) {
         manager.serviceClient().getTrafficManagerUserMetricsKeys().getWithResponse(com.azure.core.util.Context.NONE);
     }
 }

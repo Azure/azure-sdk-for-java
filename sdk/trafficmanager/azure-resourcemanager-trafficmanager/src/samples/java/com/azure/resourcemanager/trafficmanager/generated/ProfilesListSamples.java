@@ -14,9 +14,9 @@ public final class ProfilesListSamples {
     /**
      * Sample code: ListBySubscription.
      * 
-     * @param manager Entry point to TrafficManagerManager.
+     * @param manager Entry point to TrafficManager.
      */
-    public static void listBySubscription(com.azure.resourcemanager.trafficmanager.TrafficManagerManager manager) {
+    public static void listBySubscription(com.azure.resourcemanager.trafficmanager.TrafficManager manager) {
         manager.serviceClient().getProfiles().list(com.azure.core.util.Context.NONE);
     }
 }

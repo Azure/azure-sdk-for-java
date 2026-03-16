@@ -22,10 +22,10 @@ public final class EndpointsCreateOrUpdateSamples {
     /**
      * Sample code: Endpoint-PUT-External-WithAlwaysServe.
      * 
-     * @param manager Entry point to TrafficManagerManager.
+     * @param manager Entry point to TrafficManager.
      */
     public static void
-        endpointPUTExternalWithAlwaysServe(com.azure.resourcemanager.trafficmanager.TrafficManagerManager manager) {
+        endpointPUTExternalWithAlwaysServe(com.azure.resourcemanager.trafficmanager.TrafficManager manager) {
         manager.serviceClient()
             .getEndpoints()
             .createOrUpdateWithResponse("azuresdkfornetautoresttrafficmanager1421", "azsmnet6386",
@@ -45,10 +45,10 @@ public final class EndpointsCreateOrUpdateSamples {
     /**
      * Sample code: Endpoint-PUT-External-WithSubnetMapping.
      * 
-     * @param manager Entry point to TrafficManagerManager.
+     * @param manager Entry point to TrafficManager.
      */
     public static void
-        endpointPUTExternalWithSubnetMapping(com.azure.resourcemanager.trafficmanager.TrafficManagerManager manager) {
+        endpointPUTExternalWithSubnetMapping(com.azure.resourcemanager.trafficmanager.TrafficManager manager) {
         manager.serviceClient()
             .getEndpoints()
             .createOrUpdateWithResponse("azuresdkfornetautoresttrafficmanager2191",
@@ -69,10 +69,10 @@ public final class EndpointsCreateOrUpdateSamples {
     /**
      * Sample code: Endpoint-PUT-External-WithCustomHeaders.
      * 
-     * @param manager Entry point to TrafficManagerManager.
+     * @param manager Entry point to TrafficManager.
      */
     public static void
-        endpointPUTExternalWithCustomHeaders(com.azure.resourcemanager.trafficmanager.TrafficManagerManager manager) {
+        endpointPUTExternalWithCustomHeaders(com.azure.resourcemanager.trafficmanager.TrafficManager manager) {
         manager.serviceClient()
             .getEndpoints()
             .createOrUpdateWithResponse("azuresdkfornetautoresttrafficmanager1421", "azsmnet6386",
@@ -94,10 +94,10 @@ public final class EndpointsCreateOrUpdateSamples {
     /**
      * Sample code: Endpoint-PUT-External-WithLocation.
      * 
-     * @param manager Entry point to TrafficManagerManager.
+     * @param manager Entry point to TrafficManager.
      */
     public static void
-        endpointPUTExternalWithLocation(com.azure.resourcemanager.trafficmanager.TrafficManagerManager manager) {
+        endpointPUTExternalWithLocation(com.azure.resourcemanager.trafficmanager.TrafficManager manager) {
         manager.serviceClient()
             .getEndpoints()
             .createOrUpdateWithResponse("azuresdkfornetautoresttrafficmanager1421", "azsmnet6386",
@@ -116,10 +116,10 @@ public final class EndpointsCreateOrUpdateSamples {
     /**
      * Sample code: Endpoint-PUT-External-WithGeoMapping.
      * 
-     * @param manager Entry point to TrafficManagerManager.
+     * @param manager Entry point to TrafficManager.
      */
     public static void
-        endpointPUTExternalWithGeoMapping(com.azure.resourcemanager.trafficmanager.TrafficManagerManager manager) {
+        endpointPUTExternalWithGeoMapping(com.azure.resourcemanager.trafficmanager.TrafficManager manager) {
         manager.serviceClient()
             .getEndpoints()
             .createOrUpdateWithResponse("azuresdkfornetautoresttrafficmanager2191",

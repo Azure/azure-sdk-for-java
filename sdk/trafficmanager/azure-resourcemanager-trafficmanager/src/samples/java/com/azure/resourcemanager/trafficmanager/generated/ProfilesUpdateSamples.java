@@ -20,10 +20,9 @@ public final class ProfilesUpdateSamples {
     /**
      * Sample code: Profile-PATCH-MonitorConfig.
      * 
-     * @param manager Entry point to TrafficManagerManager.
+     * @param manager Entry point to TrafficManager.
      */
-    public static void
-        profilePATCHMonitorConfig(com.azure.resourcemanager.trafficmanager.TrafficManagerManager manager) {
+    public static void profilePATCHMonitorConfig(com.azure.resourcemanager.trafficmanager.TrafficManager manager) {
         manager.serviceClient()
             .getProfiles()
             .updateWithResponse("azuresdkfornetautoresttrafficmanager2583", "azuresdkfornetautoresttrafficmanager6192",

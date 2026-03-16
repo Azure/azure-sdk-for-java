@@ -14,10 +14,10 @@ public final class ProfilesGetByResourceGroupSamples {
     /**
      * Sample code: Profile-GET-WithTrafficViewEnabled.
      * 
-     * @param manager Entry point to TrafficManagerManager.
+     * @param manager Entry point to TrafficManager.
      */
     public static void
-        profileGETWithTrafficViewEnabled(com.azure.resourcemanager.trafficmanager.TrafficManagerManager manager) {
+        profileGETWithTrafficViewEnabled(com.azure.resourcemanager.trafficmanager.TrafficManager manager) {
         manager.serviceClient()
             .getProfiles()
             .getByResourceGroupWithResponse("azuresdkfornetautoresttrafficmanager1323",
@@ -30,10 +30,10 @@ public final class ProfilesGetByResourceGroupSamples {
     /**
      * Sample code: Profile-GET-WithTrafficViewDisabled.
      * 
-     * @param manager Entry point to TrafficManagerManager.
+     * @param manager Entry point to TrafficManager.
      */
     public static void
-        profileGETWithTrafficViewDisabled(com.azure.resourcemanager.trafficmanager.TrafficManagerManager manager) {
+        profileGETWithTrafficViewDisabled(com.azure.resourcemanager.trafficmanager.TrafficManager manager) {
         manager.serviceClient()
             .getProfiles()
             .getByResourceGroupWithResponse("azuresdkfornetautoresttrafficmanager1323",
@@ -46,9 +46,9 @@ public final class ProfilesGetByResourceGroupSamples {
     /**
      * Sample code: Profile-GET-WithEndpoints.
      * 
-     * @param manager Entry point to TrafficManagerManager.
+     * @param manager Entry point to TrafficManager.
      */
-    public static void profileGETWithEndpoints(com.azure.resourcemanager.trafficmanager.TrafficManagerManager manager) {
+    public static void profileGETWithEndpoints(com.azure.resourcemanager.trafficmanager.TrafficManager manager) {
         manager.serviceClient()
             .getProfiles()
             .getByResourceGroupWithResponse("azuresdkfornetautoresttrafficmanager1323",

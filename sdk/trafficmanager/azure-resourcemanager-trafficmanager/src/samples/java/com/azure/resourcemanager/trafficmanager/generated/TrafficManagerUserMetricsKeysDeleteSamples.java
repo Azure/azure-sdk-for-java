@@ -14,10 +14,10 @@ public final class TrafficManagerUserMetricsKeysDeleteSamples {
     /**
      * Sample code: TrafficManagerUserMetricsKeys-DELETE.
      * 
-     * @param manager Entry point to TrafficManagerManager.
+     * @param manager Entry point to TrafficManager.
      */
     public static void
-        trafficManagerUserMetricsKeysDELETE(com.azure.resourcemanager.trafficmanager.TrafficManagerManager manager) {
+        trafficManagerUserMetricsKeysDELETE(com.azure.resourcemanager.trafficmanager.TrafficManager manager) {
         manager.serviceClient().getTrafficManagerUserMetricsKeys().deleteWithResponse(com.azure.core.util.Context.NONE);
     }
 }

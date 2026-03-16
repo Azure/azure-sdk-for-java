@@ -14,10 +14,9 @@ public final class ProfilesListByResourceGroupSamples {
     /**
      * Sample code: ListProfilesByResourceGroup.
      * 
-     * @param manager Entry point to TrafficManagerManager.
+     * @param manager Entry point to TrafficManager.
      */
-    public static void
-        listProfilesByResourceGroup(com.azure.resourcemanager.trafficmanager.TrafficManagerManager manager) {
+    public static void listProfilesByResourceGroup(com.azure.resourcemanager.trafficmanager.TrafficManager manager) {
         manager.serviceClient()
             .getProfiles()
             .listByResourceGroup("azuresdkfornetautoresttrafficmanager3640", com.azure.core.util.Context.NONE);

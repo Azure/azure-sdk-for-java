@@ -17,10 +17,9 @@ public final class EndpointsUpdateSamples {
     /**
      * Sample code: Endpoint-PATCH-External-Target.
      * 
-     * @param manager Entry point to TrafficManagerManager.
+     * @param manager Entry point to TrafficManager.
      */
-    public static void
-        endpointPATCHExternalTarget(com.azure.resourcemanager.trafficmanager.TrafficManagerManager manager) {
+    public static void endpointPATCHExternalTarget(com.azure.resourcemanager.trafficmanager.TrafficManager manager) {
         manager.serviceClient()
             .getEndpoints()
             .updateWithResponse("azuresdkfornetautoresttrafficmanager1421", "azsmnet6386",

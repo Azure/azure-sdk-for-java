@@ -16,10 +16,10 @@ public final class ProfilesCheckTrafficManagerRelativeDnsNameAvailabilitySamples
     /**
      * Sample code: NameAvailabilityTest_NameNotAvailablePOST23.
      * 
-     * @param manager Entry point to TrafficManagerManager.
+     * @param manager Entry point to TrafficManager.
      */
-    public static void nameAvailabilityTestNameNotAvailablePOST23(
-        com.azure.resourcemanager.trafficmanager.TrafficManagerManager manager) {
+    public static void
+        nameAvailabilityTestNameNotAvailablePOST23(com.azure.resourcemanager.trafficmanager.TrafficManager manager) {
         manager.serviceClient()
             .getProfiles()
             .checkTrafficManagerRelativeDnsNameAvailabilityWithResponse(
@@ -34,10 +34,10 @@ public final class ProfilesCheckTrafficManagerRelativeDnsNameAvailabilitySamples
     /**
      * Sample code: NameAvailabilityTest_NameAvailablePOST21.
      * 
-     * @param manager Entry point to TrafficManagerManager.
+     * @param manager Entry point to TrafficManager.
      */
-    public static void nameAvailabilityTestNameAvailablePOST21(
-        com.azure.resourcemanager.trafficmanager.TrafficManagerManager manager) {
+    public static void
+        nameAvailabilityTestNameAvailablePOST21(com.azure.resourcemanager.trafficmanager.TrafficManager manager) {
         manager.serviceClient()
             .getProfiles()
             .checkTrafficManagerRelativeDnsNameAvailabilityWithResponse(

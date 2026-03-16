@@ -16,10 +16,10 @@ public final class EndpointsGetSamples {
     /**
      * Sample code: Endpoint-GET-External-WithGeoMapping.
      * 
-     * @param manager Entry point to TrafficManagerManager.
+     * @param manager Entry point to TrafficManager.
      */
     public static void
-        endpointGETExternalWithGeoMapping(com.azure.resourcemanager.trafficmanager.TrafficManagerManager manager) {
+        endpointGETExternalWithGeoMapping(com.azure.resourcemanager.trafficmanager.TrafficManager manager) {
         manager.serviceClient()
             .getEndpoints()
             .getWithResponse("azuresdkfornetautoresttrafficmanager2191", "azuresdkfornetautoresttrafficmanager8224",
@@ -32,10 +32,10 @@ public final class EndpointsGetSamples {
     /**
      * Sample code: Endpoint-GET-External-WithSubnetMapping.
      * 
-     * @param manager Entry point to TrafficManagerManager.
+     * @param manager Entry point to TrafficManager.
      */
     public static void
-        endpointGETExternalWithSubnetMapping(com.azure.resourcemanager.trafficmanager.TrafficManagerManager manager) {
+        endpointGETExternalWithSubnetMapping(com.azure.resourcemanager.trafficmanager.TrafficManager manager) {
         manager.serviceClient()
             .getEndpoints()
             .getWithResponse("azuresdkfornetautoresttrafficmanager2191", "azuresdkfornetautoresttrafficmanager8224",
@@ -48,10 +48,10 @@ public final class EndpointsGetSamples {
     /**
      * Sample code: Endpoint-GET-External-WithLocation.
      * 
-     * @param manager Entry point to TrafficManagerManager.
+     * @param manager Entry point to TrafficManager.
      */
     public static void
-        endpointGETExternalWithLocation(com.azure.resourcemanager.trafficmanager.TrafficManagerManager manager) {
+        endpointGETExternalWithLocation(com.azure.resourcemanager.trafficmanager.TrafficManager manager) {
         manager.serviceClient()
             .getEndpoints()
             .getWithResponse("azuresdkfornetautoresttrafficmanager1421", "azsmnet6386",

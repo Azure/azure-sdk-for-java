@@ -16,10 +16,10 @@ public final class ProfilesCheckTrafficManagerNameAvailabilityV2Samples {
     /**
      * Sample code: NameAvailabilityV2Test_NameNotAvailablePOST23.
      * 
-     * @param manager Entry point to TrafficManagerManager.
+     * @param manager Entry point to TrafficManager.
      */
-    public static void nameAvailabilityV2TestNameNotAvailablePOST23(
-        com.azure.resourcemanager.trafficmanager.TrafficManagerManager manager) {
+    public static void
+        nameAvailabilityV2TestNameNotAvailablePOST23(com.azure.resourcemanager.trafficmanager.TrafficManager manager) {
         manager.serviceClient()
             .getProfiles()
             .checkTrafficManagerNameAvailabilityV2WithResponse(
@@ -34,10 +34,10 @@ public final class ProfilesCheckTrafficManagerNameAvailabilityV2Samples {
     /**
      * Sample code: NameAvailabilityV2Test_NameAvailablePOST21.
      * 
-     * @param manager Entry point to TrafficManagerManager.
+     * @param manager Entry point to TrafficManager.
      */
-    public static void nameAvailabilityV2TestNameAvailablePOST21(
-        com.azure.resourcemanager.trafficmanager.TrafficManagerManager manager) {
+    public static void
+        nameAvailabilityV2TestNameAvailablePOST21(com.azure.resourcemanager.trafficmanager.TrafficManager manager) {
         manager.serviceClient()
             .getProfiles()
             .checkTrafficManagerNameAvailabilityV2WithResponse(
