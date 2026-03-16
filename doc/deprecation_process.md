@@ -24,7 +24,7 @@ Clone the repository and update the following files of your package:
 
 - `CHANGELOG.md` add a new version with the current date and the same disclaimer. For instance:
 
-> ## 1.2.3 (2023-04-03)
+> ## 1.0.1 (2023-04-03)
 > 
 > Please note, this package has been deprecated and will no longer be maintained after $EOLDate. We encourage you to
 > upgrade to the replacement package, $Replacement, to continue receiving updates. Refer to the migration guide
