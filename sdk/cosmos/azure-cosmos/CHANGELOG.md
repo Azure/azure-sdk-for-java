@@ -4,7 +4,8 @@
 
 #### Features Added
 * Added support for N-Region synchronous commit feature - See [PR 47757](https://github.com/Azure/azure-sdk-for-java/pull/47757)
-* Added support for Query Advisor feature - See [48160](https://github.com/Azure/azure-sdk-for-java/pull/48160) 
+* Added support for Query Advisor feature - See [48160](https://github.com/Azure/azure-sdk-for-java/pull/48160)
+* Added write availability strategy (hedging) for Per-Partition Automatic Failover (PPAF) single-writer accounts. When a write to the current write region is slow or fails (410/21005, 503/21008, 403/3, 408), the SDK hedges the write to a read region via the existing availability strategy. On success, the PPAF manager records the new region so subsequent writes route directly there. Controlled by `COSMOS.IS_WRITE_AVAILABILITY_STRATEGY_ENABLED_WITH_PPAF` system property (default: enabled).
 
 #### Breaking Changes
 
