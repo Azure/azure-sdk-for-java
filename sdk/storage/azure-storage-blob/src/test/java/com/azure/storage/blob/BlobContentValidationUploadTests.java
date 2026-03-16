@@ -48,51 +48,12 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
     /* Single-part uploads with length < 4MB use CRC64 header; >= 4MB use structured message. */
     private static final int UNDER_4MB = 2 * Constants.MB;
 
-    /**
-     * Creates a BlobAsyncClient that records all outgoing request headers into the supplied list.
-     * Each test should use its own list so tests can run concurrently.
-     */
-    private BlobAsyncClient createBlobAsyncClientWithRequestSniffer(List<HttpHeaders> recordedRequestHeaders) {
-        HttpPipelinePolicy sniffPolicy = (context, next) -> {
-            recordedRequestHeaders.add(context.getHttpRequest().getHeaders());
-            return next.process();
-        };
-        BlobServiceAsyncClient serviceClient = getServiceAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
-            ENVIRONMENT.getPrimaryAccount().getBlobEndpoint(), sniffPolicy);
-        return serviceClient.getBlobContainerAsyncClient(containerName).getBlobAsyncClient(generateBlobName());
-    }
-
-    private static boolean hasOnlyStructuredMessageHeaders(List<HttpHeaders> recordedRequestHeaders) {
-        return recordedRequestHeaders.stream().anyMatch(headers -> {
-            String bodyType = headers.getValue(Constants.HeaderConstants.STRUCTURED_BODY_TYPE_HEADER_NAME);
-            String contentLength = headers.getValue(Constants.HeaderConstants.STRUCTURED_CONTENT_LENGTH_HEADER_NAME);
-            String contentCrc64 = headers.getValue(Constants.HeaderConstants.CONTENT_CRC64_HEADER_NAME);
-            return StructuredMessageConstants.STRUCTURED_BODY_TYPE_VALUE.equals(bodyType)
-                && contentLength != null
-                && contentCrc64 == null;
-        });
-    }
-
-    private static boolean hasOnlyCrc64Headers(List<HttpHeaders> recordedRequestHeaders) {
-        return recordedRequestHeaders.stream().anyMatch(headers -> {
-            String contentCrc64 = headers.getValue(Constants.HeaderConstants.CONTENT_CRC64_HEADER_NAME);
-            String bodyType = headers.getValue(Constants.HeaderConstants.STRUCTURED_BODY_TYPE_HEADER_NAME);
-            String contentLength = headers.getValue(Constants.HeaderConstants.STRUCTURED_CONTENT_LENGTH_HEADER_NAME);
-            return contentCrc64 != null && bodyType == null && contentLength == null;
-        });
-    }
-
-    private static boolean hasNoContentValidationHeaders(List<HttpHeaders> recordedRequestHeaders) {
-        return recordedRequestHeaders.stream().anyMatch(headers -> {
-            String bodyType = headers.getValue(Constants.HeaderConstants.STRUCTURED_BODY_TYPE_HEADER_NAME);
-            String contentLength = headers.getValue(Constants.HeaderConstants.STRUCTURED_CONTENT_LENGTH_HEADER_NAME);
-            String contentCrc64 = headers.getValue(Constants.HeaderConstants.CONTENT_CRC64_HEADER_NAME);
-            return bodyType == null && contentLength == null && contentCrc64 == null;
-        });
-    }
+    // ===========================================================================================
+    // BlobAsyncClient.uploadWithResponse
+    // ===========================================================================================
 
     /**
-     * Single-part upload &lt; 4MB with CRC64: content validation uses CRC64 header only (no structured message).
+     * Single-part upload; 4MB with CRC64: content validation uses CRC64 header only (no structured message).
      */
     @Test
     public void uploadWithCrc64Header() {
@@ -114,7 +75,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
     }
 
     /**
-     * Single-part upload 10MB (>= 4MB) with CRC64: content validation uses structured message.
+     * Single-part upload; 10MB (>= 4MB): content validation uses structured message.
      */
     @Test
     public void uploadWithStructuredMessage() {
@@ -136,7 +97,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
     }
 
     /**
-     * Multi-part (chunked) upload with CRC64: content validation always uses structured message on each stage block.
+     * Multi-part (chunked) upload; content validation uses structured message on each stage block.
      */
     @Test
     public void uploadChunkedWithStructuredMessage() {
@@ -160,7 +121,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
     }
 
     @Test
-    public void uploadWithNoContentValidation() {
+    public void uploadWithoutContentValidation() {
         List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
         BlobAsyncClient client = createBlobAsyncClientWithRequestSniffer(recorded);
 
@@ -428,22 +389,12 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
     // BlobAsyncClient.uploadFromFileWithResponse tests
     // ===========================================================================================
 
-    private File createTempFile(byte[] data) throws IOException {
-        File tempFile = File.createTempFile("blob-content-validation-", ".tmp");
-        tempFile.deleteOnExit();
-        try (FileOutputStream fos = new FileOutputStream(tempFile)) {
-            fos.write(data);
-        }
-        return tempFile;
-    }
-
     @Test
     public void uploadFromFileWithCrc64Header() throws IOException {
         List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
         BlobAsyncClient client = createBlobAsyncClientWithRequestSniffer(recorded);
 
-        byte[] randomData = getRandomByteArray(UNDER_4MB);
-        File tempFile = createTempFile(randomData);
+        File tempFile = getRandomFile(UNDER_4MB);
 
         BlobUploadFromFileOptions options = new BlobUploadFromFileOptions(tempFile.getAbsolutePath())
             .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) UNDER_4MB))
@@ -460,8 +411,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
         BlobAsyncClient client = createBlobAsyncClientWithRequestSniffer(recorded);
 
-        byte[] randomData = getRandomByteArray(TEN_MB);
-        File tempFile = createTempFile(randomData);
+        File tempFile = getRandomFile(TEN_MB);
 
         BlobUploadFromFileOptions options = new BlobUploadFromFileOptions(tempFile.getAbsolutePath())
             .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) TEN_MB))
@@ -478,8 +428,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
         BlobAsyncClient client = createBlobAsyncClientWithRequestSniffer(recorded);
 
-        byte[] randomData = getRandomByteArray(TEN_MB);
-        File tempFile = createTempFile(randomData);
+        File tempFile = getRandomFile(TEN_MB);
         long blockSize = 2 * (long) Constants.MB;
 
         BlobUploadFromFileOptions options = new BlobUploadFromFileOptions(tempFile.getAbsolutePath())
@@ -498,8 +447,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
         BlobAsyncClient client = createBlobAsyncClientWithRequestSniffer(recorded);
 
-        byte[] randomData = getRandomByteArray(TEN_MB);
-        File tempFile = createTempFile(randomData);
+        File tempFile = getRandomFile(TEN_MB);
 
         BlobUploadFromFileOptions options = new BlobUploadFromFileOptions(tempFile.getAbsolutePath())
             .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) TEN_MB))
@@ -514,16 +462,6 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
     // ===========================================================================================
     // Sync BlobOutputStream tests (getBlobOutputStream)
     // ===========================================================================================
-
-    private BlobClient createBlobClientWithRequestSniffer(List<HttpHeaders> recordedRequestHeaders) {
-        HttpPipelinePolicy sniffPolicy = (context, next) -> {
-            recordedRequestHeaders.add(context.getHttpRequest().getHeaders());
-            return next.process();
-        };
-        BlobServiceClient serviceClient = getServiceClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
-            ENVIRONMENT.getPrimaryAccount().getBlobEndpoint(), sniffPolicy);
-        return serviceClient.getBlobContainerClient(containerName).getBlobClient(generateBlobName());
-    }
 
     // --- AppendBlobClient.getBlobOutputStream ---
 
@@ -759,6 +697,59 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         }
 
         assertTrue(hasNoContentValidationHeaders(recorded));
+    }
+
+    private static boolean hasOnlyStructuredMessageHeaders(List<HttpHeaders> recordedRequestHeaders) {
+        return recordedRequestHeaders.stream().anyMatch(headers -> {
+            String bodyType = headers.getValue(Constants.HeaderConstants.STRUCTURED_BODY_TYPE_HEADER_NAME);
+            String contentLength = headers.getValue(Constants.HeaderConstants.STRUCTURED_CONTENT_LENGTH_HEADER_NAME);
+            String contentCrc64 = headers.getValue(Constants.HeaderConstants.CONTENT_CRC64_HEADER_NAME);
+            return StructuredMessageConstants.STRUCTURED_BODY_TYPE_VALUE.equals(bodyType)
+                && contentLength != null
+                && contentCrc64 == null;
+        });
+    }
+
+    private static boolean hasOnlyCrc64Headers(List<HttpHeaders> recordedRequestHeaders) {
+        return recordedRequestHeaders.stream().anyMatch(headers -> {
+            String contentCrc64 = headers.getValue(Constants.HeaderConstants.CONTENT_CRC64_HEADER_NAME);
+            String bodyType = headers.getValue(Constants.HeaderConstants.STRUCTURED_BODY_TYPE_HEADER_NAME);
+            String contentLength = headers.getValue(Constants.HeaderConstants.STRUCTURED_CONTENT_LENGTH_HEADER_NAME);
+            return contentCrc64 != null && bodyType == null && contentLength == null;
+        });
+    }
+
+    private static boolean hasNoContentValidationHeaders(List<HttpHeaders> recordedRequestHeaders) {
+        return recordedRequestHeaders.stream().anyMatch(headers -> {
+            String bodyType = headers.getValue(Constants.HeaderConstants.STRUCTURED_BODY_TYPE_HEADER_NAME);
+            String contentLength = headers.getValue(Constants.HeaderConstants.STRUCTURED_CONTENT_LENGTH_HEADER_NAME);
+            String contentCrc64 = headers.getValue(Constants.HeaderConstants.CONTENT_CRC64_HEADER_NAME);
+            return bodyType == null && contentLength == null && contentCrc64 == null;
+        });
+    }
+
+    /**
+     * Creates a BlobAsyncClient that records all outgoing request headers into the supplied list.
+     * Each test should use its own list so tests can run concurrently.
+     */
+    private BlobAsyncClient createBlobAsyncClientWithRequestSniffer(List<HttpHeaders> recordedRequestHeaders) {
+        HttpPipelinePolicy sniffPolicy = (context, next) -> {
+            recordedRequestHeaders.add(context.getHttpRequest().getHeaders());
+            return next.process();
+        };
+        BlobServiceAsyncClient serviceClient = getServiceAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
+            ENVIRONMENT.getPrimaryAccount().getBlobEndpoint(), sniffPolicy);
+        return serviceClient.getBlobContainerAsyncClient(containerName).getBlobAsyncClient(generateBlobName());
+    }
+
+    private BlobClient createBlobClientWithRequestSniffer(List<HttpHeaders> recordedRequestHeaders) {
+        HttpPipelinePolicy sniffPolicy = (context, next) -> {
+            recordedRequestHeaders.add(context.getHttpRequest().getHeaders());
+            return next.process();
+        };
+        BlobServiceClient serviceClient = getServiceClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
+            ENVIRONMENT.getPrimaryAccount().getBlobEndpoint(), sniffPolicy);
+        return serviceClient.getBlobContainerClient(containerName).getBlobClient(generateBlobName());
     }
 
 }
