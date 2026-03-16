@@ -115,7 +115,10 @@ public class RecurrenceValidator {
         final Duration intervalDuration = RecurrencePatternType.DAILY.equals(pattern.getType())
             ? Duration.ofDays(pattern.getInterval())
             : Duration.ofDays((long) pattern.getInterval() * RecurrenceConstants.DAYS_PER_WEEK);
-        final Duration timeWindowDuration = Duration.between(settings.getStart(), settings.getEnd());
+        // Convert to UTC to ensure consistent duration calculation across DST transitions
+        final Duration timeWindowDuration = Duration.between(
+            settings.getStart().withZoneSameInstant(ZoneOffset.UTC), 
+            settings.getEnd().withZoneSameInstant(ZoneOffset.UTC));
         if (timeWindowDuration.compareTo(intervalDuration) > 0) {
             throw new IllegalArgumentException(String.format(RecurrenceConstants.TIME_WINDOW_DURATION_OUT_OF_RANGE, "Recurrence.Pattern.Interval"));
         }
@@ -155,16 +158,19 @@ public class RecurrenceValidator {
         final List<DayOfWeek> sortedDaysOfWeek = TimeWindowUtils.sortDaysOfWeek(daysOfWeek, firstDayOfWeek);
 
         // Loop the whole week to get the min gap between the two consecutive recurrences
+        // Use calendar-based day counting to avoid DST-related issues (23/25 hour elapsed time)
         ZonedDateTime date;
         ZonedDateTime prevOccurrence = null;
-        Duration minGap = Duration.ofDays(RecurrenceConstants.DAYS_PER_WEEK);
+        long minGapDays = RecurrenceConstants.DAYS_PER_WEEK;
 
         for (DayOfWeek day: sortedDaysOfWeek) {
             date = firstDateOfWeek.plusDays(TimeWindowUtils.getPassedWeekDays(day, firstDayOfWeek));
             if (prevOccurrence != null) {
-                final Duration currentGap = Duration.between(prevOccurrence, date);
-                if (currentGap.compareTo(minGap) < 0) {
-                    minGap = currentGap;
+                // Use ChronoUnit.DAYS to count calendar days, not elapsed time
+                // This ensures Sunday-Monday is always 1 day (24 hours) regardless of DST
+                final long currentGapDays = ChronoUnit.DAYS.between(prevOccurrence, date);
+                if (currentGapDays < minGapDays) {
+                    minGapDays = currentGapDays;
                 }
             }
             prevOccurrence = date;
@@ -174,13 +180,19 @@ public class RecurrenceValidator {
             // It may across weeks. Check the adjacent week
             date = firstDateOfWeek.plusDays(RecurrenceConstants.DAYS_PER_WEEK)
                 .plusDays(TimeWindowUtils.getPassedWeekDays(sortedDaysOfWeek.get(0), firstDayOfWeek));
-            final Duration currentGap = Duration.between(prevOccurrence, date);
-            if (currentGap.compareTo(minGap) < 0) {
-                minGap = currentGap;
+            // Use ChronoUnit.DAYS to count calendar days, not elapsed time
+            final long currentGapDays = ChronoUnit.DAYS.between(prevOccurrence, date);
+            if (currentGapDays < minGapDays) {
+                minGapDays = currentGapDays;
             }
         }
 
-        final Duration timeWindowDuration = Duration.between(settings.getStart(), settings.getEnd());
+        final Duration minGap = Duration.ofDays(minGapDays);
+
+        // Convert to UTC to ensure consistent duration calculation across DST transitions
+        final Duration timeWindowDuration = Duration.between(
+            settings.getStart().withZoneSameInstant(ZoneOffset.UTC), 
+            settings.getEnd().withZoneSameInstant(ZoneOffset.UTC));
         return minGap.compareTo(timeWindowDuration) >= 0;
     }
 }

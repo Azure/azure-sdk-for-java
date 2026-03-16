@@ -30,12 +30,12 @@ import com.azure.spring.cloud.feature.management.implementation.timewindow.recur
 public class RecurrenceValidatorDSTTest {
 
     /**
-     * Test that a 23.5-hour window between Monday and Wednesday is valid when using UTC,
-     * even during a DST transition week. Without UTC, the validator might incorrectly
-     * calculate the gap as 22.5 or 24.5 hours depending on DST.
+     * Test that a 23-hour window between Monday and Wednesday is valid when using calendar-based gap calculation.
+     * Without calendar-based calculation, the validator might incorrectly calculate gaps based on elapsed time
+     * which could be 23 or 25 hours depending on DST transitions.
      * 
      * This test uses a reference time on the DST transition day (Sunday, March 31, 2024)
-     * to ensure the validator correctly calculates gaps in UTC.
+     * to ensure the validator correctly calculates gaps using calendar days (always 24 hours per day).
      */
     @Test
     public void validate23HourWindowDuringDSTSpringForward() {
@@ -45,31 +45,33 @@ public class RecurrenceValidatorDSTTest {
         final Recurrence recurrence = new Recurrence();
         
         pattern.setType("Weekly");
-        pattern.setDaysOfWeek(List.of("Monday", "Wednesday")); // 48-hour gap minimum
+        pattern.setDaysOfWeek(List.of("Monday", "Wednesday")); // 48-hour gap minimum (2 calendar days)
         pattern.setFirstDayOfWeek("Monday");
         pattern.setInterval(1);
         
         recurrence.setRange(range);
         recurrence.setPattern(pattern);
         
-        // 23.5-hour window (just under 24 hours, well within 48-hour gap)
-        settings.setStart("2024-03-25T10:00:00+01:00"); // Monday, before DST
-        settings.setEnd("2024-03-26T09:30:00+01:00"); // Tuesday, 23.5 hours later
+        // 23-hour window in UTC (unambiguous duration)
+        settings.setStart("2024-03-25T10:00:00Z"); // Monday
+        settings.setEnd("2024-03-26T09:00:00Z"); // Tuesday, 23 hours later
         settings.setRecurrence(recurrence);
         
         // Reference time during DST transition week (Sunday, March 31, 2024 in UTC)
-        // If validator used local time incorrectly, it might miscalculate the Monday-Wednesday gap
+        // This forces the validator to calculate gaps during a DST week
         final ZonedDateTime referenceDuringDST = ZonedDateTime.of(2024, 3, 31, 12, 0, 0, 0, ZoneOffset.UTC);
         
-        // Should pass because 23.5 hours < 48 hours (Monday to Wednesday gap)
+        // Should pass because 23 hours < 48 hours (Monday to Wednesday is 2 calendar days = 48 hours)
         assertDoesNotThrow(() -> RecurrenceValidator.validateSettings(settings, referenceDuringDST),
-            "23.5-hour window should be valid with 48-hour gap, even during DST");
+            "23-hour window should be valid with 48-hour gap using calendar-based calculation");
     }
 
     /**
-     * Test that a 23-hour window is valid with consecutive day recurrence (Monday, Tuesday).
-     * Without UTC, if the validator ran on the DST transition day, it might incorrectly
-     * calculate the Monday-Tuesday gap as 23 hours (losing 1 hour), causing validation to fail.
+     * Test that a 23-hour window is valid with consecutive day recurrence (Sunday, Monday).
+     * The reference time is set to the DST transition week, so when the validator calculates
+     * the Sunday-Monday gap, it crosses the DST spring forward boundary (March 31 2AM -> April 1).
+     * With calendar-based calculation, Sunday to Monday is always 1 day = 24 hours.
+     * A 23-hour window should pass validation (23 < 24).
      */
     @Test
     public void validate23HourWindowWithConsecutiveDays() {
@@ -79,7 +81,7 @@ public class RecurrenceValidatorDSTTest {
         final Recurrence recurrence = new Recurrence();
         
         pattern.setType("Weekly");
-        pattern.setDaysOfWeek(List.of("Monday", "Tuesday")); // 24-hour gap minimum
+        pattern.setDaysOfWeek(List.of("Sunday", "Monday")); // 24-hour gap minimum (1 calendar day)
         pattern.setFirstDayOfWeek("Monday");
         pattern.setInterval(1);
         
@@ -87,23 +89,26 @@ public class RecurrenceValidatorDSTTest {
         recurrence.setPattern(pattern);
         
         // 23-hour window (1 hour less than 24-hour gap)
-        settings.setStart("2024-03-25T10:00:00+01:00"); // Monday
-        settings.setEnd("2024-03-26T09:00:00+01:00"); // Tuesday, 23 hours later
+        settings.setStart("2024-03-24T10:00:00Z"); // Sunday 10:00 UTC
+        settings.setEnd("2024-03-25T09:00:00Z"); // Monday 09:00 UTC (23 hours later)
         settings.setRecurrence(recurrence);
         
-        // Reference time on DST transition day - without UTC, the Monday-Tuesday gap
-        // might be calculated as 23 hours due to DST, causing incorrect failure
-        final ZonedDateTime referenceDuringDST = ZonedDateTime.of(2024, 3, 31, 2, 30, 0, 0, 
+        // Reference time: Wednesday March 27, 2024 in Europe/Paris
+        // This week spans Monday Mar 25 - Sunday Mar 31 (DST transition on Mar 31)
+        // The validator will check the gap from Sunday Mar 31 to Monday Apr 1 which crosses DST
+        // With calendar-based calculation: 1 day = 24 hours
+        final ZonedDateTime referenceDuringDST = ZonedDateTime.of(2024, 3, 27, 12, 0, 0, 0, 
             ZoneId.of("Europe/Paris"));
         
-        // Should pass because 23 hours < 24 hours (UTC calculation)
+        // Should pass because 23 hours < 24 hours (1 calendar day)
         assertDoesNotThrow(() -> RecurrenceValidator.validateSettings(settings, referenceDuringDST),
-            "23-hour window should be valid with 24-hour gap when calculated in UTC");
+            "23-hour window should be valid with 24-hour gap when using calendar-based calculation");
     }
 
     /**
      * Test that a window GREATER than the gap fails validation with consecutive day recurrence.
      * The window must not exceed the gap between occurrences.
+     * With calendar-based calculation, the gap is always 24 hours (1 day) regardless of DST.
      */
     @Test
     public void validate25HourWindowWithConsecutiveDaysShouldFail() {
@@ -121,13 +126,13 @@ public class RecurrenceValidatorDSTTest {
         recurrence.setPattern(pattern);
         
         // 25-hour window (greater than 24-hour gap, should fail)
-        settings.setStart("2024-03-25T10:00:00+01:00"); // Monday
-        settings.setEnd("2024-03-26T11:00:00+01:00"); // Tuesday, 25 hours later
+        settings.setStart("2024-03-25T10:00:00Z"); // Monday 10:00 UTC
+        settings.setEnd("2024-03-26T11:00:00Z"); // Tuesday 11:00 UTC, 25 hours later
         settings.setRecurrence(recurrence);
         
         final ZonedDateTime reference = ZonedDateTime.of(2024, 3, 31, 12, 0, 0, 0, ZoneOffset.UTC);
         
-        // Should fail because window duration (25h) > gap (24h)
+        // Should fail because window duration (25h) > gap (24h calendar days)
         assertThrows(IllegalArgumentException.class, 
             () -> RecurrenceValidator.validateSettings(settings, reference),
             "25-hour window should fail validation with 24-hour gap");
@@ -135,8 +140,8 @@ public class RecurrenceValidatorDSTTest {
 
     /**
      * Test validation across DST fall back transition.
-     * A 23.5-hour window on Sunday-Tuesday should be valid even though
-     * the Sunday night has an extra hour (25-hour day).
+     * A 23-hour window on Sunday-Tuesday should be valid.
+     * With calendar-based calculation, Sunday-Tuesday is always 2 days = 48 hours.
      */
     @Test
     public void validate23HourWindowDuringDSTFallBack() {
@@ -153,18 +158,18 @@ public class RecurrenceValidatorDSTTest {
         recurrence.setRange(range);
         recurrence.setPattern(pattern);
         
-        // 23.5-hour window starting on Sunday before DST fall back
-        settings.setStart("2024-10-27T10:00:00+02:00"); // Sunday (daylight time)
-        settings.setEnd("2024-10-28T09:30:00+01:00"); // Monday, 23.5 hours later (standard time)
+        // 23-hour window in UTC
+        settings.setStart("2024-10-27T10:00:00Z"); // Sunday
+        settings.setEnd("2024-10-28T09:00:00Z"); // Monday, 23 hours later
         settings.setRecurrence(recurrence);
         
         // Reference time during DST fall back week
         final ZonedDateTime referenceDuringFallBack = ZonedDateTime.of(2024, 10, 27, 12, 0, 0, 0, 
             ZoneOffset.UTC);
         
-        // Should pass because 23.5 hours < 48 hours (Sunday to Tuesday gap in UTC)
+        // Should pass because 23 hours < 48 hours (Sunday to Tuesday gap with calendar days)
         assertDoesNotThrow(() -> RecurrenceValidator.validateSettings(settings, referenceDuringFallBack),
-            "23.5-hour window should be valid during DST fall back when calculated in UTC");
+            "23-hour window should be valid during DST fall back when using calendar-based calculation");
     }
 
     /**

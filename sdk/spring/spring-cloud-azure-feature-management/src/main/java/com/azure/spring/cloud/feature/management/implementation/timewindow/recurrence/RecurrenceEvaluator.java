@@ -7,6 +7,7 @@ import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import com.azure.spring.cloud.feature.management.implementation.models.RecurrencePattern;
@@ -97,8 +98,10 @@ public class RecurrenceEvaluator {
         final ZonedDateTime firstDayOfFirstWeek = start.minusDays(
             TimeWindowUtils.getPassedWeekDays(start.getDayOfWeek(), pattern.getFirstDayOfWeek()));
 
-        final long numberOfInterval = Duration.between(firstDayOfFirstWeek, now).toSeconds()
-            / Duration.ofDays((long) interval * RecurrenceConstants.DAYS_PER_WEEK).toSeconds();
+        // Use calendar-based week calculation to avoid DST-related undercounting
+        // Convert both dates to the same zone for accurate week counting
+        final ZonedDateTime alignedNow = now.withZoneSameInstant(firstDayOfFirstWeek.getZone());
+        final long numberOfInterval = ChronoUnit.WEEKS.between(firstDayOfFirstWeek, alignedNow) / interval;
         ZonedDateTime firstDayOfMostRecentOccurringWeek = firstDayOfFirstWeek.plusDays(
             numberOfInterval * (interval * RecurrenceConstants.DAYS_PER_WEEK));
         
