@@ -42,7 +42,7 @@ public final class SemanticRerankResult {
      *
      * @param scores the list of scored documents.
      */
-    public void setScores(List<SemanticRerankScore> scores) {
+    void setScores(List<SemanticRerankScore> scores) {
         this.scores = scores;
     }
 
@@ -60,7 +60,7 @@ public final class SemanticRerankResult {
      *
      * @param latency the latency information map.
      */
-    public void setLatency(Map<String, Object> latency) {
+    void setLatency(Map<String, Object> latency) {
         this.latency = latency;
     }
 
@@ -78,7 +78,7 @@ public final class SemanticRerankResult {
      *
      * @param tokenUsage the token usage information map.
      */
-    public void setTokenUsage(Map<String, Object> tokenUsage) {
+    void setTokenUsage(Map<String, Object> tokenUsage) {
         this.tokenUsage = tokenUsage;
     }
 }

@@ -739,6 +739,39 @@ public final class ModelBridgeInternal {
         return cosmosPatchOperations.getPatchOperations();
     }
 
+    // Bridge methods for SemanticRerankResult and SemanticRerankScore — setters are package-private
+    // to prevent mutation by callers; InferenceService uses these bridge methods to populate instances.
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static void setSemanticRerankResultScores(SemanticRerankResult result, java.util.List<SemanticRerankScore> scores) {
+        result.setScores(scores);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static void setSemanticRerankResultLatency(SemanticRerankResult result, Map<String, Object> latency) {
+        result.setLatency(latency);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static void setSemanticRerankResultTokenUsage(SemanticRerankResult result, Map<String, Object> tokenUsage) {
+        result.setTokenUsage(tokenUsage);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static void setSemanticRerankScoreIndex(SemanticRerankScore score, int index) {
+        score.setIndex(index);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static void setSemanticRerankScoreScore(SemanticRerankScore score, double scoreValue) {
+        score.setScore(scoreValue);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static void setSemanticRerankScoreDocument(SemanticRerankScore score, String document) {
+        score.setDocument(document);
+    }
+
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static void  initializeAllAccessors() {
         CosmosBatch.initialize();

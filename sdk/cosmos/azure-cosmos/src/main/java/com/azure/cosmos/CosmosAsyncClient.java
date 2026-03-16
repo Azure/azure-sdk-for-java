@@ -319,8 +319,10 @@ public final class CosmosAsyncClient implements Closeable {
         }
         if (this.inferenceService.get() == null) {
             InferenceService newSvc = new InferenceService(this.tokenCredential);
-            // If another thread already set it, compareAndSet is a no-op and newSvc is discarded
-            this.inferenceService.compareAndSet(null, newSvc);
+            if (!this.inferenceService.compareAndSet(null, newSvc)) {
+                // Another thread already set the instance; close the losing one to prevent resource leak
+                newSvc.close();
+            }
         }
         return this.inferenceService.get();
     }

@@ -377,8 +377,6 @@ public class InferenceServiceTest {
         // The Mono is returned inside the supplier so it is assembled after the
         // virtual scheduler is installed.
         final InferenceService service = new InferenceService(mockTokenCredential);
-        service.retryScheduler = reactor.core.scheduler.Schedulers.fromExecutor(
-            java.util.concurrent.Executors.newSingleThreadScheduledExecutor());
 
         StepVerifier.withVirtualTime(() -> {
                 service.retryScheduler = reactor.test.scheduler.VirtualTimeScheduler.get();

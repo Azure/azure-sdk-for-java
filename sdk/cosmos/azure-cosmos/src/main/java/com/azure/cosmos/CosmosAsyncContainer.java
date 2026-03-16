@@ -1711,8 +1711,12 @@ public class CosmosAsyncContainer {
         List<String> documents,
         Map<String, Object> options) {
 
-        checkNotNull(rerankContext, "Rerank context cannot be null");
-        checkNotNull(documents, "Documents list cannot be null");
+        if (rerankContext == null) {
+            return Mono.error(new IllegalArgumentException("Rerank context cannot be null"));
+        }
+        if (documents == null) {
+            return Mono.error(new IllegalArgumentException("Documents list cannot be null"));
+        }
 
         if (rerankContext.trim().isEmpty()) {
             return Mono.error(new IllegalArgumentException("Rerank context cannot be empty"));

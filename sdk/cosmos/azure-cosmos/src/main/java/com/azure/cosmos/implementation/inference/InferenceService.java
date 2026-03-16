@@ -18,6 +18,7 @@ import com.azure.cosmos.implementation.http.HttpClientConfig;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.SemanticRerankResult;
 import com.azure.cosmos.models.SemanticRerankScore;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -57,15 +58,22 @@ public class InferenceService implements AutoCloseable {
     private static final Logger logger = LoggerFactory.getLogger(InferenceService.class);
     private static final String INFERENCE_SCOPE = "https://dbinference.azure.com/.default";
     private static final String BASE_PATH = "/inference/semanticReranking";
-    private static final String INFERENCE_USER_AGENT = "cosmos-inference-java";
+    private static final String INFERENCE_USER_AGENT =
+        "cosmos-inference-java/" + HttpConstants.Versions.getSdkVersion();
     private static final ObjectMapper OBJECT_MAPPER = Utils.getSimpleObjectMapper();
 
     // System property / environment variable names
     private static final String MAX_CONNECTION_LIMIT_PROPERTY = "AZURE_COSMOS_SEMANTIC_RERANKER_INFERENCE_SERVICE_MAX_CONNECTION_LIMIT";
     private static final String MAX_CONNECTION_LIMIT_VARIABLE = "AZURE_COSMOS_SEMANTIC_RERANKER_INFERENCE_SERVICE_MAX_CONNECTION_LIMIT";
 
-    // Option key that callers can pass in the options map to override the per-request timeout
+    // Option keys that callers can pass in the options map
     public static final String OPTION_TIMEOUT_SECONDS = "timeout_seconds";
+    public static final String OPTION_RETURN_DOCUMENTS = "return_documents";
+    public static final String OPTION_TOP_K = "top_k";
+    public static final String OPTION_BATCH_SIZE = "batch_size";
+    public static final String OPTION_SORT = "sort";
+    public static final String OPTION_DOCUMENT_TYPE = "document_type";
+    public static final String OPTION_TARGET_PATHS = "target_paths";
 
     /**
      * Default network-level (connection + read) timeout for inference service HTTP calls.
@@ -124,14 +132,15 @@ public class InferenceService implements AutoCloseable {
                 + "Rebuild the CosmosClient using .credential(TokenCredential) — "
                 + "key-based auth (master key or AzureKeyCredential) is not supported for this operation.");
 
-        URI inferenceBaseUrl = new Configs().getInferenceServiceEndpoint();
+        Configs configs = new Configs();
+        URI inferenceBaseUrl = configs.getInferenceServiceEndpoint();
 
         if (inferenceBaseUrl == null || inferenceBaseUrl.toString().trim().isEmpty()) {
             throw new IllegalArgumentException("Inference endpoint property must be set to use semantic reranking");
         }
 
         this.inferenceEndpoint = URI.create(inferenceBaseUrl + BASE_PATH);
-        HttpClientConfig httpClientConfig = new HttpClientConfig(Configs.getDefaultInferenceServiceConfig())
+        HttpClientConfig httpClientConfig = new HttpClientConfig(configs)
             .withNetworkRequestTimeout(DEFAULT_NETWORK_REQUEST_TIMEOUT)
             .withConnectionAcquireTimeout(DEFAULT_CONNECTION_ACQUIRE_TIMEOUT)
             .withMaxIdleConnectionTimeout(DEFAULT_IDLE_CONNECTION_TIMEOUT)
@@ -211,17 +220,6 @@ public class InferenceService implements AutoCloseable {
         List<String> documents,
         Map<String, Object> options) {
 
-        checkNotNull(rerankContext, "Rerank context cannot be null");
-        checkNotNull(documents, "Documents list cannot be null");
-
-        if (rerankContext.trim().isEmpty()) {
-            return Mono.error(new IllegalArgumentException("Rerank context cannot be empty"));
-        }
-
-        if (documents.isEmpty()) {
-            return Mono.error(new IllegalArgumentException("Documents list cannot be empty"));
-        }
-
         // Resolve the per-request timeout: options > default
         final Duration requestTimeout = resolveRequestTimeout(options);
 
@@ -294,7 +292,6 @@ public class InferenceService implements AutoCloseable {
      * <p>Retries up to {@value #RETRY_MAX_ATTEMPTS} times on retryable {@link com.azure.cosmos.CosmosException}
      * status codes (429, 500, 502, 503) using exponential backoff with jitter, starting at
      * {@link #RETRY_INITIAL_BACKOFF} and capped at {@link #RETRY_MAX_BACKOFF}.
-     * For 429 responses the {@code Retry-After} header is honoured when present.
      * All other exceptions (non-retryable status codes, serialisation errors, etc.) propagate immediately.
      *
      * <p>Matches the Python SDK's retry policy:
@@ -330,7 +327,6 @@ public class InferenceService implements AutoCloseable {
         headers.set(HttpConstants.HttpHeaders.CONTENT_TYPE, "application/json");
         headers.set(HttpConstants.HttpHeaders.AUTHORIZATION, "Bearer " + accessToken.getToken());
         headers.set(HttpConstants.HttpHeaders.USER_AGENT, INFERENCE_USER_AGENT);
-        headers.set(HttpConstants.HttpHeaders.VERSION, HttpConstants.Versions.CURRENT_VERSION);
 
         return new HttpRequest(
             HttpMethod.POST,
@@ -373,17 +369,23 @@ public class InferenceService implements AutoCloseable {
                         if (scoresNode.isArray()) {
                             for (JsonNode scoreNode : scoresNode) {
                                 SemanticRerankScore score = new SemanticRerankScore();
-                                score.setIndex(scoreNode.get("index").asInt());
-                                score.setScore(scoreNode.get("score").asDouble());
+                                JsonNode indexNode = scoreNode.get("index");
+                                JsonNode scoreValNode = scoreNode.get("score");
+                                if (indexNode != null) {
+                                    ModelBridgeInternal.setSemanticRerankScoreIndex(score, indexNode.asInt());
+                                }
+                                if (scoreValNode != null) {
+                                    ModelBridgeInternal.setSemanticRerankScoreScore(score, scoreValNode.asDouble());
+                                }
 
                                 if (scoreNode.has("document")) {
-                                    score.setDocument(scoreNode.get("document").asText());
+                                    ModelBridgeInternal.setSemanticRerankScoreDocument(score, scoreNode.get("document").asText());
                                 }
 
                                 scores.add(score);
                             }
                         }
-                        result.setScores(scores);
+                        ModelBridgeInternal.setSemanticRerankResultScores(result, scores);
                     }
 
                     // Parse latency
@@ -391,7 +393,7 @@ public class InferenceService implements AutoCloseable {
                         Map<String, Object> latency = new HashMap<>();
                         rootNode.get("latency").fields().forEachRemaining(
                             entry -> latency.put(entry.getKey(), entry.getValue().asDouble()));
-                        result.setLatency(latency);
+                        ModelBridgeInternal.setSemanticRerankResultLatency(result, latency);
                     }
 
                     // Parse token usage
@@ -399,7 +401,7 @@ public class InferenceService implements AutoCloseable {
                         Map<String, Object> tokenUsage = new HashMap<>();
                         rootNode.get("token_usage").fields().forEachRemaining(
                             entry -> tokenUsage.put(entry.getKey(), entry.getValue().asInt()));
-                        result.setTokenUsage(tokenUsage);
+                        ModelBridgeInternal.setSemanticRerankResultTokenUsage(result, tokenUsage);
                     }
 
                     if (logger.isDebugEnabled()) {
@@ -409,7 +411,7 @@ public class InferenceService implements AutoCloseable {
 
                     return Mono.just(result);
 
-                } catch (IOException e) {
+                } catch (Exception e) {
                     logger.error("Failed to parse semantic rerank response", e);
                     // Use BadRequestException (400) + CUSTOM_SERIALIZER_EXCEPTION sub-status —
                     // the same pattern CosmosItemSerializer uses for client-side deserialization

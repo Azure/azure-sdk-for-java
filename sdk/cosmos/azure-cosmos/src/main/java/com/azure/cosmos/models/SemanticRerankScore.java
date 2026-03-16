@@ -39,7 +39,7 @@ public final class SemanticRerankScore {
      *
      * @param index the document index.
      */
-    public void setIndex(int index) {
+    void setIndex(int index) {
         this.index = index;
     }
 
@@ -57,7 +57,7 @@ public final class SemanticRerankScore {
      *
      * @param document the document text.
      */
-    public void setDocument(String document) {
+    void setDocument(String document) {
         this.document = document;
     }
 
@@ -75,7 +75,7 @@ public final class SemanticRerankScore {
      *
      * @param score the relevance score.
      */
-    public void setScore(double score) {
+    void setScore(double score) {
         this.score = score;
     }
 }
