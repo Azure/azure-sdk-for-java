@@ -15,6 +15,7 @@ import com.azure.storage.file.datalake.DataLakeFileSystemClient;
 import com.azure.storage.file.datalake.DataLakeServiceAsyncClient;
 import com.azure.storage.file.datalake.DataLakeServiceClient;
 import com.azure.storage.file.datalake.DataLakeServiceClientBuilder;
+import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
 import com.azure.storage.stress.ContentMismatchException;
 import com.azure.storage.stress.FaultInjectingHttpPolicy;
 import com.azure.storage.stress.FaultInjectionProbabilities;
@@ -23,6 +24,7 @@ import com.azure.storage.stress.TelemetryHelper;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.util.UUID;
 
@@ -88,48 +90,72 @@ public abstract class DataLakeScenarioBase<TOptions extends StorageStressOptions
             .then(super.globalCleanupAsync());
     }
 
-    /**
-     * Enhanced cleanup with timeout and retry logic to ensure file systems are properly destroyed.
-     */
+    private static final int DELETE_TIMEOUT_SECONDS = 30;
+    private static final int PATH_CLEANUP_TIMEOUT_SECONDS = 60;
+    private static final int MAX_RETRY_ATTEMPTS = 3;
+
     private Mono<Void> cleanupFileSystemWithRetry() {
+        return tryDeleteFileSystem()
+            .onErrorResume(error -> fallbackCleanup());
+    }
+
+    private Mono<Void> tryDeleteFileSystem() {
         return asyncNoFaultFileSystemClient.deleteIfExists()
-            .then()  // Convert Mono<Boolean> to Mono<Void>
-            .timeout(java.time.Duration.ofSeconds(30))
-            .retry(3)
-            .onErrorResume(error -> {
-                // If file system deletion fails, try to delete all files first then retry
-                return deleteAllFilesInFileSystem()
-                    .then(asyncNoFaultFileSystemClient.deleteIfExists())
-                    .then()  // Convert Mono<Boolean> to Mono<Void>
-                    .timeout(java.time.Duration.ofSeconds(30))
-                    .onErrorResume(finalError -> {
-                        // Log the error but don't fail the test
-                        LOGGER.atWarning()
-                            .addKeyValue("error", finalError.getMessage())
-                            .log("Final file system cleanup failed after retries");
-                        return Mono.empty();
-                    });
-            });
+            .then()
+            .timeout(Duration.ofSeconds(DELETE_TIMEOUT_SECONDS))
+            .retry(MAX_RETRY_ATTEMPTS);
+    }
+
+    private Mono<Void> fallbackCleanup() {
+        return deleteAllPathsInFileSystem()
+            .then(tryDeleteFileSystemOnce())
+            .onErrorResume(this::logCleanupFailure);
+    }
+
+    private Mono<Void> tryDeleteFileSystemOnce() {
+        return asyncNoFaultFileSystemClient.deleteIfExists()
+            .then()
+            .timeout(Duration.ofSeconds(DELETE_TIMEOUT_SECONDS));
+    }
+
+    private Mono<Void> logCleanupFailure(Throwable error) {
+        LOGGER.atWarning()
+            .addKeyValue("error", error.getMessage())
+            .log("Final file system cleanup failed after retries");
+        return Mono.empty();
     }
 
     /**
-     * Delete all files in the file system to help with cleanup.
+     * Deletes all paths in the file system sequentially to avoid throttling.
      */
-    private Mono<Void> deleteAllFilesInFileSystem() {
+    private Mono<Void> deleteAllPathsInFileSystem() {
         return asyncNoFaultFileSystemClient.listPaths()
-            .concatMap(pathItem ->
-                asyncNoFaultFileSystemClient.getFileAsyncClient(pathItem.getName()).deleteIfExists()
-                    .onErrorResume(e -> Mono.empty())
-                    .then())
+            .concatMap(this::deletePathQuietly)
             .then()
-            .timeout(java.time.Duration.ofSeconds(60))
+            .timeout(Duration.ofSeconds(PATH_CLEANUP_TIMEOUT_SECONDS))
             .onErrorResume(error -> {
-                // Log but continue - some files might have been deleted
                 LOGGER.atWarning()
                     .addKeyValue("error", error.getMessage())
-                    .log("File cleanup partially failed");
+                    .log("Path cleanup partially failed");
                 return Mono.empty();
             });
+    }
+
+    private Mono<Void> deletePathQuietly(com.azure.storage.file.datalake.models.PathItem pathItem) {
+        DataLakePathDeleteOptions deleteOptions = new DataLakePathDeleteOptions();
+        deleteOptions.setIsRecursive(true);
+
+        if (pathItem.isDirectory()) {
+            return asyncNoFaultFileSystemClient.getDirectoryAsyncClient(pathItem.getName())
+                .deleteIfExistsWithResponse(deleteOptions)
+                .onErrorResume(e -> Mono.empty())
+                .then();
+        } else {
+            return asyncNoFaultFileSystemClient.getFileAsyncClient(pathItem.getName())
+                .deleteIfExists()
+                .onErrorResume(e -> Mono.empty())
+                .then();
+        }
     }
 
     @SuppressWarnings("try")
