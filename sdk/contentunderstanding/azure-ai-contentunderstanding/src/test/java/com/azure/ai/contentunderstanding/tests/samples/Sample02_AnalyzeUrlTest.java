@@ -442,6 +442,10 @@ public class Sample02_AnalyzeUrlTest extends ContentUnderstandingClientTestBase 
             assertTrue(content instanceof AudioVisualContent, "Video analysis should return AudioVisualContent");
             AudioVisualContent avContent = (AudioVisualContent) content;
             assertTrue(avContent.getEndTime().toMillis() > avContent.getStartTime().toMillis());
+            assertTrue(avContent.getStartTime().toMillis() >= 0,
+                "Range(0-5s) segment StartTime (" + avContent.getStartTime().toMillis() + " ms) should be >= 0 ms");
+            assertTrue(avContent.getEndTime().toMillis() <= 5000,
+                "Range(0-5s) segment EndTime (" + avContent.getEndTime().toMillis() + " ms) should be <= 5000 ms");
         }
         // END:Assertion_ContentUnderstandingAnalyzeVideoUrlWithTimeContentRanges
 
@@ -461,6 +465,8 @@ public class Sample02_AnalyzeUrlTest extends ContentUnderstandingClientTestBase 
             assertTrue(content instanceof AudioVisualContent);
             AudioVisualContent avContent = (AudioVisualContent) content;
             assertTrue(avContent.getEndTime().toMillis() > avContent.getStartTime().toMillis());
+            assertTrue(avContent.getStartTime().toMillis() >= 10000, "TimeRangeFrom(10s) segment StartTime ("
+                + avContent.getStartTime().toMillis() + " ms) should be >= 10000 ms");
             assertNotNull(avContent.getMarkdown());
             assertFalse(avContent.getMarkdown().isEmpty());
         }
@@ -481,6 +487,10 @@ public class Sample02_AnalyzeUrlTest extends ContentUnderstandingClientTestBase 
             assertTrue(content instanceof AudioVisualContent);
             AudioVisualContent avContent = (AudioVisualContent) content;
             assertTrue(avContent.getEndTime().toMillis() > avContent.getStartTime().toMillis());
+            assertTrue(avContent.getStartTime().toMillis() >= 1200, "Range(1200ms-3651ms) segment StartTime ("
+                + avContent.getStartTime().toMillis() + " ms) should be >= 1200 ms");
+            assertTrue(avContent.getEndTime().toMillis() <= 3651, "Range(1200ms-3651ms) segment EndTime ("
+                + avContent.getEndTime().toMillis() + " ms) should be <= 3651 ms");
         }
 
         // ---- Combine multiple time ranges (0-3s, 30s-) ----
@@ -500,6 +510,9 @@ public class Sample02_AnalyzeUrlTest extends ContentUnderstandingClientTestBase 
             assertTrue(content instanceof AudioVisualContent);
             AudioVisualContent avContent = (AudioVisualContent) content;
             assertTrue(avContent.getEndTime().toMillis() > avContent.getStartTime().toMillis());
+            assertTrue(avContent.getEndTime().toMillis() <= 3000 || avContent.getStartTime().toMillis() >= 30000,
+                "Combine(0-3s, 30s-) segment should be in [0,3s] or [30s,∞), but was "
+                    + avContent.getStartTime().toMillis() + "-" + avContent.getEndTime().toMillis() + " ms");
             assertNotNull(avContent.getMarkdown());
             assertFalse(avContent.getMarkdown().isEmpty());
         }
@@ -520,6 +533,10 @@ public class Sample02_AnalyzeUrlTest extends ContentUnderstandingClientTestBase 
             assertTrue(content instanceof AudioVisualContent);
             AudioVisualContent avContent = (AudioVisualContent) content;
             assertTrue(avContent.getEndTime().toMillis() > avContent.getStartTime().toMillis());
+            assertTrue(avContent.getStartTime().toMillis() >= 0, "Raw range(0-5000) segment StartTime ("
+                + avContent.getStartTime().toMillis() + " ms) should be >= 0 ms");
+            assertTrue(avContent.getEndTime().toMillis() <= 5000, "Raw range(0-5000) segment EndTime ("
+                + avContent.getEndTime().toMillis() + " ms) should be <= 5000 ms");
         }
         // The raw string "0-5000" should produce identical results to TimeRange(0, 5s)
         assertEquals(rangeResult.getContents().size(), rawVideoResult.getContents().size(),
@@ -567,6 +584,8 @@ public class Sample02_AnalyzeUrlTest extends ContentUnderstandingClientTestBase 
         assertTrue(fullPhraseCount >= rangePhraseCount);
         long rangeDurationMs = rangeAudioContent.getEndTime().toMillis() - rangeAudioContent.getStartTime().toMillis();
         assertTrue(fullDurationMs >= rangeDurationMs);
+        assertTrue(rangeAudioContent.getStartTime().toMillis() >= 5000, "TimeRangeFrom(5s) audio StartTime ("
+            + rangeAudioContent.getStartTime().toMillis() + " ms) should be >= 5000 ms");
         // END:Assertion_ContentUnderstandingAnalyzeAudioUrlWithTimeContentRanges
 
         // ---- TimeRange(2s, 8s) — specific time window ----
@@ -581,6 +600,10 @@ public class Sample02_AnalyzeUrlTest extends ContentUnderstandingClientTestBase 
 
         assertTrue(audioWindowContent.getEndTime().toMillis() > audioWindowContent.getStartTime().toMillis());
         assertTrue(audioWindowContent.getMarkdown().length() > 0);
+        assertTrue(audioWindowContent.getStartTime().toMillis() >= 2000, "Range(2s-8s) audio StartTime ("
+            + audioWindowContent.getStartTime().toMillis() + " ms) should be >= 2000 ms");
+        assertTrue(audioWindowContent.getEndTime().toMillis() <= 8000,
+            "Range(2s-8s) audio EndTime (" + audioWindowContent.getEndTime().toMillis() + " ms) should be <= 8000 ms");
         long windowDurationMs
             = audioWindowContent.getEndTime().toMillis() - audioWindowContent.getStartTime().toMillis();
         assertTrue(fullDurationMs >= windowDurationMs);
@@ -597,6 +620,10 @@ public class Sample02_AnalyzeUrlTest extends ContentUnderstandingClientTestBase 
 
         assertTrue(audioSubSecondContent.getEndTime().toMillis() > audioSubSecondContent.getStartTime().toMillis());
         assertTrue(audioSubSecondContent.getMarkdown().length() > 0);
+        assertTrue(audioSubSecondContent.getStartTime().toMillis() >= 1200, "Range(1200ms-3651ms) audio StartTime ("
+            + audioSubSecondContent.getStartTime().toMillis() + " ms) should be >= 1200 ms");
+        assertTrue(audioSubSecondContent.getEndTime().toMillis() <= 3651, "Range(1200ms-3651ms) audio EndTime ("
+            + audioSubSecondContent.getEndTime().toMillis() + " ms) should be <= 3651 ms");
         long subSecondDurationMs
             = audioSubSecondContent.getEndTime().toMillis() - audioSubSecondContent.getStartTime().toMillis();
         assertTrue(fullDurationMs >= subSecondDurationMs);
