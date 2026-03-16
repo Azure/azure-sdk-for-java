@@ -397,28 +397,22 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
     }
 
     private Flux<Document> getComponentQueryResults(List<FeedRangeEpkImpl> targetFeedRanges, int initialPageSize, DocumentCollection collection, Flux<QueryInfo> rewrittenQueryInfos) {
-        return rewrittenQueryInfos.flatMap(queryInfo -> {
+        // Use concatMap to serialize component query initialization. The parent class has shared mutable
+        // state (documentProducers, metrics trackers) that is not thread-safe for concurrent access.
+        // Each component query still executes its partition queries in parallel via the inner flatMap.
+        return rewrittenQueryInfos.concatMap(queryInfo -> {
             Map<FeedRangeEpkImpl, String> partitionKeyRangeToContinuationToken = new HashMap<>();
             for (FeedRangeEpkImpl feedRangeEpk : targetFeedRanges) {
                 partitionKeyRangeToContinuationToken.put(feedRangeEpk,
                     null);
             }
+            documentProducers = new ArrayList<>();
+            super.initialize(collection,
+                partitionKeyRangeToContinuationToken,
+                initialPageSize,
+                new SqlQuerySpec(queryInfo.getRewrittenQuery(), this.querySpec.getParameters()));
 
-            // Synchronize the creation of document producers to prevent ConcurrentModificationException
-            // when multiple component queries execute in parallel via flatMap. The shared documentProducers
-            // field is reassigned and populated by super.initialize(), so we must capture a local reference
-            // while holding the lock.
-            final List<DocumentProducer<Document>> producers;
-            synchronized (this) {
-                documentProducers = new ArrayList<>();
-                super.initialize(collection,
-                    partitionKeyRangeToContinuationToken,
-                    initialPageSize,
-                    new SqlQuerySpec(queryInfo.getRewrittenQuery(), this.querySpec.getParameters()));
-                producers = this.documentProducers;
-            }
-
-            return Flux.fromIterable(producers)
+            return Flux.fromIterable(documentProducers)
                 .flatMap(DocumentProducer::produceAsync)
                 .flatMap(response -> Flux.fromIterable(response.pageResult.getResults()));
         });
