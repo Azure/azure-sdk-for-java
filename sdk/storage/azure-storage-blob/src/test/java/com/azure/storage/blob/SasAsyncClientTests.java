@@ -598,6 +598,7 @@ public class SasAsyncClientTests extends BlobTestBase {
 
             Mono<Void> response = oauthService.getUserDelegationKey(null, expiryTime).flatMap(key -> {
                 key.setSignedTenantId(testResourceNamer.recordValueFromConfig(key.getSignedTenantId()));
+                key.setSignedObjectId(testResourceNamer.recordValueFromConfig(key.getSignedObjectId()));
                 String saoid = testResourceNamer.randomUuid();
 
                 BlobSasPermission permissions = new BlobSasPermission().setCreatePermission(true);
@@ -638,7 +639,7 @@ public class SasAsyncClientTests extends BlobTestBase {
             Mono<Void> response = oauthService.getUserDelegationKey(null, expiryTime).flatMap(key -> {
 
                 key.setSignedTenantId(testResourceNamer.recordValueFromConfig(key.getSignedTenantId()));
-                String saoid = testResourceNamer.randomUuid();
+                String saoid = testResourceNamer.recordValueFromConfig(getOidFromToken(getAuthToken()));
 
                 // Create-only permission for destination blob
                 BlobSasPermission destinationPermissions = new BlobSasPermission().setCreatePermission(true);
@@ -682,6 +683,7 @@ public class SasAsyncClientTests extends BlobTestBase {
             Mono<Void> response = oauthService.getUserDelegationKey(null, expiryTime).flatMap(key -> {
 
                 key.setSignedTenantId(testResourceNamer.recordValueFromConfig(key.getSignedTenantId()));
+                key.setSignedObjectId(testResourceNamer.recordValueFromConfig(key.getSignedObjectId()));
                 String saoid = testResourceNamer.randomUuid();
 
                 // Create-only permission for destination blob

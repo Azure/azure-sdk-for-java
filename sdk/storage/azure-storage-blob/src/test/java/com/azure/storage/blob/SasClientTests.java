@@ -1302,7 +1302,7 @@ public class SasClientTests extends BlobTestBase {
     @Test
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-04-06")
     public void createPermissionUpload() {
-        liveTestScenarioWithRetry(rbacRetry -> {
+        liveTestScenarioWithRetry(() -> {
             BlobServiceClient oauthService = getOAuthServiceClient();
             String oauthContainerName = cc.getBlobContainerName();
             BlobContainerClient oauthContainer = oauthService.getBlobContainerClient(oauthContainerName);
@@ -1312,6 +1312,7 @@ public class SasClientTests extends BlobTestBase {
 
             UserDelegationKey key = oauthService.getUserDelegationKey(null, expiryTime);
             key.setSignedTenantId(testResourceNamer.recordValueFromConfig(key.getSignedTenantId()));
+            key.setSignedObjectId(testResourceNamer.recordValueFromConfig(key.getSignedObjectId()));
             String saoid = testResourceNamer.randomUuid();
 
             BlobSasPermission permissions = new BlobSasPermission().setCreatePermission(true);
@@ -1346,6 +1347,7 @@ public class SasClientTests extends BlobTestBase {
 
             UserDelegationKey key = oauthService.getUserDelegationKey(null, expiryTime);
             key.setSignedTenantId(testResourceNamer.recordValueFromConfig(key.getSignedTenantId()));
+            key.setSignedObjectId(testResourceNamer.recordValueFromConfig(key.getSignedObjectId()));
             String saoid = testResourceNamer.randomUuid();
 
             // Create-only permission for destination blob
@@ -1378,7 +1380,7 @@ public class SasClientTests extends BlobTestBase {
             String containerName = cc.getBlobContainerName();
             BlobContainerClient oauthContainer = oauthService.getBlobContainerClient(containerName);
             String blockId = Base64.getEncoder().encodeToString("blockid".getBytes(StandardCharsets.UTF_8));
-            List<String> blockIds = new ArrayList<String>();
+            List<String> blockIds = new ArrayList<>();
             blockIds.add(blockId);
 
             String destinationBlobName = generateBlobName();
@@ -1386,6 +1388,7 @@ public class SasClientTests extends BlobTestBase {
 
             UserDelegationKey key = oauthService.getUserDelegationKey(null, expiryTime);
             key.setSignedTenantId(testResourceNamer.recordValueFromConfig(key.getSignedTenantId()));
+            key.setSignedObjectId(testResourceNamer.recordValueFromConfig(key.getSignedObjectId()));
             String saoid = testResourceNamer.randomUuid();
 
             // Create-only permission for destination blob
