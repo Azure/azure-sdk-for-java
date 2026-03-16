@@ -1332,7 +1332,7 @@ public class SasClientTests extends BlobTestBase {
     @Test
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-04-06")
     public void transferBlobWithCreatePermission() {
-        liveTestScenarioWithRetry(rbacRetry -> {
+        liveTestScenarioWithRetry(() -> {
             BlobServiceClient oauthService = getOAuthServiceClient();
             String containerName = cc.getBlobContainerName();
             BlobContainerClient oauthContainer = oauthService.getBlobContainerClient(containerName);
