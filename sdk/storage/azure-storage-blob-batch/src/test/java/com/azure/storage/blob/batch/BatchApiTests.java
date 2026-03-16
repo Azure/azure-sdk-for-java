@@ -111,11 +111,11 @@ public class BatchApiTests extends BlobBatchTestBase {
             .upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
 
         Response<Void> response1 = batch.setBlobAccessTier(containerName, blobName1, AccessTier.HOT);
-        //        Response<Void> response2 = batch.setBlobAccessTier(containerName, blobName2, AccessTier.COOL);
+        Response<Void> response2 = batch.setBlobAccessTier(containerName, blobName2, AccessTier.COOL);
         batchClient.submitBatch(batch);
 
         assertEquals(200, response1.getStatusCode());
-        //        assertEquals(200, response2.getStatusCode());
+        assertEquals(200, response2.getStatusCode());
     }
 
     @Test
