@@ -9,8 +9,10 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.StreamResponse;
 import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
 import com.azure.storage.blob.models.DownloadRetryOptions;
+import com.azure.storage.common.policy.StorageContentValidationDecoderPolicy;
 import reactor.core.publisher.Mono;
 
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiFunction;
 
 /**
@@ -35,7 +37,24 @@ public final class BlobDownloadAsyncResponseConstructorProxy {
          * @param retryOptions Retry options.
          */
         BlobDownloadAsyncResponse create(StreamResponse sourceResponse,
-            BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume, DownloadRetryOptions retryOptions);
+            BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume, DownloadRetryOptions retryOptions,
+            AtomicReference<StorageContentValidationDecoderPolicy.DecoderState> decoderStateRef);
+
+        /**
+         * Gets the source {@link StreamResponse} from a {@link BlobDownloadAsyncResponse}.
+         *
+         * @param response The {@link BlobDownloadAsyncResponse}.
+         * @return The source {@link StreamResponse}, or null if not available.
+         */
+        StreamResponse getSourceResponse(BlobDownloadAsyncResponse response);
+
+        /**
+         * Gets the current decoder state from a {@link BlobDownloadAsyncResponse}.
+         *
+         * @param response The {@link BlobDownloadAsyncResponse}.
+         * @return The current decoder state, or null if not available.
+         */
+        StorageContentValidationDecoderPolicy.DecoderState getDecoderState(BlobDownloadAsyncResponse response);
     }
 
     /**
@@ -56,7 +75,8 @@ public final class BlobDownloadAsyncResponseConstructorProxy {
      * @param retryOptions Retry options.
      */
     public static BlobDownloadAsyncResponse create(StreamResponse sourceResponse,
-        BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume, DownloadRetryOptions retryOptions) {
+        BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume, DownloadRetryOptions retryOptions,
+        AtomicReference<StorageContentValidationDecoderPolicy.DecoderState> decoderStateRef) {
         // This looks odd but is necessary, it is possible to engage the access helper before anywhere else in the
         // application accesses BlobDownloadAsyncResponse which triggers the accessor to be configured. So, if the accessor
         // is null this effectively pokes the class to set up the accessor.
@@ -66,6 +86,39 @@ public final class BlobDownloadAsyncResponseConstructorProxy {
         }
 
         assert accessor != null;
-        return accessor.create(sourceResponse, onErrorResume, retryOptions);
+        return accessor.create(sourceResponse, onErrorResume, retryOptions, decoderStateRef);
+    }
+
+    /**
+     * Gets the source {@link StreamResponse} from a {@link BlobDownloadAsyncResponse}.
+     *
+     * @param response The {@link BlobDownloadAsyncResponse}.
+     * @return The source {@link StreamResponse}, or null if not available.
+     */
+    public static StreamResponse getSourceResponse(BlobDownloadAsyncResponse response) {
+        if (accessor == null) {
+            new BlobDownloadAsyncResponse(new HttpRequest(HttpMethod.GET, "http://microsoft.com"), 200,
+                new HttpHeaders(), null, null);
+        }
+
+        assert accessor != null;
+        return accessor.getSourceResponse(response);
+    }
+
+    /**
+     * Gets the current decoder state from a {@link BlobDownloadAsyncResponse}.
+     *
+     * @param response The {@link BlobDownloadAsyncResponse}.
+     * @return The decoder state, or null if not available.
+     */
+    public static StorageContentValidationDecoderPolicy.DecoderState
+        getDecoderState(BlobDownloadAsyncResponse response) {
+        if (accessor == null) {
+            new BlobDownloadAsyncResponse(new HttpRequest(HttpMethod.GET, "http://microsoft.com"), 200,
+                new HttpHeaders(), null, null);
+        }
+
+        assert accessor != null;
+        return accessor.getDecoderState(response);
     }
 }

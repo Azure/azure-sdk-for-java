@@ -85,6 +85,16 @@ public final class Constants {
 
     public static final String STORAGE_LOG_STRING_TO_SIGN = "Azure-Storage-Log-String-To-Sign";
 
+    /**
+     * System property name for enabling legacy default concurrency behavior.
+     */
+    public static final String USE_LEGACY_DEFAULT_CONCURRENCY_PROPERTY = "Azure.Storage.UseLegacyDefaultConcurrency";
+
+    /**
+     * Environment variable name for enabling legacy default concurrency behavior.
+     */
+    public static final String USE_LEGACY_DEFAULT_CONCURRENCY_ENV_VAR = "AZURE_STORAGE_USE_LEGACY_DEFAULT_CONCURRENCY";
+
     public static final String PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION = "AZURE_STORAGE_SAS_SERVICE_VERSION";
 
     public static final String SAS_SERVICE_VERSION
@@ -106,6 +116,13 @@ public final class Constants {
         = "azure-storage-structured-message-validation-options";
 
     /**
+     * Context key used to signal that structured message decoding should be scoped to a single response.
+     * This is used for parallel range downloads where each response is independently structured-encoded.
+     */
+    public static final String STRUCTURED_MESSAGE_RESPONSE_SCOPED_CONTEXT_KEY
+        = "azure-storage-structured-message-response-scoped";
+
+    /**
      * Context key used to pass stateful decoder state across retry requests.
      */
     public static final String STRUCTURED_MESSAGE_DECODER_STATE_CONTEXT_KEY
@@ -116,6 +133,22 @@ public final class Constants {
      */
     public static final String STRUCTURED_MESSAGE_DECODER_STATE_REF_CONTEXT_KEY
         = "azure-storage-structured-message-decoder-state-ref";
+
+    /**
+     * Context key used to pass the number of decoded bytes to skip on the next structured message response.
+     */
+    public static final String STRUCTURED_MESSAGE_DECODER_SKIP_BYTES_CONTEXT_KEY
+        = "azure-storage-structured-message-decoder-skip-bytes";
+    /**
+     * Context key used to share structured message CRC aggregation state across retries.
+     */
+    public static final String STRUCTURED_MESSAGE_AGGREGATE_CRC_CONTEXT_KEY
+        = "azure-storage-structured-message-aggregate-crc";
+
+    /**
+     * Structured message header value for CRC64 validation.
+     */
+    public static final String STRUCTURED_MESSAGE_CRC64_BODY_TYPE = "XSM/1.0; properties=crc64";
 
     private Constants() {
     }

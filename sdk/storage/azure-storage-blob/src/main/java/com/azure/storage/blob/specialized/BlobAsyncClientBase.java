@@ -12,6 +12,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
@@ -41,6 +42,7 @@ import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.models.InternalBlobLegalHoldResult;
 import com.azure.storage.blob.implementation.models.QueryRequest;
 import com.azure.storage.blob.implementation.models.QuerySerialization;
+import com.azure.storage.blob.implementation.util.BlobConstants;
 import com.azure.storage.blob.implementation.util.BlobQueryReader;
 import com.azure.storage.blob.implementation.util.BlobRequestConditionProperty;
 import com.azure.storage.blob.implementation.util.BlobSasImplUtil;
@@ -86,12 +88,14 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.SasImplUtils;
+import com.azure.storage.common.implementation.StorageCrc64Calculator;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.StorageChecksumAlgorithm;
 import com.azure.storage.common.policy.StorageContentValidationDecoderPolicy;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.SignalType;
+import reactor.core.scheduler.Schedulers;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -99,7 +103,10 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.channels.AsynchronousByteChannel;
 import java.nio.channels.AsynchronousFileChannel;
+import java.nio.channels.CompletionHandler;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.OpenOption;
@@ -107,19 +114,26 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
@@ -1310,13 +1324,17 @@ public class BlobAsyncClientBase {
         StorageChecksumAlgorithm responseChecksumAlgorithm, Context context) {
         BlobRange finalRange = range == null ? new BlobRange(0) : range;
 
+        boolean structuredDecode
+            = contentValidationOptions != null && contentValidationOptions.isStructuredMessageValidationEnabled();
+
         // Determine MD5 validation: properly consider both getRangeContentMd5 parameter and validation options
-        // MD5 validation is enabled if:
+        // MD5 validation is enabled if structured message validation is not enabled and either:
         // 1. getRangeContentMd5 is explicitly true, OR
         // 2. contentValidationOptions.isMd5ValidationEnabled() is true
         final Boolean finalGetMD5;
-        if (getRangeContentMd5
-            || (contentValidationOptions != null && contentValidationOptions.isMd5ValidationEnabled())) {
+        if (!structuredDecode
+            && (getRangeContentMd5
+                || (contentValidationOptions != null && contentValidationOptions.isMd5ValidationEnabled()))) {
             finalGetMD5 = true;
         } else {
             finalGetMD5 = null;
@@ -1327,24 +1345,36 @@ public class BlobAsyncClientBase {
         DownloadRetryOptions finalOptions = (options == null) ? new DownloadRetryOptions() : options;
 
         // The first range should eagerly convert headers as they'll be used to create response types.
-        Context initialContext = context == null
+        final Context baseContext = context == null
             ? new Context("azure-eagerly-convert-headers", true)
             : context.addData("azure-eagerly-convert-headers", true);
 
+        String structuredBodyType = structuredDecode ? Constants.STRUCTURED_MESSAGE_CRC64_BODY_TYPE : null;
+        // Structured message responses are scoped to the response; each retry returns a fresh structured message.
+        final boolean responseScoped = structuredDecode;
+        final Context responseScopedContext = structuredDecode
+            ? baseContext.addData(Constants.STRUCTURED_MESSAGE_RESPONSE_SCOPED_CONTEXT_KEY, true)
+            : baseContext;
+        boolean structuredRetry = structuredDecode;
+
         AtomicReference<StorageContentValidationDecoderPolicy.DecoderState> decoderStateRef = new AtomicReference<>();
+        StorageContentValidationDecoderPolicy.AggregateCrcState aggregateCrcState
+            = structuredDecode ? new StorageContentValidationDecoderPolicy.AggregateCrcState() : null;
+        AtomicLong responseStartOffset = new AtomicLong(0);
 
         // Add structured message decoding context if enabled
         final Context firstRangeContext;
-        if (contentValidationOptions != null && contentValidationOptions.isStructuredMessageValidationEnabled()) {
-            firstRangeContext = initialContext.addData(Constants.STRUCTURED_MESSAGE_DECODING_CONTEXT_KEY, true)
+        if (structuredDecode) {
+            firstRangeContext = responseScopedContext.addData(Constants.STRUCTURED_MESSAGE_DECODING_CONTEXT_KEY, true)
                 .addData(Constants.STRUCTURED_MESSAGE_VALIDATION_OPTIONS_CONTEXT_KEY, contentValidationOptions)
-                .addData(Constants.STRUCTURED_MESSAGE_DECODER_STATE_REF_CONTEXT_KEY, decoderStateRef);
+                .addData(Constants.STRUCTURED_MESSAGE_DECODER_STATE_REF_CONTEXT_KEY, decoderStateRef)
+                .addData(Constants.STRUCTURED_MESSAGE_AGGREGATE_CRC_CONTEXT_KEY, aggregateCrcState);
         } else {
-            firstRangeContext = initialContext;
+            firstRangeContext = responseScopedContext;
         }
 
         return downloadRange(finalRange, finalRequestConditions, finalRequestConditions.getIfMatch(), finalGetMD5,
-            firstRangeContext).map(response -> {
+            structuredBodyType, firstRangeContext).map(response -> {
                 BlobsDownloadHeaders blobsDownloadHeaders = new BlobsDownloadHeaders(response.getHeaders());
                 String eTag = blobsDownloadHeaders.getETag();
                 BlobDownloadHeaders blobDownloadHeaders = ModelHelper.populateBlobDownloadHeaders(blobsDownloadHeaders,
@@ -1370,63 +1400,49 @@ public class BlobAsyncClientBase {
                         return Mono.error(throwable);
                     }
 
-                    // For structured message decoding, treat downstream offset as 0 to avoid carrying stale skip/offset
-                    // state across retries. Structured downloads always require the whole encoded message.
-                    boolean structuredDecode = contentValidationOptions != null
-                        && contentValidationOptions.isStructuredMessageValidationEnabled();
-                    long emittedOffset = structuredDecode ? 0 : offset;
-
+                    long emittedOffset = offset;
+                    long currentResponseOffset = responseStartOffset.get();
                     long newCount = finalCount - emittedOffset;
                     StorageContentValidationDecoderPolicy.DecoderState decoderState = null;
-                    long expectedEncodedLength = finalCount;
-                    long encodedProgress = emittedOffset;
                     long retryStartOffset = -1;
+                    long bytesToSkip = 0;
                     boolean noBytesEmitted = emittedOffset == 0;
 
-                    if (structuredDecode) {
+                    if (structuredRetry) {
                         decoderState = decoderStateRef.get();
 
-                        if (decoderState == null) {
-                            Object decoderStateObj
-                                = firstRangeContext.getData(Constants.STRUCTURED_MESSAGE_DECODER_STATE_CONTEXT_KEY)
-                                    .orElse(null);
+                        // Prefer the retry start offset token emitted by the decoder policy when present.
+                        long parsedRetryOffset
+                            = StorageContentValidationDecoderPolicy.parseRetryStartOffset(throwable.getMessage());
+                        if (parsedRetryOffset >= 0) {
+                            retryStartOffset = currentResponseOffset + parsedRetryOffset;
+                        }
 
-                            if (decoderStateObj instanceof StorageContentValidationDecoderPolicy.DecoderState) {
-                                decoderState = (StorageContentValidationDecoderPolicy.DecoderState) decoderStateObj;
+                        // Compute the last validated segment boundary to align retry to a safe offset.
+                        if (decoderState != null) {
+                            long decodedBoundary = decoderState.getDecodedBytesAtLastCompleteSegment();
+                            long boundaryGlobal = currentResponseOffset + decodedBoundary;
+                            if (retryStartOffset < 0 || boundaryGlobal > retryStartOffset) {
+                                retryStartOffset = boundaryGlobal;
                             }
                         }
 
-                        // If the decoder has already finalized, discard it and restart from the beginning.
-                        if (decoderState != null && decoderState.isFinalized()) {
-                            decoderState = null;
+                        if (retryStartOffset < 0) {
+                            // No decoder state available (likely failed before policy captured it) or no bytes emitted;
+                            // restart from response start and fast-forward using skip bytes.
+                            retryStartOffset = currentResponseOffset;
+                            decoderStateRef.set(null);
                         }
 
-                        if (decoderState != null) {
-                            if (noBytesEmitted) {
-                                // No decoded bytes reached the caller; discard this state and restart cleanly.
-                                decoderState = null;
+                        bytesToSkip = emittedOffset - retryStartOffset;
+                        if (bytesToSkip < 0) {
+                            // Fallback to response start if our computed boundary is ahead of emitted progress.
+                            retryStartOffset = currentResponseOffset;
+                            bytesToSkip = emittedOffset - retryStartOffset;
+                            if (bytesToSkip < 0) {
+                                bytesToSkip = 0;
                             }
                         }
-
-                        if (decoderState != null) {
-                            expectedEncodedLength = decoderState.getExpectedContentLength();
-                            encodedProgress = decoderState.getTotalEncodedBytesProcessed();
-
-                            long boundaryDecoded = decoderState.getDecodedBytesAtLastCompleteSegment();
-                            long bytesToSkip = emittedOffset <= boundaryDecoded ? 0 : emittedOffset - boundaryDecoded;
-                            decoderState.setDecodedBytesToSkip(bytesToSkip);
-
-                            // Always rewind decoder to last validated boundary before retrying.
-                            retryStartOffset = decoderState.resetForRetry();
-                        }
-                    }
-
-                    if (decoderState == null) {
-                        // No decoder state available (likely failed before policy captured it) or no bytes emitted;
-                        // restart from beginning to avoid skipping data.
-                        retryStartOffset = noBytesEmitted ? 0 : -1;
-                        encodedProgress = noBytesEmitted ? 0 : encodedProgress;
-                        decoderStateRef.set(null);
                     }
 
                     try {
@@ -1434,61 +1450,60 @@ public class BlobAsyncClientBase {
                         Context retryContext = firstRangeContext;
                         BlobRange retryRange;
 
-                        // If structured message decoding is enabled, we need to calculate the retry offset
-                        // based on the encoded bytes processed, not the decoded bytes
-                        if (structuredDecode) {
-                            // If no decoder state or no retry offset from state, fall back to parsed token or offset.
-                            if (retryStartOffset < 0 && !noBytesEmitted) {
-                                retryStartOffset = StorageContentValidationDecoderPolicy
-                                    .parseRetryStartOffset(throwable.getMessage());
-                            }
+                        if (structuredRetry) {
                             if (retryStartOffset < 0) {
-                                retryStartOffset = noBytesEmitted ? 0 : emittedOffset;
+                                retryStartOffset = noBytesEmitted ? currentResponseOffset : emittedOffset;
+                                bytesToSkip = Math.max(0, emittedOffset - retryStartOffset);
                             }
 
-                            if (decoderState != null) {
-                                retryContext = retryContext
-                                    .addData(Constants.STRUCTURED_MESSAGE_DECODER_STATE_CONTEXT_KEY, decoderState);
-                                decoderStateRef.set(decoderState);
-                            } else {
-                                // Ensure we don't carry a stale decoder state into a full restart.
-                                retryContext = retryContext
-                                    .addData(Constants.STRUCTURED_MESSAGE_DECODER_STATE_CONTEXT_KEY, null);
-                            }
-
-                            long remainingCount = expectedEncodedLength - retryStartOffset;
+                            long remainingCount = finalCount - retryStartOffset;
                             if (remainingCount < 0) {
-                                remainingCount = expectedEncodedLength - offset;
-                                retryStartOffset = offset;
+                                retryStartOffset = Math.min(emittedOffset, finalCount);
+                                remainingCount = finalCount - retryStartOffset;
+                                bytesToSkip = 0;
                             }
 
+                            if (bytesToSkip > 0) {
+                                retryContext = retryContext
+                                    .addData(Constants.STRUCTURED_MESSAGE_DECODER_SKIP_BYTES_CONTEXT_KEY, bytesToSkip);
+                            }
+
+                            responseStartOffset.set(retryStartOffset);
                             retryRange = new BlobRange(initialOffset + retryStartOffset, remainingCount);
 
                             LOGGER.info(
-                                "Structured message smart retry: resuming from offset {} (initial={}, encoded={}, remaining={})",
-                                initialOffset + retryStartOffset, initialOffset, retryStartOffset, remainingCount);
+                                "Structured message retry: resuming from offset {} (initial={}, decoded={}, remaining={}, skip={})",
+                                initialOffset + retryStartOffset, initialOffset, retryStartOffset, remainingCount,
+                                bytesToSkip);
                         } else {
                             // For non-structured downloads, use smart retry from the interrupted offset
-                            retryRange = new BlobRange(initialOffset + offset, newCount);
+                            retryRange = new BlobRange(initialOffset + emittedOffset, newCount);
                         }
 
-                        return downloadRange(retryRange, finalRequestConditions, eTag, finalGetMD5, retryContext);
+                        return downloadRange(retryRange, finalRequestConditions, eTag, finalGetMD5, structuredBodyType,
+                            retryContext);
                     } catch (Exception e) {
                         return Mono.error(e);
                     }
                 };
 
                 // Structured message decoding is now handled by StructuredMessageDecoderPolicy
-                return BlobDownloadAsyncResponseConstructorProxy.create(response, onDownloadErrorResume, finalOptions);
+                return BlobDownloadAsyncResponseConstructorProxy.create(response, onDownloadErrorResume, finalOptions,
+                    decoderStateRef);
             });
 
     }
 
+    Mono<BlobDownloadAsyncResponse> downloadStreamWithResponse(BlobRange range, DownloadRetryOptions options,
+        BlobRequestConditions requestConditions, boolean getRangeContentMd5, Context context) {
+        return downloadStreamWithResponse(range, options, requestConditions, getRangeContentMd5, null, context);
+    }
+
     private Mono<StreamResponse> downloadRange(BlobRange range, BlobRequestConditions requestConditions, String eTag,
-        Boolean getMD5, Context context) {
+        Boolean getMD5, String structuredBodyType, Context context) {
         return azureBlobStorage.getBlobs()
             .downloadNoCustomHeadersWithResponseAsync(containerName, blobName, snapshot, versionId, null,
-                range.toHeaderValue(), requestConditions.getLeaseId(), getMD5, null, null,
+                range.toHeaderValue(), requestConditions.getLeaseId(), getMD5, null, structuredBodyType,
                 requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(), eTag,
                 requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null, customerProvidedKey,
                 context);
@@ -1638,7 +1653,7 @@ public class BlobAsyncClientBase {
         BlobRequestConditions requestConditions, boolean rangeGetContentMd5, Set<OpenOption> openOptions) {
         try {
             final com.azure.storage.common.ParallelTransferOptions finalParallelTransferOptions
-                = ModelHelper.wrapBlobOptions(ModelHelper.populateAndApplyDefaults(parallelTransferOptions));
+                = parallelTransferOptions == null ? null : ModelHelper.wrapBlobOptions(parallelTransferOptions);
             return withContext(
                 context -> downloadToFileWithResponse(new BlobDownloadToFileOptions(filePath).setRange(range)
                     .setParallelTransferOptions(finalParallelTransferOptions)
@@ -1692,8 +1707,15 @@ public class BlobAsyncClientBase {
         StorageImplUtils.assertNotNull("options", options);
 
         BlobRange finalRange = options.getRange() == null ? new BlobRange(0) : options.getRange();
-        final com.azure.storage.common.ParallelTransferOptions finalParallelTransferOptions
-            = ModelHelper.populateAndApplyDefaults(options.getParallelTransferOptions());
+        com.azure.storage.common.ParallelTransferOptions originalParallelTransferOptions
+            = options.getParallelTransferOptions();
+        boolean blockSizeProvided
+            = originalParallelTransferOptions != null && originalParallelTransferOptions.getBlockSizeLong() != null;
+        boolean maxConcurrencyProvided
+            = originalParallelTransferOptions != null && originalParallelTransferOptions.getMaxConcurrency() != null;
+        com.azure.storage.common.ParallelTransferOptions finalParallelTransferOptions
+            = ModelHelper.populateAndApplyDefaults(originalParallelTransferOptions);
+        DownloadContentValidationOptions contentValidationOptions = options.getContentValidationOptions();
         BlobRequestConditions finalConditions
             = options.getRequestConditions() == null ? new BlobRequestConditions() : options.getRequestConditions();
 
@@ -1704,7 +1726,14 @@ public class BlobAsyncClientBase {
         }
 
         AsynchronousFileChannel channel = downloadToFileResourceSupplier(options.getFilePath(), openOptions);
+        // Run download on boundedElastic to avoid blocking the reactor thread when async file I/O
+        // completion is delivered (matches .NET behavior where DownloadTo runs off the sync context).
         return Mono.just(channel)
+            .flatMap(c -> this
+                .downloadToFileImpl(c, finalRange, finalParallelTransferOptions, blockSizeProvided,
+                    maxConcurrencyProvided, options.getDownloadRetryOptions(), finalConditions,
+                    options.isRetrieveContentRangeMd5(), contentValidationOptions, context)
+                .subscribeOn(Schedulers.boundedElastic()))
             .flatMap(c -> this.downloadToFileImpl(c, finalRange, finalParallelTransferOptions,
                 options.getDownloadRetryOptions(), finalConditions, options.isRetrieveContentRangeMd5(),
                 options.getResponseChecksumAlgorithm(), context))
@@ -1723,51 +1752,544 @@ public class BlobAsyncClientBase {
         com.azure.storage.common.ParallelTransferOptions finalParallelTransferOptions,
         DownloadRetryOptions downloadRetryOptions, BlobRequestConditions requestConditions, boolean rangeGetContentMd5,
         StorageChecksumAlgorithm responseChecksumAlgorithm, Context context) {
+        com.azure.storage.common.ParallelTransferOptions finalParallelTransferOptions, boolean blockSizeProvided,
+        boolean maxConcurrencyProvided, DownloadRetryOptions downloadRetryOptions,
+        BlobRequestConditions requestConditions, boolean rangeGetContentMd5,
+        DownloadContentValidationOptions contentValidationOptions, Context context) {
         // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
         ProgressListener progressReceiver = finalParallelTransferOptions.getProgressListener();
         ProgressReporter progressReporter
             = progressReceiver == null ? null : ProgressReporter.withProgressListener(progressReceiver);
 
+        boolean structuredDecode
+            = contentValidationOptions != null && contentValidationOptions.isStructuredMessageValidationEnabled();
+        final Context downloadContext = structuredDecode
+            ? (context == null
+                ? new Context(Constants.STRUCTURED_MESSAGE_RESPONSE_SCOPED_CONTEXT_KEY, true)
+                : context.addData(Constants.STRUCTURED_MESSAGE_RESPONSE_SCOPED_CONTEXT_KEY, true))
+            : context;
+
         /*
          * Downloads the first chunk and gets the size of the data and etag if not specified by the user.
          */
         BiFunction<BlobRange, BlobRequestConditions, Mono<BlobDownloadAsyncResponse>> downloadFunc
+            = (range, conditions) -> structuredDecode
+                ? this.downloadStreamWithResponse(range, downloadRetryOptions, conditions, rangeGetContentMd5,
+                    contentValidationOptions, downloadContext)
+                : this.downloadStreamWithResponse(range, downloadRetryOptions, conditions, rangeGetContentMd5,
+                    downloadContext);
+        BiFunction<BlobRange, BlobRequestConditions, Mono<BlobDownloadAsyncResponse>> emptyBlobDownloadFunc
+            = (range, conditions) -> this.downloadStreamWithResponse(range, downloadRetryOptions, conditions, false,
+                null, context);
+
+        boolean checksumValidationEnabled = structuredDecode
+            || rangeGetContentMd5
+            || (contentValidationOptions != null && contentValidationOptions.isMd5ValidationEnabled());
+        boolean md5ValidationEnabled = !structuredDecode
+            && (rangeGetContentMd5
+                || (contentValidationOptions != null && contentValidationOptions.isMd5ValidationEnabled()));
+
+        long rangeSize = blockSizeProvided
+            ? Math.min(finalParallelTransferOptions.getBlockSizeLong(), BlobConstants.BLOB_MAX_DOWNLOAD_BYTES)
+            : (checksumValidationEnabled
+                ? BlobConstants.BLOB_MAX_HASH_REQUEST_DOWNLOAD_RANGE
+                : BlobConstants.BLOB_DEFAULT_DOWNLOAD_RANGE_SIZE);
+
+        Long requestedInitialTransferSize = finalParallelTransferOptions.getInitialTransferSizeLong();
+        long initialRangeSize = requestedInitialTransferSize != null && requestedInitialTransferSize > 0
+            ? requestedInitialTransferSize
+            : (checksumValidationEnabled
+                ? BlobConstants.BLOB_MAX_HASH_REQUEST_DOWNLOAD_RANGE
+                : BlobConstants.BLOB_DEFAULT_INITIAL_DOWNLOAD_RANGE_SIZE);
+
+        int maxConcurrency = maxConcurrencyProvided
+            ? finalParallelTransferOptions.getMaxConcurrency()
+            : getDefaultDownloadConcurrency();
             = (range, conditions) -> this.downloadStreamWithResponseInternal(range, downloadRetryOptions, conditions,
                 rangeGetContentMd5, responseChecksumAlgorithm, context);
 
+        com.azure.storage.common.ParallelTransferOptions initialParallelTransferOptions
+            = new com.azure.storage.common.ParallelTransferOptions().setBlockSizeLong(initialRangeSize);
+
+        boolean useMasterCrc = structuredDecode;
+
+        LOGGER.atVerbose()
+            .addKeyValue("thread", Thread.currentThread().getName())
+            .log("BlobAsyncClientBase.downloadToFileImpl calling downloadFirstChunk");
         return ChunkedDownloadUtils
-            .downloadFirstChunk(finalRange, finalParallelTransferOptions, requestConditions, downloadFunc, true,
-                context)
+            .downloadFirstChunk(finalRange, initialParallelTransferOptions, requestConditions, downloadFunc,
+                emptyBlobDownloadFunc, true, downloadContext)
+            .doOnSuccess(t -> LOGGER.atVerbose()
+                .addKeyValue("newCount", t != null ? t.getT1() : null)
+                .addKeyValue("thread", Thread.currentThread().getName())
+                .log("BlobAsyncClientBase downloadFirstChunk returned"))
             .flatMap(setupTuple3 -> {
                 long newCount = setupTuple3.getT1();
                 BlobRequestConditions finalConditions = setupTuple3.getT2();
-
-                int numChunks = ChunkedDownloadUtils.calculateNumBlocks(newCount,
-                    finalParallelTransferOptions.getBlockSizeLong());
-
-                // In case it is an empty blob, this ensures we still actually perform a download operation.
-                numChunks = numChunks == 0 ? 1 : numChunks;
-
                 BlobDownloadAsyncResponse initialResponse = setupTuple3.getT3();
-                return Flux.range(0, numChunks)
-                    .flatMap(
-                        chunkNum -> ChunkedDownloadUtils.downloadChunk(chunkNum, initialResponse, finalRange,
-                            finalParallelTransferOptions, finalConditions, newCount, downloadFunc,
-                            response -> writeBodyToFile(response, file, chunkNum, finalParallelTransferOptions,
-                                progressReporter == null ? null : progressReporter.createChild()).flux()),
-                        finalParallelTransferOptions.getMaxConcurrency())
+                LOGGER.atVerbose()
+                    .addKeyValue("newCount", newCount)
+                    .addKeyValue("thread", Thread.currentThread().getName())
+                    .log("BlobAsyncClientBase flatMap after first chunk");
 
-                    // Only the first download call returns a value.
-                    .then(Mono.just(ModelHelper.buildBlobPropertiesResponse(initialResponse)));
+                if (initialResponse.getStatusCode() == 304 || newCount == 0) {
+                    return Mono.fromCallable(() -> {
+                        Response<BlobProperties> propertiesResponse
+                            = ModelHelper.buildBlobPropertiesResponse(initialResponse);
+                        try {
+                            initialResponse.close();
+                        } catch (IOException e) {
+                            throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+                        }
+                        return propertiesResponse;
+                    });
+                }
+
+                AsynchronousByteChannel baseChannel = IOUtils.toAsynchronousByteChannel(file, 0);
+                Crc64TrackingAsynchronousByteChannel crcChannel
+                    = useMasterCrc ? new Crc64TrackingAsynchronousByteChannel(baseChannel) : null;
+                AsynchronousByteChannel targetChannel = useMasterCrc ? crcChannel : baseChannel;
+                ComposedCrcState composedCrcState = useMasterCrc ? new ComposedCrcState() : null;
+
+                long initialLength = Math.min(initialRangeSize, newCount);
+                if (initialLength == newCount) {
+                    // One-shot download path aligned with .NET: write the initial response directly and finalize.
+                    LOGGER.atVerbose()
+                        .addKeyValue("thread", Thread.currentThread().getName())
+                        .log("BlobAsyncClientBase taking ONE-SHOT path (single chunk)");
+                    return writeBodyToFile(initialResponse, targetChannel,
+                        progressReporter == null ? null : progressReporter.createChild(), useMasterCrc,
+                        composedCrcState, md5ValidationEnabled).doFinally(signalType -> closeQuietly(initialResponse))
+                            .then(Mono.fromCallable(() -> {
+                                if (useMasterCrc) {
+                                    validateComposedCrc(composedCrcState, crcChannel);
+                                }
+                                return ModelHelper.buildBlobPropertiesResponse(initialResponse);
+                            }));
+                }
+
+                long remainingLength = Math.max(0L, newCount - initialLength);
+                int remainingChunks = ChunkedDownloadUtils.calculateNumBlocks(remainingLength, rangeSize);
+                int numChunks = Math.max(1, 1 + remainingChunks);
+                LOGGER.atVerbose()
+                    .addKeyValue("numChunks", numChunks)
+                    .addKeyValue("thread", Thread.currentThread().getName())
+                    .log("BlobAsyncClientBase taking PARALLEL path");
+
+                List<BlobRange> remainingRanges = new ArrayList<>(Math.max(0, numChunks - 1));
+                for (int chunkIndex = 1; chunkIndex < numChunks; chunkIndex++) {
+                    long offset = initialLength + (long) (chunkIndex - 1) * rangeSize;
+                    long chunkSizeActual = Math.min(rangeSize, newCount - offset);
+                    if (chunkSizeActual <= 0) {
+                        break;
+                    }
+                    remainingRanges.add(new BlobRange(finalRange.getOffset() + offset, chunkSizeActual));
+                }
+
+                // Match .NET behavior: parallelize request issuance while serializing writes in range order.
+                int effectiveConcurrency = Math.max(1, maxConcurrency);
+                ArrayDeque<CompletableFuture<BlobDownloadAsyncResponse>> running = new ArrayDeque<>();
+                Iterator<BlobRange> remainingIterator = remainingRanges.iterator();
+
+                running.add(CompletableFuture.completedFuture(initialResponse));
+                while (running.size() < effectiveConcurrency && remainingIterator.hasNext()) {
+                    BlobRange nextRange = remainingIterator.next();
+                    running.add(downloadFunc.apply(nextRange, finalConditions).toFuture());
+                }
+
+                return drainQueuedResponses(running, remainingIterator, downloadFunc, finalConditions, targetChannel,
+                    progressReporter, useMasterCrc, composedCrcState, md5ValidationEnabled)
+                        .doFinally(signalType -> closePendingResponses(running))
+                        .then(Mono.fromCallable(() -> {
+                            if (useMasterCrc) {
+                                validateComposedCrc(composedCrcState, crcChannel);
+                            }
+                            return ModelHelper.buildBlobPropertiesResponse(initialResponse);
+                        }));
             });
     }
 
-    private static Mono<Void> writeBodyToFile(BlobDownloadAsyncResponse response, AsynchronousFileChannel file,
-        long chunkNum, com.azure.storage.common.ParallelTransferOptions finalParallelTransferOptions,
-        ProgressReporter progressReporter) {
+    private static Mono<Void> drainQueuedResponses(ArrayDeque<CompletableFuture<BlobDownloadAsyncResponse>> running,
+        Iterator<BlobRange> remainingIterator,
+        BiFunction<BlobRange, BlobRequestConditions, Mono<BlobDownloadAsyncResponse>> downloadFunc,
+        BlobRequestConditions finalConditions, AsynchronousByteChannel targetChannel, ProgressReporter progressReporter,
+        boolean useMasterCrc, ComposedCrcState composedCrcState, boolean md5ValidationEnabled) {
+        return Mono.defer(() -> {
+            CompletableFuture<BlobDownloadAsyncResponse> nextFuture = running.poll();
+            if (nextFuture == null) {
+                return Mono.empty();
+            }
 
-        long position = chunkNum * finalParallelTransferOptions.getBlockSizeLong();
-        return response.writeValueToAsync(IOUtils.toAsynchronousByteChannel(file, position), progressReporter);
+            if (remainingIterator.hasNext()) {
+                BlobRange nextRange = remainingIterator.next();
+                running.add(downloadFunc.apply(nextRange, finalConditions).toFuture());
+            }
+
+            return Mono.fromFuture(nextFuture)
+                .flatMap(response -> writeBodyToFile(response, targetChannel,
+                    progressReporter == null ? null : progressReporter.createChild(), useMasterCrc, composedCrcState,
+                    md5ValidationEnabled).doFinally(signalType -> closeQuietly(response)))
+                .then(Mono.defer(() -> drainQueuedResponses(running, remainingIterator, downloadFunc, finalConditions,
+                    targetChannel, progressReporter, useMasterCrc, composedCrcState, md5ValidationEnabled)));
+        });
+    }
+
+    private static void closePendingResponses(ArrayDeque<CompletableFuture<BlobDownloadAsyncResponse>> running) {
+        CompletableFuture<BlobDownloadAsyncResponse> future;
+        while ((future = running.poll()) != null) {
+            future.whenComplete((response, throwable) -> {
+                if (response != null) {
+                    closeQuietly(response);
+                }
+            });
+            if (!future.isDone()) {
+                future.cancel(true);
+            }
+        }
+    }
+
+    private static Mono<Void> writeBodyToFile(BlobDownloadAsyncResponse response, AsynchronousByteChannel channel,
+        ProgressReporter progressReporter, boolean useMasterCrc, ComposedCrcState composedCrcState,
+        boolean validateMd5) {
+        LOGGER.atVerbose()
+            .addKeyValue("thread", Thread.currentThread().getName())
+            .addKeyValue("useMasterCrc", useMasterCrc)
+            .log("BlobAsyncClientBase.writeBodyToFile entry");
+        Md5TrackingAsynchronousByteChannel md5Channel = null;
+        AsynchronousByteChannel targetChannel = channel;
+
+        if (validateMd5) {
+            md5Channel = new Md5TrackingAsynchronousByteChannel(targetChannel);
+            targetChannel = md5Channel;
+        }
+
+        /*
+         * Use BlobDownloadAsyncResponse#writeValueToAsync to preserve the original retriable stream
+         * transfer behavior (same model used by .NET stream copy path).
+         */
+        Mono<Void> write = response.writeValueToAsync(targetChannel, progressReporter)
+            .doOnSuccess(v -> LOGGER.atVerbose()
+                .addKeyValue("thread", Thread.currentThread().getName())
+                .log("BlobAsyncClientBase.writeBodyToFile writeValueToAsync completed"))
+            .doOnError(e -> LOGGER.atVerbose()
+                .addKeyValue("thread", Thread.currentThread().getName())
+                .addKeyValue("error", e)
+                .log("BlobAsyncClientBase.writeBodyToFile writeValueToAsync error"));
+        if (!useMasterCrc && !validateMd5) {
+            return write;
+        }
+
+        Md5TrackingAsynchronousByteChannel finalMd5Channel = md5Channel;
+        return write.then(Mono.fromRunnable(() -> {
+            if (validateMd5) {
+                validateResponseMd5(response, finalMd5Channel);
+            }
+            if (useMasterCrc) {
+                StorageContentValidationDecoderPolicy.DecoderState decoderState = getStructuredDecoderState(response);
+                if (decoderState == null || !decoderState.isFinalized()) {
+                    throw LOGGER.logExceptionAsError(new IllegalStateException(
+                        "Structured message decoder state wasn't available or finalized for checksum validation."));
+                }
+
+                long composedLength = decoderState.getComposedLength();
+                if (composedLength > 0) {
+                    long partitionCrc = decoderState.getComposedCrc64();
+                    composedCrcState.append(partitionCrc, composedLength);
+
+                    BlobDownloadHeaders headers = response.getDeserializedHeaders();
+                    if (headers != null) {
+                        headers.setContentCrc64(littleEndianLongToBytes(partitionCrc));
+                    }
+                }
+            }
+        }));
+    }
+
+    private static StorageContentValidationDecoderPolicy.DecoderState
+        getStructuredDecoderState(BlobDownloadAsyncResponse response) {
+        return BlobDownloadAsyncResponseConstructorProxy.getDecoderState(response);
+    }
+
+    private static byte[] littleEndianLongToBytes(long value) {
+        return ByteBuffer.allocate(Long.BYTES).order(ByteOrder.LITTLE_ENDIAN).putLong(value).array();
+    }
+
+    private static int getDefaultDownloadConcurrency() {
+        Configuration configuration = Configuration.getGlobalConfiguration();
+        String legacyDefaultConcurrency = configuration.get(Constants.USE_LEGACY_DEFAULT_CONCURRENCY_PROPERTY);
+        if (legacyDefaultConcurrency == null) {
+            legacyDefaultConcurrency = configuration.get(Constants.USE_LEGACY_DEFAULT_CONCURRENCY_ENV_VAR);
+        }
+        if (Boolean.parseBoolean(legacyDefaultConcurrency)) {
+            return BlobConstants.BLOB_LEGACY_DEFAULT_CONCURRENT_TRANSFERS_COUNT;
+        }
+
+        int processors = Runtime.getRuntime().availableProcessors();
+        int concurrency = Math.max(processors * 2, 8);
+        return Math.min(concurrency, 32);
+    }
+
+    private static void validateResponseMd5(BlobDownloadAsyncResponse response,
+        Md5TrackingAsynchronousByteChannel md5Channel) {
+        if (md5Channel == null) {
+            return;
+        }
+
+        byte[] expectedMd5
+            = response.getDeserializedHeaders() == null ? null : response.getDeserializedHeaders().getContentMd5();
+        if (expectedMd5 == null || expectedMd5.length == 0) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Content-MD5 header missing from download response."));
+        }
+
+        byte[] actualMd5 = md5Channel.getMd5();
+        if (!Arrays.equals(expectedMd5, actualMd5)) {
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException("MD5 mismatch detected in download response."));
+        }
+    }
+
+    private static void validateComposedCrc(ComposedCrcState composedCrcState,
+        Crc64TrackingAsynchronousByteChannel crcChannel) {
+        if (composedCrcState == null || crcChannel == null || composedCrcState.getLength() == 0) {
+            return;
+        }
+
+        long composed = composedCrcState.getCrc();
+        long master = crcChannel.getCrc();
+        if (composed != master) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "CRC64 mismatch detected in composed download. Expected: " + composed + ", got: " + master));
+        }
+    }
+
+    private static void closeQuietly(BlobDownloadAsyncResponse response) {
+        if (response == null) {
+            return;
+        }
+
+        try {
+            response.close();
+        } catch (IOException e) {
+            LOGGER.warning("Failed to close BlobDownloadAsyncResponse: {}", e.getMessage());
+        }
+    }
+
+    private static final class ComposedCrcState {
+        private long crc;
+        private long length;
+
+        private void append(long nextCrc, long nextLength) {
+            if (nextLength <= 0) {
+                return;
+            }
+
+            if (length == 0) {
+                crc = nextCrc;
+                length = nextLength;
+                return;
+            }
+
+            crc = StorageCrc64Calculator.concat(0, 0, crc, length, 0, nextCrc, nextLength);
+            length += nextLength;
+        }
+
+        private long getCrc() {
+            return crc;
+        }
+
+        private long getLength() {
+            return length;
+        }
+    }
+
+    private static final class Crc64TrackingAsynchronousByteChannel implements AsynchronousByteChannel {
+        private final AsynchronousByteChannel channel;
+        private final AtomicLong crc = new AtomicLong(0);
+        private final AtomicLong bytesWritten = new AtomicLong(0);
+
+        private Crc64TrackingAsynchronousByteChannel(AsynchronousByteChannel channel) {
+            this.channel = channel;
+        }
+
+        private long getCrc() {
+            return crc.get();
+        }
+
+        private long getBytesWritten() {
+            return bytesWritten.get();
+        }
+
+        @Override
+        public <A> void read(ByteBuffer dst, A attachment, CompletionHandler<Integer, ? super A> handler) {
+            channel.read(dst, attachment, handler);
+        }
+
+        @Override
+        public Future<Integer> read(ByteBuffer dst) {
+            return channel.read(dst);
+        }
+
+        @Override
+        public <A> void write(ByteBuffer src, A attachment, CompletionHandler<Integer, ? super A> handler) {
+            int startPos = src.position();
+            ByteBuffer duplicate = src.duplicate();
+            channel.write(src, attachment, new CompletionHandler<Integer, A>() {
+                @Override
+                public void completed(Integer result, A att) {
+                    if (result != null && result > 0) {
+                        updateCrc(duplicate, startPos, result);
+                    }
+                    handler.completed(result, att);
+                }
+
+                @Override
+                public void failed(Throwable exc, A att) {
+                    handler.failed(exc, att);
+                }
+            });
+        }
+
+        @Override
+        public Future<Integer> write(ByteBuffer src) {
+            CompletableFuture<Integer> future = new CompletableFuture<>();
+            int startPos = src.position();
+            ByteBuffer duplicate = src.duplicate();
+            channel.write(src, src, new CompletionHandler<Integer, ByteBuffer>() {
+                @Override
+                public void completed(Integer result, ByteBuffer attachment) {
+                    if (result != null && result > 0) {
+                        updateCrc(duplicate, startPos, result);
+                    }
+                    future.complete(result);
+                }
+
+                @Override
+                public void failed(Throwable exc, ByteBuffer attachment) {
+                    future.completeExceptionally(exc);
+                }
+            });
+            return future;
+        }
+
+        @Override
+        public boolean isOpen() {
+            return channel.isOpen();
+        }
+
+        @Override
+        public void close() throws IOException {
+            channel.close();
+        }
+
+        private void updateCrc(ByteBuffer buffer, int startPos, int length) {
+            if (length <= 0) {
+                return;
+            }
+
+            ByteBuffer slice = buffer.duplicate();
+            slice.position(startPos);
+            slice.limit(startPos + length);
+            byte[] bytes = new byte[length];
+            slice.get(bytes);
+            crc.updateAndGet(previous -> StorageCrc64Calculator.compute(bytes, previous));
+            bytesWritten.addAndGet(length);
+        }
+    }
+
+    private static final class Md5TrackingAsynchronousByteChannel implements AsynchronousByteChannel {
+        private final AsynchronousByteChannel channel;
+        private final MessageDigest digest;
+
+        private Md5TrackingAsynchronousByteChannel(AsynchronousByteChannel channel) {
+            this.channel = channel;
+            try {
+                this.digest = MessageDigest.getInstance("MD5");
+            } catch (NoSuchAlgorithmException e) {
+                throw LOGGER.logExceptionAsError(new IllegalStateException("MD5 MessageDigest unavailable.", e));
+            }
+        }
+
+        private byte[] getMd5() {
+            synchronized (digest) {
+                return digest.digest();
+            }
+        }
+
+        @Override
+        public <A> void read(ByteBuffer dst, A attachment, CompletionHandler<Integer, ? super A> handler) {
+            channel.read(dst, attachment, handler);
+        }
+
+        @Override
+        public Future<Integer> read(ByteBuffer dst) {
+            return channel.read(dst);
+        }
+
+        @Override
+        public <A> void write(ByteBuffer src, A attachment, CompletionHandler<Integer, ? super A> handler) {
+            int startPos = src.position();
+            ByteBuffer duplicate = src.duplicate();
+            channel.write(src, attachment, new CompletionHandler<Integer, A>() {
+                @Override
+                public void completed(Integer result, A att) {
+                    if (result != null && result > 0) {
+                        updateMd5(duplicate, startPos, result);
+                    }
+                    handler.completed(result, att);
+                }
+
+                @Override
+                public void failed(Throwable exc, A att) {
+                    handler.failed(exc, att);
+                }
+            });
+        }
+
+        @Override
+        public Future<Integer> write(ByteBuffer src) {
+            CompletableFuture<Integer> future = new CompletableFuture<>();
+            int startPos = src.position();
+            ByteBuffer duplicate = src.duplicate();
+            channel.write(src, src, new CompletionHandler<Integer, ByteBuffer>() {
+                @Override
+                public void completed(Integer result, ByteBuffer attachment) {
+                    if (result != null && result > 0) {
+                        updateMd5(duplicate, startPos, result);
+                    }
+                    future.complete(result);
+                }
+
+                @Override
+                public void failed(Throwable exc, ByteBuffer attachment) {
+                    future.completeExceptionally(exc);
+                }
+            });
+            return future;
+        }
+
+        @Override
+        public boolean isOpen() {
+            return channel.isOpen();
+        }
+
+        @Override
+        public void close() throws IOException {
+            channel.close();
+        }
+
+        private void updateMd5(ByteBuffer buffer, int startPos, int length) {
+            if (length <= 0) {
+                return;
+            }
+
+            ByteBuffer slice = buffer.duplicate();
+            slice.position(startPos);
+            slice.limit(startPos + length);
+            synchronized (digest) {
+                digest.update(slice);
+            }
+        }
     }
 
     private void downloadToFileCleanup(AsynchronousFileChannel channel, String filePath, SignalType signalType) {

@@ -32,6 +32,26 @@ public final class BlobConstants {
      */
     public static final int BLOB_DEFAULT_NUMBER_OF_BUFFERS = 8;
     /**
+     * The legacy default number of concurrent transfers for download operations.
+     */
+    public static final int BLOB_LEGACY_DEFAULT_CONCURRENT_TRANSFERS_COUNT = 5;
+    /**
+     * The default range size used for download operations when no checksum validation is requested.
+     */
+    public static final long BLOB_DEFAULT_DOWNLOAD_RANGE_SIZE = 4L * Constants.MB;
+    /**
+     * The default initial range size used for download operations when no checksum validation is requested.
+     */
+    public static final long BLOB_DEFAULT_INITIAL_DOWNLOAD_RANGE_SIZE = 256L * Constants.MB;
+    /**
+     * The maximum range size used for download operations.
+     */
+    public static final long BLOB_MAX_DOWNLOAD_BYTES = 256L * Constants.MB;
+    /**
+     * The maximum range size used when requesting a transactional checksum during download.
+     */
+    public static final long BLOB_MAX_HASH_REQUEST_DOWNLOAD_RANGE = 4L * Constants.MB;
+    /**
      * If a blob  is known to be greater than 100MB, using a larger block size will trigger some server-side
      * optimizations. If the block size is not set and the size of the blob is known to be greater than 100MB, this
      * value will be used.

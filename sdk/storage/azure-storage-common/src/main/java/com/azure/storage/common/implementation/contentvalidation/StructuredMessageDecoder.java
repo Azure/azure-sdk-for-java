@@ -9,7 +9,9 @@ import com.azure.storage.common.implementation.StorageCrc64Calculator;
 import java.io.ByteArrayOutputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.azure.storage.common.implementation.structuredmessage.StructuredMessageConstants.CRC64_LENGTH;
@@ -43,16 +45,21 @@ public class StructuredMessageDecoder {
     // Offset tracking
     private long messageOffset = 0;  // Absolute encoded bytes consumed from the message
     private long totalDecodedPayloadBytes = 0;  // Total decoded (payload) bytes output
+    private long decodedBytesAtLastCompleteSegment = 0;
 
     // Current segment state
     private int currentSegmentNumber = 0;
     private long currentSegmentContentLength = 0;
     private long currentSegmentContentOffset = 0;
+    private int lastCompleteSegmentNumber = 0;
 
     // CRC validation
     private long messageCrc64 = 0;
+    private long messageCrc64AtLastCompleteSegment = 0;
     private long segmentCrc64 = 0;
     private final Map<Integer, Long> segmentCrcs = new HashMap<>();
+    private final Map<Integer, Long> segmentLengths = new HashMap<>();
+    private final List<SegmentInfo> completedSegments = new ArrayList<>();
 
     // Smart retry tracking - lastCompleteSegmentStart is the absolute offset where the last
     // fully completed segment ended. This is the safe retry boundary.
@@ -159,6 +166,15 @@ public class StructuredMessageDecoder {
     }
 
     /**
+     * Gets the total decoded payload bytes at the last complete segment boundary.
+     *
+     * @return The decoded byte count at the last complete segment boundary.
+     */
+    public long getDecodedBytesAtLastCompleteSegment() {
+        return decodedBytesAtLastCompleteSegment;
+    }
+
+    /**
      * Advances the message offset by the specified number of bytes.
      * This should be called after consuming an encoded segment to maintain
      * the authoritative encoded offset.
@@ -181,7 +197,12 @@ public class StructuredMessageDecoder {
      * the data being provided from the retry offset.
      */
     public void resetToLastCompleteSegment() {
-        if (messageOffset != lastCompleteSegmentStart) {
+        boolean needsReset = messageOffset != lastCompleteSegmentStart
+            || pendingBytes.size() > 0
+            || currentSegmentContentOffset != 0
+            || currentSegmentContentLength != 0
+            || currentSegmentNumber != lastCompleteSegmentNumber;
+        if (needsReset) {
             LOGGER.atInfo()
                 .addKeyValue("fromOffset", messageOffset)
                 .addKeyValue("toOffset", lastCompleteSegmentStart)
@@ -190,9 +211,13 @@ public class StructuredMessageDecoder {
                 .addKeyValue("currentSegmentContentLength", currentSegmentContentLength)
                 .log("Resetting decoder to last complete segment boundary");
             messageOffset = lastCompleteSegmentStart;
+            totalDecodedPayloadBytes = decodedBytesAtLastCompleteSegment;
+            messageCrc64 = messageCrc64AtLastCompleteSegment;
             // Reset current segment state - next decode will read the segment header
             currentSegmentContentOffset = 0;
             currentSegmentContentLength = 0;
+            currentSegmentNumber = lastCompleteSegmentNumber;
+            segmentCrc64 = 0;
             // Clear any pending bytes since we're resetting to a known boundary
             pendingBytes.reset();
         } else {
@@ -303,6 +328,15 @@ public class StructuredMessageDecoder {
      */
     public StructuredMessageFlags getFlags() {
         return flags;
+    }
+
+    /**
+     * Gets the completed segments in decode order.
+     *
+     * @return List of completed segment CRCs and lengths.
+     */
+    public List<SegmentInfo> getCompletedSegments() {
+        return new ArrayList<>(completedSegments);
     }
 
     /**
@@ -459,6 +493,7 @@ public class StructuredMessageDecoder {
         currentSegmentNumber = segmentNum;
         currentSegmentContentLength = segmentSize;
         currentSegmentContentOffset = 0;
+        segmentLengths.put(currentSegmentNumber, segmentSize);
 
         if (flags == StructuredMessageFlags.STORAGE_CRC64) {
             segmentCrc64 = 0;
@@ -545,11 +580,16 @@ public class StructuredMessageDecoder {
 
             consumeBytes(CRC64_LENGTH, buffer);
             segmentCrcs.put(currentSegmentNumber, segmentCrc64);
+            long length = segmentLengths.getOrDefault(currentSegmentNumber, currentSegmentContentLength);
+            completedSegments.add(new SegmentInfo(segmentCrc64, length));
             messageOffset += CRC64_LENGTH;
         }
 
         // Mark that this segment is complete
         lastCompleteSegmentStart = messageOffset;
+        decodedBytesAtLastCompleteSegment = totalDecodedPayloadBytes;
+        messageCrc64AtLastCompleteSegment = messageCrc64;
+        lastCompleteSegmentNumber = currentSegmentNumber;
         LOGGER.atInfo()
             .addKeyValue("segmentNum", currentSegmentNumber)
             .addKeyValue("offset", lastCompleteSegmentStart)
@@ -625,15 +665,10 @@ public class StructuredMessageDecoder {
 
             // Step 2: Process segments
             while (messageOffset < messageLength) {
-                // If all segments are done, proceed to message footer before attempting any new segment header.
-                if (currentSegmentNumber == numSegments && currentSegmentContentOffset == currentSegmentContentLength) {
-                    if (!tryReadMessageFooter(buffer)) {
-                        break;
-                    }
-                }
-
-                // Read segment header if needed
-                if (currentSegmentContentOffset == currentSegmentContentLength) {
+                // Read segment header only after the *previous* segment is fully complete (including its CRC footer).
+                // Otherwise we would misinterpret segment N's footer bytes as segment N+1's header when the footer
+                // is split across network buffers (e.g. "Unexpected segment number. Expected: 2, got: 10710").
+                if (lastCompleteSegmentNumber == currentSegmentNumber && currentSegmentNumber < numSegments) {
                     if (!tryReadSegmentHeader(buffer)) {
                         break; // Need more bytes for segment header
                     }
@@ -646,6 +681,10 @@ public class StructuredMessageDecoder {
                 if (currentSegmentContentOffset == currentSegmentContentLength) {
                     if (!tryReadSegmentFooter(buffer)) {
                         break; // Need more bytes for segment footer
+                    }
+                    // After reading this segment's footer, if it was the last segment, read message footer.
+                    if (currentSegmentNumber == numSegments && !tryReadMessageFooter(buffer)) {
+                        break;
                     }
                 }
 
@@ -706,7 +745,8 @@ public class StructuredMessageDecoder {
         }
 
         while (buffer.hasRemaining() && decodedContent.size() < size) {
-            if (currentSegmentContentOffset == currentSegmentContentLength) {
+            // Only read next segment header after previous segment is fully complete (including footer).
+            if (lastCompleteSegmentNumber == currentSegmentNumber && currentSegmentNumber < numSegments) {
                 if (!tryReadSegmentHeader(buffer)) {
                     break; // Need more bytes
                 }
@@ -759,6 +799,27 @@ public class StructuredMessageDecoder {
      */
     public boolean isComplete() {
         return messageLength != -1 && messageOffset >= messageLength;
+    }
+
+    /**
+     * Represents a completed segment with CRC and length.
+     */
+    public static final class SegmentInfo {
+        private final long crc64;
+        private final long length;
+
+        public SegmentInfo(long crc64, long length) {
+            this.crc64 = crc64;
+            this.length = length;
+        }
+
+        public long getCrc64() {
+            return crc64;
+        }
+
+        public long getLength() {
+            return length;
+        }
     }
 
     /**

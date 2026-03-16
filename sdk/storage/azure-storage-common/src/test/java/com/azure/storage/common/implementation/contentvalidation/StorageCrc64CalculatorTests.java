@@ -11,6 +11,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import com.azure.storage.common.implementation.Constants;
 
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -210,5 +211,34 @@ public class StorageCrc64CalculatorTests {
                 "8473418370223760471", "10401355811619715622", "33760", "3692020299859515126"),
             Arguments.of("889000539881195835", "2971048229276949174", "5346315327374690144", "307387",
                 "1407121768110541356", "10535852615249992663", "741189", "3634018251978804152"));
+    }
+
+    @Test
+    void testComputeTwoMatchesTwoComputes() {
+        byte[] data = "This is a test where the data is longer than 64 characters so that we can test that code path."
+            .getBytes();
+        long seg0 = 0;
+        long msg0 = 0;
+        long seg1 = StorageCrc64Calculator.compute(data, seg0);
+        long msg1 = StorageCrc64Calculator.compute(data, msg0);
+        long[] two = StorageCrc64Calculator.computeTwo(data, seg0, msg0);
+        assertEquals(seg1, two[0]);
+        assertEquals(msg1, two[1]);
+    }
+
+    @Test
+    void testComputeByteBufferMatchesByteArray() {
+        byte[] data = "Hello World!".getBytes();
+        long expected = StorageCrc64Calculator.compute(data, 0);
+        long actual = StorageCrc64Calculator.compute(ByteBuffer.wrap(data), 0);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void testComputeSliceMatchesFullArray() {
+        byte[] data = "Hello World!".getBytes();
+        long expected = StorageCrc64Calculator.compute(data, 0);
+        long actual = StorageCrc64Calculator.compute(data, 0, data.length, 0);
+        assertEquals(expected, actual);
     }
 }

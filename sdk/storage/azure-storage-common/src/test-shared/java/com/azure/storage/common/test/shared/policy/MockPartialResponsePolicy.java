@@ -16,15 +16,16 @@ import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class MockPartialResponsePolicy implements HttpPipelinePolicy {
     static final HttpHeaderName X_MS_RANGE_HEADER = HttpHeaderName.fromString("x-ms-range");
     static final HttpHeaderName RANGE_HEADER = HttpHeaderName.RANGE;
-    private int tries;
-    private final List<String> rangeHeaders = new ArrayList<>();
+    private final AtomicInteger tries;
+    private final List<String> rangeHeaders = Collections.synchronizedList(new ArrayList<>());
     private final int maxBytesPerResponse;  // Maximum bytes to return before simulating timeout
     private final AtomicInteger hits = new AtomicInteger();
     private final String targetUrlPrefix;
@@ -56,7 +57,7 @@ public class MockPartialResponsePolicy implements HttpPipelinePolicy {
      * @param targetUrlPrefix If non-null, only requests whose URL starts with this prefix will be interrupted.
      */
     public MockPartialResponsePolicy(int tries, int maxBytesPerResponse, String targetUrlPrefix) {
-        this.tries = tries;
+        this.tries = new AtomicInteger(tries);
         this.maxBytesPerResponse = maxBytesPerResponse;
         this.targetUrlPrefix = targetUrlPrefix;
     }
@@ -87,13 +88,16 @@ public class MockPartialResponsePolicy implements HttpPipelinePolicy {
             boolean urlMatches = targetUrlPrefix == null
                 || response.getRequest().getUrl().toString().startsWith(targetUrlPrefix);
 
-            if ((response.getRequest().getHttpMethod() != HttpMethod.GET) || !urlMatches || this.tries == 0) {
+            if ((response.getRequest().getHttpMethod() != HttpMethod.GET) || !urlMatches) {
                 return Mono.just(response);
             } else {
+                int remainingTries = this.tries.getAndUpdate(value -> value > 0 ? value - 1 : value);
+                if (remainingTries <= 0) {
+                    return Mono.just(response);
+                }
                 hits.incrementAndGet();
-                System.out.println("[MockPartialResponsePolicy] invoked. tries=" + tries
+                System.out.println("[MockPartialResponsePolicy] invoked. tries=" + remainingTries
                     + ", maxBytesPerResponse=" + maxBytesPerResponse);
-                this.tries -= 1;
 
                 // Simulate an interruption mid-stream (like FaultyStream in .NET) without mutating headers.
                 // Emit up to maxBytesPerResponse, then complete early to let the decoder detect an incomplete message
@@ -150,7 +154,7 @@ public class MockPartialResponsePolicy implements HttpPipelinePolicy {
     }
 
     public int getTriesRemaining() {
-        return tries;
+        return tries.get();
     }
 
     public List<String> getRangeHeaders() {
