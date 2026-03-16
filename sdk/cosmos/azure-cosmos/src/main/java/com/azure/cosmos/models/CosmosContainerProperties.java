@@ -393,6 +393,51 @@ public final class CosmosContainerProperties {
         return this;
     }
 
+    /**
+     * Gets the materialized view definition for this container in the Azure Cosmos DB service.
+     * A materialized view is derived from a source container and is defined by a SQL-like query.
+     *
+     * @return the CosmosMaterializedViewDefinition
+     */
+    public CosmosMaterializedViewDefinition getMaterializedViewDefinition() {
+        return this.documentCollection.getMaterializedViewDefinition();
+    }
+
+    /**
+     * Sets the materialized view definition for this container in the Azure Cosmos DB service.
+     * A materialized view is derived from a source container and is defined by a SQL-like query.
+     * <p>
+     * Example:
+     * <pre>{@code
+     * CosmosMaterializedViewDefinition mvDef = new CosmosMaterializedViewDefinition()
+     *     .setSourceCollectionId("gsi-src")
+     *     .setDefinition("SELECT c.customerId, c.emailAddress FROM c");
+     * containerProperties.setMaterializedViewDefinition(mvDef);
+     * }</pre>
+     *
+     * @param value the CosmosMaterializedViewDefinition to be used.
+     * @return the CosmosContainerProperties.
+     */
+    public CosmosContainerProperties setMaterializedViewDefinition(CosmosMaterializedViewDefinition value) {
+        this.documentCollection.setMaterializedViewDefinition(value);
+        return this;
+    }
+
+    /**
+     * Gets the read-only list of materialized view containers derived from this container.
+     * This property is populated only when reading a container response from the Azure Cosmos DB service.
+     * <p>
+     * Example JSON representation in the response:
+     * <pre>{@code
+     * "materializedViews": [{ "id": "gsi_testcontainer1", "_rid": "TughAMEOdUI=" }]
+     * }</pre>
+     *
+     * @return the list of {@link CosmosMaterializedView}, or an empty list if none are present.
+     */
+    public List<CosmosMaterializedView> getMaterializedViews() {
+        return this.documentCollection.getMaterializedViews();
+    }
+
     Resource getResource() {
         return this.documentCollection;
     }

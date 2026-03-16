@@ -9,6 +9,8 @@ import com.azure.cosmos.models.ChangeFeedPolicy;
 import com.azure.cosmos.models.ClientEncryptionPolicy;
 import com.azure.cosmos.models.ComputedProperty;
 import com.azure.cosmos.models.ConflictResolutionPolicy;
+import com.azure.cosmos.models.CosmosMaterializedViewDefinition;
+import com.azure.cosmos.models.CosmosMaterializedView;
 import com.azure.cosmos.models.CosmosFullTextPolicy;
 import com.azure.cosmos.models.CosmosVectorEmbeddingPolicy;
 import com.azure.cosmos.models.IndexingPolicy;
@@ -24,6 +26,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -45,6 +48,7 @@ public final class DocumentCollection extends Resource {
     private ClientEncryptionPolicy clientEncryptionPolicyInternal;
     private CosmosVectorEmbeddingPolicy cosmosVectorEmbeddingPolicy;
     private CosmosFullTextPolicy cosmosFullTextPolicy;
+    private CosmosMaterializedViewDefinition cosmosMaterializedViewDefinition;
 
     /**
      * Constructor.
@@ -467,6 +471,48 @@ public final class DocumentCollection extends Resource {
     public void setFullTextPolicy(CosmosFullTextPolicy value) {
         checkNotNull(value, "cosmosFullTextPolicy cannot be null");
         this.set(Constants.Properties.FULL_TEXT_POLICY, value);
+    }
+
+    /**
+     * Gets the materialized view definition for this container in the Azure Cosmos DB service.
+     *
+     * @return the CosmosMaterializedViewDefinition
+     */
+    public CosmosMaterializedViewDefinition getMaterializedViewDefinition() {
+        if (this.cosmosMaterializedViewDefinition == null) {
+            if (super.has(Constants.Properties.MATERIALIZED_VIEW_DEFINITION)) {
+                this.cosmosMaterializedViewDefinition = super.getObject(
+                    Constants.Properties.MATERIALIZED_VIEW_DEFINITION,
+                    CosmosMaterializedViewDefinition.class);
+            }
+        }
+        return this.cosmosMaterializedViewDefinition;
+    }
+
+    /**
+     * Sets the materialized view definition for this container in the Azure Cosmos DB service.
+     *
+     * @param value the CosmosMaterializedViewDefinition
+     */
+    public void setMaterializedViewDefinition(CosmosMaterializedViewDefinition value) {
+        checkNotNull(value, "cosmosMaterializedViewDefinition cannot be null");
+        this.cosmosMaterializedViewDefinition = value;
+        this.set(Constants.Properties.MATERIALIZED_VIEW_DEFINITION, value);
+    }
+
+    /**
+     * Gets the read-only list of materialized views derived from this container.
+     * This property is populated only when reading a container response from the Azure Cosmos DB service.
+     *
+     * @return the list of {@link CosmosMaterializedView}, or an empty list if none are present.
+     */
+    public List<CosmosMaterializedView> getMaterializedViews() {
+        List<CosmosMaterializedView> results =
+            super.getList(Constants.Properties.MATERIALIZED_VIEWS, CosmosMaterializedView.class);
+        if (results == null) {
+            return Collections.emptyList();
+        }
+        return Collections.unmodifiableList(results);
     }
 
     public void populatePropertyBag() {
