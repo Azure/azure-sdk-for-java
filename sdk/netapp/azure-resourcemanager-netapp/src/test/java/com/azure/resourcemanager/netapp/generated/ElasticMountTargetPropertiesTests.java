@@ -11,7 +11,7 @@ public final class ElasticMountTargetPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ElasticMountTargetProperties model
-            = BinaryData.fromString("{\"ipAddress\":\"alhsnvkc\",\"smbServerFqdn\":\"xzrpo\"}")
+            = BinaryData.fromString("{\"ipAddress\":\"rtujwsawddjibab\",\"smbServerFqdn\":\"ititvtzeexavoxt\"}")
                 .toObject(ElasticMountTargetProperties.class);
     }
 }

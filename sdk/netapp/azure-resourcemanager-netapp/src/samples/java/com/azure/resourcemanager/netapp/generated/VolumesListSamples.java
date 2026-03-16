@@ -9,7 +9,7 @@ package com.azure.resourcemanager.netapp.generated;
  */
 public final class VolumesListSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/Volumes_ExtraLargeVolumes_List.json
+     * x-ms-original-file: 2025-12-15-preview/Volumes_ExtraLargeVolumes_List.json
      */
     /**
      * Sample code: Volumes_ExtralargeVolumeList.
@@ -21,7 +21,7 @@ public final class VolumesListSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-09-01-preview/Volumes_List.json
+     * x-ms-original-file: 2025-12-15-preview/Volumes_List.json
      */
     /**
      * Sample code: Volumes_List.

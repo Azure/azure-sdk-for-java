@@ -12,7 +12,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class ListMemoryStores {
     public static void main(String[] args) {
-        String endpoint = Configuration.getGlobalConfiguration().get("AZURE_AGENTS_ENDPOINT");
+        String endpoint = Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT");
 
         // Code sample for listing all memory stores
         MemoryStoresClient memoryStoresClient = new AgentsClientBuilder()

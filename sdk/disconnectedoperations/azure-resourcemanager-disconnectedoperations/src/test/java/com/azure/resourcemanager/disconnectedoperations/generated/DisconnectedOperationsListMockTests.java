@@ -11,8 +11,11 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.disconnectedoperations.DisconnectedOperationsManager;
+import com.azure.resourcemanager.disconnectedoperations.models.AutoRenew;
+import com.azure.resourcemanager.disconnectedoperations.models.BenefitPlanStatus;
 import com.azure.resourcemanager.disconnectedoperations.models.ConnectionIntent;
 import com.azure.resourcemanager.disconnectedoperations.models.DisconnectedOperation;
+import com.azure.resourcemanager.disconnectedoperations.models.PricingModel;
 import com.azure.resourcemanager.disconnectedoperations.models.RegistrationStatus;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -24,7 +27,7 @@ public final class DisconnectedOperationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"stampId\":\"nmoc\",\"billingModel\":\"Capacity\",\"connectionIntent\":\"Connected\",\"connectionStatus\":\"Disconnected\",\"registrationStatus\":\"Unregistered\",\"deviceVersion\":\"afbljjgpbtoqcjmk\"},\"location\":\"a\",\"tags\":{\"pku\":\"idtqajzyu\",\"gqexzlocxs\":\"jkrlkhbzhfepg\",\"bcsglumma\":\"paierh\"},\"id\":\"tjaodxobnb\",\"name\":\"xkqpxo\",\"type\":\"ajionpimexgstxg\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"stampId\":\"yfsoppu\",\"billingModel\":\"Capacity\",\"connectionIntent\":\"Connected\",\"connectionStatus\":\"Connected\",\"registrationStatus\":\"Registered\",\"deviceVersion\":\"ej\",\"billingConfiguration\":{\"autoRenew\":\"Disabled\",\"billingStatus\":\"Disabled\",\"current\":{\"cores\":1996811861,\"pricingModel\":\"Annual\"},\"upcoming\":{\"cores\":570000653,\"pricingModel\":\"Annual\"}},\"benefitPlans\":{\"azureHybridWindowsServerBenefit\":\"Enabled\",\"windowsServerVmCount\":2075047144}},\"location\":\"xdn\",\"tags\":{\"azjdyggd\":\"owgujjugwdkcglhs\"},\"id\":\"jixhbk\",\"name\":\"ofqweykhmenevfye\",\"type\":\"fwhybcibvy\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,11 +39,25 @@ public final class DisconnectedOperationsListMockTests {
         PagedIterable<DisconnectedOperation> response
             = manager.disconnectedOperations().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("a", response.iterator().next().location());
-        Assertions.assertEquals("idtqajzyu", response.iterator().next().tags().get("pku"));
+        Assertions.assertEquals("xdn", response.iterator().next().location());
+        Assertions.assertEquals("owgujjugwdkcglhs", response.iterator().next().tags().get("azjdyggd"));
         Assertions.assertEquals(ConnectionIntent.CONNECTED, response.iterator().next().properties().connectionIntent());
-        Assertions.assertEquals(RegistrationStatus.UNREGISTERED,
+        Assertions.assertEquals(RegistrationStatus.REGISTERED,
             response.iterator().next().properties().registrationStatus());
-        Assertions.assertEquals("afbljjgpbtoqcjmk", response.iterator().next().properties().deviceVersion());
+        Assertions.assertEquals("ej", response.iterator().next().properties().deviceVersion());
+        Assertions.assertEquals(AutoRenew.DISABLED,
+            response.iterator().next().properties().billingConfiguration().autoRenew());
+        Assertions.assertEquals(1996811861,
+            response.iterator().next().properties().billingConfiguration().current().cores());
+        Assertions.assertEquals(PricingModel.ANNUAL,
+            response.iterator().next().properties().billingConfiguration().current().pricingModel());
+        Assertions.assertEquals(570000653,
+            response.iterator().next().properties().billingConfiguration().upcoming().cores());
+        Assertions.assertEquals(PricingModel.ANNUAL,
+            response.iterator().next().properties().billingConfiguration().upcoming().pricingModel());
+        Assertions.assertEquals(BenefitPlanStatus.ENABLED,
+            response.iterator().next().properties().benefitPlans().azureHybridWindowsServerBenefit());
+        Assertions.assertEquals(2075047144,
+            response.iterator().next().properties().benefitPlans().windowsServerVmCount());
     }
 }

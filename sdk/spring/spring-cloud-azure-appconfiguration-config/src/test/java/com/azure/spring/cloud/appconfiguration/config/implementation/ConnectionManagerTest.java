@@ -277,7 +277,7 @@ public class ConnectionManagerTest {
             throw new RuntimeException("Test verification failed", e);
         }
         
-        // activeClients list should now only have the second client
+        // activeClients list should now contain only the second client
         try {
             java.lang.reflect.Field activeClientsField = ConnectionManager.class.getDeclaredField("activeClients");
             activeClientsField.setAccessible(true);

@@ -21,7 +21,7 @@ public final class ElasticSnapshotsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\"},\"id\":\"hvrztnvg\",\"name\":\"shqrdgrt\",\"type\":\"mewjzlpyk\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\"},\"id\":\"zangprbfaxyxzlbc\",\"name\":\"phmsexroq\",\"type\":\"ndktxfv\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,8 +31,8 @@ public final class ElasticSnapshotsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ElasticSnapshot response = manager.elasticSnapshots()
-            .define("hpriylfm")
-            .withExistingElasticVolume("emmjauwcg", "efnoh", "itranizerwguda", "mxubvfbngfcoce")
+            .define("mhzcgkrepdqh")
+            .withExistingElasticVolume("owtjo", "ztfwfqchvcz", "vjnn", "tagfyvrtpqp")
             .withProperties(new ElasticSnapshotProperties())
             .create();
 

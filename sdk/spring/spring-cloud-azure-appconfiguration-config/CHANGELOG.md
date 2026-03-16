@@ -1,18 +1,18 @@
 # Release History
 
-## 7.1.0-beta.1 (Unreleased)
+## 7.2.0-beta.1 (Unreleased)
 
 ### Features Added
-
-- Added support for filtering configuration settings and feature flags by tags. Tags can be configured via `spring.cloud.azure.appconfiguration.stores[0].selects[0].tags-filter` for key-value settings and `spring.cloud.azure.appconfiguration.stores[0].feature-flags.selects[0].tags-filter` for feature flags. The value is a list of `tag=value` pairs (e.g., `["env=prod", "team=backend"]`) combined with AND logic.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
-- Fixed YAML configuration binding for `label-filter` by adding standard no-arg getter methods to `AppConfigurationKeyValueSelector` and `FeatureFlagKeyValueSelector`, enabling proper type resolution by Spring Boot's `@ConfigurationProperties` binder.
-
 ### Other Changes
+
+## 7.1.0 (2026-03-11)
+
+Please refer to [spring/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/CHANGELOG.md#710-2026-03-11) for more details.
 
 ## 7.0.0 (2026-02-03)
 

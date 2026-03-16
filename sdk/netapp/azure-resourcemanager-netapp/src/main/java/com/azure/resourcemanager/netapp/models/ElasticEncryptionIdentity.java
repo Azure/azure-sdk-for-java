@@ -27,6 +27,11 @@ public final class ElasticEncryptionIdentity implements JsonSerializable<Elastic
      */
     private String userAssignedIdentity;
 
+    /*
+     * ClientId of the multi-tenant Entra ID Application. Used to access cross-tenant keyvaults.
+     */
+    private String federatedClientId;
+
     /**
      * Creates an instance of ElasticEncryptionIdentity class.
      */
@@ -68,6 +73,28 @@ public final class ElasticEncryptionIdentity implements JsonSerializable<Elastic
     }
 
     /**
+     * Get the federatedClientId property: ClientId of the multi-tenant Entra ID Application. Used to access
+     * cross-tenant keyvaults.
+     * 
+     * @return the federatedClientId value.
+     */
+    public String federatedClientId() {
+        return this.federatedClientId;
+    }
+
+    /**
+     * Set the federatedClientId property: ClientId of the multi-tenant Entra ID Application. Used to access
+     * cross-tenant keyvaults.
+     * 
+     * @param federatedClientId the federatedClientId value to set.
+     * @return the ElasticEncryptionIdentity object itself.
+     */
+    public ElasticEncryptionIdentity withFederatedClientId(String federatedClientId) {
+        this.federatedClientId = federatedClientId;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -82,6 +109,7 @@ public final class ElasticEncryptionIdentity implements JsonSerializable<Elastic
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("userAssignedIdentity", this.userAssignedIdentity);
+        jsonWriter.writeStringField("federatedClientId", this.federatedClientId);
         return jsonWriter.writeEndObject();
     }
 
@@ -104,6 +132,8 @@ public final class ElasticEncryptionIdentity implements JsonSerializable<Elastic
                     deserializedElasticEncryptionIdentity.principalId = reader.getString();
                 } else if ("userAssignedIdentity".equals(fieldName)) {
                     deserializedElasticEncryptionIdentity.userAssignedIdentity = reader.getString();
+                } else if ("federatedClientId".equals(fieldName)) {
+                    deserializedElasticEncryptionIdentity.federatedClientId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

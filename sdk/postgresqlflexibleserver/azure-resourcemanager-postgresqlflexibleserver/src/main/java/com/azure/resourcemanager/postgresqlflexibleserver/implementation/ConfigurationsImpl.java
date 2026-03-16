@@ -31,12 +31,8 @@ public final class ConfigurationsImpl implements Configurations {
         String configurationName, Context context) {
         Response<ConfigurationInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, serverName, configurationName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ConfigurationImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ConfigurationImpl(inner.getValue(), this.manager()));
     }
 
     public Configuration get(String resourceGroupName, String serverName, String configurationName) {

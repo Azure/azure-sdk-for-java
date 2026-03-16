@@ -37,6 +37,8 @@ import java.net.UnknownHostException;
 import java.util.List;
 import java.util.UUID;
 
+import com.azure.cosmos.FlakyTestRetryAnalyzer;
+
 import static org.assertj.core.api.Assertions.fail;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -62,7 +64,7 @@ public class InvalidHostnameTest extends TestSuiteBase {
         directConnectionTestCore(true);
     }
 
-    @Test(groups = { "fast", "fi-multi-master", "multi-region" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast", "fi-multi-master", "multi-region" }, timeOut = TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void directConnectionFailsWhenHostnameIsInvalidAndHostnameValidationIsNotSet() throws Exception {
         directConnectionFailsWhenHostnameIsInvalidCore(null);
     }

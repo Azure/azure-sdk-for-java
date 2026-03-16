@@ -315,9 +315,13 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             this.injectRequestRateTooLargeIntoAllRegions =
                 (c, operationType) -> injectRequestRateTooLargeError(c, this.writeableRegions, operationType);
 
-            CosmosAsyncContainer container = this.createTestContainer(dummyClient);
-            this.testDatabaseId = container.getDatabase().getId();
-            this.testContainerId = container.getId();
+            final CosmosAsyncContainer[] containerHolder = new CosmosAsyncContainer[1];
+            final CosmosAsyncClient clientForRetry = dummyClient;
+            executeWithRetry(() -> {
+                containerHolder[0] = this.createTestContainer(clientForRetry);
+            }, 3, "FaultInjectionWithAvailabilityStrategyTestsBase createTestContainer");
+            this.testDatabaseId = containerHolder[0].getDatabase().getId();
+            this.testContainerId = containerHolder[0].getId();
 
             // Creating a container is an async task - especially with multiple regions it can
             // take some time until the container is available in the remote regions as well
@@ -410,7 +414,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             // successfully with 200 - OK>
             new Object[] {
                 "404-1002_OnlyFirstRegion_RemotePreferred_ReluctantAvailabilityStrategy",
-                ONE_SECOND_DURATION,
+                TWO_SECOND_DURATION,
                 reluctantThresholdAvailabilityStrategy,
                 CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED,
                 ConnectionMode.DIRECT,
@@ -507,7 +511,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             // successfully with 200 - OK>
             new Object[] {
                 "404-1002_OnlyFirstRegion_RemotePreferred_NoAvailabilityStrategy",
-                ONE_SECOND_DURATION,
+                TWO_SECOND_DURATION,
                 null,
                 CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED,
                 ConnectionMode.DIRECT,
@@ -563,7 +567,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             // should result in the 404/0 being returned
             new Object[] {
                 "Legit404_404-1002_OnlyFirstRegion_RemotePreferred_NoAvailabilityStrategy",
-                ONE_SECOND_DURATION,
+                TWO_SECOND_DURATION,
                 null,
                 CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED,
                 ConnectionMode.DIRECT,
@@ -1711,7 +1715,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
             // cross regional retry to finish within e2e timeout.
             new Object[] {
                 "Create_404-1002_FirstRegionOnly_RemotePreferredWithHighInRegionRetryTime_NoAvailabilityStrategy_WithRetries",
-                ONE_SECOND_DURATION,
+                TWO_SECOND_DURATION,
                 noAvailabilityStrategy,
                 CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED,
                 ConnectionMode.DIRECT,

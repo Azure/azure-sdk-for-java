@@ -5,13 +5,16 @@
 package com.azure.ai.agents;
 
 import com.azure.ai.agents.implementation.OpenAIJsonHelper;
+import com.azure.ai.agents.implementation.StreamingUtils;
 import com.azure.ai.agents.models.AgentReference;
 import com.azure.core.annotation.ServiceClient;
 import com.openai.client.OpenAIClientAsync;
 import com.openai.core.JsonValue;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
+import com.openai.models.responses.ResponseStreamEvent;
 import com.openai.services.async.ResponseServiceAsync;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
@@ -72,7 +75,7 @@ public final class ResponsesAsyncClient {
 
         Map<String, JsonValue> additionalBodyProperties = new HashMap<>();
         params.conversation(conversationId);
-        additionalBodyProperties.put("agent", agentRefJsonValue);
+        additionalBodyProperties.put("agent_reference", agentRefJsonValue);
 
         params.additionalBodyProperties(additionalBodyProperties);
         return Mono.fromFuture(this.responseServiceAsync.create(params.build()));
@@ -92,7 +95,7 @@ public final class ResponsesAsyncClient {
         JsonValue agentRefJsonValue = OpenAIJsonHelper.toJsonValue(agentReference);
 
         Map<String, JsonValue> additionalBodyProperties = new HashMap<>();
-        additionalBodyProperties.put("agent", agentRefJsonValue);
+        additionalBodyProperties.put("agent_reference", agentRefJsonValue);
 
         params.additionalBodyProperties(additionalBodyProperties);
         return Mono.fromFuture(this.responseServiceAsync.create(params.build()));
@@ -106,5 +109,50 @@ public final class ResponsesAsyncClient {
      */
     public Mono<Response> createWithAgent(AgentReference agentReference) {
         return createWithAgent(agentReference, new ResponseCreateParams.Builder());
+    }
+
+    /**
+     * Creates a streaming response with an agent.
+     *
+     * @param agentReference The agent reference.
+     * @param params The parameters to create the response.
+     * @return A Flux of ResponseStreamEvent.
+     */
+    public Flux<ResponseStreamEvent> createStreamingWithAgent(AgentReference agentReference,
+        ResponseCreateParams.Builder params) {
+        Objects.requireNonNull(agentReference, "agentReference cannot be null");
+        Objects.requireNonNull(params, "params cannot be null");
+
+        JsonValue agentRefJsonValue = OpenAIJsonHelper.toJsonValue(agentReference);
+
+        Map<String, JsonValue> additionalBodyProperties = new HashMap<>();
+        additionalBodyProperties.put("agent_reference", agentRefJsonValue);
+
+        params.additionalBodyProperties(additionalBodyProperties);
+        return StreamingUtils.toFlux(this.responseServiceAsync.createStreaming(params.build()));
+    }
+
+    /**
+     * Creates a streaming response with an agent conversation.
+     *
+     * @param agentReference The agent reference.
+     * @param conversationId The conversation ID.
+     * @param params The parameters to create the response.
+     * @return A Flux of ResponseStreamEvent.
+     */
+    public Flux<ResponseStreamEvent> createStreamingWithAgentConversation(AgentReference agentReference,
+        String conversationId, ResponseCreateParams.Builder params) {
+        Objects.requireNonNull(agentReference, "agentReference cannot be null");
+        Objects.requireNonNull(conversationId, "conversationId cannot be null");
+        Objects.requireNonNull(params, "params cannot be null");
+
+        JsonValue agentRefJsonValue = OpenAIJsonHelper.toJsonValue(agentReference);
+
+        Map<String, JsonValue> additionalBodyProperties = new HashMap<>();
+        params.conversation(conversationId);
+        additionalBodyProperties.put("agent_reference", agentRefJsonValue);
+
+        params.additionalBodyProperties(additionalBodyProperties);
+        return StreamingUtils.toFlux(this.responseServiceAsync.createStreaming(params.build()));
     }
 }

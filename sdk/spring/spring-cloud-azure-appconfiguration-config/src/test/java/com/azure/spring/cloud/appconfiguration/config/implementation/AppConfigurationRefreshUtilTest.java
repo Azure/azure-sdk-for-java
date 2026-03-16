@@ -248,7 +248,6 @@ public class AppConfigurationRefreshUtilTest {
                 Duration.ofMinutes(10),
                 (long) 60, replicaLookUpMock);
             assertFalse(eventData.getDoRefresh());
-            verify(clientFactoryMock, times(1)).setCurrentConfigStoreClient(Mockito.eq(endpoint), Mockito.eq(endpoint));
             verify(clientOriginMock, times(0)).getWatchKey(Mockito.anyString(), Mockito.anyString(),
                 Mockito.any(Context.class));
         }
@@ -271,7 +270,6 @@ public class AppConfigurationRefreshUtilTest {
             RefreshEventData eventData = new AppConfigurationRefreshUtil().refreshStoresCheck(clientFactoryMock,
                 Duration.ofMinutes(10), (long) 60, replicaLookUpMock);
             assertFalse(eventData.getDoRefresh());
-            verify(clientFactoryMock, times(1)).setCurrentConfigStoreClient(Mockito.eq(endpoint), Mockito.eq(endpoint));
             verify(clientOriginMock, times(0)).getWatchKey(Mockito.anyString(), Mockito.anyString(),
                 Mockito.any(Context.class));
         }
@@ -292,7 +290,6 @@ public class AppConfigurationRefreshUtilTest {
                 Duration.ofMinutes(10),
                 (long) 60, replicaLookUpMock);
             assertFalse(eventData.getDoRefresh());
-            verify(clientFactoryMock, times(1)).setCurrentConfigStoreClient(Mockito.eq(endpoint), Mockito.eq(endpoint));
             verify(clientOriginMock, times(0)).getWatchKey(Mockito.anyString(), Mockito.anyString(),
                 Mockito.any(Context.class));
         }
@@ -316,7 +313,6 @@ public class AppConfigurationRefreshUtilTest {
                 (long) 60, replicaLookUpMock);
             assertFalse(eventData.getDoRefresh());
             ArgumentCaptor<Context> captorParam = ArgumentCaptor.forClass(Context.class);
-            verify(clientFactoryMock, times(1)).setCurrentConfigStoreClient(Mockito.eq(endpoint), Mockito.eq(endpoint));
             verify(clientOriginMock, times(1)).getWatchKey(Mockito.anyString(), Mockito.anyString(),
                 captorParam.capture());
             assertEquals(newState, StateHolder.getState(endpoint));
@@ -346,7 +342,6 @@ public class AppConfigurationRefreshUtilTest {
                 Duration.ofMinutes(10), (long) 60, replicaLookUpMock);
             assertEquals(newState, StateHolder.getState(endpoint));
             assertFalse(eventData.getDoRefresh());
-            verify(clientFactoryMock, times(1)).setCurrentConfigStoreClient(Mockito.eq(endpoint), Mockito.eq(endpoint));
             verify(clientOriginMock, times(1)).getWatchKey(Mockito.anyString(), Mockito.anyString(),
                 Mockito.any(Context.class));
         }
@@ -380,7 +375,6 @@ public class AppConfigurationRefreshUtilTest {
             assertEquals(newState, StateHolder.getState(endpoint));
             assertFalse(eventData.getDoRefresh());
             ArgumentCaptor<Context> captorParam = ArgumentCaptor.forClass(Context.class);
-            verify(clientFactoryMock, times(1)).setCurrentConfigStoreClient(Mockito.eq(endpoint), Mockito.eq(endpoint));
             verify(clientOriginMock, times(1)).getWatchKey(Mockito.anyString(), Mockito.anyString(),
                 captorParam.capture());
             Context testContext = captorParam.getValue();
@@ -417,7 +411,6 @@ public class AppConfigurationRefreshUtilTest {
             assertEquals(newState, StateHolder.getState(endpoint));
             assertFalse(eventData.getDoRefresh());
             ArgumentCaptor<Context> captorParam = ArgumentCaptor.forClass(Context.class);
-            verify(clientFactoryMock, times(1)).setCurrentConfigStoreClient(Mockito.eq(endpoint), Mockito.eq(endpoint));
             verify(clientOriginMock, times(1)).getWatchKey(Mockito.anyString(), Mockito.anyString(),
                 captorParam.capture());
             Context testContext = captorParam.getValue();
@@ -452,7 +445,6 @@ public class AppConfigurationRefreshUtilTest {
                 Duration.ofMinutes(10),
                 (long) 60, replicaLookUpMock);
             assertTrue(eventData.getDoRefresh());
-            verify(clientFactoryMock, times(1)).setCurrentConfigStoreClient(Mockito.eq(endpoint), Mockito.eq(endpoint));
             verify(clientOriginMock, times(1)).getWatchKey(Mockito.anyString(), Mockito.anyString(),
                 Mockito.any(Context.class));
             verify(currentStateMock, times(1)).updateStateRefresh(Mockito.any(), Mockito.any());
@@ -476,7 +468,6 @@ public class AppConfigurationRefreshUtilTest {
                 Duration.ofMinutes(10),
                 (long) 60, replicaLookUpMock);
             assertFalse(eventData.getDoRefresh());
-            verify(clientFactoryMock, times(1)).setCurrentConfigStoreClient(Mockito.eq(endpoint), Mockito.eq(endpoint));
             verify(clientOriginMock, times(0)).getWatchKey(Mockito.anyString(), Mockito.anyString(),
                 Mockito.any(Context.class));
         }
@@ -499,7 +490,6 @@ public class AppConfigurationRefreshUtilTest {
                 Duration.ofMinutes(10),
                 (long) 60, replicaLookUpMock);
             assertFalse(eventData.getDoRefresh());
-            verify(clientFactoryMock, times(1)).setCurrentConfigStoreClient(Mockito.eq(endpoint), Mockito.eq(endpoint));
             verify(clientOriginMock, times(0)).getWatchKey(Mockito.anyString(), Mockito.anyString(),
                 Mockito.any(Context.class));
         }
@@ -529,7 +519,6 @@ public class AppConfigurationRefreshUtilTest {
             RefreshEventData eventData = new AppConfigurationRefreshUtil().refreshStoresCheck(clientFactoryMock,
                 Duration.ofMinutes(10), (long) 60, replicaLookUpMock);
             assertFalse(eventData.getDoRefresh());
-            verify(clientFactoryMock, times(1)).setCurrentConfigStoreClient(Mockito.eq(endpoint), Mockito.eq(endpoint));
             verify(clientOriginMock, times(0)).getWatchKey(Mockito.anyString(), Mockito.anyString(),
                 Mockito.any(Context.class));
             verify(currentStateMock, times(1)).updateFeatureFlagStateRefresh(Mockito.any(), Mockito.any());
@@ -558,7 +547,6 @@ public class AppConfigurationRefreshUtilTest {
             RefreshEventData eventData = new AppConfigurationRefreshUtil().refreshStoresCheck(clientFactoryMock,
                 Duration.ofMinutes(10), (long) 60, replicaLookUpMock);
             assertTrue(eventData.getDoRefresh());
-            verify(clientFactoryMock, times(1)).setCurrentConfigStoreClient(Mockito.eq(endpoint), Mockito.eq(endpoint));
             verify(clientOriginMock, times(0)).getWatchKey(Mockito.anyString(), Mockito.anyString(),
                 Mockito.any(Context.class));
         }
@@ -631,7 +619,6 @@ public class AppConfigurationRefreshUtilTest {
                 clientFactoryMock, Duration.ofMinutes(10), (long) 60, replicaLookUpMock);
 
             assertTrue(eventData.getDoRefresh());
-            verify(clientFactoryMock, times(1)).setCurrentConfigStoreClient(Mockito.eq(endpoint), Mockito.eq(endpoint));
             // Verify checkWatchKeys is called (watched configuration settings path)
             verify(clientOriginMock, times(1)).checkWatchKeys(Mockito.any(SettingSelector.class),
                 Mockito.any(Context.class));

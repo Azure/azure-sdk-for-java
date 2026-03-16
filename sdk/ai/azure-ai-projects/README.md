@@ -135,7 +135,7 @@ String indexVersion = Configuration.getGlobalConfiguration().get("INDEX_VERSION"
 String aiSearchConnectionName = Configuration.getGlobalConfiguration().get("AI_SEARCH_CONNECTION_NAME", "");
 String aiSearchIndexName = Configuration.getGlobalConfiguration().get("AI_SEARCH_INDEX_NAME", "");
 
-Index index = indexesClient.createOrUpdateVersion(
+AIProjectIndex index = indexesClient.createOrUpdateVersion(
     indexName,
     indexVersion,
     new AzureAISearchIndex()
@@ -177,7 +177,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 
 <!-- LINKS -->
 [product_documentation]: https://learn.microsoft.com/azure/ai-studio/
-[docs]: https://learn.microsoft.com/rest/api/aifoundry/aiprojects/
+[docs]: https://learn.microsoft.com/rest/api/aifoundry/aiproject/
 [jdk]: https://learn.microsoft.com/azure/developer/java/fundamentals/
 [azure_subscription]: https://azure.microsoft.com/free/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity

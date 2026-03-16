@@ -34,12 +34,8 @@ public final class ExascaleDbNodesImpl implements ExascaleDbNodes {
         String exascaleDbNodeName, Context context) {
         Response<ExascaleDbNodeInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, exadbVmClusterName, exascaleDbNodeName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ExascaleDbNodeImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ExascaleDbNodeImpl(inner.getValue(), this.manager()));
     }
 
     public ExascaleDbNode get(String resourceGroupName, String exadbVmClusterName, String exascaleDbNodeName) {

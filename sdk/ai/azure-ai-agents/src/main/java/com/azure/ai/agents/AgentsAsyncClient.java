@@ -11,7 +11,7 @@ import com.azure.ai.agents.implementation.models.CreateAgentVersionRequest;
 import com.azure.ai.agents.implementation.models.UpdateAgentFromManifestRequest;
 import com.azure.ai.agents.implementation.models.UpdateAgentRequest;
 import com.azure.ai.agents.models.AgentDefinition;
-import com.azure.ai.agents.models.AgentDefinitionFeatureKeys;
+import com.azure.ai.agents.models.AgentDefinitionOptInKeys;
 import com.azure.ai.agents.models.AgentDetails;
 import com.azure.ai.agents.models.AgentKind;
 import com.azure.ai.agents.models.AgentVersionDetails;
@@ -1339,7 +1339,7 @@ public final class AgentsAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<AgentDetails> createAgent(String agentName, AgentDefinition definition,
-        AgentDefinitionFeatureKeys foundryFeatures, Map<String, String> metadata, String description) {
+        AgentDefinitionOptInKeys foundryFeatures, Map<String, String> metadata, String description) {
         // Generated convenience method for createAgentWithResponse
         RequestOptions requestOptions = new RequestOptions();
         CreateAgentRequest createAgentRequestObj
@@ -1378,7 +1378,7 @@ public final class AgentsAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<AgentDetails> updateAgent(String agentName, AgentDefinition definition,
-        AgentDefinitionFeatureKeys foundryFeatures, Map<String, String> metadata, String description) {
+        AgentDefinitionOptInKeys foundryFeatures, Map<String, String> metadata, String description) {
         // Generated convenience method for updateAgentWithResponse
         RequestOptions requestOptions = new RequestOptions();
         UpdateAgentRequest updateAgentRequestObj
@@ -1419,7 +1419,7 @@ public final class AgentsAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AgentVersionDetails> createAgentVersion(String agentName, AgentDefinition definition,
-        AgentDefinitionFeatureKeys foundryFeatures, Map<String, String> metadata, String description) {
+        AgentDefinitionOptInKeys foundryFeatures, Map<String, String> metadata, String description) {
         // Generated convenience method for createAgentVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
         CreateAgentVersionRequest createAgentVersionRequestObj
