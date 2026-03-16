@@ -174,13 +174,14 @@ public abstract class ShareScenarioBase<TOptions extends StorageStressOptions> e
     @SuppressWarnings("try")
     @Override
     public Mono<Void> runAsync() {
-        return telemetryHelper.instrumentRunAsync(ctx -> runInternalAsync(ctx))
-            .retryWhen(reactor.util.retry.Retry.max(3)
-                .filter(e -> !(Exceptions.unwrap(e) instanceof ContentMismatchException)))
-            .doOnError(e -> {
-                // Log the error for debugging but let legitimate failures propagate
-                LOGGER.error("Share test operation failed after retries.", e);
-            });
+        return telemetryHelper.instrumentRunAsync(ctx ->
+            runInternalAsync(ctx)
+                .retryWhen(reactor.util.retry.Retry.max(3)
+                    .filter(e -> !(Exceptions.unwrap(e) instanceof ContentMismatchException)))
+                .doOnError(e -> {
+                    // Log the error for debugging but let legitimate failures propagate
+                    LOGGER.error("Share test operation failed after retries.", e);
+                }));
     }
 
     protected abstract void runInternal(Context context) throws Exception;
