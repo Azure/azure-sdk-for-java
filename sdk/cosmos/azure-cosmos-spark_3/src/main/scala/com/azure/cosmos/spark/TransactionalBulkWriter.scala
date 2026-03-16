@@ -482,7 +482,10 @@ private class TransactionalBulkWriter
 
   private def getId(objectNode: ObjectNode): String = {
     val idField = objectNode.get(CosmosConstants.Properties.Id)
-    assume(idField != null && idField.isTextual)
+    if (idField == null || !idField.isTextual) {
+      throw new IllegalArgumentException(
+        s"The required '${CosmosConstants.Properties.Id}' field is missing or not a string in the document being written to Cosmos DB.")
+    }
     idField.textValue()
   }
 
