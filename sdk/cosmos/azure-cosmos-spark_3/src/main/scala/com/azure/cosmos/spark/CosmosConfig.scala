@@ -1607,7 +1607,14 @@ private object CosmosWriteConfig {
     key = CosmosConfigNames.WriteBulkTransactionalMarkerTtlSeconds,
     defaultValue = Option.apply(86400),
     mandatory = false,
-    parseFromStringFunction = ttlSeconds => ttlSeconds.toInt,
+    parseFromStringFunction = ttlSeconds => {
+      val value = ttlSeconds.toInt
+      if (value <= 0) {
+        throw new IllegalArgumentException(
+          s"'${CosmosConfigNames.WriteBulkTransactionalMarkerTtlSeconds}' must be a positive number of seconds, but was $value.")
+      }
+      value
+    },
     helpMessage = "TTL in seconds for batch marker documents used for retry ambiguity resolution in transactional bulk mode. " +
       "Markers are actively deleted after each batch completes; TTL is defense-in-depth for orphan cleanup from crashed runs. " +
       "Default: 86400 (24 hours). Set to a lower value (e.g., 3600) if container storage is constrained.")

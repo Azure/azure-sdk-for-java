@@ -492,19 +492,24 @@ class TransactionalBulkWriterSpec extends UnitSpec {
   // (Verifies the hashCode fix — PartitionKey.toString() as set key)
   // =====================================================
 
-  "PartitionKey hashCode bug" should "demonstrate that value-equal PartitionKeys have different hashCodes" in {
-    // PartitionKey.hashCode() uses Object.hashCode() (memory address), but
-    // PartitionKey.equals() compares content. This violates the Java equals/hashCode contract.
+  "PartitionKey String-based keying" should "work regardless of PartitionKey.hashCode() behavior" in {
+    // PartitionKey.hashCode() may use Object.hashCode() (identity-based), which violates
+    // the Java equals/hashCode contract. Our fix uses PartitionKey.toString() as the set key
+    // instead of PartitionKey directly. This test verifies that the String-based approach
+    // produces correct results whether or not the SDK fixes hashCode() in the future.
     val pk1 = new PartitionKeyBuilder()
       .add("tenant-A").add("user-1").add("session-1").build()
     val pk2 = new PartitionKeyBuilder()
       .add("tenant-A").add("user-1").add("session-1").build()
 
-    // Equals: value-based -> true (correct)
+    // Value equality holds
     pk1.equals(pk2) should be(true)
 
-    // HashCode: identity-based -> DIFFERENT (bug!)
-    pk1.hashCode() should not be pk2.hashCode()
+    // String-based keying always detects duplicates, regardless of hashCode() behavior
+    pk1.toString should be(pk2.toString)
+    val set = ConcurrentHashMap.newKeySet[String]()
+    set.add(pk1.toString) should be(true)   // first add -> true
+    set.add(pk2.toString) should be(false)  // duplicate detected via String equality -> false
   }
 
   "duplicate PK detection with String keys (C10 fix)" should "detect value-equal HPK partition keys" in {

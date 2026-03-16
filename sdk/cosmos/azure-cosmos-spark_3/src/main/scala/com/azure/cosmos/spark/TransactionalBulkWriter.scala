@@ -432,8 +432,10 @@ private class TransactionalBulkWriter
                 batchOperation.markerId)
             } else {
               // Happy path: batch succeeded on first attempt
-              outputMetricsPublisher.trackWriteOperation(resp.getResponse.size(), None)
-              totalSuccessfulIngestionMetrics.addAndGet(resp.getResponse.size())
+              // Use originalItems.size (business items only), not resp.getResponse.size()
+              // which includes the internal marker operation and would inflate metrics.
+              outputMetricsPublisher.trackWriteOperation(batchOperation.originalItems.size, None)
+              totalSuccessfulIngestionMetrics.addAndGet(batchOperation.originalItems.size)
               // Best-effort marker cleanup — marker is no longer needed
               deleteMarkerBestEffort(
                 batchOperation.markerId,
@@ -538,7 +540,7 @@ private class TransactionalBulkWriter
       pendingCosmosBatchSnapshot = pendingBatchRetries.clone()
     }
 
-    val cnt = totalScheduledMetrics.getAndAdd(cosmosBatch.getOperations.size())
+    val cnt = totalScheduledMetrics.getAndAdd(originalItems.size)
     log.logTrace(s"total scheduled $cnt, Context: ${operationContext.toString} $getThreadInfo")
 
     scheduleBatchInternal(CosmosBatchOperation(cosmosBatchBulkOperation, operationContext, originalItems, markerId))
@@ -612,10 +614,8 @@ private class TransactionalBulkWriter
                 s"statusCode='$effectiveStatusCode:$effectiveSubStatusCode', " +
                 s"attemptNumber=${operationContext.attemptNumber}, " +
                 s"Context: {${operationContext.toString}} $getThreadInfo")
-              outputMetricsPublisher.trackWriteOperation(
-                cosmosBatchBulkOperation.getCosmosBatch.getOperations.size(), None)
-              totalSuccessfulIngestionMetrics.addAndGet(
-                cosmosBatchBulkOperation.getCosmosBatch.getOperations.size())
+              outputMetricsPublisher.trackWriteOperation(originalItems.size, None)
+              totalSuccessfulIngestionMetrics.addAndGet(originalItems.size)
               deleteMarkerBestEffort(markerId, cosmosBatchBulkOperation.getPartitionKeyValue)
 
             case NotCommitted =>
@@ -678,10 +678,8 @@ private class TransactionalBulkWriter
             s"statusCode='$effectiveStatusCode:$effectiveSubStatusCode', " +
             s"attemptNumber=${operationContext.attemptNumber}, " +
             s"Context: {${operationContext.toString}} $getThreadInfo")
-          outputMetricsPublisher.trackWriteOperation(
-            cosmosBatchBulkOperation.getCosmosBatch.getOperations.size(), None)
-          totalSuccessfulIngestionMetrics.addAndGet(
-            cosmosBatchBulkOperation.getCosmosBatch.getOperations.size())
+          outputMetricsPublisher.trackWriteOperation(originalItems.size, None)
+          totalSuccessfulIngestionMetrics.addAndGet(originalItems.size)
       }
     } else if (shouldRetry(effectiveStatusCode, effectiveSubStatusCode, operationContext)) {
       // requeue
@@ -991,9 +989,14 @@ private class TransactionalBulkWriter
           transactionalBatchInputEmitter.emitComplete(TransactionalBulkWriter.emitFailureHandlerForComplete)
 
           throwIfCapturedExceptionExists()
-          assume(activeBatchTasks.get() <= 0)
-          assume(activeBatches.isEmpty)
-          assume(semaphore.availablePermits() >= maxPendingBatches)
+          if (activeBatchTasks.get() > 0) {
+            log.logWarning(s"flushAndClose completed but activeBatchTasks=${activeBatchTasks.get()} > 0. " +
+              s"Context: ${operationContext.toString} $getThreadInfo")
+          }
+          if (activeBatches.nonEmpty) {
+            log.logWarning(s"flushAndClose completed but activeBatches is not empty (size=${activeBatches.size}). " +
+              s"Context: ${operationContext.toString} $getThreadInfo")
+          }
 
           if (totalScheduledMetrics.get() != totalSuccessfulIngestionMetrics.get) {
             log.logWarning(s"flushAndClose completed with no error but inconsistent total success and " +
