@@ -74,6 +74,7 @@ private[cosmos] object CosmosConstants {
     val IndexingPolicy = "IndexingPolicy"
     val DefaultTtlInSeconds = "DefaultTtlInSeconds"
     val AnalyticalStoreTtlInSeconds = "AnalyticalStoreTtlInSeconds"
+    val VectorEmbeddingPolicy = "VectorEmbeddingPolicy"
   }
 
   object ChangeFeedMetricsConfigs {
