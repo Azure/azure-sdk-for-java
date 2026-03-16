@@ -591,7 +591,8 @@ public class SasAsyncClientTests extends BlobTestBase {
     public void createPermissionUpload() {
         liveTestScenarioWithRetry(() -> {
             BlobServiceAsyncClient oauthService = getOAuthServiceAsyncClient();
-            BlobContainerAsyncClient oauthContainer = oauthService.getBlobContainerAsyncClient(cc.getBlobContainerName());
+            BlobContainerAsyncClient oauthContainer
+                = oauthService.getBlobContainerAsyncClient(cc.getBlobContainerName());
 
             String oauthBlobName = generateBlobName();
             OffsetDateTime expiryTime = testResourceNamer.now().plusDays(1);
@@ -639,7 +640,7 @@ public class SasAsyncClientTests extends BlobTestBase {
             Mono<Void> response = oauthService.getUserDelegationKey(null, expiryTime).flatMap(key -> {
 
                 key.setSignedTenantId(testResourceNamer.recordValueFromConfig(key.getSignedTenantId()));
-                String saoid = testResourceNamer.recordValueFromConfig(getOidFromToken(getAuthToken()));
+                String saoid = testResourceNamer.randomUuid();
 
                 // Create-only permission for destination blob
                 BlobSasPermission destinationPermissions = new BlobSasPermission().setCreatePermission(true);

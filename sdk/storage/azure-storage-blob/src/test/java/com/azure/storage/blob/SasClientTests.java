@@ -1393,12 +1393,12 @@ public class SasClientTests extends BlobTestBase {
 
             // Create-only permission for destination blob
             BlobSasPermission destinationPermissions = new BlobSasPermission().setCreatePermission(true);
-            BlobServiceSasSignatureValues sasValues =
-                new BlobServiceSasSignatureValues(expiryTime, destinationPermissions)
+            BlobServiceSasSignatureValues sasValues
+                = new BlobServiceSasSignatureValues(expiryTime, destinationPermissions)
                     .setPreauthorizedAgentObjectId(saoid);
             String createPermissionsOnly = oauthContainer.generateUserDelegationSas(sasValues, key);
-            BlockBlobClient destinationClient =
-                instrument(new SpecializedBlobClientBuilder().endpoint(oauthContainer.getBlobContainerUrl())
+            BlockBlobClient destinationClient
+                = instrument(new SpecializedBlobClientBuilder().endpoint(oauthContainer.getBlobContainerUrl())
                     .blobName(destinationBlobName)
                     .sasToken(createPermissionsOnly)).buildBlockBlobClient();
 
