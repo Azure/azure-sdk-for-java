@@ -102,11 +102,11 @@ public class RecurrenceValidatorDSTTest {
     }
 
     /**
-     * Test that a 24-hour window FAILS validation with consecutive day recurrence.
-     * The window must be strictly less than the gap between occurrences.
+     * Test that a window GREATER than the gap fails validation with consecutive day recurrence.
+     * The window must not exceed the gap between occurrences.
      */
     @Test
-    public void validate24HourWindowWithConsecutiveDaysShouldFail() {
+    public void validate25HourWindowWithConsecutiveDaysShouldFail() {
         final TimeWindowFilterSettings settings = new TimeWindowFilterSettings();
         final RecurrencePattern pattern = new RecurrencePattern();
         final RecurrenceRange range = new RecurrenceRange();
@@ -120,17 +120,17 @@ public class RecurrenceValidatorDSTTest {
         recurrence.setRange(range);
         recurrence.setPattern(pattern);
         
-        // Exactly 24-hour window (equal to gap, should fail)
+        // 25-hour window (greater than 24-hour gap, should fail)
         settings.setStart("2024-03-25T10:00:00+01:00"); // Monday
-        settings.setEnd("2024-03-26T10:00:00+01:00"); // Tuesday, exactly 24 hours later
+        settings.setEnd("2024-03-26T11:00:00+01:00"); // Tuesday, 25 hours later
         settings.setRecurrence(recurrence);
         
         final ZonedDateTime reference = ZonedDateTime.of(2024, 3, 31, 12, 0, 0, 0, ZoneOffset.UTC);
         
-        // Should fail because window duration must be strictly less than gap
+        // Should fail because window duration (25h) > gap (24h)
         assertThrows(IllegalArgumentException.class, 
             () -> RecurrenceValidator.validateSettings(settings, reference),
-            "24-hour window should fail validation with 24-hour gap (not strictly less)");
+            "25-hour window should fail validation with 24-hour gap");
     }
 
     /**
@@ -228,10 +228,12 @@ public class RecurrenceValidatorDSTTest {
     }
 
     /**
-     * Test that 24-hour window FAILS with daily recurrence.
+     * Test that a window GREATER than the interval fails with daily recurrence.
+     * Daily recurrence with interval=1 has a 24-hour interval.
+     * A 25-hour window should fail because it's greater than the interval.
      */
     @Test
-    public void validateDailyRecurrence24HourWindowShouldFail() {
+    public void validateDailyRecurrence25HourWindowShouldFail() {
         final TimeWindowFilterSettings settings = new TimeWindowFilterSettings();
         final RecurrencePattern pattern = new RecurrencePattern();
         final RecurrenceRange range = new RecurrenceRange();
@@ -243,16 +245,18 @@ public class RecurrenceValidatorDSTTest {
         recurrence.setRange(range);
         recurrence.setPattern(pattern);
         
-        // Exactly 24-hour window
+        // 25-hour window (in UTC): 
+        // Start: 2024-03-30 10:00 +01:00 = 09:00 UTC
+        // End:   2024-03-31 12:00 +02:00 = 10:00 UTC (25 hours later in UTC)
         settings.setStart("2024-03-30T10:00:00+01:00");
-        settings.setEnd("2024-03-31T10:00:00+02:00"); // Exactly 24 hours later (crossing DST)
+        settings.setEnd("2024-03-31T12:00:00+02:00"); // 25 hours later in UTC
         settings.setRecurrence(recurrence);
         
         final ZonedDateTime reference = ZonedDateTime.of(2024, 3, 31, 12, 0, 0, 0, ZoneOffset.UTC);
         
         assertThrows(IllegalArgumentException.class,
             () -> RecurrenceValidator.validateSettings(settings, reference),
-            "24-hour window should fail for daily recurrence (not strictly less than 24-hour gap)");
+            "25-hour window should fail for daily recurrence (greater than 24-hour interval)");
     }
 
     /**
