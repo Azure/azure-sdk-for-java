@@ -2157,6 +2157,132 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 expectedResponseBeforeFailover,
                 expectedResponseAfterFailover,
             },
+            {
+                "Test write availability strategy hedging for CREATE with FORBIDDEN / FORBIDDEN_WRITEFORBIDDEN in write region under PPAF.",
+                OperationType.Create,
+                HttpConstants.StatusCodes.FORBIDDEN,
+                HttpConstants.SubStatusCodes.FORBIDDEN_WRITEFORBIDDEN,
+                HttpConstants.StatusCodes.CREATED,
+                expectedResponseBeforeFailover,
+                expectedResponseAfterFailover,
+            },
+            {
+                "Test write availability strategy hedging for REPLACE with FORBIDDEN / FORBIDDEN_WRITEFORBIDDEN in write region under PPAF.",
+                OperationType.Replace,
+                HttpConstants.StatusCodes.FORBIDDEN,
+                HttpConstants.SubStatusCodes.FORBIDDEN_WRITEFORBIDDEN,
+                HttpConstants.StatusCodes.OK,
+                expectedResponseBeforeFailover,
+                expectedResponseAfterFailover,
+            },
+            {
+                "Test write availability strategy hedging for UPSERT with FORBIDDEN / FORBIDDEN_WRITEFORBIDDEN in write region under PPAF.",
+                OperationType.Upsert,
+                HttpConstants.StatusCodes.FORBIDDEN,
+                HttpConstants.SubStatusCodes.FORBIDDEN_WRITEFORBIDDEN,
+                HttpConstants.StatusCodes.OK,
+                expectedResponseBeforeFailover,
+                expectedResponseAfterFailover,
+            },
+            {
+                "Test write availability strategy hedging for DELETE with FORBIDDEN / FORBIDDEN_WRITEFORBIDDEN in write region under PPAF.",
+                OperationType.Delete,
+                HttpConstants.StatusCodes.FORBIDDEN,
+                HttpConstants.SubStatusCodes.FORBIDDEN_WRITEFORBIDDEN,
+                HttpConstants.StatusCodes.NOT_MODIFIED,
+                expectedResponseBeforeFailover,
+                expectedResponseAfterFailover,
+            },
+            {
+                "Test write availability strategy hedging for PATCH with FORBIDDEN / FORBIDDEN_WRITEFORBIDDEN in write region under PPAF.",
+                OperationType.Patch,
+                HttpConstants.StatusCodes.FORBIDDEN,
+                HttpConstants.SubStatusCodes.FORBIDDEN_WRITEFORBIDDEN,
+                HttpConstants.StatusCodes.OK,
+                expectedResponseBeforeFailover,
+                expectedResponseAfterFailover,
+            },
+            {
+                "Test write availability strategy hedging for REPLACE with SERVICE_UNAVAILABLE / SERVER_GENERATED_503 in write region under PPAF.",
+                OperationType.Replace,
+                HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
+                HttpConstants.StatusCodes.OK,
+                expectedResponseBeforeFailover,
+                expectedResponseAfterFailover,
+            },
+            {
+                "Test write availability strategy hedging for UPSERT with SERVICE_UNAVAILABLE / SERVER_GENERATED_503 in write region under PPAF.",
+                OperationType.Upsert,
+                HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
+                HttpConstants.StatusCodes.OK,
+                expectedResponseBeforeFailover,
+                expectedResponseAfterFailover,
+            },
+            {
+                "Test write availability strategy hedging for DELETE with SERVICE_UNAVAILABLE / SERVER_GENERATED_503 in write region under PPAF.",
+                OperationType.Delete,
+                HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
+                HttpConstants.StatusCodes.NOT_MODIFIED,
+                expectedResponseBeforeFailover,
+                expectedResponseAfterFailover,
+            },
+            {
+                "Test write availability strategy hedging for PATCH with SERVICE_UNAVAILABLE / SERVER_GENERATED_503 in write region under PPAF.",
+                OperationType.Patch,
+                HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
+                HttpConstants.StatusCodes.OK,
+                expectedResponseBeforeFailover,
+                expectedResponseAfterFailover,
+            },
+            {
+                "Test write availability strategy hedging for CREATE with REQUEST_TIMEOUT / UNKNOWN in write region under PPAF.",
+                OperationType.Create,
+                HttpConstants.StatusCodes.REQUEST_TIMEOUT,
+                HttpConstants.SubStatusCodes.UNKNOWN,
+                HttpConstants.StatusCodes.CREATED,
+                expectedResponseBeforeFailover,
+                expectedResponseAfterFailover,
+            },
+            {
+                "Test write availability strategy hedging for REPLACE with REQUEST_TIMEOUT / UNKNOWN in write region under PPAF.",
+                OperationType.Replace,
+                HttpConstants.StatusCodes.REQUEST_TIMEOUT,
+                HttpConstants.SubStatusCodes.UNKNOWN,
+                HttpConstants.StatusCodes.OK,
+                expectedResponseBeforeFailover,
+                expectedResponseAfterFailover,
+            },
+            {
+                "Test write availability strategy hedging for UPSERT with REQUEST_TIMEOUT / UNKNOWN in write region under PPAF.",
+                OperationType.Upsert,
+                HttpConstants.StatusCodes.REQUEST_TIMEOUT,
+                HttpConstants.SubStatusCodes.UNKNOWN,
+                HttpConstants.StatusCodes.OK,
+                expectedResponseBeforeFailover,
+                expectedResponseAfterFailover,
+            },
+            {
+                "Test write availability strategy hedging for DELETE with REQUEST_TIMEOUT / UNKNOWN in write region under PPAF.",
+                OperationType.Delete,
+                HttpConstants.StatusCodes.REQUEST_TIMEOUT,
+                HttpConstants.SubStatusCodes.UNKNOWN,
+                HttpConstants.StatusCodes.NOT_MODIFIED,
+                expectedResponseBeforeFailover,
+                expectedResponseAfterFailover,
+            },
+            {
+                "Test write availability strategy hedging for PATCH with REQUEST_TIMEOUT / UNKNOWN in write region under PPAF.",
+                OperationType.Patch,
+                HttpConstants.StatusCodes.REQUEST_TIMEOUT,
+                HttpConstants.SubStatusCodes.UNKNOWN,
+                HttpConstants.StatusCodes.OK,
+                expectedResponseBeforeFailover,
+                expectedResponseAfterFailover,
+            },
         };
     }
 
@@ -2166,8 +2292,8 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
      *
      * <p><strong>Scenario</strong>:
      * <ol>
-     *   <li>A fault (GONE/410 with sub-status 21005 or SERVICE_UNAVAILABLE/503) is injected into the
-     *       write region for a specific partition key range.</li>
+     *   <li>A fault (GONE/410 with sub-status 21005, SERVICE_UNAVAILABLE/503, or FORBIDDEN/3) is injected
+     *       into the write region for a specific partition key range.</li>
      *   <li>The availability strategy should hedge the write to a read region, which returns success.</li>
      *   <li>After the hedged write succeeds, the PPAF manager should record the successful read region
      *       as the new write target for that partition.</li>
@@ -2572,37 +2698,277 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
             {
                 "GATEWAY: Write availability strategy hedging for CREATE with delayed write region under PPAF.",
                 OperationType.Create,
+                HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
                 HttpConstants.StatusCodes.CREATED,
                 expectedBeforeFailover,
                 expectedAfterFailover,
+                false,
+                false,
             },
             {
                 "GATEWAY: Write availability strategy hedging for REPLACE with delayed write region under PPAF.",
                 OperationType.Replace,
+                HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
                 HttpConstants.StatusCodes.OK,
                 expectedBeforeFailover,
                 expectedAfterFailover,
+                false,
+                false,
             },
             {
                 "GATEWAY: Write availability strategy hedging for UPSERT with delayed write region under PPAF.",
                 OperationType.Upsert,
+                HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
                 HttpConstants.StatusCodes.OK,
                 expectedBeforeFailover,
                 expectedAfterFailover,
+                false,
+                false,
             },
             {
                 "GATEWAY: Write availability strategy hedging for DELETE with delayed write region under PPAF.",
                 OperationType.Delete,
+                HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
                 HttpConstants.StatusCodes.NOT_MODIFIED,
                 expectedBeforeFailover,
                 expectedAfterFailover,
+                false,
+                false,
             },
             {
                 "GATEWAY: Write availability strategy hedging for PATCH with delayed write region under PPAF.",
                 OperationType.Patch,
+                HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
                 HttpConstants.StatusCodes.OK,
                 expectedBeforeFailover,
                 expectedAfterFailover,
+                false,
+                false,
+            },
+            {
+                "GATEWAY: Write availability strategy hedging for CREATE with FORBIDDEN / FORBIDDEN_WRITEFORBIDDEN in write region under PPAF.",
+                OperationType.Create,
+                HttpConstants.StatusCodes.FORBIDDEN,
+                HttpConstants.SubStatusCodes.FORBIDDEN_WRITEFORBIDDEN,
+                HttpConstants.StatusCodes.CREATED,
+                expectedBeforeFailover,
+                expectedAfterFailover,
+                false,
+                false,
+            },
+            {
+                "GATEWAY: Write availability strategy hedging for REPLACE with FORBIDDEN / FORBIDDEN_WRITEFORBIDDEN in write region under PPAF.",
+                OperationType.Replace,
+                HttpConstants.StatusCodes.FORBIDDEN,
+                HttpConstants.SubStatusCodes.FORBIDDEN_WRITEFORBIDDEN,
+                HttpConstants.StatusCodes.OK,
+                expectedBeforeFailover,
+                expectedAfterFailover,
+                false,
+                false,
+            },
+            {
+                "GATEWAY: Write availability strategy hedging for UPSERT with FORBIDDEN / FORBIDDEN_WRITEFORBIDDEN in write region under PPAF.",
+                OperationType.Upsert,
+                HttpConstants.StatusCodes.FORBIDDEN,
+                HttpConstants.SubStatusCodes.FORBIDDEN_WRITEFORBIDDEN,
+                HttpConstants.StatusCodes.OK,
+                expectedBeforeFailover,
+                expectedAfterFailover,
+                false,
+                false,
+            },
+            {
+                "GATEWAY: Write availability strategy hedging for DELETE with FORBIDDEN / FORBIDDEN_WRITEFORBIDDEN in write region under PPAF.",
+                OperationType.Delete,
+                HttpConstants.StatusCodes.FORBIDDEN,
+                HttpConstants.SubStatusCodes.FORBIDDEN_WRITEFORBIDDEN,
+                HttpConstants.StatusCodes.NOT_MODIFIED,
+                expectedBeforeFailover,
+                expectedAfterFailover,
+                false,
+                false,
+            },
+            {
+                "GATEWAY: Write availability strategy hedging for PATCH with FORBIDDEN / FORBIDDEN_WRITEFORBIDDEN in write region under PPAF.",
+                OperationType.Patch,
+                HttpConstants.StatusCodes.FORBIDDEN,
+                HttpConstants.SubStatusCodes.FORBIDDEN_WRITEFORBIDDEN,
+                HttpConstants.StatusCodes.OK,
+                expectedBeforeFailover,
+                expectedAfterFailover,
+                false,
+                false,
+            },
+            {
+                "GATEWAY: Write availability strategy hedging for CREATE with REQUEST_TIMEOUT / UNKNOWN in write region under PPAF.",
+                OperationType.Create,
+                HttpConstants.StatusCodes.REQUEST_TIMEOUT,
+                HttpConstants.SubStatusCodes.UNKNOWN,
+                HttpConstants.StatusCodes.CREATED,
+                expectedBeforeFailover,
+                expectedAfterFailover,
+                false,
+                false,
+            },
+            {
+                "GATEWAY: Write availability strategy hedging for REPLACE with REQUEST_TIMEOUT / UNKNOWN in write region under PPAF.",
+                OperationType.Replace,
+                HttpConstants.StatusCodes.REQUEST_TIMEOUT,
+                HttpConstants.SubStatusCodes.UNKNOWN,
+                HttpConstants.StatusCodes.OK,
+                expectedBeforeFailover,
+                expectedAfterFailover,
+                false,
+                false,
+            },
+            {
+                "GATEWAY: Write availability strategy hedging for UPSERT with REQUEST_TIMEOUT / UNKNOWN in write region under PPAF.",
+                OperationType.Upsert,
+                HttpConstants.StatusCodes.REQUEST_TIMEOUT,
+                HttpConstants.SubStatusCodes.UNKNOWN,
+                HttpConstants.StatusCodes.OK,
+                expectedBeforeFailover,
+                expectedAfterFailover,
+                false,
+                false,
+            },
+            {
+                "GATEWAY: Write availability strategy hedging for DELETE with REQUEST_TIMEOUT / UNKNOWN in write region under PPAF.",
+                OperationType.Delete,
+                HttpConstants.StatusCodes.REQUEST_TIMEOUT,
+                HttpConstants.SubStatusCodes.UNKNOWN,
+                HttpConstants.StatusCodes.NOT_MODIFIED,
+                expectedBeforeFailover,
+                expectedAfterFailover,
+                false,
+                false,
+            },
+            {
+                "GATEWAY: Write availability strategy hedging for PATCH with REQUEST_TIMEOUT / UNKNOWN in write region under PPAF.",
+                OperationType.Patch,
+                HttpConstants.StatusCodes.REQUEST_TIMEOUT,
+                HttpConstants.SubStatusCodes.UNKNOWN,
+                HttpConstants.StatusCodes.OK,
+                expectedBeforeFailover,
+                expectedAfterFailover,
+                false,
+                false,
+            },
+            {
+                "GATEWAY: Write availability strategy hedging for CREATE with REQUEST_TIMEOUT / GATEWAY_ENDPOINT_READ_TIMEOUT (network error) in write region under PPAF.",
+                OperationType.Create,
+                HttpConstants.StatusCodes.REQUEST_TIMEOUT,
+                HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT,
+                HttpConstants.StatusCodes.CREATED,
+                expectedBeforeFailover,
+                expectedAfterFailover,
+                true,
+                true,
+            },
+            {
+                "GATEWAY: Write availability strategy hedging for REPLACE with REQUEST_TIMEOUT / GATEWAY_ENDPOINT_READ_TIMEOUT (network error) in write region under PPAF.",
+                OperationType.Replace,
+                HttpConstants.StatusCodes.REQUEST_TIMEOUT,
+                HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT,
+                HttpConstants.StatusCodes.OK,
+                expectedBeforeFailover,
+                expectedAfterFailover,
+                true,
+                true,
+            },
+            {
+                "GATEWAY: Write availability strategy hedging for UPSERT with REQUEST_TIMEOUT / GATEWAY_ENDPOINT_READ_TIMEOUT (network error) in write region under PPAF.",
+                OperationType.Upsert,
+                HttpConstants.StatusCodes.REQUEST_TIMEOUT,
+                HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT,
+                HttpConstants.StatusCodes.OK,
+                expectedBeforeFailover,
+                expectedAfterFailover,
+                true,
+                true,
+            },
+            {
+                "GATEWAY: Write availability strategy hedging for DELETE with REQUEST_TIMEOUT / GATEWAY_ENDPOINT_READ_TIMEOUT (network error) in write region under PPAF.",
+                OperationType.Delete,
+                HttpConstants.StatusCodes.REQUEST_TIMEOUT,
+                HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT,
+                HttpConstants.StatusCodes.NOT_MODIFIED,
+                expectedBeforeFailover,
+                expectedAfterFailover,
+                true,
+                true,
+            },
+            {
+                "GATEWAY: Write availability strategy hedging for PATCH with REQUEST_TIMEOUT / GATEWAY_ENDPOINT_READ_TIMEOUT (network error) in write region under PPAF.",
+                OperationType.Patch,
+                HttpConstants.StatusCodes.REQUEST_TIMEOUT,
+                HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT,
+                HttpConstants.StatusCodes.OK,
+                expectedBeforeFailover,
+                expectedAfterFailover,
+                true,
+                true,
+            },
+            {
+                "GATEWAY: Write availability strategy hedging for CREATE with SERVICE_UNAVAILABLE / GATEWAY_ENDPOINT_UNAVAILABLE (network error) in write region under PPAF.",
+                OperationType.Create,
+                HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE,
+                HttpConstants.StatusCodes.CREATED,
+                expectedBeforeFailover,
+                expectedAfterFailover,
+                true,
+                false,
+            },
+            {
+                "GATEWAY: Write availability strategy hedging for REPLACE with SERVICE_UNAVAILABLE / GATEWAY_ENDPOINT_UNAVAILABLE (network error) in write region under PPAF.",
+                OperationType.Replace,
+                HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE,
+                HttpConstants.StatusCodes.OK,
+                expectedBeforeFailover,
+                expectedAfterFailover,
+                true,
+                false,
+            },
+            {
+                "GATEWAY: Write availability strategy hedging for UPSERT with SERVICE_UNAVAILABLE / GATEWAY_ENDPOINT_UNAVAILABLE (network error) in write region under PPAF.",
+                OperationType.Upsert,
+                HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE,
+                HttpConstants.StatusCodes.OK,
+                expectedBeforeFailover,
+                expectedAfterFailover,
+                true,
+                false,
+            },
+            {
+                "GATEWAY: Write availability strategy hedging for DELETE with SERVICE_UNAVAILABLE / GATEWAY_ENDPOINT_UNAVAILABLE (network error) in write region under PPAF.",
+                OperationType.Delete,
+                HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE,
+                HttpConstants.StatusCodes.NOT_MODIFIED,
+                expectedBeforeFailover,
+                expectedAfterFailover,
+                true,
+                false,
+            },
+            {
+                "GATEWAY: Write availability strategy hedging for PATCH with SERVICE_UNAVAILABLE / GATEWAY_ENDPOINT_UNAVAILABLE (network error) in write region under PPAF.",
+                OperationType.Patch,
+                HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE,
+                HttpConstants.StatusCodes.OK,
+                expectedBeforeFailover,
+                expectedAfterFailover,
+                true,
+                false,
             },
         };
     }
@@ -2614,8 +2980,10 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
      * write failover tests) to control responses from both write and read regions:
      * <ul>
      *   <li>Default: all requests return mocked success.</li>
-     *   <li>Override: requests to the write region endpoint are delayed by 10s before returning an error,
-     *       simulating an unresponsive write region.</li>
+     *   <li>Override: requests to the write region endpoint are delayed by 10s before returning a
+     *       parameterized error (SERVICE_UNAVAILABLE/503, FORBIDDEN/3, REQUEST_TIMEOUT/UNKNOWN,
+     *       GATEWAY_ENDPOINT_READ_TIMEOUT via ReadTimeoutException, or GATEWAY_ENDPOINT_UNAVAILABLE
+     *       via SocketTimeoutException), simulating an unresponsive or faulted write region.</li>
      *   <li>The hedged request to the read region hits the default success mock and completes immediately.</li>
      * </ul>
      *
@@ -2625,9 +2993,13 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
     public void testPpafWriteAvailabilityStrategyHedgingInGatewayMode(
         String testType,
         OperationType operationType,
+        int errorStatusCodeToMock,
+        int errorSubStatusCodeToMock,
         int successStatusCode,
         ExpectedResponseCharacteristics expectedBeforeFailover,
-        ExpectedResponseCharacteristics expectedAfterFailover) {
+        ExpectedResponseCharacteristics expectedAfterFailover,
+        boolean shouldThrowNetworkError,
+        boolean shouldThrowReadTimeoutExceptionWhenNetworkError) {
 
         ConnectionPolicy connectionPolicy = COSMOS_CLIENT_BUILDER_ACCESSOR.getConnectionPolicy(getClientBuilder());
         ConnectionMode connectionMode = connectionPolicy.getConnectionMode();
@@ -2686,19 +3058,31 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
             // Default: all requests return success (including hedged requests to read region)
             setupHttpClientToReturnSuccessResponse(mockedHttpClient, operationType, databaseAccount, successStatusCode);
 
-            // Override: write region requests are delayed by 10s then error — simulates unresponsive write region
-            CosmosException cosmosException = createCosmosException(
-                HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
-                HttpConstants.SubStatusCodes.SERVER_GENERATED_503);
+            // Override: write region requests are delayed then error — simulates unresponsive write region
+            if (!shouldThrowNetworkError) {
+                CosmosException cosmosException = createCosmosException(
+                    errorStatusCodeToMock,
+                    errorSubStatusCodeToMock);
 
-            // shouldForceE2ETimeout=true triggers the Mono.delay(10s) pattern
-            setupHttpClientToThrowCosmosException(
-                mockedHttpClient,
-                new URI(readableRegionNameToEndpoint.get(regionWithIssues)),
-                cosmosException,
-                false,  // shouldThrowNetworkError
-                false,  // shouldThrowReadTimeoutExceptionWhenNetworkError
-                true);  // shouldForceE2ETimeout — delays response by 10s
+                // shouldForceE2ETimeout=true triggers the Mono.delay(10s) pattern
+                setupHttpClientToThrowCosmosException(
+                    mockedHttpClient,
+                    new URI(readableRegionNameToEndpoint.get(regionWithIssues)),
+                    cosmosException,
+                    false,  // shouldThrowNetworkError
+                    false,  // shouldThrowReadTimeoutExceptionWhenNetworkError
+                    true);  // shouldForceE2ETimeout — delays response by 10s
+            } else {
+                // For gateway-specific network errors (GATEWAY_ENDPOINT_READ_TIMEOUT, GATEWAY_ENDPOINT_UNAVAILABLE),
+                // delay 10s then throw the raw network exception (ReadTimeoutException / SocketTimeoutException)
+                setupHttpClientToThrowCosmosException(
+                    mockedHttpClient,
+                    new URI(readableRegionNameToEndpoint.get(regionWithIssues)),
+                    null,   // cosmosException not used for network errors
+                    true,   // shouldThrowNetworkError
+                    shouldThrowReadTimeoutExceptionWhenNetworkError,
+                    true);  // shouldForceE2ETimeout — delays response by 10s before throwing network error
+            }
 
             TestObject testItem = TestObject.create();
 
@@ -2802,13 +3186,23 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
         boolean shouldForceE2ETimeout) {
 
         if (shouldForceE2ETimeout) {
+
+            Exception delayedError;
+            if (shouldThrowNetworkError) {
+                delayedError = shouldThrowReadTimeoutExceptionWhenNetworkError
+                    ? new ReadTimeoutException()
+                    : new SocketTimeoutException();
+            } else {
+                delayedError = cosmosException;
+            }
+
             Mockito.when(
                     httpClientMock.send(
                         Mockito.argThat(argument -> {
                             URI uri = argument.uri();
                             return uri.toString().contains(locationEndpointToRoute.toString());
                         }), Mockito.any(Duration.class)))
-                .thenReturn(Mono.delay(Duration.ofSeconds(10)).flatMap(aLong -> Mono.error(cosmosException)));
+                .thenReturn(Mono.delay(Duration.ofSeconds(10)).flatMap(aLong -> Mono.error(delayedError)));
 
             return;
         }
