@@ -114,7 +114,7 @@ public abstract class PageBlobScenarioBase<TOptions extends StorageStressOptions
      */
     private Mono<Void> deleteAllBlobsInContainer() {
         return asyncNoFaultContainerClient.listBlobs()
-            .flatMap(blobItem ->
+            .concatMap(blobItem ->
                 asyncNoFaultContainerClient.getBlobAsyncClient(blobItem.getName()).delete())
             .then()
             .timeout(Duration.ofSeconds(60))
@@ -139,11 +139,9 @@ public abstract class PageBlobScenarioBase<TOptions extends StorageStressOptions
         return telemetryHelper.instrumentRunAsync(ctx -> runInternalAsync(ctx))
             .retryWhen(reactor.util.retry.Retry.max(3)
                 .filter(e -> !(reactor.core.Exceptions.unwrap(e) instanceof com.azure.storage.stress.ContentMismatchException)))
-            .onErrorMap(e -> {
-                // Log the error for debugging but let legitimate failures propagate
-                System.err.println("Test operation failed after retries: " + e.getMessage());
-                return e;
-            });
+            .doOnError(e -> LOGGER.atError()
+                .addKeyValue("error", e.getMessage())
+                .log("Test operation failed after retries"));
     }
 
     protected abstract void runInternal(Context context) throws Exception;

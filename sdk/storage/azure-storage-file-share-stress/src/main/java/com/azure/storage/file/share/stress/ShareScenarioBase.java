@@ -78,7 +78,6 @@ public abstract class ShareScenarioBase<TOptions extends StorageStressOptions> e
     public Mono<Void> globalCleanupAsync() {
         telemetryHelper.recordEnd(startTime);
         return cleanupShareWithRetry()
-            .then(super.globalCleanupAsync())
             .onErrorResume(error -> {
                 // Log cleanup failure but don't fail the overall test
                 LOGGER.atWarning()
@@ -161,10 +160,9 @@ public abstract class ShareScenarioBase<TOptions extends StorageStressOptions> e
         return telemetryHelper.instrumentRunAsync(ctx -> runInternalAsync(ctx))
             .retryWhen(reactor.util.retry.Retry.max(3)
                 .filter(e -> !(reactor.core.Exceptions.unwrap(e) instanceof com.azure.storage.stress.ContentMismatchException)))
-            .onErrorMap(e -> {
+            .doOnError(e -> {
                 // Log the error for debugging but let legitimate failures propagate
-                System.err.println("Share test operation failed after retries: " + e.getMessage());
-                return e;
+                LOGGER.error("Share test operation failed after retries.", e);
             });
     }
 
