@@ -38,8 +38,10 @@ Clone the repository and update the following files of your package:
 > $ReplaceGuide for guidance on upgrading. Refer to our deprecation policy (https://aka.ms/azsdk/support-policies) for
 > more details.
 
-- `eng/versioning/version_client.txt` if the release version differs from the `current-version`
-  (third field), update it to the version you are about to release.
+Additionally, update the following repo-level file if needed:
+
+- `eng/versioning/version_client.txt` set the `current-version` (third field) to the release
+  version if they differ.
   For instance:
 
   ```diff
