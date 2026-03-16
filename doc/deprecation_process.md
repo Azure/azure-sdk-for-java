@@ -42,10 +42,10 @@ Clone the repository and update the following files of your package:
   (third field), update it to the version you are about to release.
   For instance:
 
-```diff
-- com.azure:azure-example;1.1.0;1.2.0-beta.1
-+ com.azure:azure-example;1.1.0;1.2.3
-```
+  ```diff
+  - com.azure:azure-example;1.1.0;1.2.0-beta.1
+  + com.azure:azure-example;1.1.0;1.2.3
+  ```
 
 Do a PR targeting the `main` branch. Post your PR in our [channel for Java](https://teams.microsoft.com/l/channel/19%3a5e673e41085f4a7eaaf20823b85b2b53%40thread.skype/Language%2520-%2520Java?groupId=3e17dcb0-4257-4a30-b843-77f47f1d4121&tenantId=72f988bf-86f1-41af-91ab-2d7cd011db47).
 
