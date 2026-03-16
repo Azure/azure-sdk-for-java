@@ -139,8 +139,9 @@ public abstract class BlobScenarioBase<TOptions extends StorageStressOptions> ex
 
     private Mono<Void> deleteBlobQuietly(com.azure.storage.blob.models.BlobItem blobItem) {
         return asyncNoFaultContainerClient.getBlobAsyncClient(blobItem.getName())
-            .delete()
-            .onErrorResume(e -> Mono.empty());
+            .deleteIfExists()
+            .onErrorResume(e -> Mono.empty())
+            .then();
     }
 
     @SuppressWarnings("try")

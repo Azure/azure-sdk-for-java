@@ -114,8 +114,10 @@ public abstract class DataLakeScenarioBase<TOptions extends StorageStressOptions
      */
     private Mono<Void> deleteAllFilesInFileSystem() {
         return asyncNoFaultFileSystemClient.listPaths()
-            .flatMap(pathItem ->
-                asyncNoFaultFileSystemClient.getFileAsyncClient(pathItem.getName()).delete())
+            .concatMap(pathItem ->
+                asyncNoFaultFileSystemClient.getFileAsyncClient(pathItem.getName()).deleteIfExists()
+                    .onErrorResume(e -> Mono.empty())
+                    .then())
             .then()
             .timeout(java.time.Duration.ofSeconds(60))
             .onErrorResume(error -> {
