@@ -140,8 +140,8 @@ public class Sample01_AnalyzeBinary {
      */
     public static void analyzeBinaryWithContentRange(ContentUnderstandingClient client) {
         try {
-            // Load a multi-page document (4 pages)
-            String multiPageFilePath = "src/samples/resources/mixed_financial_docs.pdf";
+            // Load a multi-page document (10 pages)
+            String multiPageFilePath = "src/samples/resources/mixed_financial_invoices.pdf";
             Path multiPagePath = Paths.get(multiPageFilePath);
             byte[] multiPageBytes = Files.readAllBytes(multiPagePath);
             BinaryData multiPageData = BinaryData.fromBytes(multiPageBytes);
@@ -184,7 +184,7 @@ public class Sample01_AnalyzeBinary {
             System.out.println("Combine(Page(1), Pages(3,4)): returned " + combineDoc.getPages().size() + " pages"
                 + " (pages " + combineDoc.getStartPageNumber() + "-" + combineDoc.getEndPageNumber() + ")");
 
-            // Combine with out-of-range pages (clamped by the service)
+            // Combine multiple page ranges: pages 1-3, page 5, and pages 9 onward
             SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> bigCombineOperation
                 = client.beginAnalyzeBinary("prebuilt-documentSearch", multiPageData,
                     ContentRange.combine(

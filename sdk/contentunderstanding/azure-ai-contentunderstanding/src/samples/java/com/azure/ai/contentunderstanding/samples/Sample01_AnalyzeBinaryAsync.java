@@ -176,8 +176,8 @@ public class Sample01_AnalyzeBinaryAsync {
      */
     public static void analyzeBinaryWithContentRange(ContentUnderstandingAsyncClient client)
         throws IOException, InterruptedException {
-        // Load a multi-page document (4 pages)
-        String multiPageFilePath = "src/samples/resources/mixed_financial_docs.pdf";
+        // Load a multi-page document (10 pages)
+        String multiPageFilePath = "src/samples/resources/mixed_financial_invoices.pdf";
         Path multiPagePath = Paths.get(multiPageFilePath);
         byte[] multiPageBytes = Files.readAllBytes(multiPagePath);
         BinaryData multiPageData = BinaryData.fromBytes(multiPageBytes);
@@ -264,7 +264,7 @@ public class Sample01_AnalyzeBinaryAsync {
                     + " (pages " + combineDoc.getStartPageNumber() + "-" + combineDoc.getEndPageNumber() + ")");
             });
 
-        // Combine with out-of-range pages (clamped by the service)
+        // Combine multiple page ranges: pages 1-3, page 5, and pages 9 onward
         Mono<AnalysisResult> bigCombineMono = client
             .beginAnalyzeBinary("prebuilt-documentSearch", multiPageData,
                 ContentRange.combine(
