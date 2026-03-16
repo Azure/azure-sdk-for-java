@@ -115,7 +115,16 @@ public abstract class PageBlobScenarioBase<TOptions extends StorageStressOptions
     private Mono<Void> deleteAllBlobsInContainer() {
         return asyncNoFaultContainerClient.listBlobs()
             .concatMap(blobItem ->
-                asyncNoFaultContainerClient.getBlobAsyncClient(blobItem.getName()).delete())
+                asyncNoFaultContainerClient.getBlobAsyncClient(blobItem.getName())
+                    .deleteIfExists()
+                    .onErrorResume(error -> {
+                        // Log but continue - failures for individual blobs should not stop cleanup
+                        LOGGER.atWarning()
+                            .addKeyValue("blobName", blobItem.getName())
+                            .addKeyValue("error", error.getMessage())
+                            .log("Failed to delete blob during cleanup");
+                        return Mono.empty();
+                    }))
             .then()
             .timeout(Duration.ofSeconds(60))
             .onErrorResume(error -> {

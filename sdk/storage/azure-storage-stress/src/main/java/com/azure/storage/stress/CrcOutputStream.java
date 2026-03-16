@@ -36,7 +36,7 @@ public class CrcOutputStream extends OutputStream {
     // Uses tryEmitValue so that double-close (e.g. explicit close + try-with-resources)
     // doesn't throw on the second call.
     @Override
-    public void close() throws IOException {
+    public synchronized void close() throws IOException {
         String baseErrorMessage = "Failed to emit content because ";
         Sinks.EmitResult emitResult = sink.tryEmitValue(new ContentInfo(crc.getValue(), length, head));
         switch (emitResult) {
