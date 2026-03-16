@@ -17,10 +17,12 @@ import com.azure.storage.file.share.ShareServiceAsyncClient;
 import com.azure.storage.file.share.ShareServiceClient;
 import com.azure.storage.file.share.ShareServiceClientBuilder;
 import com.azure.storage.file.share.models.ShareTokenIntent;
+import com.azure.storage.stress.ContentMismatchException;
 import com.azure.storage.stress.TelemetryHelper;
 import com.azure.storage.stress.FaultInjectingHttpPolicy;
 import com.azure.storage.stress.FaultInjectionProbabilities;
 import com.azure.storage.stress.StorageStressOptions;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
 import java.time.Instant;
@@ -174,7 +176,7 @@ public abstract class ShareScenarioBase<TOptions extends StorageStressOptions> e
     public Mono<Void> runAsync() {
         return telemetryHelper.instrumentRunAsync(ctx -> runInternalAsync(ctx))
             .retryWhen(reactor.util.retry.Retry.max(3)
-                .filter(e -> !(reactor.core.Exceptions.unwrap(e) instanceof com.azure.storage.stress.ContentMismatchException)))
+                .filter(e -> !(Exceptions.unwrap(e) instanceof ContentMismatchException)))
             .doOnError(e -> {
                 // Log the error for debugging but let legitimate failures propagate
                 LOGGER.error("Share test operation failed after retries.", e);

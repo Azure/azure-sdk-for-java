@@ -15,10 +15,12 @@ import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
+import com.azure.storage.stress.ContentMismatchException;
 import com.azure.storage.stress.TelemetryHelper;
 import com.azure.storage.stress.FaultInjectingHttpPolicy;
 import com.azure.storage.stress.FaultInjectionProbabilities;
 import com.azure.storage.stress.StorageStressOptions;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -146,9 +148,11 @@ public abstract class PageBlobScenarioBase<TOptions extends StorageStressOptions
     @SuppressWarnings("try")
     @Override
     public Mono<Void> runAsync() {
-        return telemetryHelper.instrumentRunAsync(ctx -> runInternalAsync(ctx))
+        return telemetryHelper.instrumentRunAsync(ctx ->
+        runInternalAsync(ctx)
             .retryWhen(reactor.util.retry.Retry.max(3)
-                .filter(e -> !(reactor.core.Exceptions.unwrap(e) instanceof com.azure.storage.stress.ContentMismatchException)))
+                .filter(e -> !(Exceptions.unwrap(e)
+                    instanceof ContentMismatchException))))
             .doOnError(e -> LOGGER.atError()
                 .addKeyValue("error", e.getMessage())
                 .log("Test operation failed after retries"));

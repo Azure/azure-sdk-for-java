@@ -15,10 +15,12 @@ import com.azure.storage.file.datalake.DataLakeFileSystemClient;
 import com.azure.storage.file.datalake.DataLakeServiceAsyncClient;
 import com.azure.storage.file.datalake.DataLakeServiceClient;
 import com.azure.storage.file.datalake.DataLakeServiceClientBuilder;
+import com.azure.storage.stress.ContentMismatchException;
 import com.azure.storage.stress.FaultInjectingHttpPolicy;
 import com.azure.storage.stress.FaultInjectionProbabilities;
 import com.azure.storage.stress.StorageStressOptions;
 import com.azure.storage.stress.TelemetryHelper;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
 import java.time.Instant;
@@ -141,7 +143,7 @@ public abstract class DataLakeScenarioBase<TOptions extends StorageStressOptions
     public Mono<Void> runAsync() {
         return telemetryHelper.instrumentRunAsync(ctx -> runInternalAsync(ctx))
             .retryWhen(reactor.util.retry.Retry.max(3)
-                .filter(e -> !(reactor.core.Exceptions.unwrap(e) instanceof com.azure.storage.stress.ContentMismatchException)))
+                .filter(e -> !(Exceptions.unwrap(e) instanceof ContentMismatchException)))
             .doOnError(e -> LOGGER.atWarning()
                 .addKeyValue("error", e.getMessage())
                 .log("DataLake test operation failed after retries"));

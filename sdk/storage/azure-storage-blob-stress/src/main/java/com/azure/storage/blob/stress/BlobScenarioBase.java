@@ -15,10 +15,12 @@ import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
+import com.azure.storage.stress.ContentMismatchException;
 import com.azure.storage.stress.TelemetryHelper;
 import com.azure.storage.stress.FaultInjectionProbabilities;
 import com.azure.storage.stress.FaultInjectingHttpPolicy;
 import com.azure.storage.stress.StorageStressOptions;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
 import java.time.Instant;
@@ -154,16 +156,18 @@ public abstract class BlobScenarioBase<TOptions extends StorageStressOptions> ex
     @SuppressWarnings("try")
     @Override
     public Mono<Void> runAsync() {
-        return telemetryHelper.instrumentRunAsync(ctx -> runInternalAsync(ctx))
-            .retryWhen(reactor.util.retry.Retry.max(3)
-                .filter(e -> !(reactor.core.Exceptions.unwrap(e) instanceof com.azure.storage.stress.ContentMismatchException)))
-            .doOnError(e -> {
-                // Log the error for debugging but let legitimate failures propagate
-                LOGGER.atError()
-                    .addKeyValue("error", e.getMessage())
-                    .addKeyValue("errorType", e.getClass().getSimpleName())
-                    .log("Test operation failed after retries");
-            });
+        return telemetryHelper.instrumentRunAsync(ctx ->
+            runInternalAsync(ctx)
+                .retryWhen(reactor.util.retry.Retry.max(3)
+                    .filter(e -> !(Exceptions.unwrap(e)
+                        instanceof ContentMismatchException)))
+                .doOnError(e -> {
+                    // Log the error for debugging but let legitimate failures propagate
+                    LOGGER.atError()
+                        .addKeyValue("error", e.getMessage())
+                        .addKeyValue("errorType", e.getClass().getSimpleName())
+                        .log("Test operation failed after retries");
+                }));
     }
 
     protected abstract void runInternal(Context context) throws Exception;
