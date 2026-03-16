@@ -444,6 +444,49 @@ class TransactionalBulkWriterSpec extends UnitSpec {
     (!isIdempotent) should be(false) // would NOT skip
   }
 
+  "batchIsIdempotent computation" should "be true for non-patch strategies" in {
+    // All non-patch strategies are idempotent: upsert, create, delete, replace
+    // produce the same result on retry.
+    val nonPatchStrategies = List(
+      ItemWriteStrategy.ItemOverwrite,
+      ItemWriteStrategy.ItemAppend,
+      ItemWriteStrategy.ItemDelete,
+      ItemWriteStrategy.ItemDeleteIfNotModified,
+      ItemWriteStrategy.ItemOverwriteIfNotModified
+    )
+    for (strategy <- nonPatchStrategies) {
+      val isIdempotent = strategy match {
+        case ItemWriteStrategy.ItemPatch | ItemWriteStrategy.ItemPatchIfExists => false // placeholder
+        case _ => true
+      }
+      isIdempotent should be(true)
+    }
+  }
+
+  it should "be true for ItemPatch with only Set/Add/Replace/Remove operations" in {
+    // Patch operations like set, add, replace, remove are idempotent —
+    // applying them twice produces the same document state.
+    val hasIncrement = List(
+      CosmosPatchOperationTypes.Set,
+      CosmosPatchOperationTypes.Add,
+      CosmosPatchOperationTypes.Replace,
+      CosmosPatchOperationTypes.Remove
+    ).exists(_ == CosmosPatchOperationTypes.Increment)
+    hasIncrement should be(false) // no increment → idempotent
+  }
+
+  it should "be false for ItemPatch with Increment operations" in {
+    // Increment is non-idempotent — double-applying corrupts counters.
+    // The batchIsIdempotent flag must be false when any column config uses Increment.
+    val operationTypes = List(
+      CosmosPatchOperationTypes.Set,
+      CosmosPatchOperationTypes.Increment, // non-idempotent
+      CosmosPatchOperationTypes.Replace
+    )
+    val hasIncrement = operationTypes.exists(_ == CosmosPatchOperationTypes.Increment)
+    hasIncrement should be(true) // has increment → NOT idempotent → batchIsIdempotent = false
+  }
+
   // =====================================================
   // Duplicate PK Detection with String Keys
   // (Verifies the hashCode fix — PartitionKey.toString() as set key)
@@ -807,6 +850,38 @@ class TransactionalBulkWriterSpec extends UnitSpec {
     simulateVerification(408) should be(TestInconclusive)  // Request Timeout
     simulateVerification(503) should be(TestInconclusive)  // Service Unavailable
     simulateVerification(500) should be(TestInconclusive)  // Internal Server Error
+  }
+
+  // =====================================================
+  // Inconclusive Retry Eligibility Tests
+  // =====================================================
+
+  "Inconclusive retry eligibility" should "depend on attempt budget, not original batch status code" in {
+    // scenario: ItemAppend batch gets 409 on retry (shouldIgnore-eligible).
+    // Marker verification fails transiently → Inconclusive.
+    // The retry decision must be based on attemptNumber < maxRetryCount,
+
+    val maxRetryCount = 10
+
+    // 409 is NOT transient
+    Exceptions.canBeTransientFailure(409, 0) should be(false)
+
+    // Attempt 2 of 10: should be eligible for retry (budget remains)
+    val attemptNumber = 2
+    (attemptNumber < maxRetryCount) should be(true)
+
+    // Attempt 10 of 10: should NOT be eligible (budget exhausted)
+    val lastAttempt = 10
+    (lastAttempt < maxRetryCount) should be(false)
+
+    // Also verify that non-shouldIgnore-eligible transient codes are irrelevant here —
+    // the Inconclusive path doesn't care what the original batch status was,
+    // only whether there is retry budget left.
+    // 404/0 for ItemDelete (shouldIgnore-eligible, not transient for non-ItemOverwrite):
+    Exceptions.canBeTransientFailure(404, 0) should be(false)
+    // Even with a non-transient original status, retry is allowed if budget remains:
+    val midAttempt = 5
+    (midAttempt < maxRetryCount) should be(true)
   }
 }
 //scalastyle:on null

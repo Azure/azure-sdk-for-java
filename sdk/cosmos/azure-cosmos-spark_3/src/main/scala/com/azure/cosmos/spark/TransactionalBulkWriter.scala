@@ -149,6 +149,20 @@ private class TransactionalBulkWriter
     case _ => None
   }
 
+  // Idempotency is determined once at construction time — the strategy and patch configs are immutable.
+  // Only ItemPatch/ItemPatchIfExists with Increment operations are non-idempotent (double-applying
+  // an increment silently corrupts counters). All other strategies produce the same result on retry.
+  // This flag gates the flushAndClose re-enqueue path (NOT shouldRetry).
+  private val batchIsIdempotent: Boolean = writeConfig.itemWriteStrategy match {
+    case ItemWriteStrategy.ItemPatch | ItemWriteStrategy.ItemPatchIfExists =>
+      writeConfig.patchConfigs match {
+        case Some(patchConfigs) =>
+          !patchConfigs.columnConfigsMap.values.exists(_.operationType == CosmosPatchOperationTypes.Increment)
+        case None => true // no patch configs → no increment → idempotent
+      }
+    case _ => true // all non-patch strategies are idempotent on retry
+  }
+
   // --- Batch Marker
   // Without the marker, retry ambiguity causes false positives (inferring SUCCESS when the batch
   // never committed — silently losing N-1 items) and false negatives (inferring FAIL when the
@@ -482,7 +496,8 @@ private class TransactionalBulkWriter
       new OperationContext(
         cosmosBatch.getPartitionKeyValue,
         1,
-        monotonicOperationCounter.incrementAndGet())
+        monotonicOperationCounter.incrementAndGet(),
+        batchIsIdempotent)
     val partitionKeyString = cosmosBatch.getPartitionKeyValue.toString
     if (!transactionalBatchPartitionKeyScheduled.add(partitionKeyString)) {
       log.logError(s"Partition key value '$partitionKeyString' has already been scheduled in this writer instance. " +
@@ -616,12 +631,17 @@ private class TransactionalBulkWriter
               cancelWork()
 
             case Inconclusive =>
-              // Verification read itself failed — consume one retry attempt
+              // Verification read itself failed — consume one retry attempt.
+              // Retry eligibility is based solely on remaining attempt budget, NOT on the original
+              // batch status code. The original batch returned a shouldIgnore-eligible code (e.g., 409
+              // for ItemAppend) which is NOT transient — passing it to shouldRetry() would incorrectly
+              // reject the retry even though attempts remain. The verification read failed transiently;
+              // the only question is whether we have retry budget left.
               log.logWarning(s"for partitionKeyValue=[${operationContext.partitionKeyValueInput}], " +
                 s"marker verification inconclusive (read failed). Will retry. markerId='$id', " +
                 s"attemptNumber=${operationContext.attemptNumber}, " +
                 s"Context: {${operationContext.toString}} $getThreadInfo")
-              if (shouldRetry(effectiveStatusCode, effectiveSubStatusCode, operationContext)) {
+              if (operationContext.attemptNumber < writeConfig.maxRetryCount) {
                 val batchOperationRetry = CosmosBatchOperation(
                   cosmosBatchBulkOperation,
                   new OperationContext(
@@ -1093,7 +1113,10 @@ private class TransactionalBulkWriter
     partitionKeyValue: PartitionKey
   ): MarkerVerificationOutcome = {
     try {
-      container.readItem(markerId, partitionKeyValue, classOf[ObjectNode]).block()
+      // Bounded timeout prevents hanging on network stall, thread starvation, or extended
+      // SDK-internal retry loops. Timeout is treated as Inconclusive, consuming a retry attempt.
+      container.readItem(markerId, partitionKeyValue, classOf[ObjectNode])
+        .block(TransactionalBulkWriter.MarkerVerificationTimeout)
       // 200 OK — marker exists -> batch committed
       Committed
     } catch {
@@ -1108,7 +1131,7 @@ private class TransactionalBulkWriter
           s"Context: ${operationContext.toString} $getThreadInfo")
         Inconclusive
       case ex: Exception =>
-        // Unexpected error — treat as inconclusive (conservative)
+        // Unexpected error (including block() timeout -> IllegalStateException) — treat as inconclusive
         log.logWarning(s"Marker verification read failed unexpectedly for marker '$markerId'. " +
           s"Exception: ${ex.getMessage}, " +
           s"Context: ${operationContext.toString} $getThreadInfo")
@@ -1260,6 +1283,10 @@ private object TransactionalBulkWriter {
   // Default TTL for marker documents (orphan cleanup from crashed runs)
   // 24 hours = 86400 seconds. Primary cleanup is active deletion, not TTL.
   private val DefaultMarkerTtlSeconds = 86400
+  // Bounded timeout for marker verification point-read. Prevents hanging on network stall,
+  // thread starvation, or extended SDK-internal retry loops. A timeout is treated as Inconclusive.
+  // 10 seconds is generous for a single point-read but covers SDK-internal 429 retries.
+  private val MarkerVerificationTimeout = java.time.Duration.ofSeconds(10)
   // Shared ObjectMapper for building marker documents — thread-safe, reused across all instances
   private val markerObjectMapper = new ObjectMapper()
   private val TRANSACTIONAL_BULK_WRITER_REQUESTS_BOUNDED_ELASTIC_THREAD_NAME = "transactional-bulk-writer-requests-bounded-elastic"
