@@ -60,6 +60,7 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.policy.RequestRetryOptions;
+import com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants;
 import com.azure.storage.common.test.shared.StorageCommonTestUtils;
 import com.azure.storage.common.test.shared.TestAccount;
 import com.azure.storage.common.test.shared.TestDataFactory;
@@ -1311,5 +1312,87 @@ public class BlobTestBase extends TestProxyTestBase {
 
             return next.process();
         };
+    }
+
+    protected static boolean hasOnlyStructuredMessageHeaders(List<HttpHeaders> recordedRequestHeaders) {
+        if (recordedRequestHeaders == null || recordedRequestHeaders.isEmpty()) {
+            return false;
+        }
+        return recordedRequestHeaders.stream().anyMatch(headers -> {
+            String bodyType = headers.getValue(Constants.HeaderConstants.STRUCTURED_BODY_TYPE_HEADER_NAME);
+            String contentLength = headers.getValue(Constants.HeaderConstants.STRUCTURED_CONTENT_LENGTH_HEADER_NAME);
+            String contentCrc64 = headers.getValue(Constants.HeaderConstants.CONTENT_CRC64_HEADER_NAME);
+            if (!StructuredMessageConstants.STRUCTURED_BODY_TYPE_VALUE.equals(bodyType) || contentCrc64 != null) {
+                return false;
+            }
+            // Require non-blank content length that parses as non-negative long (same format as policy uses).
+            // Rejects empty string, whitespace, or non-numeric values so we never return true when
+            // structured message was not actually applied.
+            if (contentLength == null || contentLength.trim().isEmpty()) {
+                return false;
+            }
+            try {
+                return Long.parseLong(contentLength.trim()) >= 0;
+            } catch (NumberFormatException e) {
+                return false;
+            }
+        });
+    }
+
+    protected static boolean hasOnlyCrc64Headers(List<HttpHeaders> recordedRequestHeaders) {
+        if (recordedRequestHeaders == null || recordedRequestHeaders.isEmpty()) {
+            return false;
+        }
+        return recordedRequestHeaders.stream().anyMatch(headers -> {
+            String contentCrc64 = headers.getValue(Constants.HeaderConstants.CONTENT_CRC64_HEADER_NAME);
+            String bodyType = headers.getValue(Constants.HeaderConstants.STRUCTURED_BODY_TYPE_HEADER_NAME);
+            String contentLength = headers.getValue(Constants.HeaderConstants.STRUCTURED_CONTENT_LENGTH_HEADER_NAME);
+            // Require CRC64 header to be present and non-blank (policy sets Base64-encoded 8 bytes).
+            // Reject empty/whitespace so we never return true when CRC64 was not actually applied.
+            if (contentCrc64 == null || contentCrc64.trim().isEmpty() || bodyType != null || contentLength != null) {
+                return false;
+            }
+            return true;
+        });
+    }
+
+    protected static boolean hasNoContentValidationHeaders(List<HttpHeaders> recordedRequestHeaders) {
+        if (recordedRequestHeaders == null || recordedRequestHeaders.isEmpty()) {
+            return false;
+        }
+        return recordedRequestHeaders.stream().anyMatch(headers -> {
+            String bodyType = headers.getValue(Constants.HeaderConstants.STRUCTURED_BODY_TYPE_HEADER_NAME);
+            String contentLength = headers.getValue(Constants.HeaderConstants.STRUCTURED_CONTENT_LENGTH_HEADER_NAME);
+            String contentCrc64 = headers.getValue(Constants.HeaderConstants.CONTENT_CRC64_HEADER_NAME);
+            // All three must be absent (null). If any header is present, even with empty value, we return false.
+            return bodyType == null && contentLength == null && contentCrc64 == null;
+        });
+    }
+
+    /**
+    * Creates a BlobClient that records all outgoing request headers into the supplied list.
+    * Each test should use its own list so tests can run concurrently.
+    */
+    protected BlobClient createBlobClientWithRequestSniffer(List<HttpHeaders> recordedRequestHeaders) {
+        HttpPipelinePolicy sniffPolicy = (context, next) -> {
+            recordedRequestHeaders.add(context.getHttpRequest().getHeaders());
+            return next.process();
+        };
+        BlobServiceClient serviceClient = getServiceClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
+            ENVIRONMENT.getPrimaryAccount().getBlobEndpoint(), sniffPolicy);
+        return serviceClient.getBlobContainerClient(containerName).getBlobClient(generateBlobName());
+    }
+
+    /**
+    * Creates a BlobAsyncClient that records all outgoing request headers into the supplied list.
+    */
+    protected BlobAsyncClient createBlobAsyncClientWithRequestSniffer(List<HttpHeaders> recordedRequestHeaders) {
+        HttpPipelinePolicy sniffPolicy = (context, next) -> {
+            recordedRequestHeaders.add(context.getHttpRequest().getHeaders());
+            return next.process();
+        };
+        BlobServiceAsyncClient serviceClient = getServiceAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
+            ENVIRONMENT.getPrimaryAccount().getBlobEndpoint(), sniffPolicy);
+        return serviceClient.getBlobContainerAsyncClient(containerName).getBlobAsyncClient(generateBlobName());
     }
 }

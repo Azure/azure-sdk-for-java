@@ -4,8 +4,8 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Context;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.ParallelTransferOptions;
@@ -19,23 +19,18 @@ import com.azure.storage.blob.options.BlockBlobSimpleUploadOptions;
 import com.azure.storage.blob.options.BlockBlobStageBlockOptions;
 import com.azure.storage.blob.options.PageBlobOutputStreamOptions;
 import com.azure.storage.blob.options.PageBlobUploadPagesOptions;
-import com.azure.storage.blob.specialized.AppendBlobAsyncClient;
 import com.azure.storage.blob.specialized.AppendBlobClient;
 import com.azure.storage.blob.specialized.BlobOutputStream;
-import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.blob.specialized.BlockBlobClient;
-import com.azure.storage.blob.specialized.PageBlobAsyncClient;
 import com.azure.storage.blob.specialized.PageBlobClient;
 import com.azure.storage.common.StorageChecksumAlgorithm;
 import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants;
 import org.junit.jupiter.api.Test;
-import reactor.core.publisher.Flux;
-import reactor.test.StepVerifier;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -43,13 +38,18 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+/**
+ * Tests content validation (CRC64 / structured message) for upload operations using sync clients.
+ * Upload types that have no async counterpart (OutputStream, SeekableByteChannel) are tested only here.
+ * Async counterparts of the same operations are in {@link BlobContentValidationAsyncUploadTests}.
+ */
 public class BlobContentValidationUploadTests extends BlobTestBase {
     private static final int TEN_MB = 10 * Constants.MB;
     /* Single-part uploads with length < 4MB use CRC64 header; >= 4MB use structured message. */
     private static final int UNDER_4MB = 2 * Constants.MB;
 
     // ===========================================================================================
-    // BlobAsyncClient.uploadWithResponse
+    // BlobClient.uploadWithResponse
     // ===========================================================================================
 
     /**
@@ -58,20 +58,18 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
     @Test
     public void uploadWithCrc64Header() {
         List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
-        BlobAsyncClient client = createBlobAsyncClientWithRequestSniffer(recorded);
+        BlobClient client = createBlobClientWithRequestSniffer(recorded);
 
         byte[] randomData = getRandomByteArray(UNDER_4MB);
-        Flux<ByteBuffer> data = Flux.just(ByteBuffer.wrap(randomData));
+        InputStream data = new ByteArrayInputStream(randomData);
 
         BlobParallelUploadOptions options = new BlobParallelUploadOptions(data)
             .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) UNDER_4MB))
             .setRequestConditions(new BlobRequestConditions())
             .setRequestChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
 
-        StepVerifier.create(client.uploadWithResponse(options)).assertNext(response -> {
-            assertNotNull(response.getValue().getETag());
-            assertTrue(hasOnlyCrc64Headers(recorded));
-        }).verifyComplete();
+        assertNotNull(client.uploadWithResponse(options, null, Context.NONE).getValue().getETag());
+        assertTrue(hasOnlyCrc64Headers(recorded));
     }
 
     /**
@@ -80,20 +78,18 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
     @Test
     public void uploadWithStructuredMessage() {
         List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
-        BlobAsyncClient client = createBlobAsyncClientWithRequestSniffer(recorded);
+        BlobClient client = createBlobClientWithRequestSniffer(recorded);
 
         byte[] randomData = getRandomByteArray(TEN_MB);
-        Flux<ByteBuffer> data = Flux.just(ByteBuffer.wrap(randomData));
+        InputStream data = new ByteArrayInputStream(randomData);
 
         BlobParallelUploadOptions options = new BlobParallelUploadOptions(data)
             .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) TEN_MB))
             .setRequestConditions(new BlobRequestConditions())
             .setRequestChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
 
-        StepVerifier.create(client.uploadWithResponse(options)).assertNext(response -> {
-            assertNotNull(response.getValue().getETag());
-            assertTrue(hasOnlyStructuredMessageHeaders(recorded));
-        }).verifyComplete();
+        assertNotNull(client.uploadWithResponse(options, null, Context.NONE).getValue().getETag());
+        assertTrue(hasOnlyStructuredMessageHeaders(recorded));
     }
 
     /**
@@ -102,10 +98,10 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
     @Test
     public void uploadChunkedWithStructuredMessage() {
         List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
-        BlobAsyncClient client = createBlobAsyncClientWithRequestSniffer(recorded);
+        BlobClient client = createBlobClientWithRequestSniffer(recorded);
 
         byte[] randomData = getRandomByteArray(TEN_MB);
-        Flux<ByteBuffer> data = Flux.just(ByteBuffer.wrap(randomData));
+        InputStream data = new ByteArrayInputStream(randomData);
         long blockSize = 2 * (long) Constants.MB;
 
         BlobParallelUploadOptions options = new BlobParallelUploadOptions(data)
@@ -114,40 +110,36 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
             .setRequestConditions(new BlobRequestConditions())
             .setRequestChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
 
-        StepVerifier.create(client.uploadWithResponse(options)).assertNext(response -> {
-            assertNotNull(response.getValue().getETag());
-            assertTrue(hasOnlyStructuredMessageHeaders(recorded));
-        }).verifyComplete();
+        assertNotNull(client.uploadWithResponse(options, null, Context.NONE).getValue().getETag());
+        assertTrue(hasOnlyStructuredMessageHeaders(recorded));
     }
 
     @Test
     public void uploadWithoutContentValidation() {
         List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
-        BlobAsyncClient client = createBlobAsyncClientWithRequestSniffer(recorded);
+        BlobClient client = createBlobClientWithRequestSniffer(recorded);
 
         byte[] randomData = getRandomByteArray(TEN_MB);
-        Flux<ByteBuffer> data = Flux.just(ByteBuffer.wrap(randomData));
+        InputStream data = new ByteArrayInputStream(randomData);
 
         BlobParallelUploadOptions options = new BlobParallelUploadOptions(data)
             .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) TEN_MB))
             .setRequestConditions(new BlobRequestConditions())
             .setRequestChecksumAlgorithm(StorageChecksumAlgorithm.NONE);
 
-        StepVerifier.create(client.uploadWithResponse(options)).assertNext(response -> {
-            assertNotNull(response.getValue().getETag());
-            assertTrue(hasNoContentValidationHeaders(recorded));
-        }).verifyComplete();
+        assertNotNull(client.uploadWithResponse(options, null, Context.NONE).getValue().getETag());
+        assertTrue(hasNoContentValidationHeaders(recorded));
     }
 
     // ===========================================================================================
-    // BlockBlobAsyncClient.uploadWithResponse (BlockBlobSimpleUpload / Put Blob) tests
+    // BlockBlobClient.uploadWithResponse (BlockBlobSimpleUpload / Put Blob) tests
     // ===========================================================================================
 
     @Test
     public void blockBlobSimpleUploadWithCrc64Header() {
         List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
-        BlobAsyncClient blobClient = createBlobAsyncClientWithRequestSniffer(recorded);
-        BlockBlobAsyncClient client = blobClient.getBlockBlobAsyncClient();
+        BlobClient blobClient = createBlobClientWithRequestSniffer(recorded);
+        BlockBlobClient client = blobClient.getBlockBlobClient();
 
         byte[] randomData = getRandomByteArray(UNDER_4MB);
         BinaryData data = BinaryData.fromBytes(randomData);
@@ -155,20 +147,15 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         BlockBlobSimpleUploadOptions options
             = new BlockBlobSimpleUploadOptions(data).setRequestChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
 
-        StepVerifier.create(client.uploadWithResponse(options)).assertNext(response -> {
-            assertNotNull(response.getValue().getETag());
-            assertTrue(hasOnlyCrc64Headers(recorded));
-        }).verifyComplete();
+        assertNotNull(client.uploadWithResponse(options, null, Context.NONE).getValue().getETag());
+        assertTrue(hasOnlyCrc64Headers(recorded));
     }
-
-    //  ai silly and doesn't know about max upload sizes in relation to parallelism
-    // tomorrow: fix these, fix perf tests, edge case tests, md5 compatibility tests
 
     @Test
     public void blockBlobSimpleUploadWithStructuredMessage() {
         List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
-        BlobAsyncClient blobClient = createBlobAsyncClientWithRequestSniffer(recorded);
-        BlockBlobAsyncClient client = blobClient.getBlockBlobAsyncClient();
+        BlobClient blobClient = createBlobClientWithRequestSniffer(recorded);
+        BlockBlobClient client = blobClient.getBlockBlobClient();
 
         byte[] randomData = getRandomByteArray(TEN_MB);
         BinaryData data = BinaryData.fromBytes(randomData);
@@ -176,17 +163,15 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         BlockBlobSimpleUploadOptions options
             = new BlockBlobSimpleUploadOptions(data).setRequestChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
 
-        StepVerifier.create(client.uploadWithResponse(options)).assertNext(response -> {
-            assertNotNull(response.getValue().getETag());
-            assertTrue(hasOnlyStructuredMessageHeaders(recorded));
-        }).verifyComplete();
+        assertNotNull(client.uploadWithResponse(options, null, Context.NONE).getValue().getETag());
+        assertTrue(hasOnlyStructuredMessageHeaders(recorded));
     }
 
     @Test
     public void blockBlobSimpleUploadWithNoContentValidation() {
         List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
-        BlobAsyncClient blobClient = createBlobAsyncClientWithRequestSniffer(recorded);
-        BlockBlobAsyncClient client = blobClient.getBlockBlobAsyncClient();
+        BlobClient blobClient = createBlobClientWithRequestSniffer(recorded);
+        BlockBlobClient client = blobClient.getBlockBlobClient();
 
         byte[] randomData = getRandomByteArray(TEN_MB);
         BinaryData data = BinaryData.fromBytes(randomData);
@@ -194,21 +179,19 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         BlockBlobSimpleUploadOptions options
             = new BlockBlobSimpleUploadOptions(data).setRequestChecksumAlgorithm(StorageChecksumAlgorithm.NONE);
 
-        StepVerifier.create(client.uploadWithResponse(options)).assertNext(response -> {
-            assertNotNull(response.getValue().getETag());
-            assertTrue(hasNoContentValidationHeaders(recorded));
-        }).verifyComplete();
+        assertNotNull(client.uploadWithResponse(options, null, Context.NONE).getValue().getETag());
+        assertTrue(hasNoContentValidationHeaders(recorded));
     }
 
     // ===========================================================================================
-    // BlockBlobAsyncClient.stageBlockWithResponse (Put Block) tests
+    // BlockBlobClient.stageBlockWithResponse (Put Block) tests
     // ===========================================================================================
 
     @Test
     public void stageBlockWithCrc64Header() {
         List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
-        BlobAsyncClient blobClient = createBlobAsyncClientWithRequestSniffer(recorded);
-        BlockBlobAsyncClient client = blobClient.getBlockBlobAsyncClient();
+        BlobClient blobClient = createBlobClientWithRequestSniffer(recorded);
+        BlockBlobClient client = blobClient.getBlockBlobClient();
 
         byte[] randomData = getRandomByteArray(UNDER_4MB);
         BinaryData data = BinaryData.fromBytes(randomData);
@@ -216,16 +199,15 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         BlockBlobStageBlockOptions options = new BlockBlobStageBlockOptions(getBlockID(), data)
             .setRequestChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
 
-        StepVerifier.create(client.stageBlockWithResponse(options)).assertNext(response -> {
-            assertTrue(hasOnlyCrc64Headers(recorded));
-        }).verifyComplete();
+        client.stageBlockWithResponse(options, null, Context.NONE);
+        assertTrue(hasOnlyCrc64Headers(recorded));
     }
 
     @Test
     public void stageBlockWithStructuredMessage() {
         List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
-        BlobAsyncClient blobClient = createBlobAsyncClientWithRequestSniffer(recorded);
-        BlockBlobAsyncClient client = blobClient.getBlockBlobAsyncClient();
+        BlobClient blobClient = createBlobClientWithRequestSniffer(recorded);
+        BlockBlobClient client = blobClient.getBlockBlobClient();
 
         byte[] randomData = getRandomByteArray(TEN_MB);
         BinaryData data = BinaryData.fromBytes(randomData);
@@ -233,16 +215,15 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         BlockBlobStageBlockOptions options = new BlockBlobStageBlockOptions(getBlockID(), data)
             .setRequestChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
 
-        StepVerifier.create(client.stageBlockWithResponse(options)).assertNext(response -> {
-            assertTrue(hasOnlyStructuredMessageHeaders(recorded));
-        }).verifyComplete();
+        client.stageBlockWithResponse(options, null, Context.NONE);
+        assertTrue(hasOnlyStructuredMessageHeaders(recorded));
     }
 
     @Test
     public void stageBlockWithNoContentValidation() {
         List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
-        BlobAsyncClient blobClient = createBlobAsyncClientWithRequestSniffer(recorded);
-        BlockBlobAsyncClient client = blobClient.getBlockBlobAsyncClient();
+        BlobClient blobClient = createBlobClientWithRequestSniffer(recorded);
+        BlockBlobClient client = blobClient.getBlockBlobClient();
 
         byte[] randomData = getRandomByteArray(TEN_MB);
         BinaryData data = BinaryData.fromBytes(randomData);
@@ -250,75 +231,67 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         BlockBlobStageBlockOptions options = new BlockBlobStageBlockOptions(getBlockID(), data)
             .setRequestChecksumAlgorithm(StorageChecksumAlgorithm.NONE);
 
-        StepVerifier.create(client.stageBlockWithResponse(options)).assertNext(response -> {
-            assertTrue(hasNoContentValidationHeaders(recorded));
-        }).verifyComplete();
+        client.stageBlockWithResponse(options, null, Context.NONE);
+        assertTrue(hasNoContentValidationHeaders(recorded));
     }
 
     // ===========================================================================================
-    // AppendBlobAsyncClient.appendBlockWithResponse (Append Block) tests
+    // AppendBlobClient.appendBlockWithResponse (Append Block) tests
     // ===========================================================================================
 
     @Test
-
     public void appendBlockWithCrc64Header() {
         List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
-        BlobAsyncClient blobClient = createBlobAsyncClientWithRequestSniffer(recorded);
-        AppendBlobAsyncClient client = blobClient.getAppendBlobAsyncClient();
-        client.create().block();
+        BlobClient blobClient = createBlobClientWithRequestSniffer(recorded);
+        AppendBlobClient client = blobClient.getAppendBlobClient();
+        client.create();
 
         byte[] randomData = getRandomByteArray(UNDER_4MB);
-        Flux<ByteBuffer> data = Flux.just(ByteBuffer.wrap(randomData));
+        InputStream data = new ByteArrayInputStream(randomData);
 
         AppendBlobAppendBlockOptions options = new AppendBlobAppendBlockOptions(data, UNDER_4MB)
             .setRequestChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
 
-        StepVerifier.create(client.appendBlockWithResponse(options)).assertNext(response -> {
-            assertNotNull(response.getValue().getETag());
-            assertTrue(hasOnlyCrc64Headers(recorded));
-        }).verifyComplete();
+        assertNotNull(client.appendBlockWithResponse(options, null, Context.NONE).getValue().getETag());
+        assertTrue(hasOnlyCrc64Headers(recorded));
     }
 
     @Test
     public void appendBlockWithStructuredMessage() {
         List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
-        BlobAsyncClient blobClient = createBlobAsyncClientWithRequestSniffer(recorded);
-        AppendBlobAsyncClient client = blobClient.getAppendBlobAsyncClient();
-        client.create().block();
+        BlobClient blobClient = createBlobClientWithRequestSniffer(recorded);
+        AppendBlobClient client = blobClient.getAppendBlobClient();
+        client.create();
 
         byte[] randomData = getRandomByteArray(TEN_MB);
-        Flux<ByteBuffer> data = Flux.just(ByteBuffer.wrap(randomData));
+        InputStream data = new ByteArrayInputStream(randomData);
 
         AppendBlobAppendBlockOptions options = new AppendBlobAppendBlockOptions(data, TEN_MB)
             .setRequestChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
 
-        StepVerifier.create(client.appendBlockWithResponse(options)).assertNext(response -> {
-            assertNotNull(response.getValue().getETag());
-            assertTrue(hasOnlyStructuredMessageHeaders(recorded));
-        }).verifyComplete();
+        assertNotNull(client.appendBlockWithResponse(options, null, Context.NONE).getValue().getETag());
+        assertTrue(hasOnlyStructuredMessageHeaders(recorded));
     }
 
     @Test
     public void appendBlockWithNoContentValidation() {
         List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
-        BlobAsyncClient blobClient = createBlobAsyncClientWithRequestSniffer(recorded);
-        AppendBlobAsyncClient client = blobClient.getAppendBlobAsyncClient();
-        client.create().block();
+        BlobClient blobClient = createBlobClientWithRequestSniffer(recorded);
+        AppendBlobClient client = blobClient.getAppendBlobClient();
+        client.create();
 
         byte[] randomData = getRandomByteArray(TEN_MB);
-        Flux<ByteBuffer> data = Flux.just(ByteBuffer.wrap(randomData));
+        InputStream data = new ByteArrayInputStream(randomData);
 
         AppendBlobAppendBlockOptions options
             = new AppendBlobAppendBlockOptions(data, TEN_MB).setRequestChecksumAlgorithm(StorageChecksumAlgorithm.NONE);
 
-        StepVerifier.create(client.appendBlockWithResponse(options)).assertNext(response -> {
-            assertNotNull(response.getValue().getETag());
-            assertTrue(hasNoContentValidationHeaders(recorded));
-        }).verifyComplete();
+        assertNotNull(client.appendBlockWithResponse(options, null, Context.NONE).getValue().getETag());
+        assertTrue(hasNoContentValidationHeaders(recorded));
     }
 
     // ===========================================================================================
-    // PageBlobAsyncClient.uploadPagesWithResponse (Put Page) tests
+    // PageBlobClient.uploadPagesWithResponse (Put Page) tests
     // ===========================================================================================
 
     private static final int PAGE_BYTES = PageBlobClient.PAGE_BYTES;
@@ -328,71 +301,65 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
     @Test
     public void uploadPagesWithCrc64Header() {
         List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
-        BlobAsyncClient blobClient = createBlobAsyncClientWithRequestSniffer(recorded);
-        PageBlobAsyncClient client = blobClient.getPageBlobAsyncClient();
-        client.create(UNDER_4MB_PAGE_ALIGNED).block();
+        BlobClient blobClient = createBlobClientWithRequestSniffer(recorded);
+        PageBlobClient client = blobClient.getPageBlobClient();
+        client.create(UNDER_4MB_PAGE_ALIGNED);
 
         byte[] randomData = getRandomByteArray(UNDER_4MB_PAGE_ALIGNED);
-        Flux<ByteBuffer> data = Flux.just(ByteBuffer.wrap(randomData));
+        InputStream data = new ByteArrayInputStream(randomData);
 
         PageBlobUploadPagesOptions options
             = new PageBlobUploadPagesOptions(new PageRange().setStart(0).setEnd(UNDER_4MB_PAGE_ALIGNED - 1), data)
                 .setRequestChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
 
-        StepVerifier.create(client.uploadPagesWithResponse(options)).assertNext(response -> {
-            assertNotNull(response.getValue().getETag());
-            assertTrue(hasOnlyCrc64Headers(recorded));
-        }).verifyComplete();
+        assertNotNull(client.uploadPagesWithResponse(options, null, Context.NONE).getValue().getETag());
+        assertTrue(hasOnlyCrc64Headers(recorded));
     }
 
     @Test
     public void uploadPagesWithStructuredMessage() {
         List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
-        BlobAsyncClient blobClient = createBlobAsyncClientWithRequestSniffer(recorded);
-        PageBlobAsyncClient client = blobClient.getPageBlobAsyncClient();
-        client.create(FOUR_MB_PAGE_ALIGNED).block();
+        BlobClient blobClient = createBlobClientWithRequestSniffer(recorded);
+        PageBlobClient client = blobClient.getPageBlobClient();
+        client.create(FOUR_MB_PAGE_ALIGNED);
 
         byte[] randomData = getRandomByteArray(FOUR_MB_PAGE_ALIGNED);
-        Flux<ByteBuffer> data = Flux.just(ByteBuffer.wrap(randomData));
+        InputStream data = new ByteArrayInputStream(randomData);
 
         PageBlobUploadPagesOptions options
             = new PageBlobUploadPagesOptions(new PageRange().setStart(0).setEnd(FOUR_MB_PAGE_ALIGNED - 1), data)
                 .setRequestChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
 
-        StepVerifier.create(client.uploadPagesWithResponse(options)).assertNext(response -> {
-            assertNotNull(response.getValue().getETag());
-            assertTrue(hasOnlyStructuredMessageHeaders(recorded));
-        }).verifyComplete();
+        assertNotNull(client.uploadPagesWithResponse(options, null, Context.NONE).getValue().getETag());
+        assertTrue(hasOnlyStructuredMessageHeaders(recorded));
     }
 
     @Test
     public void uploadPagesWithNoContentValidation() {
         List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
-        BlobAsyncClient blobClient = createBlobAsyncClientWithRequestSniffer(recorded);
-        PageBlobAsyncClient client = blobClient.getPageBlobAsyncClient();
-        client.create(FOUR_MB_PAGE_ALIGNED).block();
+        BlobClient blobClient = createBlobClientWithRequestSniffer(recorded);
+        PageBlobClient client = blobClient.getPageBlobClient();
+        client.create(FOUR_MB_PAGE_ALIGNED);
 
         byte[] randomData = getRandomByteArray(FOUR_MB_PAGE_ALIGNED);
-        Flux<ByteBuffer> data = Flux.just(ByteBuffer.wrap(randomData));
+        InputStream data = new ByteArrayInputStream(randomData);
 
         PageBlobUploadPagesOptions options
             = new PageBlobUploadPagesOptions(new PageRange().setStart(0).setEnd(FOUR_MB_PAGE_ALIGNED - 1), data)
                 .setRequestChecksumAlgorithm(StorageChecksumAlgorithm.NONE);
 
-        StepVerifier.create(client.uploadPagesWithResponse(options)).assertNext(response -> {
-            assertNotNull(response.getValue().getETag());
-            assertTrue(hasNoContentValidationHeaders(recorded));
-        }).verifyComplete();
+        assertNotNull(client.uploadPagesWithResponse(options, null, Context.NONE).getValue().getETag());
+        assertTrue(hasNoContentValidationHeaders(recorded));
     }
 
     // ===========================================================================================
-    // BlobAsyncClient.uploadFromFileWithResponse tests
+    // BlobClient.uploadFromFileWithResponse tests
     // ===========================================================================================
 
     @Test
     public void uploadFromFileWithCrc64Header() throws IOException {
         List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
-        BlobAsyncClient client = createBlobAsyncClientWithRequestSniffer(recorded);
+        BlobClient client = createBlobClientWithRequestSniffer(recorded);
 
         File tempFile = getRandomFile(UNDER_4MB);
 
@@ -400,16 +367,14 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
             .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) UNDER_4MB))
             .setRequestChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
 
-        StepVerifier.create(client.uploadFromFileWithResponse(options)).assertNext(response -> {
-            assertNotNull(response.getValue().getETag());
-            assertTrue(hasOnlyCrc64Headers(recorded));
-        }).verifyComplete();
+        assertNotNull(client.uploadFromFileWithResponse(options, null, Context.NONE).getValue().getETag());
+        assertTrue(hasOnlyCrc64Headers(recorded));
     }
 
     @Test
     public void uploadFromFileWithStructuredMessage() throws IOException {
         List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
-        BlobAsyncClient client = createBlobAsyncClientWithRequestSniffer(recorded);
+        BlobClient client = createBlobClientWithRequestSniffer(recorded);
 
         File tempFile = getRandomFile(TEN_MB);
 
@@ -417,16 +382,14 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
             .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) TEN_MB))
             .setRequestChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
 
-        StepVerifier.create(client.uploadFromFileWithResponse(options)).assertNext(response -> {
-            assertNotNull(response.getValue().getETag());
-            assertTrue(hasOnlyStructuredMessageHeaders(recorded));
-        }).verifyComplete();
+        assertNotNull(client.uploadFromFileWithResponse(options, null, Context.NONE).getValue().getETag());
+        assertTrue(hasOnlyStructuredMessageHeaders(recorded));
     }
 
     @Test
     public void uploadFromFileChunkedWithStructuredMessage() throws IOException {
         List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
-        BlobAsyncClient client = createBlobAsyncClientWithRequestSniffer(recorded);
+        BlobClient client = createBlobClientWithRequestSniffer(recorded);
 
         File tempFile = getRandomFile(TEN_MB);
         long blockSize = 2 * (long) Constants.MB;
@@ -436,16 +399,14 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
                 new ParallelTransferOptions().setBlockSizeLong(blockSize).setMaxSingleUploadSizeLong(blockSize))
             .setRequestChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
 
-        StepVerifier.create(client.uploadFromFileWithResponse(options)).assertNext(response -> {
-            assertNotNull(response.getValue().getETag());
-            assertTrue(hasOnlyStructuredMessageHeaders(recorded));
-        }).verifyComplete();
+        assertNotNull(client.uploadFromFileWithResponse(options, null, Context.NONE).getValue().getETag());
+        assertTrue(hasOnlyStructuredMessageHeaders(recorded));
     }
 
     @Test
     public void uploadFromFileWithNoContentValidation() throws IOException {
         List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
-        BlobAsyncClient client = createBlobAsyncClientWithRequestSniffer(recorded);
+        BlobClient client = createBlobClientWithRequestSniffer(recorded);
 
         File tempFile = getRandomFile(TEN_MB);
 
@@ -453,10 +414,8 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
             .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) TEN_MB))
             .setRequestChecksumAlgorithm(StorageChecksumAlgorithm.NONE);
 
-        StepVerifier.create(client.uploadFromFileWithResponse(options)).assertNext(response -> {
-            assertNotNull(response.getValue().getETag());
-            assertTrue(hasNoContentValidationHeaders(recorded));
-        }).verifyComplete();
+        assertNotNull(client.uploadFromFileWithResponse(options, null, Context.NONE).getValue().getETag());
+        assertTrue(hasNoContentValidationHeaders(recorded));
     }
 
     // ===========================================================================================
@@ -698,58 +657,4 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
 
         assertTrue(hasNoContentValidationHeaders(recorded));
     }
-
-    private static boolean hasOnlyStructuredMessageHeaders(List<HttpHeaders> recordedRequestHeaders) {
-        return recordedRequestHeaders.stream().anyMatch(headers -> {
-            String bodyType = headers.getValue(Constants.HeaderConstants.STRUCTURED_BODY_TYPE_HEADER_NAME);
-            String contentLength = headers.getValue(Constants.HeaderConstants.STRUCTURED_CONTENT_LENGTH_HEADER_NAME);
-            String contentCrc64 = headers.getValue(Constants.HeaderConstants.CONTENT_CRC64_HEADER_NAME);
-            return StructuredMessageConstants.STRUCTURED_BODY_TYPE_VALUE.equals(bodyType)
-                && contentLength != null
-                && contentCrc64 == null;
-        });
-    }
-
-    private static boolean hasOnlyCrc64Headers(List<HttpHeaders> recordedRequestHeaders) {
-        return recordedRequestHeaders.stream().anyMatch(headers -> {
-            String contentCrc64 = headers.getValue(Constants.HeaderConstants.CONTENT_CRC64_HEADER_NAME);
-            String bodyType = headers.getValue(Constants.HeaderConstants.STRUCTURED_BODY_TYPE_HEADER_NAME);
-            String contentLength = headers.getValue(Constants.HeaderConstants.STRUCTURED_CONTENT_LENGTH_HEADER_NAME);
-            return contentCrc64 != null && bodyType == null && contentLength == null;
-        });
-    }
-
-    private static boolean hasNoContentValidationHeaders(List<HttpHeaders> recordedRequestHeaders) {
-        return recordedRequestHeaders.stream().anyMatch(headers -> {
-            String bodyType = headers.getValue(Constants.HeaderConstants.STRUCTURED_BODY_TYPE_HEADER_NAME);
-            String contentLength = headers.getValue(Constants.HeaderConstants.STRUCTURED_CONTENT_LENGTH_HEADER_NAME);
-            String contentCrc64 = headers.getValue(Constants.HeaderConstants.CONTENT_CRC64_HEADER_NAME);
-            return bodyType == null && contentLength == null && contentCrc64 == null;
-        });
-    }
-
-    /**
-     * Creates a BlobAsyncClient that records all outgoing request headers into the supplied list.
-     * Each test should use its own list so tests can run concurrently.
-     */
-    private BlobAsyncClient createBlobAsyncClientWithRequestSniffer(List<HttpHeaders> recordedRequestHeaders) {
-        HttpPipelinePolicy sniffPolicy = (context, next) -> {
-            recordedRequestHeaders.add(context.getHttpRequest().getHeaders());
-            return next.process();
-        };
-        BlobServiceAsyncClient serviceClient = getServiceAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
-            ENVIRONMENT.getPrimaryAccount().getBlobEndpoint(), sniffPolicy);
-        return serviceClient.getBlobContainerAsyncClient(containerName).getBlobAsyncClient(generateBlobName());
-    }
-
-    private BlobClient createBlobClientWithRequestSniffer(List<HttpHeaders> recordedRequestHeaders) {
-        HttpPipelinePolicy sniffPolicy = (context, next) -> {
-            recordedRequestHeaders.add(context.getHttpRequest().getHeaders());
-            return next.process();
-        };
-        BlobServiceClient serviceClient = getServiceClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
-            ENVIRONMENT.getPrimaryAccount().getBlobEndpoint(), sniffPolicy);
-        return serviceClient.getBlobContainerClient(containerName).getBlobClient(generateBlobName());
-    }
-
 }
