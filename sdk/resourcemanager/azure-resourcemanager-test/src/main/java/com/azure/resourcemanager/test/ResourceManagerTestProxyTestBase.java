@@ -313,9 +313,9 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
                 new HttpLogOptions().setLogLevel(httpLogDetailLevel), policies, interceptorManager.getPlaybackClient());
             if (!testContextManager.doNotRecordTest()) {
                 // don't match api-version when matching url
-                interceptorManager.addMatchers(Collections
-                    .singletonList(new CustomMatcher().setIgnoredQueryParameters(Arrays.asList("api-version"))
-                        .setExcludedHeaders(Arrays.asList("If-Match"))
+                interceptorManager.addMatchers(Collections.singletonList(
+                    new CustomMatcher().setIgnoredQueryParameters(Collections.singletonList("api-version"))
+                        .setExcludedHeaders(Arrays.asList("Accept", "If-Match"))
                         .setQueryOrderingIgnored(true)));
                 addSanitizers();
                 removeSanitizers();
