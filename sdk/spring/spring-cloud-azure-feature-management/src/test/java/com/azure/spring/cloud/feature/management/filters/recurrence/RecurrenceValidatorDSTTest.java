@@ -265,8 +265,8 @@ public class RecurrenceValidatorDSTTest {
     }
 
     /**
-     * Test Monday-Friday-Sunday pattern with 23.5-hour window.
-     * Minimum gap is Monday-Friday (96 hours), so this should pass.
+     * Test weekly recurrence with Monday, Friday, and Sunday and a 23.5-hour window.
+     * The minimum gap between enabled days is Friday-Sunday (48 hours), so this should pass.
      */
     @Test
     public void validateMultipleDaysOfWeekWith23HourWindow() {
@@ -320,12 +320,13 @@ public class RecurrenceValidatorDSTTest {
         settings.setEnd("2024-03-31T09:00:00+01:00"); // Sunday, 23 hours later
         settings.setRecurrence(recurrence);
         
-        // Reference on the DST transition day itself
-        final ZonedDateTime reference = ZonedDateTime.of(2024, 3, 31, 2, 30, 0, 0, 
+        // Reference on the DST transition day itself, using a valid local time after the DST gap
+        final ZonedDateTime reference = ZonedDateTime.of(2024, 3, 31, 3, 30, 0, 0,
             ZoneId.of("Europe/Paris"));
         
-        // Minimum gap is Saturday-Sunday or Sunday-Monday (24 hours in UTC)
-        // 23 hours < 24 hours, so should pass
+        // Minimum gap is between consecutive calendar days (Saturday-Sunday or Sunday-Monday).
+        // On this DST transition day the elapsed UTC time is 23 hours, but recurrence validation
+        // is based on calendar days, so a 23-hour window is still less than one day and should pass.
         assertDoesNotThrow(() -> RecurrenceValidator.validateSettings(settings, reference),
             "23-hour window should be valid spanning DST transition with UTC calculation");
     }
