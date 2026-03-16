@@ -196,7 +196,7 @@ class SparkE2ETransactionalBulkWriterITest extends IntegrationSpec
     val writeConfig = getBaseWriteConfig(cosmosContainersWithPkAsPartitionKey) +
       ("spark.cosmos.write.strategy" -> "ItemAppend")
 
-    // Should fail because existingId already exists → 409 → batch rolls back
+    // Should fail because existingId already exists -> 409 -> batch rolls back
     intercept[Exception] {
       operationsDf.write
         .format("cosmos.oltp")
@@ -229,7 +229,7 @@ class SparkE2ETransactionalBulkWriterITest extends IntegrationSpec
     seedNode.put("name", "DocB")
     container.createItem(seedNode, new PartitionKey(partitionKeyValue), null).block()
 
-    // Try to delete [A (missing), B (exists)] — A will cause 404 → entire batch rolls back
+    // Try to delete [A (missing), B (exists)] — A will cause 404 -> entire batch rolls back
     val idA = s"docA-${UUID.randomUUID()}"
     val deleteRows = Seq(
       Row(idA, partitionKeyValue, "phantom"),
@@ -355,7 +355,7 @@ class SparkE2ETransactionalBulkWriterITest extends IntegrationSpec
     }
   }
 
-  "transactional write with HPK batch grouping" should "create separate batches per full HPK value (C10)" in {
+  "transactional write with HPK batch grouping" should "create separate batches per full HPK value" in {
     // This test verifies that the String-based PK comparison correctly
     // distinguishes different HPK values that share a common prefix.
     val containerName = s"test-hpk-grouping-${UUID.randomUUID()}"

@@ -334,7 +334,7 @@ class TransactionalBulkWriterSpec extends UnitSpec {
 
   "shouldIgnoreOnRetry first-operation check" should "find first non-424 result at index 0" in {
     // Scenario: ItemAppend retry, op[0]=409, op[1]=424, op[2]=424
-    // The first non-424 is at index 0 → shouldIgnoreOnRetry should return true
+    // The first non-424 is at index 0 -> shouldIgnoreOnRetry should return true
     val response = createMockBatchResponse(409, 0, List((409, 0), (424, 0), (424, 0)))
     val results = response.getResults.asScala
 
@@ -351,7 +351,7 @@ class TransactionalBulkWriterSpec extends UnitSpec {
 
   it should "reject when first non-424 result is NOT at index 0" in {
     // Scenario: op[0]=424, op[1]=404, op[2]=424
-    // The first non-424 is at index 1 → shouldIgnoreOnRetry should return false
+    // The first non-424 is at index 1 -> shouldIgnoreOnRetry should return false
     val response = createMockBatchResponse(404, 0, List((424, 0), (404, 0), (424, 0)))
     val results = response.getResults.asScala
 
@@ -360,7 +360,7 @@ class TransactionalBulkWriterSpec extends UnitSpec {
     }
 
     firstNon424 should be(defined)
-    firstNon424.get._2 should be(1) // index 1 → NOT first operation → reject
+    firstNon424.get._2 should be(1) // index 1 -> NOT first operation → reject
     firstNon424.get._1.getStatusCode should be(404)
   }
 
@@ -376,8 +376,8 @@ class TransactionalBulkWriterSpec extends UnitSpec {
   }
 
   "shouldIgnoreOnRetry attempt guard" should "distinguish first attempt from retry" in {
-    // attemptNumber = 1 → first attempt, shouldIgnoreOnRetry must return false
-    // attemptNumber > 1 → retry, shouldIgnoreOnRetry may return true
+    // attemptNumber = 1 -> first attempt, shouldIgnoreOnRetry must return false
+    // attemptNumber > 1 -> retry, shouldIgnoreOnRetry may return true
     // This test verifies the guard logic pattern
     val attemptNumberFirstAttempt = 1
     val attemptNumberRetry = 2

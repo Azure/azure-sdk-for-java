@@ -161,7 +161,6 @@ private class TransactionalBulkWriter
     .getOrElse(TransactionalBulkWriter.DefaultMarkerTtlSeconds)
   private val batchSequenceCounter = new AtomicLong(0)
   // jobRunId + sparkPartitionId + batchSeq make each marker ID globally unique.
-  // Use a single TaskContext.get call to extract both values.
   private val (sparkPartitionId: Int, jobRunId: String) = {
     val tc = TaskContext.get
     if (tc != null) {
@@ -319,7 +318,7 @@ private class TransactionalBulkWriter
           })
 
           // Append marker as the last upsert in the batch for retry ambiguity resolution.
-          // Skip marker if batch already has 100 items (C15: server limit).
+          // Skip marker if batch already has 100 items
           val markerId = if (bulkItemsList.size() < TransactionalBulkWriter.MaxOperationsPerBatch) {
             val batchSeq = batchSequenceCounter.incrementAndGet()
             val id = s"__tbw:$jobRunId:$sparkPartitionId:$batchSeq"
@@ -327,7 +326,7 @@ private class TransactionalBulkWriter
             cosmosBatch.upsertItemOperation(markerNode)
             Some(id)
           } else {
-            // C15: batch has 100 business items — skip marker, fall back to shouldIgnore-only
+            // batch has 100 business items — skip marker, fall back to shouldIgnore-only
             log.logInfo(s"Batch for PK '${bulkItemsList.get(0).partitionKey}' has " +
               s"${bulkItemsList.size()} items (server limit). Marker skipped — using shouldIgnore-only inference. " +
               s"Context: ${operationContext.toString} $getThreadInfo")
@@ -650,7 +649,7 @@ private class TransactionalBulkWriter
           }
 
         case None =>
-          // C15 batch (100 items, marker skipped) → shouldIgnore-only inference
+          // batch (100 items, marker skipped) -> shouldIgnore-only inference
           log.logInfo(s"for partitionKeyValue=[${operationContext.partitionKeyValueInput}], " +
             s"inferred SUCCESS on retry via shouldIgnore (C15 batch, no marker). " +
             s"statusCode='$effectiveStatusCode:$effectiveSubStatusCode', " +
@@ -818,7 +817,7 @@ private class TransactionalBulkWriter
         // order by batch sequence number
         // then return all original items for re-scheduling
         // Use originalItems instead of batch.getOperations to avoid NPE on delete operations
-        // (Issue 3: getItem[ObjectNode] returns null for delete operations)
+        // (getItem[ObjectNode] returns null for delete operations)
         val retriableRemainingOperations = if (allowRetryOnNewBulkWriterInstance) {
           Some(
             (pendingRetriesSnapshot ++ activeOperationsSnapshot)
@@ -1061,7 +1060,6 @@ private class TransactionalBulkWriter
     markerId match {
       case Some(id) =>
         // Fire-and-forget: do not block the response handler thread.
-        // The batch outcome is already determined — this is purely cleanup.
         container.deleteItem(id, partitionKeyValue)
           .doOnSuccess((_: Any) =>
             log.logDebug(s"Marker '$id' deleted successfully. " +
@@ -1081,10 +1079,10 @@ private class TransactionalBulkWriter
     }
   }
 
-  // Marker verification outcomes — see DESIGN.md § Verification on Ambiguity
+  // Marker verification outcomes
   private sealed trait MarkerVerificationOutcome
-  private case object Committed extends MarkerVerificationOutcome     // Marker present → batch committed
-  private case object NotCommitted extends MarkerVerificationOutcome  // Marker absent → batch did not commit
+  private case object Committed extends MarkerVerificationOutcome     // Marker present -> batch committed
+  private case object NotCommitted extends MarkerVerificationOutcome  // Marker absent -> batch did not commit
   private case object Inconclusive extends MarkerVerificationOutcome  // Verification read itself failed
 
   // Marker verification — the ONLY decision signal for ambiguous retries.
@@ -1096,11 +1094,11 @@ private class TransactionalBulkWriter
   ): MarkerVerificationOutcome = {
     try {
       container.readItem(markerId, partitionKeyValue, classOf[ObjectNode]).block()
-      // 200 OK — marker exists → batch committed
+      // 200 OK — marker exists -> batch committed
       Committed
     } catch {
       case cosmosEx: CosmosException if cosmosEx.getStatusCode == 404 =>
-        // 404 Not Found — marker does not exist → batch did NOT commit
+        // 404 Not Found — marker does not exist -> batch did NOT commit
         NotCommitted
       case cosmosEx: CosmosException
         if Exceptions.canBeTransientFailure(cosmosEx.getStatusCode, cosmosEx.getSubStatusCode) =>
@@ -1141,7 +1139,7 @@ private class TransactionalBulkWriter
   //   2. We have per-operation results
   //   3. The first non-424 result is on the FIRST operation (index 0)
   //   4. shouldIgnore returns true for that operation's status code
-  //   5. Strategy is NOT ItemBulkUpdate (retries rebuild the batch — invariant C5)
+  //   5. Strategy is NOT ItemBulkUpdate (retries rebuild the batch)
   // See DESIGN.md § Response Handling Flow
   private def shouldIgnoreOnRetry(
     operationContext: OperationContext,
@@ -1196,11 +1194,10 @@ private class TransactionalBulkWriter
             statusCode == 0 // Gateway mode: PoolAcquirePendingLimitException
       }
     }
-    // NOTE: isIdempotent does NOT gate shouldRetry. The design doc (Scenario 8) explicitly states
-    // that TransactionalBulkWriter follows BulkWriter's retry behavior — retrying even non-idempotent
+    // NOTE: isIdempotent does NOT gate shouldRetry. TransactionalBulkWriter follows BulkWriter's retry behavior — retrying even non-idempotent
     // operations (e.g., increment) and accepting the double-application risk. This matches BulkWriter
     // which retries ItemPatch (including increment) with no special handling.
-    // The isIdempotent flag ONLY gates the flushAndClose re-enqueue path (Issue 1 fix).
+    // The isIdempotent flag ONLY gates the flushAndClose re-enqueue path.
 
     log.logDebug(s"Should retry statusCode '$statusCode:$subStatusCode' -> $returnValue, " +
       s"Context: ${operationContext.toString} $getThreadInfo")
