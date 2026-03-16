@@ -22,9 +22,6 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.implementation.SearchIndexerClientImpl;
-import com.azure.search.documents.implementation.models.CreateOrUpdateRequestAccept34;
-import com.azure.search.documents.implementation.models.CreateOrUpdateRequestAccept43;
-import com.azure.search.documents.implementation.models.CreateOrUpdateRequestAccept49;
 import com.azure.search.documents.indexes.models.DocumentKeysOrIds;
 import com.azure.search.documents.indexes.models.IndexerResyncBody;
 import com.azure.search.documents.indexes.models.ListDataSourcesResult;
@@ -35,18 +32,7 @@ import com.azure.search.documents.indexes.models.SearchIndexerDataSourceConnecti
 import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
 import com.azure.search.documents.indexes.models.SearchIndexerStatus;
 import com.azure.search.documents.indexes.models.SkillNames;
-import com.azure.search.documents.models.CreateOrUpdateRequestAccept33;
-import com.azure.search.documents.models.CreateOrUpdateRequestAccept35;
-import com.azure.search.documents.models.CreateOrUpdateRequestAccept36;
-import com.azure.search.documents.models.CreateOrUpdateRequestAccept37;
-import com.azure.search.documents.models.CreateOrUpdateRequestAccept38;
-import com.azure.search.documents.models.CreateOrUpdateRequestAccept39;
-import com.azure.search.documents.models.CreateOrUpdateRequestAccept42;
-import com.azure.search.documents.models.CreateOrUpdateRequestAccept44;
-import com.azure.search.documents.models.CreateOrUpdateRequestAccept45;
-import com.azure.search.documents.models.CreateOrUpdateRequestAccept48;
-import com.azure.search.documents.models.CreateOrUpdateRequestAccept50;
-import com.azure.search.documents.models.CreateOrUpdateRequestAccept51;
+import com.azure.search.documents.models.AcceptHeaderMinimalConstant;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -1367,46 +1353,6 @@ public final class SearchIndexerAsyncClient {
     /**
      * Creates a new datasource or updates a datasource if it already exists.
      *
-     * @param name The name of the datasource.
-     * @param dataSource The definition of the datasource to create or update.
-     * @param skipIndexerResetRequirementForCache Ignores cache reset requirements.
-     * @param matchConditions Specifies HTTP options for conditional requests.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a datasource definition, which can be used to configure an indexer on successful completion of
-     * {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<SearchIndexerDataSourceConnection> createOrUpdateDataSourceConnection(String name,
-        SearchIndexerDataSourceConnection dataSource, Boolean skipIndexerResetRequirementForCache,
-        MatchConditions matchConditions) {
-        // Generated convenience method for createOrUpdateDataSourceConnectionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
-        String ifNoneMatch = matchConditions == null ? null : matchConditions.getIfNoneMatch();
-        if (skipIndexerResetRequirementForCache != null) {
-            requestOptions.addQueryParam("ignoreResetRequirements", String.valueOf(skipIndexerResetRequirementForCache),
-                false);
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        return createOrUpdateDataSourceConnectionWithResponse(name, BinaryData.fromObject(dataSource), requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(SearchIndexerDataSourceConnection.class));
-    }
-
-    /**
-     * Creates a new datasource or updates a datasource if it already exists.
-     *
      * @param dataSource The definition of the datasource to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1450,34 +1396,6 @@ public final class SearchIndexerAsyncClient {
         return createOrUpdateDataSourceConnectionWithResponse(name, BinaryData.fromObject(dataSource), requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(SearchIndexerDataSourceConnection.class));
-    }
-
-    /**
-     * Deletes a datasource.
-     *
-     * @param name The name of the datasource.
-     * @param matchConditions Specifies HTTP options for conditional requests.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteDataSourceConnection(String name, MatchConditions matchConditions) {
-        // Generated convenience method for deleteDataSourceConnectionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
-        String ifNoneMatch = matchConditions == null ? null : matchConditions.getIfNoneMatch();
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        return deleteDataSourceConnectionWithResponse(name, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -1727,50 +1645,6 @@ public final class SearchIndexerAsyncClient {
     /**
      * Creates a new indexer or updates an indexer if it already exists.
      *
-     * @param name The name of the indexer.
-     * @param indexer The definition of the indexer to create or update.
-     * @param skipIndexerResetRequirementForCache Ignores cache reset requirements.
-     * @param disableCacheReprocessingChangeDetection Disables cache reprocessing change detection.
-     * @param matchConditions Specifies HTTP options for conditional requests.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an indexer on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<SearchIndexer> createOrUpdateIndexer(String name, SearchIndexer indexer,
-        Boolean skipIndexerResetRequirementForCache, Boolean disableCacheReprocessingChangeDetection,
-        MatchConditions matchConditions) {
-        // Generated convenience method for createOrUpdateIndexerWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
-        String ifNoneMatch = matchConditions == null ? null : matchConditions.getIfNoneMatch();
-        if (skipIndexerResetRequirementForCache != null) {
-            requestOptions.addQueryParam("ignoreResetRequirements", String.valueOf(skipIndexerResetRequirementForCache),
-                false);
-        }
-        if (disableCacheReprocessingChangeDetection != null) {
-            requestOptions.addQueryParam("disableCacheReprocessingChangeDetection",
-                String.valueOf(disableCacheReprocessingChangeDetection), false);
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        return createOrUpdateIndexerWithResponse(name, BinaryData.fromObject(indexer), requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(SearchIndexer.class));
-    }
-
-    /**
-     * Creates a new indexer or updates an indexer if it already exists.
-     *
      * @param indexer The definition of the indexer to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1810,34 +1684,6 @@ public final class SearchIndexerAsyncClient {
         return createOrUpdateIndexerWithResponse(name, BinaryData.fromObject(indexer), requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(SearchIndexer.class));
-    }
-
-    /**
-     * Deletes an indexer.
-     *
-     * @param name The name of the indexer.
-     * @param matchConditions Specifies HTTP options for conditional requests.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteIndexer(String name, MatchConditions matchConditions) {
-        // Generated convenience method for deleteIndexerWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
-        String ifNoneMatch = matchConditions == null ? null : matchConditions.getIfNoneMatch();
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        return deleteIndexerWithResponse(name, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -2022,50 +1868,6 @@ public final class SearchIndexerAsyncClient {
      *
      * @param name The name of the skillset.
      * @param skillset The skillset containing one or more skills to create or update in a search service.
-     * @param skipIndexerResetRequirementForCache Ignores cache reset requirements.
-     * @param disableCacheReprocessingChangeDetection Disables cache reprocessing change detection.
-     * @param matchConditions Specifies HTTP options for conditional requests.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of skills on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<SearchIndexerSkillset> createOrUpdateSkillset(String name, SearchIndexerSkillset skillset,
-        Boolean skipIndexerResetRequirementForCache, Boolean disableCacheReprocessingChangeDetection,
-        MatchConditions matchConditions) {
-        // Generated convenience method for createOrUpdateSkillsetWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
-        String ifNoneMatch = matchConditions == null ? null : matchConditions.getIfNoneMatch();
-        if (skipIndexerResetRequirementForCache != null) {
-            requestOptions.addQueryParam("ignoreResetRequirements", String.valueOf(skipIndexerResetRequirementForCache),
-                false);
-        }
-        if (disableCacheReprocessingChangeDetection != null) {
-            requestOptions.addQueryParam("disableCacheReprocessingChangeDetection",
-                String.valueOf(disableCacheReprocessingChangeDetection), false);
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        return createOrUpdateSkillsetWithResponse(name, BinaryData.fromObject(skillset), requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(SearchIndexerSkillset.class));
-    }
-
-    /**
-     * Creates a new skillset in a search service or updates the skillset if it already exists.
-     *
-     * @param name The name of the skillset.
-     * @param skillset The skillset containing one or more skills to create or update in a search service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2103,34 +1905,6 @@ public final class SearchIndexerAsyncClient {
         } catch (Exception ex) {
             return Mono.error(ex);
         }
-    }
-
-    /**
-     * Deletes a skillset in a search service.
-     *
-     * @param name The name of the skillset.
-     * @param matchConditions Specifies HTTP options for conditional requests.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteSkillset(String name, MatchConditions matchConditions) {
-        // Generated convenience method for deleteSkillsetWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
-        String ifNoneMatch = matchConditions == null ? null : matchConditions.getIfNoneMatch();
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        return deleteSkillsetWithResponse(name, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -3533,6 +3307,39 @@ public final class SearchIndexerAsyncClient {
     }
 
     /**
+     * Deletes a datasource.
+     *
+     * @param name The name of the datasource.
+     * @param accept The Accept header.
+     * @param matchConditions Specifies HTTP options for conditional requests.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteDataSourceConnection(String name, AcceptHeaderMinimalConstant accept,
+        MatchConditions matchConditions) {
+        // Generated convenience method for deleteDataSourceConnectionWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
+        String ifNoneMatch = matchConditions == null ? null : matchConditions.getIfNoneMatch();
+        if (accept != null) {
+            requestOptions.setHeader(HttpHeaderName.ACCEPT, accept.toString());
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        return deleteDataSourceConnectionWithResponse(name, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
      * Retrieves a datasource definition.
      *
      * @param name The name of the datasource.
@@ -3549,7 +3356,7 @@ public final class SearchIndexerAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchIndexerDataSourceConnection> getDataSourceConnection(String name,
-        CreateOrUpdateRequestAccept33 accept) {
+        AcceptHeaderMinimalConstant accept) {
         // Generated convenience method for hiddenGeneratedGetDataSourceConnectionWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (accept != null) {
@@ -3575,7 +3382,7 @@ public final class SearchIndexerAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ListDataSourcesResult> getDataSourceConnections(CreateOrUpdateRequestAccept34 accept, List<String> select) {
+    Mono<ListDataSourcesResult> getDataSourceConnections(AcceptHeaderMinimalConstant accept, List<String> select) {
         // Generated convenience method for getDataSourceConnectionsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (accept != null) {
@@ -3609,7 +3416,7 @@ public final class SearchIndexerAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchIndexerDataSourceConnection> createDataSourceConnection(
-        SearchIndexerDataSourceConnection dataSourceConnection, CreateOrUpdateRequestAccept35 accept) {
+        SearchIndexerDataSourceConnection dataSourceConnection, AcceptHeaderMinimalConstant accept) {
         // Generated convenience method for hiddenGeneratedCreateDataSourceConnectionWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (accept != null) {
@@ -3635,7 +3442,7 @@ public final class SearchIndexerAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> resetIndexer(String name, CreateOrUpdateRequestAccept36 accept) {
+    public Mono<Void> resetIndexer(String name, AcceptHeaderMinimalConstant accept) {
         // Generated convenience method for resetIndexerWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (accept != null) {
@@ -3660,7 +3467,7 @@ public final class SearchIndexerAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> resync(String name, IndexerResyncBody indexerResync, CreateOrUpdateRequestAccept37 accept) {
+    public Mono<Void> resync(String name, IndexerResyncBody indexerResync, AcceptHeaderMinimalConstant accept) {
         // Generated convenience method for hiddenGeneratedResyncWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (accept != null) {
@@ -3689,7 +3496,7 @@ public final class SearchIndexerAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> resetDocuments(String name, CreateOrUpdateRequestAccept38 accept, Boolean overwrite,
+    public Mono<Void> resetDocuments(String name, AcceptHeaderMinimalConstant accept, Boolean overwrite,
         DocumentKeysOrIds keysOrIds) {
         // Generated convenience method for resetDocumentsWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -3720,13 +3527,45 @@ public final class SearchIndexerAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> runIndexer(String name, CreateOrUpdateRequestAccept39 accept) {
+    public Mono<Void> runIndexer(String name, AcceptHeaderMinimalConstant accept) {
         // Generated convenience method for runIndexerWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (accept != null) {
             requestOptions.setHeader(HttpHeaderName.ACCEPT, accept.toString());
         }
         return runIndexerWithResponse(name, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Deletes an indexer.
+     *
+     * @param name The name of the indexer.
+     * @param accept The Accept header.
+     * @param matchConditions Specifies HTTP options for conditional requests.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteIndexer(String name, AcceptHeaderMinimalConstant accept, MatchConditions matchConditions) {
+        // Generated convenience method for deleteIndexerWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
+        String ifNoneMatch = matchConditions == null ? null : matchConditions.getIfNoneMatch();
+        if (accept != null) {
+            requestOptions.setHeader(HttpHeaderName.ACCEPT, accept.toString());
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        return deleteIndexerWithResponse(name, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -3744,7 +3583,7 @@ public final class SearchIndexerAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SearchIndexer> getIndexer(String name, CreateOrUpdateRequestAccept42 accept) {
+    public Mono<SearchIndexer> getIndexer(String name, AcceptHeaderMinimalConstant accept) {
         // Generated convenience method for hiddenGeneratedGetIndexerWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (accept != null) {
@@ -3770,7 +3609,7 @@ public final class SearchIndexerAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ListIndexersResult> getIndexers(CreateOrUpdateRequestAccept43 accept, List<String> select) {
+    Mono<ListIndexersResult> getIndexers(AcceptHeaderMinimalConstant accept, List<String> select) {
         // Generated convenience method for getIndexersWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (accept != null) {
@@ -3802,7 +3641,7 @@ public final class SearchIndexerAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SearchIndexer> createIndexer(SearchIndexer indexer, CreateOrUpdateRequestAccept44 accept) {
+    public Mono<SearchIndexer> createIndexer(SearchIndexer indexer, AcceptHeaderMinimalConstant accept) {
         // Generated convenience method for hiddenGeneratedCreateIndexerWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (accept != null) {
@@ -3829,7 +3668,7 @@ public final class SearchIndexerAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SearchIndexerStatus> getIndexerStatus(String name, CreateOrUpdateRequestAccept45 accept) {
+    public Mono<SearchIndexerStatus> getIndexerStatus(String name, AcceptHeaderMinimalConstant accept) {
         // Generated convenience method for hiddenGeneratedGetIndexerStatusWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (accept != null) {
@@ -3837,6 +3676,38 @@ public final class SearchIndexerAsyncClient {
         }
         return hiddenGeneratedGetIndexerStatusWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(SearchIndexerStatus.class));
+    }
+
+    /**
+     * Deletes a skillset in a search service.
+     *
+     * @param name The name of the skillset.
+     * @param accept The Accept header.
+     * @param matchConditions Specifies HTTP options for conditional requests.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteSkillset(String name, AcceptHeaderMinimalConstant accept, MatchConditions matchConditions) {
+        // Generated convenience method for deleteSkillsetWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
+        String ifNoneMatch = matchConditions == null ? null : matchConditions.getIfNoneMatch();
+        if (accept != null) {
+            requestOptions.setHeader(HttpHeaderName.ACCEPT, accept.toString());
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        return deleteSkillsetWithResponse(name, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -3854,7 +3725,7 @@ public final class SearchIndexerAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SearchIndexerSkillset> getSkillset(String name, CreateOrUpdateRequestAccept48 accept) {
+    public Mono<SearchIndexerSkillset> getSkillset(String name, AcceptHeaderMinimalConstant accept) {
         // Generated convenience method for hiddenGeneratedGetSkillsetWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (accept != null) {
@@ -3880,7 +3751,7 @@ public final class SearchIndexerAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ListSkillsetsResult> getSkillsets(CreateOrUpdateRequestAccept49 accept, List<String> select) {
+    Mono<ListSkillsetsResult> getSkillsets(AcceptHeaderMinimalConstant accept, List<String> select) {
         // Generated convenience method for getSkillsetsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (accept != null) {
@@ -3913,7 +3784,7 @@ public final class SearchIndexerAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchIndexerSkillset> createSkillset(SearchIndexerSkillset skillset,
-        CreateOrUpdateRequestAccept50 accept) {
+        AcceptHeaderMinimalConstant accept) {
         // Generated convenience method for hiddenGeneratedCreateSkillsetWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (accept != null) {
@@ -3940,7 +3811,7 @@ public final class SearchIndexerAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> resetSkills(String name, SkillNames skillNames, CreateOrUpdateRequestAccept51 accept) {
+    public Mono<Void> resetSkills(String name, SkillNames skillNames, AcceptHeaderMinimalConstant accept) {
         // Generated convenience method for hiddenGeneratedResetSkillsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (accept != null) {

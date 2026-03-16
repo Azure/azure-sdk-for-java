@@ -21,7 +21,7 @@ import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.implementation.KnowledgeBaseRetrievalClientImpl;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalRequest;
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalResponse;
-import com.azure.search.documents.models.CreateOrUpdateRequestAccept52;
+import com.azure.search.documents.models.AcceptHeaderMinimalConstant;
 
 /**
  * Initializes a new instance of the synchronous KnowledgeBaseRetrievalClient type.
@@ -260,7 +260,7 @@ public final class KnowledgeBaseRetrievalClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KnowledgeBaseRetrievalResponse retrieve(String knowledgeBaseName,
-        KnowledgeBaseRetrievalRequest retrievalRequest, CreateOrUpdateRequestAccept52 accept,
+        KnowledgeBaseRetrievalRequest retrievalRequest, AcceptHeaderMinimalConstant accept,
         String querySourceAuthorization) {
         // Generated convenience method for hiddenGeneratedRetrieveWithResponse
         RequestOptions requestOptions = new RequestOptions();

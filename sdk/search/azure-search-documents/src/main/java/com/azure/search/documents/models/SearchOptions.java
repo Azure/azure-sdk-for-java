@@ -1219,4 +1219,32 @@ public final class SearchOptions {
         this.hybridSearch = hybridSearch;
         return this;
     }
+
+    /*
+     * The Accept header.
+     */
+    @Generated
+    private AcceptHeaderNoneConstant accept;
+
+    /**
+     * Get the accept property: The Accept header.
+     *
+     * @return the accept value.
+     */
+    @Generated
+    public AcceptHeaderNoneConstant getAccept() {
+        return this.accept;
+    }
+
+    /**
+     * Set the accept property: The Accept header.
+     *
+     * @param accept the accept value to set.
+     * @return the SearchOptions object itself.
+     */
+    @Generated
+    public SearchOptions setAccept(AcceptHeaderNoneConstant accept) {
+        this.accept = accept;
+        return this;
+    }
 }

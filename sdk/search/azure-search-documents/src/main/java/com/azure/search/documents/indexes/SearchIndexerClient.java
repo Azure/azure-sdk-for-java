@@ -21,9 +21,6 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.implementation.SearchIndexerClientImpl;
-import com.azure.search.documents.implementation.models.CreateOrUpdateRequestAccept34;
-import com.azure.search.documents.implementation.models.CreateOrUpdateRequestAccept43;
-import com.azure.search.documents.implementation.models.CreateOrUpdateRequestAccept49;
 import com.azure.search.documents.indexes.models.DocumentKeysOrIds;
 import com.azure.search.documents.indexes.models.IndexerResyncBody;
 import com.azure.search.documents.indexes.models.ListDataSourcesResult;
@@ -34,18 +31,7 @@ import com.azure.search.documents.indexes.models.SearchIndexerDataSourceConnecti
 import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
 import com.azure.search.documents.indexes.models.SearchIndexerStatus;
 import com.azure.search.documents.indexes.models.SkillNames;
-import com.azure.search.documents.models.CreateOrUpdateRequestAccept33;
-import com.azure.search.documents.models.CreateOrUpdateRequestAccept35;
-import com.azure.search.documents.models.CreateOrUpdateRequestAccept36;
-import com.azure.search.documents.models.CreateOrUpdateRequestAccept37;
-import com.azure.search.documents.models.CreateOrUpdateRequestAccept38;
-import com.azure.search.documents.models.CreateOrUpdateRequestAccept39;
-import com.azure.search.documents.models.CreateOrUpdateRequestAccept42;
-import com.azure.search.documents.models.CreateOrUpdateRequestAccept44;
-import com.azure.search.documents.models.CreateOrUpdateRequestAccept45;
-import com.azure.search.documents.models.CreateOrUpdateRequestAccept48;
-import com.azure.search.documents.models.CreateOrUpdateRequestAccept50;
-import com.azure.search.documents.models.CreateOrUpdateRequestAccept51;
+import com.azure.search.documents.models.AcceptHeaderMinimalConstant;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -1348,45 +1334,6 @@ public final class SearchIndexerClient {
     /**
      * Creates a new datasource or updates a datasource if it already exists.
      *
-     * @param name The name of the datasource.
-     * @param dataSource The definition of the datasource to create or update.
-     * @param skipIndexerResetRequirementForCache Ignores cache reset requirements.
-     * @param matchConditions Specifies HTTP options for conditional requests.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a datasource definition, which can be used to configure an indexer.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SearchIndexerDataSourceConnection createOrUpdateDataSourceConnection(String name,
-        SearchIndexerDataSourceConnection dataSource, Boolean skipIndexerResetRequirementForCache,
-        MatchConditions matchConditions) {
-        // Generated convenience method for createOrUpdateDataSourceConnectionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
-        String ifNoneMatch = matchConditions == null ? null : matchConditions.getIfNoneMatch();
-        if (skipIndexerResetRequirementForCache != null) {
-            requestOptions.addQueryParam("ignoreResetRequirements", String.valueOf(skipIndexerResetRequirementForCache),
-                false);
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        return createOrUpdateDataSourceConnectionWithResponse(name, BinaryData.fromObject(dataSource), requestOptions)
-            .getValue()
-            .toObject(SearchIndexerDataSourceConnection.class);
-    }
-
-    /**
-     * Creates a new datasource or updates a datasource if it already exists.
-     *
      * @param dataSource The definition of the datasource to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1424,33 +1371,6 @@ public final class SearchIndexerClient {
         return createOrUpdateDataSourceConnectionWithResponse(name, BinaryData.fromObject(dataSource), requestOptions)
             .getValue()
             .toObject(SearchIndexerDataSourceConnection.class);
-    }
-
-    /**
-     * Deletes a datasource.
-     *
-     * @param name The name of the datasource.
-     * @param matchConditions Specifies HTTP options for conditional requests.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteDataSourceConnection(String name, MatchConditions matchConditions) {
-        // Generated convenience method for deleteDataSourceConnectionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
-        String ifNoneMatch = matchConditions == null ? null : matchConditions.getIfNoneMatch();
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        deleteDataSourceConnectionWithResponse(name, requestOptions).getValue();
     }
 
     /**
@@ -1690,48 +1610,6 @@ public final class SearchIndexerClient {
     /**
      * Creates a new indexer or updates an indexer if it already exists.
      *
-     * @param name The name of the indexer.
-     * @param indexer The definition of the indexer to create or update.
-     * @param skipIndexerResetRequirementForCache Ignores cache reset requirements.
-     * @param disableCacheReprocessingChangeDetection Disables cache reprocessing change detection.
-     * @param matchConditions Specifies HTTP options for conditional requests.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an indexer.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SearchIndexer createOrUpdateIndexer(String name, SearchIndexer indexer, Boolean skipIndexerResetRequirementForCache,
-        Boolean disableCacheReprocessingChangeDetection, MatchConditions matchConditions) {
-        // Generated convenience method for createOrUpdateIndexerWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
-        String ifNoneMatch = matchConditions == null ? null : matchConditions.getIfNoneMatch();
-        if (skipIndexerResetRequirementForCache != null) {
-            requestOptions.addQueryParam("ignoreResetRequirements", String.valueOf(skipIndexerResetRequirementForCache),
-                false);
-        }
-        if (disableCacheReprocessingChangeDetection != null) {
-            requestOptions.addQueryParam("disableCacheReprocessingChangeDetection",
-                String.valueOf(disableCacheReprocessingChangeDetection), false);
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        return createOrUpdateIndexerWithResponse(name, BinaryData.fromObject(indexer), requestOptions).getValue()
-            .toObject(SearchIndexer.class);
-    }
-
-    /**
-     * Creates a new indexer or updates an indexer if it already exists.
-     *
      * @param indexer The definition of the indexer to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1766,33 +1644,6 @@ public final class SearchIndexerClient {
         RequestOptions requestOptions = new RequestOptions();
         return createOrUpdateIndexerWithResponse(name, BinaryData.fromObject(indexer), requestOptions).getValue()
             .toObject(SearchIndexer.class);
-    }
-
-    /**
-     * Deletes an indexer.
-     *
-     * @param name The name of the indexer.
-     * @param matchConditions Specifies HTTP options for conditional requests.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteIndexer(String name, MatchConditions matchConditions) {
-        // Generated convenience method for deleteIndexerWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
-        String ifNoneMatch = matchConditions == null ? null : matchConditions.getIfNoneMatch();
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        deleteIndexerWithResponse(name, requestOptions).getValue();
     }
 
     /**
@@ -1971,49 +1822,6 @@ public final class SearchIndexerClient {
      *
      * @param name The name of the skillset.
      * @param skillset The skillset containing one or more skills to create or update in a search service.
-     * @param skipIndexerResetRequirementForCache Ignores cache reset requirements.
-     * @param disableCacheReprocessingChangeDetection Disables cache reprocessing change detection.
-     * @param matchConditions Specifies HTTP options for conditional requests.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of skills.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SearchIndexerSkillset createOrUpdateSkillset(String name, SearchIndexerSkillset skillset,
-        Boolean skipIndexerResetRequirementForCache, Boolean disableCacheReprocessingChangeDetection,
-        MatchConditions matchConditions) {
-        // Generated convenience method for createOrUpdateSkillsetWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
-        String ifNoneMatch = matchConditions == null ? null : matchConditions.getIfNoneMatch();
-        if (skipIndexerResetRequirementForCache != null) {
-            requestOptions.addQueryParam("ignoreResetRequirements", String.valueOf(skipIndexerResetRequirementForCache),
-                false);
-        }
-        if (disableCacheReprocessingChangeDetection != null) {
-            requestOptions.addQueryParam("disableCacheReprocessingChangeDetection",
-                String.valueOf(disableCacheReprocessingChangeDetection), false);
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        return createOrUpdateSkillsetWithResponse(name, BinaryData.fromObject(skillset), requestOptions).getValue()
-            .toObject(SearchIndexerSkillset.class);
-    }
-
-    /**
-     * Creates a new skillset in a search service or updates the skillset if it already exists.
-     *
-     * @param name The name of the skillset.
-     * @param skillset The skillset containing one or more skills to create or update in a search service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2046,33 +1854,6 @@ public final class SearchIndexerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SearchIndexerSkillset createOrUpdateSkillset(SearchIndexerSkillset skillset) {
         return createOrUpdateSkillset(skillset.getName(), skillset);
-    }
-
-    /**
-     * Deletes a skillset in a search service.
-     *
-     * @param name The name of the skillset.
-     * @param matchConditions Specifies HTTP options for conditional requests.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteSkillset(String name, MatchConditions matchConditions) {
-        // Generated convenience method for deleteSkillsetWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
-        String ifNoneMatch = matchConditions == null ? null : matchConditions.getIfNoneMatch();
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        deleteSkillsetWithResponse(name, requestOptions).getValue();
     }
 
     /**
@@ -3463,6 +3244,38 @@ public final class SearchIndexerClient {
     }
 
     /**
+     * Deletes a datasource.
+     *
+     * @param name The name of the datasource.
+     * @param accept The Accept header.
+     * @param matchConditions Specifies HTTP options for conditional requests.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteDataSourceConnection(String name, AcceptHeaderMinimalConstant accept,
+        MatchConditions matchConditions) {
+        // Generated convenience method for deleteDataSourceConnectionWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
+        String ifNoneMatch = matchConditions == null ? null : matchConditions.getIfNoneMatch();
+        if (accept != null) {
+            requestOptions.setHeader(HttpHeaderName.ACCEPT, accept.toString());
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        deleteDataSourceConnectionWithResponse(name, requestOptions).getValue();
+    }
+
+    /**
      * Retrieves a datasource definition.
      *
      * @param name The name of the datasource.
@@ -3477,8 +3290,7 @@ public final class SearchIndexerClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SearchIndexerDataSourceConnection getDataSourceConnection(String name,
-        CreateOrUpdateRequestAccept33 accept) {
+    public SearchIndexerDataSourceConnection getDataSourceConnection(String name, AcceptHeaderMinimalConstant accept) {
         // Generated convenience method for hiddenGeneratedGetDataSourceConnectionWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (accept != null) {
@@ -3504,7 +3316,7 @@ public final class SearchIndexerClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ListDataSourcesResult getDataSourceConnections(CreateOrUpdateRequestAccept34 accept, List<String> select) {
+    ListDataSourcesResult getDataSourceConnections(AcceptHeaderMinimalConstant accept, List<String> select) {
         // Generated convenience method for getDataSourceConnectionsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (accept != null) {
@@ -3536,7 +3348,7 @@ public final class SearchIndexerClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SearchIndexerDataSourceConnection createDataSourceConnection(
-        SearchIndexerDataSourceConnection dataSourceConnection, CreateOrUpdateRequestAccept35 accept) {
+        SearchIndexerDataSourceConnection dataSourceConnection, AcceptHeaderMinimalConstant accept) {
         // Generated convenience method for hiddenGeneratedCreateDataSourceConnectionWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (accept != null) {
@@ -3560,7 +3372,7 @@ public final class SearchIndexerClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void resetIndexer(String name, CreateOrUpdateRequestAccept36 accept) {
+    public void resetIndexer(String name, AcceptHeaderMinimalConstant accept) {
         // Generated convenience method for resetIndexerWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (accept != null) {
@@ -3584,7 +3396,7 @@ public final class SearchIndexerClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void resync(String name, IndexerResyncBody indexerResync, CreateOrUpdateRequestAccept37 accept) {
+    public void resync(String name, IndexerResyncBody indexerResync, AcceptHeaderMinimalConstant accept) {
         // Generated convenience method for hiddenGeneratedResyncWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (accept != null) {
@@ -3611,7 +3423,7 @@ public final class SearchIndexerClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void resetDocuments(String name, CreateOrUpdateRequestAccept38 accept, Boolean overwrite,
+    public void resetDocuments(String name, AcceptHeaderMinimalConstant accept, Boolean overwrite,
         DocumentKeysOrIds keysOrIds) {
         // Generated convenience method for resetDocumentsWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -3641,13 +3453,44 @@ public final class SearchIndexerClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void runIndexer(String name, CreateOrUpdateRequestAccept39 accept) {
+    public void runIndexer(String name, AcceptHeaderMinimalConstant accept) {
         // Generated convenience method for runIndexerWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (accept != null) {
             requestOptions.setHeader(HttpHeaderName.ACCEPT, accept.toString());
         }
         runIndexerWithResponse(name, requestOptions).getValue();
+    }
+
+    /**
+     * Deletes an indexer.
+     *
+     * @param name The name of the indexer.
+     * @param accept The Accept header.
+     * @param matchConditions Specifies HTTP options for conditional requests.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteIndexer(String name, AcceptHeaderMinimalConstant accept, MatchConditions matchConditions) {
+        // Generated convenience method for deleteIndexerWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
+        String ifNoneMatch = matchConditions == null ? null : matchConditions.getIfNoneMatch();
+        if (accept != null) {
+            requestOptions.setHeader(HttpHeaderName.ACCEPT, accept.toString());
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        deleteIndexerWithResponse(name, requestOptions).getValue();
     }
 
     /**
@@ -3665,7 +3508,7 @@ public final class SearchIndexerClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SearchIndexer getIndexer(String name, CreateOrUpdateRequestAccept42 accept) {
+    public SearchIndexer getIndexer(String name, AcceptHeaderMinimalConstant accept) {
         // Generated convenience method for hiddenGeneratedGetIndexerWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (accept != null) {
@@ -3690,7 +3533,7 @@ public final class SearchIndexerClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ListIndexersResult getIndexers(CreateOrUpdateRequestAccept43 accept, List<String> select) {
+    ListIndexersResult getIndexers(AcceptHeaderMinimalConstant accept, List<String> select) {
         // Generated convenience method for getIndexersWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (accept != null) {
@@ -3721,7 +3564,7 @@ public final class SearchIndexerClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SearchIndexer createIndexer(SearchIndexer indexer, CreateOrUpdateRequestAccept44 accept) {
+    public SearchIndexer createIndexer(SearchIndexer indexer, AcceptHeaderMinimalConstant accept) {
         // Generated convenience method for hiddenGeneratedCreateIndexerWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (accept != null) {
@@ -3746,7 +3589,7 @@ public final class SearchIndexerClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SearchIndexerStatus getIndexerStatus(String name, CreateOrUpdateRequestAccept45 accept) {
+    public SearchIndexerStatus getIndexerStatus(String name, AcceptHeaderMinimalConstant accept) {
         // Generated convenience method for hiddenGeneratedGetIndexerStatusWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (accept != null) {
@@ -3754,6 +3597,37 @@ public final class SearchIndexerClient {
         }
         return hiddenGeneratedGetIndexerStatusWithResponse(name, requestOptions).getValue()
             .toObject(SearchIndexerStatus.class);
+    }
+
+    /**
+     * Deletes a skillset in a search service.
+     *
+     * @param name The name of the skillset.
+     * @param accept The Accept header.
+     * @param matchConditions Specifies HTTP options for conditional requests.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteSkillset(String name, AcceptHeaderMinimalConstant accept, MatchConditions matchConditions) {
+        // Generated convenience method for deleteSkillsetWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
+        String ifNoneMatch = matchConditions == null ? null : matchConditions.getIfNoneMatch();
+        if (accept != null) {
+            requestOptions.setHeader(HttpHeaderName.ACCEPT, accept.toString());
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        deleteSkillsetWithResponse(name, requestOptions).getValue();
     }
 
     /**
@@ -3771,7 +3645,7 @@ public final class SearchIndexerClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SearchIndexerSkillset getSkillset(String name, CreateOrUpdateRequestAccept48 accept) {
+    public SearchIndexerSkillset getSkillset(String name, AcceptHeaderMinimalConstant accept) {
         // Generated convenience method for hiddenGeneratedGetSkillsetWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (accept != null) {
@@ -3797,7 +3671,7 @@ public final class SearchIndexerClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ListSkillsetsResult getSkillsets(CreateOrUpdateRequestAccept49 accept, List<String> select) {
+    ListSkillsetsResult getSkillsets(AcceptHeaderMinimalConstant accept, List<String> select) {
         // Generated convenience method for getSkillsetsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (accept != null) {
@@ -3828,7 +3702,7 @@ public final class SearchIndexerClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SearchIndexerSkillset createSkillset(SearchIndexerSkillset skillset, CreateOrUpdateRequestAccept50 accept) {
+    public SearchIndexerSkillset createSkillset(SearchIndexerSkillset skillset, AcceptHeaderMinimalConstant accept) {
         // Generated convenience method for hiddenGeneratedCreateSkillsetWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (accept != null) {
@@ -3853,7 +3727,7 @@ public final class SearchIndexerClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void resetSkills(String name, SkillNames skillNames, CreateOrUpdateRequestAccept51 accept) {
+    public void resetSkills(String name, SkillNames skillNames, AcceptHeaderMinimalConstant accept) {
         // Generated convenience method for hiddenGeneratedResetSkillsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (accept != null) {

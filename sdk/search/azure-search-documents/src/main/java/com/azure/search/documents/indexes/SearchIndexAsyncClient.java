@@ -29,7 +29,6 @@ import com.azure.search.documents.SearchClientBuilder;
 import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.implementation.FieldBuilder;
 import com.azure.search.documents.implementation.SearchIndexClientImpl;
-import com.azure.search.documents.implementation.models.CreateOrUpdateRequestAccept3;
 import com.azure.search.documents.indexes.models.AnalyzeResult;
 import com.azure.search.documents.indexes.models.AnalyzeTextOptions;
 import com.azure.search.documents.indexes.models.GetIndexStatisticsResult;
@@ -45,21 +44,7 @@ import com.azure.search.documents.indexes.models.SearchIndexResponse;
 import com.azure.search.documents.indexes.models.SearchServiceStatistics;
 import com.azure.search.documents.indexes.models.SynonymMap;
 import com.azure.search.documents.knowledgebases.models.KnowledgeSourceStatus;
-import com.azure.search.documents.models.CreateOrUpdateRequestAccept10;
-import com.azure.search.documents.models.CreateOrUpdateRequestAccept11;
-import com.azure.search.documents.models.CreateOrUpdateRequestAccept12;
-import com.azure.search.documents.models.CreateOrUpdateRequestAccept15;
-import com.azure.search.documents.models.CreateOrUpdateRequestAccept17;
-import com.azure.search.documents.models.CreateOrUpdateRequestAccept2;
-import com.azure.search.documents.models.CreateOrUpdateRequestAccept20;
-import com.azure.search.documents.models.CreateOrUpdateRequestAccept22;
-import com.azure.search.documents.models.CreateOrUpdateRequestAccept25;
-import com.azure.search.documents.models.CreateOrUpdateRequestAccept27;
-import com.azure.search.documents.models.CreateOrUpdateRequestAccept28;
-import com.azure.search.documents.models.CreateOrUpdateRequestAccept29;
-import com.azure.search.documents.models.CreateOrUpdateRequestAccept4;
-import com.azure.search.documents.models.CreateOrUpdateRequestAccept7;
-import com.azure.search.documents.models.CreateOrUpdateRequestAccept9;
+import com.azure.search.documents.models.AcceptHeaderMinimalConstant;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.time.OffsetDateTime;
@@ -1261,38 +1246,6 @@ public final class SearchIndexAsyncClient {
      *
      * @param name The name of the synonym map.
      * @param synonymMap The definition of the synonym map to create or update.
-     * @param matchConditions Specifies HTTP options for conditional requests.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a synonym map definition on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<SynonymMap> createOrUpdateSynonymMap(String name, SynonymMap synonymMap, MatchConditions matchConditions) {
-        // Generated convenience method for createOrUpdateSynonymMapWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
-        String ifNoneMatch = matchConditions == null ? null : matchConditions.getIfNoneMatch();
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        return createOrUpdateSynonymMapWithResponse(name, BinaryData.fromObject(synonymMap), requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(SynonymMap.class));
-    }
-
-    /**
-     * Creates a new synonym map or updates a synonym map if it already exists.
-     *
-     * @param name The name of the synonym map.
-     * @param synonymMap The definition of the synonym map to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1326,34 +1279,6 @@ public final class SearchIndexAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SynonymMap> createOrUpdateSynonymMap(SynonymMap synonymMap) {
         return createOrUpdateSynonymMap(synonymMap.getName(), synonymMap);
-    }
-
-    /**
-     * Deletes a synonym map.
-     *
-     * @param name The name of the synonym map.
-     * @param matchConditions Specifies HTTP options for conditional requests.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteSynonymMap(String name, MatchConditions matchConditions) {
-        // Generated convenience method for deleteSynonymMapWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
-        String ifNoneMatch = matchConditions == null ? null : matchConditions.getIfNoneMatch();
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        return deleteSynonymMapWithResponse(name, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -1514,47 +1439,6 @@ public final class SearchIndexAsyncClient {
     /**
      * Creates a new search index or updates an index if it already exists.
      *
-     * @param name The name of the index.
-     * @param index The definition of the index to create or update.
-     * @param allowIndexDowntime Allows new analyzers, tokenizers, token filters, or char filters to be added to an
-     * index by taking the index offline for at least a few seconds. This temporarily causes indexing and query requests
-     * to fail. Performance and write availability of the index can be impaired for several minutes after the index is
-     * updated, or longer for very large indexes.
-     * @param matchConditions Specifies HTTP options for conditional requests.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a search index definition, which describes the fields and search behavior of an index on
-     * successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<SearchIndex> createOrUpdateIndex(String name, SearchIndex index, Boolean allowIndexDowntime,
-        MatchConditions matchConditions) {
-        // Generated convenience method for createOrUpdateIndexWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
-        String ifNoneMatch = matchConditions == null ? null : matchConditions.getIfNoneMatch();
-        if (allowIndexDowntime != null) {
-            requestOptions.addQueryParam("allowIndexDowntime", String.valueOf(allowIndexDowntime), false);
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        return createOrUpdateIndexWithResponse(name, BinaryData.fromObject(index), requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(SearchIndex.class));
-    }
-
-    /**
-     * Creates a new search index or updates an index if it already exists.
-     *
      * @param index The definition of the index to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1592,36 +1476,6 @@ public final class SearchIndexAsyncClient {
         return createOrUpdateIndexWithResponse(name, BinaryData.fromObject(index), requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(SearchIndex.class));
-    }
-
-    /**
-     * Deletes a search index and all the documents it contains. This operation is permanent, with no recovery option.
-     * Make sure you have a master copy of your index definition, data ingestion code, and a backup of the primary data
-     * source in case you need to re-build the index.
-     *
-     * @param name The name of the index.
-     * @param matchConditions Specifies HTTP options for conditional requests.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteIndex(String name, MatchConditions matchConditions) {
-        // Generated convenience method for deleteIndexWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
-        String ifNoneMatch = matchConditions == null ? null : matchConditions.getIfNoneMatch();
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        return deleteIndexWithResponse(name, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -1795,39 +1649,6 @@ public final class SearchIndexAsyncClient {
     /**
      * Creates a new search alias or updates an alias if it already exists.
      *
-     * @param name The name of the alias.
-     * @param alias The definition of the alias to create or update.
-     * @param matchConditions Specifies HTTP options for conditional requests.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an index alias, which describes a mapping from the alias name to an index on successful
-     * completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<SearchAlias> createOrUpdateAlias(String name, SearchAlias alias, MatchConditions matchConditions) {
-        // Generated convenience method for createOrUpdateAliasWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
-        String ifNoneMatch = matchConditions == null ? null : matchConditions.getIfNoneMatch();
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        return createOrUpdateAliasWithResponse(name, BinaryData.fromObject(alias), requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(SearchAlias.class));
-    }
-
-    /**
-     * Creates a new search alias or updates an alias if it already exists.
-     *
      * @param alias The definition of the alias to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1865,35 +1686,6 @@ public final class SearchIndexAsyncClient {
         return createOrUpdateAliasWithResponse(name, BinaryData.fromObject(alias), requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(SearchAlias.class));
-    }
-
-    /**
-     * Deletes a search alias and its associated mapping to an index. This operation is permanent, with no recovery
-     * option. The mapped index is untouched by this operation.
-     *
-     * @param name The name of the alias.
-     * @param matchConditions Specifies HTTP options for conditional requests.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAlias(String name, MatchConditions matchConditions) {
-        // Generated convenience method for deleteAliasWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
-        String ifNoneMatch = matchConditions == null ? null : matchConditions.getIfNoneMatch();
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        return deleteAliasWithResponse(name, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -1996,39 +1788,6 @@ public final class SearchIndexAsyncClient {
      *
      * @param name The name of the knowledge base.
      * @param knowledgeBase The definition of the knowledge base to create or update.
-     * @param matchConditions Specifies HTTP options for conditional requests.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a knowledge base definition on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<KnowledgeBase> createOrUpdateKnowledgeBase(String name, KnowledgeBase knowledgeBase,
-        MatchConditions matchConditions) {
-        // Generated convenience method for createOrUpdateKnowledgeBaseWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
-        String ifNoneMatch = matchConditions == null ? null : matchConditions.getIfNoneMatch();
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        return createOrUpdateKnowledgeBaseWithResponse(name, BinaryData.fromObject(knowledgeBase), requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(KnowledgeBase.class));
-    }
-
-    /**
-     * Creates a new knowledge base or updates a knowledge base if it already exists.
-     *
-     * @param name The name of the knowledge base.
-     * @param knowledgeBase The definition of the knowledge base to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2045,34 +1804,6 @@ public final class SearchIndexAsyncClient {
         return createOrUpdateKnowledgeBaseWithResponse(name, BinaryData.fromObject(knowledgeBase), requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(KnowledgeBase.class));
-    }
-
-    /**
-     * Deletes a knowledge base.
-     *
-     * @param name The name of the knowledge base.
-     * @param matchConditions Specifies HTTP options for conditional requests.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteKnowledgeBase(String name, MatchConditions matchConditions) {
-        // Generated convenience method for deleteKnowledgeBaseWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
-        String ifNoneMatch = matchConditions == null ? null : matchConditions.getIfNoneMatch();
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        return deleteKnowledgeBaseWithResponse(name, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -2170,39 +1901,6 @@ public final class SearchIndexAsyncClient {
     /**
      * Creates a new knowledge source or updates an knowledge source if it already exists.
      *
-     * @param name The name of the knowledge source.
-     * @param knowledgeSource The definition of the knowledge source to create or update.
-     * @param matchConditions Specifies HTTP options for conditional requests.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a knowledge source definition on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<KnowledgeSource> createOrUpdateKnowledgeSource(String name, KnowledgeSource knowledgeSource,
-        MatchConditions matchConditions) {
-        // Generated convenience method for createOrUpdateKnowledgeSourceWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
-        String ifNoneMatch = matchConditions == null ? null : matchConditions.getIfNoneMatch();
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        return createOrUpdateKnowledgeSourceWithResponse(name, BinaryData.fromObject(knowledgeSource), requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(KnowledgeSource.class));
-    }
-
-    /**
-     * Creates a new knowledge source or updates an knowledge source if it already exists.
-     *
      * @param knowledgeSource The definition of the knowledge source to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2238,34 +1936,6 @@ public final class SearchIndexAsyncClient {
         return createOrUpdateKnowledgeSourceWithResponse(name, BinaryData.fromObject(knowledgeSource), requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(KnowledgeSource.class));
-    }
-
-    /**
-     * Deletes an existing knowledge source.
-     *
-     * @param name The name of the knowledge source.
-     * @param matchConditions Specifies HTTP options for conditional requests.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteKnowledgeSource(String name, MatchConditions matchConditions) {
-        // Generated convenience method for deleteKnowledgeSourceWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
-        String ifNoneMatch = matchConditions == null ? null : matchConditions.getIfNoneMatch();
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        return deleteKnowledgeSourceWithResponse(name, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -4747,6 +4417,70 @@ public final class SearchIndexAsyncClient {
     }
 
     /**
+     * Lists all indexes available for a search service.
+     *
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from a List Indexes request as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<SearchIndexResponse> listIndexesWithSelectedProperties() {
+        // Generated convenience method for hiddenGeneratedListIndexesWithSelectedProperties
+        RequestOptions requestOptions = new RequestOptions();
+        PagedFlux<BinaryData> pagedFluxResponse = hiddenGeneratedListIndexesWithSelectedProperties(requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return flux
+                .map(pagedResponse -> new PagedResponseBase<Void, SearchIndexResponse>(pagedResponse.getRequest(),
+                    pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                    pagedResponse.getValue()
+                        .stream()
+                        .map(protocolMethodData -> protocolMethodData.toObject(SearchIndexResponse.class))
+                        .collect(Collectors.toList()),
+                    pagedResponse.getContinuationToken(), null));
+        });
+    }
+
+    /**
+     * Deletes a synonym map.
+     *
+     * @param name The name of the synonym map.
+     * @param accept The Accept header.
+     * @param matchConditions Specifies HTTP options for conditional requests.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteSynonymMap(String name, AcceptHeaderMinimalConstant accept,
+        MatchConditions matchConditions) {
+        // Generated convenience method for deleteSynonymMapWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
+        String ifNoneMatch = matchConditions == null ? null : matchConditions.getIfNoneMatch();
+        if (accept != null) {
+            requestOptions.setHeader(HttpHeaderName.ACCEPT, accept.toString());
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        return deleteSynonymMapWithResponse(name, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
      * Retrieves a synonym map definition.
      *
      * @param name The name of the synonym map.
@@ -4761,7 +4495,7 @@ public final class SearchIndexAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SynonymMap> getSynonymMap(String name, CreateOrUpdateRequestAccept2 accept) {
+    public Mono<SynonymMap> getSynonymMap(String name, AcceptHeaderMinimalConstant accept) {
         // Generated convenience method for hiddenGeneratedGetSynonymMapWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (accept != null) {
@@ -4787,7 +4521,7 @@ public final class SearchIndexAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ListSynonymMapsResult> getSynonymMaps(CreateOrUpdateRequestAccept3 accept, List<String> select) {
+    Mono<ListSynonymMapsResult> getSynonymMaps(AcceptHeaderMinimalConstant accept, List<String> select) {
         // Generated convenience method for getSynonymMapsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (accept != null) {
@@ -4819,7 +4553,7 @@ public final class SearchIndexAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SynonymMap> createSynonymMap(SynonymMap synonymMap, CreateOrUpdateRequestAccept4 accept) {
+    public Mono<SynonymMap> createSynonymMap(SynonymMap synonymMap, AcceptHeaderMinimalConstant accept) {
         // Generated convenience method for hiddenGeneratedCreateSynonymMapWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (accept != null) {
@@ -4828,6 +4562,40 @@ public final class SearchIndexAsyncClient {
         return hiddenGeneratedCreateSynonymMapWithResponse(BinaryData.fromObject(synonymMap), requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(SynonymMap.class));
+    }
+
+    /**
+     * Deletes a search index and all the documents it contains. This operation is permanent, with no recovery option.
+     * Make sure you have a master copy of your index definition, data ingestion code, and a backup of the primary data
+     * source in case you need to re-build the index.
+     *
+     * @param name The name of the index.
+     * @param accept The Accept header.
+     * @param matchConditions Specifies HTTP options for conditional requests.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteIndex(String name, AcceptHeaderMinimalConstant accept, MatchConditions matchConditions) {
+        // Generated convenience method for deleteIndexWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
+        String ifNoneMatch = matchConditions == null ? null : matchConditions.getIfNoneMatch();
+        if (accept != null) {
+            requestOptions.setHeader(HttpHeaderName.ACCEPT, accept.toString());
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        return deleteIndexWithResponse(name, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -4846,7 +4614,7 @@ public final class SearchIndexAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SearchIndex> getIndex(String name, CreateOrUpdateRequestAccept7 accept) {
+    public Mono<SearchIndex> getIndex(String name, AcceptHeaderMinimalConstant accept) {
         // Generated convenience method for hiddenGeneratedGetIndexWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (accept != null) {
@@ -4872,7 +4640,7 @@ public final class SearchIndexAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<SearchIndexResponse> listIndexesWithSelectedProperties(CreateOrUpdateRequestAccept9 accept,
+    public PagedFlux<SearchIndexResponse> listIndexesWithSelectedProperties(AcceptHeaderMinimalConstant accept,
         List<String> select) {
         // Generated convenience method for hiddenGeneratedListIndexesWithSelectedProperties
         RequestOptions requestOptions = new RequestOptions();
@@ -4886,37 +4654,6 @@ public final class SearchIndexAsyncClient {
                     .collect(Collectors.joining(",")),
                 false);
         }
-        PagedFlux<BinaryData> pagedFluxResponse = hiddenGeneratedListIndexesWithSelectedProperties(requestOptions);
-        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
-                ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
-            return flux
-                .map(pagedResponse -> new PagedResponseBase<Void, SearchIndexResponse>(pagedResponse.getRequest(),
-                    pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                    pagedResponse.getValue()
-                        .stream()
-                        .map(protocolMethodData -> protocolMethodData.toObject(SearchIndexResponse.class))
-                        .collect(Collectors.toList()),
-                    pagedResponse.getContinuationToken(), null));
-        });
-    }
-
-    /**
-     * Lists all indexes available for a search service.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a List Indexes request as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<SearchIndexResponse> listIndexesWithSelectedProperties() {
-        // Generated convenience method for hiddenGeneratedListIndexesWithSelectedProperties
-        RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = hiddenGeneratedListIndexesWithSelectedProperties(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
@@ -4949,7 +4686,7 @@ public final class SearchIndexAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SearchIndex> createIndex(SearchIndex index, CreateOrUpdateRequestAccept10 accept) {
+    public Mono<SearchIndex> createIndex(SearchIndex index, AcceptHeaderMinimalConstant accept) {
         // Generated convenience method for hiddenGeneratedCreateIndexWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (accept != null) {
@@ -4975,7 +4712,7 @@ public final class SearchIndexAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GetIndexStatisticsResult> getIndexStatistics(String name, CreateOrUpdateRequestAccept11 accept) {
+    public Mono<GetIndexStatisticsResult> getIndexStatistics(String name, AcceptHeaderMinimalConstant accept) {
         // Generated convenience method for hiddenGeneratedGetIndexStatisticsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (accept != null) {
@@ -5002,7 +4739,7 @@ public final class SearchIndexAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeResult> analyzeText(String name, AnalyzeTextOptions request,
-        CreateOrUpdateRequestAccept12 accept) {
+        AcceptHeaderMinimalConstant accept) {
         // Generated convenience method for hiddenGeneratedAnalyzeTextWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (accept != null) {
@@ -5011,6 +4748,39 @@ public final class SearchIndexAsyncClient {
         return hiddenGeneratedAnalyzeTextWithResponse(name, BinaryData.fromObject(request), requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AnalyzeResult.class));
+    }
+
+    /**
+     * Deletes a search alias and its associated mapping to an index. This operation is permanent, with no recovery
+     * option. The mapped index is untouched by this operation.
+     *
+     * @param name The name of the alias.
+     * @param accept The Accept header.
+     * @param matchConditions Specifies HTTP options for conditional requests.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteAlias(String name, AcceptHeaderMinimalConstant accept, MatchConditions matchConditions) {
+        // Generated convenience method for deleteAliasWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
+        String ifNoneMatch = matchConditions == null ? null : matchConditions.getIfNoneMatch();
+        if (accept != null) {
+            requestOptions.setHeader(HttpHeaderName.ACCEPT, accept.toString());
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        return deleteAliasWithResponse(name, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -5029,7 +4799,7 @@ public final class SearchIndexAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SearchAlias> getAlias(String name, CreateOrUpdateRequestAccept15 accept) {
+    public Mono<SearchAlias> getAlias(String name, AcceptHeaderMinimalConstant accept) {
         // Generated convenience method for hiddenGeneratedGetAliasWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (accept != null) {
@@ -5055,7 +4825,7 @@ public final class SearchIndexAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SearchAlias> createAlias(SearchAlias alias, CreateOrUpdateRequestAccept17 accept) {
+    public Mono<SearchAlias> createAlias(SearchAlias alias, AcceptHeaderMinimalConstant accept) {
         // Generated convenience method for hiddenGeneratedCreateAliasWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (accept != null) {
@@ -5064,6 +4834,76 @@ public final class SearchIndexAsyncClient {
         return hiddenGeneratedCreateAliasWithResponse(BinaryData.fromObject(alias), requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(SearchAlias.class));
+    }
+
+    /**
+     * Creates a new knowledge base or updates a knowledge base if it already exists.
+     *
+     * @param name The name of the knowledge base.
+     * @param knowledgeBase The definition of the knowledge base to create or update.
+     * @param accept The Accept header.
+     * @param matchConditions Specifies HTTP options for conditional requests.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a knowledge base definition on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<KnowledgeBase> createOrUpdateKnowledgeBase(String name, KnowledgeBase knowledgeBase,
+        AcceptHeaderMinimalConstant accept, MatchConditions matchConditions) {
+        // Generated convenience method for createOrUpdateKnowledgeBaseWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
+        String ifNoneMatch = matchConditions == null ? null : matchConditions.getIfNoneMatch();
+        if (accept != null) {
+            requestOptions.setHeader(HttpHeaderName.ACCEPT, accept.toString());
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        return createOrUpdateKnowledgeBaseWithResponse(name, BinaryData.fromObject(knowledgeBase), requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(KnowledgeBase.class));
+    }
+
+    /**
+     * Deletes a knowledge base.
+     *
+     * @param name The name of the knowledge base.
+     * @param accept The Accept header.
+     * @param matchConditions Specifies HTTP options for conditional requests.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteKnowledgeBase(String name, AcceptHeaderMinimalConstant accept,
+        MatchConditions matchConditions) {
+        // Generated convenience method for deleteKnowledgeBaseWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
+        String ifNoneMatch = matchConditions == null ? null : matchConditions.getIfNoneMatch();
+        if (accept != null) {
+            requestOptions.setHeader(HttpHeaderName.ACCEPT, accept.toString());
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        return deleteKnowledgeBaseWithResponse(name, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -5081,7 +4921,7 @@ public final class SearchIndexAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KnowledgeBase> getKnowledgeBase(String name, CreateOrUpdateRequestAccept20 accept) {
+    public Mono<KnowledgeBase> getKnowledgeBase(String name, AcceptHeaderMinimalConstant accept) {
         // Generated convenience method for hiddenGeneratedGetKnowledgeBaseWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (accept != null) {
@@ -5106,7 +4946,7 @@ public final class SearchIndexAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KnowledgeBase> createKnowledgeBase(KnowledgeBase knowledgeBase, CreateOrUpdateRequestAccept22 accept) {
+    public Mono<KnowledgeBase> createKnowledgeBase(KnowledgeBase knowledgeBase, AcceptHeaderMinimalConstant accept) {
         // Generated convenience method for hiddenGeneratedCreateKnowledgeBaseWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (accept != null) {
@@ -5115,6 +4955,39 @@ public final class SearchIndexAsyncClient {
         return hiddenGeneratedCreateKnowledgeBaseWithResponse(BinaryData.fromObject(knowledgeBase), requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(KnowledgeBase.class));
+    }
+
+    /**
+     * Deletes an existing knowledge source.
+     *
+     * @param name The name of the knowledge source.
+     * @param accept The Accept header.
+     * @param matchConditions Specifies HTTP options for conditional requests.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteKnowledgeSource(String name, AcceptHeaderMinimalConstant accept,
+        MatchConditions matchConditions) {
+        // Generated convenience method for deleteKnowledgeSourceWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
+        String ifNoneMatch = matchConditions == null ? null : matchConditions.getIfNoneMatch();
+        if (accept != null) {
+            requestOptions.setHeader(HttpHeaderName.ACCEPT, accept.toString());
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        return deleteKnowledgeSourceWithResponse(name, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -5132,7 +5005,7 @@ public final class SearchIndexAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KnowledgeSource> getKnowledgeSource(String name, CreateOrUpdateRequestAccept25 accept) {
+    public Mono<KnowledgeSource> getKnowledgeSource(String name, AcceptHeaderMinimalConstant accept) {
         // Generated convenience method for hiddenGeneratedGetKnowledgeSourceWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (accept != null) {
@@ -5158,7 +5031,7 @@ public final class SearchIndexAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KnowledgeSource> createKnowledgeSource(KnowledgeSource knowledgeSource,
-        CreateOrUpdateRequestAccept27 accept) {
+        AcceptHeaderMinimalConstant accept) {
         // Generated convenience method for hiddenGeneratedCreateKnowledgeSourceWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (accept != null) {
@@ -5185,7 +5058,7 @@ public final class SearchIndexAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KnowledgeSourceStatus> getKnowledgeSourceStatus(String name, CreateOrUpdateRequestAccept28 accept) {
+    public Mono<KnowledgeSourceStatus> getKnowledgeSourceStatus(String name, AcceptHeaderMinimalConstant accept) {
         // Generated convenience method for hiddenGeneratedGetKnowledgeSourceStatusWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (accept != null) {
@@ -5209,7 +5082,7 @@ public final class SearchIndexAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SearchServiceStatistics> getServiceStatistics(CreateOrUpdateRequestAccept29 accept) {
+    public Mono<SearchServiceStatistics> getServiceStatistics(AcceptHeaderMinimalConstant accept) {
         // Generated convenience method for hiddenGeneratedGetServiceStatisticsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (accept != null) {

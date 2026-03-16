@@ -5,35 +5,35 @@
 package com.azure.search.documents.models;
 
 /**
- * Defines values for CreateOrUpdateRequestAccept50.
+ * Defines values for AcceptHeaderMinimalConstant.
  */
-public enum CreateOrUpdateRequestAccept50 {
+public enum AcceptHeaderMinimalConstant {
     /**
      * Enum value application/json;odata.metadata=minimal.
      */
-    APPLICATION_JSON_ODATA_METADATA_MINIMAL("application/json;odata.metadata=minimal");
+    APPLICATION_JSON_METADATA_MINIMAL("application/json;odata.metadata=minimal");
 
     /**
-     * The actual serialized value for a CreateOrUpdateRequestAccept50 instance.
+     * The actual serialized value for a AcceptHeaderMinimalConstant instance.
      */
     private final String value;
 
-    CreateOrUpdateRequestAccept50(String value) {
+    AcceptHeaderMinimalConstant(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a CreateOrUpdateRequestAccept50 instance.
+     * Parses a serialized value to a AcceptHeaderMinimalConstant instance.
      * 
      * @param value the serialized value to parse.
-     * @return the parsed CreateOrUpdateRequestAccept50 object, or null if unable to parse.
+     * @return the parsed AcceptHeaderMinimalConstant object, or null if unable to parse.
      */
-    public static CreateOrUpdateRequestAccept50 fromString(String value) {
+    public static AcceptHeaderMinimalConstant fromString(String value) {
         if (value == null) {
             return null;
         }
-        CreateOrUpdateRequestAccept50[] items = CreateOrUpdateRequestAccept50.values();
-        for (CreateOrUpdateRequestAccept50 item : items) {
+        AcceptHeaderMinimalConstant[] items = AcceptHeaderMinimalConstant.values();
+        for (AcceptHeaderMinimalConstant item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

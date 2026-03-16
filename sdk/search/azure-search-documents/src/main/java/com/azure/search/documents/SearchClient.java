@@ -23,12 +23,10 @@ import com.azure.core.util.paging.ContinuablePagedIterable;
 import com.azure.search.documents.implementation.SearchClientImpl;
 import com.azure.search.documents.implementation.SearchUtils;
 import com.azure.search.documents.implementation.models.AutocompletePostRequest;
-import com.azure.search.documents.implementation.models.CountRequestAccept6;
 import com.azure.search.documents.implementation.models.SuggestPostRequest;
+import com.azure.search.documents.models.AcceptHeaderNoneConstant;
 import com.azure.search.documents.models.AutocompleteOptions;
 import com.azure.search.documents.models.AutocompleteResult;
-import com.azure.search.documents.models.CountRequestAccept;
-import com.azure.search.documents.models.CountRequestAccept3;
 import com.azure.search.documents.models.IndexBatchException;
 import com.azure.search.documents.models.IndexDocumentsBatch;
 import com.azure.search.documents.models.IndexDocumentsOptions;
@@ -790,6 +788,7 @@ public final class SearchClient {
     public SuggestDocumentsResult suggest(SuggestOptions options) {
         // Generated convenience method for suggestWithResponse
         RequestOptions requestOptions = new RequestOptions();
+        AcceptHeaderNoneConstant accept = options.getAccept();
         SuggestPostRequest suggestPostRequestObj
             = new SuggestPostRequest(options.getSearchText(), options.getSuggesterName()).setFilter(options.getFilter())
                 .setUseFuzzyMatching(options.isUseFuzzyMatching())
@@ -801,6 +800,9 @@ public final class SearchClient {
                 .setSelect(options.getSelect())
                 .setTop(options.getTop());
         BinaryData suggestPostRequest = BinaryData.fromObject(suggestPostRequestObj);
+        if (accept != null) {
+            requestOptions.setHeader(HttpHeaderName.ACCEPT, accept.toString());
+        }
         return suggestWithResponse(suggestPostRequest, requestOptions).getValue()
             .toObject(SuggestDocumentsResult.class);
     }
@@ -851,6 +853,7 @@ public final class SearchClient {
     public AutocompleteResult autocomplete(AutocompleteOptions options) {
         // Generated convenience method for autocompleteWithResponse
         RequestOptions requestOptions = new RequestOptions();
+        AcceptHeaderNoneConstant accept = options.getAccept();
         AutocompletePostRequest autocompletePostRequestObj
             = new AutocompletePostRequest(options.getSearchText(), options.getSuggesterName())
                 .setAutocompleteMode(options.getAutocompleteMode())
@@ -862,6 +865,9 @@ public final class SearchClient {
                 .setSearchFields(options.getSearchFields())
                 .setTop(options.getTop());
         BinaryData autocompletePostRequest = BinaryData.fromObject(autocompletePostRequestObj);
+        if (accept != null) {
+            requestOptions.setHeader(HttpHeaderName.ACCEPT, accept.toString());
+        }
         return autocompleteWithResponse(autocompletePostRequest, requestOptions).getValue()
             .toObject(AutocompleteResult.class);
     }
@@ -1042,7 +1048,7 @@ public final class SearchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public long getDocumentCount(CountRequestAccept accept) {
+    public long getDocumentCount(AcceptHeaderNoneConstant accept) {
         // Generated convenience method for hiddenGeneratedGetDocumentCountWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (accept != null) {
@@ -1072,7 +1078,7 @@ public final class SearchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public LookupDocument getDocument(String key, CountRequestAccept3 accept, String querySourceAuthorization,
+    public LookupDocument getDocument(String key, AcceptHeaderNoneConstant accept, String querySourceAuthorization,
         Boolean enableElevatedRead, List<String> selectedFields) {
         // Generated convenience method for hiddenGeneratedGetDocumentWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -1112,7 +1118,7 @@ public final class SearchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IndexDocumentsResult index(IndexDocumentsBatch batch, CountRequestAccept6 accept) {
+    IndexDocumentsResult index(IndexDocumentsBatch batch, AcceptHeaderNoneConstant accept) {
         // Generated convenience method for indexWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (accept != null) {

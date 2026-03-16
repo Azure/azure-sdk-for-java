@@ -391,4 +391,32 @@ public final class SuggestOptions {
         this.top = top;
         return this;
     }
+
+    /*
+     * The Accept header.
+     */
+    @Generated
+    private AcceptHeaderNoneConstant accept;
+
+    /**
+     * Get the accept property: The Accept header.
+     *
+     * @return the accept value.
+     */
+    @Generated
+    public AcceptHeaderNoneConstant getAccept() {
+        return this.accept;
+    }
+
+    /**
+     * Set the accept property: The Accept header.
+     *
+     * @param accept the accept value to set.
+     * @return the SuggestOptions object itself.
+     */
+    @Generated
+    public SuggestOptions setAccept(AcceptHeaderNoneConstant accept) {
+        this.accept = accept;
+        return this;
+    }
 }
