@@ -14,11 +14,13 @@ import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosFullTextIndex;
 import com.azure.cosmos.models.CosmosFullTextPath;
 import com.azure.cosmos.models.CosmosFullTextPolicy;
+import com.azure.cosmos.models.CosmosFullTextScoreScope;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.IncludedPath;
 import com.azure.cosmos.models.IndexingMode;
 import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
@@ -49,7 +51,7 @@ import static com.azure.cosmos.rx.TestSuiteBase.safeDeleteDatabase;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
-@Ignore("TODO: Ignore these test cases until the public emulator is released.")
+//@Ignore("TODO: Ignore these test cases until the public emulator is released.")
 public class HybridSearchQueryTest {
     protected static final int TIMEOUT = 30000;
     protected static final int SETUP_TIMEOUT = 80000;
@@ -74,7 +76,7 @@ public class HybridSearchQueryTest {
 
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
         ArrayList<String> paths = new ArrayList<String>();
-        paths.add("/id");
+        paths.add("/pk");
         partitionKeyDef.setPaths(paths);
 
         CosmosContainerProperties containerProperties = new CosmosContainerProperties(containerId, partitionKeyDef);
@@ -83,8 +85,11 @@ public class HybridSearchQueryTest {
         database.createContainer(containerProperties, ThroughputProperties.createManualThroughput(10000)).block();
         container = database.getContainer(containerId);
 
+        // Insert documents with pk field based on (index % 2) + 1, so even ids → pk="1", odd ids → pk="2"
         List<Document> documents = loadProductsFromJson();
         for (Document doc : documents) {
+            int index = Integer.parseInt(doc.getId());
+            doc.pk = String.valueOf((index % 2) + 1);
             container.createItem(doc).block();
         }
     }
@@ -131,7 +136,7 @@ public class HybridSearchQueryTest {
             .flatMap(feedResponse -> Flux.fromIterable(feedResponse.getResults()))
             .collectList().block();
         assertThat(resultDocs).hasSize(15);
-        validateResults(Arrays.asList("51", "49", "24", "61", "54", "22", "2", "25", "75", "77", "57", "76", "66", "80", "85"), resultDocs);
+        validateResults(Arrays.asList("61", "54", "51", "49", "24", "2", "57", "22", "75", "25", "77", "76", "66", "80", "85"), resultDocs);
 
         query = "SELECT c.id, c.title FROM c WHERE FullTextContains(c.title, @term1) " +
             "OR FullTextContains(c.text, @term1) OR FullTextContains(c.text, @term2) ORDER BY " +
@@ -144,7 +149,7 @@ public class HybridSearchQueryTest {
             .flatMap(feedResponse -> Flux.fromIterable(feedResponse.getResults()))
             .collectList().block();
         assertThat(resultDocs).hasSize(10);
-        validateResults(Arrays.asList("22", "2", "25", "75", "77", "57", "76", "66", "80", "85"), resultDocs);
+        validateResults(Arrays.asList("2", "57", "22", "75", "25", "77", "76", "66", "80", "85"), resultDocs);
 
         List<Float> vector = getQueryVector();
         query = "SELECT TOP 10 c.id, c.text, c.title FROM c " +
@@ -159,7 +164,7 @@ public class HybridSearchQueryTest {
             .flatMap(feedResponse -> Flux.fromIterable(feedResponse.getResults()))
             .collectList().block();
         assertThat(resultDocs).hasSize(10);
-        validateResults(Arrays.asList("4", "24", "6", "9", "2", "3", "21", "5", "49", "13"), resultDocs);
+        validateResults(Arrays.asList("55", "61", "57", "24", "2", "54", "63", "9", "62", "75"), resultDocs);
     }
 
     @Test(groups = {"query", "split"}, timeOut = TIMEOUT)
@@ -179,7 +184,7 @@ public class HybridSearchQueryTest {
         assertThat(results).isNotNull();
 
         validateResults(
-            Arrays.asList("51", "49", "24", "61", "54", "22", "2", "25", "75", "77", "57", "76", "66", "80", "85"),
+            Arrays.asList("61", "54", "51", "49", "24", "2", "57", "22", "75", "25", "77", "76", "66", "80", "85"),
             results
         );
 
@@ -198,7 +203,7 @@ public class HybridSearchQueryTest {
         assertThat(results).hasSize(15);
         assertThat(results).isNotNull();
         validateResults(
-            Arrays.asList("51", "49", "24", "61", "54", "22", "2", "25", "75", "77", "57", "76", "66", "80", "85"),
+            Arrays.asList("61", "54", "51", "49", "24", "2", "57", "22", "75", "25", "77", "76", "66", "80", "85"),
             results
         );
 
@@ -216,7 +221,7 @@ public class HybridSearchQueryTest {
         assertThat(results).hasSize(10);
         assertThat(results).isNotNull();
         validateResults(
-            Arrays.asList("51", "49", "24", "61", "54", "22", "2", "25", "75", "77"),
+            Arrays.asList("61", "54", "51", "49", "24", "2", "57", "22", "75", "25"),
             results
         );
 
@@ -234,7 +239,7 @@ public class HybridSearchQueryTest {
         assertThat(results).hasSize(10);
         assertThat(results).isNotNull();
         validateResults(
-            Arrays.asList("22", "57", "25", "24", "66", "2", "85", "49", "51", "54"),
+            Arrays.asList("57", "22", "25", "54", "66", "24", "2", "85", "61", "76"),
             results
         );
 
@@ -254,9 +259,104 @@ public class HybridSearchQueryTest {
         assertThat(results).hasSize(10);
         assertThat(results).isNotNull();
         validateResults(
-            Arrays.asList("75", "24", "49", "61", "21", "9", "26", "4", "6", "37"),
+            Arrays.asList("75", "24", "49", "55", "61", "21", "9", "26", "37", "57"),
             results
         );
+    }
+
+    @Test(groups = {"query", "split"}, timeOut = TIMEOUT)
+    public void hybridQueryWithLocalStatisticsTest() {
+        // Documents with 'John': id=2 (pk="1"), id=57 (pk="2"), id=85 (pk="2")
+
+        String query = "SELECT TOP 10 c.id, c.title, c.pk FROM c WHERE FullTextContains(c.title, @term1) OR " +
+            "FullTextContains(c.text, @term1) ORDER BY RANK FullTextScore(c.title, @term1)";
+        SqlQuerySpec querySpec = new SqlQuerySpec(query, Arrays.asList(
+            new SqlParameter("@term1", "John")
+        ));
+
+        // Test 1: GLOBAL scope (default) cross-partition — should return all 3 'John' matches
+        List<Document> globalResultDocs = container.queryItems(querySpec, new CosmosQueryRequestOptions(), Document.class).byPage()
+            .flatMap(feedResponse -> Flux.fromIterable(feedResponse.getResults()))
+            .collectList().block();
+        assertThat(globalResultDocs).isNotNull();
+        assertThat(globalResultDocs).hasSize(3);
+
+        // Test 2: Explicit GLOBAL scope cross-partition — same as default
+        CosmosQueryRequestOptions globalScopeOptions = new CosmosQueryRequestOptions();
+        globalScopeOptions.setFullTextScoreScope(CosmosFullTextScoreScope.GLOBAL);
+
+        List<Document> explicitGlobalResultDocs = container.queryItems(querySpec, globalScopeOptions, Document.class).byPage()
+            .flatMap(feedResponse -> Flux.fromIterable(feedResponse.getResults()))
+            .collectList().block();
+        assertThat(explicitGlobalResultDocs).isNotNull();
+        assertThat(explicitGlobalResultDocs).hasSize(3);
+
+        List<String> defaultIds = globalResultDocs.stream().map(Document::getId).collect(Collectors.toList());
+        List<String> explicitGlobalIds = explicitGlobalResultDocs.stream().map(Document::getId).collect(Collectors.toList());
+        assertThat(explicitGlobalIds).isEqualTo(defaultIds);
+
+        // Test 3: LOCAL scope with pk="2" — only id=57 and id=85 have 'John' in pk="2"
+        // Stats are computed only over pk="2" partition
+        CosmosQueryRequestOptions localScopeOptionsPk2 = new CosmosQueryRequestOptions();
+        localScopeOptionsPk2.setFullTextScoreScope(CosmosFullTextScoreScope.LOCAL);
+        localScopeOptionsPk2.setPartitionKey(new PartitionKey("2"));
+
+        List<Document> localPk2ResultDocs = container.queryItems(querySpec, localScopeOptionsPk2, Document.class).byPage()
+            .flatMap(feedResponse -> Flux.fromIterable(feedResponse.getResults()))
+            .collectList().block();
+        assertThat(localPk2ResultDocs).isNotNull();
+        assertThat(localPk2ResultDocs).hasSize(2);
+        for (Document doc : localPk2ResultDocs) {
+            assertThat(doc.getPk()).isEqualTo("2");
+        }
+
+        // Test 4: LOCAL scope with pk="1" — only id=2 has 'John' in pk="1"
+        // Stats are computed only over pk="1" partition
+        CosmosQueryRequestOptions localScopeOptionsPk1 = new CosmosQueryRequestOptions();
+        localScopeOptionsPk1.setFullTextScoreScope(CosmosFullTextScoreScope.LOCAL);
+        localScopeOptionsPk1.setPartitionKey(new PartitionKey("1"));
+
+        List<Document> localPk1ResultDocs = container.queryItems(querySpec, localScopeOptionsPk1, Document.class).byPage()
+            .flatMap(feedResponse -> Flux.fromIterable(feedResponse.getResults()))
+            .collectList().block();
+        assertThat(localPk1ResultDocs).isNotNull();
+        assertThat(localPk1ResultDocs).hasSize(1);
+        assertThat(localPk1ResultDocs.get(0).getId()).isEqualTo("2");
+        assertThat(localPk1ResultDocs.get(0).getPk()).isEqualTo("1");
+    }
+
+    @Test(groups = {"query", "split"}, timeOut = TIMEOUT)
+    public void hybridQueryRRFWithLocalStatisticsTest() {
+        // Test LOCAL scope with RRF (multiple component queries)
+        String query = "SELECT TOP 10 c.id, c.title, c.pk FROM c WHERE " +
+            "FullTextContains(c.title, @term1) OR FullTextContains(c.text, @term1) OR " +
+            "FullTextContains(c.text, @term2) " +
+            "ORDER BY RANK RRF(FullTextScore(c.title, @term1), FullTextScore(c.text, @term2))";
+        SqlQuerySpec querySpec = new SqlQuerySpec(query, Arrays.asList(
+            new SqlParameter("@term1", "John"),
+            new SqlParameter("@term2", "United")
+        ));
+
+        // GLOBAL scope (default) cross-partition
+        List<Document> globalResultDocs = container.queryItems(querySpec, new CosmosQueryRequestOptions(), Document.class).byPage()
+            .flatMap(feedResponse -> Flux.fromIterable(feedResponse.getResults()))
+            .collectList().block();
+        assertThat(globalResultDocs).isNotNull();
+        assertThat(globalResultDocs).isNotEmpty();
+
+        // LOCAL scope with pk="2"
+        CosmosQueryRequestOptions localScopeOptions = new CosmosQueryRequestOptions();
+        localScopeOptions.setFullTextScoreScope(CosmosFullTextScoreScope.LOCAL);
+        localScopeOptions.setPartitionKey(new PartitionKey("2"));
+
+        List<Document> localResultDocs = container.queryItems(querySpec, localScopeOptions, Document.class).byPage()
+            .flatMap(feedResponse -> Flux.fromIterable(feedResponse.getResults()))
+            .collectList().block();
+        assertThat(localResultDocs).isNotNull();
+        assertThat(localResultDocs).isNotEmpty();
+        for (Document doc : localResultDocs) {
+            assertThat(doc.getPk()).isEqualTo("2");
+        }
     }
 
     @Test(groups = {"query", "split"}, timeOut = TIMEOUT)
@@ -410,6 +510,8 @@ public class HybridSearchQueryTest {
     static class Document {
         @JsonProperty("id")
         String id;
+        @JsonProperty("pk")
+        String pk;
         @JsonProperty("text")
         String text;
         @JsonProperty("title")
@@ -422,8 +524,9 @@ public class HybridSearchQueryTest {
         public Document() {
         }
 
-        public Document(String id, String text, String title, double[] vector, double score) {
+        public Document(String id, String pk, String text, String title, double[] vector, double score) {
             this.id = id;
+            this.pk = pk;
             this.text = text;
             this.title = title;
             this.vector = vector;
@@ -432,6 +535,10 @@ public class HybridSearchQueryTest {
 
         public String getId() {
             return id;
+        }
+
+        public String getPk() {
+            return pk;
         }
     }
 }

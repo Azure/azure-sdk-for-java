@@ -262,7 +262,8 @@ public class DocumentQueryExecutionContextFactory {
         SqlQuerySpec query,
         PartitionedQueryExecutionInfo partitionedQueryExecutionInfo,
         Map<String, PartitionedQueryExecutionInfo> queryPlanCache) {
-        if (canCacheQuery(partitionedQueryExecutionInfo.getQueryInfo()) && !queryPlanCache.containsKey(query.getQueryText())) {
+        QueryInfo queryInfo = partitionedQueryExecutionInfo.getQueryInfo();
+        if (queryInfo != null && canCacheQuery(queryInfo) && !queryPlanCache.containsKey(query.getQueryText())) {
             if (queryPlanCache.size() >= Constants.QUERYPLAN_CACHE_SIZE) {
                 logger.warn("Clearing query plan cache as it has reached the maximum size : {}", queryPlanCache.size());
                 queryPlanCache.clear();

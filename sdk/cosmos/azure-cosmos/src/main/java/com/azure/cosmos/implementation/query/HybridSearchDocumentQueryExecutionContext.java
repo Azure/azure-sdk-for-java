@@ -24,6 +24,7 @@ import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.query.hybridsearch.FullTextQueryStatistics;
 import com.azure.cosmos.implementation.query.hybridsearch.GlobalFullTextSearchQueryStatistics;
 import com.azure.cosmos.implementation.query.hybridsearch.HybridSearchQueryInfo;
+import com.azure.cosmos.models.CosmosFullTextScoreScope;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -141,8 +142,15 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
         this.hybridSearchSchedulingStopwatch.start();
 
         if (hybridSearchQueryInfo.getRequiresGlobalStatistics()) {
+            // When FullTextScoreScope is GLOBAL (default), use allFeedRanges for statistics.
+            // When LOCAL, use only targetFeedRanges for scoped statistics.
+            List<FeedRangeEpkImpl> statisticsTargetRanges =
+                this.cosmosQueryRequestOptions.getFullTextScoreScope() == CosmosFullTextScoreScope.LOCAL
+                    ? targetFeedRanges
+                    : allFeedRanges;
+
             Map<FeedRangeEpkImpl, String> partitionKeyRangeToContinuationToken = new HashMap<>();
-            for (FeedRangeEpkImpl feedRangeEpk : allFeedRanges) {
+            for (FeedRangeEpkImpl feedRangeEpk : statisticsTargetRanges) {
                 partitionKeyRangeToContinuationToken.put(feedRangeEpk, null);
             }
             super.initialize(collection,
@@ -395,13 +403,22 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
                 partitionKeyRangeToContinuationToken.put(feedRangeEpk,
                     null);
             }
-            documentProducers = new ArrayList<>();
-            super.initialize(collection,
-                partitionKeyRangeToContinuationToken,
-                initialPageSize,
-                new SqlQuerySpec(queryInfo.getRewrittenQuery(), this.querySpec.getParameters()));
 
-            return Flux.fromIterable(documentProducers)
+            // Synchronize the creation of document producers to prevent ConcurrentModificationException
+            // when multiple component queries execute in parallel via flatMap. The shared documentProducers
+            // field is reassigned and populated by super.initialize(), so we must capture a local reference
+            // while holding the lock.
+            final List<DocumentProducer<Document>> producers;
+            synchronized (this) {
+                documentProducers = new ArrayList<>();
+                super.initialize(collection,
+                    partitionKeyRangeToContinuationToken,
+                    initialPageSize,
+                    new SqlQuerySpec(queryInfo.getRewrittenQuery(), this.querySpec.getParameters()));
+                producers = this.documentProducers;
+            }
+
+            return Flux.fromIterable(producers)
                 .flatMap(DocumentProducer::produceAsync)
                 .flatMap(response -> Flux.fromIterable(response.pageResult.getResults()));
         });
