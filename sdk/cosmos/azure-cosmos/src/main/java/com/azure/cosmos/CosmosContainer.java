@@ -985,7 +985,7 @@ public class CosmosContainer {
      *                {@code timeout_seconds} (Number) - per-request timeout in seconds (default: 120).
      * @return The semantic rerank result.
      */
-    @Beta(value = Beta.SinceVersion.V4_78_0)
+    @Beta(value = Beta.SinceVersion.V4_78_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public SemanticRerankResult semanticRerank(
         String rerankContext,
         List<String> documents,

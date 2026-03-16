@@ -1705,7 +1705,7 @@ public class CosmosAsyncContainer {
      *                </ul>
      * @return A {@link Mono} emitting the {@link SemanticRerankResult}.
      */
-    @Beta(value = Beta.SinceVersion.V4_78_0)
+    @Beta(value = Beta.SinceVersion.V4_78_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Mono<SemanticRerankResult> semanticRerank(
         String rerankContext,
         List<String> documents,
