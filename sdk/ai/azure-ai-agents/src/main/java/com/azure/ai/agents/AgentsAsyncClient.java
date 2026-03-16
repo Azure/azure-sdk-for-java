@@ -1486,8 +1486,8 @@ public final class AgentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listConversations(RequestOptions requestOptions) {
-        return this.serviceClient.listConversationsAsync(requestOptions);
+    public PagedFlux<BinaryData> listAgentConversations(RequestOptions requestOptions) {
+        return this.serviceClient.listAgentConversationsAsync(requestOptions);
     }
 
     /**
@@ -1517,9 +1517,9 @@ public final class AgentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<Conversation> listConversations(Integer limit, PageOrder order, String after, String before,
+    public PagedFlux<Conversation> listAgentConversations(Integer limit, PageOrder order, String after, String before,
         String agentName, String agentId) {
-        // Generated convenience method for listConversations
+        // Generated convenience method for listAgentConversations
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
@@ -1539,7 +1539,7 @@ public final class AgentsAsyncClient {
         if (agentId != null) {
             requestOptions.addQueryParam("agent_id", agentId, false);
         }
-        PagedFlux<BinaryData> pagedFluxResponse = listConversations(requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listAgentConversations(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
@@ -1566,10 +1566,10 @@ public final class AgentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<Conversation> listConversations() {
-        // Generated convenience method for listConversations
+    public PagedFlux<Conversation> listAgentConversations() {
+        // Generated convenience method for listAgentConversations
         RequestOptions requestOptions = new RequestOptions();
-        PagedFlux<BinaryData> pagedFluxResponse = listConversations(requestOptions);
+        PagedFlux<BinaryData> pagedFluxResponse = listAgentConversations(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)

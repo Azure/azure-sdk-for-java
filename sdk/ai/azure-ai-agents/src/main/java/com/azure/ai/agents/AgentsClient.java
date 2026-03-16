@@ -1418,8 +1418,8 @@ public final class AgentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listConversations(RequestOptions requestOptions) {
-        return this.serviceClient.listConversations(requestOptions);
+    public PagedIterable<BinaryData> listAgentConversations(RequestOptions requestOptions) {
+        return this.serviceClient.listAgentConversations(requestOptions);
     }
 
     /**
@@ -1449,9 +1449,9 @@ public final class AgentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Conversation> listConversations(Integer limit, PageOrder order, String after, String before,
-        String agentName, String agentId) {
-        // Generated convenience method for listConversations
+    public PagedIterable<Conversation> listAgentConversations(Integer limit, PageOrder order, String after,
+        String before, String agentName, String agentId) {
+        // Generated convenience method for listAgentConversations
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
@@ -1471,7 +1471,7 @@ public final class AgentsClient {
         if (agentId != null) {
             requestOptions.addQueryParam("agent_id", agentId, false);
         }
-        return serviceClient.listConversations(requestOptions)
+        return serviceClient.listAgentConversations(requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(Conversation.class));
     }
 
@@ -1487,10 +1487,10 @@ public final class AgentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Conversation> listConversations() {
-        // Generated convenience method for listConversations
+    public PagedIterable<Conversation> listAgentConversations() {
+        // Generated convenience method for listAgentConversations
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listConversations(requestOptions)
+        return serviceClient.listAgentConversations(requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(Conversation.class));
     }
 }

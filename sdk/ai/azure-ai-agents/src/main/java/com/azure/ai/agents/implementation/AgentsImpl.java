@@ -350,7 +350,7 @@ public final class AgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listConversations(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> listAgentConversations(@HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/openai/v1/conversations")
@@ -359,7 +359,7 @@ public final class AgentsImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listConversationsSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> listAgentConversationsSync(@HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
     }
 
@@ -2124,11 +2124,11 @@ public final class AgentsImpl {
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listConversationsSinglePageAsync(RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listAgentConversationsSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context -> service.listConversations(this.client.getEndpoint(), accept, requestOptions, context))
+                context -> service.listAgentConversations(this.client.getEndpoint(), accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "data"), null, null));
     }
@@ -2184,8 +2184,8 @@ public final class AgentsImpl {
      * @return the response data for a requested list of items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listConversationsAsync(RequestOptions requestOptions) {
-        return new PagedFlux<>(() -> listConversationsSinglePageAsync(requestOptions));
+    public PagedFlux<BinaryData> listAgentConversationsAsync(RequestOptions requestOptions) {
+        return new PagedFlux<>(() -> listAgentConversationsSinglePageAsync(requestOptions));
     }
 
     /**
@@ -2239,10 +2239,10 @@ public final class AgentsImpl {
      * @return the response data for a requested list of items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listConversationsSinglePage(RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listAgentConversationsSinglePage(RequestOptions requestOptions) {
         final String accept = "application/json";
         Response<BinaryData> res
-            = service.listConversationsSync(this.client.getEndpoint(), accept, requestOptions, Context.NONE);
+            = service.listAgentConversationsSync(this.client.getEndpoint(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "data"), null, null);
     }
@@ -2298,8 +2298,8 @@ public final class AgentsImpl {
      * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listConversations(RequestOptions requestOptions) {
-        return new PagedIterable<>(() -> listConversationsSinglePage(requestOptions));
+    public PagedIterable<BinaryData> listAgentConversations(RequestOptions requestOptions) {
+        return new PagedIterable<>(() -> listAgentConversationsSinglePage(requestOptions));
     }
 
     private List<BinaryData> getValues(BinaryData binaryData, String path) {
