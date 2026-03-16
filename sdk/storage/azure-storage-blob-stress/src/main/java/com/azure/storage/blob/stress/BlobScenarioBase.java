@@ -76,14 +76,15 @@ public abstract class BlobScenarioBase<TOptions extends StorageStressOptions> ex
     public Mono<Void> globalCleanupAsync() {
         telemetryHelper.recordEnd(startTime);
         return cleanupContainerWithRetry()
-            .then(super.globalCleanupAsync())
             .onErrorResume(error -> {
                 // Log cleanup failure but don't fail the overall test
                 LOGGER.atWarning()
                     .addKeyValue("error", error.getMessage())
                     .log("Container cleanup failed");
-                return super.globalCleanupAsync();
-            });
+
+                return Mono.empty();
+            })
+            .then(super.globalCleanupAsync());
     }
 
     private static final int DELETE_TIMEOUT_SECONDS = 30;

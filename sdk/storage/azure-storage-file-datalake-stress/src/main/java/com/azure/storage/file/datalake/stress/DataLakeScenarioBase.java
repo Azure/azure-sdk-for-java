@@ -75,14 +75,15 @@ public abstract class DataLakeScenarioBase<TOptions extends StorageStressOptions
     public Mono<Void> globalCleanupAsync() {
         telemetryHelper.recordEnd(startTime);
         return cleanupFileSystemWithRetry()
-            .then(super.globalCleanupAsync())
             .onErrorResume(error -> {
                 // Log cleanup failure but don't fail the overall test
                 LOGGER.atWarning()
                     .addKeyValue("error", error.getMessage())
                     .log("FileSystem cleanup failed");
-                return super.globalCleanupAsync();
-            });
+
+                return Mono.empty();
+            })
+            .then(super.globalCleanupAsync());
     }
 
     /**

@@ -157,6 +157,7 @@ public abstract class ShareScenarioBase<TOptions extends StorageStressOptions> e
                                 .addKeyValue("error", error.getMessage())
                                 .log("Failed to delete file during share cleanup; continuing with remaining items.");
                             return Mono.empty();
+                        });
                 }
             })
             .then();
