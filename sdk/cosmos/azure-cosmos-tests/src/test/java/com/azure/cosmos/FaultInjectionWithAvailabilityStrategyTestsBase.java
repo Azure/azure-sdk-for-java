@@ -4884,7 +4884,7 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
         boolean shouldInjectPreferredRegionsInClient) {
 
         // Thin client forces GATEWAY mode — DIRECT mode tests are not applicable
-        if (Configs.isThinClientEnabled() && connectionMode == ConnectionMode.DIRECT) {
+        if (Configs.isThinClientEnabled() && Configs.isHttp2Enabled() && connectionMode == ConnectionMode.DIRECT) {
             throw new SkipException(
                 "Skipping DIRECT mode test '" + testCaseId + "' — thin client forces GATEWAY mode");
         }
