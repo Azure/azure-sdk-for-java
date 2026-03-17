@@ -30,14 +30,28 @@ final class JsonConfigurationParser {
             return false;
         }
 
-        if (contentType.contains("/")) {
-            String mainType = contentType.split("/")[0];
-            String subType = contentType.split("/")[1];
+        // Remove parameters like "; charset=utf-8" if present
+        String cleanContentType = contentType.split(";")[0].trim();
+
+        if (cleanContentType.contains("/")) {
+            String[] parts = cleanContentType.split("/", 2);
+            if (parts.length < 2) {
+                return false;
+            }
+            
+            String mainType = parts[0].trim();
+            String subType = parts[1].trim();
 
             if (mainType.equalsIgnoreCase(acceptedMainType)) {
                 if (subType.contains("+")) {
+                    // Handle structured syntax suffixes like "application/vnd.api+json"
                     List<String> subtypes = Arrays.asList(subType.split("\\+"));
-                    return subtypes.contains(acceptedSubType);
+                    for (String sub : subtypes) {
+                        if (sub.trim().equalsIgnoreCase(acceptedSubType)) {
+                            return true;
+                        }
+                    }
+                    return false;
                 } else {
                     return subType.equalsIgnoreCase(acceptedSubType);
                 }
