@@ -28,32 +28,41 @@ final class JsonConfigurationParser {
             return false;
         }
 
-        // Remove parameters like "; charset=utf-8" if present
-        String cleanContentType = contentType.split(";")[0].trim();
-
-        if (cleanContentType.contains("/")) {
-            String[] parts = cleanContentType.split("/", 2);
-            if (parts.length < 2) {
-                return false;
-            }
-            
-            String mainType = parts[0].trim();
-            String subType = parts[1].trim();
-
-            if (mainType.equalsIgnoreCase(acceptedMainType)) {
-                if (subType.contains("+")) {
-                    // Handle structured syntax suffixes like "application/vnd.api+json"
-                    // According to RFC 6839, the suffix is the part after the last +
-                    String[] subtypes = subType.split("\\+");
-                    String suffix = subtypes[subtypes.length - 1].trim();
-                    return suffix.equalsIgnoreCase(acceptedSubType);
-                } else {
-                    return subType.equalsIgnoreCase(acceptedSubType);
-                }
-            }
+        // Remove parameters like "; charset=utf-8" if present, without using regex-based split
+        String cleanContentType;
+        int semicolonIndex = contentType.indexOf(';');
+        if (semicolonIndex >= 0) {
+            cleanContentType = contentType.substring(0, semicolonIndex).trim();
+        } else {
+            cleanContentType = contentType.trim();
         }
 
-        return false;
+        if (cleanContentType.isEmpty()) {
+            return false;
+        }
+
+        int slashIndex = cleanContentType.indexOf('/');
+        if (slashIndex <= 0 || slashIndex == cleanContentType.length() - 1) {
+            // No slash, slash at start, or no subtype
+            return false;
+        }
+
+        String mainType = cleanContentType.substring(0, slashIndex).trim();
+       String subType = cleanContentType.substring(slashIndex + 1).trim();
+
+        if (!mainType.equalsIgnoreCase(acceptedMainType) || subType.isEmpty()) {
+            return false;
+        }
+
+        // Handle structured syntax suffixes like "application/vnd.api+json".
+        // According to RFC 6839, the suffix is the part after the last '+'.
+        int plusIndex = subType.lastIndexOf('+');
+        if (plusIndex >= 0 && plusIndex < subType.length() - 1) {
+            String suffix = subType.substring(plusIndex + 1).trim();
+            return suffix.equalsIgnoreCase(acceptedSubType);
+        } else {
+            return subType.equalsIgnoreCase(acceptedSubType);
+        }
     }
 
     static Map<String, Object> parseJsonSetting(ConfigurationSetting setting)

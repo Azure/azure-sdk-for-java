@@ -54,12 +54,14 @@ public class JsonConfigurationParserTest {
 
     @Test
     public void isJsonContentTypeWithWhitespace() {
-        // Content types with various whitespace
+        // Content types with various whitespace at the boundaries
         assertTrue(JsonConfigurationParser.isJsonContentType(" application/json"));
         assertTrue(JsonConfigurationParser.isJsonContentType("application/json "));
         assertTrue(JsonConfigurationParser.isJsonContentType(" application/json "));
-        assertTrue(JsonConfigurationParser.isJsonContentType("application / json")); // Note: This might fail if strict parsing is needed
-        assertTrue(JsonConfigurationParser.isJsonContentType("application/vnd.api + json")); // Whitespace around +
+
+        // Internal whitespace around '/' or '+' is not allowed by RFC 7231/6838 token rules
+        assertFalse(JsonConfigurationParser.isJsonContentType("application / json"));
+        assertFalse(JsonConfigurationParser.isJsonContentType("application/vnd.api + json"));
     }
 
     @Test
