@@ -440,10 +440,10 @@ public final class BlobProperties {
             contentMd5, contentEncoding, contentDisposition, contentLanguage, cacheControl, blobSequenceNumber,
             blobType, leaseStatus, leaseState, leaseDuration, copyId, copyStatus, copySource, copyProgress,
             copyCompletionTime, copyStatusDescription, isServerEncrypted, isIncrementalCopy, copyDestinationSnapshot,
-            accessTier, isAccessTierInferred, archiveStatus, encryptionKeySha256, encryptionScope, accessTierChangeTime,
-            metadata, committedBlockCount, tagCount, versionId, isCurrentVersion, objectReplicationSourcePolicies,
-            objectReplicationDestinationPolicyId, rehydratePriority, isSealed, lastAccessedTime, expiresOn,
-            immutabilityPolicy, hasLegalHold, requestId));
+            accessTier, null, isAccessTierInferred, archiveStatus, encryptionKeySha256, encryptionScope,
+            accessTierChangeTime, metadata, committedBlockCount, tagCount, versionId, isCurrentVersion,
+            objectReplicationSourcePolicies, objectReplicationDestinationPolicyId, rehydratePriority, isSealed,
+            lastAccessedTime, expiresOn, immutabilityPolicy, hasLegalHold, requestId));
     }
 
     /**

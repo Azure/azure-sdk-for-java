@@ -50,10 +50,12 @@ public final class BlobPropertiesConstructorProxy {
         // application accesses BlobDownloadHeaders which triggers the accessor to be configured. So, if the accessor
         // is null this effectively pokes the class to set up the accessor.
         if (accessor == null) {
-            new BlobProperties(null, null, null, 0, null, null, null, null, null, null, null, null, null, null, null,
-                null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+            try {
+                Class.forName("com.azure.storage.blob.models.BlobProperties");
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
         }
-
         assert accessor != null;
         return accessor.create(internalProperties);
     }
