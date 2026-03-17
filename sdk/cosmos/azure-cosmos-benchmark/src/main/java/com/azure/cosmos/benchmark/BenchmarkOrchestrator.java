@@ -205,12 +205,18 @@ public class BenchmarkOrchestrator {
             for (int cycle = 1; cycle <= totalCycles; cycle++) {
                 logger.info("[LIFECYCLE] CYCLE_START cycle={} timestamp={}", cycle, Instant.now());
 
-                // 1. Create clients
+                // 1. Capture baseline CPU before benchmark creation (which includes data ingestion)
+                double baselineCpu = CpuMonitor.captureProcessCpuLoad();
+
+                // 2. Create clients (constructors perform data ingestion)
                 List<Benchmark> benchmarks = createBenchmarks(config, benchmarkScheduler);
                 logger.info("[LIFECYCLE] POST_CREATE cycle={} clients={} timestamp={}",
                     cycle, benchmarks.size(), Instant.now());
 
-                // 2. Run workload in parallel
+                // 3. Cool-down: wait for CPU to settle after data ingestion before measuring workload
+                CpuMonitor.awaitCoolDown(baselineCpu);
+
+                // 4. Run workload in parallel
                 runWorkload(benchmarks, cycle, executor);
                 logger.info("[LIFECYCLE] POST_WORKLOAD cycle={} timestamp={}", cycle, Instant.now());
 
