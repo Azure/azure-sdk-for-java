@@ -55,12 +55,8 @@ public final class MonitorsImpl implements Monitors {
         String monitorName, Context context) {
         Response<NewRelicMonitorResourceInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, monitorName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new NewRelicMonitorResourceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new NewRelicMonitorResourceImpl(inner.getValue(), this.manager()));
     }
 
     public NewRelicMonitorResource getByResourceGroup(String resourceGroupName, String monitorName) {
@@ -105,12 +101,8 @@ public final class MonitorsImpl implements Monitors {
         MetricsRequest request, Context context) {
         Response<MetricRulesInner> inner
             = this.serviceClient().getMetricRulesWithResponse(resourceGroupName, monitorName, request, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new MetricRulesImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new MetricRulesImpl(inner.getValue(), this.manager()));
     }
 
     public MetricRules getMetricRules(String resourceGroupName, String monitorName, MetricsRequest request) {
@@ -126,12 +118,8 @@ public final class MonitorsImpl implements Monitors {
         MetricsStatusRequest request, Context context) {
         Response<MetricsStatusResponseInner> inner
             = this.serviceClient().getMetricStatusWithResponse(resourceGroupName, monitorName, request, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new MetricsStatusResponseImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new MetricsStatusResponseImpl(inner.getValue(), this.manager()));
     }
 
     public MetricsStatusResponse getMetricStatus(String resourceGroupName, String monitorName,
@@ -233,12 +221,8 @@ public final class MonitorsImpl implements Monitors {
         Context context) {
         Response<VMExtensionPayloadInner> inner
             = this.serviceClient().vmHostPayloadWithResponse(resourceGroupName, monitorName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new VMExtensionPayloadImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new VMExtensionPayloadImpl(inner.getValue(), this.manager()));
     }
 
     public VMExtensionPayload vmHostPayload(String resourceGroupName, String monitorName) {
@@ -254,12 +238,8 @@ public final class MonitorsImpl implements Monitors {
         Context context) {
         Response<LatestLinkedSaaSResponseInner> inner
             = this.serviceClient().latestLinkedSaaSWithResponse(resourceGroupName, monitorName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new LatestLinkedSaaSResponseImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new LatestLinkedSaaSResponseImpl(inner.getValue(), this.manager()));
     }
 
     public LatestLinkedSaaSResponse latestLinkedSaaS(String resourceGroupName, String monitorName) {

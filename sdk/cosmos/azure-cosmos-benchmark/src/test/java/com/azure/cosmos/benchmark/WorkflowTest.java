@@ -11,12 +11,12 @@ import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.models.IncludedPath;
 import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.PartitionKeyDefinition;
-import com.codahale.metrics.MetricRegistry;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import reactor.core.scheduler.Schedulers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,7 +64,7 @@ public class WorkflowTest {
         AtomicInteger success = new AtomicInteger();
         AtomicInteger error = new AtomicInteger();
 
-        ReadMyWriteWorkflow wf = new ReadMyWriteWorkflow(cfg, new MetricRegistry()) {
+        ReadMyWriteWorkflow wf = new ReadMyWriteWorkflow(cfg, Schedulers.parallel()) {
             @Override
             protected void onError(Throwable throwable) {
                 error.incrementAndGet();
@@ -116,7 +116,7 @@ public class WorkflowTest {
         AtomicInteger success = new AtomicInteger();
         AtomicInteger error = new AtomicInteger();
 
-        AsyncWriteBenchmark wf = new AsyncWriteBenchmark(cfg, new MetricRegistry()) {
+        AsyncWriteBenchmark wf = new AsyncWriteBenchmark(cfg, Schedulers.parallel()) {
             @Override
             protected void onError(Throwable throwable) {
                 error.incrementAndGet();
@@ -153,7 +153,7 @@ public class WorkflowTest {
         AtomicInteger success = new AtomicInteger();
         AtomicInteger error = new AtomicInteger();
 
-        AsyncWriteBenchmark wf = new AsyncWriteBenchmark(cfg, new MetricRegistry()) {
+        AsyncWriteBenchmark wf = new AsyncWriteBenchmark(cfg, Schedulers.parallel()) {
             @Override
             protected void onError(Throwable throwable) {
                 error.incrementAndGet();
@@ -190,7 +190,7 @@ public class WorkflowTest {
         AtomicInteger success = new AtomicInteger();
         AtomicInteger error = new AtomicInteger();
 
-        AsyncReadBenchmark wf = new AsyncReadBenchmark(cfg, new MetricRegistry()) {
+        AsyncReadBenchmark wf = new AsyncReadBenchmark(cfg, Schedulers.parallel()) {
             @Override
             protected void onError(Throwable throwable) {
                 error.incrementAndGet();
@@ -227,7 +227,7 @@ public class WorkflowTest {
         AtomicInteger success = new AtomicInteger();
         AtomicInteger error = new AtomicInteger();
 
-        AsyncReadBenchmark wf = new AsyncReadBenchmark(cfg, new MetricRegistry()) {
+        AsyncReadBenchmark wf = new AsyncReadBenchmark(cfg, Schedulers.parallel()) {
             @Override
             protected void onError(Throwable throwable) {
                 error.incrementAndGet();

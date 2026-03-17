@@ -33,12 +33,8 @@ public final class ConfigurationsImpl implements Configurations {
         String configurationName, Context context) {
         Response<ConfigurationInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, clusterName, configurationName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ConfigurationImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ConfigurationImpl(inner.getValue(), this.manager()));
     }
 
     public Configuration get(String resourceGroupName, String clusterName, String configurationName) {
@@ -79,12 +75,8 @@ public final class ConfigurationsImpl implements Configurations {
         String configurationName, Context context) {
         Response<ServerConfigurationInner> inner
             = this.serviceClient().getNodeWithResponse(resourceGroupName, clusterName, configurationName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ServerConfigurationImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ServerConfigurationImpl(inner.getValue(), this.manager()));
     }
 
     public ServerConfiguration getNode(String resourceGroupName, String clusterName, String configurationName) {
@@ -123,12 +115,8 @@ public final class ConfigurationsImpl implements Configurations {
         String configurationName, Context context) {
         Response<ServerConfigurationInner> inner = this.serviceClient()
             .getCoordinatorWithResponse(resourceGroupName, clusterName, configurationName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ServerConfigurationImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ServerConfigurationImpl(inner.getValue(), this.manager()));
     }
 
     public ServerConfiguration getCoordinator(String resourceGroupName, String clusterName, String configurationName) {
