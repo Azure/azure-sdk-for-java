@@ -8,8 +8,8 @@
 
 #### `models.MhsmPrivateLinkResource` was modified
 
-* `tags()` was removed
 * `location()` was removed
+* `tags()` was removed
 
 ## 2.54.2 (2026-01-29)
 
