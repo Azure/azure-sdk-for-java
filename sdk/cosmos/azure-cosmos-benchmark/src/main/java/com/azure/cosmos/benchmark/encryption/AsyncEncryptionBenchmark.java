@@ -72,7 +72,7 @@ public abstract class AsyncEncryptionBenchmark<T> implements Benchmark {
     private CosmosAsyncDatabase cosmosAsyncDatabase;
     private Properties keyVaultProperties;
 
-    final Logger logger;
+    static final Logger logger = LoggerFactory.getLogger(AsyncEncryptionBenchmark.class);
     final CosmosAsyncClient cosmosClient;
 
     final String partitionKey;
@@ -92,7 +92,6 @@ public abstract class AsyncEncryptionBenchmark<T> implements Benchmark {
 
         workloadConfig = workloadCfg;
         this.benchmarkScheduler = scheduler;
-        logger = LoggerFactory.getLogger(this.getClass());
 
         final TokenCredential credential = workloadCfg.isManagedIdentityRequired()
             ? workloadCfg.buildTokenCredential()
