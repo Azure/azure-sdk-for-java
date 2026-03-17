@@ -53,8 +53,10 @@ import java.util.Objects;
     serviceClients = {
         AgentsClient.class,
         MemoryStoresClient.class,
+        ConversationsClient.class,
         AgentsAsyncClient.class,
-        MemoryStoresAsyncClient.class })
+        MemoryStoresAsyncClient.class,
+        ConversationsAsyncClient.class })
 public final class AgentsClientBuilder
     implements HttpTrait<AgentsClientBuilder>, ConfigurationTrait<AgentsClientBuilder>,
     TokenCredentialTrait<AgentsClientBuilder>, EndpointTrait<AgentsClientBuilder> {
@@ -425,5 +427,25 @@ public final class AgentsClientBuilder
     @Generated
     public AgentsClient buildAgentsClient() {
         return new AgentsClient(buildInnerClient().getAgents());
+    }
+
+    /**
+     * Builds an instance of ConversationsAsyncClient class.
+     *
+     * @return an instance of ConversationsAsyncClient.
+     */
+    @Generated
+    public ConversationsAsyncClient buildConversationsAsyncClient() {
+        return new ConversationsAsyncClient(buildInnerClient().getConversations());
+    }
+
+    /**
+     * Builds an instance of ConversationsClient class.
+     *
+     * @return an instance of ConversationsClient.
+     */
+    @Generated
+    public ConversationsClient buildConversationsClient() {
+        return new ConversationsClient(buildInnerClient().getConversations());
     }
 }

@@ -7,6 +7,7 @@ package com.azure.ai.agents;
 import com.azure.ai.agents.implementation.OpenAIJsonHelper;
 import com.azure.ai.agents.implementation.StreamingUtils;
 import com.azure.ai.agents.models.AgentReference;
+import com.azure.ai.agents.models.AzureCreateResponse;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.IterableStream;
 import com.openai.client.OpenAIClient;
@@ -109,6 +110,7 @@ public final class ResponsesClient {
     public Response createWithAgent(AgentReference agentReference) {
         return createWithAgent(agentReference, new ResponseCreateParams.Builder());
     }
+
 
     /**
      * Creates a streaming response with an agent.
