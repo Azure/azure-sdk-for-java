@@ -113,7 +113,7 @@ public final class ResponsesClient {
     /**
      * Creates a response using structured input values that are substituted into the agent's prompt template
      * at runtime. The keys in the {@code structuredInputs} map must match the structured input names declared
-     * on the agent's definition (via {@link StructuredInputDefinition}), and the values should conform to the
+     * on the agent's definition (via {@link com.azure.ai.agents.models.StructuredInputDefinition}), and the values should conform to the
      * schema and type expectations defined there.
      *
      * <p>For example, if the agent was created with structured inputs {@code "userName"} and {@code "userRole"},
@@ -171,7 +171,7 @@ public final class ResponsesClient {
     /**
      * Creates a streaming response using structured input values that are substituted into the agent's prompt
      * template at runtime. The keys in the {@code structuredInputs} map must match the structured input names
-     * declared on the agent's definition (via {@link StructuredInputDefinition}), and the values should conform
+     * declared on the agent's definition (via {@link com.azure.ai.agents.models.StructuredInputDefinition}), and the values should conform
      * to the schema and type expectations defined there.
      *
      * <p>For example, if the agent was created with structured inputs {@code "userName"} and {@code "userRole"},
