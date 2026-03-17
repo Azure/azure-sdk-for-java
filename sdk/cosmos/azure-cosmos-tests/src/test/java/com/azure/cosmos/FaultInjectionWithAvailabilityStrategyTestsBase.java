@@ -18,6 +18,7 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
+import org.testng.SkipException;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemIdentity;
@@ -4881,6 +4882,12 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
         boolean clearContainerBeforeExecution,
         ConnectionMode connectionMode,
         boolean shouldInjectPreferredRegionsInClient) {
+
+        // Thin client with HTTP/2 forces GATEWAY mode — DIRECT mode tests are not applicable
+        if (Configs.isThinClientEnabled() && Configs.isHttp2Enabled() && connectionMode == ConnectionMode.DIRECT) {
+            throw new SkipException(
+                "Skipping DIRECT mode test '" + testCaseId + "' — thin client with HTTP/2 forces GATEWAY mode");
+        }
 
         // Test two cases here:
         // - the endToEndOperationLatencyPolicyConfig is being configured on the client only
