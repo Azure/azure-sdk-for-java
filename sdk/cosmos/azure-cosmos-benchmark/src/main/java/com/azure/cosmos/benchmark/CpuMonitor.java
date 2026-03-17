@@ -24,6 +24,9 @@ final class CpuMonitor {
 
     private static final Logger logger = LoggerFactory.getLogger(CpuMonitor.class);
 
+    // Cached MXBean instance to avoid repeated lookups during polling
+    private static final OperatingSystemMXBean OS_BEAN = ManagementFactory.getOperatingSystemMXBean();
+
     // Cool-down defaults (internal, not user-configurable)
     private static final long MAX_WAIT_MS = 5 * 60 * 1_000; // 5 minutes
     private static final double CPU_THRESHOLD_DELTA = 0.10;   // baseline + 10%
@@ -34,12 +37,15 @@ final class CpuMonitor {
 
     /**
      * Captures the current process CPU load as a value between 0.0 and 1.0.
-     * Returns -1.0 if the metric is unavailable.
+     * Returns -1.0 if the metric is unavailable or NaN.
      */
     static double captureProcessCpuLoad() {
-        OperatingSystemMXBean osBean = ManagementFactory.getOperatingSystemMXBean();
-        if (osBean instanceof com.sun.management.OperatingSystemMXBean) {
-            double load = ((com.sun.management.OperatingSystemMXBean) osBean).getProcessCpuLoad();
+        if (OS_BEAN instanceof com.sun.management.OperatingSystemMXBean) {
+            double load = ((com.sun.management.OperatingSystemMXBean) OS_BEAN).getProcessCpuLoad();
+            if (Double.isNaN(load) || load < 0) {
+                logger.warn("[CpuMonitor] Process CPU load unavailable (returned {})", load);
+                return -1.0;
+            }
             logger.info("[CpuMonitor] Current process CPU load: {}", String.format("%.2f%%", load * 100));
             return load;
         }
@@ -114,9 +120,12 @@ final class CpuMonitor {
      * Internal helper — reads CPU without logging at INFO level to avoid log spam during polling.
      */
     private static double captureCurrentCpuLoadQuietly() {
-        OperatingSystemMXBean osBean = ManagementFactory.getOperatingSystemMXBean();
-        if (osBean instanceof com.sun.management.OperatingSystemMXBean) {
-            return ((com.sun.management.OperatingSystemMXBean) osBean).getProcessCpuLoad();
+        if (OS_BEAN instanceof com.sun.management.OperatingSystemMXBean) {
+            double load = ((com.sun.management.OperatingSystemMXBean) OS_BEAN).getProcessCpuLoad();
+            if (Double.isNaN(load) || load < 0) {
+                return -1.0;
+            }
+            return load;
         }
         return -1.0;
     }

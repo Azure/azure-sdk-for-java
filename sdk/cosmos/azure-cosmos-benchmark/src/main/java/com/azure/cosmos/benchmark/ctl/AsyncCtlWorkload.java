@@ -35,6 +35,7 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -72,6 +73,7 @@ public class AsyncCtlWorkload implements Benchmark {
 
     public AsyncCtlWorkload(TenantWorkloadConfig workloadCfg, Scheduler scheduler) {
         this.benchmarkScheduler = scheduler;
+        logger = LoggerFactory.getLogger(this.getClass());
 
         final TokenCredential credential = workloadCfg.isManagedIdentityRequired()
             ? workloadCfg.buildTokenCredential()
@@ -88,6 +90,9 @@ public class AsyncCtlWorkload implements Benchmark {
                 .contentResponseOnWriteEnabled(workloadCfg.isContentResponseOnWriteEnabled());
 
         if (workloadCfg.getConnectionMode().equals(ConnectionMode.DIRECT)) {
+            if (workloadCfg.isHttp2Enabled()) {
+                logger.warn("HTTP/2 is enabled but connection mode is DIRECT; HTTP/2 settings are only applied in GATEWAY mode and will be ignored");
+            }
             cosmosClientBuilder = cosmosClientBuilder.directMode(DirectConnectionConfig.getDefaultConfig());
         } else {
             GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
@@ -103,7 +108,6 @@ public class AsyncCtlWorkload implements Benchmark {
         }
         cosmosClient = cosmosClientBuilder.buildAsyncClient();
         workloadConfig = workloadCfg;
-        logger = LoggerFactory.getLogger(this.getClass());
 
         parsedReadWriteQueryReadManyPct(workloadConfig.getReadWriteQueryReadManyPct());
 
@@ -257,44 +261,45 @@ public class AsyncCtlWorkload implements Benchmark {
     private void createPrePopulatedDocs(int numberOfPreCreatedDocuments) {
         for (CosmosAsyncContainer container : containers) {
             List<PojoizedJson> generatedDocs = new ArrayList<>();
+            List<CosmosItemOperation> bulkOperations = new ArrayList<>();
 
-            Flux<CosmosItemOperation> bulkOperationFlux = Flux.range(0, numberOfPreCreatedDocuments)
-                .map(i -> {
-                    String uId = UUID.randomUUID().toString();
-                    PojoizedJson newDoc = BenchmarkHelper.generateDocument(uId,
-                        dataFieldValue,
-                        partitionKey,
-                        workloadConfig.getDocumentDataFieldCount());
-                    generatedDocs.add(newDoc);
-                    return CosmosBulkOperations.getCreateItemOperation(newDoc, new PartitionKey(uId));
-                });
+            for (int i = 0; i < numberOfPreCreatedDocuments; i++) {
+                String uId = UUID.randomUUID().toString();
+                PojoizedJson newDoc = BenchmarkHelper.generateDocument(uId,
+                    dataFieldValue,
+                    partitionKey,
+                    workloadConfig.getDocumentDataFieldCount());
+                generatedDocs.add(newDoc);
+                bulkOperations.add(CosmosBulkOperations.getCreateItemOperation(newDoc, new PartitionKey(uId)));
+            }
 
             AtomicLong successCount = new AtomicLong(0);
             AtomicLong failureCount = new AtomicLong(0);
-            List<CosmosBulkOperationResponse<Object>> failedResponses = new ArrayList<>();
+            List<CosmosBulkOperationResponse<Object>> failedResponses = Collections.synchronizedList(new ArrayList<>());
             CosmosBulkExecutionOptions bulkExecutionOptions = new CosmosBulkExecutionOptions();
-            container.executeBulkOperations(bulkOperationFlux, bulkExecutionOptions)
+            container.executeBulkOperations(Flux.fromIterable(bulkOperations), bulkExecutionOptions)
                 .doOnNext(response -> {
                     if (response.getResponse() != null && response.getResponse().isSuccessStatusCode()) {
                         successCount.incrementAndGet();
                     } else {
                         failureCount.incrementAndGet();
                         failedResponses.add(response);
-                        logger.error("Error during pre populating item {}",
+                        logger.debug("Error during pre populating item {}",
                             response.getException() != null ? response.getException().getMessage() : "unknown error");
                     }
                 })
                 .blockLast(Duration.ofMinutes(10));
 
-            BenchmarkHelper.retryFailedBulkOperations(failedResponses, container, partitionKey);
+            if (failureCount.get() > 0) {
+                logger.warn("Bulk pre-population encountered {} failures out of {} items for container {}",
+                    failureCount.get(), numberOfPreCreatedDocuments, container.getId());
+            }
+
+            BenchmarkHelper.retryFailedBulkOperations(failedResponses, container);
 
             docsToRead.put(container.getId(), generatedDocs);
             logger.info("Finished pre-populating {} documents for container {}",
                 successCount.get(), container.getId());
-            if (failureCount.get() > 0) {
-                logger.info("Failed pre-populating {} documents for container {}",
-                    failureCount.get(), container.getId());
-            }
         }
     }
 

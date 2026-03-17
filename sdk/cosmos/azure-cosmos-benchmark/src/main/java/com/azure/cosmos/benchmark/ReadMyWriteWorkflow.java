@@ -21,6 +21,7 @@ import reactor.util.retry.Retry;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -139,27 +140,27 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<PojoizedJson> {
     private void populateCache() {
         logger.info("PRE-populating {} documents ....", cacheSize);
         List<PojoizedJson> generatedDocs = new ArrayList<>();
+        List<CosmosItemOperation> bulkOperations = new ArrayList<>();
 
-        Flux<CosmosItemOperation> bulkOperationFlux = Flux.range(0, cacheSize)
-            .map(i -> {
-                String idString = UUID.randomUUID().toString();
-                String randomVal = UUID.randomUUID().toString();
-                PojoizedJson newDoc = new PojoizedJson();
-                newDoc.setProperty("id", idString);
-                newDoc.setProperty(partitionKey, idString);
-                newDoc.setProperty(QUERY_FIELD_NAME, randomVal);
-                newDoc.setProperty("dataField1", randomVal);
-                newDoc.setProperty("dataField2", randomVal);
-                newDoc.setProperty("dataField3", randomVal);
-                newDoc.setProperty("dataField4", randomVal);
-                generatedDocs.add(newDoc);
-                return CosmosBulkOperations.getCreateItemOperation(newDoc, new PartitionKey(idString));
-            });
+        for (int i = 0; i < cacheSize; i++) {
+            String idString = UUID.randomUUID().toString();
+            String randomVal = UUID.randomUUID().toString();
+            PojoizedJson newDoc = new PojoizedJson();
+            newDoc.setProperty("id", idString);
+            newDoc.setProperty(partitionKey, idString);
+            newDoc.setProperty(QUERY_FIELD_NAME, randomVal);
+            newDoc.setProperty("dataField1", randomVal);
+            newDoc.setProperty("dataField2", randomVal);
+            newDoc.setProperty("dataField3", randomVal);
+            newDoc.setProperty("dataField4", randomVal);
+            generatedDocs.add(newDoc);
+            bulkOperations.add(CosmosBulkOperations.getCreateItemOperation(newDoc, new PartitionKey(idString)));
+        }
 
         CosmosBulkExecutionOptions bulkExecutionOptions = new CosmosBulkExecutionOptions();
-        List<CosmosBulkOperationResponse<Object>> failedResponses = new ArrayList<>();
+        List<CosmosBulkOperationResponse<Object>> failedResponses = Collections.synchronizedList(new ArrayList<>());
         cosmosAsyncContainer
-            .executeBulkOperations(bulkOperationFlux, bulkExecutionOptions)
+            .executeBulkOperations(Flux.fromIterable(bulkOperations), bulkExecutionOptions)
             .doOnNext(response -> {
                 if (response.getResponse() == null || !response.getResponse().isSuccessStatusCode()) {
                     failedResponses.add(response);
@@ -167,7 +168,7 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<PojoizedJson> {
             })
             .blockLast(Duration.ofMinutes(10));
 
-        BenchmarkHelper.retryFailedBulkOperations(failedResponses, cosmosAsyncContainer, partitionKey);
+        BenchmarkHelper.retryFailedBulkOperations(failedResponses, cosmosAsyncContainer);
 
         for (int i = 0; i < generatedDocs.size(); i++) {
             cache.put(i, generatedDocs.get(i));

@@ -36,6 +36,7 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
@@ -122,6 +123,9 @@ abstract class AsyncBenchmark<T> implements Benchmark {
         benchmarkSpecificClientBuilder.clientTelemetryConfig(telemetryConfig);
 
         if (cfg.getConnectionMode().equals(ConnectionMode.DIRECT)) {
+            if (cfg.isHttp2Enabled()) {
+                logger.warn("HTTP/2 is enabled but connection mode is DIRECT; HTTP/2 settings are only applied in GATEWAY mode and will be ignored");
+            }
             benchmarkSpecificClientBuilder = benchmarkSpecificClientBuilder.directMode(DirectConnectionConfig.getDefaultConfig());
         } else {
             GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
@@ -201,22 +205,22 @@ abstract class AsyncBenchmark<T> implements Benchmark {
             logger.info("PRE-populating {} documents ....", cfg.getNumberOfPreCreatedDocuments());
             String dataFieldValue = RandomStringUtils.randomAlphabetic(cfg.getDocumentDataFieldSize());
             List<PojoizedJson> generatedDocs = new ArrayList<>();
+            List<CosmosItemOperation> bulkOperations = new ArrayList<>();
 
-            Flux<CosmosItemOperation> bulkOperationFlux = Flux.range(0, cfg.getNumberOfPreCreatedDocuments())
-                .map(i -> {
-                    String uuid = UUID.randomUUID().toString();
-                    PojoizedJson newDoc = BenchmarkHelper.generateDocument(uuid,
-                        dataFieldValue,
-                        partitionKey,
-                        cfg.getDocumentDataFieldCount());
-                    generatedDocs.add(newDoc);
-                    return CosmosBulkOperations.getCreateItemOperation(newDoc, new PartitionKey(uuid));
-                });
+            for (int i = 0; i < cfg.getNumberOfPreCreatedDocuments(); i++) {
+                String uuid = UUID.randomUUID().toString();
+                PojoizedJson newDoc = BenchmarkHelper.generateDocument(uuid,
+                    dataFieldValue,
+                    partitionKey,
+                    cfg.getDocumentDataFieldCount());
+                generatedDocs.add(newDoc);
+                bulkOperations.add(CosmosBulkOperations.getCreateItemOperation(newDoc, new PartitionKey(uuid)));
+            }
 
             CosmosBulkExecutionOptions bulkExecutionOptions = new CosmosBulkExecutionOptions();
-            List<CosmosBulkOperationResponse<Object>> failedResponses = new ArrayList<>();
+            List<CosmosBulkOperationResponse<Object>> failedResponses = Collections.synchronizedList(new ArrayList<>());
             cosmosAsyncContainer
-                .executeBulkOperations(bulkOperationFlux, bulkExecutionOptions)
+                .executeBulkOperations(Flux.fromIterable(bulkOperations), bulkExecutionOptions)
                 .doOnNext(response -> {
                     if (response.getResponse() == null || !response.getResponse().isSuccessStatusCode()) {
                         failedResponses.add(response);
@@ -224,7 +228,7 @@ abstract class AsyncBenchmark<T> implements Benchmark {
                 })
                 .blockLast(Duration.ofMinutes(10));
 
-            BenchmarkHelper.retryFailedBulkOperations(failedResponses, cosmosAsyncContainer, partitionKey);
+            BenchmarkHelper.retryFailedBulkOperations(failedResponses, cosmosAsyncContainer);
 
             docsToRead = generatedDocs;
         } else {

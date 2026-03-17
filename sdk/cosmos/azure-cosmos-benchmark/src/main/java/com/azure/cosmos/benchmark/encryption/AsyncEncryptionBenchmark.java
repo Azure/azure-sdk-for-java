@@ -53,6 +53,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 import java.util.UUID;
@@ -91,6 +92,7 @@ public abstract class AsyncEncryptionBenchmark<T> implements Benchmark {
 
         workloadConfig = workloadCfg;
         this.benchmarkScheduler = scheduler;
+        logger = LoggerFactory.getLogger(this.getClass());
 
         final TokenCredential credential = workloadCfg.isManagedIdentityRequired()
             ? workloadCfg.buildTokenCredential()
@@ -107,6 +109,9 @@ public abstract class AsyncEncryptionBenchmark<T> implements Benchmark {
                 .contentResponseOnWriteEnabled(workloadCfg.isContentResponseOnWriteEnabled());
 
         if (workloadCfg.getConnectionMode().equals(ConnectionMode.DIRECT)) {
+            if (workloadCfg.isHttp2Enabled()) {
+                logger.warn("HTTP/2 is enabled but connection mode is DIRECT; HTTP/2 settings are only applied in GATEWAY mode and will be ignored");
+            }
             cosmosClientBuilder = cosmosClientBuilder.directMode(DirectConnectionConfig.getDefaultConfig());
         } else {
             GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
@@ -122,7 +127,6 @@ public abstract class AsyncEncryptionBenchmark<T> implements Benchmark {
         }
         cosmosClient = cosmosClientBuilder.buildAsyncClient();
         cosmosEncryptionAsyncClient = createEncryptionClientInstance(cosmosClient);
-        logger = LoggerFactory.getLogger(this.getClass());
         createEncryptionDatabaseAndContainer();
         partitionKey = cosmosAsyncContainer.read().block().getProperties().getPartitionKeyDefinition()
             .getPaths().iterator().next().split("/")[1];
@@ -131,31 +135,31 @@ public abstract class AsyncEncryptionBenchmark<T> implements Benchmark {
             logger.info("PRE-populating {} documents ....", workloadCfg.getNumberOfPreCreatedDocuments());
             String dataFieldValue = RandomStringUtils.randomAlphabetic(workloadCfg.getDocumentDataFieldSize());
             List<PojoizedJson> generatedDocs = new ArrayList<>();
+            List<CosmosItemOperation> bulkOperations = new ArrayList<>();
 
-            Flux<CosmosItemOperation> bulkOperationFlux = Flux.range(0, workloadCfg.getNumberOfPreCreatedDocuments())
-                .map(i -> {
-                    String uuid = UUID.randomUUID().toString();
-                    PojoizedJson newDoc = BenchmarkHelper.generateDocument(uuid,
-                        dataFieldValue,
-                        partitionKey,
-                        workloadConfig.getDocumentDataFieldCount());
-                    for (int j = 1; j <= workloadCfg.getEncryptedStringFieldCount(); j++) {
-                        newDoc.setProperty(ENCRYPTED_STRING_FIELD + j, uuid);
-                    }
-                    for (int j = 1; j <= workloadCfg.getEncryptedLongFieldCount(); j++) {
-                        newDoc.setProperty(ENCRYPTED_LONG_FIELD + j, 1234l);
-                    }
-                    for (int j = 1; j <= workloadCfg.getEncryptedDoubleFieldCount(); j++) {
-                        newDoc.setProperty(ENCRYPTED_DOUBLE_FIELD + j, 1234.01d);
-                    }
-                    generatedDocs.add(newDoc);
-                    return CosmosBulkOperations.getCreateItemOperation(newDoc, new PartitionKey(uuid));
-                });
+            for (int i = 0; i < workloadCfg.getNumberOfPreCreatedDocuments(); i++) {
+                String uuid = UUID.randomUUID().toString();
+                PojoizedJson newDoc = BenchmarkHelper.generateDocument(uuid,
+                    dataFieldValue,
+                    partitionKey,
+                    workloadConfig.getDocumentDataFieldCount());
+                for (int j = 1; j <= workloadCfg.getEncryptedStringFieldCount(); j++) {
+                    newDoc.setProperty(ENCRYPTED_STRING_FIELD + j, uuid);
+                }
+                for (int j = 1; j <= workloadCfg.getEncryptedLongFieldCount(); j++) {
+                    newDoc.setProperty(ENCRYPTED_LONG_FIELD + j, 1234L);
+                }
+                for (int j = 1; j <= workloadCfg.getEncryptedDoubleFieldCount(); j++) {
+                    newDoc.setProperty(ENCRYPTED_DOUBLE_FIELD + j, 1234.01d);
+                }
+                generatedDocs.add(newDoc);
+                bulkOperations.add(CosmosBulkOperations.getCreateItemOperation(newDoc, new PartitionKey(uuid)));
+            }
 
             CosmosBulkExecutionOptions bulkExecutionOptions = new CosmosBulkExecutionOptions();
-            List<CosmosBulkOperationResponse<Object>> failedResponses = new ArrayList<>();
+            List<CosmosBulkOperationResponse<Object>> failedResponses = Collections.synchronizedList(new ArrayList<>());
             cosmosEncryptionAsyncContainer
-                .executeBulkOperations(bulkOperationFlux, bulkExecutionOptions)
+                .executeBulkOperations(Flux.fromIterable(bulkOperations), bulkExecutionOptions)
                 .doOnNext(response -> {
                     if (response.getResponse() == null || !response.getResponse().isSuccessStatusCode()) {
                         failedResponses.add(response);
@@ -163,7 +167,8 @@ public abstract class AsyncEncryptionBenchmark<T> implements Benchmark {
                 })
                 .blockLast(Duration.ofMinutes(10));
 
-            BenchmarkHelper.retryFailedBulkOperations(failedResponses, cosmosAsyncContainer, partitionKey);
+            BenchmarkHelper.retryFailedBulkOperations(failedResponses,
+                (item, pk) -> cosmosEncryptionAsyncContainer.createItem(item, pk, null).then());
 
             docsToRead = generatedDocs;
         } else {

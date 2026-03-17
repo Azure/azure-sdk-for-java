@@ -13,6 +13,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -42,10 +43,18 @@ public class TenantWorkloadConfigApplyFieldTest {
         }
 
         // Parse the source file to find all case "..." entries in applyField
-        Path sourceFile = Paths.get("src/main/java/com/azure/cosmos/benchmark/TenantWorkloadConfig.java");
-        String source = new String(Files.readAllBytes(sourceFile));
+        String basedir = System.getProperty("basedir", System.getProperty("user.dir"));
+        Path sourceFile = Paths.get(basedir, "src/main/java/com/azure/cosmos/benchmark/TenantWorkloadConfig.java");
+        String source = new String(Files.readAllBytes(sourceFile), StandardCharsets.UTF_8);
+        // Extract the applyField method body to avoid matching case statements from other switches
+        int applyFieldStart = source.indexOf("void applyField(");
+        if (applyFieldStart < 0) {
+            applyFieldStart = source.indexOf("applyField(String");
+        }
+        String applyFieldSource = applyFieldStart >= 0 ? source.substring(applyFieldStart) : source;
+
         Set<String> caseNames = new HashSet<>();
-        Matcher matcher = Pattern.compile("case\\s+\"([^\"]+)\"").matcher(source);
+        Matcher matcher = Pattern.compile("case\\s+\"([^\"]+)\"").matcher(applyFieldSource);
         while (matcher.find()) {
             caseNames.add(matcher.group(1));
         }

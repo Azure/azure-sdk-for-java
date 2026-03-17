@@ -6,6 +6,7 @@ package com.azure.cosmos.benchmark;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiFunction;
 
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosException;
@@ -48,15 +49,30 @@ public class BenchmarkHelper {
     /**
      * Retries failed bulk operation responses by falling back to individual createItem calls.
      * Ignores 409 (Conflict) errors since the document already exists.
+     * Re-throws all other errors after retries are exhausted.
      *
      * @param failedResponses list of failed bulk operation responses
      * @param container the container to retry against
-     * @param partitionKeyName the partition key property name
      */
     public static <TContext> void retryFailedBulkOperations(
         List<CosmosBulkOperationResponse<TContext>> failedResponses,
-        CosmosAsyncContainer container,
-        String partitionKeyName) {
+        CosmosAsyncContainer container) {
+
+        retryFailedBulkOperations(failedResponses,
+            (item, pk) -> container.createItem(item, pk, null).then());
+    }
+
+    /**
+     * Retries failed bulk operation responses using a custom create function.
+     * Ignores 409 (Conflict) errors since the document already exists.
+     * Re-throws all other errors after retries are exhausted.
+     *
+     * @param failedResponses list of failed bulk operation responses
+     * @param createFunction a function that creates an item given the item and partition key
+     */
+    public static <TContext> void retryFailedBulkOperations(
+        List<CosmosBulkOperationResponse<TContext>> failedResponses,
+        BiFunction<PojoizedJson, PartitionKey, Mono<Void>> createFunction) {
 
         if (failedResponses.isEmpty()) {
             return;
@@ -70,7 +86,7 @@ public class BenchmarkHelper {
                 PojoizedJson item = operation.getItem();
                 PartitionKey pk = operation.getPartitionKeyValue();
 
-                return container.createItem(item, pk, null)
+                return createFunction.apply(item, pk)
                     .retryWhen(Retry.max(5).filter(error -> {
                         if (!(error instanceof CosmosException)) {
                             return false;
@@ -87,8 +103,7 @@ public class BenchmarkHelper {
                             && ((CosmosException) error).getStatusCode() == 409) {
                             return Mono.empty();
                         }
-                        logger.error("Failed to create item on retry: {}", error.getMessage());
-                        return Mono.empty();
+                        return Mono.error(error);
                     });
             }, 100)
             .blockLast(Duration.ofMinutes(10));

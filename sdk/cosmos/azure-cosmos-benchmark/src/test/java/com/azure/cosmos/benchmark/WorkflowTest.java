@@ -99,7 +99,7 @@ public class WorkflowTest {
     }
 
     @Test(dataProvider = "collectionLinkTypeArgProvider", groups = "fast", timeOut = TIMEOUT)
-    public void writeLatency(boolean useNameLink) throws Exception {
+    public void writeThroughputWithDataProvider(boolean useNameLink) throws Exception {
         int numberOfOperations = 123;
 
         TenantWorkloadConfig cfg = new TenantWorkloadConfig();
@@ -173,7 +173,7 @@ public class WorkflowTest {
     }
 
     @Test(dataProvider = "collectionLinkTypeArgProvider", groups = "fast", timeOut = TIMEOUT)
-    public void readLatency(boolean useNameLink) throws Exception {
+    public void readThroughputWithDataProvider(boolean useNameLink) throws Exception {
         int numberOfOperations = 123;
 
         TenantWorkloadConfig cfg = new TenantWorkloadConfig();

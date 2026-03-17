@@ -18,6 +18,7 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.ThroughputProperties;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
@@ -184,13 +185,39 @@ abstract class SyncBenchmark<T> implements Benchmark {
                             workloadCfg.getDocumentDataFieldCount());
                     CompletableFuture<PojoizedJson> futureResult = CompletableFuture.supplyAsync(() -> {
 
-                        try {
-                            CosmosItemResponse<PojoizedJson> itemResponse = cosmosContainer.createItem(newDoc);
-                            return toPojoizedJson(itemResponse);
-
-                        } catch (Exception e) {
-                            throw propagate(e);
+                        int maxRetries = 5;
+                        for (int attempt = 0; attempt <= maxRetries; attempt++) {
+                            try {
+                                CosmosItemResponse<PojoizedJson> itemResponse = cosmosContainer.createItem(newDoc);
+                                return toPojoizedJson(itemResponse);
+                            } catch (CosmosException ce) {
+                                if (ce.getStatusCode() == 409) {
+                                    // conflict — document already exists, read it back
+                                    try {
+                                        return cosmosContainer.readItem(
+                                            uuid, new PartitionKey(uuid), PojoizedJson.class).getItem();
+                                    } catch (Exception readEx) {
+                                        throw propagate(readEx);
+                                    }
+                                }
+                                int statusCode = ce.getStatusCode();
+                                boolean isTransient = statusCode == 408 || statusCode == 410
+                                    || statusCode == 429 || statusCode == 500 || statusCode == 503;
+                                if (isTransient && attempt < maxRetries) {
+                                    try {
+                                        Thread.sleep(1000L * (attempt + 1));
+                                    } catch (InterruptedException ie) {
+                                        Thread.currentThread().interrupt();
+                                        throw propagate(ce);
+                                    }
+                                    continue;
+                                }
+                                throw propagate(ce);
+                            } catch (Exception e) {
+                                throw propagate(e);
+                            }
                         }
+                        throw new RuntimeException("Exhausted retries for createItem");
 
                     }, executorService);
 
