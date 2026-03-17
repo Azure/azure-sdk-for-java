@@ -111,6 +111,46 @@ public final class ResponsesClient {
         return createWithAgent(agentReference, new ResponseCreateParams.Builder());
     }
 
+    /**
+     * Creates a response using Azure-specific properties.
+     *
+     * <p>The properties from {@link AzureCreateResponse} (e.g., {@code agent_reference},
+     * {@code structured_inputs}) are flattened into the request body as top-level fields
+     * alongside the standard OpenAI parameters.</p>
+     *
+     * @param createResponse The Azure-specific create response properties.
+     * @param params The parameters to create the response.
+     * @return The created Response.
+     */
+    public Response createAzureResponse(AzureCreateResponse createResponse, ResponseCreateParams.Builder params) {
+        Objects.requireNonNull(createResponse, "createResponse cannot be null");
+        Objects.requireNonNull(params, "params cannot be null");
+
+        Map<String, JsonValue> additionalBodyProperties = OpenAIJsonHelper.toJsonValueMap(createResponse);
+        params.additionalBodyProperties(additionalBodyProperties);
+        return this.responseService.create(params.build());
+    }
+
+    /**
+     * Creates a streaming response using Azure-specific properties.
+     *
+     * <p>The properties from {@link AzureCreateResponse} (e.g., {@code agent_reference},
+     * {@code structured_inputs}) are flattened into the request body as top-level fields
+     * alongside the standard OpenAI parameters.</p>
+     *
+     * @param createResponse The Azure-specific create response properties.
+     * @param params The parameters to create the response.
+     * @return An IterableStream of ResponseStreamEvent.
+     */
+    public IterableStream<ResponseStreamEvent> createStreamingAzureResponse(AzureCreateResponse createResponse,
+        ResponseCreateParams.Builder params) {
+        Objects.requireNonNull(createResponse, "createResponse cannot be null");
+        Objects.requireNonNull(params, "params cannot be null");
+
+        Map<String, JsonValue> additionalBodyProperties = OpenAIJsonHelper.toJsonValueMap(createResponse);
+        params.additionalBodyProperties(additionalBodyProperties);
+        return StreamingUtils.toIterableStream(this.responseService.createStreaming(params.build()));
+    }
 
     /**
      * Creates a streaming response with an agent.
