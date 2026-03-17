@@ -681,13 +681,15 @@ public class BlobBaseAsyncApiTests extends BlobTestBase {
         blob1.upload(DATA.getDefaultBinaryData()).then(blob1.setAccessTier(AccessTier.SMART)).block();
         blob2.upload(DATA.getDefaultBinaryData()).then(blob2.setAccessTier(AccessTier.SMART)).block();
 
-        ccAsync.listBlobs().concatMap(blobItem -> {
-            if (blobItem.getName().equals(blobName1) || blobItem.getName().equals(blobName2)) {
-                assertEquals(AccessTier.SMART, blobItem.getProperties().getAccessTier());
-                assertNotNull(blobItem.getProperties().getSmartAccessTier());
-            }
-            return Mono.empty();
-        });
+        StepVerifier.create(
+                ccAsync.listBlobs().concatMap(blobItem -> {
+                    if (blobItem.getName().equals(blobName1) || blobItem.getName().equals(blobName2)) {
+                        assertEquals(AccessTier.SMART, blobItem.getProperties().getAccessTier());
+                        assertNotNull(blobItem.getProperties().getSmartAccessTier());
+                    }
+                    return Mono.empty();
+                }))
+            .verifyComplete();
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
@@ -723,11 +725,12 @@ public class BlobBaseAsyncApiTests extends BlobTestBase {
             .then(blob2.setAccessTierWithResponse(options))
             .block();
 
-        ccAsync.listBlobs().concatMap(blobItem -> {
+        StepVerifier.create(ccAsync.listBlobs().concatMap(blobItem -> {
             if (blobItem.getName().equals(blobName1) || blobItem.getName().equals(blobName2)) {
                 assertEquals(REHYDRATE_PENDING_TO_SMART, blobItem.getProperties().getArchiveStatus());
             }
             return Mono.empty();
-        });
+        }))
+            .verifyComplete();
     }
 }
