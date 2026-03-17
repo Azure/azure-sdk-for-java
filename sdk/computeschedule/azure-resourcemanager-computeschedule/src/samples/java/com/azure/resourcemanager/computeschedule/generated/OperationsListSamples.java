@@ -9,7 +9,7 @@ package com.azure.resourcemanager.computeschedule.generated;
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2025-04-15-preview/Operations_List_MinimumSet_Gen.json
+     * x-ms-original-file: 2026-03-01-preview/Operations_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: Operations_List_MinimumSet.
@@ -22,7 +22,7 @@ public final class OperationsListSamples {
     }
 
     /*
-     * x-ms-original-file: 2025-04-15-preview/Operations_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-01-preview/Operations_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: Operations_List_MaximumSet.

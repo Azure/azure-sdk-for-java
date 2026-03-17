@@ -9,7 +9,7 @@ package com.azure.resourcemanager.computeschedule.generated;
  */
 public final class ScheduledActionsListResourcesSamples {
     /*
-     * x-ms-original-file: 2025-04-15-preview/ScheduledActions_ListResources_MaximumSet_Gen.json
+     * x-ms-original-file: 2026-03-01-preview/ScheduledActions_ListResources_MaximumSet_Gen.json
      */
     /**
      * Sample code: ScheduledActions_ListResources_MaximumSet.
@@ -19,6 +19,6 @@ public final class ScheduledActionsListResourcesSamples {
     public static void scheduledActionsListResourcesMaximumSet(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
-            .listResources("rgcomputeschedule", "myScheduledAction", com.azure.core.util.Context.NONE);
+            .listResources("rgcomputeschedule", "scheduled-action-01", com.azure.core.util.Context.NONE);
     }
 }

@@ -24,7 +24,7 @@ public final class ScheduledActionsListResourcesMockTests {
     @Test
     public void testListResources() throws Exception {
         String responseStr
-            = "{\"value\":[{\"name\":\"yrnxxmueedn\",\"id\":\"rdvstkwqqtch\",\"type\":\"lmfmtdaay\",\"resourceId\":\"dvwvgpio\",\"notificationSettings\":[{\"destination\":\"xrtfudxep\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":true}]}]}";
+            = "{\"value\":[{\"name\":\"hkh\",\"id\":\"zxkhnzbonlwnto\",\"type\":\"okdwb\",\"resourceId\":\"hksz\",\"notificationSettings\":[{\"destination\":\"rvexztvb\",\"type\":\"Email\",\"language\":\"en-us\",\"disabled\":false}]}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,14 +33,14 @@ public final class ScheduledActionsListResourcesMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<ScheduledActionResource> response
-            = manager.scheduledActions().listResources("v", "vvcnayr", com.azure.core.util.Context.NONE);
+        PagedIterable<ScheduledActionResource> response = manager.scheduledActions()
+            .listResources("ybxarzgszu", "oxciqopidoamcio", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("dvwvgpio", response.iterator().next().resourceId());
-        Assertions.assertEquals("xrtfudxep", response.iterator().next().notificationSettings().get(0).destination());
+        Assertions.assertEquals("hksz", response.iterator().next().resourceId());
+        Assertions.assertEquals("rvexztvb", response.iterator().next().notificationSettings().get(0).destination());
         Assertions.assertEquals(NotificationType.EMAIL,
             response.iterator().next().notificationSettings().get(0).type());
         Assertions.assertEquals(Language.EN_US, response.iterator().next().notificationSettings().get(0).language());
-        Assertions.assertTrue(response.iterator().next().notificationSettings().get(0).disabled());
+        Assertions.assertFalse(response.iterator().next().notificationSettings().get(0).disabled());
     }
 }

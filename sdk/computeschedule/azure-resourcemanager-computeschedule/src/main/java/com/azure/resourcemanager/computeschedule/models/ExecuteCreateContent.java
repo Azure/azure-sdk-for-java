@@ -15,7 +15,7 @@ import java.io.IOException;
  * The ExecuteCreateRequest request for create operations.
  */
 @Fluent
-public final class ExecuteCreateRequest implements JsonSerializable<ExecuteCreateRequest> {
+public final class ExecuteCreateContent implements JsonSerializable<ExecuteCreateContent> {
     /*
      * resource creation payload
      */
@@ -32,9 +32,9 @@ public final class ExecuteCreateRequest implements JsonSerializable<ExecuteCreat
     private String correlationid;
 
     /**
-     * Creates an instance of ExecuteCreateRequest class.
+     * Creates an instance of ExecuteCreateContent class.
      */
-    public ExecuteCreateRequest() {
+    public ExecuteCreateContent() {
     }
 
     /**
@@ -50,9 +50,9 @@ public final class ExecuteCreateRequest implements JsonSerializable<ExecuteCreat
      * Set the resourceConfigParameters property: resource creation payload.
      * 
      * @param resourceConfigParameters the resourceConfigParameters value to set.
-     * @return the ExecuteCreateRequest object itself.
+     * @return the ExecuteCreateContent object itself.
      */
-    public ExecuteCreateRequest withResourceConfigParameters(ResourceProvisionPayload resourceConfigParameters) {
+    public ExecuteCreateContent withResourceConfigParameters(ResourceProvisionPayload resourceConfigParameters) {
         this.resourceConfigParameters = resourceConfigParameters;
         return this;
     }
@@ -70,9 +70,9 @@ public final class ExecuteCreateRequest implements JsonSerializable<ExecuteCreat
      * Set the executionParameters property: The execution parameters for the request.
      * 
      * @param executionParameters the executionParameters value to set.
-     * @return the ExecuteCreateRequest object itself.
+     * @return the ExecuteCreateContent object itself.
      */
-    public ExecuteCreateRequest withExecutionParameters(ExecutionParameters executionParameters) {
+    public ExecuteCreateContent withExecutionParameters(ExecutionParameters executionParameters) {
         this.executionParameters = executionParameters;
         return this;
     }
@@ -90,9 +90,9 @@ public final class ExecuteCreateRequest implements JsonSerializable<ExecuteCreat
      * Set the correlationid property: CorrelationId item.
      * 
      * @param correlationid the correlationid value to set.
-     * @return the ExecuteCreateRequest object itself.
+     * @return the ExecuteCreateContent object itself.
      */
-    public ExecuteCreateRequest withCorrelationid(String correlationid) {
+    public ExecuteCreateContent withCorrelationid(String correlationid) {
         this.correlationid = correlationid;
         return this;
     }
@@ -110,34 +110,34 @@ public final class ExecuteCreateRequest implements JsonSerializable<ExecuteCreat
     }
 
     /**
-     * Reads an instance of ExecuteCreateRequest from the JsonReader.
+     * Reads an instance of ExecuteCreateContent from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ExecuteCreateRequest if the JsonReader was pointing to an instance of it, or null if it
+     * @return An instance of ExecuteCreateContent if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ExecuteCreateRequest.
+     * @throws IOException If an error occurs while reading the ExecuteCreateContent.
      */
-    public static ExecuteCreateRequest fromJson(JsonReader jsonReader) throws IOException {
+    public static ExecuteCreateContent fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ExecuteCreateRequest deserializedExecuteCreateRequest = new ExecuteCreateRequest();
+            ExecuteCreateContent deserializedExecuteCreateContent = new ExecuteCreateContent();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("resourceConfigParameters".equals(fieldName)) {
-                    deserializedExecuteCreateRequest.resourceConfigParameters
+                    deserializedExecuteCreateContent.resourceConfigParameters
                         = ResourceProvisionPayload.fromJson(reader);
                 } else if ("executionParameters".equals(fieldName)) {
-                    deserializedExecuteCreateRequest.executionParameters = ExecutionParameters.fromJson(reader);
+                    deserializedExecuteCreateContent.executionParameters = ExecutionParameters.fromJson(reader);
                 } else if ("correlationid".equals(fieldName)) {
-                    deserializedExecuteCreateRequest.correlationid = reader.getString();
+                    deserializedExecuteCreateContent.correlationid = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedExecuteCreateRequest;
+            return deserializedExecuteCreateContent;
         });
     }
 }

@@ -217,7 +217,7 @@ public final class ComputeScheduleMgmtClientImpl implements ComputeScheduleMgmtC
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-04-15-preview";
+        this.apiVersion = "2026-03-01-preview";
         this.operations = new OperationsClientImpl(this);
         this.scheduledActions = new ScheduledActionsClientImpl(this);
         this.scheduledActionExtensions = new ScheduledActionExtensionsClientImpl(this);
