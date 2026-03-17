@@ -59,8 +59,8 @@ public final class CustomCallingContext {
      */
     CustomCallingContext(Map<String, String> sipHeaders, Map<String, String> voipHeaders,
         TeamsPhoneCallDetails teamsPhoneCallDetails) {
-        this.sipHeaders = sipHeaders;
-        this.voipHeaders = voipHeaders;
+        this.sipHeaders = sipHeaders == null ? new HashMap<>() : sipHeaders;
+        this.voipHeaders = voipHeaders == null ? new HashMap<>() : voipHeaders;
         this.teamsPhoneCallDetails = teamsPhoneCallDetails;
         this.logger = new ClientLogger(CustomCallingContext.class);
     }
