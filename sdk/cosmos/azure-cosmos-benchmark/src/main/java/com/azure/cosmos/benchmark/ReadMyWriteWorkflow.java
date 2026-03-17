@@ -140,7 +140,6 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<PojoizedJson> {
     private void populateCache() {
         logger.info("PRE-populating {} documents ....", cacheSize);
         List<PojoizedJson> generatedDocs = new ArrayList<>();
-        List<CosmosItemOperation> bulkOperations = new ArrayList<>();
 
         for (int i = 0; i < cacheSize; i++) {
             String idString = UUID.randomUUID().toString();
@@ -154,13 +153,15 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<PojoizedJson> {
             newDoc.setProperty("dataField3", randomVal);
             newDoc.setProperty("dataField4", randomVal);
             generatedDocs.add(newDoc);
-            bulkOperations.add(CosmosBulkOperations.getCreateItemOperation(newDoc, new PartitionKey(idString)));
         }
 
         CosmosBulkExecutionOptions bulkExecutionOptions = new CosmosBulkExecutionOptions();
         List<CosmosBulkOperationResponse<Object>> failedResponses = Collections.synchronizedList(new ArrayList<>());
         cosmosAsyncContainer
-            .executeBulkOperations(Flux.fromIterable(bulkOperations), bulkExecutionOptions)
+            .executeBulkOperations(
+                Flux.fromIterable(generatedDocs)
+                    .map(doc -> CosmosBulkOperations.getCreateItemOperation(doc, new PartitionKey(doc.getId()))),
+                bulkExecutionOptions)
             .doOnNext(response -> {
                 if (response.getResponse() == null || !response.getResponse().isSuccessStatusCode()) {
                     failedResponses.add(response);

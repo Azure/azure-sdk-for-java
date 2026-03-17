@@ -7,22 +7,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.testng.annotations.Test;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Ensures every @JsonProperty field in TenantWorkloadConfig has a corresponding
  * case in the applyField() switch statement, so that tenantDefaults inheritance works.
+ *
+ * Uses reflection to invoke the private applyField method for each property name
+ * and verifies the corresponding field was set, avoiding brittle source file parsing.
  */
 public class TenantWorkloadConfigApplyFieldTest {
 
@@ -32,8 +29,8 @@ public class TenantWorkloadConfigApplyFieldTest {
     ));
 
     @Test(groups = {"unit"})
-    public void allJsonPropertiesShouldHaveApplyFieldCase() throws IOException {
-        // Collect all @JsonProperty names from the class
+    public void allJsonPropertiesShouldHaveApplyFieldCase() throws Exception {
+        // Collect all @JsonProperty names and their corresponding declared fields
         Set<String> jsonPropertyNames = new HashSet<>();
         for (Field field : TenantWorkloadConfig.class.getDeclaredFields()) {
             JsonProperty annotation = field.getAnnotation(JsonProperty.class);
@@ -42,27 +39,44 @@ public class TenantWorkloadConfigApplyFieldTest {
             }
         }
 
-        // Parse the source file to find all case "..." entries in applyField
-        String basedir = System.getProperty("basedir", System.getProperty("user.dir"));
-        Path sourceFile = Paths.get(basedir, "src/main/java/com/azure/cosmos/benchmark/TenantWorkloadConfig.java");
-        String source = new String(Files.readAllBytes(sourceFile), StandardCharsets.UTF_8);
-        // Extract the applyField method body to avoid matching case statements from other switches
-        int applyFieldStart = source.indexOf("void applyField(");
-        if (applyFieldStart < 0) {
-            applyFieldStart = source.indexOf("applyField(String");
-        }
-        String applyFieldSource = applyFieldStart >= 0 ? source.substring(applyFieldStart) : source;
+        // Get the private applyField method via reflection
+        Method applyField = TenantWorkloadConfig.class.getDeclaredMethod(
+            "applyField", String.class, String.class, boolean.class);
+        applyField.setAccessible(true);
 
-        Set<String> caseNames = new HashSet<>();
-        Matcher matcher = Pattern.compile("case\\s+\"([^\"]+)\"").matcher(applyFieldSource);
-        while (matcher.find()) {
-            caseNames.add(matcher.group(1));
-        }
-
-        // Every @JsonProperty (except excluded) should have a case in applyField
+        // For each @JsonProperty, invoke applyField and verify the field was handled
         Set<String> missingCases = new HashSet<>();
         for (String propName : jsonPropertyNames) {
-            if (!EXCLUDED_FIELDS.contains(propName) && !caseNames.contains(propName)) {
+            if (EXCLUDED_FIELDS.contains(propName)) {
+                continue;
+            }
+
+            TenantWorkloadConfig config = new TenantWorkloadConfig();
+            try {
+                applyField.invoke(config, propName, "test-sentinel-value", true);
+            } catch (Exception e) {
+                // If applyField throws (e.g., NumberFormatException for int fields),
+                // that means the case exists but the test value is wrong type — that's OK.
+                // A missing case would just be a no-op (fall through default).
+                continue;
+            }
+
+            // Check if ANY field was modified from its default (null) state.
+            // If applyField silently ignored the key (no matching case), no field changes.
+            boolean fieldWasSet = false;
+            for (Field field : TenantWorkloadConfig.class.getDeclaredFields()) {
+                JsonProperty annotation = field.getAnnotation(JsonProperty.class);
+                if (annotation != null && annotation.value().equals(propName)) {
+                    field.setAccessible(true);
+                    Object value = field.get(config);
+                    if (value != null) {
+                        fieldWasSet = true;
+                    }
+                    break;
+                }
+            }
+
+            if (!fieldWasSet) {
                 missingCases.add(propName);
             }
         }

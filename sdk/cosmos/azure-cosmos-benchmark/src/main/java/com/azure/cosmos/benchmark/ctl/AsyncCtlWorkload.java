@@ -90,9 +90,6 @@ public class AsyncCtlWorkload implements Benchmark {
                 .contentResponseOnWriteEnabled(workloadCfg.isContentResponseOnWriteEnabled());
 
         if (workloadCfg.getConnectionMode().equals(ConnectionMode.DIRECT)) {
-            if (workloadCfg.isHttp2Enabled()) {
-                logger.warn("HTTP/2 is enabled but connection mode is DIRECT; HTTP/2 settings are only applied in GATEWAY mode and will be ignored");
-            }
             cosmosClientBuilder = cosmosClientBuilder.directMode(DirectConnectionConfig.getDefaultConfig());
         } else {
             GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
@@ -261,7 +258,6 @@ public class AsyncCtlWorkload implements Benchmark {
     private void createPrePopulatedDocs(int numberOfPreCreatedDocuments) {
         for (CosmosAsyncContainer container : containers) {
             List<PojoizedJson> generatedDocs = new ArrayList<>();
-            List<CosmosItemOperation> bulkOperations = new ArrayList<>();
 
             for (int i = 0; i < numberOfPreCreatedDocuments; i++) {
                 String uId = UUID.randomUUID().toString();
@@ -270,14 +266,16 @@ public class AsyncCtlWorkload implements Benchmark {
                     partitionKey,
                     workloadConfig.getDocumentDataFieldCount());
                 generatedDocs.add(newDoc);
-                bulkOperations.add(CosmosBulkOperations.getCreateItemOperation(newDoc, new PartitionKey(uId)));
             }
 
             AtomicLong successCount = new AtomicLong(0);
             AtomicLong failureCount = new AtomicLong(0);
             List<CosmosBulkOperationResponse<Object>> failedResponses = Collections.synchronizedList(new ArrayList<>());
             CosmosBulkExecutionOptions bulkExecutionOptions = new CosmosBulkExecutionOptions();
-            container.executeBulkOperations(Flux.fromIterable(bulkOperations), bulkExecutionOptions)
+            container.executeBulkOperations(
+                    Flux.fromIterable(generatedDocs)
+                        .map(doc -> CosmosBulkOperations.getCreateItemOperation(doc, new PartitionKey(doc.getId()))),
+                    bulkExecutionOptions)
                 .doOnNext(response -> {
                     if (response.getResponse() != null && response.getResponse().isSuccessStatusCode()) {
                         successCount.incrementAndGet();

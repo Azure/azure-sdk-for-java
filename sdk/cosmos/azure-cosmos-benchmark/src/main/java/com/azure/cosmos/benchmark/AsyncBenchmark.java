@@ -123,9 +123,6 @@ abstract class AsyncBenchmark<T> implements Benchmark {
         benchmarkSpecificClientBuilder.clientTelemetryConfig(telemetryConfig);
 
         if (cfg.getConnectionMode().equals(ConnectionMode.DIRECT)) {
-            if (cfg.isHttp2Enabled()) {
-                logger.warn("HTTP/2 is enabled but connection mode is DIRECT; HTTP/2 settings are only applied in GATEWAY mode and will be ignored");
-            }
             benchmarkSpecificClientBuilder = benchmarkSpecificClientBuilder.directMode(DirectConnectionConfig.getDefaultConfig());
         } else {
             GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
@@ -205,7 +202,6 @@ abstract class AsyncBenchmark<T> implements Benchmark {
             logger.info("PRE-populating {} documents ....", cfg.getNumberOfPreCreatedDocuments());
             String dataFieldValue = RandomStringUtils.randomAlphabetic(cfg.getDocumentDataFieldSize());
             List<PojoizedJson> generatedDocs = new ArrayList<>();
-            List<CosmosItemOperation> bulkOperations = new ArrayList<>();
 
             for (int i = 0; i < cfg.getNumberOfPreCreatedDocuments(); i++) {
                 String uuid = UUID.randomUUID().toString();
@@ -214,13 +210,15 @@ abstract class AsyncBenchmark<T> implements Benchmark {
                     partitionKey,
                     cfg.getDocumentDataFieldCount());
                 generatedDocs.add(newDoc);
-                bulkOperations.add(CosmosBulkOperations.getCreateItemOperation(newDoc, new PartitionKey(uuid)));
             }
 
             CosmosBulkExecutionOptions bulkExecutionOptions = new CosmosBulkExecutionOptions();
             List<CosmosBulkOperationResponse<Object>> failedResponses = Collections.synchronizedList(new ArrayList<>());
             cosmosAsyncContainer
-                .executeBulkOperations(Flux.fromIterable(bulkOperations), bulkExecutionOptions)
+                .executeBulkOperations(
+                    Flux.fromIterable(generatedDocs)
+                        .map(doc -> CosmosBulkOperations.getCreateItemOperation(doc, new PartitionKey(doc.getId()))),
+                    bulkExecutionOptions)
                 .doOnNext(response -> {
                     if (response.getResponse() == null || !response.getResponse().isSuccessStatusCode()) {
                         failedResponses.add(response);
