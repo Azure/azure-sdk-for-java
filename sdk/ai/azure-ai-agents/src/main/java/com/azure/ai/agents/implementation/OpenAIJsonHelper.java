@@ -3,6 +3,7 @@
 
 package com.azure.ai.agents.implementation;
 
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -91,5 +92,49 @@ public final class OpenAIJsonHelper {
             return null;
         }
         return openAIObjects.stream().map(obj -> toAzureType(obj, fromJson)).collect(Collectors.toList());
+    }
+
+    // AI Tooling: openai-java de-dup
+
+    /**
+     * Serializes an openai-java object to {@link BinaryData} whose content is a JSON object.
+     * The resulting BinaryData can be written to a {@link com.azure.json.JsonWriter} via
+     * {@code binaryData.writeTo(jsonWriter)} and will produce a JSON object, not a quoted string.
+     *
+     * @param openAIObject the openai-java object to serialize.
+     * @return BinaryData containing the JSON representation, or null if the input is null.
+     */
+    public static BinaryData toBinaryData(Object openAIObject) {
+        if (openAIObject == null) {
+            return null;
+        }
+        try {
+            String json = MAPPER.writeValueAsString(openAIObject);
+            try (JsonReader reader = JsonProviders.createReader(new StringReader(json))) {
+                reader.nextToken();
+                return BinaryData.fromObject(reader.readUntyped());
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to convert OpenAI type to BinaryData", e);
+        }
+    }
+
+    /**
+     * Deserializes {@link BinaryData} to an openai-java type using the openai-java ObjectMapper.
+     *
+     * @param data the BinaryData containing JSON.
+     * @param type the target openai-java class.
+     * @param <T> the target type.
+     * @return the deserialized openai-java object, or null if the input is null.
+     */
+    public static <T> T fromBinaryData(BinaryData data, Class<T> type) {
+        if (data == null) {
+            return null;
+        }
+        try {
+            return MAPPER.readValue(data.toString(), type);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to deserialize BinaryData to OpenAI type", e);
+        }
     }
 }

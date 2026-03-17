@@ -301,7 +301,7 @@ Connect agents to external MCP servers:
 // Uses gitmcp.io to expose a GitHub repository as an MCP-compatible server
 McpTool tool = new McpTool("api-specs")
     .setServerUrl("https://gitmcp.io/Azure/azure-rest-api-specs")
-    .setRequireApproval(BinaryData.fromObject("always"));
+    .setRequireApproval("always");
 ```
 
 See the full sample in [McpSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/McpSync.java).
@@ -536,7 +536,7 @@ MCP integration using project-specific connections for accessing connected MCP s
 McpTool mcpTool = new McpTool("api-specs")
     .setServerUrl("https://api.githubcopilot.com/mcp")
     .setProjectConnectionId(mcpConnectionId)
-    .setRequireApproval(BinaryData.fromObject("always"));
+    .setRequireApproval("always");
 ```
 
 See the full sample in [McpWithConnectionSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/McpWithConnectionSync.java).
@@ -559,6 +559,67 @@ OpenApiTool openApiTool = new OpenApiTool(
 ```
 
 See the full sample in [OpenApiWithConnectionSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/OpenApiWithConnectionSync.java).
+
+---
+
+### Streaming responses
+
+The `ResponsesClient` and `ResponsesAsyncClient` support streaming, which allows you to process response events as they arrive rather than waiting for the full response. This is useful for displaying text to users in real time and observing tool execution progress.
+
+#### Synchronous streaming
+
+The synchronous streaming methods return `IterableStream<ResponseStreamEvent>`, which can be consumed with a standard for-each loop. Use the `ResponseAccumulator` from the OpenAI SDK to collect events into a final `Response`:
+
+```java com.azure.ai.agents.streaming.simple_sync
+// Use ResponseAccumulator to collect streamed events into a final Response
+ResponseAccumulator responseAccumulator = ResponseAccumulator.create();
+
+// Stream response - text is printed as it arrives
+IterableStream<ResponseStreamEvent> events =
+    responsesClient.createStreamingWithAgent(agentReference,
+        ResponseCreateParams.builder()
+            .input("Tell me a short story about a brave explorer."));
+
+for (ResponseStreamEvent event : events) {
+    responseAccumulator.accumulate(event);
+    event.outputTextDelta()
+        .ifPresent(textEvent -> System.out.print(textEvent.delta()));
+}
+System.out.println(); // newline after streamed text
+
+// Access the complete accumulated response
+Response response = responseAccumulator.response();
+System.out.println("\nResponse ID: " + response.id());
+```
+
+See the full samples in [SimpleStreamingSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/streaming/SimpleStreamingSync.java), [FunctionCallStreamingSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/streaming/FunctionCallStreamingSync.java), and [CodeInterpreterStreamingSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/streaming/CodeInterpreterStreamingSync.java).
+
+#### Asynchronous streaming
+
+The asynchronous streaming methods return `Flux<ResponseStreamEvent>`, integrating naturally with Reactor pipelines:
+
+```java com.azure.ai.agents.streaming.simple_async
+// Use ResponseAccumulator to collect streamed events into a final Response
+ResponseAccumulator responseAccumulator = ResponseAccumulator.create();
+
+// Stream response asynchronously - text is printed as each chunk arrives
+return responsesAsyncClient.createStreamingWithAgent(agentReference,
+        ResponseCreateParams.builder()
+            .input("Tell me a short story about a brave explorer."))
+    .doOnNext(event -> {
+        responseAccumulator.accumulate(event);
+        event.outputTextDelta()
+            .ifPresent(textEvent -> System.out.print(textEvent.delta()));
+    })
+    .then(Mono.fromCallable(() -> {
+        System.out.println(); // newline after streamed text
+
+        // Access the complete accumulated response
+        Response response = responseAccumulator.response();
+        System.out.println("\nResponse ID: " + response.id());
+```
+
+See the full samples in [SimpleStreamingAsync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/streaming/SimpleStreamingAsync.java), [FunctionCallStreamingAsync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/streaming/FunctionCallStreamingAsync.java), and [CodeInterpreterStreamingAsync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/streaming/CodeInterpreterStreamingAsync.java).
 
 ---
 

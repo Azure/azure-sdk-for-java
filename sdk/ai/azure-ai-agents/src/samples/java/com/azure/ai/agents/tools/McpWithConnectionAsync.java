@@ -10,7 +10,6 @@ import com.azure.ai.agents.models.AgentReference;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.McpTool;
 import com.azure.ai.agents.models.PromptAgentDefinition;
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.openai.models.responses.ResponseCreateParams;
@@ -53,7 +52,7 @@ public class McpWithConnectionAsync {
         McpTool mcpTool = new McpTool("api-specs")
             .setServerUrl("https://api.githubcopilot.com/mcp")
             .setProjectConnectionId(mcpConnectionId)
-            .setRequireApproval(BinaryData.fromObject("always"));
+            .setRequireApproval("always");
 
         PromptAgentDefinition agentDefinition = new PromptAgentDefinition(model)
             .setInstructions("Use MCP tools as needed")
