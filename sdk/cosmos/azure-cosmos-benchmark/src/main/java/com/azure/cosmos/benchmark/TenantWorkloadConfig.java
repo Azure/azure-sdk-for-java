@@ -329,7 +329,19 @@ public class TenantWorkloadConfig {
 
     public ConsistencyLevel getConsistencyLevel() {
         if (consistencyLevel == null) return ConsistencyLevel.SESSION;
-        return ConsistencyLevel.valueOf(consistencyLevel.toUpperCase());
+
+        // Try enum name first (e.g., "SESSION", "BOUNDED_STALENESS")
+        try {
+            return ConsistencyLevel.valueOf(consistencyLevel.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            // Fall back to wire format (e.g., "BoundedStaleness", "ConsistentPrefix")
+            for (ConsistencyLevel cl : ConsistencyLevel.values()) {
+                if (cl.toString().equalsIgnoreCase(consistencyLevel)) {
+                    return cl;
+                }
+            }
+            throw new IllegalArgumentException("Unknown ConsistencyLevel: " + consistencyLevel, e);
+        }
     }
 
     public int getMaxConnectionPoolSize() { return maxConnectionPoolSize != null ? maxConnectionPoolSize : 1000; }
