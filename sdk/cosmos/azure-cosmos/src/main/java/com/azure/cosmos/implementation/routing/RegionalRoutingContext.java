@@ -51,9 +51,6 @@ public class RegionalRoutingContext {
 
     @Override
     public String toString() {
-        return "RegionalRoutingContext{" +
-            "gatewayRegionalEndpoint=" + gatewayRegionalEndpointAsString +
-            ", thinclientRegionalEndpoint=" + thinclientRegionalEndpointAsString +
-            '}';
+        return gatewayRegionalEndpointAsString;
     }
 }
