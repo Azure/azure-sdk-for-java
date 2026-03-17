@@ -3163,6 +3163,7 @@ public final class ManagedNamespacesCreateOrUpdateSamples {
         com.azure.resourcemanager.containerservice.generated.ContainerServiceManager manager) {
         manager.managedNamespaces()
             .define("namespace1")
+            .withRegion("eastus2")
             .withExistingManagedCluster("rg1", "clustername1")
             .withTags(mapOf("tagKey1", "fakeTokenPlaceholder"))
             .withProperties(new NamespaceProperties().withLabels(mapOf("kubernetes.io/metadata.name", "true"))

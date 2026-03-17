@@ -23,7 +23,7 @@ public final class SnapshotsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"creationData\":{\"sourceResourceId\":\"gcvkyyli\"},\"snapshotType\":\"NodePool\",\"kubernetesVersion\":\"jpsfxsfu\",\"nodeImageVersion\":\"lvt\",\"osType\":\"Linux\",\"osSku\":\"AzureLinux3\",\"vmSize\":\"idqlvhu\",\"enableFIPS\":false},\"location\":\"ofizrvjfnmjmvlwy\",\"tags\":{\"uyjucejikzo\":\"blkujrllfojuidjp\",\"ikyju\":\"ovvtzejetjkln\"},\"id\":\"k\",\"name\":\"bqzolxr\",\"type\":\"vhqjwtrhtgvg\"}]}";
+            = "{\"value\":[{\"properties\":{\"creationData\":{\"sourceResourceId\":\"xd\"},\"snapshotType\":\"NodePool\",\"kubernetesVersion\":\"zusg\",\"nodeImageVersion\":\"ln\",\"osType\":\"Linux\",\"osSku\":\"Ubuntu2404\",\"vmSize\":\"pafolp\",\"enableFIPS\":true},\"location\":\"mxq\",\"tags\":{\"lejchcsr\":\"gpgdphtvdulaj\",\"vnphc\":\"zknmzlanrupd\"},\"id\":\"zqtpjhmq\",\"name\":\"hvthlaiwdcxsm\",\"type\":\"zzhz\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,9 +34,9 @@ public final class SnapshotsListMockTests {
 
         PagedIterable<Snapshot> response = manager.snapshots().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ofizrvjfnmjmvlwy", response.iterator().next().location());
-        Assertions.assertEquals("blkujrllfojuidjp", response.iterator().next().tags().get("uyjucejikzo"));
-        Assertions.assertEquals("gcvkyyli", response.iterator().next().creationData().sourceResourceId());
+        Assertions.assertEquals("mxq", response.iterator().next().location());
+        Assertions.assertEquals("gpgdphtvdulaj", response.iterator().next().tags().get("lejchcsr"));
+        Assertions.assertEquals("xd", response.iterator().next().creationData().sourceResourceId());
         Assertions.assertEquals(SnapshotType.NODE_POOL, response.iterator().next().snapshotType());
     }
 }

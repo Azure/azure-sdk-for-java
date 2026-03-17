@@ -22,7 +22,7 @@ public final class PrivateEndpointConnectionsListWithResponseMockTests {
     @Test
     public void testListWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"privateEndpoint\":{\"id\":\"dbwnu\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"xkumasjcaac\"}},\"id\":\"mmcpug\",\"name\":\"ehqepvufhbzehe\",\"type\":\"hoqhnl\"},{\"properties\":{\"provisioningState\":\"Creating\",\"privateEndpoint\":{\"id\":\"xeaclgsc\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"mkrsrrmoucsofl\"}},\"id\":\"uviyfcaabeo\",\"name\":\"hbhlvbm\",\"type\":\"uqibsxtkcu\"},{\"properties\":{\"provisioningState\":\"Canceled\",\"privateEndpoint\":{\"id\":\"rfsiowlkjxn\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"gf\"}},\"id\":\"mhqykizmdksa\",\"name\":\"afclu\",\"type\":\"v\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Creating\",\"privateEndpoint\":{\"id\":\"sydsxwefohe\"},\"privateLinkServiceConnectionState\":{\"status\":\"Disconnected\",\"description\":\"pwndyqlea\"}},\"id\":\"klmtkhlowkx\",\"name\":\"pvbrdfjmzsyz\",\"type\":\"hotlhikcyychunsj\"},{\"properties\":{\"provisioningState\":\"Canceled\",\"privateEndpoint\":{\"id\":\"szhv\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"phvtrrmhwrb\"}},\"id\":\"pyf\",\"name\":\"ubhvj\",\"type\":\"lrocuyzlwh\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +32,12 @@ public final class PrivateEndpointConnectionsListWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrivateEndpointConnectionListResult response = manager.privateEndpointConnections()
-            .listWithResponse("shbraga", "yyrmfsvbp", com.azure.core.util.Context.NONE)
+            .listWithResponse("v", "xmycjimryvwgcw", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("dbwnu", response.value().get(0).privateEndpoint().id());
-        Assertions.assertEquals(ConnectionStatus.APPROVED,
+        Assertions.assertEquals("sydsxwefohe", response.value().get(0).privateEndpoint().id());
+        Assertions.assertEquals(ConnectionStatus.DISCONNECTED,
             response.value().get(0).privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("xkumasjcaac",
-            response.value().get(0).privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("pwndyqlea", response.value().get(0).privateLinkServiceConnectionState().description());
     }
 }

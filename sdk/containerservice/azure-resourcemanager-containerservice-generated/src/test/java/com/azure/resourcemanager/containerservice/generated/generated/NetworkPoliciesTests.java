@@ -12,18 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class NetworkPoliciesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NetworkPolicies model = BinaryData.fromString("{\"ingress\":\"AllowAll\",\"egress\":\"AllowAll\"}")
+        NetworkPolicies model = BinaryData.fromString("{\"ingress\":\"AllowAll\",\"egress\":\"DenyAll\"}")
             .toObject(NetworkPolicies.class);
         Assertions.assertEquals(PolicyRule.ALLOW_ALL, model.ingress());
-        Assertions.assertEquals(PolicyRule.ALLOW_ALL, model.egress());
+        Assertions.assertEquals(PolicyRule.DENY_ALL, model.egress());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkPolicies model
-            = new NetworkPolicies().withIngress(PolicyRule.ALLOW_ALL).withEgress(PolicyRule.ALLOW_ALL);
+        NetworkPolicies model = new NetworkPolicies().withIngress(PolicyRule.ALLOW_ALL).withEgress(PolicyRule.DENY_ALL);
         model = BinaryData.fromObject(model).toObject(NetworkPolicies.class);
         Assertions.assertEquals(PolicyRule.ALLOW_ALL, model.ingress());
-        Assertions.assertEquals(PolicyRule.ALLOW_ALL, model.egress());
+        Assertions.assertEquals(PolicyRule.DENY_ALL, model.egress());
     }
 }

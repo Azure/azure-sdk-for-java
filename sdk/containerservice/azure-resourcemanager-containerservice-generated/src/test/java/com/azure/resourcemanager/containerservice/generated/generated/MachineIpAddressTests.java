@@ -11,6 +11,6 @@ public final class MachineIpAddressTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MachineIpAddress model
-            = BinaryData.fromString("{\"family\":\"IPv4\",\"ip\":\"nmacj\"}").toObject(MachineIpAddress.class);
+            = BinaryData.fromString("{\"family\":\"IPv4\",\"ip\":\"hzovaj\"}").toObject(MachineIpAddress.class);
     }
 }

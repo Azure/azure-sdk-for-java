@@ -20,8 +20,10 @@ public final class ManagedNamespaceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedNamespaceInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Creating\",\"labels\":{\"lo\":\"kxw\",\"vuzlm\":\"bq\"},\"annotations\":{\"noigbrnjwmwk\":\"lfktgplcrpwjxe\"},\"portalFqdn\":\"bsazejjoqka\",\"defaultResourceQuota\":{\"cpuRequest\":\"sxtta\",\"cpuLimit\":\"zxnfaaz\",\"memoryRequest\":\"dtnkdmkq\",\"memoryLimit\":\"lwuenvrkp\"},\"defaultNetworkPolicy\":{\"ingress\":\"DenyAll\",\"egress\":\"AllowSameNamespace\"},\"adoptionPolicy\":\"IfIdentical\",\"deletePolicy\":\"Delete\"},\"tags\":{\"wfff\":\"ysjkixqtnqttez\",\"mjihyeozphv\":\"akpjpqqmtedlt\",\"p\":\"auyqncygupkv\",\"totxhojujb\":\"dscwxqupevzhf\"},\"location\":\"elmcuvhixbjxyfw\",\"eTag\":\"lrcoolsttpki\",\"id\":\"kbnujr\",\"name\":\"wvtylbfpncurdo\",\"type\":\"wiithtywub\"}")
+            "{\"properties\":{\"provisioningState\":\"Creating\",\"labels\":{\"lo\":\"kxw\",\"vuzlm\":\"bq\"},\"annotations\":{\"noigbrnjwmwk\":\"lfktgplcrpwjxe\"},\"portalFqdn\":\"bsazejjoqka\",\"defaultResourceQuota\":{\"cpuRequest\":\"sxtta\",\"cpuLimit\":\"zxnfaaz\",\"memoryRequest\":\"dtnkdmkq\",\"memoryLimit\":\"lwuenvrkp\"},\"defaultNetworkPolicy\":{\"ingress\":\"DenyAll\",\"egress\":\"AllowSameNamespace\"},\"adoptionPolicy\":\"IfIdentical\",\"deletePolicy\":\"Delete\"},\"eTag\":\"aysjkixqtnqttez\",\"location\":\"fffiak\",\"tags\":{\"yeozphvwauyqncy\":\"qqmtedltmmji\",\"xqupevzhf\":\"upkvipmdsc\"},\"id\":\"totxhojujb\",\"name\":\"pelmcuvhixbjxyf\",\"type\":\"n\"}")
             .toObject(ManagedNamespaceInner.class);
+        Assertions.assertEquals("fffiak", model.location());
+        Assertions.assertEquals("qqmtedltmmji", model.tags().get("yeozphvwauyqncy"));
         Assertions.assertEquals("kxw", model.properties().labels().get("lo"));
         Assertions.assertEquals("lfktgplcrpwjxe", model.properties().annotations().get("noigbrnjwmwk"));
         Assertions.assertEquals("sxtta", model.properties().defaultResourceQuota().cpuRequest());
@@ -32,13 +34,12 @@ public final class ManagedNamespaceInnerTests {
         Assertions.assertEquals(PolicyRule.ALLOW_SAME_NAMESPACE, model.properties().defaultNetworkPolicy().egress());
         Assertions.assertEquals(AdoptionPolicy.IF_IDENTICAL, model.properties().adoptionPolicy());
         Assertions.assertEquals(DeletePolicy.DELETE, model.properties().deletePolicy());
-        Assertions.assertEquals("ysjkixqtnqttez", model.tags().get("wfff"));
-        Assertions.assertEquals("elmcuvhixbjxyfw", model.location());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedNamespaceInner model = new ManagedNamespaceInner()
+        ManagedNamespaceInner model = new ManagedNamespaceInner().withLocation("fffiak")
+            .withTags(mapOf("yeozphvwauyqncy", "qqmtedltmmji", "xqupevzhf", "upkvipmdsc"))
             .withProperties(new NamespaceProperties().withLabels(mapOf("lo", "kxw", "vuzlm", "bq"))
                 .withAnnotations(mapOf("noigbrnjwmwk", "lfktgplcrpwjxe"))
                 .withDefaultResourceQuota(new ResourceQuota().withCpuRequest("sxtta")
@@ -48,11 +49,10 @@ public final class ManagedNamespaceInnerTests {
                 .withDefaultNetworkPolicy(
                     new NetworkPolicies().withIngress(PolicyRule.DENY_ALL).withEgress(PolicyRule.ALLOW_SAME_NAMESPACE))
                 .withAdoptionPolicy(AdoptionPolicy.IF_IDENTICAL)
-                .withDeletePolicy(DeletePolicy.DELETE))
-            .withTags(mapOf("wfff", "ysjkixqtnqttez", "mjihyeozphv", "akpjpqqmtedlt", "p", "auyqncygupkv", "totxhojujb",
-                "dscwxqupevzhf"))
-            .withLocation("elmcuvhixbjxyfw");
+                .withDeletePolicy(DeletePolicy.DELETE));
         model = BinaryData.fromObject(model).toObject(ManagedNamespaceInner.class);
+        Assertions.assertEquals("fffiak", model.location());
+        Assertions.assertEquals("qqmtedltmmji", model.tags().get("yeozphvwauyqncy"));
         Assertions.assertEquals("kxw", model.properties().labels().get("lo"));
         Assertions.assertEquals("lfktgplcrpwjxe", model.properties().annotations().get("noigbrnjwmwk"));
         Assertions.assertEquals("sxtta", model.properties().defaultResourceQuota().cpuRequest());
@@ -63,8 +63,6 @@ public final class ManagedNamespaceInnerTests {
         Assertions.assertEquals(PolicyRule.ALLOW_SAME_NAMESPACE, model.properties().defaultNetworkPolicy().egress());
         Assertions.assertEquals(AdoptionPolicy.IF_IDENTICAL, model.properties().adoptionPolicy());
         Assertions.assertEquals(DeletePolicy.DELETE, model.properties().deletePolicy());
-        Assertions.assertEquals("ysjkixqtnqttez", model.tags().get("wfff"));
-        Assertions.assertEquals("elmcuvhixbjxyfw", model.location());
     }
 
     // Use "Map.of" if available

@@ -22,7 +22,7 @@ public final class TrustedAccessRoleBindingsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"sourceResourceId\":\"th\",\"roles\":[\"n\"]},\"id\":\"aoyankcoeqswa\",\"name\":\"kltytmhdroz\",\"type\":\"nhd\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"sourceResourceId\":\"tspphkixkykxdssj\",\"roles\":[\"mmuc\",\"xhikkflrmymyin\"]},\"id\":\"lhrisw\",\"name\":\"lmiiiovg\",\"type\":\"cgxuugqkctotiowl\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +32,13 @@ public final class TrustedAccessRoleBindingsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         TrustedAccessRoleBinding response = manager.trustedAccessRoleBindings()
-            .define("gkkumuikjcj")
-            .withExistingManagedCluster("gddeimaw", "o")
-            .withSourceResourceId("tbw")
-            .withRoles(Arrays.asList("sqowxwc"))
+            .define("ewbidyvteowxv")
+            .withExistingManagedCluster("srlsmd", "sqplpvmjcd")
+            .withSourceResourceId("udeugfsxz")
+            .withRoles(Arrays.asList("paxwkufyk"))
             .create();
 
-        Assertions.assertEquals("th", response.sourceResourceId());
-        Assertions.assertEquals("n", response.roles().get(0));
+        Assertions.assertEquals("tspphkixkykxdssj", response.sourceResourceId());
+        Assertions.assertEquals("mmuc", response.roles().get(0));
     }
 }

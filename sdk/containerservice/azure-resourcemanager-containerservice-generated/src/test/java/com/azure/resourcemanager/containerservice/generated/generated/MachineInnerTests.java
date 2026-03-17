@@ -11,7 +11,7 @@ public final class MachineInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MachineInner model = BinaryData.fromString(
-            "{\"properties\":{\"network\":{\"ipAddresses\":[{\"family\":\"IPv6\",\"ip\":\"qubkw\"},{\"family\":\"IPv4\",\"ip\":\"rds\"},{\"family\":\"IPv6\",\"ip\":\"bazpjuohmi\"}]},\"resourceId\":\"flnorwmduvwp\"},\"zones\":[\"xwmygdxpgpqc\",\"isze\"],\"id\":\"nb\",\"name\":\"crxgibb\",\"type\":\"axconfozauo\"}")
+            "{\"properties\":{\"network\":{\"ipAddresses\":[{\"family\":\"IPv4\",\"ip\":\"vyvnqqyb\"},{\"family\":\"IPv4\",\"ip\":\"uayjkqa\"}]},\"resourceId\":\"gzslesjcbhernnti\"},\"zones\":[\"jcvb\"],\"id\":\"wr\",\"name\":\"ehwagoh\",\"type\":\"uffkmrqemvvh\"}")
             .toObject(MachineInner.class);
     }
 }

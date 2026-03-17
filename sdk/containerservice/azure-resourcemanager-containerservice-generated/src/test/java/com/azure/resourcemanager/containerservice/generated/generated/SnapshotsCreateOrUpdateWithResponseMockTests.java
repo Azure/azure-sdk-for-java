@@ -25,7 +25,7 @@ public final class SnapshotsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"creationData\":{\"sourceResourceId\":\"c\"},\"snapshotType\":\"NodePool\",\"kubernetesVersion\":\"zzhz\",\"nodeImageVersion\":\"xetlgydlhqv\",\"osType\":\"Windows\",\"osSku\":\"Windows2019\",\"vmSize\":\"b\",\"enableFIPS\":false},\"location\":\"geaar\",\"tags\":{\"ulidwc\":\"ekglklb\",\"nfhjirwgdnqzbr\":\"vmzegj\",\"igsxcdgljplk\":\"kspzhzmtksjcit\"},\"id\":\"ua\",\"name\":\"htomflrytswfp\",\"type\":\"mdgycxn\"}";
+            = "{\"properties\":{\"creationData\":{\"sourceResourceId\":\"ovyrrleaesinu\"},\"snapshotType\":\"NodePool\",\"kubernetesVersion\":\"qobbpihehcec\",\"nodeImageVersion\":\"mrqbrjbbmpxdlv\",\"osType\":\"Windows\",\"osSku\":\"Ubuntu\",\"vmSize\":\"crse\",\"enableFIPS\":false},\"location\":\"s\",\"tags\":{\"gsv\":\"dgzhxogj\",\"kxibdafh\":\"u\",\"y\":\"kmdyomkxfbvfbh\"},\"id\":\"rhpw\",\"name\":\"gddeimaw\",\"type\":\"o\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,17 +35,17 @@ public final class SnapshotsCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Snapshot response = manager.snapshots()
-            .define("lawjmjsmwrok")
-            .withRegion("qzr")
-            .withExistingResourceGroup("pcrrk")
-            .withTags(mapOf("vl", "gdphtvdula"))
-            .withCreationData(new CreationData().withSourceResourceId("zzzwy"))
+            .define("qvlnnpxybafiqgea")
+            .withRegion("tdigsxcdglj")
+            .withExistingResourceGroup("txetlgydl")
+            .withTags(mapOf("ytswfp", "euachtomfl", "skw", "mdgycxn", "shhkvpedw", "qjjyslurl"))
+            .withCreationData(new CreationData().withSourceResourceId("jekglklbyuli"))
             .withSnapshotType(SnapshotType.NODE_POOL)
             .create();
 
-        Assertions.assertEquals("geaar", response.location());
-        Assertions.assertEquals("ekglklb", response.tags().get("ulidwc"));
-        Assertions.assertEquals("c", response.creationData().sourceResourceId());
+        Assertions.assertEquals("s", response.location());
+        Assertions.assertEquals("dgzhxogj", response.tags().get("gsv"));
+        Assertions.assertEquals("ovyrrleaesinu", response.creationData().sourceResourceId());
         Assertions.assertEquals(SnapshotType.NODE_POOL, response.snapshotType());
     }
 

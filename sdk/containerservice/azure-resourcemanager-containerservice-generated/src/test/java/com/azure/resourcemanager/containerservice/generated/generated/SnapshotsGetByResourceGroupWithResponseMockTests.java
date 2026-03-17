@@ -22,7 +22,7 @@ public final class SnapshotsGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"creationData\":{\"sourceResourceId\":\"ydsx\"},\"snapshotType\":\"NodePool\",\"kubernetesVersion\":\"hecbvopwndyq\",\"nodeImageVersion\":\"allklmtkhlowk\",\"osType\":\"Windows\",\"osSku\":\"Ubuntu\",\"vmSize\":\"dfjmzsyzfhotlh\",\"enableFIPS\":true},\"location\":\"ychunsjlpjrtwszh\",\"tags\":{\"bfdpyflubhv\":\"icphvtrrmhw\"},\"id\":\"glrocuy\",\"name\":\"lw\",\"type\":\"hmem\"}";
+            = "{\"properties\":{\"creationData\":{\"sourceResourceId\":\"mykyujxsglhs\"},\"snapshotType\":\"NodePool\",\"kubernetesVersion\":\"ejylmbkzu\",\"nodeImageVersion\":\"igrfihotjewl\",\"osType\":\"Windows\",\"osSku\":\"Ubuntu\",\"vmSize\":\"gnrefqyhqo\",\"enableFIPS\":true},\"location\":\"iqakydiwfbr\",\"tags\":{\"vhcspodaqaxsip\":\"zdq\",\"oichdlpnfpubnt\":\"etgbebjfulb\",\"aelcat\":\"batzviqsows\"},\"id\":\"cjuhplrvkm\",\"name\":\"cwmjvlg\",\"type\":\"ggcvk\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,12 @@ public final class SnapshotsGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Snapshot response = manager.snapshots()
-            .getByResourceGroupWithResponse("xmycjimryvwgcw", "pbmz", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("memhooclutnpq", "emc", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ychunsjlpjrtwszh", response.location());
-        Assertions.assertEquals("icphvtrrmhw", response.tags().get("bfdpyflubhv"));
-        Assertions.assertEquals("ydsx", response.creationData().sourceResourceId());
+        Assertions.assertEquals("iqakydiwfbr", response.location());
+        Assertions.assertEquals("zdq", response.tags().get("vhcspodaqaxsip"));
+        Assertions.assertEquals("mykyujxsglhs", response.creationData().sourceResourceId());
         Assertions.assertEquals(SnapshotType.NODE_POOL, response.snapshotType());
     }
 }

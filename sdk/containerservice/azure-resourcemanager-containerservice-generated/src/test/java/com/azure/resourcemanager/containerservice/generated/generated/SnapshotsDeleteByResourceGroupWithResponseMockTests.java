@@ -27,8 +27,7 @@ public final class SnapshotsDeleteByResourceGroupWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.snapshots()
-            .deleteByResourceGroupWithResponse("ooclutnp", "memczjkmmyk", com.azure.core.util.Context.NONE);
+        manager.snapshots().deleteByResourceGroupWithResponse("y", "izrzb", com.azure.core.util.Context.NONE);
 
     }
 }

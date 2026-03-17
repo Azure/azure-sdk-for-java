@@ -19,43 +19,43 @@ public final class NamespacePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NamespaceProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Updating\",\"labels\":{\"wjchrdg\":\"wqknfdn\"},\"annotations\":{\"ctondz\":\"xum\",\"tov\":\"luudfdlwggytsb\",\"irgne\":\"tgseinqfiufxqkn\"},\"portalFqdn\":\"twqmsniffcdmqnr\",\"defaultResourceQuota\":{\"cpuRequest\":\"pij\",\"cpuLimit\":\"rxfrddhc\",\"memoryRequest\":\"tizzronasxif\",\"memoryLimit\":\"zq\"},\"defaultNetworkPolicy\":{\"ingress\":\"DenyAll\",\"egress\":\"AllowSameNamespace\"},\"adoptionPolicy\":\"Always\",\"deletePolicy\":\"Delete\"}")
+            "{\"provisioningState\":\"Canceled\",\"labels\":{\"sttp\":\"o\"},\"annotations\":{\"rywvtylbfpn\":\"kkbnu\"},\"portalFqdn\":\"rd\",\"defaultResourceQuota\":{\"cpuRequest\":\"iithtywu\",\"cpuLimit\":\"cbihwqk\",\"memoryRequest\":\"dntwjchrdgo\",\"memoryLimit\":\"xum\"},\"defaultNetworkPolicy\":{\"ingress\":\"DenyAll\",\"egress\":\"AllowSameNamespace\"},\"adoptionPolicy\":\"IfIdentical\",\"deletePolicy\":\"Keep\"}")
             .toObject(NamespaceProperties.class);
-        Assertions.assertEquals("wqknfdn", model.labels().get("wjchrdg"));
-        Assertions.assertEquals("xum", model.annotations().get("ctondz"));
-        Assertions.assertEquals("pij", model.defaultResourceQuota().cpuRequest());
-        Assertions.assertEquals("rxfrddhc", model.defaultResourceQuota().cpuLimit());
-        Assertions.assertEquals("tizzronasxif", model.defaultResourceQuota().memoryRequest());
-        Assertions.assertEquals("zq", model.defaultResourceQuota().memoryLimit());
+        Assertions.assertEquals("o", model.labels().get("sttp"));
+        Assertions.assertEquals("kkbnu", model.annotations().get("rywvtylbfpn"));
+        Assertions.assertEquals("iithtywu", model.defaultResourceQuota().cpuRequest());
+        Assertions.assertEquals("cbihwqk", model.defaultResourceQuota().cpuLimit());
+        Assertions.assertEquals("dntwjchrdgo", model.defaultResourceQuota().memoryRequest());
+        Assertions.assertEquals("xum", model.defaultResourceQuota().memoryLimit());
         Assertions.assertEquals(PolicyRule.DENY_ALL, model.defaultNetworkPolicy().ingress());
         Assertions.assertEquals(PolicyRule.ALLOW_SAME_NAMESPACE, model.defaultNetworkPolicy().egress());
-        Assertions.assertEquals(AdoptionPolicy.ALWAYS, model.adoptionPolicy());
-        Assertions.assertEquals(DeletePolicy.DELETE, model.deletePolicy());
+        Assertions.assertEquals(AdoptionPolicy.IF_IDENTICAL, model.adoptionPolicy());
+        Assertions.assertEquals(DeletePolicy.KEEP, model.deletePolicy());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NamespaceProperties model = new NamespaceProperties().withLabels(mapOf("wjchrdg", "wqknfdn"))
-            .withAnnotations(mapOf("ctondz", "xum", "tov", "luudfdlwggytsb", "irgne", "tgseinqfiufxqkn"))
-            .withDefaultResourceQuota(new ResourceQuota().withCpuRequest("pij")
-                .withCpuLimit("rxfrddhc")
-                .withMemoryRequest("tizzronasxif")
-                .withMemoryLimit("zq"))
+        NamespaceProperties model = new NamespaceProperties().withLabels(mapOf("sttp", "o"))
+            .withAnnotations(mapOf("rywvtylbfpn", "kkbnu"))
+            .withDefaultResourceQuota(new ResourceQuota().withCpuRequest("iithtywu")
+                .withCpuLimit("cbihwqk")
+                .withMemoryRequest("dntwjchrdgo")
+                .withMemoryLimit("xum"))
             .withDefaultNetworkPolicy(
                 new NetworkPolicies().withIngress(PolicyRule.DENY_ALL).withEgress(PolicyRule.ALLOW_SAME_NAMESPACE))
-            .withAdoptionPolicy(AdoptionPolicy.ALWAYS)
-            .withDeletePolicy(DeletePolicy.DELETE);
+            .withAdoptionPolicy(AdoptionPolicy.IF_IDENTICAL)
+            .withDeletePolicy(DeletePolicy.KEEP);
         model = BinaryData.fromObject(model).toObject(NamespaceProperties.class);
-        Assertions.assertEquals("wqknfdn", model.labels().get("wjchrdg"));
-        Assertions.assertEquals("xum", model.annotations().get("ctondz"));
-        Assertions.assertEquals("pij", model.defaultResourceQuota().cpuRequest());
-        Assertions.assertEquals("rxfrddhc", model.defaultResourceQuota().cpuLimit());
-        Assertions.assertEquals("tizzronasxif", model.defaultResourceQuota().memoryRequest());
-        Assertions.assertEquals("zq", model.defaultResourceQuota().memoryLimit());
+        Assertions.assertEquals("o", model.labels().get("sttp"));
+        Assertions.assertEquals("kkbnu", model.annotations().get("rywvtylbfpn"));
+        Assertions.assertEquals("iithtywu", model.defaultResourceQuota().cpuRequest());
+        Assertions.assertEquals("cbihwqk", model.defaultResourceQuota().cpuLimit());
+        Assertions.assertEquals("dntwjchrdgo", model.defaultResourceQuota().memoryRequest());
+        Assertions.assertEquals("xum", model.defaultResourceQuota().memoryLimit());
         Assertions.assertEquals(PolicyRule.DENY_ALL, model.defaultNetworkPolicy().ingress());
         Assertions.assertEquals(PolicyRule.ALLOW_SAME_NAMESPACE, model.defaultNetworkPolicy().egress());
-        Assertions.assertEquals(AdoptionPolicy.ALWAYS, model.adoptionPolicy());
-        Assertions.assertEquals(DeletePolicy.DELETE, model.deletePolicy());
+        Assertions.assertEquals(AdoptionPolicy.IF_IDENTICAL, model.adoptionPolicy());
+        Assertions.assertEquals(DeletePolicy.KEEP, model.deletePolicy());
     }
 
     // Use "Map.of" if available

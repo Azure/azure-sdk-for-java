@@ -21,7 +21,7 @@ public final class MachinesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"network\":{\"ipAddresses\":[{\"family\":\"IPv6\",\"ip\":\"ntacn\"},{\"family\":\"IPv4\",\"ip\":\"ehtuevrhr\"},{\"family\":\"IPv4\",\"ip\":\"ogwxhnsduugwb\"}]},\"resourceId\":\"e\"},\"zones\":[\"q\",\"fuarenlvhht\",\"lnvnafvvkyfedev\"],\"id\":\"oslc\",\"name\":\"xypokkhmi\",\"type\":\"q\"}]}";
+            = "{\"value\":[{\"properties\":{\"network\":{\"ipAddresses\":[{\"family\":\"IPv4\",\"ip\":\"mxxdtddmflh\"},{\"family\":\"IPv4\",\"ip\":\"zv\"},{\"family\":\"IPv6\",\"ip\":\"pxbannovvoxc\"}]},\"resourceId\":\"tprwnw\"},\"zones\":[\"ev\",\"tlyo\",\"rrrouuxvnsa\"],\"id\":\"crymodizrxklobd\",\"name\":\"nazpmk\",\"type\":\"lmv\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class MachinesListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Machine> response
-            = manager.machines().list("ro", "xddbhfhpfpaz", "zoyw", com.azure.core.util.Context.NONE);
+            = manager.machines().list("ymc", "ngnbdxxew", "ninvudbchaqdt", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -13,18 +13,18 @@ public final class PrivateLinkServiceConnectionStateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateLinkServiceConnectionState model
-            = BinaryData.fromString("{\"status\":\"Rejected\",\"description\":\"t\"}")
+            = BinaryData.fromString("{\"status\":\"Pending\",\"description\":\"pthjoxo\"}")
                 .toObject(PrivateLinkServiceConnectionState.class);
-        Assertions.assertEquals(ConnectionStatus.REJECTED, model.status());
-        Assertions.assertEquals("t", model.description());
+        Assertions.assertEquals(ConnectionStatus.PENDING, model.status());
+        Assertions.assertEquals("pthjoxo", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PrivateLinkServiceConnectionState model
-            = new PrivateLinkServiceConnectionState().withStatus(ConnectionStatus.REJECTED).withDescription("t");
+            = new PrivateLinkServiceConnectionState().withStatus(ConnectionStatus.PENDING).withDescription("pthjoxo");
         model = BinaryData.fromObject(model).toObject(PrivateLinkServiceConnectionState.class);
-        Assertions.assertEquals(ConnectionStatus.REJECTED, model.status());
-        Assertions.assertEquals("t", model.description());
+        Assertions.assertEquals(ConnectionStatus.PENDING, model.status());
+        Assertions.assertEquals("pthjoxo", model.description());
     }
 }

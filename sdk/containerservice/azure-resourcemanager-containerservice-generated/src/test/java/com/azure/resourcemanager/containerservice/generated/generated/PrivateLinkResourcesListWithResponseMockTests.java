@@ -21,7 +21,7 @@ public final class PrivateLinkResourcesListWithResponseMockTests {
     @Test
     public void testListWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"id\":\"owx\",\"name\":\"piudeugfsxzecpa\",\"type\":\"kufykhvu\",\"groupId\":\"epmrut\",\"requiredMembers\":[\"baobn\",\"lujdjltymkmv\",\"uihywart\",\"pphkixkykxds\"],\"privateLinkServiceID\":\"pemmucfxhik\"}]}";
+            = "{\"value\":[{\"id\":\"foxx\",\"name\":\"bvphavpm\",\"type\":\"rbqgvgov\",\"groupId\":\"bttefjoknss\",\"requiredMembers\":[\"qedikdfrd\",\"iqmrjgeihfqlggw\",\"iwzcxmjpbyeph\"],\"privateLinkServiceID\":\"t\"},{\"id\":\"j\",\"name\":\"cmyfqipgxhnpo\",\"type\":\"qwcabvnui\",\"groupId\":\"ey\",\"requiredMembers\":[\"lpaugmrm\",\"jlrxwtoaukhfk\",\"cisiz\",\"oaedsxjwuivedwcg\"],\"privateLinkServiceID\":\"ewxeiqbpsm\"},{\"id\":\"mguaml\",\"name\":\"l\",\"type\":\"msplzgaufcshhvn\",\"groupId\":\"gnxkympqan\",\"requiredMembers\":[\"kixtwbtaoy\"],\"privateLinkServiceID\":\"yghs\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,13 +31,13 @@ public final class PrivateLinkResourcesListWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrivateLinkResourcesListResult response = manager.privateLinkResources()
-            .listWithResponse("mdesqp", "pvmjcdoewbid", com.azure.core.util.Context.NONE)
+            .listWithResponse("ufypiv", "sbbjpmcu", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("owx", response.value().get(0).id());
-        Assertions.assertEquals("piudeugfsxzecpa", response.value().get(0).name());
-        Assertions.assertEquals("kufykhvu", response.value().get(0).type());
-        Assertions.assertEquals("epmrut", response.value().get(0).groupId());
-        Assertions.assertEquals("baobn", response.value().get(0).requiredMembers().get(0));
+        Assertions.assertEquals("foxx", response.value().get(0).id());
+        Assertions.assertEquals("bvphavpm", response.value().get(0).name());
+        Assertions.assertEquals("rbqgvgov", response.value().get(0).type());
+        Assertions.assertEquals("bttefjoknss", response.value().get(0).groupId());
+        Assertions.assertEquals("qedikdfrd", response.value().get(0).requiredMembers().get(0));
     }
 }

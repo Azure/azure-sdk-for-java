@@ -25,7 +25,7 @@ public final class ManagedNamespacesListByManagedClusterMockTests {
     @Test
     public void testListByManagedCluster() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"labels\":{\"kmqp\":\"ewpktvqy\"},\"annotations\":{\"oxoebqi\":\"hlfbcgwgc\",\"ujqlafcbahh\":\"jipnwj\"},\"portalFqdn\":\"pofoi\",\"defaultResourceQuota\":{\"cpuRequest\":\"p\",\"cpuLimit\":\"lkmkkholvdndvi\",\"memoryRequest\":\"ogphuartvtiu\",\"memoryLimit\":\"efchn\"},\"defaultNetworkPolicy\":{\"ingress\":\"AllowAll\",\"egress\":\"AllowSameNamespace\"},\"adoptionPolicy\":\"IfIdentical\",\"deletePolicy\":\"Delete\"},\"tags\":{\"oxffif\":\"irwrwe\",\"ozqvbubqmam\":\"xwrsnew\",\"taboidvmf\":\"sycxhxzgaz\"},\"location\":\"ppu\",\"eTag\":\"w\",\"id\":\"pdfgkmtdherngbt\",\"name\":\"juahokqto\",\"type\":\"kauxof\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"labels\":{\"xoe\":\"qpzoyhlfbcgwgcl\",\"jqlafcbahhpzp\":\"qinjipnwjf\",\"kkholvdndvia\":\"foiyjwpfilk\",\"yefchnm\":\"ogphuartvtiu\"},\"annotations\":{\"xffi\":\"mnxhkxjqirwrweo\",\"rsnewmozqvbubqma\":\"hx\",\"taboidvmf\":\"hsycxhxzgaz\"},\"portalFqdn\":\"ppu\",\"defaultResourceQuota\":{\"cpuRequest\":\"sepdfgk\",\"cpuLimit\":\"dherngbtcj\",\"memoryRequest\":\"hokq\",\"memoryLimit\":\"bkau\"},\"defaultNetworkPolicy\":{\"ingress\":\"DenyAll\",\"egress\":\"AllowAll\"},\"adoptionPolicy\":\"IfIdentical\",\"deletePolicy\":\"Delete\"},\"eTag\":\"ulaiywzejywhs\",\"location\":\"koj\",\"tags\":{\"nnfhyetefypo\":\"ndnpdwrpqafgfug\"},\"id\":\"octfjgtixrjvzuyt\",\"name\":\"rmlmuowo\",\"type\":\"bauiropi\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,23 +35,22 @@ public final class ManagedNamespacesListByManagedClusterMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ManagedNamespace> response
-            = manager.managedNamespaces().listByManagedCluster("z", "pqwjedm", com.azure.core.util.Context.NONE);
+            = manager.managedNamespaces().listByManagedCluster("edmurrxxge", "pkt", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ewpktvqy", response.iterator().next().properties().labels().get("kmqp"));
-        Assertions.assertEquals("hlfbcgwgc", response.iterator().next().properties().annotations().get("oxoebqi"));
-        Assertions.assertEquals("p", response.iterator().next().properties().defaultResourceQuota().cpuRequest());
-        Assertions.assertEquals("lkmkkholvdndvi",
+        Assertions.assertEquals("koj", response.iterator().next().location());
+        Assertions.assertEquals("ndnpdwrpqafgfug", response.iterator().next().tags().get("nnfhyetefypo"));
+        Assertions.assertEquals("qpzoyhlfbcgwgcl", response.iterator().next().properties().labels().get("xoe"));
+        Assertions.assertEquals("mnxhkxjqirwrweo", response.iterator().next().properties().annotations().get("xffi"));
+        Assertions.assertEquals("sepdfgk", response.iterator().next().properties().defaultResourceQuota().cpuRequest());
+        Assertions.assertEquals("dherngbtcj",
             response.iterator().next().properties().defaultResourceQuota().cpuLimit());
-        Assertions.assertEquals("ogphuartvtiu",
-            response.iterator().next().properties().defaultResourceQuota().memoryRequest());
-        Assertions.assertEquals("efchn", response.iterator().next().properties().defaultResourceQuota().memoryLimit());
-        Assertions.assertEquals(PolicyRule.ALLOW_ALL,
+        Assertions.assertEquals("hokq", response.iterator().next().properties().defaultResourceQuota().memoryRequest());
+        Assertions.assertEquals("bkau", response.iterator().next().properties().defaultResourceQuota().memoryLimit());
+        Assertions.assertEquals(PolicyRule.DENY_ALL,
             response.iterator().next().properties().defaultNetworkPolicy().ingress());
-        Assertions.assertEquals(PolicyRule.ALLOW_SAME_NAMESPACE,
+        Assertions.assertEquals(PolicyRule.ALLOW_ALL,
             response.iterator().next().properties().defaultNetworkPolicy().egress());
         Assertions.assertEquals(AdoptionPolicy.IF_IDENTICAL, response.iterator().next().properties().adoptionPolicy());
         Assertions.assertEquals(DeletePolicy.DELETE, response.iterator().next().properties().deletePolicy());
-        Assertions.assertEquals("irwrwe", response.iterator().next().tags().get("oxffif"));
-        Assertions.assertEquals("ppu", response.iterator().next().location());
     }
 }

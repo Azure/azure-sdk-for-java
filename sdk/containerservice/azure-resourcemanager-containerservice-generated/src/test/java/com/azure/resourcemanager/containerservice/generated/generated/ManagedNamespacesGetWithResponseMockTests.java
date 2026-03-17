@@ -24,7 +24,7 @@ public final class ManagedNamespacesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Updating\",\"labels\":{\"kqmhhaowjr\":\"gqjxgpnrhgovfgp\",\"kfvxcnq\":\"zvuporqzdfuydz\",\"vkhlggdhbemz\":\"xqpswok\"},\"annotations\":{\"wiwtglxxhl\":\"sz\",\"gjsxv\":\"fpgpicrmnzhrgm\",\"qgvriibakcla\":\"qcbfrmbodths\"},\"portalFqdn\":\"fr\",\"defaultResourceQuota\":{\"cpuRequest\":\"usx\",\"cpuLimit\":\"zlwvsgmwohqfz\",\"memoryRequest\":\"vux\",\"memoryLimit\":\"kjsvthnwpzteko\"},\"defaultNetworkPolicy\":{\"ingress\":\"AllowSameNamespace\",\"egress\":\"AllowAll\"},\"adoptionPolicy\":\"Always\",\"deletePolicy\":\"Delete\"},\"tags\":{\"nykzcugswvxwlm\":\"ucfotangcf\"},\"location\":\"wmvtxnjm\",\"eTag\":\"cuqudtcvclxy\",\"id\":\"dkvgfabuiyjibuzp\",\"name\":\"dugneiknp\",\"type\":\"oxgjiuqhibt\"}";
+            = "{\"properties\":{\"provisioningState\":\"Updating\",\"labels\":{\"kqmhhaowjr\":\"gqjxgpnrhgovfgp\",\"kfvxcnq\":\"zvuporqzdfuydz\",\"vkhlggdhbemz\":\"xqpswok\"},\"annotations\":{\"wiwtglxxhl\":\"sz\",\"gjsxv\":\"fpgpicrmnzhrgm\",\"qgvriibakcla\":\"qcbfrmbodths\"},\"portalFqdn\":\"fr\",\"defaultResourceQuota\":{\"cpuRequest\":\"usx\",\"cpuLimit\":\"zlwvsgmwohqfz\",\"memoryRequest\":\"vux\",\"memoryLimit\":\"kjsvthnwpzteko\"},\"defaultNetworkPolicy\":{\"ingress\":\"AllowSameNamespace\",\"egress\":\"AllowAll\"},\"adoptionPolicy\":\"Always\",\"deletePolicy\":\"Delete\"},\"eTag\":\"lu\",\"location\":\"otangcfhnykzc\",\"tags\":{\"njmxmcuqudtcvcl\":\"wvxwlmzqwmvt\",\"iyji\":\"ynpdkvgfab\",\"n\":\"uzphdugnei\"},\"id\":\"gox\",\"name\":\"jiuqhibtozi\",\"type\":\"qw\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -37,6 +37,8 @@ public final class ManagedNamespacesGetWithResponseMockTests {
             .getWithResponse("niypfpubcpzg", "xtiv", "j", com.azure.core.util.Context.NONE)
             .getValue();
 
+        Assertions.assertEquals("otangcfhnykzc", response.location());
+        Assertions.assertEquals("wvxwlmzqwmvt", response.tags().get("njmxmcuqudtcvcl"));
         Assertions.assertEquals("gqjxgpnrhgovfgp", response.properties().labels().get("kqmhhaowjr"));
         Assertions.assertEquals("sz", response.properties().annotations().get("wiwtglxxhl"));
         Assertions.assertEquals("usx", response.properties().defaultResourceQuota().cpuRequest());
@@ -48,7 +50,5 @@ public final class ManagedNamespacesGetWithResponseMockTests {
         Assertions.assertEquals(PolicyRule.ALLOW_ALL, response.properties().defaultNetworkPolicy().egress());
         Assertions.assertEquals(AdoptionPolicy.ALWAYS, response.properties().adoptionPolicy());
         Assertions.assertEquals(DeletePolicy.DELETE, response.properties().deletePolicy());
-        Assertions.assertEquals("ucfotangcf", response.tags().get("nykzcugswvxwlm"));
-        Assertions.assertEquals("wmvtxnjm", response.location());
     }
 }

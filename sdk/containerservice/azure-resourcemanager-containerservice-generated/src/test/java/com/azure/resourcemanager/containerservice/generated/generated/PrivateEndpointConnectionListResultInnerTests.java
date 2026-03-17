@@ -13,11 +13,12 @@ public final class PrivateEndpointConnectionListResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateEndpointConnectionListResultInner model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\",\"privateEndpoint\":{\"id\":\"ctxtgzukxi\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"tg\"}},\"id\":\"q\",\"name\":\"hrnxrxc\",\"type\":\"juisavokqdzf\"}]}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"privateEndpoint\":{\"id\":\"iml\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"xkcgxxlxsffgcvi\"}},\"id\":\"zdwlvwlyoupfgfb\",\"name\":\"jub\",\"type\":\"yhgk\"},{\"properties\":{\"provisioningState\":\"Failed\",\"privateEndpoint\":{\"id\":\"owzfttsttkt\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"qactxtgzukxitmmq\"}},\"id\":\"qqqxhrnxrx\",\"name\":\"pjui\",\"type\":\"av\"}]}")
             .toObject(PrivateEndpointConnectionListResultInner.class);
-        Assertions.assertEquals("ctxtgzukxi", model.value().get(0).privateEndpoint().id());
-        Assertions.assertEquals(ConnectionStatus.PENDING,
+        Assertions.assertEquals("iml", model.value().get(0).privateEndpoint().id());
+        Assertions.assertEquals(ConnectionStatus.REJECTED,
             model.value().get(0).privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("tg", model.value().get(0).privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("xkcgxxlxsffgcvi",
+            model.value().get(0).privateLinkServiceConnectionState().description());
     }
 }

@@ -21,7 +21,7 @@ public final class TrustedAccessRolesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"sourceResourceType\":\"xhnpo\",\"name\":\"qwcabvnui\",\"rules\":[{\"verbs\":[\"swlpaugmrmfj\",\"rxwtoaukhfkvc\"],\"apiGroups\":[\"zmoaeds\",\"jwuive\"],\"resources\":[\"gyeewxeiq\",\"psmgo\"],\"resourceNames\":[\"amljdlrgmsplzgau\"],\"nonResourceURLs\":[\"hhvnewgnxkymp\",\"anxrj\",\"ixt\"]}]}]}";
+            = "{\"value\":[{\"sourceResourceType\":\"jqoyueayfbpcm\",\"name\":\"lbyrru\",\"rules\":[{\"verbs\":[\"mg\"],\"apiGroups\":[\"scbbxig\"],\"resources\":[\"iidlop\",\"dbwdpyqyybxubmdn\",\"fcbqwremjela\"],\"resourceNames\":[\"igeleohd\",\"vqvwzkjopwbe\",\"nrlkwzdqy\",\"x\"],\"nonResourceURLs\":[\"kxcpt\",\"oqfyiaseqch\",\"rttzrazisgykiu\",\"mvanbwzo\"]},{\"verbs\":[\"rx\",\"bsojk\",\"inhmdptys\"],\"apiGroups\":[\"sgnzxojpslsvjgpl\",\"ufiqwoyxqvapcohh\",\"ucqpqojxcxzrz\"],\"resources\":[\"dzbenri\",\"cawetzqddt\"],\"resourceNames\":[\"ljhznamtuatmzwcj\",\"nc\",\"tjzmi\"],\"nonResourceURLs\":[\"bgatzu\",\"vbxngr\",\"bwggahtt\"]},{\"verbs\":[\"wvajq\",\"utlxjoqzasunwqrj\"],\"apiGroups\":[\"gqhaohcmbuocn\"],\"resources\":[\"hmbpyryxamebly\",\"yvk\"],\"resourceNames\":[\"rocxnehvs\"],\"nonResourceURLs\":[\"dlfp\",\"apucygvo\",\"vyuns\",\"xlghieegj\"]}]}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class TrustedAccessRolesListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<TrustedAccessRole> response
-            = manager.trustedAccessRoles().list("i", com.azure.core.util.Context.NONE);
+            = manager.trustedAccessRoles().list("ezkhhltnjadhqo", com.azure.core.util.Context.NONE);
 
     }
 }

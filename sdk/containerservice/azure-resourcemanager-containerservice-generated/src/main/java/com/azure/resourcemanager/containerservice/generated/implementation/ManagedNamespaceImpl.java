@@ -34,8 +34,8 @@ public final class ManagedNamespaceImpl
         return this.innerModel().type();
     }
 
-    public NamespaceProperties properties() {
-        return this.innerModel().properties();
+    public String location() {
+        return this.innerModel().location();
     }
 
     public Map<String, String> tags() {
@@ -47,8 +47,8 @@ public final class ManagedNamespaceImpl
         }
     }
 
-    public String location() {
-        return this.innerModel().location();
+    public NamespaceProperties properties() {
+        return this.innerModel().properties();
     }
 
     public String eTag() {

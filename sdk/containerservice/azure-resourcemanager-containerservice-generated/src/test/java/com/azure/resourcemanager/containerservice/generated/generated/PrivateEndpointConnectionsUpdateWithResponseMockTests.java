@@ -25,7 +25,7 @@ public final class PrivateEndpointConnectionsUpdateWithResponseMockTests {
     @Test
     public void testUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"privateEndpoint\":{\"id\":\"awpcbbnzqcykn\"},\"privateLinkServiceConnectionState\":{\"status\":\"Disconnected\",\"description\":\"fyuicdh\"}},\"id\":\"dyb\",\"name\":\"wgbdvibidmhmwffp\",\"type\":\"fmuvapckccr\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"privateEndpoint\":{\"id\":\"bldxeaclgscho\"},\"privateLinkServiceConnectionState\":{\"status\":\"Disconnected\",\"description\":\"rsrrmoucsofldp\"}},\"id\":\"iyfc\",\"name\":\"abeolhbhlvbm\",\"type\":\"uqibsxtkcu\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,16 +35,16 @@ public final class PrivateEndpointConnectionsUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrivateEndpointConnection response = manager.privateEndpointConnections()
-            .updateWithResponse("nwvroevytlyokrr", "o", "uxvnsasbcrymodi",
-                new PrivateEndpointConnectionInner().withPrivateEndpoint(new PrivateEndpoint().withId("bdxnaz"))
+            .updateWithResponse("vwe", "oxoyyukp", "aimmoiroqb",
+                new PrivateEndpointConnectionInner().withPrivateEndpoint(new PrivateEndpoint().withId("gapyyrmfsv"))
                     .withPrivateLinkServiceConnectionState(
-                        new PrivateLinkServiceConnectionState().withStatus(ConnectionStatus.PENDING)
-                            .withDescription("lmv")),
+                        new PrivateLinkServiceConnectionState().withStatus(ConnectionStatus.APPROVED)
+                            .withDescription("bopfppdbwnup")),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("awpcbbnzqcykn", response.privateEndpoint().id());
+        Assertions.assertEquals("bldxeaclgscho", response.privateEndpoint().id());
         Assertions.assertEquals(ConnectionStatus.DISCONNECTED, response.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("fyuicdh", response.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("rsrrmoucsofldp", response.privateLinkServiceConnectionState().description());
     }
 }

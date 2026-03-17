@@ -23,7 +23,7 @@ public final class ResolvePrivateLinkServiceIdsPOSTWithResponseMockTests {
     @Test
     public void testPOSTWithResponse() throws Exception {
         String responseStr
-            = "{\"id\":\"fypiv\",\"name\":\"bbjpmcubkmif\",\"type\":\"xkubvphavpmhbrbq\",\"groupId\":\"govpbbtte\",\"requiredMembers\":[\"knssqyzqed\",\"kdfrdbiqmrjgeihf\",\"lg\",\"wfiwzcxmj\"],\"privateLinkServiceID\":\"yephmgtvljvrcmyf\"}";
+            = "{\"id\":\"kihcirlde\",\"name\":\"rdcoxnbkkj\",\"type\":\"urnnqbnqbpiz\",\"groupId\":\"ltgrdogypxrxv\",\"requiredMembers\":[\"hwuhvctaf\",\"rbxrblmliowxihsp\",\"xwqagnepzw\",\"klsbsbqqqagw\"],\"privateLinkServiceID\":\"xaomzisglrrc\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,19 +33,19 @@ public final class ResolvePrivateLinkServiceIdsPOSTWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrivateLinkResource response = manager.resolvePrivateLinkServiceIds()
-            .pOSTWithResponse("flrmymyi", "cqlh",
-                new PrivateLinkResourceInner().withId("s")
-                    .withName("lmiiiovg")
-                    .withType("gxuugqkctotio")
-                    .withGroupId("xteqdptjgwdtg")
-                    .withRequiredMembers(Arrays.asList("anblwphqlkccu", "gygqwah", "iul", "gniiprglvaw")),
+            .pOSTWithResponse("xcy", "hkgmnsg",
+                new PrivateLinkResourceInner().withId("xycphdrwjjkh")
+                    .withName("omacluzvxnqmhr")
+                    .withType("pd")
+                    .withGroupId("mkoisqcssf")
+                    .withRequiredMembers(Arrays.asList("ifmcsypobkdqzr", "zsylollgt")),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("fypiv", response.id());
-        Assertions.assertEquals("bbjpmcubkmif", response.name());
-        Assertions.assertEquals("xkubvphavpmhbrbq", response.type());
-        Assertions.assertEquals("govpbbtte", response.groupId());
-        Assertions.assertEquals("knssqyzqed", response.requiredMembers().get(0));
+        Assertions.assertEquals("kihcirlde", response.id());
+        Assertions.assertEquals("rdcoxnbkkj", response.name());
+        Assertions.assertEquals("urnnqbnqbpiz", response.type());
+        Assertions.assertEquals("ltgrdogypxrxv", response.groupId());
+        Assertions.assertEquals("hwuhvctaf", response.requiredMembers().get(0));
     }
 }

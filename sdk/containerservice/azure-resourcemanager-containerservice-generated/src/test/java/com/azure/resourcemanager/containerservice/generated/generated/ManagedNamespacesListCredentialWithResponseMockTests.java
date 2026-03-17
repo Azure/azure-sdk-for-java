@@ -19,7 +19,8 @@ import reactor.core.publisher.Mono;
 public final class ManagedNamespacesListCredentialWithResponseMockTests {
     @Test
     public void testListCredentialWithResponse() throws Exception {
-        String responseStr = "{\"kubeconfigs\":[{\"name\":\"efy\"}]}";
+        String responseStr
+            = "{\"kubeconfigs\":[{\"name\":\"yccxlzhcox\"},{\"name\":\"ekhenl\"},{\"name\":\"nrd\"},{\"name\":\"txrdcqtjvi\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -29,8 +30,7 @@ public final class ManagedNamespacesListCredentialWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CredentialResults response = manager.managedNamespaces()
-            .listCredentialWithResponse("hfphwpnulaiywze", "ywhslwkojpllndnp", "wrpqafgfugsnnf",
-                com.azure.core.util.Context.NONE)
+            .listCredentialWithResponse("nszonwpngaj", "n", "ixjawrtm", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

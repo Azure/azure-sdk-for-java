@@ -16,11 +16,11 @@ public final class SnapshotInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SnapshotInner model = BinaryData.fromString(
-            "{\"properties\":{\"creationData\":{\"sourceResourceId\":\"vjlfrqtt\"},\"snapshotType\":\"NodePool\",\"kubernetesVersion\":\"katnwxyi\",\"nodeImageVersion\":\"id\",\"osType\":\"Windows\",\"osSku\":\"Windows2019\",\"vmSize\":\"vscx\",\"enableFIPS\":false},\"location\":\"igovi\",\"tags\":{\"uruocbgo\":\"kpmloa\"},\"id\":\"rb\",\"name\":\"eoybfhjxakvvjgs\",\"type\":\"ordilmywwtkgkxny\"}")
+            "{\"properties\":{\"creationData\":{\"sourceResourceId\":\"zfvazi\"},\"snapshotType\":\"NodePool\",\"kubernetesVersion\":\"rqttbajlkatnw\",\"nodeImageVersion\":\"iopid\",\"osType\":\"Windows\",\"osSku\":\"Windows2019\",\"vmSize\":\"vscx\",\"enableFIPS\":false},\"location\":\"igovi\",\"tags\":{\"uruocbgo\":\"kpmloa\"},\"id\":\"rb\",\"name\":\"eoybfhjxakvvjgs\",\"type\":\"ordilmywwtkgkxny\"}")
             .toObject(SnapshotInner.class);
         Assertions.assertEquals("igovi", model.location());
         Assertions.assertEquals("kpmloa", model.tags().get("uruocbgo"));
-        Assertions.assertEquals("vjlfrqtt", model.creationData().sourceResourceId());
+        Assertions.assertEquals("zfvazi", model.creationData().sourceResourceId());
         Assertions.assertEquals(SnapshotType.NODE_POOL, model.snapshotType());
     }
 
@@ -28,12 +28,12 @@ public final class SnapshotInnerTests {
     public void testSerialize() throws Exception {
         SnapshotInner model = new SnapshotInner().withLocation("igovi")
             .withTags(mapOf("uruocbgo", "kpmloa"))
-            .withCreationData(new CreationData().withSourceResourceId("vjlfrqtt"))
+            .withCreationData(new CreationData().withSourceResourceId("zfvazi"))
             .withSnapshotType(SnapshotType.NODE_POOL);
         model = BinaryData.fromObject(model).toObject(SnapshotInner.class);
         Assertions.assertEquals("igovi", model.location());
         Assertions.assertEquals("kpmloa", model.tags().get("uruocbgo"));
-        Assertions.assertEquals("vjlfrqtt", model.creationData().sourceResourceId());
+        Assertions.assertEquals("zfvazi", model.creationData().sourceResourceId());
         Assertions.assertEquals(SnapshotType.NODE_POOL, model.snapshotType());
     }
 

@@ -29,7 +29,7 @@ public final class ManagedNamespacesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"labels\":{\"amz\":\"uflqbctq\",\"qzeqyjleziunjxdf\":\"rwd\",\"qa\":\"antkwcegyamlbns\"},\"annotations\":{\"ooqjagmditgueio\":\"vpilg\",\"tdtpdelqacslmo\":\"kjbsah\",\"xofvcjk\":\"oebn\"},\"portalFqdn\":\"irazftxejwabmd\",\"defaultResourceQuota\":{\"cpuRequest\":\"mvcopexcmjurbuhh\",\"cpuLimit\":\"yqltqsro\",\"memoryRequest\":\"uwkffdjktsysid\",\"memoryLimit\":\"c\"},\"defaultNetworkPolicy\":{\"ingress\":\"DenyAll\",\"egress\":\"AllowAll\"},\"adoptionPolicy\":\"Always\",\"deletePolicy\":\"Keep\"},\"tags\":{\"sharujtj\":\"usqogsfikayia\",\"qhjpenuygbqe\":\"qxfzyjqttvwk\",\"guaucmfdjwnla\":\"qekewvnqvcd\"},\"location\":\"un\",\"eTag\":\"ikczvvitacgxmf\",\"id\":\"serxht\",\"name\":\"soxhlwntsjgqr\",\"type\":\"xypruuuy\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"labels\":{\"lxnfuijtkbusqogs\":\"fvcl\",\"ji\":\"ikayiansharuj\",\"j\":\"xfz\"},\"annotations\":{\"penuy\":\"vwkpqh\",\"guaucmfdjwnla\":\"bqeqqekewvnqvcd\",\"ikczvvitacgxmf\":\"punj\"},\"portalFqdn\":\"serxht\",\"defaultResourceQuota\":{\"cpuRequest\":\"xhlw\",\"cpuLimit\":\"sjgqrsxyp\",\"memoryRequest\":\"uuybnchrsz\",\"memoryLimit\":\"oyuelyetn\"},\"defaultNetworkPolicy\":{\"ingress\":\"AllowAll\",\"egress\":\"AllowSameNamespace\"},\"adoptionPolicy\":\"Never\",\"deletePolicy\":\"Keep\"},\"eTag\":\"lnlg\",\"location\":\"rwahzjmucftbyr\",\"tags\":{\"u\":\"ohkpigqfu\",\"alhhjnhgwydyynfs\":\"kzmkwklsnoxaxmqe\",\"qtanarfdlpuk\":\"khgb\"},\"id\":\"py\",\"name\":\"neizjcpe\",\"type\":\"gkhnmgbrouxddbh\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -39,34 +39,36 @@ public final class ManagedNamespacesCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ManagedNamespace response = manager.managedNamespaces()
-            .define("urmlmuo")
-            .withExistingManagedCluster("coc", "fjgtixrjvzuy")
-            .withRegion("qehgpd")
-            .withTags(mapOf("hwpusxj", "jlxuz"))
-            .withProperties(new NamespaceProperties().withLabels(mapOf("pngajin", "iropionszon"))
-                .withAnnotations(mapOf("xlzhcoxovnekh", "jawrtmjfjmyc", "jxtxrdc", "nlusfnrd"))
-                .withDefaultResourceQuota(new ResourceQuota().withCpuRequest("lvyjtcvuwkas")
-                    .withCpuLimit("iesfuug")
-                    .withMemoryRequest("uqfecj")
-                    .withMemoryLimit("ygtuhx"))
-                .withDefaultNetworkPolicy(new NetworkPolicies().withIngress(PolicyRule.ALLOW_SAME_NAMESPACE)
-                    .withEgress(PolicyRule.ALLOW_SAME_NAMESPACE))
-                .withAdoptionPolicy(AdoptionPolicy.IF_IDENTICAL)
-                .withDeletePolicy(DeletePolicy.KEEP))
+            .define("zies")
+            .withRegion("dt")
+            .withExistingManagedCluster("tgepuslvyjtcvuwk", "s")
+            .withTags(mapOf("cslmotoebnfxo", "lq", "razftxejwabmdujt", "vcjkgd", "m", "vcopex"))
+            .withProperties(new NamespaceProperties()
+                .withLabels(mapOf("ey", "uqfecj", "ewmrswnjlxu", "tuhxuicb", "jbaqehgpdoh", "rhwpus", "nwfepbnwg",
+                    "jqatucoigebxn"))
+                .withAnnotations(mapOf("aquflqbctqha", "jgcgbjbgdlfgtdys"))
+                .withDefaultResourceQuota(new ResourceQuota().withCpuRequest("jleziunjx")
+                    .withCpuLimit("zantkwceg")
+                    .withMemoryRequest("mlbnseq")
+                    .withMemoryLimit("jjvpilguooqja"))
+                .withDefaultNetworkPolicy(
+                    new NetworkPolicies().withIngress(PolicyRule.ALLOW_ALL).withEgress(PolicyRule.DENY_ALL))
+                .withAdoptionPolicy(AdoptionPolicy.ALWAYS)
+                .withDeletePolicy(DeletePolicy.DELETE))
             .create();
 
-        Assertions.assertEquals("uflqbctq", response.properties().labels().get("amz"));
-        Assertions.assertEquals("vpilg", response.properties().annotations().get("ooqjagmditgueio"));
-        Assertions.assertEquals("mvcopexcmjurbuhh", response.properties().defaultResourceQuota().cpuRequest());
-        Assertions.assertEquals("yqltqsro", response.properties().defaultResourceQuota().cpuLimit());
-        Assertions.assertEquals("uwkffdjktsysid", response.properties().defaultResourceQuota().memoryRequest());
-        Assertions.assertEquals("c", response.properties().defaultResourceQuota().memoryLimit());
-        Assertions.assertEquals(PolicyRule.DENY_ALL, response.properties().defaultNetworkPolicy().ingress());
-        Assertions.assertEquals(PolicyRule.ALLOW_ALL, response.properties().defaultNetworkPolicy().egress());
-        Assertions.assertEquals(AdoptionPolicy.ALWAYS, response.properties().adoptionPolicy());
+        Assertions.assertEquals("rwahzjmucftbyr", response.location());
+        Assertions.assertEquals("ohkpigqfu", response.tags().get("u"));
+        Assertions.assertEquals("fvcl", response.properties().labels().get("lxnfuijtkbusqogs"));
+        Assertions.assertEquals("vwkpqh", response.properties().annotations().get("penuy"));
+        Assertions.assertEquals("xhlw", response.properties().defaultResourceQuota().cpuRequest());
+        Assertions.assertEquals("sjgqrsxyp", response.properties().defaultResourceQuota().cpuLimit());
+        Assertions.assertEquals("uuybnchrsz", response.properties().defaultResourceQuota().memoryRequest());
+        Assertions.assertEquals("oyuelyetn", response.properties().defaultResourceQuota().memoryLimit());
+        Assertions.assertEquals(PolicyRule.ALLOW_ALL, response.properties().defaultNetworkPolicy().ingress());
+        Assertions.assertEquals(PolicyRule.ALLOW_SAME_NAMESPACE, response.properties().defaultNetworkPolicy().egress());
+        Assertions.assertEquals(AdoptionPolicy.NEVER, response.properties().adoptionPolicy());
         Assertions.assertEquals(DeletePolicy.KEEP, response.properties().deletePolicy());
-        Assertions.assertEquals("usqogsfikayia", response.tags().get("sharujtj"));
-        Assertions.assertEquals("un", response.location());
     }
 
     // Use "Map.of" if available

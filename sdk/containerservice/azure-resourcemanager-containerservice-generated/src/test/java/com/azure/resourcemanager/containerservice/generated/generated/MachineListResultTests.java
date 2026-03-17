@@ -12,8 +12,8 @@ public final class MachineListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MachineListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"network\":{\"ipAddresses\":[{},{},{}]},\"resourceId\":\"qvci\"},\"zones\":[\"vfgmblrrilby\"],\"id\":\"xsmiccwrwfscjf\",\"name\":\"ynszquji\",\"type\":\"dvoqyt\"}],\"nextLink\":\"yo\"}")
+            "{\"value\":[{\"properties\":{\"network\":{\"ipAddresses\":[{}]},\"resourceId\":\"s\"},\"zones\":[\"e\",\"ulfgslqu\",\"kwdlenrdsutujba\",\"pjuohminyfl\"],\"id\":\"rwm\",\"name\":\"uvwpklvxwmyg\",\"type\":\"xpgpq\"},{\"properties\":{\"network\":{\"ipAddresses\":[{}]},\"resourceId\":\"pnnbjc\"},\"zones\":[\"ibbdaxconfoza\",\"orsukokwbqp\"],\"id\":\"lvnuuepzlrph\",\"name\":\"zsoldwey\",\"type\":\"qdunvmnnrwrbior\"},{\"properties\":{\"network\":{\"ipAddresses\":[{},{},{}]},\"resourceId\":\"jhhgdnhxmsi\"},\"zones\":[\"miloxggdufiqndie\"],\"id\":\"ao\",\"name\":\"jchvcyy\",\"type\":\"s\"}],\"nextLink\":\"dotcubiipuip\"}")
             .toObject(MachineListResult.class);
-        Assertions.assertEquals("yo", model.nextLink());
+        Assertions.assertEquals("dotcubiipuip", model.nextLink());
     }
 }

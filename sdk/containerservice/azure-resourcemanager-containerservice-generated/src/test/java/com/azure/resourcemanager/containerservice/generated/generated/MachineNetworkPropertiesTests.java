@@ -10,8 +10,8 @@ import com.azure.resourcemanager.containerservice.generated.models.MachineNetwor
 public final class MachineNetworkPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MachineNetworkProperties model = BinaryData.fromString(
-            "{\"ipAddresses\":[{\"family\":\"IPv4\",\"ip\":\"ggdufiqndieu\"},{\"family\":\"IPv6\",\"ip\":\"jchvcyy\"},{\"family\":\"IPv4\",\"ip\":\"dotcubiipuip\"}]}")
-            .toObject(MachineNetworkProperties.class);
+        MachineNetworkProperties model
+            = BinaryData.fromString("{\"ipAddresses\":[{\"family\":\"IPv6\",\"ip\":\"mguaadraufa\"}]}")
+                .toObject(MachineNetworkProperties.class);
     }
 }

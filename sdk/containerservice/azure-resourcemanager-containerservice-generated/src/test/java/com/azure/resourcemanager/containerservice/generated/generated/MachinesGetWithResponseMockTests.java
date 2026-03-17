@@ -20,7 +20,7 @@ public final class MachinesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"network\":{\"ipAddresses\":[{\"family\":\"IPv6\",\"ip\":\"mu\"},{\"family\":\"IPv4\",\"ip\":\"yrplrohkpigqfus\"},{\"family\":\"IPv6\",\"ip\":\"mkwkl\"}]},\"resourceId\":\"oxaxm\"},\"zones\":[\"alhhjnhgwydyynfs\",\"khgb\"],\"id\":\"ta\",\"name\":\"arfdlpukhpyrnei\",\"type\":\"jcpeogkhnmg\"}";
+            = "{\"properties\":{\"network\":{\"ipAddresses\":[{\"family\":\"IPv6\",\"ip\":\"bsre\"}]},\"resourceId\":\"fqkfuarenl\"},\"zones\":[\"tklnvnafvvkyfed\",\"v\"],\"id\":\"oslc\",\"name\":\"xypokkhmi\",\"type\":\"q\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class MachinesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Machine response = manager.machines()
-            .getWithResponse("nchrszizoyu", "lyetndnbfqygg", "g", "lnlg", com.azure.core.util.Context.NONE)
+            .getWithResponse("hpfpazjzoywjxhp", "ulontacnpqwteht", "evrh", "ljyoogwx", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

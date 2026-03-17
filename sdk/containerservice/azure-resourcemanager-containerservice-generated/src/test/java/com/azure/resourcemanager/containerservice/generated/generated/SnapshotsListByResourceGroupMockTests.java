@@ -23,7 +23,7 @@ public final class SnapshotsListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"creationData\":{\"sourceResourceId\":\"jylmbkzudnigr\"},\"snapshotType\":\"NodePool\",\"kubernetesVersion\":\"tjewlpxuzzj\",\"nodeImageVersion\":\"refqy\",\"osType\":\"Linux\",\"osSku\":\"CBLMariner\",\"vmSize\":\"hiqakydiwfbrk\",\"enableFIPS\":false},\"location\":\"qtvhcspodaqax\",\"tags\":{\"bmoichd\":\"ietgbebjfu\"},\"id\":\"pnfpubntnbat\",\"name\":\"viqsowsaaelcattc\",\"type\":\"uhplrvkmjcwmjv\"}]}";
+            = "{\"value\":[{\"properties\":{\"creationData\":{\"sourceResourceId\":\"vtmva\"},\"snapshotType\":\"NodePool\",\"kubernetesVersion\":\"dqlvhukoveof\",\"nodeImageVersion\":\"rvjfnmjmvlw\",\"osType\":\"Windows\",\"osSku\":\"Ubuntu2404\",\"vmSize\":\"kujrllfojui\",\"enableFIPS\":true},\"location\":\"uyjucejikzo\",\"tags\":{\"yjuzkdb\":\"vtzejetjklnti\",\"tgvgzp\":\"zolxrzvhqjwtr\",\"wro\":\"rrkolawjmjs\"},\"id\":\"cdxfzzzwyjafitl\",\"name\":\"guyn\",\"type\":\"chl\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,11 +33,11 @@ public final class SnapshotsListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Snapshot> response
-            = manager.snapshots().listByResourceGroup("ujxsglhsr", com.azure.core.util.Context.NONE);
+            = manager.snapshots().listByResourceGroup("psfxsf", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("qtvhcspodaqax", response.iterator().next().location());
-        Assertions.assertEquals("ietgbebjfu", response.iterator().next().tags().get("bmoichd"));
-        Assertions.assertEquals("jylmbkzudnigr", response.iterator().next().creationData().sourceResourceId());
+        Assertions.assertEquals("uyjucejikzo", response.iterator().next().location());
+        Assertions.assertEquals("vtzejetjklnti", response.iterator().next().tags().get("yjuzkdb"));
+        Assertions.assertEquals("vtmva", response.iterator().next().creationData().sourceResourceId());
         Assertions.assertEquals(SnapshotType.NODE_POOL, response.iterator().next().snapshotType());
     }
 }

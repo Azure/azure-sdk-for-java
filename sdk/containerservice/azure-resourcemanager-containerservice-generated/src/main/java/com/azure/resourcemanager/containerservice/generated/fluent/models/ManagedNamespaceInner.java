@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.containerservice.generated.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.ProxyResource;
+import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -18,21 +18,11 @@ import java.util.Map;
  * Namespace managed by ARM.
  */
 @Fluent
-public final class ManagedNamespaceInner extends ProxyResource {
+public final class ManagedNamespaceInner extends Resource {
     /*
      * Properties of a namespace.
      */
     private NamespaceProperties properties;
-
-    /*
-     * Resource tags.
-     */
-    private Map<String, String> tags;
-
-    /*
-     * The geo-location where the resource lives
-     */
-    private String location;
 
     /*
      * If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.
@@ -85,46 +75,6 @@ public final class ManagedNamespaceInner extends ProxyResource {
      */
     public ManagedNamespaceInner withProperties(NamespaceProperties properties) {
         this.properties = properties;
-        return this;
-    }
-
-    /**
-     * Get the tags property: Resource tags.
-     * 
-     * @return the tags value.
-     */
-    public Map<String, String> tags() {
-        return this.tags;
-    }
-
-    /**
-     * Set the tags property: Resource tags.
-     * 
-     * @param tags the tags value to set.
-     * @return the ManagedNamespaceInner object itself.
-     */
-    public ManagedNamespaceInner withTags(Map<String, String> tags) {
-        this.tags = tags;
-        return this;
-    }
-
-    /**
-     * Get the location property: The geo-location where the resource lives.
-     * 
-     * @return the location value.
-     */
-    public String location() {
-        return this.location;
-    }
-
-    /**
-     * Set the location property: The geo-location where the resource lives.
-     * 
-     * @param location the location value to set.
-     * @return the ManagedNamespaceInner object itself.
-     */
-    public ManagedNamespaceInner withLocation(String location) {
-        this.location = location;
         return this;
     }
 
@@ -183,11 +133,29 @@ public final class ManagedNamespaceInner extends ProxyResource {
      * {@inheritDoc}
      */
     @Override
+    public ManagedNamespaceInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ManagedNamespaceInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("properties", this.properties);
-        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeStringField("location", this.location);
         return jsonWriter.writeEndObject();
     }
 
@@ -213,13 +181,13 @@ public final class ManagedNamespaceInner extends ProxyResource {
                     deserializedManagedNamespaceInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedManagedNamespaceInner.type = reader.getString();
-                } else if ("properties".equals(fieldName)) {
-                    deserializedManagedNamespaceInner.properties = NamespaceProperties.fromJson(reader);
+                } else if ("location".equals(fieldName)) {
+                    deserializedManagedNamespaceInner.withLocation(reader.getString());
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                    deserializedManagedNamespaceInner.tags = tags;
-                } else if ("location".equals(fieldName)) {
-                    deserializedManagedNamespaceInner.location = reader.getString();
+                    deserializedManagedNamespaceInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedManagedNamespaceInner.properties = NamespaceProperties.fromJson(reader);
                 } else if ("eTag".equals(fieldName)) {
                     deserializedManagedNamespaceInner.eTag = reader.getString();
                 } else if ("systemData".equals(fieldName)) {

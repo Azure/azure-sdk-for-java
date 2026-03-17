@@ -37,11 +37,11 @@ public interface ManagedNamespace {
     String type();
 
     /**
-     * Gets the properties property: Properties of a namespace.
+     * Gets the location property: The geo-location where the resource lives.
      * 
-     * @return the properties value.
+     * @return the location value.
      */
-    NamespaceProperties properties();
+    String location();
 
     /**
      * Gets the tags property: Resource tags.
@@ -51,11 +51,11 @@ public interface ManagedNamespace {
     Map<String, String> tags();
 
     /**
-     * Gets the location property: The geo-location where the resource lives.
+     * Gets the properties property: Properties of a namespace.
      * 
-     * @return the location value.
+     * @return the properties value.
      */
-    String location();
+    NamespaceProperties properties();
 
     /**
      * Gets the eTag property: If eTag is provided in the response body, it may also be provided as a header per the
@@ -105,8 +105,8 @@ public interface ManagedNamespace {
     /**
      * The entirety of the ManagedNamespace definition.
      */
-    interface Definition
-        extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
 
     /**
@@ -116,7 +116,28 @@ public interface ManagedNamespace {
         /**
          * The first stage of the ManagedNamespace definition.
          */
-        interface Blank extends WithParentResource {
+        interface Blank extends WithLocation {
+        }
+
+        /**
+         * The stage of the ManagedNamespace definition allowing to specify location.
+         */
+        interface WithLocation {
+            /**
+             * Specifies the region for the resource.
+             * 
+             * @param location The geo-location where the resource lives.
+             * @return the next definition stage.
+             */
+            WithParentResource withRegion(Region location);
+
+            /**
+             * Specifies the region for the resource.
+             * 
+             * @param location The geo-location where the resource lives.
+             * @return the next definition stage.
+             */
+            WithParentResource withRegion(String location);
         }
 
         /**
@@ -137,8 +158,7 @@ public interface ManagedNamespace {
          * The stage of the ManagedNamespace definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithLocation, DefinitionStages.WithTags, DefinitionStages.WithProperties {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithProperties {
             /**
              * Executes the create request.
              * 
@@ -153,27 +173,6 @@ public interface ManagedNamespace {
              * @return the created resource.
              */
             ManagedNamespace create(Context context);
-        }
-
-        /**
-         * The stage of the ManagedNamespace definition allowing to specify location.
-         */
-        interface WithLocation {
-            /**
-             * Specifies the region for the resource.
-             * 
-             * @param location The geo-location where the resource lives.
-             * @return the next definition stage.
-             */
-            WithCreate withRegion(Region location);
-
-            /**
-             * Specifies the region for the resource.
-             * 
-             * @param location The geo-location where the resource lives.
-             * @return the next definition stage.
-             */
-            WithCreate withRegion(String location);
         }
 
         /**

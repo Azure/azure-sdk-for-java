@@ -22,7 +22,7 @@ public final class PrivateEndpointConnectionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"privateEndpoint\":{\"id\":\"ct\"},\"privateLinkServiceConnectionState\":{\"status\":\"Disconnected\",\"description\":\"tddmf\"}},\"id\":\"uytxzvtznapxban\",\"name\":\"o\",\"type\":\"voxczytpr\"}";
+            = "{\"properties\":{\"provisioningState\":\"Deleting\",\"privateEndpoint\":{\"id\":\"qbawpcbbnzqcykn\"},\"privateLinkServiceConnectionState\":{\"status\":\"Disconnected\",\"description\":\"fyuicdh\"}},\"id\":\"dyb\",\"name\":\"wgbdvibidmhmwffp\",\"type\":\"fmuvapckccr\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,11 @@ public final class PrivateEndpointConnectionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrivateEndpointConnection response = manager.privateEndpointConnections()
-            .getWithResponse("ymc", "ngnbdxxew", "ninvudbchaqdt", com.azure.core.util.Context.NONE)
+            .getWithResponse("vfxzopjh", "zxlioh", "d", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ct", response.privateEndpoint().id());
+        Assertions.assertEquals("qbawpcbbnzqcykn", response.privateEndpoint().id());
         Assertions.assertEquals(ConnectionStatus.DISCONNECTED, response.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("tddmf", response.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("fyuicdh", response.privateLinkServiceConnectionState().description());
     }
 }

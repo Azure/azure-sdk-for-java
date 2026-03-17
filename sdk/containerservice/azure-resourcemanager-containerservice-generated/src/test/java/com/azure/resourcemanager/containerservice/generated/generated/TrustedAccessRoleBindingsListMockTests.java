@@ -22,7 +22,7 @@ public final class TrustedAccessRoleBindingsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"sourceResourceId\":\"dgzhxogj\",\"roles\":[\"svoujkxi\"]},\"id\":\"afhrkmdyomk\",\"name\":\"fbvfbhdy\",\"type\":\"rhpw\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"sourceResourceId\":\"ankltytm\",\"roles\":[\"roznnhdrlktgj\",\"sggux\"]},\"id\":\"mlwywaeeczg\",\"name\":\"bukklels\",\"type\":\"xblycsxzuj\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class TrustedAccessRoleBindingsListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<TrustedAccessRoleBinding> response = manager.trustedAccessRoleBindings()
-            .list("mrqbrjbbmpxdlv", "kfrexcrseqwjks", com.azure.core.util.Context.NONE);
+        PagedIterable<TrustedAccessRoleBinding> response
+            = manager.trustedAccessRoleBindings().list("naoyank", "oe", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("dgzhxogj", response.iterator().next().sourceResourceId());
-        Assertions.assertEquals("svoujkxi", response.iterator().next().roles().get(0));
+        Assertions.assertEquals("ankltytm", response.iterator().next().sourceResourceId());
+        Assertions.assertEquals("roznnhdrlktgj", response.iterator().next().roles().get(0));
     }
 }

@@ -21,7 +21,7 @@ public final class TrustedAccessRoleBindingsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Updating\",\"sourceResourceId\":\"srhmpqvww\",\"roles\":[\"ondcbrw\",\"muvqejosovyr\"]},\"id\":\"eaesin\",\"name\":\"qtljqobbpihehc\",\"type\":\"cy\"}";
+            = "{\"properties\":{\"provisioningState\":\"Failed\",\"sourceResourceId\":\"twvc\",\"roles\":[\"swkacvej\",\"fdv\",\"vhb\"]},\"id\":\"nfxtgdd\",\"name\":\"qthe\",\"type\":\"n\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class TrustedAccessRoleBindingsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         TrustedAccessRoleBinding response = manager.trustedAccessRoleBindings()
-            .getWithResponse("skw", "qjjyslurl", "shhkvpedw", com.azure.core.util.Context.NONE)
+            .getWithResponse("gkkumuikjcj", "aztb", "snsqowxwcoml", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("srhmpqvww", response.sourceResourceId());
-        Assertions.assertEquals("ondcbrw", response.roles().get(0));
+        Assertions.assertEquals("twvc", response.sourceResourceId());
+        Assertions.assertEquals("swkacvej", response.roles().get(0));
     }
 }
