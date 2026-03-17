@@ -2,14 +2,11 @@
 
 ## 2.55.0 (2026-03-07)
 
-### Breaking Changes
+### Other Changes
 
-#### `models.ManagedHsmResource` was removed
+#### Dependency Updates
 
-#### `models.MhsmPrivateLinkResource` was modified
-
-* `tags()` was removed
-* `location()` was removed
+- Updated `api-version` to `2026-02-01`.
 
 ## 2.54.2 (2026-01-29)
 
