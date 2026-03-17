@@ -96,14 +96,17 @@ public class BlobContentValidationPerfTests extends BlobTestBase {
         delayBetweenPerfTests();
         forceGc();
         long usedBefore = getHeapUsed();
+        long uploadElapsedNanos;
 
         AtomicLong peakHeap = new AtomicLong(usedBefore);
         Thread sampler = startHeapSampler(peakHeap);
+        long uploadStartTime = System.nanoTime();
         try {
             upload.run();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
+            uploadElapsedNanos = System.nanoTime() - uploadStartTime;
             stopHeapSampler(sampler);
         }
 
@@ -118,6 +121,8 @@ public class BlobContentValidationPerfTests extends BlobTestBase {
         System.out.println("  Heap before: " + (usedBefore / (1024 * 1024)) + " MB");
         System.out.println("  Peak heap during upload: " + (peakHeap.get() / (1024 * 1024)) + " MB");
         System.out.println("  Heap after (post-GC): " + (usedAfterGc / (1024 * 1024)) + " MB");
+        System.out.printf("  Time taken: %.3f s (%d ms)%n", uploadElapsedNanos / 1_000_000_000.0,
+            uploadElapsedNanos / 1_000_000);
         System.out.println();
         return peakHeap.get();
     }
@@ -536,6 +541,7 @@ public class BlobContentValidationPerfTests extends BlobTestBase {
 
     // ===========================================================================================
     // Async: BlobAsyncClient.uploadFromFileWithResponse (see BlobContentValidationAsyncUploadTests)
+    // I dont think these perf values can be improved without a change to how netty handles FileContent
     // ===========================================================================================
 
     @Test

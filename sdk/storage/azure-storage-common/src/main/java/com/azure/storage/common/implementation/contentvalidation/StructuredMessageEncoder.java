@@ -22,6 +22,7 @@ import java.util.Map;
  */
 public class StructuredMessageEncoder {
     private static final ClientLogger LOGGER = new ClientLogger(StructuredMessageEncoder.class);
+    private static final int CRC64_SCRATCH_BUFFER_SIZE = 64 * 1024;
 
     private final int messageVersion;
     private final int contentLength;
@@ -35,6 +36,7 @@ public class StructuredMessageEncoder {
     private int currentSegmentOffset;
     private long messageCRC64;
     private final Map<Integer, Long> segmentCRC64s;
+    private final byte[] crc64ScratchBuffer;
 
     /**
      * Constructs a new StructuredMessageEncoder.
@@ -63,6 +65,7 @@ public class StructuredMessageEncoder {
         this.currentSegmentOffset = 0;
         this.messageCRC64 = 0;
         this.segmentCRC64s = new HashMap<>();
+        this.crc64ScratchBuffer = new byte[CRC64_SCRATCH_BUFFER_SIZE];
 
         if (numSegments > Short.MAX_VALUE) {
             StorageImplUtils.assertInBounds("numSegments", numSegments, 1, Short.MAX_VALUE);
@@ -212,11 +215,7 @@ public class StructuredMessageEncoder {
                     readSize, segmentCRC64s.get(currentSegmentNumber)));
                 messageCRC64 = StorageCrc64Calculator.compute(unencodedBuffer.array(), pos, readSize, messageCRC64);
             } else {
-                // if the unencoded buffer does not have an array, copy the array to a new byte array and compute the CRC64 checksum
-                byte[] copy = copyToArray(unencodedBuffer, readSize);
-                segmentCRC64s.put(currentSegmentNumber,
-                    StorageCrc64Calculator.compute(copy, segmentCRC64s.get(currentSegmentNumber)));
-                messageCRC64 = StorageCrc64Calculator.compute(copy, messageCRC64);
+                updateCrc64sWithoutAccessibleArray(unencodedBuffer, readSize);
             }
         }
 
@@ -230,10 +229,22 @@ public class StructuredMessageEncoder {
         return slice.asReadOnlyBuffer();
     }
 
-    private static byte[] copyToArray(ByteBuffer buf, int length) {
-        byte[] arr = new byte[length];
-        buf.duplicate().get(arr);
-        return arr;
+    private void updateCrc64sWithoutAccessibleArray(ByteBuffer unencodedBuffer, int readSize) {
+        ByteBuffer duplicate = unencodedBuffer.duplicate();
+        duplicate.limit(duplicate.position() + readSize);
+
+        long segmentCrc64 = segmentCRC64s.get(currentSegmentNumber);
+        long currentMessageCrc64 = messageCRC64;
+
+        while (duplicate.hasRemaining()) {
+            int chunkSize = Math.min(duplicate.remaining(), crc64ScratchBuffer.length);
+            duplicate.get(crc64ScratchBuffer, 0, chunkSize);
+            segmentCrc64 = StorageCrc64Calculator.compute(crc64ScratchBuffer, 0, chunkSize, segmentCrc64);
+            currentMessageCrc64 = StorageCrc64Calculator.compute(crc64ScratchBuffer, 0, chunkSize, currentMessageCrc64);
+        }
+
+        segmentCRC64s.put(currentSegmentNumber, segmentCrc64);
+        messageCRC64 = currentMessageCrc64;
     }
 
     private int calculateMessageLength() {
