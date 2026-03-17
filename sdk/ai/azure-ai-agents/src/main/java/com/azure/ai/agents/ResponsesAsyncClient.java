@@ -7,6 +7,7 @@ package com.azure.ai.agents;
 import com.azure.ai.agents.implementation.OpenAIJsonHelper;
 import com.azure.ai.agents.implementation.StreamingUtils;
 import com.azure.ai.agents.models.AgentReference;
+import com.azure.ai.agents.models.AzureCreateResponse;
 import com.azure.core.annotation.ServiceClient;
 import com.openai.client.OpenAIClientAsync;
 import com.openai.core.JsonValue;
@@ -227,6 +228,47 @@ public final class ResponsesAsyncClient {
         params.conversation(conversationId);
         additionalBodyProperties.put("agent_reference", agentRefJsonValue);
 
+        params.additionalBodyProperties(additionalBodyProperties);
+        return StreamingUtils.toFlux(this.responseServiceAsync.createStreaming(params.build()));
+    }
+
+    /**
+     * Creates a response using Azure-specific properties.
+     *
+     * <p>The properties from {@link AzureCreateResponse} (e.g., {@code agent_reference},
+     * {@code structured_inputs}) are flattened into the request body as top-level fields
+     * alongside the standard OpenAI parameters.</p>
+     *
+     * @param createResponse The Azure-specific create response properties.
+     * @param params The parameters to create the response.
+     * @return A Mono that emits the created Response.
+     */
+    public Mono<Response> createAzureResponse(AzureCreateResponse createResponse, ResponseCreateParams.Builder params) {
+        Objects.requireNonNull(createResponse, "createResponse cannot be null");
+        Objects.requireNonNull(params, "params cannot be null");
+
+        Map<String, JsonValue> additionalBodyProperties = OpenAIJsonHelper.toJsonValueMap(createResponse);
+        params.additionalBodyProperties(additionalBodyProperties);
+        return Mono.fromFuture(this.responseServiceAsync.create(params.build()));
+    }
+
+    /**
+     * Creates a streaming response using Azure-specific properties.
+     *
+     * <p>The properties from {@link AzureCreateResponse} (e.g., {@code agent_reference},
+     * {@code structured_inputs}) are flattened into the request body as top-level fields
+     * alongside the standard OpenAI parameters.</p>
+     *
+     * @param createResponse The Azure-specific create response properties.
+     * @param params The parameters to create the response.
+     * @return A Flux of ResponseStreamEvent.
+     */
+    public Flux<ResponseStreamEvent> createStreamingAzureResponse(AzureCreateResponse createResponse,
+        ResponseCreateParams.Builder params) {
+        Objects.requireNonNull(createResponse, "createResponse cannot be null");
+        Objects.requireNonNull(params, "params cannot be null");
+
+        Map<String, JsonValue> additionalBodyProperties = OpenAIJsonHelper.toJsonValueMap(createResponse);
         params.additionalBodyProperties(additionalBodyProperties);
         return StreamingUtils.toFlux(this.responseServiceAsync.createStreaming(params.build()));
     }

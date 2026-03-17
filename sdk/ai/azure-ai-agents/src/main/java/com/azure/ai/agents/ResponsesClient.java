@@ -7,6 +7,7 @@ package com.azure.ai.agents;
 import com.azure.ai.agents.implementation.OpenAIJsonHelper;
 import com.azure.ai.agents.implementation.StreamingUtils;
 import com.azure.ai.agents.models.AgentReference;
+import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.IterableStream;
 import com.openai.client.OpenAIClient;
@@ -111,40 +112,44 @@ public final class ResponsesClient {
     }
 
     /**
-     * Creates a response using structured input values that are substituted into the agent's prompt template
-     * at runtime. The keys in the {@code structuredInputs} map must match the structured input names declared
-     * on the agent's definition (via {@link com.azure.ai.agents.models.StructuredInputDefinition}), and the values should conform to the
-     * schema and type expectations defined there.
+     * Creates a response using Azure-specific properties.
      *
-     * <p>For example, if the agent was created with structured inputs {@code "userName"} and {@code "userRole"},
-     * the map should contain the corresponding runtime values:</p>
-     * <pre>{@code
-     * Map<String, Object> structuredInputs = new LinkedHashMap<>();
-     * structuredInputs.put("userName", "Alice Smith");
-     * structuredInputs.put("userRole", "Senior Developer");
-     * }</pre>
+     * <p>The properties from {@link AzureCreateResponseOptions} (e.g., {@code agent_reference},
+     * {@code structured_inputs}) are flattened into the request body as top-level fields
+     * alongside the standard OpenAI parameters.</p>
      *
-     * @param agentReference The agent reference.
-     * @param structuredInputs A map of structured input names to their runtime values. The values are
-     *     serialized as JSON and must match the structure expected by the agent's definition.
+     * @param createResponse The Azure-specific create response properties.
      * @param params The parameters to create the response.
      * @return The created Response.
      */
-    public Response createWithAgentStructuredInput(AgentReference agentReference, Map<String, Object> structuredInputs,
-        ResponseCreateParams.Builder params) {
-        Objects.requireNonNull(agentReference, "agentReference cannot be null");
-        Objects.requireNonNull(structuredInputs, "structuredInputs cannot be null");
+    public Response createAzureResponse(AzureCreateResponseOptions createResponse, ResponseCreateParams.Builder params) {
+        Objects.requireNonNull(createResponse, "createResponse cannot be null");
+        Objects.requireNonNull(params, "params cannot be null");
 
-        JsonValue agentRefJsonValue = OpenAIJsonHelper.toJsonValue(agentReference);
-        JsonValue structuredInputsJsonValue = JsonValue.from(structuredInputs);
-
-        Map<String, JsonValue> additionalBodyProperties = new HashMap<>();
-        additionalBodyProperties.put("agent_reference", agentRefJsonValue);
-        additionalBodyProperties.put("structured_inputs", structuredInputsJsonValue);
-
+        Map<String, JsonValue> additionalBodyProperties = OpenAIJsonHelper.toJsonValueMap(createResponse);
         params.additionalBodyProperties(additionalBodyProperties);
-
         return this.responseService.create(params.build());
+    }
+
+    /**
+     * Creates a streaming response using Azure-specific properties.
+     *
+     * <p>The properties from {@link AzureCreateResponseOptions} (e.g., {@code agent_reference},
+     * {@code structured_inputs}) are flattened into the request body as top-level fields
+     * alongside the standard OpenAI parameters.</p>
+     *
+     * @param createResponse The Azure-specific create response properties.
+     * @param params The parameters to create the response.
+     * @return An IterableStream of ResponseStreamEvent.
+     */
+    public IterableStream<ResponseStreamEvent> createStreamingAzureResponse(AzureCreateResponseOptions createResponse,
+        ResponseCreateParams.Builder params) {
+        Objects.requireNonNull(createResponse, "createResponse cannot be null");
+        Objects.requireNonNull(params, "params cannot be null");
+
+        Map<String, JsonValue> additionalBodyProperties = OpenAIJsonHelper.toJsonValueMap(createResponse);
+        params.additionalBodyProperties(additionalBodyProperties);
+        return StreamingUtils.toIterableStream(this.responseService.createStreaming(params.build()));
     }
 
     /**
@@ -163,43 +168,6 @@ public final class ResponsesClient {
 
         Map<String, JsonValue> additionalBodyProperties = new HashMap<>();
         additionalBodyProperties.put("agent_reference", agentRefJsonValue);
-
-        params.additionalBodyProperties(additionalBodyProperties);
-        return StreamingUtils.toIterableStream(this.responseService.createStreaming(params.build()));
-    }
-
-    /**
-     * Creates a streaming response using structured input values that are substituted into the agent's prompt
-     * template at runtime. The keys in the {@code structuredInputs} map must match the structured input names
-     * declared on the agent's definition (via {@link com.azure.ai.agents.models.StructuredInputDefinition}), and the values should conform
-     * to the schema and type expectations defined there.
-     *
-     * <p>For example, if the agent was created with structured inputs {@code "userName"} and {@code "userRole"},
-     * the map should contain the corresponding runtime values:</p>
-     * <pre>{@code
-     * Map<String, Object> structuredInputs = new LinkedHashMap<>();
-     * structuredInputs.put("userName", "Alice Smith");
-     * structuredInputs.put("userRole", "Senior Developer");
-     * }</pre>
-     *
-     * @param agentReference The agent reference.
-     * @param structuredInputs A map of structured input names to their runtime values. The values are
-     *     serialized as JSON and must match the structure expected by the agent's definition.
-     * @param params The parameters to create the response.
-     * @return An IterableStream of ResponseStreamEvent.
-     */
-    public IterableStream<ResponseStreamEvent> createStreamingWithAgentStructuredInput(AgentReference agentReference,
-        Map<String, Object> structuredInputs, ResponseCreateParams.Builder params) {
-        Objects.requireNonNull(agentReference, "agentReference cannot be null");
-        Objects.requireNonNull(structuredInputs, "structuredInputs cannot be null");
-        Objects.requireNonNull(params, "params cannot be null");
-
-        JsonValue agentRefJsonValue = OpenAIJsonHelper.toJsonValue(agentReference);
-        JsonValue structuredInputsJsonValue = JsonValue.from(structuredInputs);
-
-        Map<String, JsonValue> additionalBodyProperties = new HashMap<>();
-        additionalBodyProperties.put("agent_reference", agentRefJsonValue);
-        additionalBodyProperties.put("structured_inputs", structuredInputsJsonValue);
 
         params.additionalBodyProperties(additionalBodyProperties);
         return StreamingUtils.toIterableStream(this.responseService.createStreaming(params.build()));
