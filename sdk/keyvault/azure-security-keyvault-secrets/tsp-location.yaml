@@ -3,4 +3,4 @@ commit: 30f8354c4b10115a7d48806e8a8e8d01277c513f
 repo: Azure/azure-rest-api-specs
 cleanup: true
 additionalDirectories:
-- specification/keyvault/data-plane/Secrets/common
+- specification/keyvault/data-plane/Secrets/common/
