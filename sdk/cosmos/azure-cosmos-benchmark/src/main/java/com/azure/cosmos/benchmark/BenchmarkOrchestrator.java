@@ -329,10 +329,8 @@ public class BenchmarkOrchestrator {
         if (cfg.isSync()) {
             switch (cfg.getOperationType()) {
                 case ReadThroughput:
-                case ReadLatency:
                     return new SyncReadBenchmark(cfg);
                 case WriteThroughput:
-                case WriteLatency:
                     return new SyncWriteBenchmark(cfg);
                 default:
                     throw new IllegalArgumentException(
@@ -352,10 +350,8 @@ public class BenchmarkOrchestrator {
         if (cfg.isEncryptionEnabled()) {
             switch (cfg.getOperationType()) {
                 case WriteThroughput:
-                case WriteLatency:
                     return new AsyncEncryptionWriteBenchmark(cfg, scheduler);
                 case ReadThroughput:
-                case ReadLatency:
                     return new AsyncEncryptionReadBenchmark(cfg, scheduler);
                 case QueryCross:
                 case QuerySingle:
@@ -375,10 +371,8 @@ public class BenchmarkOrchestrator {
         // Default: async benchmarks
         switch (cfg.getOperationType()) {
             case ReadThroughput:
-            case ReadLatency:
                 return new AsyncReadBenchmark(cfg, scheduler);
             case WriteThroughput:
-            case WriteLatency:
                 return new AsyncWriteBenchmark(cfg, scheduler);
             case QueryCross:
             case QuerySingle:
@@ -390,7 +384,6 @@ public class BenchmarkOrchestrator {
             case QueryInClauseParallel:
             case ReadAllItemsOfLogicalPartition:
                 return new AsyncQueryBenchmark(cfg, scheduler);
-            case ReadManyLatency:
             case ReadManyThroughput:
                 return new AsyncReadManyBenchmark(cfg, scheduler);
             case Mixed:

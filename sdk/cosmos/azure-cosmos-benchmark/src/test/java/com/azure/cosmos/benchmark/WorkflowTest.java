@@ -84,11 +84,11 @@ public class WorkflowTest {
     }
 
     @Test(groups = "fast", timeOut = TIMEOUT)
-    public void writeLatencyCLI() throws Exception {
+    public void writeThroughputCLI() throws Exception {
         String cmdFormat = "-serviceEndpoint %s -masterKey %s" +
                 " -databaseId %s -collectionId %s" +
                 " -consistencyLevel SESSION -concurrency 2 -numberOfOperations 1000" +
-                " -operation WriteLatency -connectionMode DIRECT";
+                " -operation WriteThroughput -connectionMode DIRECT";
 
         String cmd = String.format(cmdFormat,
                                    TestConfigurations.HOST,
@@ -110,7 +110,7 @@ public class WorkflowTest {
         cfg.setConsistencyLevel("SESSION");
         cfg.setConcurrency(2);
         cfg.setNumberOfOperations(numberOfOperations);
-        cfg.setOperation("WriteLatency");
+        cfg.setOperation("WriteThroughput");
         cfg.setConnectionMode("DIRECT");
 
         AtomicInteger success = new AtomicInteger();
@@ -184,7 +184,7 @@ public class WorkflowTest {
         cfg.setConsistencyLevel("SESSION");
         cfg.setConcurrency(2);
         cfg.setNumberOfOperations(numberOfOperations);
-        cfg.setOperation("ReadLatency");
+        cfg.setOperation("ReadThroughput");
         cfg.setConnectionMode("DIRECT");
 
         AtomicInteger success = new AtomicInteger();

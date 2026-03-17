@@ -173,8 +173,7 @@ abstract class SyncBenchmark<T> implements Benchmark {
 
             ArrayList<CompletableFuture<PojoizedJson>> createDocumentFutureList = new ArrayList<>();
 
-            if (workloadCfg.getOperationType() != Operation.WriteLatency
-                    && workloadCfg.getOperationType() != Operation.WriteThroughput
+            if (workloadCfg.getOperationType() != Operation.WriteThroughput
                     && workloadCfg.getOperationType() != Operation.ReadMyWrites) {
                 String dataFieldValue = RandomStringUtils.randomAlphabetic(workloadCfg.getDocumentDataFieldSize());
                 for (int i = 0; i < workloadCfg.getNumberOfPreCreatedDocuments(); i++) {

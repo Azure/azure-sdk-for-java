@@ -196,8 +196,7 @@ abstract class AsyncBenchmark<T> implements Benchmark {
         partitionKey = cosmosAsyncContainer.read().block().getProperties().getPartitionKeyDefinition()
             .getPaths().iterator().next().split("/")[1];
 
-        if (cfg.getOperationType() != Operation.WriteLatency
-            && cfg.getOperationType() != Operation.WriteThroughput
+        if (cfg.getOperationType() != Operation.WriteThroughput
             && cfg.getOperationType() != Operation.ReadMyWrites) {
             logger.info("PRE-populating {} documents ....", cfg.getNumberOfPreCreatedDocuments());
             String dataFieldValue = RandomStringUtils.randomAlphabetic(cfg.getDocumentDataFieldSize());

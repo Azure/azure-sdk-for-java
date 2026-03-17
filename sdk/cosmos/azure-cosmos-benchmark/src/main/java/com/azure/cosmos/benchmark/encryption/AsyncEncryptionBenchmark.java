@@ -126,8 +126,7 @@ public abstract class AsyncEncryptionBenchmark<T> implements Benchmark {
         createEncryptionDatabaseAndContainer();
         partitionKey = cosmosAsyncContainer.read().block().getProperties().getPartitionKeyDefinition()
             .getPaths().iterator().next().split("/")[1];
-        if (workloadConfig.getOperationType() != Operation.WriteLatency
-            && workloadConfig.getOperationType() != Operation.WriteThroughput
+        if (workloadConfig.getOperationType() != Operation.WriteThroughput
             && workloadConfig.getOperationType() != Operation.ReadMyWrites) {
             logger.info("PRE-populating {} documents ....", workloadCfg.getNumberOfPreCreatedDocuments());
             String dataFieldValue = RandomStringUtils.randomAlphabetic(workloadCfg.getDocumentDataFieldSize());
