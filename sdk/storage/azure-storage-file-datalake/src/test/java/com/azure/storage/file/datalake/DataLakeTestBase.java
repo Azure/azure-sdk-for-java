@@ -126,7 +126,6 @@ public class DataLakeTestBase extends TestProxyTestBase {
     protected DataLakeFileSystemAsyncClient dataLakeFileSystemAsyncClient;
     protected DataLakeServiceClient primaryDataLakeServiceClient;
     protected DataLakeServiceAsyncClient primaryDataLakeServiceAsyncClient;
-    protected DataLakeServiceClient premiumDataLakeServiceClient;
     protected String fileSystemName;
     protected int entityNo = 0;
 

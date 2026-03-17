@@ -130,8 +130,6 @@ class Transforms {
     static final HttpHeaderName X_MS_PERMISSIONS = HttpHeaderName.fromString("x-ms-permissions");
     static final HttpHeaderName X_MS_CONTINUATION = HttpHeaderName.fromString("x-ms-continuation");
     static final HttpHeaderName X_MS_ACL = HttpHeaderName.fromString("x-ms-acl");
-    static final HttpHeaderName X_MS_ACCESS_TIER_INFERRED = HttpHeaderName.fromString("x-ms-access-tier-inferred");
-    static final HttpHeaderName X_MS_SMART_ACCESS_TIER = HttpHeaderName.fromString("x-ms-smart-access-tier");
 
     static {
         // https://docs.oracle.com/javase/8/docs/api/java/util/Date.html#getTime--
