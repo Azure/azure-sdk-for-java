@@ -27,7 +27,7 @@ import java.util.UUID;
  */
 public final class VaultsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/createVaultWithNetworkAcls.json
+     * x-ms-original-file: 2026-02-01/createVaultWithNetworkAcls.json
      */
     /**
      * Sample code: Create or update a vault with network acls.
@@ -55,7 +55,7 @@ public final class VaultsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-03-01-preview/createVault.json
+     * x-ms-original-file: 2026-02-01/createVault.json
      */
     /**
      * Sample code: Create a new vault or update an existing vault.

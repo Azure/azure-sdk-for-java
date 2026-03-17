@@ -9,7 +9,7 @@ package com.azure.resourcemanager.keyvault.generated;
  */
 public final class PrivateLinkResourcesListByVaultSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/listPrivateLinkResources.json
+     * x-ms-original-file: 2026-02-01/listPrivateLinkResources.json
      */
     /**
      * Sample code: KeyVaultListPrivateLinkResources.

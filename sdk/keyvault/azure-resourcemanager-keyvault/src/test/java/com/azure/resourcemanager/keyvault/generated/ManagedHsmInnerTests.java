@@ -32,81 +32,74 @@ public final class ManagedHsmInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedHsmInner model = BinaryData.fromString(
-            "{\"properties\":{\"tenantId\":\"f40b1f34-ba25-4c5c-bf5c-340f805f1980\",\"initialAdminObjectIds\":[\"kzywbiex\",\"fey\",\"eaxib\",\"ujwb\"],\"hsmUri\":\"walm\",\"enableSoftDelete\":false,\"softDeleteRetentionInDays\":1532421493,\"enablePurgeProtection\":false,\"createMode\":\"default\",\"statusMessage\":\"zjancuxr\",\"provisioningState\":\"Activated\",\"networkAcls\":{\"bypass\":\"AzureServices\",\"defaultAction\":\"Allow\",\"ipRules\":[{\"value\":\"wd\"},{\"value\":\"swzts\"},{\"value\":\"bpg\"},{\"value\":\"xytxhpzxbz\"}],\"serviceTags\":[{\"tag\":\"abgl\"},{\"tag\":\"uhxwtctyqiklbbov\"},{\"tag\":\"lwzbhvgyugu\"}],\"virtualNetworkRules\":[{\"id\":\"mkfssxqukkfplgm\"},{\"id\":\"sxnkjzkdeslpvlo\"},{\"id\":\"wiyighxpkdw\"}]},\"regions\":[{\"name\":\"uebbaumnyqup\",\"provisioningState\":\"Failed\",\"isPrimary\":false},{\"name\":\"a\",\"provisioningState\":\"Succeeded\",\"isPrimary\":true},{\"name\":\"txp\",\"provisioningState\":\"Succeeded\",\"isPrimary\":true},{\"name\":\"hvpesapskrdqm\",\"provisioningState\":\"Cleanup\",\"isPrimary\":false}],\"privateEndpointConnections\":[{\"id\":\"wky\",\"etag\":\"uutkncw\",\"properties\":{\"privateEndpoint\":{\"id\":\"vlxotogtwrupqsx\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"ykvceoveil\",\"actionsRequired\":\"None\"},\"provisioningState\":\"Failed\"}},{\"id\":\"fj\",\"etag\":\"njbkcnxdhbttkph\",\"properties\":{\"privateEndpoint\":{\"id\":\"vjtoqnermclfp\"},\"privateLinkServiceConnectionState\":{\"status\":\"Disconnected\",\"description\":\"uscrpabgyepsb\",\"actionsRequired\":\"None\"},\"provisioningState\":\"Creating\"}},{\"id\":\"gxywpmue\",\"etag\":\"jzwf\",\"properties\":{\"privateEndpoint\":{\"id\":\"jidsuyonobglaoc\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"mgyudxytlmoyrxv\",\"actionsRequired\":\"None\"},\"provisioningState\":\"Disconnected\"}}],\"publicNetworkAccess\":\"Enabled\",\"scheduledPurgeDate\":\"2021-02-14T17:53:11Z\",\"securityDomainProperties\":{\"activationStatus\":\"NotActivated\",\"activationStatusMessage\":\"hl\"}},\"sku\":{\"family\":\"C\",\"name\":\"Custom_B32\"},\"identity\":{\"principalId\":\"b6a5161b-10ce-40e1-a218-ac9027fce4db\",\"tenantId\":\"bd975dc0-2f70-4d10-8131-6bee77170986\",\"type\":\"None\",\"userAssignedIdentities\":{\"xsbkyvpyca\":{\"principalId\":\"74cdf409-1fff-41c6-b68d-2252c471306a\",\"clientId\":\"db3e9322-aa20-49e7-a15c-ea0ee3c9c4f8\"},\"bpzkafkuwbc\":{\"principalId\":\"03913093-37f3-4358-b77f-9419a0cd0496\",\"clientId\":\"5b83b398-6319-4884-8b90-e885e4c2434e\"},\"bmehh\":{\"principalId\":\"e723622b-f0fc-46c5-9a40-12094138232a\",\"clientId\":\"49f74ff1-ab62-4983-b929-bdeb06079534\"}}},\"location\":\"yvjusrtslhsp\",\"tags\":{\"elmqk\":\"emaofmxagkvt\",\"hcdhmdual\":\"hahvljuahaq\",\"vfadmws\":\"exq\",\"lf\":\"crgvxpvgom\"},\"id\":\"sgwbnbbeld\",\"name\":\"wkz\",\"type\":\"ali\"}")
+            "{\"properties\":{\"tenantId\":\"cd752b06-dfb1-42c6-8ec3-d1fe2cada8d9\",\"initialAdminObjectIds\":[\"yqiklbbovplwzb\"],\"hsmUri\":\"gy\",\"enableSoftDelete\":true,\"softDeleteRetentionInDays\":615952432,\"enablePurgeProtection\":true,\"createMode\":\"default\",\"statusMessage\":\"sxqu\",\"provisioningState\":\"Provisioning\",\"networkAcls\":{\"bypass\":\"None\",\"defaultAction\":\"Deny\",\"ipRules\":[{\"value\":\"nkjzkdeslpvlop\"},{\"value\":\"i\"},{\"value\":\"ighxpk\"}],\"serviceTags\":[{\"tag\":\"baiuebbaumny\"}],\"virtualNetworkRules\":[{\"id\":\"edeojnabc\"}]},\"regions\":[{\"name\":\"txp\",\"provisioningState\":\"Succeeded\",\"isPrimary\":true},{\"name\":\"hvpesapskrdqm\",\"provisioningState\":\"Cleanup\",\"isPrimary\":false},{\"name\":\"ldwkyzxuutkn\",\"provisioningState\":\"Deleting\",\"isPrimary\":true}],\"privateEndpointConnections\":[{\"id\":\"xotogtwrupqsxv\",\"etag\":\"i\",\"properties\":{\"privateEndpoint\":{\"id\":\"ceoveilovno\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"cnjbkcnxdhbt\",\"actionsRequired\":\"None\"},\"provisioningState\":\"Deleting\"}},{\"id\":\"pnvjtoqnermclf\",\"etag\":\"phoxus\",\"properties\":{\"privateEndpoint\":{\"id\":\"bgyepsbj\"},\"privateLinkServiceConnectionState\":{\"status\":\"Disconnected\",\"description\":\"gxywpmue\",\"actionsRequired\":\"None\"},\"provisioningState\":\"Creating\"}},{\"id\":\"qkqujidsu\",\"etag\":\"nobglaocq\",\"properties\":{\"privateEndpoint\":{\"id\":\"mgyudxytlmoyrxv\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"pz\",\"actionsRequired\":\"None\"},\"provisioningState\":\"Disconnected\"}},{\"id\":\"hl\",\"etag\":\"jbhckfrlhr\",\"properties\":{\"privateEndpoint\":{\"id\":\"yvpycanuzbpzk\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"b\",\"actionsRequired\":\"None\"},\"provisioningState\":\"Succeeded\"}}],\"publicNetworkAccess\":\"Disabled\",\"scheduledPurgeDate\":\"2021-05-28T09:26:13Z\",\"securityDomainProperties\":{\"activationStatus\":\"Unknown\",\"activationStatusMessage\":\"jusrtslhspk\"}},\"sku\":{\"family\":\"C\",\"name\":\"Standard_B1\"},\"identity\":{\"principalId\":\"7b33af7f-0ae9-4cda-af1f-30bdf6bd077a\",\"tenantId\":\"d6ef95c6-97ac-4db8-b1ad-d5125e4ff928\",\"type\":\"None\",\"userAssignedIdentities\":{\"vt\":{\"principalId\":\"f8deb130-769b-4073-b663-11e6252c9adb\",\"clientId\":\"e1f6ded7-f50e-49c1-8988-0ed643849971\"}}},\"location\":\"lmqkrhahvlj\",\"tags\":{\"ualaexqpvfadmw\":\"aquhcdhm\",\"vgomz\":\"rcrgvx\"},\"id\":\"misgwbnb\",\"name\":\"e\",\"type\":\"dawkzbali\"}")
             .toObject(ManagedHsmInner.class);
-        Assertions.assertEquals(UUID.fromString("f40b1f34-ba25-4c5c-bf5c-340f805f1980"), model.properties().tenantId());
-        Assertions.assertEquals("kzywbiex", model.properties().initialAdminObjectIds().get(0));
-        Assertions.assertFalse(model.properties().enableSoftDelete());
-        Assertions.assertEquals(1532421493, model.properties().softDeleteRetentionInDays());
-        Assertions.assertFalse(model.properties().enablePurgeProtection());
+        Assertions.assertEquals(UUID.fromString("cd752b06-dfb1-42c6-8ec3-d1fe2cada8d9"), model.properties().tenantId());
+        Assertions.assertEquals("yqiklbbovplwzb", model.properties().initialAdminObjectIds().get(0));
+        Assertions.assertTrue(model.properties().enableSoftDelete());
+        Assertions.assertEquals(615952432, model.properties().softDeleteRetentionInDays());
+        Assertions.assertTrue(model.properties().enablePurgeProtection());
         Assertions.assertEquals(CreateMode.DEFAULT, model.properties().createMode());
-        Assertions.assertEquals(NetworkRuleBypassOptions.AZURE_SERVICES, model.properties().networkAcls().bypass());
-        Assertions.assertEquals(NetworkRuleAction.ALLOW, model.properties().networkAcls().defaultAction());
-        Assertions.assertEquals("wd", model.properties().networkAcls().ipRules().get(0).value());
-        Assertions.assertEquals("abgl", model.properties().networkAcls().serviceTags().get(0).tag());
-        Assertions.assertEquals("mkfssxqukkfplgm", model.properties().networkAcls().virtualNetworkRules().get(0).id());
-        Assertions.assertEquals("uebbaumnyqup", model.properties().regions().get(0).name());
-        Assertions.assertFalse(model.properties().regions().get(0).isPrimary());
-        Assertions.assertEquals(PublicNetworkAccess.ENABLED, model.properties().publicNetworkAccess());
+        Assertions.assertEquals(NetworkRuleBypassOptions.NONE, model.properties().networkAcls().bypass());
+        Assertions.assertEquals(NetworkRuleAction.DENY, model.properties().networkAcls().defaultAction());
+        Assertions.assertEquals("nkjzkdeslpvlop", model.properties().networkAcls().ipRules().get(0).value());
+        Assertions.assertEquals("baiuebbaumny", model.properties().networkAcls().serviceTags().get(0).tag());
+        Assertions.assertEquals("edeojnabc", model.properties().networkAcls().virtualNetworkRules().get(0).id());
+        Assertions.assertEquals("txp", model.properties().regions().get(0).name());
+        Assertions.assertTrue(model.properties().regions().get(0).isPrimary());
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.properties().publicNetworkAccess());
         Assertions.assertEquals(ManagedHsmSkuFamily.C, model.sku().family());
-        Assertions.assertEquals(ManagedHsmSkuName.CUSTOM_B32, model.sku().name());
+        Assertions.assertEquals(ManagedHsmSkuName.STANDARD_B1, model.sku().name());
         Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.identity().type());
-        Assertions.assertEquals("yvjusrtslhsp", model.location());
-        Assertions.assertEquals("emaofmxagkvt", model.tags().get("elmqk"));
+        Assertions.assertEquals("lmqkrhahvlj", model.location());
+        Assertions.assertEquals("aquhcdhm", model.tags().get("ualaexqpvfadmw"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ManagedHsmInner model = new ManagedHsmInner()
-            .withProperties(new ManagedHsmProperties()
-                .withTenantId(UUID.fromString("f40b1f34-ba25-4c5c-bf5c-340f805f1980"))
-                .withInitialAdminObjectIds(Arrays.asList("kzywbiex", "fey", "eaxib", "ujwb"))
-                .withEnableSoftDelete(false)
-                .withSoftDeleteRetentionInDays(1532421493)
-                .withEnablePurgeProtection(false)
-                .withCreateMode(CreateMode.DEFAULT)
-                .withNetworkAcls(new MhsmNetworkRuleSet().withBypass(NetworkRuleBypassOptions.AZURE_SERVICES)
-                    .withDefaultAction(NetworkRuleAction.ALLOW)
-                    .withIpRules(Arrays.asList(new MhsmipRule().withValue("wd"), new MhsmipRule().withValue("swzts"),
-                        new MhsmipRule().withValue("bpg"), new MhsmipRule().withValue("xytxhpzxbz")))
-                    .withServiceTags(Arrays.asList(new MhsmServiceTagRule().withTag("abgl"),
-                        new MhsmServiceTagRule().withTag("uhxwtctyqiklbbov"),
-                        new MhsmServiceTagRule().withTag("lwzbhvgyugu")))
-                    .withVirtualNetworkRules(Arrays.asList(new MhsmVirtualNetworkRule().withId("mkfssxqukkfplgm"),
-                        new MhsmVirtualNetworkRule().withId("sxnkjzkdeslpvlo"),
-                        new MhsmVirtualNetworkRule().withId("wiyighxpkdw"))))
-                .withRegions(
-                    Arrays.asList(new MhsmGeoReplicatedRegionInner().withName("uebbaumnyqup").withIsPrimary(false),
-                        new MhsmGeoReplicatedRegionInner().withName("a").withIsPrimary(true),
-                        new MhsmGeoReplicatedRegionInner().withName("txp").withIsPrimary(true),
-                        new MhsmGeoReplicatedRegionInner().withName("hvpesapskrdqm").withIsPrimary(false)))
-                .withPublicNetworkAccess(PublicNetworkAccess.ENABLED))
-            .withSku(new ManagedHsmSku().withFamily(ManagedHsmSkuFamily.C).withName(ManagedHsmSkuName.CUSTOM_B32))
+            .withProperties(
+                new ManagedHsmProperties().withTenantId(UUID.fromString("cd752b06-dfb1-42c6-8ec3-d1fe2cada8d9"))
+                    .withInitialAdminObjectIds(Arrays.asList("yqiklbbovplwzb"))
+                    .withEnableSoftDelete(true)
+                    .withSoftDeleteRetentionInDays(615952432)
+                    .withEnablePurgeProtection(true)
+                    .withCreateMode(CreateMode.DEFAULT)
+                    .withNetworkAcls(new MhsmNetworkRuleSet().withBypass(NetworkRuleBypassOptions.NONE)
+                        .withDefaultAction(NetworkRuleAction.DENY)
+                        .withIpRules(Arrays.asList(new MhsmipRule().withValue("nkjzkdeslpvlop"),
+                            new MhsmipRule().withValue("i"), new MhsmipRule().withValue("ighxpk")))
+                        .withServiceTags(Arrays.asList(new MhsmServiceTagRule().withTag("baiuebbaumny")))
+                        .withVirtualNetworkRules(Arrays.asList(new MhsmVirtualNetworkRule().withId("edeojnabc"))))
+                    .withRegions(Arrays.asList(new MhsmGeoReplicatedRegionInner().withName("txp").withIsPrimary(true),
+                        new MhsmGeoReplicatedRegionInner().withName("hvpesapskrdqm").withIsPrimary(false),
+                        new MhsmGeoReplicatedRegionInner().withName("ldwkyzxuutkn").withIsPrimary(true)))
+                    .withPublicNetworkAccess(PublicNetworkAccess.DISABLED))
+            .withSku(new ManagedHsmSku().withFamily(ManagedHsmSkuFamily.C).withName(ManagedHsmSkuName.STANDARD_B1))
             .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
-                .withUserAssignedIdentities(mapOf("xsbkyvpyca", new UserAssignedIdentity(), "bpzkafkuwbc",
-                    new UserAssignedIdentity(), "bmehh", new UserAssignedIdentity())))
-            .withLocation("yvjusrtslhsp")
-            .withTags(mapOf("elmqk", "emaofmxagkvt", "hcdhmdual", "hahvljuahaq", "vfadmws", "exq", "lf", "crgvxpvgom"));
+                .withUserAssignedIdentities(mapOf("vt", new UserAssignedIdentity())))
+            .withLocation("lmqkrhahvlj")
+            .withTags(mapOf("ualaexqpvfadmw", "aquhcdhm", "vgomz", "rcrgvx"));
         model = BinaryData.fromObject(model).toObject(ManagedHsmInner.class);
-        Assertions.assertEquals(UUID.fromString("f40b1f34-ba25-4c5c-bf5c-340f805f1980"), model.properties().tenantId());
-        Assertions.assertEquals("kzywbiex", model.properties().initialAdminObjectIds().get(0));
-        Assertions.assertFalse(model.properties().enableSoftDelete());
-        Assertions.assertEquals(1532421493, model.properties().softDeleteRetentionInDays());
-        Assertions.assertFalse(model.properties().enablePurgeProtection());
+        Assertions.assertEquals(UUID.fromString("cd752b06-dfb1-42c6-8ec3-d1fe2cada8d9"), model.properties().tenantId());
+        Assertions.assertEquals("yqiklbbovplwzb", model.properties().initialAdminObjectIds().get(0));
+        Assertions.assertTrue(model.properties().enableSoftDelete());
+        Assertions.assertEquals(615952432, model.properties().softDeleteRetentionInDays());
+        Assertions.assertTrue(model.properties().enablePurgeProtection());
         Assertions.assertEquals(CreateMode.DEFAULT, model.properties().createMode());
-        Assertions.assertEquals(NetworkRuleBypassOptions.AZURE_SERVICES, model.properties().networkAcls().bypass());
-        Assertions.assertEquals(NetworkRuleAction.ALLOW, model.properties().networkAcls().defaultAction());
-        Assertions.assertEquals("wd", model.properties().networkAcls().ipRules().get(0).value());
-        Assertions.assertEquals("abgl", model.properties().networkAcls().serviceTags().get(0).tag());
-        Assertions.assertEquals("mkfssxqukkfplgm", model.properties().networkAcls().virtualNetworkRules().get(0).id());
-        Assertions.assertEquals("uebbaumnyqup", model.properties().regions().get(0).name());
-        Assertions.assertFalse(model.properties().regions().get(0).isPrimary());
-        Assertions.assertEquals(PublicNetworkAccess.ENABLED, model.properties().publicNetworkAccess());
+        Assertions.assertEquals(NetworkRuleBypassOptions.NONE, model.properties().networkAcls().bypass());
+        Assertions.assertEquals(NetworkRuleAction.DENY, model.properties().networkAcls().defaultAction());
+        Assertions.assertEquals("nkjzkdeslpvlop", model.properties().networkAcls().ipRules().get(0).value());
+        Assertions.assertEquals("baiuebbaumny", model.properties().networkAcls().serviceTags().get(0).tag());
+        Assertions.assertEquals("edeojnabc", model.properties().networkAcls().virtualNetworkRules().get(0).id());
+        Assertions.assertEquals("txp", model.properties().regions().get(0).name());
+        Assertions.assertTrue(model.properties().regions().get(0).isPrimary());
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.properties().publicNetworkAccess());
         Assertions.assertEquals(ManagedHsmSkuFamily.C, model.sku().family());
-        Assertions.assertEquals(ManagedHsmSkuName.CUSTOM_B32, model.sku().name());
+        Assertions.assertEquals(ManagedHsmSkuName.STANDARD_B1, model.sku().name());
         Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.identity().type());
-        Assertions.assertEquals("yvjusrtslhsp", model.location());
-        Assertions.assertEquals("emaofmxagkvt", model.tags().get("elmqk"));
+        Assertions.assertEquals("lmqkrhahvlj", model.location());
+        Assertions.assertEquals("aquhcdhm", model.tags().get("ualaexqpvfadmw"));
     }
 
     // Use "Map.of" if available

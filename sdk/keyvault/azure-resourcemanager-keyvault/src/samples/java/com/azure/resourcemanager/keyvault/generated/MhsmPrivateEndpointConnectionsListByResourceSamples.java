@@ -9,7 +9,7 @@ package com.azure.resourcemanager.keyvault.generated;
  */
 public final class MhsmPrivateEndpointConnectionsListByResourceSamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/ManagedHsm_ListPrivateEndpointConnectionsByResource.json
+     * x-ms-original-file: 2026-02-01/ManagedHsm_ListPrivateEndpointConnectionsByResource.json
      */
     /**
      * Sample code: List managed HSM Pools in a subscription.

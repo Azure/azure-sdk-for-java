@@ -20,7 +20,7 @@ import java.util.UUID;
  */
 public final class VaultsUpdateAccessPolicySamples {
     /*
-     * x-ms-original-file: 2026-03-01-preview/updateAccessPoliciesAdd.json
+     * x-ms-original-file: 2026-02-01/updateAccessPoliciesAdd.json
      */
     /**
      * Sample code: Add an access policy, or update an access policy with new permissions.
