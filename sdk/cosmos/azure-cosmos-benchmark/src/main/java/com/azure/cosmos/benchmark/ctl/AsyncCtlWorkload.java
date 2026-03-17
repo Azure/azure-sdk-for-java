@@ -291,7 +291,8 @@ public class AsyncCtlWorkload implements Benchmark {
                     failureCount.get(), numberOfPreCreatedDocuments, container.getId());
             }
 
-            BenchmarkHelper.retryFailedBulkOperations(failedResponses, container);
+            BenchmarkHelper.retryFailedBulkOperations(failedResponses, container,
+                workloadConfig.getConcurrency());
 
             docsToRead.put(container.getId(), generatedDocs);
             logger.info("Finished pre-populating {} documents for container {}",

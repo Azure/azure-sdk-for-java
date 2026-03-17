@@ -53,13 +53,16 @@ public class BenchmarkHelper {
      *
      * @param failedResponses list of failed bulk operation responses
      * @param container the container to retry against
+     * @param retryConcurrency max concurrent retry operations
      */
     public static <TContext> void retryFailedBulkOperations(
         List<CosmosBulkOperationResponse<TContext>> failedResponses,
-        CosmosAsyncContainer container) {
+        CosmosAsyncContainer container,
+        int retryConcurrency) {
 
         retryFailedBulkOperations(failedResponses,
-            (item, pk) -> container.createItem(item, pk, null).then());
+            (item, pk) -> container.createItem(item, pk, null).then(),
+            retryConcurrency);
     }
 
     /**
@@ -73,10 +76,12 @@ public class BenchmarkHelper {
      *
      * @param failedResponses list of failed bulk operation responses
      * @param createFunction a function that creates an item given the item and partition key
+     * @param retryConcurrency max concurrent retry operations
      */
     public static <TContext> void retryFailedBulkOperations(
         List<CosmosBulkOperationResponse<TContext>> failedResponses,
-        BiFunction<PojoizedJson, PartitionKey, Mono<Void>> createFunction) {
+        BiFunction<PojoizedJson, PartitionKey, Mono<Void>> createFunction,
+        int retryConcurrency) {
 
         if (failedResponses.isEmpty()) {
             return;
@@ -113,7 +118,7 @@ public class BenchmarkHelper {
                         }
                         return Mono.error(error);
                     });
-            }, 20)
+            }, Math.min(retryConcurrency, 20))
             .blockLast(Duration.ofMinutes(10));
 
         logger.info("Finished retrying failed bulk operations");

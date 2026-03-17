@@ -224,7 +224,8 @@ abstract class AsyncBenchmark<T> implements Benchmark {
                 })
                 .blockLast(Duration.ofMinutes(10));
 
-            BenchmarkHelper.retryFailedBulkOperations(failedResponses, cosmosAsyncContainer);
+            BenchmarkHelper.retryFailedBulkOperations(failedResponses, cosmosAsyncContainer,
+                cfg.getConcurrency());
 
             docsToRead = generatedDocs;
         } else {

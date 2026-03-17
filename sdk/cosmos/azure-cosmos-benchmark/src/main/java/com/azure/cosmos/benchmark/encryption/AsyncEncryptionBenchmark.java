@@ -164,7 +164,8 @@ public abstract class AsyncEncryptionBenchmark<T> implements Benchmark {
                 .blockLast(Duration.ofMinutes(10));
 
             BenchmarkHelper.retryFailedBulkOperations(failedResponses,
-                (item, pk) -> cosmosEncryptionAsyncContainer.createItem(item, pk, null).then());
+                (item, pk) -> cosmosEncryptionAsyncContainer.createItem(item, pk, null).then(),
+                workloadConfig.getConcurrency());
 
             docsToRead = generatedDocs;
         } else {
