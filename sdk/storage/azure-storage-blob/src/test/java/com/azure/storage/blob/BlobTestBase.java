@@ -194,7 +194,8 @@ public class BlobTestBase extends TestProxyTestBase {
                     new TestProxySanitizer("x-ms-copy-source-authorization", ".+", "REDACTED",
                         TestProxySanitizerType.HEADER),
                     new TestProxySanitizer("x-ms-rename-source", "((?<=http://|https://)([^/?]+)|sig=(.*))", "REDACTED",
-                        TestProxySanitizerType.HEADER)));
+                        TestProxySanitizerType.HEADER),
+                    new TestProxySanitizer("skoid=([^&]+)", "REDACTED", TestProxySanitizerType.URL)));
         }
 
         // Ignore changes to the order of query parameters and wholly ignore the 'sv' (service version) query parameter
