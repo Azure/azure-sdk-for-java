@@ -20,13 +20,9 @@ Find the most specific signal in the failure log and jump directly:
 
 | Log Signal | Category | Jump |
 |---|---|---|
-| `[VALIDATE][tspconfig.yaml] ... namespace is REQUIRED` | tspconfig | [1.1 Missing `namespace`](#11-missing-namespace) |
-| `Could not find the selected project in the reactor` | tspconfig | [1.1 Missing `namespace`](#11-missing-namespace) |
-| `Google Java Formatter encountered errors` | tspconfig | [1.2 Invalid Namespace Characters](#12-invalid-namespace-characters) |
-| `error: <identifier> expected` | tspconfig | [1.2 Invalid Namespace Characters](#12-invalid-namespace-characters) |
-| `[COMPILE] Maven build fail.` + Checkstyle `PackageName` `must match pattern` | tspconfig | [1.3 Namespace Segment Too Long](#13-namespace-segment-too-long) |
-| `not supported by Fluent Premium` | tspconfig | [1.4 Unsupported Emitter Option (Fluent Premium)](#14-unsupported-emitter-option-fluent-premium) |
-| Verify Swagger and TypeSpec Code Generation check fails | tspconfig | [1.5 Verify Swagger and TypeSpec Code Generation fails](#15-verify-swagger-and-typespec-code-generation-fails) |
+| `[COMPILE] Maven build fail.` + Checkstyle `PackageName` `must match pattern` | tspconfig | [1.1 Namespace Segment Too Long](#11-namespace-segment-too-long) |
+| `not supported by Fluent Premium` | tspconfig | [1.2 Unsupported Emitter Option (Fluent Premium)](#12-unsupported-emitter-option-fluent-premium) |
+| Verify Swagger and TypeSpec Code Generation check fails | tspconfig | [1.3 Verify Swagger and TypeSpec Code Generation fails](#13-verify-swagger-and-typespec-code-generation-fails) |
 | `[COMPILE] Maven build fail.` + customization class/method referenced | customization | [2. Customization Errors](#2-customization-errors) |
 | `Could not resolve dependencies` / `Could not transfer artifact` | intermittent | [3.1 Maven Dependency Download Failure](#31-maven-dependency-download-failure) |
 | None match | unknown | [Escalation](#escalation) |
@@ -42,57 +38,7 @@ Find the most specific signal in the failure log and jump directly:
 - Azure TypeSpec Autorest emitter reference: https://azure.github.io/typespec-azure/docs/emitters/typespec-autorest/reference/emitter/
 - Azure TypeSpec Java emitter reference: https://azure.github.io/typespec-azure/docs/emitters/clients/typespec-java/reference/emitter/
 
-### 1.1 Missing `namespace`
-
-**Log signal:**
-- `[VALIDATE][tspconfig.yaml] ... namespace is REQUIRED`
-- `Could not find the selected project in the reactor`
-
-**Error (real-world example):**
-```
-[VALIDATE][tspconfig.yaml] options.@azure-tools/typespec-java.namespace is REQUIRED for Java SDK
-```
-or, if validation does not block it, Maven fails later:
-```
-[ERROR] Could not find the selected project in the reactor: com.azure.resourcemanager:azure-resourcemanager-<package>
-[ERROR] [COMPILE] Maven build fail.
-```
-
-**Root cause:** `namespace` is not set in `tspconfig.yaml`. Without it, the generator cannot determine the correct Maven project, causing either a validation error or a downstream Maven build failure.
-
-**Solution:** Add `namespace` to `tspconfig.yaml` in the spec repo:
-```yaml
-options:
-  "@azure-tools/typespec-java":
-    namespace: "com.azure.resourcemanager.yourservice"  # mgmt-plane
-    # or
-    namespace: "com.azure.yourservice"                  # data-plane
-```
-
-### 1.2 Invalid Namespace Characters
-
-**Log signal:**
-- `Google Java Formatter encountered errors`
-- `error: <identifier> expected`
-
-**Error (real-world example):**
-```
-Google Java Formatter encountered errors:
-error: <identifier> expected
-... com.azure.resourcemanager:azure-resourcemanager-<pkg>.<Something> ...
-```
-
-**Root cause:** `namespace` contains illegal Java package characters (commonly `:` from Maven coordinates like `groupId:artifactId`).
-
-**Solution:** Use a valid Java package name (letters/digits/underscore + `.` separators). Example:
-```yaml
-options:
-  "@azure-tools/typespec-java":
-    # ❌ wrong: "com.azure.resourcemanager:azure-resourcemanager-foo"
-    namespace: "com.azure.resourcemanager.foo"  # ✅
-```
-
-### 1.3 Namespace Segment Too Long
+### 1.1 Namespace Segment Too Long
 
 **Log signal:**
 - `[COMPILE] Maven build fail.`
@@ -107,9 +53,17 @@ options:
 
 **Root cause:** One `.`-separated segment in the namespace exceeds 32 characters (Checkstyle package rules).
 
-**Solution:** Shorten the long segment so each segment is within 32 characters and keep the whole package name within typical limits.
+**Solution:**
 
-### 1.4 Unsupported Emitter Option (Fluent Premium)
+1. **Check whether the namespace is approved.** If the long namespace has been reviewed and approved (e.g. it matches the service name exactly):
+   - Add a Checkstyle suppression to [`eng/lintingconfigs/checkstyle/track2/checkstyle-suppressions.xml`](https://github.com/Azure/azure-sdk-for-java/blob/main/eng/lintingconfigs/checkstyle/track2/checkstyle-suppressions.xml#L109-L110). For example:
+     ```xml
+     <!-- Suppress the long package name in yourservice -->
+     <suppress checks="PackageName" files="com.azure.resourcemanager.yourverylongservicename.*" />
+     ```
+2. **If the namespace is not approved**, use a shorter namespace so that each `.`-separated segment is within 32 characters and the whole package name stays within typical limits.
+
+### 1.2 Unsupported Emitter Option (Fluent Premium)
 
 **Log signal:**
 - `not supported by Fluent Premium`
@@ -126,7 +80,7 @@ java.lang.IllegalStateException: Package 'com.azure.resourcemanager.<pkg>' is no
 
 ---
 
-### 1.5 Verify Swagger and TypeSpec Code Generation fails 
+### 1.3 Verify Swagger and TypeSpec Code Generation fails 
 **Log signal:**
 - Verify Swagger and TypeSpec Code Generation check fails in Java SDK CI - java-pullrequest
 
