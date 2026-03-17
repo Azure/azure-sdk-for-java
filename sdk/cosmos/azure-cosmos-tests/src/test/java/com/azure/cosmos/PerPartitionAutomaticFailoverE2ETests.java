@@ -1279,6 +1279,11 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
             throw new SkipException(String.format("Test with type : %s not eligible for specified connection mode %s.", testType, connectionMode));
         }
 
+        // Thin client only supports GATEWAY mode - skip DIRECT mode tests
+        if (connectionMode == ConnectionMode.DIRECT && Configs.isThinClientEnabled()) {
+            throw new SkipException("DIRECT connection mode is not supported with thin client - skipping.");
+        }
+
         if (connectionMode == ConnectionMode.DIRECT) {
 
             TransportClient transportClientMock = Mockito.mock(TransportClient.class);
@@ -1542,6 +1547,11 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
             throw new SkipException(String.format("Test with type : %s not eligible for specified connection mode %s.", testType, connectionMode));
         }
 
+        // Thin client only supports GATEWAY mode - skip DIRECT mode tests
+        if (connectionMode == ConnectionMode.DIRECT && Configs.isThinClientEnabled()) {
+            throw new SkipException("DIRECT connection mode is not supported with thin client - skipping.");
+        }
+
         // DIRECT flow: swap transport client, inject error for primary region/PK range, and verify phase-by-phase
         if (connectionMode == ConnectionMode.DIRECT) {
             TransportClient transportClientMock = Mockito.mock(TransportClient.class);
@@ -1802,6 +1812,11 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
 
         if (!allowedConnectionModes.contains(connectionMode)) {
             throw new SkipException(String.format("Test with type : %s not eligible for specified connection mode %s.", testType, connectionMode));
+        }
+
+        // Thin client only supports GATEWAY mode - skip DIRECT mode tests
+        if (connectionMode == ConnectionMode.DIRECT && Configs.isThinClientEnabled()) {
+            throw new SkipException("DIRECT connection mode is not supported with thin client - skipping.");
         }
 
         final int consecutiveFaults = 10;
