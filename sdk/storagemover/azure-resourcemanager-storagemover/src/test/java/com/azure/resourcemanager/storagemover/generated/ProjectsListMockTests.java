@@ -22,7 +22,7 @@ public final class ProjectsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"description\":\"pcirelsfeaen\",\"provisioningState\":\"Deleting\"},\"id\":\"atklddxbjhwuaa\",\"name\":\"oz\",\"type\":\"osphyoul\"}]}";
+            = "{\"value\":[{\"properties\":{\"description\":\"zev\",\"provisioningState\":\"Failed\"},\"id\":\"wpusdsttwvogv\",\"name\":\"bejdcn\",\"type\":\"qqmoaku\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,8 +32,8 @@ public final class ProjectsListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Project> response
-            = manager.projects().list("rey", "kzikfjawneaivxwc", com.azure.core.util.Context.NONE);
+            = manager.projects().list("r", "kdsnfdsdoakgtdl", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("pcirelsfeaen", response.iterator().next().description());
+        Assertions.assertEquals("zev", response.iterator().next().description());
     }
 }

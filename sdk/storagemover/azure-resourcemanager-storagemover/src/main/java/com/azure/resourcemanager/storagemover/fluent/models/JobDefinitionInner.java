@@ -11,11 +11,14 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storagemover.models.CopyMode;
+import com.azure.resourcemanager.storagemover.models.DataIntegrityValidation;
 import com.azure.resourcemanager.storagemover.models.JobDefinitionPropertiesSourceTargetMap;
 import com.azure.resourcemanager.storagemover.models.JobRunStatus;
 import com.azure.resourcemanager.storagemover.models.JobType;
 import com.azure.resourcemanager.storagemover.models.ProvisioningState;
+import com.azure.resourcemanager.storagemover.models.ScheduleInfo;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * The Job Definition resource.
@@ -373,6 +376,98 @@ public final class JobDefinitionInner extends ProxyResource {
      */
     public ProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the connections property: List of connections associated to this job.
+     * 
+     * @return the connections value.
+     */
+    public List<String> connections() {
+        return this.innerProperties() == null ? null : this.innerProperties().connections();
+    }
+
+    /**
+     * Set the connections property: List of connections associated to this job.
+     * 
+     * @param connections the connections value to set.
+     * @return the JobDefinitionInner object itself.
+     */
+    public JobDefinitionInner withConnections(List<String> connections) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobDefinitionProperties();
+        }
+        this.innerProperties().withConnections(connections);
+        return this;
+    }
+
+    /**
+     * Get the schedule property: Schedule information for the Job Definition.
+     * 
+     * @return the schedule value.
+     */
+    public ScheduleInfo schedule() {
+        return this.innerProperties() == null ? null : this.innerProperties().schedule();
+    }
+
+    /**
+     * Set the schedule property: Schedule information for the Job Definition.
+     * 
+     * @param schedule the schedule value to set.
+     * @return the JobDefinitionInner object itself.
+     */
+    public JobDefinitionInner withSchedule(ScheduleInfo schedule) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobDefinitionProperties();
+        }
+        this.innerProperties().withSchedule(schedule);
+        return this;
+    }
+
+    /**
+     * Get the dataIntegrityValidation property: The checksum validation mode for the job definition.
+     * 
+     * @return the dataIntegrityValidation value.
+     */
+    public DataIntegrityValidation dataIntegrityValidation() {
+        return this.innerProperties() == null ? null : this.innerProperties().dataIntegrityValidation();
+    }
+
+    /**
+     * Set the dataIntegrityValidation property: The checksum validation mode for the job definition.
+     * 
+     * @param dataIntegrityValidation the dataIntegrityValidation value to set.
+     * @return the JobDefinitionInner object itself.
+     */
+    public JobDefinitionInner withDataIntegrityValidation(DataIntegrityValidation dataIntegrityValidation) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobDefinitionProperties();
+        }
+        this.innerProperties().withDataIntegrityValidation(dataIntegrityValidation);
+        return this;
+    }
+
+    /**
+     * Get the preservePermissions property: Boolean to preserve permissions or not.
+     * 
+     * @return the preservePermissions value.
+     */
+    public Boolean preservePermissions() {
+        return this.innerProperties() == null ? null : this.innerProperties().preservePermissions();
+    }
+
+    /**
+     * Set the preservePermissions property: Boolean to preserve permissions or not.
+     * 
+     * @param preservePermissions the preservePermissions value to set.
+     * @return the JobDefinitionInner object itself.
+     */
+    public JobDefinitionInner withPreservePermissions(Boolean preservePermissions) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobDefinitionProperties();
+        }
+        this.innerProperties().withPreservePermissions(preservePermissions);
+        return this;
     }
 
     /**

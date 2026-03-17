@@ -23,7 +23,7 @@ public final class StorageMoversCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"description\":\"wjmy\",\"provisioningState\":\"Canceled\"},\"location\":\"slswtm\",\"tags\":{\"yqsemwa\":\"iofz\",\"tshhszhedp\":\"n\",\"k\":\"vwiwubmwmbesld\"},\"id\":\"wtppjflcxogaoko\",\"name\":\"z\",\"type\":\"nsikvmkqzeqqkdl\"}";
+            = "{\"properties\":{\"description\":\"xafnndlpichko\",\"provisioningState\":\"Canceled\"},\"location\":\"dyh\",\"tags\":{\"reqnovvqfov\":\"kpw\",\"rsndsytgadgvra\":\"jxywsuws\",\"uu\":\"aeneqnzarrwl\",\"e\":\"jfqka\"},\"id\":\"iipfpubj\",\"name\":\"bwwift\",\"type\":\"hqkvpuvksgplsak\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,16 +33,16 @@ public final class StorageMoversCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         StorageMover response = manager.storageMovers()
-            .define("hqlkthumaqo")
-            .withRegion("y")
-            .withExistingResourceGroup("ynduha")
-            .withTags(mapOf("mdnbbglzpswiy", "olpsslqlf", "mnvdfzn", "mcwyhzdxssadb"))
-            .withDescription("ycduier")
+            .define("ibahwflus")
+            .withRegion("btgiwbwoenwas")
+            .withExistingResourceGroup("sdqrhzoymibmrq")
+            .withTags(mapOf("ujw", "dtkcnqxwbpokulp", "yuq", "asipqiio"))
+            .withDescription("mhrkwofyyvoqacp")
             .create();
 
-        Assertions.assertEquals("slswtm", response.location());
-        Assertions.assertEquals("iofz", response.tags().get("yqsemwa"));
-        Assertions.assertEquals("wjmy", response.description());
+        Assertions.assertEquals("dyh", response.location());
+        Assertions.assertEquals("kpw", response.tags().get("reqnovvqfov"));
+        Assertions.assertEquals("xafnndlpichko", response.description());
     }
 
     // Use "Map.of" if available
