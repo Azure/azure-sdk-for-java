@@ -41,17 +41,12 @@ public class RegionalRoutingContext {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         RegionalRoutingContext that = (RegionalRoutingContext) o;
-        if (this.thinclientRegionalEndpoint != null) {
-            return this.gatewayRegionalEndpoint.equals(that.gatewayRegionalEndpoint) &&
-                this.thinclientRegionalEndpoint.equals(that.thinclientRegionalEndpoint);
-        } else {
-            return this.gatewayRegionalEndpoint.equals(that.gatewayRegionalEndpoint);
-        }
+        return this.gatewayRegionalEndpoint.equals(that.gatewayRegionalEndpoint);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.gatewayRegionalEndpoint, this.thinclientRegionalEndpoint);
+        return Objects.hash(this.gatewayRegionalEndpoint);
     }
 
     @Override

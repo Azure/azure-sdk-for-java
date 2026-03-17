@@ -27,6 +27,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -184,9 +185,6 @@ public class LocationCache {
 
         boolean usePreferredLocations = request.requestContext.usePreferredLocations != null ? request.requestContext.usePreferredLocations : true;
         if (!usePreferredLocations || (request.getOperationType().isWriteOperation() && !this.canUseMultipleWriteLocations(request))) {
-            // For non-document resource types in case of client can use multiple write locations
-            // or when client cannot use multiple write locations, flip-flop between the
-            // first and the second writable region in DatabaseAccount (for manual failover)
             DatabaseAccountLocationsInfo currentLocationInfo =  this.locationInfo;
 
             if (this.enableEndpointDiscovery && !currentLocationInfo.availableWriteLocations.isEmpty()) {
@@ -919,10 +917,6 @@ public class LocationCache {
                             endpointsByLocation.put(location, regionalRoutingContext);
                         }
 
-                        if (!regionByEndpoint.containsKey(regionalRoutingContext)) {
-                            regionByEndpoint.put(regionalRoutingContext, location);
-                        }
-
                         parsedLocations.add(gatewayDbAccountLocation.getName());
                         orderedEndpoints.add(regionalRoutingContext);
                     } catch (Exception e) {
@@ -936,6 +930,9 @@ public class LocationCache {
             }
         }
 
+        // Set thin client endpoints before inserting into regionByEndpoint map
+        // because the map's key hashing depends on the object's toString/hashCode
+        // which changes when the thin client endpoint is set
         if (thinclientDbAccountLocations != null) {
             for (DatabaseAccountLocation thinclientDbAccountLocation : thinclientDbAccountLocations) {
                 if (!Strings.isNullOrEmpty(thinclientDbAccountLocation.getName())) {
@@ -944,12 +941,28 @@ public class LocationCache {
                         URI endpoint = new URI(thinclientDbAccountLocation.getEndpoint().toLowerCase(Locale.ROOT));
 
                         RegionalRoutingContext regionalRoutingContext = endpointsByLocation.get(location);
-                        regionalRoutingContext.setThinclientRegionalEndpoint(endpoint);
+                        if (regionalRoutingContext != null) {
+                            regionalRoutingContext.setThinclientRegionalEndpoint(endpoint);
+                        }
                     } catch (Exception e) {
                         logger.warn("Skipping add for location = [{}] and endpoint = [{}] due to exception [{}]",
                             thinclientDbAccountLocation.getName(),
                             thinclientDbAccountLocation.getEndpoint(),
                             e.getMessage());
+                    }
+                }
+            }
+        }
+
+        // Insert into regionByEndpoint after thin client endpoints are fully set.
+        // The regionByEndpoint map (CaseInsensitiveMap) uses toString() for key hashing,
+        // so the thin client endpoint must be set before insertion to ensure stable keys.
+        for (RegionalRoutingContext routingContext : orderedEndpoints) {
+            if (!regionByEndpoint.containsKey(routingContext)) {
+                for (Map.Entry<String, RegionalRoutingContext> entry : endpointsByLocation.entrySet()) {
+                    if (entry.getValue() == routingContext) {
+                        regionByEndpoint.put(routingContext, entry.getKey());
+                        break;
                     }
                 }
             }
@@ -962,7 +975,13 @@ public class LocationCache {
                                                                                    Utils.ValueHolder<UnmodifiableList<RegionalRoutingContext>> orderedEndpointsHolder,
                                                                                    Utils.ValueHolder<UnmodifiableMap<RegionalRoutingContext, String>> regionMap) {
         Map<String, RegionalRoutingContext> endpointsByLocation = new CaseInsensitiveMap<>();
-        Map<RegionalRoutingContext, String> regionByEndpoint = new CaseInsensitiveMap<>();
+        // Use HashMap (not CaseInsensitiveMap) for RegionalRoutingContext keys.
+        // CaseInsensitiveMap uses toString() for key hashing, which includes the mutable
+        // thinclientRegionalEndpoint. This causes lookup failures in getRegionName() where
+        // a new RegionalRoutingContext(gatewayEndpoint) is created for lookup but lacks
+        // the thinclientRegionalEndpoint — producing a different toString().
+        // HashMap uses equals()/hashCode() which only compare gatewayRegionalEndpoint.
+        Map<RegionalRoutingContext, String> regionByEndpoint = new HashMap<>();
         List<String> parsedLocations = new ArrayList<>();
         List<RegionalRoutingContext> orderedEndpoints = new ArrayList<>();
 
