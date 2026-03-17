@@ -47,7 +47,7 @@ abstract class SyncBenchmark<T> implements Benchmark {
     private boolean databaseCreated;
     private boolean collectionCreated;
 
-    final Logger logger;
+    static final Logger logger = LoggerFactory.getLogger(SyncBenchmark.class);
     final CosmosClient benchmarkWorkloadClient;
     CosmosContainer cosmosContainer;
     CosmosDatabase cosmosDatabase;
@@ -71,7 +71,6 @@ abstract class SyncBenchmark<T> implements Benchmark {
     SyncBenchmark(TenantWorkloadConfig workloadCfg) throws Exception {
         executorService = Executors.newFixedThreadPool(workloadCfg.getConcurrency());
         workloadConfig = workloadCfg;
-        logger = LoggerFactory.getLogger(this.getClass());
 
         boolean isManagedIdentityRequired = workloadCfg.isManagedIdentityRequired();
 

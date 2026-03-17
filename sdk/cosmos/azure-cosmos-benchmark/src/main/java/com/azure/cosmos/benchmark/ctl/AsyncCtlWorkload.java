@@ -55,7 +55,7 @@ public class AsyncCtlWorkload implements Benchmark {
     private final String prefixUuidForCreate;
     private final String dataFieldValue;
     private final String partitionKey;
-    private final Logger logger;
+    private static final Logger logger = LoggerFactory.getLogger(AsyncCtlWorkload.class);
     private final CosmosAsyncClient cosmosClient;
     private final TenantWorkloadConfig workloadConfig;
     private final Map<String, List<PojoizedJson>> docsToRead = new HashMap<>();
@@ -73,7 +73,6 @@ public class AsyncCtlWorkload implements Benchmark {
 
     public AsyncCtlWorkload(TenantWorkloadConfig workloadCfg, Scheduler scheduler) {
         this.benchmarkScheduler = scheduler;
-        logger = LoggerFactory.getLogger(this.getClass());
 
         final TokenCredential credential = workloadCfg.isManagedIdentityRequired()
             ? workloadCfg.buildTokenCredential()

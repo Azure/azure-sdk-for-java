@@ -53,7 +53,7 @@ abstract class AsyncBenchmark<T> implements Benchmark {
     private boolean databaseCreated;
     private boolean collectionCreated;
 
-    final Logger logger;
+    static final Logger logger = LoggerFactory.getLogger(AsyncBenchmark.class);
     final CosmosAsyncClient benchmarkWorkloadClient;
     CosmosAsyncContainer cosmosAsyncContainer;
     CosmosAsyncDatabase cosmosAsyncDatabase;
@@ -63,7 +63,6 @@ abstract class AsyncBenchmark<T> implements Benchmark {
 
     AsyncBenchmark(TenantWorkloadConfig cfg, Scheduler scheduler) {
 
-        logger = LoggerFactory.getLogger(this.getClass());
         workloadConfig = cfg;
         this.benchmarkScheduler = scheduler;
 
