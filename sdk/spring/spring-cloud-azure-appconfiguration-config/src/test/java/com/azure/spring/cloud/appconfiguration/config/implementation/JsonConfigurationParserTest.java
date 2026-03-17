@@ -28,7 +28,6 @@ public class JsonConfigurationParserTest {
         // Basic valid JSON content types
         assertTrue(JsonConfigurationParser.isJsonContentType("application/json"));
         assertTrue(JsonConfigurationParser.isJsonContentType("application/api+json"));
-        assertTrue(JsonConfigurationParser.isJsonContentType("application/json+activity"));
         assertTrue(JsonConfigurationParser.isJsonContentType("application/vnd.xxxx+json"));
         assertTrue(JsonConfigurationParser.isJsonContentType("application/vnd.microsoft.appconfig.document+json"));
         
@@ -39,6 +38,7 @@ public class JsonConfigurationParserTest {
         assertFalse(JsonConfigurationParser.isJsonContentType("application/config"));
         assertFalse(JsonConfigurationParser.isJsonContentType(""));
         assertFalse(JsonConfigurationParser.isJsonContentType(null));
+        assertFalse(JsonConfigurationParser.isJsonContentType("application/json+activity")); // activity is the suffix, not json
     }
 
     @Test

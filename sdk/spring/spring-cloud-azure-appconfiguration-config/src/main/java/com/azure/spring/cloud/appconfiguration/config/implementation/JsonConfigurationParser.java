@@ -45,13 +45,10 @@ final class JsonConfigurationParser {
             if (mainType.equalsIgnoreCase(acceptedMainType)) {
                 if (subType.contains("+")) {
                     // Handle structured syntax suffixes like "application/vnd.api+json"
-                    List<String> subtypes = Arrays.asList(subType.split("\\+"));
-                    for (String sub : subtypes) {
-                        if (sub.trim().equalsIgnoreCase(acceptedSubType)) {
-                            return true;
-                        }
-                    }
-                    return false;
+                    // According to RFC 6839, the suffix is the part after the last +
+                    String[] subtypes = subType.split("\\+");
+                    String suffix = subtypes[subtypes.length - 1].trim();
+                    return suffix.equalsIgnoreCase(acceptedSubType);
                 } else {
                     return subType.equalsIgnoreCase(acceptedSubType);
                 }
