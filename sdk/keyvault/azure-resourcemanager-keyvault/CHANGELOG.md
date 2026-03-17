@@ -1,14 +1,15 @@
 # Release History
 
-## 2.55.0-beta.1 (Unreleased)
-
-### Features Added
+## 2.55.0 (2026-03-17)
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.ManagedHsmResource` was removed
 
-### Other Changes
+#### `models.MhsmPrivateLinkResource` was modified
+
+* `tags()` was removed
+* `location()` was removed
 
 ## 2.54.2 (2026-01-29)
 
