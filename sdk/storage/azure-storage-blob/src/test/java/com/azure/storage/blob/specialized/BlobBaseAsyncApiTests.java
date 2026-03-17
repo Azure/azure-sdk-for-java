@@ -5,9 +5,13 @@ package com.azure.storage.blob.specialized;
 
 import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.polling.AsyncPollResponse;
+import com.azure.core.util.polling.PollResponse;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobTestBase;
+import com.azure.storage.blob.models.AccessTier;
+import com.azure.storage.blob.models.BlobCopyInfo;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobQueryArrowField;
 import com.azure.storage.blob.models.BlobQueryArrowFieldType;
@@ -22,6 +26,7 @@ import com.azure.storage.blob.models.BlobQuerySerialization;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.BlockBlobItem;
+import com.azure.storage.blob.options.BlobBeginCopyOptions;
 import com.azure.storage.blob.options.BlobQueryOptions;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
@@ -53,6 +58,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BlobBaseAsyncApiTests extends BlobTestBase {
@@ -606,4 +612,19 @@ public class BlobBaseAsyncApiTests extends BlobTestBase {
         }
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
+    @Test
+    public void startCopyFromURLSmartAccessTier() {
+        BlockBlobAsyncClient destBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
+
+        BlobBeginCopyOptions options = new BlobBeginCopyOptions(bc.getBlobUrl()).setTier(AccessTier.SMART);
+
+        AsyncPollResponse<BlobCopyInfo, Void> operation = destBlob.beginCopy(options).blockLast();
+        assertTrue(operation.getStatus().isComplete());
+
+        StepVerifier.create(destBlob.getPropertiesWithResponse(null)).assertNext(response -> {
+            assertEquals(AccessTier.SMART, response.getValue().getAccessTier());
+            assertNotNull(response.getValue().getSmartAccessTier());
+        }).verifyComplete();
+    }
 }
