@@ -464,7 +464,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
         };
     }
 
-    @BeforeClass(groups = {"multi-region"})
+    @BeforeClass(groups = {"multi-region", "fi-thinclient-multi-region"})
     public void beforeClass() {
         this.sharedClient = getClientBuilder().buildAsyncClient();
 
@@ -484,7 +484,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
         this.accountLevelLocationReadableLocationContext = getAccountLevelLocationContext(databaseAccountSnapshot, false);
     }
 
-    @AfterClass(groups = {"multi-region"})
+    @AfterClass(groups = {"multi-region", "fi-thinclient-multi-region"})
     public void afterClass() throws InterruptedException {
         safeClose(this.sharedClient);
         System.gc();
@@ -1258,7 +1258,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
      *   <li>Success vs failure based on phase and configuration.</li>
      * </ul>
      */
-    @Test(groups = {"multi-region"}, dataProvider = "ppafTestConfigsWithWriteOps")
+    @Test(groups = {"multi-region", "fi-thinclient-multi-region"}, dataProvider = "ppafTestConfigsWithWriteOps")
     public void testPpafWithWriteFailoverWithEligibleErrorStatusCodes(
         String testType,
         OperationType operationType,
@@ -1521,7 +1521,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
      * <p>Expectations are provided by the data provider: when disabled, the request should not succeed;
      * when enabled, it should succeed. Works for both DIRECT and GATEWAY connection modes.</p>
      */
-    @Test(groups = {"multi-region"}, dataProvider = "ppafDynamicEnablement503Only")
+    @Test(groups = {"multi-region", "fi-thinclient-multi-region"}, dataProvider = "ppafDynamicEnablement503Only")
     public void testPpafWithWriteFailoverWithEligibleErrorStatusCodesWithPpafDynamicEnablement(
         String testType,
         OperationType operationType,
@@ -1788,7 +1788,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
      * <p>Dynamic enablement is achieved by overriding GlobalEndpointManager's owner to
      * inject the PPAF flag into DatabaseAccount snapshots.</p>
      */
-    @Test(groups = {"multi-region"}, dataProvider = "ppafNonWriteDynamicEnablementScenarios")
+    @Test(groups = {"multi-region", "fi-thinclient-multi-region"}, dataProvider = "ppafNonWriteDynamicEnablementScenarios")
     public void testFailoverBehaviorForNonWriteOperationsWithPpafDynamicEnablement(
         String testType,
         OperationType operationType,
