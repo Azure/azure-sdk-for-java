@@ -2,11 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
-import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.test.faultinjection.FaultInjectionOperationType;
 import org.apache.commons.lang3.ArrayUtils;
-import org.testng.SkipException;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
@@ -36,13 +34,6 @@ public class FITests_readManyAfterCreation
         int numberOfOtherDocumentsWithSameId,
         int numberOfOtherDocumentsWithSamePk,
         boolean shouldInjectPreferredRegionsInClient) {
-
-        // readMany hardcodes DIRECT — skip baseline (no hedging) under thin client
-        // which forces GATEWAY. Availability strategy tests must still run.
-        if (Configs.isThinClientEnabled() && availabilityStrategy == null) {
-            throw new SkipException(
-                "Skipping DIRECT baseline test config '" + testCaseId + "' under thin client (GATEWAY mode forced)");
-        }
 
         execute(
             testCaseId,

@@ -2,10 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
-import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.test.faultinjection.FaultInjectionOperationType;
 import org.apache.commons.lang3.ArrayUtils;
-import org.testng.SkipException;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
@@ -31,14 +29,6 @@ public class FITests_readAllAfterCreation extends FaultInjectionWithAvailability
         int numberOfOtherDocumentsWithSameId,
         int numberOfOtherDocumentsWithSamePk,
         boolean shouldInjectPreferredRegionsInClient) {
-
-        // Thin client forces GATEWAY mode — skip DIRECT-only baseline test configs whose
-        // timeouts are too tight for the gateway proxy path. Availability strategy (hedging)
-        // tests must still run as they validate core thin client functionality.
-        if (Configs.isThinClientEnabled() && connectionMode == ConnectionMode.DIRECT && availabilityStrategy == null) {
-            throw new SkipException(
-                "Skipping DIRECT baseline test config '" + testCaseId + "' under thin client (GATEWAY mode forced)");
-        }
 
         execute(
             testCaseId,
