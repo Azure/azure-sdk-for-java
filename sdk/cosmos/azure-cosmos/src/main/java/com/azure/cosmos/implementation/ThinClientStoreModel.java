@@ -185,7 +185,7 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
             && request.getPartitionKeyRangeIdentity() != null;
     }
     @Override
-    public HttpRequest wrapInHttpRequest(RxDocumentServiceRequest request, URI requestUri) throws Exception {
+    public HttpRequest wrapInHttpRequest(RxDocumentServiceRequest request, String requestUri, int port) throws Exception {
         if (this.globalDatabaseAccountName == null) {
             this.globalDatabaseAccountName = this.globalEndpointManager.getLatestDatabaseAccount().getId();
         }
@@ -233,7 +233,7 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
             return new HttpRequest(
                 HttpMethod.POST,
                 requestUri,
-                requestUri.getPort(),
+                port,
                 headers,
                 Flux.just(contentAsByteArray))
                 .withThinClientRequest(true);

@@ -194,11 +194,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
     }
 
     @Override
-    public HttpRequest wrapInHttpRequest(RxDocumentServiceRequest request, URI requestUri) throws Exception {
-        return wrapInHttpRequest(request, requestUri.toString(), requestUri.getPort());
-    }
-
-    private HttpRequest wrapInHttpRequest(RxDocumentServiceRequest request, String requestUriString, int port) throws Exception {
+    public HttpRequest wrapInHttpRequest(RxDocumentServiceRequest request, String requestUriString, int port) throws Exception {
         HttpMethod method = getHttpMethod(request);
         HttpHeaders httpHeaders = this.getHttpRequestHeaders(request.getHeaders());
 
@@ -328,15 +324,8 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
     private Mono<RxDocumentServiceResponse> performRequestInternalCore(RxDocumentServiceRequest request, String requestUri) {
 
         try {
-            HttpRequest httpRequest;
             HttpTransportSerializer effectiveSerializer = request.getEffectiveHttpTransportSerializer(this);
-            if (effectiveSerializer == this) {
-                // Fast path: use the string-based overload to avoid URI parsing
-                httpRequest = this.wrapInHttpRequest(request, requestUri, this.resolvePort(request));
-            } else {
-                // Fallback for custom serializers (e.g., ThinClientStoreModel)
-                httpRequest = effectiveSerializer.wrapInHttpRequest(request, new URI(requestUri));
-            }
+            HttpRequest httpRequest = effectiveSerializer.wrapInHttpRequest(request, requestUri, this.resolvePort(request));
 
             // Capture the request record early so it's available on both success and error paths.
             // Each retry creates a new HttpRequest with a new record, so this is per-attempt.
