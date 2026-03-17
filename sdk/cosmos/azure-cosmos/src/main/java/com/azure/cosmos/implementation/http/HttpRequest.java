@@ -16,7 +16,6 @@ import java.time.Instant;
 public class HttpRequest {
     private HttpMethod httpMethod;
     private URI uri;
-    private String uriString;
     private int port;
     private HttpHeaders headers;
     private Flux<byte[]> body;
@@ -32,7 +31,6 @@ public class HttpRequest {
     public HttpRequest(HttpMethod httpMethod, URI uri, int port, HttpHeaders httpHeaders) {
         this.httpMethod = httpMethod;
         this.uri = uri;
-        this.uriString = uri.toString();
         this.port = port;
         this.headers = httpHeaders;
         this.reactorNettyRequestRecord = createReactorNettyRequestRecord();
@@ -46,8 +44,7 @@ public class HttpRequest {
      */
     public HttpRequest(HttpMethod httpMethod, String uri, int port) throws URISyntaxException {
         this.httpMethod = httpMethod;
-        this.uriString = uri;
-        this.uri = null;
+        this.uri = new URI(uri);
         this.port = port;
         this.headers = new HttpHeaders();
         this.reactorNettyRequestRecord = createReactorNettyRequestRecord();
@@ -64,26 +61,6 @@ public class HttpRequest {
     public HttpRequest(HttpMethod httpMethod, URI uri, int port, HttpHeaders headers, Flux<byte[]> body) {
         this.httpMethod = httpMethod;
         this.uri = uri;
-        this.uriString = uri.toString();
-        this.port = port;
-        this.headers = headers;
-        this.body = body;
-        this.reactorNettyRequestRecord = createReactorNettyRequestRecord();
-    }
-
-    /**
-     * Create a new HttpRequest instance from a URI string without parsing it.
-     *
-     * @param httpMethod the HTTP request method
-     * @param uriString  the target address as a string (URI parsing is deferred)
-     * @param port       the target port
-     * @param headers    the HTTP headers to use with this request
-     * @param body       the request content
-     */
-    public HttpRequest(HttpMethod httpMethod, String uriString, int port, HttpHeaders headers, Flux<byte[]> body) {
-        this.httpMethod = httpMethod;
-        this.uriString = uriString;
-        this.uri = null;
         this.port = port;
         this.headers = headers;
         this.body = body;
@@ -136,25 +113,7 @@ public class HttpRequest {
      * @return the target address
      */
     public URI uri() {
-        URI result = this.uri;
-        if (result == null) {
-            try {
-                result = new URI(this.uriString);
-                this.uri = result;
-            } catch (URISyntaxException e) {
-                throw new IllegalArgumentException("Invalid URI: " + this.uriString, e);
-            }
-        }
-        return result;
-    }
-
-    /**
-     * Get the target address as a string without triggering URI parsing.
-     *
-     * @return the target address string
-     */
-    public String uriString() {
-        return this.uriString;
+        return uri;
     }
 
     /**
@@ -165,7 +124,6 @@ public class HttpRequest {
      */
     public HttpRequest withUri(URI uri) {
         this.uri = uri;
-        this.uriString = uri.toString();
         return this;
     }
 

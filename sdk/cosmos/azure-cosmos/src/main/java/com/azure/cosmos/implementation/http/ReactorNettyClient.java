@@ -176,7 +176,7 @@ public class ReactorNettyClient implements HttpClient {
     @Override
     public Mono<HttpResponse> send(final HttpRequest request, Duration responseTimeout) {
         Objects.requireNonNull(request.httpMethod());
-        Objects.requireNonNull(request.uriString());
+        Objects.requireNonNull(request.uri());
         Objects.requireNonNull(this.httpClientConfig);
         if(request.reactorNettyRequestRecord() == null) {
             ReactorNettyRequestRecord reactorNettyRequestRecord = new ReactorNettyRequestRecord();
@@ -202,7 +202,7 @@ public class ReactorNettyClient implements HttpClient {
             .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, connectTimeoutMs)
             .responseTimeout(responseTimeout)
             .request(HttpMethod.valueOf(request.httpMethod().toString()))
-            .uri(request.uriString())
+            .uri(request.uri().toASCIIString())
             .send(bodySendDelegate(request))
             .responseConnection((reactorNettyResponse, reactorNettyConnection) -> {
                 HttpResponse httpResponse = new ReactorNettyHttpResponse(reactorNettyResponse,
