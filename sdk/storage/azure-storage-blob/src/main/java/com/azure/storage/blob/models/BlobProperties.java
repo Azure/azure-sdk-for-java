@@ -692,10 +692,15 @@ public final class BlobProperties {
     }
 
     /**
-     * Gets the smart access tier of the blob.
+     * Gets the underlying access tier of the blob when its access tier is {@link AccessTier#SMART}.
+     * <p>
+     * This value is only populated when {@link #getAccessTier()} returns {@link AccessTier#SMART}. In that case, it
+     * represents the concrete access tier (for example {@link AccessTier#HOT} or {@link AccessTier#COOL}) that the
+     * service has selected for the blob. For all other access tiers, this property is {@code null} and should be
+     * ignored.
      *
-     * @return the tier of the blob. This is only set for Page blobs on a premium storage account or for Block blobs on
-     * blob storage or general purpose V2 account.
+     * @return the underlying access tier chosen by the service when the blob's access tier is
+     * {@link AccessTier#SMART}, or {@code null} if the blob is not using the smart access tier.
      */
     public AccessTier getSmartAccessTier() {
         return internalProperties.getSmartAccessTier();

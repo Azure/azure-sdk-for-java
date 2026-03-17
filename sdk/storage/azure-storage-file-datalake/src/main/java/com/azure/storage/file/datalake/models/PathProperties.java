@@ -54,13 +54,13 @@ public class PathProperties {
 
     static {
         AccessorUtility.setPathPropertiesAccessor((properties, encryptionScope, encryptionContext, owner, group,
-            permissions, AccessControlList, accessTierInferred, smartAccessTier) -> {
+            permissions, accessControlList, accessTierInferred, smartAccessTier) -> {
             properties.encryptionScope = encryptionScope;
             properties.encryptionContext = encryptionContext;
             properties.owner = owner;
             properties.group = group;
             properties.permissions = permissions;
-            properties.accessControlList = PathAccessControlEntry.parseList(AccessControlList);
+            properties.accessControlList = PathAccessControlEntry.parseList(accessControlList);
             properties.accessTierInferred = accessTierInferred;
             properties.smartAccessTier = smartAccessTier;
 
