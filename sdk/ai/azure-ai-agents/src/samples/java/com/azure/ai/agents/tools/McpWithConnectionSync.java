@@ -5,7 +5,6 @@ package com.azure.ai.agents.tools;
 
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.ConversationsClient;
 import com.azure.ai.agents.ResponsesClient;
 import com.azure.ai.agents.models.AgentReference;
 import com.azure.ai.agents.models.AgentVersionDetails;
@@ -18,6 +17,7 @@ import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
 import com.openai.models.responses.ResponseInputItem;
 import com.openai.models.responses.ResponseOutputItem;
+import com.openai.services.blocking.ConversationService;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -50,7 +50,7 @@ public class McpWithConnectionSync {
 
         AgentsClient agentsClient = builder.buildAgentsClient();
         ResponsesClient responsesClient = builder.buildResponsesClient();
-        ConversationsClient conversationsClient = builder.buildConversationsClient();
+        ConversationService conversationService = builder.buildOpenAIClient().conversations();
 
         // BEGIN: com.azure.ai.agents.define_mcp_with_connection
         // Create MCP tool with project connection authentication
@@ -73,7 +73,7 @@ public class McpWithConnectionSync {
                 .setVersion(agent.getVersion());
 
             // Create a conversation for context
-            Conversation conversation = conversationsClient.getConversationService().create();
+            Conversation conversation = conversationService.create();
 
             // Send initial request that triggers the MCP tool
             Response response = responsesClient.createWithAgentConversation(

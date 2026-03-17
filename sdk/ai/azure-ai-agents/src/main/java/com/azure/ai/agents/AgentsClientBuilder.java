@@ -53,10 +53,8 @@ import java.util.Objects;
     serviceClients = {
         AgentsClient.class,
         MemoryStoresClient.class,
-        ConversationsClient.class,
         AgentsAsyncClient.class,
-        MemoryStoresAsyncClient.class,
-        ConversationsAsyncClient.class })
+        MemoryStoresAsyncClient.class })
 public final class AgentsClientBuilder
     implements HttpTrait<AgentsClientBuilder>, ConfigurationTrait<AgentsClientBuilder>,
     TokenCredentialTrait<AgentsClientBuilder>, EndpointTrait<AgentsClientBuilder> {
@@ -321,28 +319,6 @@ public final class AgentsClientBuilder
             .clientOptions(localClientOptions)
             .build();
         return httpPipeline;
-    }
-
-    /**
-     * Builds an instance of ConversationsAsyncClient class.
-     *
-     * @return an instance of ConversationsAsyncClient.
-     */
-    public ConversationsAsyncClient buildConversationsAsyncClient() {
-        return new ConversationsAsyncClient(getOpenAIAsyncClientBuilder().build()
-            .withOptions(optionBuilder -> optionBuilder
-                .httpClient(HttpClientHelper.mapToOpenAIHttpClient(createHttpPipeline()))));
-    }
-
-    /**
-     * Builds an instance of ConversationsClient class.
-     *
-     * @return an instance of ConversationsClient.
-     */
-    public ConversationsClient buildConversationsClient() {
-        return new ConversationsClient(getOpenAIClientBuilder().build()
-            .withOptions(optionBuilder -> optionBuilder
-                .httpClient(HttpClientHelper.mapToOpenAIHttpClient(createHttpPipeline()))));
     }
 
     /**

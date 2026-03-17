@@ -5,7 +5,6 @@ package com.azure.ai.agents.tools;
 
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.ConversationsClient;
 import com.azure.ai.agents.ResponsesClient;
 import com.azure.ai.agents.SampleUtils;
 import com.azure.ai.agents.models.AgentReference;
@@ -22,6 +21,7 @@ import com.openai.models.conversations.items.ItemCreateParams;
 import com.openai.models.responses.EasyInputMessage;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
+import com.openai.services.blocking.ConversationService;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -49,7 +49,7 @@ public class OpenApiSample {
 
         AgentsClient agentsClient = builder.buildAgentsClient();
         ResponsesClient responsesClient = builder.buildResponsesClient();
-        ConversationsClient conversationsClient = builder.buildConversationsClient();
+        ConversationService conversationService = builder.buildOpenAIClient().conversations();
 
 
         // Load the OpenAPI spec from a JSON file
@@ -70,8 +70,8 @@ public class OpenApiSample {
         System.out.println("Agent: " + agentVersion.getName() + ", version: " + agentVersion.getVersion());
 
         // Create a conversation and add a user message
-        Conversation conversation = conversationsClient.getConversationService().create();
-        conversationsClient.getConversationService().items().create(
+        Conversation conversation = conversationService.create();
+        conversationService.items().create(
             ItemCreateParams.builder()
                 .conversationId(conversation.id())
                 .addItem(EasyInputMessage.builder()
