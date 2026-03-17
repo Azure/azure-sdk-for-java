@@ -4,6 +4,7 @@
 package com.azure.cosmos.benchmark;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
@@ -109,5 +110,20 @@ public class BenchmarkHelper {
             .blockLast(Duration.ofMinutes(10));
 
         logger.info("Finished retrying failed bulk operations");
+    }
+
+    /**
+     * Creates lightweight PojoizedJson objects containing only id and partition key,
+     * suitable for use as docsToRead references without holding full document data.
+     */
+    public static List<PojoizedJson> idsToLightweightDocs(List<String> ids, String partitionKeyName) {
+        List<PojoizedJson> docs = new ArrayList<>(ids.size());
+        for (String id : ids) {
+            PojoizedJson doc = new PojoizedJson();
+            doc.setProperty("id", id);
+            doc.setProperty(partitionKeyName, id);
+            docs.add(doc);
+        }
+        return docs;
     }
 }

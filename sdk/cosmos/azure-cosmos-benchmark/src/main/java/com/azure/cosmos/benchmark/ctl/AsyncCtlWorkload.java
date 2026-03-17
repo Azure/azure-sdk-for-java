@@ -257,25 +257,24 @@ public class AsyncCtlWorkload implements Benchmark {
 
     private void createPrePopulatedDocs(int numberOfPreCreatedDocuments) {
         for (CosmosAsyncContainer container : containers) {
-            List<PojoizedJson> generatedDocs = new ArrayList<>();
+            List<String> generatedIds = new ArrayList<>();
 
-            for (int i = 0; i < numberOfPreCreatedDocuments; i++) {
-                String uId = UUID.randomUUID().toString();
-                PojoizedJson newDoc = BenchmarkHelper.generateDocument(uId,
-                    dataFieldValue,
-                    partitionKey,
-                    workloadConfig.getDocumentDataFieldCount());
-                generatedDocs.add(newDoc);
-            }
+            Flux<CosmosItemOperation> bulkOperationFlux = Flux.range(0, numberOfPreCreatedDocuments)
+                .map(i -> {
+                    String uId = UUID.randomUUID().toString();
+                    PojoizedJson newDoc = BenchmarkHelper.generateDocument(uId,
+                        dataFieldValue,
+                        partitionKey,
+                        workloadConfig.getDocumentDataFieldCount());
+                    generatedIds.add(uId);
+                    return CosmosBulkOperations.getCreateItemOperation(newDoc, new PartitionKey(uId));
+                });
 
             AtomicLong successCount = new AtomicLong(0);
             AtomicLong failureCount = new AtomicLong(0);
             List<CosmosBulkOperationResponse<Object>> failedResponses = Collections.synchronizedList(new ArrayList<>());
             CosmosBulkExecutionOptions bulkExecutionOptions = new CosmosBulkExecutionOptions();
-            container.executeBulkOperations(
-                    Flux.fromIterable(generatedDocs)
-                        .map(doc -> CosmosBulkOperations.getCreateItemOperation(doc, new PartitionKey(doc.getId()))),
-                    bulkExecutionOptions)
+            container.executeBulkOperations(bulkOperationFlux, bulkExecutionOptions)
                 .doOnNext(response -> {
                     if (response.getResponse() != null && response.getResponse().isSuccessStatusCode()) {
                         successCount.incrementAndGet();
@@ -295,7 +294,7 @@ public class AsyncCtlWorkload implements Benchmark {
 
             BenchmarkHelper.retryFailedBulkOperations(failedResponses, container);
 
-            docsToRead.put(container.getId(), generatedDocs);
+            docsToRead.put(container.getId(), BenchmarkHelper.idsToLightweightDocs(generatedIds, partitionKey));
             logger.info("Finished pre-populating {} documents for container {}",
                 successCount.get(), container.getId());
         }

@@ -141,27 +141,26 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<PojoizedJson> {
         logger.info("PRE-populating {} documents ....", cacheSize);
         List<PojoizedJson> generatedDocs = new ArrayList<>();
 
-        for (int i = 0; i < cacheSize; i++) {
-            String idString = UUID.randomUUID().toString();
-            String randomVal = UUID.randomUUID().toString();
-            PojoizedJson newDoc = new PojoizedJson();
-            newDoc.setProperty("id", idString);
-            newDoc.setProperty(partitionKey, idString);
-            newDoc.setProperty(QUERY_FIELD_NAME, randomVal);
-            newDoc.setProperty("dataField1", randomVal);
-            newDoc.setProperty("dataField2", randomVal);
-            newDoc.setProperty("dataField3", randomVal);
-            newDoc.setProperty("dataField4", randomVal);
-            generatedDocs.add(newDoc);
-        }
+        Flux<CosmosItemOperation> bulkOperationFlux = Flux.range(0, cacheSize)
+            .map(i -> {
+                String idString = UUID.randomUUID().toString();
+                String randomVal = UUID.randomUUID().toString();
+                PojoizedJson newDoc = new PojoizedJson();
+                newDoc.setProperty("id", idString);
+                newDoc.setProperty(partitionKey, idString);
+                newDoc.setProperty(QUERY_FIELD_NAME, randomVal);
+                newDoc.setProperty("dataField1", randomVal);
+                newDoc.setProperty("dataField2", randomVal);
+                newDoc.setProperty("dataField3", randomVal);
+                newDoc.setProperty("dataField4", randomVal);
+                generatedDocs.add(newDoc);
+                return CosmosBulkOperations.getCreateItemOperation(newDoc, new PartitionKey(idString));
+            });
 
         CosmosBulkExecutionOptions bulkExecutionOptions = new CosmosBulkExecutionOptions();
         List<CosmosBulkOperationResponse<Object>> failedResponses = Collections.synchronizedList(new ArrayList<>());
         cosmosAsyncContainer
-            .executeBulkOperations(
-                Flux.fromIterable(generatedDocs)
-                    .map(doc -> CosmosBulkOperations.getCreateItemOperation(doc, new PartitionKey(doc.getId()))),
-                bulkExecutionOptions)
+            .executeBulkOperations(bulkOperationFlux, bulkExecutionOptions)
             .doOnNext(response -> {
                 if (response.getResponse() == null || !response.getResponse().isSuccessStatusCode()) {
                     failedResponses.add(response);

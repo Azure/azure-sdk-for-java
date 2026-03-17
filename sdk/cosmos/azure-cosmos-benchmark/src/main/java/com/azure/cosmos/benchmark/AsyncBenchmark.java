@@ -201,24 +201,23 @@ abstract class AsyncBenchmark<T> implements Benchmark {
             && cfg.getOperationType() != Operation.ReadMyWrites) {
             logger.info("PRE-populating {} documents ....", cfg.getNumberOfPreCreatedDocuments());
             String dataFieldValue = RandomStringUtils.randomAlphabetic(cfg.getDocumentDataFieldSize());
-            List<PojoizedJson> generatedDocs = new ArrayList<>();
+            List<String> generatedIds = new ArrayList<>();
 
-            for (int i = 0; i < cfg.getNumberOfPreCreatedDocuments(); i++) {
-                String uuid = UUID.randomUUID().toString();
-                PojoizedJson newDoc = BenchmarkHelper.generateDocument(uuid,
-                    dataFieldValue,
-                    partitionKey,
-                    cfg.getDocumentDataFieldCount());
-                generatedDocs.add(newDoc);
-            }
+            Flux<CosmosItemOperation> bulkOperationFlux = Flux.range(0, cfg.getNumberOfPreCreatedDocuments())
+                .map(i -> {
+                    String uuid = UUID.randomUUID().toString();
+                    PojoizedJson newDoc = BenchmarkHelper.generateDocument(uuid,
+                        dataFieldValue,
+                        partitionKey,
+                        cfg.getDocumentDataFieldCount());
+                    generatedIds.add(uuid);
+                    return CosmosBulkOperations.getCreateItemOperation(newDoc, new PartitionKey(uuid));
+                });
 
             CosmosBulkExecutionOptions bulkExecutionOptions = new CosmosBulkExecutionOptions();
             List<CosmosBulkOperationResponse<Object>> failedResponses = Collections.synchronizedList(new ArrayList<>());
             cosmosAsyncContainer
-                .executeBulkOperations(
-                    Flux.fromIterable(generatedDocs)
-                        .map(doc -> CosmosBulkOperations.getCreateItemOperation(doc, new PartitionKey(doc.getId()))),
-                    bulkExecutionOptions)
+                .executeBulkOperations(bulkOperationFlux, bulkExecutionOptions)
                 .doOnNext(response -> {
                     if (response.getResponse() == null || !response.getResponse().isSuccessStatusCode()) {
                         failedResponses.add(response);
@@ -228,7 +227,7 @@ abstract class AsyncBenchmark<T> implements Benchmark {
 
             BenchmarkHelper.retryFailedBulkOperations(failedResponses, cosmosAsyncContainer);
 
-            docsToRead = generatedDocs;
+            docsToRead = BenchmarkHelper.idsToLightweightDocs(generatedIds, partitionKey);
         } else {
             docsToRead = new ArrayList<>();
         }
