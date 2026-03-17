@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixes a bug where ';' was ignored in json content type checking.
+
 ### Other Changes
 
 ## 7.1.0 (2026-03-11)
