@@ -33,7 +33,7 @@ import java.util.Map;
  * <p>Before running the sample, set these environment variables:</p>
  * <ul>
  *   <li>FOUNDRY_PROJECT_ENDPOINT - The Azure AI Project endpoint.</li>
- *   <li>FOUNDRY_MODEL_DEPLOYMENT_NAME - The model deployment name.</li>
+ *   <li>FOUNDRY_MODEL_NAME - The model deployment name.</li>
  * </ul>
  *
  * <p>Also place an OpenAPI spec JSON file at {@code src/samples/resources/assets/httpbin_openapi.json}.</p>
@@ -41,7 +41,7 @@ import java.util.Map;
 public class OpenApiSync {
     public static void main(String[] args) throws Exception {
         String endpoint = Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT");
-        String model = Configuration.getGlobalConfiguration().get("FOUNDRY_MODEL_DEPLOYMENT_NAME");
+        String model = Configuration.getGlobalConfiguration().get("FOUNDRY_MODEL_NAME");
 
         AgentsClientBuilder builder = new AgentsClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())

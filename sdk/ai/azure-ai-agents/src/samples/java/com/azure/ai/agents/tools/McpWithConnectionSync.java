@@ -33,7 +33,7 @@ import java.util.List;
  * <p>Before running the sample, set these environment variables:</p>
  * <ul>
  *   <li>FOUNDRY_PROJECT_ENDPOINT - The Azure AI Project endpoint.</li>
- *   <li>FOUNDRY_MODEL_DEPLOYMENT_NAME - The model deployment name.</li>
+ *   <li>FOUNDRY_MODEL_NAME - The model deployment name.</li>
  *   <li>MCP_PROJECT_CONNECTION_ID - The MCP project connection ID (Custom Keys connection
  *       with key "Authorization" and value "Bearer &lt;your GitHub PAT token&gt;").</li>
  * </ul>
@@ -41,7 +41,7 @@ import java.util.List;
 public class McpWithConnectionSync {
     public static void main(String[] args) {
         String endpoint = Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT");
-        String model = Configuration.getGlobalConfiguration().get("FOUNDRY_MODEL_DEPLOYMENT_NAME");
+        String model = Configuration.getGlobalConfiguration().get("FOUNDRY_MODEL_NAME");
         String mcpConnectionId = Configuration.getGlobalConfiguration().get("MCP_PROJECT_CONNECTION_ID");
 
         AgentsClientBuilder builder = new AgentsClientBuilder()
