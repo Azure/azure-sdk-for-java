@@ -9,7 +9,7 @@ package com.azure.resourcemanager.keyvault.generated;
  */
 public final class PrivateEndpointConnectionsGetSamples {
     /*
-     * x-ms-original-file: 2026-02-01/getPrivateEndpointConnection.json
+     * x-ms-original-file: 2026-03-01-preview/getPrivateEndpointConnection.json
      */
     /**
      * Sample code: KeyVaultGetPrivateEndpointConnection.

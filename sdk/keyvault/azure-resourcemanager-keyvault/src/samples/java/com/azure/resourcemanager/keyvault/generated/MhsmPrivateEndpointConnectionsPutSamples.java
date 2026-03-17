@@ -13,7 +13,7 @@ import com.azure.resourcemanager.keyvault.models.PrivateEndpointServiceConnectio
  */
 public final class MhsmPrivateEndpointConnectionsPutSamples {
     /*
-     * x-ms-original-file: 2026-02-01/ManagedHsm_putPrivateEndpointConnection.json
+     * x-ms-original-file: 2026-03-01-preview/ManagedHsm_putPrivateEndpointConnection.json
      */
     /**
      * Sample code: ManagedHsmPutPrivateEndpointConnection.

@@ -120,6 +120,11 @@ public final class VaultProperties implements JsonSerializable<VaultProperties> 
      */
     private String publicNetworkAccess;
 
+    /*
+     * Configuration for Token Binding for Entra tokens
+     */
+    private TokenBindingParameters tokenBindingParameters;
+
     /**
      * Creates an instance of VaultProperties class.
      */
@@ -485,6 +490,26 @@ public final class VaultProperties implements JsonSerializable<VaultProperties> 
     }
 
     /**
+     * Get the tokenBindingParameters property: Configuration for Token Binding for Entra tokens.
+     * 
+     * @return the tokenBindingParameters value.
+     */
+    public TokenBindingParameters tokenBindingParameters() {
+        return this.tokenBindingParameters;
+    }
+
+    /**
+     * Set the tokenBindingParameters property: Configuration for Token Binding for Entra tokens.
+     * 
+     * @param tokenBindingParameters the tokenBindingParameters value to set.
+     * @return the VaultProperties object itself.
+     */
+    public VaultProperties withTokenBindingParameters(TokenBindingParameters tokenBindingParameters) {
+        this.tokenBindingParameters = tokenBindingParameters;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -508,6 +533,9 @@ public final class VaultProperties implements JsonSerializable<VaultProperties> 
         }
         if (privateEndpointConnections() != null) {
             privateEndpointConnections().forEach(e -> e.validate());
+        }
+        if (tokenBindingParameters() != null) {
+            tokenBindingParameters().validate();
         }
     }
 
@@ -536,6 +564,7 @@ public final class VaultProperties implements JsonSerializable<VaultProperties> 
         jsonWriter.writeStringField("provisioningState",
             this.provisioningState == null ? null : this.provisioningState.toString());
         jsonWriter.writeStringField("publicNetworkAccess", this.publicNetworkAccess);
+        jsonWriter.writeJsonField("tokenBindingParameters", this.tokenBindingParameters);
         return jsonWriter.writeEndObject();
     }
 
@@ -596,6 +625,8 @@ public final class VaultProperties implements JsonSerializable<VaultProperties> 
                     deserializedVaultProperties.privateEndpointConnections = privateEndpointConnections;
                 } else if ("publicNetworkAccess".equals(fieldName)) {
                     deserializedVaultProperties.publicNetworkAccess = reader.getString();
+                } else if ("tokenBindingParameters".equals(fieldName)) {
+                    deserializedVaultProperties.tokenBindingParameters = TokenBindingParameters.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

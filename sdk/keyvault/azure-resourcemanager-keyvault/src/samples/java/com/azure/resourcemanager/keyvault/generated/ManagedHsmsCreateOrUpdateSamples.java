@@ -19,7 +19,7 @@ import java.util.UUID;
  */
 public final class ManagedHsmsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2026-02-01/ManagedHsm_CreateOrUpdate.json
+     * x-ms-original-file: 2026-03-01-preview/ManagedHsm_CreateOrUpdate.json
      */
     /**
      * Sample code: Create a new managed HSM Pool or update an existing managed HSM Pool.

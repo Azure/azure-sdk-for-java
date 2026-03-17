@@ -9,7 +9,7 @@ package com.azure.resourcemanager.keyvault.generated;
  */
 public final class SecretsGetSamples {
     /*
-     * x-ms-original-file: 2026-02-01/getSecret.json
+     * x-ms-original-file: 2026-03-01-preview/getSecret.json
      */
     /**
      * Sample code: Get a secret.

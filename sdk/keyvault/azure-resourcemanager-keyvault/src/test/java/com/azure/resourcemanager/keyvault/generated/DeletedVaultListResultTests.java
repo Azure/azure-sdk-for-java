@@ -12,8 +12,8 @@ public final class DeletedVaultListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeletedVaultListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"vaultId\":\"yggdtjixh\",\"location\":\"uofqwe\",\"deletionDate\":\"2021-10-20T00:24:32Z\",\"scheduledPurgeDate\":\"2021-04-02T02:52:26Z\",\"tags\":{\"ybcibvyvdcsit\":\"vfyexfw\",\"eypvhezrkg\":\"nnaamdectehfiqsc\",\"sle\":\"hcjrefovgmk\",\"cattpngjcrcczsq\":\"yvxyqjp\"},\"purgeProtectionEnabled\":true},\"id\":\"mdajv\",\"name\":\"ysou\",\"type\":\"q\"}],\"nextLink\":\"a\"}")
+            "{\"value\":[{\"properties\":{\"vaultId\":\"cibvyvdcsitynn\",\"location\":\"mdectehfiqscjey\",\"deletionDate\":\"2021-03-08T20:07:33Z\",\"scheduledPurgeDate\":\"2021-01-16T02:36:56Z\",\"tags\":{\"kqsleyyvxy\":\"gqhcjrefovg\",\"cr\":\"jpkcattpng\",\"ajvnysounqe\":\"czsqpjhvm\"},\"purgeProtectionEnabled\":false},\"id\":\"ae\",\"name\":\"pfhyhl\",\"type\":\"rpmopjmc\"},{\"properties\":{\"vaultId\":\"u\",\"location\":\"thfuiuaodsfcpkvx\",\"deletionDate\":\"2021-07-31T05:00:25Z\",\"scheduledPurgeDate\":\"2021-06-07T12:26:40Z\",\"tags\":{\"okktwhrdxw\":\"yzydagfuaxbezyi\",\"ryocfsfksymdd\":\"ywqsmbsurexim\",\"o\":\"stkiiuxhqyud\",\"b\":\"rq\"},\"purgeProtectionEnabled\":false},\"id\":\"vyifqrvkdvjsl\",\"name\":\"rm\",\"type\":\"vdfwatkpn\"}],\"nextLink\":\"lexxbczwtru\"}")
             .toObject(DeletedVaultListResult.class);
-        Assertions.assertEquals("a", model.nextLink());
+        Assertions.assertEquals("lexxbczwtru", model.nextLink());
     }
 }

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.keyvault.generated;
  */
 public final class VaultsDeleteSamples {
     /*
-     * x-ms-original-file: 2026-02-01/deleteVault.json
+     * x-ms-original-file: 2026-03-01-preview/deleteVault.json
      */
     /**
      * Sample code: Delete a vault.

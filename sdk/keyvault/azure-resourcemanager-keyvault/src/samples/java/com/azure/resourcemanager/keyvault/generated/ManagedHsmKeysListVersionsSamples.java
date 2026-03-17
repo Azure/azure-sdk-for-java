@@ -9,7 +9,7 @@ package com.azure.resourcemanager.keyvault.generated;
  */
 public final class ManagedHsmKeysListVersionsSamples {
     /*
-     * x-ms-original-file: 2026-02-01/managedHsmListKeyVersions.json
+     * x-ms-original-file: 2026-03-01-preview/managedHsmListKeyVersions.json
      */
     /**
      * Sample code: List key versions in the managed HSM.

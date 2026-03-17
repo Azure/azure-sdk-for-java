@@ -9,7 +9,7 @@ package com.azure.resourcemanager.keyvault.generated;
  */
 public final class KeysGetVersionSamples {
     /*
-     * x-ms-original-file: 2026-02-01/getKeyVersion.json
+     * x-ms-original-file: 2026-03-01-preview/getKeyVersion.json
      */
     /**
      * Sample code: Get a key version.

@@ -13,7 +13,7 @@ import com.azure.resourcemanager.keyvault.models.KeyCreateParameters;
  */
 public final class KeysCreateIfNotExistSamples {
     /*
-     * x-ms-original-file: 2026-02-01/createKey.json
+     * x-ms-original-file: 2026-03-01-preview/createKey.json
      */
     /**
      * Sample code: Create a key.

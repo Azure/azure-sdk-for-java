@@ -97,6 +97,11 @@ public final class VaultPatchProperties implements JsonSerializable<VaultPatchPr
      */
     private String publicNetworkAccess;
 
+    /*
+     * Configuration for Token Binding for Entra tokens
+     */
+    private TokenBindingParameters tokenBindingParameters;
+
     /**
      * Creates an instance of VaultPatchProperties class.
      */
@@ -400,6 +405,26 @@ public final class VaultPatchProperties implements JsonSerializable<VaultPatchPr
     }
 
     /**
+     * Get the tokenBindingParameters property: Configuration for Token Binding for Entra tokens.
+     * 
+     * @return the tokenBindingParameters value.
+     */
+    public TokenBindingParameters tokenBindingParameters() {
+        return this.tokenBindingParameters;
+    }
+
+    /**
+     * Set the tokenBindingParameters property: Configuration for Token Binding for Entra tokens.
+     * 
+     * @param tokenBindingParameters the tokenBindingParameters value to set.
+     * @return the VaultPatchProperties object itself.
+     */
+    public VaultPatchProperties withTokenBindingParameters(TokenBindingParameters tokenBindingParameters) {
+        this.tokenBindingParameters = tokenBindingParameters;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -413,6 +438,9 @@ public final class VaultPatchProperties implements JsonSerializable<VaultPatchPr
         }
         if (networkAcls() != null) {
             networkAcls().validate();
+        }
+        if (tokenBindingParameters() != null) {
+            tokenBindingParameters().validate();
         }
     }
 
@@ -436,6 +464,7 @@ public final class VaultPatchProperties implements JsonSerializable<VaultPatchPr
         jsonWriter.writeBooleanField("enablePurgeProtection", this.enablePurgeProtection);
         jsonWriter.writeJsonField("networkAcls", this.networkAcls);
         jsonWriter.writeStringField("publicNetworkAccess", this.publicNetworkAccess);
+        jsonWriter.writeJsonField("tokenBindingParameters", this.tokenBindingParameters);
         return jsonWriter.writeEndObject();
     }
 
@@ -486,6 +515,8 @@ public final class VaultPatchProperties implements JsonSerializable<VaultPatchPr
                     deserializedVaultPatchProperties.networkAcls = NetworkRuleSet.fromJson(reader);
                 } else if ("publicNetworkAccess".equals(fieldName)) {
                     deserializedVaultPatchProperties.publicNetworkAccess = reader.getString();
+                } else if ("tokenBindingParameters".equals(fieldName)) {
+                    deserializedVaultPatchProperties.tokenBindingParameters = TokenBindingParameters.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

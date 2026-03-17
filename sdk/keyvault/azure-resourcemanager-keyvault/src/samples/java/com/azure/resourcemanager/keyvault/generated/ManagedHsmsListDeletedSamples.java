@@ -9,7 +9,7 @@ package com.azure.resourcemanager.keyvault.generated;
  */
 public final class ManagedHsmsListDeletedSamples {
     /*
-     * x-ms-original-file: 2026-02-01/DeletedManagedHsm_List.json
+     * x-ms-original-file: 2026-03-01-preview/DeletedManagedHsm_List.json
      */
     /**
      * Sample code: List deleted managed HSMs in the specified subscription.
