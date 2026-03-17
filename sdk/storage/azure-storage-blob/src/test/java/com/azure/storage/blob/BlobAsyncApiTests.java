@@ -2583,31 +2583,16 @@ public class BlobAsyncApiTests extends BlobTestBase {
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
     @Test
     public void uploadStreamAccessTierSmart() {
+        bc = ccAsync.getBlobAsyncClient(generateBlobName());
+        BlobParallelUploadOptions options
+            = new BlobParallelUploadOptions(DATA.getDefaultFlux()).setTier(AccessTier.SMART);
+        Mono<Response<BlobProperties>> response
+            = bc.uploadWithResponse(options).then(bc.getPropertiesWithResponse(null));
 
-        Flux<BlobItem> response
-            = primaryBlobServiceAsyncClient.createBlobContainer(generateContainerName()).flatMapMany(cc -> {
-                BlockBlobAsyncClient bc = cc.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
-                return bc.upload(DATA.getDefaultFlux(), DATA.getDefaultData().remaining())
-                    .then(bc.setAccessTierWithResponse(AccessTier.SMART, null, null))
-                    .flatMap(r -> {
-                        HttpHeaders headers = r.getHeaders();
-
-                        assertTrue(r.getStatusCode() == 200 || r.getStatusCode() == 202);
-                        assertNotNull(headers.getValue(X_MS_VERSION));
-                        assertNotNull(headers.getValue(X_MS_REQUEST_ID));
-                        return Mono.empty();
-                    })
-                    .then(bc.getProperties())
-                    .flatMap(r -> {
-                        assertEquals(AccessTier.SMART, r.getAccessTier());
-                        return Mono.empty();
-                    })
-                    .thenMany(cc.listBlobs());
-            });
-
-        StepVerifier.create(response)
-            .assertNext(r -> assertEquals(AccessTier.SMART, r.getProperties().getAccessTier()))
-            .verifyComplete();
+        StepVerifier.create(response).assertNext(r -> {
+            assertEquals(AccessTier.SMART, r.getValue().getAccessTier());
+            assertNotNull(r.getValue().getSmartAccessTier());
+        }).verifyComplete();
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-12-02")
