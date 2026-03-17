@@ -65,7 +65,11 @@ public class BenchmarkHelper {
     /**
      * Retries failed bulk operation responses using a custom create function.
      * Ignores 409 (Conflict) errors since the document already exists.
-     * Re-throws all other errors after retries are exhausted.
+     * Re-throws all other non-transient errors after retries are exhausted.
+     *
+     * <p>Retryable status codes (aligned with
+     * <a href="https://github.com/Azure/azure-cosmos-distributed-bulk-sample/blob/main/src/main/java/com/azure/cosmos/samples/distributedbulk/BulkWriter.java">BulkWriter</a>):
+     * 408, 410, 429, 449, 500, 503.</p>
      *
      * @param failedResponses list of failed bulk operation responses
      * @param createFunction a function that creates an item given the item and partition key
@@ -87,17 +91,21 @@ public class BenchmarkHelper {
                 PartitionKey pk = operation.getPartitionKeyValue();
 
                 return createFunction.apply(item, pk)
-                    .retryWhen(Retry.max(5).filter(error -> {
-                        if (!(error instanceof CosmosException)) {
-                            return false;
-                        }
-                        int statusCode = ((CosmosException) error).getStatusCode();
-                        return statusCode == 410
-                            || statusCode == 408
-                            || statusCode == 429
-                            || statusCode == 500
-                            || statusCode == 503;
-                    }))
+                    .retryWhen(Retry.backoff(5, Duration.ofMillis(100))
+                        .maxBackoff(Duration.ofSeconds(5))
+                        .jitter(0.5)
+                        .filter(error -> {
+                            if (!(error instanceof CosmosException)) {
+                                return false;
+                            }
+                            int statusCode = ((CosmosException) error).getStatusCode();
+                            return statusCode == 408
+                                || statusCode == 410
+                                || statusCode == 429
+                                || statusCode == 449
+                                || statusCode == 500
+                                || statusCode == 503;
+                        }))
                     .onErrorResume(error -> {
                         if (error instanceof CosmosException
                             && ((CosmosException) error).getStatusCode() == 409) {
@@ -105,7 +113,7 @@ public class BenchmarkHelper {
                         }
                         return Mono.error(error);
                     });
-            }, 100)
+            }, 20)
             .blockLast(Duration.ofMinutes(10));
 
         logger.info("Finished retrying failed bulk operations");

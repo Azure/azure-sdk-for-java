@@ -202,7 +202,8 @@ abstract class SyncBenchmark<T> implements Benchmark {
                                 }
                                 int statusCode = ce.getStatusCode();
                                 boolean isTransient = statusCode == 408 || statusCode == 410
-                                    || statusCode == 429 || statusCode == 500 || statusCode == 503;
+                                    || statusCode == 429 || statusCode == 449
+                                    || statusCode == 500 || statusCode == 503;
                                 if (isTransient && attempt < maxRetries) {
                                     try {
                                         Thread.sleep(1000L * (attempt + 1));
