@@ -36,11 +36,12 @@ public class FITests_queryAfterCreation
         int numberOfOtherDocumentsWithSamePk,
         boolean shouldInjectPreferredRegionsInClient) {
 
-        // Thin client forces GATEWAY mode — skip DIRECT-only test configs whose timeouts
-        // are too tight for the gateway proxy path
-        if (Configs.isThinClientEnabled() && connectionMode == ConnectionMode.DIRECT) {
+        // Thin client forces GATEWAY mode — skip DIRECT-only baseline test configs whose
+        // timeouts are too tight for the gateway proxy path. Availability strategy (hedging)
+        // tests must still run as they validate core thin client functionality.
+        if (Configs.isThinClientEnabled() && connectionMode == ConnectionMode.DIRECT && availabilityStrategy == null) {
             throw new SkipException(
-                "Skipping DIRECT mode test config '" + testCaseId + "' under thin client (GATEWAY mode forced)");
+                "Skipping DIRECT baseline test config '" + testCaseId + "' under thin client (GATEWAY mode forced)");
         }
 
         execute(

@@ -2,10 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.test.faultinjection.FaultInjectionOperationType;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.lang3.ArrayUtils;
+import org.testng.SkipException;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
@@ -28,6 +30,11 @@ public class FITests_readAfterCreation
         BiConsumer<Integer, Integer> validateStatusCode,
         Consumer<CosmosDiagnosticsContext> validateDiagnosticsContext,
         boolean shouldInjectPreferredRegionsInClient) {
+
+        if (Configs.isThinClientEnabled() && connectionMode == ConnectionMode.DIRECT && availabilityStrategy == null) {
+            throw new SkipException(
+                "Skipping DIRECT baseline test config '" + testCaseId + "' under thin client (GATEWAY mode forced)");
+        }
 
         Function<ItemOperationInvocationParameters, CosmosResponseWrapper> readItemCallback = (params) ->
             new CosmosResponseWrapper(params.container
