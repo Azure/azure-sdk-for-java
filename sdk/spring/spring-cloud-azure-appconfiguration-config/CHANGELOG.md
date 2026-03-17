@@ -8,7 +8,7 @@
 
 ### Bugs Fixed
 
-- Fixes a bug where ';' was ignored in json content type checking.
+- Fixes a bug where ';' was ignored in JSON content type checking.
 
 ### Other Changes
 
