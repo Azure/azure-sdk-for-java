@@ -3,8 +3,6 @@
 
 package com.azure.ai.agents;
 
-import com.azure.ai.agents.implementation.OpenAIJsonHelper;
-import com.azure.ai.agents.models.AgentReference;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.ai.agents.models.StructuredInputDefinition;
@@ -48,11 +46,18 @@ public class CreateResponseWithStructuredInput {
                 .setStructuredInputs(inputDefs));
 
         // Create a response, passing structured input values
+        Map<String, Object> agentRef = new LinkedHashMap<>();
+        agentRef.put("type", "agent_reference");
+        agentRef.put("name", agent.getName());
+        agentRef.put("version", agent.getVersion());
+
+        Map<String, Object> structuredInputs = new LinkedHashMap<>();
+        structuredInputs.put("userName", "Alice Smith");
+        structuredInputs.put("userRole", "Senior Developer");
+
         Map<String, JsonValue> extraBody = new LinkedHashMap<>();
-        extraBody.put("agent_reference", OpenAIJsonHelper.toJsonValue(
-            new AgentReference(agent.getName()).setVersion(agent.getVersion())));
-        extraBody.put("structured_inputs", JsonValue.from(
-            Map.of("userName", "Alice Smith", "userRole", "Senior Developer")));
+        extraBody.put("agent_reference", JsonValue.from(agentRef));
+        extraBody.put("structured_inputs", JsonValue.from(structuredInputs));
 
         Response response = responsesClient.getResponseService().create(
             ResponseCreateParams.builder()
