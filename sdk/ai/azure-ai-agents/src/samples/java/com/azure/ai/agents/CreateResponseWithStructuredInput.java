@@ -33,6 +33,7 @@ public class CreateResponseWithStructuredInput {
         AgentsClient agentsClient = builder.buildAgentsClient();
         ResponsesClient responsesClient = builder.buildResponsesClient();
 
+        // BEGIN: com.azure.ai.agents.define_structured_inputs
         // Create an agent with structured input definitions
         Map<String, StructuredInputDefinition> structuredInputDefinitions = new LinkedHashMap<>();
         structuredInputDefinitions.put("userName", new StructuredInputDefinition().setDescription("User's name").setRequired(true));
@@ -44,7 +45,9 @@ public class CreateResponseWithStructuredInput {
                     + "The user's name is {{userName}} and their role is {{userRole}}. "
                     + "Greet them and confirm their details.")
                 .setStructuredInputs(structuredInputDefinitions));
+        // END: com.azure.ai.agents.define_structured_inputs
 
+        // BEGIN: com.azure.ai.agents.create_response_with_structured_input
         // Create a response, passing structured input values that match the agent's definitions
         Map<String, Object> structuredInputValues = new LinkedHashMap<>();
         structuredInputValues.put("userName", "Alice Smith");
@@ -55,6 +58,7 @@ public class CreateResponseWithStructuredInput {
             structuredInputValues,
             ResponseCreateParams.builder().input("Hello! Can you confirm my details?")
         );
+        // END: com.azure.ai.agents.create_response_with_structured_input
 
         System.out.println("Response: " + response.output());
 

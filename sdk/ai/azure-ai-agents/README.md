@@ -623,6 +623,51 @@ See the full samples in [SimpleStreamingAsync.java](https://github.com/Azure/azu
 
 ---
 
+### Structured inputs
+
+Structured inputs allow you to define named parameters on an agent that get substituted into its prompt template at runtime. This is useful when you want the same agent definition to handle different users or contexts by simply changing the input values.
+
+#### Define structured inputs on an agent
+
+When creating the agent, declare each structured input with a description and whether it is required. Use `{{inputName}}` placeholders in the instructions to reference them:
+
+```java com.azure.ai.agents.define_structured_inputs
+// Create an agent with structured input definitions
+Map<String, StructuredInputDefinition> structuredInputDefinitions = new LinkedHashMap<>();
+structuredInputDefinitions.put("userName", new StructuredInputDefinition().setDescription("User's name").setRequired(true));
+structuredInputDefinitions.put("userRole", new StructuredInputDefinition().setDescription("User's role").setRequired(true));
+
+AgentVersionDetails agent = agentsClient.createAgentVersion("structured-input-agent",
+    new PromptAgentDefinition(model)
+        .setInstructions("You are a helpful assistant. "
+            + "The user's name is {{userName}} and their role is {{userRole}}. "
+            + "Greet them and confirm their details.")
+        .setStructuredInputs(structuredInputDefinitions));
+```
+
+#### Create a response with structured input values
+
+When creating a response, pass a `Map<String, Object>` whose keys match the structured input names declared on the agent. The values are substituted into the prompt template before the model processes the request:
+
+```java com.azure.ai.agents.create_response_with_structured_input
+// Create a response, passing structured input values that match the agent's definitions
+Map<String, Object> structuredInputValues = new LinkedHashMap<>();
+structuredInputValues.put("userName", "Alice Smith");
+structuredInputValues.put("userRole", "Senior Developer");
+
+Response response = responsesClient.createWithAgentStructuredInput(
+    new AgentReference(agent.getName()).setVersion(agent.getVersion()),
+    structuredInputValues,
+    ResponseCreateParams.builder().input("Hello! Can you confirm my details?")
+);
+```
+
+Streaming is also supported via `createStreamingWithAgentStructuredInput`, which returns an `IterableStream<ResponseStreamEvent>` (sync) or `Flux<ResponseStreamEvent>` (async).
+
+See the full sample in [CreateResponseWithStructuredInput.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/CreateResponseWithStructuredInput.java).
+
+---
+
 ### Service API versions
 
 The client library targets the latest service API version by default.
