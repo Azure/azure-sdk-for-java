@@ -257,7 +257,7 @@ public class AsyncCtlWorkload implements Benchmark {
 
     private void createPrePopulatedDocs(int numberOfPreCreatedDocuments) {
         for (CosmosAsyncContainer container : containers) {
-            List<String> generatedIds = new ArrayList<>();
+            List<PojoizedJson> generatedDocs = new ArrayList<>();
 
             Flux<CosmosItemOperation> bulkOperationFlux = Flux.range(0, numberOfPreCreatedDocuments)
                 .map(i -> {
@@ -266,7 +266,7 @@ public class AsyncCtlWorkload implements Benchmark {
                         dataFieldValue,
                         partitionKey,
                         workloadConfig.getDocumentDataFieldCount());
-                    generatedIds.add(uId);
+                    generatedDocs.add(newDoc);
                     return CosmosBulkOperations.getCreateItemOperation(newDoc, new PartitionKey(uId));
                 });
 
@@ -294,7 +294,7 @@ public class AsyncCtlWorkload implements Benchmark {
 
             BenchmarkHelper.retryFailedBulkOperations(failedResponses, container);
 
-            docsToRead.put(container.getId(), BenchmarkHelper.idsToLightweightDocs(generatedIds, partitionKey));
+            docsToRead.put(container.getId(), generatedDocs);
             logger.info("Finished pre-populating {} documents for container {}",
                 successCount.get(), container.getId());
         }

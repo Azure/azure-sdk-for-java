@@ -131,7 +131,7 @@ public abstract class AsyncEncryptionBenchmark<T> implements Benchmark {
             && workloadConfig.getOperationType() != Operation.ReadMyWrites) {
             logger.info("PRE-populating {} documents ....", workloadCfg.getNumberOfPreCreatedDocuments());
             String dataFieldValue = RandomStringUtils.randomAlphabetic(workloadCfg.getDocumentDataFieldSize());
-            List<String> generatedIds = new ArrayList<>();
+            List<PojoizedJson> generatedDocs = new ArrayList<>();
 
             Flux<CosmosItemOperation> bulkOperationFlux = Flux.range(0, workloadCfg.getNumberOfPreCreatedDocuments())
                 .map(i -> {
@@ -149,7 +149,7 @@ public abstract class AsyncEncryptionBenchmark<T> implements Benchmark {
                     for (int j = 1; j <= workloadCfg.getEncryptedDoubleFieldCount(); j++) {
                         newDoc.setProperty(ENCRYPTED_DOUBLE_FIELD + j, 1234.01d);
                     }
-                    generatedIds.add(uuid);
+                    generatedDocs.add(newDoc);
                     return CosmosBulkOperations.getCreateItemOperation(newDoc, new PartitionKey(uuid));
                 });
 
@@ -167,7 +167,7 @@ public abstract class AsyncEncryptionBenchmark<T> implements Benchmark {
             BenchmarkHelper.retryFailedBulkOperations(failedResponses,
                 (item, pk) -> cosmosEncryptionAsyncContainer.createItem(item, pk, null).then());
 
-            docsToRead = BenchmarkHelper.idsToLightweightDocs(generatedIds, partitionKey);
+            docsToRead = generatedDocs;
         } else {
             docsToRead = new ArrayList<>();
         }

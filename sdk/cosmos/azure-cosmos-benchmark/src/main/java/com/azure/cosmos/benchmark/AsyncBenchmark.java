@@ -201,7 +201,7 @@ abstract class AsyncBenchmark<T> implements Benchmark {
             && cfg.getOperationType() != Operation.ReadMyWrites) {
             logger.info("PRE-populating {} documents ....", cfg.getNumberOfPreCreatedDocuments());
             String dataFieldValue = RandomStringUtils.randomAlphabetic(cfg.getDocumentDataFieldSize());
-            List<String> generatedIds = new ArrayList<>();
+            List<PojoizedJson> generatedDocs = new ArrayList<>();
 
             Flux<CosmosItemOperation> bulkOperationFlux = Flux.range(0, cfg.getNumberOfPreCreatedDocuments())
                 .map(i -> {
@@ -210,7 +210,7 @@ abstract class AsyncBenchmark<T> implements Benchmark {
                         dataFieldValue,
                         partitionKey,
                         cfg.getDocumentDataFieldCount());
-                    generatedIds.add(uuid);
+                    generatedDocs.add(newDoc);
                     return CosmosBulkOperations.getCreateItemOperation(newDoc, new PartitionKey(uuid));
                 });
 
@@ -227,7 +227,7 @@ abstract class AsyncBenchmark<T> implements Benchmark {
 
             BenchmarkHelper.retryFailedBulkOperations(failedResponses, cosmosAsyncContainer);
 
-            docsToRead = BenchmarkHelper.idsToLightweightDocs(generatedIds, partitionKey);
+            docsToRead = generatedDocs;
         } else {
             docsToRead = new ArrayList<>();
         }
