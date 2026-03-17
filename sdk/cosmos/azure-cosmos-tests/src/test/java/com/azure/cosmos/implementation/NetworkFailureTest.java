@@ -31,6 +31,10 @@ public class NetworkFailureTest extends TestSuiteBase {
 
     @Test(groups = { "long-emulator" }, timeOut = TIMEOUT)
     public void createCollectionWithUnreachableHost() {
+        // Save previous values to restore later (in case CI sets these)
+        String prevMaxRetryCount = System.getProperty("COSMOS.CLIENT_ENDPOINT_FAILOVER_MAX_RETRY_COUNT");
+        String prevRetryIntervalMs = System.getProperty("COSMOS.CLIENT_ENDPOINT_FAILOVER_RETRY_INTERVAL_IN_MS");
+
         // Override retry constants for this test to avoid 120 × 1s = 2 min wait
         System.setProperty("COSMOS.CLIENT_ENDPOINT_FAILOVER_MAX_RETRY_COUNT", String.valueOf(TEST_MAX_RETRY_COUNT));
         System.setProperty("COSMOS.CLIENT_ENDPOINT_FAILOVER_RETRY_INTERVAL_IN_MS", String.valueOf(TEST_RETRY_INTERVAL_MS));
@@ -71,9 +75,17 @@ public class NetworkFailureTest extends TestSuiteBase {
 
         } finally {
             safeClose(client);
-            // Restore default retry constants so other tests in the same JVM are not affected
-            System.clearProperty("COSMOS.CLIENT_ENDPOINT_FAILOVER_MAX_RETRY_COUNT");
-            System.clearProperty("COSMOS.CLIENT_ENDPOINT_FAILOVER_RETRY_INTERVAL_IN_MS");
+            // Restore previous values (or clear if previously unset)
+            if (prevMaxRetryCount != null) {
+                System.setProperty("COSMOS.CLIENT_ENDPOINT_FAILOVER_MAX_RETRY_COUNT", prevMaxRetryCount);
+            } else {
+                System.clearProperty("COSMOS.CLIENT_ENDPOINT_FAILOVER_MAX_RETRY_COUNT");
+            }
+            if (prevRetryIntervalMs != null) {
+                System.setProperty("COSMOS.CLIENT_ENDPOINT_FAILOVER_RETRY_INTERVAL_IN_MS", prevRetryIntervalMs);
+            } else {
+                System.clearProperty("COSMOS.CLIENT_ENDPOINT_FAILOVER_RETRY_INTERVAL_IN_MS");
+            }
         }
     }
 

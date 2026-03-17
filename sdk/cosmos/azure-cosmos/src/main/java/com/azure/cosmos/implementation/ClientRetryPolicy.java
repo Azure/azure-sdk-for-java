@@ -39,6 +39,8 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
     private final DocumentClientRetryPolicy metadataThrottlingRetry;
     private final GlobalEndpointManager globalEndpointManager;
     private final boolean enableEndpointDiscovery;
+    private final int endpointFailoverMaxRetryCount;
+    private final int endpointFailoverRetryIntervalInMs;
     private int failoverRetryCount;
 
     private int sessionTokenRetryCount;
@@ -65,6 +67,8 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         this.globalEndpointManager = globalEndpointManager;
         this.failoverRetryCount = 0;
         this.enableEndpointDiscovery = enableEndpointDiscovery;
+        this.endpointFailoverMaxRetryCount = Configs.getEndpointFailoverMaxRetryCount();
+        this.endpointFailoverRetryIntervalInMs = Configs.getEndpointFailoverRetryIntervalInMs();
         this.sessionTokenRetryCount = 0;
         this.canUseMultipleWriteLocations = false;
         this.cosmosDiagnostics = diagnosticsClientContext.createDiagnostics();
@@ -287,7 +291,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
     }
 
     private Mono<ShouldRetryResult> shouldRetryOnEndpointFailureAsync(boolean isReadRequest, boolean forceRefresh, boolean usePreferredLocations) {
-        if (!this.enableEndpointDiscovery || this.failoverRetryCount > Configs.getEndpointFailoverMaxRetryCount()) {
+        if (!this.enableEndpointDiscovery || this.failoverRetryCount > this.endpointFailoverMaxRetryCount) {
             logger.warn("ShouldRetryOnEndpointFailureAsync() Not retrying. Retry count = {}", this.failoverRetryCount);
             return Mono.just(ShouldRetryResult.noRetry());
         }
@@ -308,10 +312,10 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
             logger.debug("Failover happening. retryCount {}",  this.failoverRetryCount);
             if (this.failoverRetryCount > 1) {
                 //if retried both endpoints, follow regular retry interval.
-                retryDelay = Duration.ofMillis(Configs.getEndpointFailoverRetryIntervalInMs());
+                retryDelay = Duration.ofMillis(this.endpointFailoverRetryIntervalInMs);
             }
         } else {
-            retryDelay = Duration.ofMillis(Configs.getEndpointFailoverRetryIntervalInMs());
+            retryDelay = Duration.ofMillis(this.endpointFailoverRetryIntervalInMs);
         }
         return refreshLocationCompletable.then(Mono.just(ShouldRetryResult.retryAfter(retryDelay)));
     }
@@ -332,14 +336,14 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
 
         //if operation is data plane read, metadata read, or query plan it can be retried on a different endpoint.
         if (canPerformCrossRegionRetryOnGatewayReadTimeout) {
-            if (!this.enableEndpointDiscovery || this.failoverRetryCount > Configs.getEndpointFailoverMaxRetryCount()) {
+            if (!this.enableEndpointDiscovery || this.failoverRetryCount > this.endpointFailoverMaxRetryCount) {
                 logger.warn("shouldRetryOnHttpTimeout() Not retrying. Retry count = {}", this.failoverRetryCount);
                 return Mono.just(ShouldRetryResult.noRetry());
             }
 
             this.failoverRetryCount++;
             this.retryContext = new RetryContext(this.failoverRetryCount, true);
-            Duration retryDelay = Duration.ofMillis(Configs.getEndpointFailoverRetryIntervalInMs());
+            Duration retryDelay = Duration.ofMillis(this.endpointFailoverRetryIntervalInMs);
             return Mono.just(ShouldRetryResult.retryAfter(retryDelay));
         }
 
@@ -352,7 +356,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
     }
 
     private Mono<ShouldRetryResult> shouldNotRetryOnEndpointFailureAsync(boolean isReadRequest , boolean forceRefresh, boolean usePreferredLocations) {
-        if (!this.enableEndpointDiscovery || this.failoverRetryCount > Configs.getEndpointFailoverMaxRetryCount()) {
+        if (!this.enableEndpointDiscovery || this.failoverRetryCount > this.endpointFailoverMaxRetryCount) {
             logger.warn("ShouldRetryOnEndpointFailureAsync() Not retrying. Retry count = {}", this.failoverRetryCount);
             return Mono.just(ShouldRetryResult.noRetry());
         }
