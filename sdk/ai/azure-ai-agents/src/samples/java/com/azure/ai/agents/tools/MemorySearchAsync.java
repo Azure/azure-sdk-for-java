@@ -5,7 +5,6 @@ package com.azure.ai.agents.tools;
 
 import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.ConversationsAsyncClient;
 import com.azure.ai.agents.MemoryStoresClient;
 import com.azure.ai.agents.ResponsesAsyncClient;
 import com.azure.ai.agents.models.AgentReference;
@@ -20,6 +19,7 @@ import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
+import com.openai.services.async.ConversationServiceAsync;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -53,7 +53,7 @@ public class MemorySearchAsync {
 
         AgentsAsyncClient agentsAsyncClient = builder.buildAgentsAsyncClient();
         ResponsesAsyncClient responsesAsyncClient = builder.buildResponsesAsyncClient();
-        ConversationsAsyncClient conversationsAsyncClient = builder.buildConversationsAsyncClient();
+        ConversationServiceAsync conversationServiceAsync = builder.buildOpenAIAsyncClient().conversations();
         // Memory store operations use sync client for setup/teardown
         MemoryStoresClient memoryStoresClient = builder.buildMemoryStoresClient();
 
@@ -93,7 +93,7 @@ public class MemorySearchAsync {
                     .setVersion(agent.getVersion());
 
                 // First conversation: teach a preference
-                return Mono.fromFuture(conversationsAsyncClient.getConversationServiceAsync().create())
+                return Mono.fromFuture(conversationServiceAsync.create())
                     .<Response>flatMap(conv -> {
                         firstConvRef.set(conv.id());
                         return responsesAsyncClient.createWithAgentConversation(
@@ -109,7 +109,7 @@ public class MemorySearchAsync {
                     .setVersion(agent.getVersion());
 
                 // Second conversation: test memory recall
-                return Mono.fromFuture(conversationsAsyncClient.getConversationServiceAsync().create())
+                return Mono.fromFuture(conversationServiceAsync.create())
                     .<Response>flatMap(conv -> {
                         secondConvRef.set(conv.id());
                         return responsesAsyncClient.createWithAgentConversation(
@@ -123,11 +123,11 @@ public class MemorySearchAsync {
                 try {
                     String c1 = firstConvRef.get();
                     if (c1 != null) {
-                        conversationsAsyncClient.getConversationServiceAsync().delete(c1).join();
+                        conversationServiceAsync.delete(c1).join();
                     }
                     String c2 = secondConvRef.get();
                     if (c2 != null) {
-                        conversationsAsyncClient.getConversationServiceAsync().delete(c2).join();
+                        conversationServiceAsync.delete(c2).join();
                     }
                 } catch (Exception ignored) {
                     // best-effort
