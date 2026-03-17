@@ -199,38 +199,6 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
             @PathParam("subscriptionId") String subscriptionId, @PathParam("location") String location,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") CheckNameAvailabilityRequest parameters, Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<BackupVaultResourceList>> getInSubscriptionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Accept") String accept, Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<BackupVaultResourceList> getInSubscriptionNextSync(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Accept") String accept, Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<BackupVaultResourceList>> getInResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Accept") String accept, Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<BackupVaultResourceList> getInResourceGroupNextSync(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -815,7 +783,7 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), accept, context))
             .<PagedResponse<BackupVaultResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
-                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -828,7 +796,7 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<BackupVaultResourceInner> listAsync() {
-        return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> getInSubscriptionNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync());
     }
 
     /**
@@ -844,7 +812,7 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
         Response<BackupVaultResourceList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+            null, null);
     }
 
     /**
@@ -862,7 +830,7 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
         Response<BackupVaultResourceList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+            null, null);
     }
 
     /**
@@ -874,7 +842,7 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BackupVaultResourceInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> getInSubscriptionNextSinglePage(nextLink));
+        return new PagedIterable<>(() -> listSinglePage());
     }
 
     /**
@@ -888,8 +856,7 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BackupVaultResourceInner> list(Context context) {
-        return new PagedIterable<>(() -> listSinglePage(context),
-            nextLink -> getInSubscriptionNextSinglePage(nextLink, context));
+        return new PagedIterable<>(() -> listSinglePage(context));
     }
 
     /**
@@ -908,7 +875,7 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, accept, context))
             .<PagedResponse<BackupVaultResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
-                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -923,8 +890,7 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<BackupVaultResourceInner> listByResourceGroupAsync(String resourceGroupName) {
-        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
-            nextLink -> getInResourceGroupNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName));
     }
 
     /**
@@ -942,7 +908,7 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
         Response<BackupVaultResourceList> res = service.listByResourceGroupSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+            null, null);
     }
 
     /**
@@ -962,7 +928,7 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
         Response<BackupVaultResourceList> res = service.listByResourceGroupSync(this.client.getEndpoint(),
             this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+            null, null);
     }
 
     /**
@@ -976,8 +942,7 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BackupVaultResourceInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
-            nextLink -> getInResourceGroupNextSinglePage(nextLink));
+        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName));
     }
 
     /**
@@ -992,8 +957,7 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BackupVaultResourceInner> listByResourceGroup(String resourceGroupName, Context context) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
-            nextLink -> getInResourceGroupNextSinglePage(nextLink, context));
+        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context));
     }
 
     /**
@@ -1073,118 +1037,5 @@ public final class BackupVaultsClientImpl implements BackupVaultsClient {
     public CheckNameAvailabilityResultInner checkNameAvailability(String resourceGroupName, String location,
         CheckNameAvailabilityRequest parameters) {
         return checkNameAvailabilityWithResponse(resourceGroupName, location, parameters, Context.NONE).getValue();
-    }
-
-    /**
-     * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of BackupVault resources along with {@link PagedResponse} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BackupVaultResourceInner>> getInSubscriptionNextSinglePageAsync(String nextLink) {
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.getInSubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<BackupVaultResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
-                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of BackupVault resources along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BackupVaultResourceInner> getInSubscriptionNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<BackupVaultResourceList> res
-            = service.getInSubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
-    }
-
-    /**
-     * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of BackupVault resources along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BackupVaultResourceInner> getInSubscriptionNextSinglePage(String nextLink, Context context) {
-        final String accept = "application/json";
-        Response<BackupVaultResourceList> res
-            = service.getInSubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, context);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
-    }
-
-    /**
-     * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of BackupVault resources along with {@link PagedResponse} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BackupVaultResourceInner>> getInResourceGroupNextSinglePageAsync(String nextLink) {
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context -> service.getInResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<BackupVaultResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
-                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of BackupVault resources along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BackupVaultResourceInner> getInResourceGroupNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<BackupVaultResourceList> res
-            = service.getInResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
-    }
-
-    /**
-     * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of BackupVault resources along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BackupVaultResourceInner> getInResourceGroupNextSinglePage(String nextLink, Context context) {
-        final String accept = "application/json";
-        Response<BackupVaultResourceList> res
-            = service.getInResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, context);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
     }
 }

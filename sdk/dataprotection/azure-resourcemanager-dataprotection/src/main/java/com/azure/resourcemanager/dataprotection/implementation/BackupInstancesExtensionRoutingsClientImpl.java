@@ -79,22 +79,6 @@ public final class BackupInstancesExtensionRoutingsClientImpl implements BackupI
             @QueryParam("api-version") String apiVersion,
             @PathParam(value = "resourceId", encoded = true) String resourceId, @HeaderParam("Accept") String accept,
             Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<BackupInstanceResourceList>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Accept") String accept, Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<BackupInstanceResourceList> listNextSync(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -114,7 +98,7 @@ public final class BackupInstancesExtensionRoutingsClientImpl implements BackupI
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(), resourceId,
                 accept, context))
             .<PagedResponse<BackupInstanceResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
-                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -130,7 +114,7 @@ public final class BackupInstancesExtensionRoutingsClientImpl implements BackupI
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<BackupInstanceResourceInner> listAsync(String resourceId) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceId), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceId));
     }
 
     /**
@@ -148,7 +132,7 @@ public final class BackupInstancesExtensionRoutingsClientImpl implements BackupI
         Response<BackupInstanceResourceList> res = service.listSync(this.client.getEndpoint(),
             this.client.getApiVersion(), resourceId, accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+            null, null);
     }
 
     /**
@@ -167,7 +151,7 @@ public final class BackupInstancesExtensionRoutingsClientImpl implements BackupI
         Response<BackupInstanceResourceList> res
             = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceId, accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+            null, null);
     }
 
     /**
@@ -182,7 +166,7 @@ public final class BackupInstancesExtensionRoutingsClientImpl implements BackupI
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BackupInstanceResourceInner> list(String resourceId) {
-        return new PagedIterable<>(() -> listSinglePage(resourceId), nextLink -> listNextSinglePage(nextLink));
+        return new PagedIterable<>(() -> listSinglePage(resourceId));
     }
 
     /**
@@ -198,63 +182,6 @@ public final class BackupInstancesExtensionRoutingsClientImpl implements BackupI
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BackupInstanceResourceInner> list(String resourceId, Context context) {
-        return new PagedIterable<>(() -> listSinglePage(resourceId, context),
-            nextLink -> listNextSinglePage(nextLink, context));
-    }
-
-    /**
-     * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of backup instances associated with a tracked resource along with {@link PagedResponse} on
-     * successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BackupInstanceResourceInner>> listNextSinglePageAsync(String nextLink) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<BackupInstanceResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
-                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of backup instances associated with a tracked resource along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BackupInstanceResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<BackupInstanceResourceList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
-    }
-
-    /**
-     * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of backup instances associated with a tracked resource along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BackupInstanceResourceInner> listNextSinglePage(String nextLink, Context context) {
-        final String accept = "application/json";
-        Response<BackupInstanceResourceList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return new PagedIterable<>(() -> listSinglePage(resourceId, context));
     }
 }
