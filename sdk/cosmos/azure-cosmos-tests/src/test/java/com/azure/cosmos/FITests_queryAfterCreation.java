@@ -2,8 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.test.faultinjection.FaultInjectionOperationType;
 import org.apache.commons.lang3.ArrayUtils;
+import org.testng.SkipException;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
@@ -33,6 +35,13 @@ public class FITests_queryAfterCreation
         int numberOfOtherDocumentsWithSameId,
         int numberOfOtherDocumentsWithSamePk,
         boolean shouldInjectPreferredRegionsInClient) {
+
+        // Thin client forces GATEWAY mode — skip DIRECT-only test configs whose timeouts
+        // are too tight for the gateway proxy path
+        if (Configs.isThinClientEnabled() && connectionMode == ConnectionMode.DIRECT) {
+            throw new SkipException(
+                "Skipping DIRECT mode test config '" + testCaseId + "' under thin client (GATEWAY mode forced)");
+        }
 
         execute(
             testCaseId,
