@@ -84,11 +84,11 @@ public class WorkflowTest {
     }
 
     @Test(groups = "fast", timeOut = TIMEOUT)
-    public void writeLatencyCLI() throws Exception {
+    public void writeThroughputCLI() throws Exception {
         String cmdFormat = "-serviceEndpoint %s -masterKey %s" +
                 " -databaseId %s -collectionId %s" +
                 " -consistencyLevel SESSION -concurrency 2 -numberOfOperations 1000" +
-                " -operation WriteLatency -connectionMode DIRECT";
+                " -operation WriteThroughput -connectionMode DIRECT";
 
         String cmd = String.format(cmdFormat,
                                    TestConfigurations.HOST,
@@ -99,7 +99,7 @@ public class WorkflowTest {
     }
 
     @Test(dataProvider = "collectionLinkTypeArgProvider", groups = "fast", timeOut = TIMEOUT)
-    public void writeLatency(boolean useNameLink) throws Exception {
+    public void writeThroughputWithDataProvider(boolean useNameLink) throws Exception {
         int numberOfOperations = 123;
 
         TenantWorkloadConfig cfg = new TenantWorkloadConfig();
@@ -110,7 +110,7 @@ public class WorkflowTest {
         cfg.setConsistencyLevel("SESSION");
         cfg.setConcurrency(2);
         cfg.setNumberOfOperations(numberOfOperations);
-        cfg.setOperation("WriteLatency");
+        cfg.setOperation("WriteThroughput");
         cfg.setConnectionMode("DIRECT");
 
         AtomicInteger success = new AtomicInteger();
@@ -173,7 +173,7 @@ public class WorkflowTest {
     }
 
     @Test(dataProvider = "collectionLinkTypeArgProvider", groups = "fast", timeOut = TIMEOUT)
-    public void readLatency(boolean useNameLink) throws Exception {
+    public void readThroughputWithDataProvider(boolean useNameLink) throws Exception {
         int numberOfOperations = 123;
 
         TenantWorkloadConfig cfg = new TenantWorkloadConfig();
@@ -184,7 +184,7 @@ public class WorkflowTest {
         cfg.setConsistencyLevel("SESSION");
         cfg.setConcurrency(2);
         cfg.setNumberOfOperations(numberOfOperations);
-        cfg.setOperation("ReadLatency");
+        cfg.setOperation("ReadThroughput");
         cfg.setConnectionMode("DIRECT");
 
         AtomicInteger success = new AtomicInteger();
