@@ -47,16 +47,21 @@ final class Http2SensitivityDetectorUtil {
     // Cached reflection fields for performance — computed once at class load time
     private static final Field HEADERS_ENCODER_FIELD;
     private static final Field SENSITIVITY_DETECTOR_FIELD;
+    private static final Field HPACK_ENCODER_FIELD;
 
     static {
         Field headersEncoderField = null;
         Field sensitivityDetectorField = null;
+        Field hpackEncoderField = null;
         try {
             headersEncoderField = DefaultHttp2FrameWriter.class.getDeclaredField("headersEncoder");
             headersEncoderField.setAccessible(true);
             sensitivityDetectorField = DefaultHttp2HeadersEncoder.class
                 .getDeclaredField("sensitivityDetector");
             sensitivityDetectorField.setAccessible(true);
+            hpackEncoderField = DefaultHttp2HeadersEncoder.class
+                .getDeclaredField("hpackEncoder");
+            hpackEncoderField.setAccessible(true);
         } catch (NoSuchFieldException e) {
             logger.warn(
                 "Failed to resolve HPACK sensitivity detector fields via reflection. "
@@ -71,6 +76,7 @@ final class Http2SensitivityDetectorUtil {
         }
         HEADERS_ENCODER_FIELD = headersEncoderField;
         SENSITIVITY_DETECTOR_FIELD = sensitivityDetectorField;
+        HPACK_ENCODER_FIELD = hpackEncoderField;
     }
 
     private Http2SensitivityDetectorUtil() {
@@ -79,6 +85,11 @@ final class Http2SensitivityDetectorUtil {
     /**
      * Installs the {@link CosmosHttp2SensitivityDetector} on the HTTP/2 connection if
      * the pipeline contains an {@code Http2FrameCodec}.
+     * <p>
+     * When HPACK diagnostics are enabled (via system property
+     * {@code COSMOS_HTTP2_HPACK_DIAGNOSTICS_ENABLED=true}), a tracking wrapper is installed
+     * that monitors per-header cardinality and HPACK table utilization. This helps identify
+     * which headers have high cardinality and should be marked as never-indexed.
      * <p>
      * This method is safe to call for both HTTP/1.1 and HTTP/2 connections — it checks
      * the pipeline handler type before proceeding.
@@ -121,14 +132,39 @@ final class Http2SensitivityDetectorUtil {
                 return;
             }
 
-            SENSITIVITY_DETECTOR_FIELD.set(headersEncoder, CosmosHttp2SensitivityDetector.INSTANCE);
+            Http2HeadersEncoder.SensitivityDetector detector;
+            if (Http2HpackDiagnostics.isEnabled()) {
+                Http2HpackDiagnostics diagnostics =
+                    new Http2HpackDiagnostics(CosmosHttp2SensitivityDetector.INSTANCE);
 
-            if (logger.isDebugEnabled()) {
-                logger.debug(
-                    "Installed CosmosHttp2SensitivityDetector on channel {}. "
-                        + "Authorization header will use HPACK never-indexed representation.",
+                // Extract HpackEncoder reference for table utilization metrics
+                if (HPACK_ENCODER_FIELD != null) {
+                    try {
+                        Object hpackEncoder = HPACK_ENCODER_FIELD.get(headersEncoder);
+                        if (hpackEncoder != null) {
+                            diagnostics.setHpackEncoder(hpackEncoder);
+                        }
+                    } catch (Exception e) {
+                        logger.debug("Could not extract HpackEncoder for diagnostics", e);
+                    }
+                }
+
+                detector = diagnostics;
+                logger.info(
+                    "Installed HPACK diagnostics on channel {}. "
+                        + "Header cardinality and table utilization will be tracked.",
                     connection.channel().id());
+            } else {
+                detector = CosmosHttp2SensitivityDetector.INSTANCE;
+                if (logger.isDebugEnabled()) {
+                    logger.debug(
+                        "Installed CosmosHttp2SensitivityDetector on channel {}. "
+                            + "Authorization header will use HPACK never-indexed representation.",
+                        connection.channel().id());
+                }
             }
+
+            SENSITIVITY_DETECTOR_FIELD.set(headersEncoder, detector);
         } catch (IllegalAccessException e) {
             logger.warn(
                 "Failed to install HPACK sensitivity detector via reflection. "
