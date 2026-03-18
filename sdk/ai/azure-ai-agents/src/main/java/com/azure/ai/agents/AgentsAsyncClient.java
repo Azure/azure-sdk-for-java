@@ -1594,6 +1594,7 @@ public final class AgentsAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a {@link Mono} that completes when the agent is deleted.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAgent(String agentName) {
