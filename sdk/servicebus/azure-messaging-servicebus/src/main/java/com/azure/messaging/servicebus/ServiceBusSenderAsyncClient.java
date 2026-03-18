@@ -983,10 +983,16 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
             .addKeyValue("callSite", callSite)
             .log("Performing {} recovery before retry.", recoveryKind);
 
-        // Dispose the cached send link so the next retry creates a fresh one.
+        // Start async close of the cached send link so the next retry creates a fresh one.
+        // Use closeAsync() rather than dispose() to avoid blocking the Reactor thread; ReactorSender
+        // dispose() calls closeAsync().block(tryTimeout), which is illegal on a non-blocking scheduler.
         final AmqpSendLink link = lastSendLink.getAndSet(null);
         if (link != null) {
-            link.dispose();
+            link.closeAsync()
+                .subscribe(null,
+                    error -> logger.atVerbose()
+                        .addKeyValue(ENTITY_PATH_KEY, entityName)
+                        .log("Error closing stale send link during recovery.", error));
         }
         linkName.set(null);
 

@@ -212,7 +212,9 @@ public final class RetryUtil {
 
             // Quick retry: on the FIRST LINK/CONNECTION error, retry immediately (no backoff).
             // Uses didQuickRetry flag to prevent repeated immediate retries under persistent
-            // errors — matching the Go SDK's didQuickRetry + ResetAttempts() pattern.
+            // errors — similar to the Go SDK's didQuickRetry pattern. Unlike Go's ResetAttempts(),
+            // the attempt counter is not reset here; subsequent retries continue with standard
+            // exponential backoff from the current attempt count.
             if (!didQuickRetry.getAndSet(true) && (kind == RecoveryKind.LINK || kind == RecoveryKind.CONNECTION)) {
                 LOGGER.atInfo().log("Quick retry after {} recovery (first occurrence).", kind);
                 return Mono.just(attempt);

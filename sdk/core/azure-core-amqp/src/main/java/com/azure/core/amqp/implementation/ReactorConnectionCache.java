@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
@@ -48,6 +49,7 @@ public final class ReactorConnectionCache<T extends ReactorConnection> implement
     // any dependent type; instead, the dependent type must acquire Connection only through the cache route,
     // i.e., by subscribing to 'createOrGetCachedConnection' via 'get()' getter.
     private volatile T currentConnection;
+    private final AtomicBoolean forceInvalidate = new AtomicBoolean(false);
     private final State state = new State();
 
     /**
@@ -112,7 +114,7 @@ public final class ReactorConnectionCache<T extends ReactorConnection> implement
                 sink.next(connection);
             }
         }).cacheInvalidateIf(c -> {
-            if (c.isDisposed()) {
+            if (c.isDisposed() || forceInvalidate.compareAndSet(true, false)) {
                 withConnectionId(logger, c.getId()).log("The connection is closed, requesting a new connection.");
                 return true;
             } else {
@@ -190,10 +192,16 @@ public final class ReactorConnectionCache<T extends ReactorConnection> implement
         if (connection != null && !connection.isDisposed()) {
             withConnectionId(logger, connection.getId())
                 .log("Force-closing connection for recovery. Next get() will create a fresh connection.");
-            // Call dispose() rather than closeAsync() so that isDisposed() returns true synchronously.
-            // This ensures cacheInvalidateIf immediately invalidates the cached reference on the next
-            // get() call, rather than waiting for the async close handshake to complete.
-            connection.dispose();
+            // Set forceInvalidate before starting async close so that cacheInvalidateIf immediately
+            // invalidates this connection on the next get() call, without blocking the caller
+            // while the AMQP close handshake completes. ReactorConnection.dispose() calls
+            // closeAsync().block(), which is illegal on a non-blocking Reactor thread.
+            forceInvalidate.set(true);
+            connection.closeAsync()
+                .subscribe(null,
+                    error -> logger.atVerbose()
+                        .addKeyValue(CONNECTION_ID_KEY, connection.getId())
+                        .log("Error during async connection force-close.", error));
         }
     }
 
