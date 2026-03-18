@@ -2095,6 +2095,15 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                     expectedDuringWindow,
                     expectedAfterWindow);
 
+                // Validate thin client endpoint was used when thin client is enabled
+                if (Configs.isThinClientEnabled()) {
+                    ResponseWrapper<?> probeResponse = dataPlaneOperation.apply(params);
+                    CosmosDiagnostics diag = extractDiagnostics(probeResponse);
+                    if (diag != null) {
+                        assertThinClientEndpointUsed(diag.getDiagnosticsContext());
+                    }
+                }
+
             } catch (Exception e) {
                 Assertions.fail("The test ran into an exception {}", e);
             } finally {
@@ -2122,6 +2131,19 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
         // Stabilized post-window request
         ResponseWrapper<?> postWindow = dataPlaneOperation.apply(params);
         this.validateExpectedResponseCharacteristics.accept(postWindow, expectedAfterWindow);
+    }
+
+    private static CosmosDiagnostics extractDiagnostics(ResponseWrapper<?> response) {
+        if (response.cosmosItemResponse != null) {
+            return response.cosmosItemResponse.getDiagnostics();
+        } else if (response.feedResponse != null) {
+            return response.feedResponse.getCosmosDiagnostics();
+        } else if (response.cosmosException != null) {
+            return response.cosmosException.getDiagnostics();
+        } else if (response.batchResponse != null) {
+            return response.batchResponse.getDiagnostics();
+        }
+        return null;
     }
 
     private static class DelegatingDatabaseAccountManagerInternal implements DatabaseAccountManagerInternal {

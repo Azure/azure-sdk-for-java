@@ -3656,6 +3656,13 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                             validateRegionsContactedWhenShortCircuitingHasKickedIn.accept(response.batchResponse.getDiagnostics().getDiagnosticsContext());
                         }
                     }
+
+                    if (Configs.isThinClientEnabled()) {
+                        CosmosDiagnosticsContext ctx = getDiagnosticsContext(response);
+                        if (ctx != null) {
+                            assertThinClientEndpointUsed(ctx);
+                        }
+                    }
                 }
 
                 // Ensure circuit breaker has kicked in before fail back
@@ -3698,6 +3705,13 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
 
                         validateRegionsContactedWhenShortCircuitRegionMarkedAsHealthyOrHealthyTentative.accept(response.batchResponse.getDiagnostics().getDiagnosticsContext());
                     }
+
+                    if (Configs.isThinClientEnabled()) {
+                        CosmosDiagnosticsContext ctx = getDiagnosticsContext(response);
+                        if (ctx != null) {
+                            assertThinClientEndpointUsed(ctx);
+                        }
+                    }
                 }
             }
         } catch (InterruptedException ex) {
@@ -3709,6 +3723,19 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
             System.clearProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG");
             safeClose(client);
         }
+    }
+
+    private static CosmosDiagnosticsContext getDiagnosticsContext(ResponseWrapper<?> response) {
+        if (response.cosmosItemResponse != null) {
+            return response.cosmosItemResponse.getDiagnostics().getDiagnosticsContext();
+        } else if (response.feedResponse != null) {
+            return response.feedResponse.getCosmosDiagnostics().getDiagnosticsContext();
+        } else if (response.cosmosException != null) {
+            return response.cosmosException.getDiagnostics().getDiagnosticsContext();
+        } else if (response.batchResponse != null) {
+            return response.batchResponse.getDiagnostics().getDiagnosticsContext();
+        }
+        return null;
     }
 
     private static int resolveTestObjectCountToBootstrapFrom(FaultInjectionOperationType faultInjectionOperationType, int opCount) {
