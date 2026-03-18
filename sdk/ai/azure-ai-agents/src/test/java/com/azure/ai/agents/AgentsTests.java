@@ -17,6 +17,7 @@ import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
 import com.openai.models.responses.ResponseInputItem;
 import com.openai.models.responses.ResponseStatus;
+import com.openai.services.blocking.ConversationService;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -113,7 +114,7 @@ public class AgentsTests extends ClientTestBase {
     @MethodSource("com.azure.ai.agents.TestUtils#getTestParameters")
     public void promptAgentTest(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
         AgentsClient agentsClient = getAgentsSyncClient(httpClient, serviceVersion);
-        ConversationsClient conversationsClient = getConversationsSyncClient(httpClient, serviceVersion);
+        ConversationService conversationService = getConversationsSyncClient(httpClient, serviceVersion);
         ResponsesClient responsesClient = getResponsesSyncClient(httpClient, serviceVersion);
         String agentModel = "gpt-4o";
 
@@ -124,7 +125,7 @@ public class AgentsTests extends ClientTestBase {
         AgentReference agentReference = new AgentReference(createdAgent.getName());
         agentReference.setVersion(createdAgent.getVersion());
 
-        Conversation conversation = conversationsClient.getConversationService().create();
+        Conversation conversation = conversationService.create();
 
         List<ResponseInputItem> inputItems = new ArrayList<>();
         inputItems.add(ResponseInputItem.ofEasyInputMessage(EasyInputMessage.builder()
@@ -155,7 +156,7 @@ public class AgentsTests extends ClientTestBase {
 
         // Clean up
         agentsClient.deleteAgent(createdAgent.getId());
-        conversationsClient.getConversationService().delete(conversation.id());
+        conversationService.delete(conversation.id());
         // Deleting response causes a 500
         responsesClient.getResponseService().delete(response.id());
     }
