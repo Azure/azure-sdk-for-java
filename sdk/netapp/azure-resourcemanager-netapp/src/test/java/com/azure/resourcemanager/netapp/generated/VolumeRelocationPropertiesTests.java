@@ -12,7 +12,7 @@ public final class VolumeRelocationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VolumeRelocationProperties model
-            = BinaryData.fromString("{\"relocationRequested\":false,\"readyToBeFinalized\":false}")
+            = BinaryData.fromString("{\"relocationRequested\":false,\"readyToBeFinalized\":true}")
                 .toObject(VolumeRelocationProperties.class);
         Assertions.assertFalse(model.relocationRequested());
     }

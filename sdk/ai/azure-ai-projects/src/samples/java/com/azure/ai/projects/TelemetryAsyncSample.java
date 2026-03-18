@@ -10,7 +10,7 @@
 //public class TelemetryAsyncSample {
 //
 //    private static TelemetryAsyncClient telemetryAsyncClient
-//        = new AIProjectClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+//        = new AIProjectClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT", "endpoint"))
 //        .credential(new DefaultAzureCredentialBuilder().build())
 //        .buildTelemetryAsyncClient();
 //
