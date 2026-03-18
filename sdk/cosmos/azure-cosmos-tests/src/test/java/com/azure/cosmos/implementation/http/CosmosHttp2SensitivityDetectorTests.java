@@ -33,16 +33,48 @@ public class CosmosHttp2SensitivityDetectorTests {
     }
 
     @Test(groups = "unit")
-    public void authorizationConstantIsSensitive() {
+    public void xmsDateHeaderIsSensitive() {
+        CosmosHttp2SensitivityDetector detector = CosmosHttp2SensitivityDetector.INSTANCE;
+
+        assertThat(detector.isSensitive("x-ms-date", "Tue, 18 Mar 2025 03:00:00 GMT"))
+            .as("x-ms-date should be marked sensitive (unique per-request)")
+            .isTrue();
+
+        assertThat(detector.isSensitive("X-MS-DATE", "Tue, 18 Mar 2025 03:00:00 GMT"))
+            .as("X-MS-DATE (upper case) should be marked sensitive")
+            .isTrue();
+    }
+
+    @Test(groups = "unit")
+    public void partitionKeyHeaderIsSensitive() {
+        CosmosHttp2SensitivityDetector detector = CosmosHttp2SensitivityDetector.INSTANCE;
+
+        assertThat(detector.isSensitive("x-ms-documentdb-partitionkey", "[\"myPartitionKey\"]"))
+            .as("x-ms-documentdb-partitionkey should be marked sensitive (high cardinality)")
+            .isTrue();
+
+        assertThat(detector.isSensitive("X-Ms-Documentdb-Partitionkey", "[\"key\"]"))
+            .as("X-Ms-Documentdb-Partitionkey (mixed case) should be marked sensitive")
+            .isTrue();
+    }
+
+    @Test(groups = "unit")
+    public void allSensitiveHeaderConstants() {
         CosmosHttp2SensitivityDetector detector = CosmosHttp2SensitivityDetector.INSTANCE;
 
         assertThat(detector.isSensitive(HttpConstants.HttpHeaders.AUTHORIZATION, "sig=abc"))
             .as("HttpConstants.HttpHeaders.AUTHORIZATION should be marked sensitive")
             .isTrue();
+        assertThat(detector.isSensitive(HttpConstants.HttpHeaders.X_DATE, "timestamp"))
+            .as("HttpConstants.HttpHeaders.X_DATE should be marked sensitive")
+            .isTrue();
+        assertThat(detector.isSensitive(HttpConstants.HttpHeaders.PARTITION_KEY, "[\"pk\"]"))
+            .as("HttpConstants.HttpHeaders.PARTITION_KEY should be marked sensitive")
+            .isTrue();
     }
 
     @Test(groups = "unit")
-    public void nonAuthorizationHeadersAreNotSensitive() {
+    public void nonSensitiveHeadersAreNotSensitive() {
         CosmosHttp2SensitivityDetector detector = CosmosHttp2SensitivityDetector.INSTANCE;
 
         assertThat(detector.isSensitive("User-Agent", "cosmos-sdk/4.0"))
@@ -57,16 +89,16 @@ public class CosmosHttp2SensitivityDetectorTests {
             .as("Content-Type should not be marked sensitive")
             .isFalse();
 
-        assertThat(detector.isSensitive("x-ms-date", "Tue, 18 Mar 2025 03:00:00 GMT"))
-            .as("x-ms-date should not be marked sensitive")
-            .isFalse();
-
         assertThat(detector.isSensitive("x-ms-activity-id", "some-guid"))
             .as("x-ms-activity-id should not be marked sensitive")
             .isFalse();
 
         assertThat(detector.isSensitive("x-ms-session-token", "0:1234"))
             .as("x-ms-session-token should not be marked sensitive")
+            .isFalse();
+
+        assertThat(detector.isSensitive("cache-control", "no-cache"))
+            .as("cache-control should not be marked sensitive")
             .isFalse();
     }
 
