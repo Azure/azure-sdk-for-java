@@ -104,7 +104,7 @@ jobs:
       # When manually triggering the pipeline, at least one release_* parameter must be checked.
       - ${{ if and(eq(variables['System.TeamProject'], 'internal'), eq(variables['Build.Reason'], 'Manual'), eq(length(parameters.ReleaseArtifacts), 0)) }}:
         - pwsh: |
-            Write-Host "##[error]No packages selected for release. When manually queuing this pipeline, please select at least one package by checking the appropriate release_* parameter(s)."
+            Write-Host "##[error]No packages selected for release. When manually queuing this pipeline, please select at least one package by checking the appropriate package-name parameter(s)."
             exit 1
           displayName: 'Validate: at least one package is selected for release'
 
