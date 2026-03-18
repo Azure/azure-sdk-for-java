@@ -800,7 +800,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
     // Only APIs that accept ParallelTransferOptions (and thus setProgressListener) are tested here.
     // ===========================================================================================
 
-    @Test
+    @Test // all progress reporter tests fail right now
     public void uploadProgressReportsPreEncodedBytes() {
         BlobClient client = createBlobClientWithRequestSniffer(new CopyOnWriteArrayList<>());
 

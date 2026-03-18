@@ -76,6 +76,7 @@ public class BlobContentValidationPerfTests extends BlobTestBase {
     private static final int FIFTY_MB = 50 * Constants.MB;
     private static final int FIVE_HUNDRED_MB = 500 * Constants.MB;
     private static final int UNDER_4MB = 2 * Constants.MB;
+    private static final String PERF_DO_NOT_DELETE_BIN_FILENAME = "blob-content-validation-perf-do-not-delete.bin";
     private static final int PAGE_BYTES = PageBlobClient.PAGE_BYTES;
     private static final int UNDER_4MB_PAGE_ALIGNED = (UNDER_4MB / PAGE_BYTES) * PAGE_BYTES;
     private static final int FOUR_MB_PAGE_ALIGNED = (4 * Constants.MB / PAGE_BYTES) * PAGE_BYTES;
@@ -197,6 +198,23 @@ public class BlobContentValidationPerfTests extends BlobTestBase {
             fos.write(data);
         }
         return tempFile;
+    }
+
+    private File getPreGeneratedDoNotDeleteBinFile() {
+        // Perf tests may run multiple times, so reuse a single pre-generated 500MB file when present.
+        // Expected size: FIVE_HUNDRED_MB bytes.
+        String[] candidates = new String[] {
+            "src/test/java/com/azure/storage/blob/" + PERF_DO_NOT_DELETE_BIN_FILENAME,
+            "sdk/storage/azure-storage-blob/src/test/java/com/azure/storage/blob/" + PERF_DO_NOT_DELETE_BIN_FILENAME,
+            PERF_DO_NOT_DELETE_BIN_FILENAME };
+        for (String candidate : candidates) {
+            File f = new File(candidate);
+            if (f.exists() && f.length() == FIVE_HUNDRED_MB) {
+                return f;
+            }
+        }
+        throw new IllegalStateException("Pre-generated perf file '" + PERF_DO_NOT_DELETE_BIN_FILENAME
+            + "' was not found. Create it at one of: " + String.join(", ", candidates));
     }
 
     // ===========================================================================================
@@ -552,15 +570,10 @@ public class BlobContentValidationPerfTests extends BlobTestBase {
             ? createBlobAsyncClientWithRequestSniffer(recorded)
             : ccAsync.getBlobAsyncClient(generateBlobName());
         runPerfTest("BlobAsyncClient.uploadFromFile - No validation (baseline)", size, null, () -> {
-            byte[] data = getRandomByteArray((int) size);
-            File tempFile = createTempFile(data);
-            try {
-                client.uploadFromFileWithResponse(new BlobUploadFromFileOptions(tempFile.getAbsolutePath())
-                    .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong(size))
-                    .setRequestChecksumAlgorithm(StorageChecksumAlgorithm.NONE)).block();
-            } finally {
-                tempFile.delete();
-            }
+            File file = getPreGeneratedDoNotDeleteBinFile();
+            client.uploadFromFileWithResponse(new BlobUploadFromFileOptions(file.getAbsolutePath())
+                .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong(size))
+                .setRequestChecksumAlgorithm(StorageChecksumAlgorithm.NONE)).block();
         });
         if (RUN_CONTENT_VALIDATION_VERIFICATION) {
             assertTrue(hasNoContentValidationHeaders(recorded));
@@ -598,15 +611,10 @@ public class BlobContentValidationPerfTests extends BlobTestBase {
             ? createBlobAsyncClientWithRequestSniffer(recorded)
             : ccAsync.getBlobAsyncClient(generateBlobName());
         runPerfTest("BlobAsyncClient.uploadFromFile - Structured message", size, null, () -> {
-            byte[] data = getRandomByteArray(size);
-            File tempFile = createTempFile(data);
-            try {
-                client.uploadFromFileWithResponse(new BlobUploadFromFileOptions(tempFile.getAbsolutePath())
-                    .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) size))
-                    .setRequestChecksumAlgorithm(StorageChecksumAlgorithm.CRC64)).block();
-            } finally {
-                tempFile.delete();
-            }
+            File file = getPreGeneratedDoNotDeleteBinFile();
+            client.uploadFromFileWithResponse(new BlobUploadFromFileOptions(file.getAbsolutePath())
+                .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) size))
+                .setRequestChecksumAlgorithm(StorageChecksumAlgorithm.CRC64)).block();
         });
         if (RUN_CONTENT_VALIDATION_VERIFICATION) {
             assertTrue(hasOnlyStructuredMessageHeaders(recorded));
@@ -622,16 +630,11 @@ public class BlobContentValidationPerfTests extends BlobTestBase {
             ? createBlobAsyncClientWithRequestSniffer(recorded)
             : ccAsync.getBlobAsyncClient(generateBlobName());
         runPerfTest("BlobAsyncClient.uploadFromFile - Chunked no validation (baseline)", size, blockSize, () -> {
-            byte[] data = getRandomByteArray(size);
-            File tempFile = createTempFile(data);
-            try {
-                client.uploadFromFileWithResponse(new BlobUploadFromFileOptions(tempFile.getAbsolutePath())
-                    .setParallelTransferOptions(
-                        new ParallelTransferOptions().setBlockSizeLong(blockSize).setMaxSingleUploadSizeLong(blockSize))
-                    .setRequestChecksumAlgorithm(StorageChecksumAlgorithm.NONE)).block();
-            } finally {
-                tempFile.delete();
-            }
+            File file = getPreGeneratedDoNotDeleteBinFile();
+            client.uploadFromFileWithResponse(new BlobUploadFromFileOptions(file.getAbsolutePath())
+                .setParallelTransferOptions(
+                    new ParallelTransferOptions().setBlockSizeLong(blockSize).setMaxSingleUploadSizeLong(blockSize))
+                .setRequestChecksumAlgorithm(StorageChecksumAlgorithm.NONE)).block();
         });
         if (RUN_CONTENT_VALIDATION_VERIFICATION) {
             assertTrue(hasNoContentValidationHeaders(recorded));
@@ -648,16 +651,11 @@ public class BlobContentValidationPerfTests extends BlobTestBase {
             : ccAsync.getBlobAsyncClient(generateBlobName());
         long peakHeap
             = runPerfTest("BlobAsyncClient.uploadFromFile - Chunked structured message", size, blockSize, () -> {
-                byte[] data = getRandomByteArray(size);
-                File tempFile = createTempFile(data);
-                try {
-                    client.uploadFromFileWithResponse(new BlobUploadFromFileOptions(tempFile.getAbsolutePath())
-                        .setParallelTransferOptions(new ParallelTransferOptions().setBlockSizeLong(blockSize)
-                            .setMaxSingleUploadSizeLong(blockSize))
-                        .setRequestChecksumAlgorithm(StorageChecksumAlgorithm.CRC64)).block();
-                } finally {
-                    tempFile.delete();
-                }
+                File file = getPreGeneratedDoNotDeleteBinFile();
+                client.uploadFromFileWithResponse(new BlobUploadFromFileOptions(file.getAbsolutePath())
+                    .setParallelTransferOptions(
+                        new ParallelTransferOptions().setBlockSizeLong(blockSize).setMaxSingleUploadSizeLong(blockSize))
+                    .setRequestChecksumAlgorithm(StorageChecksumAlgorithm.CRC64)).block();
             });
         if (RUN_CONTENT_VALIDATION_VERIFICATION) {
             assertTrue(hasOnlyStructuredMessageHeaders(recorded));
