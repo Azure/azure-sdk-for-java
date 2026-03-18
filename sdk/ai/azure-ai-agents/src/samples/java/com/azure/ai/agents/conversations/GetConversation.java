@@ -4,22 +4,23 @@
 package com.azure.ai.agents.conversations;
 
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.ConversationsClient;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.openai.models.conversations.Conversation;
+import com.openai.services.blocking.ConversationService;
 
 public class GetConversation {
     public static void main(String[] args) {
         String endpoint = Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT");
         String conversationId = "your-conversation-id"; // Replace with actual conversation ID
         // Code sample for retrieving a conversation
-        ConversationsClient conversationsClient = new AgentsClientBuilder()
+        ConversationService conversationService = new AgentsClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(endpoint)
-                .buildConversationsClient();
+                .buildOpenAIClient()
+                .conversations();
 
-        Conversation conversation = conversationsClient.getConversationService().retrieve(conversationId);
+        Conversation conversation = conversationService.retrieve(conversationId);
 
         System.out.println("Conversation ID: " + conversation.id());
         System.out.println("Conversation Created At: " + conversation.createdAt());
