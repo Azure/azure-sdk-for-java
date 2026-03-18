@@ -716,11 +716,11 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
       // These headers are attached to every Cosmos DB request made by this client instance.
       // Converts Map[String, String] from Spark config to Map[CosmosHeaderName, String] for the builder.
       if (cosmosClientConfiguration.additionalHeaders.isDefined) {
-        val enumHeaders = new java.util.HashMap[CosmosHeaderName, String]()
+        val headerMap = new java.util.HashMap[CosmosHeaderName, String]()
         for ((key, value) <- cosmosClientConfiguration.additionalHeaders.get) {
-          enumHeaders.put(CosmosHeaderName.fromString(key), value)
+          headerMap.put(CosmosHeaderName.fromString(key), value)
         }
-        builder.additionalHeaders(enumHeaders)
+        builder.additionalHeaders(headerMap)
       }
 
       var client = builder.buildAsyncClient()

@@ -282,7 +282,7 @@ public class WorkloadIdE2ETests extends TestSuiteBase {
 
 
     /**
-     * Verifies that the {@link CosmosHeaderName} enum-based allowlist rejects unknown
+     * Verifies that the {@link CosmosHeaderName} allowlist rejects unknown
      * header names at client build time. Attempting to set an unrecognized header via
      * {@code additionalHeaders()} should throw {@link IllegalArgumentException} from
      * {@link CosmosHeaderName#fromString(String)}, preventing arbitrary headers from

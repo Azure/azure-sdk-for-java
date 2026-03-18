@@ -2,8 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.models;
 
+import com.azure.cosmos.CosmosHeaderName;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.RequestOptions;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Encapsulates options that can be specified for a request issued to cosmos stored procedure.
@@ -15,6 +19,7 @@ public final class CosmosStoredProcedureRequestOptions {
     private String ifMatchETag;
     private String ifNoneMatchETag;
     private boolean scriptLoggingEnabled;
+    private Map<String, String> customOptions;
 
     /**
      * Gets the If-Match (ETag) associated with the request in the Azure Cosmos DB service.
@@ -158,6 +163,39 @@ public final class CosmosStoredProcedureRequestOptions {
         return this;
     }
 
+    /**
+     * Sets additional headers to be included with this specific request.
+     * <p>
+     * The {@link CosmosHeaderName} class defines exactly which headers are supported.
+     * This allows per-request header customization, such as setting a workload ID
+     * that overrides the client-level default set via
+     * {@link com.azure.cosmos.CosmosClientBuilder#additionalHeaders(java.util.Map)}.
+     * <p>
+     * If the same header is also set at the client level, the request-level value
+     * takes precedence.
+     *
+     * @param additionalHeaders map of {@link CosmosHeaderName} to value
+     * @return the CosmosStoredProcedureRequestOptions.
+     * @throws IllegalArgumentException if the workload-id value is not a valid integer
+     */
+    public CosmosStoredProcedureRequestOptions setAdditionalHeaders(Map<CosmosHeaderName, String> additionalHeaders) {
+        CosmosHeaderName.validateAdditionalHeaders(additionalHeaders);
+        if (additionalHeaders != null) {
+            for (Map.Entry<CosmosHeaderName, String> entry : additionalHeaders.entrySet()) {
+                this.setHeader(entry.getKey().getHeaderName(), entry.getValue());
+            }
+        }
+        return this;
+    }
+
+    CosmosStoredProcedureRequestOptions setHeader(String name, String value) {
+        if (this.customOptions == null) {
+            this.customOptions = new HashMap<>();
+        }
+        this.customOptions.put(name, value);
+        return this;
+    }
+
     RequestOptions toRequestOptions() {
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.setIfMatchETag(getIfMatchETag());
@@ -166,6 +204,11 @@ public final class CosmosStoredProcedureRequestOptions {
         requestOptions.setPartitionKey(partitionKey);
         requestOptions.setSessionToken(sessionToken);
         requestOptions.setScriptLoggingEnabled(scriptLoggingEnabled);
+        if (this.customOptions != null) {
+            for (Map.Entry<String, String> entry : this.customOptions.entrySet()) {
+                requestOptions.setHeader(entry.getKey(), entry.getValue());
+            }
+        }
         return requestOptions;
     }
 }

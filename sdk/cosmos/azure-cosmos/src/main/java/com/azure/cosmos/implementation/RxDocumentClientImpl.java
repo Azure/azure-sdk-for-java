@@ -871,7 +871,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 this.consistencyLevel,
                 this.userAgentContainer,
                 this.globalEndpointManager,
-                this.reactorHttpClient);
+                this.reactorHttpClient,
+                this.additionalHeaders);
 
             this.perPartitionFailoverConfigModifier
                 = (databaseAccount -> {
@@ -1045,14 +1046,16 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                          ConsistencyLevel consistencyLevel,
                                          UserAgentContainer userAgentContainer,
                                          GlobalEndpointManager globalEndpointManager,
-                                         HttpClient httpClient) {
+                                         HttpClient httpClient,
+                                         Map<String, String> additionalHeaders) {
         return new ThinClientStoreModel(
             this,
             sessionContainer,
             consistencyLevel,
             userAgentContainer,
             globalEndpointManager,
-            httpClient);
+            httpClient,
+            additionalHeaders);
     }
 
     private HttpClient httpClient() {

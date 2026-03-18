@@ -47,7 +47,8 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
         ConsistencyLevel defaultConsistencyLevel,
         UserAgentContainer userAgentContainer,
         GlobalEndpointManager globalEndpointManager,
-        HttpClient httpClient) {
+        HttpClient httpClient,
+        Map<String, String> additionalHeaders) {
         super(
             clientContext,
             sessionContainer,
@@ -57,7 +58,7 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
             globalEndpointManager,
             httpClient,
             ApiType.SQL,
-            null);
+            additionalHeaders);
 
         String userAgent = userAgentContainer != null
             ? userAgentContainer.getUserAgent()

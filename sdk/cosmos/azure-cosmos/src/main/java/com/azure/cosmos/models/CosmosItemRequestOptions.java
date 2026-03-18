@@ -569,7 +569,7 @@ public class CosmosItemRequestOptions {
     /**
      * Sets additional headers to be included with this specific request.
      * <p>
-     * The {@link CosmosHeaderName} enum defines exactly which headers are supported.
+     * The {@link CosmosHeaderName} class defines exactly which headers are supported.
      * This allows per-request header customization, such as setting a workload ID
      * that overrides the client-level default set via
      * {@link com.azure.cosmos.CosmosClientBuilder#additionalHeaders(java.util.Map)}.

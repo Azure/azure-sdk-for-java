@@ -740,13 +740,13 @@ public class CosmosClientBuilder implements
     /**
      * Sets additional HTTP headers that will be included with every request from this client.
      * <p>
-     * The {@link CosmosHeaderName} enum defines exactly which headers are supported. Currently
+     * {@link CosmosHeaderName} defines exactly which headers are supported. Currently
      * the only supported header is {@link CosmosHeaderName#WORKLOAD_ID}
      * ({@code x-ms-cosmos-workload-id}).
      * <p>
      * This restriction exists because in Direct mode (RNTBD), only headers with explicit
-     * encoding support are sent on the wire. The enum ensures consistent behavior across
-     * both Gateway and Direct modes.
+     * encoding support are sent on the wire. Using {@link CosmosHeaderName} ensures consistent
+     * behavior across both Gateway and Direct modes.
      * <p>
      * If the same header is also set on request options (e.g.,
      * {@code CosmosItemRequestOptions.setAdditionalHeaders(Map)}),
