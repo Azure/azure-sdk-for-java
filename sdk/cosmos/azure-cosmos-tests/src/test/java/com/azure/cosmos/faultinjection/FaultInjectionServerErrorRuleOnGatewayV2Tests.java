@@ -45,6 +45,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.assertj.core.api.AssertionsForClassTypes;
+import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -563,7 +564,7 @@ public class FaultInjectionServerErrorRuleOnGatewayV2Tests extends FaultInjectio
         // ThinClientStoreModel.wrapInHttpRequest because partitionKeyDefinition is null.
 
         if (this.preferredReadRegions.size() < 2) {
-            throw new org.testng.SkipException("Need >= 2 regions for hedging");
+            throw new SkipException("Need >= 2 regions for hedging");
         }
 
         String firstRegion = this.preferredReadRegions.get(0);

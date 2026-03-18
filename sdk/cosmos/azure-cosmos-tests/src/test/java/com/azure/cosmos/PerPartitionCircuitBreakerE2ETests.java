@@ -2908,7 +2908,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
         }
 
         // Thin client only supports GATEWAY mode - skip DIRECT mode tests
-        if (connectionPolicy.getConnectionMode() == ConnectionMode.DIRECT && Configs.isThinClientEnabled()) {
+        if (connectionPolicy.getConnectionMode() == ConnectionMode.DIRECT && Configs.isThinClientEnabled() && Configs.isHttp2Enabled()) {
             throw new SkipException("DIRECT connection mode is not supported with thin client - skipping.");
         }
 
@@ -3657,7 +3657,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                         }
                     }
 
-                    if (Configs.isThinClientEnabled() && response.cosmosException == null) {
+                    if (Configs.isThinClientEnabled() && Configs.isHttp2Enabled() && response.cosmosException == null) {
                         CosmosDiagnosticsContext ctx = getDiagnosticsContext(response);
                         if (ctx != null) {
                             assertThinClientEndpointUsed(ctx);
@@ -3706,7 +3706,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                         validateRegionsContactedWhenShortCircuitRegionMarkedAsHealthyOrHealthyTentative.accept(response.batchResponse.getDiagnostics().getDiagnosticsContext());
                     }
 
-                    if (Configs.isThinClientEnabled() && response.cosmosException == null) {
+                    if (Configs.isThinClientEnabled() && Configs.isHttp2Enabled() && response.cosmosException == null) {
                         CosmosDiagnosticsContext ctx = getDiagnosticsContext(response);
                         if (ctx != null) {
                             assertThinClientEndpointUsed(ctx);

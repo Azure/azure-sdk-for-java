@@ -36,6 +36,10 @@ public class RegionalRoutingContext {
         return this.thinclientRegionalEndpoint;
     }
 
+    // equals, hashCode and toString only depend on gatewayRegionalEndpoint because it is
+    // immutable and set at construction. thinclientRegionalEndpoint is set later via a mutable
+    // setter and must not participate — otherwise map lookups break when the field is updated
+    // after insertion as a key (e.g. in LocationCache's CaseInsensitiveMap).
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

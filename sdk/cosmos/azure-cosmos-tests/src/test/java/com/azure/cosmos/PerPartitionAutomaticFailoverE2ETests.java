@@ -1280,7 +1280,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
         }
 
         // Thin client only supports GATEWAY mode - skip DIRECT mode tests
-        if (connectionMode == ConnectionMode.DIRECT && Configs.isThinClientEnabled()) {
+        if (connectionMode == ConnectionMode.DIRECT && Configs.isThinClientEnabled() && Configs.isHttp2Enabled()) {
             throw new SkipException("DIRECT connection mode is not supported with thin client - skipping.");
         }
 
@@ -1454,7 +1454,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 // which uses RNTBD binary encoding — incompatible with standard HTTP mock responses.
                 // Replace thinProxy with gatewayProxy so data requests use the same mocked HttpClient
                 // with standard HTTP encoding. PPAF retry/failover logic is transport-agnostic.
-                if (Configs.isThinClientEnabled()) {
+                if (Configs.isThinClientEnabled() && Configs.isHttp2Enabled()) {
                     ReflectionUtils.setThinProxy(rxDocumentClient, rxStoreModel);
                 }
 
@@ -1558,7 +1558,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
         }
 
         // Thin client only supports GATEWAY mode - skip DIRECT mode tests
-        if (connectionMode == ConnectionMode.DIRECT && Configs.isThinClientEnabled()) {
+        if (connectionMode == ConnectionMode.DIRECT && Configs.isThinClientEnabled() && Configs.isHttp2Enabled()) {
             throw new SkipException("DIRECT connection mode is not supported with thin client - skipping.");
         }
 
@@ -1721,7 +1721,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 // which uses RNTBD binary encoding — incompatible with standard HTTP mock responses.
                 // Replace thinProxy with gatewayProxy so data requests use the same mocked HttpClient
                 // with standard HTTP encoding. PPAF retry/failover logic is transport-agnostic.
-                if (Configs.isThinClientEnabled()) {
+                if (Configs.isThinClientEnabled() && Configs.isHttp2Enabled()) {
                     ReflectionUtils.setThinProxy(rxDocumentClient, rxStoreModel);
                 }
 
@@ -1835,7 +1835,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
         }
 
         // Thin client only supports GATEWAY mode - skip DIRECT mode tests
-        if (connectionMode == ConnectionMode.DIRECT && Configs.isThinClientEnabled()) {
+        if (connectionMode == ConnectionMode.DIRECT && Configs.isThinClientEnabled() && Configs.isHttp2Enabled()) {
             throw new SkipException("DIRECT connection mode is not supported with thin client - skipping.");
         }
 
@@ -2096,7 +2096,7 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                     expectedAfterWindow);
 
                 // Validate thin client endpoint was used when thin client is enabled
-                if (Configs.isThinClientEnabled()) {
+                if (Configs.isThinClientEnabled() && Configs.isHttp2Enabled()) {
                     ResponseWrapper<?> probeResponse = dataPlaneOperation.apply(params);
                     CosmosDiagnostics diag = extractDiagnostics(probeResponse);
                     if (diag != null) {

@@ -4883,14 +4883,8 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
         ConnectionMode connectionMode,
         boolean shouldInjectPreferredRegionsInClient) {
 
-        // When thin client mode is enabled (COSMOS.THINCLIENT_ENABLED=true) together with HTTP/2
-        // (COSMOS.HTTP2_ENABLED=true), requests are routed through the thin client gateway proxy.
-        // This means DIRECT mode is not exercised — all requests go through GATEWAY regardless of
-        // the connectionMode specified in the test config. DIRECT mode test configs have tight
-        // timeouts (e.g. 1s) calibrated for direct TCP connections, which are insufficient for the
-        // gateway proxy path. Skip these to avoid spurious 408 (Request Timeout) failures.
-        // GATEWAY mode test configs — including those with availability strategy (hedging) — continue
-        // to run as they validate core thin client functionality.
+        // When thin client + HTTP/2 are enabled, all requests route through the thin client
+        // gateway proxy — DIRECT mode is not exercised. Skip DIRECT mode tests.
         if (Configs.isThinClientEnabled() && Configs.isHttp2Enabled() && connectionMode == ConnectionMode.DIRECT) {
             throw new SkipException(
                 "Skipping DIRECT mode test '" + testCaseId + "' — thin client forces GATEWAY mode");

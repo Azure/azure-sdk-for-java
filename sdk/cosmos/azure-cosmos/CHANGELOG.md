@@ -10,7 +10,7 @@
 
 #### Bugs Fixed
 * Fixed Remote Code Execution (RCE) vulnerability (CWE-502) by replacing Java deserialization with JSON-based serialization in `CosmosClientMetadataCachesSnapshot`, `AsyncCache`, and `DocumentCollection`. The metadata cache snapshot now uses Jackson for serialization/deserialization, eliminating the entire class of Java deserialization attacks. - [PR 47971](https://github.com/Azure/azure-sdk-for-java/pull/47971)
-* Fixed `NullPointerException` in `ThinClientStoreModel.wrapInHttpRequest` when a partition-key-scoped query is hedged (cross-region speculative execution) on Gateway V2. `RxDocumentServiceRequest.clone()` was not copying `partitionKeyDefinition`, causing the cloned hedged request to fail EPK computation.
+* Fixed availability strategy (hedging) and cross-region failover for Gateway V2 (thin client) by ensuring `RegionalRoutingContext` identity is based only on the immutable gateway endpoint.
 
 #### Other Changes
 * Added aggressive HTTP timeout policies for document operations routed to Gateway V2. - [PR 47879](https://github.com/Azure/azure-sdk-for-java/pull/47879)
