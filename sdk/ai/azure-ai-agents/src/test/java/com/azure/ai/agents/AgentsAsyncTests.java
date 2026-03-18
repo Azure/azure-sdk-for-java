@@ -5,12 +5,14 @@ package com.azure.ai.agents;
 
 import com.azure.ai.agents.models.AgentReference;
 import com.azure.ai.agents.models.PromptAgentDefinition;
+import com.azure.ai.agents.models.StructuredInputDefinition;
 import com.azure.core.http.HttpClient;
 import com.openai.models.conversations.Conversation;
 import com.openai.models.responses.EasyInputMessage;
 import com.openai.models.responses.ResponseCreateParams;
 import com.openai.models.responses.ResponseInputItem;
 import com.openai.models.responses.ResponseStatus;
+import com.openai.services.async.ConversationServiceAsync;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -18,10 +20,15 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import static com.azure.ai.agents.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AgentsAsyncTests extends ClientTestBase {
 
@@ -104,7 +111,7 @@ public class AgentsAsyncTests extends ClientTestBase {
     @MethodSource("com.azure.ai.agents.TestUtils#getTestParameters")
     public void promptAgentTest(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
         AgentsAsyncClient agentsClient = getAgentsAsyncClient(httpClient, serviceVersion);
-        ConversationsAsyncClient conversationsClient = getConversationsAsyncClient(httpClient, serviceVersion);
+        ConversationServiceAsync conversationsClient = getConversationsAsyncClient(httpClient, serviceVersion);
         ResponsesAsyncClient responsesClient = getResponsesAsyncClient(httpClient, serviceVersion);
         String agentModel = "gpt-4o";
 
@@ -118,45 +125,93 @@ public class AgentsAsyncTests extends ClientTestBase {
             AgentReference agentReference = new AgentReference(createdAgent.getName());
             agentReference.setVersion(createdAgent.getVersion());
 
-            return Mono.fromFuture(conversationsClient.getConversationServiceAsync().create())
-                .flatMap((Conversation conversation) -> {
-                    List<ResponseInputItem> inputItems = new ArrayList<>();
-                    inputItems.add(ResponseInputItem.ofEasyInputMessage(EasyInputMessage.builder()
-                        .type(EasyInputMessage.Type.MESSAGE)
-                        .role(EasyInputMessage.Role.SYSTEM)
-                        .content("You are a helpful assistant who speaks like a pirate. Today is a sunny and warm day.")
-                        .build()));
-                    inputItems.add(ResponseInputItem.ofEasyInputMessage(EasyInputMessage.builder()
-                        .type(EasyInputMessage.Type.MESSAGE)
-                        .role(EasyInputMessage.Role.USER)
-                        .content("Could you help me decide what clothes to wear today?")
-                        .build()));
+            return Mono.fromFuture(conversationsClient.create()).flatMap((Conversation conversation) -> {
+                List<ResponseInputItem> inputItems = new ArrayList<>();
+                inputItems.add(ResponseInputItem.ofEasyInputMessage(EasyInputMessage.builder()
+                    .type(EasyInputMessage.Type.MESSAGE)
+                    .role(EasyInputMessage.Role.SYSTEM)
+                    .content("You are a helpful assistant who speaks like a pirate. Today is a sunny and warm day.")
+                    .build()));
+                inputItems.add(ResponseInputItem.ofEasyInputMessage(EasyInputMessage.builder()
+                    .type(EasyInputMessage.Type.MESSAGE)
+                    .role(EasyInputMessage.Role.USER)
+                    .content("Could you help me decide what clothes to wear today?")
+                    .build()));
 
-                    ResponseCreateParams.Builder paramsBuilder
-                        = ResponseCreateParams.builder().inputOfResponse(inputItems);
+                ResponseCreateParams.Builder paramsBuilder = ResponseCreateParams.builder().inputOfResponse(inputItems);
 
-                    return responsesClient.createWithAgentConversation(agentReference, conversation.id(), paramsBuilder)
-                        .doOnNext(response -> {
-                            assertNotNull(response);
-                            assertTrue(response.id().startsWith("resp"));
-                            assertTrue(response.status().isPresent());
-                            assertEquals(ResponseStatus.COMPLETED, response.status().get());
-                            assertFalse(response.output().isEmpty());
-                            assertTrue(response.output().get(0).isMessage());
-                            assertFalse(response.output().get(0).asMessage().content().isEmpty());
-                        })
-                        .flatMap(response -> cleanupPromptAgentTest(agentsClient, conversationsClient, responsesClient,
-                            createdAgent.getId(), conversation.id(), response.id()).thenReturn(response));
-                });
+                return responsesClient.createWithAgentConversation(agentReference, conversation.id(), paramsBuilder)
+                    .doOnNext(response -> {
+                        assertNotNull(response);
+                        assertTrue(response.id().startsWith("resp"));
+                        assertTrue(response.status().isPresent());
+                        assertEquals(ResponseStatus.COMPLETED, response.status().get());
+                        assertFalse(response.output().isEmpty());
+                        assertTrue(response.output().get(0).isMessage());
+                        assertFalse(response.output().get(0).asMessage().content().isEmpty());
+                    })
+                    .flatMap(response -> cleanupPromptAgentTest(agentsClient, conversationsClient, responsesClient,
+                        createdAgent.getId(), conversation.id(), response.id()).thenReturn(response));
+            });
         })).assertNext(response -> assertTrue(response.id().startsWith("resp"))).verifyComplete();
     }
 
     private Mono<Void> cleanupPromptAgentTest(AgentsAsyncClient agentsClient,
-        ConversationsAsyncClient conversationsClient, ResponsesAsyncClient responsesClient, String agentId,
+        ConversationServiceAsync conversationsClient, ResponsesAsyncClient responsesClient, String agentId,
         String conversationId, String responseId) {
         return Mono.whenDelayError(agentsClient.deleteAgent(agentId).then(),
-            Mono.fromFuture(conversationsClient.getConversationServiceAsync().delete(conversationId)).then(),
+            Mono.fromFuture(conversationsClient.delete(conversationId)).then(),
             // Deleting response causes a 500 in service, but keep the request for parity with sync tests.
             Mono.fromFuture(responsesClient.getResponseServiceAsync().delete(responseId)).then());
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.agents.TestUtils#getTestParameters")
+    public void structuredInputTest(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
+        AgentsAsyncClient agentsClient = getAgentsAsyncClient(httpClient, serviceVersion);
+        ResponsesAsyncClient responsesClient = getResponsesAsyncClient(httpClient, serviceVersion);
+        String agentModel = "gpt-4o";
+
+        // Create an agent with structured input definitions
+        Map<String, StructuredInputDefinition> structuredInputDefinitions = new LinkedHashMap<>();
+        structuredInputDefinitions.put("userName",
+            new StructuredInputDefinition().setDescription("User's name").setRequired(true));
+        structuredInputDefinitions.put("userRole",
+            new StructuredInputDefinition().setDescription("User's role").setRequired(true));
+
+        StepVerifier.create(
+            agentsClient
+                .createAgentVersion(AGENT_NAME,
+                    new PromptAgentDefinition(agentModel).setInstructions("You are a helpful assistant. "
+                        + "The user's name is {{userName}} and their role is {{userRole}}. "
+                        + "Greet them and confirm their details.").setStructuredInputs(structuredInputDefinitions))
+                .flatMap(createdAgent -> {
+                    assertNotNull(createdAgent);
+                    assertNotNull(createdAgent.getId());
+                    assertEquals(AGENT_NAME, createdAgent.getName());
+
+                    Map<String, Object> structuredInputValues = new LinkedHashMap<>();
+                    structuredInputValues.put("userName", "Alice Smith");
+                    structuredInputValues.put("userRole", "Senior Developer");
+
+                    return responsesClient
+                        .createWithAgentStructuredInput(
+                            new AgentReference(createdAgent.getName()).setVersion(createdAgent.getVersion()),
+                            structuredInputValues,
+                            ResponseCreateParams.builder().input("Hello! Can you confirm my details?"))
+                        .flatMap(response -> agentsClient
+                            .deleteAgentVersion(createdAgent.getName(), createdAgent.getVersion())
+                            .thenReturn(response));
+                }))
+            .assertNext(response -> {
+                assertNotNull(response);
+                assertTrue(response.id().startsWith("resp"));
+                assertTrue(response.status().isPresent());
+                assertEquals(ResponseStatus.COMPLETED, response.status().get());
+                assertFalse(response.output().isEmpty());
+                assertTrue(response.output().get(0).isMessage());
+                assertFalse(response.output().get(0).asMessage().content().isEmpty());
+            })
+            .verifyComplete();
     }
 }

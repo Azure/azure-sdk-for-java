@@ -322,28 +322,6 @@ public final class AgentsClientBuilder
     }
 
     /**
-     * Builds an instance of ConversationsAsyncClient class.
-     *
-     * @return an instance of ConversationsAsyncClient.
-     */
-    public ConversationsAsyncClient buildConversationsAsyncClient() {
-        return new ConversationsAsyncClient(getOpenAIAsyncClientBuilder().build()
-            .withOptions(optionBuilder -> optionBuilder
-                .httpClient(HttpClientHelper.mapToOpenAIHttpClient(createHttpPipeline()))));
-    }
-
-    /**
-     * Builds an instance of ConversationsClient class.
-     *
-     * @return an instance of ConversationsClient.
-     */
-    public ConversationsClient buildConversationsClient() {
-        return new ConversationsClient(getOpenAIClientBuilder().build()
-            .withOptions(optionBuilder -> optionBuilder
-                .httpClient(HttpClientHelper.mapToOpenAIHttpClient(createHttpPipeline()))));
-    }
-
-    /**
      * Builds an instance of ResponsesClient class with a default setup for OpenAI
      *
      * @return an instance of ResponsesClient

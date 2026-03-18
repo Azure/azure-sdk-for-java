@@ -11,13 +11,14 @@ import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.models.IncludedPath;
 import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.PartitionKeyDefinition;
-import org.apache.commons.lang3.StringUtils;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import reactor.core.scheduler.Schedulers;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -32,17 +33,22 @@ public class WorkflowTest {
 
     @Test(groups = "fast", timeOut = TIMEOUT)
     public void readMyWritesCLI() throws Exception {
-        String cmdFormat = "-serviceEndpoint %s -masterKey %s" +
-                " -databaseId %s -collectionId %s" +
-                " -consistencyLevel SESSION -concurrency 2 -numberOfOperations 123" +
-                " -operation ReadMyWrites -connectionMode DIRECT -numberOfPreCreatedDocuments 100";
-
-        String cmd = String.format(cmdFormat,
-                                   TestConfigurations.HOST,
-                                   TestConfigurations.MASTER_KEY,
-                                   database.getId(),
-                                   collection.getId());
-        Main.main(StringUtils.split(cmd));
+        File configFile = createWorkloadConfigFile(
+            TestConfigurations.HOST,
+            TestConfigurations.MASTER_KEY,
+            database.getId(),
+            collection.getId(),
+            "ReadMyWrites",
+            "DIRECT",
+            "SESSION",
+            2,
+            123,
+            100);
+        try {
+            Main.main(new String[]{"-workloadConfig", configFile.getAbsolutePath()});
+        } finally {
+            configFile.delete();
+        }
     }
 
     @Test(dataProvider = "collectionLinkTypeArgProvider", groups = "fast", timeOut = TIMEOUT)
@@ -84,22 +90,27 @@ public class WorkflowTest {
     }
 
     @Test(groups = "fast", timeOut = TIMEOUT)
-    public void writeLatencyCLI() throws Exception {
-        String cmdFormat = "-serviceEndpoint %s -masterKey %s" +
-                " -databaseId %s -collectionId %s" +
-                " -consistencyLevel SESSION -concurrency 2 -numberOfOperations 1000" +
-                " -operation WriteLatency -connectionMode DIRECT";
-
-        String cmd = String.format(cmdFormat,
-                                   TestConfigurations.HOST,
-                                   TestConfigurations.MASTER_KEY,
-                                   database.getId(),
-                                   collection.getId());
-        Main.main(StringUtils.split(cmd));
+    public void writeThroughputCLI() throws Exception {
+        File configFile = createWorkloadConfigFile(
+            TestConfigurations.HOST,
+            TestConfigurations.MASTER_KEY,
+            database.getId(),
+            collection.getId(),
+            "WriteThroughput",
+            "DIRECT",
+            "SESSION",
+            2,
+            1000,
+            0);
+        try {
+            Main.main(new String[]{"-workloadConfig", configFile.getAbsolutePath()});
+        } finally {
+            configFile.delete();
+        }
     }
 
     @Test(dataProvider = "collectionLinkTypeArgProvider", groups = "fast", timeOut = TIMEOUT)
-    public void writeLatency(boolean useNameLink) throws Exception {
+    public void writeThroughputWithDataProvider(boolean useNameLink) throws Exception {
         int numberOfOperations = 123;
 
         TenantWorkloadConfig cfg = new TenantWorkloadConfig();
@@ -110,7 +121,7 @@ public class WorkflowTest {
         cfg.setConsistencyLevel("SESSION");
         cfg.setConcurrency(2);
         cfg.setNumberOfOperations(numberOfOperations);
-        cfg.setOperation("WriteLatency");
+        cfg.setOperation("WriteThroughput");
         cfg.setConnectionMode("DIRECT");
 
         AtomicInteger success = new AtomicInteger();
@@ -173,7 +184,7 @@ public class WorkflowTest {
     }
 
     @Test(dataProvider = "collectionLinkTypeArgProvider", groups = "fast", timeOut = TIMEOUT)
-    public void readLatency(boolean useNameLink) throws Exception {
+    public void readThroughputWithDataProvider(boolean useNameLink) throws Exception {
         int numberOfOperations = 123;
 
         TenantWorkloadConfig cfg = new TenantWorkloadConfig();
@@ -184,7 +195,7 @@ public class WorkflowTest {
         cfg.setConsistencyLevel("SESSION");
         cfg.setConcurrency(2);
         cfg.setNumberOfOperations(numberOfOperations);
-        cfg.setOperation("ReadLatency");
+        cfg.setOperation("ReadThroughput");
         cfg.setConnectionMode("DIRECT");
 
         AtomicInteger success = new AtomicInteger();
@@ -290,6 +301,42 @@ public class WorkflowTest {
         Utils.safeCleanDatabases(housekeepingClient);
         Utils.safeClean(housekeepingClient, database);
         Utils.safeClose(housekeepingClient);
+    }
+
+    private File createWorkloadConfigFile(
+        String serviceEndpoint,
+        String masterKey,
+        String databaseId,
+        String containerId,
+        String operation,
+        String connectionMode,
+        String consistencyLevel,
+        int concurrency,
+        int numberOfOperations,
+        int numberOfPreCreatedDocuments) throws Exception {
+
+        String json = String.format(
+            "{ \"tenants\": [{ "
+                + "\"serviceEndpoint\": \"%s\", "
+                + "\"masterKey\": \"%s\", "
+                + "\"databaseId\": \"%s\", "
+                + "\"containerId\": \"%s\", "
+                + "\"operation\": \"%s\", "
+                + "\"connectionMode\": \"%s\", "
+                + "\"consistencyLevel\": \"%s\", "
+                + "\"concurrency\": %d, "
+                + "\"numberOfOperations\": %d, "
+                + "\"numberOfPreCreatedDocuments\": %d "
+                + "}] }",
+            serviceEndpoint, masterKey, databaseId, containerId,
+            operation, connectionMode, consistencyLevel,
+            concurrency, numberOfOperations, numberOfPreCreatedDocuments);
+
+        File tempFile = File.createTempFile("workload-config-", ".json");
+        try (FileWriter writer = new FileWriter(tempFile)) {
+            writer.write(json);
+        }
+        return tempFile;
     }
 
     DocumentCollection getCollectionDefinitionWithRangeRangeIndex() {
