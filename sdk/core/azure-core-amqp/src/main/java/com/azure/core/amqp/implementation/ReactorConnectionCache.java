@@ -173,6 +173,28 @@ public final class ReactorConnectionCache<T extends ReactorConnection> implement
     }
 
     /**
+     * Closes the current cached connection (if any) so that the next {@link #get()} call creates
+     * a fresh connection. This is used for connection-level recovery when the current connection
+     * is in a stale state that the cache's normal error detection (via endpoint state signals)
+     * has not detected — for example, when intermediate infrastructure (load balancers, NAT gateways)
+     * is echoing AMQP heartbeats on behalf of a dead connection.
+     *
+     * <p>This is modeled after the Go SDK's {@code Namespace.Recover()} which explicitly closes
+     * the old connection and increments the connection revision.</p>
+     *
+     * <p>This method is safe to call concurrently. If the connection is already closed or being
+     * closed, this is a no-op.</p>
+     */
+    public void forceCloseConnection() {
+        final T connection = currentConnection;
+        if (connection != null && !connection.isDisposed()) {
+            withConnectionId(logger, connection.getId())
+                .log("Force-closing connection for recovery. Next get() will create a fresh connection.");
+            closeConnection(connection, logger, "Force-close for connection recovery.");
+        }
+    }
+
+    /**
      * Terminate so that consumers will no longer be able to request connection. If there is a current (cached)
      * connection then it will be closed.
      */

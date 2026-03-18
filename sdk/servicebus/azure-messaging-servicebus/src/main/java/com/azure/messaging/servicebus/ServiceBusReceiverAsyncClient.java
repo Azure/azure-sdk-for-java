@@ -11,6 +11,7 @@ import com.azure.core.amqp.implementation.CreditFlowMode;
 import com.azure.core.amqp.implementation.MessageFlux;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RequestResponseChannelClosedException;
+import com.azure.core.amqp.implementation.RecoveryKind;
 import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.implementation.StringUtil;
 import com.azure.core.amqp.implementation.handler.DeliveryNotOnLinkException;
@@ -1734,17 +1735,26 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         // [2]. When we try to create a new session (to host the new link) but on a connection being disposed,
         //      the retry can eventually receive a new connection and then proceed with creating session and link.
         //
-        final Mono<ServiceBusReceiveLink> retryableReceiveLinkMono
-            = RetryUtil.withRetry(receiveLinkMono.onErrorMap(RequestResponseChannelClosedException.class, e -> {
-                // When the current connection is being disposed, the V1 ConnectionProcessor or V2 ReactorConnectionCache
-                // can produce a new connection if downstream request. In this context, treat
-                // RequestResponseChannelClosedException error from the following two sources as retry-able so that
-                // retry can obtain a new connection -
-                // 1. error from the RequestResponseChannel scoped to the current connection being disposed,
-                // 2. error from the V2 RequestResponseChannelCache scoped to the current connection being disposed.
-                //
+        final Mono<ServiceBusReceiveLink> retryableReceiveLinkMono = RetryUtil
+            .withRetryAndRecovery(receiveLinkMono.onErrorMap(RequestResponseChannelClosedException.class, e -> {
                 return new AmqpException(true, e.getMessage(), e, null);
-            }), connectionCacheWrapper.getRetryOptions(), "Failed to create receive link " + linkName, true);
+            }), connectionCacheWrapper.getRetryOptions(), "Failed to create receive link " + linkName, true,
+                recoveryKind -> {
+                    if (recoveryKind == RecoveryKind.LINK || recoveryKind == RecoveryKind.CONNECTION) {
+                        LOGGER.atWarning()
+                            .addKeyValue(LINK_NAME_KEY, linkName)
+                            .addKeyValue("recoveryKind", recoveryKind)
+                            .log("Receive link creation failed, performing {} recovery.", recoveryKind);
+
+                        // For LINK errors during link creation, the session hosting the link may be stale.
+                        // Ask the connection to remove it so the next retry creates a fresh session + link.
+                        // The entityPath is the session name used by createReceiveLink().
+                        connectionProcessor.subscribe(connection -> connection.removeSession(entityPath));
+                    }
+                    if (recoveryKind == RecoveryKind.CONNECTION) {
+                        connectionCacheWrapper.forceCloseConnection();
+                    }
+                });
 
         // A Flux that produces a new AmqpReceiveLink each time it receives a request from the below
         // 'AmqpReceiveLinkProcessor'. Obviously, the processor requests a link when there is a downstream subscriber.

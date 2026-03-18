@@ -9,6 +9,7 @@ import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.StringUtil;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler2;
+import com.azure.core.amqp.implementation.RecoveryKind;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
@@ -137,12 +138,24 @@ final class ServiceBusSessionAcquirer {
             return acquireSession(sessionId).timeout(tryTimeout)
                 .retryWhen(Retry.from(signals -> signals.flatMap(signal -> {
                     final Throwable t = signal.failure();
+                    final RecoveryKind kind = RecoveryKind.classify(t);
+                    if (kind == RecoveryKind.CONNECTION) {
+                        logger.atWarning()
+                            .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                            .log("Connection-level error acquiring session, forcing connection recovery.", t);
+                        connectionCacheWrapper.forceCloseConnection();
+                    }
                     if (isTimeoutError(t)) {
                         logger.atVerbose()
                             .addKeyValue(ENTITY_PATH_KEY, entityPath)
                             .addKeyValue("attempt", signal.totalRetriesInARow())
                             .log("Timeout while acquiring session '{}'.", sessionName(sessionId), t);
-                        // retry session acquire using Schedulers.parallel() and free the QPid thread.
+                        return Mono.delay(Duration.ZERO);
+                    }
+                    if (kind == RecoveryKind.LINK) {
+                        logger.atWarning()
+                            .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                            .log("Link-level error acquiring session, retrying.", t);
                         return Mono.delay(Duration.ZERO);
                     }
                     return publishError(sessionId, t, true);

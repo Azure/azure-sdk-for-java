@@ -8,6 +8,7 @@ import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.SessionErrorContext;
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.amqp.implementation.RecoveryKind;
 import com.azure.core.amqp.implementation.StringUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
@@ -281,10 +282,19 @@ class ServiceBusSessionManager implements AutoCloseable, IServiceBusSessionManag
             .timeout(operationTimeout)
             .then(Mono.just(link)))).retryWhen(Retry.from(retrySignals -> retrySignals.flatMap(signal -> {
                 final Throwable failure = signal.failure();
+                final RecoveryKind kind = RecoveryKind.classify(failure);
                 LOGGER.atInfo()
                     .addKeyValue(ENTITY_PATH_KEY, entityPath)
                     .addKeyValue("attempt", signal.totalRetriesInARow())
+                    .addKeyValue("recoveryKind", kind)
                     .log("Error occurred while getting unnamed session.", failure);
+
+                if (kind == RecoveryKind.CONNECTION) {
+                    LOGGER.atWarning()
+                        .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                        .log("Connection-level error in session manager, forcing connection recovery.");
+                    connectionCacheWrapper.forceCloseConnection();
+                }
 
                 if (isDisposed.get()) {
                     return Mono.<Long>error(
@@ -293,12 +303,9 @@ class ServiceBusSessionManager implements AutoCloseable, IServiceBusSessionManag
                     return Mono.delay(Duration.ZERO);
                 } else if (failure instanceof AmqpException
                     && ((AmqpException) failure).getErrorCondition() == AmqpErrorCondition.TIMEOUT_ERROR) {
-                    // The link closed remotely with 'Detach {errorCondition:com.microsoft:timeout}' frame because
-                    // the broker waited for N seconds (60 sec hard limit today) but there was no free or new session.
-                    //
-                    // Given N seconds elapsed since the last session acquire attempt, request for a session on
-                    // the 'parallel' Scheduler and free the 'QPid' thread for other IO.
-                    //
+                    return Mono.delay(Duration.ZERO);
+                } else if (kind == RecoveryKind.LINK) {
+                    // Link-level error — retry to get a fresh link.
                     return Mono.delay(Duration.ZERO);
                 } else {
                     final long id = System.nanoTime();

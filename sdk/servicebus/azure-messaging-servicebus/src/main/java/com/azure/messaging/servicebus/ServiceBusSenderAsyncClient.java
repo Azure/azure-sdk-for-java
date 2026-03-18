@@ -10,7 +10,9 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.ErrorContextProvider;
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.amqp.implementation.RecoveryKind;
 import com.azure.core.amqp.implementation.RequestResponseChannelClosedException;
+import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -228,12 +230,14 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
 
     private final ClientLogger logger;
     private final AtomicReference<String> linkName = new AtomicReference<>();
+    private final AtomicReference<AmqpSendLink> lastSendLink = new AtomicReference<>();
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final MessageSerializer messageSerializer;
     private final AmqpRetryOptions retryOptions;
     private final MessagingEntityType entityType;
     private final Runnable onClientClose;
     private final String entityName;
+    private final ConnectionCacheWrapper connectionCacheWrapper;
     private final Mono<ServiceBusAmqpConnection> connectionProcessor;
     private final String fullyQualifiedNamespace;
     private final String viaEntityName;
@@ -254,6 +258,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
         this.entityName = Objects.requireNonNull(entityName, "'entityPath' cannot be null.");
         Objects.requireNonNull(connectionCacheWrapper, "'connectionCacheWrapper' cannot be null.");
+        this.connectionCacheWrapper = connectionCacheWrapper;
         this.connectionProcessor = connectionCacheWrapper.getConnection();
         this.fullyQualifiedNamespace = connectionCacheWrapper.getFullyQualifiedNamespace();
         this.instrumentation = Objects.requireNonNull(instrumentation, "'instrumentation' cannot be null.");
@@ -810,8 +815,9 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
             return monoError(logger, new NullPointerException("'scheduledEnqueueTime' cannot be null."));
         }
 
-        return tracer.traceScheduleMono("ServiceBus.scheduleMessage",
-            getSendLinkWithRetry("schedule-message").flatMap(link -> link.getLinkSize().flatMap(size -> {
+        return tracer.traceScheduleMono("ServiceBus.scheduleMessage", getSendLink("schedule-message").flatMap(link -> {
+            lastSendLink.set(link);
+            return link.getLinkSize().flatMap(size -> {
                 final int maxSize = size > 0 ? size : MAX_MESSAGE_LENGTH_BYTES;
                 return connectionProcessor.flatMap(connection -> connection.getManagementNode(entityName, entityType))
                     .flatMap(
@@ -819,7 +825,8 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
                             .schedule(Arrays.asList(message), scheduledEnqueueTime, maxSize, link.getLinkName(),
                                 transactionContext)
                             .next());
-            })), message, message.getContext()).onErrorMap(this::mapError);
+            });
+        }), message, message.getContext()).onErrorMap(this::mapError);
     }
 
     /**
@@ -860,6 +867,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         });
 
         final Mono<Void> sendMessage = getSendLink("send-batch").flatMap(link -> {
+            lastSendLink.set(link);
             if (transactionContext != null && transactionContext.getTransactionId() != null) {
                 final TransactionalState deliveryState = new TransactionalState();
                 deliveryState.setTxnId(Binary.create(transactionContext.getTransactionId()));
@@ -871,8 +879,11 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
             }
         });
 
-        final String message = "Sending messages timed out. message-count:" + batch.getCount() + entityId();
-        final Mono<Void> withRetry = withRetry(sendMessage, retryOptions, message).onErrorMap(this::mapError);
+        final String timeoutMessage = "Sending messages timed out. message-count:" + batch.getCount() + entityId();
+        final Mono<Void> withRetry
+            = RetryUtil.withRetryAndRecovery(sendMessage, retryOptions, timeoutMessage, recoveryKind -> {
+                performRecovery(recoveryKind, "sendBatch");
+            }).onErrorMap(this::mapError);
         return instrumentation.instrumentSendBatch("ServiceBus.send", withRetry, batch.getMessages());
     }
 
@@ -883,19 +894,26 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
                 new IllegalStateException(String.format(INVALID_OPERATION_DISPOSED_SENDER, "sendMessage")));
         }
 
-        final Mono<List<ServiceBusMessageBatch>> batchList
-            = getSendLinkWithRetry("send-batches").flatMap(link -> link.getLinkSize().flatMap(size -> {
+        final Mono<List<ServiceBusMessageBatch>> batchList = getSendLink("send-batches").flatMap(link -> {
+            lastSendLink.set(link);
+            return link.getLinkSize().flatMap(size -> {
                 final int batchSize = size > 0 ? size : MAX_MESSAGE_LENGTH_BYTES;
                 final CreateMessageBatchOptions batchOptions
                     = new CreateMessageBatchOptions().setMaximumSizeInBytes(batchSize);
                 return messages.collect(
                     new AmqpMessageCollector(isV2, batchOptions, 1, link::getErrorContext, tracer, messageSerializer));
-            }));
+            });
+        });
 
-        return batchList.flatMap(list -> Flux.fromIterable(list)
+        final Mono<Void> sendOperation = batchList.flatMap(list -> Flux.fromIterable(list)
             .flatMap(batch -> sendBatchInternal(batch, transactionContext))
             .then()
-            .doOnError(error -> logger.error("Error sending batch.", error))).onErrorMap(this::mapError);
+            .doOnError(error -> logger.error("Error sending batch.", error)));
+
+        return RetryUtil.withRetryAndRecovery(sendOperation, retryOptions, "Sending messages timed out." + entityId(),
+            recoveryKind -> {
+                performRecovery(recoveryKind, "sendFlux");
+            }).onErrorMap(this::mapError);
     }
 
     private Mono<AmqpSendLink> getSendLink(String callSite) {
@@ -926,7 +944,10 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
     }
 
     private Mono<AmqpSendLink> getSendLinkWithRetry(String callSite) {
-        return withRetry(getSendLink(callSite), retryOptions, String.format(retryGetLinkErrorMessageFormat, callSite));
+        return RetryUtil.withRetryAndRecovery(getSendLink(callSite), retryOptions,
+            String.format(retryGetLinkErrorMessageFormat, callSite), recoveryKind -> {
+                performRecovery(recoveryKind, "getSendLink-" + callSite);
+            });
     }
 
     private Throwable mapError(Throwable throwable) {
@@ -934,6 +955,46 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
             return new ServiceBusException(throwable, ServiceBusErrorSource.SEND);
         }
         return throwable;
+    }
+
+    /**
+     * Performs tiered recovery by disposing stale resources based on the classified error.
+     * For LINK recovery, disposes the send link so the next retry creates a fresh one.
+     * For CONNECTION recovery, disposes the link and the connection so the connection
+     * processor creates everything fresh.
+     *
+     * <p>This matches the Go SDK's RecoverIfNeeded() and the .NET SDK's
+     * FaultTolerantAmqpObject pattern.</p>
+     */
+    private void performRecovery(RecoveryKind recoveryKind, String callSite) {
+        if (recoveryKind == RecoveryKind.NONE || recoveryKind == RecoveryKind.FATAL) {
+            return;
+        }
+
+        logger.atWarning()
+            .addKeyValue(ENTITY_PATH_KEY, entityName)
+            .addKeyValue("recoveryKind", recoveryKind)
+            .addKeyValue("callSite", callSite)
+            .log("Performing {} recovery before retry.", recoveryKind);
+
+        // Dispose the cached send link so the next retry creates a fresh one.
+        final AmqpSendLink link = lastSendLink.getAndSet(null);
+        if (link != null) {
+            link.dispose();
+        }
+        linkName.set(null);
+
+        // For CONNECTION errors, the link disposal above is the sender's responsibility.
+        // Connection-level recovery (closing and recreating the AMQP connection) is handled
+        // by the ReactorConnectionCache when it detects the connection's endpoint state has
+        // changed. My job is to reset the cached link reference so the next retry goes through the fresh path — the connection disposal happens organically.
+        if (recoveryKind == RecoveryKind.CONNECTION) {
+            // Force-close the cached connection so the next get() on the connection
+            // processor creates a fresh one. This handles the stale-connection scenario
+            // where heartbeats are echoed by intermediate infrastructure and the cache
+            // hasn't detected the failure. Matches Go SDK's Namespace.Recover().
+            connectionCacheWrapper.forceCloseConnection();
+        }
     }
 
     private String entityId() {
