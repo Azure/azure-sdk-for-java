@@ -2208,6 +2208,13 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             Thread.sleep(100);
         }
 
+        // Ensure the processor has fully started — start() is async so it may still
+        // be transitioning, especially when createdDocuments is empty.
+        long startDeadline = System.currentTimeMillis() + 2 * CHANGE_FEED_PROCESSOR_TIMEOUT;
+        while (!changeFeedProcessor.isStarted() && System.currentTimeMillis() < startDeadline) {
+            Thread.sleep(200);
+        }
+
         assertThat(changeFeedProcessor.isStarted()).as("Change Feed Processor instance is running").isTrue();
 
         List<ChangeFeedProcessorState> cfpCurrentState = changeFeedProcessor

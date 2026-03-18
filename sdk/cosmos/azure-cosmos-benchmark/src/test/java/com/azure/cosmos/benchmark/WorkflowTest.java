@@ -11,7 +11,6 @@ import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.models.IncludedPath;
 import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.PartitionKeyDefinition;
-import org.apache.commons.lang3.StringUtils;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -32,17 +31,42 @@ public class WorkflowTest {
 
     @Test(groups = "fast", timeOut = TIMEOUT)
     public void readMyWritesCLI() throws Exception {
-        String cmdFormat = "-serviceEndpoint %s -masterKey %s" +
-                " -databaseId %s -collectionId %s" +
-                " -consistencyLevel SESSION -concurrency 2 -numberOfOperations 123" +
-                " -operation ReadMyWrites -connectionMode DIRECT -numberOfPreCreatedDocuments 100";
+        // Converted from CLI-based test to TenantWorkloadConfig-based test
+        // after CLI parameter refactor moved all workload config to JSON files.
+        int numberOfOperations = 123;
 
-        String cmd = String.format(cmdFormat,
-                                   TestConfigurations.HOST,
-                                   TestConfigurations.MASTER_KEY,
-                                   database.getId(),
-                                   collection.getId());
-        Main.main(StringUtils.split(cmd));
+        TenantWorkloadConfig cfg = new TenantWorkloadConfig();
+        cfg.setServiceEndpoint(TestConfigurations.HOST);
+        cfg.setMasterKey(TestConfigurations.MASTER_KEY);
+        cfg.setDatabaseId(database.getId());
+        cfg.setContainerId(collection.getId());
+        cfg.setConsistencyLevel("SESSION");
+        cfg.setConcurrency(2);
+        cfg.setNumberOfOperations(numberOfOperations);
+        cfg.setOperation("ReadMyWrites");
+        cfg.setConnectionMode("DIRECT");
+        cfg.setNumberOfPreCreatedDocuments(100);
+
+        AtomicInteger success = new AtomicInteger();
+        AtomicInteger error = new AtomicInteger();
+
+        ReadMyWriteWorkflow wf = new ReadMyWriteWorkflow(cfg, Schedulers.parallel()) {
+            @Override
+            protected void onError(Throwable throwable) {
+                error.incrementAndGet();
+            }
+
+            @Override
+            protected void onSuccess() {
+                success.incrementAndGet();
+            }
+        };
+
+        wf.run();
+        wf.shutdown();
+
+        assertThat(error).hasValue(0);
+        assertThat(success).hasValue(numberOfOperations);
     }
 
     @Test(dataProvider = "collectionLinkTypeArgProvider", groups = "fast", timeOut = TIMEOUT)
@@ -85,17 +109,41 @@ public class WorkflowTest {
 
     @Test(groups = "fast", timeOut = TIMEOUT)
     public void writeThroughputCLI() throws Exception {
-        String cmdFormat = "-serviceEndpoint %s -masterKey %s" +
-                " -databaseId %s -collectionId %s" +
-                " -consistencyLevel SESSION -concurrency 2 -numberOfOperations 1000" +
-                " -operation WriteThroughput -connectionMode DIRECT";
+        // Converted from CLI-based test to TenantWorkloadConfig-based test
+        // after CLI parameter refactor moved all workload config to JSON files.
+        int numberOfOperations = 1000;
 
-        String cmd = String.format(cmdFormat,
-                                   TestConfigurations.HOST,
-                                   TestConfigurations.MASTER_KEY,
-                                   database.getId(),
-                                   collection.getId());
-        Main.main(StringUtils.split(cmd));
+        TenantWorkloadConfig cfg = new TenantWorkloadConfig();
+        cfg.setServiceEndpoint(TestConfigurations.HOST);
+        cfg.setMasterKey(TestConfigurations.MASTER_KEY);
+        cfg.setDatabaseId(database.getId());
+        cfg.setContainerId(collection.getId());
+        cfg.setConsistencyLevel("SESSION");
+        cfg.setConcurrency(2);
+        cfg.setNumberOfOperations(numberOfOperations);
+        cfg.setOperation("WriteThroughput");
+        cfg.setConnectionMode("DIRECT");
+
+        AtomicInteger success = new AtomicInteger();
+        AtomicInteger error = new AtomicInteger();
+
+        AsyncWriteBenchmark wf = new AsyncWriteBenchmark(cfg, Schedulers.parallel()) {
+            @Override
+            protected void onError(Throwable throwable) {
+                error.incrementAndGet();
+            }
+
+            @Override
+            protected void onSuccess() {
+                success.incrementAndGet();
+            }
+        };
+
+        wf.run();
+        wf.shutdown();
+
+        assertThat(error).hasValue(0);
+        assertThat(success).hasValue(numberOfOperations);
     }
 
     @Test(dataProvider = "collectionLinkTypeArgProvider", groups = "fast", timeOut = TIMEOUT)
