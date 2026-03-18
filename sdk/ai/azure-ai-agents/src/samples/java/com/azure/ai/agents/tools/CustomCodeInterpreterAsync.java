@@ -10,7 +10,6 @@ import com.azure.ai.agents.models.AgentReference;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.McpTool;
 import com.azure.ai.agents.models.PromptAgentDefinition;
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.openai.models.responses.ResponseCreateParams;
@@ -27,7 +26,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * <p>Before running the sample, set these environment variables:</p>
  * <ul>
  *   <li>FOUNDRY_PROJECT_ENDPOINT - The Azure AI Project endpoint.</li>
- *   <li>FOUNDRY_MODEL_DEPLOYMENT_NAME - The model deployment name.</li>
+ *   <li>FOUNDRY_MODEL_NAME - The model deployment name.</li>
  *   <li>MCP_SERVER_URL - The MCP server URL for the custom code interpreter.</li>
  *   <li>MCP_PROJECT_CONNECTION_ID - The MCP project connection ID.</li>
  * </ul>
@@ -35,7 +34,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class CustomCodeInterpreterAsync {
     public static void main(String[] args) {
         String endpoint = Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT");
-        String model = Configuration.getGlobalConfiguration().get("FOUNDRY_MODEL_DEPLOYMENT_NAME");
+        String model = Configuration.getGlobalConfiguration().get("FOUNDRY_MODEL_NAME");
         String mcpServerUrl = Configuration.getGlobalConfiguration().get("MCP_SERVER_URL");
         String connectionId = Configuration.getGlobalConfiguration().get("MCP_PROJECT_CONNECTION_ID");
 
@@ -51,7 +50,7 @@ public class CustomCodeInterpreterAsync {
         McpTool customCodeInterpreter = new McpTool("custom-code-interpreter")
             .setServerUrl(mcpServerUrl)
             .setProjectConnectionId(connectionId)
-            .setRequireApproval(BinaryData.fromObject("never"));
+            .setRequireApproval("never");
 
         PromptAgentDefinition agentDefinition = new PromptAgentDefinition(model)
             .setInstructions("You are a helpful assistant that can run Python code to analyze data and solve problems.")

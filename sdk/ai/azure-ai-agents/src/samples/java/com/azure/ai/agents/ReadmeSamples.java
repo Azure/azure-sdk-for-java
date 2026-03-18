@@ -17,6 +17,7 @@ import com.openai.models.conversations.items.ItemCreateParams;
 import com.openai.models.responses.EasyInputMessage;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
+import com.openai.services.blocking.ConversationService;
 
 public final class ReadmeSamples {
     public void readmeSamples() {
@@ -27,7 +28,7 @@ public final class ReadmeSamples {
 
         AgentsClient agentsClient = builder.buildAgentsClient();
         ResponsesClient responsesClient = builder.buildResponsesClient();
-        ConversationsClient conversationsClient = builder.buildConversationsClient();
+        ConversationService conversationsClient = builder.buildOpenAIClient().conversations();
 
         // BEGIN: com.azure.ai.agents.create_prompt_agent
         PromptAgentDefinition promptAgentDefinition = new PromptAgentDefinition("gpt-4o");
@@ -35,11 +36,11 @@ public final class ReadmeSamples {
         // END: com.azure.ai.agents.create_prompt_agent
 
         // BEGIN: com.azure.ai.agents.create_conversation
-        Conversation conversation = conversationsClient.getConversationService().create();
+        Conversation conversation = conversationsClient.create();
         // END: com.azure.ai.agents.create_conversation
 
         // BEGIN: com.azure.ai.agents.add_message_to_conversation
-        conversationsClient.getConversationService().items().create(
+        conversationsClient.items().create(
             ItemCreateParams.builder()
                 .conversationId(conversation.id())
                 .addItem(EasyInputMessage.builder()

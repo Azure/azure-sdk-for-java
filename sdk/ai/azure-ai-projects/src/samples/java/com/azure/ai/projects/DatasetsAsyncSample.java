@@ -20,7 +20,7 @@ import java.nio.file.Path;
 public class DatasetsAsyncSample {
 
     private static DatasetsAsyncClient datasetsAsyncClient
-            = new AIProjectClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+            = new AIProjectClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT", "endpoint"))
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildDatasetsAsyncClient();
 

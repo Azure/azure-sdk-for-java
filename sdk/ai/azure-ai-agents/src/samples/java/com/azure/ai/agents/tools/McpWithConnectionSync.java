@@ -5,13 +5,11 @@ package com.azure.ai.agents.tools;
 
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.ConversationsClient;
 import com.azure.ai.agents.ResponsesClient;
 import com.azure.ai.agents.models.AgentReference;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.McpTool;
 import com.azure.ai.agents.models.PromptAgentDefinition;
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.openai.models.conversations.Conversation;
@@ -19,6 +17,7 @@ import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
 import com.openai.models.responses.ResponseInputItem;
 import com.openai.models.responses.ResponseOutputItem;
+import com.openai.services.blocking.ConversationService;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -34,7 +33,7 @@ import java.util.List;
  * <p>Before running the sample, set these environment variables:</p>
  * <ul>
  *   <li>FOUNDRY_PROJECT_ENDPOINT - The Azure AI Project endpoint.</li>
- *   <li>FOUNDRY_MODEL_DEPLOYMENT_NAME - The model deployment name.</li>
+ *   <li>FOUNDRY_MODEL_NAME - The model deployment name.</li>
  *   <li>MCP_PROJECT_CONNECTION_ID - The MCP project connection ID (Custom Keys connection
  *       with key "Authorization" and value "Bearer &lt;your GitHub PAT token&gt;").</li>
  * </ul>
@@ -42,7 +41,7 @@ import java.util.List;
 public class McpWithConnectionSync {
     public static void main(String[] args) {
         String endpoint = Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT");
-        String model = Configuration.getGlobalConfiguration().get("FOUNDRY_MODEL_DEPLOYMENT_NAME");
+        String model = Configuration.getGlobalConfiguration().get("FOUNDRY_MODEL_NAME");
         String mcpConnectionId = Configuration.getGlobalConfiguration().get("MCP_PROJECT_CONNECTION_ID");
 
         AgentsClientBuilder builder = new AgentsClientBuilder()
@@ -51,14 +50,14 @@ public class McpWithConnectionSync {
 
         AgentsClient agentsClient = builder.buildAgentsClient();
         ResponsesClient responsesClient = builder.buildResponsesClient();
-        ConversationsClient conversationsClient = builder.buildConversationsClient();
+        ConversationService conversationService = builder.buildOpenAIClient().conversations();
 
         // BEGIN: com.azure.ai.agents.define_mcp_with_connection
         // Create MCP tool with project connection authentication
         McpTool mcpTool = new McpTool("api-specs")
             .setServerUrl("https://api.githubcopilot.com/mcp")
             .setProjectConnectionId(mcpConnectionId)
-            .setRequireApproval(BinaryData.fromObject("always"));
+            .setRequireApproval("always");
         // END: com.azure.ai.agents.define_mcp_with_connection
 
         // Create agent with MCP tool
@@ -74,7 +73,7 @@ public class McpWithConnectionSync {
                 .setVersion(agent.getVersion());
 
             // Create a conversation for context
-            Conversation conversation = conversationsClient.getConversationService().create();
+            Conversation conversation = conversationService.create();
 
             // Send initial request that triggers the MCP tool
             Response response = responsesClient.createWithAgentConversation(
