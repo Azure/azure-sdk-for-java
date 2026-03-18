@@ -409,6 +409,13 @@ public class Configs {
     private static final boolean DEFAULT_CLIENT_LEAK_DETECTION_ENABLED = false;
     private static final String CLIENT_LEAK_DETECTION_ENABLED = "COSMOS.CLIENT_LEAK_DETECTION_ENABLED";
 
+    // Config for endpoint failover retry policy
+    // These can be overridden in tests to speed up NetworkFailureTest
+    private static final String CLIENT_ENDPOINT_FAILOVER_RETRY_INTERVAL_IN_MS = "COSMOS.CLIENT_ENDPOINT_FAILOVER_RETRY_INTERVAL_IN_MS";
+    private static final int DEFAULT_CLIENT_ENDPOINT_FAILOVER_RETRY_INTERVAL_IN_MS = 1000;
+    private static final String CLIENT_ENDPOINT_FAILOVER_MAX_RETRY_COUNT = "COSMOS.CLIENT_ENDPOINT_FAILOVER_MAX_RETRY_COUNT";
+    private static final int DEFAULT_CLIENT_ENDPOINT_FAILOVER_MAX_RETRY_COUNT = 120;
+
     private static final Object lockObject = new Object();
     private static Boolean cachedIsHostnameValidationDisabled = null;
 
@@ -548,6 +555,14 @@ public class Configs {
         }
 
         return DEFAULT_CLIENT_LEAK_DETECTION_ENABLED;
+    }
+
+    public static int getEndpointFailoverRetryIntervalInMs() {
+        return getJVMConfigAsInt(CLIENT_ENDPOINT_FAILOVER_RETRY_INTERVAL_IN_MS, DEFAULT_CLIENT_ENDPOINT_FAILOVER_RETRY_INTERVAL_IN_MS);
+    }
+
+    public static int getEndpointFailoverMaxRetryCount() {
+        return getJVMConfigAsInt(CLIENT_ENDPOINT_FAILOVER_MAX_RETRY_COUNT, DEFAULT_CLIENT_ENDPOINT_FAILOVER_MAX_RETRY_COUNT);
     }
 
     public int getUnavailableLocationsExpirationTimeInSeconds() {
