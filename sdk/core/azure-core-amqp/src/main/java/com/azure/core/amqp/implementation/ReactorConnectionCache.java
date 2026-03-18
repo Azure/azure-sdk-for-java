@@ -129,7 +129,7 @@ public final class ReactorConnectionCache<T extends ReactorConnection> implement
                 && targetId.equals(c.getId())
                 && forceInvalidateConnectionId.compareAndSet(targetId, null)) {
                 // forceCloseConnection() asked to invalidate exactly this connection.
-                withConnectionId(logger, c.getId()).log("The connection is closed, requesting a new connection.");
+                withConnectionId(logger, c.getId()).log("Forcing connection close, requesting a new connection.");
                 return true;
             }
             // No forced invalidation targeted this connection — emit it from cache.
