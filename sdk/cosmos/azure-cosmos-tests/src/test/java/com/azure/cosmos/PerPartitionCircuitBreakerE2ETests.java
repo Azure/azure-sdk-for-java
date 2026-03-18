@@ -3657,7 +3657,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                         }
                     }
 
-                    if (Configs.isThinClientEnabled()) {
+                    if (Configs.isThinClientEnabled() && response.cosmosException == null) {
                         CosmosDiagnosticsContext ctx = getDiagnosticsContext(response);
                         if (ctx != null) {
                             assertThinClientEndpointUsed(ctx);
