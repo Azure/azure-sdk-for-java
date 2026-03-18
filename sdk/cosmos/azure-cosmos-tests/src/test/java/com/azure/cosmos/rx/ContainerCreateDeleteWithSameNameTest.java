@@ -409,10 +409,10 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
                     .feedContainer(feedContainer)
                     .leaseContainer(leaseContainer)
                     .options(new ChangeFeedProcessorOptions()
-                        .setLeaseRenewInterval(Duration.ofSeconds(20))
-                        .setLeaseAcquireInterval(Duration.ofSeconds(10))
-                        .setLeaseExpirationInterval(Duration.ofSeconds(30))
-                        .setFeedPollDelay(Duration.ofSeconds(2))
+                        .setLeaseRenewInterval(Duration.ofSeconds(5))
+                        .setLeaseAcquireInterval(Duration.ofSeconds(2))
+                        .setLeaseExpirationInterval(Duration.ofSeconds(10))
+                        .setFeedPollDelay(Duration.ofMillis(500))
                         .setLeasePrefix("TEST")
                         .setMaxItemCount(10)
                         .setStartFromBeginning(true)
@@ -425,10 +425,14 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
                         .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
                         .subscribe();
 
-                    // Wait for the feed processor to receive and process the documents.
-                    Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
+                    // Poll until CFP is started instead of fixed sleep
+                    long deadline = System.currentTimeMillis() + 2 * CHANGE_FEED_PROCESSOR_TIMEOUT;
+                    while (System.currentTimeMillis() < deadline && !changeFeedProcessor.isStarted()) {
+                        Thread.sleep(200);
+                    }
                     assertThat(changeFeedProcessor.isStarted()).as("Change Feed Processor instance is running").isTrue();
 
+                    // Poll until all documents are received
                     long remainingWork = 2 * CHANGE_FEED_PROCESSOR_TIMEOUT;
                     while (remainingWork > 0 && receivedDocuments.size() < createdDocuments.size()) {
                         remainingWork -= 100;
@@ -441,10 +445,14 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
                 } finally {
                     changeFeedProcessor.stop().subscribeOn(Schedulers.boundedElastic()).timeout(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
 
-                    // Wait for the feed processor to shutdown.
+                    // Poll until CFP is stopped instead of fixed sleep
                     try {
-                        Thread.sleep(CHANGE_FEED_PROCESSOR_TIMEOUT);
+                        long stopDeadline = System.currentTimeMillis() + CHANGE_FEED_PROCESSOR_TIMEOUT;
+                        while (System.currentTimeMillis() < stopDeadline && changeFeedProcessor.isStarted()) {
+                            Thread.sleep(200);
+                        }
                     } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
                     }
                 }
 
