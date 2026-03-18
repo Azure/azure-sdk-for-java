@@ -307,4 +307,46 @@ public class RetryUtilTest {
         // Recovery called on each retry attempt (not the final one which terminates)
         assertEquals(maxRetries, recoveryCount.get(), "Recovery callback called once per non-terminal retry");
     }
+
+    /**
+     * A NONE-kind failure (server-busy) before the first LINK failure must not consume the
+     * quick-retry flag. The first LINK failure should still trigger the quick-retry optimization
+     * (no backoff delay). Prior to the T13 fix, {@code didQuickRetry.getAndSet(true)} was evaluated
+     * unconditionally; this test verifies the kind check comes first.
+     */
+    @Test
+    void createRetryWithRecovery_noneFailureBeforeLinkPreservesQuickRetry() {
+        // Arrange
+        final AmqpRetryOptions options = new AmqpRetryOptions().setMaxRetries(3).setDelay(Duration.ofMillis(100));
+        final List<RecoveryKind> recoveries = new ArrayList<>();
+        final Retry retry = RetryUtil.createRetryWithRecovery(options, recoveries::add);
+        final AtomicInteger attempt = new AtomicInteger();
+        final Mono<Integer> source = Mono.defer(() -> {
+            switch (attempt.getAndIncrement()) {
+                case 0:
+                    // NONE kind — server-busy; should not consume the quick-retry flag.
+                    return Mono.error(new AmqpException(true, AmqpErrorCondition.SERVER_BUSY_ERROR, "busy", null));
+
+                case 1:
+                    // LINK kind — first occurrence; flag must still be available → quick-retry fires.
+                    return Mono.error(new AmqpException(true, AmqpErrorCondition.LINK_DETACH_FORCED, "detach", null));
+
+                default:
+                    return Mono.just(99);
+            }
+        });
+
+        // Act & Assert — virtual time to skip the SERVER_BUSY backoff; LINK quick-retry fires without delay.
+        StepVerifier.withVirtualTime(() -> source.retryWhen(retry))
+            .expectSubscription()
+            .thenAwait(Duration.ofMinutes(1))
+            .expectNext(99)
+            .expectComplete()
+            .verify(Duration.ofSeconds(5));
+
+        // NONE failures do not invoke recovery; only LINK does.
+        assertEquals(1, recoveries.size(), "Only the LINK failure should invoke recovery");
+        assertEquals(RecoveryKind.LINK, recoveries.get(0),
+            "Recovery callback must be called with LINK kind for the detach error");
+    }
 }

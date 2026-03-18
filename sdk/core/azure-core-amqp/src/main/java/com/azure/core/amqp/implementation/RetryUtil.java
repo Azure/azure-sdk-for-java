@@ -215,7 +215,9 @@ public final class RetryUtil {
             // errors — similar to the Go SDK's didQuickRetry pattern. Unlike Go's ResetAttempts(),
             // the attempt counter is not reset here; subsequent retries continue with standard
             // exponential backoff from the current attempt count.
-            if (!didQuickRetry.getAndSet(true) && (kind == RecoveryKind.LINK || kind == RecoveryKind.CONNECTION)) {
+            // The kind check must come first: short-circuit evaluation prevents consuming the
+            // flag on NONE/FATAL failures where no quick-retry should be issued.
+            if ((kind == RecoveryKind.LINK || kind == RecoveryKind.CONNECTION) && !didQuickRetry.getAndSet(true)) {
                 LOGGER.atInfo().log("Quick retry after {} recovery (first occurrence).", kind);
                 return Mono.just(attempt);
             }
