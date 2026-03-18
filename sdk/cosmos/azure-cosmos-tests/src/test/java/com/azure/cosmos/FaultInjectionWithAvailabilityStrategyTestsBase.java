@@ -4902,8 +4902,16 @@ public abstract class FaultInjectionWithAvailabilityStrategyTestsBase extends Te
         for (boolean e2eTimeoutPolicyOnClient : Arrays.asList(Boolean.TRUE, Boolean.FALSE)) {
             logger.info("START {}, e2eTimeoutPolicyOnClient {}", testCaseId, e2eTimeoutPolicyOnClient);
 
+            // Thin client adds ~500ms overhead for container + partition key range cache lookups
+            // through the RNTBD-encoded thin client proxy path. Increase e2e timeout to avoid
+            // spurious 408 (OperationCancelled) failures with tight timeouts.
+            Duration effectiveEndToEndTimeout = endToEndTimeout;
+            if (Configs.isThinClientEnabled() && Configs.isHttp2Enabled() && endToEndTimeout != null) {
+                effectiveEndToEndTimeout = endToEndTimeout.plusMillis(500);
+            }
+
             CosmosEndToEndOperationLatencyPolicyConfigBuilder e2ePolicyBuilder =
-                new CosmosEndToEndOperationLatencyPolicyConfigBuilder(endToEndTimeout)
+                new CosmosEndToEndOperationLatencyPolicyConfigBuilder(effectiveEndToEndTimeout)
                     .enable(true);
             CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig =
                 availabilityStrategy != null
