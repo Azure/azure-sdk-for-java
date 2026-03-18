@@ -184,4 +184,24 @@ class RecoveryKindTest {
             = new AmqpException(true, AmqpErrorCondition.RESOURCE_LIMIT_EXCEEDED, "resource limit", null);
         assertEquals(RecoveryKind.NONE, RecoveryKind.classify(error));
     }
+
+    @Test
+    void illegalStateExceptionDisposedMessageReturnsLink() {
+        // Matches ReactorSender.send() message: "connectionId[%s] linkName[%s] Cannot publish message when disposed."
+        assertEquals(RecoveryKind.LINK, RecoveryKind.classify(
+            new IllegalStateException("connectionId[abc] linkName[xyz] Cannot publish message when disposed.")));
+    }
+
+    @Test
+    void illegalStateExceptionDisposedDataBatchReturnsLink() {
+        // Matches ReactorSender.send(List) message: "connectionId[%s] linkName[%s] Cannot publish data batch when disposed."
+        assertEquals(RecoveryKind.LINK, RecoveryKind.classify(
+            new IllegalStateException("connectionId[abc] linkName[xyz] Cannot publish data batch when disposed.")));
+    }
+
+    @Test
+    void illegalStateExceptionUnrelatedToDisposedReturnsFatal() {
+        // Non-disposed IllegalStateException must remain FATAL (genuine application or SDK bug).
+        assertEquals(RecoveryKind.FATAL, RecoveryKind.classify(new IllegalStateException("some unexpected state")));
+    }
 }

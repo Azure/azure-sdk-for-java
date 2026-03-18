@@ -141,6 +141,18 @@ public enum RecoveryKind {
             return LINK;
         }
 
+        // IllegalStateException thrown by a disposed ReactorSender (e.g., "Cannot publish
+        // message when disposed." or "Cannot publish data batch when disposed."). This is
+        // a link-staleness signal: the link was closed (possibly by a concurrent recovery
+        // path) before the in-flight send could complete. LINK recovery creates a fresh
+        // link on the next retry.
+        if (error instanceof IllegalStateException) {
+            final String msg = error.getMessage();
+            if (msg != null && msg.contains("disposed")) {
+                return LINK;
+            }
+        }
+
         // Unknown non-AMQP errors — treat as fatal (don't retry application or SDK bugs).
         // The Go SDK defaults to CONNECTION for unknown errors, but those are AMQP-layer
         // errors (io.EOF, net.Error). Java's non-AMQP exceptions (e.g., AzureException,
