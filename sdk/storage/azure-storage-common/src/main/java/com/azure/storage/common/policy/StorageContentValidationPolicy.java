@@ -8,11 +8,13 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.util.FluxUtil;
 import com.azure.storage.common.implementation.contentvalidation.StorageCrc64Calculator;
 import com.azure.storage.common.implementation.contentvalidation.StructuredMessageEncoder;
 import com.azure.storage.common.implementation.contentvalidation.StructuredMessageFlags;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.nio.ByteBuffer;
 import java.util.Base64;
@@ -40,52 +42,70 @@ public class StorageContentValidationPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        applyContentValidation(context);
-        return next.process();
+        return applyContentValidation(context).then(next.process());
     }
 
     /**
      * Applies content validation to the request body.
      *
      * @param context the HTTP pipeline call context
+     * @return a {@link Mono} that completes when content validation has been applied to the request body.
      */
-    private void applyContentValidation(HttpPipelineCallContext context) {
+    private Mono<Void> applyContentValidation(HttpPipelineCallContext context) {
         Optional<Object> behaviorOptional = context.getContext().getData(CONTENT_VALIDATION_BEHAVIOR_KEY);
         if (!behaviorOptional.isPresent()) {
-            return;
+            return Mono.empty();
         }
 
         String contentValidationBehavior = behaviorOptional.get().toString();
         if (contentValidationBehavior.isEmpty()) {
-            return;
+            return Mono.empty();
         }
 
+        Mono<Void> validation = Mono.empty();
+
         if (contentValidationBehavior.contains(USE_CRC64_CHECKSUM_HEADER_CONTEXT)) {
-            applyCRC64Header(context);
+            validation = validation.then(applyCRC64Header(context));
         }
         if (contentValidationBehavior.contains(USE_STRUCTURED_MESSAGE_CONTEXT)) {
-            applyStructuredMessage(context);
+            validation = validation.then(applyStructuredMessage(context));
         }
+
+        return validation;
     }
 
     /**
      * Applies the crc64 header to the request body.
      *
      * @param context the HTTP pipeline call context
+     * @return a {@link Mono} that completes when the crc64 header has been applied to the request body.
      */
-    private void applyCRC64Header(HttpPipelineCallContext context) {
-        // Implementation for setting the crc64 header
-        long contentCRC64 = StorageCrc64Calculator.compute(context.getHttpRequest().getBodyAsBinaryData().toBytes(), 0);
-
-        // Convert the 64-bit CRC value to 8 bytes in little-endian format
-        byte[] crc64Bytes = new byte[8];
-        for (int i = 0; i < 8; i++) {
-            crc64Bytes[i] = (byte) (contentCRC64 >>> (i * 8));
+    private Mono<Void> applyCRC64Header(HttpPipelineCallContext context) {
+        if (context.getHttpRequest().getBody() == null) {
+            return Mono.empty();
         }
 
-        // Base64 encode the binary representation
-        String encodedCRC64 = Base64.getEncoder().encodeToString(crc64Bytes);
-        context.getHttpRequest().setHeader(CONTENT_CRC64_HEADER_NAME, encodedCRC64);
+        // Collect request body bytes once, compute CRC64 off the reactive thread, and then restore the body
+        // as a replayable Flux so downstream processing / sending still sees the expected content.
+        Flux<ByteBuffer> originalBody = context.getHttpRequest().getBody();
+        return FluxUtil.collectBytesInByteBufferStream(originalBody)
+            .flatMap(originalBytes -> Mono.fromCallable(() -> StorageCrc64Calculator.compute(originalBytes, 0))
+                .subscribeOn(Schedulers.boundedElastic())
+                .doOnNext(contentCRC64 -> {
+                    // Restore body for downstream consumers.
+                    context.getHttpRequest().setBody(Flux.just(ByteBuffer.wrap(originalBytes)));
+
+                    // Convert the 64-bit CRC value to 8 bytes in little-endian format.
+                    byte[] crc64Bytes = new byte[8];
+                    for (int i = 0; i < 8; i++) {
+                        crc64Bytes[i] = (byte) (contentCRC64 >>> (i * 8));
+                    }
+
+                    // Base64 encode the binary representation.
+                    String encodedCRC64 = Base64.getEncoder().encodeToString(crc64Bytes);
+                    context.getHttpRequest().setHeader(CONTENT_CRC64_HEADER_NAME, encodedCRC64);
+                })
+                .then());
     }
 
     /**
@@ -93,7 +113,7 @@ public class StorageContentValidationPolicy implements HttpPipelinePolicy {
      *
      * @param context the HTTP pipeline call context
      */
-    private void applyStructuredMessage(HttpPipelineCallContext context) {
+    private Mono<Void> applyStructuredMessage(HttpPipelineCallContext context) {
         int unencodedContentLength
             = Integer.parseInt(context.getHttpRequest().getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH));
         Flux<ByteBuffer> originalBody = context.getHttpRequest().getBody();
@@ -123,6 +143,8 @@ public class StorageContentValidationPolicy implements HttpPipelinePolicy {
         context.getHttpRequest().setHeader(STRUCTURED_BODY_TYPE_HEADER_NAME, STRUCTURED_BODY_TYPE_VALUE);
         context.getHttpRequest()
             .setHeader(STRUCTURED_CONTENT_LENGTH_HEADER_NAME, String.valueOf(unencodedContentLength));
+
+        return Mono.empty();
     }
 
 }
