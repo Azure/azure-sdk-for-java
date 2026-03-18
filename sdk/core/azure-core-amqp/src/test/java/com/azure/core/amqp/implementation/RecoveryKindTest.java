@@ -204,4 +204,12 @@ class RecoveryKindTest {
         // Non-disposed IllegalStateException must remain FATAL (genuine application or SDK bug).
         assertEquals(RecoveryKind.FATAL, RecoveryKind.classify(new IllegalStateException("some unexpected state")));
     }
+
+    @Test
+    void illegalStateExceptionConnectionDisposedReturnsFatal() {
+        // "Connection is disposed. Cannot get management instance." contains "disposed" but NOT
+        // "Cannot publish" — must remain FATAL to avoid misclassifying connection-level disposal.
+        assertEquals(RecoveryKind.FATAL, RecoveryKind
+            .classify(new IllegalStateException("Connection is disposed. Cannot get management instance.")));
+    }
 }

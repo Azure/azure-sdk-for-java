@@ -146,9 +146,11 @@ public enum RecoveryKind {
         // a link-staleness signal: the link was closed (possibly by a concurrent recovery
         // path) before the in-flight send could complete. LINK recovery creates a fresh
         // link on the next retry.
+        // Match both "Cannot publish" and "disposed" to avoid misclassifying unrelated
+        // disposal signals (e.g., "Connection is disposed. Cannot get management instance.").
         if (error instanceof IllegalStateException) {
             final String msg = error.getMessage();
-            if (msg != null && msg.contains("disposed")) {
+            if (msg != null && msg.contains("Cannot publish") && msg.contains("disposed")) {
                 return LINK;
             }
         }
