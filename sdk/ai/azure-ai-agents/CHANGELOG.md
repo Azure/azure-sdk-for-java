@@ -17,6 +17,10 @@
   - `createStreamingWithAgent` and `createStreamingWithAgentConversation` on `ResponsesAsyncClient` return `Flux<ResponseStreamEvent>` for asynchronous streaming.
 - Added `StreamingUtils` implementation helper that bridges OpenAI `StreamResponse` to `IterableStream` and `AsyncStreamResponse` to `Flux`.
 - Added streaming samples: `SimpleStreamingSync`/`SimpleStreamingAsync`, `FunctionCallStreamingSync`/`FunctionCallStreamingAsync`, and `CodeInterpreterStreamingSync`/`CodeInterpreterStreamingAsync`.
+- Added structured input convenience methods to `ResponsesClient` and `ResponsesAsyncClient` for creating responses with agent-defined template parameters:
+  - `createWithAgentStructuredInput` accepts a `Map<String, Object>` of runtime values that are substituted into the agent's prompt template.
+  - `createStreamingWithAgentStructuredInput` provides the streaming equivalent, returning `IterableStream<ResponseStreamEvent>` (sync) or `Flux<ResponseStreamEvent>` (async).
+- Added `CreateResponseWithStructuredInput` sample demonstrating how to define structured inputs on an agent and pass runtime values when creating a response.
 
 ### Breaking Changes
 
@@ -34,6 +38,7 @@
 
 - Added `ToolsTests` and `ToolsAsyncTests` with recorded end-to-end test coverage for OpenAPI, Code Interpreter, Function Call, Web Search, MCP, and File Search tools.
 - Added `StreamingTests` and `StreamingAsyncTests` with recorded test coverage for streaming responses (simple prompt, function calling, and Code Interpreter scenarios).
+- Added structured input test coverage to `AgentsTests`, `AgentsAsyncTests`, `StreamingTests`, and `StreamingAsyncTests`.
 
 ## 2.0.0-beta.2 (2026-03-04)
 
