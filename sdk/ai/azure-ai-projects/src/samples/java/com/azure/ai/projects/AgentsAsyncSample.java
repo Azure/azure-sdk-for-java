@@ -13,8 +13,8 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 public class AgentsAsyncSample {
 
     public static void main(String[] args) {
-        String endpoint = Configuration.getGlobalConfiguration().get("AZURE_AGENTS_ENDPOINT");
-        String model = Configuration.getGlobalConfiguration().get("AZURE_AGENT_MODEL");
+        String endpoint = Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT");
+        String model = Configuration.getGlobalConfiguration().get("FOUNDRY_MODEL_NAME");
 
         AgentsAsyncClient agentsClient = new AgentsClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())

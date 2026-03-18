@@ -205,12 +205,18 @@ public class BenchmarkOrchestrator {
             for (int cycle = 1; cycle <= totalCycles; cycle++) {
                 logger.info("[LIFECYCLE] CYCLE_START cycle={} timestamp={}", cycle, Instant.now());
 
-                // 1. Create clients
+                // 1. Capture baseline CPU before benchmark creation (which includes data ingestion)
+                double baselineCpu = CpuMonitor.captureProcessCpuLoad();
+
+                // 2. Create clients (constructors perform data ingestion)
                 List<Benchmark> benchmarks = createBenchmarks(config, benchmarkScheduler);
                 logger.info("[LIFECYCLE] POST_CREATE cycle={} clients={} timestamp={}",
                     cycle, benchmarks.size(), Instant.now());
 
-                // 2. Run workload in parallel
+                // 3. Cool-down: wait for CPU to settle after data ingestion before measuring workload
+                CpuMonitor.awaitCoolDown(baselineCpu);
+
+                // 4. Run workload in parallel
                 runWorkload(benchmarks, cycle, executor);
                 logger.info("[LIFECYCLE] POST_WORKLOAD cycle={} timestamp={}", cycle, Instant.now());
 
@@ -323,10 +329,8 @@ public class BenchmarkOrchestrator {
         if (cfg.isSync()) {
             switch (cfg.getOperationType()) {
                 case ReadThroughput:
-                case ReadLatency:
                     return new SyncReadBenchmark(cfg);
                 case WriteThroughput:
-                case WriteLatency:
                     return new SyncWriteBenchmark(cfg);
                 default:
                     throw new IllegalArgumentException(
@@ -346,10 +350,8 @@ public class BenchmarkOrchestrator {
         if (cfg.isEncryptionEnabled()) {
             switch (cfg.getOperationType()) {
                 case WriteThroughput:
-                case WriteLatency:
                     return new AsyncEncryptionWriteBenchmark(cfg, scheduler);
                 case ReadThroughput:
-                case ReadLatency:
                     return new AsyncEncryptionReadBenchmark(cfg, scheduler);
                 case QueryCross:
                 case QuerySingle:
@@ -369,10 +371,8 @@ public class BenchmarkOrchestrator {
         // Default: async benchmarks
         switch (cfg.getOperationType()) {
             case ReadThroughput:
-            case ReadLatency:
                 return new AsyncReadBenchmark(cfg, scheduler);
             case WriteThroughput:
-            case WriteLatency:
                 return new AsyncWriteBenchmark(cfg, scheduler);
             case QueryCross:
             case QuerySingle:
@@ -384,7 +384,6 @@ public class BenchmarkOrchestrator {
             case QueryInClauseParallel:
             case ReadAllItemsOfLogicalPartition:
                 return new AsyncQueryBenchmark(cfg, scheduler);
-            case ReadManyLatency:
             case ReadManyThroughput:
                 return new AsyncReadManyBenchmark(cfg, scheduler);
             case Mixed:
