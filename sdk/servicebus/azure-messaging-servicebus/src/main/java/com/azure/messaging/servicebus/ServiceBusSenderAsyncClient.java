@@ -897,26 +897,24 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
                 new IllegalStateException(String.format(INVALID_OPERATION_DISPOSED_SENDER, "sendMessage")));
         }
 
-        final Mono<List<ServiceBusMessageBatch>> batchList = getSendLink("send-batches").flatMap(link -> {
-            lastSendLink.set(link);
-            return link.getLinkSize().flatMap(size -> {
+        // Apply retry+recovery only to link acquisition. Keeping messages.collect() outside the
+        // retry boundary avoids re-subscribing the user-provided Flux on each retry attempt,
+        // which could duplicate side-effects or re-consume a hot publisher.
+        final Mono<AmqpSendLink> linkWithRecovery
+            = RetryUtil.withRetryAndRecovery(getSendLink("send-batches").doOnNext(link -> lastSendLink.set(link)),
+                retryOptions, "Failed to acquire send link for batch collection." + entityId(),
+                recoveryKind -> performRecovery(recoveryKind, "sendFlux-link"));
+
+        final Mono<List<ServiceBusMessageBatch>> batchListMono
+            = linkWithRecovery.flatMap(link -> link.getLinkSize().flatMap(size -> {
                 final int batchSize = size > 0 ? size : MAX_MESSAGE_LENGTH_BYTES;
                 final CreateMessageBatchOptions batchOptions
                     = new CreateMessageBatchOptions().setMaximumSizeInBytes(batchSize);
                 return messages.collect(
                     new AmqpMessageCollector(isV2, batchOptions, 1, link::getErrorContext, tracer, messageSerializer));
-            });
-        });
+            }));
 
-        // Wrap only the link-acquisition+batch-collection phase with retry+recovery.
-        // Individual batch sends are already retried inside sendBatchInternal, so wrapping the
-        // entire sendOperation (which includes messages.collect()) would cause the user-provided
-        // Flux to be re-subscribed on each retry and could duplicate batches that already sent.
-        final Mono<List<ServiceBusMessageBatch>> batchListWithRecovery = RetryUtil.withRetryAndRecovery(batchList,
-            retryOptions, "Failed to acquire send link for batch collection." + entityId(),
-            recoveryKind -> performRecovery(recoveryKind, "sendFlux-link"));
-
-        final Mono<Void> sendOperation = batchListWithRecovery.flatMap(list -> Flux.fromIterable(list)
+        final Mono<Void> sendOperation = batchListMono.flatMap(list -> Flux.fromIterable(list)
             .flatMap(batch -> sendBatchInternal(batch, transactionContext))
             .then()
             .doOnError(error -> logger.error("Error sending batch.", error)));

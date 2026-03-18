@@ -173,8 +173,15 @@ class RecoveryKindTest {
     }
 
     @Test
-    void operationCancelledReturnsNone() {
+    void operationCancelledReturnsLink() {
         final AmqpException error = new AmqpException(true, AmqpErrorCondition.OPERATION_CANCELLED, "cancelled", null);
+        assertEquals(RecoveryKind.LINK, RecoveryKind.classify(error));
+    }
+
+    @Test
+    void resourceLimitExceededReturnsNone() {
+        final AmqpException error
+            = new AmqpException(true, AmqpErrorCondition.RESOURCE_LIMIT_EXCEEDED, "resource limit", null);
         assertEquals(RecoveryKind.NONE, RecoveryKind.classify(error));
     }
 }

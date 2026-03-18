@@ -144,6 +144,7 @@ final class ServiceBusSessionAcquirer {
                             .addKeyValue(ENTITY_PATH_KEY, entityPath)
                             .log("Connection-level error acquiring session, forcing connection recovery.", t);
                         connectionCacheWrapper.forceCloseConnection();
+                        return Mono.delay(Duration.ZERO);
                     }
                     if (isTimeoutError(t)) {
                         logger.atVerbose()

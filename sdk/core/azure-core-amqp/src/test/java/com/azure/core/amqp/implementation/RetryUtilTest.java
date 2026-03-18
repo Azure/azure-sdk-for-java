@@ -9,6 +9,7 @@ import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ExponentialAmqpRetryPolicy;
 import com.azure.core.amqp.FixedAmqpRetryPolicy;
+import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import org.junit.jupiter.api.Assertions;
@@ -24,9 +25,12 @@ import reactor.util.retry.Retry;
 import reactor.util.retry.RetryBackoffSpec;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -202,5 +206,105 @@ public class RetryUtilTest {
 
         // Assert
         assertEquals(expected, actual);
+    }
+
+    // ---- createRetryWithRecovery tests ----
+
+    /**
+     * FATAL errors must not be retried and must not invoke the recovery callback.
+     */
+    @Test
+    void createRetryWithRecovery_fatalErrorTerminatesImmediately() {
+        // Arrange
+        final AmqpRetryOptions options = new AmqpRetryOptions().setMaxRetries(3).setDelay(Duration.ofMillis(100));
+        final AtomicInteger recoveryCount = new AtomicInteger();
+        final Retry retry = RetryUtil.createRetryWithRecovery(options, kind -> recoveryCount.incrementAndGet());
+        final AmqpException fatalError = new AmqpException(false, AmqpErrorCondition.NOT_FOUND, "not found", null);
+
+        // Act & Assert
+        StepVerifier.create(Mono.<Integer>error(fatalError).retryWhen(retry))
+            .expectErrorSatisfies(e -> assertEquals(fatalError, e))
+            .verify(Duration.ofSeconds(5));
+
+        assertEquals(0, recoveryCount.get(), "Recovery callback must not be called for FATAL errors");
+    }
+
+    /**
+     * LINK errors must invoke the recovery callback and retry. The first occurrence uses
+     * the quick-retry path (no backoff delay).
+     */
+    @Test
+    void createRetryWithRecovery_linkErrorInvokesRecoveryAndRetries() {
+        // Arrange
+        final AmqpRetryOptions options = new AmqpRetryOptions().setMaxRetries(3).setDelay(Duration.ofMillis(100));
+        final List<RecoveryKind> recoveries = new ArrayList<>();
+        final Retry retry = RetryUtil.createRetryWithRecovery(options, recoveries::add);
+        final AtomicInteger attempt = new AtomicInteger();
+        final Mono<Integer> source = Mono.defer(() -> {
+            if (attempt.getAndIncrement() < 2) {
+                return Mono.error(new AmqpException(true, AmqpErrorCondition.LINK_DETACH_FORCED, "detach", null));
+            }
+            return Mono.just(42);
+        });
+
+        // Act & Assert — use virtual time because the second retry applies a SERVER_BUSY backoff delay.
+        StepVerifier.withVirtualTime(() -> source.retryWhen(retry))
+            .expectSubscription()
+            .thenAwait(Duration.ofMinutes(1))
+            .expectNext(42)
+            .expectComplete()
+            .verify(Duration.ofSeconds(5));
+
+        assertEquals(2, recoveries.size(), "Recovery callback called once per LINK error");
+        assertTrue(recoveries.stream().allMatch(k -> k == RecoveryKind.LINK));
+    }
+
+    /**
+     * CONNECTION errors must invoke the recovery callback with CONNECTION kind.
+     */
+    @Test
+    void createRetryWithRecovery_connectionErrorInvokesRecovery() {
+        // Arrange
+        final AmqpRetryOptions options = new AmqpRetryOptions().setMaxRetries(2).setDelay(Duration.ofMillis(100));
+        final AtomicReference<RecoveryKind> capturedKind = new AtomicReference<>();
+        final Retry retry = RetryUtil.createRetryWithRecovery(options, capturedKind::set);
+        final AtomicInteger attempt = new AtomicInteger();
+        final Mono<Integer> source = Mono.defer(() -> {
+            if (attempt.getAndIncrement() == 0) {
+                return Mono.error(new AmqpException(true, AmqpErrorCondition.CONNECTION_FORCED, "forced", null));
+            }
+            return Mono.just(1);
+        });
+
+        // Act & Assert
+        StepVerifier.create(source.retryWhen(retry)).expectNext(1).expectComplete().verify(Duration.ofSeconds(5));
+
+        assertEquals(RecoveryKind.CONNECTION, capturedKind.get(),
+            "Recovery callback must receive CONNECTION kind for connection errors");
+    }
+
+    /**
+     * After the retry budget is exhausted the error must propagate without further retries.
+     */
+    @Test
+    void createRetryWithRecovery_exhaustedRetriesTerminateWithError() {
+        // Arrange
+        final int maxRetries = 2;
+        final AmqpRetryOptions options
+            = new AmqpRetryOptions().setMaxRetries(maxRetries).setDelay(Duration.ofMillis(10));
+        final AtomicInteger recoveryCount = new AtomicInteger();
+        final Retry retry = RetryUtil.createRetryWithRecovery(options, kind -> recoveryCount.incrementAndGet());
+        final AmqpException transientError
+            = new AmqpException(true, AmqpErrorCondition.LINK_DETACH_FORCED, "detach", null);
+
+        // Act & Assert — use virtual time because the second retry applies a SERVER_BUSY backoff delay.
+        StepVerifier.withVirtualTime(() -> Mono.<Integer>error(transientError).retryWhen(retry))
+            .expectSubscription()
+            .thenAwait(Duration.ofMinutes(1))
+            .expectError(AmqpException.class)
+            .verify(Duration.ofSeconds(5));
+
+        // Recovery called on each retry attempt (not the final one which terminates)
+        assertEquals(maxRetries, recoveryCount.get(), "Recovery callback called once per non-terminal retry");
     }
 }

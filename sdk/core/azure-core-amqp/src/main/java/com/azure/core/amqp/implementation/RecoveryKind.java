@@ -23,7 +23,7 @@ import java.util.concurrent.TimeoutException;
 public enum RecoveryKind {
     /**
      * No recovery needed — retry on the same link and connection.
-     * Applies to: server-busy, timeouts, operation-cancelled.
+     * Applies to: server-busy, timeouts, resource-limit-exceeded.
      */
     NONE,
 
@@ -84,13 +84,15 @@ public enum RecoveryKind {
                     case LINK_REDIRECT:
                     case PARTITION_NOT_OWNED_ERROR:
                     case TRANSFER_LIMIT_EXCEEDED:
+                        // operation-cancelled can signal "AMQP layer unexpectedly aborted or disconnected"
+                        // (e.g. ReceiverUnsettledDeliveries remote Released outcome), requiring link recovery.
+                    case OPERATION_CANCELLED:
                         return LINK;
 
                     // Fatal errors — do not retry.
                     case NOT_FOUND:
                     case UNAUTHORIZED_ACCESS:
                     case LINK_PAYLOAD_SIZE_EXCEEDED:
-                    case RESOURCE_LIMIT_EXCEEDED:
                     case NOT_ALLOWED:
                     case NOT_IMPLEMENTED:
                     case ENTITY_DISABLED_ERROR:
@@ -103,10 +105,12 @@ public enum RecoveryKind {
                     case STORE_LOCK_LOST_ERROR:
                         return FATAL;
 
-                    // Server-busy and timeouts — retry on same link.
+                    // Server-busy, timeouts, and resource-limit errors — retry on same link.
+                    // RESOURCE_LIMIT_EXCEEDED is treated as transient here because ReactorSender
+                    // groups it alongside SERVER_BUSY and TIMEOUT in its send-error retry logic.
                     case SERVER_BUSY_ERROR:
                     case TIMEOUT_ERROR:
-                    case OPERATION_CANCELLED:
+                    case RESOURCE_LIMIT_EXCEEDED:
                         return NONE;
 
                     // Session/lock errors — link-level recovery.

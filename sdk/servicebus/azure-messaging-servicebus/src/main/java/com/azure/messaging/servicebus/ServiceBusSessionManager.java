@@ -304,8 +304,8 @@ class ServiceBusSessionManager implements AutoCloseable, IServiceBusSessionManag
                 } else if (failure instanceof AmqpException
                     && ((AmqpException) failure).getErrorCondition() == AmqpErrorCondition.TIMEOUT_ERROR) {
                     return Mono.delay(Duration.ZERO);
-                } else if (kind == RecoveryKind.LINK) {
-                    // Link-level error — retry to get a fresh link.
+                } else if (kind == RecoveryKind.LINK || kind == RecoveryKind.CONNECTION) {
+                    // Link or connection-level error — retry to acquire a fresh link (or connection).
                     return Mono.delay(Duration.ZERO);
                 } else {
                     final long id = System.nanoTime();
