@@ -62,11 +62,11 @@ public enum CertificateServiceVersion implements ServiceVersion {
     }
 
     /**
-     * Gets the latest service version supported by this client library.
+     * Gets the latest stable (non-preview) service version supported by this client library.
      *
-     * @return The latest {@link CertificateServiceVersion}.
+     * @return The latest stable {@link CertificateServiceVersion}.
      */
     public static CertificateServiceVersion getLatest() {
-        return V7_6;
+        return V2025_07_01;
     }
 }
