@@ -43,7 +43,7 @@ public final class StructuredMessageConstants {
     public static final int MAXIMUM_SINGLE_PART_UPLOAD_SIZE_TO_USE_CRC64_HEADER = 4 * 1024 * 1024; // 4 MiB
 
     /**
-     * The header name for the CRC64 checksum.
+     * The structured body type header value indicating version 1 with CRC64 properties.
      */
     public static final String STRUCTURED_BODY_TYPE_VALUE = "XSM/1.0; properties=crc64";
 

@@ -99,12 +99,12 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
     /**
      * Indicates the number of bytes in a page.
      */
-    static final int PAGE_BYTES = BlobConstants.PAGE_BYTES;
+    public static final int PAGE_BYTES = BlobConstants.PAGE_BYTES;
 
     /**
      * Indicates the maximum number of bytes that may be sent in a call to putPage.
      */
-    static final int MAX_PUT_PAGES_BYTES = BlobConstants.MAX_PUT_PAGES_BYTES;
+    public static final int MAX_PUT_PAGES_BYTES = BlobConstants.MAX_PUT_PAGES_BYTES;
 
     private static final ClientLogger LOGGER = new ClientLogger(PageBlobAsyncClient.class);
 

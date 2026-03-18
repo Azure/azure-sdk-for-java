@@ -5,8 +5,6 @@ package com.azure.storage.common.implementation.contentvalidation;
 
 import org.junit.jupiter.api.Test;
 
-import com.azure.storage.common.implementation.contentvalidation.StructuredMessageFlags;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;

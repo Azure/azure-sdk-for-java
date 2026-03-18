@@ -72,8 +72,8 @@ public final class ContentValidationBehaviorUtil {
      *
      * @param contentMd5 The MD5 hash (when provided) for the request.
      * @param requestChecksumAlgorithm The request checksum algorithm (when provided) for the request.
-     * @return An {@link IllegalArgumentException} describing the conflict, or {@code null} if validation should
-     * proceed.
+     * @return {@code true} if both {@code contentMd5} and a non-{@link StorageChecksumAlgorithm#NONE}
+     * {@code requestChecksumAlgorithm} are specified, otherwise {@code false}.
      */
     public static boolean hasConflictingTransactionalContentValidation(byte[] contentMd5,
         StorageChecksumAlgorithm requestChecksumAlgorithm) {
