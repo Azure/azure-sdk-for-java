@@ -16,6 +16,7 @@ import reactor.util.retry.RetryBackoffSpec;
 
 import java.time.Duration;
 import java.util.Locale;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
@@ -225,7 +226,7 @@ public final class RetryUtil {
                 long millis = baseDelay.toMillis() * (1L << Math.min(attempt, 30));
                 delay = Duration.ofMillis(Math.min(millis, maxDelay.toMillis()));
             }
-            final double jitter = 1.0 + (Math.random() * 2 - 1) * JITTER_FACTOR;
+            final double jitter = 1.0 + (ThreadLocalRandom.current().nextDouble() * 2 - 1) * JITTER_FACTOR;
             final Duration jitteredDelay = Duration.ofMillis((long) (delay.toMillis() * jitter));
 
             return Mono.delay(jitteredDelay).thenReturn(attempt);

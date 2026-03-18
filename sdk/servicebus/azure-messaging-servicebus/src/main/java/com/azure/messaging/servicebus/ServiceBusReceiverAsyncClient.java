@@ -1749,7 +1749,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                         // For LINK errors during link creation, the session hosting the link may be stale.
                         // Ask the connection to remove it so the next retry creates a fresh session + link.
                         // The entityPath is the session name used by createReceiveLink().
-                        connectionProcessor.subscribe(connection -> connection.removeSession(entityPath));
+                        connectionProcessor.subscribe(connection -> connection.removeSession(entityPath),
+                            error -> LOGGER.atWarning()
+                                .addKeyValue(LINK_NAME_KEY, linkName)
+                                .log("Error removing stale session during LINK recovery.", error));
                     }
                     if (recoveryKind == RecoveryKind.CONNECTION) {
                         connectionCacheWrapper.forceCloseConnection();

@@ -815,18 +815,21 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
             return monoError(logger, new NullPointerException("'scheduledEnqueueTime' cannot be null."));
         }
 
-        return tracer.traceScheduleMono("ServiceBus.scheduleMessage", getSendLink("schedule-message").flatMap(link -> {
-            lastSendLink.set(link);
-            return link.getLinkSize().flatMap(size -> {
-                final int maxSize = size > 0 ? size : MAX_MESSAGE_LENGTH_BYTES;
-                return connectionProcessor.flatMap(connection -> connection.getManagementNode(entityName, entityType))
-                    .flatMap(
-                        managementNode -> managementNode
-                            .schedule(Arrays.asList(message), scheduledEnqueueTime, maxSize, link.getLinkName(),
-                                transactionContext)
-                            .next());
-            });
-        }), message, message.getContext()).onErrorMap(this::mapError);
+        return tracer
+            .traceScheduleMono("ServiceBus.scheduleMessage", getSendLinkWithRetry("schedule-message").flatMap(link -> {
+                lastSendLink.set(link);
+                return link.getLinkSize().flatMap(size -> {
+                    final int maxSize = size > 0 ? size : MAX_MESSAGE_LENGTH_BYTES;
+                    return connectionProcessor
+                        .flatMap(connection -> connection.getManagementNode(entityName, entityType))
+                        .flatMap(
+                            managementNode -> managementNode
+                                .schedule(Arrays.asList(message), scheduledEnqueueTime, maxSize, link.getLinkName(),
+                                    transactionContext)
+                                .next());
+                });
+            }), message, message.getContext())
+            .onErrorMap(this::mapError);
     }
 
     /**
@@ -905,15 +908,20 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
             });
         });
 
-        final Mono<Void> sendOperation = batchList.flatMap(list -> Flux.fromIterable(list)
+        // Wrap only the link-acquisition+batch-collection phase with retry+recovery.
+        // Individual batch sends are already retried inside sendBatchInternal, so wrapping the
+        // entire sendOperation (which includes messages.collect()) would cause the user-provided
+        // Flux to be re-subscribed on each retry and could duplicate batches that already sent.
+        final Mono<List<ServiceBusMessageBatch>> batchListWithRecovery = RetryUtil.withRetryAndRecovery(batchList,
+            retryOptions, "Failed to acquire send link for batch collection." + entityId(),
+            recoveryKind -> performRecovery(recoveryKind, "sendFlux-link"));
+
+        final Mono<Void> sendOperation = batchListWithRecovery.flatMap(list -> Flux.fromIterable(list)
             .flatMap(batch -> sendBatchInternal(batch, transactionContext))
             .then()
             .doOnError(error -> logger.error("Error sending batch.", error)));
 
-        return RetryUtil.withRetryAndRecovery(sendOperation, retryOptions, "Sending messages timed out." + entityId(),
-            recoveryKind -> {
-                performRecovery(recoveryKind, "sendFlux");
-            }).onErrorMap(this::mapError);
+        return sendOperation.onErrorMap(this::mapError);
     }
 
     private Mono<AmqpSendLink> getSendLink(String callSite) {
@@ -984,15 +992,12 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         }
         linkName.set(null);
 
-        // For CONNECTION errors, the link disposal above is the sender's responsibility.
-        // Connection-level recovery (closing and recreating the AMQP connection) is handled
-        // by the ReactorConnectionCache when it detects the connection's endpoint state has
-        // changed. My job is to reset the cached link reference so the next retry goes through the fresh path — the connection disposal happens organically.
+        // For CONNECTION errors, explicitly force-close the cached connection so the
+        // next get() on the connection processor creates a fresh one. This handles the
+        // stale-connection scenario where heartbeats are echoed by intermediate
+        // infrastructure and the cache has not yet detected the failure.
+        // Matches Go SDK's Namespace.Recover().
         if (recoveryKind == RecoveryKind.CONNECTION) {
-            // Force-close the cached connection so the next get() on the connection
-            // processor creates a fresh one. This handles the stale-connection scenario
-            // where heartbeats are echoed by intermediate infrastructure and the cache
-            // hasn't detected the failure. Matches Go SDK's Namespace.Recover().
             connectionCacheWrapper.forceCloseConnection();
         }
     }

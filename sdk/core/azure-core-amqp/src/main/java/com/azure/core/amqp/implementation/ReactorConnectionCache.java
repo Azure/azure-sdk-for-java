@@ -190,7 +190,10 @@ public final class ReactorConnectionCache<T extends ReactorConnection> implement
         if (connection != null && !connection.isDisposed()) {
             withConnectionId(logger, connection.getId())
                 .log("Force-closing connection for recovery. Next get() will create a fresh connection.");
-            closeConnection(connection, logger, "Force-close for connection recovery.");
+            // Call dispose() rather than closeAsync() so that isDisposed() returns true synchronously.
+            // This ensures cacheInvalidateIf immediately invalidates the cached reference on the next
+            // get() call, rather than waiting for the async close handshake to complete.
+            connection.dispose();
         }
     }
 
