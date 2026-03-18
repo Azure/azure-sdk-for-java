@@ -1,6 +1,6 @@
 # Azure Resource Manager Neon Postgres client library for Java
 
-Please note, this package has been deprecated and will no longer be maintained after 2026-03-13. The Azure Neon Postgres service has been permanently retired. . The migration guide for Neon Postgres from Azure is available at https://neon.com/docs/import/migrate-from-azure-native. Refer to our deprecation policy (https://aka.ms/azsdk/support-policies) for more details.
+Please note, this package has been deprecated and will no longer be maintained after 2026-03-13. The Azure Neon Postgres service has been permanently retired. The migration guide for Neon Postgres from Azure is available at https://neon.com/docs/import/migrate-from-azure-native. Refer to our deprecation policy (https://aka.ms/azsdk/support-policies) for more details.
 
 Azure Resource Manager Neon Postgres client library for Java.
 
