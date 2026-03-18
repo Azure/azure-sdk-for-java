@@ -214,7 +214,7 @@ public class RetryUtilTest {
      * FATAL errors must not be retried and must not invoke the recovery callback.
      */
     @Test
-    void createRetryWithRecovery_fatalErrorTerminatesImmediately() {
+    void createRetryWithRecoveryFatalErrorTerminatesImmediately() {
         // Arrange
         final AmqpRetryOptions options = new AmqpRetryOptions().setMaxRetries(3).setDelay(Duration.ofMillis(100));
         final AtomicInteger recoveryCount = new AtomicInteger();
@@ -234,7 +234,7 @@ public class RetryUtilTest {
      * the quick-retry path (no backoff delay).
      */
     @Test
-    void createRetryWithRecovery_linkErrorInvokesRecoveryAndRetries() {
+    void createRetryWithRecoveryLinkErrorInvokesRecoveryAndRetries() {
         // Arrange
         final AmqpRetryOptions options = new AmqpRetryOptions().setMaxRetries(3).setDelay(Duration.ofMillis(100));
         final List<RecoveryKind> recoveries = new ArrayList<>();
@@ -265,7 +265,7 @@ public class RetryUtilTest {
      * CONNECTION errors must invoke the recovery callback with CONNECTION kind.
      */
     @Test
-    void createRetryWithRecovery_connectionErrorInvokesRecovery() {
+    void createRetryWithRecoveryConnectionErrorInvokesRecovery() {
         // Arrange
         final AmqpRetryOptions options = new AmqpRetryOptions().setMaxRetries(2).setDelay(Duration.ofMillis(100));
         final AtomicReference<RecoveryKind> capturedKind = new AtomicReference<>();
@@ -289,7 +289,7 @@ public class RetryUtilTest {
      * After the retry budget is exhausted the error must propagate without further retries.
      */
     @Test
-    void createRetryWithRecovery_exhaustedRetriesTerminateWithError() {
+    void createRetryWithRecoveryExhaustedRetriesTerminateWithError() {
         // Arrange
         final int maxRetries = 2;
         final AmqpRetryOptions options
@@ -319,7 +319,7 @@ public class RetryUtilTest {
      * unconditionally; this test verifies the kind check comes first.
      */
     @Test
-    void createRetryWithRecovery_noneFailureBeforeLinkPreservesQuickRetry() {
+    void createRetryWithRecoveryNoneFailureBeforeLinkPreservesQuickRetry() {
         // Arrange
         final AmqpRetryOptions options = new AmqpRetryOptions().setMaxRetries(3).setDelay(Duration.ofMillis(100));
         final List<RecoveryKind> recoveries = new ArrayList<>();
