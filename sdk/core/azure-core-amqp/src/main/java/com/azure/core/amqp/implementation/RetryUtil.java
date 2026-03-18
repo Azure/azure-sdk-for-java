@@ -221,13 +221,16 @@ public final class RetryUtil {
             // Standard backoff delay.
             final Duration delay;
             if (isFixed) {
-                delay = baseDelay;
+                // Cap baseDelay to maxDelay so FIXED mode respects retryOptions.getMaxDelay().
+                delay = baseDelay.compareTo(maxDelay) > 0 ? maxDelay : baseDelay;
             } else {
                 long millis = baseDelay.toMillis() * (1L << Math.min(attempt, 30));
                 delay = Duration.ofMillis(Math.min(millis, maxDelay.toMillis()));
             }
             final double jitter = 1.0 + (ThreadLocalRandom.current().nextDouble() * 2 - 1) * JITTER_FACTOR;
-            final Duration jitteredDelay = Duration.ofMillis((long) (delay.toMillis() * jitter));
+            // Clamp the final jittered delay to maxDelay so retryOptions are consistently respected.
+            final Duration jitteredDelay
+                = Duration.ofMillis(Math.min((long) (delay.toMillis() * jitter), maxDelay.toMillis()));
 
             return Mono.delay(jitteredDelay).thenReturn(attempt);
         }));
