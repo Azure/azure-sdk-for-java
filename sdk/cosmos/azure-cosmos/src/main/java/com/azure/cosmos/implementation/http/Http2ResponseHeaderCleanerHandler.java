@@ -30,7 +30,7 @@ public class Http2ResponseHeaderCleanerHandler extends ChannelInboundHandlerAdap
             CharSequence serverVersion = headers.get(SERVER_VERSION_KEY);
             if (serverVersion != null && serverVersion.length() > 0
                 && (serverVersion.charAt(0) == ' ' || serverVersion.charAt(serverVersion.length() - 1) == ' ')) {
-                logger.trace("There are extra white space for key {} with value {}", SERVER_VERSION_KEY, serverVersion);
+                logger.trace("There is extra whitespace for key {} with value {}", SERVER_VERSION_KEY, serverVersion);
                 headers.set(SERVER_VERSION_KEY, serverVersion.toString().trim());
             }
 
