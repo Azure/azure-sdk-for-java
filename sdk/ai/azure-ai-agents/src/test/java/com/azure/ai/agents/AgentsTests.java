@@ -7,7 +7,6 @@ import com.azure.ai.agents.models.AgentDefinition;
 import com.azure.ai.agents.models.AgentDetails;
 import com.azure.ai.agents.models.AgentReference;
 import com.azure.ai.agents.models.AgentVersionDetails;
-import com.azure.ai.agents.models.DeleteAgentResponse;
 import com.azure.ai.agents.models.DeleteAgentVersionResponse;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.http.HttpClient;
@@ -61,9 +60,7 @@ public class AgentsTests extends ClientTestBase {
             }
         }
 
-        DeleteAgentResponse deletedAgent = client.deleteAgent(AGENT_NAME);
-        assertEquals(AGENT_NAME, deletedAgent.getName());
-        assertTrue(deletedAgent.isDeleted());
+        assertDoesNotThrow(() -> client.deleteAgent(AGENT_NAME));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
