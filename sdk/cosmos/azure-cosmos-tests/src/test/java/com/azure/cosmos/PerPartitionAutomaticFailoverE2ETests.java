@@ -1444,9 +1444,19 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 assertThat(preferredRegions.size()).isGreaterThanOrEqualTo(1);
 
                 String regionWithIssues = preferredRegions.get(0);
-                URI locationEndpointWithIssues = new URI(readableRegionNameToEndpoint.get(regionWithIssues) + "dbs/" + this.sharedDatabase.getId() + "/colls/" + this.sharedSinglePartitionContainer.getId() + "/docs");
+                String baseEndpoint = readableRegionNameToEndpoint.get(regionWithIssues);
+
+                URI locationEndpointWithIssues = new URI(baseEndpoint + "dbs/" + this.sharedDatabase.getId() + "/colls/" + this.sharedSinglePartitionContainer.getId() + "/docs");
 
                 ReflectionUtils.setGatewayHttpClient(rxStoreModel, mockedHttpClient);
+
+                // When thin client is enabled, data requests route through thinProxy (ThinClientStoreModel)
+                // which uses RNTBD binary encoding — incompatible with standard HTTP mock responses.
+                // Replace thinProxy with gatewayProxy so data requests use the same mocked HttpClient
+                // with standard HTTP encoding. PPAF retry/failover logic is transport-agnostic.
+                if (Configs.isThinClientEnabled()) {
+                    ReflectionUtils.setThinProxy(rxDocumentClient, rxStoreModel);
+                }
 
                 setupHttpClientToReturnSuccessResponse(mockedHttpClient, operationType, databaseAccount, successStatusCode);
 
@@ -1700,10 +1710,20 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                 assertThat(preferredRegions.size()).isGreaterThanOrEqualTo(1);
 
                 String regionWithIssues = preferredRegions.get(0);
-                URI locationEndpointWithIssues = new URI(readableRegionNameToEndpoint.get(regionWithIssues) + "dbs/" + this.sharedDatabase.getId() + "/colls/" + this.sharedSinglePartitionContainer.getId() + "/docs");
+                String baseEndpoint = readableRegionNameToEndpoint.get(regionWithIssues);
+
+                URI locationEndpointWithIssues = new URI(baseEndpoint + "dbs/" + this.sharedDatabase.getId() + "/colls/" + this.sharedSinglePartitionContainer.getId() + "/docs");
 
                 // Redirect gateway calls through our mocked HttpClient
                 ReflectionUtils.setGatewayHttpClient(rxStoreModel, mockedHttpClient);
+
+                // When thin client is enabled, data requests route through thinProxy (ThinClientStoreModel)
+                // which uses RNTBD binary encoding — incompatible with standard HTTP mock responses.
+                // Replace thinProxy with gatewayProxy so data requests use the same mocked HttpClient
+                // with standard HTTP encoding. PPAF retry/failover logic is transport-agnostic.
+                if (Configs.isThinClientEnabled()) {
+                    ReflectionUtils.setThinProxy(rxDocumentClient, rxStoreModel);
+                }
 
                 setupHttpClientToReturnSuccessResponse(mockedHttpClient, operationType, databaseAccountForResponses, successStatusCode);
 
