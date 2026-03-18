@@ -220,11 +220,11 @@ public class BenchmarkOrchestrator {
                 runWorkload(benchmarks, cycle, executor);
                 logger.info("[LIFECYCLE] POST_WORKLOAD cycle={} timestamp={}", cycle, Instant.now());
 
-                // 3. Close all clients
+                // 5. Close all clients
                 shutdownBenchmarks(benchmarks, cycle);
                 logger.info("[LIFECYCLE] POST_CLOSE cycle={} timestamp={}", cycle, Instant.now());
 
-                // 4. Settle
+                // 6. Settle
                 if (config.getSettleTimeMs() > 0) {
                     logger.info(" Settling for {}ms...", config.getSettleTimeMs());
                     long halfSettle = config.getSettleTimeMs() / 2;
