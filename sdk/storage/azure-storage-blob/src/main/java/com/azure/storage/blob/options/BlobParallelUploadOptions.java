@@ -281,7 +281,7 @@ public class BlobParallelUploadOptions {
      * Gets the computeMd5 property.
      *
      * @return Whether the library should calculate the md5 and send it for the service to verify.
-     * @deprecated Use {@link #setRequestChecksumAlgorithm(StorageChecksumAlgorithm)} instead.
+     * @deprecated Use {@link #getRequestChecksumAlgorithm()} instead.
      */
     @Deprecated
     public boolean isComputeMd5() {

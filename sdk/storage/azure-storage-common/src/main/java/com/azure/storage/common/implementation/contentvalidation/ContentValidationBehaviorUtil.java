@@ -21,6 +21,9 @@ public final class ContentValidationBehaviorUtil {
     private ContentValidationBehaviorUtil() {
     }
 
+    public static final String CONFLICTING_TRANSACTIONAL_CONTENT_VALIDATION_MESSAGE
+        = "Both contentMd5 and requestChecksumAlgorithm are set. Only one form of transactional content validation may be used.";
+
     /**
      * Behavior for a single-part upload. Use CRC64 header when length is less than 4MB, otherwise structured
      * message.
@@ -59,5 +62,26 @@ public final class ContentValidationBehaviorUtil {
             return null;
         }
         return USE_STRUCTURED_MESSAGE_CONTEXT;
+    }
+
+    /**
+     * Checks if callers configured mutually exclusive transactional content validation options.
+     * <p>
+     * If both {@code contentMd5} and {@code requestChecksumAlgorithm} are specified (and the algorithm is not
+     * {@link StorageChecksumAlgorithm#NONE}), Azure only accepts one form of validation.
+     *
+     * @param contentMd5 The MD5 hash (when provided) for the request.
+     * @param requestChecksumAlgorithm The request checksum algorithm (when provided) for the request.
+     * @return An {@link IllegalArgumentException} describing the conflict, or {@code null} if validation should
+     * proceed.
+     */
+    public static boolean hasConflictingTransactionalContentValidation(byte[] contentMd5,
+        StorageChecksumAlgorithm requestChecksumAlgorithm) {
+        if (contentMd5 != null
+            && requestChecksumAlgorithm != null
+            && requestChecksumAlgorithm != StorageChecksumAlgorithm.NONE) {
+            return true;
+        }
+        return false;
     }
 }

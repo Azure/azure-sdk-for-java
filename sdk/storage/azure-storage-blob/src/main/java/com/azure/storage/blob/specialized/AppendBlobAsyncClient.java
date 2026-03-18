@@ -41,8 +41,7 @@ import com.azure.storage.blob.options.AppendBlobSealOptions;
 import com.azure.storage.common.StorageChecksumAlgorithm;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.contentvalidation.ContentValidationBehaviorUtil;
-import static com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants.CONTENT_VALIDATION_BEHAVIOR_KEY;
-import com.azure.core.http.rest.ResponseBase;
+import com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -84,14 +83,14 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      * @deprecated use {@link AppendBlobAsyncClient#getMaxAppendBlockBytes()}.
      */
     @Deprecated
-    static final int MAX_APPEND_BLOCK_BYTES = 4 * Constants.MB;
+    public static final int MAX_APPEND_BLOCK_BYTES = 4 * Constants.MB;
 
     /**
      * Indicates the maximum number of blocks allowed in an append blob.
      * @deprecated use {@link AppendBlobAsyncClient#getMaxBlocks()}.
      */
     @Deprecated
-    static final int MAX_BLOCKS = 50000;
+    public static final int MAX_BLOCKS = 50000;
 
     /**
      * Indicates the maximum number of bytes that can be sent in a call to appendBlock.
@@ -503,11 +502,10 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
             return monoError(LOGGER, new NullPointerException("'data' cannot be null."));
         }
 
-        if (contentMd5 != null
-            && requestChecksumAlgorithm != null
-            && requestChecksumAlgorithm != StorageChecksumAlgorithm.NONE) {
+        if (ContentValidationBehaviorUtil.hasConflictingTransactionalContentValidation(contentMd5,
+            requestChecksumAlgorithm)) {
             return monoError(LOGGER, new IllegalArgumentException(
-                "Both contentMd5 and requestChecksumAlgorithm are set. Only one form of transactional content validation may be used."));
+                ContentValidationBehaviorUtil.CONFLICTING_TRANSACTIONAL_CONTENT_VALIDATION_MESSAGE));
         }
 
         appendBlobRequestConditions
@@ -517,7 +515,8 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
         String contentValidationBehavior
             = ContentValidationBehaviorUtil.getBehaviorForSinglePartUpload(requestChecksumAlgorithm, length);
         if (contentValidationBehavior != null) {
-            context = context.addData(CONTENT_VALIDATION_BEHAVIOR_KEY, contentValidationBehavior);
+            context = context.addData(StructuredMessageConstants.CONTENT_VALIDATION_BEHAVIOR_KEY,
+                contentValidationBehavior);
         }
 
         return this.azureBlobStorage.getAppendBlobs()

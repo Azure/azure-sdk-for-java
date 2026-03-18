@@ -420,11 +420,10 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         StorageImplUtils.assertNotNull("options", options);
 
         StorageChecksumAlgorithm requestChecksumAlgorithm = options.getRequestChecksumAlgorithm();
-        if (options.getContentMd5() != null
-            && requestChecksumAlgorithm != null
-            && requestChecksumAlgorithm != StorageChecksumAlgorithm.NONE) {
+        if (ContentValidationBehaviorUtil.hasConflictingTransactionalContentValidation(options.getContentMd5(),
+            requestChecksumAlgorithm)) {
             return monoError(LOGGER, new IllegalArgumentException(
-                "Both contentMd5 and requestChecksumAlgorithm are set. Only one form of transactional content validation may be used."));
+                ContentValidationBehaviorUtil.CONFLICTING_TRANSACTIONAL_CONTENT_VALIDATION_MESSAGE));
         }
 
         Mono<BinaryData> dataMono;
@@ -776,11 +775,10 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         Objects.requireNonNull(options.getData(), "data must not be null");
         Objects.requireNonNull(options.getData().getLength(), "data must have defined length");
 
-        if (options.getContentMd5() != null
-            && options.getRequestChecksumAlgorithm() != null
-            && options.getRequestChecksumAlgorithm() != StorageChecksumAlgorithm.NONE) {
+        if (ContentValidationBehaviorUtil.hasConflictingTransactionalContentValidation(options.getContentMd5(),
+            options.getRequestChecksumAlgorithm())) {
             return monoError(LOGGER, new IllegalArgumentException(
-                "Both contentMd5 and requestChecksumAlgorithm are set. Only one form of transactional content validation may be used."));
+                ContentValidationBehaviorUtil.CONFLICTING_TRANSACTIONAL_CONTENT_VALIDATION_MESSAGE));
         }
 
         context = context == null ? Context.NONE : context;
