@@ -180,13 +180,13 @@ This will return an `AgentVersionObject` which contains the information necessar
 First we need to create our `Conversation` object so we can attach items to it:
 
 ```java com.azure.ai.agents.create_conversation
-Conversation conversation = conversationsClient.getConversationService().create();
+Conversation conversation = conversationsClient.create();
 ```
 
 With `conversation.id()` contains the reference we will use to append messages to this `Conversation`. `Conversation` objects can be used by multiple agents and serve the purpose of being a centralized source of context. To add items:
 
 ```java com.azure.ai.agents.add_message_to_conversation
-conversationsClient.getConversationService().items().create(
+conversationsClient.items().create(
     ItemCreateParams.builder()
         .conversationId(conversation.id())
         .addItem(EasyInputMessage.builder()

@@ -11,7 +11,7 @@ import reactor.core.publisher.Mono;
 public class ConnectionsAsyncSample {
 
     private static ConnectionsAsyncClient connectionsAsyncClient
-        = new AIProjectClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+        = new AIProjectClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT", "endpoint"))
         .credential(new DefaultAzureCredentialBuilder().build())
         .buildConnectionsAsyncClient();
 
