@@ -42,7 +42,9 @@ public class StorageContentValidationPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        return applyContentValidation(context).then(next.process());
+        // Defer creating the next policy Mono until validation (and any required header mutations) has completed.
+        // Some downstream policies may compute auth/signatures eagerly in their `process()` method.
+        return applyContentValidation(context).then(Mono.defer(next::process));
     }
 
     /**
