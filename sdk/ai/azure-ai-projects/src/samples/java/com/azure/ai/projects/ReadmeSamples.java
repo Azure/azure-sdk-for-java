@@ -6,7 +6,6 @@ package com.azure.ai.projects;
 
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.ConversationsClient;
 import com.azure.ai.agents.MemoryStoresClient;
 import com.azure.ai.agents.ResponsesClient;
 import com.openai.client.OpenAIClient;
@@ -47,7 +46,6 @@ public final class ReadmeSamples {
         AgentsClientBuilder agentsClientBuilder = new AgentsClientBuilder();
 
         AgentsClient agentsClient = agentsClientBuilder.buildAgentsClient();
-        ConversationsClient conversationsClient = agentsClientBuilder.buildConversationsClient();
         MemoryStoresClient memoryStoresClient = agentsClientBuilder.buildMemoryStoresClient();
         ResponsesClient responsesClient = agentsClientBuilder.buildResponsesClient();
         // END: com.azure.ai.projects.agentsSubClients

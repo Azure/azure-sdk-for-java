@@ -13,6 +13,7 @@ import com.openai.models.conversations.items.ItemCreateParams;
 import com.openai.models.conversations.items.ItemListPage;
 import com.openai.models.responses.EasyInputMessage;
 import com.openai.models.responses.Response;
+import com.openai.services.blocking.ConversationService;
 
 /**
  * This sample how multiple agents can consume a centralized context source (conversation) and provide different responses
@@ -25,7 +26,7 @@ public class MultipleAgentsConversation {
      */
     public static void main(String[] args) {
         String endpoint = Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT");
-        String model = Configuration.getGlobalConfiguration().get("FOUNDRY_MODEL_DEPLOYMENT_NAME");
+        String model = Configuration.getGlobalConfiguration().get("FOUNDRY_MODEL_NAME");
         // Code sample for creating an agent
         AgentsClientBuilder builder = new AgentsClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
@@ -33,7 +34,7 @@ public class MultipleAgentsConversation {
             .endpoint(endpoint);
         AgentsClient agentsClient = builder.buildAgentsClient();
         ResponsesClient responsesClient = builder.buildResponsesClient();
-        ConversationsClient conversationsClient = builder.buildConversationsClient();
+        ConversationService conversationsClient = builder.buildOpenAIClient().conversations();
 
         // Setting up the conversation with initial messages
         Conversation conversation = startConversation(conversationsClient);
@@ -80,11 +81,11 @@ public class MultipleAgentsConversation {
         return agentsClient.createAgentVersion(name, request);
     }
 
-    private static Conversation startConversation(ConversationsClient conversationsClient) {
-        return conversationsClient.getConversationService().create();
+    private static Conversation startConversation(ConversationService conversationsClient) {
+        return conversationsClient.create();
     }
 
-    private static void addMessageToConversation(ConversationsClient conversationsClient, String conversationId, String content, EasyInputMessage.Role role) {
+    private static void addMessageToConversation(ConversationService conversationService, String conversationId, String content, EasyInputMessage.Role role) {
         ItemCreateParams itemParams = ItemCreateParams.builder()
             .conversationId(conversationId)
             .addItem(
@@ -94,12 +95,12 @@ public class MultipleAgentsConversation {
                     .role(role).build()
             ).build();
 
-        conversationsClient.getConversationService().items().create(itemParams);
+        conversationService.items().create(itemParams);
     }
 
-    private static void printConversationItems(ConversationsClient conversationsClient, String conversationId, int limit) {
+    private static void printConversationItems(ConversationService conversationsClient, String conversationId, int limit) {
         System.out.println("Printing conversation items:");
-        ItemListPage page = conversationsClient.getConversationService().items().list(conversationId);
+        ItemListPage page = conversationsClient.items().list(conversationId);
         page.autoPager().stream().limit(limit).forEach(item -> {
             System.out.println("\t" + item.asMessage().role() + ": " + item.asMessage().content().get(0).asInputText().text());
         });

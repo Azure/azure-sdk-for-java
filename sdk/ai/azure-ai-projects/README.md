@@ -72,7 +72,6 @@ For the Agents operation, you can use the `azure-ai-agents` package which is ava
 AgentsClientBuilder agentsClientBuilder = new AgentsClientBuilder();
 
 AgentsClient agentsClient = agentsClientBuilder.buildAgentsClient();
-ConversationsClient conversationsClient = agentsClientBuilder.buildConversationsClient();
 MemoryStoresClient memoryStoresClient = agentsClientBuilder.buildMemoryStoresClient();
 ResponsesClient responsesClient = agentsClientBuilder.buildResponsesClient();
 ```
