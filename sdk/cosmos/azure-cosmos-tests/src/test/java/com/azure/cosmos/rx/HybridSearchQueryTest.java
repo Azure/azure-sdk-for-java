@@ -21,6 +21,10 @@ import com.azure.cosmos.models.IndexingMode;
 import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.PartitionKeyBuilder;
+import com.azure.cosmos.models.PartitionKind;
+import com.azure.cosmos.models.PartitionKeyDefinitionVersion;
+import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
@@ -51,7 +55,7 @@ import static com.azure.cosmos.rx.TestSuiteBase.safeDeleteDatabase;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
-//@Ignore("TODO: Ignore these test cases until the public emulator is released.")
+@Ignore("TODO: Ignore these test cases until the public emulator is released.")
 public class HybridSearchQueryTest {
     protected static final int TIMEOUT = 30000;
     protected static final int SETUP_TIMEOUT = 80000;
@@ -60,9 +64,11 @@ public class HybridSearchQueryTest {
     protected static Logger logger = LoggerFactory.getLogger(HybridSearchQueryTest.class);
 
     private final String containerId = UUID.randomUUID().toString();
+    private final String hpkContainerId = UUID.randomUUID().toString();
     private CosmosAsyncClient client;
     private CosmosAsyncDatabase database;
     private CosmosAsyncContainer container;
+    private CosmosAsyncContainer hpkContainer;
 
     @BeforeClass(groups = {"query", "split"}, timeOut = SETUP_TIMEOUT* 10)
     public void before_HybridSearchQueryTest() {
@@ -91,6 +97,30 @@ public class HybridSearchQueryTest {
             int index = Integer.parseInt(doc.getId());
             doc.pk = String.valueOf((index % 2) + 1);
             container.createItem(doc).block();
+        }
+
+        // Create a hierarchical partition key container (/pk, /category) for HPK tests
+        PartitionKeyDefinition hpkDef = new PartitionKeyDefinition();
+        ArrayList<String> hpkPaths = new ArrayList<String>();
+        hpkPaths.add("/pk");
+        hpkPaths.add("/category");
+        hpkDef.setPaths(hpkPaths);
+        hpkDef.setKind(PartitionKind.MULTI_HASH);
+        hpkDef.setVersion(PartitionKeyDefinitionVersion.V2);
+
+        CosmosContainerProperties hpkContainerProperties = new CosmosContainerProperties(hpkContainerId, hpkDef);
+        hpkContainerProperties.setIndexingPolicy(populateIndexingPolicy());
+        hpkContainerProperties.setFullTextPolicy(populateFullTextPolicy());
+        database.createContainer(hpkContainerProperties, ThroughputProperties.createManualThroughput(10000)).block();
+        hpkContainer = database.getContainer(hpkContainerId);
+
+        // Insert documents with pk and category fields for hierarchical partition key
+        // pk = (index % 2) + 1, category = "A" for index % 3 == 0, "B" otherwise
+        for (Document doc : documents) {
+            int index = Integer.parseInt(doc.getId());
+            doc.pk = String.valueOf((index % 2) + 1);
+            doc.category = (index % 3 == 0) ? "A" : "B";
+            hpkContainer.createItem(doc).block();
         }
     }
 
@@ -309,6 +339,7 @@ public class HybridSearchQueryTest {
         for (Document doc : localPk2ResultDocs) {
             assertThat(doc.getPk()).isEqualTo("2");
         }
+        validateResults(Arrays.asList("57", "85"), localPk2ResultDocs);
 
         // Test 4: LOCAL scope with pk="1" — only id=2 has 'John' in pk="1"
         // Stats are computed only over pk="1" partition
@@ -357,6 +388,124 @@ public class HybridSearchQueryTest {
         for (Document doc : localResultDocs) {
             assertThat(doc.getPk()).isEqualTo("2");
         }
+    }
+
+    @Test(groups = {"query", "split"}, timeOut = TIMEOUT)
+    public void hybridQueryWithLocalScopeWithoutPartitionKeyTest() {
+        // LOCAL scope without a partition key filter should degenerate gracefully to GLOBAL behavior,
+        // since targetFeedRanges equals allFeedRanges when no partition key is specified.
+        CosmosQueryRequestOptions localScopeOptions = new CosmosQueryRequestOptions();
+        localScopeOptions.setFullTextScoreScope(CosmosFullTextScoreScope.LOCAL);
+
+        String query = "SELECT TOP 10 c.id, c.title FROM c WHERE FullTextContains(c.title, @term1) OR " +
+            "FullTextContains(c.text, @term1) ORDER BY RANK FullTextScore(c.title, @term1)";
+        SqlQuerySpec querySpec = new SqlQuerySpec(query, Arrays.asList(
+            new SqlParameter("@term1", "John")
+        ));
+
+        List<Document> localNoPkResults = container.queryItems(querySpec, localScopeOptions, Document.class).byPage()
+            .flatMap(feedResponse -> Flux.fromIterable(feedResponse.getResults()))
+            .collectList().block();
+        assertThat(localNoPkResults).isNotNull();
+        assertThat(localNoPkResults).hasSize(3);
+
+        // Should produce the same results as default/GLOBAL since all partitions are targeted
+        List<Document> globalResults = container.queryItems(querySpec, new CosmosQueryRequestOptions(), Document.class).byPage()
+            .flatMap(feedResponse -> Flux.fromIterable(feedResponse.getResults()))
+            .collectList().block();
+        assertThat(globalResults).isNotNull();
+
+        List<String> localIds = localNoPkResults.stream().map(Document::getId).collect(Collectors.toList());
+        List<String> globalIds = globalResults.stream().map(Document::getId).collect(Collectors.toList());
+        assertThat(localIds).isEqualTo(globalIds);
+    }
+
+    @Test(groups = {"query", "split"}, timeOut = TIMEOUT)
+    public void hybridQueryWithLocalScopeAndHierarchicalPartitionKeyTest() {
+        // HPK container: /pk + /category
+        // Documents with 'John': id=2 (pk="1", cat="B"), id=57 (pk="2", cat="A"), id=85 (pk="2", cat="B")
+
+        String query = "SELECT TOP 10 c.id, c.title, c.pk, c.category FROM c " +
+            "WHERE FullTextContains(c.title, @term1) OR FullTextContains(c.text, @term1) " +
+            "ORDER BY RANK FullTextScore(c.title, @term1)";
+        SqlQuerySpec querySpec = new SqlQuerySpec(query, Arrays.asList(
+            new SqlParameter("@term1", "John")
+        ));
+
+        // LOCAL scope with full HPK (pk="2", category="A") — only id=57 matches
+        CosmosQueryRequestOptions localFullHpk = new CosmosQueryRequestOptions();
+        localFullHpk.setFullTextScoreScope(CosmosFullTextScoreScope.LOCAL);
+        localFullHpk.setPartitionKey(
+            new PartitionKeyBuilder().add("2").add("A").build());
+
+        List<Document> fullHpkResults = hpkContainer.queryItems(querySpec, localFullHpk, Document.class).byPage()
+            .flatMap(feedResponse -> Flux.fromIterable(feedResponse.getResults()))
+            .collectList().block();
+        assertThat(fullHpkResults).isNotNull();
+        assertThat(fullHpkResults).hasSize(1);
+        assertThat(fullHpkResults.get(0).getId()).isEqualTo("57");
+        assertThat(fullHpkResults.get(0).getPk()).isEqualTo("2");
+        assertThat(fullHpkResults.get(0).getCategory()).isEqualTo("A");
+
+        // LOCAL scope with partial HPK prefix (pk="2") — id=57 and id=85 match
+        CosmosQueryRequestOptions localPartialHpk = new CosmosQueryRequestOptions();
+        localPartialHpk.setFullTextScoreScope(CosmosFullTextScoreScope.LOCAL);
+        localPartialHpk.setPartitionKey(
+            new PartitionKeyBuilder().add("2").build());
+
+        List<Document> partialHpkResults = hpkContainer.queryItems(querySpec, localPartialHpk, Document.class).byPage()
+            .flatMap(feedResponse -> Flux.fromIterable(feedResponse.getResults()))
+            .collectList().block();
+        assertThat(partialHpkResults).isNotNull();
+        assertThat(partialHpkResults).hasSize(2);
+        for (Document doc : partialHpkResults) {
+            assertThat(doc.getPk()).isEqualTo("2");
+        }
+
+        // GLOBAL scope cross-partition — all 3 'John' matches
+        List<Document> globalResults = hpkContainer.queryItems(querySpec, new CosmosQueryRequestOptions(), Document.class).byPage()
+            .flatMap(feedResponse -> Flux.fromIterable(feedResponse.getResults()))
+            .collectList().block();
+        assertThat(globalResults).isNotNull();
+        assertThat(globalResults).hasSize(3);
+    }
+
+    @Test(groups = {"query", "split"}, timeOut = TIMEOUT)
+    public void hybridQueryWithLocalScopeAndFeedRangeTest() {
+        // Test LOCAL scope with FeedRange.forLogicalPartition() instead of setPartitionKey()
+        String query = "SELECT TOP 10 c.id, c.title, c.pk FROM c " +
+            "WHERE FullTextContains(c.title, @term1) OR FullTextContains(c.text, @term1) " +
+            "ORDER BY RANK FullTextScore(c.title, @term1)";
+        SqlQuerySpec querySpec = new SqlQuerySpec(query, Arrays.asList(
+            new SqlParameter("@term1", "John")
+        ));
+
+        // LOCAL scope with FeedRange for pk="2" — only id=57 and id=85 match
+        CosmosQueryRequestOptions localFeedRangeOptions = new CosmosQueryRequestOptions();
+        localFeedRangeOptions.setFullTextScoreScope(CosmosFullTextScoreScope.LOCAL);
+        localFeedRangeOptions.setFeedRange(FeedRange.forLogicalPartition(new PartitionKey("2")));
+
+        List<Document> feedRangeResults = container.queryItems(querySpec, localFeedRangeOptions, Document.class).byPage()
+            .flatMap(feedResponse -> Flux.fromIterable(feedResponse.getResults()))
+            .collectList().block();
+        assertThat(feedRangeResults).isNotNull();
+        assertThat(feedRangeResults).hasSize(2);
+        for (Document doc : feedRangeResults) {
+            assertThat(doc.getPk()).isEqualTo("2");
+        }
+        validateResults(Arrays.asList("57", "85"), feedRangeResults);
+
+        // LOCAL scope with FeedRange for pk="1" — only id=2 matches
+        CosmosQueryRequestOptions localFeedRangePk1 = new CosmosQueryRequestOptions();
+        localFeedRangePk1.setFullTextScoreScope(CosmosFullTextScoreScope.LOCAL);
+        localFeedRangePk1.setFeedRange(FeedRange.forLogicalPartition(new PartitionKey("1")));
+
+        List<Document> feedRangePk1Results = container.queryItems(querySpec, localFeedRangePk1, Document.class).byPage()
+            .flatMap(feedResponse -> Flux.fromIterable(feedResponse.getResults()))
+            .collectList().block();
+        assertThat(feedRangePk1Results).isNotNull();
+        assertThat(feedRangePk1Results).hasSize(1);
+        assertThat(feedRangePk1Results.get(0).getId()).isEqualTo("2");
     }
 
     @Test(groups = {"query", "split"}, timeOut = TIMEOUT)
@@ -512,6 +661,8 @@ public class HybridSearchQueryTest {
         String id;
         @JsonProperty("pk")
         String pk;
+        @JsonProperty("category")
+        String category;
         @JsonProperty("text")
         String text;
         @JsonProperty("title")
@@ -524,21 +675,16 @@ public class HybridSearchQueryTest {
         public Document() {
         }
 
-        public Document(String id, String pk, String text, String title, double[] vector, double score) {
-            this.id = id;
-            this.pk = pk;
-            this.text = text;
-            this.title = title;
-            this.vector = vector;
-            this.score = score;
-        }
-
         public String getId() {
             return id;
         }
 
         public String getPk() {
             return pk;
+        }
+
+        public String getCategory() {
+            return category;
         }
     }
 }

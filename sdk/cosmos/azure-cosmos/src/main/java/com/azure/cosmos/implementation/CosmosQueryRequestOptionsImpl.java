@@ -415,10 +415,10 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
     /**
      * Gets the scope for computing BM25 statistics used by FullTextScore in hybrid search queries.
      *
-     * @return the full text score scope, or null if not set (defaults to GLOBAL behavior).
+     * @return the full text score scope. Defaults to {@link CosmosFullTextScoreScope#GLOBAL}.
      */
     public CosmosFullTextScoreScope getFullTextScoreScope() {
-        return this.fullTextScoreScope;
+        return this.fullTextScoreScope != null ? this.fullTextScoreScope : CosmosFullTextScoreScope.GLOBAL;
     }
 
     /**

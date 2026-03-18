@@ -538,8 +538,7 @@ public class CosmosQueryRequestOptions {
      * @return the scope for computing BM25 statistics. Defaults to {@link CosmosFullTextScoreScope#GLOBAL}.
      */
     public CosmosFullTextScoreScope getFullTextScoreScope() {
-        CosmosFullTextScoreScope scope = this.actualRequestOptions.getFullTextScoreScope();
-        return scope != null ? scope : CosmosFullTextScoreScope.GLOBAL;
+        return this.actualRequestOptions.getFullTextScoreScope();
     }
 
     /**

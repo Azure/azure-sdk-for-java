@@ -263,7 +263,11 @@ public class DocumentQueryExecutionContextFactory {
         PartitionedQueryExecutionInfo partitionedQueryExecutionInfo,
         Map<String, PartitionedQueryExecutionInfo> queryPlanCache) {
         QueryInfo queryInfo = partitionedQueryExecutionInfo.getQueryInfo();
-        if (queryInfo != null && canCacheQuery(queryInfo) && !queryPlanCache.containsKey(query.getQueryText())) {
+        if (queryInfo == null) {
+            logger.trace("Skipping query plan caching: queryInfo is null (likely a hybrid search query)");
+            return;
+        }
+        if (canCacheQuery(queryInfo) && !queryPlanCache.containsKey(query.getQueryText())) {
             if (queryPlanCache.size() >= Constants.QUERYPLAN_CACHE_SIZE) {
                 logger.warn("Clearing query plan cache as it has reached the maximum size : {}", queryPlanCache.size());
                 queryPlanCache.clear();

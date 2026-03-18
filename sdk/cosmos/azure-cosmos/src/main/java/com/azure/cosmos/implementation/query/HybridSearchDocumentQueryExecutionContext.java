@@ -29,6 +29,8 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.SqlQuerySpec;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -50,6 +52,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQueryExecutionContextBase<Document> {
+
+    private static final Logger logger = LoggerFactory.getLogger(HybridSearchDocumentQueryExecutionContext.class);
 
     private final static
     ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagnosticsAccessor =
@@ -144,10 +148,16 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
         if (hybridSearchQueryInfo.getRequiresGlobalStatistics()) {
             // When FullTextScoreScope is GLOBAL (default), use allFeedRanges for statistics.
             // When LOCAL, use only targetFeedRanges for scoped statistics.
+            CosmosFullTextScoreScope scope = this.cosmosQueryRequestOptions.getFullTextScoreScope();
             List<FeedRangeEpkImpl> statisticsTargetRanges =
-                this.cosmosQueryRequestOptions.getFullTextScoreScope() == CosmosFullTextScoreScope.LOCAL
+                scope == CosmosFullTextScoreScope.LOCAL
                     ? targetFeedRanges
                     : allFeedRanges;
+
+            if (scope == CosmosFullTextScoreScope.LOCAL && targetFeedRanges.size() == allFeedRanges.size()) {
+                logger.warn("LOCAL fullTextScoreScope is set but no partition key filter was specified; "
+                    + "statistics will be computed across all partitions, equivalent to GLOBAL scope.");
+            }
 
             Map<FeedRangeEpkImpl, String> partitionKeyRangeToContinuationToken = new HashMap<>();
             for (FeedRangeEpkImpl feedRangeEpk : statisticsTargetRanges) {
@@ -159,14 +169,19 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
                 new SqlQuerySpec(hybridSearchQueryInfo.getGlobalStatisticsQuery(), this.querySpec.getParameters())
             );
 
-            aggregatedGlobalStatistics = Flux.fromIterable(documentProducers)
+            // Capture the producers into a local variable to avoid ConcurrentModificationException
+            // if documentProducers field is later reassigned by getComponentQueryResults.
+            List<DocumentProducer<Document>> globalStatsProducers = new ArrayList<>(this.documentProducers);
+
+            aggregatedGlobalStatistics = Flux.fromIterable(globalStatsProducers)
                 .flatMap(producer -> producer.produceAsync()
                     .map(documentProducerFeedResponse -> {
                         List<Document> results = documentProducerFeedResponse.pageResult.getResults();
                         return new GlobalFullTextSearchQueryStatistics(results.get(0));
                     }))
                 .collectList()
-                .map(this::aggregateStatistics);
+                .map(this::aggregateStatistics)
+                .cache();
         }
 
         hybridObservable = hybridSearch(targetFeedRanges, initialPageSize, collection);
@@ -400,6 +415,9 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
         // Use concatMap to serialize component query initialization. The parent class has shared mutable
         // state (documentProducers, metrics trackers) that is not thread-safe for concurrent access.
         // Each component query still executes its partition queries in parallel via the inner flatMap.
+        // TODO: Refactor to pass producer list as a local variable instead of relying on the shared
+        //  mutable documentProducers field in ParallelDocumentQueryExecutionContextBase, which would
+        //  allow safe re-introduction of flatMap concurrency across component queries.
         return rewrittenQueryInfos.concatMap(queryInfo -> {
             Map<FeedRangeEpkImpl, String> partitionKeyRangeToContinuationToken = new HashMap<>();
             for (FeedRangeEpkImpl feedRangeEpk : targetFeedRanges) {
@@ -412,7 +430,9 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
                 initialPageSize,
                 new SqlQuerySpec(queryInfo.getRewrittenQuery(), this.querySpec.getParameters()));
 
-            return Flux.fromIterable(documentProducers)
+            // Capture into a local copy to avoid CME if the field is later reassigned/modified.
+            List<DocumentProducer<Document>> componentProducers = new ArrayList<>(documentProducers);
+            return Flux.fromIterable(componentProducers)
                 .flatMap(DocumentProducer::produceAsync)
                 .flatMap(response -> Flux.fromIterable(response.pageResult.getResults()));
         });
