@@ -5,6 +5,7 @@ package com.azure.ai.agents;
 
 import com.azure.ai.agents.models.AgentReference;
 import com.azure.ai.agents.models.PromptAgentDefinition;
+import com.azure.ai.agents.models.StructuredInputDefinition;
 import com.azure.core.http.HttpClient;
 import com.openai.models.conversations.Conversation;
 import com.openai.models.responses.EasyInputMessage;
@@ -19,10 +20,15 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import static com.azure.ai.agents.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AgentsAsyncTests extends ClientTestBase {
 
@@ -157,5 +163,55 @@ public class AgentsAsyncTests extends ClientTestBase {
             Mono.fromFuture(conversationsClient.delete(conversationId)).then(),
             // Deleting response causes a 500 in service, but keep the request for parity with sync tests.
             Mono.fromFuture(responsesClient.getResponseServiceAsync().delete(responseId)).then());
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.agents.TestUtils#getTestParameters")
+    public void structuredInputTest(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
+        AgentsAsyncClient agentsClient = getAgentsAsyncClient(httpClient, serviceVersion);
+        ResponsesAsyncClient responsesClient = getResponsesAsyncClient(httpClient, serviceVersion);
+        String agentModel = "gpt-4o";
+
+        // Create an agent with structured input definitions
+        Map<String, StructuredInputDefinition> structuredInputDefinitions = new LinkedHashMap<>();
+        structuredInputDefinitions.put("userName",
+            new StructuredInputDefinition().setDescription("User's name").setRequired(true));
+        structuredInputDefinitions.put("userRole",
+            new StructuredInputDefinition().setDescription("User's role").setRequired(true));
+
+        StepVerifier.create(
+            agentsClient
+                .createAgentVersion(AGENT_NAME,
+                    new PromptAgentDefinition(agentModel).setInstructions("You are a helpful assistant. "
+                        + "The user's name is {{userName}} and their role is {{userRole}}. "
+                        + "Greet them and confirm their details.").setStructuredInputs(structuredInputDefinitions))
+                .flatMap(createdAgent -> {
+                    assertNotNull(createdAgent);
+                    assertNotNull(createdAgent.getId());
+                    assertEquals(AGENT_NAME, createdAgent.getName());
+
+                    Map<String, Object> structuredInputValues = new LinkedHashMap<>();
+                    structuredInputValues.put("userName", "Alice Smith");
+                    structuredInputValues.put("userRole", "Senior Developer");
+
+                    return responsesClient
+                        .createWithAgentStructuredInput(
+                            new AgentReference(createdAgent.getName()).setVersion(createdAgent.getVersion()),
+                            structuredInputValues,
+                            ResponseCreateParams.builder().input("Hello! Can you confirm my details?"))
+                        .flatMap(response -> agentsClient
+                            .deleteAgentVersion(createdAgent.getName(), createdAgent.getVersion())
+                            .thenReturn(response));
+                }))
+            .assertNext(response -> {
+                assertNotNull(response);
+                assertTrue(response.id().startsWith("resp"));
+                assertTrue(response.status().isPresent());
+                assertEquals(ResponseStatus.COMPLETED, response.status().get());
+                assertFalse(response.output().isEmpty());
+                assertTrue(response.output().get(0).isMessage());
+                assertFalse(response.output().get(0).asMessage().content().isEmpty());
+            })
+            .verifyComplete();
     }
 }

@@ -8,6 +8,7 @@ import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.CodeInterpreterTool;
 import com.azure.ai.agents.models.FunctionTool;
 import com.azure.ai.agents.models.PromptAgentDefinition;
+import com.azure.ai.agents.models.StructuredInputDefinition;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.BinaryData;
 import com.openai.helpers.ResponseAccumulator;
@@ -193,6 +194,70 @@ public class StreamingAsyncTests extends ClientTestBase {
 
                         assertFalse(codeDeltas.isEmpty(), "Should have received code interpreter code deltas");
                         assertTrue(codeInterpreterCompleted[0], "Code interpreter should have completed");
+                        return response;
+                    }));
+                })
+                .flatMap(response -> {
+                    AgentVersionDetails agent = agentRef.get();
+                    return agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion()).thenReturn(response);
+                }))
+            .assertNext(response -> assertNotNull(response.id()))
+            .verifyComplete();
+    }
+
+    // ========================================================================
+    // Structured input streaming
+    // ========================================================================
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.agents.TestUtils#getTestParameters")
+    public void structuredInputStreamingProducesTextDeltas(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
+        AgentsAsyncClient agentsClient = getAgentsAsyncClient(httpClient, serviceVersion);
+        ResponsesAsyncClient responsesClient = getResponsesAsyncClient(httpClient, serviceVersion);
+
+        Map<String, StructuredInputDefinition> structuredInputDefinitions = new LinkedHashMap<>();
+        structuredInputDefinitions.put("userName",
+            new StructuredInputDefinition().setDescription("User's name").setRequired(true));
+        structuredInputDefinitions.put("userRole",
+            new StructuredInputDefinition().setDescription("User's role").setRequired(true));
+
+        AtomicReference<AgentVersionDetails> agentRef = new AtomicReference<>();
+
+        StepVerifier
+            .create(agentsClient
+                .createAgentVersion("structured-input-streaming-async-test-agent",
+                    new PromptAgentDefinition(AGENT_MODEL).setInstructions("You are a helpful assistant. "
+                        + "The user's name is {{userName}} and their role is {{userRole}}. "
+                        + "Greet them and confirm their details.").setStructuredInputs(structuredInputDefinitions))
+                .flatMap(agent -> {
+                    agentRef.set(agent);
+
+                    AgentReference agentReference = new AgentReference(agent.getName()).setVersion(agent.getVersion());
+
+                    Map<String, Object> structuredInputValues = new LinkedHashMap<>();
+                    structuredInputValues.put("userName", "Alice Smith");
+                    structuredInputValues.put("userRole", "Senior Developer");
+
+                    ResponseAccumulator accumulator = ResponseAccumulator.create();
+                    List<String> textDeltas = new ArrayList<>();
+
+                    Flux<ResponseStreamEvent> events
+                        = responsesClient.createStreamingWithAgentStructuredInput(agentReference, structuredInputValues,
+                            ResponseCreateParams.builder().input("Hello! Can you confirm my details?"));
+
+                    return events.doOnNext(event -> {
+                        accumulator.accumulate(event);
+                        event.outputTextDelta().ifPresent(textEvent -> textDeltas.add(textEvent.delta()));
+                    }).then(Mono.fromCallable(() -> {
+                        assertFalse(textDeltas.isEmpty(), "Should have received at least one text delta");
+
+                        Response response = accumulator.response();
+                        assertNotNull(response.id());
+                        assertTrue(response.status().isPresent());
+                        assertEquals(ResponseStatus.COMPLETED, response.status().get());
+
+                        String streamedText = String.join("", textDeltas);
+                        assertFalse(streamedText.isEmpty());
                         return response;
                     }));
                 })
