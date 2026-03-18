@@ -247,7 +247,9 @@ public class RetryUtilTest {
             return Mono.just(42);
         });
 
-        // Act & Assert — use virtual time because the second retry applies a SERVER_BUSY backoff delay.
+        // Act & Assert — use virtual time because the base retry delay unconditionally includes
+        //                  SERVER_BUSY_WAIT_TIME (4 s), regardless of error type — the cumulative
+        //                  wait would exceed real-time test limits.
         StepVerifier.withVirtualTime(() -> source.retryWhen(retry))
             .expectSubscription()
             .thenAwait(Duration.ofMinutes(1))
@@ -297,7 +299,9 @@ public class RetryUtilTest {
         final AmqpException transientError
             = new AmqpException(true, AmqpErrorCondition.LINK_DETACH_FORCED, "detach", null);
 
-        // Act & Assert — use virtual time because the second retry applies a SERVER_BUSY backoff delay.
+        // Act & Assert — use virtual time because the base retry delay unconditionally includes
+        //                  SERVER_BUSY_WAIT_TIME (4 s), regardless of error type — the cumulative
+        //                  wait would exceed real-time test limits.
         StepVerifier.withVirtualTime(() -> Mono.<Integer>error(transientError).retryWhen(retry))
             .expectSubscription()
             .thenAwait(Duration.ofMinutes(1))
@@ -336,7 +340,8 @@ public class RetryUtilTest {
             }
         });
 
-        // Act & Assert — virtual time to skip the SERVER_BUSY backoff; LINK quick-retry fires without delay.
+        // Act & Assert — virtual time because the base delay logic unconditionally adds SERVER_BUSY_WAIT_TIME
+        //                  (4 s) to every retry; the first LINK error uses the quick-retry path (no delay).
         StepVerifier.withVirtualTime(() -> source.retryWhen(retry))
             .expectSubscription()
             .thenAwait(Duration.ofMinutes(1))
