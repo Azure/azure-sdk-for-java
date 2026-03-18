@@ -83,9 +83,12 @@ For Java SDK users, the most direct question is therefore not "which plane is th
 
 ---
 
-## 3. The Relationship Between TypeSpec and Java SDK LROs
+## 3. Authoring Long-Running Operations in TypeSpec
 
-LROs in the Java SDK may be hand-designed, or they may be generated from OpenAPI or TypeSpec. From a consumer perspective, what matters is the Java SDK API that is exposed. From a service-definition perspective, what determines polling behavior and final-result semantics often lives in the API specification layer.
+Long-running operations in the Azure SDK for Java can be implemented in multiple ways.  
+They may be hand-authored directly in the SDK, or generated from API specifications such as OpenAPI or TypeSpec.
+
+TypeSpec is an optional but increasingly common authoring approach used by Azure services to describe long-running operation semantics at the REST API level. When TypeSpec is used, its LRO declarations are consumed by the SDK generation pipeline and translated into the corresponding Java SDK poller-based programming model.
 
 ### 3.1 What Matters in Data-Plane TypeSpec Authoring
 
@@ -108,13 +111,6 @@ For example:
 - Resource create or update operations commonly use the resource type as `FinalResult`.
 - Delete operations commonly use `void`.
 - Async actions should use a `FinalResult` matching the actual action response type. If there is no response content, `void` should be used.
-
-### 3.3 What This Means for Java SDK Users
-
-Most Java SDK users do not need to understand TypeSpec syntax directly, but TypeSpec can strongly influence the observable behavior of the resulting Java API. Therefore:
-
-- Java users typically do not need to understand TypeSpec syntax itself.
-- When it is necessary to analyze why a poller's final result is a resource, a particular response type, or `void`, the API contract should be examined first rather than only the Java SDK surface.
 
 ---
 
