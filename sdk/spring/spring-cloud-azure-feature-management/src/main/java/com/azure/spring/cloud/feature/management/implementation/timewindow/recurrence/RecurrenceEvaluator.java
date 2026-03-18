@@ -6,6 +6,8 @@ package com.azure.spring.cloud.feature.management.implementation.timewindow.recu
 import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.ZonedDateTime;
+import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import com.azure.spring.cloud.feature.management.implementation.models.RecurrencePattern;
@@ -96,10 +98,30 @@ public class RecurrenceEvaluator {
         final ZonedDateTime firstDayOfFirstWeek = start.minusDays(
             TimeWindowUtils.getPassedWeekDays(start.getDayOfWeek(), pattern.getFirstDayOfWeek()));
 
-        final long numberOfInterval = Duration.between(firstDayOfFirstWeek, now).toSeconds()
-            / Duration.ofDays((long) interval * RecurrenceConstants.DAYS_PER_WEEK).toSeconds();
-        final ZonedDateTime firstDayOfMostRecentOccurringWeek = firstDayOfFirstWeek.plusDays(
+        // Use calendar-based week calculation to avoid DST-related undercounting
+        // Convert both dates to the same zone for accurate week counting
+        final ZonedDateTime alignedNow = now.withZoneSameInstant(firstDayOfFirstWeek.getZone());
+        final long numberOfInterval = ChronoUnit.WEEKS.between(firstDayOfFirstWeek, alignedNow) / interval;
+        ZonedDateTime firstDayOfMostRecentOccurringWeek = firstDayOfFirstWeek.plusDays(
             numberOfInterval * (interval * RecurrenceConstants.DAYS_PER_WEEK));
+        
+        // Handle DST transitions: If the calculated week start has a fixed offset (ZoneOffset)
+        // and 'now' has a region zone, check if they represent the same geographic location.
+        // We do this by checking if the fixed offset matches what the region zone's offset
+        // was at the *original start time*. If it matches, they're in the same timezone,
+        // and we should convert to the region zone for DST-aware comparisons.
+        if (firstDayOfMostRecentOccurringWeek.getZone() instanceof ZoneOffset 
+            && !(now.getZone() instanceof ZoneOffset)) {
+            // Check if the fixed offset matches the region zone's offset at the *start* instant
+            // (not at firstDayOfMostRecentOccurringWeek's instant, which might have crossed DST)
+            ZoneOffset offsetAtStart = now.getZone().getRules().getOffset(start.toInstant());
+            if (start.getOffset().equals(offsetAtStart)) {
+                // Same geographic location, convert to region zone for DST-aware comparisons
+                firstDayOfMostRecentOccurringWeek = firstDayOfMostRecentOccurringWeek
+                    .withZoneSameLocal(now.getZone());
+            }
+        }
+        
         final List<DayOfWeek> sortedDaysOfWeek = TimeWindowUtils.sortDaysOfWeek(pattern.getDaysOfWeek(), pattern.getFirstDayOfWeek());
         final int maxDayOffset = TimeWindowUtils.getPassedWeekDays(sortedDaysOfWeek.get(sortedDaysOfWeek.size() - 1), pattern.getFirstDayOfWeek());
         final int minDayOffset = TimeWindowUtils.getPassedWeekDays(sortedDaysOfWeek.get(0), pattern.getFirstDayOfWeek());

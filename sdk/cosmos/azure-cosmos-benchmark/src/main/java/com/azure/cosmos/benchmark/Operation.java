@@ -15,8 +15,6 @@ import java.util.Arrays;
 public enum Operation {
     ReadThroughput,
     WriteThroughput,
-    ReadLatency,
-    WriteLatency,
     QueryInClauseParallel,
     QueryCross,
     QuerySingle,
@@ -31,7 +29,6 @@ public enum Operation {
     CtlWorkload,
     ReadAllItemsOfLogicalPartition,
     LinkedInCtlWorkload,
-    ReadManyLatency,
     ReadManyThroughput;
 
     /**

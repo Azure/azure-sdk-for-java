@@ -422,7 +422,7 @@ com.azure.resourcemanager:azure-resourcemanager-fluidrelay;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-devcenter;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-connectedvmware;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-alertsmanagement;1.0.0-beta.2;1.0.0-beta.3
-com.azure.resourcemanager:azure-resourcemanager-nginx;1.0.0;1.1.0-beta.5
+com.azure.resourcemanager:azure-resourcemanager-nginx;1.0.0;1.1.0
 com.azure.resourcemanager:azure-resourcemanager-agrifood;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-devhub;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-elasticsan;1.2.0;1.3.0-beta.1
@@ -480,7 +480,7 @@ com.azure.resourcemanager:azure-resourcemanager-iotoperations;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-containerorchestratorruntime;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-terraform;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-connectedcache;1.0.0-beta.2;1.0.0-beta.3
-com.azure.resourcemanager:azure-resourcemanager-neonpostgres;1.0.0;1.1.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-neonpostgres;1.0.1;1.0.1
 com.azure.resourcemanager:azure-resourcemanager-pineconevectordb;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-impactreporting;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-migration-assessment;1.0.0-beta.1;1.0.0-beta.2
