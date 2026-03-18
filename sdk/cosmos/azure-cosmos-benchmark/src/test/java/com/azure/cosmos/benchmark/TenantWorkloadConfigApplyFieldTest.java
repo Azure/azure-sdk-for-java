@@ -52,14 +52,11 @@ public class TenantWorkloadConfigApplyFieldTest {
             }
 
             TenantWorkloadConfig config = new TenantWorkloadConfig();
-            try {
-                applyField.invoke(config, propName, "test-sentinel-value", true);
-            } catch (Exception e) {
-                // If applyField throws (e.g., NumberFormatException for int fields),
-                // that means the case exists but the test value is wrong type — that's OK.
-                // A missing case would just be a no-op (fall through default).
-                continue;
-            }
+            // Use "42" as the sentinel: it's valid for String, Integer (42), and
+            // Boolean (false) fields. Note that applyField() catches parse exceptions
+            // internally and does not rethrow, so we cannot rely on catching exceptions
+            // here to detect Integer/Boolean case existence.
+            applyField.invoke(config, propName, "42", true);
 
             // Check if ANY field was modified from its default (null) state.
             // If applyField silently ignored the key (no matching case), no field changes.
