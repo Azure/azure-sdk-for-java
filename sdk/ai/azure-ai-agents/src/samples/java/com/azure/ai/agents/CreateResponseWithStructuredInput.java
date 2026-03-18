@@ -3,12 +3,12 @@
 
 package com.azure.ai.agents;
 
+import com.azure.ai.agents.models.AgentReference;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.ai.agents.models.StructuredInputDefinition;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.openai.core.JsonValue;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
 
@@ -33,37 +33,32 @@ public class CreateResponseWithStructuredInput {
         AgentsClient agentsClient = builder.buildAgentsClient();
         ResponsesClient responsesClient = builder.buildResponsesClient();
 
+        // BEGIN: com.azure.ai.agents.define_structured_inputs
         // Create an agent with structured input definitions
-        Map<String, StructuredInputDefinition> inputDefs = new LinkedHashMap<>();
-        inputDefs.put("userName", new StructuredInputDefinition().setDescription("User's name").setRequired(true));
-        inputDefs.put("userRole", new StructuredInputDefinition().setDescription("User's role").setRequired(true));
+        Map<String, StructuredInputDefinition> structuredInputDefinitions = new LinkedHashMap<>();
+        structuredInputDefinitions.put("userName", new StructuredInputDefinition().setDescription("User's name").setRequired(true));
+        structuredInputDefinitions.put("userRole", new StructuredInputDefinition().setDescription("User's role").setRequired(true));
 
         AgentVersionDetails agent = agentsClient.createAgentVersion("structured-input-agent",
             new PromptAgentDefinition(model)
                 .setInstructions("You are a helpful assistant. "
                     + "The user's name is {{userName}} and their role is {{userRole}}. "
                     + "Greet them and confirm their details.")
-                .setStructuredInputs(inputDefs));
+                .setStructuredInputs(structuredInputDefinitions));
+        // END: com.azure.ai.agents.define_structured_inputs
 
-        // Create a response, passing structured input values
-        Map<String, Object> agentRef = new LinkedHashMap<>();
-        agentRef.put("type", "agent_reference");
-        agentRef.put("name", agent.getName());
-        agentRef.put("version", agent.getVersion());
+        // BEGIN: com.azure.ai.agents.create_response_with_structured_input
+        // Create a response, passing structured input values that match the agent's definitions
+        Map<String, Object> structuredInputValues = new LinkedHashMap<>();
+        structuredInputValues.put("userName", "Alice Smith");
+        structuredInputValues.put("userRole", "Senior Developer");
 
-        Map<String, Object> structuredInputs = new LinkedHashMap<>();
-        structuredInputs.put("userName", "Alice Smith");
-        structuredInputs.put("userRole", "Senior Developer");
-
-        Map<String, JsonValue> extraBody = new LinkedHashMap<>();
-        extraBody.put("agent_reference", JsonValue.from(agentRef));
-        extraBody.put("structured_inputs", JsonValue.from(structuredInputs));
-
-        Response response = responsesClient.getResponseService().create(
-            ResponseCreateParams.builder()
-                .input("Hello! Can you confirm my details?")
-                .additionalBodyProperties(extraBody)
-                .build());
+        Response response = responsesClient.createWithAgentStructuredInput(
+            new AgentReference(agent.getName()).setVersion(agent.getVersion()),
+            structuredInputValues,
+            ResponseCreateParams.builder().input("Hello! Can you confirm my details?")
+        );
+        // END: com.azure.ai.agents.create_response_with_structured_input
 
         System.out.println("Response: " + response.output());
 

@@ -10,6 +10,7 @@ import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.DeleteAgentResponse;
 import com.azure.ai.agents.models.DeleteAgentVersionResponse;
 import com.azure.ai.agents.models.PromptAgentDefinition;
+import com.azure.ai.agents.models.StructuredInputDefinition;
 import com.azure.core.http.HttpClient;
 import com.openai.models.conversations.Conversation;
 import com.openai.models.responses.EasyInputMessage;
@@ -21,7 +22,10 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 import static com.azure.ai.agents.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.*;
@@ -205,4 +209,49 @@ public class AgentsTests extends ClientTestBase {
     //        // Deleting response causes a 500
     //        //        responsesClient.getOpenAIClient().delete(response.id());
     //    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.agents.TestUtils#getTestParameters")
+    public void structuredInputTest(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
+        AgentsClient agentsClient = getAgentsSyncClient(httpClient, serviceVersion);
+        ResponsesClient responsesClient = getResponsesSyncClient(httpClient, serviceVersion);
+        String agentModel = "gpt-4o";
+
+        // Create an agent with structured input definitions
+        Map<String, StructuredInputDefinition> structuredInputDefinitions = new LinkedHashMap<>();
+        structuredInputDefinitions.put("userName",
+            new StructuredInputDefinition().setDescription("User's name").setRequired(true));
+        structuredInputDefinitions.put("userRole",
+            new StructuredInputDefinition().setDescription("User's role").setRequired(true));
+
+        AgentVersionDetails createdAgent = agentsClient.createAgentVersion(AGENT_NAME,
+            new PromptAgentDefinition(agentModel).setInstructions(
+                "You are a helpful assistant. " + "The user's name is {{userName}} and their role is {{userRole}}. "
+                    + "Greet them and confirm their details.")
+                .setStructuredInputs(structuredInputDefinitions));
+
+        assertNotNull(createdAgent);
+        assertNotNull(createdAgent.getId());
+        assertEquals(AGENT_NAME, createdAgent.getName());
+
+        // Create a response, passing structured input values that match the agent's definitions
+        Map<String, Object> structuredInputValues = new LinkedHashMap<>();
+        structuredInputValues.put("userName", "Alice Smith");
+        structuredInputValues.put("userRole", "Senior Developer");
+
+        Response response = responsesClient.createWithAgentStructuredInput(
+            new AgentReference(createdAgent.getName()).setVersion(createdAgent.getVersion()), structuredInputValues,
+            ResponseCreateParams.builder().input("Hello! Can you confirm my details?"));
+
+        assertNotNull(response);
+        assertTrue(response.id().startsWith("resp"));
+        assertTrue(response.status().isPresent());
+        assertEquals(ResponseStatus.COMPLETED, response.status().get());
+        assertFalse(response.output().isEmpty());
+        assertTrue(response.output().get(0).isMessage());
+        assertFalse(response.output().get(0).asMessage().content().isEmpty());
+
+        // Clean up
+        agentsClient.deleteAgentVersion(createdAgent.getName(), createdAgent.getVersion());
+    }
 }
