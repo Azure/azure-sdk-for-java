@@ -164,6 +164,12 @@ public class ReactorNettyClient implements HttpClient {
                             "customHeaderCleaner",
                             new Http2ResponseHeaderCleanerHandler());
                     }
+
+                    // Mark the Authorization header as HPACK "never indexed" (RFC 7541 §7.1.3).
+                    // Cosmos authorization tokens are unique per-request and large (~200+ bytes).
+                    // Without this, they pollute the HPACK dynamic table and evict reusable
+                    // static headers (User-Agent, x-ms-version, Content-Type, etc.).
+                    Http2SensitivityDetectorUtil.installSensitivityDetector(connection);
                 }));
         }
     }
