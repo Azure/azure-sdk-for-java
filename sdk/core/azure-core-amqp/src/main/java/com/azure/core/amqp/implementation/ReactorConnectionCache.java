@@ -18,7 +18,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.TimeoutException;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
@@ -49,7 +48,10 @@ public final class ReactorConnectionCache<T extends ReactorConnection> implement
     // any dependent type; instead, the dependent type must acquire Connection only through the cache route,
     // i.e., by subscribing to 'createOrGetCachedConnection' via 'get()' getter.
     private volatile T currentConnection;
-    private final AtomicBoolean forceInvalidate = new AtomicBoolean(false);
+    // Holds the ID of the connection that forceCloseConnection() asked to force-invalidate.
+    // Only the connection whose getId() matches this value will be invalidated by cacheInvalidateIf;
+    // a freshly created connection with a different ID is never accidentally invalidated.
+    private final AtomicReference<String> forceInvalidateConnectionId = new AtomicReference<>(null);
     private final State state = new State();
 
     /**
@@ -114,13 +116,24 @@ public final class ReactorConnectionCache<T extends ReactorConnection> implement
                 sink.next(connection);
             }
         }).cacheInvalidateIf(c -> {
-            if (c.isDisposed() || forceInvalidate.compareAndSet(true, false)) {
+            if (c.isDisposed()) {
+                // Connection disposed for any reason. Clean up the force-invalidate marker if it
+                // was targeting this connection so it is not accidentally consumed by a future
+                // connection that happens to have the same ID.
+                forceInvalidateConnectionId.compareAndSet(c.getId(), null);
                 withConnectionId(logger, c.getId()).log("The connection is closed, requesting a new connection.");
                 return true;
-            } else {
-                // Emit cached connection.
-                return false;
             }
+            final String targetId = forceInvalidateConnectionId.get();
+            if (targetId != null
+                && targetId.equals(c.getId())
+                && forceInvalidateConnectionId.compareAndSet(targetId, null)) {
+                // forceCloseConnection() asked to invalidate exactly this connection.
+                withConnectionId(logger, c.getId()).log("The connection is closed, requesting a new connection.");
+                return true;
+            }
+            // No forced invalidation targeted this connection — emit it from cache.
+            return false;
         });
     }
 
@@ -196,7 +209,7 @@ public final class ReactorConnectionCache<T extends ReactorConnection> implement
             // invalidates this connection on the next get() call, without blocking the caller
             // while the AMQP close handshake completes. ReactorConnection.dispose() calls
             // closeAsync().block(), which is illegal on a non-blocking Reactor thread.
-            forceInvalidate.set(true);
+            forceInvalidateConnectionId.set(connection.getId());
             connection.closeAsync()
                 .subscribe(null,
                     error -> logger.atVerbose()
