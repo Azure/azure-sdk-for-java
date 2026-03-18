@@ -31,7 +31,9 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicLong;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -579,5 +581,97 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         StepVerifier.create(client.uploadFromFileWithResponse(options))
             .verifyErrorMatches(throwable -> throwable instanceof IllegalArgumentException
                 && UPLOAD_FROM_FILE_MD5_NOT_SUPPORTED_MESSAGE.equals(throwable.getMessage()));
+    }
+
+    // ===========================================================================================
+    // Progress reporting tests with content validation (structured message)
+    //
+    // These tests verify that the ProgressListener reports the original (pre-encoded) byte count,
+    // not the encoded byte count which includes structured message overhead.
+    // Only APIs that accept ParallelTransferOptions (and thus setProgressListener) are tested here.
+    // ===========================================================================================
+
+    @Test
+    public void uploadProgressReportsPreEncodedBytes() {
+        BlobAsyncClient client = createBlobAsyncClientWithRequestSniffer(new CopyOnWriteArrayList<>());
+
+        byte[] randomData = getRandomByteArray(TEN_MB);
+        Flux<ByteBuffer> data = Flux.just(ByteBuffer.wrap(randomData));
+        AtomicLong progressReported = new AtomicLong(0);
+
+        BlobParallelUploadOptions options = new BlobParallelUploadOptions(data)
+            .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) TEN_MB)
+                .setProgressListener(progressReported::set))
+            .setRequestConditions(new BlobRequestConditions())
+            .setRequestChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
+
+        StepVerifier.create(client.uploadWithResponse(options)).assertNext(response -> {
+            assertNotNull(response.getValue().getETag());
+            assertEquals((long) TEN_MB, progressReported.get(),
+                "Progress should report pre-encoded byte count, not encoded byte count");
+        }).verifyComplete();
+    }
+
+    @Test
+    public void uploadChunkedProgressReportsPreEncodedBytes() {
+        BlobAsyncClient client = createBlobAsyncClientWithRequestSniffer(new CopyOnWriteArrayList<>());
+
+        byte[] randomData = getRandomByteArray(TEN_MB);
+        Flux<ByteBuffer> data = Flux.just(ByteBuffer.wrap(randomData));
+        long blockSize = 2 * (long) Constants.MB;
+        AtomicLong progressReported = new AtomicLong(0);
+
+        BlobParallelUploadOptions options = new BlobParallelUploadOptions(data)
+            .setParallelTransferOptions(new ParallelTransferOptions().setBlockSizeLong(blockSize)
+                .setMaxSingleUploadSizeLong(blockSize)
+                .setProgressListener(progressReported::set))
+            .setRequestConditions(new BlobRequestConditions())
+            .setRequestChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
+
+        StepVerifier.create(client.uploadWithResponse(options)).assertNext(response -> {
+            assertNotNull(response.getValue().getETag());
+            assertEquals((long) TEN_MB, progressReported.get(),
+                "Progress should report pre-encoded byte count, not encoded byte count");
+        }).verifyComplete();
+    }
+
+    @Test
+    public void uploadFromFileProgressReportsPreEncodedBytes() throws IOException {
+        BlobAsyncClient client = createBlobAsyncClientWithRequestSniffer(new CopyOnWriteArrayList<>());
+
+        File tempFile = getRandomFile(TEN_MB);
+        AtomicLong progressReported = new AtomicLong(0);
+
+        BlobUploadFromFileOptions options = new BlobUploadFromFileOptions(tempFile.getAbsolutePath())
+            .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong((long) TEN_MB)
+                .setProgressListener(progressReported::set))
+            .setRequestChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
+
+        StepVerifier.create(client.uploadFromFileWithResponse(options)).assertNext(response -> {
+            assertNotNull(response.getValue().getETag());
+            assertEquals((long) TEN_MB, progressReported.get(),
+                "Progress should report pre-encoded byte count, not encoded byte count");
+        }).verifyComplete();
+    }
+
+    @Test
+    public void uploadFromFileChunkedProgressReportsPreEncodedBytes() throws IOException {
+        BlobAsyncClient client = createBlobAsyncClientWithRequestSniffer(new CopyOnWriteArrayList<>());
+
+        File tempFile = getRandomFile(TEN_MB);
+        long blockSize = 2 * (long) Constants.MB;
+        AtomicLong progressReported = new AtomicLong(0);
+
+        BlobUploadFromFileOptions options = new BlobUploadFromFileOptions(tempFile.getAbsolutePath())
+            .setParallelTransferOptions(new ParallelTransferOptions().setBlockSizeLong(blockSize)
+                .setMaxSingleUploadSizeLong(blockSize)
+                .setProgressListener(progressReported::set))
+            .setRequestChecksumAlgorithm(StorageChecksumAlgorithm.CRC64);
+
+        StepVerifier.create(client.uploadFromFileWithResponse(options)).assertNext(response -> {
+            assertNotNull(response.getValue().getETag());
+            assertEquals((long) TEN_MB, progressReported.get(),
+                "Progress should report pre-encoded byte count, not encoded byte count");
+        }).verifyComplete();
     }
 }
