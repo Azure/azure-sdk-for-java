@@ -52,7 +52,7 @@ final class JsonConfigurationParser {
 
         // RFC 7231/6838: tokens cannot contain whitespace
         // Check for internal whitespace (after initial trim of the whole content type)
-        if (mainType.contains(" ") || mainType.contains("\t") || 
+        if (mainType.contains(" ") || mainType.contains("\t") ||
             subType.contains(" ") || subType.contains("\t")) {
             return false;
         }
