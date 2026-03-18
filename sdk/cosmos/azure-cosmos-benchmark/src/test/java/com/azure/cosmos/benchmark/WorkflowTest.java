@@ -17,6 +17,8 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import reactor.core.scheduler.Schedulers;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -31,42 +33,22 @@ public class WorkflowTest {
 
     @Test(groups = "fast", timeOut = TIMEOUT)
     public void readMyWritesCLI() throws Exception {
-        // Converted from CLI-based test to TenantWorkloadConfig-based test
-        // after CLI parameter refactor moved all workload config to JSON files.
-        int numberOfOperations = 123;
-
-        TenantWorkloadConfig cfg = new TenantWorkloadConfig();
-        cfg.setServiceEndpoint(TestConfigurations.HOST);
-        cfg.setMasterKey(TestConfigurations.MASTER_KEY);
-        cfg.setDatabaseId(database.getId());
-        cfg.setContainerId(collection.getId());
-        cfg.setConsistencyLevel("SESSION");
-        cfg.setConcurrency(2);
-        cfg.setNumberOfOperations(numberOfOperations);
-        cfg.setOperation("ReadMyWrites");
-        cfg.setConnectionMode("DIRECT");
-        cfg.setNumberOfPreCreatedDocuments(100);
-
-        AtomicInteger success = new AtomicInteger();
-        AtomicInteger error = new AtomicInteger();
-
-        ReadMyWriteWorkflow wf = new ReadMyWriteWorkflow(cfg, Schedulers.parallel()) {
-            @Override
-            protected void onError(Throwable throwable) {
-                error.incrementAndGet();
-            }
-
-            @Override
-            protected void onSuccess() {
-                success.incrementAndGet();
-            }
-        };
-
-        wf.run();
-        wf.shutdown();
-
-        assertThat(error).hasValue(0);
-        assertThat(success).hasValue(numberOfOperations);
+        File configFile = createWorkloadConfigFile(
+            TestConfigurations.HOST,
+            TestConfigurations.MASTER_KEY,
+            database.getId(),
+            collection.getId(),
+            "ReadMyWrites",
+            "DIRECT",
+            "SESSION",
+            2,
+            123,
+            100);
+        try {
+            Main.main(new String[]{"-workloadConfig", configFile.getAbsolutePath()});
+        } finally {
+            configFile.delete();
+        }
     }
 
     @Test(dataProvider = "collectionLinkTypeArgProvider", groups = "fast", timeOut = TIMEOUT)
@@ -109,41 +91,22 @@ public class WorkflowTest {
 
     @Test(groups = "fast", timeOut = TIMEOUT)
     public void writeThroughputCLI() throws Exception {
-        // Converted from CLI-based test to TenantWorkloadConfig-based test
-        // after CLI parameter refactor moved all workload config to JSON files.
-        int numberOfOperations = 1000;
-
-        TenantWorkloadConfig cfg = new TenantWorkloadConfig();
-        cfg.setServiceEndpoint(TestConfigurations.HOST);
-        cfg.setMasterKey(TestConfigurations.MASTER_KEY);
-        cfg.setDatabaseId(database.getId());
-        cfg.setContainerId(collection.getId());
-        cfg.setConsistencyLevel("SESSION");
-        cfg.setConcurrency(2);
-        cfg.setNumberOfOperations(numberOfOperations);
-        cfg.setOperation("WriteThroughput");
-        cfg.setConnectionMode("DIRECT");
-
-        AtomicInteger success = new AtomicInteger();
-        AtomicInteger error = new AtomicInteger();
-
-        AsyncWriteBenchmark wf = new AsyncWriteBenchmark(cfg, Schedulers.parallel()) {
-            @Override
-            protected void onError(Throwable throwable) {
-                error.incrementAndGet();
-            }
-
-            @Override
-            protected void onSuccess() {
-                success.incrementAndGet();
-            }
-        };
-
-        wf.run();
-        wf.shutdown();
-
-        assertThat(error).hasValue(0);
-        assertThat(success).hasValue(numberOfOperations);
+        File configFile = createWorkloadConfigFile(
+            TestConfigurations.HOST,
+            TestConfigurations.MASTER_KEY,
+            database.getId(),
+            collection.getId(),
+            "WriteThroughput",
+            "DIRECT",
+            "SESSION",
+            2,
+            1000,
+            0);
+        try {
+            Main.main(new String[]{"-workloadConfig", configFile.getAbsolutePath()});
+        } finally {
+            configFile.delete();
+        }
     }
 
     @Test(dataProvider = "collectionLinkTypeArgProvider", groups = "fast", timeOut = TIMEOUT)
@@ -338,6 +301,42 @@ public class WorkflowTest {
         Utils.safeCleanDatabases(housekeepingClient);
         Utils.safeClean(housekeepingClient, database);
         Utils.safeClose(housekeepingClient);
+    }
+
+    private File createWorkloadConfigFile(
+        String serviceEndpoint,
+        String masterKey,
+        String databaseId,
+        String containerId,
+        String operation,
+        String connectionMode,
+        String consistencyLevel,
+        int concurrency,
+        int numberOfOperations,
+        int numberOfPreCreatedDocuments) throws Exception {
+
+        String json = String.format(
+            "{ \"tenants\": [{ "
+                + "\"serviceEndpoint\": \"%s\", "
+                + "\"masterKey\": \"%s\", "
+                + "\"databaseId\": \"%s\", "
+                + "\"containerId\": \"%s\", "
+                + "\"operation\": \"%s\", "
+                + "\"connectionMode\": \"%s\", "
+                + "\"consistencyLevel\": \"%s\", "
+                + "\"concurrency\": %d, "
+                + "\"numberOfOperations\": %d, "
+                + "\"numberOfPreCreatedDocuments\": %d "
+                + "}] }",
+            serviceEndpoint, masterKey, databaseId, containerId,
+            operation, connectionMode, consistencyLevel,
+            concurrency, numberOfOperations, numberOfPreCreatedDocuments);
+
+        File tempFile = File.createTempFile("workload-config-", ".json");
+        try (FileWriter writer = new FileWriter(tempFile)) {
+            writer.write(json);
+        }
+        return tempFile;
     }
 
     DocumentCollection getCollectionDefinitionWithRangeRangeIndex() {
