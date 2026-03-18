@@ -280,7 +280,7 @@ public class AsyncCtlWorkload implements Benchmark {
                     } else {
                         failureCount.incrementAndGet();
                         failedResponses.add(response);
-                        logger.debug("Error during pre populating item {}",
+                        logger.debug("Error during pre-populating: {}",
                             response.getException() != null ? response.getException().getMessage() : "unknown error");
                     }
                 })
