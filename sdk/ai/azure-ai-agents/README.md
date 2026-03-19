@@ -608,7 +608,8 @@ The asynchronous streaming methods return `Flux<ResponseStreamEvent>`, integrati
 ResponseAccumulator responseAccumulator = ResponseAccumulator.create();
 
 // Stream response asynchronously - text is printed as each chunk arrives
-return responsesAsyncClient.createStreamingWithAgent(agentReference,
+return responsesAsyncClient.createStreamingAzureResponse(
+        new AzureCreateResponseOptions().setAgentReference(agentReference),
         ResponseCreateParams.builder()
             .input("Tell me a short story about a brave explorer."))
     .doOnNext(event -> {
