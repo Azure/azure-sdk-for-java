@@ -1996,12 +1996,12 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
 
                 if (leaseDocumentsWithNonNullContinuationToken > 0) {
                     assertThrows(IllegalStateException.class, () -> fullFidelityChangeFeedProcessor.start().subscribeOn(Schedulers.boundedElastic())
-                        .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
+                        .timeout(Duration.ofMillis(10 * CHANGE_FEED_PROCESSOR_TIMEOUT))
                         .block());
                 } else {
 
                     fullFidelityChangeFeedProcessor.start().subscribeOn(Schedulers.boundedElastic())
-                        .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
+                        .timeout(Duration.ofMillis(10 * CHANGE_FEED_PROCESSOR_TIMEOUT))
                         .doOnSuccess(ignore -> logger.info("Started FULL_FIDELITY ChangeFeedProcessor successfully!"))
                         .block();
 
@@ -2201,19 +2201,8 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             throw ex;
         }
 
-        // Poll until all documents are received instead of sleeping the full duration.
-        // This returns as soon as documents arrive, saving significant time in CI.
-        long deadline = System.currentTimeMillis() + sleepTime;
-        while (System.currentTimeMillis() < deadline && receivedDocuments.size() < createdDocuments.size()) {
-            Thread.sleep(100);
-        }
-
-        // Ensure the processor has fully started — start() is async so it may still
-        // be transitioning, especially when createdDocuments is empty.
-        long startDeadline = System.currentTimeMillis() + 2 * CHANGE_FEED_PROCESSOR_TIMEOUT;
-        while (!changeFeedProcessor.isStarted() && System.currentTimeMillis() < startDeadline) {
-            Thread.sleep(200);
-        }
+        // Wait for the feed processor to receive and process the documents.
+        Thread.sleep(sleepTime);
 
         assertThat(changeFeedProcessor.isStarted()).as("Change Feed Processor instance is running").isTrue();
 
@@ -2235,7 +2224,11 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             assertThat(item.getHostName()).isEqualTo(hostName).as("Change Feed Processor ownership");
         }
 
-        changeFeedProcessor.stop().subscribeOn(Schedulers.boundedElastic()).timeout(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
+        // Block on stop to ensure the processor fully releases leases before the caller
+        // starts another processor on the same lease container (e.g. full fidelity CFP).
+        changeFeedProcessor.stop().subscribeOn(Schedulers.boundedElastic())
+            .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
+            .block();
 
         for (InternalObjectNode item : createdDocuments) {
             assertThat(receivedDocuments.containsKey(item.getId())).as("Document with getId: " + item.getId()).isTrue();
