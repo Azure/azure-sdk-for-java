@@ -16,43 +16,33 @@ public class NetworkCustomization extends Customization {
     public void customize(LibraryCustomization customization, Logger logger) {
         PackageCustomization fluentModelsPackage
             = customization.getPackage("com.azure.resourcemanager.network.fluent.models");
-        // change base class to "Resource", to avoid breaking changes and compilation errors
+        // change base class to "Resource" for DdosProtectionPlan and RouteFilter
         customizeResourceBaseClass(fluentModelsPackage.getClass("DdosProtectionPlanInner"));
         customizeResourceBaseClass(fluentModelsPackage.getClass("RouteFilterInner"));
 
-        // change SubnetInner base class to SubResource for backward compatibility
-        customizeSubResourceBaseClass(fluentModelsPackage.getClass("SubnetInner"));
+        // make SubResourceModel extend SubResource for backward compatibility
+        PackageCustomization modelsPackage
+            = customization.getPackage("com.azure.resourcemanager.network.models");
+        customizeSubResourceModelBaseClass(modelsPackage.getClass("SubResourceModel"));
     }
 
-    /**
-     * Customize the base class to be "com.azure.core.management.Resource".
-     *
-     * @param customization the customization for class
-     */
     private static void customizeResourceBaseClass(ClassCustomization customization) {
         customization.customizeAst(ast -> {
             ast.getClassByName(customization.getClassName()).ifPresent(clazz -> {
-                String resourceClassName = "com.azure.core.management.Resource";
-                ast.addImport(resourceClassName);
+                ast.addImport("com.azure.core.management.Resource");
                 clazz.getExtendedTypes().clear();
                 clazz.addExtendedType(new ClassOrInterfaceType(null, "Resource"));
-                // remove withId method that references super.withId() which doesn't exist on Resource
-                clazz.getMethodsByName("withId").forEach(method -> method.remove());
+                // remove withId/withName methods that call super methods not on Resource
+                clazz.getMethodsByName("withId").forEach(m -> m.remove());
+                clazz.getMethodsByName("withName").forEach(m -> m.remove());
             });
         });
     }
 
-    /**
-     * Customize the base class to be "com.azure.core.management.SubResource".
-     *
-     * @param customization the customization for class
-     */
-    private static void customizeSubResourceBaseClass(ClassCustomization customization) {
+    private static void customizeSubResourceModelBaseClass(ClassCustomization customization) {
         customization.customizeAst(ast -> {
             ast.getClassByName(customization.getClassName()).ifPresent(clazz -> {
-                String subResourceClassName = "com.azure.core.management.SubResource";
-                ast.addImport(subResourceClassName);
-                clazz.getExtendedTypes().clear();
+                ast.addImport("com.azure.core.management.SubResource");
                 clazz.addExtendedType(new ClassOrInterfaceType(null, "SubResource"));
             });
         });
