@@ -28,13 +28,13 @@ public final class EntityRecognitionSkillV3 extends SearchIndexerSkill {
      * A list of entity categories that should be extracted.
      */
     @Generated
-    private List<String> categories;
+    private List<EntityCategory> categories;
 
     /*
      * A value indicating which language code to use. Default is `en`.
      */
     @Generated
-    private String defaultLanguageCode;
+    private EntityRecognitionSkillLanguage defaultLanguageCode;
 
     /*
      * A value between 0 and 1 that be used to only include entities whose confidence score is greater than the value
@@ -78,7 +78,7 @@ public final class EntityRecognitionSkillV3 extends SearchIndexerSkill {
      * @return the categories value.
      */
     @Generated
-    public List<String> getCategories() {
+    public List<EntityCategory> getCategories() {
         return this.categories;
     }
 
@@ -89,7 +89,9 @@ public final class EntityRecognitionSkillV3 extends SearchIndexerSkill {
      * @return the EntityRecognitionSkillV3 object itself.
      */
     public EntityRecognitionSkillV3 setCategories(String... categories) {
-        this.categories = (categories == null) ? null : Arrays.asList(categories);
+        this.categories = (categories == null)
+            ? null
+            : Arrays.stream(categories).map(EntityCategory::fromString).collect(java.util.stream.Collectors.toList());
         return this;
     }
 
@@ -100,7 +102,7 @@ public final class EntityRecognitionSkillV3 extends SearchIndexerSkill {
      * @return the EntityRecognitionSkillV3 object itself.
      */
     @Generated
-    public EntityRecognitionSkillV3 setCategories(List<String> categories) {
+    public EntityRecognitionSkillV3 setCategories(List<EntityCategory> categories) {
         this.categories = categories;
         return this;
     }
@@ -111,20 +113,8 @@ public final class EntityRecognitionSkillV3 extends SearchIndexerSkill {
      * @return the defaultLanguageCode value.
      */
     @Generated
-    public String getDefaultLanguageCode() {
+    public EntityRecognitionSkillLanguage getDefaultLanguageCode() {
         return this.defaultLanguageCode;
-    }
-
-    /**
-     * Set the defaultLanguageCode property: A value indicating which language code to use. Default is `en`.
-     *
-     * @param defaultLanguageCode the defaultLanguageCode value to set.
-     * @return the EntityRecognitionSkillV3 object itself.
-     */
-    @Generated
-    public EntityRecognitionSkillV3 setDefaultLanguageCode(String defaultLanguageCode) {
-        this.defaultLanguageCode = defaultLanguageCode;
-        return this;
     }
 
     /**
@@ -222,8 +212,10 @@ public final class EntityRecognitionSkillV3 extends SearchIndexerSkill {
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeStringField("context", getContext());
         jsonWriter.writeStringField("@odata.type", this.odataType);
-        jsonWriter.writeArrayField("categories", this.categories, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeStringField("defaultLanguageCode", this.defaultLanguageCode);
+        jsonWriter.writeArrayField("categories", this.categories,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeStringField("defaultLanguageCode",
+            this.defaultLanguageCode == null ? null : this.defaultLanguageCode.toString());
         jsonWriter.writeNumberField("minimumPrecision", this.minimumPrecision);
         jsonWriter.writeStringField("modelVersion", this.modelVersion);
         return jsonWriter.writeEndObject();
@@ -247,8 +239,8 @@ public final class EntityRecognitionSkillV3 extends SearchIndexerSkill {
             String description = null;
             String context = null;
             String odataType = "#Microsoft.Skills.Text.V3.EntityRecognitionSkill";
-            List<String> categories = null;
-            String defaultLanguageCode = null;
+            List<EntityCategory> categories = null;
+            EntityRecognitionSkillLanguage defaultLanguageCode = null;
             Double minimumPrecision = null;
             String modelVersion = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -267,9 +259,9 @@ public final class EntityRecognitionSkillV3 extends SearchIndexerSkill {
                 } else if ("@odata.type".equals(fieldName)) {
                     odataType = reader.getString();
                 } else if ("categories".equals(fieldName)) {
-                    categories = reader.readArray(reader1 -> reader1.getString());
+                    categories = reader.readArray(reader1 -> EntityCategory.fromString(reader1.getString()));
                 } else if ("defaultLanguageCode".equals(fieldName)) {
-                    defaultLanguageCode = reader.getString();
+                    defaultLanguageCode = EntityRecognitionSkillLanguage.fromString(reader.getString());
                 } else if ("minimumPrecision".equals(fieldName)) {
                     minimumPrecision = reader.getNullable(JsonReader::getDouble);
                 } else if ("modelVersion".equals(fieldName)) {
@@ -290,5 +282,17 @@ public final class EntityRecognitionSkillV3 extends SearchIndexerSkill {
             deserializedEntityRecognitionSkillV3.modelVersion = modelVersion;
             return deserializedEntityRecognitionSkillV3;
         });
+    }
+
+    /**
+     * Set the defaultLanguageCode property: A value indicating which language code to use. Default is `en`.
+     *
+     * @param defaultLanguageCode the defaultLanguageCode value to set.
+     * @return the EntityRecognitionSkillV3 object itself.
+     */
+    @Generated
+    public EntityRecognitionSkillV3 setDefaultLanguageCode(EntityRecognitionSkillLanguage defaultLanguageCode) {
+        this.defaultLanguageCode = defaultLanguageCode;
+        return this;
     }
 }

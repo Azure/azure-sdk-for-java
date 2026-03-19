@@ -15,19 +15,6 @@ import java.util.List;
 public final class SearchOptions {
 
     /*
-     * Token identifying the user for which the query is being executed. This token is used to enforce security
-     * restrictions on documents.
-     */
-    @Generated
-    private String querySourceAuthorization;
-
-    /*
-     * A value that enables elevated read that bypass document level permission checks for the query operation.
-     */
-    @Generated
-    private Boolean enableElevatedRead;
-
-    /*
      * A value that specifies whether to fetch the total count of results. Default is false. Setting this value to true
      * may have a performance impact. Note that the count returned is an approximation.
      */
@@ -151,18 +138,6 @@ public final class SearchOptions {
     private SearchMode searchMode;
 
     /*
-     * A value that specifies the language of the search query.
-     */
-    @Generated
-    private QueryLanguage queryLanguage;
-
-    /*
-     * A value that specifies the type of the speller to use to spell-correct individual search query terms.
-     */
-    @Generated
-    private QuerySpellerType querySpeller;
-
-    /*
      * The comma-separated list of fields to retrieve. If unspecified, all fields marked as retrievable in the schema
      * are included.
      */
@@ -226,18 +201,6 @@ public final class SearchOptions {
     private QueryCaptionType captions;
 
     /*
-     * A value that specifies whether query rewrites should be generated to augment the search query.
-     */
-    @Generated
-    private QueryRewritesType queryRewrites;
-
-    /*
-     * The comma-separated list of field names used for semantic ranking.
-     */
-    @Generated
-    private List<String> semanticFields;
-
-    /*
      * The query parameters for vector and hybrid search queries.
      */
     @Generated
@@ -250,65 +213,11 @@ public final class SearchOptions {
     @Generated
     private VectorFilterMode vectorFilterMode;
 
-    /*
-     * The query parameters to configure hybrid search behaviors.
-     */
-    @Generated
-    private HybridSearch hybridSearch;
-
     /**
      * Creates an instance of SearchOptions class.
      */
     @Generated
     public SearchOptions() {
-    }
-
-    /**
-     * Get the querySourceAuthorization property: Token identifying the user for which the query is being executed. This
-     * token is used to enforce security restrictions on documents.
-     *
-     * @return the querySourceAuthorization value.
-     */
-    @Generated
-    public String getQuerySourceAuthorization() {
-        return this.querySourceAuthorization;
-    }
-
-    /**
-     * Set the querySourceAuthorization property: Token identifying the user for which the query is being executed. This
-     * token is used to enforce security restrictions on documents.
-     *
-     * @param querySourceAuthorization the querySourceAuthorization value to set.
-     * @return the SearchOptions object itself.
-     */
-    @Generated
-    public SearchOptions setQuerySourceAuthorization(String querySourceAuthorization) {
-        this.querySourceAuthorization = querySourceAuthorization;
-        return this;
-    }
-
-    /**
-     * Get the enableElevatedRead property: A value that enables elevated read that bypass document level permission
-     * checks for the query operation.
-     *
-     * @return the enableElevatedRead value.
-     */
-    @Generated
-    public Boolean isEnableElevatedRead() {
-        return this.enableElevatedRead;
-    }
-
-    /**
-     * Set the enableElevatedRead property: A value that enables elevated read that bypass document level permission
-     * checks for the query operation.
-     *
-     * @param enableElevatedRead the enableElevatedRead value to set.
-     * @return the SearchOptions object itself.
-     */
-    @Generated
-    public SearchOptions setEnableElevatedRead(Boolean enableElevatedRead) {
-        this.enableElevatedRead = enableElevatedRead;
-        return this;
     }
 
     /**
@@ -805,52 +714,6 @@ public final class SearchOptions {
     }
 
     /**
-     * Get the queryLanguage property: A value that specifies the language of the search query.
-     *
-     * @return the queryLanguage value.
-     */
-    @Generated
-    public QueryLanguage getQueryLanguage() {
-        return this.queryLanguage;
-    }
-
-    /**
-     * Set the queryLanguage property: A value that specifies the language of the search query.
-     *
-     * @param queryLanguage the queryLanguage value to set.
-     * @return the SearchOptions object itself.
-     */
-    @Generated
-    public SearchOptions setQueryLanguage(QueryLanguage queryLanguage) {
-        this.queryLanguage = queryLanguage;
-        return this;
-    }
-
-    /**
-     * Get the querySpeller property: A value that specifies the type of the speller to use to spell-correct individual
-     * search query terms.
-     *
-     * @return the querySpeller value.
-     */
-    @Generated
-    public QuerySpellerType getQuerySpeller() {
-        return this.querySpeller;
-    }
-
-    /**
-     * Set the querySpeller property: A value that specifies the type of the speller to use to spell-correct individual
-     * search query terms.
-     *
-     * @param querySpeller the querySpeller value to set.
-     * @return the SearchOptions object itself.
-     */
-    @Generated
-    public SearchOptions setQuerySpeller(QuerySpellerType querySpeller) {
-        this.querySpeller = querySpeller;
-        return this;
-    }
-
-    /**
      * Get the select property: The comma-separated list of fields to retrieve. If unspecified, all fields marked as
      * retrievable in the schema are included.
      *
@@ -1085,63 +948,6 @@ public final class SearchOptions {
     }
 
     /**
-     * Get the queryRewrites property: A value that specifies whether query rewrites should be generated to augment the
-     * search query.
-     *
-     * @return the queryRewrites value.
-     */
-    @Generated
-    public QueryRewritesType getQueryRewrites() {
-        return this.queryRewrites;
-    }
-
-    /**
-     * Set the queryRewrites property: A value that specifies whether query rewrites should be generated to augment the
-     * search query.
-     *
-     * @param queryRewrites the queryRewrites value to set.
-     * @return the SearchOptions object itself.
-     */
-    @Generated
-    public SearchOptions setQueryRewrites(QueryRewritesType queryRewrites) {
-        this.queryRewrites = queryRewrites;
-        return this;
-    }
-
-    /**
-     * Get the semanticFields property: The comma-separated list of field names used for semantic ranking.
-     *
-     * @return the semanticFields value.
-     */
-    @Generated
-    public List<String> getSemanticFields() {
-        return this.semanticFields;
-    }
-
-    /**
-     * Set the semanticFields property: The comma-separated list of field names used for semantic ranking.
-     *
-     * @param semanticFields the semanticFields value to set.
-     * @return the SearchOptions object itself.
-     */
-    public SearchOptions setSemanticFields(String... semanticFields) {
-        this.semanticFields = (semanticFields == null) ? null : Arrays.asList(semanticFields);
-        return this;
-    }
-
-    /**
-     * Set the semanticFields property: The comma-separated list of field names used for semantic ranking.
-     *
-     * @param semanticFields the semanticFields value to set.
-     * @return the SearchOptions object itself.
-     */
-    @Generated
-    public SearchOptions setSemanticFields(List<String> semanticFields) {
-        this.semanticFields = semanticFields;
-        return this;
-    }
-
-    /**
      * Get the vectorQueries property: The query parameters for vector and hybrid search queries.
      *
      * @return the vectorQueries value.
@@ -1195,28 +1001,6 @@ public final class SearchOptions {
     @Generated
     public SearchOptions setVectorFilterMode(VectorFilterMode vectorFilterMode) {
         this.vectorFilterMode = vectorFilterMode;
-        return this;
-    }
-
-    /**
-     * Get the hybridSearch property: The query parameters to configure hybrid search behaviors.
-     *
-     * @return the hybridSearch value.
-     */
-    @Generated
-    public HybridSearch getHybridSearch() {
-        return this.hybridSearch;
-    }
-
-    /**
-     * Set the hybridSearch property: The query parameters to configure hybrid search behaviors.
-     *
-     * @param hybridSearch the hybridSearch value to set.
-     * @return the SearchOptions object itself.
-     */
-    @Generated
-    public SearchOptions setHybridSearch(HybridSearch hybridSearch) {
-        this.hybridSearch = hybridSearch;
         return this;
     }
 }

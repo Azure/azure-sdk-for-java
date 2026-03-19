@@ -180,14 +180,10 @@ public class KnowledgeBaseReference implements JsonSerializable<KnowledgeBaseRef
                     return KnowledgeBaseSearchIndexReference.fromJson(readerToUse.reset());
                 } else if ("azureBlob".equals(discriminatorValue)) {
                     return KnowledgeBaseAzureBlobReference.fromJson(readerToUse.reset());
-                } else if ("indexedSharePoint".equals(discriminatorValue)) {
-                    return KnowledgeBaseIndexedSharePointReference.fromJson(readerToUse.reset());
                 } else if ("indexedOneLake".equals(discriminatorValue)) {
                     return KnowledgeBaseIndexedOneLakeReference.fromJson(readerToUse.reset());
                 } else if ("web".equals(discriminatorValue)) {
                     return KnowledgeBaseWebReference.fromJson(readerToUse.reset());
-                } else if ("remoteSharePoint".equals(discriminatorValue)) {
-                    return KnowledgeBaseRemoteSharePointReference.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }
