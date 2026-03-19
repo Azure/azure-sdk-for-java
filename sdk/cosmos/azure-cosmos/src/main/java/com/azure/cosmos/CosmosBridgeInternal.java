@@ -115,6 +115,10 @@ public final class CosmosBridgeInternal {
             .multipleWriteRegionsEnabled(builder.isMultipleWriteRegionsEnabled())
             .readRequestsFallbackEnabled(builder.isReadRequestsFallbackEnabled());
 
+fixig        if (builder.getAdditionalHeadersRaw() != null) {
+            copy.additionalHeaders(builder.getAdditionalHeadersRaw());
+        }
+
         return copy;
     }
 

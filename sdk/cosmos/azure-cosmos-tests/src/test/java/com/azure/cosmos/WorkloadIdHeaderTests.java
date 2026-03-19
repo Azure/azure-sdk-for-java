@@ -113,6 +113,36 @@ public class WorkloadIdHeaderTests {
         assertThat(builder.getAdditionalHeaders()).isEmpty();
     }
 
+    @Test(groups = { "unit" })
+    public void clonedBuilderPreservesAdditionalHeaders() {
+        Map<CosmosHeaderName, String> headers = new HashMap<>();
+        headers.put(CosmosHeaderName.WORKLOAD_ID, "25");
+
+        CosmosClientBuilder original = new CosmosClientBuilder()
+            .endpoint("https://test.documents.azure.com:443/")
+            .key("dGVzdEtleQ==")
+            .additionalHeaders(headers);
+
+        CosmosClientBuilder cloned = CosmosBridgeInternal.cloneCosmosClientBuilder(original);
+
+        assertThat(cloned.getAdditionalHeaders())
+            .as("cloned builder should preserve additionalHeaders")
+            .containsEntry(WORKLOAD_ID_HEADER, "25");
+    }
+
+    @Test(groups = { "unit" })
+    public void clonedBuilderHandlesNullAdditionalHeaders() {
+        CosmosClientBuilder original = new CosmosClientBuilder()
+            .endpoint("https://test.documents.azure.com:443/")
+            .key("dGVzdEtleQ==");
+
+        CosmosClientBuilder cloned = CosmosBridgeInternal.cloneCosmosClientBuilder(original);
+
+        assertThat(cloned.getAdditionalHeaders())
+            .as("cloned builder should handle null additionalHeaders")
+            .isNull();
+    }
+
     // ==============================================================================================
     // 3. Validation — non-numeric rejected, out-of-range accepted
     // ==============================================================================================
