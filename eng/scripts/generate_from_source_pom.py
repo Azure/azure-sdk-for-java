@@ -311,11 +311,9 @@ def resolve_project_dependencies(pom_identifier: str, dependency_modules: Set[st
         # These are added since From Source the parent POMs are also built.
         if project.parent_pom is not None and project.parent_pom in projects:
             parent_project = projects[project.parent_pom]
-            for dependency in parent_project.dependencies:
-                # Only continue if the parent's dependencies haven't already been resolved.
-                if not dependency in dependency_modules:
-                    dependency_modules.add(dependency)
-                    dependency_modules = resolve_project_dependencies(dependency, dependency_modules, projects)
+            if not parent_project.identifier in dependency_modules:
+                dependency_modules.add(parent_project.identifier)
+                dependency_modules = resolve_project_dependencies(parent_project.identifier, dependency_modules, projects)
 
     return dependency_modules
 
