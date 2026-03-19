@@ -338,6 +338,10 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                 .getEffectiveHttpTransportSerializer(this)
                 .wrapInHttpRequest(request, requestUri);
 
+            // Capture the request record early so it's available on both success and error paths.
+            // Each retry creates a new HttpRequest with a new record, so this is per-attempt.
+            request.requestContext.reactorNettyRequestRecord = httpRequest.reactorNettyRequestRecord();
+
             Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest, request.getResponseTimeout());
 
             if (this.gatewayServerErrorInjector != null) {
@@ -489,71 +493,60 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
 
                             // there could be a race with the catch in the .map operator below
                             // so, use safeRelease
-                            ReferenceCountUtil.safeRelease(buf);
+                            safeSilentRelease(buf);
                         }
                     })
                     .publishOn(CosmosSchedulers.TRANSPORT_RESPONSE_BOUNDED_ELASTIC);
 
                 return contentObservable
                     .map(content -> {
-                        // Mark as consumed - downstream StoreResponse creation will release the ByteBuf
-                        retainedBufRef.compareAndSet(content, null);
 
                         if (leakDetectionDebuggingEnabled) {
                             content.touch("RxGatewayStoreModel - before capturing transport timeline - refCnt: " + content.refCnt());
                             logger.debug("RxGatewayStoreModel - before capturing transport timeline - refCnt: {}", content.refCnt());
                         }
 
-                        try {
-                            // Capture transport client request timeline
-                            ReactorNettyRequestRecord reactorNettyRequestRecord = httpResponse.request().reactorNettyRequestRecord();
-                            if (reactorNettyRequestRecord != null) {
-                                reactorNettyRequestRecord.setTimeCompleted(Instant.now());
-                            }
-
-                            if (leakDetectionDebuggingEnabled) {
-                                content.touch("RxGatewayStoreModel - before creating StoreResponse - refCnt: " + content.refCnt());
-                                logger.debug("RxGatewayStoreModel - before creating StoreResponse - refCnt: {}", content.refCnt());
-                            }
-                            StoreResponse rsp = request
-                                .getEffectiveHttpTransportSerializer(this)
-                                .unwrapToStoreResponse(httpRequest.uri().toString(), request, httpResponseStatus, httpResponseHeaders, content);
-
-                            if (reactorNettyRequestRecord != null) {
-                                rsp.setRequestTimeline(reactorNettyRequestRecord.takeTimelineSnapshot());
-
-                                if (this.gatewayServerErrorInjector != null) {
-                                    // only configure when fault injection is used
-                                    rsp.setFaultInjectionRuleId(
-                                        request
-                                            .faultInjectionRequestContext
-                                            .getFaultInjectionRuleId(reactorNettyRequestRecord.getTransportRequestId()));
-
-                                    rsp.setFaultInjectionRuleEvaluationResults(
-                                        request
-                                            .faultInjectionRequestContext
-                                            .getFaultInjectionRuleEvaluationResults(reactorNettyRequestRecord.getTransportRequestId()));
-                                }
-                            }
-
-                            if (request.requestContext.cosmosDiagnostics != null) {
-                                BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, rsp, globalEndpointManager);
-                            }
-
-                            return rsp;
-                        } catch (Throwable t) {
-                            if (content.refCnt() > 0) {
-                                if (leakDetectionDebuggingEnabled) {
-                                    content.touch("RxGatewayStoreModel -exception creating StoreResponse - refCnt: " + content.refCnt());
-                                    logger.debug("RxGatewayStoreModel -exception creating StoreResponse - refCnt: {}", content.refCnt());
-                                }
-                                // Unwrap failed before StoreResponse took ownership -> release our retain
-                                // there could be a race with the doOnDiscard above - so, use safeRelease
-                                ReferenceCountUtil.safeRelease(content);
-                            }
-
-                            throw t;
+                        // Capture transport client request timeline
+                        ReactorNettyRequestRecord reactorNettyRequestRecord = httpResponse.request().reactorNettyRequestRecord();
+                        if (reactorNettyRequestRecord != null) {
+                            reactorNettyRequestRecord.setTimeCompleted(Instant.now());
                         }
+
+                        if (leakDetectionDebuggingEnabled) {
+                            content.touch("RxGatewayStoreModel - before creating StoreResponse - refCnt: " + content.refCnt());
+                            logger.debug("RxGatewayStoreModel - before creating StoreResponse - refCnt: {}", content.refCnt());
+                        }
+                        StoreResponse rsp = request
+                            .getEffectiveHttpTransportSerializer(this)
+                            .unwrapToStoreResponse(httpRequest.uri().toString(), request, httpResponseStatus, httpResponseHeaders, content);
+
+                        // Only clear retainedBufRef AFTER StoreResponse successfully takes ownership.
+                        // If unwrapToStoreResponse throws, retainedBufRef remains set so doFinally
+                        // will release the buffer — avoiding a double-release race with doOnDiscard.
+                        retainedBufRef.compareAndSet(content, null);
+
+                        if (reactorNettyRequestRecord != null) {
+                            rsp.setRequestTimeline(reactorNettyRequestRecord.takeTimelineSnapshot());
+
+                            if (this.gatewayServerErrorInjector != null) {
+                                // only configure when fault injection is used
+                                rsp.setFaultInjectionRuleId(
+                                    request
+                                        .faultInjectionRequestContext
+                                        .getFaultInjectionRuleId(reactorNettyRequestRecord.getTransportRequestId()));
+
+                                rsp.setFaultInjectionRuleEvaluationResults(
+                                    request
+                                        .faultInjectionRequestContext
+                                        .getFaultInjectionRuleEvaluationResults(reactorNettyRequestRecord.getTransportRequestId()));
+                            }
+                        }
+
+                        if (request.requestContext.cosmosDiagnostics != null) {
+                            BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, rsp, globalEndpointManager);
+                        }
+
+                        return rsp;
                     })
                     .doOnDiscard(ByteBuf.class, buf -> {
                         // This handles the case where the retained buffer is discarded after the map operation
@@ -564,7 +557,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                                 buf.touch("RxGatewayStoreModel - doOnDiscard after map - refCnt: " + buf.refCnt());
                                 logger.debug("RxGatewayStoreModel - doOnDiscard after map - refCnt: {}", buf.refCnt());
                             }
-                            ReferenceCountUtil.safeRelease(buf);
+                            safeSilentRelease(buf);
                         }
                     })
                     .doFinally(signal -> {
@@ -577,7 +570,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                                 buf.touch("RxGatewayStoreModel - doFinally safety net - signal: " + signal + " - refCnt: " + buf.refCnt());
                                 logger.debug("RxGatewayStoreModel - doFinally safety net releasing ByteBuf - signal: {}, refCnt: {}", signal, buf.refCnt());
                             }
-                            ReferenceCountUtil.safeRelease(buf);
+                            safeSilentRelease(buf);
                         }
                     })
                     .single();
@@ -688,6 +681,13 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
 
                     request.requestContext.cancelledGatewayRequestTimelineContexts.add(gatewayRequestTimelineContext);
 
+                    // Always set the request URI so endpoint is captured in diagnostics on cancellation.
+                    // The endpoint is known at request-send time and should not be lost on cancellation.
+                    ImplementationBridgeHelpers
+                        .CosmosExceptionHelper
+                        .getCosmosExceptionAccessor()
+                        .setRequestUri(oce, Uri.create(httpRequest.uri().toString()));
+
                     if (request.requestContext.getCrossRegionAvailabilityContext() != null) {
 
                         CrossRegionAvailabilityContextForRxDocumentServiceRequest availabilityStrategyContextForReq =
@@ -736,7 +736,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                 ? retainedBodyAsByteBuf.toString(StandardCharsets.UTF_8)
                 : null;
 
-            ReferenceCountUtil.safeRelease(retainedBodyAsByteBuf);
+            safeSilentRelease(retainedBodyAsByteBuf);
 
             CosmosError cosmosError;
             cosmosError = (StringUtils.isNotEmpty(body)) ? new CosmosError(body) : new CosmosError();
@@ -1110,5 +1110,15 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
 
     private static boolean isStoredProcedureMasterOperation(ResourceType resourceType, OperationType operationType) {
         return resourceType == ResourceType.StoredProcedure && operationType != OperationType.ExecuteJavaScript;
+    }
+
+    static void safeSilentRelease(Object msg) {
+        try {
+            ReferenceCountUtil.release(msg);
+        } catch (Throwable t) {
+            // ReferenceCountUtil.safeRelease(msg); would always log teh warning below - which is unnecessary
+            // in this class - we only needs this for a race condition rarely double-releasing
+            // logger.warn("Failed to release a message: {}", msg, t);
+        }
     }
 }

@@ -54,12 +54,8 @@ public final class ResourceProvidersImpl implements ResourceProviders {
         String operationId, Context context) {
         Response<OperationStatusInner> inner
             = this.serviceClient().getOperationStatusWithResponse(vaultName, resourceGroupName, operationId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new OperationStatusImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new OperationStatusImpl(inner.getValue(), this.manager()));
     }
 
     public OperationStatus getOperationStatus(String vaultName, String resourceGroupName, String operationId) {

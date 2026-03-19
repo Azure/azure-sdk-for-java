@@ -31,12 +31,8 @@ public final class NamespaceDevicesImpl implements NamespaceDevices {
         Context context) {
         Response<NamespaceDeviceInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, namespaceName, deviceName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new NamespaceDeviceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new NamespaceDeviceImpl(inner.getValue(), this.manager()));
     }
 
     public NamespaceDevice get(String resourceGroupName, String namespaceName, String deviceName) {

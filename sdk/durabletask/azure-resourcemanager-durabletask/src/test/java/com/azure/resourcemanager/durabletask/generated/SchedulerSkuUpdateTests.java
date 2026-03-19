@@ -13,18 +13,18 @@ public final class SchedulerSkuUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SchedulerSkuUpdate model
-            = BinaryData.fromString("{\"name\":\"Consumption\",\"capacity\":1389039399,\"redundancyState\":\"None\"}")
+            = BinaryData.fromString("{\"name\":\"Consumption\",\"capacity\":1359237516,\"redundancyState\":\"None\"}")
                 .toObject(SchedulerSkuUpdate.class);
         Assertions.assertEquals(SchedulerSkuName.CONSUMPTION, model.name());
-        Assertions.assertEquals(1389039399, model.capacity());
+        Assertions.assertEquals(1359237516, model.capacity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SchedulerSkuUpdate model
-            = new SchedulerSkuUpdate().withName(SchedulerSkuName.CONSUMPTION).withCapacity(1389039399);
+            = new SchedulerSkuUpdate().withName(SchedulerSkuName.CONSUMPTION).withCapacity(1359237516);
         model = BinaryData.fromObject(model).toObject(SchedulerSkuUpdate.class);
         Assertions.assertEquals(SchedulerSkuName.CONSUMPTION, model.name());
-        Assertions.assertEquals(1389039399, model.capacity());
+        Assertions.assertEquals(1359237516, model.capacity());
     }
 }

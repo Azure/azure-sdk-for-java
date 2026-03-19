@@ -31,12 +31,8 @@ public final class RecoveryPointsImpl implements RecoveryPoints {
         String backupInstanceName, String recoveryPointId, Context context) {
         Response<AzureBackupRecoveryPointResourceInner> inner = this.serviceClient()
             .getWithResponse(resourceGroupName, vaultName, backupInstanceName, recoveryPointId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new AzureBackupRecoveryPointResourceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new AzureBackupRecoveryPointResourceImpl(inner.getValue(), this.manager()));
     }
 
     public AzureBackupRecoveryPointResource get(String resourceGroupName, String vaultName, String backupInstanceName,

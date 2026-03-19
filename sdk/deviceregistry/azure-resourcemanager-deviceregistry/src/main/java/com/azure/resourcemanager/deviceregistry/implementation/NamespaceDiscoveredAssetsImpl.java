@@ -31,12 +31,8 @@ public final class NamespaceDiscoveredAssetsImpl implements NamespaceDiscoveredA
         String discoveredAssetName, Context context) {
         Response<NamespaceDiscoveredAssetInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, namespaceName, discoveredAssetName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new NamespaceDiscoveredAssetImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new NamespaceDiscoveredAssetImpl(inner.getValue(), this.manager()));
     }
 
     public NamespaceDiscoveredAsset get(String resourceGroupName, String namespaceName, String discoveredAssetName) {

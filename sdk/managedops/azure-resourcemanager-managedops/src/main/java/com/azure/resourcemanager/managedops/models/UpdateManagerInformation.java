@@ -19,7 +19,7 @@ public final class UpdateManagerInformation implements JsonSerializable<UpdateMa
     /*
      * Indicates whether the service is enabled.
      */
-    private ChangeTrackingInformationEnablementStatus enablementStatus;
+    private EnablementState enablementStatus;
 
     /**
      * Creates an instance of UpdateManagerInformation class.
@@ -32,7 +32,7 @@ public final class UpdateManagerInformation implements JsonSerializable<UpdateMa
      * 
      * @return the enablementStatus value.
      */
-    public ChangeTrackingInformationEnablementStatus enablementStatus() {
+    public EnablementState enablementStatus() {
         return this.enablementStatus;
     }
 
@@ -65,7 +65,7 @@ public final class UpdateManagerInformation implements JsonSerializable<UpdateMa
 
                 if ("enablementStatus".equals(fieldName)) {
                     deserializedUpdateManagerInformation.enablementStatus
-                        = ChangeTrackingInformationEnablementStatus.fromString(reader.getString());
+                        = EnablementState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

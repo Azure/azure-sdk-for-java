@@ -12,10 +12,10 @@ public final class MhsmRegionsListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MhsmRegionsListResult model = BinaryData.fromString(
-            "{\"value\":[{\"name\":\"uo\",\"provisioningState\":\"Succeeded\",\"isPrimary\":false},{\"name\":\"lnorwmdu\",\"provisioningState\":\"Succeeded\",\"isPrimary\":false},{\"name\":\"xwmygdxpgpqc\",\"provisioningState\":\"Deleting\",\"isPrimary\":false}],\"nextLink\":\"nnbj\"}")
+            "{\"value\":[{\"name\":\"ostgkts\",\"provisioningState\":\"Provisioning\",\"isPrimary\":false},{\"name\":\"lzedqbcvhzlhplo\",\"provisioningState\":\"Succeeded\",\"isPrimary\":true}],\"nextLink\":\"wqfbumlkxtrqjfsm\"}")
             .toObject(MhsmRegionsListResult.class);
-        Assertions.assertEquals("uo", model.value().get(0).name());
+        Assertions.assertEquals("ostgkts", model.value().get(0).name());
         Assertions.assertFalse(model.value().get(0).isPrimary());
-        Assertions.assertEquals("nnbj", model.nextLink());
+        Assertions.assertEquals("wqfbumlkxtrqjfsm", model.nextLink());
     }
 }

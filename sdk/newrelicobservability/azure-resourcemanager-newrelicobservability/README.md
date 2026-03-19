@@ -1,8 +1,8 @@
-# Azure Resource Manager NewRelicObservability client library for Java
+# Azure Resource Manager NewRelic Observability client library for Java
 
-Azure Resource Manager NewRelicObservability client library for Java.
+Azure Resource Manager NewRelic Observability client library for Java.
 
-This package contains Microsoft Azure SDK for NewRelicObservability Management SDK.  Package tag package-2025-05-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+This package contains Microsoft Azure SDK for NewRelic Observability Management SDK.  Package api-version 2025-05-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ## We'd love to hear your feedback
 
@@ -32,7 +32,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-newrelicobservability</artifactId>
-    <version>1.3.0-beta.1</version>
+    <version>1.3.0-beta.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

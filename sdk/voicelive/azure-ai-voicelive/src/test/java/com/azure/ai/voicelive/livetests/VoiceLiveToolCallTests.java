@@ -12,450 +12,547 @@ import com.azure.ai.voicelive.models.ClientEventConversationItemCreate;
 import com.azure.ai.voicelive.models.ClientEventResponseCreate;
 import com.azure.ai.voicelive.models.ClientEventSessionUpdate;
 import com.azure.ai.voicelive.models.FunctionCallOutputItem;
-import com.azure.ai.voicelive.models.ItemType;
-import com.azure.ai.voicelive.models.ResponseFunctionCallItem;
 import com.azure.ai.voicelive.models.ServerEventType;
 import com.azure.ai.voicelive.models.ServerVadTurnDetection;
-import com.azure.ai.voicelive.models.SessionUpdateConversationItemCreated;
-import com.azure.ai.voicelive.models.SessionUpdateResponseAudioDelta;
 import com.azure.ai.voicelive.models.SessionUpdateResponseAudioTranscriptDone;
+import com.azure.ai.voicelive.models.SessionUpdateResponseFunctionCallArgumentsDelta;
 import com.azure.ai.voicelive.models.SessionUpdateResponseFunctionCallArgumentsDone;
 import com.azure.ai.voicelive.models.ToolChoiceFunctionSelection;
 import com.azure.ai.voicelive.models.VoiceLiveFunctionDefinition;
 import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
-import com.azure.ai.voicelive.models.VoiceLiveToolDefinition;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Stream;
 
 /**
- * Live tests for VoiceLive tool/function call features.
+ * Live tests for VoiceLive tool/function call operations.
+ * Translated from Python voicelive tool call tests.
  */
 public class VoiceLiveToolCallTests extends VoiceLiveTestBase {
 
+    // API version for the older preview used by session update test
+    private static final String API_VERSION_2025_05_01_PREVIEW = "2025-05-01-preview";
+
+    // ===== test_realtime_service_tool_call =====
+    // Python: models=[gpt-4o-realtime, gpt-4o], api_versions=[2025-10-01, 2026-01-01-preview]
+    // Uses _get_speech_recognition_setting(model), audio=4-1.wav, tool=assess_pronunciation
+    // Voice: AzureStandardVoice("en-US-AriaNeural")
+
+    static Stream<Arguments> toolCallParams() {
+        return crossProduct(new String[] { MODEL_GPT_4O_REALTIME, MODEL_GPT_4O },
+            new String[] { API_VERSION_GA, API_VERSION_PREVIEW });
+    }
+
     @ParameterizedTest
-    @ValueSource(strings = { "gpt-4o-realtime", "gpt-4o" })
+    @MethodSource("toolCallParams")
     @LiveOnly
-    public void testRealtimeServiceToolCall(String model) throws InterruptedException, IOException {
-        VoiceLiveAsyncClient client = createClient();
+    public void testRealtimeServiceToolCall(String model, String apiVersion) throws InterruptedException, IOException {
+        // Python uses @pytest.mark.flaky(reruns=3, reruns_delay=2) because the model
+        // sometimes responds with audio instead of calling the tool.
+        int maxAttempts = 3;
+        AssertionError lastFailure = null;
+        for (int attempt = 1; attempt <= maxAttempts; attempt++) {
+            try {
+                doTestRealtimeServiceToolCall(model, apiVersion);
+                return; // passed
+            } catch (AssertionError e) {
+                lastFailure = e;
+                System.out.println("testRealtimeServiceToolCall attempt " + attempt + "/" + maxAttempts + " failed: "
+                    + e.getMessage());
+                if (attempt < maxAttempts) {
+                    Thread.sleep(2000); // reruns_delay=2
+                }
+            }
+        }
+        throw lastFailure;
+    }
 
-        byte[] audioData = loadAudioFile("ask_weather.wav");
+    private void doTestRealtimeServiceToolCall(String model, String apiVersion)
+        throws InterruptedException, IOException {
 
-        AtomicBoolean functionCallReceived = new AtomicBoolean(false);
-        List<String> functionCallArguments = new ArrayList<>();
-        CountDownLatch responseLatch = new CountDownLatch(1);
+        VoiceLiveAsyncClient client = createClient(apiVersion);
+        byte[] audioData = loadAudioFile("4-1.wav");
 
+        // Matching Python: collect RESPONSE_FUNCTION_CALL_ARGUMENTS_DELTA events within timeout
+        List<SessionUpdateResponseFunctionCallArgumentsDelta> functionCallResults = new ArrayList<>();
+        CountDownLatch firstDeltaLatch = new CountDownLatch(1);
+        // Track response completions so we can re-issue response.create() if VAD
+        // triggered a non-tool-call response first (gpt-4o-realtime race condition).
+        CountDownLatch responseDoneLatch = new CountDownLatch(1);
+
+        VoiceLiveSessionAsyncClient session = null;
         try {
-            VoiceLiveFunctionDefinition weatherTool
-                = new VoiceLiveFunctionDefinition("get_weather").setDescription("Get the weather for a given location.")
-                    .setParameters(createFunctionParameters("location"));
+            // Build tool: assess_pronunciation (no parameters, matching Python)
+            VoiceLiveFunctionDefinition assessTool = new VoiceLiveFunctionDefinition("assess_pronunciation");
+            assessTool.setDescription("Assess pronunciation of the last user input speech");
 
-            List<VoiceLiveToolDefinition> tools = Arrays.asList(weatherTool);
-
+            // Session options matching Python exactly
             VoiceLiveSessionOptions sessionOptions = new VoiceLiveSessionOptions()
                 .setInstructions(
-                    "You are a helpful assistant with tools. If asked about weather, call get_weather function.")
-                .setTools(tools)
-                .setToolChoice(BinaryData.fromString("auto"))
-                .setInputAudioTranscription(
-                    new AudioInputTranscriptionOptions(AudioInputTranscriptionOptionsModel.WHISPER_1))
-                .setTurnDetection(
-                    new ServerVadTurnDetection().setThreshold(0.5).setPrefixPaddingMs(300).setSilenceDurationMs(200));
+                    "You are a teacher to a student who is learning English. You are talking with student with speech. "
+                        + "For each user input speech, you need to call the assess_pronunciation function to assess "
+                        + "the pronunciation of the last user input speech, and then give feedback to the student.")
+                .setVoice(BinaryData.fromObject(new AzureStandardVoice("en-US-AriaNeural")))
+                .setInputAudioTranscription(getSpeechRecognitionSetting(model))
+                .setTools(Arrays.asList(assessTool))
+                .setToolChoice(BinaryData.fromObject("auto"));
 
-            VoiceLiveSessionAsyncClient session = client.startSession(model).block(SESSION_TIMEOUT);
-
+            session = client.startSession(model).block(SESSION_TIMEOUT);
             Assertions.assertNotNull(session, "Session should be created successfully");
 
             session.receiveEvents().subscribe(event -> {
                 ServerEventType eventType = event.getType();
-
-                if (eventType == ServerEventType.CONVERSATION_ITEM_CREATED) {
-                    if (event instanceof SessionUpdateConversationItemCreated) {
-                        SessionUpdateConversationItemCreated itemCreated = (SessionUpdateConversationItemCreated) event;
-                        if (itemCreated.getItem() != null
-                            && itemCreated.getItem().getType() == ItemType.FUNCTION_CALL) {
-                            functionCallReceived.set(true);
-                        }
-                    }
-                } else if (eventType == ServerEventType.RESPONSE_FUNCTION_CALL_ARGUMENTS_DONE) {
-                    if (event instanceof SessionUpdateResponseFunctionCallArgumentsDone) {
-                        SessionUpdateResponseFunctionCallArgumentsDone funcDone
-                            = (SessionUpdateResponseFunctionCallArgumentsDone) event;
-                        functionCallArguments.add(funcDone.getArguments());
-                    }
-                    responseLatch.countDown();
+                if (eventType == ServerEventType.RESPONSE_FUNCTION_CALL_ARGUMENTS_DELTA) {
+                    functionCallResults.add((SessionUpdateResponseFunctionCallArgumentsDelta) event);
+                    firstDeltaLatch.countDown();
+                } else if (eventType == ServerEventType.RESPONSE_DONE) {
+                    responseDoneLatch.countDown();
                 } else if (eventType == ServerEventType.ERROR) {
                     handleError(event);
-                    responseLatch.countDown();
                 }
             }, error -> {
                 System.err.println("Error receiving events: " + error.getMessage());
-                responseLatch.countDown();
+                firstDeltaLatch.countDown();
             });
 
             waitForSetup();
 
-            ClientEventSessionUpdate updateEvent = new ClientEventSessionUpdate(sessionOptions);
-            session.sendEvent(updateEvent).block(SEND_TIMEOUT);
+            session.sendEvent(new ClientEventSessionUpdate(sessionOptions)).block(SEND_TIMEOUT);
 
-            waitForSetup();
+            // Send audio and response.create() in tight succession to beat server VAD.
+            // With gpt-4o-realtime, the default server VAD detects speech, auto-commits the
+            // buffer and triggers its own response before a delayed response.create() arrives.
+            session.sendInputAudio(audioData)
+                .then(session.sendEvent(new ClientEventResponseCreate()))
+                .block(SEND_TIMEOUT);
 
-            session.sendInputAudio(audioData).block(SEND_TIMEOUT);
-            session.sendInputAudio(getTrailingSilenceBytes()).block(SEND_TIMEOUT);
+            // Python uses a 10s polling loop; wait for at least one delta event
+            boolean gotDelta = firstDeltaLatch.await(10, TimeUnit.SECONDS);
 
-            boolean received = responseLatch.await(EVENT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+            // If no function call delta yet, the server VAD may have created a non-tool-call
+            // response first (audio). Wait for that response to finish, then try again.
+            if (!gotDelta && functionCallResults.isEmpty()) {
+                responseDoneLatch.await(5, TimeUnit.SECONDS);
+                // Re-issue response.create() now that the VAD response has completed
+                session.sendEvent(new ClientEventResponseCreate()).block(SEND_TIMEOUT);
+                firstDeltaLatch.await(10, TimeUnit.SECONDS);
+            }
 
-            Assertions.assertTrue(received, "Should receive response within timeout");
-            Assertions.assertTrue(functionCallReceived.get(), "Should receive function call item created event");
-            Assertions.assertFalse(functionCallArguments.isEmpty(), "Should have function call arguments");
-
-            session.close();
-        } catch (Exception e) {
-            Assertions.fail("Test failed with exception: " + e.getMessage());
+            Assertions.assertFalse(functionCallResults.isEmpty(), "Should have at least one function call result");
+        } finally {
+            closeSession(session);
         }
     }
 
-    @ParameterizedTest
-    @ValueSource(strings = { "gpt-4o", "gpt-5-chat" })
-    @LiveOnly
-    public void testRealtimeServiceToolChoice(String model) throws InterruptedException, IOException {
-        VoiceLiveAsyncClient client = createClient();
+    // ===== test_realtime_service_tool_choice =====
+    // Python: models=[gpt-realtime, gpt-4o, gpt-5-chat], skip if "realtime" in model
+    //   -> effective models: [gpt-4o, gpt-5-chat]
+    // api_versions=[2025-10-01, 2026-01-01-preview]
+    // Uses azure-speech + ServerVad, audio=ask_weather.wav
+    // Tools: get_weather, get_time. ToolChoice: get_time
+    // Assert: function_done.name == "get_time", arguments contains Beijing
 
+    static Stream<Arguments> toolChoiceParams() {
+        return crossProduct(new String[] { MODEL_GPT_4O, MODEL_GPT_5_CHAT },
+            new String[] { API_VERSION_GA, API_VERSION_PREVIEW });
+    }
+
+    @ParameterizedTest
+    @MethodSource("toolChoiceParams")
+    @LiveOnly
+    public void testRealtimeServiceToolChoice(String model, String apiVersion)
+        throws InterruptedException, IOException {
+
+        VoiceLiveAsyncClient client = createClient(apiVersion);
         byte[] audioData = loadAudioFile("ask_weather.wav");
 
-        AtomicReference<String> functionNameCalled = new AtomicReference<>();
-        AtomicReference<String> functionArguments = new AtomicReference<>();
-        CountDownLatch responseLatch = new CountDownLatch(1);
+        AtomicReference<SessionUpdateResponseFunctionCallArgumentsDone> functionDone = new AtomicReference<>();
+        CountDownLatch responseDoneLatch = new CountDownLatch(1);
 
+        VoiceLiveSessionAsyncClient session = null;
         try {
-            VoiceLiveFunctionDefinition weatherTool
-                = new VoiceLiveFunctionDefinition("get_weather").setDescription("Get the weather for a given location.")
-                    .setParameters(createFunctionParameters("location"));
+            // Build tools: get_weather, get_time (matching Python)
+            VoiceLiveFunctionDefinition weatherTool = new VoiceLiveFunctionDefinition("get_weather");
+            weatherTool.setDescription("Get the weather for a given location.");
+            weatherTool.setParameters(createFunctionParameters("location"));
 
-            VoiceLiveFunctionDefinition timeTool = new VoiceLiveFunctionDefinition("get_time")
-                .setDescription("Get the current time in a given location.")
-                .setParameters(createFunctionParameters("location"));
+            VoiceLiveFunctionDefinition timeTool = new VoiceLiveFunctionDefinition("get_time");
+            timeTool.setDescription("Get the current time in a given location.");
+            timeTool.setParameters(createFunctionParameters("location"));
 
-            List<VoiceLiveToolDefinition> tools = Arrays.asList(weatherTool, timeTool);
-
+            // Session options: azure-speech + ServerVad, tool_choice=get_time (matching Python)
             VoiceLiveSessionOptions sessionOptions = new VoiceLiveSessionOptions()
                 .setInstructions("You are a helpful assistant with tools.")
-                .setTools(tools)
-                .setToolChoice(BinaryData.fromObject(new ToolChoiceFunctionSelection("get_time")))
                 .setInputAudioTranscription(
-                    new AudioInputTranscriptionOptions(AudioInputTranscriptionOptionsModel.WHISPER_1))
+                    new AudioInputTranscriptionOptions(AudioInputTranscriptionOptionsModel.AZURE_SPEECH))
                 .setTurnDetection(
-                    new ServerVadTurnDetection().setThreshold(0.5).setPrefixPaddingMs(300).setSilenceDurationMs(200));
+                    new ServerVadTurnDetection().setThreshold(0.5).setPrefixPaddingMs(300).setSilenceDurationMs(200))
+                .setTools(Arrays.asList(weatherTool, timeTool))
+                .setToolChoice(BinaryData.fromObject(new ToolChoiceFunctionSelection("get_time")));
 
-            VoiceLiveSessionAsyncClient session = client.startSession(model).block(SESSION_TIMEOUT);
-
+            session = client.startSession(model).block(SESSION_TIMEOUT);
             Assertions.assertNotNull(session, "Session should be created successfully");
 
             session.receiveEvents().subscribe(event -> {
                 ServerEventType eventType = event.getType();
-
                 if (eventType == ServerEventType.RESPONSE_FUNCTION_CALL_ARGUMENTS_DONE) {
-                    if (event instanceof SessionUpdateResponseFunctionCallArgumentsDone) {
-                        SessionUpdateResponseFunctionCallArgumentsDone funcDone
-                            = (SessionUpdateResponseFunctionCallArgumentsDone) event;
-                        functionNameCalled.set(funcDone.getName());
-                        functionArguments.set(funcDone.getArguments());
-                    }
-                    responseLatch.countDown();
+                    functionDone.set((SessionUpdateResponseFunctionCallArgumentsDone) event);
+                } else if (eventType == ServerEventType.RESPONSE_DONE) {
+                    responseDoneLatch.countDown();
                 } else if (eventType == ServerEventType.ERROR) {
                     handleError(event);
-                    responseLatch.countDown();
+                    responseDoneLatch.countDown();
                 }
             }, error -> {
                 System.err.println("Error receiving events: " + error.getMessage());
-                responseLatch.countDown();
+                responseDoneLatch.countDown();
             });
 
             waitForSetup();
 
-            ClientEventSessionUpdate updateEvent = new ClientEventSessionUpdate(sessionOptions);
-            session.sendEvent(updateEvent).block(SEND_TIMEOUT);
-
+            session.sendEvent(new ClientEventSessionUpdate(sessionOptions)).block(SEND_TIMEOUT);
             waitForSetup();
 
             session.sendInputAudio(audioData).block(SEND_TIMEOUT);
             session.sendInputAudio(getTrailingSilenceBytes()).block(SEND_TIMEOUT);
 
-            boolean received = responseLatch.await(EVENT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+            boolean done = responseDoneLatch.await(EVENT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+            Assertions.assertTrue(done, "Should receive response done event");
+            Assertions.assertNotNull(functionDone.get(), "Should have received function call arguments done");
+            Assertions.assertEquals("get_time", functionDone.get().getName(), "Function name should be get_time");
 
-            Assertions.assertTrue(received, "Should receive response within timeout");
-            Assertions.assertEquals("get_time", functionNameCalled.get(),
-                "Should call get_time function as forced by tool_choice");
-            Assertions.assertNotNull(functionArguments.get(), "Should have function arguments");
-            Assertions.assertTrue(functionArguments.get().contains("北京") || functionArguments.get().contains("Beijing"),
-                "Arguments should contain Beijing location, got: " + functionArguments.get());
-
-            session.close();
-        } catch (Exception e) {
-            Assertions.fail("Test failed with exception: " + e.getMessage());
+            // Normalized argument check matching Python:
+            // function_done.arguments.replace(" ", "").replace("\n", "")
+            //   in ['{"location":"北京"}', '{"location":"Beijing"}']
+            String normalized = functionDone.get().getArguments().replace(" ", "").replace("\n", "");
+            boolean matchesBeijing
+                = "{\"location\":\"北京\"}".equals(normalized) || "{\"location\":\"Beijing\"}".equals(normalized);
+            Assertions.assertTrue(matchesBeijing,
+                "Arguments should contain Beijing location, got: " + functionDone.get().getArguments());
+        } finally {
+            closeSession(session);
         }
     }
 
-    @ParameterizedTest
-    @ValueSource(strings = { "gpt-4o", "gpt-4o-realtime" })
-    @LiveOnly
-    public void testLiveSessionUpdateWithTools(String model) throws InterruptedException, IOException {
-        VoiceLiveAsyncClient client = createClient();
+    // ===== test_realtime_service_tool_call_parameter =====
+    // Python: models=[gpt-realtime, gpt-4.1, gpt-5, gpt-5.1, gpt-5.2, phi4-mm-realtime],
+    //   skip if "realtime" in model -> effective models: [gpt-4.1, gpt-5]
+    // api_versions=[2025-10-01, 2026-01-01-preview]
+    // Uses azure-speech + ServerVad, audio=ask_weather.wav
+    // Tool: get_weather. Full tool call flow: get function call -> send tool output -> get transcript
+    // Assert: transcript contains "sunny" or chinese equivalent, and "25"
 
+    static Stream<Arguments> toolCallParameterParams() {
+        return crossProduct(new String[] { MODEL_GPT_41, MODEL_GPT_5 },
+            new String[] { API_VERSION_GA, API_VERSION_PREVIEW });
+    }
+
+    @ParameterizedTest
+    @MethodSource("toolCallParameterParams")
+    @LiveOnly
+    public void testRealtimeServiceToolCallParameter(String model, String apiVersion)
+        throws InterruptedException, IOException {
+
+        VoiceLiveAsyncClient client = createClient(apiVersion);
         byte[] audioData = loadAudioFile("ask_weather.wav");
 
-        AtomicInteger firstResponseBytes = new AtomicInteger(0);
-        AtomicReference<String> functionCallName = new AtomicReference<>();
-        CountDownLatch firstResponseLatch = new CountDownLatch(1);
-        CountDownLatch functionCallLatch = new CountDownLatch(1);
-        AtomicBoolean waitingForFunctionCall = new AtomicBoolean(false);
+        AtomicReference<SessionUpdateResponseFunctionCallArgumentsDone> functionDone = new AtomicReference<>();
+        // Phase 1: wait for function call response to FULLY complete (response.done)
+        // This avoids a race where audio_transcript.done and function_call_arguments.done
+        // are interleaved within the same response.
+        AtomicBoolean functionCallSeen = new AtomicBoolean(false);
+        CountDownLatch functionCallResponseDoneLatch = new CountDownLatch(1);
+        // Phase 2: collect transcripts from post-tool-output response
+        AtomicBoolean collectingPostToolTranscripts = new AtomicBoolean(false);
+        List<String> postToolTranscripts = new ArrayList<>();
+        CountDownLatch postToolResponseDoneLatch = new CountDownLatch(1);
 
+        VoiceLiveSessionAsyncClient session = null;
         try {
-            VoiceLiveSessionOptions initialSession = new VoiceLiveSessionOptions()
+            // Build tool: get_weather
+            VoiceLiveFunctionDefinition weatherTool = new VoiceLiveFunctionDefinition("get_weather");
+            weatherTool.setDescription("Retrieve the weather of given location.");
+            weatherTool.setParameters(createFunctionParameters("location"));
+
+            // Session options: azure-speech + ServerVad (matching Python)
+            VoiceLiveSessionOptions sessionOptions = new VoiceLiveSessionOptions()
+                .setInstructions("You are a helpful assistant with tools. "
+                    + "If you are asked about the weather, please respond with "
+                    + "`I will get the weather for you. Please wait a moment.` "
+                    + "and then call the get_weather function with the location parameter.")
+                .setInputAudioTranscription(
+                    new AudioInputTranscriptionOptions(AudioInputTranscriptionOptionsModel.AZURE_SPEECH))
+                .setTurnDetection(
+                    new ServerVadTurnDetection().setThreshold(0.5).setPrefixPaddingMs(300).setSilenceDurationMs(200))
+                .setTools(Arrays.asList(weatherTool))
+                .setToolChoice(BinaryData.fromObject("auto"));
+
+            session = client.startSession(model).block(SESSION_TIMEOUT);
+            Assertions.assertNotNull(session, "Session should be created successfully");
+
+            session.receiveEvents().subscribe(event -> {
+                ServerEventType eventType = event.getType();
+                if (eventType == ServerEventType.RESPONSE_FUNCTION_CALL_ARGUMENTS_DONE) {
+                    functionDone.set((SessionUpdateResponseFunctionCallArgumentsDone) event);
+                    functionCallSeen.set(true);
+                } else if (eventType == ServerEventType.RESPONSE_AUDIO_TRANSCRIPT_DONE) {
+                    if (collectingPostToolTranscripts.get()) {
+                        String transcript = ((SessionUpdateResponseAudioTranscriptDone) event).getTranscript();
+                        if (transcript != null && !transcript.isEmpty()) {
+                            postToolTranscripts.add(transcript);
+                        }
+                    }
+                } else if (eventType == ServerEventType.RESPONSE_DONE) {
+                    if (functionCallSeen.get() && !collectingPostToolTranscripts.get()) {
+                        // Function call response fully complete (all output items done)
+                        functionCallResponseDoneLatch.countDown();
+                    } else if (collectingPostToolTranscripts.get()) {
+                        // Post-tool-output response complete
+                        postToolResponseDoneLatch.countDown();
+                    }
+                } else if (eventType == ServerEventType.ERROR) {
+                    handleError(event);
+                    functionCallResponseDoneLatch.countDown();
+                    postToolResponseDoneLatch.countDown();
+                }
+            }, error -> {
+                System.err.println("Error receiving events: " + error.getMessage());
+                functionCallResponseDoneLatch.countDown();
+                postToolResponseDoneLatch.countDown();
+            });
+
+            waitForSetup();
+
+            session.sendEvent(new ClientEventSessionUpdate(sessionOptions)).block(SEND_TIMEOUT);
+            waitForSetup();
+
+            // Send audio + trailing silence
+            session.sendInputAudio(audioData).block(SEND_TIMEOUT);
+            session.sendInputAudio(getTrailingSilenceBytes()).block(SEND_TIMEOUT);
+
+            // Wait for RESPONSE_DONE that contains the function call.
+            // This ensures all interleaved audio_transcript events from the same response
+            // have been fully processed before we start collecting post-tool transcripts.
+            boolean responseDone = functionCallResponseDoneLatch.await(EVENT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+            Assertions.assertTrue(responseDone, "Should receive response done with function call");
+            Assertions.assertNotNull(functionDone.get(), "Function call should not be null");
+            Assertions.assertEquals("get_weather", functionDone.get().getName(), "Function name should be get_weather");
+
+            // Verify arguments contain Beijing
+            String normalized = functionDone.get().getArguments().replace(" ", "").replace("\n", "");
+            boolean matchesBeijing
+                = "{\"location\":\"北京\"}".equals(normalized) || "{\"location\":\"Beijing\"}".equals(normalized);
+            Assertions.assertTrue(matchesBeijing,
+                "Arguments should contain Beijing location, got: " + functionDone.get().getArguments());
+
+            // Now safe to flip the flag — RESPONSE_DONE guarantees all pre-tool events are processed
+            collectingPostToolTranscripts.set(true);
+
+            // Send tool output and trigger new response
+            String toolOutput = "{\"location\": \"Beijing\", \"weather\": \"sunny\", \"temp_c\": 25}";
+            FunctionCallOutputItem outputItem = new FunctionCallOutputItem(functionDone.get().getCallId(), toolOutput);
+            ClientEventConversationItemCreate createItem = new ClientEventConversationItemCreate();
+            createItem.setItem(outputItem);
+            session.sendEvent(createItem).block(SEND_TIMEOUT);
+            session.sendEvent(new ClientEventResponseCreate()).block(SEND_TIMEOUT);
+
+            // Wait for the post-tool response to complete
+            boolean gotPostToolResponse = postToolResponseDoneLatch.await(EVENT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+            Assertions.assertTrue(gotPostToolResponse, "Should receive post-tool response done");
+
+            // Verify transcript contains weather info
+            String fullTranscript = String.join(" ", postToolTranscripts).toLowerCase();
+            boolean hasSunny = fullTranscript.contains("\u6674") || fullTranscript.contains("sunny");
+            boolean has25 = fullTranscript.contains("25");
+            Assertions.assertTrue(hasSunny, "Transcript should mention sunny, got: " + fullTranscript);
+            Assertions.assertTrue(has25, "Transcript should mention 25, got: " + fullTranscript);
+        } finally {
+            closeSession(session);
+        }
+    }
+
+    // ===== test_realtime_service_live_session_update =====
+    // Python: model=[gpt-realtime], api_versions=[2025-05-01-preview, 2026-01-01-preview]
+    // Two-phase test:
+    //   Phase 1: Session without tools -> send audio -> expect no function call in response
+    //   Phase 2: New session with tools -> send audio -> expect function call
+    // Uses azure-speech + ServerVad, audio=ask_weather.wav
+
+    static Stream<Arguments> liveSessionUpdateParams() {
+        return crossProduct(new String[] { MODEL_GPT_4O_REALTIME },
+            new String[] { API_VERSION_2025_05_01_PREVIEW, API_VERSION_PREVIEW });
+    }
+
+    @ParameterizedTest
+    @MethodSource("liveSessionUpdateParams")
+    @LiveOnly
+    public void testRealtimeServiceLiveSessionUpdate(String model, String apiVersion)
+        throws InterruptedException, IOException {
+
+        VoiceLiveAsyncClient client = createClient(apiVersion);
+        byte[] audioData = loadAudioFile("ask_weather.wav");
+
+        // Build tool: get_weather (used in phase 2)
+        VoiceLiveFunctionDefinition weatherTool = new VoiceLiveFunctionDefinition("get_weather");
+        weatherTool.setDescription("Get the weather for a given location.");
+        weatherTool.setParameters(createFunctionParameters("location"));
+
+        // Single session for both phases (matching Python: session.update on same connection)
+        VoiceLiveSessionAsyncClient session = null;
+        try {
+            session = client.startSession(model).block(SESSION_TIMEOUT);
+            Assertions.assertNotNull(session, "Session should be created successfully");
+
+            // Phase tracking: 1 = no tools, 2 = with tools, 3 = post-response.create
+            AtomicInteger phase = new AtomicInteger(1);
+            AtomicInteger phase1TranscriptCount = new AtomicInteger(0);
+            CountDownLatch phase1Latch = new CountDownLatch(1);
+            CountDownLatch phase1ResponseDoneLatch = new CountDownLatch(1);
+            AtomicReference<SessionUpdateResponseFunctionCallArgumentsDone> phase2FunctionDone
+                = new AtomicReference<>();
+            CountDownLatch phase2Latch = new CountDownLatch(1);
+            // Wait for phase 2 response to fully complete before transitioning to phase 3
+            AtomicBoolean phase2FunctionCallSeen = new AtomicBoolean(false);
+            CountDownLatch phase2ResponseDoneLatch = new CountDownLatch(1);
+            AtomicInteger phase3TranscriptCount = new AtomicInteger(0);
+            CountDownLatch phase3Latch = new CountDownLatch(1);
+
+            session.receiveEvents().subscribe(event -> {
+                ServerEventType eventType = event.getType();
+                int currentPhase = phase.get();
+
+                if (eventType == ServerEventType.RESPONSE_AUDIO_TRANSCRIPT_DONE) {
+                    if (currentPhase == 1) {
+                        phase1TranscriptCount.incrementAndGet();
+                        phase1Latch.countDown();
+                    } else if (currentPhase == 3) {
+                        phase3TranscriptCount.incrementAndGet();
+                    }
+                } else if (eventType == ServerEventType.RESPONSE_DONE && currentPhase == 1) {
+                    phase1ResponseDoneLatch.countDown();
+                } else if (eventType == ServerEventType.RESPONSE_FUNCTION_CALL_ARGUMENTS_DONE && currentPhase == 2) {
+                    phase2FunctionDone.set((SessionUpdateResponseFunctionCallArgumentsDone) event);
+                    phase2FunctionCallSeen.set(true);
+                    phase2Latch.countDown();
+                } else if (eventType == ServerEventType.RESPONSE_DONE) {
+                    if (currentPhase == 2 && phase2FunctionCallSeen.get()) {
+                        phase2ResponseDoneLatch.countDown();
+                    } else if (currentPhase == 3) {
+                        phase3Latch.countDown();
+                    }
+                } else if (eventType == ServerEventType.ERROR) {
+                    handleError(event);
+                    phase1Latch.countDown();
+                    phase1ResponseDoneLatch.countDown();
+                    phase2Latch.countDown();
+                    phase2ResponseDoneLatch.countDown();
+                    phase3Latch.countDown();
+                }
+            }, error -> {
+                System.err.println("Session error: " + error.getMessage());
+                phase1Latch.countDown();
+                phase1ResponseDoneLatch.countDown();
+                phase2Latch.countDown();
+                phase2ResponseDoneLatch.countDown();
+                phase3Latch.countDown();
+            });
+
+            waitForSetup();
+
+            // ---- Phase 1: Session WITHOUT tools ----
+            VoiceLiveSessionOptions sessionOptionsNoTools = new VoiceLiveSessionOptions()
                 .setInstructions("You are a helpful assistant that can answer questions.")
                 .setVoice(BinaryData.fromObject(new AzureStandardVoice("en-US-AvaMultilingualNeural")))
                 .setInputAudioTranscription(
-                    new AudioInputTranscriptionOptions(AudioInputTranscriptionOptionsModel.WHISPER_1))
+                    new AudioInputTranscriptionOptions(AudioInputTranscriptionOptionsModel.AZURE_SPEECH))
                 .setTurnDetection(
                     new ServerVadTurnDetection().setThreshold(0.5).setPrefixPaddingMs(300).setSilenceDurationMs(200));
 
-            VoiceLiveSessionAsyncClient session = client.startSession(model).block(SESSION_TIMEOUT);
-
-            Assertions.assertNotNull(session, "Session should be created successfully");
-
-            session.receiveEvents().subscribe(event -> {
-                ServerEventType eventType = event.getType();
-
-                if (eventType == ServerEventType.RESPONSE_AUDIO_TRANSCRIPT_DONE) {
-                    if (!waitingForFunctionCall.get()) {
-                        firstResponseLatch.countDown();
-                    }
-                } else if (eventType == ServerEventType.RESPONSE_AUDIO_DELTA) {
-                    if (event instanceof SessionUpdateResponseAudioDelta) {
-                        SessionUpdateResponseAudioDelta audioDelta = (SessionUpdateResponseAudioDelta) event;
-                        if (audioDelta.getDelta() != null && !waitingForFunctionCall.get()) {
-                            firstResponseBytes.addAndGet(audioDelta.getDelta().length);
-                        }
-                    }
-                } else if (eventType == ServerEventType.RESPONSE_FUNCTION_CALL_ARGUMENTS_DONE) {
-                    if (event instanceof SessionUpdateResponseFunctionCallArgumentsDone) {
-                        SessionUpdateResponseFunctionCallArgumentsDone funcDone
-                            = (SessionUpdateResponseFunctionCallArgumentsDone) event;
-                        functionCallName.set(funcDone.getName());
-                    }
-                    functionCallLatch.countDown();
-                } else if (eventType == ServerEventType.ERROR) {
-                    handleError(event);
-                    firstResponseLatch.countDown();
-                    functionCallLatch.countDown();
-                }
-            }, error -> {
-                System.err.println("Error receiving events: " + error.getMessage());
-                firstResponseLatch.countDown();
-                functionCallLatch.countDown();
-            });
-
-            waitForSetup();
-
-            session.sendEvent(new ClientEventSessionUpdate(initialSession)).block(SEND_TIMEOUT);
-
+            session.sendEvent(new ClientEventSessionUpdate(sessionOptionsNoTools)).block(SEND_TIMEOUT);
             waitForSetup();
 
             session.sendInputAudio(audioData).block(SEND_TIMEOUT);
             session.sendInputAudio(getTrailingSilenceBytes()).block(SEND_TIMEOUT);
 
-            boolean firstReceived = firstResponseLatch.await(EVENT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
-            Assertions.assertTrue(firstReceived, "Should receive first response");
-            Assertions.assertTrue(firstResponseBytes.get() > 0, "First response should have audio");
+            boolean phase1Done = phase1Latch.await(EVENT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+            Assertions.assertTrue(phase1Done, "Phase 1: Should receive audio transcript done event");
 
-            waitingForFunctionCall.set(true);
+            // Wait for Phase 1 response to FULLY complete before transitioning.
+            // AUDIO_TRANSCRIPT_DONE fires before RESPONSE_DONE; sending new audio before
+            // RESPONSE_DONE causes the server to reject the next VAD-triggered response
+            // with conversation_already_has_active_response.
+            phase1ResponseDoneLatch.await(EVENT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+            Assertions.assertEquals(1, phase1TranscriptCount.get(),
+                "Phase 1: Should have exactly 1 transcript (speech response, no function call)");
 
-            VoiceLiveFunctionDefinition weatherTool
-                = new VoiceLiveFunctionDefinition("get_weather").setDescription("Get the weather for a given location.")
-                    .setParameters(createFunctionParameters("location"));
+            // ---- Phase 2: Session update WITH tools (same session) ----
+            phase.set(2);
 
-            VoiceLiveSessionOptions updatedSession = new VoiceLiveSessionOptions()
+            VoiceLiveSessionOptions sessionOptionsWithTools = new VoiceLiveSessionOptions()
                 .setInstructions("You are a helpful assistant with tools.")
                 .setVoice(BinaryData.fromObject(new AzureStandardVoice("en-US-AvaMultilingualNeural")))
-                .setInputAudioTranscription(
-                    new AudioInputTranscriptionOptions(AudioInputTranscriptionOptionsModel.WHISPER_1))
                 .setTools(Arrays.asList(weatherTool))
-                .setToolChoice(BinaryData.fromString("auto"))
+                .setToolChoice(BinaryData.fromObject("auto"))
                 .setTurnDetection(
                     new ServerVadTurnDetection().setThreshold(0.5).setPrefixPaddingMs(300).setSilenceDurationMs(200));
 
-            session.sendEvent(new ClientEventSessionUpdate(updatedSession)).block(SEND_TIMEOUT);
+            session.sendEvent(new ClientEventSessionUpdate(sessionOptionsWithTools)).block(SEND_TIMEOUT);
             waitForSetup();
 
             session.sendInputAudio(audioData).block(SEND_TIMEOUT);
             session.sendInputAudio(getTrailingSilenceBytes()).block(SEND_TIMEOUT);
 
-            boolean functionCallReceived = functionCallLatch.await(EVENT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
-            Assertions.assertTrue(functionCallReceived, "Should receive function call");
-            Assertions.assertEquals("get_weather", functionCallName.get(), "Should call get_weather function");
+            boolean phase2Done = phase2Latch.await(EVENT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+            Assertions.assertTrue(phase2Done, "Phase 2: Should receive function call after adding tools");
+            Assertions.assertNotNull(phase2FunctionDone.get(),
+                "Phase 2: Should have function call result after adding tools");
+            Assertions.assertEquals("get_weather", phase2FunctionDone.get().getName(),
+                "Phase 2: Function name should be get_weather");
 
-            session.close();
-        } catch (Exception e) {
-            Assertions.fail("Test failed with exception: " + e.getMessage());
+            // Verify arguments contain Beijing
+            String normalized = phase2FunctionDone.get().getArguments().replace(" ", "").replace("\n", "");
+            boolean matchesBeijing
+                = "{\"location\":\"北京\"}".equals(normalized) || "{\"location\":\"Beijing\"}".equals(normalized);
+            Assertions.assertTrue(matchesBeijing,
+                "Phase 2: Arguments should contain Beijing, got: " + phase2FunctionDone.get().getArguments());
+
+            // Wait for Phase 2 response to fully complete before transitioning
+            boolean phase2ResponseCompleted = phase2ResponseDoneLatch.await(EVENT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+            Assertions.assertTrue(phase2ResponseCompleted,
+                "Phase 2: Response did not complete before timeout; cannot safely proceed to Phase 3");
+
+            // Phase 3: Create response after function call (matching Python)
+            phase.set(3);
+            session.sendEvent(new ClientEventResponseCreate()).block(SEND_TIMEOUT);
+
+            boolean phase3Done = phase3Latch.await(EVENT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+            Assertions.assertTrue(phase3Done, "Phase 3: Should receive response done after response.create");
+            Assertions.assertTrue(phase3TranscriptCount.get() >= 1,
+                "Phase 3: Should have at least 1 transcript, got: " + phase3TranscriptCount.get());
+        } finally {
+            closeSession(session);
         }
     }
 
-    @ParameterizedTest
-    @ValueSource(strings = { "gpt-4.1", "gpt-5", "phi4-mm-realtime" })
-    @LiveOnly
-    public void testRealtimeServiceToolCallParameter(String model) throws InterruptedException, IOException {
-        VoiceLiveAsyncClient client = createClient();
+    // ===== test_realtime_service_tool_call_no_audio_overlap =====
+    // Python: @pytest.mark.skip() - skipped in Python tests
 
-        byte[] audioData = loadAudioFile("ask_weather.wav");
-
-        AtomicReference<String> functionCallName = new AtomicReference<>();
-        AtomicReference<String> functionArguments = new AtomicReference<>();
-        AtomicReference<String> callId = new AtomicReference<>();
-        AtomicReference<String> previousItemId = new AtomicReference<>();
-        AtomicReference<String> finalTranscript = new AtomicReference<>();
-        CountDownLatch functionCallLatch = new CountDownLatch(1);
-        CountDownLatch responseDoneLatch = new CountDownLatch(1);
-        CountDownLatch finalResponseLatch = new CountDownLatch(1);
-        AtomicBoolean waitingForFinalResponse = new AtomicBoolean(false);
-
-        try {
-            Map<String, Object> params = new HashMap<>();
-            params.put("type", "object");
-            Map<String, Object> properties = new HashMap<>();
-            Map<String, Object> locationProp = new HashMap<>();
-            locationProp.put("type", "string");
-            locationProp.put("description", "The location to get the weather for.");
-            properties.put("location", locationProp);
-            params.put("properties", properties);
-            params.put("required", Arrays.asList("location"));
-
-            VoiceLiveFunctionDefinition weatherTool = new VoiceLiveFunctionDefinition("get_weather")
-                .setDescription("Retrieve the weather of given location.")
-                .setParameters(BinaryData.fromObject(params));
-
-            List<VoiceLiveToolDefinition> tools = Arrays.asList(weatherTool);
-
-            String instructions = "You are a helpful assistant with tools.";
-            if (!"phi4-mm-realtime".equals(model)) {
-                instructions
-                    += " If you are asked about the weather, please respond with `I will get the weather for you. Please wait a moment.` and then call the get_weather function with the location parameter.";
-            }
-
-            VoiceLiveSessionOptions sessionOptions = new VoiceLiveSessionOptions().setInstructions(instructions)
-                .setTools(tools)
-                .setToolChoice(BinaryData.fromString("auto"))
-                .setInputAudioTranscription(
-                    new AudioInputTranscriptionOptions(AudioInputTranscriptionOptionsModel.WHISPER_1))
-                .setTurnDetection(
-                    new ServerVadTurnDetection().setThreshold(0.5).setPrefixPaddingMs(300).setSilenceDurationMs(200));
-
-            VoiceLiveSessionAsyncClient session = client.startSession(model).block(SESSION_TIMEOUT);
-
-            Assertions.assertNotNull(session, "Session should be created successfully");
-
-            session.receiveEvents().subscribe(event -> {
-                ServerEventType eventType = event.getType();
-
-                if (eventType == ServerEventType.CONVERSATION_ITEM_CREATED) {
-                    if (event instanceof SessionUpdateConversationItemCreated) {
-                        SessionUpdateConversationItemCreated itemCreated = (SessionUpdateConversationItemCreated) event;
-                        if (itemCreated.getItem() != null
-                            && itemCreated.getItem().getType() == ItemType.FUNCTION_CALL) {
-                            ResponseFunctionCallItem funcItem = (ResponseFunctionCallItem) itemCreated.getItem();
-                            callId.set(funcItem.getCallId());
-                            previousItemId.set(funcItem.getId());
-                        }
-                    }
-                } else if (eventType == ServerEventType.RESPONSE_FUNCTION_CALL_ARGUMENTS_DONE) {
-                    if (event instanceof SessionUpdateResponseFunctionCallArgumentsDone) {
-                        SessionUpdateResponseFunctionCallArgumentsDone funcDone
-                            = (SessionUpdateResponseFunctionCallArgumentsDone) event;
-                        functionCallName.set(funcDone.getName());
-                        functionArguments.set(funcDone.getArguments());
-                    }
-                    functionCallLatch.countDown();
-                } else if (eventType == ServerEventType.RESPONSE_DONE) {
-                    if (!waitingForFinalResponse.get()) {
-                        responseDoneLatch.countDown();
-                    } else {
-                        finalResponseLatch.countDown();
-                    }
-                } else if (eventType == ServerEventType.RESPONSE_AUDIO_TRANSCRIPT_DONE) {
-                    if (waitingForFinalResponse.get() && event instanceof SessionUpdateResponseAudioTranscriptDone) {
-                        SessionUpdateResponseAudioTranscriptDone transcriptDone
-                            = (SessionUpdateResponseAudioTranscriptDone) event;
-                        finalTranscript.set(transcriptDone.getTranscript());
-                    }
-                } else if (eventType == ServerEventType.ERROR) {
-                    handleError(event);
-                    functionCallLatch.countDown();
-                    responseDoneLatch.countDown();
-                    finalResponseLatch.countDown();
-                }
-            }, error -> {
-                System.err.println("Error receiving events: " + error.getMessage());
-                functionCallLatch.countDown();
-                responseDoneLatch.countDown();
-                finalResponseLatch.countDown();
-            });
-
-            waitForSetup();
-
-            ClientEventSessionUpdate updateEvent = new ClientEventSessionUpdate(sessionOptions);
-            session.sendEvent(updateEvent).block(SEND_TIMEOUT);
-
-            waitForSetup();
-
-            session.sendInputAudio(audioData).block(SEND_TIMEOUT);
-            session.sendInputAudio(getTrailingSilenceBytes()).block(SEND_TIMEOUT);
-
-            boolean functionCallReceived = functionCallLatch.await(EVENT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
-            Assertions.assertTrue(functionCallReceived, "Should receive function call within timeout");
-            Assertions.assertEquals("get_weather", functionCallName.get(), "Should call get_weather function");
-            Assertions.assertNotNull(functionArguments.get(), "Should have function arguments");
-            Assertions.assertTrue(functionArguments.get().contains("北京") || functionArguments.get().contains("Beijing"),
-                "Arguments should contain Beijing location, got: " + functionArguments.get());
-
-            boolean firstResponseDone = responseDoneLatch.await(EVENT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
-            Assertions.assertTrue(firstResponseDone, "Should receive first response done");
-
-            waitingForFinalResponse.set(true);
-
-            String toolOutput = "{\"location\": \"Beijing\", \"weather\": \"sunny\", \"temp_c\": 25}";
-
-            FunctionCallOutputItem outputItem = new FunctionCallOutputItem(callId.get(), toolOutput);
-            ClientEventConversationItemCreate createItemEvent
-                = new ClientEventConversationItemCreate().setItem(outputItem).setPreviousItemId(previousItemId.get());
-            session.sendEvent(createItemEvent).block(SEND_TIMEOUT);
-
-            session.sendEvent(new ClientEventResponseCreate()).block(SEND_TIMEOUT);
-
-            boolean finalResponseReceived = finalResponseLatch.await(EVENT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
-            Assertions.assertTrue(finalResponseReceived, "Should receive final response within timeout");
-
-            Assertions.assertNotNull(finalTranscript.get(), "Should have final transcript");
-            boolean hasSunny = finalTranscript.get().contains("晴") || finalTranscript.get().contains("sunny");
-            boolean hasTemp = finalTranscript.get().contains("25");
-            Assertions.assertTrue(hasSunny || hasTemp,
-                "Transcript should contain weather info (sunny/晴 or 25), got: " + finalTranscript.get());
-
-            session.close();
-        } catch (Exception e) {
-            Assertions.fail("Test failed with exception: " + e.getMessage());
-        }
+    static Stream<Arguments> toolCallNoAudioOverlapParams() {
+        return crossProduct(new String[] { MODEL_GPT_4O_REALTIME },
+            new String[] { API_VERSION_GA, API_VERSION_PREVIEW });
     }
 }

@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * CodeInterpreterToolAuto
+ * Automatic Code Interpreter Tool Parameters
  *
  * Configuration for a code interpreter container. Optionally specify the IDs of the files to run the code on.
  */

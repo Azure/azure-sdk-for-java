@@ -3,7 +3,7 @@
 package com.azure.ai.projects;
 
 import com.azure.ai.projects.models.AzureAISearchIndex;
-import com.azure.ai.projects.models.Index;
+import com.azure.ai.projects.models.AIProjectIndex;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.Configuration;
 import org.junit.jupiter.api.Assertions;
@@ -23,12 +23,12 @@ public class IndexesClientTest extends ClientTestBase {
         IndexesClient indexesClient = getIndexesClient(httpClient, serviceVersion);
 
         // Verify that listing indexes returns results
-        Iterable<Index> indexes = indexesClient.listLatest();
+        Iterable<AIProjectIndex> indexes = indexesClient.listLatest();
         Assertions.assertNotNull(indexes);
 
         // Verify that at least one index can be retrieved if available
         boolean hasAtLeastOneIndex = false;
-        for (Index index : indexes) {
+        for (AIProjectIndex index : indexes) {
             hasAtLeastOneIndex = true;
             assertValidIndex(index, null, null);
             break;
@@ -50,12 +50,12 @@ public class IndexesClientTest extends ClientTestBase {
 
         try {
             // Verify that listing index versions returns results
-            Iterable<Index> indexVersions = indexesClient.listVersions(indexName);
+            Iterable<AIProjectIndex> indexVersions = indexesClient.listVersions(indexName);
             Assertions.assertNotNull(indexVersions);
 
             // Verify that at least one index version can be retrieved if available
             boolean hasAtLeastOneVersion = false;
-            for (Index index : indexVersions) {
+            for (AIProjectIndex index : indexVersions) {
                 hasAtLeastOneVersion = true;
                 assertValidIndex(index, indexName, null);
                 break;
@@ -81,7 +81,7 @@ public class IndexesClientTest extends ClientTestBase {
         String indexVersion = Configuration.getGlobalConfiguration().get("TEST_INDEX_VERSION", "1.0");
 
         try {
-            Index index = indexesClient.getVersion(indexName, indexVersion);
+            AIProjectIndex index = indexesClient.getVersion(indexName, indexVersion);
 
             // Verify the index properties
             assertValidIndex(index, indexName, indexVersion);
@@ -117,7 +117,7 @@ public class IndexesClientTest extends ClientTestBase {
                 = new AzureAISearchIndex().setConnectionName(aiSearchConnectionName).setIndexName(aiSearchIndexName);
 
             // Create or update the index
-            Index createdIndex = indexesClient.createOrUpdateVersion(indexName, indexVersion, searchIndex);
+            AIProjectIndex createdIndex = indexesClient.createOrUpdateVersion(indexName, indexVersion, searchIndex);
 
             // Verify the created/updated index
             assertValidIndex(createdIndex, indexName, indexVersion);
@@ -147,7 +147,7 @@ public class IndexesClientTest extends ClientTestBase {
 
         try {
             // First verify the index exists
-            Index index = indexesClient.getVersion(indexName, indexVersion);
+            AIProjectIndex index = indexesClient.getVersion(indexName, indexVersion);
             assertValidIndex(index, indexName, indexVersion);
 
             // Delete the index
@@ -155,7 +155,7 @@ public class IndexesClientTest extends ClientTestBase {
 
             // Try to get the deleted index - should throw ResourceNotFoundException
             try {
-                Index deletedIndex = indexesClient.getVersion(indexName, indexVersion);
+                AIProjectIndex deletedIndex = indexesClient.getVersion(indexName, indexVersion);
                 Assertions.fail("Index should have been deleted but was found: " + deletedIndex.getName());
             } catch (Exception e) {
                 // Expected exception

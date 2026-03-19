@@ -4,22 +4,23 @@
 package com.azure.ai.agents.conversations;
 
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.ConversationsClient;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.openai.models.conversations.ConversationDeletedResource;
+import com.openai.services.blocking.ConversationService;
 
 public class DeleteConversation {
     public static void main(String[] args) {
-        String endpoint = Configuration.getGlobalConfiguration().get("AZURE_AGENTS_ENDPOINT");
+        String endpoint = Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT");
         String conversationId = "your-conversation-id"; // Replace with actual conversation ID
         // Code sample for deleting a conversation
-        ConversationsClient conversationsClient = new AgentsClientBuilder()
+        ConversationService conversationService = new AgentsClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(endpoint)
-                .buildConversationsClient();
+                .buildOpenAIClient()
+                .conversations();
 
-        ConversationDeletedResource deletedConversation = conversationsClient.getConversationService().delete(conversationId);
+        ConversationDeletedResource deletedConversation = conversationService.delete(conversationId);
 
         System.out.println("Deleted conversation with the following details:");
         System.out.println("\tConversation ID: " + deletedConversation.id());

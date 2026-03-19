@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.managedops.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.managedops.models.DesiredConfigurationDefenderForServers;
 import com.azure.resourcemanager.managedops.models.DesiredConfigurationUpdate;
+import com.azure.resourcemanager.managedops.models.DesiredEnablementState;
 import com.azure.resourcemanager.managedops.models.ManagedOpUpdate;
 import com.azure.resourcemanager.managedops.models.ManagedOpUpdateProperties;
 import org.junit.jupiter.api.Assertions;
@@ -17,9 +17,9 @@ public final class ManagedOpUpdateTests {
         ManagedOpUpdate model = BinaryData.fromString(
             "{\"properties\":{\"desiredConfiguration\":{\"defenderForServers\":\"Disable\",\"defenderCspm\":\"Disable\"}}}")
             .toObject(ManagedOpUpdate.class);
-        Assertions.assertEquals(DesiredConfigurationDefenderForServers.DISABLE,
+        Assertions.assertEquals(DesiredEnablementState.DISABLE,
             model.properties().desiredConfiguration().defenderForServers());
-        Assertions.assertEquals(DesiredConfigurationDefenderForServers.DISABLE,
+        Assertions.assertEquals(DesiredEnablementState.DISABLE,
             model.properties().desiredConfiguration().defenderCspm());
     }
 
@@ -27,12 +27,12 @@ public final class ManagedOpUpdateTests {
     public void testSerialize() throws Exception {
         ManagedOpUpdate model
             = new ManagedOpUpdate().withProperties(new ManagedOpUpdateProperties().withDesiredConfiguration(
-                new DesiredConfigurationUpdate().withDefenderForServers(DesiredConfigurationDefenderForServers.DISABLE)
-                    .withDefenderCspm(DesiredConfigurationDefenderForServers.DISABLE)));
+                new DesiredConfigurationUpdate().withDefenderForServers(DesiredEnablementState.DISABLE)
+                    .withDefenderCspm(DesiredEnablementState.DISABLE)));
         model = BinaryData.fromObject(model).toObject(ManagedOpUpdate.class);
-        Assertions.assertEquals(DesiredConfigurationDefenderForServers.DISABLE,
+        Assertions.assertEquals(DesiredEnablementState.DISABLE,
             model.properties().desiredConfiguration().defenderForServers());
-        Assertions.assertEquals(DesiredConfigurationDefenderForServers.DISABLE,
+        Assertions.assertEquals(DesiredEnablementState.DISABLE,
             model.properties().desiredConfiguration().defenderCspm());
     }
 }
