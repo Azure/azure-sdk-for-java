@@ -335,22 +335,22 @@ public class BlobSasImplUtil {
                     permissions = BlobContainerSasPermission.parse(permissions).toString();
                     break;
 
+                case SAS_BLOB_DIRECTORY_CONSTANT:
+                    // Normalize backslashes to forward slashes to align directory depth with canonical name computation.
+                    String normalizedBlobName = blobName.replace('\\', '/');
+                    if (!normalizedBlobName.equalsIgnoreCase("/")) {
+                        directoryDepth = normalizedBlobName.trim().replaceAll("^/+|/+$", "").split("/").length;
+                    } else {
+                        directoryDepth = 0;
+                    }
+                    permissions = BlobSasPermission.parse(permissions).toString();
+                    break;
+
                 default:
                     // We won't reparse the permissions if we don't know the type.
                     LOGGER.info("Not re-parsing permissions. Resource type '{}' is unknown.", resource);
                     break;
             }
-        }
-
-        if (resource.equals(SAS_BLOB_DIRECTORY_CONSTANT)) {
-            // Normalize backslashes to forward slashes to align directory depth with canonical name computation.
-            String normalizedBlobName = blobName.replace('\\', '/');
-            if (!normalizedBlobName.equalsIgnoreCase("/")) {
-                directoryDepth = normalizedBlobName.trim().replaceAll("^/+|/+$", "").split("/").length;
-            } else {
-                directoryDepth = 0;
-            }
-            permissions = BlobSasPermission.parse(permissions).toString();
         }
     }
 

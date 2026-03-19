@@ -300,7 +300,8 @@ public class BlobServiceSasModelsTests extends BlobTestBase {
     }
 
     /**
-     * Validates encoded query parameters for a directory scoped user delegation SAS, including delegated OID and request header/query key lists.
+     * Validates encoded query parameters for a directory scoped user delegation SAS,
+     *  including delegated OID and request header/query key lists.
      */
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-02-10")
     @Test
