@@ -31,12 +31,8 @@ public final class ProviderMonitorSettingsImpl implements ProviderMonitorSetting
         String providerMonitorSettingName, Context context) {
         Response<ProviderMonitorSettingInner> inner = this.serviceClient()
             .getByResourceGroupWithResponse(resourceGroupName, providerMonitorSettingName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ProviderMonitorSettingImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ProviderMonitorSettingImpl(inner.getValue(), this.manager()));
     }
 
     public ProviderMonitorSetting getByResourceGroup(String resourceGroupName, String providerMonitorSettingName) {
@@ -53,12 +49,8 @@ public final class ProviderMonitorSettingsImpl implements ProviderMonitorSetting
         String providerMonitorSettingName, Context context) {
         Response<ProviderMonitorSettingInner> inner
             = this.serviceClient().updateWithResponse(resourceGroupName, providerMonitorSettingName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ProviderMonitorSettingImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ProviderMonitorSettingImpl(inner.getValue(), this.manager()));
     }
 
     public ProviderMonitorSetting update(String resourceGroupName, String providerMonitorSettingName) {

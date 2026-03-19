@@ -19,4 +19,5 @@ module com.azure.resourcemanager.appservice {
     opens com.azure.resourcemanager.appservice.fluent.models to com.azure.core;
     opens com.azure.resourcemanager.appservice.models to com.azure.core;
     opens com.azure.resourcemanager.appservice.implementation to com.azure.core;
+    opens com.azure.resourcemanager.appservice.implementation.models to com.azure.core;
 }

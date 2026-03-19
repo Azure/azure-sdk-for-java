@@ -13,23 +13,31 @@ import com.azure.ai.voicelive.models.SessionUpdateSessionUpdated;
 import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
 import com.azure.core.test.annotation.LiveOnly;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Arrays;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Stream;
 
 /**
  * Live tests for VoiceLive session management.
  */
 public class VoiceLiveSessionTests extends VoiceLiveTestBase {
 
-    @Test
+    static Stream<Arguments> apiVersionParams() {
+        return Stream.of(Arguments.of(API_VERSION_GA), Arguments.of(API_VERSION_PREVIEW));
+    }
+
+    @ParameterizedTest
+    @MethodSource("apiVersionParams")
     @LiveOnly
-    public void testSessionUpdateEventIsReceived() throws InterruptedException {
-        VoiceLiveAsyncClient client = createClient();
+    public void testSessionUpdateEventIsReceived(String apiVersion) throws InterruptedException {
+        VoiceLiveAsyncClient client = createClient(apiVersion);
 
         AtomicBoolean sessionUpdatedReceived = new AtomicBoolean(false);
         AtomicReference<SessionUpdateSessionUpdated> receivedEvent = new AtomicReference<>();

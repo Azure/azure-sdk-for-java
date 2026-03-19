@@ -42,12 +42,8 @@ public final class HcxEnterpriseSitesImpl implements HcxEnterpriseSites {
         String hcxEnterpriseSiteName, Context context) {
         Response<HcxEnterpriseSiteInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, privateCloudName, hcxEnterpriseSiteName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new HcxEnterpriseSiteImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new HcxEnterpriseSiteImpl(inner.getValue(), this.manager()));
     }
 
     public HcxEnterpriseSite get(String resourceGroupName, String privateCloudName, String hcxEnterpriseSiteName) {

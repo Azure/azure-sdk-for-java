@@ -30,12 +30,8 @@ public final class BillingInfoesImpl implements BillingInfoes {
         Context context) {
         Response<BillingInfoResponseInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, monitorName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new BillingInfoResponseImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new BillingInfoResponseImpl(inner.getValue(), this.manager()));
     }
 
     public BillingInfoResponse get(String resourceGroupName, String monitorName) {

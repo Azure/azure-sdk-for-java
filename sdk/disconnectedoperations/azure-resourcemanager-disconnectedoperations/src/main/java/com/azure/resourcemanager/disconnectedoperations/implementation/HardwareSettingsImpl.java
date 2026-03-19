@@ -41,12 +41,8 @@ public final class HardwareSettingsImpl implements HardwareSettings {
         Context context) {
         Response<HardwareSettingInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, name, hardwareSettingName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new HardwareSettingImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new HardwareSettingImpl(inner.getValue(), this.manager()));
     }
 
     public HardwareSetting get(String resourceGroupName, String name, String hardwareSettingName) {

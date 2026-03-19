@@ -31,12 +31,8 @@ public final class DatabasesImpl implements Databases {
         Context context) {
         Response<DatabaseInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, serverName, databaseName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new DatabaseImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new DatabaseImpl(inner.getValue(), this.manager()));
     }
 
     public Database get(String resourceGroupName, String serverName, String databaseName) {

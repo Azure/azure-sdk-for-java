@@ -3,38 +3,32 @@
 
 package com.azure.cosmos.benchmark;
 
-import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.implementation.AsyncDocumentClient;
-import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
-import com.azure.cosmos.implementation.Database;
-import com.azure.cosmos.implementation.Document;
-import com.azure.cosmos.implementation.DocumentCollection;
-import com.azure.cosmos.implementation.NotFoundException;
-import com.azure.cosmos.implementation.OperationType;
-import com.azure.cosmos.implementation.QueryFeedOperationState;
-import com.azure.cosmos.implementation.RequestOptions;
-import com.azure.cosmos.implementation.ResourceResponse;
-import com.azure.cosmos.implementation.ResourceType;
+import com.azure.cosmos.models.CosmosBulkExecutionOptions;
+import com.azure.cosmos.models.CosmosBulkOperationResponse;
+import com.azure.cosmos.models.CosmosBulkOperations;
+import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
 import org.apache.commons.lang3.RandomUtils;
-import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Flux;
-import reactor.core.scheduler.Schedulers;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
 import reactor.util.retry.Retry;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
-import com.codahale.metrics.MetricRegistry;
+
 
 /**
  * This workflow is intended for session and above consistency levels.
@@ -42,38 +36,29 @@ import com.codahale.metrics.MetricRegistry;
  * This workflow first will create some documents in cosmosdb and will store them all in its local cache.
  * Then at each step will randomly will try to do a write, read its own write, or query for its own write.
  */
-class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
+class ReadMyWriteWorkflow extends AsyncBenchmark<PojoizedJson> {
     private final static String QUERY_FIELD_NAME = "prop";
     private final static String ORDER_BY_FIELD_NAME = "_ts";
     private final static int MAX_TOP_QUERY_COUNT = 2000;
-    private AsyncDocumentClient client;
-    private DocumentCollection collection;
-    private String nameCollectionLink;
 
-    private ConcurrentHashMap<Integer, Document> cache;
+    private ConcurrentHashMap<Integer, PojoizedJson> cache;
     private int cacheSize;
 
-    ReadMyWriteWorkflow(TenantWorkloadConfig cfg, MetricRegistry sharedRegistry) {
-        super(cfg, sharedRegistry);
+    ReadMyWriteWorkflow(TenantWorkloadConfig cfg, Scheduler scheduler) {
+        super(cfg, scheduler);
     }
 
     @Override
     protected void init() {
-        // TODO: move read my writes to use v4 APIs
-        this.client =  CosmosBridgeInternal.getAsyncDocumentClient(benchmarkWorkloadClient);
-        Database database = DocDBUtils.getDatabase(client, workloadConfig.getDatabaseId());
-        this.collection = DocDBUtils.getCollection(client, database.getSelfLink(), workloadConfig.getContainerId());
-        this.nameCollectionLink = String.format("dbs/%s/colls/%s", database.getId(), collection.getId());
-
         this.cacheSize = workloadConfig.getNumberOfPreCreatedDocuments();
         this.cache = new ConcurrentHashMap<>();
         this.populateCache();
     }
 
     @Override
-    protected void performWorkload(BaseSubscriber<Document> baseSubscriber, long i) throws Exception {
+    protected Mono<PojoizedJson> performWorkload(long i) {
 
-        Flux<Document> obs;
+        Flux<PojoizedJson> obs;
         boolean readyMyWrite = RandomUtils.nextBoolean();
 
         if (readyMyWrite) {
@@ -97,7 +82,7 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
                     // then try to query for the document which just was written
                     obs = writeDocument()
                             .flatMap(d -> singlePartitionQuery(d)
-                                    .switchIfEmpty(Flux.error(new NotFoundException(
+                                    .switchIfEmpty(Flux.error(new RuntimeException(
                                             "couldn't find my write in a single partition query!"))));
                     break;
                 case 2:
@@ -105,7 +90,7 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
                     // then try to query for the document which just was written
                     obs = writeDocument()
                             .flatMap(d -> xPartitionQuery(generateQuery(d))
-                                    .switchIfEmpty(Flux.error(new NotFoundException(
+                                    .switchIfEmpty(Flux.error(new RuntimeException(
                                             "couldn't find my write in a cross partition query!"))));
                     break;
                 default:
@@ -134,13 +119,13 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
                 case 2:
                     // randomly choose a document from the cache and do a single partition query
                     obs = singlePartitionQuery(cache.get(cacheKey()))
-                            .switchIfEmpty(Flux.error(new NotFoundException(
+                            .switchIfEmpty(Flux.error(new RuntimeException(
                                     "couldn't find my cached write in a single partition query!")));
                     break;
                 case 3:
                     // randomly choose a document from the cache and do a cross partition query
                     obs = xPartitionQuery(generateRandomQuery())
-                            .switchIfEmpty(Flux.error(new NotFoundException(
+                            .switchIfEmpty(Flux.error(new RuntimeException(
                                     "couldn't find my cached write in a cross partition query!")));
                     break;
                 default:
@@ -149,29 +134,46 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
             }
         }
 
-        concurrencyControlSemaphore.acquire();
-        logger.debug("concurrencyControlSemaphore: {}", concurrencyControlSemaphore);
-
-        try {
-            obs.subscribeOn(Schedulers.parallel()).subscribe(baseSubscriber);
-        } catch (Throwable error) {
-            concurrencyControlSemaphore.release();
-            logger.error("subscription failed due to ", error);
-            if (error instanceof Error) {
-                throw (Error) error;
-            }
-        }
+        return obs.last();
     }
 
     private void populateCache() {
-        ArrayList<Flux<Document>> list = new ArrayList<>();
-        for (int i = 0; i < cacheSize; i++) {
-            Flux<Document> observable = writeDocument(i);
-            list.add(observable);
-        }
-
         logger.info("PRE-populating {} documents ....", cacheSize);
-        Flux.merge(Flux.fromIterable(list), workloadConfig.getConcurrency()).then().block();
+        List<PojoizedJson> generatedDocs = new ArrayList<>();
+
+        Flux<CosmosItemOperation> bulkOperationFlux = Flux.range(0, cacheSize)
+            .map(i -> {
+                String idString = UUID.randomUUID().toString();
+                String randomVal = UUID.randomUUID().toString();
+                PojoizedJson newDoc = new PojoizedJson();
+                newDoc.setProperty("id", idString);
+                newDoc.setProperty(partitionKey, idString);
+                newDoc.setProperty(QUERY_FIELD_NAME, randomVal);
+                newDoc.setProperty("dataField1", randomVal);
+                newDoc.setProperty("dataField2", randomVal);
+                newDoc.setProperty("dataField3", randomVal);
+                newDoc.setProperty("dataField4", randomVal);
+                generatedDocs.add(newDoc);
+                return CosmosBulkOperations.getCreateItemOperation(newDoc, new PartitionKey(idString));
+            });
+
+        CosmosBulkExecutionOptions bulkExecutionOptions = new CosmosBulkExecutionOptions();
+        List<CosmosBulkOperationResponse<Object>> failedResponses = Collections.synchronizedList(new ArrayList<>());
+        cosmosAsyncContainer
+            .executeBulkOperations(bulkOperationFlux, bulkExecutionOptions)
+            .doOnNext(response -> {
+                if (response.getResponse() == null || !response.getResponse().isSuccessStatusCode()) {
+                    failedResponses.add(response);
+                }
+            })
+            .blockLast(Duration.ofMinutes(10));
+
+        BenchmarkHelper.retryFailedBulkOperations(failedResponses, cosmosAsyncContainer,
+            workloadConfig.getConcurrency());
+
+        for (int i = 0; i < generatedDocs.size(); i++) {
+            cache.put(i, generatedDocs.get(i));
+        }
         logger.info("Finished pre-populating {} documents", cacheSize);
     }
 
@@ -180,7 +182,7 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
      *
      * @return Observable of document
      */
-    private Flux<Document> writeDocument() {
+    private Flux<PojoizedJson> writeDocument() {
         return writeDocument(null);
     }
 
@@ -189,20 +191,20 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
      *
      * @return Observable of document
      */
-    private Flux<Document> writeDocument(Integer i) {
+    private Flux<PojoizedJson> writeDocument(Integer i) {
         String idString = UUID.randomUUID().toString();
         String randomVal = UUID.randomUUID().toString();
-        Document document = new Document();
-        document.setId(idString);
-        document.set(partitionKey, idString);
-        document.set(QUERY_FIELD_NAME, randomVal);
-        document.set("dataField1", randomVal);
-        document.set("dataField2", randomVal);
-        document.set("dataField3", randomVal);
-        document.set("dataField4", randomVal);
+        PojoizedJson newDoc = new PojoizedJson();
+        newDoc.setProperty("id", idString);
+        newDoc.setProperty(partitionKey, idString);
+        newDoc.setProperty(QUERY_FIELD_NAME, randomVal);
+        newDoc.setProperty("dataField1", randomVal);
+        newDoc.setProperty("dataField2", randomVal);
+        newDoc.setProperty("dataField3", randomVal);
+        newDoc.setProperty("dataField4", randomVal);
 
         Integer key = i == null ? cacheKey() : i;
-        return client.createDocument(getCollectionLink(), document, null, false)
+        return cosmosAsyncContainer.createItem(newDoc)
                      .retryWhen(Retry.max(5).filter((error) -> {
                          if (!(error instanceof CosmosException)) {
                              return false;
@@ -229,10 +231,11 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
 
                              return false;
                          },
-                         (conflictException) -> client.readDocument(getDocumentLink(document), null)
+                         (conflictException) -> cosmosAsyncContainer.readItem(
+                             idString, new PartitionKey(idString), PojoizedJson.class)
                      )
-                    .doOnNext(r -> cache.put(key, r.getResource()))
-                    .map(ResourceResponse::getResource).flux();
+                    .doOnNext(r -> cache.put(key, r.getItem()))
+                    .map(r -> r.getItem()).flux();
     }
 
     /**
@@ -241,12 +244,10 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
      * @param d document to be read
      * @return Observable of document
      */
-    private Flux<Document> readDocument(Document d) {
-        RequestOptions options = new RequestOptions();
-        options.setPartitionKey(new PartitionKey(d.getString(partitionKey)));
-
-        return client.readDocument(getDocumentLink(d), options)
-                .map(ResourceResponse::getResource).flux();
+    private Flux<PojoizedJson> readDocument(PojoizedJson d) {
+        return cosmosAsyncContainer.readItem(
+                d.getId(), new PartitionKey(d.getId()), PojoizedJson.class)
+                .map(r -> r.getItem()).flux();
     }
 
     /**
@@ -261,7 +262,7 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
             int key = RandomUtils.nextInt(0, cacheSize);
             keys.add(key);
         }
-        List<Document> documentList = null;
+        List<PojoizedJson> documentList = null;
         if (RandomUtils.nextBoolean()) {
             documentList = keys.stream().map(cache::get).collect(Collectors.toList());
         }
@@ -278,24 +279,11 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
      * @param query to find document
      * @return Observable document
      */
-    private Flux<Document> xPartitionQuery(SqlQuerySpec query) {
+    private Flux<PojoizedJson> xPartitionQuery(SqlQuerySpec query) {
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         options.setMaxDegreeOfParallelism(-1);
 
-        QueryFeedOperationState state = new QueryFeedOperationState(
-                benchmarkWorkloadClient,
-            "xPartitionQuery",
-            workloadConfig.getDatabaseId(),
-            workloadConfig.getContainerId(),
-            ResourceType.Document,
-            OperationType.Query,
-            null,
-            options,
-            new CosmosPagedFluxOptions()
-        );
-
-        return client.<Document>queryDocuments(getCollectionLink(), query, state, Document.class)
-                .flatMap(p -> Flux.fromIterable(p.getResults()));
+        return cosmosAsyncContainer.queryItems(query, options, PojoizedJson.class);
     }
 
     /**
@@ -305,28 +293,15 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
      * @param d document to be queried for.
      * @return Observable document
      */
-    private Flux<Document> singlePartitionQuery(Document d) {
+    private Flux<PojoizedJson> singlePartitionQuery(PojoizedJson d) {
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
-        options.setPartitionKey(new PartitionKey(d.get(partitionKey)));
+        options.setPartitionKey(new PartitionKey(d.getProperty(partitionKey)));
 
         SqlQuerySpec sqlQuerySpec = new SqlQuerySpec(String.format("Select top 100 * from c where c.%s = '%s'",
                                                                    QUERY_FIELD_NAME,
-                                                                   d.getString(QUERY_FIELD_NAME)));
+                                                                   (String) d.getProperty(QUERY_FIELD_NAME)));
 
-        QueryFeedOperationState state = new QueryFeedOperationState(
-                benchmarkWorkloadClient,
-            "singlePartitionQuery",
-            workloadConfig.getDatabaseId(),
-            workloadConfig.getContainerId(),
-            ResourceType.Document,
-            OperationType.Query,
-            null,
-            options,
-            new CosmosPagedFluxOptions()
-        );
-
-        return client.<Document>queryDocuments(getCollectionLink(), sqlQuerySpec, state, Document.class)
-                .flatMap(p -> Flux.fromIterable(p.getResults()));
+        return cosmosAsyncContainer.queryItems(sqlQuerySpec, options, PojoizedJson.class);
     }
 
     /**
@@ -337,7 +312,7 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
      * @param documentList list of documents to be queried for
      * @return SqlQuerySpec
      */
-    private SqlQuerySpec generateQuery(Document... documentList) {
+    private SqlQuerySpec generateQuery(PojoizedJson... documentList) {
         return generateQuery(Arrays.asList(documentList));
     }
 
@@ -349,7 +324,7 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
      * @param documentList list of documents to be queried for
      * @return SqlQuerySpec
      */
-    private SqlQuerySpec generateQuery(List<Document> documentList) {
+    private SqlQuerySpec generateQuery(List<PojoizedJson> documentList) {
         int top = RandomUtils.nextInt(0, MAX_TOP_QUERY_COUNT);
         boolean useOrderBy = RandomUtils.nextBoolean();
 
@@ -364,7 +339,7 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
      * @param withOrderBy  if not null, the query will have an orderby clause
      * @return SqlQuerySpec
      */
-    private SqlQuerySpec generateQuery(List<Document> documentList, Integer topCount, boolean withOrderBy) {
+    private SqlQuerySpec generateQuery(List<PojoizedJson> documentList, Integer topCount, boolean withOrderBy) {
         QueryBuilder queryBuilder = new QueryBuilder();
         if (withOrderBy) {
             queryBuilder.orderBy(ORDER_BY_FIELD_NAME);
@@ -420,10 +395,10 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
                 private final List<SqlParameter> parameters;
                 private final String whereCondition;
 
-                static InWhereClause asInWhereClause(String fieldName, List<Document> documentList) {
+                static InWhereClause asInWhereClause(String fieldName, List<PojoizedJson> documentList) {
                     List<SqlParameter> parameters = new ArrayList<>(documentList.size());
                     for (int i = 0; i < documentList.size(); i++) {
-                        Object value = documentList.get(i).get(fieldName);
+                        Object value = documentList.get(i).getProperty(fieldName);
                         SqlParameter sqlParameter = new SqlParameter("@param" + i, value);
                         parameters.add(sqlParameter);
                     }
@@ -484,28 +459,4 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
         }
     }
 
-    protected String getCollectionLink() {
-        if (workloadConfig.isUseNameLink()) {
-            return this.nameCollectionLink;
-        } else {
-            return collection.getSelfLink();
-        }
-    }
-
-    protected String getDocumentLink(Document doc) {
-        if (workloadConfig.isUseNameLink()) {
-            return this.nameCollectionLink + "/docs/" + doc.getId();
-        } else {
-            return doc.getSelfLink();
-        }
-    }
-
-    @Override
-    public void shutdown() {
-        if (this.client != null) {
-            this.client.close();
-        }
-
-        super.shutdown();
-    }
 }

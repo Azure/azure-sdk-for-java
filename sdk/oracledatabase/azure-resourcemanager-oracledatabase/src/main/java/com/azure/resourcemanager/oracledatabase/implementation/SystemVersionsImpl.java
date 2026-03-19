@@ -29,12 +29,8 @@ public final class SystemVersionsImpl implements SystemVersions {
 
     public Response<SystemVersion> getWithResponse(String location, String systemversionname, Context context) {
         Response<SystemVersionInner> inner = this.serviceClient().getWithResponse(location, systemversionname, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new SystemVersionImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new SystemVersionImpl(inner.getValue(), this.manager()));
     }
 
     public SystemVersion get(String location, String systemversionname) {

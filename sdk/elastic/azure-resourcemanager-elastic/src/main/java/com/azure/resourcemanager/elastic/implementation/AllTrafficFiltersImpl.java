@@ -30,12 +30,8 @@ public final class AllTrafficFiltersImpl implements AllTrafficFilters {
         Context context) {
         Response<ElasticTrafficFilterResponseInner> inner
             = this.serviceClient().listWithResponse(resourceGroupName, monitorName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ElasticTrafficFilterResponseImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ElasticTrafficFilterResponseImpl(inner.getValue(), this.manager()));
     }
 
     public ElasticTrafficFilterResponse list(String resourceGroupName, String monitorName) {

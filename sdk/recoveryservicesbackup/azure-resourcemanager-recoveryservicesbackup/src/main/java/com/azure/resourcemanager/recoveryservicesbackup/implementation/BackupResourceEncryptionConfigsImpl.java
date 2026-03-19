@@ -31,12 +31,8 @@ public final class BackupResourceEncryptionConfigsImpl implements BackupResource
         String resourceGroupName, Context context) {
         Response<BackupResourceEncryptionConfigExtendedResourceInner> inner
             = this.serviceClient().getWithResponse(vaultName, resourceGroupName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new BackupResourceEncryptionConfigExtendedResourceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new BackupResourceEncryptionConfigExtendedResourceImpl(inner.getValue(), this.manager()));
     }
 
     public BackupResourceEncryptionConfigExtendedResource get(String vaultName, String resourceGroupName) {
