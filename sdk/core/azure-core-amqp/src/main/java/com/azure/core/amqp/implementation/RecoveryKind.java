@@ -6,6 +6,7 @@ package com.azure.core.amqp.implementation;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
 
+import java.util.Locale;
 import java.util.concurrent.TimeoutException;
 
 /**
@@ -150,8 +151,11 @@ public enum RecoveryKind {
         // disposal signals (e.g., "Connection is disposed. Cannot get management instance.").
         if (error instanceof IllegalStateException) {
             final String msg = error.getMessage();
-            if (msg != null && msg.contains("Cannot publish") && msg.contains("disposed")) {
-                return LINK;
+            if (msg != null) {
+                final String normalizedMsg = msg.toLowerCase(Locale.ROOT);
+                if (normalizedMsg.contains("cannot publish") && normalizedMsg.contains("disposed")) {
+                    return LINK;
+                }
             }
         }
 

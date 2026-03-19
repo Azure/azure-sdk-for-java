@@ -228,7 +228,12 @@ public final class RetryUtil {
                 // Cap baseDelay to maxDelay so FIXED mode respects retryOptions.getMaxDelay().
                 delay = baseDelay.compareTo(maxDelay) > 0 ? maxDelay : baseDelay;
             } else {
-                long millis = baseDelay.toMillis() * (1L << Math.min(attempt, 30));
+                final long multiplier = 1L << Math.min(attempt, 30);
+                final long baseMillis = baseDelay.toMillis();
+                // Guard against overflow: if baseMillis * multiplier would exceed Long.MAX_VALUE,
+                // saturate to maxDelay (the clamp below would cap it there anyway).
+                final long millis
+                    = baseMillis > Long.MAX_VALUE / multiplier ? maxDelay.toMillis() : baseMillis * multiplier;
                 delay = Duration.ofMillis(Math.min(millis, maxDelay.toMillis()));
             }
             final double jitter = 1.0 + (ThreadLocalRandom.current().nextDouble() * 2 - 1) * JITTER_FACTOR;
