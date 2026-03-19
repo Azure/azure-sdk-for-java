@@ -188,8 +188,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
         }
     }
 
-    /// TODO : Enable this test once emulator supports startFromTime with FULL_FIDELITY change feed
-    @Test(groups = { "long-emulator" }, timeOut = 50 * CHANGE_FEED_PROCESSOR_TIMEOUT, enabled = false)
+    @Test(groups = { "long-emulator" }, timeOut = 50 * CHANGE_FEED_PROCESSOR_TIMEOUT)
     public void fullFidelityChangeFeedProcessorStartFromPointInTime() throws InterruptedException {
         CosmosAsyncContainer createdFeedCollection = createFeedCollection(FEED_COLLECTION_THROUGHPUT);
         CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(LEASE_COLLECTION_THROUGHPUT);
