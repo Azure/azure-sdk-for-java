@@ -51,7 +51,6 @@ ConnectionsClient connectionsClient = builder.buildConnectionsClient();
 DatasetsClient datasetsClient = builder.buildDatasetsClient();
 DeploymentsClient deploymentsClient = builder.buildDeploymentsClient();
 EvaluationRulesClient evaluationRulesClient = builder.buildEvaluationRulesClient();
-EvaluationsClient evaluationsClient = builder.buildEvaluationsClient();
 EvaluationTaxonomiesClient evaluationTaxonomiesClient = builder.buildEvaluationTaxonomiesClient();
 EvaluatorsClient evaluatorsClient = builder.buildEvaluatorsClient();
 IndexesClient indexesClient = builder.buildIndexesClient();
@@ -63,7 +62,8 @@ SchedulesClient schedulesClient = builder.buildSchedulesClient();
 In the particular case of the `EvaluationsClient`, this client library exposes [OpenAI's official SDK][openai_java_sdk] directly, so you can use the [official OpenAI docs][openai_api_docs] to access this feature.
 
 ```java com.azure.ai.projects.evaluationsClientInit
-EvalService evalService = evaluationsClient.getEvalService();
+EvalService evalService = builder.buildOpenAIClient().evals();
+EvalServiceAsync evalAsyncService = builder.buildOpenAIAsyncClient().evals();
 ```
 
 For the Agents operation, you can use the `azure-ai-agents` package which is available as transitive dependency:

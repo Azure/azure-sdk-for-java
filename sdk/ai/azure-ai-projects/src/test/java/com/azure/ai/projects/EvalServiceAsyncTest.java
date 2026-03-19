@@ -5,6 +5,7 @@ package com.azure.ai.projects;
 import com.azure.core.http.HttpClient;
 import com.openai.core.RequestOptions;
 import com.openai.core.Timeout;
+import com.openai.services.async.EvalServiceAsync;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -16,18 +17,18 @@ import static com.azure.ai.projects.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class EvaluationsAsyncClientTest extends ClientTestBase {
+public class EvalServiceAsyncTest extends ClientTestBase {
 
     @Disabled("Flaky test")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
     public void timeoutResponse(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
-        EvaluationsAsyncClient client = getEvaluationsAsyncClient(httpClient, serviceVersion);
+        EvalServiceAsync client = getEvaluationsAsyncClient(httpClient, serviceVersion);
         RequestOptions requestOptions
             = RequestOptions.builder().timeout(Timeout.builder().read(Duration.ofMillis(1)).build()).build();
 
         ExecutionException thrown = assertThrows(ExecutionException.class,
-            () -> client.getEvalServiceAsync().retrieve("I probably don't exist", requestOptions).get());
+            () -> client.retrieve("I probably don't exist", requestOptions).get());
         assertInstanceOf(TimeoutException.class, thrown.getCause());
     }
     //
