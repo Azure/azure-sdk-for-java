@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Disabled MSAL's internal retry for Confidential Client, Managed Identity and Public Client Applications.
+
 ### Other Changes
 
 ## 1.19.0-beta.2 (2026-02-25)
