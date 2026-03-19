@@ -707,7 +707,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                 && requestChecksumAlgorithm != null
                 && requestChecksumAlgorithm != StorageChecksumAlgorithm.NONE) {
                 return monoError(LOGGER, new IllegalArgumentException(
-                    "Both computeMd5 and requestChecksumAlgorithm are set. Only one form of transactional content validation may be used."));
+                    ContentValidationBehaviorUtil.CONFLICTING_TRANSACTIONAL_CONTENT_VALIDATION_MESSAGE));
             }
 
             BlockBlobAsyncClient blockBlobAsyncClient = getBlockBlobAsyncClient();

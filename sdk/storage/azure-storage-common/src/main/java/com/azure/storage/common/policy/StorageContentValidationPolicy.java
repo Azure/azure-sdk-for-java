@@ -116,8 +116,24 @@ public class StorageContentValidationPolicy implements HttpPipelinePolicy {
      * @param context the HTTP pipeline call context
      */
     private Mono<Void> applyStructuredMessage(HttpPipelineCallContext context) {
-        int unencodedContentLength
-            = Integer.parseInt(context.getHttpRequest().getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH));
+        String contentLengthValue = context.getHttpRequest().getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH);
+        if (contentLengthValue == null || contentLengthValue.isEmpty()) {
+            throw new IllegalArgumentException("Content-Length header is required to apply structured message "
+                + "and CRC64 encoding, but it was not present on the request.");
+        }
+
+        long parsedContentLength;
+        try {
+            parsedContentLength = Long.parseLong(contentLengthValue);
+        } catch (NumberFormatException ex) {
+            throw new IllegalArgumentException(
+                "Content-Length header value '" + contentLengthValue
+                    + "' is not a valid non-negative integer value required for structured message and CRC64 encoding.",
+                ex);
+        }
+
+        int unencodedContentLength = (int) parsedContentLength;
+
         Flux<ByteBuffer> originalBody = context.getHttpRequest().getBody();
 
         /*
@@ -126,8 +142,7 @@ public class StorageContentValidationPolicy implements HttpPipelinePolicy {
          *
          * A fresh encoder is created on each subscribe (via defer) so retries re-encode correctly from the
          * original replayable body. The encoded buffers are slices of the original data, produced lazily and
-         * consumed by the HTTP client without materialization. This avoids the ~2x peak memory that a
-         * collectList + cache approach would cause (holding both original and encoded copies simultaneously).
+         * consumed by the HTTP client without materialization.
          *
          * limitRate(1) keeps the encoder's segment boundaries aligned with buffer boundaries.
          */

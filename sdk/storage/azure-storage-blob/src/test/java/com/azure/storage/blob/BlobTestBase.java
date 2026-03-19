@@ -1318,7 +1318,19 @@ public class BlobTestBase extends TestProxyTestBase {
         if (recordedRequestHeaders == null || recordedRequestHeaders.isEmpty()) {
             return false;
         }
-        return recordedRequestHeaders.stream().anyMatch(headers -> {
+        // Only consider requests where any of the structured-message or CRC64-related headers is present.
+        List<HttpHeaders> headersWithContentValidation = recordedRequestHeaders.stream().filter(headers -> {
+            String bodyType = headers.getValue(Constants.HeaderConstants.STRUCTURED_BODY_TYPE_HEADER_NAME);
+            String contentLength = headers.getValue(Constants.HeaderConstants.STRUCTURED_CONTENT_LENGTH_HEADER_NAME);
+            String contentCrc64 = headers.getValue(Constants.HeaderConstants.CONTENT_CRC64_HEADER_NAME);
+            return bodyType != null || contentLength != null || contentCrc64 != null;
+        }).collect(Collectors.toList());
+        // If no requests had any content-validation headers at all, we cannot claim structured-message was applied.
+        if (headersWithContentValidation.isEmpty()) {
+            return false;
+        }
+        // All requests that used any content-validation header must be consistent structured-message requests.
+        return headersWithContentValidation.stream().allMatch(headers -> {
             String bodyType = headers.getValue(Constants.HeaderConstants.STRUCTURED_BODY_TYPE_HEADER_NAME);
             String contentLength = headers.getValue(Constants.HeaderConstants.STRUCTURED_CONTENT_LENGTH_HEADER_NAME);
             String contentCrc64 = headers.getValue(Constants.HeaderConstants.CONTENT_CRC64_HEADER_NAME);
@@ -1343,7 +1355,19 @@ public class BlobTestBase extends TestProxyTestBase {
         if (recordedRequestHeaders == null || recordedRequestHeaders.isEmpty()) {
             return false;
         }
-        return recordedRequestHeaders.stream().anyMatch(headers -> {
+        // Only consider requests where any of the structured-message or CRC64-related headers is present.
+        List<HttpHeaders> headersWithContentValidation = recordedRequestHeaders.stream().filter(headers -> {
+            String bodyType = headers.getValue(Constants.HeaderConstants.STRUCTURED_BODY_TYPE_HEADER_NAME);
+            String contentLength = headers.getValue(Constants.HeaderConstants.STRUCTURED_CONTENT_LENGTH_HEADER_NAME);
+            String contentCrc64 = headers.getValue(Constants.HeaderConstants.CONTENT_CRC64_HEADER_NAME);
+            return bodyType != null || contentLength != null || contentCrc64 != null;
+        }).collect(Collectors.toList());
+        // If no requests had any content-validation headers at all, we cannot claim CRC64 was applied.
+        if (headersWithContentValidation.isEmpty()) {
+            return false;
+        }
+        // All requests that used any content-validation header must be consistent CRC64-only requests.
+        return headersWithContentValidation.stream().allMatch(headers -> {
             String contentCrc64 = headers.getValue(Constants.HeaderConstants.CONTENT_CRC64_HEADER_NAME);
             String bodyType = headers.getValue(Constants.HeaderConstants.STRUCTURED_BODY_TYPE_HEADER_NAME);
             String contentLength = headers.getValue(Constants.HeaderConstants.STRUCTURED_CONTENT_LENGTH_HEADER_NAME);
@@ -1360,7 +1384,7 @@ public class BlobTestBase extends TestProxyTestBase {
         if (recordedRequestHeaders == null || recordedRequestHeaders.isEmpty()) {
             return false;
         }
-        return recordedRequestHeaders.stream().anyMatch(headers -> {
+        return recordedRequestHeaders.stream().allMatch(headers -> {
             String bodyType = headers.getValue(Constants.HeaderConstants.STRUCTURED_BODY_TYPE_HEADER_NAME);
             String contentLength = headers.getValue(Constants.HeaderConstants.STRUCTURED_CONTENT_LENGTH_HEADER_NAME);
             String contentCrc64 = headers.getValue(Constants.HeaderConstants.CONTENT_CRC64_HEADER_NAME);
