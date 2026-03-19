@@ -61,6 +61,6 @@ extends:
         # required by the above perf libraries
       - name: perf-test-core
         groupId: com.azure
-        # Build azure-core-amqp from source (needed for RecoveryKind, tiered retry)
       - name: azure-core-amqp
         groupId: com.azure
+        # Build azure-core-amqp from source (needed for RecoveryKind, tiered retry)
