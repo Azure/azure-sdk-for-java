@@ -34,6 +34,84 @@ function SetCurrentVersion($GroupId, $ArtifactId, $Version) {
   $cmdOutput = python $setVersionFilePath --new-version $Version --artifact-id $ArtifactId --group-id $GroupId
 }
 
+# Normalize version_client.txt for patch releases.
+# This handles the edge case where some libraries within the same release pipeline
+# got partially released (i.e., only some libraries in a release group received a
+# stable release) instead of all libraries releasing together. In such cases, the
+# unreleased libraries have a beta current-version (col3) but a GA dependency-version
+# (col2). During patch generation, we need {x-version-update;...;current} markers to
+# resolve to GA versions for non-patched artifacts, so we normalize col3 = col2
+# only for the specific dependencies referenced by the patched artifacts.
+function NormalizeVersionFileForPatching([string[]]$PatchedArtifactNames, [string[]]$PatchedPomFilePaths) {
+  # Step 1: Scan patched artifacts' pom.xml files for {;current} dependencies
+  $depsToNormalize = @{}
+  foreach ($pomPath in $PatchedPomFilePaths) {
+    if (Test-Path $pomPath) {
+      $pomContent = Get-Content $pomPath -Raw
+      $regex = [regex]'\{x-version-update;([^;]+);current\}'
+      foreach ($match in $regex.Matches($pomContent)) {
+        $depName = $match.Groups[1].Value
+        if ($PatchedArtifactNames -notcontains $depName) {
+          $depsToNormalize[$depName] = $true
+        }
+      }
+    }
+  }
+
+  if ($depsToNormalize.Count -eq 0) {
+    Write-Host "No non-patched {;current} dependencies found to normalize."
+    return
+  }
+
+  Write-Host "Dependencies to check for normalization: $($depsToNormalize.Keys -join ', ')"
+
+  # Step 2: Normalize only those entries in version_client.txt where col3 is prerelease and col2 is GA
+  $repoRoot = Resolve-Path "${PSScriptRoot}../../.."
+  $versionFilePath = Join-Path $repoRoot "eng" "versioning" "version_client.txt"
+  $lines = Get-Content $versionFilePath
+  $newLines = @()
+  $normalizedCount = 0
+
+  foreach ($line in $lines) {
+    if ($line.StartsWith('#') -or [string]::IsNullOrWhiteSpace($line)) {
+      $newLines += $line
+      continue
+    }
+
+    $parts = $line.Split(';')
+    if ($parts.Length -ne 3) {
+      $newLines += $line
+      continue
+    }
+
+    $artifactName = $parts[0].Trim()
+
+    if (-not $depsToNormalize.ContainsKey($artifactName)) {
+      $newLines += $line
+      continue
+    }
+
+    $dependencyVersion = $parts[1].Trim()
+    $currentVersion = $parts[2].Trim()
+
+    $parsedCurrent = [AzureEngSemanticVersion]::ParseVersionString($currentVersion)
+    $parsedDependency = [AzureEngSemanticVersion]::ParseVersionString($dependencyVersion)
+
+    if ($null -ne $parsedCurrent -and $parsedCurrent.IsPrerelease -and
+        $null -ne $parsedDependency -and -not $parsedDependency.IsPrerelease) {
+      $newLines += "$artifactName;$dependencyVersion;$dependencyVersion"
+      $normalizedCount++
+    } else {
+      $newLines += $line
+    }
+  }
+
+  if ($normalizedCount -gt 0) {
+    Set-Content -Path $versionFilePath -Value $newLines -Encoding UTF8
+  }
+  Write-Host "Normalized $normalizedCount entries in version_client.txt for patch release."
+}
+
 # Update dependencies of the artifact.
 function UpdateDependencyOfClientSDK() {
   $repoRoot = Resolve-Path "${PSScriptRoot}../../.."

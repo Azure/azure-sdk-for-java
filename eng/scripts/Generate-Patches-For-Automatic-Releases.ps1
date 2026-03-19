@@ -55,6 +55,16 @@ try {
     $packagesData = $ymlObject["extends"]["parameters"]["artifacts"]
     $libraryList = $null
 
+    # Build the list of artifacts being patched and normalize version_client.txt
+    # so non-patched in-group dependencies resolve to GA versions.
+    $patchedArtifactNames = @()
+    $patchedPomPaths = @()
+    foreach ($packageData in $packagesData) {
+        $patchedArtifactNames += $packageData["groupId"] + ":" + $packageData["name"]
+        $patchedPomPaths += Join-Path $SourcesDirectory "sdk" $packageData["ServiceDirectory"] $packageData["name"] "pom.xml"
+    }
+    NormalizeVersionFileForPatching -PatchedArtifactNames $patchedArtifactNames -PatchedPomFilePaths $patchedPomPaths
+
     # Build PatchVersionOverrides: map of "${groupId}:${artifactId}" → patch version for all
     # artifacts being patched. This is passed to generatepatch.ps1 so changelogs show the
     # correct version when a sibling dependency is also being patched in the same run.

@@ -88,6 +88,19 @@ if(!$BranchName) {
 
 Write-Output "Branch Name is: $BranchName"
 
+# Normalize version_client.txt so non-patched in-group dependencies resolve to GA versions.
+$patchedArtifactNames = $ArtifactIds | ForEach-Object { "${GroupId}:$_" }
+$patchedPomPaths = @()
+if ($ServiceDirectoryName) {
+    foreach ($artifactId in $ArtifactIds) {
+        $pomPath = Join-Path $RepoRoot "sdk" $ServiceDirectoryName $artifactId "pom.xml"
+        if (Test-Path $pomPath) { $patchedPomPaths += $pomPath }
+    }
+}
+if ($patchedPomPaths.Count -gt 0) {
+    NormalizeVersionFileForPatching -PatchedArtifactNames $patchedArtifactNames -PatchedPomFilePaths $patchedPomPaths
+}
+
 foreach ($artifactId in $ArtifactIds) {
     $patchInfo = [ArtifactPatchInfo]::new()
     $patchInfo.ArtifactId = $artifactId
