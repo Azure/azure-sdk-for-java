@@ -120,6 +120,7 @@ import static org.mockito.Mockito.spy;
 
 public abstract class TestSuiteBase extends CosmosAsyncClientTest {
 
+    protected static final String THIN_CLIENT_ENDPOINT_INDICATOR = ":10250/";
     private static final int DEFAULT_BULK_INSERT_CONCURRENCY_LEVEL = 5;
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private static final CosmosItemRequestOptions DEFAULT_DELETE_ITEM_OPTIONS = new CosmosItemRequestOptions()
@@ -2007,8 +2008,6 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
             }
         }
     }
-
-    private static final String THIN_CLIENT_ENDPOINT_INDICATOR = ":10250/";
 
     protected static void assertThinClientEndpointUsed(CosmosDiagnostics diagnostics) {
         assertThat(diagnostics).isNotNull();
