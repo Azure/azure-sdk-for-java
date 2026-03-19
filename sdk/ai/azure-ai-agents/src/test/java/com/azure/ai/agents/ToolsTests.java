@@ -5,6 +5,7 @@ package com.azure.ai.agents;
 
 import com.azure.ai.agents.models.AgentReference;
 import com.azure.ai.agents.models.AgentVersionDetails;
+import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.CodeInterpreterTool;
 import com.azure.ai.agents.models.FileSearchTool;
 import com.azure.ai.agents.models.FunctionTool;
@@ -91,8 +92,9 @@ public class ToolsTests extends ClientTestBase {
 
             AgentReference agentReference = new AgentReference(agent.getName()).setVersion(agent.getVersion());
 
-            Response response = responsesClient.createWithAgentConversation(agentReference, conversation.id(),
-                ResponseCreateParams.builder().maxOutputTokens(300L));
+            Response response = responsesClient.createAzureResponse(
+                new AzureCreateResponseOptions().setAgentReference(agentReference),
+                ResponseCreateParams.builder().conversation(conversation.id()).maxOutputTokens(300L));
 
             assertNotNull(response);
             assertTrue(response.id().startsWith("resp"));
@@ -129,7 +131,8 @@ public class ToolsTests extends ClientTestBase {
         try {
             AgentReference agentReference = new AgentReference(agent.getName()).setVersion(agent.getVersion());
 
-            Response response = responsesClient.createWithAgent(agentReference,
+            Response response = responsesClient.createAzureResponse(
+                new AzureCreateResponseOptions().setAgentReference(agentReference),
                 ResponseCreateParams.builder().input("Calculate the first 10 prime numbers and show the Python code."));
 
             assertNotNull(response);
@@ -184,7 +187,8 @@ public class ToolsTests extends ClientTestBase {
         try {
             AgentReference agentReference = new AgentReference(agent.getName()).setVersion(agent.getVersion());
 
-            Response response = responsesClient.createWithAgent(agentReference,
+            Response response = responsesClient.createAzureResponse(
+                new AzureCreateResponseOptions().setAgentReference(agentReference),
                 ResponseCreateParams.builder().input("What's the weather like in Seattle?"));
 
             assertNotNull(response);
@@ -227,7 +231,8 @@ public class ToolsTests extends ClientTestBase {
         try {
             AgentReference agentReference = new AgentReference(agent.getName()).setVersion(agent.getVersion());
 
-            Response response = responsesClient.createWithAgent(agentReference,
+            Response response = responsesClient.createAzureResponse(
+                new AzureCreateResponseOptions().setAgentReference(agentReference),
                 ResponseCreateParams.builder().input("What are the latest trends in renewable energy?"));
 
             assertNotNull(response);
@@ -263,7 +268,8 @@ public class ToolsTests extends ClientTestBase {
         try {
             AgentReference agentReference = new AgentReference(agent.getName()).setVersion(agent.getVersion());
 
-            Response response = responsesClient.createWithAgent(agentReference,
+            Response response = responsesClient.createAzureResponse(
+                new AzureCreateResponseOptions().setAgentReference(agentReference),
                 ResponseCreateParams.builder().input("Please summarize the Azure REST API specifications Readme"));
 
             assertNotNull(response);
@@ -285,7 +291,8 @@ public class ToolsTests extends ClientTestBase {
             assertFalse(approvals.isEmpty(), "Expected at least one MCP approval request");
 
             // Send approvals and get the final response
-            Response finalResponse = responsesClient.createWithAgent(agentReference,
+            Response finalResponse = responsesClient.createAzureResponse(
+                new AzureCreateResponseOptions().setAgentReference(agentReference),
                 ResponseCreateParams.builder().inputOfResponse(approvals).previousResponseId(response.id()));
 
             assertNotNull(finalResponse);
@@ -354,8 +361,11 @@ public class ToolsTests extends ClientTestBase {
             Conversation conversation = conversationService.create();
             assertNotNull(conversation);
 
-            Response response = responsesClient.createWithAgentConversation(agentReference, conversation.id(),
-                ResponseCreateParams.builder().input("What is the largest planet in the Solar System?"));
+            Response response = responsesClient.createAzureResponse(
+                new AzureCreateResponseOptions().setAgentReference(agentReference),
+                ResponseCreateParams.builder()
+                    .conversation(conversation.id())
+                    .input("What is the largest planet in the Solar System?"));
 
             assertNotNull(response);
             assertTrue(response.status().isPresent());

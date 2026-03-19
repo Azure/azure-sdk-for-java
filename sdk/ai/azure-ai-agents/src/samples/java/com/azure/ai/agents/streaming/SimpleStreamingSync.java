@@ -7,6 +7,7 @@ import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.ResponsesClient;
 import com.azure.ai.agents.models.AgentReference;
+import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.util.Configuration;
@@ -58,7 +59,8 @@ public class SimpleStreamingSync {
 
             // Stream response - text is printed as it arrives
             IterableStream<ResponseStreamEvent> events =
-                responsesClient.createStreamingWithAgent(agentReference,
+                responsesClient.createStreamingAzureResponse(
+                    new AzureCreateResponseOptions().setAgentReference(agentReference),
                     ResponseCreateParams.builder()
                         .input("Tell me a short story about a brave explorer."));
 
