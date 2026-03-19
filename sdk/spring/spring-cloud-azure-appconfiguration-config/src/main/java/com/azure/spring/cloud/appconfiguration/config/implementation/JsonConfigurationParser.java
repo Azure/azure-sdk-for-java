@@ -36,7 +36,7 @@ final class JsonConfigurationParser {
         String mainType = typeParts[0];
         String subType = typeParts[1];
         
-        if (!mainType.equals("application")) {
+        if (!"application".equals(mainType)) {
             return false;
         }
 
