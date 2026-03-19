@@ -655,7 +655,7 @@ AgentVersionDetails agent = agentsClient.createAgentVersion("structured-input-ag
 
 #### Create a response with structured input values
 
-When creating a response, pass a `Map<String, Object>` whose keys match the structured input names declared on the agent. The values are substituted into the prompt template before the model processes the request:
+When creating a response, pass a `Map<String, BinaryData>` whose keys match the structured input names declared on the agent. The values are substituted into the prompt template before the model processes the request:
 
 ```java com.azure.ai.agents.create_response_with_structured_input
 // Build the structured input values that match the agent's definitions
