@@ -6,7 +6,7 @@ package com.azure.ai.agents;
 import com.azure.ai.agents.models.AgentReference;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.AzureCreateResponseOptions;
-import com.azure.ai.agents.models.AzureCreateResponseResult;
+import com.azure.ai.agents.models.AzureCreateResponseDetails;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.ai.agents.models.StructuredInputDefinition;
 import com.azure.core.util.BinaryData;
@@ -73,7 +73,7 @@ public class CreateResponseWithStructuredInput {
         System.out.println("Response model: " + response.model());
 
         // Extract Azure-specific fields from the response
-        AzureCreateResponseResult azureResult = ResponsesUtils.getAzureFields(response);
+        AzureCreateResponseDetails azureResult = ResponsesUtils.getAzureFields(response);
         if (azureResult != null && azureResult.getAgentReference() != null) {
             AgentReference ref = azureResult.getAgentReference();
             System.out.println("Azure agent_reference.type: " + ref.getType());

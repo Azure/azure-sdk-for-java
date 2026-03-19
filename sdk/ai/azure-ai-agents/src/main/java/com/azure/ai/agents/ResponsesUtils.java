@@ -4,7 +4,7 @@
 package com.azure.ai.agents;
 
 import com.azure.ai.agents.implementation.OpenAIJsonHelper;
-import com.azure.ai.agents.models.AzureCreateResponseResult;
+import com.azure.ai.agents.models.AzureCreateResponseDetails;
 import com.openai.models.responses.Response;
 
 /**
@@ -22,8 +22,8 @@ public final class ResponsesUtils {
      * @param response the OpenAI response.
      * @return the Azure-specific create response result, or null if not present.
      */
-    public static AzureCreateResponseResult getAzureFields(Response response) {
+    public static AzureCreateResponseDetails getAzureFields(Response response) {
         return OpenAIJsonHelper.fromAdditionalProperties(response._additionalProperties(),
-            AzureCreateResponseResult::fromJson);
+            AzureCreateResponseDetails::fromJson);
     }
 }

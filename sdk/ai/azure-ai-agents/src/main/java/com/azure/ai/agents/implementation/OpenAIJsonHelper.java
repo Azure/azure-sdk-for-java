@@ -182,7 +182,7 @@ public final class OpenAIJsonHelper {
      * @param <T> the Azure SDK type that implements {@link JsonSerializable}.
      * @param additionalProperties the map of property names to {@link JsonValue} entries.
      * @param fromJson the deserializer function, typically a method reference to the static
-     *     {@code fromJson} method (e.g., {@code AzureCreateResponseResult::fromJson}).
+     *     {@code fromJson} method (e.g., {@code AzureCreateResponseDetails::fromJson}).
      * @return the deserialized Azure SDK object, or null if the input is null or empty.
      * @throws RuntimeException if serialization or deserialization fails.
      */

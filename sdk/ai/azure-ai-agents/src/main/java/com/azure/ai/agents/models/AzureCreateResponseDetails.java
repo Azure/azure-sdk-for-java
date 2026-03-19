@@ -13,10 +13,10 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * intermediate model.
+ * Azure specific fields returned in a "Response" object.
  */
 @Immutable
-public final class AzureCreateResponseResult implements JsonSerializable<AzureCreateResponseResult> {
+public final class AzureCreateResponseDetails implements JsonSerializable<AzureCreateResponseDetails> {
     /*
      * The agent used for this response
      */
@@ -24,12 +24,12 @@ public final class AzureCreateResponseResult implements JsonSerializable<AzureCr
     private final AgentReference agentReference;
 
     /**
-     * Creates an instance of AzureCreateResponseResult class.
+     * Creates an instance of AzureCreateResponseDetails class.
      * 
      * @param agentReference the agentReference value to set.
      */
     @Generated
-    private AzureCreateResponseResult(AgentReference agentReference) {
+    private AzureCreateResponseDetails(AgentReference agentReference) {
         this.agentReference = agentReference;
     }
 
@@ -55,16 +55,16 @@ public final class AzureCreateResponseResult implements JsonSerializable<AzureCr
     }
 
     /**
-     * Reads an instance of AzureCreateResponseResult from the JsonReader.
+     * Reads an instance of AzureCreateResponseDetails from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of AzureCreateResponseResult if the JsonReader was pointing to an instance of it, or null if
+     * @return An instance of AzureCreateResponseDetails if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the AzureCreateResponseResult.
+     * @throws IOException If an error occurs while reading the AzureCreateResponseDetails.
      */
     @Generated
-    public static AzureCreateResponseResult fromJson(JsonReader jsonReader) throws IOException {
+    public static AzureCreateResponseDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AgentReference agentReference = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -77,7 +77,7 @@ public final class AzureCreateResponseResult implements JsonSerializable<AzureCr
                     reader.skipChildren();
                 }
             }
-            return new AzureCreateResponseResult(agentReference);
+            return new AzureCreateResponseDetails(agentReference);
         });
     }
 }
