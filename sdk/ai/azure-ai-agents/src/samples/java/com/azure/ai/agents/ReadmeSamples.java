@@ -5,7 +5,9 @@
 package com.azure.ai.agents;
 
 import com.azure.ai.agents.models.AgentReference;
+import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.AgentVersionDetails;
+import com.azure.ai.agents.models.AzureCreateResponseResult;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.identity.AuthenticationUtil;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -57,7 +59,11 @@ public final class ReadmeSamples {
 
         // BEGIN: com.azure.ai.agents.create_response
         AgentReference agentReference = new AgentReference(agent.getName()).setVersion(agent.getVersion());
-        Response response = responsesClient.createWithAgentConversation(agentReference, conversation.id());
+        Response response = responsesClient.createAzureResponse(
+            new AzureCreateResponseOptions().setAgentReference(agentReference),
+            ResponseCreateParams.builder().conversation(conversation.id()));
+        // To extract Azure-specific response details:
+        AzureCreateResponseResult azureResults = ResponsesUtils.getAzureFields(response);
         // END: com.azure.ai.agents.create_response
 
         // BEGIN: com.azure.ai.agents.openai_official_library

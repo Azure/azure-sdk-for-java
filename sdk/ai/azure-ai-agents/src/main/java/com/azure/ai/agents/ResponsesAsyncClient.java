@@ -7,7 +7,7 @@ package com.azure.ai.agents;
 import com.azure.ai.agents.implementation.OpenAIJsonHelper;
 import com.azure.ai.agents.implementation.StreamingUtils;
 import com.azure.ai.agents.models.AgentReference;
-import com.azure.ai.agents.models.AzureCreateResponse;
+import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.core.annotation.ServiceClient;
 import com.openai.client.OpenAIClientAsync;
 import com.openai.core.JsonValue;
@@ -54,6 +54,7 @@ public final class ResponsesAsyncClient {
      * @param conversationId The conversation ID.
      * @return The created Response.
      */
+    @Deprecated
     public Mono<Response> createWithAgentConversation(AgentReference agentReference, String conversationId) {
         return createWithAgentConversation(agentReference, conversationId, new ResponseCreateParams.Builder());
     }
@@ -66,6 +67,7 @@ public final class ResponsesAsyncClient {
      * @param params The parameters to create the response.
      * @return A Mono that emits the created Response.
      */
+    @Deprecated
     public Mono<Response> createWithAgentConversation(AgentReference agentReference, String conversationId,
         ResponseCreateParams.Builder params) {
         Objects.requireNonNull(agentReference, "agentReference cannot be null");
@@ -89,6 +91,7 @@ public final class ResponsesAsyncClient {
      * @param params The parameters to create the response.
      * @return The created Response.
      */
+    @Deprecated
     public Mono<Response> createWithAgent(AgentReference agentReference, ResponseCreateParams.Builder params) {
         Objects.requireNonNull(agentReference, "agentReference cannot be null");
         Objects.requireNonNull(params, "params cannot be null");
@@ -108,6 +111,7 @@ public final class ResponsesAsyncClient {
      * @param agentReference The agent reference.
      * @return The created Response.
      */
+    @Deprecated
     public Mono<Response> createWithAgent(AgentReference agentReference) {
         return createWithAgent(agentReference, new ResponseCreateParams.Builder());
     }
@@ -132,6 +136,7 @@ public final class ResponsesAsyncClient {
      * @param params The parameters to create the response.
      * @return A Mono that emits the created Response.
      */
+    @Deprecated
     public Mono<Response> createWithAgentStructuredInput(AgentReference agentReference,
         Map<String, Object> structuredInputs, ResponseCreateParams.Builder params) {
         Objects.requireNonNull(agentReference, "agentReference cannot be null");
@@ -157,6 +162,7 @@ public final class ResponsesAsyncClient {
      * @param params The parameters to create the response.
      * @return A Flux of ResponseStreamEvent.
      */
+    @Deprecated
     public Flux<ResponseStreamEvent> createStreamingWithAgent(AgentReference agentReference,
         ResponseCreateParams.Builder params) {
         Objects.requireNonNull(agentReference, "agentReference cannot be null");
@@ -191,6 +197,7 @@ public final class ResponsesAsyncClient {
      * @param params The parameters to create the response.
      * @return A Flux of ResponseStreamEvent.
      */
+    @Deprecated
     public Flux<ResponseStreamEvent> createStreamingWithAgentStructuredInput(AgentReference agentReference,
         Map<String, Object> structuredInputs, ResponseCreateParams.Builder params) {
         Objects.requireNonNull(agentReference, "agentReference cannot be null");
@@ -216,6 +223,7 @@ public final class ResponsesAsyncClient {
      * @param params The parameters to create the response.
      * @return A Flux of ResponseStreamEvent.
      */
+    @Deprecated
     public Flux<ResponseStreamEvent> createStreamingWithAgentConversation(AgentReference agentReference,
         String conversationId, ResponseCreateParams.Builder params) {
         Objects.requireNonNull(agentReference, "agentReference cannot be null");
@@ -233,17 +241,15 @@ public final class ResponsesAsyncClient {
     }
 
     /**
-     * Creates a response using Azure-specific properties.
-     *
-     * <p>The properties from {@link AzureCreateResponse} (e.g., {@code agent_reference},
-     * {@code structured_inputs}) are flattened into the request body as top-level fields
-     * alongside the standard OpenAI parameters.</p>
+     * Creates a response passing additional Azure-specific properties (such as an {@link com.azure.ai.agents.models.AgentReference})
+     * through the {@link AzureCreateResponseOptions}
      *
      * @param createResponse The Azure-specific create response properties.
      * @param params The parameters to create the response.
-     * @return A Mono that emits the created Response.
+     * @return The created Response.
      */
-    public Mono<Response> createAzureResponse(AzureCreateResponse createResponse, ResponseCreateParams.Builder params) {
+    public Mono<Response> createAzureResponse(AzureCreateResponseOptions createResponse,
+        ResponseCreateParams.Builder params) {
         Objects.requireNonNull(createResponse, "createResponse cannot be null");
         Objects.requireNonNull(params, "params cannot be null");
 
@@ -253,17 +259,14 @@ public final class ResponsesAsyncClient {
     }
 
     /**
-     * Creates a streaming response using Azure-specific properties.
-     *
-     * <p>The properties from {@link AzureCreateResponse} (e.g., {@code agent_reference},
-     * {@code structured_inputs}) are flattened into the request body as top-level fields
-     * alongside the standard OpenAI parameters.</p>
+     * Creates a streaming response passing additional Azure-specific properties (such as an {@link com.azure.ai.agents.models.AgentReference})
+     * through the {@link AzureCreateResponseOptions}
      *
      * @param createResponse The Azure-specific create response properties.
      * @param params The parameters to create the response.
-     * @return A Flux of ResponseStreamEvent.
+     * @return An IterableStream of ResponseStreamEvent.
      */
-    public Flux<ResponseStreamEvent> createStreamingAzureResponse(AzureCreateResponse createResponse,
+    public Flux<ResponseStreamEvent> createStreamingAzureResponse(AzureCreateResponseOptions createResponse,
         ResponseCreateParams.Builder params) {
         Objects.requireNonNull(createResponse, "createResponse cannot be null");
         Objects.requireNonNull(params, "params cannot be null");

@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Tests that validate the wire format of {@link AzureCreateResponse} when flattened via
+ * Tests that validate the wire format of {@link AzureCreateResponseOptions} when flattened via
  * {@link OpenAIJsonHelper#toJsonValueMap}. The goal is to confirm that properties like
  * {@code agent_reference} and {@code structured_inputs} appear as separate top-level
  * entries in the additionalBodyProperties map (matching the @@copyProperties wire format),
@@ -30,13 +30,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class AzureCreateResponseWireFormatTests {
 
     /**
-     * Verifies that AzureCreateResponse serializes to JSON with correct wire-format property names
+     * Verifies that AzureCreateResponseOptions serializes to JSON with correct wire-format property names
      * (snake_case) via its toJson method.
      */
     @Test
-    public void testAzureCreateResponseSerialization() throws IOException {
-        AzureCreateResponse createResponse
-            = new AzureCreateResponse().setAgentReference(new AgentReference("test-agent").setVersion("1"))
+    public void testAzureCreateResponseOptionsSerialization() throws IOException {
+        AzureCreateResponseOptions createResponse
+            = new AzureCreateResponseOptions().setAgentReference(new AgentReference("test-agent").setVersion("1"))
                 .setStructuredInputs(buildStructuredInputs());
 
         String json = serializeToJson(createResponse);
@@ -60,8 +60,8 @@ public class AzureCreateResponseWireFormatTests {
      */
     @Test
     public void testToJsonValueMapProducesFlatKeys() {
-        AzureCreateResponse createResponse
-            = new AzureCreateResponse().setAgentReference(new AgentReference("my-agent").setVersion("2"))
+        AzureCreateResponseOptions createResponse
+            = new AzureCreateResponseOptions().setAgentReference(new AgentReference("my-agent").setVersion("2"))
                 .setStructuredInputs(buildStructuredInputs());
 
         Map<String, JsonValue> flatMap = OpenAIJsonHelper.toJsonValueMap(createResponse);
@@ -84,8 +84,8 @@ public class AzureCreateResponseWireFormatTests {
     @SuppressWarnings("unchecked")
     @Test
     public void testAgentReferenceJsonValueStructure() {
-        AzureCreateResponse createResponse
-            = new AzureCreateResponse().setAgentReference(new AgentReference("structured-input-agent").setVersion("3"));
+        AzureCreateResponseOptions createResponse = new AzureCreateResponseOptions()
+            .setAgentReference(new AgentReference("structured-input-agent").setVersion("3"));
 
         Map<String, JsonValue> flatMap = OpenAIJsonHelper.toJsonValueMap(createResponse);
         JsonValue agentRefValue = flatMap.get("agent_reference");
@@ -110,7 +110,8 @@ public class AzureCreateResponseWireFormatTests {
     @SuppressWarnings("unchecked")
     @Test
     public void testStructuredInputsJsonValueStructure() {
-        AzureCreateResponse createResponse = new AzureCreateResponse().setStructuredInputs(buildStructuredInputs());
+        AzureCreateResponseOptions createResponse
+            = new AzureCreateResponseOptions().setStructuredInputs(buildStructuredInputs());
 
         Map<String, JsonValue> flatMap = OpenAIJsonHelper.toJsonValueMap(createResponse);
         JsonValue structuredInputsValue = flatMap.get("structured_inputs");
@@ -128,8 +129,8 @@ public class AzureCreateResponseWireFormatTests {
      */
     @Test
     public void testToJsonValueMapWithOnlyAgentReference() {
-        AzureCreateResponse createResponse
-            = new AzureCreateResponse().setAgentReference(new AgentReference("agent-only"));
+        AzureCreateResponseOptions createResponse
+            = new AzureCreateResponseOptions().setAgentReference(new AgentReference("agent-only"));
 
         Map<String, JsonValue> flatMap = OpenAIJsonHelper.toJsonValueMap(createResponse);
 
@@ -142,7 +143,8 @@ public class AzureCreateResponseWireFormatTests {
      */
     @Test
     public void testToJsonValueMapWithOnlyStructuredInputs() {
-        AzureCreateResponse createResponse = new AzureCreateResponse().setStructuredInputs(buildStructuredInputs());
+        AzureCreateResponseOptions createResponse
+            = new AzureCreateResponseOptions().setStructuredInputs(buildStructuredInputs());
 
         Map<String, JsonValue> flatMap = OpenAIJsonHelper.toJsonValueMap(createResponse);
 
@@ -151,16 +153,16 @@ public class AzureCreateResponseWireFormatTests {
     }
 
     /**
-     * Verifies that toJsonValueMap returns an empty map for a default (empty) AzureCreateResponse.
+     * Verifies that toJsonValueMap returns an empty map for a default (empty) AzureCreateResponseOptions.
      */
     @Test
     public void testToJsonValueMapWithEmptyObject() {
-        AzureCreateResponse createResponse = new AzureCreateResponse();
+        AzureCreateResponseOptions createResponse = new AzureCreateResponseOptions();
 
         Map<String, JsonValue> flatMap = OpenAIJsonHelper.toJsonValueMap(createResponse);
 
         assertNotNull(flatMap);
-        assertTrue(flatMap.isEmpty(), "Empty AzureCreateResponse should produce an empty map");
+        assertTrue(flatMap.isEmpty(), "Empty AzureCreateResponseOptions should produce an empty map");
     }
 
     /**
@@ -183,7 +185,7 @@ public class AzureCreateResponseWireFormatTests {
         return inputs;
     }
 
-    private String serializeToJson(AzureCreateResponse createResponse) throws IOException {
+    private String serializeToJson(AzureCreateResponseOptions createResponse) throws IOException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         try (JsonWriter jsonWriter = JsonProviders.createWriter(outputStream)) {
             createResponse.toJson(jsonWriter);

@@ -207,7 +207,11 @@ And the final step that ties everything together, we pass the `AgentReference` a
 
 ```java com.azure.ai.agents.create_response
 AgentReference agentReference = new AgentReference(agent.getName()).setVersion(agent.getVersion());
-Response response = responsesClient.createWithAgentConversation(agentReference, conversation.id());
+Response response = responsesClient.createAzureResponse(
+    new AzureCreateResponseOptions().setAgentReference(agentReference),
+    ResponseCreateParams.builder().conversation(conversation.id()));
+// To extract Azure-specific response details:
+AzureCreateResponseResult azureResults = ResponsesUtils.getAzureFields(response);
 ```
 
 ### Using Agent tools
@@ -576,7 +580,8 @@ ResponseAccumulator responseAccumulator = ResponseAccumulator.create();
 
 // Stream response - text is printed as it arrives
 IterableStream<ResponseStreamEvent> events =
-    responsesClient.createStreamingWithAgent(agentReference,
+    responsesClient.createStreamingAzureResponse(
+        new AzureCreateResponseOptions().setAgentReference(agentReference),
         ResponseCreateParams.builder()
             .input("Tell me a short story about a brave explorer."));
 
@@ -634,8 +639,10 @@ When creating the agent, declare each structured input with a description and wh
 ```java com.azure.ai.agents.define_structured_inputs
 // Create an agent with structured input definitions
 Map<String, StructuredInputDefinition> structuredInputDefinitions = new LinkedHashMap<>();
-structuredInputDefinitions.put("userName", new StructuredInputDefinition().setDescription("User's name").setRequired(true));
-structuredInputDefinitions.put("userRole", new StructuredInputDefinition().setDescription("User's role").setRequired(true));
+structuredInputDefinitions.put("userName",
+    new StructuredInputDefinition().setDescription("User's name").setRequired(true));
+structuredInputDefinitions.put("userRole",
+    new StructuredInputDefinition().setDescription("User's role").setRequired(true));
 
 AgentVersionDetails agent = agentsClient.createAgentVersion("structured-input-agent",
     new PromptAgentDefinition(model)
@@ -650,14 +657,17 @@ AgentVersionDetails agent = agentsClient.createAgentVersion("structured-input-ag
 When creating a response, pass a `Map<String, Object>` whose keys match the structured input names declared on the agent. The values are substituted into the prompt template before the model processes the request:
 
 ```java com.azure.ai.agents.create_response_with_structured_input
-// Create a response, passing structured input values that match the agent's definitions
-Map<String, Object> structuredInputValues = new LinkedHashMap<>();
-structuredInputValues.put("userName", "Alice Smith");
-structuredInputValues.put("userRole", "Senior Developer");
+// Build the structured input values that match the agent's definitions
+Map<String, BinaryData> structuredInputValues = new LinkedHashMap<>();
+structuredInputValues.put("userName", BinaryData.fromObject("Alice Smith"));
+structuredInputValues.put("userRole", BinaryData.fromObject("Senior Developer"));
 
-Response response = responsesClient.createWithAgentStructuredInput(
-    new AgentReference(agent.getName()).setVersion(agent.getVersion()),
-    structuredInputValues,
+// Create a response using AzureCreateResponse, which flattens agent_reference
+// and structured_inputs as top-level properties in the request body
+Response response = responsesClient.createAzureResponse(
+    new AzureCreateResponseOptions()
+        .setAgentReference(new AgentReference(agent.getName()).setVersion(agent.getVersion()))
+        .setStructuredInputs(structuredInputValues),
     ResponseCreateParams.builder().input("Hello! Can you confirm my details?")
 );
 ```
