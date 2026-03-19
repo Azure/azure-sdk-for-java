@@ -7,6 +7,7 @@ on:
 engine: copilot
 safe-outputs:
   add-comment: {}
+  create-pull-request-review-comment: {}
 permissions:
   contents: read
   pull-requests: read
