@@ -483,7 +483,7 @@ public final class Constants {
          */
         public static final String URI_SUBDOMAIN = "file";
 
-        private File(){
+        private File() {
         }
     }
 
@@ -496,7 +496,7 @@ public final class Constants {
          */
         public static final String URI_SUBDOMAIN = "queue";
 
-        private Queue(){
+        private Queue() {
         }
     }
 
@@ -509,7 +509,7 @@ public final class Constants {
          */
         public static final String URI_SUBDOMAIN = "table";
 
-        private Table(){
+        private Table() {
         }
     }
 
@@ -522,7 +522,7 @@ public final class Constants {
          */
         public static final String URI_SUBDOMAIN = "dfs";
 
-        private Dfs(){
+        private Dfs() {
         }
     }
 }
