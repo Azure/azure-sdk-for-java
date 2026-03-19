@@ -14,7 +14,7 @@ import java.util.Arrays;
  */
 public final class RegistriesImportImageSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/ImportImageFromPublicRegistry.json
+     * x-ms-original-file: 2025-11-01/ImportImageFromPublicRegistry.json
      */
     /**
      * Sample code: ImportImageFromPublicRegistry.
@@ -36,7 +36,7 @@ public final class RegistriesImportImageSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/ImportImageByTag.json
+     * x-ms-original-file: 2025-11-01/ImportImageByTag.json
      */
     /**
      * Sample code: ImportImageByTag.
@@ -57,7 +57,7 @@ public final class RegistriesImportImageSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/ImportImageByManifestDigest.json
+     * x-ms-original-file: 2025-11-01/ImportImageByManifestDigest.json
      */
     /**
      * Sample code: ImportImageByManifestDigest.

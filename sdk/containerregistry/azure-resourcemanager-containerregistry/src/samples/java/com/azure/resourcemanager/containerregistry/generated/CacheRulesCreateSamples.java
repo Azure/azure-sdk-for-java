@@ -5,18 +5,13 @@
 package com.azure.resourcemanager.containerregistry.generated;
 
 import com.azure.resourcemanager.containerregistry.fluent.models.CacheRuleInner;
-import com.azure.resourcemanager.containerregistry.models.IdentityProperties;
-import com.azure.resourcemanager.containerregistry.models.ResourceIdentityType;
-import com.azure.resourcemanager.containerregistry.models.UserIdentityProperties;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Samples for CacheRules Create.
  */
 public final class CacheRulesCreateSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/CacheRuleCreate.json
+     * x-ms-original-file: 2025-11-01/CacheRuleCreate.json
      */
     /**
      * Sample code: CacheRuleCreate.
@@ -31,38 +26,5 @@ public final class CacheRulesCreateSamples {
                     .withSourceRepository("docker.io/library/hello-world")
                     .withTargetRepository("cached-docker-hub/hello-world"),
                 com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2026-01-01-preview/CacheRuleCreateUserAssignedMIAuthentication.json
-     */
-    /**
-     * Sample code: CacheRuleCreateUserAssignedMIAuthentication.
-     * 
-     * @param manager Entry point to ContainerRegistryManager.
-     */
-    public static void cacheRuleCreateUserAssignedMIAuthentication(
-        com.azure.resourcemanager.containerregistry.ContainerRegistryManager manager) {
-        manager.serviceClient()
-            .getCacheRules()
-            .create("myResourceGroup", "myRegistry", "myCacheRule", new CacheRuleInner()
-                .withIdentity(new IdentityProperties().withType(ResourceIdentityType.USER_ASSIGNED)
-                    .withUserAssignedIdentities(mapOf(
-                        "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myUserAssignedIdentity",
-                        new UserIdentityProperties())))
-                .withSourceRepository("acr-registry.azurecr.io/library/repository")
-                .withTargetRepository("cached-acr/hello-world"), com.azure.core.util.Context.NONE);
-    }
-
-    // Use "Map.of" if available
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
-        }
-        return map;
     }
 }

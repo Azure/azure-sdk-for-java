@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Assertions;
 public final class ActorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Actor model = BinaryData.fromString("{\"name\":\"pevzhfst\"}").toObject(Actor.class);
-        Assertions.assertEquals("pevzhfst", model.name());
+        Actor model = BinaryData.fromString("{\"name\":\"yhejhzisxgfp\"}").toObject(Actor.class);
+        Assertions.assertEquals("yhejhzisxgfp", model.name());
     }
 }

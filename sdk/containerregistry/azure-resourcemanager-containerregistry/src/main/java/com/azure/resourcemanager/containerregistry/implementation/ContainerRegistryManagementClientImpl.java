@@ -8,16 +8,11 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.resourcemanager.containerregistry.fluent.ArchiveVersionsClient;
-import com.azure.resourcemanager.containerregistry.fluent.ArchivesClient;
 import com.azure.resourcemanager.containerregistry.fluent.CacheRulesClient;
 import com.azure.resourcemanager.containerregistry.fluent.ConnectedRegistriesClient;
 import com.azure.resourcemanager.containerregistry.fluent.ContainerRegistryManagementClient;
 import com.azure.resourcemanager.containerregistry.fluent.CredentialSetsClient;
-import com.azure.resourcemanager.containerregistry.fluent.ExportPipelinesClient;
-import com.azure.resourcemanager.containerregistry.fluent.ImportPipelinesClient;
 import com.azure.resourcemanager.containerregistry.fluent.OperationsClient;
-import com.azure.resourcemanager.containerregistry.fluent.PipelineRunsClient;
 import com.azure.resourcemanager.containerregistry.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.containerregistry.fluent.RegistriesClient;
 import com.azure.resourcemanager.containerregistry.fluent.ReplicationsClient;
@@ -146,34 +141,6 @@ public final class ContainerRegistryManagementClientImpl extends AzureServiceCli
     }
 
     /**
-     * The ArchivesClient object to access its operations.
-     */
-    private final ArchivesClient archives;
-
-    /**
-     * Gets the ArchivesClient object to access its operations.
-     * 
-     * @return the ArchivesClient object.
-     */
-    public ArchivesClient getArchives() {
-        return this.archives;
-    }
-
-    /**
-     * The ArchiveVersionsClient object to access its operations.
-     */
-    private final ArchiveVersionsClient archiveVersions;
-
-    /**
-     * Gets the ArchiveVersionsClient object to access its operations.
-     * 
-     * @return the ArchiveVersionsClient object.
-     */
-    public ArchiveVersionsClient getArchiveVersions() {
-        return this.archiveVersions;
-    }
-
-    /**
      * The CacheRulesClient object to access its operations.
      */
     private final CacheRulesClient cacheRules;
@@ -272,48 +239,6 @@ public final class ContainerRegistryManagementClientImpl extends AzureServiceCli
     }
 
     /**
-     * The ExportPipelinesClient object to access its operations.
-     */
-    private final ExportPipelinesClient exportPipelines;
-
-    /**
-     * Gets the ExportPipelinesClient object to access its operations.
-     * 
-     * @return the ExportPipelinesClient object.
-     */
-    public ExportPipelinesClient getExportPipelines() {
-        return this.exportPipelines;
-    }
-
-    /**
-     * The ImportPipelinesClient object to access its operations.
-     */
-    private final ImportPipelinesClient importPipelines;
-
-    /**
-     * Gets the ImportPipelinesClient object to access its operations.
-     * 
-     * @return the ImportPipelinesClient object.
-     */
-    public ImportPipelinesClient getImportPipelines() {
-        return this.importPipelines;
-    }
-
-    /**
-     * The PipelineRunsClient object to access its operations.
-     */
-    private final PipelineRunsClient pipelineRuns;
-
-    /**
-     * Gets the PipelineRunsClient object to access its operations.
-     * 
-     * @return the PipelineRunsClient object.
-     */
-    public PipelineRunsClient getPipelineRuns() {
-        return this.pipelineRuns;
-    }
-
-    /**
      * The WebhooksClient object to access its operations.
      */
     private final WebhooksClient webhooks;
@@ -345,11 +270,9 @@ public final class ContainerRegistryManagementClientImpl extends AzureServiceCli
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2026-01-01-preview";
+        this.apiVersion = "2025-11-01";
         this.operations = new OperationsClientImpl(this);
         this.registries = new RegistriesClientImpl(this);
-        this.archives = new ArchivesClientImpl(this);
-        this.archiveVersions = new ArchiveVersionsClientImpl(this);
         this.cacheRules = new CacheRulesClientImpl(this);
         this.credentialSets = new CredentialSetsClientImpl(this);
         this.connectedRegistries = new ConnectedRegistriesClientImpl(this);
@@ -357,9 +280,6 @@ public final class ContainerRegistryManagementClientImpl extends AzureServiceCli
         this.replications = new ReplicationsClientImpl(this);
         this.scopeMaps = new ScopeMapsClientImpl(this);
         this.tokens = new TokensClientImpl(this);
-        this.exportPipelines = new ExportPipelinesClientImpl(this);
-        this.importPipelines = new ImportPipelinesClientImpl(this);
-        this.pipelineRuns = new PipelineRunsClientImpl(this);
         this.webhooks = new WebhooksClientImpl(this);
     }
 }

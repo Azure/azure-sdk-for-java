@@ -14,16 +14,16 @@ public final class TrustPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TrustPolicy model
-            = BinaryData.fromString("{\"type\":\"Notary\",\"status\":\"enabled\"}").toObject(TrustPolicy.class);
+            = BinaryData.fromString("{\"type\":\"Notary\",\"status\":\"disabled\"}").toObject(TrustPolicy.class);
         Assertions.assertEquals(TrustPolicyType.NOTARY, model.type());
-        Assertions.assertEquals(PolicyStatus.ENABLED, model.status());
+        Assertions.assertEquals(PolicyStatus.DISABLED, model.status());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TrustPolicy model = new TrustPolicy().withType(TrustPolicyType.NOTARY).withStatus(PolicyStatus.ENABLED);
+        TrustPolicy model = new TrustPolicy().withType(TrustPolicyType.NOTARY).withStatus(PolicyStatus.DISABLED);
         model = BinaryData.fromObject(model).toObject(TrustPolicy.class);
         Assertions.assertEquals(TrustPolicyType.NOTARY, model.type());
-        Assertions.assertEquals(PolicyStatus.ENABLED, model.status());
+        Assertions.assertEquals(PolicyStatus.DISABLED, model.status());
     }
 }

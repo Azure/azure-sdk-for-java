@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public final class ReplicationsCreateSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/ReplicationCreate.json
+     * x-ms-original-file: 2025-11-01/ReplicationCreate.json
      */
     /**
      * Sample code: ReplicationCreate.
@@ -30,7 +30,7 @@ public final class ReplicationsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: 2026-01-01-preview/ReplicationCreateZoneRedundant.json
+     * x-ms-original-file: 2025-11-01/ReplicationCreateZoneRedundant.json
      */
     /**
      * Sample code: ReplicationCreateZoneRedundant.

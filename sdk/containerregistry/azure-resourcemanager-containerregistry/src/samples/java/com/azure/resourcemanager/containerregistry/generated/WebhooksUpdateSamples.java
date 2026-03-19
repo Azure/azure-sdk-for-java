@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public final class WebhooksUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/WebhookUpdate.json
+     * x-ms-original-file: 2025-11-01/WebhookUpdate.json
      */
     /**
      * Sample code: WebhookUpdate.

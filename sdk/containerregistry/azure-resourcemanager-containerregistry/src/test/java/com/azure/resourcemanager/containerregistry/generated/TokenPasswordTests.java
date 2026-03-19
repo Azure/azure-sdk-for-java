@@ -14,21 +14,21 @@ public final class TokenPasswordTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TokenPassword model = BinaryData.fromString(
-            "{\"creationTime\":\"2021-08-05T23:46:07Z\",\"expiry\":\"2021-04-26T15:47:13Z\",\"name\":\"password1\",\"value\":\"zsqpjhvmdajvny\"}")
+            "{\"creationTime\":\"2021-01-13T20:24:26Z\",\"expiry\":\"2021-06-09T11:05:27Z\",\"name\":\"password2\",\"value\":\"tpngjcrcczsqpjh\"}")
             .toObject(TokenPassword.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-05T23:46:07Z"), model.creationTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-26T15:47:13Z"), model.expiry());
-        Assertions.assertEquals(TokenPasswordName.PASSWORD1, model.name());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-13T20:24:26Z"), model.creationTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-09T11:05:27Z"), model.expiry());
+        Assertions.assertEquals(TokenPasswordName.PASSWORD2, model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TokenPassword model = new TokenPassword().withCreationTime(OffsetDateTime.parse("2021-08-05T23:46:07Z"))
-            .withExpiry(OffsetDateTime.parse("2021-04-26T15:47:13Z"))
-            .withName(TokenPasswordName.PASSWORD1);
+        TokenPassword model = new TokenPassword().withCreationTime(OffsetDateTime.parse("2021-01-13T20:24:26Z"))
+            .withExpiry(OffsetDateTime.parse("2021-06-09T11:05:27Z"))
+            .withName(TokenPasswordName.PASSWORD2);
         model = BinaryData.fromObject(model).toObject(TokenPassword.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-05T23:46:07Z"), model.creationTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-26T15:47:13Z"), model.expiry());
-        Assertions.assertEquals(TokenPasswordName.PASSWORD1, model.name());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-13T20:24:26Z"), model.creationTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-09T11:05:27Z"), model.expiry());
+        Assertions.assertEquals(TokenPasswordName.PASSWORD2, model.name());
     }
 }

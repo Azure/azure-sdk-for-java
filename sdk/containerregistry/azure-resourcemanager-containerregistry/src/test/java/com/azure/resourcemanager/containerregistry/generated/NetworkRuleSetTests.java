@@ -15,22 +15,21 @@ import org.junit.jupiter.api.Assertions;
 public final class NetworkRuleSetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NetworkRuleSet model = BinaryData.fromString(
-            "{\"defaultAction\":\"Allow\",\"ipRules\":[{\"action\":\"Allow\",\"value\":\"xigjyjgzjaoyfhr\"},{\"action\":\"Allow\",\"value\":\"lnerkujysvleju\"}]}")
+        NetworkRuleSet model = BinaryData
+            .fromString("{\"defaultAction\":\"Allow\",\"ipRules\":[{\"action\":\"Allow\",\"value\":\"fpsalgbqu\"}]}")
             .toObject(NetworkRuleSet.class);
         Assertions.assertEquals(DefaultAction.ALLOW, model.defaultAction());
         Assertions.assertEquals(Action.ALLOW, model.ipRules().get(0).action());
-        Assertions.assertEquals("xigjyjgzjaoyfhr", model.ipRules().get(0).ipAddressOrRange());
+        Assertions.assertEquals("fpsalgbqu", model.ipRules().get(0).ipAddressOrRange());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NetworkRuleSet model = new NetworkRuleSet().withDefaultAction(DefaultAction.ALLOW)
-            .withIpRules(Arrays.asList(new IpRule().withAction(Action.ALLOW).withIpAddressOrRange("xigjyjgzjaoyfhr"),
-                new IpRule().withAction(Action.ALLOW).withIpAddressOrRange("lnerkujysvleju")));
+            .withIpRules(Arrays.asList(new IpRule().withAction(Action.ALLOW).withIpAddressOrRange("fpsalgbqu")));
         model = BinaryData.fromObject(model).toObject(NetworkRuleSet.class);
         Assertions.assertEquals(DefaultAction.ALLOW, model.defaultAction());
         Assertions.assertEquals(Action.ALLOW, model.ipRules().get(0).action());
-        Assertions.assertEquals("xigjyjgzjaoyfhr", model.ipRules().get(0).ipAddressOrRange());
+        Assertions.assertEquals("fpsalgbqu", model.ipRules().get(0).ipAddressOrRange());
     }
 }

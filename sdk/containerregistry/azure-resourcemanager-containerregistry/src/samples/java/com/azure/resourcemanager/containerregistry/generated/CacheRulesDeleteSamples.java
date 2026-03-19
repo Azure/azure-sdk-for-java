@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerregistry.generated;
  */
 public final class CacheRulesDeleteSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/CacheRuleDelete.json
+     * x-ms-original-file: 2025-11-01/CacheRuleDelete.json
      */
     /**
      * Sample code: CacheRuleDelete.

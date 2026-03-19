@@ -12,9 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class RegistryPasswordTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RegistryPassword model
-            = BinaryData.fromString("{\"name\":\"password2\",\"value\":\"aamdect\"}").toObject(RegistryPassword.class);
+        RegistryPassword model = BinaryData.fromString("{\"name\":\"password2\",\"value\":\"bqvudwxdndn\"}")
+            .toObject(RegistryPassword.class);
         Assertions.assertEquals(PasswordName.PASSWORD2, model.name());
-        Assertions.assertEquals("aamdect", model.value());
+        Assertions.assertEquals("bqvudwxdndn", model.value());
     }
 }

@@ -14,7 +14,7 @@ import java.util.Arrays;
  */
 public final class CredentialSetsUpdateSamples {
     /*
-     * x-ms-original-file: 2026-01-01-preview/CredentialSetUpdate.json
+     * x-ms-original-file: 2025-11-01/CredentialSetUpdate.json
      */
     /**
      * Sample code: CredentialSetUpdate.

@@ -10,8 +10,9 @@ import com.azure.resourcemanager.containerregistry.models.UserIdentityProperties
 public final class UserIdentityPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UserIdentityProperties model = BinaryData.fromString("{\"principalId\":\"j\",\"clientId\":\"dxob\"}")
-            .toObject(UserIdentityProperties.class);
+        UserIdentityProperties model
+            = BinaryData.fromString("{\"principalId\":\"norcjxvsnbyxqab\",\"clientId\":\"ocpcy\"}")
+                .toObject(UserIdentityProperties.class);
     }
 
     @org.junit.jupiter.api.Test
