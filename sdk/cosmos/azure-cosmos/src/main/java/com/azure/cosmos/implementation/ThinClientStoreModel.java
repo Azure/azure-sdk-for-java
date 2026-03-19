@@ -202,6 +202,10 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
                     .flatMap(collectionHolder -> {
                         if (collectionHolder.v != null) {
                             request.setPartitionKeyDefinition(collectionHolder.v.getPartitionKey());
+                        } else {
+                            logger.warn(
+                                "Collection cache returned null for request {}",
+                                request.getResourceAddress());
                         }
                         return super.performRequestInternal(request, requestUri);
                     });

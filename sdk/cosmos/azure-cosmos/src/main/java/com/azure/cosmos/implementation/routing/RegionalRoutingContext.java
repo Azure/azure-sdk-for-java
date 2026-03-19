@@ -36,10 +36,9 @@ public class RegionalRoutingContext {
         return this.thinclientRegionalEndpoint;
     }
 
-    // equals, hashCode and toString only depend on gatewayRegionalEndpoint because
-    // there are map lookups done on RegionalRoutingContext with only the gateway regional endpoint.
-    // Lookup based on gateway regional endpoint is "safer" as gateway regional endpoint is expected
-    // to always be returned in the DatabaseAccount payload from the Gateway service.
+    // equals and hashCode should only take dependency on gatewayRegionalEndpoint
+    // because map lookups are done on RegionalRoutingContext with only the gateway regional endpoint.
+    // toString includes both endpoints for diagnostic visibility.
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -55,6 +54,7 @@ public class RegionalRoutingContext {
 
     @Override
     public String toString() {
-        return gatewayRegionalEndpointAsString;
+        return "RegionalRoutingContext{gw=" + gatewayRegionalEndpointAsString
+            + ", tc=" + thinclientRegionalEndpointAsString + "}";
     }
 }
