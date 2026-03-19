@@ -24,6 +24,7 @@ import com.openai.models.responses.ResponseOutputItem;
 import com.openai.models.responses.ResponseStatus;
 import com.openai.models.vectorstores.VectorStore;
 import com.openai.models.vectorstores.VectorStoreCreateParams;
+import com.openai.services.async.ConversationServiceAsync;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
@@ -55,7 +56,7 @@ public class ToolsAsyncTests extends ClientTestBase {
     public void openApiToolEndToEnd(HttpClient httpClient, AgentsServiceVersion serviceVersion) throws IOException {
         AgentsAsyncClient agentsClient = getAgentsAsyncClient(httpClient, serviceVersion);
         ResponsesAsyncClient responsesClient = getResponsesAsyncClient(httpClient, serviceVersion);
-        ConversationsAsyncClient conversationsClient = getConversationsAsyncClient(httpClient, serviceVersion);
+        ConversationServiceAsync conversationsClient = getConversationsAsyncClient(httpClient, serviceVersion);
 
         Map<String, BinaryData> spec
             = OpenApiFunctionDefinition.readSpecFromFile(TestUtils.getTestResourcePath("assets/httpbin_openapi.json"));
@@ -75,28 +76,21 @@ public class ToolsAsyncTests extends ClientTestBase {
 
                 AgentReference agentReference = new AgentReference(agent.getName()).setVersion(agent.getVersion());
 
-                return Mono.fromFuture(conversationsClient.getConversationServiceAsync().create())
-                    .flatMap(conversation -> {
-                        assertNotNull(conversation);
-                        return responsesClient.createWithAgentConversation(agentReference, conversation.id(),
-                            ResponseCreateParams.builder()
-                                .input(
-                                    "Use the OpenAPI tool and summarize the returned URL and origin in one sentence.")
-                                .maxOutputTokens(300L));
-                    })
-                    .doOnNext(response -> {
-                        assertNotNull(response);
-                        assertTrue(response.id().startsWith("resp"));
-                        assertTrue(response.status().isPresent());
-                        assertEquals(ResponseStatus.COMPLETED, response.status().get());
-                        assertFalse(response.output().isEmpty());
-                        assertTrue(response.output().stream().anyMatch(item -> item.isMessage()));
-                    })
-                    .then(agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion()));
-            })).assertNext(deletedAgent -> {
-                assertEquals("openapi-tool-test-agent-java-async", deletedAgent.getName());
-                assertTrue(deletedAgent.isDeleted());
-            }).verifyComplete();
+                return Mono.fromFuture(conversationsClient.create()).flatMap(conversation -> {
+                    assertNotNull(conversation);
+                    return responsesClient.createWithAgentConversation(agentReference, conversation.id(),
+                        ResponseCreateParams.builder()
+                            .input("Use the OpenAPI tool and summarize the returned URL and origin in one sentence.")
+                            .maxOutputTokens(300L));
+                }).doOnNext(response -> {
+                    assertNotNull(response);
+                    assertTrue(response.id().startsWith("resp"));
+                    assertTrue(response.status().isPresent());
+                    assertEquals(ResponseStatus.COMPLETED, response.status().get());
+                    assertFalse(response.output().isEmpty());
+                    assertTrue(response.output().stream().anyMatch(item -> item.isMessage()));
+                }).then(agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion()));
+            })).verifyComplete();
     }
 
     // -----------------------------------------------------------------------
@@ -133,10 +127,7 @@ public class ToolsAsyncTests extends ClientTestBase {
                         assertTrue(response.output().stream().anyMatch(item -> item.isCodeInterpreterCall()));
                     })
                     .then(agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion()));
-            })).assertNext(deletedAgent -> {
-                assertEquals("code-interpreter-test-agent-java-async", deletedAgent.getName());
-                assertTrue(deletedAgent.isDeleted());
-            }).verifyComplete();
+            })).verifyComplete();
     }
 
     // -----------------------------------------------------------------------
@@ -196,10 +187,7 @@ public class ToolsAsyncTests extends ClientTestBase {
                         assertNotNull(functionCallItem.asFunctionCall().arguments());
                     })
                     .then(agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion()));
-            })).assertNext(deletedAgent -> {
-                assertEquals("function-call-test-agent-java-async", deletedAgent.getName());
-                assertTrue(deletedAgent.isDeleted());
-            }).verifyComplete();
+            })).verifyComplete();
     }
 
     // -----------------------------------------------------------------------
@@ -235,10 +223,7 @@ public class ToolsAsyncTests extends ClientTestBase {
                         assertTrue(response.output().stream().anyMatch(item -> item.isMessage()));
                     })
                     .then(agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion()));
-            })).assertNext(deletedAgent -> {
-                assertEquals("web-search-test-agent-java-async", deletedAgent.getName());
-                assertTrue(deletedAgent.isDeleted());
-            }).verifyComplete();
+            })).verifyComplete();
     }
 
     // -----------------------------------------------------------------------
@@ -300,10 +285,6 @@ public class ToolsAsyncTests extends ClientTestBase {
                     })
                     .then(agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion()));
             }))
-            .assertNext(deletedAgent -> {
-                assertEquals("mcp-test-agent-java-async", deletedAgent.getName());
-                assertTrue(deletedAgent.isDeleted());
-            })
             .verifyComplete();
     }
 
@@ -316,7 +297,7 @@ public class ToolsAsyncTests extends ClientTestBase {
     public void fileSearchToolEndToEnd(HttpClient httpClient, AgentsServiceVersion serviceVersion) throws Exception {
         AgentsAsyncClient agentsClient = getAgentsAsyncClient(httpClient, serviceVersion);
         ResponsesAsyncClient responsesClient = getResponsesAsyncClient(httpClient, serviceVersion);
-        ConversationsAsyncClient conversationsClient = getConversationsAsyncClient(httpClient, serviceVersion);
+        ConversationServiceAsync conversationsClient = getConversationsAsyncClient(httpClient, serviceVersion);
 
         AgentsClientBuilder openAIBuilder = getClientBuilder(httpClient, serviceVersion);
         com.openai.client.OpenAIClient openAIClient = openAIBuilder.buildOpenAIClient();
@@ -357,26 +338,19 @@ public class ToolsAsyncTests extends ClientTestBase {
 
                     AgentReference agentReference = new AgentReference(agent.getName()).setVersion(agent.getVersion());
 
-                    return Mono.fromFuture(conversationsClient.getConversationServiceAsync().create())
-                        .flatMap(conversation -> {
-                            assertNotNull(conversation);
-                            return responsesClient.createWithAgentConversation(agentReference, conversation.id(),
-                                ResponseCreateParams.builder()
-                                    .input("What is the largest planet in the Solar System?"));
-                        })
-                        .doOnNext(response -> {
-                            assertNotNull(response);
-                            assertTrue(response.status().isPresent());
-                            assertEquals(ResponseStatus.COMPLETED, response.status().get());
-                            assertFalse(response.output().isEmpty());
-                            assertTrue(response.output().stream().anyMatch(item -> item.isFileSearchCall()));
-                            assertTrue(response.output().stream().anyMatch(item -> item.isMessage()));
-                        })
-                        .then(agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion()));
-                })).assertNext(deletedAgent -> {
-                    assertEquals("file-search-test-agent-java-async", deletedAgent.getName());
-                    assertTrue(deletedAgent.isDeleted());
-                }).verifyComplete();
+                    return Mono.fromFuture(conversationsClient.create()).flatMap(conversation -> {
+                        assertNotNull(conversation);
+                        return responsesClient.createWithAgentConversation(agentReference, conversation.id(),
+                            ResponseCreateParams.builder().input("What is the largest planet in the Solar System?"));
+                    }).doOnNext(response -> {
+                        assertNotNull(response);
+                        assertTrue(response.status().isPresent());
+                        assertEquals(ResponseStatus.COMPLETED, response.status().get());
+                        assertFalse(response.output().isEmpty());
+                        assertTrue(response.output().stream().anyMatch(item -> item.isFileSearchCall()));
+                        assertTrue(response.output().stream().anyMatch(item -> item.isMessage()));
+                    }).then(agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion()));
+                })).verifyComplete();
         } finally {
             Files.deleteIfExists(tempFile);
             if (vectorStore != null) {
