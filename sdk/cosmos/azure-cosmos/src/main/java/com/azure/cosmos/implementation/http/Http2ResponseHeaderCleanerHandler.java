@@ -26,8 +26,6 @@ public class Http2ResponseHeaderCleanerHandler extends ChannelInboundHandlerAdap
             Http2HeadersFrame headersFrame = (Http2HeadersFrame) msg;
             Http2Headers headers = headersFrame.headers();
 
-            
-
             // Direct O(1) hash lookup instead of O(n) forEach iteration over all headers
             CharSequence serverVersion = headers.get(SERVER_VERSION_KEY);
             if (serverVersion != null && serverVersion.length() > 0
