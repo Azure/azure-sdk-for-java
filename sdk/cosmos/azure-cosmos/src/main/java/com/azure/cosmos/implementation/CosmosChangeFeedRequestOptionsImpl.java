@@ -258,7 +258,8 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
         if (!this.startFromInternal.supportsFullFidelityRetention()) {
             throw new IllegalStateException(
                 "Full fidelity retention is not supported for the chosen change feed start from " +
-                    "option. Use CosmosChangeFeedRequestOptions.createForProcessingFromNow or " +
+                    "option. Use CosmosChangeFeedRequestOptions.createForProcessingFromNow, " +
+                    "CosmosChangeFeedRequestOptions.createForProcessingFromPointInTime or " +
                     "CosmosChangeFeedRequestOptions.createFromContinuation instead."
             );
         }
@@ -274,7 +275,8 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
         if (!this.startFromInternal.supportsFullFidelityRetention()) {
             throw new IllegalStateException(
                 "All Versions and Deletes mode is not supported for the chosen change feed start from " +
-                    "option. Use CosmosChangeFeedRequestOptions.createForProcessingFromNow or " +
+                    "option. Use CosmosChangeFeedRequestOptions.createForProcessingFromNow, " +
+                    "CosmosChangeFeedRequestOptions.createForProcessingFromPointInTime or " +
                     "CosmosChangeFeedRequestOptions.createFromContinuation instead."
             );
         }

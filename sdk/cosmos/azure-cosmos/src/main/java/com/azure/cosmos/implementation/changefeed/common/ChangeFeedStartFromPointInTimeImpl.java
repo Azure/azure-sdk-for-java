@@ -81,6 +81,6 @@ class ChangeFeedStartFromPointInTimeImpl extends ChangeFeedStartFromInternal {
 
     @Override
     public boolean supportsFullFidelityRetention() {
-        return false;
+        return true;
     }
 }

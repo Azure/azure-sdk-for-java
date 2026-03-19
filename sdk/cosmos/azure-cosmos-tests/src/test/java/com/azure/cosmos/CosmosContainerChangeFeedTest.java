@@ -608,11 +608,80 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
             null,
             expectedEventCountAfterFirstSetOfUpdates);
 
-        // applying first set of  updates
+        // applying second set of updates
         updateAction2.run();
 
         options = CosmosChangeFeedRequestOptions
             .createForProcessingFromContinuation(continuation);
+
+        drainAndValidateChangeFeedResults(
+            options,
+            null,
+            expectedEventCountAfterSecondSetOfUpdates);
+    }
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    public void asyncChangeFeed_fromStartTime_fullFidelity_forFullRange() throws Exception {
+        this.createContainer(
+        (cp) -> cp.setChangeFeedPolicy(ChangeFeedPolicy.createAllVersionsAndDeletesPolicy(Duration.ofMinutes(10)))
+        );
+        // take the current date time as the start time
+        Instant startTime = Instant.now();
+        Thread.sleep(1000);
+        insertDocuments(5, 5);
+        updateDocuments(3, 5);
+        deleteDocuments(2, 3);
+
+
+        Runnable updateAction1 = () -> {
+            insertDocuments(5, 9);
+            updateDocuments(3, 5);
+            deleteDocuments(2, 3);
+        };
+
+        Runnable updateAction2 = () -> {
+            updateDocuments(5, 2);
+            deleteDocuments(2, 3);
+            insertDocuments(10, 5);
+        };
+
+        final int expectedInitialEventCount =
+            5 * 5       // events for inserts
+                + 3 * 5       // event count for updates
+                + 2 * 3;      // plus deletes (which are all included in FF CF)
+
+        final int expectedEventCountAfterFirstSetOfUpdates =
+            5 * 9       // events for inserts
+                + 3 * 5       // event count for updates
+                + 2 * 3;      // plus deletes (which are all included in FF CF)
+
+        final int expectedEventCountAfterSecondSetOfUpdates =
+            10 * 5         // events for inserts
+                + 5 * 2         // event count for updates
+                + 2 * 3;        // plus deletes (which are all included in FF CF)
+
+        CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
+            .createForProcessingFromPointInTime(startTime, FeedRange.forFullRange()).allVersionsAndDeletes();
+
+
+        String continuation = drainAndValidateChangeFeedResults(options, null, expectedInitialEventCount);
+
+        // applying first set of  updates
+        updateAction1.run();
+
+        options = CosmosChangeFeedRequestOptions
+            .createForProcessingFromContinuation(continuation).allVersionsAndDeletes();
+
+        continuation = drainAndValidateChangeFeedResults(
+            options,
+            null,
+            expectedEventCountAfterFirstSetOfUpdates);
+
+        // applying second set of updates
+        updateAction2.run();
+
+        options = CosmosChangeFeedRequestOptions
+            .createForProcessingFromContinuation(continuation).allVersionsAndDeletes();
 
         drainAndValidateChangeFeedResults(
             options,
@@ -660,17 +729,6 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
             .createForProcessingFromContinuation(continuation);
 
         drainAndValidateChangeFeedResults(options, null, expectedEventCountAfterUpdates);
-    }
-
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
-    public void asyncChangeFeed_fromPointInTime_fullFidelity_forFullRange() throws Exception {
-        assertThrows(
-            IllegalStateException.class,
-            () -> CosmosChangeFeedRequestOptions
-                .createForProcessingFromPointInTime(
-                    Instant.now().minus(10, ChronoUnit.SECONDS),
-                    FeedRange.forFullRange())
-                .allVersionsAndDeletes());
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)

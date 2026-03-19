@@ -123,6 +123,9 @@ public class PartitionProcessorHelper {
                         changeFeedState.getContinuation().getCurrentContinuationToken().getToken(),
                         feedRange);
             }
+            if (processorOptions.getStartTime() != null) {
+                return ChangeFeedStartFromInternal.createFromPointInTime(processorOptions.getStartTime());
+            }
             return ChangeFeedStartFromInternal.createFromNow();
         }
 

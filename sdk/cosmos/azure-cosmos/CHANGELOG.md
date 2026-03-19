@@ -4,7 +4,8 @@
 
 #### Features Added
 * Added support for N-Region synchronous commit feature - See [PR 47757](https://github.com/Azure/azure-sdk-for-java/pull/47757)
-* Added support for Query Advisor feature - See [48160](https://github.com/Azure/azure-sdk-for-java/pull/48160) 
+* Added `startTime` support for Change Feed Processor and point-in-time support for querying change feed in All Versions and Deletes mode. - See [PR 47684](https://github.com/Azure/azure-sdk-for-java/pull/47684)
+* Added support for Query Advisor feature - See [48160](https://github.com/Azure/azure-sdk-for-java/pull/48160)
 
 #### Breaking Changes
 
