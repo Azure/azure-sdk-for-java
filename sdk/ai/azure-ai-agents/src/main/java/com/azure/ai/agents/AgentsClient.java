@@ -216,7 +216,7 @@ public final class AgentsClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteAgentVersion(String agentName, String agentVersion, RequestOptions requestOptions) {
+    public void deleteAgentVersion(String agentName, String agentVersion) {
         deleteAgentVersionWithResponse(agentName, agentVersion, new RequestOptions());
     }
 
