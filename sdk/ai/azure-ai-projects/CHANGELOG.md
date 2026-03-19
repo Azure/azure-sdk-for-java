@@ -15,10 +15,6 @@
 - `getInsight(String, Boolean)` overload removed; replaced by `getInsight(String)` and `getInsight(String, FoundryFeaturesOptInKeys, Boolean)`.
 - `listInsights(InsightType, String, String, String, Boolean)` signature changed to `listInsights(FoundryFeaturesOptInKeys, InsightType, String, String, String, Boolean)`.
 
-### Bugs Fixed
-
-### Other Changes
-
 ## 2.0.0-beta.2 (2026-03-04)
 
 ### Breaking Changes
