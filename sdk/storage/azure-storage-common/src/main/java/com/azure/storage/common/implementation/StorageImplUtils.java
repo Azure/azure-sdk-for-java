@@ -270,6 +270,59 @@ public class StorageImplUtils {
         return accountName;
     }
 
+
+    public static String getAccountName(URL url, String serviceSubDomain) throws MalformedURLException {
+        String host = url.getHost();
+        return getAccountNameFromHost(host, serviceSubDomain);
+    }
+
+    /**
+     * Gets the account name from a host string, stripping IPv6, dualstack, and secondary suffixes.
+     * <p>
+     * For IPv6/dualstack endpoints, hosts look like {@code accountname-ipv6.blob.core.windows.net} or
+     * {@code accountname-secondary-dualstack.blob.core.windows.net}. This method extracts the base account name
+     * by verifying the service subdomain is present, then stripping known suffixes.
+     * <p>
+     * Suffixes are stripped in order: first {@code -ipv6} or {@code -dualstack}, then {@code -secondary},
+     * to handle compound cases like {@code accountname-secondary-ipv6}.
+     *
+     * @param host The host string from a URL.
+     * @param serviceSubDomain The service subdomain (e.g., "blob", "file", "queue", "dfs").
+     * @return The account name, or {@code null} if it cannot be parsed.
+     */
+    public static String getAccountNameFromHost(String host, String serviceSubDomain) {
+        if (CoreUtils.isNullOrEmpty(host)) {
+            return null;
+        }
+
+        int accountEndIndex = host.indexOf('.');
+        if (accountEndIndex >= 0) {
+            int serviceStartIndex = host.indexOf(serviceSubDomain, accountEndIndex);
+            if (serviceStartIndex > -1) {
+                String accountName = host.substring(0, accountEndIndex);
+
+                // Note: The suffixes are specifically checked/trimmed in this order to
+                // take into account of cases with both "-secondary" and "-ipv6"/"-dualstack"
+                // ie. "accountname-secondary-ipv6"
+
+                // Remove "-ipv6" or "-dualstack" from end if present
+                if (accountName.endsWith("-ipv6")) {
+                    accountName = accountName.substring(0, accountName.length() - "-ipv6".length());
+                } else if (accountName.endsWith("-dualstack")) {
+                    accountName = accountName.substring(0, accountName.length() - "-dualstack".length());
+                }
+
+                // Remove "-secondary" from end if present
+                if (accountName.endsWith("-secondary")) {
+                    accountName = accountName.substring(0, accountName.length() - "-secondary".length());
+                }
+
+                return accountName;
+            }
+        }
+        return null;
+    }
+
     /** Returns an empty string if value is {@code null}, otherwise returns value
      * @param value The value to check and return.
      * @return The value or empty string.

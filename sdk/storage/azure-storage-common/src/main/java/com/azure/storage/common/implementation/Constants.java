@@ -463,4 +463,54 @@ public final class Constants {
             // Private to prevent construction.
         }
     }
+
+    /**
+     * Constants for the Blob service subdomain.
+     */
+    public static class Blob {
+        /**
+         * The URI subdomain for blob storage.
+         */
+        public static final String URI_SUBDOMAIN = "blob";
+    }
+
+    /**
+     * Constants for the File service subdomain.
+     */
+    public static class File {
+        /**
+         * The URI subdomain for file storage.
+         */
+        public static final String URI_SUBDOMAIN = "file";
+    }
+
+    /**
+     * Constants for the Queue service subdomain.
+     */
+    public static class Queue {
+        /**
+         * The URI subdomain for queue storage.
+         */
+        public static final String URI_SUBDOMAIN = "queue";
+    }
+
+    /**
+     * Constants for the Table service subdomain.
+     */
+    public static class Table {
+        /**
+         * The URI subdomain for table storage.
+         */
+        public static final String URI_SUBDOMAIN = "table";
+    }
+
+    /**
+     * Constants for the DFS (Data Lake) service subdomain.
+     */
+    public static class Dfs {
+        /**
+         * The URI subdomain for Data Lake Storage.
+         */
+        public static final String URI_SUBDOMAIN = "dfs";
+    }
 }
