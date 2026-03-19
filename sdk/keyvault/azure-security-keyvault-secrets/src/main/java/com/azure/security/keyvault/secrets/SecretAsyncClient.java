@@ -34,6 +34,7 @@ import com.azure.security.keyvault.secrets.implementation.models.SecretSetParame
 import com.azure.security.keyvault.secrets.implementation.models.SecretsModelsUtils;
 import com.azure.security.keyvault.secrets.models.DeletedSecret;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
+import com.azure.security.keyvault.secrets.models.SecretContentType;
 import com.azure.security.keyvault.secrets.models.SecretProperties;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -432,6 +433,94 @@ public final class SecretAsyncClient {
 
         try {
             return implClient.getSecretWithResponseAsync(name, version, EMPTY_OPTIONS)
+                .onErrorMap(HttpResponseException.class, SecretAsyncClient::mapGetSecretException)
+                .map(response -> new SimpleResponse<>(response,
+                    createKeyVaultSecret(response.getValue().toObject(SecretBundle.class))));
+        } catch (RuntimeException e) {
+            return monoError(LOGGER, e);
+        }
+    }
+
+    /**
+     * Gets the latest version of the specified certificate-backed secret from the key vault, requesting on-demand
+     * format conversion. Use this method to retrieve a certificate stored as a secret and convert it from PFX to
+     * PEM format in a single service call. This operation requires the {@code secrets/get} permission.
+     *
+     * <p>This method is only supported for service version {@code 2025-07-01} and later.
+     * Currently only PFX ({@link SecretContentType#PFX}) to PEM ({@link SecretContentType#PEM})
+     * conversion is supported.</p>
+     *
+     * <p><strong>Code sample</strong></p>
+     * <p>Gets a certificate-backed secret in PEM format.</p>
+     * <!-- src_embed com.azure.keyvault.secrets.SecretAsyncClient.getSecret#string-SecretContentType -->
+     * <pre>
+     * secretAsyncClient.getSecret&#40;&quot;myCertificateSecret&quot;, SecretContentType.PEM&#41;
+     *     .subscribe&#40;pemSecret -&gt;
+     *         System.out.printf&#40;&quot;Retrieved secret in PEM format, value starts with: %s%n&quot;,
+     *             pemSecret.getValue&#40;&#41;.substring&#40;0, 27&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.keyvault.secrets.SecretAsyncClient.getSecret#string-SecretContentType -->
+     *
+     * @param name The name of the certificate-backed secret.
+     * @param outContentType The desired output format. Use {@link SecretContentType#PEM} to request
+     *     PFX-to-PEM conversion.
+     * @return A {@link Mono} containing the requested {@link KeyVaultSecret} with its value in the
+     *     specified format.
+     * @throws ResourceNotFoundException When a secret with the given {@code name} doesn't exist in the vault.
+     * @throws IllegalArgumentException If {@code name} is either {@code null} or empty.
+     * @throws HttpResponseException If {@code outContentType} specifies an unsupported format.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<KeyVaultSecret> getSecret(String name, SecretContentType outContentType) {
+        return getSecretWithResponse(name, "", outContentType).map(Response::getValue);
+    }
+
+    /**
+     * Gets the specified version of a certificate-backed secret from the key vault, requesting on-demand
+     * format conversion. Use this method to retrieve a certificate stored as a secret and convert it from PFX to
+     * PEM format in a single service call. This operation requires the {@code secrets/get} permission.
+     *
+     * <p>This method is only supported for service version {@code 2025-07-01} and later.
+     * Currently only PFX ({@link SecretContentType#PFX}) to PEM ({@link SecretContentType#PEM})
+     * conversion is supported.</p>
+     *
+     * <p><strong>Code sample</strong></p>
+     * <p>Gets a specific version of a certificate-backed secret in PEM format.</p>
+     * <!-- src_embed com.azure.keyvault.secrets.SecretAsyncClient.getSecretWithResponse#string-string-SecretContentType -->
+     * <pre>
+     * String secretVersion = &quot;6A385B124DEF4096AF1361A85B16C204&quot;;
+     * secretAsyncClient.getSecretWithResponse&#40;&quot;myCertificateSecret&quot;, secretVersion, SecretContentType.PEM&#41;
+     *     .subscribe&#40;pemResponse -&gt;
+     *         System.out.printf&#40;&quot;Retrieved secret in PEM format with status: %d%n&quot;,
+     *             pemResponse.getStatusCode&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.keyvault.secrets.SecretAsyncClient.getSecretWithResponse#string-string-SecretContentType -->
+     *
+     * @param name The name of the certificate-backed secret, cannot be null.
+     * @param version The version of the secret to retrieve. If this is an empty string or null, the latest
+     *     version is retrieved.
+     * @param outContentType The desired output format. Use {@link SecretContentType#PEM} to request
+     *     PFX-to-PEM conversion.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
+     *     requested {@link KeyVaultSecret} with its value in the specified format.
+     * @throws ResourceNotFoundException When a secret with the given {@code name} and {@code version} doesn't
+     *     exist in the vault.
+     * @throws IllegalArgumentException If {@code name} is either {@code null} or empty.
+     * @throws HttpResponseException If {@code outContentType} specifies an unsupported format.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<KeyVaultSecret>> getSecretWithResponse(String name, String version,
+        SecretContentType outContentType) {
+        if (CoreUtils.isNullOrEmpty(name)) {
+            return monoError(LOGGER, new IllegalArgumentException("'name' cannot be null or empty."));
+        }
+
+        try {
+            RequestOptions requestOptions = new RequestOptions();
+            if (outContentType != null) {
+                requestOptions.addQueryParam("outContentType", outContentType.toString());
+            }
+            return implClient.getSecretWithResponseAsync(name, version != null ? version : "", requestOptions)
                 .onErrorMap(HttpResponseException.class, SecretAsyncClient::mapGetSecretException)
                 .map(response -> new SimpleResponse<>(response,
                     createKeyVaultSecret(response.getValue().toObject(SecretBundle.class))));

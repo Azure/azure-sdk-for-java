@@ -8,6 +8,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
+import com.azure.security.keyvault.secrets.models.SecretContentType;
 import com.azure.security.keyvault.secrets.models.SecretProperties;
 import reactor.util.context.Context;
 
@@ -352,5 +353,29 @@ public final class SecretAsyncClientJavaDocCodeSnippets {
             .subscribe(secret -> System.out.printf("Received secret with name %s and type %s%n",
                 secret.getName(), secret.getValue()));
         // END: com.azure.keyvault.secrets.SecretClient.listSecretVersions#string
+    }
+
+    /**
+     * Method to insert code snippets for
+     * {@link SecretAsyncClient#getSecret(String, SecretContentType)} and
+     * {@link SecretAsyncClient#getSecretWithResponse(String, String, SecretContentType)}.
+     */
+    public void getSecretWithOutContentTypeCodeSnippets() {
+        SecretAsyncClient secretAsyncClient = getAsyncSecretClient();
+
+        // BEGIN: com.azure.keyvault.secrets.SecretAsyncClient.getSecret#string-SecretContentType
+        secretAsyncClient.getSecret("myCertificateSecret", SecretContentType.PEM)
+            .subscribe(pemSecret ->
+                System.out.printf("Retrieved secret in PEM format, value starts with: %s%n",
+                    pemSecret.getValue().substring(0, 27)));
+        // END: com.azure.keyvault.secrets.SecretAsyncClient.getSecret#string-SecretContentType
+
+        // BEGIN: com.azure.keyvault.secrets.SecretAsyncClient.getSecretWithResponse#string-string-SecretContentType
+        String secretVersion = "6A385B124DEF4096AF1361A85B16C204";
+        secretAsyncClient.getSecretWithResponse("myCertificateSecret", secretVersion, SecretContentType.PEM)
+            .subscribe(pemResponse ->
+                System.out.printf("Retrieved secret in PEM format with status: %d%n",
+                    pemResponse.getStatusCode()));
+        // END: com.azure.keyvault.secrets.SecretAsyncClient.getSecretWithResponse#string-string-SecretContentType
     }
 }
