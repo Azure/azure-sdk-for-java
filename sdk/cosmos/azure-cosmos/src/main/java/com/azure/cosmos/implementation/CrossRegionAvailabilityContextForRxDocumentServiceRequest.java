@@ -30,6 +30,15 @@ public class CrossRegionAvailabilityContextForRxDocumentServiceRequest {
 
     private final PerPartitionAutomaticFailoverInfoHolder perPartitionAutomaticFailoverInfoHolder;
 
+    /**
+     * For PPAF write hedging on single-writer accounts, this field holds the target
+     * read region that the hedged write should be routed to. When set, {@code ClientRetryPolicy}
+     * uses {@code routeToLocation(RegionalRoutingContext)} to force-route the request
+     * to this region, bypassing the excluded-regions mechanism which cannot route writes
+     * to read regions on single-writer accounts.
+     */
+    private volatile RegionalRoutingContext writeRegionRoutingContextForPpafAvailabilityStrategy;
+
     public CrossRegionAvailabilityContextForRxDocumentServiceRequest(
         FeedOperationContextForCircuitBreaker feedOperationContextForCircuitBreaker,
         PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker,
@@ -98,20 +107,11 @@ public class CrossRegionAvailabilityContextForRxDocumentServiceRequest {
         return this.perPartitionAutomaticFailoverInfoHolder;
     }
 
-    /**
-     * For PPAF write hedging on single-writer accounts, this field holds the target
-     * read region that the hedged write should be routed to. When set, {@code ClientRetryPolicy}
-     * uses {@code routeToLocation(RegionalRoutingContext)} to force-route the request
-     * to this region, bypassing the excluded-regions mechanism which cannot route writes
-     * to read regions on single-writer accounts.
-     */
-    private volatile RegionalRoutingContext ppafWriteHedgeTargetRegion;
-
-    public RegionalRoutingContext getPpafWriteHedgeTargetRegion() {
-        return this.ppafWriteHedgeTargetRegion;
+    public RegionalRoutingContext getWriteRegionRoutingContextForPpafAvailabilityStrategy() {
+        return this.writeRegionRoutingContextForPpafAvailabilityStrategy;
     }
 
-    public void setPpafWriteHedgeTargetRegion(RegionalRoutingContext ppafWriteHedgeTargetRegion) {
-        this.ppafWriteHedgeTargetRegion = ppafWriteHedgeTargetRegion;
+    public void setWriteRegionRoutingContextForPpafAvailabilityStrategy(RegionalRoutingContext writeRegionRoutingContextForPpafAvailabilityStrategy) {
+        this.writeRegionRoutingContextForPpafAvailabilityStrategy = writeRegionRoutingContextForPpafAvailabilityStrategy;
     }
 }

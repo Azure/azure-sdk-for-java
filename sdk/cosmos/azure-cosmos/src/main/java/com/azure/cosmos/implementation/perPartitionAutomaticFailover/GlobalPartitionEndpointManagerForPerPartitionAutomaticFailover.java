@@ -173,30 +173,31 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
         }
 
         // For PPAF write hedging: when the availability strategy has set a target read region
-        // for a hedged write and no existing failover entry exists, create the entry and route there.
-        // This is the synchronous, deterministic path — the conchashmap is updated in the same
-        // request pipeline so subsequent requests for this partition route directly to the target.
+        // for a hedged write, route the request to that region WITHOUT creating a failover entry.
+        // A failover override should only be persisted when the hedged request succeeds — creating
+        // one eagerly here would route future requests to a potentially bad region if this request fails.
         CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionCtx =
             request.requestContext.getCrossRegionAvailabilityContext();
 
-        if (crossRegionCtx != null && crossRegionCtx.getPpafWriteHedgeTargetRegion() != null) {
-            RegionalRoutingContext hedgeTarget = crossRegionCtx.getPpafWriteHedgeTargetRegion();
+        if (crossRegionCtx != null && crossRegionCtx.getWriteRegionRoutingContextForPpafAvailabilityStrategy() != null) {
+            RegionalRoutingContext hedgeTarget = crossRegionCtx.getWriteRegionRoutingContextForPpafAvailabilityStrategy();
 
-            // computeIfAbsent is atomic on ConcurrentHashMap — if the retry-based path already
-            // created an entry for this partition (with a potentially different region), we get
-            // that entry back. We route to the entry's current region (not blindly to hedgeTarget)
-            // to avoid routing to a region the retry path may have already marked as failed.
-            PartitionLevelAutomaticFailoverInfo hedgeFailoverInfo =
-                this.partitionKeyRangeToFailoverInfo.computeIfAbsent(
-                    partitionKeyRangeWrapper,
-                    k -> new PartitionLevelAutomaticFailoverInfo(hedgeTarget, this.globalEndpointManager));
+            // Check if an existing failover entry already exists for this partition
+            PartitionLevelAutomaticFailoverInfo existingFailoverInfo = this.partitionKeyRangeToFailoverInfo.get(partitionKeyRangeWrapper);
 
-            request.requestContext.routeToLocation(hedgeFailoverInfo.getCurrent());
-            request.requestContext.setPerPartitionAutomaticFailoverInfoHolder(hedgeFailoverInfo);
+            if (existingFailoverInfo != null) {
+                // An existing entry exists (from retry-based failover path) — use its current region
+                request.requestContext.routeToLocation(existingFailoverInfo.getCurrent());
+                request.requestContext.setPerPartitionAutomaticFailoverInfoHolder(existingFailoverInfo);
+            } else {
+                // No existing entry — route directly to the hedge target WITHOUT creating an override.
+                // The override will only be created if this hedged request succeeds.
+                request.requestContext.routeToLocation(hedgeTarget);
+            }
 
             if (logger.isInfoEnabled()) {
                 logger.info(
-                    "PPAF write hedge: routing write for partition key range {} and collection rid {} to target region {}",
+                    "PPAF write availability strategy: routing write for partition key range {} and collection rid {} to target region {}",
                     partitionKeyRangeWrapper.getPartitionKeyRange(),
                     partitionKeyRangeWrapper.getCollectionResourceId(),
                     hedgeTarget.getGatewayRegionalEndpoint());

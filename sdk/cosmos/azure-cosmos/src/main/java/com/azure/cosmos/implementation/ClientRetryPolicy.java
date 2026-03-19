@@ -551,8 +551,8 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         }
 
         // In case PPAF is enabled and a location override exists for the partition key range assigned to the request.
-        // This also handles PPAF write hedging — when ppafWriteHedgeTargetRegion is set, it creates
-        // the conchashmap entry and routes the request to the target read region.
+        // This also handles PPAF write hedging — when writeRegionRoutingContextForPpafAvailabilityStrategy is set, it creates
+        // the ConcurrentHashMap entry and routes the request to the target read region.
         this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryAddPartitionLevelLocationOverride(request);
 
         this.throttlingRetry.onBeforeSendRequest(request);

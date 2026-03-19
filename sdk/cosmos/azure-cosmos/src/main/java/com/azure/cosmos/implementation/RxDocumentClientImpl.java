@@ -7488,7 +7488,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     if (applyAvailabilityStrategyForWritesForPpaf) {
                         RegionalRoutingContext targetRegion = regionToRoutingContext.get(region.toLowerCase(Locale.ROOT));
                         if (targetRegion != null) {
-                            crossRegionAvailabilityContextForHedgedRequest.setPpafWriteHedgeTargetRegion(targetRegion);
+                            crossRegionAvailabilityContextForHedgedRequest.setWriteRegionRoutingContextForPpafAvailabilityStrategy(targetRegion);
                         }
                     }
 
