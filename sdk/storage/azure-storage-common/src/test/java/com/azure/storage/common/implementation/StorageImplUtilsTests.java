@@ -23,22 +23,17 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class StorageImplUtilsTests {
-    private static final String[] URL_SUFFIXES = {
-        "", "-secondary", "-dualstack", "-ipv6", "-secondary-dualstack", "-secondary-ipv6"
-    };
+    private static final String[] URL_SUFFIXES
+        = { "", "-secondary", "-dualstack", "-ipv6", "-secondary-dualstack", "-secondary-ipv6" };
 
     private static final String[] ALL_SUBDOMAINS = {
         Constants.Blob.URI_SUBDOMAIN,
         Constants.File.URI_SUBDOMAIN,
         Constants.Queue.URI_SUBDOMAIN,
         Constants.Table.URI_SUBDOMAIN,
-        Constants.Dfs.URI_SUBDOMAIN
-    };
+        Constants.Dfs.URI_SUBDOMAIN };
 
-    private static final String[] BLOB_AND_DFS = {
-        Constants.Blob.URI_SUBDOMAIN,
-        Constants.Dfs.URI_SUBDOMAIN
-    };
+    private static final String[] BLOB_AND_DFS = { Constants.Blob.URI_SUBDOMAIN, Constants.Dfs.URI_SUBDOMAIN };
 
     @ParameterizedTest
     @MethodSource("exceptionCallables")
@@ -103,11 +98,8 @@ public class StorageImplUtilsTests {
         return args.stream();
     }
 
-    private static Arguments generateURL(String account, String subdomain, String suffix)
-        throws MalformedURLException {
-        return Arguments.of(
-            new URL("https://" + account + suffix + "." + subdomain + ".core.windows.net/"),
-            subdomain,
+    private static Arguments generateURL(String account, String subdomain, String suffix) throws MalformedURLException {
+        return Arguments.of(new URL("https://" + account + suffix + "." + subdomain + ".core.windows.net/"), subdomain,
             account);
     }
 }
