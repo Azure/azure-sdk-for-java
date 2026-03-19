@@ -206,7 +206,7 @@ public final class RetryUtil {
                 try {
                     recoveryAction.accept(kind);
                 } catch (Exception e) {
-                    LOGGER.atWarning().log("Recovery action failed.", e);
+                    LOGGER.atWarning().addKeyValue("recoveryKind", kind).log("Recovery action failed.", e);
                 }
             }
 

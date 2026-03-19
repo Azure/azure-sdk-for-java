@@ -289,6 +289,11 @@ class ServiceBusSessionManager implements AutoCloseable, IServiceBusSessionManag
                     .addKeyValue("recoveryKind", kind)
                     .log("Error occurred while getting unnamed session.", failure);
 
+                if (isDisposed.get()) {
+                    return Mono.<Long>error(
+                        new AmqpException(false, "SessionManager is already disposed.", failure, getErrorContext()));
+                }
+
                 if (kind == RecoveryKind.CONNECTION) {
                     LOGGER.atWarning()
                         .addKeyValue(ENTITY_PATH_KEY, entityPath)
@@ -296,10 +301,7 @@ class ServiceBusSessionManager implements AutoCloseable, IServiceBusSessionManag
                     connectionCacheWrapper.forceCloseConnection();
                 }
 
-                if (isDisposed.get()) {
-                    return Mono.<Long>error(
-                        new AmqpException(false, "SessionManager is already disposed.", failure, getErrorContext()));
-                } else if (failure instanceof TimeoutException) {
+                if (failure instanceof TimeoutException) {
                     return Mono.delay(Duration.ZERO);
                 } else if (failure instanceof AmqpException
                     && ((AmqpException) failure).getErrorCondition() == AmqpErrorCondition.TIMEOUT_ERROR) {

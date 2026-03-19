@@ -230,7 +230,6 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
 
     private final ClientLogger logger;
     private final AtomicReference<String> linkName = new AtomicReference<>();
-    private final AtomicReference<AmqpSendLink> lastSendLink = new AtomicReference<>();
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final MessageSerializer messageSerializer;
     private final AmqpRetryOptions retryOptions;
@@ -817,7 +816,6 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
 
         return tracer
             .traceScheduleMono("ServiceBus.scheduleMessage", getSendLinkWithRetry("schedule-message").flatMap(link -> {
-                lastSendLink.set(link);
                 return link.getLinkSize().flatMap(size -> {
                     final int maxSize = size > 0 ? size : MAX_MESSAGE_LENGTH_BYTES;
                     return connectionProcessor
@@ -869,8 +867,9 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
             messages.add(message);
         });
 
+        final AtomicReference<AmqpSendLink> operationLink = new AtomicReference<>();
         final Mono<Void> sendMessage = getSendLink("send-batch").flatMap(link -> {
-            lastSendLink.set(link);
+            operationLink.set(link);
             if (transactionContext != null && transactionContext.getTransactionId() != null) {
                 final TransactionalState deliveryState = new TransactionalState();
                 deliveryState.setTxnId(Binary.create(transactionContext.getTransactionId()));
@@ -885,7 +884,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         final String timeoutMessage = "Sending messages timed out. message-count:" + batch.getCount() + entityId();
         final Mono<Void> withRetry
             = RetryUtil.withRetryAndRecovery(sendMessage, retryOptions, timeoutMessage, recoveryKind -> {
-                performRecovery(recoveryKind, "sendBatch");
+                performRecovery(recoveryKind, "sendBatch", operationLink);
             }).onErrorMap(this::mapError);
         return instrumentation.instrumentSendBatch("ServiceBus.send", withRetry, batch.getMessages());
     }
@@ -900,10 +899,11 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         // Apply retry+recovery only to link acquisition. Keeping messages.collect() outside the
         // retry boundary avoids re-subscribing the user-provided Flux on each retry attempt,
         // which could duplicate side-effects or re-consume a hot publisher.
+        final AtomicReference<AmqpSendLink> operationLink = new AtomicReference<>();
         final Mono<AmqpSendLink> linkWithRecovery
-            = RetryUtil.withRetryAndRecovery(getSendLink("send-batches").doOnNext(link -> lastSendLink.set(link)),
-                retryOptions, "Failed to acquire send link for batch collection." + entityId(),
-                recoveryKind -> performRecovery(recoveryKind, "sendFlux-link"));
+            = RetryUtil.withRetryAndRecovery(getSendLink("send-batches").doOnNext(operationLink::set), retryOptions,
+                "Failed to acquire send link for batch collection." + entityId(),
+                recoveryKind -> performRecovery(recoveryKind, "sendFlux-link", operationLink));
 
         final Mono<List<ServiceBusMessageBatch>> batchListMono
             = linkWithRecovery.flatMap(link -> link.getLinkSize().flatMap(size -> {
@@ -952,7 +952,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
     private Mono<AmqpSendLink> getSendLinkWithRetry(String callSite) {
         return RetryUtil.withRetryAndRecovery(getSendLink(callSite), retryOptions,
             String.format(retryGetLinkErrorMessageFormat, callSite), recoveryKind -> {
-                performRecovery(recoveryKind, "getSendLink-" + callSite);
+                performRecovery(recoveryKind, "getSendLink-" + callSite, null);
             });
     }
 
@@ -972,7 +972,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      * <p>This matches the Go SDK's RecoverIfNeeded() and the .NET SDK's
      * FaultTolerantAmqpObject pattern.</p>
      */
-    private void performRecovery(RecoveryKind recoveryKind, String callSite) {
+    private void performRecovery(RecoveryKind recoveryKind, String callSite, AtomicReference<AmqpSendLink> linkRef) {
         if (recoveryKind == RecoveryKind.NONE || recoveryKind == RecoveryKind.FATAL) {
             return;
         }
@@ -983,10 +983,12 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
             .addKeyValue("callSite", callSite)
             .log("Performing {} recovery before retry.", recoveryKind);
 
-        // Start async close of the cached send link so the next retry creates a fresh one.
+        // Start async close of the operation-scoped send link so the next retry creates a fresh one.
+        // Using a per-operation AtomicReference (not a class-level field) prevents concurrent send
+        // operations from accidentally closing each other's links.
         // Use closeAsync() rather than dispose() to avoid blocking the Reactor thread; ReactorSender
         // dispose() calls closeAsync().block(tryTimeout), which is illegal on a non-blocking scheduler.
-        final AmqpSendLink link = lastSendLink.getAndSet(null);
+        final AmqpSendLink link = linkRef != null ? linkRef.getAndSet(null) : null;
         if (link != null) {
             link.closeAsync()
                 .subscribe(null,
