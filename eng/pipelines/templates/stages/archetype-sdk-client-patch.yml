@@ -88,7 +88,7 @@ extends:
               displayName: 'Generate FromSource POM and directories for sparse checkout'
               inputs:
                 scriptPath: 'eng/scripts/generate_from_source_pom.py'
-                arguments: '--artifacts-list $(ArtifactsList) --additional-modules-list $(AdditionalModulesList)'
+                arguments: '--artifacts-list $(ArtifactsList) --additional-modules-list $(AdditionalModulesList) --match-any-version'
                 workingDirectory: '$(System.DefaultWorkingDirectory)'
 
             - template: /eng/pipelines/templates/steps/sparse-checkout-repo-initialized.yml
@@ -242,7 +242,7 @@ extends:
               displayName: 'Generate FromSource POM and directories for sparse checkout'
               inputs:
                 scriptPath: 'eng/scripts/generate_from_source_pom.py'
-                arguments: '--artifacts-list $(ArtifactsList) --additional-modules-list $(AdditionalModulesList)'
+                arguments: '--artifacts-list $(ArtifactsList) --additional-modules-list $(AdditionalModulesList) --match-any-version'
                 workingDirectory: '$(System.DefaultWorkingDirectory)'
 
             - template: /eng/pipelines/templates/steps/sparse-checkout-repo-initialized.yml

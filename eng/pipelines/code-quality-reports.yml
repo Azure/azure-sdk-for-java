@@ -74,7 +74,7 @@ extends:
                 displayName: 'Generate FromSource POM and directories for sparse checkout'
                 inputs:
                   scriptPath: 'eng/scripts/generate_from_source_pom.py'
-                  arguments: '--set-skip-linting-projects SkipLintingProjects --artifacts-list $(ArtifactsList) --additional-modules-list $(AdditionalModulesList)'
+                  arguments: '--set-skip-linting-projects SkipLintingProjects --artifacts-list $(ArtifactsList) --additional-modules-list $(AdditionalModulesList) --match-any-version'
                   workingDirectory: '$(System.DefaultWorkingDirectory)'
 
               - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
