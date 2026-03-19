@@ -243,8 +243,7 @@ class SparkE2EChangeFeedITest
       ChangeFeedTable.defaultFullFidelityChangeFeedSchemaForInferenceDisabled) shouldEqual true
   }
 
-  // TODO: Enable this test once emulator supports startFromPointInTime with AllVersionsAndDeletes change feed
-  "spark change feed query (all versions and deletes)" can "use point in time start" ignore {
+  "spark change feed query (all versions and deletes)" can "use point in time start" in {
     val cosmosEndpoint = TestConfigurations.HOST
     val cosmosMasterKey = TestConfigurations.MASTER_KEY
 
@@ -271,7 +270,7 @@ class SparkE2EChangeFeedITest
 
     val df = spark.read.format("cosmos.oltp.changeFeed").options(cfg).load()
     val rowsArray = df.collect()
-    rowsArray.length should be >= 0
+    rowsArray.length should be > 0
     df.schema.equals(
       ChangeFeedTable.defaultFullFidelityChangeFeedSchemaForInferenceDisabled) shouldEqual true
   }

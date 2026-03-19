@@ -232,15 +232,6 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
 
                 changeFeedProcessor.stop().subscribeOn(Schedulers.boundedElastic()).timeout(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
 
-                // query for leases from the createdLeaseCollection
-                String leaseQuery = "select * from c where not contains(c.id, \"info\")";
-                List<JsonNode> leaseDocuments =
-                    createdLeaseCollection
-                        .queryItems(leaseQuery, JsonNode.class)
-                        .byPage()
-                        .blockFirst()
-                        .getResults();
-
 
                 Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
 

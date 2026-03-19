@@ -608,7 +608,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
             null,
             expectedEventCountAfterFirstSetOfUpdates);
 
-        // applying first set of  updates
+        // applying second set of updates
         updateAction2.run();
 
         options = CosmosChangeFeedRequestOptions
@@ -625,8 +625,9 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
         this.createContainer(
         (cp) -> cp.setChangeFeedPolicy(ChangeFeedPolicy.createAllVersionsAndDeletesPolicy(Duration.ofMinutes(10)))
         );
-        // take the the current date time as the start time
+        // take the current date time as the start time
         Instant startTime = Instant.now();
+        Thread.sleep(1000);
         insertDocuments(5, 5);
         updateDocuments(3, 5);
         deleteDocuments(2, 3);
@@ -645,7 +646,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
         };
 
         final int expectedInitialEventCount =
-            8 * 15       // events for inserts
+            5 * 5       // events for inserts
                 + 3 * 5       // event count for updates
                 + 2 * 3;      // plus deletes (which are all included in FF CF)
 
@@ -676,7 +677,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
             null,
             expectedEventCountAfterFirstSetOfUpdates);
 
-        // applying first set of  updates
+        // applying second set of updates
         updateAction2.run();
 
         options = CosmosChangeFeedRequestOptions
