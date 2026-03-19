@@ -26,10 +26,12 @@ public final class AfdCustomDomainsUpdateSamples {
     /**
      * Sample code: AFDCustomDomains_Update.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void aFDCustomDomainsUpdate(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient()
+    public static void aFDCustomDomainsUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
             .getAfdCustomDomains()
             .update("RG", "profile1", "domain1",
                 new AfdDomainUpdateParameters()

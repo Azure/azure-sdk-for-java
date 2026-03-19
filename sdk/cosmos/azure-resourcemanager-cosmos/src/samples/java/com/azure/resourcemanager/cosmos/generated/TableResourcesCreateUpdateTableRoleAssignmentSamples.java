@@ -16,10 +16,12 @@ public final class TableResourcesCreateUpdateTableRoleAssignmentSamples {
     /**
      * Sample code: CosmosDBTableRoleAssignmentCreateUpdate.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBTableRoleAssignmentCreateUpdate(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBTableRoleAssignmentCreateUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getTableResources()
             .createUpdateTableRoleAssignment("myResourceGroupName", "myAccountName", "myRoleAssignmentId",
                 new TableRoleAssignmentResourceInner().withRoleDefinitionId(

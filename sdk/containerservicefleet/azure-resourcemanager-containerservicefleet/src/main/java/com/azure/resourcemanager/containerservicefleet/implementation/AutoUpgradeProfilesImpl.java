@@ -31,8 +31,12 @@ public final class AutoUpgradeProfilesImpl implements AutoUpgradeProfiles {
         String autoUpgradeProfileName, Context context) {
         Response<AutoUpgradeProfileInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, fleetName, autoUpgradeProfileName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new AutoUpgradeProfileImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new AutoUpgradeProfileImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public AutoUpgradeProfile get(String resourceGroupName, String fleetName, String autoUpgradeProfileName) {

@@ -31,8 +31,12 @@ public final class PrivateEndpointsImpl implements PrivateEndpoints {
         Response<OperationStatusInner> inner = this.serviceClient()
             .getOperationStatusWithResponse(vaultName, resourceGroupName, privateEndpointConnectionName, operationId,
                 context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new OperationStatusImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new OperationStatusImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public OperationStatus getOperationStatus(String vaultName, String resourceGroupName,

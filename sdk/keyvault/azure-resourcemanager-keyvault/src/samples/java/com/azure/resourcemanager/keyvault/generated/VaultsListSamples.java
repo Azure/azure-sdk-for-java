@@ -14,10 +14,9 @@ public final class VaultsListSamples {
     /**
      * Sample code: List vaults in the specified subscription.
      * 
-     * @param manager Entry point to KeyVaultManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void
-        listVaultsInTheSpecifiedSubscription(com.azure.resourcemanager.keyvault.KeyVaultManager manager) {
-        manager.serviceClient().getVaults().list(1, com.azure.core.util.Context.NONE);
+    public static void listVaultsInTheSpecifiedSubscription(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.vaults().manager().serviceClient().getVaults().list(1, com.azure.core.util.Context.NONE);
     }
 }

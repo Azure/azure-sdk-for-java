@@ -16,10 +16,12 @@ public final class ManagedHsmsCheckMhsmNameAvailabilitySamples {
     /**
      * Sample code: Validate a managed hsm name.
      * 
-     * @param manager Entry point to KeyVaultManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void validateAManagedHsmName(com.azure.resourcemanager.keyvault.KeyVaultManager manager) {
-        manager.serviceClient()
+    public static void validateAManagedHsmName(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.vaults()
+            .manager()
+            .serviceClient()
             .getManagedHsms()
             .checkMhsmNameAvailabilityWithResponse(new CheckMhsmNameAvailabilityParameters().withName("sample-mhsm"),
                 com.azure.core.util.Context.NONE);

@@ -31,8 +31,12 @@ public final class ElasticSansImpl implements ElasticSans {
         Context context) {
         Response<ElasticSanInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, elasticSanName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new ElasticSanImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ElasticSanImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ElasticSan getByResourceGroup(String resourceGroupName, String elasticSanName) {

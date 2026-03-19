@@ -17,10 +17,12 @@ public final class FleetAnalyticsCreateSamples {
     /**
      * Sample code: CosmosDB FleetAnalytics Create.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBFleetAnalyticsCreate(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBFleetAnalyticsCreate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getFleetAnalytics()
             .createWithResponse("rg1", "fleet1", "storageAccount", new FleetAnalyticsResourceInner()
                 .withStorageLocationType(FleetAnalyticsPropertiesStorageLocationType.STORAGE_ACCOUNT)

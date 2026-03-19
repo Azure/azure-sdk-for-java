@@ -33,8 +33,12 @@ public final class CachesImpl implements Caches {
         String cacheName, Context context) {
         Response<CacheInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, accountName, poolName, cacheName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new CacheImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new CacheImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public Cache get(String resourceGroupName, String accountName, String poolName, String cacheName) {
@@ -72,8 +76,12 @@ public final class CachesImpl implements Caches {
         String poolName, String cacheName, Context context) {
         Response<PeeringPassphrasesInner> inner = this.serviceClient()
             .listPeeringPassphrasesWithResponse(resourceGroupName, accountName, poolName, cacheName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new PeeringPassphrasesImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new PeeringPassphrasesImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public PeeringPassphrases listPeeringPassphrases(String resourceGroupName, String accountName, String poolName,

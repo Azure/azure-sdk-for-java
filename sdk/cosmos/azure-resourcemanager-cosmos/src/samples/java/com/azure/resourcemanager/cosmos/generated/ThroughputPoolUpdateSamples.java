@@ -16,10 +16,12 @@ public final class ThroughputPoolUpdateSamples {
     /**
      * Sample code: CosmosDB ThroughputPool Update.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBThroughputPoolUpdate(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBThroughputPoolUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getThroughputPools()
             .update("rg1", "tp1", new ThroughputPoolUpdate().withMaxThroughput(10000),
                 com.azure.core.util.Context.NONE);

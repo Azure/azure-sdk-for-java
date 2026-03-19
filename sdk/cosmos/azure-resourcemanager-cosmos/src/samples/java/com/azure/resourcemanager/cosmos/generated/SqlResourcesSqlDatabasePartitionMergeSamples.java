@@ -16,10 +16,12 @@ public final class SqlResourcesSqlDatabasePartitionMergeSamples {
     /**
      * Sample code: CosmosDBSqlDatabasePartitionMerge.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBSqlDatabasePartitionMerge(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBSqlDatabasePartitionMerge(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getSqlResources()
             .sqlDatabasePartitionMerge("rgName", "ddb1", "databaseName", new MergeParameters().withIsDryRun(false),
                 com.azure.core.util.Context.NONE);

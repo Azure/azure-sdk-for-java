@@ -18,10 +18,12 @@ public final class AfdOriginsUpdateSamples {
     /**
      * Sample code: AFDOrigins_Update.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void aFDOriginsUpdate(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient()
+    public static void aFDOriginsUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
             .getAfdOrigins()
             .update("RG", "profile1", "origingroup1", "origin1",
                 new AfdOriginUpdateParameters().withHostname("host1.blob.core.windows.net")

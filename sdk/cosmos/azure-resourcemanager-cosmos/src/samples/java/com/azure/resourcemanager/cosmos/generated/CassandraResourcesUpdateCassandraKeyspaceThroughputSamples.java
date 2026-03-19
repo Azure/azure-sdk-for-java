@@ -19,11 +19,12 @@ public final class CassandraResourcesUpdateCassandraKeyspaceThroughputSamples {
     /**
      * Sample code: CosmosDBCassandraKeyspaceThroughputUpdate.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void
-        cosmosDBCassandraKeyspaceThroughputUpdate(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBCassandraKeyspaceThroughputUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getCassandraResources()
             .updateCassandraKeyspaceThroughput("rg1", "ddb1", "keyspaceName",
                 new ThroughputSettingsUpdateParameters().withLocation("West US")

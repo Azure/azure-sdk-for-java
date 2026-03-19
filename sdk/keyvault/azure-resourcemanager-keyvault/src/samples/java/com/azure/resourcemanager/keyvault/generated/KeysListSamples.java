@@ -14,9 +14,13 @@ public final class KeysListSamples {
     /**
      * Sample code: List keys in the vault.
      * 
-     * @param manager Entry point to KeyVaultManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void listKeysInTheVault(com.azure.resourcemanager.keyvault.KeyVaultManager manager) {
-        manager.serviceClient().getKeys().list("sample-group", "sample-vault-name", com.azure.core.util.Context.NONE);
+    public static void listKeysInTheVault(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.vaults()
+            .manager()
+            .serviceClient()
+            .getKeys()
+            .list("sample-group", "sample-vault-name", com.azure.core.util.Context.NONE);
     }
 }

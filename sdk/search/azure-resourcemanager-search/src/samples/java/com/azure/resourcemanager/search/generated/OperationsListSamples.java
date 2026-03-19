@@ -14,9 +14,9 @@ public final class OperationsListSamples {
     /**
      * Sample code: SearchListOperations.
      * 
-     * @param manager Entry point to SearchServiceManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void searchListOperations(com.azure.resourcemanager.search.SearchServiceManager manager) {
-        manager.serviceClient().getOperations().list(com.azure.core.util.Context.NONE);
+    public static void searchListOperations(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.searchServices().manager().serviceClient().getOperations().list(com.azure.core.util.Context.NONE);
     }
 }

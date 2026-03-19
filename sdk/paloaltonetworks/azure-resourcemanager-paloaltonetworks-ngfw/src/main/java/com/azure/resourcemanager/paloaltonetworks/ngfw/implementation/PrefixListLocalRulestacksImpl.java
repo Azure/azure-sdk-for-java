@@ -31,8 +31,12 @@ public final class PrefixListLocalRulestacksImpl implements PrefixListLocalRules
         String name, Context context) {
         Response<PrefixListResourceInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, localRulestackName, name, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new PrefixListResourceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new PrefixListResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public PrefixListResource get(String resourceGroupName, String localRulestackName, String name) {

@@ -31,8 +31,12 @@ public final class DataProtectionsImpl implements DataProtections {
         FeatureValidationRequestBase parameters, Context context) {
         Response<FeatureValidationResponseBaseInner> inner
             = this.serviceClient().checkFeatureSupportWithResponse(location, parameters, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new FeatureValidationResponseBaseImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new FeatureValidationResponseBaseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public FeatureValidationResponseBase checkFeatureSupport(String location, FeatureValidationRequestBase parameters) {

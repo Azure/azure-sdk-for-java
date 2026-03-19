@@ -56,8 +56,12 @@ public final class GroupQuotaSubscriptionAllocationRequestsImpl implements Group
         String resourceProviderName, String allocationId, Context context) {
         Response<QuotaAllocationRequestStatusInner> inner = this.serviceClient()
             .getWithResponse(managementGroupId, groupQuotaName, resourceProviderName, allocationId, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new QuotaAllocationRequestStatusImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new QuotaAllocationRequestStatusImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public QuotaAllocationRequestStatus get(String managementGroupId, String groupQuotaName,

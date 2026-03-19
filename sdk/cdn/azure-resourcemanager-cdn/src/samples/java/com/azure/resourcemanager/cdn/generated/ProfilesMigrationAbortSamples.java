@@ -14,9 +14,13 @@ public final class ProfilesMigrationAbortSamples {
     /**
      * Sample code: Profiles_CdnMigrationCommit.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void profilesCdnMigrationCommit(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient().getProfiles().migrationAbort("RG", "profile1", com.azure.core.util.Context.NONE);
+    public static void profilesCdnMigrationCommit(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
+            .getProfiles()
+            .migrationAbort("RG", "profile1", com.azure.core.util.Context.NONE);
     }
 }

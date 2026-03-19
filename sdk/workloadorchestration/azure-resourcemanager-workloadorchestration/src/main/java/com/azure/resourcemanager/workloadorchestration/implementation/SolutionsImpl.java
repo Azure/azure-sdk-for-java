@@ -31,8 +31,12 @@ public final class SolutionsImpl implements Solutions {
         Context context) {
         Response<SolutionInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, targetName, solutionName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new SolutionImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new SolutionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public Solution get(String resourceGroupName, String targetName, String solutionName) {

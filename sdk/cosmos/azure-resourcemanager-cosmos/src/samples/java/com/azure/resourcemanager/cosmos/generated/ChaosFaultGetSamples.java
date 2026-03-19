@@ -14,10 +14,12 @@ public final class ChaosFaultGetSamples {
     /**
      * Sample code: ChaosFaultGet.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void chaosFaultGet(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void chaosFaultGet(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getChaosFaults()
             .getWithResponse("rg1", "ddb1", "ServiceUnavailability", com.azure.core.util.Context.NONE);
     }

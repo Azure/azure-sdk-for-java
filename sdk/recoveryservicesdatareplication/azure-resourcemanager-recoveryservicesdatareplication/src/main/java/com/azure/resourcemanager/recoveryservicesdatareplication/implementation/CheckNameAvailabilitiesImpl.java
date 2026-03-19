@@ -31,8 +31,12 @@ public final class CheckNameAvailabilitiesImpl implements CheckNameAvailabilitie
         CheckNameAvailabilityModel body, Context context) {
         Response<CheckNameAvailabilityResponseModelInner> inner
             = this.serviceClient().postWithResponse(location, body, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new CheckNameAvailabilityResponseModelImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new CheckNameAvailabilityResponseModelImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public CheckNameAvailabilityResponseModel post(String location) {

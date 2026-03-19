@@ -18,11 +18,13 @@ public final class SqlResourcesCreateUpdateSqlUserDefinedFunctionSamples {
     /**
      * Sample code: CosmosDBSqlUserDefinedFunctionCreateUpdate.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
-        cosmosDBSqlUserDefinedFunctionCreateUpdate(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+        cosmosDBSqlUserDefinedFunctionCreateUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getSqlResources()
             .createUpdateSqlUserDefinedFunction("rg1", "ddb1", "databaseName", "containerName",
                 "userDefinedFunctionName",

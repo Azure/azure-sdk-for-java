@@ -34,8 +34,12 @@ public final class AccountsImpl implements Accounts {
         Context context) {
         Response<AccountInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, accountName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new AccountImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new AccountImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public Account getByResourceGroup(String resourceGroupName, String accountName) {
@@ -79,8 +83,12 @@ public final class AccountsImpl implements Accounts {
         Context context) {
         Response<CheckNameAvailabilityResponseInner> inner
             = this.serviceClient().checkNameAvailabilityWithResponse(body, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new CheckNameAvailabilityResponseImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new CheckNameAvailabilityResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public CheckNameAvailabilityResponse checkNameAvailability(CheckNameAvailabilityRequest body) {

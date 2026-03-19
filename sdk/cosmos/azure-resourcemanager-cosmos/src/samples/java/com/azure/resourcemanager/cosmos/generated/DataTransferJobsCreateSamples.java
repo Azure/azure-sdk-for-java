@@ -19,10 +19,12 @@ public final class DataTransferJobsCreateSamples {
     /**
      * Sample code: CosmosDBDataTransferJobCreate.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBDataTransferJobCreate(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBDataTransferJobCreate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getDataTransferJobs()
             .createWithResponse("rg1", "ddb1", "j1",
                 new CreateJobRequest().withProperties(new DataTransferJobProperties()

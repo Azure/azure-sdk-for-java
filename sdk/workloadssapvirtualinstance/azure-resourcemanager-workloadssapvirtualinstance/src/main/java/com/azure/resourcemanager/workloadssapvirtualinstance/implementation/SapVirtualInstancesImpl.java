@@ -47,8 +47,12 @@ public final class SapVirtualInstancesImpl implements SapVirtualInstances {
         String sapVirtualInstanceName, Context context) {
         Response<SapVirtualInstanceInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, sapVirtualInstanceName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new SapVirtualInstanceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new SapVirtualInstanceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public SapVirtualInstance getByResourceGroup(String resourceGroupName, String sapVirtualInstanceName) {
@@ -134,8 +138,12 @@ public final class SapVirtualInstancesImpl implements SapVirtualInstances {
         SapSizingRecommendationRequest body, Context context) {
         Response<SapSizingRecommendationResultInner> inner
             = this.serviceClient().getSizingRecommendationsWithResponse(location, body, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new SapSizingRecommendationResultImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new SapSizingRecommendationResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public SapSizingRecommendationResult getSizingRecommendations(String location,
@@ -152,8 +160,12 @@ public final class SapVirtualInstancesImpl implements SapVirtualInstances {
         SapSupportedSkusRequest body, Context context) {
         Response<SapSupportedResourceSkusResultInner> inner
             = this.serviceClient().getSapSupportedSkuWithResponse(location, body, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new SapSupportedResourceSkusResultImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new SapSupportedResourceSkusResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public SapSupportedResourceSkusResult getSapSupportedSku(String location, SapSupportedSkusRequest body) {
@@ -169,8 +181,12 @@ public final class SapVirtualInstancesImpl implements SapVirtualInstances {
         SapDiskConfigurationsRequest body, Context context) {
         Response<SapDiskConfigurationsResultInner> inner
             = this.serviceClient().getDiskConfigurationsWithResponse(location, body, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new SapDiskConfigurationsResultImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new SapDiskConfigurationsResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public SapDiskConfigurationsResult getDiskConfigurations(String location, SapDiskConfigurationsRequest body) {
@@ -186,8 +202,12 @@ public final class SapVirtualInstancesImpl implements SapVirtualInstances {
         SapAvailabilityZoneDetailsRequest body, Context context) {
         Response<SapAvailabilityZoneDetailsResultInner> inner
             = this.serviceClient().getAvailabilityZoneDetailsWithResponse(location, body, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new SapAvailabilityZoneDetailsResultImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new SapAvailabilityZoneDetailsResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public SapAvailabilityZoneDetailsResult getAvailabilityZoneDetails(String location,

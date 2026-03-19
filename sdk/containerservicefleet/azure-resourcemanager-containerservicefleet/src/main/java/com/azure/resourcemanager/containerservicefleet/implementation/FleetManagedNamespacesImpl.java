@@ -31,8 +31,12 @@ public final class FleetManagedNamespacesImpl implements FleetManagedNamespaces 
         String managedNamespaceName, Context context) {
         Response<FleetManagedNamespaceInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, fleetName, managedNamespaceName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new FleetManagedNamespaceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new FleetManagedNamespaceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public FleetManagedNamespace get(String resourceGroupName, String fleetName, String managedNamespaceName) {

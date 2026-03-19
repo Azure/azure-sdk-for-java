@@ -31,8 +31,12 @@ public final class DataflowsImpl implements Dataflows {
         String dataflowProfileName, String dataflowName, Context context) {
         Response<DataflowResourceInner> inner = this.serviceClient()
             .getWithResponse(resourceGroupName, instanceName, dataflowProfileName, dataflowName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new DataflowResourceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new DataflowResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public DataflowResource get(String resourceGroupName, String instanceName, String dataflowProfileName,

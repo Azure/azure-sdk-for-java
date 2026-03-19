@@ -16,10 +16,12 @@ public final class ThroughputPoolAccountCreateSamples {
     /**
      * Sample code: CosmosDB ThroughputPool Account Create.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBThroughputPoolAccountCreate(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBThroughputPoolAccountCreate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getThroughputPoolAccounts()
             .create("rg1", "tp1", "db1", new ThroughputPoolAccountResourceInner().withAccountResourceIdentifier(
                 "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/providers/Microsoft.DocumentDB/resourceGroup/rg1/databaseAccounts/db1/")

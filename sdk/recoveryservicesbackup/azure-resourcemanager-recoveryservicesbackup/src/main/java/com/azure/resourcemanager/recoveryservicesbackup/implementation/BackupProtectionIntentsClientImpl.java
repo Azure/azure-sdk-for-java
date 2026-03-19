@@ -81,22 +81,6 @@ public final class BackupProtectionIntentsClientImpl implements BackupProtection
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("subscriptionId") String subscriptionId, @QueryParam("$filter") String filter,
             @QueryParam("$skipToken") String skipToken, @HeaderParam("Accept") String accept, Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ProtectionIntentResourceList>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Accept") String accept, Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<ProtectionIntentResourceList> listNextSync(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -120,7 +104,7 @@ public final class BackupProtectionIntentsClientImpl implements BackupProtection
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(), vaultName,
                 resourceGroupName, this.client.getSubscriptionId(), filter, skipToken, accept, context))
             .<PagedResponse<ProtectionIntentResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
-                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -139,8 +123,7 @@ public final class BackupProtectionIntentsClientImpl implements BackupProtection
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ProtectionIntentResourceInner> listAsync(String vaultName, String resourceGroupName,
         String filter, String skipToken) {
-        return new PagedFlux<>(() -> listSinglePageAsync(vaultName, resourceGroupName, filter, skipToken),
-            nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(vaultName, resourceGroupName, filter, skipToken));
     }
 
     /**
@@ -157,8 +140,7 @@ public final class BackupProtectionIntentsClientImpl implements BackupProtection
     private PagedFlux<ProtectionIntentResourceInner> listAsync(String vaultName, String resourceGroupName) {
         final String filter = null;
         final String skipToken = null;
-        return new PagedFlux<>(() -> listSinglePageAsync(vaultName, resourceGroupName, filter, skipToken),
-            nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(vaultName, resourceGroupName, filter, skipToken));
     }
 
     /**
@@ -181,7 +163,7 @@ public final class BackupProtectionIntentsClientImpl implements BackupProtection
             = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), vaultName, resourceGroupName,
                 this.client.getSubscriptionId(), filter, skipToken, accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+            null, null);
     }
 
     /**
@@ -205,7 +187,7 @@ public final class BackupProtectionIntentsClientImpl implements BackupProtection
             = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), vaultName, resourceGroupName,
                 this.client.getSubscriptionId(), filter, skipToken, accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+            null, null);
     }
 
     /**
@@ -222,8 +204,7 @@ public final class BackupProtectionIntentsClientImpl implements BackupProtection
     public PagedIterable<ProtectionIntentResourceInner> list(String vaultName, String resourceGroupName) {
         final String filter = null;
         final String skipToken = null;
-        return new PagedIterable<>(() -> listSinglePage(vaultName, resourceGroupName, filter, skipToken),
-            nextLink -> listNextSinglePage(nextLink));
+        return new PagedIterable<>(() -> listSinglePage(vaultName, resourceGroupName, filter, skipToken));
     }
 
     /**
@@ -242,63 +223,6 @@ public final class BackupProtectionIntentsClientImpl implements BackupProtection
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProtectionIntentResourceInner> list(String vaultName, String resourceGroupName, String filter,
         String skipToken, Context context) {
-        return new PagedIterable<>(() -> listSinglePage(vaultName, resourceGroupName, filter, skipToken, context),
-            nextLink -> listNextSinglePage(nextLink, context));
-    }
-
-    /**
-     * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ProtectionIntent resources along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ProtectionIntentResourceInner>> listNextSinglePageAsync(String nextLink) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ProtectionIntentResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
-                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ProtectionIntent resources along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<ProtectionIntentResourceInner> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<ProtectionIntentResourceList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
-    }
-
-    /**
-     * Get the next page of items.
-     * 
-     * @param nextLink The URL to get the next list of items.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ProtectionIntent resources along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<ProtectionIntentResourceInner> listNextSinglePage(String nextLink, Context context) {
-        final String accept = "application/json";
-        Response<ProtectionIntentResourceList> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
-            res.getValue().nextLink(), null);
+        return new PagedIterable<>(() -> listSinglePage(vaultName, resourceGroupName, filter, skipToken, context));
     }
 }

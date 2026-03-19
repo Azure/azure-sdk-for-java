@@ -31,8 +31,12 @@ public final class MaintenanceConfigurationsImpl implements MaintenanceConfigura
         String resourceName, Context context) {
         Response<MaintenanceConfigurationInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, resourceName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new MaintenanceConfigurationImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new MaintenanceConfigurationImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public MaintenanceConfiguration getByResourceGroup(String resourceGroupName, String resourceName) {
@@ -48,8 +52,12 @@ public final class MaintenanceConfigurationsImpl implements MaintenanceConfigura
         String resourceName, Context context) {
         Response<MaintenanceConfigurationInner> inner
             = this.serviceClient().deleteWithResponse(resourceGroupName, resourceName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new MaintenanceConfigurationImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new MaintenanceConfigurationImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public MaintenanceConfiguration deleteByResourceGroup(String resourceGroupName, String resourceName) {

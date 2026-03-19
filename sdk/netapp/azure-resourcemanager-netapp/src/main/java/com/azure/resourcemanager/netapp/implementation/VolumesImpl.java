@@ -53,8 +53,12 @@ public final class VolumesImpl implements Volumes {
         String volumeName, Context context) {
         Response<VolumeInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, accountName, poolName, volumeName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new VolumeImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new VolumeImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public Volume get(String resourceGroupName, String accountName, String poolName, String volumeName) {
@@ -203,8 +207,12 @@ public final class VolumesImpl implements Volumes {
         String poolName, String volumeName, Context context) {
         Response<ReplicationStatusInner> inner = this.serviceClient()
             .replicationStatusWithResponse(resourceGroupName, accountName, poolName, volumeName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new ReplicationStatusImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ReplicationStatusImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ReplicationStatus replicationStatus(String resourceGroupName, String accountName, String poolName,

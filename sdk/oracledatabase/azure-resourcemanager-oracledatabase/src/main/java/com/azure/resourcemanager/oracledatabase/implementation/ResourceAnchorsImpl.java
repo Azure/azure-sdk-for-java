@@ -41,8 +41,12 @@ public final class ResourceAnchorsImpl implements ResourceAnchors {
         Context context) {
         Response<ResourceAnchorInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, resourceAnchorName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new ResourceAnchorImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ResourceAnchorImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ResourceAnchor getByResourceGroup(String resourceGroupName, String resourceAnchorName) {

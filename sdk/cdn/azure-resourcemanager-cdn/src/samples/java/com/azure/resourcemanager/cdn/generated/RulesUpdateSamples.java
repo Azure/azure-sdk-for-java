@@ -20,10 +20,12 @@ public final class RulesUpdateSamples {
     /**
      * Sample code: Rules_Update.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void rulesUpdate(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient()
+    public static void rulesUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
             .getRules()
             .update("RG", "profile1", "ruleSet1", "rule1",
                 new RuleUpdateParameters().withOrder(1)

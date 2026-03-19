@@ -14,10 +14,12 @@ public final class SecurityPoliciesGetSamples {
     /**
      * Sample code: SecurityPolicies_Get.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void securityPoliciesGet(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient()
+    public static void securityPoliciesGet(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
             .getSecurityPolicies()
             .getWithResponse("RG", "profile1", "securityPolicy1", com.azure.core.util.Context.NONE);
     }

@@ -14,10 +14,12 @@ public final class SqlResourcesGetSqlUserDefinedFunctionSamples {
     /**
      * Sample code: CosmosDBSqlUserDefinedFunctionGet.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBSqlUserDefinedFunctionGet(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBSqlUserDefinedFunctionGet(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getSqlResources()
             .getSqlUserDefinedFunctionWithResponse("rgName", "ddb1", "databaseName", "containerName",
                 "userDefinedFunctionName", com.azure.core.util.Context.NONE);

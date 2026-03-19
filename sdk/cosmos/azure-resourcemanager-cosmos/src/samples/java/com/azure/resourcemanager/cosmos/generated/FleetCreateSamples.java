@@ -18,10 +18,12 @@ public final class FleetCreateSamples {
     /**
      * Sample code: CosmosDB Fleet Create.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBFleetCreate(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBFleetCreate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getFleets()
             .createWithResponse("rg1", "fleet1", new FleetResourceInner().withLocation("West US")
                 .withTags(mapOf("Dept", "Finance", "Environment", "Production")), com.azure.core.util.Context.NONE);

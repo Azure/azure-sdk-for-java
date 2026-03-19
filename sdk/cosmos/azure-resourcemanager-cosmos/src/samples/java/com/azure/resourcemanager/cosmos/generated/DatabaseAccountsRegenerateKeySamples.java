@@ -17,10 +17,12 @@ public final class DatabaseAccountsRegenerateKeySamples {
     /**
      * Sample code: CosmosDBDatabaseAccountRegenerateKey.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBDatabaseAccountRegenerateKey(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBDatabaseAccountRegenerateKey(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getDatabaseAccounts()
             .regenerateKey("rg1", "ddb1", new DatabaseAccountRegenerateKeyParameters().withKeyKind(KeyKind.PRIMARY),
                 com.azure.core.util.Context.NONE);

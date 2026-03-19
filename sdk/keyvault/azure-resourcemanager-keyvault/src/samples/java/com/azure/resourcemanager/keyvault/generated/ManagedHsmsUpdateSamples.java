@@ -18,10 +18,12 @@ public final class ManagedHsmsUpdateSamples {
     /**
      * Sample code: Update an existing managed HSM Pool.
      * 
-     * @param manager Entry point to KeyVaultManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void updateAnExistingManagedHSMPool(com.azure.resourcemanager.keyvault.KeyVaultManager manager) {
-        manager.serviceClient()
+    public static void updateAnExistingManagedHSMPool(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.vaults()
+            .manager()
+            .serviceClient()
             .getManagedHsms()
             .update("hsm-group", "hsm1",
                 new ManagedHsmInner().withTags(mapOf("Dept", "hsm", "Environment", "dogfood", "Slice", "A")),

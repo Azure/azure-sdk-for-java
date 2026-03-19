@@ -14,10 +14,12 @@ public final class CredentialSetsGetSamples {
     /**
      * Sample code: CredentialSetGet.
      * 
-     * @param manager Entry point to ContainerRegistryManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void credentialSetGet(com.azure.resourcemanager.containerregistry.ContainerRegistryManager manager) {
-        manager.serviceClient()
+    public static void credentialSetGet(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.containerRegistries()
+            .manager()
+            .serviceClient()
             .getCredentialSets()
             .getWithResponse("myResourceGroup", "myRegistry", "myCredentialSet", com.azure.core.util.Context.NONE);
     }

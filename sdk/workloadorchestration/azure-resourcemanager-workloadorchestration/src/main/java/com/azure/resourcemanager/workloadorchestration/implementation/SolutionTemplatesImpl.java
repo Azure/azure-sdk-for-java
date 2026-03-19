@@ -35,8 +35,12 @@ public final class SolutionTemplatesImpl implements SolutionTemplates {
         String solutionTemplateName, Context context) {
         Response<SolutionTemplateInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, solutionTemplateName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new SolutionTemplateImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new SolutionTemplateImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public SolutionTemplate getByResourceGroup(String resourceGroupName, String solutionTemplateName) {

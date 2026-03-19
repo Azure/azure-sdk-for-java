@@ -31,8 +31,12 @@ public final class StorageDiscoveryWorkspacesImpl implements StorageDiscoveryWor
         String storageDiscoveryWorkspaceName, Context context) {
         Response<StorageDiscoveryWorkspaceInner> inner = this.serviceClient()
             .getByResourceGroupWithResponse(resourceGroupName, storageDiscoveryWorkspaceName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new StorageDiscoveryWorkspaceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new StorageDiscoveryWorkspaceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public StorageDiscoveryWorkspace getByResourceGroup(String resourceGroupName,

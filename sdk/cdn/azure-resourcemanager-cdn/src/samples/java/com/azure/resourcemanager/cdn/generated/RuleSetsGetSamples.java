@@ -14,10 +14,12 @@ public final class RuleSetsGetSamples {
     /**
      * Sample code: RuleSets_Get.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void ruleSetsGet(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient()
+    public static void ruleSetsGet(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
             .getRuleSets()
             .getWithResponse("RG", "profile1", "ruleSet1", com.azure.core.util.Context.NONE);
     }

@@ -14,10 +14,12 @@ public final class DataTransferJobsCompleteSamples {
     /**
      * Sample code: CosmosDBDataTransferJobComplete.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBDataTransferJobComplete(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBDataTransferJobComplete(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getDataTransferJobs()
             .completeWithResponse("rg1", "ddb1", "j1", com.azure.core.util.Context.NONE);
     }

@@ -19,11 +19,13 @@ public final class CassandraResourcesCreateUpdateCassandraRoleDefinitionSamples 
     /**
      * Sample code: CosmosDBCassandraRoleDefinitionCreateUpdate.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
-        cosmosDBCassandraRoleDefinitionCreateUpdate(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+        cosmosDBCassandraRoleDefinitionCreateUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getCassandraResources()
             .createUpdateCassandraRoleDefinition("myResourceGroupName", "myAccountName", "myRoleDefinitionId",
                 new CassandraRoleDefinitionResourceInner().withRoleName("myRoleName")

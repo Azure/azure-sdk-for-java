@@ -30,8 +30,12 @@ public final class DefaultWafPoliciesImpl implements DefaultWafPolicies {
         String deploymentName, Context context) {
         Response<NginxDeploymentDefaultWafPolicyListResponseInner> inner
             = this.serviceClient().listWithResponse(resourceGroupName, deploymentName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new NginxDeploymentDefaultWafPolicyListResponseImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new NginxDeploymentDefaultWafPolicyListResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public NginxDeploymentDefaultWafPolicyListResponse list(String resourceGroupName, String deploymentName) {

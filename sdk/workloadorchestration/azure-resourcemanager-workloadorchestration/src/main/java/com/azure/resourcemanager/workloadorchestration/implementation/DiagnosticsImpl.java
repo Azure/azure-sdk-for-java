@@ -31,8 +31,12 @@ public final class DiagnosticsImpl implements Diagnostics {
         Context context) {
         Response<DiagnosticInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, diagnosticName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new DiagnosticImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new DiagnosticImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public Diagnostic getByResourceGroup(String resourceGroupName, String diagnosticName) {

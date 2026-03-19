@@ -34,8 +34,12 @@ public final class ResourceGuardsImpl implements ResourceGuards {
         Response<DppBaseResourceInner> inner = this.serviceClient()
             .getDefaultDeleteResourceGuardProxyRequestsObjectWithResponse(resourceGroupName, resourceGuardsName,
                 requestName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new DppBaseResourceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new DppBaseResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public DppBaseResource getDefaultDeleteResourceGuardProxyRequestsObject(String resourceGroupName,
@@ -67,8 +71,12 @@ public final class ResourceGuardsImpl implements ResourceGuards {
         String resourceGuardsName, Context context) {
         Response<ResourceGuardResourceInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, resourceGuardsName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new ResourceGuardResourceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ResourceGuardResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ResourceGuardResource getByResourceGroup(String resourceGroupName, String resourceGuardsName) {
@@ -116,8 +124,12 @@ public final class ResourceGuardsImpl implements ResourceGuards {
         Response<DppBaseResourceInner> inner = this.serviceClient()
             .getDefaultDisableSoftDeleteRequestsObjectWithResponse(resourceGroupName, resourceGuardsName, requestName,
                 context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new DppBaseResourceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new DppBaseResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public DppBaseResource getDefaultDisableSoftDeleteRequestsObject(String resourceGroupName,
@@ -150,8 +162,12 @@ public final class ResourceGuardsImpl implements ResourceGuards {
         Response<DppBaseResourceInner> inner = this.serviceClient()
             .getDefaultUpdateProtectedItemRequestsObjectWithResponse(resourceGroupName, resourceGuardsName, requestName,
                 context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new DppBaseResourceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new DppBaseResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public DppBaseResource getDefaultUpdateProtectedItemRequestsObject(String resourceGroupName,
@@ -184,8 +200,12 @@ public final class ResourceGuardsImpl implements ResourceGuards {
         Response<DppBaseResourceInner> inner = this.serviceClient()
             .getDefaultUpdateProtectionPolicyRequestsObjectWithResponse(resourceGroupName, resourceGuardsName,
                 requestName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new DppBaseResourceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new DppBaseResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public DppBaseResource getDefaultUpdateProtectionPolicyRequestsObject(String resourceGroupName,
@@ -218,8 +238,12 @@ public final class ResourceGuardsImpl implements ResourceGuards {
         Response<DppBaseResourceInner> inner = this.serviceClient()
             .getDefaultDeleteProtectedItemRequestsObjectWithResponse(resourceGroupName, resourceGuardsName, requestName,
                 context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new DppBaseResourceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new DppBaseResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public DppBaseResource getDefaultDeleteProtectedItemRequestsObject(String resourceGroupName,
@@ -252,8 +276,12 @@ public final class ResourceGuardsImpl implements ResourceGuards {
         Response<DppBaseResourceInner> inner = this.serviceClient()
             .getDefaultBackupSecurityPinRequestsObjectWithResponse(resourceGroupName, resourceGuardsName, requestName,
                 context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new DppBaseResourceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new DppBaseResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public DppBaseResource getDefaultBackupSecurityPinRequestsObject(String resourceGroupName,

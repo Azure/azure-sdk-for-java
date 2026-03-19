@@ -21,10 +21,12 @@ public final class OriginGroupsUpdateSamples {
     /**
      * Sample code: OriginGroups_Update.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void originGroupsUpdate(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient()
+    public static void originGroupsUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
             .getOriginGroups()
             .update("RG", "profile1", "endpoint1", "originGroup1", new OriginGroupUpdateParameters()
                 .withHealthProbeSettings(new HealthProbeParameters().withProbePath("/health.aspx")

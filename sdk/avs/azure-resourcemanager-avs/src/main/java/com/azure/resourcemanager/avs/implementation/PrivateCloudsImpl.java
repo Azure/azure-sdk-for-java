@@ -54,8 +54,12 @@ public final class PrivateCloudsImpl implements PrivateClouds {
         Context context) {
         Response<PrivateCloudInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, privateCloudName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new PrivateCloudImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new PrivateCloudImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public PrivateCloud getByResourceGroup(String resourceGroupName, String privateCloudName) {
@@ -95,8 +99,12 @@ public final class PrivateCloudsImpl implements PrivateClouds {
         String privateCloudName, Context context) {
         Response<AdminCredentialsInner> inner
             = this.serviceClient().listAdminCredentialsWithResponse(resourceGroupName, privateCloudName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new AdminCredentialsImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new AdminCredentialsImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public AdminCredentials listAdminCredentials(String resourceGroupName, String privateCloudName) {
@@ -112,8 +120,12 @@ public final class PrivateCloudsImpl implements PrivateClouds {
         Context context) {
         Response<VcfLicenseInner> inner
             = this.serviceClient().getVcfLicenseWithResponse(resourceGroupName, privateCloudName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new VcfLicenseImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new VcfLicenseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public VcfLicense getVcfLicense(String resourceGroupName, String privateCloudName) {

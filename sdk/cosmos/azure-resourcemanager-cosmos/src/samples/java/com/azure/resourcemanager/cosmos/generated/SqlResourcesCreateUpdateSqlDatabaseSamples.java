@@ -23,10 +23,12 @@ public final class SqlResourcesCreateUpdateSqlDatabaseSamples {
     /**
      * Sample code: CosmosDBSqlDatabaseCreateUpdate.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBSqlDatabaseCreateUpdate(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBSqlDatabaseCreateUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getSqlResources()
             .createUpdateSqlDatabase("rg1", "ddb1", "databaseName",
                 new SqlDatabaseCreateUpdateParameters().withLocation("West US")
@@ -42,10 +44,12 @@ public final class SqlResourcesCreateUpdateSqlDatabaseSamples {
     /**
      * Sample code: CosmosDBSqlDatabaseRestore.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBSqlDatabaseRestore(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBSqlDatabaseRestore(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getSqlResources()
             .createUpdateSqlDatabase("rg1", "ddb1", "databaseName", new SqlDatabaseCreateUpdateParameters()
                 .withLocation("West US")

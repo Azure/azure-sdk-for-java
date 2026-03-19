@@ -14,10 +14,12 @@ public final class WebAgentsGetByResourceGroupSamples {
     /**
      * Sample code: Get Web Agent.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void getWebAgent(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient()
+    public static void getWebAgent(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
             .getWebAgents()
             .getByResourceGroupWithResponse("RG", "myWebAgent1", com.azure.core.util.Context.NONE);
     }

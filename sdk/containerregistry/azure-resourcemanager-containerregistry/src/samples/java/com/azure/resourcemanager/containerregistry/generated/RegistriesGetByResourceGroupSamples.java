@@ -14,10 +14,12 @@ public final class RegistriesGetByResourceGroupSamples {
     /**
      * Sample code: RegistryGet.
      * 
-     * @param manager Entry point to ContainerRegistryManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void registryGet(com.azure.resourcemanager.containerregistry.ContainerRegistryManager manager) {
-        manager.serviceClient()
+    public static void registryGet(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.containerRegistries()
+            .manager()
+            .serviceClient()
             .getRegistries()
             .getByResourceGroupWithResponse("myResourceGroup", "myRegistry", com.azure.core.util.Context.NONE);
     }

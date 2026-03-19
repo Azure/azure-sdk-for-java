@@ -14,10 +14,12 @@ public final class RuleSetsListResourceUsageSamples {
     /**
      * Sample code: RuleSets_ListResourceUsage.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void ruleSetsListResourceUsage(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient()
+    public static void ruleSetsListResourceUsage(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
             .getRuleSets()
             .listResourceUsage("RG", "profile1", "ruleSet1", com.azure.core.util.Context.NONE);
     }

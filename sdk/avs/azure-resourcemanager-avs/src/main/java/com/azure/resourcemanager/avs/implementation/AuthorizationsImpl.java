@@ -44,8 +44,12 @@ public final class AuthorizationsImpl implements Authorizations {
         String authorizationName, Context context) {
         Response<ExpressRouteAuthorizationInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, privateCloudName, authorizationName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new ExpressRouteAuthorizationImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ExpressRouteAuthorizationImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ExpressRouteAuthorization get(String resourceGroupName, String privateCloudName, String authorizationName) {

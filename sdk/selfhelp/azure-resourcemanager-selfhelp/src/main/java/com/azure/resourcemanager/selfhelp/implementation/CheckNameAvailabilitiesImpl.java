@@ -31,8 +31,12 @@ public final class CheckNameAvailabilitiesImpl implements CheckNameAvailabilitie
         CheckNameAvailabilityRequest checkNameAvailabilityRequest, Context context) {
         Response<CheckNameAvailabilityResponseInner> inner
             = this.serviceClient().checkAvailabilityWithResponse(scope, checkNameAvailabilityRequest, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new CheckNameAvailabilityResponseImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new CheckNameAvailabilityResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public CheckNameAvailabilityResponse checkAvailability(String scope) {

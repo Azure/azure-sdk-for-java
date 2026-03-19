@@ -14,11 +14,13 @@ public final class GremlinResourcesMigrateGremlinDatabaseToManualThroughputSampl
     /**
      * Sample code: CosmosDBGremlinDatabaseMigrateToManualThroughput.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
-        cosmosDBGremlinDatabaseMigrateToManualThroughput(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+        cosmosDBGremlinDatabaseMigrateToManualThroughput(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getGremlinResources()
             .migrateGremlinDatabaseToManualThroughput("rg1", "ddb1", "databaseName", com.azure.core.util.Context.NONE);
     }

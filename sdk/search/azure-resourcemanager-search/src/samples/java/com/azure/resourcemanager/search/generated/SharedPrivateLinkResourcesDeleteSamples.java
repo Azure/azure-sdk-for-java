@@ -14,10 +14,12 @@ public final class SharedPrivateLinkResourcesDeleteSamples {
     /**
      * Sample code: SharedPrivateLinkResourceDelete.
      * 
-     * @param manager Entry point to SearchServiceManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void sharedPrivateLinkResourceDelete(com.azure.resourcemanager.search.SearchServiceManager manager) {
-        manager.serviceClient()
+    public static void sharedPrivateLinkResourceDelete(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.searchServices()
+            .manager()
+            .serviceClient()
             .getSharedPrivateLinkResources()
             .delete("rg1", "mysearchservice", "testResource", com.azure.core.util.Context.NONE);
     }

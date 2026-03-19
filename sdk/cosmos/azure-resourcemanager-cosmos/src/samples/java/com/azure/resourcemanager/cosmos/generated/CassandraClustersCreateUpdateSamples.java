@@ -23,10 +23,12 @@ public final class CassandraClustersCreateUpdateSamples {
     /**
      * Sample code: CosmosDBManagedCassandraClusterCreate.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBManagedCassandraClusterCreate(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBManagedCassandraClusterCreate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getCassandraClusters()
             .createUpdate("cassandra-prod-rg", "cassandra-prod", new ClusterResourceInner()
                 .withProperties(new ClusterResourceProperties().withDelegatedManagementSubnetId(

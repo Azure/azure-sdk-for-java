@@ -37,8 +37,12 @@ public final class VolumesImpl implements Volumes {
         String volumeName, Context context) {
         Response<VolumeInner> inner = this.serviceClient()
             .getWithResponse(resourceGroupName, elasticSanName, volumeGroupName, volumeName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new VolumeImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new VolumeImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public Volume get(String resourceGroupName, String elasticSanName, String volumeGroupName, String volumeName) {

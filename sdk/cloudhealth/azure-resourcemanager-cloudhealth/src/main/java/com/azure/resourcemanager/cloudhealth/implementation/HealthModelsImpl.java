@@ -31,8 +31,12 @@ public final class HealthModelsImpl implements HealthModels {
         Context context) {
         Response<HealthModelInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, healthModelName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new HealthModelImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new HealthModelImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public HealthModel getByResourceGroup(String resourceGroupName, String healthModelName) {

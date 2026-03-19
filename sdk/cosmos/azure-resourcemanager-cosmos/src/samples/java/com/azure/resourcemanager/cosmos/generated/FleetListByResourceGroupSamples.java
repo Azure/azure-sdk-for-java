@@ -14,9 +14,13 @@ public final class FleetListByResourceGroupSamples {
     /**
      * Sample code: CosmosDB Fleet List by Resource Group.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBFleetListByResourceGroup(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient().getFleets().listByResourceGroup("rg1", com.azure.core.util.Context.NONE);
+    public static void cosmosDBFleetListByResourceGroup(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
+            .getFleets()
+            .listByResourceGroup("rg1", com.azure.core.util.Context.NONE);
     }
 }

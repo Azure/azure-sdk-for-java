@@ -31,8 +31,12 @@ public final class DynamicSchemaVersionsImpl implements DynamicSchemaVersions {
         String dynamicSchemaName, String dynamicSchemaVersionName, Context context) {
         Response<DynamicSchemaVersionInner> inner = this.serviceClient()
             .getWithResponse(resourceGroupName, schemaName, dynamicSchemaName, dynamicSchemaVersionName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new DynamicSchemaVersionImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new DynamicSchemaVersionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public DynamicSchemaVersion get(String resourceGroupName, String schemaName, String dynamicSchemaName,

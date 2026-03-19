@@ -35,8 +35,12 @@ public final class SapApplicationServerInstancesImpl implements SapApplicationSe
         String sapVirtualInstanceName, String applicationInstanceName, Context context) {
         Response<SapApplicationServerInstanceInner> inner = this.serviceClient()
             .getWithResponse(resourceGroupName, sapVirtualInstanceName, applicationInstanceName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new SapApplicationServerInstanceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new SapApplicationServerInstanceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public SapApplicationServerInstance get(String resourceGroupName, String sapVirtualInstanceName,

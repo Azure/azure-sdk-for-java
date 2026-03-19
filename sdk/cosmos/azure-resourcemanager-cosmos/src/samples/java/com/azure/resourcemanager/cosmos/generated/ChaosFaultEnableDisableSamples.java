@@ -17,10 +17,12 @@ public final class ChaosFaultEnableDisableSamples {
     /**
      * Sample code: ChaosFaultEnableDisable.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void chaosFaultEnableDisable(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void chaosFaultEnableDisable(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getChaosFaults()
             .enableDisable("myResourceGroupName", "myAccountName", "ServiceUnavailability",
                 new ChaosFaultResourceInner().withAction(SupportedActions.ENABLE)

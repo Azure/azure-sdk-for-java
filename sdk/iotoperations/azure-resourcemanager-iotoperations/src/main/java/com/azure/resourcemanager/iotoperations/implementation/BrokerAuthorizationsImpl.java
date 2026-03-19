@@ -31,8 +31,12 @@ public final class BrokerAuthorizationsImpl implements BrokerAuthorizations {
         String brokerName, String authorizationName, Context context) {
         Response<BrokerAuthorizationResourceInner> inner = this.serviceClient()
             .getWithResponse(resourceGroupName, instanceName, brokerName, authorizationName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new BrokerAuthorizationResourceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new BrokerAuthorizationResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public BrokerAuthorizationResource get(String resourceGroupName, String instanceName, String brokerName,

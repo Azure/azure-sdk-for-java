@@ -31,8 +31,12 @@ public final class AkriConnectorsImpl implements AkriConnectors {
         String akriConnectorTemplateName, String connectorName, Context context) {
         Response<AkriConnectorResourceInner> inner = this.serviceClient()
             .getWithResponse(resourceGroupName, instanceName, akriConnectorTemplateName, connectorName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new AkriConnectorResourceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new AkriConnectorResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public AkriConnectorResource get(String resourceGroupName, String instanceName, String akriConnectorTemplateName,

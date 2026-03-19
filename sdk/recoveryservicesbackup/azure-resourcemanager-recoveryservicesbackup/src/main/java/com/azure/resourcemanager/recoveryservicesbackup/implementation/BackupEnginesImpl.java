@@ -31,8 +31,12 @@ public final class BackupEnginesImpl implements BackupEngines {
         String backupEngineName, String filter, String skipToken, Context context) {
         Response<BackupEngineBaseResourceInner> inner = this.serviceClient()
             .getWithResponse(vaultName, resourceGroupName, backupEngineName, filter, skipToken, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new BackupEngineBaseResourceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new BackupEngineBaseResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public BackupEngineBaseResource get(String vaultName, String resourceGroupName, String backupEngineName) {

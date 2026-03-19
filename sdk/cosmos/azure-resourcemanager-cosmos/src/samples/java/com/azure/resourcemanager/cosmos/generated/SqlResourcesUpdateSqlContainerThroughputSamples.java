@@ -19,10 +19,12 @@ public final class SqlResourcesUpdateSqlContainerThroughputSamples {
     /**
      * Sample code: CosmosDBSqlContainerThroughputUpdate.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBSqlContainerThroughputUpdate(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBSqlContainerThroughputUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getSqlResources()
             .updateSqlContainerThroughput("rg1", "ddb1", "databaseName", "containerName",
                 new ThroughputSettingsUpdateParameters().withLocation("West US")

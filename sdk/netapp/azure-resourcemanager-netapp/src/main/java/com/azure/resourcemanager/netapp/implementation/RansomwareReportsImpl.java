@@ -32,8 +32,12 @@ public final class RansomwareReportsImpl implements RansomwareReports {
         String volumeName, String ransomwareReportName, Context context) {
         Response<RansomwareReportInner> inner = this.serviceClient()
             .getWithResponse(resourceGroupName, accountName, poolName, volumeName, ransomwareReportName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new RansomwareReportImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new RansomwareReportImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public RansomwareReport get(String resourceGroupName, String accountName, String poolName, String volumeName,

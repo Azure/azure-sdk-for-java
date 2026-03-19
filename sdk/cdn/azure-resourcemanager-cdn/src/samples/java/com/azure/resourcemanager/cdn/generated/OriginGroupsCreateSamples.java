@@ -23,10 +23,12 @@ public final class OriginGroupsCreateSamples {
     /**
      * Sample code: OriginGroups_Create.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void originGroupsCreate(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient()
+    public static void originGroupsCreate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
             .getOriginGroups()
             .create("RG", "profile1", "endpoint1", "origingroup1", new OriginGroupInner()
                 .withHealthProbeSettings(new HealthProbeParameters().withProbePath("/health.aspx")

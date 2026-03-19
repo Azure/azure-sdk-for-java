@@ -43,8 +43,12 @@ public final class LicensesImpl implements Licenses {
         Context context) {
         Response<LicenseInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, privateCloudName, licenseName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new LicenseImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new LicenseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public License get(String resourceGroupName, String privateCloudName, LicenseName licenseName) {
@@ -68,8 +72,12 @@ public final class LicensesImpl implements Licenses {
         LicenseName licenseName, Context context) {
         Response<LicensePropertiesInner> inner
             = this.serviceClient().getPropertiesWithResponse(resourceGroupName, privateCloudName, licenseName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new LicensePropertiesImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new LicensePropertiesImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public LicenseProperties getProperties(String resourceGroupName, String privateCloudName, LicenseName licenseName) {

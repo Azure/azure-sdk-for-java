@@ -43,8 +43,12 @@ public final class ImagesImpl implements Images {
 
     public Response<Image> getWithResponse(String resourceGroupName, String name, String imageName, Context context) {
         Response<ImageInner> inner = this.serviceClient().getWithResponse(resourceGroupName, name, imageName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new ImageImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ImageImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public Image get(String resourceGroupName, String name, String imageName) {
@@ -60,8 +64,12 @@ public final class ImagesImpl implements Images {
         String imageName, Context context) {
         Response<ImageDownloadResultInner> inner
             = this.serviceClient().listDownloadUriWithResponse(resourceGroupName, name, imageName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new ImageDownloadResultImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ImageDownloadResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ImageDownloadResult listDownloadUri(String resourceGroupName, String name, String imageName) {

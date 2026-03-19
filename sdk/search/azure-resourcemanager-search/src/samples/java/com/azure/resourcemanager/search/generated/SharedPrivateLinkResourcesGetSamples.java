@@ -14,10 +14,12 @@ public final class SharedPrivateLinkResourcesGetSamples {
     /**
      * Sample code: SharedPrivateLinkResourceGet.
      * 
-     * @param manager Entry point to SearchServiceManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void sharedPrivateLinkResourceGet(com.azure.resourcemanager.search.SearchServiceManager manager) {
-        manager.serviceClient()
+    public static void sharedPrivateLinkResourceGet(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.searchServices()
+            .manager()
+            .serviceClient()
             .getSharedPrivateLinkResources()
             .getWithResponse("rg1", "mysearchservice", "testResource", com.azure.core.util.Context.NONE);
     }

@@ -20,10 +20,12 @@ public final class CassandraResourcesCreateUpdateCassandraKeyspaceSamples {
     /**
      * Sample code: CosmosDBCassandraKeyspaceCreateUpdate.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBCassandraKeyspaceCreateUpdate(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBCassandraKeyspaceCreateUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getCassandraResources()
             .createUpdateCassandraKeyspace("rg1", "ddb1", "keyspaceName",
                 new CassandraKeyspaceCreateUpdateParameters().withLocation("West US")

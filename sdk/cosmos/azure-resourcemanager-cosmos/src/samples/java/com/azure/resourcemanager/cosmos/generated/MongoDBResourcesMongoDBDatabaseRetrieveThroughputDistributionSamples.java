@@ -19,11 +19,13 @@ public final class MongoDBResourcesMongoDBDatabaseRetrieveThroughputDistribution
     /**
      * Sample code: CosmosDBMongoDBDatabaseRetrieveThroughputDistribution.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
-        cosmosDBMongoDBDatabaseRetrieveThroughputDistribution(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+        cosmosDBMongoDBDatabaseRetrieveThroughputDistribution(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getMongoDBResources()
             .mongoDBDatabaseRetrieveThroughputDistribution("rg1", "ddb1", "databaseName",
                 new RetrieveThroughputParameters()

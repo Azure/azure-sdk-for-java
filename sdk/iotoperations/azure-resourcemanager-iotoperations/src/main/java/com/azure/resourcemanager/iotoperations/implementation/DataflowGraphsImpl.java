@@ -31,8 +31,12 @@ public final class DataflowGraphsImpl implements DataflowGraphs {
         String dataflowProfileName, String dataflowGraphName, Context context) {
         Response<DataflowGraphResourceInner> inner = this.serviceClient()
             .getWithResponse(resourceGroupName, instanceName, dataflowProfileName, dataflowGraphName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new DataflowGraphResourceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new DataflowGraphResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public DataflowGraphResource get(String resourceGroupName, String instanceName, String dataflowProfileName,

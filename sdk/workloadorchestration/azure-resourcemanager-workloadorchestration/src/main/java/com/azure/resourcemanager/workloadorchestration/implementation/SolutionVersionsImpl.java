@@ -31,8 +31,12 @@ public final class SolutionVersionsImpl implements SolutionVersions {
         String solutionVersionName, Context context) {
         Response<SolutionVersionInner> inner = this.serviceClient()
             .getWithResponse(resourceGroupName, targetName, solutionName, solutionVersionName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new SolutionVersionImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new SolutionVersionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public SolutionVersion get(String resourceGroupName, String targetName, String solutionName,

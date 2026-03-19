@@ -31,8 +31,12 @@ public final class DataflowEndpointsImpl implements DataflowEndpoints {
         String dataflowEndpointName, Context context) {
         Response<DataflowEndpointResourceInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, instanceName, dataflowEndpointName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new DataflowEndpointResourceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new DataflowEndpointResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public DataflowEndpointResource get(String resourceGroupName, String instanceName, String dataflowEndpointName) {

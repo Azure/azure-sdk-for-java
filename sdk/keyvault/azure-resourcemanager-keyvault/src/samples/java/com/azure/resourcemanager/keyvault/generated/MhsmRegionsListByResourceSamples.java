@@ -14,10 +14,12 @@ public final class MhsmRegionsListByResourceSamples {
     /**
      * Sample code: List managed HSM Pools in a subscription.
      * 
-     * @param manager Entry point to KeyVaultManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void listManagedHSMPoolsInASubscription(com.azure.resourcemanager.keyvault.KeyVaultManager manager) {
-        manager.serviceClient()
+    public static void listManagedHSMPoolsInASubscription(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.vaults()
+            .manager()
+            .serviceClient()
             .getMhsmRegions()
             .listByResource("sample-group", "sample-mhsm", com.azure.core.util.Context.NONE);
     }

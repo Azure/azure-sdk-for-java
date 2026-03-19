@@ -31,8 +31,12 @@ public final class PrivateLinkResourcesImpl implements PrivateLinkResources {
         String groupName, Context context) {
         Response<PrivateLinkResourceInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, configStoreName, groupName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new PrivateLinkResourceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new PrivateLinkResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public PrivateLinkResource get(String resourceGroupName, String configStoreName, String groupName) {

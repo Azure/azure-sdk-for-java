@@ -14,9 +14,13 @@ public final class SecretsDeleteSamples {
     /**
      * Sample code: Secrets_Delete.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void secretsDelete(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient().getSecrets().delete("RG", "profile1", "secret1", com.azure.core.util.Context.NONE);
+    public static void secretsDelete(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
+            .getSecrets()
+            .delete("RG", "profile1", "secret1", com.azure.core.util.Context.NONE);
     }
 }

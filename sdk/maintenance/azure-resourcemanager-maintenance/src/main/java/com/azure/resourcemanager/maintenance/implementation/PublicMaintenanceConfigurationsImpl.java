@@ -29,8 +29,12 @@ public final class PublicMaintenanceConfigurationsImpl implements PublicMaintena
 
     public Response<MaintenanceConfiguration> getWithResponse(String resourceName, Context context) {
         Response<MaintenanceConfigurationInner> inner = this.serviceClient().getWithResponse(resourceName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new MaintenanceConfigurationImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new MaintenanceConfigurationImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public MaintenanceConfiguration get(String resourceName) {

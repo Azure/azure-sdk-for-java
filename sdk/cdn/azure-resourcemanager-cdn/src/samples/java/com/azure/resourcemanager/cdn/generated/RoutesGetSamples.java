@@ -14,10 +14,12 @@ public final class RoutesGetSamples {
     /**
      * Sample code: Routes_Get.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void routesGet(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient()
+    public static void routesGet(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
             .getRoutes()
             .getWithResponse("RG", "profile1", "endpoint1", "route1", com.azure.core.util.Context.NONE);
     }

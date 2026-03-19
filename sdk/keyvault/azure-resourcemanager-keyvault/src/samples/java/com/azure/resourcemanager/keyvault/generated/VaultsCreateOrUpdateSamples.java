@@ -32,10 +32,12 @@ public final class VaultsCreateOrUpdateSamples {
     /**
      * Sample code: Create or update a vault with network acls.
      * 
-     * @param manager Entry point to KeyVaultManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void createOrUpdateAVaultWithNetworkAcls(com.azure.resourcemanager.keyvault.KeyVaultManager manager) {
-        manager.serviceClient()
+    public static void createOrUpdateAVaultWithNetworkAcls(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.vaults()
+            .manager()
+            .serviceClient()
             .getVaults()
             .createOrUpdate("sample-resource-group", "sample-vault", new VaultCreateOrUpdateParameters()
                 .withLocation("westus")
@@ -60,11 +62,12 @@ public final class VaultsCreateOrUpdateSamples {
     /**
      * Sample code: Create a new vault or update an existing vault.
      * 
-     * @param manager Entry point to KeyVaultManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void
-        createANewVaultOrUpdateAnExistingVault(com.azure.resourcemanager.keyvault.KeyVaultManager manager) {
-        manager.serviceClient()
+    public static void createANewVaultOrUpdateAnExistingVault(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.vaults()
+            .manager()
+            .serviceClient()
             .getVaults()
             .createOrUpdate("sample-resource-group", "sample-vault",
                 new VaultCreateOrUpdateParameters().withLocation("westus")

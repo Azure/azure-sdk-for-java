@@ -14,11 +14,12 @@ public final class PrivateEndpointConnectionsDeleteSamples {
     /**
      * Sample code: KeyVaultDeletePrivateEndpointConnection.
      * 
-     * @param manager Entry point to KeyVaultManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void
-        keyVaultDeletePrivateEndpointConnection(com.azure.resourcemanager.keyvault.KeyVaultManager manager) {
-        manager.serviceClient()
+    public static void keyVaultDeletePrivateEndpointConnection(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.vaults()
+            .manager()
+            .serviceClient()
             .getPrivateEndpointConnections()
             .delete("sample-group", "sample-vault", "sample-pec", com.azure.core.util.Context.NONE);
     }

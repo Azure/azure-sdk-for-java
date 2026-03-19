@@ -18,10 +18,12 @@ public final class ReplicationsUpdateSamples {
     /**
      * Sample code: ReplicationUpdate.
      * 
-     * @param manager Entry point to ContainerRegistryManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void replicationUpdate(com.azure.resourcemanager.containerregistry.ContainerRegistryManager manager) {
-        manager.serviceClient()
+    public static void replicationUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.containerRegistries()
+            .manager()
+            .serviceClient()
             .getReplications()
             .update("myResourceGroup", "myRegistry", "myReplication",
                 new ReplicationUpdateParameters().withTags(mapOf("key", "fakeTokenPlaceholder")),

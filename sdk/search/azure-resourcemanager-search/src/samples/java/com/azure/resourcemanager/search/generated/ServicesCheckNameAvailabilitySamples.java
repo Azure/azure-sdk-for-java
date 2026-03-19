@@ -16,10 +16,12 @@ public final class ServicesCheckNameAvailabilitySamples {
     /**
      * Sample code: SearchCheckNameAvailability.
      * 
-     * @param manager Entry point to SearchServiceManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void searchCheckNameAvailability(com.azure.resourcemanager.search.SearchServiceManager manager) {
-        manager.serviceClient()
+    public static void searchCheckNameAvailability(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.searchServices()
+            .manager()
+            .serviceClient()
             .getServices()
             .checkNameAvailabilityWithResponse(new CheckNameAvailabilityInput().withName("mysearchservice"),
                 com.azure.core.util.Context.NONE);

@@ -14,9 +14,13 @@ public final class WebAgentsListByResourceGroupSamples {
     /**
      * Sample code: List Web Agents in a Resource Group.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void listWebAgentsInAResourceGroup(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient().getWebAgents().listByResourceGroup("RG", com.azure.core.util.Context.NONE);
+    public static void listWebAgentsInAResourceGroup(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
+            .getWebAgents()
+            .listByResourceGroup("RG", com.azure.core.util.Context.NONE);
     }
 }

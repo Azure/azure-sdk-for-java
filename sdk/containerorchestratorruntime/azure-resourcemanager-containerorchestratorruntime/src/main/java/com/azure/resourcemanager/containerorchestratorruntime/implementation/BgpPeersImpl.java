@@ -29,8 +29,12 @@ public final class BgpPeersImpl implements BgpPeers {
 
     public Response<BgpPeer> getWithResponse(String resourceUri, String bgpPeerName, Context context) {
         Response<BgpPeerInner> inner = this.serviceClient().getWithResponse(resourceUri, bgpPeerName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new BgpPeerImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new BgpPeerImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public BgpPeer get(String resourceUri, String bgpPeerName) {

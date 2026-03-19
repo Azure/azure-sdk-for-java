@@ -14,11 +14,12 @@ public final class NetworkSecurityPerimeterConfigurationsReconcileSamples {
     /**
      * Sample code: NetworkSecurityPerimeterConfigurationList.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void
-        networkSecurityPerimeterConfigurationList(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void networkSecurityPerimeterConfigurationList(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getNetworkSecurityPerimeterConfigurations()
             .reconcile("res4410", "sto8607", "dbedb4e0-40e6-4145-81f3-f1314c150774.resourceAssociation1",
                 com.azure.core.util.Context.NONE);

@@ -18,10 +18,12 @@ public final class KeyGroupsCreateUpdateSamples {
     /**
      * Sample code: KeyGroups_Create.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void keyGroupsCreate(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient()
+    public static void keyGroupsCreate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
             .getKeyGroups()
             .createUpdate("RG", "profile1", "kg1", new KeyGroupInner().withKeyReferences(Arrays.asList(
                 new ResourceReference().withId(

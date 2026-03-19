@@ -35,8 +35,12 @@ public final class SchedulersImpl implements Schedulers {
         Context context) {
         Response<SchedulerInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, schedulerName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new SchedulerImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new SchedulerImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public Scheduler getByResourceGroup(String resourceGroupName, String schedulerName) {
@@ -80,8 +84,12 @@ public final class SchedulersImpl implements Schedulers {
         String schedulerName, String privateLinkResourceName, Context context) {
         Response<SchedulerPrivateLinkResourceInner> inner = this.serviceClient()
             .getPrivateLinkWithResponse(resourceGroupName, schedulerName, privateLinkResourceName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new SchedulerPrivateLinkResourceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new SchedulerPrivateLinkResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public SchedulerPrivateLinkResource getPrivateLink(String resourceGroupName, String schedulerName,
@@ -116,8 +124,12 @@ public final class SchedulersImpl implements Schedulers {
         Response<PrivateEndpointConnectionInner> inner = this.serviceClient()
             .getPrivateEndpointConnectionWithResponse(resourceGroupName, schedulerName, privateEndpointConnectionName,
                 context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new PrivateEndpointConnectionImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new PrivateEndpointConnectionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public PrivateEndpointConnection getPrivateEndpointConnection(String resourceGroupName, String schedulerName,

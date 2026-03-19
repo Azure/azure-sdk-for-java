@@ -31,8 +31,12 @@ public final class BrokerAuthenticationsImpl implements BrokerAuthentications {
         String brokerName, String authenticationName, Context context) {
         Response<BrokerAuthenticationResourceInner> inner = this.serviceClient()
             .getWithResponse(resourceGroupName, instanceName, brokerName, authenticationName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new BrokerAuthenticationResourceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new BrokerAuthenticationResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public BrokerAuthenticationResource get(String resourceGroupName, String instanceName, String brokerName,

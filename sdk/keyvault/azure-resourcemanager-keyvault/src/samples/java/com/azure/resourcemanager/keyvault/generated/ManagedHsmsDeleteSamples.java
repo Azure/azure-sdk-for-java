@@ -14,9 +14,13 @@ public final class ManagedHsmsDeleteSamples {
     /**
      * Sample code: Delete a managed HSM Pool.
      * 
-     * @param manager Entry point to KeyVaultManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void deleteAManagedHSMPool(com.azure.resourcemanager.keyvault.KeyVaultManager manager) {
-        manager.serviceClient().getManagedHsms().delete("hsm-group", "hsm1", com.azure.core.util.Context.NONE);
+    public static void deleteAManagedHSMPool(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.vaults()
+            .manager()
+            .serviceClient()
+            .getManagedHsms()
+            .delete("hsm-group", "hsm1", com.azure.core.util.Context.NONE);
     }
 }

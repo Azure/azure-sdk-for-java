@@ -14,11 +14,12 @@ public final class ConnectedRegistriesDeactivateSamples {
     /**
      * Sample code: ConnectedRegistryDeactivate.
      * 
-     * @param manager Entry point to ContainerRegistryManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void
-        connectedRegistryDeactivate(com.azure.resourcemanager.containerregistry.ContainerRegistryManager manager) {
-        manager.serviceClient()
+    public static void connectedRegistryDeactivate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.containerRegistries()
+            .manager()
+            .serviceClient()
             .getConnectedRegistries()
             .deactivate("myResourceGroup", "myRegistry", "myConnectedRegistry", com.azure.core.util.Context.NONE);
     }

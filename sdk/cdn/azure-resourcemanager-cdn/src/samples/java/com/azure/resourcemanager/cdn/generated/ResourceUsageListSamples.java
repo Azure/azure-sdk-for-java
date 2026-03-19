@@ -14,9 +14,9 @@ public final class ResourceUsageListSamples {
     /**
      * Sample code: ResourceUsage_List.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void resourceUsageList(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient().getResourceUsages().list(com.azure.core.util.Context.NONE);
+    public static void resourceUsageList(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles().manager().serviceClient().getResourceUsages().list(com.azure.core.util.Context.NONE);
     }
 }

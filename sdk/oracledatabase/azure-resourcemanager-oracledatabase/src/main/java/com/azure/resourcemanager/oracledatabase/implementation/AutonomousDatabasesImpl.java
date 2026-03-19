@@ -48,8 +48,12 @@ public final class AutonomousDatabasesImpl implements AutonomousDatabases {
         String autonomousdatabasename, Context context) {
         Response<AutonomousDatabaseInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, autonomousdatabasename, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new AutonomousDatabaseImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new AutonomousDatabaseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public AutonomousDatabase getByResourceGroup(String resourceGroupName, String autonomousdatabasename) {
@@ -126,8 +130,12 @@ public final class AutonomousDatabasesImpl implements AutonomousDatabases {
         String autonomousdatabasename, GenerateAutonomousDatabaseWalletDetails body, Context context) {
         Response<AutonomousDatabaseWalletFileInner> inner
             = this.serviceClient().generateWalletWithResponse(resourceGroupName, autonomousdatabasename, body, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new AutonomousDatabaseWalletFileImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new AutonomousDatabaseWalletFileImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public AutonomousDatabaseWalletFile generateWallet(String resourceGroupName, String autonomousdatabasename,

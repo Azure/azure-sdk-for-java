@@ -30,8 +30,12 @@ public final class LoadBalancersImpl implements LoadBalancers {
     public Response<LoadBalancer> getWithResponse(String resourceUri, String loadBalancerName, Context context) {
         Response<LoadBalancerInner> inner
             = this.serviceClient().getWithResponse(resourceUri, loadBalancerName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new LoadBalancerImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new LoadBalancerImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public LoadBalancer get(String resourceUri, String loadBalancerName) {

@@ -19,11 +19,12 @@ public final class GremlinResourcesCreateUpdateGremlinRoleDefinitionSamples {
     /**
      * Sample code: CosmosDBGremlinRoleDefinitionCreateUpdate.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void
-        cosmosDBGremlinRoleDefinitionCreateUpdate(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBGremlinRoleDefinitionCreateUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getGremlinResources()
             .createUpdateGremlinRoleDefinition("myResourceGroupName", "myAccountName", "myRoleDefinitionId",
                 new GremlinRoleDefinitionResourceInner().withRoleName("myRoleName")

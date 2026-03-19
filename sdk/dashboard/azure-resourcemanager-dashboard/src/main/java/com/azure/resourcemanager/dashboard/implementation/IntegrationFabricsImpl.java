@@ -31,8 +31,12 @@ public final class IntegrationFabricsImpl implements IntegrationFabrics {
         String integrationFabricName, Context context) {
         Response<IntegrationFabricInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, workspaceName, integrationFabricName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new IntegrationFabricImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new IntegrationFabricImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public IntegrationFabric get(String resourceGroupName, String workspaceName, String integrationFabricName) {

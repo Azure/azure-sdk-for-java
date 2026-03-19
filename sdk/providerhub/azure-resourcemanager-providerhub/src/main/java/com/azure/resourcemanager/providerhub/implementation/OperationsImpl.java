@@ -46,11 +46,15 @@ public final class OperationsImpl implements Operations {
         Context context) {
         Response<List<OperationsDefinitionInner>> inner
             = this.serviceClient().listByProviderRegistrationWithResponse(providerNamespace, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            inner.getValue()
-                .stream()
-                .map(inner1 -> new OperationsDefinitionImpl(inner1, this.manager()))
-                .collect(Collectors.toList()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                inner.getValue()
+                    .stream()
+                    .map(inner1 -> new OperationsDefinitionImpl(inner1, this.manager()))
+                    .collect(Collectors.toList()));
+        } else {
+            return null;
+        }
     }
 
     public List<OperationsDefinition> listByProviderRegistration(String providerNamespace) {
@@ -68,8 +72,12 @@ public final class OperationsImpl implements Operations {
         OperationsPutContentInner operationsPutContent, Context context) {
         Response<OperationsPutContentInner> inner
             = this.serviceClient().createOrUpdateWithResponse(providerNamespace, operationsPutContent, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new OperationsPutContentImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new OperationsPutContentImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public OperationsPutContent createOrUpdate(String providerNamespace,

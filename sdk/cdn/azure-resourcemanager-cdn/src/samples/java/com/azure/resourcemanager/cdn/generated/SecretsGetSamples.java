@@ -14,10 +14,12 @@ public final class SecretsGetSamples {
     /**
      * Sample code: Secrets_Get.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void secretsGet(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient()
+    public static void secretsGet(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
             .getSecrets()
             .getWithResponse("RG", "profile1", "secret1", com.azure.core.util.Context.NONE);
     }

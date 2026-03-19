@@ -35,8 +35,12 @@ public final class ElasticCapacityPoolsImpl implements ElasticCapacityPools {
         Context context) {
         Response<ElasticCapacityPoolInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, accountName, poolName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new ElasticCapacityPoolImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ElasticCapacityPoolImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ElasticCapacityPool get(String resourceGroupName, String accountName, String poolName) {
@@ -96,8 +100,12 @@ public final class ElasticCapacityPoolsImpl implements ElasticCapacityPools {
         CheckElasticVolumeFilePathAvailabilityRequest body, Context context) {
         Response<CheckElasticResourceAvailabilityResponseInner> inner = this.serviceClient()
             .checkVolumeFilePathAvailabilityWithResponse(resourceGroupName, accountName, poolName, body, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new CheckElasticResourceAvailabilityResponseImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new CheckElasticResourceAvailabilityResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public CheckElasticResourceAvailabilityResponse checkVolumeFilePathAvailability(String resourceGroupName,

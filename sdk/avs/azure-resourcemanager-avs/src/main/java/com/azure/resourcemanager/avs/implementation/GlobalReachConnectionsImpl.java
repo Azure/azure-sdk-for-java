@@ -44,8 +44,12 @@ public final class GlobalReachConnectionsImpl implements GlobalReachConnections 
         String globalReachConnectionName, Context context) {
         Response<GlobalReachConnectionInner> inner = this.serviceClient()
             .getWithResponse(resourceGroupName, privateCloudName, globalReachConnectionName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new GlobalReachConnectionImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new GlobalReachConnectionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public GlobalReachConnection get(String resourceGroupName, String privateCloudName,

@@ -23,11 +23,12 @@ public final class ConnectedRegistriesUpdateSamples {
     /**
      * Sample code: ConnectedRegistryUpdate.
      * 
-     * @param manager Entry point to ContainerRegistryManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void
-        connectedRegistryUpdate(com.azure.resourcemanager.containerregistry.ContainerRegistryManager manager) {
-        manager.serviceClient()
+    public static void connectedRegistryUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.containerRegistries()
+            .manager()
+            .serviceClient()
             .getConnectedRegistries()
             .update("myResourceGroup", "myRegistry", "myScopeMap", new ConnectedRegistryUpdateParameters()
                 .withSyncProperties(new SyncUpdateProperties().withSchedule("0 0 */10 * *")

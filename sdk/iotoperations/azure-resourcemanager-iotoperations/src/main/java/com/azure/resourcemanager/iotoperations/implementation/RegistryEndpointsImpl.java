@@ -31,8 +31,12 @@ public final class RegistryEndpointsImpl implements RegistryEndpoints {
         String registryEndpointName, Context context) {
         Response<RegistryEndpointResourceInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, instanceName, registryEndpointName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new RegistryEndpointResourceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new RegistryEndpointResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public RegistryEndpointResource get(String resourceGroupName, String instanceName, String registryEndpointName) {

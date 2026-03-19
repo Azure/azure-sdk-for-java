@@ -19,10 +19,12 @@ public final class TableResourcesUpdateTableThroughputSamples {
     /**
      * Sample code: CosmosDBTableThroughputUpdate.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBTableThroughputUpdate(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBTableThroughputUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getTableResources()
             .updateTableThroughput("rg1", "ddb1", "tableName",
                 new ThroughputSettingsUpdateParameters().withLocation("West US")

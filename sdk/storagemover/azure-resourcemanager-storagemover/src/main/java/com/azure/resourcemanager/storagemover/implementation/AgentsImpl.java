@@ -31,8 +31,12 @@ public final class AgentsImpl implements Agents {
         Context context) {
         Response<AgentInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, storageMoverName, agentName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new AgentImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new AgentImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public Agent get(String resourceGroupName, String storageMoverName, String agentName) {

@@ -48,8 +48,12 @@ public final class CloudVmClustersImpl implements CloudVmClusters {
         Context context) {
         Response<CloudVmClusterInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, cloudvmclustername, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new CloudVmClusterImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new CloudVmClusterImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public CloudVmCluster getByResourceGroup(String resourceGroupName, String cloudvmclustername) {
@@ -122,11 +126,15 @@ public final class CloudVmClustersImpl implements CloudVmClusters {
         String cloudvmclustername, PrivateIpAddressesFilter body, Context context) {
         Response<List<PrivateIpAddressPropertiesInner>> inner = this.serviceClient()
             .listPrivateIpAddressesWithResponse(resourceGroupName, cloudvmclustername, body, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            inner.getValue()
-                .stream()
-                .map(inner1 -> new PrivateIpAddressPropertiesImpl(inner1, this.manager()))
-                .collect(Collectors.toList()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                inner.getValue()
+                    .stream()
+                    .map(inner1 -> new PrivateIpAddressPropertiesImpl(inner1, this.manager()))
+                    .collect(Collectors.toList()));
+        } else {
+            return null;
+        }
     }
 
     public List<PrivateIpAddressProperties> listPrivateIpAddresses(String resourceGroupName, String cloudvmclustername,

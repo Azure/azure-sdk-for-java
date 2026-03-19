@@ -32,8 +32,12 @@ public final class AccountQuotasImpl implements AccountQuotas {
         Context context) {
         Response<AccountQuotaInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, accountName, quotaName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new AccountQuotaImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new AccountQuotaImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public AccountQuota get(String resourceGroupName, String accountName, QuotaNames quotaName) {

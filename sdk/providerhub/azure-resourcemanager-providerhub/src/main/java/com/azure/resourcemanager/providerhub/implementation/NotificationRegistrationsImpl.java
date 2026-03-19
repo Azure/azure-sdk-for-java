@@ -31,8 +31,12 @@ public final class NotificationRegistrationsImpl implements NotificationRegistra
         String notificationRegistrationName, Context context) {
         Response<NotificationRegistrationInner> inner
             = this.serviceClient().getWithResponse(providerNamespace, notificationRegistrationName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new NotificationRegistrationImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new NotificationRegistrationImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public NotificationRegistration get(String providerNamespace, String notificationRegistrationName) {

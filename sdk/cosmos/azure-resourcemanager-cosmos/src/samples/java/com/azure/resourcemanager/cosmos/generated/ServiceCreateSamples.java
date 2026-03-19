@@ -22,10 +22,12 @@ public final class ServiceCreateSamples {
     /**
      * Sample code: SqlDedicatedGatewayServiceCreate.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void sqlDedicatedGatewayServiceCreate(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void sqlDedicatedGatewayServiceCreate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getServices()
             .create("rg1", "ddb1", "SqlDedicatedGateway", new ServiceResourceCreateUpdateParameters().withProperties(
                 new SqlDedicatedGatewayServiceResourceCreateUpdateParameters().withInstanceSize(ServiceSize.COSMOS_D4S)
@@ -40,10 +42,12 @@ public final class ServiceCreateSamples {
     /**
      * Sample code: DataTransferServiceCreate.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void dataTransferServiceCreate(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void dataTransferServiceCreate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getServices()
             .create("rg1", "ddb1", "DataTransfer",
                 new ServiceResourceCreateUpdateParameters().withProperties(
@@ -58,10 +62,12 @@ public final class ServiceCreateSamples {
     /**
      * Sample code: MaterializedViewsBuilderServiceCreate.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void materializedViewsBuilderServiceCreate(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void materializedViewsBuilderServiceCreate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getServices()
             .create("rg1", "ddb1", "MaterializedViewsBuilder",
                 new ServiceResourceCreateUpdateParameters()
@@ -77,10 +83,12 @@ public final class ServiceCreateSamples {
     /**
      * Sample code: GraphAPIComputeServiceCreate.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void graphAPIComputeServiceCreate(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void graphAPIComputeServiceCreate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getServices()
             .create("rg1", "ddb1", "GraphAPICompute",
                 new ServiceResourceCreateUpdateParameters().withProperties(

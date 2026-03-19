@@ -22,11 +22,12 @@ public final class ConnectedRegistriesCreateSamples {
     /**
      * Sample code: ConnectedRegistryCreate.
      * 
-     * @param manager Entry point to ContainerRegistryManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void
-        connectedRegistryCreate(com.azure.resourcemanager.containerregistry.ContainerRegistryManager manager) {
-        manager.serviceClient()
+    public static void connectedRegistryCreate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.containerRegistries()
+            .manager()
+            .serviceClient()
             .getConnectedRegistries()
             .create("myResourceGroup", "myRegistry", "myConnectedRegistry", new ConnectedRegistryInner()
                 .withMode(ConnectedRegistryMode.READ_WRITE)

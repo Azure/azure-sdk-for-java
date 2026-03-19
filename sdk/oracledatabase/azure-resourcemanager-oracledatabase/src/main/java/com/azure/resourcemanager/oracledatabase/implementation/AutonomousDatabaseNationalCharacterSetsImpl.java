@@ -31,8 +31,12 @@ public final class AutonomousDatabaseNationalCharacterSetsImpl implements Autono
         Context context) {
         Response<AutonomousDatabaseNationalCharacterSetInner> inner
             = this.serviceClient().getWithResponse(location, adbsncharsetname, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new AutonomousDatabaseNationalCharacterSetImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new AutonomousDatabaseNationalCharacterSetImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public AutonomousDatabaseNationalCharacterSet get(String location, String adbsncharsetname) {

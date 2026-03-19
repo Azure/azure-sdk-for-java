@@ -31,8 +31,12 @@ public final class DbServersImpl implements DbServers {
         String dbserverocid, Context context) {
         Response<DbServerInner> inner = this.serviceClient()
             .getWithResponse(resourceGroupName, cloudexadatainfrastructurename, dbserverocid, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new DbServerImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new DbServerImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public DbServer get(String resourceGroupName, String cloudexadatainfrastructurename, String dbserverocid) {

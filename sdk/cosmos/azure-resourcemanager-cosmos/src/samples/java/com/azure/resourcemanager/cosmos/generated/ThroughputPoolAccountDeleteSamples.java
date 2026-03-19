@@ -14,10 +14,12 @@ public final class ThroughputPoolAccountDeleteSamples {
     /**
      * Sample code: CosmosDB ThroughputPool Account Delete.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBThroughputPoolAccountDelete(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBThroughputPoolAccountDelete(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getThroughputPoolAccounts()
             .delete("rgName", "tp1", "db1", com.azure.core.util.Context.NONE);
     }

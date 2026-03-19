@@ -31,8 +31,12 @@ public final class ContextsImpl implements Contexts {
         Context context) {
         Response<ContextInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, contextName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new ContextModelImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ContextModelImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ContextModel getByResourceGroup(String resourceGroupName, String contextName) {

@@ -28,8 +28,12 @@ public final class TargetTypesImpl implements TargetTypes {
 
     public Response<TargetType> getWithResponse(String location, String targetTypeName, Context context) {
         Response<TargetTypeInner> inner = this.serviceClient().getWithResponse(location, targetTypeName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new TargetTypeImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new TargetTypeImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public TargetType get(String location, String targetTypeName) {

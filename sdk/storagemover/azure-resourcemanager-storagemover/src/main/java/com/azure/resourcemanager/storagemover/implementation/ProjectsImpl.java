@@ -31,8 +31,12 @@ public final class ProjectsImpl implements Projects {
         Context context) {
         Response<ProjectInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, storageMoverName, projectName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new ProjectImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ProjectImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public Project get(String resourceGroupName, String storageMoverName, String projectName) {

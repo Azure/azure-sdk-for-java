@@ -14,10 +14,12 @@ public final class SqlResourcesDeleteSqlStoredProcedureSamples {
     /**
      * Sample code: CosmosDBSqlStoredProcedureDelete.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBSqlStoredProcedureDelete(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBSqlStoredProcedureDelete(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getSqlResources()
             .deleteSqlStoredProcedure("rg1", "ddb1", "databaseName", "containerName", "storedProcedureName",
                 com.azure.core.util.Context.NONE);

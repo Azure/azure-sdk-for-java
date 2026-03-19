@@ -21,11 +21,12 @@ public final class CredentialSetsCreateSamples {
     /**
      * Sample code: CredentialSetCreate.
      * 
-     * @param manager Entry point to ContainerRegistryManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void
-        credentialSetCreate(com.azure.resourcemanager.containerregistry.ContainerRegistryManager manager) {
-        manager.serviceClient()
+    public static void credentialSetCreate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.containerRegistries()
+            .manager()
+            .serviceClient()
             .getCredentialSets()
             .create("myResourceGroup", "myRegistry", "myCredentialSet",
                 new CredentialSetInner()

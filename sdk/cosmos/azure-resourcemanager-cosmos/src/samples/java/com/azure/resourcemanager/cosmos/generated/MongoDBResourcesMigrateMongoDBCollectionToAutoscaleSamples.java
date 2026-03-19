@@ -14,11 +14,13 @@ public final class MongoDBResourcesMigrateMongoDBCollectionToAutoscaleSamples {
     /**
      * Sample code: CosmosDBMongoDBCollectionMigrateToAutoscale.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
-        cosmosDBMongoDBCollectionMigrateToAutoscale(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+        cosmosDBMongoDBCollectionMigrateToAutoscale(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getMongoDBResources()
             .migrateMongoDBCollectionToAutoscale("rg1", "ddb1", "databaseName", "collectionName",
                 com.azure.core.util.Context.NONE);

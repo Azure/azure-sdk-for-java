@@ -14,10 +14,12 @@ public final class MongoDBResourcesGetMongoDBDatabaseThroughputSamples {
     /**
      * Sample code: CosmosDBMongoDBDatabaseThroughputGet.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBMongoDBDatabaseThroughputGet(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBMongoDBDatabaseThroughputGet(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getMongoDBResources()
             .getMongoDBDatabaseThroughputWithResponse("rg1", "ddb1", "databaseName", com.azure.core.util.Context.NONE);
     }

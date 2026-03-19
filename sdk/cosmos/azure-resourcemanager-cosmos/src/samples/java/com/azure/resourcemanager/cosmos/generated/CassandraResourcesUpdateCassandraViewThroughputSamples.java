@@ -19,10 +19,12 @@ public final class CassandraResourcesUpdateCassandraViewThroughputSamples {
     /**
      * Sample code: CosmosDBCassandraViewThroughputUpdate.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBCassandraViewThroughputUpdate(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBCassandraViewThroughputUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getCassandraResources()
             .updateCassandraViewThroughput("rg1", "ddb1", "keyspacename", "viewname",
                 new ThroughputSettingsUpdateParameters().withTags(mapOf())

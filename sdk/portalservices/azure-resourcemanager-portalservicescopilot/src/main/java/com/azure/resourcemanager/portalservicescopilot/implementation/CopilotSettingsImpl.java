@@ -29,8 +29,12 @@ public final class CopilotSettingsImpl implements CopilotSettings {
 
     public Response<CopilotSettingsResource> getWithResponse(Context context) {
         Response<CopilotSettingsResourceInner> inner = this.serviceClient().getWithResponse(context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new CopilotSettingsResourceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new CopilotSettingsResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public CopilotSettingsResource get() {
@@ -46,8 +50,12 @@ public final class CopilotSettingsImpl implements CopilotSettings {
         Context context) {
         Response<CopilotSettingsResourceInner> inner
             = this.serviceClient().createOrUpdateWithResponse(resource, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new CopilotSettingsResourceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new CopilotSettingsResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public CopilotSettingsResource createOrUpdate(CopilotSettingsResourceInner resource) {
@@ -62,8 +70,12 @@ public final class CopilotSettingsImpl implements CopilotSettings {
     public Response<CopilotSettingsResource> updateWithResponse(CopilotSettingsResourceUpdate properties,
         Context context) {
         Response<CopilotSettingsResourceInner> inner = this.serviceClient().updateWithResponse(properties, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new CopilotSettingsResourceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new CopilotSettingsResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public CopilotSettingsResource update(CopilotSettingsResourceUpdate properties) {

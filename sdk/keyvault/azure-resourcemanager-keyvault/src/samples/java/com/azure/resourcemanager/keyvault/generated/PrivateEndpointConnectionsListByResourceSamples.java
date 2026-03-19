@@ -14,11 +14,12 @@ public final class PrivateEndpointConnectionsListByResourceSamples {
     /**
      * Sample code: KeyVaultListPrivateEndpointConnection.
      * 
-     * @param manager Entry point to KeyVaultManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void
-        keyVaultListPrivateEndpointConnection(com.azure.resourcemanager.keyvault.KeyVaultManager manager) {
-        manager.serviceClient()
+    public static void keyVaultListPrivateEndpointConnection(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.vaults()
+            .manager()
+            .serviceClient()
             .getPrivateEndpointConnections()
             .listByResource("sample-group", "sample-vault", com.azure.core.util.Context.NONE);
     }

@@ -30,8 +30,12 @@ public final class RetentionPoliciesImpl implements RetentionPolicies {
     public Response<RetentionPolicy> getWithResponse(String resourceGroupName, String schedulerName, Context context) {
         Response<RetentionPolicyInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, schedulerName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new RetentionPolicyImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new RetentionPolicyImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public RetentionPolicy get(String resourceGroupName, String schedulerName) {

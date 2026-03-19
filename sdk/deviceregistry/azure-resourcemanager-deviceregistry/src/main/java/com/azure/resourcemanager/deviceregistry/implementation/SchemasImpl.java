@@ -31,8 +31,12 @@ public final class SchemasImpl implements Schemas {
         Context context) {
         Response<SchemaInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, schemaRegistryName, schemaName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new SchemaImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new SchemaImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public Schema get(String resourceGroupName, String schemaRegistryName, String schemaName) {

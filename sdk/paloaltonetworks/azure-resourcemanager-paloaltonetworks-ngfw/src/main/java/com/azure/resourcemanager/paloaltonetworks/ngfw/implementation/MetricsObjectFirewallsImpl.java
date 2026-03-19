@@ -31,8 +31,12 @@ public final class MetricsObjectFirewallsImpl implements MetricsObjectFirewalls 
         Context context) {
         Response<MetricsObjectFirewallResourceInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, firewallName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new MetricsObjectFirewallResourceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new MetricsObjectFirewallResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public MetricsObjectFirewallResource get(String resourceGroupName, String firewallName) {

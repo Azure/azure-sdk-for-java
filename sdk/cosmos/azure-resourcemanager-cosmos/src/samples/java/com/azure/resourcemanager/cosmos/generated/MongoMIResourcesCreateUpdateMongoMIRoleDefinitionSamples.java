@@ -19,11 +19,12 @@ public final class MongoMIResourcesCreateUpdateMongoMIRoleDefinitionSamples {
     /**
      * Sample code: CosmosDBMongoMIRoleDefinitionCreateUpdate.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void
-        cosmosDBMongoMIRoleDefinitionCreateUpdate(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBMongoMIRoleDefinitionCreateUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getMongoMIResources()
             .createUpdateMongoMIRoleDefinition("myResourceGroupName", "myAccountName", "myRoleDefinitionId",
                 new MongoMIRoleDefinitionResourceInner().withRoleName("myRoleName")

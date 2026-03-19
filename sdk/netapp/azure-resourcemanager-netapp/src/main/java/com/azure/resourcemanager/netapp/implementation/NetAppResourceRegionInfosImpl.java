@@ -29,8 +29,12 @@ public final class NetAppResourceRegionInfosImpl implements NetAppResourceRegion
 
     public Response<RegionInfoResource> getWithResponse(String location, Context context) {
         Response<RegionInfoResourceInner> inner = this.serviceClient().getWithResponse(location, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new RegionInfoResourceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new RegionInfoResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public RegionInfoResource get(String location) {

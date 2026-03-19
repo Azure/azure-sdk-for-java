@@ -16,10 +16,12 @@ public final class CacheRulesCreateSamples {
     /**
      * Sample code: CacheRuleCreate.
      * 
-     * @param manager Entry point to ContainerRegistryManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cacheRuleCreate(com.azure.resourcemanager.containerregistry.ContainerRegistryManager manager) {
-        manager.serviceClient()
+    public static void cacheRuleCreate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.containerRegistries()
+            .manager()
+            .serviceClient()
             .getCacheRules()
             .create("myResourceGroup", "myRegistry", "myCacheRule",
                 new CacheRuleInner().withCredentialSetResourceId("fakeTokenPlaceholder")

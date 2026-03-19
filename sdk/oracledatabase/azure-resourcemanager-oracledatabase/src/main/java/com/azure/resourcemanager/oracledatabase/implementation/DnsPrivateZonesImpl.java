@@ -30,8 +30,12 @@ public final class DnsPrivateZonesImpl implements DnsPrivateZones {
     public Response<DnsPrivateZone> getWithResponse(String location, String dnsprivatezonename, Context context) {
         Response<DnsPrivateZoneInner> inner
             = this.serviceClient().getWithResponse(location, dnsprivatezonename, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new DnsPrivateZoneImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new DnsPrivateZoneImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public DnsPrivateZone get(String location, String dnsprivatezonename) {

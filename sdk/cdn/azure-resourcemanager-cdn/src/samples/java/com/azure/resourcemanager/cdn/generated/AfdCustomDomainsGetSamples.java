@@ -14,10 +14,12 @@ public final class AfdCustomDomainsGetSamples {
     /**
      * Sample code: AFDCustomDomains_Get.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void aFDCustomDomainsGet(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient()
+    public static void aFDCustomDomainsGet(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
             .getAfdCustomDomains()
             .getWithResponse("RG", "profile1", "domain1", com.azure.core.util.Context.NONE);
     }

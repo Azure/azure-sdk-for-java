@@ -33,8 +33,12 @@ public final class ProtectionIntentsImpl implements ProtectionIntents {
         String fabricName, String intentObjectName, Context context) {
         Response<ProtectionIntentResourceInner> inner
             = this.serviceClient().getWithResponse(vaultName, resourceGroupName, fabricName, intentObjectName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new ProtectionIntentResourceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ProtectionIntentResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ProtectionIntentResource get(String vaultName, String resourceGroupName, String fabricName,
@@ -62,8 +66,12 @@ public final class ProtectionIntentsImpl implements ProtectionIntents {
         PreValidateEnableBackupRequest parameters, Context context) {
         Response<PreValidateEnableBackupResponseInner> inner
             = this.serviceClient().validateWithResponse(azureRegion, parameters, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new PreValidateEnableBackupResponseImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new PreValidateEnableBackupResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public PreValidateEnableBackupResponse validate(String azureRegion, PreValidateEnableBackupRequest parameters) {

@@ -21,10 +21,12 @@ public final class WebhooksCreateSamples {
     /**
      * Sample code: WebhookCreate.
      * 
-     * @param manager Entry point to ContainerRegistryManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void webhookCreate(com.azure.resourcemanager.containerregistry.ContainerRegistryManager manager) {
-        manager.serviceClient()
+    public static void webhookCreate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.containerRegistries()
+            .manager()
+            .serviceClient()
             .getWebhooks()
             .create("myResourceGroup", "myRegistry", "myWebhook",
                 new WebhookCreateParameters().withTags(mapOf("key", "fakeTokenPlaceholder"))

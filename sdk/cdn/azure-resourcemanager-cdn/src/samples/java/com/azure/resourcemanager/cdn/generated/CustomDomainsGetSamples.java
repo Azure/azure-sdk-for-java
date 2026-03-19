@@ -14,10 +14,12 @@ public final class CustomDomainsGetSamples {
     /**
      * Sample code: CustomDomains_Get.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void customDomainsGet(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient()
+    public static void customDomainsGet(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
             .getCustomDomains()
             .getWithResponse("RG", "profile1", "endpoint1", "www-someDomain-net", com.azure.core.util.Context.NONE);
     }

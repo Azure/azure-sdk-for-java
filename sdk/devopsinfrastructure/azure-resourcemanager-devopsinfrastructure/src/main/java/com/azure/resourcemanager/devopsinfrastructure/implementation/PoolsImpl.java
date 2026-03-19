@@ -33,8 +33,12 @@ public final class PoolsImpl implements Pools {
     public Response<Pool> getByResourceGroupWithResponse(String resourceGroupName, String poolName, Context context) {
         Response<PoolInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, poolName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new PoolImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new PoolImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public Pool getByResourceGroup(String resourceGroupName, String poolName) {
@@ -78,8 +82,12 @@ public final class PoolsImpl implements Pools {
         Context context) {
         Response<CheckNameAvailabilityResultInner> inner
             = this.serviceClient().checkNameAvailabilityWithResponse(body, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new CheckNameAvailabilityResultImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new CheckNameAvailabilityResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public CheckNameAvailabilityResult checkNameAvailability(CheckNameAvailability body) {

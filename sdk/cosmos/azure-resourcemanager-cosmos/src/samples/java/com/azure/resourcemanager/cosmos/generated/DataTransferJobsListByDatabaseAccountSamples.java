@@ -14,10 +14,12 @@ public final class DataTransferJobsListByDatabaseAccountSamples {
     /**
      * Sample code: CosmosDBDataTransferJobFeed.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBDataTransferJobFeed(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBDataTransferJobFeed(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getDataTransferJobs()
             .listByDatabaseAccount("rg1", "ddb1", com.azure.core.util.Context.NONE);
     }

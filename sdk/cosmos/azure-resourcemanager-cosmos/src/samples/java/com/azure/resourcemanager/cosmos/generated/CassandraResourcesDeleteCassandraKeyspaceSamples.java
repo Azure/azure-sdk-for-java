@@ -14,10 +14,12 @@ public final class CassandraResourcesDeleteCassandraKeyspaceSamples {
     /**
      * Sample code: CosmosDBCassandraKeyspaceDelete.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBCassandraKeyspaceDelete(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBCassandraKeyspaceDelete(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getCassandraResources()
             .deleteCassandraKeyspace("rg1", "ddb1", "keyspaceName", com.azure.core.util.Context.NONE);
     }

@@ -16,10 +16,12 @@ public final class AdminKeysRegenerateSamples {
     /**
      * Sample code: SearchRegenerateAdminKey.
      * 
-     * @param manager Entry point to SearchServiceManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void searchRegenerateAdminKey(com.azure.resourcemanager.search.SearchServiceManager manager) {
-        manager.serviceClient()
+    public static void searchRegenerateAdminKey(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.searchServices()
+            .manager()
+            .serviceClient()
             .getAdminKeys()
             .regenerateWithResponse("rg1", "mysearchservice", AdminKeyKind.PRIMARY, com.azure.core.util.Context.NONE);
     }

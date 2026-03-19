@@ -31,8 +31,12 @@ public final class ApplicationTypesImpl implements ApplicationTypes {
         String applicationTypeName, Context context) {
         Response<ApplicationTypeResourceInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, clusterName, applicationTypeName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new ApplicationTypeResourceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ApplicationTypeResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ApplicationTypeResource get(String resourceGroupName, String clusterName, String applicationTypeName) {

@@ -34,11 +34,12 @@ public final class ServicesUpdateSamples {
     /**
      * Sample code: SearchUpdateServiceDisableLocalAuth.
      * 
-     * @param manager Entry point to SearchServiceManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void
-        searchUpdateServiceDisableLocalAuth(com.azure.resourcemanager.search.SearchServiceManager manager) {
-        manager.serviceClient()
+    public static void searchUpdateServiceDisableLocalAuth(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.searchServices()
+            .manager()
+            .serviceClient()
             .getServices()
             .updateWithResponse("rg1", "mysearchservice",
                 new SearchServiceUpdate()
@@ -54,10 +55,12 @@ public final class ServicesUpdateSamples {
     /**
      * Sample code: SearchUpdateServiceWithSku.
      * 
-     * @param manager Entry point to SearchServiceManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void searchUpdateServiceWithSku(com.azure.resourcemanager.search.SearchServiceManager manager) {
-        manager.serviceClient()
+    public static void searchUpdateServiceWithSku(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.searchServices()
+            .manager()
+            .serviceClient()
             .getServices()
             .updateWithResponse("rg1", "mysearchservice",
                 new SearchServiceUpdate().withSku(new Sku().withName(SkuName.STANDARD2))
@@ -71,11 +74,13 @@ public final class ServicesUpdateSamples {
     /**
      * Sample code: SearchUpdateServiceToAllowAccessFromPublicCustomIPsAndBypass.
      * 
-     * @param manager Entry point to SearchServiceManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void searchUpdateServiceToAllowAccessFromPublicCustomIPsAndBypass(
-        com.azure.resourcemanager.search.SearchServiceManager manager) {
-        manager.serviceClient()
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.searchServices()
+            .manager()
+            .serviceClient()
             .getServices()
             .updateWithResponse("rg1", "mysearchservice",
                 new SearchServiceUpdate().withReplicaCount(3)
@@ -94,11 +99,12 @@ public final class ServicesUpdateSamples {
     /**
      * Sample code: SearchUpdateServiceWithCmkEnforcement.
      * 
-     * @param manager Entry point to SearchServiceManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void
-        searchUpdateServiceWithCmkEnforcement(com.azure.resourcemanager.search.SearchServiceManager manager) {
-        manager.serviceClient()
+    public static void searchUpdateServiceWithCmkEnforcement(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.searchServices()
+            .manager()
+            .serviceClient()
             .getServices()
             .updateWithResponse("rg1", "mysearchservice",
                 new SearchServiceUpdate()
@@ -114,11 +120,12 @@ public final class ServicesUpdateSamples {
     /**
      * Sample code: SearchUpdateServiceWithDataExfiltration.
      * 
-     * @param manager Entry point to SearchServiceManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void
-        searchUpdateServiceWithDataExfiltration(com.azure.resourcemanager.search.SearchServiceManager manager) {
-        manager.serviceClient()
+    public static void searchUpdateServiceWithDataExfiltration(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.searchServices()
+            .manager()
+            .serviceClient()
             .getServices()
             .updateWithResponse("rg1", "mysearchservice",
                 new SearchServiceUpdate()
@@ -134,11 +141,12 @@ public final class ServicesUpdateSamples {
     /**
      * Sample code: SearchUpdateServiceToRemoveIdentity.
      * 
-     * @param manager Entry point to SearchServiceManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void
-        searchUpdateServiceToRemoveIdentity(com.azure.resourcemanager.search.SearchServiceManager manager) {
-        manager.serviceClient()
+    public static void searchUpdateServiceToRemoveIdentity(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.searchServices()
+            .manager()
+            .serviceClient()
             .getServices()
             .updateWithResponse("rg1", "mysearchservice",
                 new SearchServiceUpdate().withSku(new Sku().withName(SkuName.STANDARD))
@@ -152,11 +160,12 @@ public final class ServicesUpdateSamples {
     /**
      * Sample code: SearchUpdateServiceWithSemanticSearch.
      * 
-     * @param manager Entry point to SearchServiceManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void
-        searchUpdateServiceWithSemanticSearch(com.azure.resourcemanager.search.SearchServiceManager manager) {
-        manager.serviceClient()
+    public static void searchUpdateServiceWithSemanticSearch(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.searchServices()
+            .manager()
+            .serviceClient()
             .getServices()
             .updateWithResponse("rg1", "mysearchservice",
                 new SearchServiceUpdate()
@@ -172,11 +181,13 @@ public final class ServicesUpdateSamples {
     /**
      * Sample code: SearchUpdateServiceToAllowAccessFromPrivateEndpoints.
      * 
-     * @param manager Entry point to SearchServiceManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void searchUpdateServiceToAllowAccessFromPrivateEndpoints(
-        com.azure.resourcemanager.search.SearchServiceManager manager) {
-        manager.serviceClient()
+    public static void
+        searchUpdateServiceToAllowAccessFromPrivateEndpoints(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.searchServices()
+            .manager()
+            .serviceClient()
             .getServices()
             .updateWithResponse("rg1", "mysearchservice",
                 new SearchServiceUpdate().withReplicaCount(1)
@@ -191,11 +202,13 @@ public final class ServicesUpdateSamples {
     /**
      * Sample code: SearchUpdateServiceToAllowAccessFromPublicCustomIPs.
      * 
-     * @param manager Entry point to SearchServiceManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void searchUpdateServiceToAllowAccessFromPublicCustomIPs(
-        com.azure.resourcemanager.search.SearchServiceManager manager) {
-        manager.serviceClient()
+    public static void
+        searchUpdateServiceToAllowAccessFromPublicCustomIPs(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.searchServices()
+            .manager()
+            .serviceClient()
             .getServices()
             .updateWithResponse("rg1", "mysearchservice",
                 new SearchServiceUpdate().withReplicaCount(3)
@@ -212,10 +225,12 @@ public final class ServicesUpdateSamples {
     /**
      * Sample code: SearchUpdateServiceAuthOptions.
      * 
-     * @param manager Entry point to SearchServiceManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void searchUpdateServiceAuthOptions(com.azure.resourcemanager.search.SearchServiceManager manager) {
-        manager.serviceClient()
+    public static void searchUpdateServiceAuthOptions(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.searchServices()
+            .manager()
+            .serviceClient()
             .getServices()
             .updateWithResponse("rg1", "mysearchservice",
                 new SearchServiceUpdate()
@@ -232,10 +247,12 @@ public final class ServicesUpdateSamples {
     /**
      * Sample code: SearchUpdateService.
      * 
-     * @param manager Entry point to SearchServiceManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void searchUpdateService(com.azure.resourcemanager.search.SearchServiceManager manager) {
-        manager.serviceClient()
+    public static void searchUpdateService(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.searchServices()
+            .manager()
+            .serviceClient()
             .getServices()
             .updateWithResponse("rg1", "mysearchservice",
                 new SearchServiceUpdate()

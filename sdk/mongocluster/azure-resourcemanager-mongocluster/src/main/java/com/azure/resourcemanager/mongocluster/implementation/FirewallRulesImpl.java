@@ -31,8 +31,12 @@ public final class FirewallRulesImpl implements FirewallRules {
         String firewallRuleName, Context context) {
         Response<FirewallRuleInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, mongoClusterName, firewallRuleName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new FirewallRuleImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new FirewallRuleImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public FirewallRule get(String resourceGroupName, String mongoClusterName, String firewallRuleName) {

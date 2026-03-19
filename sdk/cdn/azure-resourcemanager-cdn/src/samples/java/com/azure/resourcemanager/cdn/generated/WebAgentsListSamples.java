@@ -14,9 +14,9 @@ public final class WebAgentsListSamples {
     /**
      * Sample code: List Web Agents in a Subscription.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void listWebAgentsInASubscription(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient().getWebAgents().list(com.azure.core.util.Context.NONE);
+    public static void listWebAgentsInASubscription(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles().manager().serviceClient().getWebAgents().list(com.azure.core.util.Context.NONE);
     }
 }

@@ -31,8 +31,12 @@ public final class EnterpriseMccCustomersImpl implements EnterpriseMccCustomers 
         String customerResourceName, Context context) {
         Response<EnterpriseMccCustomerResourceInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, customerResourceName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new EnterpriseMccCustomerResourceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new EnterpriseMccCustomerResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public EnterpriseMccCustomerResource getByResourceGroup(String resourceGroupName, String customerResourceName) {

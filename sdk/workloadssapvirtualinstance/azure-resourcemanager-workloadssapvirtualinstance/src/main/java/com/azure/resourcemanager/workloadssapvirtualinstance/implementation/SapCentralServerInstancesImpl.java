@@ -35,8 +35,12 @@ public final class SapCentralServerInstancesImpl implements SapCentralServerInst
         String centralInstanceName, Context context) {
         Response<SapCentralServerInstanceInner> inner = this.serviceClient()
             .getWithResponse(resourceGroupName, sapVirtualInstanceName, centralInstanceName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new SapCentralServerInstanceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new SapCentralServerInstanceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public SapCentralServerInstance get(String resourceGroupName, String sapVirtualInstanceName,

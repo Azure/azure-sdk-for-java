@@ -16,10 +16,12 @@ public final class SqlResourcesRetrieveContinuousBackupInformationSamples {
     /**
      * Sample code: CosmosDBSqlContainerBackupInformation.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBSqlContainerBackupInformation(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBSqlContainerBackupInformation(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getSqlResources()
             .retrieveContinuousBackupInformation("rgName", "ddb1", "databaseName", "containerName",
                 new ContinuousBackupRestoreLocation().withLocation("North Europe"), com.azure.core.util.Context.NONE);

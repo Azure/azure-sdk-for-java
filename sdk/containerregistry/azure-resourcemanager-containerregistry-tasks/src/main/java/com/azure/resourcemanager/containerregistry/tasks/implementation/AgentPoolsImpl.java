@@ -33,8 +33,12 @@ public final class AgentPoolsImpl implements AgentPools {
         Context context) {
         Response<AgentPoolInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, registryName, agentPoolName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new AgentPoolImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new AgentPoolImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public AgentPool get(String resourceGroupName, String registryName, String agentPoolName) {
@@ -68,8 +72,12 @@ public final class AgentPoolsImpl implements AgentPools {
         String agentPoolName, Context context) {
         Response<AgentPoolQueueStatusInner> inner
             = this.serviceClient().getQueueStatusWithResponse(resourceGroupName, registryName, agentPoolName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new AgentPoolQueueStatusImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new AgentPoolQueueStatusImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public AgentPoolQueueStatus getQueueStatus(String resourceGroupName, String registryName, String agentPoolName) {

@@ -24,7 +24,7 @@ public final class NeonDatabasesCreateOrUpdateSamples {
         neonDatabasesCreateOrUpdateMaximumSet(com.azure.resourcemanager.neonpostgres.NeonPostgresManager manager) {
         manager.neonDatabases()
             .define("postgres_main_db")
-            .withExistingBranch("rgneon", "myOrganization", "myProject", "feature")
+            .withExistingBranche("rgneon", "myOrganization", "myProject", "feature")
             .withProperties(new NeonDatabaseProperties().withEntityName("MainDatabase")
                 .withAttributes(Arrays.asList(new Attributes().withName("on").withValue("qzp")))
                 .withBranchId("sllrohrmwkgzre")

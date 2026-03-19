@@ -31,8 +31,12 @@ public final class TaskRunsImpl implements TaskRuns {
         Context context) {
         Response<TaskRunInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, registryName, taskRunName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new TaskRunImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new TaskRunImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public TaskRun get(String resourceGroupName, String registryName, String taskRunName) {
@@ -67,8 +71,12 @@ public final class TaskRunsImpl implements TaskRuns {
         Context context) {
         Response<TaskRunInner> inner
             = this.serviceClient().getDetailsWithResponse(resourceGroupName, registryName, taskRunName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new TaskRunImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new TaskRunImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public TaskRun getDetails(String resourceGroupName, String registryName, String taskRunName) {

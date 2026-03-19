@@ -18,10 +18,12 @@ public final class ThroughputPoolCreateOrUpdateSamples {
     /**
      * Sample code: CosmosDB ThroughputPool Create.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBThroughputPoolCreate(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBThroughputPoolCreate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getThroughputPools()
             .createOrUpdate("rg1", "tp1",
                 new ThroughputPoolResourceInner().withLocation("westus2").withTags(mapOf()).withMaxThroughput(10000),

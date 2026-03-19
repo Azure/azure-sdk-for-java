@@ -19,11 +19,12 @@ public final class RegistriesImportImageSamples {
     /**
      * Sample code: ImportImageFromPublicRegistry.
      * 
-     * @param manager Entry point to ContainerRegistryManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void
-        importImageFromPublicRegistry(com.azure.resourcemanager.containerregistry.ContainerRegistryManager manager) {
-        manager.serviceClient()
+    public static void importImageFromPublicRegistry(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.containerRegistries()
+            .manager()
+            .serviceClient()
             .getRegistries()
             .importImage("myResourceGroup", "myRegistry",
                 new ImportImageParameters()
@@ -41,10 +42,12 @@ public final class RegistriesImportImageSamples {
     /**
      * Sample code: ImportImageByTag.
      * 
-     * @param manager Entry point to ContainerRegistryManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void importImageByTag(com.azure.resourcemanager.containerregistry.ContainerRegistryManager manager) {
-        manager.serviceClient()
+    public static void importImageByTag(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.containerRegistries()
+            .manager()
+            .serviceClient()
             .getRegistries()
             .importImage("myResourceGroup", "myRegistry",
                 new ImportImageParameters().withSource(new ImportSource().withResourceId(
@@ -62,11 +65,12 @@ public final class RegistriesImportImageSamples {
     /**
      * Sample code: ImportImageByManifestDigest.
      * 
-     * @param manager Entry point to ContainerRegistryManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void
-        importImageByManifestDigest(com.azure.resourcemanager.containerregistry.ContainerRegistryManager manager) {
-        manager.serviceClient()
+    public static void importImageByManifestDigest(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.containerRegistries()
+            .manager()
+            .serviceClient()
             .getRegistries()
             .importImage("myResourceGroup", "myRegistry",
                 new ImportImageParameters().withSource(new ImportSource().withResourceId(

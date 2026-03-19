@@ -14,9 +14,13 @@ public final class FleetspaceListSamples {
     /**
      * Sample code: CosmosDB Fleetspace List.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBFleetspaceList(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient().getFleetspaces().list("rg1", "fleet1", com.azure.core.util.Context.NONE);
+    public static void cosmosDBFleetspaceList(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
+            .getFleetspaces()
+            .list("rg1", "fleet1", com.azure.core.util.Context.NONE);
     }
 }

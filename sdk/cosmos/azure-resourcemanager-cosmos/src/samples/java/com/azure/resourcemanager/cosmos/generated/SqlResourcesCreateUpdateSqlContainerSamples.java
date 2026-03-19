@@ -52,10 +52,12 @@ public final class SqlResourcesCreateUpdateSqlContainerSamples {
     /**
      * Sample code: CosmosDBSqlMaterializedViewCreateUpdate.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBSqlMaterializedViewCreateUpdate(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBSqlMaterializedViewCreateUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getSqlResources()
             .createUpdateSqlContainer("rg1", "ddb1", "databaseName", "mvContainerName",
                 new SqlContainerCreateUpdateParameters().withLocation("West US")
@@ -88,10 +90,12 @@ public final class SqlResourcesCreateUpdateSqlContainerSamples {
     /**
      * Sample code: CosmosDBSqlContainerCreateUpdate.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBSqlContainerCreateUpdate(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBSqlContainerCreateUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getSqlResources()
             .createUpdateSqlContainer("rg1", "ddb1", "databaseName", "containerName",
                 new SqlContainerCreateUpdateParameters().withLocation("West US")
@@ -169,10 +173,12 @@ public final class SqlResourcesCreateUpdateSqlContainerSamples {
     /**
      * Sample code: CosmosDBSqlContainerRestore.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBSqlContainerRestore(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBSqlContainerRestore(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getSqlResources()
             .createUpdateSqlContainer("rg1", "ddb1", "databaseName", "containerName",
                 new SqlContainerCreateUpdateParameters().withLocation("West US")

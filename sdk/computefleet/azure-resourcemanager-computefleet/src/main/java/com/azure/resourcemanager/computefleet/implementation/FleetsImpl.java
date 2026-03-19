@@ -34,8 +34,12 @@ public final class FleetsImpl implements Fleets {
     public Response<Fleet> getByResourceGroupWithResponse(String resourceGroupName, String fleetName, Context context) {
         Response<FleetInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, fleetName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new FleetImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new FleetImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public Fleet getByResourceGroup(String resourceGroupName, String fleetName) {

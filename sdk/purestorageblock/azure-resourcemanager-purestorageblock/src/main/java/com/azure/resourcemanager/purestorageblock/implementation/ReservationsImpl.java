@@ -37,8 +37,12 @@ public final class ReservationsImpl implements Reservations {
         Context context) {
         Response<ReservationInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, reservationName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new ReservationImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ReservationImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public Reservation getByResourceGroup(String resourceGroupName, String reservationName) {
@@ -82,8 +86,12 @@ public final class ReservationsImpl implements Reservations {
         Context context) {
         Response<LimitDetailsInner> inner
             = this.serviceClient().getResourceLimitsWithResponse(resourceGroupName, reservationName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new LimitDetailsImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new LimitDetailsImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public LimitDetails getResourceLimits(String resourceGroupName, String reservationName) {
@@ -99,8 +107,12 @@ public final class ReservationsImpl implements Reservations {
         String reservationName, Context context) {
         Response<ReservationBillingStatusInner> inner
             = this.serviceClient().getBillingStatusWithResponse(resourceGroupName, reservationName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new ReservationBillingStatusImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ReservationBillingStatusImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ReservationBillingStatus getBillingStatus(String resourceGroupName, String reservationName) {
@@ -116,8 +128,12 @@ public final class ReservationsImpl implements Reservations {
         String reservationName, Context context) {
         Response<ReservationBillingUsageReportInner> inner
             = this.serviceClient().getBillingReportWithResponse(resourceGroupName, reservationName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new ReservationBillingUsageReportImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ReservationBillingUsageReportImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ReservationBillingUsageReport getBillingReport(String resourceGroupName, String reservationName) {

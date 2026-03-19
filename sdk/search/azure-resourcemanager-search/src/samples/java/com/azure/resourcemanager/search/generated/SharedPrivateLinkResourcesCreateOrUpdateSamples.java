@@ -17,11 +17,12 @@ public final class SharedPrivateLinkResourcesCreateOrUpdateSamples {
     /**
      * Sample code: SharedPrivateLinkResourceCreateOrUpdate.
      * 
-     * @param manager Entry point to SearchServiceManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void
-        sharedPrivateLinkResourceCreateOrUpdate(com.azure.resourcemanager.search.SearchServiceManager manager) {
-        manager.serviceClient()
+    public static void sharedPrivateLinkResourceCreateOrUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.searchServices()
+            .manager()
+            .serviceClient()
             .getSharedPrivateLinkResources()
             .createOrUpdate("rg1", "mysearchservice", "testResource", new SharedPrivateLinkResourceInner()
                 .withProperties(new SharedPrivateLinkResourceProperties().withPrivateLinkResourceId(

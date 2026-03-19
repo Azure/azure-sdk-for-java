@@ -14,11 +14,13 @@ public final class NetworkSecurityPerimeterConfigurationsGetSamples {
     /**
      * Sample code: NamspaceNetworkSecurityPerimeterConfigurationList.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
-        namspaceNetworkSecurityPerimeterConfigurationList(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+        namspaceNetworkSecurityPerimeterConfigurationList(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getNetworkSecurityPerimeterConfigurations()
             .getWithResponse("res4410", "cosmosTest", "dbedb4e0-40e6-4145-81f3-f1314c150774.resourceAssociation1",
                 com.azure.core.util.Context.NONE);

@@ -14,10 +14,12 @@ public final class CassandraResourcesGetCassandraRoleAssignmentSamples {
     /**
      * Sample code: CosmosDBCassandraRoleAssignmentGet.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBCassandraRoleAssignmentGet(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBCassandraRoleAssignmentGet(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getCassandraResources()
             .getCassandraRoleAssignmentWithResponse("myResourceGroupName", "myAccountName", "myRoleAssignmentId",
                 com.azure.core.util.Context.NONE);

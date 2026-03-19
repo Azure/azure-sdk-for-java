@@ -57,7 +57,7 @@ public final class EndpointImpl implements Endpoint, Endpoint.Definition, Endpoi
 
     private String endpointName;
 
-    public EndpointImpl withExistingBranch(String resourceGroupName, String organizationName, String projectName,
+    public EndpointImpl withExistingBranche(String resourceGroupName, String organizationName, String projectName,
         String branchName) {
         this.resourceGroupName = resourceGroupName;
         this.organizationName = organizationName;

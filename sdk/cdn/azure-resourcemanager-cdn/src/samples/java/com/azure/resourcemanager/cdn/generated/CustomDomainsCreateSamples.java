@@ -16,10 +16,12 @@ public final class CustomDomainsCreateSamples {
     /**
      * Sample code: CustomDomains_Create.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void customDomainsCreate(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient()
+    public static void customDomainsCreate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
             .getCustomDomains()
             .create("RG", "profile1", "endpoint1", "www-someDomain-net",
                 new CustomDomainParameters().withHostname("www.someDomain.net"), com.azure.core.util.Context.NONE);

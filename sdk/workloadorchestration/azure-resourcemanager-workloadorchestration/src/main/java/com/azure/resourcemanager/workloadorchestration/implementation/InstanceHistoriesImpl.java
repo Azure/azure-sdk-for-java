@@ -31,8 +31,12 @@ public final class InstanceHistoriesImpl implements InstanceHistories {
         String instanceName, String instanceHistoryName, Context context) {
         Response<InstanceHistoryInner> inner = this.serviceClient()
             .getWithResponse(resourceGroupName, targetName, solutionName, instanceName, instanceHistoryName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new InstanceHistoryImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new InstanceHistoryImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public InstanceHistory get(String resourceGroupName, String targetName, String solutionName, String instanceName,

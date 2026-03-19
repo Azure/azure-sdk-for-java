@@ -40,8 +40,12 @@ public final class SitesBySubscriptionsImpl implements SitesBySubscriptions {
 
     public Response<Site> getWithResponse(String siteName, Context context) {
         Response<SiteInner> inner = this.serviceClient().getWithResponse(siteName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new SiteImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new SiteImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public Site get(String siteName) {
@@ -73,8 +77,12 @@ public final class SitesBySubscriptionsImpl implements SitesBySubscriptions {
 
     public Response<Site> updateWithResponse(String siteName, SiteUpdate properties, Context context) {
         Response<SiteInner> inner = this.serviceClient().updateWithResponse(siteName, properties, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new SiteImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new SiteImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public Site update(String siteName, SiteUpdate properties) {

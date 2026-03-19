@@ -31,8 +31,12 @@ public final class LogicalNetworksImpl implements LogicalNetworks {
         Context context) {
         Response<LogicalNetworkInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, logicalNetworkName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new LogicalNetworkImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new LogicalNetworkImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public LogicalNetwork getByResourceGroup(String resourceGroupName, String logicalNetworkName) {

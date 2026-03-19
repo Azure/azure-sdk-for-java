@@ -14,10 +14,12 @@ public final class CassandraResourcesDeleteCassandraRoleAssignmentSamples {
     /**
      * Sample code: CosmosDBCassandraRoleAssignmentDelete.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBCassandraRoleAssignmentDelete(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBCassandraRoleAssignmentDelete(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getCassandraResources()
             .deleteCassandraRoleAssignment("myResourceGroupName", "myAccountName", "myRoleAssignmentId",
                 com.azure.core.util.Context.NONE);

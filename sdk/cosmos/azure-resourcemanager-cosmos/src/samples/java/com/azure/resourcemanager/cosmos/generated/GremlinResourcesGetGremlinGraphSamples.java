@@ -14,10 +14,12 @@ public final class GremlinResourcesGetGremlinGraphSamples {
     /**
      * Sample code: CosmosDBGremlinGraphGet.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBGremlinGraphGet(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBGremlinGraphGet(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getGremlinResources()
             .getGremlinGraphWithResponse("rgName", "ddb1", "databaseName", "graphName",
                 com.azure.core.util.Context.NONE);

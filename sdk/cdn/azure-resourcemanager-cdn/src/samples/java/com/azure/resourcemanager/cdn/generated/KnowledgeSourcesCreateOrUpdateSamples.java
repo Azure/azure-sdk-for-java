@@ -18,10 +18,12 @@ public final class KnowledgeSourcesCreateOrUpdateSamples {
     /**
      * Sample code: Create or Update Knowledge Source.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void createOrUpdateKnowledgeSource(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient()
+    public static void createOrUpdateKnowledgeSource(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
             .getKnowledgeSources()
             .createOrUpdate("RG", "myWebAgent1", "myKnowledgeSource1",
                 new KnowledgeSourceInner().withDescription("Website knowledge source for FAQ content")

@@ -14,10 +14,12 @@ public final class AfdOriginGroupsGetSamples {
     /**
      * Sample code: AFDOriginGroups_Get.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void aFDOriginGroupsGet(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient()
+    public static void aFDOriginGroupsGet(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
             .getAfdOriginGroups()
             .getWithResponse("RG", "profile1", "origingroup1", com.azure.core.util.Context.NONE);
     }

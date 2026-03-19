@@ -39,8 +39,12 @@ public final class EnterpriseMccCacheNodesOperationsImpl implements EnterpriseMc
         String customerResourceName, String cacheNodeResourceName, Context context) {
         Response<EnterpriseMccCacheNodeResourceInner> inner = this.serviceClient()
             .getWithResponse(resourceGroupName, customerResourceName, cacheNodeResourceName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new EnterpriseMccCacheNodeResourceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new EnterpriseMccCacheNodeResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public EnterpriseMccCacheNodeResource get(String resourceGroupName, String customerResourceName,
@@ -84,8 +88,12 @@ public final class EnterpriseMccCacheNodesOperationsImpl implements EnterpriseMc
         Response<MccCacheNodeInstallDetailsInner> inner = this.serviceClient()
             .getCacheNodeInstallDetailsWithResponse(resourceGroupName, customerResourceName, cacheNodeResourceName,
                 context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new MccCacheNodeInstallDetailsImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new MccCacheNodeInstallDetailsImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public MccCacheNodeInstallDetails getCacheNodeInstallDetails(String resourceGroupName, String customerResourceName,
@@ -104,8 +112,12 @@ public final class EnterpriseMccCacheNodesOperationsImpl implements EnterpriseMc
         Response<MccCacheNodeAutoUpdateHistoryInner> inner = this.serviceClient()
             .getCacheNodeAutoUpdateHistoryWithResponse(resourceGroupName, customerResourceName, cacheNodeResourceName,
                 context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new MccCacheNodeAutoUpdateHistoryImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new MccCacheNodeAutoUpdateHistoryImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public MccCacheNodeAutoUpdateHistory getCacheNodeAutoUpdateHistory(String resourceGroupName,
@@ -124,8 +136,12 @@ public final class EnterpriseMccCacheNodesOperationsImpl implements EnterpriseMc
         Response<MccCacheNodeIssueHistoryInner> inner = this.serviceClient()
             .getCacheNodeMccIssueDetailsHistoryWithResponse(resourceGroupName, customerResourceName,
                 cacheNodeResourceName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new MccCacheNodeIssueHistoryImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new MccCacheNodeIssueHistoryImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public MccCacheNodeIssueHistory getCacheNodeMccIssueDetailsHistory(String resourceGroupName,
@@ -144,8 +160,12 @@ public final class EnterpriseMccCacheNodesOperationsImpl implements EnterpriseMc
         Response<MccCacheNodeTlsCertificateHistoryInner> inner = this.serviceClient()
             .getCacheNodeTlsCertificateHistoryWithResponse(resourceGroupName, customerResourceName,
                 cacheNodeResourceName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new MccCacheNodeTlsCertificateHistoryImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new MccCacheNodeTlsCertificateHistoryImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public MccCacheNodeTlsCertificateHistory getCacheNodeTlsCertificateHistory(String resourceGroupName,

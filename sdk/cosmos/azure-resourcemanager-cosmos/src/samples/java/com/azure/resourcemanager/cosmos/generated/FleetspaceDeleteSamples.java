@@ -14,10 +14,12 @@ public final class FleetspaceDeleteSamples {
     /**
      * Sample code: CosmosDB Fleetspace Delete.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBFleetspaceDelete(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBFleetspaceDelete(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getFleetspaces()
             .delete("rg1", "fleet1", "fleetspace1", com.azure.core.util.Context.NONE);
     }

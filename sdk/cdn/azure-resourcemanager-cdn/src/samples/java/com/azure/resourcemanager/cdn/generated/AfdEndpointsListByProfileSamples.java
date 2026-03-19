@@ -14,9 +14,13 @@ public final class AfdEndpointsListByProfileSamples {
     /**
      * Sample code: AFDEndpoints_ListByProfile.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void aFDEndpointsListByProfile(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient().getAfdEndpoints().listByProfile("RG", "profile1", com.azure.core.util.Context.NONE);
+    public static void aFDEndpointsListByProfile(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
+            .getAfdEndpoints()
+            .listByProfile("RG", "profile1", com.azure.core.util.Context.NONE);
     }
 }

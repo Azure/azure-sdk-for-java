@@ -31,8 +31,12 @@ public final class BackupPoliciesImpl implements BackupPolicies {
         Context context) {
         Response<BackupPolicyInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, accountName, backupPolicyName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new BackupPolicyImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new BackupPolicyImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public BackupPolicy get(String resourceGroupName, String accountName, String backupPolicyName) {

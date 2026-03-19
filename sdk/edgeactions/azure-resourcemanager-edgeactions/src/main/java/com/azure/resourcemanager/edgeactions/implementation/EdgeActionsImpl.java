@@ -31,8 +31,12 @@ public final class EdgeActionsImpl implements EdgeActions {
         Context context) {
         Response<EdgeActionInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, edgeActionName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new EdgeActionImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new EdgeActionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public EdgeAction getByResourceGroup(String resourceGroupName, String edgeActionName) {

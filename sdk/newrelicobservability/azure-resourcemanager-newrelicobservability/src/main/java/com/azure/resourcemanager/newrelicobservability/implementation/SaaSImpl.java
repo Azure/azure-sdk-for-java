@@ -31,8 +31,12 @@ public final class SaaSImpl implements SaaS {
         Context context) {
         Response<SaaSResourceDetailsResponseInner> inner
             = this.serviceClient().activateResourceWithResponse(request, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new SaaSResourceDetailsResponseImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new SaaSResourceDetailsResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public SaaSResourceDetailsResponse activateResource(ActivateSaaSParameterRequest request) {

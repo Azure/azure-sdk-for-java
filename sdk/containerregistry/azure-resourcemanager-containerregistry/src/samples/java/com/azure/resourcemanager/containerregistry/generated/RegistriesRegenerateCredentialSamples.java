@@ -17,11 +17,12 @@ public final class RegistriesRegenerateCredentialSamples {
     /**
      * Sample code: RegistryRegenerateCredential.
      * 
-     * @param manager Entry point to ContainerRegistryManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void
-        registryRegenerateCredential(com.azure.resourcemanager.containerregistry.ContainerRegistryManager manager) {
-        manager.serviceClient()
+    public static void registryRegenerateCredential(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.containerRegistries()
+            .manager()
+            .serviceClient()
             .getRegistries()
             .regenerateCredentialWithResponse("myResourceGroup", "myRegistry",
                 new RegenerateCredentialParameters().withName(PasswordName.PASSWORD), com.azure.core.util.Context.NONE);

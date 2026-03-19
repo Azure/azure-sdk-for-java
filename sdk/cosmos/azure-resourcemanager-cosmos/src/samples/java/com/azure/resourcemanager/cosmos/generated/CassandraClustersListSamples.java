@@ -14,10 +14,14 @@ public final class CassandraClustersListSamples {
     /**
      * Sample code: CosmosDBManagedCassandraClusterListBySubscription.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
-        cosmosDBManagedCassandraClusterListBySubscription(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient().getCassandraClusters().list(com.azure.core.util.Context.NONE);
+        cosmosDBManagedCassandraClusterListBySubscription(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
+            .getCassandraClusters()
+            .list(com.azure.core.util.Context.NONE);
     }
 }

@@ -34,8 +34,12 @@ public final class ManagedClusterVersionsImpl implements ManagedClusterVersions 
         Context context) {
         Response<ManagedClusterCodeVersionResultInner> inner
             = this.serviceClient().getWithResponse(location, clusterVersion, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new ManagedClusterCodeVersionResultImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ManagedClusterCodeVersionResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ManagedClusterCodeVersionResult get(String location, String clusterVersion) {
@@ -50,11 +54,15 @@ public final class ManagedClusterVersionsImpl implements ManagedClusterVersions 
     public Response<List<ManagedClusterCodeVersionResult>> listWithResponse(String location, Context context) {
         Response<List<ManagedClusterCodeVersionResultInner>> inner
             = this.serviceClient().listWithResponse(location, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            inner.getValue()
-                .stream()
-                .map(inner1 -> new ManagedClusterCodeVersionResultImpl(inner1, this.manager()))
-                .collect(Collectors.toList()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                inner.getValue()
+                    .stream()
+                    .map(inner1 -> new ManagedClusterCodeVersionResultImpl(inner1, this.manager()))
+                    .collect(Collectors.toList()));
+        } else {
+            return null;
+        }
     }
 
     public List<ManagedClusterCodeVersionResult> list(String location) {
@@ -72,8 +80,12 @@ public final class ManagedClusterVersionsImpl implements ManagedClusterVersions 
         ManagedClusterVersionEnvironment environment, String clusterVersion, Context context) {
         Response<ManagedClusterCodeVersionResultInner> inner
             = this.serviceClient().getByEnvironmentWithResponse(location, environment, clusterVersion, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new ManagedClusterCodeVersionResultImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ManagedClusterCodeVersionResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ManagedClusterCodeVersionResult getByEnvironment(String location,
@@ -91,11 +103,15 @@ public final class ManagedClusterVersionsImpl implements ManagedClusterVersions 
         ManagedClusterVersionEnvironment environment, Context context) {
         Response<List<ManagedClusterCodeVersionResultInner>> inner
             = this.serviceClient().listByEnvironmentWithResponse(location, environment, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            inner.getValue()
-                .stream()
-                .map(inner1 -> new ManagedClusterCodeVersionResultImpl(inner1, this.manager()))
-                .collect(Collectors.toList()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                inner.getValue()
+                    .stream()
+                    .map(inner1 -> new ManagedClusterCodeVersionResultImpl(inner1, this.manager()))
+                    .collect(Collectors.toList()));
+        } else {
+            return null;
+        }
     }
 
     public List<ManagedClusterCodeVersionResult> listByEnvironment(String location,

@@ -14,10 +14,12 @@ public final class TableResourcesMigrateTableToAutoscaleSamples {
     /**
      * Sample code: CosmosDBTableMigrateToAutoscale.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBTableMigrateToAutoscale(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBTableMigrateToAutoscale(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getTableResources()
             .migrateTableToAutoscale("rg1", "ddb1", "tableName", com.azure.core.util.Context.NONE);
     }

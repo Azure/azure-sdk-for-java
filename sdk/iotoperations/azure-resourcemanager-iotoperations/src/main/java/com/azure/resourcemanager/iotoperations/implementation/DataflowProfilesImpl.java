@@ -31,8 +31,12 @@ public final class DataflowProfilesImpl implements DataflowProfiles {
         String dataflowProfileName, Context context) {
         Response<DataflowProfileResourceInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, instanceName, dataflowProfileName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new DataflowProfileResourceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new DataflowProfileResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public DataflowProfileResource get(String resourceGroupName, String instanceName, String dataflowProfileName) {

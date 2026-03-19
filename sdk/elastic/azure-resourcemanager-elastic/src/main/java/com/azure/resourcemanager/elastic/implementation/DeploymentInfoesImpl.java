@@ -30,8 +30,12 @@ public final class DeploymentInfoesImpl implements DeploymentInfoes {
         Context context) {
         Response<DeploymentInfoResponseInner> inner
             = this.serviceClient().listWithResponse(resourceGroupName, monitorName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new DeploymentInfoResponseImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new DeploymentInfoResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public DeploymentInfoResponse list(String resourceGroupName, String monitorName) {

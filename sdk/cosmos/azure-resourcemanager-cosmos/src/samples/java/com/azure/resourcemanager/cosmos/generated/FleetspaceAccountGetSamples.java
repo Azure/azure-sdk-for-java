@@ -14,10 +14,12 @@ public final class FleetspaceAccountGetSamples {
     /**
      * Sample code: CosmosDB FleetspaceAccount Get.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBFleetspaceAccountGet(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBFleetspaceAccountGet(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getFleetspaceAccounts()
             .getWithResponse("rg1", "fleet1", "fleetspace1", "db1", com.azure.core.util.Context.NONE);
     }

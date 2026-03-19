@@ -43,8 +43,12 @@ public final class HostsImpl implements Hosts {
         String hostId, Context context) {
         Response<HostModelInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, privateCloudName, clusterName, hostId, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new HostModelImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new HostModelImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public HostModel get(String resourceGroupName, String privateCloudName, String clusterName, String hostId) {

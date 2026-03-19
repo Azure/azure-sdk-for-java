@@ -14,10 +14,12 @@ public final class FleetAnalyticsGetSamples {
     /**
      * Sample code: CosmosDB FleetAnalytics Get.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBFleetAnalyticsGet(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBFleetAnalyticsGet(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getFleetAnalytics()
             .getWithResponse("rg1", "fleet1", "storageAccount", com.azure.core.util.Context.NONE);
     }

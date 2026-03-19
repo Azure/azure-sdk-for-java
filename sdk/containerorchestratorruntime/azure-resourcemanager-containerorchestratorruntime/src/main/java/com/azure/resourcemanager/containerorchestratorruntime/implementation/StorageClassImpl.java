@@ -31,8 +31,12 @@ public final class StorageClassImpl implements StorageClass {
         Context context) {
         Response<StorageClassResourceInner> inner
             = this.serviceClient().getWithResponse(resourceUri, storageClassName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new StorageClassResourceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new StorageClassResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public StorageClassResource get(String resourceUri, String storageClassName) {

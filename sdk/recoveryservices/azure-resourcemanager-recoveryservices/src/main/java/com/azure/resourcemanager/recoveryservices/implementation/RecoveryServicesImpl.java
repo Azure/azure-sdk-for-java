@@ -34,8 +34,12 @@ public final class RecoveryServicesImpl implements RecoveryServices {
         String location, CheckNameAvailabilityParameters input, Context context) {
         Response<CheckNameAvailabilityResultInner> inner
             = this.serviceClient().checkNameAvailabilityWithResponse(resourceGroupName, location, input, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new CheckNameAvailabilityResultImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new CheckNameAvailabilityResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public CheckNameAvailabilityResult checkNameAvailability(String resourceGroupName, String location,
@@ -53,8 +57,12 @@ public final class RecoveryServicesImpl implements RecoveryServices {
         Context context) {
         Response<CapabilitiesResponseInner> inner
             = this.serviceClient().capabilitiesWithResponse(location, input, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new CapabilitiesResponseImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new CapabilitiesResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public CapabilitiesResponse capabilities(String location, ResourceCapabilities input) {

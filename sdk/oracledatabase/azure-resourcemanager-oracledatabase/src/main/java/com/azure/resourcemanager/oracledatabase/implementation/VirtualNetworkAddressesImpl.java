@@ -31,8 +31,12 @@ public final class VirtualNetworkAddressesImpl implements VirtualNetworkAddresse
         String virtualnetworkaddressname, Context context) {
         Response<VirtualNetworkAddressInner> inner = this.serviceClient()
             .getWithResponse(resourceGroupName, cloudvmclustername, virtualnetworkaddressname, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new VirtualNetworkAddressImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new VirtualNetworkAddressImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public VirtualNetworkAddress get(String resourceGroupName, String cloudvmclustername,

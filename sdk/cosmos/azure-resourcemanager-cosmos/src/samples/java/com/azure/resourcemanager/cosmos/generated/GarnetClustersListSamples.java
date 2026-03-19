@@ -14,9 +14,9 @@ public final class GarnetClustersListSamples {
     /**
      * Sample code: CosmosDBGarnetClusterListBySubscription.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBGarnetClusterListBySubscription(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient().getGarnetClusters().list(com.azure.core.util.Context.NONE);
+    public static void cosmosDBGarnetClusterListBySubscription(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts().manager().serviceClient().getGarnetClusters().list(com.azure.core.util.Context.NONE);
     }
 }

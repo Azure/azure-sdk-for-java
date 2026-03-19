@@ -20,10 +20,12 @@ public final class SqlResourcesCreateUpdateSqlTriggerSamples {
     /**
      * Sample code: CosmosDBSqlTriggerCreateUpdate.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBSqlTriggerCreateUpdate(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBSqlTriggerCreateUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getSqlResources()
             .createUpdateSqlTrigger("rg1", "ddb1", "databaseName", "containerName", "triggerName",
                 new SqlTriggerCreateUpdateParameters()

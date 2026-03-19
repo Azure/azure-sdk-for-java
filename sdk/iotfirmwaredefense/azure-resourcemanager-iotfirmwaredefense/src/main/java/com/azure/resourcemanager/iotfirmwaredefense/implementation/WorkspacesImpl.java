@@ -34,8 +34,12 @@ public final class WorkspacesImpl implements Workspaces {
         Context context) {
         Response<WorkspaceInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, workspaceName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new WorkspaceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new WorkspaceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public Workspace getByResourceGroup(String resourceGroupName, String workspaceName) {
@@ -79,8 +83,12 @@ public final class WorkspacesImpl implements Workspaces {
         GenerateUploadUrlRequest body, Context context) {
         Response<UrlTokenInner> inner
             = this.serviceClient().generateUploadUrlWithResponse(resourceGroupName, workspaceName, body, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new UrlTokenImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new UrlTokenImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public UrlToken generateUploadUrl(String resourceGroupName, String workspaceName, GenerateUploadUrlRequest body) {

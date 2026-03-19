@@ -57,7 +57,7 @@ public final class NeonDatabaseImpl implements NeonDatabase, NeonDatabase.Defini
 
     private String neonDatabaseName;
 
-    public NeonDatabaseImpl withExistingBranch(String resourceGroupName, String organizationName, String projectName,
+    public NeonDatabaseImpl withExistingBranche(String resourceGroupName, String organizationName, String projectName,
         String branchName) {
         this.resourceGroupName = resourceGroupName;
         this.organizationName = organizationName;

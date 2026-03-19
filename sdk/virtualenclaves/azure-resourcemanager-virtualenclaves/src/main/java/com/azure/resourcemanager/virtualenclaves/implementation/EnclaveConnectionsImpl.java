@@ -35,8 +35,12 @@ public final class EnclaveConnectionsImpl implements EnclaveConnections {
         String enclaveConnectionName, Context context) {
         Response<EnclaveConnectionResourceInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, enclaveConnectionName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new EnclaveConnectionResourceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new EnclaveConnectionResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public EnclaveConnectionResource getByResourceGroup(String resourceGroupName, String enclaveConnectionName) {

@@ -31,8 +31,12 @@ public final class ConnectorsImpl implements Connectors {
         String environmentId, String clusterId, String connectorName, Context context) {
         Response<ConnectorResourceInner> inner = this.serviceClient()
             .getWithResponse(resourceGroupName, organizationName, environmentId, clusterId, connectorName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new ConnectorResourceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ConnectorResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ConnectorResource get(String resourceGroupName, String organizationName, String environmentId,

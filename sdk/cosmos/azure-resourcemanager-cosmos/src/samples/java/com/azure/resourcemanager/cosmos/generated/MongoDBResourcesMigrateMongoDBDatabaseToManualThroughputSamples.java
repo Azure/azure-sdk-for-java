@@ -14,11 +14,13 @@ public final class MongoDBResourcesMigrateMongoDBDatabaseToManualThroughputSampl
     /**
      * Sample code: CosmosDBMongoDBDatabaseMigrateToManualThroughput.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
-        cosmosDBMongoDBDatabaseMigrateToManualThroughput(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+        cosmosDBMongoDBDatabaseMigrateToManualThroughput(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getMongoDBResources()
             .migrateMongoDBDatabaseToManualThroughput("rg1", "ddb1", "databaseName", com.azure.core.util.Context.NONE);
     }

@@ -29,8 +29,12 @@ public final class ConfigurationAssignmentsForSubscriptionsImpl implements Confi
     public Response<ConfigurationAssignment> getWithResponse(String configurationAssignmentName, Context context) {
         Response<ConfigurationAssignmentInner> inner
             = this.serviceClient().getWithResponse(configurationAssignmentName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new ConfigurationAssignmentImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ConfigurationAssignmentImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ConfigurationAssignment get(String configurationAssignmentName) {
@@ -45,8 +49,12 @@ public final class ConfigurationAssignmentsForSubscriptionsImpl implements Confi
     public Response<ConfigurationAssignment> deleteWithResponse(String configurationAssignmentName, Context context) {
         Response<ConfigurationAssignmentInner> inner
             = this.serviceClient().deleteWithResponse(configurationAssignmentName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new ConfigurationAssignmentImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ConfigurationAssignmentImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ConfigurationAssignment delete(String configurationAssignmentName) {

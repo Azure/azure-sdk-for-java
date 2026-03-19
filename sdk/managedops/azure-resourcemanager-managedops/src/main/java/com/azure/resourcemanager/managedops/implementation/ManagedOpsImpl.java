@@ -29,8 +29,12 @@ public final class ManagedOpsImpl implements ManagedOps {
 
     public Response<ManagedOp> getWithResponse(String managedOpsName, Context context) {
         Response<ManagedOpInner> inner = this.serviceClient().getWithResponse(managedOpsName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new ManagedOpImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ManagedOpImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ManagedOp get(String managedOpsName) {

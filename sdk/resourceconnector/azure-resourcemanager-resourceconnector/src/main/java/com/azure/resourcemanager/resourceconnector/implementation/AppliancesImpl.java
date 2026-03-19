@@ -41,8 +41,12 @@ public final class AppliancesImpl implements Appliances {
         Context context) {
         Response<ApplianceInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, resourceName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new ApplianceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ApplianceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public Appliance getByResourceGroup(String resourceGroupName, String resourceName) {
@@ -86,8 +90,12 @@ public final class AppliancesImpl implements Appliances {
         String resourceName, Context context) {
         Response<ApplianceListCredentialResultsInner> inner
             = this.serviceClient().listClusterUserCredentialWithResponse(resourceGroupName, resourceName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new ApplianceListCredentialResultsImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ApplianceListCredentialResultsImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ApplianceListCredentialResults listClusterUserCredential(String resourceGroupName, String resourceName) {
@@ -104,8 +112,12 @@ public final class AppliancesImpl implements Appliances {
         String artifactType, Context context) {
         Response<ApplianceListKeysResultsInner> inner
             = this.serviceClient().listKeysWithResponse(resourceGroupName, resourceName, artifactType, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new ApplianceListKeysResultsImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ApplianceListKeysResultsImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ApplianceListKeysResults listKeys(String resourceGroupName, String resourceName) {
@@ -121,8 +133,12 @@ public final class AppliancesImpl implements Appliances {
         String upgradeGraph, Context context) {
         Response<UpgradeGraphInner> inner
             = this.serviceClient().getUpgradeGraphWithResponse(resourceGroupName, resourceName, upgradeGraph, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new UpgradeGraphImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new UpgradeGraphImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public UpgradeGraph getUpgradeGraph(String resourceGroupName, String resourceName, String upgradeGraph) {
@@ -147,8 +163,12 @@ public final class AppliancesImpl implements Appliances {
     public Response<ApplianceGetTelemetryConfigResult> getTelemetryConfigWithResponse(Context context) {
         Response<ApplianceGetTelemetryConfigResultInner> inner
             = this.serviceClient().getTelemetryConfigWithResponse(context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new ApplianceGetTelemetryConfigResultImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ApplianceGetTelemetryConfigResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ApplianceGetTelemetryConfigResult getTelemetryConfig() {

@@ -31,8 +31,12 @@ public final class CertificateObjectLocalRulestacksImpl implements CertificateOb
         String localRulestackName, String name, Context context) {
         Response<CertificateObjectLocalRulestackResourceInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, localRulestackName, name, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new CertificateObjectLocalRulestackResourceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new CertificateObjectLocalRulestackResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public CertificateObjectLocalRulestackResource get(String resourceGroupName, String localRulestackName,

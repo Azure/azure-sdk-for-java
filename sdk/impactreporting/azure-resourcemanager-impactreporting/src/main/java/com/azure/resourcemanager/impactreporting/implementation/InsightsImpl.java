@@ -29,8 +29,12 @@ public final class InsightsImpl implements Insights {
 
     public Response<Insight> getWithResponse(String workloadImpactName, String insightName, Context context) {
         Response<InsightInner> inner = this.serviceClient().getWithResponse(workloadImpactName, insightName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new InsightImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new InsightImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public Insight get(String workloadImpactName, String insightName) {

@@ -19,10 +19,12 @@ public final class ReplicationsCreateSamples {
     /**
      * Sample code: ReplicationCreate.
      * 
-     * @param manager Entry point to ContainerRegistryManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void replicationCreate(com.azure.resourcemanager.containerregistry.ContainerRegistryManager manager) {
-        manager.serviceClient()
+    public static void replicationCreate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.containerRegistries()
+            .manager()
+            .serviceClient()
             .getReplications()
             .create("myResourceGroup", "myRegistry", "myReplication",
                 new ReplicationInner().withLocation("eastus").withTags(mapOf("key", "fakeTokenPlaceholder")),
@@ -35,11 +37,12 @@ public final class ReplicationsCreateSamples {
     /**
      * Sample code: ReplicationCreateZoneRedundant.
      * 
-     * @param manager Entry point to ContainerRegistryManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void
-        replicationCreateZoneRedundant(com.azure.resourcemanager.containerregistry.ContainerRegistryManager manager) {
-        manager.serviceClient()
+    public static void replicationCreateZoneRedundant(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.containerRegistries()
+            .manager()
+            .serviceClient()
             .getReplications()
             .create("myResourceGroup", "myRegistry", "myReplication",
                 new ReplicationInner().withLocation("eastus")

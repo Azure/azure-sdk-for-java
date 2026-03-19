@@ -31,8 +31,12 @@ public final class SpotPlacementScoresImpl implements SpotPlacementScores {
 
     public Response<ComputeDiagnosticBase> getWithResponse(String location, Context context) {
         Response<ComputeDiagnosticBaseInner> inner = this.serviceClient().getWithResponse(location, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new ComputeDiagnosticBaseImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ComputeDiagnosticBaseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ComputeDiagnosticBase get(String location) {
@@ -48,8 +52,12 @@ public final class SpotPlacementScoresImpl implements SpotPlacementScores {
         SpotPlacementScoresInput spotPlacementScoresInput, Context context) {
         Response<SpotPlacementScoresResponseInner> inner
             = this.serviceClient().postWithResponse(location, spotPlacementScoresInput, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new SpotPlacementScoresResponseImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new SpotPlacementScoresResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public SpotPlacementScoresResponse post(String location, SpotPlacementScoresInput spotPlacementScoresInput) {

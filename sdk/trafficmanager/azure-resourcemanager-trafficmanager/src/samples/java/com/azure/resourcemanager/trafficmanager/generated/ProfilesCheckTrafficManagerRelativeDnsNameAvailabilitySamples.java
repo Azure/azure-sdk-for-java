@@ -16,11 +16,13 @@ public final class ProfilesCheckTrafficManagerRelativeDnsNameAvailabilitySamples
     /**
      * Sample code: NameAvailabilityTest_NameNotAvailablePOST23.
      * 
-     * @param manager Entry point to TrafficManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
-        nameAvailabilityTestNameNotAvailablePOST23(com.azure.resourcemanager.trafficmanager.TrafficManager manager) {
-        manager.serviceClient()
+        nameAvailabilityTestNameNotAvailablePOST23(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.trafficManagerProfiles()
+            .manager()
+            .serviceClient()
             .getProfiles()
             .checkTrafficManagerRelativeDnsNameAvailabilityWithResponse(
                 new CheckTrafficManagerRelativeDnsNameAvailabilityParameters().withName("azsmnet4696")
@@ -34,11 +36,12 @@ public final class ProfilesCheckTrafficManagerRelativeDnsNameAvailabilitySamples
     /**
      * Sample code: NameAvailabilityTest_NameAvailablePOST21.
      * 
-     * @param manager Entry point to TrafficManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void
-        nameAvailabilityTestNameAvailablePOST21(com.azure.resourcemanager.trafficmanager.TrafficManager manager) {
-        manager.serviceClient()
+    public static void nameAvailabilityTestNameAvailablePOST21(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.trafficManagerProfiles()
+            .manager()
+            .serviceClient()
             .getProfiles()
             .checkTrafficManagerRelativeDnsNameAvailabilityWithResponse(
                 new CheckTrafficManagerRelativeDnsNameAvailabilityParameters().withName("azsmnet5403")

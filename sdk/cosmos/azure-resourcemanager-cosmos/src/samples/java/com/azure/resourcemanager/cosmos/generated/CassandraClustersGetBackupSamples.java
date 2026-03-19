@@ -14,10 +14,12 @@ public final class CassandraClustersGetBackupSamples {
     /**
      * Sample code: CosmosDBManagedCassandraBackup.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBManagedCassandraBackup(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBManagedCassandraBackup(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getCassandraClusters()
             .getBackupWithResponse("cassandra-prod-rg", "cassandra-prod", "1611250348",
                 com.azure.core.util.Context.NONE);

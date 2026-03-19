@@ -14,9 +14,9 @@ public final class DatabaseAccountsListSamples {
     /**
      * Sample code: CosmosDBDatabaseAccountList.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBDatabaseAccountList(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient().getDatabaseAccounts().list(com.azure.core.util.Context.NONE);
+    public static void cosmosDBDatabaseAccountList(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts().manager().serviceClient().getDatabaseAccounts().list(com.azure.core.util.Context.NONE);
     }
 }

@@ -14,9 +14,13 @@ public final class TableResourcesListTablesSamples {
     /**
      * Sample code: CosmosDBTableList.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBTableList(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient().getTableResources().listTables("rgName", "ddb1", com.azure.core.util.Context.NONE);
+    public static void cosmosDBTableList(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
+            .getTableResources()
+            .listTables("rgName", "ddb1", com.azure.core.util.Context.NONE);
     }
 }

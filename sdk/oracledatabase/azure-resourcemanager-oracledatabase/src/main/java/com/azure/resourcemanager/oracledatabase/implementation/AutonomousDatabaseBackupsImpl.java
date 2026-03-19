@@ -31,8 +31,12 @@ public final class AutonomousDatabaseBackupsImpl implements AutonomousDatabaseBa
         String adbbackupid, Context context) {
         Response<AutonomousDatabaseBackupInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, autonomousdatabasename, adbbackupid, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new AutonomousDatabaseBackupImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new AutonomousDatabaseBackupImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public AutonomousDatabaseBackup get(String resourceGroupName, String autonomousdatabasename, String adbbackupid) {

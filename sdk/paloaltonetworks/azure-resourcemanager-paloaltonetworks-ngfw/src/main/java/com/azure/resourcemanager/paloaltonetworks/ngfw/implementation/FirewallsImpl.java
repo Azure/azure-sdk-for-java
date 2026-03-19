@@ -37,8 +37,12 @@ public final class FirewallsImpl implements Firewalls {
         Context context) {
         Response<FirewallResourceInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, firewallName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new FirewallResourceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new FirewallResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public FirewallResource getByResourceGroup(String resourceGroupName, String firewallName) {
@@ -83,8 +87,12 @@ public final class FirewallsImpl implements Firewalls {
         Context context) {
         Response<GlobalRulestackInfoInner> inner
             = this.serviceClient().getGlobalRulestackWithResponse(resourceGroupName, firewallName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new GlobalRulestackInfoImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new GlobalRulestackInfoImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public GlobalRulestackInfo getGlobalRulestack(String resourceGroupName, String firewallName) {
@@ -100,8 +108,12 @@ public final class FirewallsImpl implements Firewalls {
         Context context) {
         Response<LogSettingsInner> inner
             = this.serviceClient().getLogProfileWithResponse(resourceGroupName, firewallName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new LogSettingsImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new LogSettingsImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public LogSettings getLogProfile(String resourceGroupName, String firewallName) {
@@ -117,8 +129,12 @@ public final class FirewallsImpl implements Firewalls {
         Context context) {
         Response<SupportInfoInner> inner
             = this.serviceClient().getSupportInfoWithResponse(resourceGroupName, firewallName, email, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new SupportInfoImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new SupportInfoImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public SupportInfo getSupportInfo(String resourceGroupName, String firewallName) {

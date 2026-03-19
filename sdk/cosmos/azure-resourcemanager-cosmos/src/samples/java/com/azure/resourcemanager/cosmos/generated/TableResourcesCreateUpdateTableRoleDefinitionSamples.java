@@ -19,10 +19,12 @@ public final class TableResourcesCreateUpdateTableRoleDefinitionSamples {
     /**
      * Sample code: CosmosDBTableRoleDefinitionCreateUpdate.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBTableRoleDefinitionCreateUpdate(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBTableRoleDefinitionCreateUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getTableResources()
             .createUpdateTableRoleDefinition("myResourceGroupName", "myAccountName", "myRoleDefinitionId",
                 new TableRoleDefinitionResourceInner().withRoleName("myRoleName")

@@ -14,9 +14,13 @@ public final class PoliciesDeleteSamples {
     /**
      * Sample code: Delete protection policy.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void deleteProtectionPolicy(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient().getPolicies().deleteWithResponse("rg1", "Policy1", com.azure.core.util.Context.NONE);
+    public static void deleteProtectionPolicy(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
+            .getPolicies()
+            .deleteWithResponse("rg1", "Policy1", com.azure.core.util.Context.NONE);
     }
 }

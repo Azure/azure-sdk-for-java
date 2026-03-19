@@ -14,10 +14,12 @@ public final class OriginGroupsGetSamples {
     /**
      * Sample code: OriginGroups_Get.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void originGroupsGet(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient()
+    public static void originGroupsGet(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
             .getOriginGroups()
             .getWithResponse("RG", "profile1", "endpoint1", "originGroup1", com.azure.core.util.Context.NONE);
     }

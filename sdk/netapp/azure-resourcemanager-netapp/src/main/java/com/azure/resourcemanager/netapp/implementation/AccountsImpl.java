@@ -35,8 +35,12 @@ public final class AccountsImpl implements Accounts {
         Context context) {
         Response<NetAppAccountInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, accountName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new NetAppAccountImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new NetAppAccountImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public NetAppAccount getByResourceGroup(String resourceGroupName, String accountName) {

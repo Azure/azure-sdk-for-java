@@ -14,9 +14,9 @@ public final class EdgeNodesListSamples {
     /**
      * Sample code: EdgeNodes_List.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void edgeNodesList(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient().getEdgeNodes().list(com.azure.core.util.Context.NONE);
+    public static void edgeNodesList(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles().manager().serviceClient().getEdgeNodes().list(com.azure.core.util.Context.NONE);
     }
 }

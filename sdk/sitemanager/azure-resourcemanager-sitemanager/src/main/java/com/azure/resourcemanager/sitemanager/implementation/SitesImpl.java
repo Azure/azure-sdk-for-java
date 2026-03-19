@@ -29,8 +29,12 @@ public final class SitesImpl implements Sites {
     public Response<Site> getByResourceGroupWithResponse(String resourceGroupName, String siteName, Context context) {
         Response<SiteInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, siteName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new SiteImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new SiteImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public Site getByResourceGroup(String resourceGroupName, String siteName) {

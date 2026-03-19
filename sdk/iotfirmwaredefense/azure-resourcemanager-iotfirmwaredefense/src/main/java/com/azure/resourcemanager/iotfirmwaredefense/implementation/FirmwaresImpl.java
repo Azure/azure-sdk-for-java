@@ -31,8 +31,12 @@ public final class FirmwaresImpl implements Firmwares {
         Context context) {
         Response<FirmwareInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, workspaceName, firmwareId, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new FirmwareImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new FirmwareImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public Firmware get(String resourceGroupName, String workspaceName, String firmwareId) {

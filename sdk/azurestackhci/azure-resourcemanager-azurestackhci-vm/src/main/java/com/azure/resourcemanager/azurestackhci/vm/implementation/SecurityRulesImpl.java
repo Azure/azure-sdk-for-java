@@ -31,8 +31,12 @@ public final class SecurityRulesImpl implements SecurityRules {
         String securityRuleName, Context context) {
         Response<SecurityRuleInner> inner = this.serviceClient()
             .getWithResponse(resourceGroupName, networkSecurityGroupName, securityRuleName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new SecurityRuleImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new SecurityRuleImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public SecurityRule get(String resourceGroupName, String networkSecurityGroupName, String securityRuleName) {

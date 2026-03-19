@@ -18,10 +18,12 @@ public final class FleetspaceUpdateSamples {
     /**
      * Sample code: CosmosDB Fleetspace Update.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBFleetspaceUpdate(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBFleetspaceUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getFleetspaces()
             .update("rg1", "fleet1", "fleetspace1",
                 new FleetspaceUpdate().withFleetspaceApiKind(FleetspacePropertiesFleetspaceApiKind.NO_SQL)

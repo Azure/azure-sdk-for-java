@@ -14,9 +14,13 @@ public final class CopyJobsCancelSamples {
     /**
      * Sample code: CosmosDBCopyJobCancel.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBCopyJobCancel(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient().getCopyJobs().cancelWithResponse("rg1", "ddb1", "j1", com.azure.core.util.Context.NONE);
+    public static void cosmosDBCopyJobCancel(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
+            .getCopyJobs()
+            .cancelWithResponse("rg1", "ddb1", "j1", com.azure.core.util.Context.NONE);
     }
 }

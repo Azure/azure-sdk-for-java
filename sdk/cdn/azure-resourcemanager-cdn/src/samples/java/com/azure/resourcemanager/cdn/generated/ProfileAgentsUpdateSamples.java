@@ -18,10 +18,12 @@ public final class ProfileAgentsUpdateSamples {
     /**
      * Sample code: ProfileAgents_Update.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void profileAgentsUpdate(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient()
+    public static void profileAgentsUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
             .getProfileAgents()
             .update("RG", "profile1", "agent1",
                 new ProfileAgentUpdateParameters().withCustomDomains(Arrays.asList(new ResourceReference().withId(

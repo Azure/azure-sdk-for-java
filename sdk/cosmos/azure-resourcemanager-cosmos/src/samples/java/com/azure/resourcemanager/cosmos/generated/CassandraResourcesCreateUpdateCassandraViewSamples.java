@@ -20,10 +20,12 @@ public final class CassandraResourcesCreateUpdateCassandraViewSamples {
     /**
      * Sample code: CosmosDBCassandraViewCreateUpdate.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBCassandraViewCreateUpdate(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBCassandraViewCreateUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getCassandraResources()
             .createUpdateCassandraView("rg1", "ddb1", "keyspacename", "viewname",
                 new CassandraViewCreateUpdateParameters().withTags(mapOf())

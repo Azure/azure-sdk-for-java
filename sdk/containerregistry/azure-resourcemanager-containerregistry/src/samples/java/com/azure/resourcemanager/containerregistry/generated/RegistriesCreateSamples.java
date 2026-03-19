@@ -22,11 +22,12 @@ public final class RegistriesCreateSamples {
     /**
      * Sample code: RegistryCreateAbac.
      * 
-     * @param manager Entry point to ContainerRegistryManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void
-        registryCreateAbac(com.azure.resourcemanager.containerregistry.ContainerRegistryManager manager) {
-        manager.serviceClient()
+    public static void registryCreateAbac(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.containerRegistries()
+            .manager()
+            .serviceClient()
             .getRegistries()
             .create("myResourceGroup", "myRegistry",
                 new RegistryInner().withLocation("westus")
@@ -42,11 +43,12 @@ public final class RegistriesCreateSamples {
     /**
      * Sample code: RegistryCreateZoneRedundant.
      * 
-     * @param manager Entry point to ContainerRegistryManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void
-        registryCreateZoneRedundant(com.azure.resourcemanager.containerregistry.ContainerRegistryManager manager) {
-        manager.serviceClient()
+    public static void registryCreateZoneRedundant(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.containerRegistries()
+            .manager()
+            .serviceClient()
             .getRegistries()
             .create("myResourceGroup", "myRegistry",
                 new RegistryInner().withLocation("westus")
@@ -62,10 +64,12 @@ public final class RegistriesCreateSamples {
     /**
      * Sample code: RegistryCreate.
      * 
-     * @param manager Entry point to ContainerRegistryManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void registryCreate(com.azure.resourcemanager.containerregistry.ContainerRegistryManager manager) {
-        manager.serviceClient()
+    public static void registryCreate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.containerRegistries()
+            .manager()
+            .serviceClient()
             .getRegistries()
             .create("myResourceGroup", "myRegistry",
                 new RegistryInner().withLocation("westus")

@@ -17,10 +17,12 @@ public final class ProfilesCanMigrateSamples {
     /**
      * Sample code: Profiles_CanMigrate.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void profilesCanMigrate(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient()
+    public static void profilesCanMigrate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
             .getProfiles()
             .canMigrate("RG",
                 new CanMigrateParameters().withClassicResourceReference(new ResourceReference().withId(

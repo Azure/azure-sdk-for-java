@@ -44,8 +44,12 @@ public final class OperationsImpl implements Operations {
         CheckNameAvailabilityParameters checkNameAvailabilityParameters, Context context) {
         Response<NameAvailabilityStatusInner> inner
             = this.serviceClient().checkNameAvailabilityWithResponse(checkNameAvailabilityParameters, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new NameAvailabilityStatusImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new NameAvailabilityStatusImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public NameAvailabilityStatus
@@ -62,8 +66,12 @@ public final class OperationsImpl implements Operations {
         CheckNameAvailabilityParameters checkNameAvailabilityParameters, Context context) {
         Response<NameAvailabilityStatusInner> inner = this.serviceClient()
             .regionalCheckNameAvailabilityWithResponse(location, checkNameAvailabilityParameters, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new NameAvailabilityStatusImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new NameAvailabilityStatusImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public NameAvailabilityStatus regionalCheckNameAvailability(String location,

@@ -31,8 +31,12 @@ public final class ServersImpl implements Servers {
         Context context) {
         Response<ClusterServerInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, clusterName, serverName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new ClusterServerImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ClusterServerImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ClusterServer get(String resourceGroupName, String clusterName, String serverName) {

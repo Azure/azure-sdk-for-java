@@ -14,9 +14,9 @@ public final class ProfilesListSamples {
     /**
      * Sample code: Profiles_List.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void profilesList(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient().getProfiles().list(com.azure.core.util.Context.NONE);
+    public static void profilesList(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles().manager().serviceClient().getProfiles().list(com.azure.core.util.Context.NONE);
     }
 }

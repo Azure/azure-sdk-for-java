@@ -14,10 +14,12 @@ public final class MongoDBResourcesDeleteMongoDBCollectionSamples {
     /**
      * Sample code: CosmosDBMongoDBCollectionDelete.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBMongoDBCollectionDelete(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBMongoDBCollectionDelete(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getMongoDBResources()
             .deleteMongoDBCollection("rg1", "ddb1", "databaseName", "collectionName", com.azure.core.util.Context.NONE);
     }

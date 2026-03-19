@@ -42,8 +42,12 @@ public final class MarketplaceAgreementsImpl implements MarketplaceAgreements {
     public Response<ConfluentAgreementResource> createWithResponse(ConfluentAgreementResourceInner body,
         Context context) {
         Response<ConfluentAgreementResourceInner> inner = this.serviceClient().createWithResponse(body, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new ConfluentAgreementResourceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ConfluentAgreementResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ConfluentAgreementResource create() {

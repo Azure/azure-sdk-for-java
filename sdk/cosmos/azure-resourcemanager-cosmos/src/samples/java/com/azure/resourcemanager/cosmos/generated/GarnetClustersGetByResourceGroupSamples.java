@@ -14,10 +14,12 @@ public final class GarnetClustersGetByResourceGroupSamples {
     /**
      * Sample code: CosmosDBGarnetClusterGet.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBGarnetClusterGet(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBGarnetClusterGet(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getGarnetClusters()
             .getByResourceGroupWithResponse("garnet-prod-rg", "garnet-prod", com.azure.core.util.Context.NONE);
     }

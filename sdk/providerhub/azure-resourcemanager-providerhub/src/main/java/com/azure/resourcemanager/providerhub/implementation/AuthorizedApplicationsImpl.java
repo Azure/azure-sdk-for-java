@@ -32,8 +32,12 @@ public final class AuthorizedApplicationsImpl implements AuthorizedApplications 
         Context context) {
         Response<AuthorizedApplicationInner> inner
             = this.serviceClient().getWithResponse(providerNamespace, applicationId, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new AuthorizedApplicationImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new AuthorizedApplicationImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public AuthorizedApplication get(String providerNamespace, UUID applicationId) {

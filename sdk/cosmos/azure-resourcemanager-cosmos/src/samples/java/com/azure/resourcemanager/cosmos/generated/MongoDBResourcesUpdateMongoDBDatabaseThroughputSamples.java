@@ -19,10 +19,12 @@ public final class MongoDBResourcesUpdateMongoDBDatabaseThroughputSamples {
     /**
      * Sample code: CosmosDBMongoDBDatabaseThroughputUpdate.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBMongoDBDatabaseThroughputUpdate(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBMongoDBDatabaseThroughputUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getMongoDBResources()
             .updateMongoDBDatabaseThroughput("rg1", "ddb1", "databaseName",
                 new ThroughputSettingsUpdateParameters().withLocation("West US")

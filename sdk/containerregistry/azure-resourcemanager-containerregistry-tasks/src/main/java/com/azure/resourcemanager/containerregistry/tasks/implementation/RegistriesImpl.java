@@ -33,8 +33,12 @@ public final class RegistriesImpl implements Registries {
         Context context) {
         Response<RunInner> inner
             = this.serviceClient().scheduleRunWithResponse(resourceGroupName, registryName, runRequest, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new RunImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new RunImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public Run scheduleRun(String resourceGroupName, String registryName, RunRequest runRequest) {
@@ -50,8 +54,12 @@ public final class RegistriesImpl implements Registries {
         String registryName, Context context) {
         Response<SourceUploadDefinitionInner> inner
             = this.serviceClient().getBuildSourceUploadUrlWithResponse(resourceGroupName, registryName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new SourceUploadDefinitionImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new SourceUploadDefinitionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public SourceUploadDefinition getBuildSourceUploadUrl(String resourceGroupName, String registryName) {

@@ -14,9 +14,13 @@ public final class ThroughputPoolsOperationListSamples {
     /**
      * Sample code: CosmosDB ThroughputPool List.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBThroughputPoolList(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient().getThroughputPoolsOperations().list(com.azure.core.util.Context.NONE);
+    public static void cosmosDBThroughputPoolList(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
+            .getThroughputPoolsOperations()
+            .list(com.azure.core.util.Context.NONE);
     }
 }

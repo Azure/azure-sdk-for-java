@@ -30,8 +30,12 @@ public final class ConfigurationAssignmentsForResourceGroupsImpl implements Conf
         String configurationAssignmentName, Context context) {
         Response<ConfigurationAssignmentInner> inner = this.serviceClient()
             .getByResourceGroupWithResponse(resourceGroupName, configurationAssignmentName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new ConfigurationAssignmentImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ConfigurationAssignmentImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ConfigurationAssignment getByResourceGroup(String resourceGroupName, String configurationAssignmentName) {
@@ -49,8 +53,12 @@ public final class ConfigurationAssignmentsForResourceGroupsImpl implements Conf
         Response<ConfigurationAssignmentInner> inner = this.serviceClient()
             .createOrUpdateWithResponse(resourceGroupName, configurationAssignmentName, configurationAssignment,
                 context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new ConfigurationAssignmentImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ConfigurationAssignmentImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ConfigurationAssignment createOrUpdate(String resourceGroupName, String configurationAssignmentName,
@@ -68,8 +76,12 @@ public final class ConfigurationAssignmentsForResourceGroupsImpl implements Conf
         String configurationAssignmentName, ConfigurationAssignmentInner configurationAssignment, Context context) {
         Response<ConfigurationAssignmentInner> inner = this.serviceClient()
             .updateWithResponse(resourceGroupName, configurationAssignmentName, configurationAssignment, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new ConfigurationAssignmentImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ConfigurationAssignmentImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ConfigurationAssignment update(String resourceGroupName, String configurationAssignmentName,
@@ -87,8 +99,12 @@ public final class ConfigurationAssignmentsForResourceGroupsImpl implements Conf
         String configurationAssignmentName, Context context) {
         Response<ConfigurationAssignmentInner> inner
             = this.serviceClient().deleteWithResponse(resourceGroupName, configurationAssignmentName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new ConfigurationAssignmentImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ConfigurationAssignmentImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ConfigurationAssignment deleteByResourceGroup(String resourceGroupName, String configurationAssignmentName) {

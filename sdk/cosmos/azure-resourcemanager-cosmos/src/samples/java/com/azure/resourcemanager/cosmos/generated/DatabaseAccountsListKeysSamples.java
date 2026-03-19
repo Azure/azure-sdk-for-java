@@ -14,10 +14,12 @@ public final class DatabaseAccountsListKeysSamples {
     /**
      * Sample code: CosmosDBDatabaseAccountListKeys.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBDatabaseAccountListKeys(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBDatabaseAccountListKeys(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getDatabaseAccounts()
             .listKeysWithResponse("rg1", "ddb1", com.azure.core.util.Context.NONE);
     }

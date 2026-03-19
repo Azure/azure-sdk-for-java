@@ -19,11 +19,13 @@ public final class SqlResourcesSqlContainerRetrieveThroughputDistributionSamples
     /**
      * Sample code: CosmosDBSqlContainerRetrieveThroughputDistribution.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
-        cosmosDBSqlContainerRetrieveThroughputDistribution(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+        cosmosDBSqlContainerRetrieveThroughputDistribution(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getSqlResources()
             .sqlContainerRetrieveThroughputDistribution("rg1", "ddb1", "databaseName", "containerName",
                 new RetrieveThroughputParameters()

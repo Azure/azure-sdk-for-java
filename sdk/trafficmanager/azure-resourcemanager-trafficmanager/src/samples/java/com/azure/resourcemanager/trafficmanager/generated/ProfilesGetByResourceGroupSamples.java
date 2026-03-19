@@ -14,11 +14,12 @@ public final class ProfilesGetByResourceGroupSamples {
     /**
      * Sample code: Profile-GET-WithTrafficViewEnabled.
      * 
-     * @param manager Entry point to TrafficManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void
-        profileGETWithTrafficViewEnabled(com.azure.resourcemanager.trafficmanager.TrafficManager manager) {
-        manager.serviceClient()
+    public static void profileGETWithTrafficViewEnabled(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.trafficManagerProfiles()
+            .manager()
+            .serviceClient()
             .getProfiles()
             .getByResourceGroupWithResponse("azuresdkfornetautoresttrafficmanager1323",
                 "azuresdkfornetautoresttrafficmanager3880", com.azure.core.util.Context.NONE);
@@ -30,11 +31,12 @@ public final class ProfilesGetByResourceGroupSamples {
     /**
      * Sample code: Profile-GET-WithTrafficViewDisabled.
      * 
-     * @param manager Entry point to TrafficManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void
-        profileGETWithTrafficViewDisabled(com.azure.resourcemanager.trafficmanager.TrafficManager manager) {
-        manager.serviceClient()
+    public static void profileGETWithTrafficViewDisabled(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.trafficManagerProfiles()
+            .manager()
+            .serviceClient()
             .getProfiles()
             .getByResourceGroupWithResponse("azuresdkfornetautoresttrafficmanager1323",
                 "azuresdkfornetautoresttrafficmanager3880", com.azure.core.util.Context.NONE);
@@ -46,10 +48,12 @@ public final class ProfilesGetByResourceGroupSamples {
     /**
      * Sample code: Profile-GET-WithEndpoints.
      * 
-     * @param manager Entry point to TrafficManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void profileGETWithEndpoints(com.azure.resourcemanager.trafficmanager.TrafficManager manager) {
-        manager.serviceClient()
+    public static void profileGETWithEndpoints(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.trafficManagerProfiles()
+            .manager()
+            .serviceClient()
             .getProfiles()
             .getByResourceGroupWithResponse("azuresdkfornetautoresttrafficmanager1323",
                 "azuresdkfornetautoresttrafficmanager3880", com.azure.core.util.Context.NONE);

@@ -14,10 +14,12 @@ public final class CassandraResourcesGetCassandraViewSamples {
     /**
      * Sample code: CosmosDBCassandraViewGet.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBCassandraViewGet(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBCassandraViewGet(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getCassandraResources()
             .getCassandraViewWithResponse("rg1", "ddb1", "keyspacename", "viewname", com.azure.core.util.Context.NONE);
     }

@@ -14,10 +14,12 @@ public final class CassandraClustersDeleteSamples {
     /**
      * Sample code: CosmosDBManagedCassandraClusterDelete.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBManagedCassandraClusterDelete(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBManagedCassandraClusterDelete(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getCassandraClusters()
             .delete("cassandra-prod-rg", "cassandra-prod", com.azure.core.util.Context.NONE);
     }

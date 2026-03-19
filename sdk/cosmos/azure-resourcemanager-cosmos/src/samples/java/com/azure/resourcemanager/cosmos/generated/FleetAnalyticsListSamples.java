@@ -14,9 +14,13 @@ public final class FleetAnalyticsListSamples {
     /**
      * Sample code: CosmosDB FleetAnalytics List.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBFleetAnalyticsList(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient().getFleetAnalytics().list("rg1", "fleet1", com.azure.core.util.Context.NONE);
+    public static void cosmosDBFleetAnalyticsList(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
+            .getFleetAnalytics()
+            .list("rg1", "fleet1", com.azure.core.util.Context.NONE);
     }
 }

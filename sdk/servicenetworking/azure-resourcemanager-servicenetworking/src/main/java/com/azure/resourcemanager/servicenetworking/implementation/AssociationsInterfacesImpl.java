@@ -31,8 +31,12 @@ public final class AssociationsInterfacesImpl implements AssociationsInterfaces 
         String associationName, Context context) {
         Response<AssociationInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, trafficControllerName, associationName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new AssociationImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new AssociationImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public Association get(String resourceGroupName, String trafficControllerName, String associationName) {

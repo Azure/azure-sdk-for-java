@@ -16,10 +16,12 @@ public final class AfdProfilesCheckHostnameAvailabilitySamples {
     /**
      * Sample code: AFDProfiles_CheckHostNameAvailability.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void aFDProfilesCheckHostNameAvailability(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient()
+    public static void aFDProfilesCheckHostNameAvailability(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
             .getAfdProfiles()
             .checkHostnameAvailabilityWithResponse("RG", "profile1",
                 new CheckHostnameAvailabilityInput().withHostname("www.someDomain.net"),

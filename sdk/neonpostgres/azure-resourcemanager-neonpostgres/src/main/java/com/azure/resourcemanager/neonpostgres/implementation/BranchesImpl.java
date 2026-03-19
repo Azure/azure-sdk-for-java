@@ -34,8 +34,12 @@ public final class BranchesImpl implements Branches {
         String branchName, Context context) {
         Response<BranchInner> inner = this.serviceClient()
             .getWithResponse(resourceGroupName, organizationName, projectName, branchName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new BranchImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new BranchImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public Branch get(String resourceGroupName, String organizationName, String projectName, String branchName) {
@@ -73,8 +77,12 @@ public final class BranchesImpl implements Branches {
         String projectName, String branchName, PreflightCheckParameters parameters, Context context) {
         Response<PreflightCheckResultInner> inner = this.serviceClient()
             .preflightWithResponse(resourceGroupName, organizationName, projectName, branchName, parameters, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new PreflightCheckResultImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new PreflightCheckResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public PreflightCheckResult preflight(String resourceGroupName, String organizationName, String projectName,

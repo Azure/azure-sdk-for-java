@@ -31,8 +31,12 @@ public final class MarketplaceGalleryImagesImpl implements MarketplaceGalleryIma
         String marketplaceGalleryImageName, Context context) {
         Response<MarketplaceGalleryImageInner> inner = this.serviceClient()
             .getByResourceGroupWithResponse(resourceGroupName, marketplaceGalleryImageName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new MarketplaceGalleryImageImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new MarketplaceGalleryImageImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public MarketplaceGalleryImage getByResourceGroup(String resourceGroupName, String marketplaceGalleryImageName) {

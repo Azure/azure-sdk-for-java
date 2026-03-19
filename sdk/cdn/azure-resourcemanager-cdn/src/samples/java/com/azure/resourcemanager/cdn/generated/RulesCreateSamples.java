@@ -31,10 +31,12 @@ public final class RulesCreateSamples {
     /**
      * Sample code: Rules_Create_AfdUrlSigningAction.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void rulesCreateAfdUrlSigningAction(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient()
+    public static void rulesCreateAfdUrlSigningAction(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
             .getRules()
             .create("RG", "profile1", "ruleSet1", "rule1", new RuleInner().withOrder(1)
                 .withConditions(Arrays.asList(new DeliveryRuleRequestMethodCondition().withParameters(
@@ -60,10 +62,12 @@ public final class RulesCreateSamples {
     /**
      * Sample code: Rules_Create.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void rulesCreate(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient()
+    public static void rulesCreate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
             .getRules()
             .create("RG", "profile1", "ruleSet1", "rule1",
                 new RuleInner().withOrder(1)

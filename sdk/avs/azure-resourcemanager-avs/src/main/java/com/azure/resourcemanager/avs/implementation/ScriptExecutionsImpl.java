@@ -44,8 +44,12 @@ public final class ScriptExecutionsImpl implements ScriptExecutions {
         String scriptExecutionName, Context context) {
         Response<ScriptExecutionInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, privateCloudName, scriptExecutionName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new ScriptExecutionImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ScriptExecutionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ScriptExecution get(String resourceGroupName, String privateCloudName, String scriptExecutionName) {
@@ -70,8 +74,12 @@ public final class ScriptExecutionsImpl implements ScriptExecutions {
         Response<ScriptExecutionInner> inner = this.serviceClient()
             .getExecutionLogsWithResponse(resourceGroupName, privateCloudName, scriptExecutionName,
                 scriptOutputStreamType, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new ScriptExecutionImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ScriptExecutionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ScriptExecution getExecutionLogs(String resourceGroupName, String privateCloudName,

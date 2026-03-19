@@ -33,8 +33,12 @@ public final class RecoveryPointsImpl implements RecoveryPoints {
         Response<RecoveryPointResourceInner> inner = this.serviceClient()
             .getWithResponse(vaultName, resourceGroupName, fabricName, containerName, protectedItemName,
                 recoveryPointId, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new RecoveryPointResourceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new RecoveryPointResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public RecoveryPointResource get(String vaultName, String resourceGroupName, String fabricName,
@@ -68,8 +72,12 @@ public final class RecoveryPointsImpl implements RecoveryPoints {
         Response<RecoveryPointResourceInner> inner = this.serviceClient()
             .updateWithResponse(resourceGroupName, vaultName, fabricName, containerName, protectedItemName,
                 recoveryPointId, parameters, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new RecoveryPointResourceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new RecoveryPointResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public RecoveryPointResource update(String resourceGroupName, String vaultName, String fabricName,

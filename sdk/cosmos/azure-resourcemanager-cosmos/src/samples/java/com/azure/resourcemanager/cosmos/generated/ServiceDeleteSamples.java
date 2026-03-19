@@ -14,10 +14,12 @@ public final class ServiceDeleteSamples {
     /**
      * Sample code: SqlDedicatedGatewayServiceDelete.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void sqlDedicatedGatewayServiceDelete(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void sqlDedicatedGatewayServiceDelete(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getServices()
             .delete("rg1", "ddb1", "SqlDedicatedGateway", com.azure.core.util.Context.NONE);
     }
@@ -28,10 +30,12 @@ public final class ServiceDeleteSamples {
     /**
      * Sample code: MaterializedViewsBuilderServiceDelete.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void materializedViewsBuilderServiceDelete(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void materializedViewsBuilderServiceDelete(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getServices()
             .delete("rg1", "ddb1", "MaterializedViewsBuilder", com.azure.core.util.Context.NONE);
     }
@@ -42,10 +46,14 @@ public final class ServiceDeleteSamples {
     /**
      * Sample code: DataTransferServiceDelete.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void dataTransferServiceDelete(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient().getServices().delete("rg1", "ddb1", "DataTransfer", com.azure.core.util.Context.NONE);
+    public static void dataTransferServiceDelete(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
+            .getServices()
+            .delete("rg1", "ddb1", "DataTransfer", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -54,10 +62,12 @@ public final class ServiceDeleteSamples {
     /**
      * Sample code: GraphAPIComputeServiceDelete.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void graphAPIComputeServiceDelete(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void graphAPIComputeServiceDelete(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getServices()
             .delete("rg1", "ddb1", "GraphAPICompute", com.azure.core.util.Context.NONE);
     }

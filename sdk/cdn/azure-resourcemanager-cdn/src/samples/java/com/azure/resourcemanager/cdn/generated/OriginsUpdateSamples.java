@@ -16,10 +16,12 @@ public final class OriginsUpdateSamples {
     /**
      * Sample code: Origins_Update.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void originsUpdate(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient()
+    public static void originsUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
             .getOrigins()
             .update("RG", "profile1", "endpoint1", "www-someDomain-net",
                 new OriginUpdateParameters().withHttpPort(42)

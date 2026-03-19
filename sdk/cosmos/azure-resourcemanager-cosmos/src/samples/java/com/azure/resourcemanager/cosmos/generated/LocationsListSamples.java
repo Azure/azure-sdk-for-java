@@ -14,9 +14,9 @@ public final class LocationsListSamples {
     /**
      * Sample code: CosmosDBLocationList.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBLocationList(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient().getLocations().list(com.azure.core.util.Context.NONE);
+    public static void cosmosDBLocationList(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts().manager().serviceClient().getLocations().list(com.azure.core.util.Context.NONE);
     }
 }

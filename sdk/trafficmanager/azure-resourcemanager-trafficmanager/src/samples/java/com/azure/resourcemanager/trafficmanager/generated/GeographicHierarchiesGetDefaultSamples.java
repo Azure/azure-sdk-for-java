@@ -14,9 +14,13 @@ public final class GeographicHierarchiesGetDefaultSamples {
     /**
      * Sample code: GeographicHierarchy-GET-default.
      * 
-     * @param manager Entry point to TrafficManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void geographicHierarchyGETDefault(com.azure.resourcemanager.trafficmanager.TrafficManager manager) {
-        manager.serviceClient().getGeographicHierarchies().getDefaultWithResponse(com.azure.core.util.Context.NONE);
+    public static void geographicHierarchyGETDefault(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.trafficManagerProfiles()
+            .manager()
+            .serviceClient()
+            .getGeographicHierarchies()
+            .getDefaultWithResponse(com.azure.core.util.Context.NONE);
     }
 }

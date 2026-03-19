@@ -14,9 +14,13 @@ public final class VaultsPurgeDeletedSamples {
     /**
      * Sample code: Purge a deleted vault.
      * 
-     * @param manager Entry point to KeyVaultManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void purgeADeletedVault(com.azure.resourcemanager.keyvault.KeyVaultManager manager) {
-        manager.serviceClient().getVaults().purgeDeleted("sample-vault", "westus", com.azure.core.util.Context.NONE);
+    public static void purgeADeletedVault(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.vaults()
+            .manager()
+            .serviceClient()
+            .getVaults()
+            .purgeDeleted("sample-vault", "westus", com.azure.core.util.Context.NONE);
     }
 }

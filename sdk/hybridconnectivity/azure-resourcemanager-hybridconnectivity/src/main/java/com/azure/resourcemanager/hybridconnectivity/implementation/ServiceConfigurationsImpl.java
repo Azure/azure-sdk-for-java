@@ -31,8 +31,12 @@ public final class ServiceConfigurationsImpl implements ServiceConfigurations {
         String serviceConfigurationName, Context context) {
         Response<ServiceConfigurationResourceInner> inner
             = this.serviceClient().getWithResponse(resourceUri, endpointName, serviceConfigurationName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new ServiceConfigurationResourceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ServiceConfigurationResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ServiceConfigurationResource get(String resourceUri, String endpointName, String serviceConfigurationName) {

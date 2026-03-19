@@ -19,11 +19,13 @@ public final class CassandraClustersInvokeCommandAsyncResourceSamples {
     /**
      * Sample code: CosmosDBManagedCassandraCommandAsync.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBManagedCassandraCommandAsync(com.azure.resourcemanager.cosmos.CosmosManager manager)
+    public static void cosmosDBManagedCassandraCommandAsync(com.azure.resourcemanager.AzureResourceManager azure)
         throws IOException {
-        manager.serviceClient()
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getCassandraClusters()
             .invokeCommandAsyncResource("cassandra-prod-rg", "cassandra-prod",
                 new CommandAsyncPostBody().withCommand("nodetool")

@@ -18,10 +18,12 @@ public final class GarnetClustersUpdateSamples {
     /**
      * Sample code: CosmosDBGarnetClusterPatch.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBGarnetClusterPatch(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBGarnetClusterPatch(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getGarnetClusters()
             .update("garnet-prod-rg", "garnet-prod",
                 new GarnetClusterResourcePatch()

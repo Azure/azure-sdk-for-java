@@ -30,8 +30,12 @@ public final class VMIngestionsImpl implements VMIngestions {
         Context context) {
         Response<VMIngestionDetailsResponseInner> inner
             = this.serviceClient().detailsWithResponse(resourceGroupName, monitorName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new VMIngestionDetailsResponseImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new VMIngestionDetailsResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public VMIngestionDetailsResponse details(String resourceGroupName, String monitorName) {

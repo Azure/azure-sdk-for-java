@@ -31,8 +31,12 @@ public final class RolesImpl implements Roles {
         Context context) {
         Response<RoleInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, clusterName, roleName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new RoleImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new RoleImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public Role get(String resourceGroupName, String clusterName, String roleName) {

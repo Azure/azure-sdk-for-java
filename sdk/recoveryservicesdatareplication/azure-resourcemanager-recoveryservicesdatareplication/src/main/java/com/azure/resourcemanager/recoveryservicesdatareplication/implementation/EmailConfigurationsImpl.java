@@ -31,8 +31,12 @@ public final class EmailConfigurationsImpl implements EmailConfigurations {
         String emailConfigurationName, Context context) {
         Response<EmailConfigurationModelInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, vaultName, emailConfigurationName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new EmailConfigurationModelImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new EmailConfigurationModelImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public EmailConfigurationModel get(String resourceGroupName, String vaultName, String emailConfigurationName) {

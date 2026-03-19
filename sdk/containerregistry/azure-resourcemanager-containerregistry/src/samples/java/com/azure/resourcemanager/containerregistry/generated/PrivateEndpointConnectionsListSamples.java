@@ -14,11 +14,12 @@ public final class PrivateEndpointConnectionsListSamples {
     /**
      * Sample code: PrivateEndpointConnectionList.
      * 
-     * @param manager Entry point to ContainerRegistryManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void
-        privateEndpointConnectionList(com.azure.resourcemanager.containerregistry.ContainerRegistryManager manager) {
-        manager.serviceClient()
+    public static void privateEndpointConnectionList(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.containerRegistries()
+            .manager()
+            .serviceClient()
             .getPrivateEndpointConnections()
             .list("myResourceGroup", "myRegistry", com.azure.core.util.Context.NONE);
     }

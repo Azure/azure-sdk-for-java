@@ -91,7 +91,7 @@ public interface NeonDatabase {
              * @param branchName The name of the Branch.
              * @return the next definition stage.
              */
-            WithCreate withExistingBranch(String resourceGroupName, String organizationName, String projectName,
+            WithCreate withExistingBranche(String resourceGroupName, String organizationName, String projectName,
                 String branchName);
         }
 

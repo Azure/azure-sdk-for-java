@@ -14,10 +14,12 @@ public final class RestorableDatabaseAccountsListByLocationSamples {
     /**
      * Sample code: CosmosDBRestorableDatabaseAccountList.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBRestorableDatabaseAccountList(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBRestorableDatabaseAccountList(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getRestorableDatabaseAccounts()
             .listByLocation("West US", com.azure.core.util.Context.NONE);
     }

@@ -14,9 +14,13 @@ public final class CopyJobsGetSamples {
     /**
      * Sample code: CosmosDBCopyJobGet.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBCopyJobGet(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient().getCopyJobs().getWithResponse("rg1", "ddb1", "j1", com.azure.core.util.Context.NONE);
+    public static void cosmosDBCopyJobGet(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
+            .getCopyJobs()
+            .getWithResponse("rg1", "ddb1", "j1", com.azure.core.util.Context.NONE);
     }
 }

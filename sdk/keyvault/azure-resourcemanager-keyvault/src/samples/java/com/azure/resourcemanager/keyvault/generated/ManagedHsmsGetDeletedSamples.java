@@ -14,10 +14,12 @@ public final class ManagedHsmsGetDeletedSamples {
     /**
      * Sample code: Retrieve a deleted managed HSM.
      * 
-     * @param manager Entry point to KeyVaultManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void retrieveADeletedManagedHSM(com.azure.resourcemanager.keyvault.KeyVaultManager manager) {
-        manager.serviceClient()
+    public static void retrieveADeletedManagedHSM(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.vaults()
+            .manager()
+            .serviceClient()
             .getManagedHsms()
             .getDeletedWithResponse("hsm1", "westus", com.azure.core.util.Context.NONE);
     }

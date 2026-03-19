@@ -21,10 +21,12 @@ public final class RegistriesUpdateSamples {
     /**
      * Sample code: RegistryUpdate.
      * 
-     * @param manager Entry point to ContainerRegistryManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void registryUpdate(com.azure.resourcemanager.containerregistry.ContainerRegistryManager manager) {
-        manager.serviceClient()
+    public static void registryUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.containerRegistries()
+            .manager()
+            .serviceClient()
             .getRegistries()
             .update("myResourceGroup", "myRegistry",
                 new RegistryUpdateParameters().withTags(mapOf("key", "fakeTokenPlaceholder"))

@@ -14,10 +14,12 @@ public final class AfdOriginsDeleteSamples {
     /**
      * Sample code: AFDOrigins_Delete.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void aFDOriginsDelete(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient()
+    public static void aFDOriginsDelete(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
             .getAfdOrigins()
             .delete("RG", "profile1", "origingroup1", "origin1", com.azure.core.util.Context.NONE);
     }

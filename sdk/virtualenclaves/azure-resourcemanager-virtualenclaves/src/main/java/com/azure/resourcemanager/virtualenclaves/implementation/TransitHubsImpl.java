@@ -31,8 +31,12 @@ public final class TransitHubsImpl implements TransitHubs {
         String transitHubName, Context context) {
         Response<TransitHubResourceInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, communityName, transitHubName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new TransitHubResourceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new TransitHubResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public TransitHubResource get(String resourceGroupName, String communityName, String transitHubName) {

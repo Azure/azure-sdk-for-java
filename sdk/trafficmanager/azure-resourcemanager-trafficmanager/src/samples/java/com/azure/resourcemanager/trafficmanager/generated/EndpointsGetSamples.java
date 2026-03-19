@@ -16,11 +16,12 @@ public final class EndpointsGetSamples {
     /**
      * Sample code: Endpoint-GET-External-WithGeoMapping.
      * 
-     * @param manager Entry point to TrafficManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void
-        endpointGETExternalWithGeoMapping(com.azure.resourcemanager.trafficmanager.TrafficManager manager) {
-        manager.serviceClient()
+    public static void endpointGETExternalWithGeoMapping(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.trafficManagerProfiles()
+            .manager()
+            .serviceClient()
             .getEndpoints()
             .getWithResponse("azuresdkfornetautoresttrafficmanager2191", "azuresdkfornetautoresttrafficmanager8224",
                 EndpointTypes.EXTERNAL_ENDPOINTS, "My%20external%20endpoint", com.azure.core.util.Context.NONE);
@@ -32,11 +33,12 @@ public final class EndpointsGetSamples {
     /**
      * Sample code: Endpoint-GET-External-WithSubnetMapping.
      * 
-     * @param manager Entry point to TrafficManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void
-        endpointGETExternalWithSubnetMapping(com.azure.resourcemanager.trafficmanager.TrafficManager manager) {
-        manager.serviceClient()
+    public static void endpointGETExternalWithSubnetMapping(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.trafficManagerProfiles()
+            .manager()
+            .serviceClient()
             .getEndpoints()
             .getWithResponse("azuresdkfornetautoresttrafficmanager2191", "azuresdkfornetautoresttrafficmanager8224",
                 EndpointTypes.EXTERNAL_ENDPOINTS, "My%20external%20endpoint", com.azure.core.util.Context.NONE);
@@ -48,11 +50,12 @@ public final class EndpointsGetSamples {
     /**
      * Sample code: Endpoint-GET-External-WithLocation.
      * 
-     * @param manager Entry point to TrafficManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void
-        endpointGETExternalWithLocation(com.azure.resourcemanager.trafficmanager.TrafficManager manager) {
-        manager.serviceClient()
+    public static void endpointGETExternalWithLocation(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.trafficManagerProfiles()
+            .manager()
+            .serviceClient()
             .getEndpoints()
             .getWithResponse("azuresdkfornetautoresttrafficmanager1421", "azsmnet6386",
                 EndpointTypes.EXTERNAL_ENDPOINTS, "azsmnet7187", com.azure.core.util.Context.NONE);

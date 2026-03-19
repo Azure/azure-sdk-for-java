@@ -20,11 +20,13 @@ public final class SqlResourcesSqlContainerRedistributeThroughputSamples {
     /**
      * Sample code: CosmosDBSqlContainerRedistributeThroughput.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
-        cosmosDBSqlContainerRedistributeThroughput(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+        cosmosDBSqlContainerRedistributeThroughput(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getSqlResources()
             .sqlContainerRedistributeThroughput("rg1", "ddb1", "databaseName", "containerName",
                 new RedistributeThroughputParameters().withResource(new RedistributeThroughputPropertiesResource()

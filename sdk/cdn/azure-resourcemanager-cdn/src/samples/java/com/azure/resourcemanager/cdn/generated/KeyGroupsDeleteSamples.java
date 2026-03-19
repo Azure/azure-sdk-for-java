@@ -14,9 +14,13 @@ public final class KeyGroupsDeleteSamples {
     /**
      * Sample code: KeyGroups_Delete.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void keyGroupsDelete(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient().getKeyGroups().delete("RG", "profile1", "kg1", com.azure.core.util.Context.NONE);
+    public static void keyGroupsDelete(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
+            .getKeyGroups()
+            .delete("RG", "profile1", "kg1", com.azure.core.util.Context.NONE);
     }
 }

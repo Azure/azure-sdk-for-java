@@ -31,8 +31,12 @@ public final class WorkloadsImpl implements Workloads {
         String workloadName, Context context) {
         Response<WorkloadResourceInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, virtualEnclaveName, workloadName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new WorkloadResourceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new WorkloadResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public WorkloadResource get(String resourceGroupName, String virtualEnclaveName, String workloadName) {

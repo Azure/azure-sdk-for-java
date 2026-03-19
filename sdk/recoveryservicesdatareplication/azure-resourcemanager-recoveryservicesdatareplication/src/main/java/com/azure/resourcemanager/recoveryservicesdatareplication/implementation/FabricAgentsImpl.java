@@ -31,8 +31,12 @@ public final class FabricAgentsImpl implements FabricAgents {
         String fabricAgentName, Context context) {
         Response<FabricAgentModelInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, fabricName, fabricAgentName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new FabricAgentModelImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new FabricAgentModelImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public FabricAgentModel get(String resourceGroupName, String fabricName, String fabricAgentName) {

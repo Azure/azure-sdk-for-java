@@ -17,10 +17,12 @@ public final class ScopeMapsCreateSamples {
     /**
      * Sample code: ScopeMapCreate.
      * 
-     * @param manager Entry point to ContainerRegistryManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void scopeMapCreate(com.azure.resourcemanager.containerregistry.ContainerRegistryManager manager) {
-        manager.serviceClient()
+    public static void scopeMapCreate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.containerRegistries()
+            .manager()
+            .serviceClient()
             .getScopeMaps()
             .create("myResourceGroup", "myRegistry", "myScopeMap",
                 new ScopeMapInner().withDescription("Developer Scopes")

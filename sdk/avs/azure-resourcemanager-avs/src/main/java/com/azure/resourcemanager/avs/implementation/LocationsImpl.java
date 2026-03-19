@@ -30,8 +30,12 @@ public final class LocationsImpl implements Locations {
 
     public Response<Trial> checkTrialAvailabilityWithResponse(String location, Sku sku, Context context) {
         Response<TrialInner> inner = this.serviceClient().checkTrialAvailabilityWithResponse(location, sku, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new TrialImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new TrialImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public Trial checkTrialAvailability(String location) {
@@ -45,8 +49,12 @@ public final class LocationsImpl implements Locations {
 
     public Response<Quota> checkQuotaAvailabilityWithResponse(String location, Context context) {
         Response<QuotaInner> inner = this.serviceClient().checkQuotaAvailabilityWithResponse(location, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new QuotaImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new QuotaImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public Quota checkQuotaAvailability(String location) {

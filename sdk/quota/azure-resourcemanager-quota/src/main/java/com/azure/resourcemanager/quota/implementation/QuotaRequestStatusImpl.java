@@ -29,8 +29,12 @@ public final class QuotaRequestStatusImpl implements QuotaRequestStatus {
 
     public Response<QuotaRequestDetails> getWithResponse(String id, String scope, Context context) {
         Response<QuotaRequestDetailsInner> inner = this.serviceClient().getWithResponse(id, scope, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new QuotaRequestDetailsImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new QuotaRequestDetailsImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public QuotaRequestDetails get(String id, String scope) {

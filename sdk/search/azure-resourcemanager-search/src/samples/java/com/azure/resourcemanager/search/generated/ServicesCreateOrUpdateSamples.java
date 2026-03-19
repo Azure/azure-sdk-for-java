@@ -37,11 +37,13 @@ public final class ServicesCreateOrUpdateSamples {
     /**
      * Sample code: SearchCreateOrUpdateServiceToAllowAccessFromPrivateEndpoints.
      * 
-     * @param manager Entry point to SearchServiceManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void searchCreateOrUpdateServiceToAllowAccessFromPrivateEndpoints(
-        com.azure.resourcemanager.search.SearchServiceManager manager) {
-        manager.serviceClient()
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.searchServices()
+            .manager()
+            .serviceClient()
             .getServices()
             .createOrUpdate("rg1", "mysearchservice",
                 new SearchServiceInner().withLocation("westus")
@@ -61,10 +63,12 @@ public final class ServicesCreateOrUpdateSamples {
     /**
      * Sample code: SearchCreateOrUpdateService.
      * 
-     * @param manager Entry point to SearchServiceManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void searchCreateOrUpdateService(com.azure.resourcemanager.search.SearchServiceManager manager) {
-        manager.serviceClient()
+    public static void searchCreateOrUpdateService(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.searchServices()
+            .manager()
+            .serviceClient()
             .getServices()
             .createOrUpdate("rg1", "mysearchservice",
                 new SearchServiceInner().withLocation("westus")
@@ -83,11 +87,12 @@ public final class ServicesCreateOrUpdateSamples {
     /**
      * Sample code: SearchCreateOrUpdateServiceAuthOptions.
      * 
-     * @param manager Entry point to SearchServiceManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void
-        searchCreateOrUpdateServiceAuthOptions(com.azure.resourcemanager.search.SearchServiceManager manager) {
-        manager.serviceClient()
+    public static void searchCreateOrUpdateServiceAuthOptions(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.searchServices()
+            .manager()
+            .serviceClient()
             .getServices()
             .createOrUpdate("rg1", "mysearchservice",
                 new SearchServiceInner().withLocation("westus")
@@ -108,11 +113,12 @@ public final class ServicesCreateOrUpdateSamples {
     /**
      * Sample code: SearchCreateOrUpdateWithSemanticSearch.
      * 
-     * @param manager Entry point to SearchServiceManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void
-        searchCreateOrUpdateWithSemanticSearch(com.azure.resourcemanager.search.SearchServiceManager manager) {
-        manager.serviceClient()
+    public static void searchCreateOrUpdateWithSemanticSearch(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.searchServices()
+            .manager()
+            .serviceClient()
             .getServices()
             .createOrUpdate("rg1", "mysearchservice",
                 new SearchServiceInner().withLocation("westus")
@@ -132,11 +138,12 @@ public final class ServicesCreateOrUpdateSamples {
     /**
      * Sample code: SearchCreateOrUpdateServiceWithIdentity.
      * 
-     * @param manager Entry point to SearchServiceManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void
-        searchCreateOrUpdateServiceWithIdentity(com.azure.resourcemanager.search.SearchServiceManager manager) {
-        manager.serviceClient()
+    public static void searchCreateOrUpdateServiceWithIdentity(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.searchServices()
+            .manager()
+            .serviceClient()
             .getServices()
             .createOrUpdate("rg1", "mysearchservice", new SearchServiceInner().withLocation("westus")
                 .withTags(mapOf("app-name", "My e-commerce app"))
@@ -157,11 +164,13 @@ public final class ServicesCreateOrUpdateSamples {
     /**
      * Sample code: SearchCreateOrUpdateServiceToAllowAccessFromPublicCustomIPsAndBypass.
      * 
-     * @param manager Entry point to SearchServiceManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void searchCreateOrUpdateServiceToAllowAccessFromPublicCustomIPsAndBypass(
-        com.azure.resourcemanager.search.SearchServiceManager manager) {
-        manager.serviceClient()
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.searchServices()
+            .manager()
+            .serviceClient()
             .getServices()
             .createOrUpdate("rg1", "mysearchservice",
                 new SearchServiceInner().withLocation("westus")
@@ -184,11 +193,13 @@ public final class ServicesCreateOrUpdateSamples {
     /**
      * Sample code: SearchCreateOrUpdateServiceDisableLocalAuth.
      * 
-     * @param manager Entry point to SearchServiceManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
-        searchCreateOrUpdateServiceDisableLocalAuth(com.azure.resourcemanager.search.SearchServiceManager manager) {
-        manager.serviceClient()
+        searchCreateOrUpdateServiceDisableLocalAuth(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.searchServices()
+            .manager()
+            .serviceClient()
             .getServices()
             .createOrUpdate("rg1", "mysearchservice",
                 new SearchServiceInner().withLocation("westus")
@@ -208,11 +219,13 @@ public final class ServicesCreateOrUpdateSamples {
     /**
      * Sample code: SearchCreateOrUpdateServiceToAllowAccessFromPublicCustomIPs.
      * 
-     * @param manager Entry point to SearchServiceManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void searchCreateOrUpdateServiceToAllowAccessFromPublicCustomIPs(
-        com.azure.resourcemanager.search.SearchServiceManager manager) {
-        manager.serviceClient()
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.searchServices()
+            .manager()
+            .serviceClient()
             .getServices()
             .createOrUpdate("rg1", "mysearchservice",
                 new SearchServiceInner().withLocation("westus")
@@ -233,11 +246,13 @@ public final class ServicesCreateOrUpdateSamples {
     /**
      * Sample code: SearchCreateOrUpdateServiceWithCmkEnforcement.
      * 
-     * @param manager Entry point to SearchServiceManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
-        searchCreateOrUpdateServiceWithCmkEnforcement(com.azure.resourcemanager.search.SearchServiceManager manager) {
-        manager.serviceClient()
+        searchCreateOrUpdateServiceWithCmkEnforcement(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.searchServices()
+            .manager()
+            .serviceClient()
             .getServices()
             .createOrUpdate("rg1", "mysearchservice",
                 new SearchServiceInner().withLocation("westus")
@@ -257,11 +272,13 @@ public final class ServicesCreateOrUpdateSamples {
     /**
      * Sample code: SearchCreateOrUpdateServiceWithDataExfiltration.
      * 
-     * @param manager Entry point to SearchServiceManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
-        searchCreateOrUpdateServiceWithDataExfiltration(com.azure.resourcemanager.search.SearchServiceManager manager) {
-        manager.serviceClient()
+        searchCreateOrUpdateServiceWithDataExfiltration(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.searchServices()
+            .manager()
+            .serviceClient()
             .getServices()
             .createOrUpdate("rg1", "mysearchservice",
                 new SearchServiceInner().withLocation("westus")

@@ -34,8 +34,12 @@ public final class ResourceGuardProxyOperationsImpl implements ResourceGuardProx
         String resourceGuardProxyName, Context context) {
         Response<ResourceGuardProxyBaseResourceInner> inner
             = this.serviceClient().getWithResponse(vaultName, resourceGroupName, resourceGuardProxyName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new ResourceGuardProxyBaseResourceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ResourceGuardProxyBaseResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ResourceGuardProxyBaseResource get(String vaultName, String resourceGroupName,
@@ -62,8 +66,12 @@ public final class ResourceGuardProxyOperationsImpl implements ResourceGuardProx
         String resourceGuardProxyName, UnlockDeleteRequest parameters, Context context) {
         Response<UnlockDeleteResponseInner> inner = this.serviceClient()
             .unlockDeleteWithResponse(vaultName, resourceGroupName, resourceGuardProxyName, parameters, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new UnlockDeleteResponseImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new UnlockDeleteResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public UnlockDeleteResponse unlockDelete(String vaultName, String resourceGroupName, String resourceGuardProxyName,

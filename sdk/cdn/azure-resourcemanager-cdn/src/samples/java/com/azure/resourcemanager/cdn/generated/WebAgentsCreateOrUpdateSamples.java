@@ -21,10 +21,12 @@ public final class WebAgentsCreateOrUpdateSamples {
     /**
      * Sample code: Create or Update Web Agent.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void createOrUpdateWebAgent(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient()
+    public static void createOrUpdateWebAgent(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
             .getWebAgents()
             .createOrUpdate("RG", "myWebAgent1", new WebAgentInner().withLocation("WestUs")
                 .withTags(mapOf("key1", "fakeTokenPlaceholder"))

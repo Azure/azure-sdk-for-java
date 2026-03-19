@@ -32,8 +32,12 @@ public final class AdvancedThreatProtectionSettingsImpl implements AdvancedThrea
         ThreatProtectionName threatProtectionName, Context context) {
         Response<AdvancedThreatProtectionSettingsModelInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, serverName, threatProtectionName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new AdvancedThreatProtectionSettingsModelImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new AdvancedThreatProtectionSettingsModelImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public AdvancedThreatProtectionSettingsModel get(String resourceGroupName, String serverName,

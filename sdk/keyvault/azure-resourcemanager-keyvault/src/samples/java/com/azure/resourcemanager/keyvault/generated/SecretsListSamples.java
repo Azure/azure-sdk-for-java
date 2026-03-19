@@ -14,10 +14,12 @@ public final class SecretsListSamples {
     /**
      * Sample code: List secrets in the vault.
      * 
-     * @param manager Entry point to KeyVaultManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void listSecretsInTheVault(com.azure.resourcemanager.keyvault.KeyVaultManager manager) {
-        manager.serviceClient()
+    public static void listSecretsInTheVault(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.vaults()
+            .manager()
+            .serviceClient()
             .getSecrets()
             .list("sample-group", "sample-vault", null, com.azure.core.util.Context.NONE);
     }

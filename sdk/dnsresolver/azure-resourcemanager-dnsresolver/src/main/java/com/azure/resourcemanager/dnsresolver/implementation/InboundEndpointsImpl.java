@@ -31,8 +31,12 @@ public final class InboundEndpointsImpl implements InboundEndpoints {
         String inboundEndpointName, Context context) {
         Response<InboundEndpointInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, dnsResolverName, inboundEndpointName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new InboundEndpointImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new InboundEndpointImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public InboundEndpoint get(String resourceGroupName, String dnsResolverName, String inboundEndpointName) {

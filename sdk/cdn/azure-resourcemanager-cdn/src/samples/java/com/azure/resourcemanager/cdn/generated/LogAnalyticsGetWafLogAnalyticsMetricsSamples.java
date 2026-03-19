@@ -20,10 +20,12 @@ public final class LogAnalyticsGetWafLogAnalyticsMetricsSamples {
     /**
      * Sample code: LogAnalytics_GetWafLogAnalyticsMetrics.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void logAnalyticsGetWafLogAnalyticsMetrics(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient()
+    public static void logAnalyticsGetWafLogAnalyticsMetrics(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
             .getLogAnalytics()
             .getWafLogAnalyticsMetricsWithResponse("RG", "profile1", Arrays.asList(WafMetric.CLIENT_REQUEST_COUNT),
                 OffsetDateTime.parse("2020-11-04T06:49:27.554Z"), OffsetDateTime.parse("2020-11-04T09:49:27.554Z"),

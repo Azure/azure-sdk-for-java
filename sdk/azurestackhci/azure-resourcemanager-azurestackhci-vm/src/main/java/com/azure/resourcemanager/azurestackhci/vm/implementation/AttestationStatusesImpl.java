@@ -28,8 +28,12 @@ public final class AttestationStatusesImpl implements AttestationStatuses {
 
     public Response<AttestationStatus> getWithResponse(String resourceUri, Context context) {
         Response<AttestationStatusInner> inner = this.serviceClient().getWithResponse(resourceUri, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new AttestationStatusImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new AttestationStatusImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public AttestationStatus get(String resourceUri) {

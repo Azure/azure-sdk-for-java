@@ -14,10 +14,12 @@ public final class AfdEndpointsDeleteSamples {
     /**
      * Sample code: AFDEndpoints_Delete.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void aFDEndpointsDelete(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient()
+    public static void aFDEndpointsDelete(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
             .getAfdEndpoints()
             .delete("RG", "profile1", "endpoint1", com.azure.core.util.Context.NONE);
     }

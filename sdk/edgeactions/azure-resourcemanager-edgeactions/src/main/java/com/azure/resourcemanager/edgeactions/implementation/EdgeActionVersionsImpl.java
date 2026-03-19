@@ -35,8 +35,12 @@ public final class EdgeActionVersionsImpl implements EdgeActionVersions {
         Context context) {
         Response<EdgeActionVersionInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, edgeActionName, version, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new EdgeActionVersionImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new EdgeActionVersionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public EdgeActionVersion get(String resourceGroupName, String edgeActionName, String version) {

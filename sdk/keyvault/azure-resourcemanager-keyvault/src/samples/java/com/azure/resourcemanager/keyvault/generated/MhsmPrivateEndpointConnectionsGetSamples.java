@@ -14,11 +14,12 @@ public final class MhsmPrivateEndpointConnectionsGetSamples {
     /**
      * Sample code: ManagedHsmGetPrivateEndpointConnection.
      * 
-     * @param manager Entry point to KeyVaultManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void
-        managedHsmGetPrivateEndpointConnection(com.azure.resourcemanager.keyvault.KeyVaultManager manager) {
-        manager.serviceClient()
+    public static void managedHsmGetPrivateEndpointConnection(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.vaults()
+            .manager()
+            .serviceClient()
             .getMhsmPrivateEndpointConnections()
             .getWithResponse("sample-group", "sample-mhsm", "sample-pec", com.azure.core.util.Context.NONE);
     }

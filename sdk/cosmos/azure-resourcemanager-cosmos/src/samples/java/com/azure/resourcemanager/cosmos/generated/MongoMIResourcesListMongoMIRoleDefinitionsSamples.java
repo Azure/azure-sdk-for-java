@@ -14,10 +14,12 @@ public final class MongoMIResourcesListMongoMIRoleDefinitionsSamples {
     /**
      * Sample code: CosmosDBMongoMIRoleDefinitionList.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBMongoMIRoleDefinitionList(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBMongoMIRoleDefinitionList(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getMongoMIResources()
             .listMongoMIRoleDefinitions("myResourceGroupName", "myAccountName", com.azure.core.util.Context.NONE);
     }

@@ -37,8 +37,12 @@ public final class ConfigTemplatesImpl implements ConfigTemplates {
         Context context) {
         Response<ConfigTemplateInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, configTemplateName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new ConfigTemplateImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ConfigTemplateImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ConfigTemplate getByResourceGroup(String resourceGroupName, String configTemplateName) {
@@ -76,8 +80,12 @@ public final class ConfigTemplatesImpl implements ConfigTemplates {
         String configTemplateName, VersionParameter body, Context context) {
         Response<RemoveVersionResponseInner> inner
             = this.serviceClient().removeVersionWithResponse(resourceGroupName, configTemplateName, body, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new RemoveVersionResponseImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new RemoveVersionResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public RemoveVersionResponse removeVersion(String resourceGroupName, String configTemplateName,

@@ -30,8 +30,12 @@ public final class PrivateLinkResourcesImpl implements PrivateLinkResources {
         String elasticSanName, Context context) {
         Response<PrivateLinkResourceListResultInner> inner
             = this.serviceClient().listByElasticSanWithResponse(resourceGroupName, elasticSanName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new PrivateLinkResourceListResultImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new PrivateLinkResourceListResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public PrivateLinkResourceListResult listByElasticSan(String resourceGroupName, String elasticSanName) {

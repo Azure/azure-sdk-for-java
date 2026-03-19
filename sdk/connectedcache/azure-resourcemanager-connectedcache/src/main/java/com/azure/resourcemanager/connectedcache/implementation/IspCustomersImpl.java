@@ -31,8 +31,12 @@ public final class IspCustomersImpl implements IspCustomers {
         String customerResourceName, Context context) {
         Response<IspCustomerResourceInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, customerResourceName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new IspCustomerResourceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new IspCustomerResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public IspCustomerResource getByResourceGroup(String resourceGroupName, String customerResourceName) {

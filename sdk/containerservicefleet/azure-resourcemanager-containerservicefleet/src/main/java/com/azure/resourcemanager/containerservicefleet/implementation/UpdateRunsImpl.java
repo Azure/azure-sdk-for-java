@@ -32,8 +32,12 @@ public final class UpdateRunsImpl implements UpdateRuns {
         Context context) {
         Response<UpdateRunInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, fleetName, updateRunName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new UpdateRunImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new UpdateRunImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public UpdateRun get(String resourceGroupName, String fleetName, String updateRunName) {

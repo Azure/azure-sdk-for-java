@@ -39,8 +39,12 @@ public final class DeploymentStacksImpl implements DeploymentStacks {
         String deploymentStackName, Context context) {
         Response<DeploymentStackInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, deploymentStackName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new DeploymentStackImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new DeploymentStackImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public DeploymentStack getByResourceGroup(String resourceGroupName, String deploymentStackName) {
@@ -105,8 +109,12 @@ public final class DeploymentStacksImpl implements DeploymentStacks {
         String resourceGroupName, String deploymentStackName, Context context) {
         Response<DeploymentStackTemplateDefinitionInner> inner = this.serviceClient()
             .exportTemplateAtResourceGroupWithResponse(resourceGroupName, deploymentStackName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new DeploymentStackTemplateDefinitionImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new DeploymentStackTemplateDefinitionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public DeploymentStackTemplateDefinition exportTemplateAtResourceGroup(String resourceGroupName,
@@ -123,8 +131,12 @@ public final class DeploymentStacksImpl implements DeploymentStacks {
     public Response<DeploymentStack> getAtSubscriptionWithResponse(String deploymentStackName, Context context) {
         Response<DeploymentStackInner> inner
             = this.serviceClient().getAtSubscriptionWithResponse(deploymentStackName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new DeploymentStackImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new DeploymentStackImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public DeploymentStack getAtSubscription(String deploymentStackName) {
@@ -209,8 +221,12 @@ public final class DeploymentStacksImpl implements DeploymentStacks {
         exportTemplateAtSubscriptionWithResponse(String deploymentStackName, Context context) {
         Response<DeploymentStackTemplateDefinitionInner> inner
             = this.serviceClient().exportTemplateAtSubscriptionWithResponse(deploymentStackName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new DeploymentStackTemplateDefinitionImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new DeploymentStackTemplateDefinitionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public DeploymentStackTemplateDefinition exportTemplateAtSubscription(String deploymentStackName) {
@@ -227,8 +243,12 @@ public final class DeploymentStacksImpl implements DeploymentStacks {
         String deploymentStackName, Context context) {
         Response<DeploymentStackInner> inner
             = this.serviceClient().getAtManagementGroupWithResponse(managementGroupId, deploymentStackName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new DeploymentStackImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new DeploymentStackImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public DeploymentStack getAtManagementGroup(String managementGroupId, String deploymentStackName) {
@@ -315,8 +335,12 @@ public final class DeploymentStacksImpl implements DeploymentStacks {
         String managementGroupId, String deploymentStackName, Context context) {
         Response<DeploymentStackTemplateDefinitionInner> inner = this.serviceClient()
             .exportTemplateAtManagementGroupWithResponse(managementGroupId, deploymentStackName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new DeploymentStackTemplateDefinitionImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new DeploymentStackTemplateDefinitionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public DeploymentStackTemplateDefinition exportTemplateAtManagementGroup(String managementGroupId,

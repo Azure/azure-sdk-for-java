@@ -29,8 +29,12 @@ public final class ManagedUnsupportedVMSizesImpl implements ManagedUnsupportedVM
 
     public Response<ManagedVMSize> getWithResponse(String location, String vmSize, Context context) {
         Response<ManagedVMSizeInner> inner = this.serviceClient().getWithResponse(location, vmSize, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new ManagedVMSizeImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ManagedVMSizeImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ManagedVMSize get(String location, String vmSize) {

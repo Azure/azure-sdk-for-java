@@ -30,8 +30,12 @@ public final class TagRulesImpl implements TagRules {
         String ruleSetName, Context context) {
         Response<MonitoringTagRulesInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, monitorName, ruleSetName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new MonitoringTagRulesImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new MonitoringTagRulesImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public MonitoringTagRules get(String resourceGroupName, String monitorName, String ruleSetName) {

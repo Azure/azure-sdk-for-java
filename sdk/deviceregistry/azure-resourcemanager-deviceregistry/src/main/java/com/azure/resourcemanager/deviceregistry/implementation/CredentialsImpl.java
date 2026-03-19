@@ -31,8 +31,12 @@ public final class CredentialsImpl implements Credentials {
     public Response<Credential> getWithResponse(String resourceGroupName, String namespaceName, Context context) {
         Response<CredentialInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, namespaceName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new CredentialImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new CredentialImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public Credential get(String resourceGroupName, String namespaceName) {

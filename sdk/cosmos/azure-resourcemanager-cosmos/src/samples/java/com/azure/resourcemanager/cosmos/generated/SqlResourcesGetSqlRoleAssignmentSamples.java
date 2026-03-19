@@ -14,10 +14,12 @@ public final class SqlResourcesGetSqlRoleAssignmentSamples {
     /**
      * Sample code: CosmosDBSqlRoleAssignmentGet.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBSqlRoleAssignmentGet(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBSqlRoleAssignmentGet(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getSqlResources()
             .getSqlRoleAssignmentWithResponse("myRoleAssignmentId", "myResourceGroupName", "myAccountName",
                 com.azure.core.util.Context.NONE);

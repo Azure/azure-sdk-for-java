@@ -14,11 +14,13 @@ public final class CustomDomainsEnableCustomHttpsSamples {
     /**
      * Sample code: CustomDomains_EnableCustomHttpsUsingCDNManagedCertificate.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
-        customDomainsEnableCustomHttpsUsingCDNManagedCertificate(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient()
+        customDomainsEnableCustomHttpsUsingCDNManagedCertificate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
             .getCustomDomains()
             .enableCustomHttps("RG", "profile1", "endpoint1", "www-someDomain-net", null,
                 com.azure.core.util.Context.NONE);
@@ -30,11 +32,13 @@ public final class CustomDomainsEnableCustomHttpsSamples {
     /**
      * Sample code: CustomDomains_EnableCustomHttpsUsingYourOwnCertificate.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
-        customDomainsEnableCustomHttpsUsingYourOwnCertificate(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient()
+        customDomainsEnableCustomHttpsUsingYourOwnCertificate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
             .getCustomDomains()
             .enableCustomHttps("RG", "profile1", "endpoint1", "www-someDomain-net", null,
                 com.azure.core.util.Context.NONE);

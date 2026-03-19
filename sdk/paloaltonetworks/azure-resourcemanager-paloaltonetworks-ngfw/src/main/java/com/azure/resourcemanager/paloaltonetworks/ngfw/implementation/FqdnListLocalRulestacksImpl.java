@@ -31,8 +31,12 @@ public final class FqdnListLocalRulestacksImpl implements FqdnListLocalRulestack
         String name, Context context) {
         Response<FqdnListLocalRulestackResourceInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, localRulestackName, name, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new FqdnListLocalRulestackResourceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new FqdnListLocalRulestackResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public FqdnListLocalRulestackResource get(String resourceGroupName, String localRulestackName, String name) {

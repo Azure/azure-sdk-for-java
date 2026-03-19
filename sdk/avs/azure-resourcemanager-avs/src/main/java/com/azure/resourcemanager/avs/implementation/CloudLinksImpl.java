@@ -40,8 +40,12 @@ public final class CloudLinksImpl implements CloudLinks {
         Context context) {
         Response<CloudLinkInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, privateCloudName, cloudLinkName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new CloudLinkImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new CloudLinkImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public CloudLink get(String resourceGroupName, String privateCloudName, String cloudLinkName) {

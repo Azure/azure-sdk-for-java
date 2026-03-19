@@ -14,11 +14,13 @@ public final class PrivateEndpointConnectionsDeleteSamples {
     /**
      * Sample code: Deletes a private endpoint connection with a given name.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
-        deletesAPrivateEndpointConnectionWithAGivenName(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+        deletesAPrivateEndpointConnectionWithAGivenName(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getPrivateEndpointConnections()
             .delete("rg1", "ddb1", "privateEndpointConnectionName", com.azure.core.util.Context.NONE);
     }

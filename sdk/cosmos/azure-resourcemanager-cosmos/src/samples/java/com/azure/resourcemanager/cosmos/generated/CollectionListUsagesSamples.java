@@ -14,10 +14,12 @@ public final class CollectionListUsagesSamples {
     /**
      * Sample code: CosmosDBCollectionGetUsages.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBCollectionGetUsages(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBCollectionGetUsages(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getCollections()
             .listUsages("rg1", "ddb1", "databaseRid", "collectionRid", "$filter=name.value eq 'Storage'",
                 com.azure.core.util.Context.NONE);

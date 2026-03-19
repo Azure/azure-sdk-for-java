@@ -31,8 +31,12 @@ public final class ManagedClustersImpl implements ManagedClusters {
         Context context) {
         Response<ManagedClusterInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, clusterName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new ManagedClusterImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ManagedClusterImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ManagedCluster getByResourceGroup(String resourceGroupName, String clusterName) {

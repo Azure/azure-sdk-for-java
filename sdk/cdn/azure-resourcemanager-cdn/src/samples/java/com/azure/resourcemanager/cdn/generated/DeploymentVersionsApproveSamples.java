@@ -14,10 +14,12 @@ public final class DeploymentVersionsApproveSamples {
     /**
      * Sample code: DeploymentVersions_Approve.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void deploymentVersionsApprove(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient()
+    public static void deploymentVersionsApprove(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
             .getDeploymentVersions()
             .approve("RG", "profile1", "dv1", com.azure.core.util.Context.NONE);
     }

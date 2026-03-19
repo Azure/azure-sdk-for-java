@@ -14,10 +14,12 @@ public final class MongoDBResourcesListMongoDBDatabasesSamples {
     /**
      * Sample code: CosmosDBMongoDBDatabaseList.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBMongoDBDatabaseList(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBMongoDBDatabaseList(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getMongoDBResources()
             .listMongoDBDatabases("rgName", "ddb1", com.azure.core.util.Context.NONE);
     }

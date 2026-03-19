@@ -47,8 +47,12 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
         String mongoClusterName, String privateEndpointConnectionName, Context context) {
         Response<PrivateEndpointConnectionResourceInner> inner = this.serviceClient()
             .getWithResponse(resourceGroupName, mongoClusterName, privateEndpointConnectionName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new PrivateEndpointConnectionResourceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new PrivateEndpointConnectionResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public PrivateEndpointConnectionResource get(String resourceGroupName, String mongoClusterName,

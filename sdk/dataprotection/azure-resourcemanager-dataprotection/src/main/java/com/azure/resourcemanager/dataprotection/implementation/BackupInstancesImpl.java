@@ -45,8 +45,12 @@ public final class BackupInstancesImpl implements BackupInstances {
         Response<BackupInstanceResourceInner> inner = this.serviceClient()
             .getBackupInstanceOperationResultWithResponse(resourceGroupName, vaultName, backupInstanceName, operationId,
                 context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new BackupInstanceResourceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new BackupInstanceResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public BackupInstanceResource getBackupInstanceOperationResult(String resourceGroupName, String vaultName,
@@ -97,8 +101,12 @@ public final class BackupInstancesImpl implements BackupInstances {
         String backupInstanceName, Context context) {
         Response<BackupInstanceResourceInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, vaultName, backupInstanceName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new BackupInstanceResourceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new BackupInstanceResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public BackupInstanceResource get(String resourceGroupName, String vaultName, String backupInstanceName) {

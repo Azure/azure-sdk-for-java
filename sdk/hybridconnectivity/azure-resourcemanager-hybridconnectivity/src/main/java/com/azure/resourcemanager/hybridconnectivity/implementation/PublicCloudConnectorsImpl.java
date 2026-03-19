@@ -33,8 +33,12 @@ public final class PublicCloudConnectorsImpl implements PublicCloudConnectors {
         String publicCloudConnector, Context context) {
         Response<PublicCloudConnectorInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, publicCloudConnector, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new PublicCloudConnectorImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new PublicCloudConnectorImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public PublicCloudConnector getByResourceGroup(String resourceGroupName, String publicCloudConnector) {

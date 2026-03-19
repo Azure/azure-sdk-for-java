@@ -14,10 +14,12 @@ public final class CustomDomainsListByEndpointSamples {
     /**
      * Sample code: CustomDomains_ListByEndpoint.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void customDomainsListByEndpoint(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient()
+    public static void customDomainsListByEndpoint(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
             .getCustomDomains()
             .listByEndpoint("RG", "profile1", "endpoint1", com.azure.core.util.Context.NONE);
     }

@@ -14,10 +14,12 @@ public final class MongoDBResourcesDeleteMongoUserDefinitionSamples {
     /**
      * Sample code: CosmosDBMongoDBUserDefinitionDelete.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBMongoDBUserDefinitionDelete(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBMongoDBUserDefinitionDelete(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getMongoDBResources()
             .deleteMongoUserDefinition("myMongoUserDefinitionId", "myResourceGroupName", "myAccountName",
                 com.azure.core.util.Context.NONE);

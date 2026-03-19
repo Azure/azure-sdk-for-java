@@ -14,9 +14,9 @@ public final class OperationsListSamples {
     /**
      * Sample code: OperationList.
      * 
-     * @param manager Entry point to ContainerRegistryManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void operationList(com.azure.resourcemanager.containerregistry.ContainerRegistryManager manager) {
-        manager.serviceClient().getOperations().list(com.azure.core.util.Context.NONE);
+    public static void operationList(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.containerRegistries().manager().serviceClient().getOperations().list(com.azure.core.util.Context.NONE);
     }
 }

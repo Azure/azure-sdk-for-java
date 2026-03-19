@@ -18,10 +18,12 @@ public final class ProfilesCreateSamples {
     /**
      * Sample code: Profiles_Create.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void profilesCreate(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient()
+    public static void profilesCreate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
             .getProfiles()
             .create("RG", "profile1",
                 new ProfileInner().withLocation("global").withSku(new Sku().withName(SkuName.PREMIUM_AZURE_FRONT_DOOR)),

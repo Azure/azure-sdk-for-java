@@ -14,11 +14,12 @@ public final class CassandraResourcesMigrateCassandraTableToAutoscaleSamples {
     /**
      * Sample code: CosmosDBCassandraTableMigrateToAutoscale.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void
-        cosmosDBCassandraTableMigrateToAutoscale(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBCassandraTableMigrateToAutoscale(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getCassandraResources()
             .migrateCassandraTableToAutoscale("rg1", "ddb1", "keyspaceName", "tableName",
                 com.azure.core.util.Context.NONE);

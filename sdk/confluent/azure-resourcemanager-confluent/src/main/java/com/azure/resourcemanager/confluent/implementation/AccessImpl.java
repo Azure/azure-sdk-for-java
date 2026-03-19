@@ -58,8 +58,12 @@ public final class AccessImpl implements Access {
         String organizationName, ListAccessRequestModel body, Context context) {
         Response<AccessListUsersSuccessResponseInner> inner
             = this.serviceClient().listUsersWithResponse(resourceGroupName, organizationName, body, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new AccessListUsersSuccessResponseImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new AccessListUsersSuccessResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public AccessListUsersSuccessResponse listUsers(String resourceGroupName, String organizationName,
@@ -77,8 +81,12 @@ public final class AccessImpl implements Access {
         String organizationName, ListAccessRequestModel body, Context context) {
         Response<AccessListServiceAccountsSuccessResponseInner> inner
             = this.serviceClient().listServiceAccountsWithResponse(resourceGroupName, organizationName, body, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new AccessListServiceAccountsSuccessResponseImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new AccessListServiceAccountsSuccessResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public AccessListServiceAccountsSuccessResponse listServiceAccounts(String resourceGroupName,
@@ -96,8 +104,12 @@ public final class AccessImpl implements Access {
         String organizationName, ListAccessRequestModel body, Context context) {
         Response<AccessListInvitationsSuccessResponseInner> inner
             = this.serviceClient().listInvitationsWithResponse(resourceGroupName, organizationName, body, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new AccessListInvitationsSuccessResponseImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new AccessListInvitationsSuccessResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public AccessListInvitationsSuccessResponse listInvitations(String resourceGroupName, String organizationName,
@@ -115,8 +127,12 @@ public final class AccessImpl implements Access {
         AccessInviteUserAccountModel body, Context context) {
         Response<InvitationRecordInner> inner
             = this.serviceClient().inviteUserWithResponse(resourceGroupName, organizationName, body, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new InvitationRecordImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new InvitationRecordImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public InvitationRecord inviteUser(String resourceGroupName, String organizationName,
@@ -133,8 +149,12 @@ public final class AccessImpl implements Access {
         String organizationName, ListAccessRequestModel body, Context context) {
         Response<AccessListEnvironmentsSuccessResponseInner> inner
             = this.serviceClient().listEnvironmentsWithResponse(resourceGroupName, organizationName, body, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new AccessListEnvironmentsSuccessResponseImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new AccessListEnvironmentsSuccessResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public AccessListEnvironmentsSuccessResponse listEnvironments(String resourceGroupName, String organizationName,
@@ -152,8 +172,12 @@ public final class AccessImpl implements Access {
         String organizationName, ListAccessRequestModel body, Context context) {
         Response<AccessListClusterSuccessResponseInner> inner
             = this.serviceClient().listClustersWithResponse(resourceGroupName, organizationName, body, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new AccessListClusterSuccessResponseImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new AccessListClusterSuccessResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public AccessListClusterSuccessResponse listClusters(String resourceGroupName, String organizationName,
@@ -171,8 +195,12 @@ public final class AccessImpl implements Access {
         String organizationName, ListAccessRequestModel body, Context context) {
         Response<AccessListRoleBindingsSuccessResponseInner> inner
             = this.serviceClient().listRoleBindingsWithResponse(resourceGroupName, organizationName, body, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new AccessListRoleBindingsSuccessResponseImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new AccessListRoleBindingsSuccessResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public AccessListRoleBindingsSuccessResponse listRoleBindings(String resourceGroupName, String organizationName,
@@ -190,8 +218,12 @@ public final class AccessImpl implements Access {
         AccessCreateRoleBindingRequestModel body, Context context) {
         Response<RoleBindingRecordInner> inner
             = this.serviceClient().createRoleBindingWithResponse(resourceGroupName, organizationName, body, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new RoleBindingRecordImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new RoleBindingRecordImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public RoleBindingRecord createRoleBinding(String resourceGroupName, String organizationName,
@@ -209,8 +241,12 @@ public final class AccessImpl implements Access {
         String resourceGroupName, String organizationName, ListAccessRequestModel body, Context context) {
         Response<AccessRoleBindingNameListSuccessResponseInner> inner = this.serviceClient()
             .listRoleBindingNameListWithResponse(resourceGroupName, organizationName, body, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new AccessRoleBindingNameListSuccessResponseImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new AccessRoleBindingNameListSuccessResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public AccessRoleBindingNameListSuccessResponse listRoleBindingNameList(String resourceGroupName,

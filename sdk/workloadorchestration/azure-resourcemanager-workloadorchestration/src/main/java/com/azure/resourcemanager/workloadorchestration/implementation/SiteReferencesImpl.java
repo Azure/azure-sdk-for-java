@@ -31,8 +31,12 @@ public final class SiteReferencesImpl implements SiteReferences {
         String siteReferenceName, Context context) {
         Response<SiteReferenceInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, contextName, siteReferenceName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new SiteReferenceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new SiteReferenceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public SiteReference get(String resourceGroupName, String contextName, String siteReferenceName) {

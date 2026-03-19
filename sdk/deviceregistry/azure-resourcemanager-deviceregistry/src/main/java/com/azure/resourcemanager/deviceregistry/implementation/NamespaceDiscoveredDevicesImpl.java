@@ -31,8 +31,12 @@ public final class NamespaceDiscoveredDevicesImpl implements NamespaceDiscovered
         String discoveredDeviceName, Context context) {
         Response<NamespaceDiscoveredDeviceInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, namespaceName, discoveredDeviceName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new NamespaceDiscoveredDeviceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new NamespaceDiscoveredDeviceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public NamespaceDiscoveredDevice get(String resourceGroupName, String namespaceName, String discoveredDeviceName) {

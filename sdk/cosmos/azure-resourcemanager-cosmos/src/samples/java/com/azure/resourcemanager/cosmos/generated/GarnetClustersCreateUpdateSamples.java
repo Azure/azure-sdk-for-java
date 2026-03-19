@@ -19,10 +19,12 @@ public final class GarnetClustersCreateUpdateSamples {
     /**
      * Sample code: CosmosDBGarnetClusterCreate.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBGarnetClusterCreate(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBGarnetClusterCreate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getGarnetClusters()
             .createUpdate("garnet-prod-rg", "garnet-prod", new GarnetClusterResourceInner().withLocation("West US")
                 .withTags(mapOf())

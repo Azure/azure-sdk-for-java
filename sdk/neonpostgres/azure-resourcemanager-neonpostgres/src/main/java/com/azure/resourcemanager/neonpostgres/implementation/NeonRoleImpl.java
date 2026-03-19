@@ -57,7 +57,7 @@ public final class NeonRoleImpl implements NeonRole, NeonRole.Definition, NeonRo
 
     private String neonRoleName;
 
-    public NeonRoleImpl withExistingBranch(String resourceGroupName, String organizationName, String projectName,
+    public NeonRoleImpl withExistingBranche(String resourceGroupName, String organizationName, String projectName,
         String branchName) {
         this.resourceGroupName = resourceGroupName;
         this.organizationName = organizationName;

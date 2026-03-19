@@ -32,8 +32,12 @@ public final class NodeTypesImpl implements NodeTypes {
         Context context) {
         Response<NodeTypeInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, clusterName, nodeTypeName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new NodeTypeImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new NodeTypeImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public NodeType get(String resourceGroupName, String clusterName, String nodeTypeName) {

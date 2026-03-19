@@ -16,10 +16,12 @@ public final class HeatMapGetSamples {
     /**
      * Sample code: HeatMap-GET-With-TopLeft-BotRight.
      * 
-     * @param manager Entry point to TrafficManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void heatMapGETWithTopLeftBotRight(com.azure.resourcemanager.trafficmanager.TrafficManager manager) {
-        manager.serviceClient()
+    public static void heatMapGETWithTopLeftBotRight(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.trafficManagerProfiles()
+            .manager()
+            .serviceClient()
             .getHeatMaps()
             .getWithResponse("azuresdkfornetautoresttrafficmanager1323", "azuresdkfornetautoresttrafficmanager3880",
                 Arrays.asList(10.0, 50.001), Arrays.asList(-50.001, 80.0), com.azure.core.util.Context.NONE);
@@ -31,10 +33,12 @@ public final class HeatMapGetSamples {
     /**
      * Sample code: HeatMap-GET.
      * 
-     * @param manager Entry point to TrafficManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void heatMapGET(com.azure.resourcemanager.trafficmanager.TrafficManager manager) {
-        manager.serviceClient()
+    public static void heatMapGET(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.trafficManagerProfiles()
+            .manager()
+            .serviceClient()
             .getHeatMaps()
             .getWithResponse("azuresdkfornetautoresttrafficmanager1323", "azuresdkfornetautoresttrafficmanager3880",
                 null, null, com.azure.core.util.Context.NONE);
@@ -46,10 +50,12 @@ public final class HeatMapGetSamples {
     /**
      * Sample code: HeatMap-GET-With-Null-Values.
      * 
-     * @param manager Entry point to TrafficManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void heatMapGETWithNullValues(com.azure.resourcemanager.trafficmanager.TrafficManager manager) {
-        manager.serviceClient()
+    public static void heatMapGETWithNullValues(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.trafficManagerProfiles()
+            .manager()
+            .serviceClient()
             .getHeatMaps()
             .getWithResponse("azuresdkfornetautoresttrafficmanager1323", "azuresdkfornetautoresttrafficmanager3880",
                 null, null, com.azure.core.util.Context.NONE);

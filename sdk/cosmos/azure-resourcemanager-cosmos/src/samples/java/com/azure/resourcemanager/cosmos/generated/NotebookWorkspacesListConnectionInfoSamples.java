@@ -16,11 +16,13 @@ public final class NotebookWorkspacesListConnectionInfoSamples {
     /**
      * Sample code: CosmosDBNotebookWorkspaceListConnectionInfo.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
-        cosmosDBNotebookWorkspaceListConnectionInfo(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+        cosmosDBNotebookWorkspaceListConnectionInfo(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getNotebookWorkspaces()
             .listConnectionInfoWithResponse("rg1", "ddb1", NotebookWorkspaceName.DEFAULT,
                 com.azure.core.util.Context.NONE);

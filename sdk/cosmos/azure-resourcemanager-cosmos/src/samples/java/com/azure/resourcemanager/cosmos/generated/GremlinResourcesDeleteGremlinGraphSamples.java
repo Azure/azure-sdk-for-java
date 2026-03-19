@@ -14,10 +14,12 @@ public final class GremlinResourcesDeleteGremlinGraphSamples {
     /**
      * Sample code: CosmosDBGremlinGraphDelete.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBGremlinGraphDelete(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBGremlinGraphDelete(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getGremlinResources()
             .deleteGremlinGraph("rg1", "ddb1", "databaseName", "graphName", com.azure.core.util.Context.NONE);
     }

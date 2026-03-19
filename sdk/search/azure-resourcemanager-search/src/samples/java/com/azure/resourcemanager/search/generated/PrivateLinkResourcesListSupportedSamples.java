@@ -14,11 +14,12 @@ public final class PrivateLinkResourcesListSupportedSamples {
     /**
      * Sample code: ListSupportedPrivateLinkResources.
      * 
-     * @param manager Entry point to SearchServiceManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void
-        listSupportedPrivateLinkResources(com.azure.resourcemanager.search.SearchServiceManager manager) {
-        manager.serviceClient()
+    public static void listSupportedPrivateLinkResources(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.searchServices()
+            .manager()
+            .serviceClient()
             .getPrivateLinkResources()
             .listSupported("rg1", "mysearchservice", com.azure.core.util.Context.NONE);
     }

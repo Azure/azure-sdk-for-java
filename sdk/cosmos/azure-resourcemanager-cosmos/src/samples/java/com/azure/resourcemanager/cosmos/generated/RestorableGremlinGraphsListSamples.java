@@ -14,10 +14,12 @@ public final class RestorableGremlinGraphsListSamples {
     /**
      * Sample code: CosmosDBRestorableGremlinGraphList.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBRestorableGremlinGraphList(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBRestorableGremlinGraphList(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getRestorableGremlinGraphs()
             .list("WestUS", "98a570f2-63db-4117-91f0-366327b7b353", "PD5DALigDgw=", null, null,
                 com.azure.core.util.Context.NONE);

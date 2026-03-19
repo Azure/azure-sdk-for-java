@@ -16,10 +16,12 @@ public final class EndpointsDeleteSamples {
     /**
      * Sample code: Endpoint-DELETE-External.
      * 
-     * @param manager Entry point to TrafficManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void endpointDELETEExternal(com.azure.resourcemanager.trafficmanager.TrafficManager manager) {
-        manager.serviceClient()
+    public static void endpointDELETEExternal(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.trafficManagerProfiles()
+            .manager()
+            .serviceClient()
             .getEndpoints()
             .deleteWithResponse("azuresdkfornetautoresttrafficmanager1421", "azsmnet6386",
                 EndpointTypes.EXTERNAL_ENDPOINTS, "azsmnet7187", com.azure.core.util.Context.NONE);

@@ -30,8 +30,12 @@ public final class DefaultRolloutsImpl implements DefaultRollouts {
     public Response<DefaultRollout> getWithResponse(String providerNamespace, String rolloutName, Context context) {
         Response<DefaultRolloutInner> inner
             = this.serviceClient().getWithResponse(providerNamespace, rolloutName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new DefaultRolloutImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new DefaultRolloutImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public DefaultRollout get(String providerNamespace, String rolloutName) {

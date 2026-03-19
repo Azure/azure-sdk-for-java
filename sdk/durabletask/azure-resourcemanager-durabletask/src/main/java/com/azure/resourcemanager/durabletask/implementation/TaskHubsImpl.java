@@ -31,8 +31,12 @@ public final class TaskHubsImpl implements TaskHubs {
         Context context) {
         Response<TaskHubInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, schedulerName, taskHubName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new TaskHubImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new TaskHubImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public TaskHub get(String resourceGroupName, String schedulerName, String taskHubName) {

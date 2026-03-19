@@ -14,10 +14,12 @@ public final class CassandraResourcesMigrateCassandraViewToAutoscaleSamples {
     /**
      * Sample code: CosmosDBCassandraViewMigrateToAutoscale.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBCassandraViewMigrateToAutoscale(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBCassandraViewMigrateToAutoscale(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getCassandraResources()
             .migrateCassandraViewToAutoscale("rg1", "ddb1", "keyspacename", "viewname",
                 com.azure.core.util.Context.NONE);

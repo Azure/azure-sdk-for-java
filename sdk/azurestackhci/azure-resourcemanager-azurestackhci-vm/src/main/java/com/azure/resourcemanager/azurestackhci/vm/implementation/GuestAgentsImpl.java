@@ -29,8 +29,12 @@ public final class GuestAgentsImpl implements GuestAgents {
 
     public Response<GuestAgent> getWithResponse(String resourceUri, Context context) {
         Response<GuestAgentInner> inner = this.serviceClient().getWithResponse(resourceUri, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new GuestAgentImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new GuestAgentImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public GuestAgent get(String resourceUri) {

@@ -16,10 +16,12 @@ public final class EndpointsValidateCustomDomainSamples {
     /**
      * Sample code: Endpoints_ValidateCustomDomain.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void endpointsValidateCustomDomain(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient()
+    public static void endpointsValidateCustomDomain(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
             .getEndpoints()
             .validateCustomDomainWithResponse("RG", "profile1", "endpoint1",
                 new ValidateCustomDomainInput().withHostname("www.someDomain.com"), com.azure.core.util.Context.NONE);

@@ -14,10 +14,12 @@ public final class DatabaseAccountsCheckNameExistsSamples {
     /**
      * Sample code: CosmosDBDatabaseAccountCheckNameExists.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBDatabaseAccountCheckNameExists(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBDatabaseAccountCheckNameExists(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getDatabaseAccounts()
             .checkNameExistsWithResponse("ddb1", com.azure.core.util.Context.NONE);
     }

@@ -14,10 +14,12 @@ public final class CassandraClustersGetCommandAsyncResourceSamples {
     /**
      * Sample code: CosmosDBManagedCassandraCommandResult.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBManagedCassandraCommandResult(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBManagedCassandraCommandResult(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getCassandraClusters()
             .getCommandAsyncResourceWithResponse("cassandra-prod-rg", "cassandra-prod",
                 "318653d0-3da5-4814-b8f6-429f2af0b2a4", com.azure.core.util.Context.NONE);

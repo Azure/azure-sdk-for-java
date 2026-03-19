@@ -18,11 +18,13 @@ public final class DatabaseAccountsFailoverPriorityChangeSamples {
     /**
      * Sample code: CosmosDBDatabaseAccountFailoverPriorityChange.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
-        cosmosDBDatabaseAccountFailoverPriorityChange(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+        cosmosDBDatabaseAccountFailoverPriorityChange(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getDatabaseAccounts()
             .failoverPriorityChange("rg1", "ddb1-failover",
                 new FailoverPolicies().withFailoverPolicies(

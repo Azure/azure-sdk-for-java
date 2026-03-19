@@ -18,10 +18,12 @@ public final class SqlResourcesCreateUpdateSqlStoredProcedureSamples {
     /**
      * Sample code: CosmosDBSqlStoredProcedureCreateUpdate.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBSqlStoredProcedureCreateUpdate(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBSqlStoredProcedureCreateUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getSqlResources()
             .createUpdateSqlStoredProcedure("rg1", "ddb1", "databaseName", "containerName", "storedProcedureName",
                 new SqlStoredProcedureCreateUpdateParameters()

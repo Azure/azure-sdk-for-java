@@ -14,10 +14,12 @@ public final class GremlinResourcesListGremlinRoleDefinitionsSamples {
     /**
      * Sample code: CosmosDBGremlinRoleDefinitionList.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBGremlinRoleDefinitionList(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBGremlinRoleDefinitionList(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getGremlinResources()
             .listGremlinRoleDefinitions("myResourceGroupName", "myAccountName", com.azure.core.util.Context.NONE);
     }

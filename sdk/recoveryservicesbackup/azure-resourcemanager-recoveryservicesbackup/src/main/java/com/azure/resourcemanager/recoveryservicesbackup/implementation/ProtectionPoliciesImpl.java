@@ -30,8 +30,12 @@ public final class ProtectionPoliciesImpl implements ProtectionPolicies {
         String policyName, Context context) {
         Response<ProtectionPolicyResourceInner> inner
             = this.serviceClient().getWithResponse(vaultName, resourceGroupName, policyName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new ProtectionPolicyResourceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ProtectionPolicyResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ProtectionPolicyResource get(String vaultName, String resourceGroupName, String policyName) {

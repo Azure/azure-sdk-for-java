@@ -23,10 +23,12 @@ public final class AfdOriginGroupsCreateSamples {
     /**
      * Sample code: AFDOriginGroups_Create.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void aFDOriginGroupsCreate(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient()
+    public static void aFDOriginGroupsCreate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
             .getAfdOriginGroups()
             .create("RG", "profile1", "origingroup1", new AfdOriginGroupInner()
                 .withLoadBalancingSettings(new LoadBalancingSettingsParameters().withSampleSize(3)

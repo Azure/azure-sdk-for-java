@@ -32,8 +32,12 @@ public final class NginxDeploymentWafPoliciesImpl implements NginxDeploymentWafP
         Context context) {
         Response<NginxDeploymentWafPolicyAnalysisResponseInner> inner = this.serviceClient()
             .analysisWithResponse(resourceGroupName, deploymentName, wafPolicyName, body, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new NginxDeploymentWafPolicyAnalysisResponseImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new NginxDeploymentWafPolicyAnalysisResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public NginxDeploymentWafPolicyAnalysisResponse analysis(String resourceGroupName, String deploymentName,

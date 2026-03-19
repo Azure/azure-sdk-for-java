@@ -17,10 +17,12 @@ public final class SecretsCreateOrUpdateSamples {
     /**
      * Sample code: Create a secret.
      * 
-     * @param manager Entry point to KeyVaultManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void createASecret(com.azure.resourcemanager.keyvault.KeyVaultManager manager) {
-        manager.serviceClient()
+    public static void createASecret(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.vaults()
+            .manager()
+            .serviceClient()
             .getSecrets()
             .createOrUpdateWithResponse("sample-group", "sample-vault", "secret-name",
                 new SecretCreateOrUpdateParameters().withProperties(new SecretProperties().withValue("secret-value")),

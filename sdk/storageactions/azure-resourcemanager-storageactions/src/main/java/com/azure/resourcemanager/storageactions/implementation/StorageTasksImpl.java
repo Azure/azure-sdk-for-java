@@ -33,8 +33,12 @@ public final class StorageTasksImpl implements StorageTasks {
         Context context) {
         Response<StorageTaskInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, storageTaskName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new StorageTaskImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new StorageTaskImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public StorageTask getByResourceGroup(String resourceGroupName, String storageTaskName) {
@@ -78,8 +82,12 @@ public final class StorageTasksImpl implements StorageTasks {
         StorageTaskPreviewActionInner parameters, Context context) {
         Response<StorageTaskPreviewActionInner> inner
             = this.serviceClient().previewActionsWithResponse(location, parameters, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new StorageTaskPreviewActionImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new StorageTaskPreviewActionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public StorageTaskPreviewAction previewActions(String location, StorageTaskPreviewActionInner parameters) {

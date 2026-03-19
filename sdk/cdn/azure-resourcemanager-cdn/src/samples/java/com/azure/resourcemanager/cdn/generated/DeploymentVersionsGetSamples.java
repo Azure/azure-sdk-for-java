@@ -14,10 +14,12 @@ public final class DeploymentVersionsGetSamples {
     /**
      * Sample code: DeploymentVersions_Get.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void deploymentVersionsGet(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient()
+    public static void deploymentVersionsGet(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
             .getDeploymentVersions()
             .getWithResponse("RG", "profile1", "dv1", com.azure.core.util.Context.NONE);
     }

@@ -14,11 +14,12 @@ public final class RegistriesListUsagesSamples {
     /**
      * Sample code: RegistryListUsages.
      * 
-     * @param manager Entry point to ContainerRegistryManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void
-        registryListUsages(com.azure.resourcemanager.containerregistry.ContainerRegistryManager manager) {
-        manager.serviceClient()
+    public static void registryListUsages(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.containerRegistries()
+            .manager()
+            .serviceClient()
             .getRegistries()
             .listUsagesWithResponse("myResourceGroup", "myRegistry", com.azure.core.util.Context.NONE);
     }

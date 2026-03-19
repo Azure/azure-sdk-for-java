@@ -19,11 +19,12 @@ public final class CredentialSetsUpdateSamples {
     /**
      * Sample code: CredentialSetUpdate.
      * 
-     * @param manager Entry point to ContainerRegistryManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void
-        credentialSetUpdate(com.azure.resourcemanager.containerregistry.ContainerRegistryManager manager) {
-        manager.serviceClient()
+    public static void credentialSetUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.containerRegistries()
+            .manager()
+            .serviceClient()
             .getCredentialSets()
             .update("myResourceGroup", "myRegistry", "myCredentialSet",
                 new CredentialSetUpdateParameters()

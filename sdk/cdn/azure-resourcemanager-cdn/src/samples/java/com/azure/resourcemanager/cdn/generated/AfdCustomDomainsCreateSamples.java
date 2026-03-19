@@ -26,10 +26,12 @@ public final class AfdCustomDomainsCreateSamples {
     /**
      * Sample code: AFDCustomDomains_Create.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void aFDCustomDomainsCreate(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient()
+    public static void aFDCustomDomainsCreate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
             .getAfdCustomDomains()
             .create("RG", "profile1", "domain1",
                 new AfdDomainInner()

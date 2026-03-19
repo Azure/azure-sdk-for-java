@@ -35,8 +35,12 @@ public final class ApplicationsImpl implements Applications {
         String applicationName, Context context) {
         Response<ApplicationResourceInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, clusterName, applicationName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new ApplicationResourceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ApplicationResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ApplicationResource get(String resourceGroupName, String clusterName, String applicationName) {

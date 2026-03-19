@@ -16,11 +16,12 @@ public final class MongoMIResourcesCreateUpdateMongoMIRoleAssignmentSamples {
     /**
      * Sample code: CosmosDBMongoMIRoleAssignmentCreateUpdate.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void
-        cosmosDBMongoMIRoleAssignmentCreateUpdate(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBMongoMIRoleAssignmentCreateUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getMongoMIResources()
             .createUpdateMongoMIRoleAssignment("myResourceGroupName", "myAccountName", "myRoleAssignmentId",
                 new MongoMIRoleAssignmentResourceInner().withRoleDefinitionId(

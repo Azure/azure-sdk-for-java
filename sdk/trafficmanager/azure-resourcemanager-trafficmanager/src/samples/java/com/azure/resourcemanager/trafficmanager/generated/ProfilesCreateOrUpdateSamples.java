@@ -29,10 +29,12 @@ public final class ProfilesCreateOrUpdateSamples {
     /**
      * Sample code: Profile-PUT-MultiValue.
      * 
-     * @param manager Entry point to TrafficManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void profilePUTMultiValue(com.azure.resourcemanager.trafficmanager.TrafficManager manager) {
-        manager.serviceClient()
+    public static void profilePUTMultiValue(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.trafficManagerProfiles()
+            .manager()
+            .serviceClient()
             .getProfiles()
             .createOrUpdateWithResponse("azuresdkfornetautoresttrafficmanager1421", "azsmnet6386",
                 new ProfileInner().withLocation("global")
@@ -52,10 +54,12 @@ public final class ProfilesCreateOrUpdateSamples {
     /**
      * Sample code: Profile-PUT-WithCustomHeaders.
      * 
-     * @param manager Entry point to TrafficManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void profilePUTWithCustomHeaders(com.azure.resourcemanager.trafficmanager.TrafficManager manager) {
-        manager.serviceClient()
+    public static void profilePUTWithCustomHeaders(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.trafficManagerProfiles()
+            .manager()
+            .serviceClient()
             .getProfiles()
             .createOrUpdateWithResponse("azuresdkfornetautoresttrafficmanager2583",
                 "azuresdkfornetautoresttrafficmanager6192",
@@ -93,10 +97,12 @@ public final class ProfilesCreateOrUpdateSamples {
     /**
      * Sample code: Profile-PUT-NoEndpoints.
      * 
-     * @param manager Entry point to TrafficManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void profilePUTNoEndpoints(com.azure.resourcemanager.trafficmanager.TrafficManager manager) {
-        manager.serviceClient()
+    public static void profilePUTNoEndpoints(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.trafficManagerProfiles()
+            .manager()
+            .serviceClient()
             .getProfiles()
             .createOrUpdateWithResponse("azuresdkfornetautoresttrafficmanager1421", "azsmnet6386",
                 new ProfileInner().withLocation("global")
@@ -115,10 +121,12 @@ public final class ProfilesCreateOrUpdateSamples {
     /**
      * Sample code: Profile-PUT-WithAliasing.
      * 
-     * @param manager Entry point to TrafficManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void profilePUTWithAliasing(com.azure.resourcemanager.trafficmanager.TrafficManager manager) {
-        manager.serviceClient()
+    public static void profilePUTWithAliasing(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.trafficManagerProfiles()
+            .manager()
+            .serviceClient()
             .getProfiles()
             .createOrUpdateWithResponse("azuresdkfornetautoresttrafficmanager2583",
                 "azuresdkfornetautoresttrafficmanager6192",
@@ -148,10 +156,12 @@ public final class ProfilesCreateOrUpdateSamples {
     /**
      * Sample code: Profile-PUT-WithEndpoints.
      * 
-     * @param manager Entry point to TrafficManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void profilePUTWithEndpoints(com.azure.resourcemanager.trafficmanager.TrafficManager manager) {
-        manager.serviceClient()
+    public static void profilePUTWithEndpoints(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.trafficManagerProfiles()
+            .manager()
+            .serviceClient()
             .getProfiles()
             .createOrUpdateWithResponse("azuresdkfornetautoresttrafficmanager2583",
                 "azuresdkfornetautoresttrafficmanager6192",
@@ -180,10 +190,12 @@ public final class ProfilesCreateOrUpdateSamples {
     /**
      * Sample code: Profile-PUT-WithNestedEndpoints.
      * 
-     * @param manager Entry point to TrafficManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void profilePUTWithNestedEndpoints(com.azure.resourcemanager.trafficmanager.TrafficManager manager) {
-        manager.serviceClient()
+    public static void profilePUTWithNestedEndpoints(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.trafficManagerProfiles()
+            .manager()
+            .serviceClient()
             .getProfiles()
             .createOrUpdateWithResponse("myresourcegroup", "parentprofile",
                 new ProfileInner().withLocation("global")

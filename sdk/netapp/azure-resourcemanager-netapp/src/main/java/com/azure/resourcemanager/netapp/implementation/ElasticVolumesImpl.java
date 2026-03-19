@@ -32,8 +32,12 @@ public final class ElasticVolumesImpl implements ElasticVolumes {
         String volumeName, Context context) {
         Response<ElasticVolumeInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, accountName, poolName, volumeName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new ElasticVolumeImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ElasticVolumeImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ElasticVolume get(String resourceGroupName, String accountName, String poolName, String volumeName) {

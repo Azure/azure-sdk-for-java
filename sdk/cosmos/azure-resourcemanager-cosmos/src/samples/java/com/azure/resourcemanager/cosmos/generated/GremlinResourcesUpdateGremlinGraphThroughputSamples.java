@@ -19,10 +19,12 @@ public final class GremlinResourcesUpdateGremlinGraphThroughputSamples {
     /**
      * Sample code: CosmosDBGremlinGraphThroughputUpdate.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBGremlinGraphThroughputUpdate(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBGremlinGraphThroughputUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getGremlinResources()
             .updateGremlinGraphThroughput("rg1", "ddb1", "databaseName", "graphName",
                 new ThroughputSettingsUpdateParameters().withLocation("West US")

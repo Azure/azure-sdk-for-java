@@ -18,10 +18,12 @@ public final class ProfilesUpdateSamples {
     /**
      * Sample code: Profiles_Update.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void profilesUpdate(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient()
+    public static void profilesUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
             .getProfiles()
             .update("RG", "profile1", new ProfileUpdateParameters().withTags(mapOf("additionalProperties", "Tag1")),
                 com.azure.core.util.Context.NONE);

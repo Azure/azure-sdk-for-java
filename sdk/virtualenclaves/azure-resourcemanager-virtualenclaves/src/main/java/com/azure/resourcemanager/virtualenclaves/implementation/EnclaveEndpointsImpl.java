@@ -35,8 +35,12 @@ public final class EnclaveEndpointsImpl implements EnclaveEndpoints {
         String enclaveEndpointName, Context context) {
         Response<EnclaveEndpointResourceInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, virtualEnclaveName, enclaveEndpointName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new EnclaveEndpointResourceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new EnclaveEndpointResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public EnclaveEndpointResource get(String resourceGroupName, String virtualEnclaveName,

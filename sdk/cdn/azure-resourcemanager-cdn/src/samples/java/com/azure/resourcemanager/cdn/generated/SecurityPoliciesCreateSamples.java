@@ -21,10 +21,12 @@ public final class SecurityPoliciesCreateSamples {
     /**
      * Sample code: SecurityPolicies_Create.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void securityPoliciesCreate(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient()
+    public static void securityPoliciesCreate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
             .getSecurityPolicies()
             .create("RG", "profile1", "securityPolicy1", new SecurityPolicyInner().withParameters(
                 new SecurityPolicyWebApplicationFirewallParameters().withWafPolicy(new ResourceReference().withId(

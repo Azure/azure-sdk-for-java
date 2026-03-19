@@ -31,8 +31,12 @@ public final class PlaywrightQuotasImpl implements PlaywrightQuotas {
     public Response<PlaywrightQuota> getWithResponse(String location, QuotaName playwrightQuotaName, Context context) {
         Response<PlaywrightQuotaInner> inner
             = this.serviceClient().getWithResponse(location, playwrightQuotaName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new PlaywrightQuotaImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new PlaywrightQuotaImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public PlaywrightQuota get(String location, QuotaName playwrightQuotaName) {

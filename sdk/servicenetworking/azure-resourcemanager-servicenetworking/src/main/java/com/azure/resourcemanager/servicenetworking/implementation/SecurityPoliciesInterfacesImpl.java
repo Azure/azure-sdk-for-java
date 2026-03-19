@@ -31,8 +31,12 @@ public final class SecurityPoliciesInterfacesImpl implements SecurityPoliciesInt
         String securityPolicyName, Context context) {
         Response<SecurityPolicyInner> inner = this.serviceClient()
             .getWithResponse(resourceGroupName, trafficControllerName, securityPolicyName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new SecurityPolicyImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new SecurityPolicyImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public SecurityPolicy get(String resourceGroupName, String trafficControllerName, String securityPolicyName) {

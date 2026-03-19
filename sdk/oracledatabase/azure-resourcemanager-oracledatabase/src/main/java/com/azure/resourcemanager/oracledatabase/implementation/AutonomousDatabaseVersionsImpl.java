@@ -31,8 +31,12 @@ public final class AutonomousDatabaseVersionsImpl implements AutonomousDatabaseV
         Context context) {
         Response<AutonomousDbVersionInner> inner
             = this.serviceClient().getWithResponse(location, autonomousdbversionsname, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new AutonomousDbVersionImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new AutonomousDbVersionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public AutonomousDbVersion get(String location, String autonomousdbversionsname) {

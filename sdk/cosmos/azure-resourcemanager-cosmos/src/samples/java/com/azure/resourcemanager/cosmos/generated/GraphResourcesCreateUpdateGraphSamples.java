@@ -20,10 +20,12 @@ public final class GraphResourcesCreateUpdateGraphSamples {
     /**
      * Sample code: CosmosDBGraphCreateUpdate.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBGraphCreateUpdate(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBGraphCreateUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getGraphResources()
             .createUpdateGraph("rg1", "ddb1", "graphName",
                 new GraphResourceCreateUpdateParameters().withLocation("West US")

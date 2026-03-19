@@ -31,8 +31,12 @@ public final class JobsImpl implements Jobs {
         Context context) {
         Response<AzureBackupJobResourceInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, vaultName, jobId, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new AzureBackupJobResourceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new AzureBackupJobResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public AzureBackupJobResource get(String resourceGroupName, String vaultName, String jobId) {

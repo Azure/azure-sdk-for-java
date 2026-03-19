@@ -17,10 +17,12 @@ public final class NotebookWorkspacesCreateOrUpdateSamples {
     /**
      * Sample code: CosmosDBNotebookWorkspaceCreate.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBNotebookWorkspaceCreate(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBNotebookWorkspaceCreate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getNotebookWorkspaces()
             .createOrUpdate("rg1", "ddb1", NotebookWorkspaceName.DEFAULT, new NotebookWorkspaceCreateUpdateParameters(),
                 com.azure.core.util.Context.NONE);

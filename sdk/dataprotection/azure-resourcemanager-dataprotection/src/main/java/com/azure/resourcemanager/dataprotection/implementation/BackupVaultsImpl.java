@@ -34,8 +34,12 @@ public final class BackupVaultsImpl implements BackupVaults {
         Context context) {
         Response<BackupVaultResourceInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, vaultName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new BackupVaultResourceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new BackupVaultResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public BackupVaultResource getByResourceGroup(String resourceGroupName, String vaultName) {
@@ -80,8 +84,12 @@ public final class BackupVaultsImpl implements BackupVaults {
         String location, CheckNameAvailabilityRequest parameters, Context context) {
         Response<CheckNameAvailabilityResultInner> inner
             = this.serviceClient().checkNameAvailabilityWithResponse(resourceGroupName, location, parameters, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new CheckNameAvailabilityResultImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new CheckNameAvailabilityResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public CheckNameAvailabilityResult checkNameAvailability(String resourceGroupName, String location,

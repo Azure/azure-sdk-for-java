@@ -33,10 +33,12 @@ public final class GremlinResourcesCreateUpdateGremlinGraphSamples {
     /**
      * Sample code: CosmosDBGremlinGraphCreateUpdate.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBGremlinGraphCreateUpdate(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBGremlinGraphCreateUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getGremlinResources()
             .createUpdateGremlinGraph("rg1", "ddb1", "databaseName", "graphName",
                 new GremlinGraphCreateUpdateParameters().withLocation("West US")

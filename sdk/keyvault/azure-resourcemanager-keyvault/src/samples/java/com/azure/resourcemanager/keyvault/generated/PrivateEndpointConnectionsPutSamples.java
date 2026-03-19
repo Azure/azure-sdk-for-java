@@ -18,11 +18,12 @@ public final class PrivateEndpointConnectionsPutSamples {
     /**
      * Sample code: KeyVaultPutPrivateEndpointConnection.
      * 
-     * @param manager Entry point to KeyVaultManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void
-        keyVaultPutPrivateEndpointConnection(com.azure.resourcemanager.keyvault.KeyVaultManager manager) {
-        manager.serviceClient()
+    public static void keyVaultPutPrivateEndpointConnection(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.vaults()
+            .manager()
+            .serviceClient()
             .getPrivateEndpointConnections()
             .putWithResponse("sample-group", "sample-vault", "sample-pec",
                 new PrivateEndpointConnectionInner().withEtag("")

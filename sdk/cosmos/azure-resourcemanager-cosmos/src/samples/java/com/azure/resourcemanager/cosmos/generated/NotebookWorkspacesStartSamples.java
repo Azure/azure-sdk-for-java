@@ -16,10 +16,12 @@ public final class NotebookWorkspacesStartSamples {
     /**
      * Sample code: CosmosDBNotebookWorkspaceStart.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBNotebookWorkspaceStart(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBNotebookWorkspaceStart(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getNotebookWorkspaces()
             .start("rg1", "ddb1", NotebookWorkspaceName.DEFAULT, com.azure.core.util.Context.NONE);
     }

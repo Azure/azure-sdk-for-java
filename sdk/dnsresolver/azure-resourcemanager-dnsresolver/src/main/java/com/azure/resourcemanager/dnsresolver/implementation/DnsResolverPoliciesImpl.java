@@ -32,8 +32,12 @@ public final class DnsResolverPoliciesImpl implements DnsResolverPolicies {
         String dnsResolverPolicyName, Context context) {
         Response<DnsResolverPolicyInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, dnsResolverPolicyName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new DnsResolverPolicyImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new DnsResolverPolicyImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public DnsResolverPolicy getByResourceGroup(String resourceGroupName, String dnsResolverPolicyName) {

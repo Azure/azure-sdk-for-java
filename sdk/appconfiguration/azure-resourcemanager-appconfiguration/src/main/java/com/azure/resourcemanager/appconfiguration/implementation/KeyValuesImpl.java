@@ -30,8 +30,12 @@ public final class KeyValuesImpl implements KeyValues {
         Context context) {
         Response<KeyValueInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, configStoreName, keyValueName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new KeyValueImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new KeyValueImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public KeyValue get(String resourceGroupName, String configStoreName, String keyValueName) {

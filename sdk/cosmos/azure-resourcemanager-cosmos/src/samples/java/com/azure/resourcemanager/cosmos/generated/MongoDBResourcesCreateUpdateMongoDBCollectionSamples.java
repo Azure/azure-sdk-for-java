@@ -27,10 +27,12 @@ public final class MongoDBResourcesCreateUpdateMongoDBCollectionSamples {
     /**
      * Sample code: CosmosDBMongoDBCollectionRestore.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBMongoDBCollectionRestore(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBMongoDBCollectionRestore(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getMongoDBResources()
             .createUpdateMongoDBCollection("rg1", "ddb1", "databaseName", "collectionName",
                 new MongoDBCollectionCreateUpdateParameters().withLocation("West US")
@@ -51,10 +53,12 @@ public final class MongoDBResourcesCreateUpdateMongoDBCollectionSamples {
     /**
      * Sample code: CosmosDBMongoDBCollectionCreateUpdate.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBMongoDBCollectionCreateUpdate(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBMongoDBCollectionCreateUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getMongoDBResources()
             .createUpdateMongoDBCollection("rg1", "ddb1", "databaseName", "collectionName",
                 new MongoDBCollectionCreateUpdateParameters().withLocation("West US")

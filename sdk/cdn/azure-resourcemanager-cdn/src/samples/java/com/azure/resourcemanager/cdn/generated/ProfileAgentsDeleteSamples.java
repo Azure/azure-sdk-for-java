@@ -14,9 +14,13 @@ public final class ProfileAgentsDeleteSamples {
     /**
      * Sample code: ProfileAgents_Delete.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void profileAgentsDelete(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient().getProfileAgents().delete("RG", "profile1", "agent1", com.azure.core.util.Context.NONE);
+    public static void profileAgentsDelete(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
+            .getProfileAgents()
+            .delete("RG", "profile1", "agent1", com.azure.core.util.Context.NONE);
     }
 }

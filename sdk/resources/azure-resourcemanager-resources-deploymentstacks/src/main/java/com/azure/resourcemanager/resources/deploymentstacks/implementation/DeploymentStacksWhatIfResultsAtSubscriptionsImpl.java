@@ -37,8 +37,12 @@ public final class DeploymentStacksWhatIfResultsAtSubscriptionsImpl
         Context context) {
         Response<DeploymentStacksWhatIfResultInner> inner
             = this.serviceClient().getWithResponse(deploymentStacksWhatIfResultName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new DeploymentStacksWhatIfResultImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new DeploymentStacksWhatIfResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public DeploymentStacksWhatIfResult get(String deploymentStacksWhatIfResultName) {

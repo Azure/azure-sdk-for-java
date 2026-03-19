@@ -31,8 +31,12 @@ public final class ReplicationExtensionsImpl implements ReplicationExtensions {
         String replicationExtensionName, Context context) {
         Response<ReplicationExtensionInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, vaultName, replicationExtensionName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new ReplicationExtensionImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ReplicationExtensionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ReplicationExtension get(String resourceGroupName, String vaultName, String replicationExtensionName) {

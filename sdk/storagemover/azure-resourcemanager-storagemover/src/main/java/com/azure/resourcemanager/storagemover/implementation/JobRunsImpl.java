@@ -31,8 +31,12 @@ public final class JobRunsImpl implements JobRuns {
         String jobDefinitionName, String jobRunName, Context context) {
         Response<JobRunInner> inner = this.serviceClient()
             .getWithResponse(resourceGroupName, storageMoverName, projectName, jobDefinitionName, jobRunName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new JobRunImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new JobRunImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public JobRun get(String resourceGroupName, String storageMoverName, String projectName, String jobDefinitionName,

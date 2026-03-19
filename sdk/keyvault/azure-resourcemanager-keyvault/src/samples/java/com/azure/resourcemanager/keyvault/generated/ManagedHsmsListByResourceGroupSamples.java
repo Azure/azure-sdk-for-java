@@ -14,10 +14,12 @@ public final class ManagedHsmsListByResourceGroupSamples {
     /**
      * Sample code: List managed HSM Pools in a resource group.
      * 
-     * @param manager Entry point to KeyVaultManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void listManagedHSMPoolsInAResourceGroup(com.azure.resourcemanager.keyvault.KeyVaultManager manager) {
-        manager.serviceClient()
+    public static void listManagedHSMPoolsInAResourceGroup(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.vaults()
+            .manager()
+            .serviceClient()
             .getManagedHsms()
             .listByResourceGroup("hsm-group", null, com.azure.core.util.Context.NONE);
     }

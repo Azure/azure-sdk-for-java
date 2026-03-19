@@ -14,10 +14,12 @@ public final class CassandraResourcesGetCassandraTableThroughputSamples {
     /**
      * Sample code: CosmosDBCassandraTableThroughputGet.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBCassandraTableThroughputGet(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBCassandraTableThroughputGet(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getCassandraResources()
             .getCassandraTableThroughputWithResponse("rg1", "ddb1", "keyspaceName", "tableName",
                 com.azure.core.util.Context.NONE);

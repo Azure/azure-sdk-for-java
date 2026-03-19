@@ -14,10 +14,12 @@ public final class SqlResourcesDeleteSqlUserDefinedFunctionSamples {
     /**
      * Sample code: CosmosDBSqlUserDefinedFunctionDelete.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBSqlUserDefinedFunctionDelete(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBSqlUserDefinedFunctionDelete(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getSqlResources()
             .deleteSqlUserDefinedFunction("rg1", "ddb1", "databaseName", "containerName", "userDefinedFunctionName",
                 com.azure.core.util.Context.NONE);

@@ -21,10 +21,12 @@ public final class WebAgentsUpdateSamples {
     /**
      * Sample code: Update Web Agent.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void updateWebAgent(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient()
+    public static void updateWebAgent(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
             .getWebAgents()
             .update("RG", "myWebAgent1", new WebAgentUpdateParameters()
                 .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))

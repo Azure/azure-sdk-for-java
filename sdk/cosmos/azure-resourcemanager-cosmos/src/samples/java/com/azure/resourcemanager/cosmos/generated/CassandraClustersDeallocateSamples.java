@@ -14,11 +14,12 @@ public final class CassandraClustersDeallocateSamples {
     /**
      * Sample code: CosmosDBManagedCassandraClusterDeallocate.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void
-        cosmosDBManagedCassandraClusterDeallocate(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBManagedCassandraClusterDeallocate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getCassandraClusters()
             .deallocate("cassandra-prod-rg", "cassandra-prod", null, com.azure.core.util.Context.NONE);
     }

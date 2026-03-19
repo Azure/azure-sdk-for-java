@@ -16,10 +16,12 @@ public final class DeploymentVersionsUpdateSamples {
     /**
      * Sample code: DeploymentVersions_Update.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void deploymentVersionsUpdate(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient()
+    public static void deploymentVersionsUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
             .getDeploymentVersions()
             .updateWithResponse("RG", "profile1", "dv1",
                 new DeploymentVersionUpdate().withDescription("test deployment"), com.azure.core.util.Context.NONE);

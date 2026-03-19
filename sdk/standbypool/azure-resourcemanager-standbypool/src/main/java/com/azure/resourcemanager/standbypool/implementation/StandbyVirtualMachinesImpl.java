@@ -31,8 +31,12 @@ public final class StandbyVirtualMachinesImpl implements StandbyVirtualMachines 
         String standbyVirtualMachinePoolName, String standbyVirtualMachineName, Context context) {
         Response<StandbyVirtualMachineResourceInner> inner = this.serviceClient()
             .getWithResponse(resourceGroupName, standbyVirtualMachinePoolName, standbyVirtualMachineName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new StandbyVirtualMachineResourceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new StandbyVirtualMachineResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public StandbyVirtualMachineResource get(String resourceGroupName, String standbyVirtualMachinePoolName,

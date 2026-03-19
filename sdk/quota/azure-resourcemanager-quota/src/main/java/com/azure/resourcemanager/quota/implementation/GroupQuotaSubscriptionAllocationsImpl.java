@@ -30,8 +30,12 @@ public final class GroupQuotaSubscriptionAllocationsImpl implements GroupQuotaSu
         String resourceProviderName, String location, Context context) {
         Response<SubscriptionQuotaAllocationsListInner> inner = this.serviceClient()
             .listWithResponse(managementGroupId, groupQuotaName, resourceProviderName, location, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new SubscriptionQuotaAllocationsListImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new SubscriptionQuotaAllocationsListImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public SubscriptionQuotaAllocationsList list(String managementGroupId, String groupQuotaName,

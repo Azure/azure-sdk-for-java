@@ -32,8 +32,12 @@ public final class CertificateProfilesImpl implements CertificateProfiles {
         String profileName, Context context) {
         Response<CertificateProfileInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, accountName, profileName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new CertificateProfileImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new CertificateProfileImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public CertificateProfile get(String resourceGroupName, String accountName, String profileName) {

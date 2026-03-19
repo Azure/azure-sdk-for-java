@@ -42,8 +42,12 @@ public final class ExadbVmClustersImpl implements ExadbVmClusters {
         Context context) {
         Response<ExadbVmClusterInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, exadbVmClusterName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new ExadbVmClusterImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ExadbVmClusterImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ExadbVmCluster getByResourceGroup(String resourceGroupName, String exadbVmClusterName) {

@@ -19,10 +19,12 @@ public final class AfdProfilesUpgradeSamples {
     /**
      * Sample code: AFDProfiles_Upgrade.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void aFDProfilesUpgrade(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient()
+    public static void aFDProfilesUpgrade(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
             .getAfdProfiles()
             .upgrade("RG", "profile1",
                 new ProfileUpgradeParameters().withWafMappingList(Arrays.asList(new ProfileChangeSkuWafMapping()

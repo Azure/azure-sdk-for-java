@@ -31,8 +31,12 @@ public final class OperationOperationsImpl implements OperationOperations {
         ValidateOperationRequestResource parameters, Context context) {
         Response<ValidateOperationsResponseInner> inner
             = this.serviceClient().validateWithResponse(vaultName, resourceGroupName, parameters, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new ValidateOperationsResponseImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ValidateOperationsResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ValidateOperationsResponse validate(String vaultName, String resourceGroupName,

@@ -31,8 +31,12 @@ public final class NetworkSecurityGroupsImpl implements NetworkSecurityGroups {
         String networkSecurityGroupName, Context context) {
         Response<NetworkSecurityGroupInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, networkSecurityGroupName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new NetworkSecurityGroupImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new NetworkSecurityGroupImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public NetworkSecurityGroup getByResourceGroup(String resourceGroupName, String networkSecurityGroupName) {

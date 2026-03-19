@@ -31,8 +31,12 @@ public final class AlertRuleResourcesImpl implements AlertRuleResources {
         String alertRuleResourceName, Context context) {
         Response<AlertRuleResourceInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, watcherName, alertRuleResourceName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new AlertRuleResourceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new AlertRuleResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public AlertRuleResource get(String resourceGroupName, String watcherName, String alertRuleResourceName) {

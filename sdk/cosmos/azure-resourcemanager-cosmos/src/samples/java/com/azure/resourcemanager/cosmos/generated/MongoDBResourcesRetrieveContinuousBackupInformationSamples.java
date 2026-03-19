@@ -16,11 +16,13 @@ public final class MongoDBResourcesRetrieveContinuousBackupInformationSamples {
     /**
      * Sample code: CosmosDBMongoDBCollectionBackupInformation.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
-        cosmosDBMongoDBCollectionBackupInformation(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+        cosmosDBMongoDBCollectionBackupInformation(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getMongoDBResources()
             .retrieveContinuousBackupInformation("rgName", "ddb1", "databaseName", "collectionName",
                 new ContinuousBackupRestoreLocation().withLocation("North Europe"), com.azure.core.util.Context.NONE);

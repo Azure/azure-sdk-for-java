@@ -14,10 +14,12 @@ public final class DatabaseListMetricDefinitionsSamples {
     /**
      * Sample code: CosmosDBDatabaseGetMetricDefinitions.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBDatabaseGetMetricDefinitions(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBDatabaseGetMetricDefinitions(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getDatabases()
             .listMetricDefinitions("rg1", "ddb1", "databaseRid", com.azure.core.util.Context.NONE);
     }

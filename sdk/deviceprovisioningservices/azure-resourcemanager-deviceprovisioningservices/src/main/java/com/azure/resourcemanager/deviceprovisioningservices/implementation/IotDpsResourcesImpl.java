@@ -48,8 +48,12 @@ public final class IotDpsResourcesImpl implements IotDpsResources {
         Response<AsyncOperationResultInner> inner = this.serviceClient()
             .getOperationResultWithResponse(operationId, resourceGroupName, provisioningServiceName, asyncinfo,
                 context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new AsyncOperationResultImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new AsyncOperationResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public AsyncOperationResult getOperationResult(String operationId, String resourceGroupName,
@@ -67,8 +71,12 @@ public final class IotDpsResourcesImpl implements IotDpsResources {
         String resourceGroupName, Context context) {
         Response<ProvisioningServiceDescriptionInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(provisioningServiceName, resourceGroupName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new ProvisioningServiceDescriptionImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ProvisioningServiceDescriptionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ProvisioningServiceDescription getByResourceGroup(String provisioningServiceName, String resourceGroupName) {
@@ -149,8 +157,12 @@ public final class IotDpsResourcesImpl implements IotDpsResources {
         String provisioningServiceName, String keyName, String resourceGroupName, Context context) {
         Response<SharedAccessSignatureAuthorizationRuleInner> inner = this.serviceClient()
             .listKeysForKeyNameWithResponse(provisioningServiceName, keyName, resourceGroupName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new SharedAccessSignatureAuthorizationRuleImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new SharedAccessSignatureAuthorizationRuleImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public SharedAccessSignatureAuthorizationRule listKeysForKeyName(String provisioningServiceName, String keyName,
@@ -168,8 +180,12 @@ public final class IotDpsResourcesImpl implements IotDpsResources {
         String resourceName, String groupId, Context context) {
         Response<GroupIdInformationInner> inner = this.serviceClient()
             .getPrivateLinkResourcesWithResponse(resourceGroupName, resourceName, groupId, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new GroupIdInformationImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new GroupIdInformationImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public GroupIdInformation getPrivateLinkResources(String resourceGroupName, String resourceName, String groupId) {
@@ -200,8 +216,12 @@ public final class IotDpsResourcesImpl implements IotDpsResources {
         Response<PrivateEndpointConnectionInner> inner = this.serviceClient()
             .getPrivateEndpointConnectionWithResponse(resourceGroupName, resourceName, privateEndpointConnectionName,
                 context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new PrivateEndpointConnectionImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new PrivateEndpointConnectionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public PrivateEndpointConnection getPrivateEndpointConnection(String resourceGroupName, String resourceName,
@@ -231,11 +251,15 @@ public final class IotDpsResourcesImpl implements IotDpsResources {
         listPrivateEndpointConnectionsWithResponse(String resourceGroupName, String resourceName, Context context) {
         Response<List<PrivateEndpointConnectionInner>> inner
             = this.serviceClient().listPrivateEndpointConnectionsWithResponse(resourceGroupName, resourceName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            inner.getValue()
-                .stream()
-                .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()))
-                .collect(Collectors.toList()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                inner.getValue()
+                    .stream()
+                    .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()))
+                    .collect(Collectors.toList()));
+        } else {
+            return null;
+        }
     }
 
     public List<PrivateEndpointConnection> listPrivateEndpointConnections(String resourceGroupName,
@@ -255,8 +279,12 @@ public final class IotDpsResourcesImpl implements IotDpsResources {
         checkProvisioningServiceNameAvailabilityWithResponse(OperationInputs arguments, Context context) {
         Response<NameAvailabilityInfoInner> inner
             = this.serviceClient().checkProvisioningServiceNameAvailabilityWithResponse(arguments, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new NameAvailabilityInfoImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new NameAvailabilityInfoImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public NameAvailabilityInfo checkProvisioningServiceNameAvailability(OperationInputs arguments) {

@@ -14,10 +14,12 @@ public final class ServiceGetSamples {
     /**
      * Sample code: DataTransferServiceGet.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void dataTransferServiceGet(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void dataTransferServiceGet(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getServices()
             .getWithResponse("rg1", "ddb1", "DataTransfer", com.azure.core.util.Context.NONE);
     }
@@ -28,10 +30,12 @@ public final class ServiceGetSamples {
     /**
      * Sample code: GraphAPIComputeServiceGet.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void graphAPIComputeServiceGet(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void graphAPIComputeServiceGet(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getServices()
             .getWithResponse("rg1", "ddb1", "GraphAPICompute", com.azure.core.util.Context.NONE);
     }
@@ -42,10 +46,12 @@ public final class ServiceGetSamples {
     /**
      * Sample code: SqlDedicatedGatewayServiceGet.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void sqlDedicatedGatewayServiceGet(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void sqlDedicatedGatewayServiceGet(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getServices()
             .getWithResponse("rg1", "ddb1", "SqlDedicatedGateway", com.azure.core.util.Context.NONE);
     }
@@ -56,10 +62,12 @@ public final class ServiceGetSamples {
     /**
      * Sample code: MaterializedViewsBuilderServiceGet.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void materializedViewsBuilderServiceGet(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void materializedViewsBuilderServiceGet(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getServices()
             .getWithResponse("rg1", "ddb1", "MaterializedViewsBuilder", com.azure.core.util.Context.NONE);
     }

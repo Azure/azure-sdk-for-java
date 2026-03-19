@@ -16,11 +16,13 @@ public final class CassandraResourcesCreateUpdateCassandraRoleAssignmentSamples 
     /**
      * Sample code: CosmosDBCassandraRoleAssignmentCreateUpdate.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
-        cosmosDBCassandraRoleAssignmentCreateUpdate(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+        cosmosDBCassandraRoleAssignmentCreateUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getCassandraResources()
             .createUpdateCassandraRoleAssignment("myResourceGroupName", "myAccountName", "myRoleAssignmentId",
                 new CassandraRoleAssignmentResourceInner().withRoleDefinitionId(

@@ -33,8 +33,12 @@ public final class DisconnectedOperationsImpl implements DisconnectedOperations 
         Context context) {
         Response<DisconnectedOperationInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, name, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new DisconnectedOperationImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new DisconnectedOperationImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public DisconnectedOperation getByResourceGroup(String resourceGroupName, String name) {
@@ -79,8 +83,12 @@ public final class DisconnectedOperationsImpl implements DisconnectedOperations 
         listDeploymentManifestWithResponse(String resourceGroupName, String name, Context context) {
         Response<DisconnectedOperationDeploymentManifestInner> inner
             = this.serviceClient().listDeploymentManifestWithResponse(resourceGroupName, name, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new DisconnectedOperationDeploymentManifestImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new DisconnectedOperationDeploymentManifestImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public DisconnectedOperationDeploymentManifest listDeploymentManifest(String resourceGroupName, String name) {

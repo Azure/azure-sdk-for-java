@@ -25,11 +25,13 @@ public final class VaultsUpdateAccessPolicySamples {
     /**
      * Sample code: Add an access policy, or update an access policy with new permissions.
      * 
-     * @param manager Entry point to KeyVaultManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void addAnAccessPolicyOrUpdateAnAccessPolicyWithNewPermissions(
-        com.azure.resourcemanager.keyvault.KeyVaultManager manager) {
-        manager.serviceClient()
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.vaults()
+            .manager()
+            .serviceClient()
             .getVaults()
             .updateAccessPolicyWithResponse("sample-group", "sample-vault", AccessPolicyUpdateKind.ADD,
                 new VaultAccessPolicyParametersInner()

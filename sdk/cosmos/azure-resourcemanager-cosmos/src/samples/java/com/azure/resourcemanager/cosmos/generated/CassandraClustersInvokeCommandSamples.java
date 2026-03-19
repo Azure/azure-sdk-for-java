@@ -18,10 +18,12 @@ public final class CassandraClustersInvokeCommandSamples {
     /**
      * Sample code: CosmosDBManagedCassandraCommand.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBManagedCassandraCommand(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBManagedCassandraCommand(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getCassandraClusters()
             .invokeCommand("cassandra-prod-rg", "cassandra-prod",
                 new CommandPostBody().withCommand("nodetool").withArguments(mapOf("status", "")).withHost("10.0.1.12"),

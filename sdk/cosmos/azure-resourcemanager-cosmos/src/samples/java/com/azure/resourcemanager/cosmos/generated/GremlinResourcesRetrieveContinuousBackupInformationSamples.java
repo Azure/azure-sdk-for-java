@@ -16,10 +16,12 @@ public final class GremlinResourcesRetrieveContinuousBackupInformationSamples {
     /**
      * Sample code: CosmosDBGremlinGraphBackupInformation.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBGremlinGraphBackupInformation(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBGremlinGraphBackupInformation(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getGremlinResources()
             .retrieveContinuousBackupInformation("rgName", "ddb1", "databaseName", "graphName",
                 new ContinuousBackupRestoreLocation().withLocation("North Europe"), com.azure.core.util.Context.NONE);

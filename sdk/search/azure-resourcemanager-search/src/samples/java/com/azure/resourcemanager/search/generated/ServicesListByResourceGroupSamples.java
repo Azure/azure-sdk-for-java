@@ -14,10 +14,13 @@ public final class ServicesListByResourceGroupSamples {
     /**
      * Sample code: SearchListServicesByResourceGroup.
      * 
-     * @param manager Entry point to SearchServiceManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void
-        searchListServicesByResourceGroup(com.azure.resourcemanager.search.SearchServiceManager manager) {
-        manager.serviceClient().getServices().listByResourceGroup("rg1", com.azure.core.util.Context.NONE);
+    public static void searchListServicesByResourceGroup(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.searchServices()
+            .manager()
+            .serviceClient()
+            .getServices()
+            .listByResourceGroup("rg1", com.azure.core.util.Context.NONE);
     }
 }

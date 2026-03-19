@@ -14,10 +14,12 @@ public final class CassandraClustersListBackupsSamples {
     /**
      * Sample code: CosmosDBManagedCassandraBackupsList.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBManagedCassandraBackupsList(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBManagedCassandraBackupsList(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getCassandraClusters()
             .listBackups("cassandra-prod-rg", "cassandra-prod", com.azure.core.util.Context.NONE);
     }

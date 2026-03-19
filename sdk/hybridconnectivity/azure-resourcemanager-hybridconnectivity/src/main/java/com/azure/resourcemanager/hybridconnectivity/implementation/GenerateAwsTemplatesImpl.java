@@ -31,8 +31,12 @@ public final class GenerateAwsTemplatesImpl implements GenerateAwsTemplates {
         Context context) {
         Response<GenerateAwsTemplateResponseInner> inner
             = this.serviceClient().postWithResponse(generateAwsTemplateRequest, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new GenerateAwsTemplateResponseImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new GenerateAwsTemplateResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public GenerateAwsTemplateResponse post(GenerateAwsTemplateRequest generateAwsTemplateRequest) {

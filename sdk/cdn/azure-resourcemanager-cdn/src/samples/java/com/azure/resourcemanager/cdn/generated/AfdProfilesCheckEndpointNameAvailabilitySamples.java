@@ -18,10 +18,12 @@ public final class AfdProfilesCheckEndpointNameAvailabilitySamples {
     /**
      * Sample code: CheckEndpointNameAvailability.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void checkEndpointNameAvailability(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient()
+    public static void checkEndpointNameAvailability(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
             .getAfdProfiles()
             .checkEndpointNameAvailabilityWithResponse("myResourceGroup", "profile1",
                 new CheckEndpointNameAvailabilityInput().withName("sampleName")

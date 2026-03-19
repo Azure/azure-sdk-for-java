@@ -18,10 +18,12 @@ public final class AfdOriginsCreateSamples {
     /**
      * Sample code: AFDOrigins_Create.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void aFDOriginsCreate(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient()
+    public static void aFDOriginsCreate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
             .getAfdOrigins()
             .create("RG", "profile1", "origingroup1", "origin1",
                 new AfdOriginInner().withHostname("host1.blob.core.windows.net")

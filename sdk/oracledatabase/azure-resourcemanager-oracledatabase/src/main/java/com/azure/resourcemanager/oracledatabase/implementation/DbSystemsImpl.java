@@ -41,8 +41,12 @@ public final class DbSystemsImpl implements DbSystems {
         Context context) {
         Response<DbSystemInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, dbSystemName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new DbSystemImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new DbSystemImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public DbSystem getByResourceGroup(String resourceGroupName, String dbSystemName) {

@@ -40,8 +40,12 @@ public final class FabricCapacitiesImpl implements FabricCapacities {
         Context context) {
         Response<FabricCapacityInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, capacityName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new FabricCapacityImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new FabricCapacityImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public FabricCapacity getByResourceGroup(String resourceGroupName, String capacityName) {
@@ -101,8 +105,12 @@ public final class FabricCapacitiesImpl implements FabricCapacities {
         CheckNameAvailabilityRequest body, Context context) {
         Response<CheckNameAvailabilityResponseInner> inner
             = this.serviceClient().checkNameAvailabilityWithResponse(location, body, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new CheckNameAvailabilityResponseImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new CheckNameAvailabilityResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public CheckNameAvailabilityResponse checkNameAvailability(String location, CheckNameAvailabilityRequest body) {

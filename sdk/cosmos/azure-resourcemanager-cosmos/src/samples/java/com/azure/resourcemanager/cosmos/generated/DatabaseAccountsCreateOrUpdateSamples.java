@@ -50,11 +50,13 @@ public final class DatabaseAccountsCreateOrUpdateSamples {
     /**
      * Sample code: CosmosDBRestoreDatabaseAccountCreateUpdate.json.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
-        cosmosDBRestoreDatabaseAccountCreateUpdateJson(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+        cosmosDBRestoreDatabaseAccountCreateUpdateJson(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getDatabaseAccounts()
             .createOrUpdate("rg1", "ddb1", new DatabaseAccountCreateUpdateParameters().withLocation("westus")
                 .withTags(mapOf())
@@ -94,10 +96,12 @@ public final class DatabaseAccountsCreateOrUpdateSamples {
     /**
      * Sample code: CosmosDBDatabaseAccountCreateMax.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBDatabaseAccountCreateMax(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBDatabaseAccountCreateMax(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getDatabaseAccounts()
             .createOrUpdate("rg1", "ddb1", new DatabaseAccountCreateUpdateParameters().withLocation("westus")
                 .withTags(mapOf())
@@ -155,10 +159,12 @@ public final class DatabaseAccountsCreateOrUpdateSamples {
     /**
      * Sample code: CosmosDBDatabaseAccountCreateMin.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBDatabaseAccountCreateMin(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBDatabaseAccountCreateMin(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getDatabaseAccounts()
             .createOrUpdate("rg1", "ddb1",
                 new DatabaseAccountCreateUpdateParameters().withLocation("westus")

@@ -14,9 +14,13 @@ public final class SqlResourcesListSqlDatabasesSamples {
     /**
      * Sample code: CosmosDBSqlDatabaseList.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBSqlDatabaseList(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient().getSqlResources().listSqlDatabases("rgName", "ddb1", com.azure.core.util.Context.NONE);
+    public static void cosmosDBSqlDatabaseList(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
+            .getSqlResources()
+            .listSqlDatabases("rgName", "ddb1", com.azure.core.util.Context.NONE);
     }
 }

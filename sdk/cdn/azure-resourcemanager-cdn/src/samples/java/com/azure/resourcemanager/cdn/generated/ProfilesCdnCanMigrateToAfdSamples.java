@@ -14,9 +14,13 @@ public final class ProfilesCdnCanMigrateToAfdSamples {
     /**
      * Sample code: Profiles_CdnCanMigrate.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void profilesCdnCanMigrate(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient().getProfiles().cdnCanMigrateToAfd("RG", "profile1", com.azure.core.util.Context.NONE);
+    public static void profilesCdnCanMigrate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
+            .getProfiles()
+            .cdnCanMigrateToAfd("RG", "profile1", com.azure.core.util.Context.NONE);
     }
 }

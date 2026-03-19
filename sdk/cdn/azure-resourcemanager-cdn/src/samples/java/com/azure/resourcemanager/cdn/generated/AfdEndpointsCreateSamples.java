@@ -21,10 +21,12 @@ public final class AfdEndpointsCreateSamples {
     /**
      * Sample code: AFDEndpoints_Create.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void aFDEndpointsCreate(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient()
+    public static void aFDEndpointsCreate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
             .getAfdEndpoints()
             .create("RG", "profile1", "endpoint1",
                 new AfdEndpointInner().withLocation("global")

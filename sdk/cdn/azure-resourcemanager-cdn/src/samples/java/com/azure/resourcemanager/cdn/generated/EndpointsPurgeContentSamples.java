@@ -17,10 +17,12 @@ public final class EndpointsPurgeContentSamples {
     /**
      * Sample code: Endpoints_PurgeContent.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void endpointsPurgeContent(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient()
+    public static void endpointsPurgeContent(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
             .getEndpoints()
             .purgeContent("RG", "profile1", "endpoint1",
                 new PurgeParameters().withContentPaths(Arrays.asList("/folder1")), com.azure.core.util.Context.NONE);

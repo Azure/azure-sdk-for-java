@@ -24,7 +24,7 @@ public final class NeonRolesCreateOrUpdateSamples {
         neonRolesCreateOrUpdateMaximumSet(com.azure.resourcemanager.neonpostgres.NeonPostgresManager manager) {
         manager.neonRoles()
             .define("read_only_role")
-            .withExistingBranch("rgneon", "myOrganization", "myProject", "feature")
+            .withExistingBranche("rgneon", "myOrganization", "myProject", "feature")
             .withProperties(new NeonRoleProperties().withEntityName("PostgresReadOnlyRole")
                 .withAttributes(Arrays.asList(new Attributes().withName("on").withValue("qzp")))
                 .withBranchId("tnmwjbftrvfpepgeytoeqsyhyz")

@@ -30,8 +30,12 @@ public final class MonitorsImpl implements Monitors {
         Context context) {
         Response<ElasticMonitorResourceInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, monitorName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new ElasticMonitorResourceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ElasticMonitorResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ElasticMonitorResource getByResourceGroup(String resourceGroupName, String monitorName) {

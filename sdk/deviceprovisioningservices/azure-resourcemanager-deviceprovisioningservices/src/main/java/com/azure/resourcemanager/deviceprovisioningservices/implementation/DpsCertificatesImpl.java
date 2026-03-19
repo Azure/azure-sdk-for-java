@@ -36,8 +36,12 @@ public final class DpsCertificatesImpl implements DpsCertificates {
         String provisioningServiceName, String ifMatch, Context context) {
         Response<CertificateResponseInner> inner = this.serviceClient()
             .getWithResponse(certificateName, resourceGroupName, provisioningServiceName, ifMatch, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new CertificateResponseImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new CertificateResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public CertificateResponse get(String certificateName, String resourceGroupName, String provisioningServiceName) {
@@ -87,8 +91,12 @@ public final class DpsCertificatesImpl implements DpsCertificates {
             .generateVerificationCodeWithResponse(certificateName, ifMatch, resourceGroupName, provisioningServiceName,
                 certificateNameParam, certificateRawBytes, certificateIsVerified, certificatePurpose,
                 certificateCreated, certificateLastUpdated, certificateHasPrivateKey, certificateNonce, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new VerificationCodeResponseImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new VerificationCodeResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public VerificationCodeResponse generateVerificationCode(String certificateName, String ifMatch,
@@ -111,8 +119,12 @@ public final class DpsCertificatesImpl implements DpsCertificates {
             .verifyCertificateWithResponse(certificateName, ifMatch, resourceGroupName, provisioningServiceName,
                 request, certificateNameParam, certificateRawBytes, certificateIsVerified, certificatePurpose,
                 certificateCreated, certificateLastUpdated, certificateHasPrivateKey, certificateNonce, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new CertificateResponseImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new CertificateResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public CertificateResponse verifyCertificate(String certificateName, String ifMatch, String resourceGroupName,

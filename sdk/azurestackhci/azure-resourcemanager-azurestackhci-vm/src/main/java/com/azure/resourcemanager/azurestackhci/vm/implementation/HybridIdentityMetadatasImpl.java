@@ -29,8 +29,12 @@ public final class HybridIdentityMetadatasImpl implements HybridIdentityMetadata
 
     public Response<HybridIdentityMetadata> getWithResponse(String resourceUri, Context context) {
         Response<HybridIdentityMetadataInner> inner = this.serviceClient().getWithResponse(resourceUri, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new HybridIdentityMetadataImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new HybridIdentityMetadataImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public HybridIdentityMetadata get(String resourceUri) {

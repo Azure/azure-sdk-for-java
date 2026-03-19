@@ -31,8 +31,12 @@ public final class BrokersImpl implements Brokers {
         Context context) {
         Response<BrokerResourceInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, instanceName, brokerName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new BrokerResourceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new BrokerResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public BrokerResource get(String resourceGroupName, String instanceName, String brokerName) {

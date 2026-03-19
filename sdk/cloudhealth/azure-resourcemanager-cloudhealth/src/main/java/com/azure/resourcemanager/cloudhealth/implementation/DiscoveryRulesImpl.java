@@ -32,8 +32,12 @@ public final class DiscoveryRulesImpl implements DiscoveryRules {
         String discoveryRuleName, Context context) {
         Response<DiscoveryRuleInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, healthModelName, discoveryRuleName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new DiscoveryRuleImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new DiscoveryRuleImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public DiscoveryRule get(String resourceGroupName, String healthModelName, String discoveryRuleName) {

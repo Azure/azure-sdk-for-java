@@ -31,8 +31,12 @@ public final class VirtualNetworkSubnetUsagesImpl implements VirtualNetworkSubne
         VirtualNetworkSubnetUsageParameter parameters, Context context) {
         Response<VirtualNetworkSubnetUsageModelInner> inner
             = this.serviceClient().listWithResponse(locationName, parameters, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new VirtualNetworkSubnetUsageModelImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new VirtualNetworkSubnetUsageModelImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public VirtualNetworkSubnetUsageModel list(String locationName, VirtualNetworkSubnetUsageParameter parameters) {

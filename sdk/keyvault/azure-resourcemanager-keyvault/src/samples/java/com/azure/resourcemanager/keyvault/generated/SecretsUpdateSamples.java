@@ -17,10 +17,12 @@ public final class SecretsUpdateSamples {
     /**
      * Sample code: Update a secret.
      * 
-     * @param manager Entry point to KeyVaultManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void updateASecret(com.azure.resourcemanager.keyvault.KeyVaultManager manager) {
-        manager.serviceClient()
+    public static void updateASecret(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.vaults()
+            .manager()
+            .serviceClient()
             .getSecrets()
             .updateWithResponse("sample-group", "sample-vault", "secret-name",
                 new SecretPatchParameters().withProperties(new SecretPatchProperties().withValue("secret-value2")),

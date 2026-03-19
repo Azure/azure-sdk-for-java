@@ -14,10 +14,12 @@ public final class QueryKeysCreateSamples {
     /**
      * Sample code: SearchCreateQueryKey.
      * 
-     * @param manager Entry point to SearchServiceManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void searchCreateQueryKey(com.azure.resourcemanager.search.SearchServiceManager manager) {
-        manager.serviceClient()
+    public static void searchCreateQueryKey(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.searchServices()
+            .manager()
+            .serviceClient()
             .getQueryKeys()
             .createWithResponse("rg1", "mysearchservice",
                 "An API key granting read-only access to the documents collection of an index.",

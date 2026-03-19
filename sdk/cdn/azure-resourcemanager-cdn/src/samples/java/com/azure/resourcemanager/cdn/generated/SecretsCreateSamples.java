@@ -20,10 +20,12 @@ public final class SecretsCreateSamples {
     /**
      * Sample code: Secrets_CreateUrlSigningKeyType.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void secretsCreateUrlSigningKeyType(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient()
+    public static void secretsCreateUrlSigningKeyType(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
             .getSecrets()
             .create("RG", "profile1", "secret1", new SecretInner().withParameters(new UrlSigningKeyParameters()
                 .withKeyId("fakeTokenPlaceholder")
@@ -38,10 +40,12 @@ public final class SecretsCreateSamples {
     /**
      * Sample code: Secrets_CreateCustomerCertificateType.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void secretsCreateCustomerCertificateType(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient()
+    public static void secretsCreateCustomerCertificateType(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
             .getSecrets()
             .create("RG", "profile1", "secret1", new SecretInner().withParameters(new CustomerCertificateParameters()
                 .withSecretSource(new ResourceReference().withId(
@@ -56,10 +60,12 @@ public final class SecretsCreateSamples {
     /**
      * Sample code: Secrets_CreateMtlsCertificateChainType.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void secretsCreateMtlsCertificateChainType(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient()
+    public static void secretsCreateMtlsCertificateChainType(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
             .getSecrets()
             .create("RG", "profile1", "secret1", new SecretInner().withParameters(new AfdSecretMtlsCertificateChain()
                 .withSecretSource(new ResourceReference().withId(

@@ -16,10 +16,12 @@ public final class VaultsCheckNameAvailabilitySamples {
     /**
      * Sample code: Validate a vault name.
      * 
-     * @param manager Entry point to KeyVaultManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void validateAVaultName(com.azure.resourcemanager.keyvault.KeyVaultManager manager) {
-        manager.serviceClient()
+    public static void validateAVaultName(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.vaults()
+            .manager()
+            .serviceClient()
             .getVaults()
             .checkNameAvailabilityWithResponse(new VaultCheckNameAvailabilityParameters().withName("sample-vault"),
                 com.azure.core.util.Context.NONE);

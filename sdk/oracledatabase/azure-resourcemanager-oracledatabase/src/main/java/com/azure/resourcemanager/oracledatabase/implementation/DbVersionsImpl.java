@@ -32,8 +32,12 @@ public final class DbVersionsImpl implements DbVersions {
 
     public Response<DbVersion> getWithResponse(String location, String dbversionsname, Context context) {
         Response<DbVersionInner> inner = this.serviceClient().getWithResponse(location, dbversionsname, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new DbVersionImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new DbVersionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public DbVersion get(String location, String dbversionsname) {

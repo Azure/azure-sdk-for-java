@@ -20,10 +20,12 @@ public final class TableResourcesCreateUpdateTableSamples {
     /**
      * Sample code: CosmosDBTableReplace.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBTableReplace(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBTableReplace(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getTableResources()
             .createUpdateTable("rg1", "ddb1", "tableName",
                 new TableCreateUpdateParameters().withLocation("West US")

@@ -31,8 +31,12 @@ public final class SharedPrivateLinkResourcesImpl implements SharedPrivateLinkRe
         String sharedPrivateLinkResourceName, Context context) {
         Response<SharedPrivateLinkResourceInner> inner = this.serviceClient()
             .getWithResponse(resourceGroupName, watcherName, sharedPrivateLinkResourceName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new SharedPrivateLinkResourceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new SharedPrivateLinkResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public SharedPrivateLinkResource get(String resourceGroupName, String watcherName,

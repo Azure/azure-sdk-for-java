@@ -16,10 +16,12 @@ public final class FleetUpdateSamples {
     /**
      * Sample code: CosmosDB Fleet Update.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBFleetUpdate(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBFleetUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getFleets()
             .updateWithResponse("rg1", "fleet1", new FleetResourceUpdate(), com.azure.core.util.Context.NONE);
     }

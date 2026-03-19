@@ -14,9 +14,13 @@ public final class ServiceListSamples {
     /**
      * Sample code: CosmosDBServicesList.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBServicesList(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient().getServices().list("rg1", "ddb1", com.azure.core.util.Context.NONE);
+    public static void cosmosDBServicesList(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
+            .getServices()
+            .list("rg1", "ddb1", com.azure.core.util.Context.NONE);
     }
 }

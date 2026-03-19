@@ -14,11 +14,13 @@ public final class CassandraResourcesMigrateCassandraTableToManualThroughputSamp
     /**
      * Sample code: CosmosDBCassandraTableMigrateToManualThroughput.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
-        cosmosDBCassandraTableMigrateToManualThroughput(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+        cosmosDBCassandraTableMigrateToManualThroughput(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getCassandraResources()
             .migrateCassandraTableToManualThroughput("rg1", "ddb1", "keyspaceName", "tableName",
                 com.azure.core.util.Context.NONE);

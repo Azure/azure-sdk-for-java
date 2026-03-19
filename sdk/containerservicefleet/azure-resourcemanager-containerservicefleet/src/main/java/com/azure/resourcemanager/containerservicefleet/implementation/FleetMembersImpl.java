@@ -31,8 +31,12 @@ public final class FleetMembersImpl implements FleetMembers {
         Context context) {
         Response<FleetMemberInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, fleetName, fleetMemberName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new FleetMemberImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new FleetMemberImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public FleetMember get(String resourceGroupName, String fleetName, String fleetMemberName) {

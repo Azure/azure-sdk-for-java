@@ -33,8 +33,12 @@ public final class SolutionTemplateVersionsImpl implements SolutionTemplateVersi
         String solutionTemplateVersionName, Context context) {
         Response<SolutionTemplateVersionInner> inner = this.serviceClient()
             .getWithResponse(resourceGroupName, solutionTemplateName, solutionTemplateVersionName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new SolutionTemplateVersionImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new SolutionTemplateVersionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public SolutionTemplateVersion get(String resourceGroupName, String solutionTemplateName,

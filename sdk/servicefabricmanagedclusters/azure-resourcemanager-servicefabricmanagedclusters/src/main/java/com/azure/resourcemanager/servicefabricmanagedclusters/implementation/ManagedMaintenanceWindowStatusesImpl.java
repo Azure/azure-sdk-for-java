@@ -30,8 +30,12 @@ public final class ManagedMaintenanceWindowStatusesImpl implements ManagedMainte
         Context context) {
         Response<ManagedMaintenanceWindowStatusInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, clusterName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new ManagedMaintenanceWindowStatusImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ManagedMaintenanceWindowStatusImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ManagedMaintenanceWindowStatus get(String resourceGroupName, String clusterName) {

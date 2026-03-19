@@ -22,11 +22,12 @@ public final class EndpointsCreateOrUpdateSamples {
     /**
      * Sample code: Endpoint-PUT-External-WithAlwaysServe.
      * 
-     * @param manager Entry point to TrafficManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void
-        endpointPUTExternalWithAlwaysServe(com.azure.resourcemanager.trafficmanager.TrafficManager manager) {
-        manager.serviceClient()
+    public static void endpointPUTExternalWithAlwaysServe(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.trafficManagerProfiles()
+            .manager()
+            .serviceClient()
             .getEndpoints()
             .createOrUpdateWithResponse("azuresdkfornetautoresttrafficmanager1421", "azsmnet6386",
                 EndpointTypes.EXTERNAL_ENDPOINTS, "azsmnet7187",
@@ -45,11 +46,12 @@ public final class EndpointsCreateOrUpdateSamples {
     /**
      * Sample code: Endpoint-PUT-External-WithSubnetMapping.
      * 
-     * @param manager Entry point to TrafficManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void
-        endpointPUTExternalWithSubnetMapping(com.azure.resourcemanager.trafficmanager.TrafficManager manager) {
-        manager.serviceClient()
+    public static void endpointPUTExternalWithSubnetMapping(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.trafficManagerProfiles()
+            .manager()
+            .serviceClient()
             .getEndpoints()
             .createOrUpdateWithResponse("azuresdkfornetautoresttrafficmanager2191",
                 "azuresdkfornetautoresttrafficmanager8224", EndpointTypes.EXTERNAL_ENDPOINTS,
@@ -69,11 +71,12 @@ public final class EndpointsCreateOrUpdateSamples {
     /**
      * Sample code: Endpoint-PUT-External-WithCustomHeaders.
      * 
-     * @param manager Entry point to TrafficManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void
-        endpointPUTExternalWithCustomHeaders(com.azure.resourcemanager.trafficmanager.TrafficManager manager) {
-        manager.serviceClient()
+    public static void endpointPUTExternalWithCustomHeaders(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.trafficManagerProfiles()
+            .manager()
+            .serviceClient()
             .getEndpoints()
             .createOrUpdateWithResponse("azuresdkfornetautoresttrafficmanager1421", "azsmnet6386",
                 EndpointTypes.EXTERNAL_ENDPOINTS, "azsmnet7187",
@@ -94,11 +97,12 @@ public final class EndpointsCreateOrUpdateSamples {
     /**
      * Sample code: Endpoint-PUT-External-WithLocation.
      * 
-     * @param manager Entry point to TrafficManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void
-        endpointPUTExternalWithLocation(com.azure.resourcemanager.trafficmanager.TrafficManager manager) {
-        manager.serviceClient()
+    public static void endpointPUTExternalWithLocation(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.trafficManagerProfiles()
+            .manager()
+            .serviceClient()
             .getEndpoints()
             .createOrUpdateWithResponse("azuresdkfornetautoresttrafficmanager1421", "azsmnet6386",
                 EndpointTypes.EXTERNAL_ENDPOINTS, "azsmnet7187",
@@ -116,11 +120,12 @@ public final class EndpointsCreateOrUpdateSamples {
     /**
      * Sample code: Endpoint-PUT-External-WithGeoMapping.
      * 
-     * @param manager Entry point to TrafficManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void
-        endpointPUTExternalWithGeoMapping(com.azure.resourcemanager.trafficmanager.TrafficManager manager) {
-        manager.serviceClient()
+    public static void endpointPUTExternalWithGeoMapping(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.trafficManagerProfiles()
+            .manager()
+            .serviceClient()
             .getEndpoints()
             .createOrUpdateWithResponse("azuresdkfornetautoresttrafficmanager2191",
                 "azuresdkfornetautoresttrafficmanager8224", EndpointTypes.EXTERNAL_ENDPOINTS,

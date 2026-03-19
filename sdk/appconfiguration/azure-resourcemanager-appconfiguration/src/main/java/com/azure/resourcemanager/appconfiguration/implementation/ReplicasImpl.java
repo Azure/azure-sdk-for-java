@@ -31,8 +31,12 @@ public final class ReplicasImpl implements Replicas {
         Context context) {
         Response<ReplicaInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, configStoreName, replicaName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new ReplicaImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ReplicaImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public Replica get(String resourceGroupName, String configStoreName, String replicaName) {

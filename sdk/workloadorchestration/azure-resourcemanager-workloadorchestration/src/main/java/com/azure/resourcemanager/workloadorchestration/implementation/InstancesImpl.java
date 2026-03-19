@@ -31,8 +31,12 @@ public final class InstancesImpl implements Instances {
         String instanceName, Context context) {
         Response<InstanceInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, targetName, solutionName, instanceName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new InstanceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new InstanceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public Instance get(String resourceGroupName, String targetName, String solutionName, String instanceName) {

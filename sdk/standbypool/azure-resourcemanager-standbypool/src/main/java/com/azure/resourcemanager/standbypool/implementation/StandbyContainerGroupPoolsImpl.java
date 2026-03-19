@@ -31,8 +31,12 @@ public final class StandbyContainerGroupPoolsImpl implements StandbyContainerGro
         String standbyContainerGroupPoolName, Context context) {
         Response<StandbyContainerGroupPoolResourceInner> inner = this.serviceClient()
             .getByResourceGroupWithResponse(resourceGroupName, standbyContainerGroupPoolName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new StandbyContainerGroupPoolResourceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new StandbyContainerGroupPoolResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public StandbyContainerGroupPoolResource getByResourceGroup(String resourceGroupName,

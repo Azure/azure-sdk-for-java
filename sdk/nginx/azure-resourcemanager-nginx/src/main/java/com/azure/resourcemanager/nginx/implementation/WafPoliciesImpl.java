@@ -47,8 +47,12 @@ public final class WafPoliciesImpl implements WafPolicies {
         String wafPolicyName, Context context) {
         Response<NginxDeploymentWafPolicyInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, deploymentName, wafPolicyName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new NginxDeploymentWafPolicyImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new NginxDeploymentWafPolicyImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public NginxDeploymentWafPolicy get(String resourceGroupName, String deploymentName, String wafPolicyName) {

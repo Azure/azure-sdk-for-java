@@ -38,10 +38,12 @@ public final class DatabaseAccountsUpdateSamples {
     /**
      * Sample code: CosmosDBDatabaseAccountPatch.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBDatabaseAccountPatch(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBDatabaseAccountPatch(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getDatabaseAccounts()
             .update("rg1", "ddb1", new DatabaseAccountUpdateParameters().withTags(mapOf("dept", "finance"))
                 .withLocation("westus")

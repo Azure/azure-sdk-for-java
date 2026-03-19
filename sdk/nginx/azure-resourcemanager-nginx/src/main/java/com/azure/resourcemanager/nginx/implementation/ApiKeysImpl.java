@@ -30,8 +30,12 @@ public final class ApiKeysImpl implements ApiKeys {
         String apiKeyName, Context context) {
         Response<NginxDeploymentApiKeyResponseInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, deploymentName, apiKeyName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new NginxDeploymentApiKeyResponseImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new NginxDeploymentApiKeyResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public NginxDeploymentApiKeyResponse get(String resourceGroupName, String deploymentName, String apiKeyName) {

@@ -14,10 +14,12 @@ public final class OriginsDeleteSamples {
     /**
      * Sample code: Origins_Delete.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void originsDelete(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient()
+    public static void originsDelete(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
             .getOrigins()
             .delete("RG", "profile1", "endpoint1", "origin1", com.azure.core.util.Context.NONE);
     }

@@ -14,9 +14,9 @@ public final class ServicesListSamples {
     /**
      * Sample code: SearchListServicesBySubscription.
      * 
-     * @param manager Entry point to SearchServiceManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void searchListServicesBySubscription(com.azure.resourcemanager.search.SearchServiceManager manager) {
-        manager.serviceClient().getServices().list(com.azure.core.util.Context.NONE);
+    public static void searchListServicesBySubscription(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.searchServices().manager().serviceClient().getServices().list(com.azure.core.util.Context.NONE);
     }
 }

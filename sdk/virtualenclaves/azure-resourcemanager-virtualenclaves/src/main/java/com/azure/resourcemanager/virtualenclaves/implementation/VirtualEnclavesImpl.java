@@ -35,8 +35,12 @@ public final class VirtualEnclavesImpl implements VirtualEnclaves {
         Context context) {
         Response<EnclaveResourceInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, virtualEnclaveName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new EnclaveResourceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new EnclaveResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public EnclaveResource getByResourceGroup(String resourceGroupName, String virtualEnclaveName) {

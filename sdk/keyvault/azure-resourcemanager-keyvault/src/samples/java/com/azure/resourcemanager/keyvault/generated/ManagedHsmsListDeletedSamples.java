@@ -14,10 +14,10 @@ public final class ManagedHsmsListDeletedSamples {
     /**
      * Sample code: List deleted managed HSMs in the specified subscription.
      * 
-     * @param manager Entry point to KeyVaultManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
-        listDeletedManagedHSMsInTheSpecifiedSubscription(com.azure.resourcemanager.keyvault.KeyVaultManager manager) {
-        manager.serviceClient().getManagedHsms().listDeleted(com.azure.core.util.Context.NONE);
+        listDeletedManagedHSMsInTheSpecifiedSubscription(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.vaults().manager().serviceClient().getManagedHsms().listDeleted(com.azure.core.util.Context.NONE);
     }
 }

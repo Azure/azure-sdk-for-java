@@ -20,11 +20,13 @@ public final class MongoDBResourcesMongoDBDatabaseRedistributeThroughputSamples 
     /**
      * Sample code: CosmosDBMongoDBDatabaseRedistributeThroughput.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
-        cosmosDBMongoDBDatabaseRedistributeThroughput(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+        cosmosDBMongoDBDatabaseRedistributeThroughput(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getMongoDBResources()
             .mongoDBDatabaseRedistributeThroughput("rg1", "ddb1", "databaseName",
                 new RedistributeThroughputParameters().withResource(new RedistributeThroughputPropertiesResource()

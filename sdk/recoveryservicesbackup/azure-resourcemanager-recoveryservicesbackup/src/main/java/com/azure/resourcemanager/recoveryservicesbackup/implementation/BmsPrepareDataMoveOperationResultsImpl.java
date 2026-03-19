@@ -30,8 +30,12 @@ public final class BmsPrepareDataMoveOperationResultsImpl implements BmsPrepareD
         String resourceGroupName, String operationId, Context context) {
         Response<VaultStorageConfigOperationResultResponseInner> inner
             = this.serviceClient().getWithResponse(vaultName, resourceGroupName, operationId, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new VaultStorageConfigOperationResultResponseImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new VaultStorageConfigOperationResultResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public VaultStorageConfigOperationResultResponse get(String vaultName, String resourceGroupName,

@@ -17,11 +17,12 @@ public final class CassandraDataCentersUpdateSamples {
     /**
      * Sample code: CosmosDBManagedCassandraDataCenterUpdate.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void
-        cosmosDBManagedCassandraDataCenterUpdate(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBManagedCassandraDataCenterUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getCassandraDataCenters()
             .update("cassandra-prod-rg", "cassandra-prod", "dc1",
                 new DataCenterResourceInner().withProperties(new DataCenterResourceProperties()

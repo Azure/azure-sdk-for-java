@@ -20,10 +20,12 @@ public final class FleetspaceCreateSamples {
     /**
      * Sample code: CosmosDB Fleetspace Create.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBFleetspaceCreate(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBFleetspaceCreate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getFleetspaces()
             .create("rg1", "fleet1", "fleetspace1",
                 new FleetspaceResourceInner().withFleetspaceApiKind(FleetspacePropertiesFleetspaceApiKind.NO_SQL)

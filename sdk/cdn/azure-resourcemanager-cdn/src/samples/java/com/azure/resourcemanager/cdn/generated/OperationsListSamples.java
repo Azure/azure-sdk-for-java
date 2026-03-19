@@ -14,9 +14,9 @@ public final class OperationsListSamples {
     /**
      * Sample code: Operations_List.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void operationsList(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient().getOperations().list(com.azure.core.util.Context.NONE);
+    public static void operationsList(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles().manager().serviceClient().getOperations().list(com.azure.core.util.Context.NONE);
     }
 }

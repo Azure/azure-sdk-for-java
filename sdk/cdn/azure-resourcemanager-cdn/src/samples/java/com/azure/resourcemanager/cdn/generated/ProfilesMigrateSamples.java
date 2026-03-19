@@ -19,10 +19,12 @@ public final class ProfilesMigrateSamples {
     /**
      * Sample code: Profiles_Migrate.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void profilesMigrate(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient()
+    public static void profilesMigrate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
             .getProfiles()
             .migrate("RG",
                 new MigrationParameters().withSku(new Sku().withName(SkuName.STANDARD_AZURE_FRONT_DOOR))

@@ -42,8 +42,12 @@ public final class ClustersImpl implements Clusters {
         Context context) {
         Response<ClusterInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, privateCloudName, clusterName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new ClusterImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ClusterImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public Cluster get(String resourceGroupName, String privateCloudName, String clusterName) {
@@ -67,8 +71,12 @@ public final class ClustersImpl implements Clusters {
         String clusterName, Context context) {
         Response<ClusterZoneListInner> inner
             = this.serviceClient().listZonesWithResponse(resourceGroupName, privateCloudName, clusterName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new ClusterZoneListImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ClusterZoneListImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ClusterZoneList listZones(String resourceGroupName, String privateCloudName, String clusterName) {

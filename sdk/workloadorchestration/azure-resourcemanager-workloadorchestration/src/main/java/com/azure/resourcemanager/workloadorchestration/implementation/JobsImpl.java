@@ -29,8 +29,12 @@ public final class JobsImpl implements Jobs {
 
     public Response<Job> getWithResponse(String resourceUri, String jobName, Context context) {
         Response<JobInner> inner = this.serviceClient().getWithResponse(resourceUri, jobName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new JobImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new JobImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public Job get(String resourceUri, String jobName) {

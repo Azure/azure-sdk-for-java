@@ -31,8 +31,12 @@ public final class FabricsImpl implements Fabrics {
         Context context) {
         Response<FabricModelInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, fabricName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new FabricModelImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new FabricModelImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public FabricModel getByResourceGroup(String resourceGroupName, String fabricName) {

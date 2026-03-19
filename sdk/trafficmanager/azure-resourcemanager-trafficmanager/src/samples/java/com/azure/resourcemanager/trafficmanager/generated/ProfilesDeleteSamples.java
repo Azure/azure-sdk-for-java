@@ -14,10 +14,12 @@ public final class ProfilesDeleteSamples {
     /**
      * Sample code: Profile-DELETE.
      * 
-     * @param manager Entry point to TrafficManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void profileDELETE(com.azure.resourcemanager.trafficmanager.TrafficManager manager) {
-        manager.serviceClient()
+    public static void profileDELETE(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.trafficManagerProfiles()
+            .manager()
+            .serviceClient()
             .getProfiles()
             .deleteWithResponse("azuresdkfornetautoresttrafficmanager1323", "azuresdkfornetautoresttrafficmanager3880",
                 com.azure.core.util.Context.NONE);

@@ -14,9 +14,13 @@ public final class RuleSetsDeleteSamples {
     /**
      * Sample code: RuleSets_Delete.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void ruleSetsDelete(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient().getRuleSets().delete("RG", "profile1", "ruleSet1", com.azure.core.util.Context.NONE);
+    public static void ruleSetsDelete(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
+            .getRuleSets()
+            .delete("RG", "profile1", "ruleSet1", com.azure.core.util.Context.NONE);
     }
 }

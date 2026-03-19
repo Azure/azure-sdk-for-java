@@ -34,8 +34,12 @@ public final class PostRulesImpl implements PostRules {
     public Response<PostRulesResource> getWithResponse(String globalRulestackName, String priority, Context context) {
         Response<PostRulesResourceInner> inner
             = this.serviceClient().getWithResponse(globalRulestackName, priority, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new PostRulesResourceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new PostRulesResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public PostRulesResource get(String globalRulestackName, String priority) {
@@ -90,8 +94,12 @@ public final class PostRulesImpl implements PostRules {
         String firewallName, Context context) {
         Response<RuleCounterInner> inner
             = this.serviceClient().getCountersWithResponse(globalRulestackName, priority, firewallName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new RuleCounterImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new RuleCounterImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public RuleCounter getCounters(String globalRulestackName, String priority) {
@@ -116,8 +124,12 @@ public final class PostRulesImpl implements PostRules {
         String firewallName, Context context) {
         Response<RuleCounterResetInner> inner
             = this.serviceClient().resetCountersWithResponse(globalRulestackName, priority, firewallName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new RuleCounterResetImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new RuleCounterResetImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public RuleCounterReset resetCounters(String globalRulestackName, String priority) {

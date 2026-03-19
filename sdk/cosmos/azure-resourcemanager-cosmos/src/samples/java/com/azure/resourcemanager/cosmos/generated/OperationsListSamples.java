@@ -14,9 +14,9 @@ public final class OperationsListSamples {
     /**
      * Sample code: CosmosDBOperationsList.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBOperationsList(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient().getOperations().list(com.azure.core.util.Context.NONE);
+    public static void cosmosDBOperationsList(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts().manager().serviceClient().getOperations().list(com.azure.core.util.Context.NONE);
     }
 }

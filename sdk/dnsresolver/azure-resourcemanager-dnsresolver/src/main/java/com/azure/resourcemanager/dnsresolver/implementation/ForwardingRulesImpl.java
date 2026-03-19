@@ -31,8 +31,12 @@ public final class ForwardingRulesImpl implements ForwardingRules {
         String forwardingRuleName, Context context) {
         Response<ForwardingRuleInner> inner = this.serviceClient()
             .getWithResponse(resourceGroupName, dnsForwardingRulesetName, forwardingRuleName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new ForwardingRuleImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ForwardingRuleImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ForwardingRule get(String resourceGroupName, String dnsForwardingRulesetName, String forwardingRuleName) {

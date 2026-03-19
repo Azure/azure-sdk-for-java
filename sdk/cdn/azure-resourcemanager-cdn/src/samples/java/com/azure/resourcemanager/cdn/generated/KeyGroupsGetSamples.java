@@ -14,10 +14,12 @@ public final class KeyGroupsGetSamples {
     /**
      * Sample code: KeyGroups_Get.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void keyGroupsGet(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient()
+    public static void keyGroupsGet(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
             .getKeyGroups()
             .getWithResponse("RG", "profile1", "kg1", com.azure.core.util.Context.NONE);
     }

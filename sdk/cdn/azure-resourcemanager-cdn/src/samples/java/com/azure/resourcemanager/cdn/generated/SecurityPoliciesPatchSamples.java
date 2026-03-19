@@ -21,10 +21,12 @@ public final class SecurityPoliciesPatchSamples {
     /**
      * Sample code: SecurityPolicies_Patch.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void securityPoliciesPatch(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient()
+    public static void securityPoliciesPatch(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
             .getSecurityPolicies()
             .patch("RG", "profile1", "securityPolicy1", new SecurityPolicyUpdateParameters().withParameters(
                 new SecurityPolicyWebApplicationFirewallParameters().withWafPolicy(new ResourceReference().withId(

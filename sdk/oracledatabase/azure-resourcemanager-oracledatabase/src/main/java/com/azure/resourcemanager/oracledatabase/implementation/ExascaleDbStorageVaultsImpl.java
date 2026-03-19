@@ -31,8 +31,12 @@ public final class ExascaleDbStorageVaultsImpl implements ExascaleDbStorageVault
         String exascaleDbStorageVaultName, Context context) {
         Response<ExascaleDbStorageVaultInner> inner = this.serviceClient()
             .getByResourceGroupWithResponse(resourceGroupName, exascaleDbStorageVaultName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new ExascaleDbStorageVaultImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ExascaleDbStorageVaultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ExascaleDbStorageVault getByResourceGroup(String resourceGroupName, String exascaleDbStorageVaultName) {

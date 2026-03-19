@@ -14,10 +14,12 @@ public final class ThroughputPoolAccountGetSamples {
     /**
      * Sample code: CosmosDB ThroughputPool Account Get.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBThroughputPoolAccountGet(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBThroughputPoolAccountGet(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getThroughputPoolAccounts()
             .getWithResponse("rgName", "tp1", "db1", com.azure.core.util.Context.NONE);
     }

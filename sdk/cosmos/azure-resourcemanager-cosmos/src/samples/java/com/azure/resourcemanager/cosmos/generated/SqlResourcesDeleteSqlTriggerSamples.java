@@ -14,10 +14,12 @@ public final class SqlResourcesDeleteSqlTriggerSamples {
     /**
      * Sample code: CosmosDBSqlTriggerDelete.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBSqlTriggerDelete(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBSqlTriggerDelete(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getSqlResources()
             .deleteSqlTrigger("rg1", "ddb1", "databaseName", "containerName", "triggerName",
                 com.azure.core.util.Context.NONE);

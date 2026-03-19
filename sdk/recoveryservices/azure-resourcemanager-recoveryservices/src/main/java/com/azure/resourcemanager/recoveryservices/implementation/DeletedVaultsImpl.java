@@ -42,8 +42,12 @@ public final class DeletedVaultsImpl implements DeletedVaults {
 
     public Response<DeletedVault> getWithResponse(String location, String deletedVaultName, Context context) {
         Response<DeletedVaultInner> inner = this.serviceClient().getWithResponse(location, deletedVaultName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new DeletedVaultImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new DeletedVaultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public DeletedVault get(String location, String deletedVaultName) {
@@ -67,8 +71,12 @@ public final class DeletedVaultsImpl implements DeletedVaults {
         String operationId, Context context) {
         Response<OperationResourceInner> inner
             = this.serviceClient().getOperationStatusWithResponse(location, deletedVaultName, operationId, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new OperationResourceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new OperationResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public OperationResource getOperationStatus(String location, String deletedVaultName, String operationId) {

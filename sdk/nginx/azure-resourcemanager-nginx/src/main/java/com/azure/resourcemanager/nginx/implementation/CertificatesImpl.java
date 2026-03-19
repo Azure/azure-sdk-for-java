@@ -31,8 +31,12 @@ public final class CertificatesImpl implements Certificates {
         String certificateName, Context context) {
         Response<NginxCertificateInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, deploymentName, certificateName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new NginxCertificateImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new NginxCertificateImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public NginxCertificate get(String resourceGroupName, String deploymentName, String certificateName) {

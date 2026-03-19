@@ -31,8 +31,12 @@ public final class VirtualNetworkLinksImpl implements VirtualNetworkLinks {
         String virtualNetworkLinkName, Context context) {
         Response<VirtualNetworkLinkInner> inner = this.serviceClient()
             .getWithResponse(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new VirtualNetworkLinkImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new VirtualNetworkLinkImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public VirtualNetworkLink get(String resourceGroupName, String dnsForwardingRulesetName,

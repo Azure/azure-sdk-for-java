@@ -14,10 +14,12 @@ public final class ScopeMapsGetSamples {
     /**
      * Sample code: ScopeMapGet.
      * 
-     * @param manager Entry point to ContainerRegistryManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void scopeMapGet(com.azure.resourcemanager.containerregistry.ContainerRegistryManager manager) {
-        manager.serviceClient()
+    public static void scopeMapGet(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.containerRegistries()
+            .manager()
+            .serviceClient()
             .getScopeMaps()
             .getWithResponse("myResourceGroup", "myRegistry", "myScopeMap", com.azure.core.util.Context.NONE);
     }

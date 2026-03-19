@@ -31,8 +31,12 @@ public final class BrokerListenersImpl implements BrokerListeners {
         String brokerName, String listenerName, Context context) {
         Response<BrokerListenerResourceInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, instanceName, brokerName, listenerName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new BrokerListenerResourceImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new BrokerListenerResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public BrokerListenerResource get(String resourceGroupName, String instanceName, String brokerName,

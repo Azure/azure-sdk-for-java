@@ -14,10 +14,12 @@ public final class CassandraClustersListCommandSamples {
     /**
      * Sample code: CosmosDBManagedCassandraListCommand.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBManagedCassandraListCommand(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBManagedCassandraListCommand(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getCassandraClusters()
             .listCommand("cassandra-prod-rg", "cassandra-prod", com.azure.core.util.Context.NONE);
     }

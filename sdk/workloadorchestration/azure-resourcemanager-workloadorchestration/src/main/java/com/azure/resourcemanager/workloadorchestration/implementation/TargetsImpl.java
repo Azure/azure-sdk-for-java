@@ -41,8 +41,12 @@ public final class TargetsImpl implements Targets {
         Context context) {
         Response<TargetInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, targetName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new TargetImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new TargetImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public Target getByResourceGroup(String resourceGroupName, String targetName) {

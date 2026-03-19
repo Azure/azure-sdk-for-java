@@ -33,8 +33,12 @@ public final class RunsImpl implements Runs {
     public Response<Run> getWithResponse(String resourceGroupName, String registryName, String runId, Context context) {
         Response<RunInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, registryName, runId, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new RunImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new RunImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public Run get(String resourceGroupName, String registryName, String runId) {
@@ -50,8 +54,12 @@ public final class RunsImpl implements Runs {
         RunUpdateParameters runUpdateParameters, Context context) {
         Response<RunInner> inner = this.serviceClient()
             .updateWithResponse(resourceGroupName, registryName, runId, runUpdateParameters, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new RunImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new RunImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public Run update(String resourceGroupName, String registryName, String runId,
@@ -80,8 +88,12 @@ public final class RunsImpl implements Runs {
         String runId, Context context) {
         Response<RunGetLogResultInner> inner
             = this.serviceClient().getLogSasUrlWithResponse(resourceGroupName, registryName, runId, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new RunGetLogResultImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new RunGetLogResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public RunGetLogResult getLogSasUrl(String resourceGroupName, String registryName, String runId) {

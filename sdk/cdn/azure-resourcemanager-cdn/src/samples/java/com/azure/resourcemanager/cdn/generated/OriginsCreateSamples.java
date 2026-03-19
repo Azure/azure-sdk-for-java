@@ -16,10 +16,12 @@ public final class OriginsCreateSamples {
     /**
      * Sample code: Origins_Create.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void originsCreate(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient()
+    public static void originsCreate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
             .getOrigins()
             .create("RG", "profile1", "endpoint1", "www-someDomain-net",
                 new OriginInner().withHostname("www.someDomain.net")

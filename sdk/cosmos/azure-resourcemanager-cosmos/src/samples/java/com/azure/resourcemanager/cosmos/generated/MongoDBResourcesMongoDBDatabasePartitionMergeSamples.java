@@ -16,10 +16,12 @@ public final class MongoDBResourcesMongoDBDatabasePartitionMergeSamples {
     /**
      * Sample code: CosmosDBMongoDBDatabasePartitionMerge.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBMongoDBDatabasePartitionMerge(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBMongoDBDatabasePartitionMerge(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getMongoDBResources()
             .mongoDBDatabasePartitionMerge("rgName", "ddb1", "databaseName", new MergeParameters().withIsDryRun(false),
                 com.azure.core.util.Context.NONE);

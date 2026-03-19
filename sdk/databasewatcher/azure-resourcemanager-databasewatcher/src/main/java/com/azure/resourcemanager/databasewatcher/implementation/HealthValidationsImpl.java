@@ -31,8 +31,12 @@ public final class HealthValidationsImpl implements HealthValidations {
         String healthValidationName, Context context) {
         Response<HealthValidationInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, watcherName, healthValidationName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new HealthValidationImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new HealthValidationImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public HealthValidation get(String resourceGroupName, String watcherName, String healthValidationName) {

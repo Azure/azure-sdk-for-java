@@ -14,10 +14,12 @@ public final class ManagedHsmKeysListSamples {
     /**
      * Sample code: List keys in the managed HSM.
      * 
-     * @param manager Entry point to KeyVaultManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void listKeysInTheManagedHSM(com.azure.resourcemanager.keyvault.KeyVaultManager manager) {
-        manager.serviceClient()
+    public static void listKeysInTheManagedHSM(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.vaults()
+            .manager()
+            .serviceClient()
             .getManagedHsmKeys()
             .list("sample-group", "sample-managedhsm-name", com.azure.core.util.Context.NONE);
     }

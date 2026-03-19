@@ -17,11 +17,13 @@ public final class PrivateEndpointConnectionsCreateOrUpdateSamples {
     /**
      * Sample code: Approve or reject a private endpoint connection with a given name.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void approveOrRejectAPrivateEndpointConnectionWithAGivenName(
-        com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void
+        approveOrRejectAPrivateEndpointConnectionWithAGivenName(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getPrivateEndpointConnections()
             .createOrUpdate("rg1", "ddb1", "privateEndpointConnectionName",
                 new PrivateEndpointConnectionInner().withPrivateLinkServiceConnectionState(

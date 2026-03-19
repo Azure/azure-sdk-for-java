@@ -24,11 +24,13 @@ public final class ManagedHsmsCreateOrUpdateSamples {
     /**
      * Sample code: Create a new managed HSM Pool or update an existing managed HSM Pool.
      * 
-     * @param manager Entry point to KeyVaultManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void createANewManagedHSMPoolOrUpdateAnExistingManagedHSMPool(
-        com.azure.resourcemanager.keyvault.KeyVaultManager manager) {
-        manager.serviceClient()
+    public static void
+        createANewManagedHSMPoolOrUpdateAnExistingManagedHSMPool(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.vaults()
+            .manager()
+            .serviceClient()
             .getManagedHsms()
             .createOrUpdate("hsm-group", "hsm1", new ManagedHsmInner()
                 .withProperties(

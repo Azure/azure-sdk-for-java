@@ -14,9 +14,9 @@ public final class ManagedRuleSetsListSamples {
     /**
      * Sample code: List Policies in a Resource Group.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void listPoliciesInAResourceGroup(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient().getManagedRuleSets().list(com.azure.core.util.Context.NONE);
+    public static void listPoliciesInAResourceGroup(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles().manager().serviceClient().getManagedRuleSets().list(com.azure.core.util.Context.NONE);
     }
 }

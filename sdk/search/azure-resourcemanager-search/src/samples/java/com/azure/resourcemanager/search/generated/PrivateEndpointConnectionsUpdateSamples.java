@@ -19,10 +19,12 @@ public final class PrivateEndpointConnectionsUpdateSamples {
     /**
      * Sample code: PrivateEndpointConnectionUpdate.
      * 
-     * @param manager Entry point to SearchServiceManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void privateEndpointConnectionUpdate(com.azure.resourcemanager.search.SearchServiceManager manager) {
-        manager.serviceClient()
+    public static void privateEndpointConnectionUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.searchServices()
+            .manager()
+            .serviceClient()
             .getPrivateEndpointConnections()
             .updateWithResponse("rg1", "mysearchservice", "testEndpoint.50bf4fbe-d7c1-4b48-a642-4f5892642546",
                 new PrivateEndpointConnectionInner()

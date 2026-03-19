@@ -23,10 +23,12 @@ public final class AfdOriginGroupsUpdateSamples {
     /**
      * Sample code: AFDOriginGroups_Update.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void aFDOriginGroupsUpdate(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient()
+    public static void aFDOriginGroupsUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
             .getAfdOriginGroups()
             .update("RG", "profile1", "origingroup1", new AfdOriginGroupUpdateParameters()
                 .withLoadBalancingSettings(new LoadBalancingSettingsParameters().withSampleSize(3)

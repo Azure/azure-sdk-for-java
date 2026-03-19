@@ -14,11 +14,13 @@ public final class DatabaseAccountsListConnectionStringsSamples {
     /**
      * Sample code: CosmosDBDatabaseAccountListConnectionStrings.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
-        cosmosDBDatabaseAccountListConnectionStrings(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+        cosmosDBDatabaseAccountListConnectionStrings(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getDatabaseAccounts()
             .listConnectionStringsWithResponse("rg1", "ddb1", com.azure.core.util.Context.NONE);
     }
@@ -29,11 +31,13 @@ public final class DatabaseAccountsListConnectionStringsSamples {
     /**
      * Sample code: CosmosDBDatabaseAccountListConnectionStringsMongo.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
-        cosmosDBDatabaseAccountListConnectionStringsMongo(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+        cosmosDBDatabaseAccountListConnectionStringsMongo(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getDatabaseAccounts()
             .listConnectionStringsWithResponse("rg1", "mongo-ddb1", com.azure.core.util.Context.NONE);
     }

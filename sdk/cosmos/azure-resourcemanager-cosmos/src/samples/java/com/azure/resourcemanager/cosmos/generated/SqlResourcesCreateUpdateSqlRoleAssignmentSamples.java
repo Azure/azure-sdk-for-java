@@ -16,10 +16,12 @@ public final class SqlResourcesCreateUpdateSqlRoleAssignmentSamples {
     /**
      * Sample code: CosmosDBSqlRoleAssignmentCreateUpdate.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBSqlRoleAssignmentCreateUpdate(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBSqlRoleAssignmentCreateUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getSqlResources()
             .createUpdateSqlRoleAssignment("myRoleAssignmentId", "myResourceGroupName", "myAccountName",
                 new SqlRoleAssignmentCreateUpdateParameters().withRoleDefinitionId(

@@ -18,10 +18,12 @@ public final class ManagedHsmKeysCreateIfNotExistSamples {
     /**
      * Sample code: Create a key.
      * 
-     * @param manager Entry point to KeyVaultManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void createAKey(com.azure.resourcemanager.keyvault.KeyVaultManager manager) {
-        manager.serviceClient()
+    public static void createAKey(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.vaults()
+            .manager()
+            .serviceClient()
             .getManagedHsmKeys()
             .createIfNotExistWithResponse(
                 "sample-group", "sample-managedhsm-name", "sample-key-name", new ManagedHsmKeyCreateParameters()

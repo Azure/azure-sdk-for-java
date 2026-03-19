@@ -14,10 +14,12 @@ public final class FleetGetByResourceGroupSamples {
     /**
      * Sample code: CosmosDB Fleet Get.
      * 
-     * @param manager Entry point to CosmosManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBFleetGet(com.azure.resourcemanager.cosmos.CosmosManager manager) {
-        manager.serviceClient()
+    public static void cosmosDBFleetGet(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
             .getFleets()
             .getByResourceGroupWithResponse("rg1", "fleet1", com.azure.core.util.Context.NONE);
     }

@@ -18,10 +18,12 @@ public final class AfdProfilesValidateSecretSamples {
     /**
      * Sample code: Validate_Secret.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void validateSecret(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient()
+    public static void validateSecret(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
             .getAfdProfiles()
             .validateSecretWithResponse("RG", "profile1", new ValidateSecretInput()
                 .withSecretType(SecretType.CUSTOMER_CERTIFICATE)

@@ -31,8 +31,12 @@ public final class ElasticBackupsImpl implements ElasticBackups {
         String backupName, Context context) {
         Response<ElasticBackupInner> inner = this.serviceClient()
             .getWithResponse(resourceGroupName, accountName, backupVaultName, backupName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new ElasticBackupImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ElasticBackupImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ElasticBackup get(String resourceGroupName, String accountName, String backupVaultName, String backupName) {

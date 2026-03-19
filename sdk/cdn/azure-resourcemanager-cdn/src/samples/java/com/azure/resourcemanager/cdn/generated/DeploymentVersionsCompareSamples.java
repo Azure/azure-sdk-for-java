@@ -16,10 +16,12 @@ public final class DeploymentVersionsCompareSamples {
     /**
      * Sample code: DeploymentVersions_Compare.
      * 
-     * @param manager Entry point to CdnManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void deploymentVersionsCompare(com.azure.resourcemanager.cdn.CdnManager manager) {
-        manager.serviceClient()
+    public static void deploymentVersionsCompare(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
             .getDeploymentVersions()
             .compareWithResponse("RG", "profile1", "dv1",
                 new CompareDeploymentVersionsParameter().withCompareTo("VersionName2"),

@@ -31,8 +31,12 @@ public final class FleetUpdateStrategiesImpl implements FleetUpdateStrategies {
         String updateStrategyName, Context context) {
         Response<FleetUpdateStrategyInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, fleetName, updateStrategyName, context);
-        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-            new FleetUpdateStrategyImpl(inner.getValue(), this.manager()));
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new FleetUpdateStrategyImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public FleetUpdateStrategy get(String resourceGroupName, String fleetName, String updateStrategyName) {

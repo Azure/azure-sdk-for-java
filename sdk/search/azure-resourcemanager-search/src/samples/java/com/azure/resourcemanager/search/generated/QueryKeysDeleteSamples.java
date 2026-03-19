@@ -14,10 +14,12 @@ public final class QueryKeysDeleteSamples {
     /**
      * Sample code: SearchDeleteQueryKey.
      * 
-     * @param manager Entry point to SearchServiceManager.
+     * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void searchDeleteQueryKey(com.azure.resourcemanager.search.SearchServiceManager manager) {
-        manager.serviceClient()
+    public static void searchDeleteQueryKey(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.searchServices()
+            .manager()
+            .serviceClient()
             .getQueryKeys()
             .deleteWithResponse("rg1", "mysearchservice", "<a query API key>", com.azure.core.util.Context.NONE);
     }
