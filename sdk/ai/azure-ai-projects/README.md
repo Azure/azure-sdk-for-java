@@ -59,9 +59,9 @@ RedTeamsClient redTeamsClient = builder.buildRedTeamsClient();
 SchedulesClient schedulesClient = builder.buildSchedulesClient();
 ```
 
-In the particular case of the `EvaluationsClient`, this client library exposes [OpenAI's official SDK][openai_java_sdk] directly, so you can use the [official OpenAI docs][openai_api_docs] to access this feature.
+In the particular case of the `Evals` feature, this client library exposes [OpenAI's official SDK][openai_java_sdk] directly, so you can use the [official OpenAI docs][openai_api_docs] to access this feature.
 
-```java com.azure.ai.projects.evaluationsClientInit
+```java com.azure.ai.projects.evalsServices
 EvalService evalService = builder.buildOpenAIClient().evals();
 EvalServiceAsync evalAsyncService = builder.buildOpenAIAsyncClient().evals();
 ```

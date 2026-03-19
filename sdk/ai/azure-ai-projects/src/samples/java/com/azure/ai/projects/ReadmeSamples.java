@@ -33,10 +33,10 @@ public final class ReadmeSamples {
         SchedulesClient schedulesClient = builder.buildSchedulesClient();
         // END: com.azure.ai.projects.clientInitialization
 
-        // BEGIN: com.azure.ai.projects.evaluationsClientInit
+        // BEGIN: com.azure.ai.projects.evalsServices
         EvalService evalService = builder.buildOpenAIClient().evals();
         EvalServiceAsync evalAsyncService = builder.buildOpenAIAsyncClient().evals();
-        // END: com.azure.ai.projects.evaluationsClientInit
+        // END: com.azure.ai.projects.evalsServices
 
         // BEGIN: com.azure.ai.projects.openAIClient
         OpenAIClient openAIClient = builder.buildOpenAIClient();
