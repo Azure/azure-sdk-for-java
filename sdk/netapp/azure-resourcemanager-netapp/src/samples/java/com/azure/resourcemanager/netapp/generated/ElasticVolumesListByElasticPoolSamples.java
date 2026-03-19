@@ -9,7 +9,7 @@ package com.azure.resourcemanager.netapp.generated;
  */
 public final class ElasticVolumesListByElasticPoolSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/ElasticVolumes_ListByElasticPool.json
+     * x-ms-original-file: 2025-12-15-preview/ElasticVolumes_ListByElasticPool.json
      */
     /**
      * Sample code: ElasticVolumes_ListByElasticPool.

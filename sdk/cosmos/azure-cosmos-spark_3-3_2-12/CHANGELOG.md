@@ -1,6 +1,6 @@
 ## Release History
 
-### 4.44.0-beta.1 (Unreleased)
+### 4.46.0-beta.1 (Unreleased)
 
 #### Features Added
 * Added `startTime` support for Change Feed in All Versions and Deletes Mode. - See [PR 47684](https://github.com/Azure/azure-sdk-for-java/pull/47684)
@@ -8,10 +8,37 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+
+#### Other Changes
+
+### 4.45.0 (2026-03-13)
+
+#### Features Added
+* Added `vectorEmbeddingPolicy` support in Spark catalog `TBLPROPERTIES` for creating vector-search-enabled containers. - See [PR 48349](https://github.com/Azure/azure-sdk-for-java/pull/48349)
+
+### 4.44.2 (2026-03-05)
+
+#### Other Changes
+* Changed azure-resourcemanager-cosmos usage to a pinned version which is deployed across all public and non-public clouds - [PR 48268](https://github.com/Azure/azure-sdk-for-java/pull/48268)
+
+### 4.44.1 (2026-03-03)
+
+#### Other Changes
+* Reduced noisy warning logs in Gateway mode - [PR 48189](https://github.com/Azure/azure-sdk-for-java/pull/48189)
+
+### 4.44.0 (2026-02-27)
+
+#### Features Added
+* Added config entry `spark.cosmos.account.azureEnvironment.management.scope` to allow specifying the Entra ID scope/audience to be used when retrieving tokens to authenticate against the ARM/management endpoint of non-public clouds. - See [PR 48137](https://github.com/Azure/azure-sdk-for-java/pull/48137)
+
+### 4.43.1 (2026-02-25)
+
+#### Bugs Fixed
 * Fixed an issue where `TransientIOErrorsRetryingIterator` would trigger extra query during retries and on close. - See [PR 47996](https://github.com/Azure/azure-sdk-for-java/pull/47996)
 
 #### Other Changes
 * Added status code history in `BulkWriterNoProgressException` error message. - See [PR 48022](https://github.com/Azure/azure-sdk-for-java/pull/48022)
+* Reduced the log noise level for frequent transient errors - for example throttling - in Gateway mode - [PR 48112](https://github.com/Azure/azure-sdk-for-java/pull/48112)
 
 ### 4.43.0 (2026-02-10)
 

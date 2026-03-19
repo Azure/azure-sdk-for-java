@@ -40,6 +40,9 @@ parameters:
   - name: BuildParallelization
     type: string
     default: '2C'
+  - name: BuildOptions
+    type: string
+    default: ''
   - name: TestGoals
     type: string
     default: $(TestGoals)
@@ -503,6 +506,7 @@ jobs:
         TestOptions: ${{ parameters.TestOptions }}
         TestParallelization: ${{ parameters.TestParallelization }}
         BuildParallelization: ${{ parameters.BuildParallelization }}
+        BuildOptions: ${{ parameters.BuildOptions }}
         AdditionalLintingOptions: ${{ parameters.AdditionalLintingOptions }}
         TimeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
         EnvVars: ${{ parameters.EnvVars }}

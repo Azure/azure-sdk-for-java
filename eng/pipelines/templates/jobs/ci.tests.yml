@@ -40,6 +40,9 @@ parameters:
   - name: BuildParallelization
     type: string
     default: '2C'
+  - name: BuildOptions
+    type: string
+    default: ''
   - name: AdditionalLintingOptions
     type: string
     default: ''
@@ -145,6 +148,7 @@ jobs:
           TestOptions: ${{ parameters.TestOptions }}
           TestParallelization: ${{ parameters.TestParallelization }}
           BuildParallelization: ${{ parameters.BuildParallelization }}
+          BuildOptions: ${{ parameters.BuildOptions }}
           TestEnvVars: ${{ parameters.EnvVars }}
           VersionOverride: ${{ parameters.VersionOverride }}
 

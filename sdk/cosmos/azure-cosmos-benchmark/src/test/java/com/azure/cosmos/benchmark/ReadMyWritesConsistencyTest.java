@@ -15,7 +15,6 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.IncludedPath;
 import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.PartitionKeyDefinition;
-import com.beust.jcommander.JCommander;
 import com.google.common.base.Strings;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -99,37 +98,22 @@ public class ReadMyWritesConsistencyTest {
 
         int concurrency = 5;
 
-        String cmdFormat = "-serviceEndpoint %s -masterKey %s" +
-            " -databaseId %s" +
-            " -collectionId %s" +
-            " -consistencyLevel %s" +
-            " -concurrency %s" +
-            " -numberOfOperations %s" +
-            " -maxRunningTimeDuration %s" +
-            " -operation ReadMyWrites" +
-            " -connectionMode Direct" +
-            " -numberOfPreCreatedDocuments 100" +
-            " -printingInterval 60" +
-            "%s";
-
-        String cmd = String.format(cmdFormat,
-            TestConfigurations.HOST,
-            TestConfigurations.MASTER_KEY,
-            database.getId(),
-            collection.getId(),
-            desiredConsistency,
-            concurrency,
-            numberOfOperationsAsString,
-            maxRunningTime,
-            (useNameLink ? " -useNameLink" : ""));
-
-        Configuration cfg = new Configuration();
-        new JCommander(cfg, StringUtils.split(cmd));
+        TenantWorkloadConfig cfg = new TenantWorkloadConfig();
+        cfg.setServiceEndpoint(TestConfigurations.HOST);
+        cfg.setMasterKey(TestConfigurations.MASTER_KEY);
+        cfg.setDatabaseId(database.getId());
+        cfg.setContainerId(collection.getId());
+        cfg.setConsistencyLevel(desiredConsistency);
+        cfg.setConcurrency(concurrency);
+        cfg.setNumberOfOperations(Integer.parseInt(numberOfOperationsAsString));
+        cfg.setOperation("ReadMyWrites");
+        cfg.setConnectionMode("Direct");
+        cfg.setNumberOfPreCreatedDocuments(100);
 
         AtomicInteger success = new AtomicInteger();
         AtomicInteger error = new AtomicInteger();
 
-        ReadMyWriteWorkflow wf = new ReadMyWriteWorkflow(cfg) {
+        ReadMyWriteWorkflow wf = new ReadMyWriteWorkflow(cfg, Schedulers.parallel()) {
             @Override
             protected void onError(Throwable throwable) {
                 logger.error("Error occurred in ReadMyWriteWorkflow", throwable);

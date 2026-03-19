@@ -332,6 +332,12 @@ public final class NodeTypeProperties implements JsonSerializable<NodeTypeProper
      */
     private Boolean isOutboundOnly;
 
+    /*
+     * Specifies whether the node type should use a resilient ephemeral OS disk when using a supported SKU size. A
+     * resilient ephemeral OS disk provides improved reliability for ephemeral OS disks by enabling full caching.
+     */
+    private Boolean enableResilientEphemeralOsDisk;
+
     /**
      * Creates an instance of NodeTypeProperties class.
      */
@@ -1497,6 +1503,30 @@ public final class NodeTypeProperties implements JsonSerializable<NodeTypeProper
     }
 
     /**
+     * Get the enableResilientEphemeralOsDisk property: Specifies whether the node type should use a resilient ephemeral
+     * OS disk when using a supported SKU size. A resilient ephemeral OS disk provides improved reliability for
+     * ephemeral OS disks by enabling full caching.
+     * 
+     * @return the enableResilientEphemeralOsDisk value.
+     */
+    public Boolean enableResilientEphemeralOsDisk() {
+        return this.enableResilientEphemeralOsDisk;
+    }
+
+    /**
+     * Set the enableResilientEphemeralOsDisk property: Specifies whether the node type should use a resilient ephemeral
+     * OS disk when using a supported SKU size. A resilient ephemeral OS disk provides improved reliability for
+     * ephemeral OS disks by enabling full caching.
+     * 
+     * @param enableResilientEphemeralOsDisk the enableResilientEphemeralOsDisk value to set.
+     * @return the NodeTypeProperties object itself.
+     */
+    public NodeTypeProperties withEnableResilientEphemeralOsDisk(Boolean enableResilientEphemeralOsDisk) {
+        this.enableResilientEphemeralOsDisk = enableResilientEphemeralOsDisk;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -1564,6 +1594,7 @@ public final class NodeTypeProperties implements JsonSerializable<NodeTypeProper
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeBooleanField("zoneBalance", this.zoneBalance);
         jsonWriter.writeBooleanField("isOutboundOnly", this.isOutboundOnly);
+        jsonWriter.writeBooleanField("enableResilientEphemeralOsDisk", this.enableResilientEphemeralOsDisk);
         return jsonWriter.writeEndObject();
     }
 
@@ -1712,6 +1743,9 @@ public final class NodeTypeProperties implements JsonSerializable<NodeTypeProper
                     deserializedNodeTypeProperties.zoneBalance = reader.getNullable(JsonReader::getBoolean);
                 } else if ("isOutboundOnly".equals(fieldName)) {
                     deserializedNodeTypeProperties.isOutboundOnly = reader.getNullable(JsonReader::getBoolean);
+                } else if ("enableResilientEphemeralOsDisk".equals(fieldName)) {
+                    deserializedNodeTypeProperties.enableResilientEphemeralOsDisk
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

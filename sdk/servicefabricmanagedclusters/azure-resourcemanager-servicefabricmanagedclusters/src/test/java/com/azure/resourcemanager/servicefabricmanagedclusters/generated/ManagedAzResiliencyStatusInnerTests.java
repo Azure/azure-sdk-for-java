@@ -11,7 +11,7 @@ public final class ManagedAzResiliencyStatusInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedAzResiliencyStatusInner model = BinaryData.fromString(
-            "{\"baseResourceStatus\":[{\"resourceName\":\"p\",\"resourceType\":\"ksrpqv\",\"isZoneResilient\":false,\"details\":\"aehtwd\"},{\"resourceName\":\"ftswibyrcdlbhsh\",\"resourceType\":\"p\",\"isZoneResilient\":false,\"details\":\"twitykhev\"},{\"resourceName\":\"cedcpnmdy\",\"resourceType\":\"nwzxltjcv\",\"isZoneResilient\":true,\"details\":\"iugcxnavvwxq\"},{\"resourceName\":\"y\",\"resourceType\":\"nyowxwlmdjrkvfg\",\"isZoneResilient\":false,\"details\":\"p\"}],\"isClusterZoneResilient\":false}")
+            "{\"baseResourceStatus\":[{\"resourceName\":\"lw\",\"resourceType\":\"ztzp\",\"isZoneResilient\":false,\"details\":\"ckw\"},{\"resourceName\":\"zqwhxxbuyqaxzfeq\",\"resourceType\":\"ppriol\",\"isZoneResilient\":true,\"details\":\"altol\"},{\"resourceName\":\"cwsobqwcs\",\"resourceType\":\"nwdcfhu\",\"isZoneResilient\":false,\"details\":\"fuvglsbjjca\"}],\"isClusterZoneResilient\":false}")
             .toObject(ManagedAzResiliencyStatusInner.class);
     }
 }

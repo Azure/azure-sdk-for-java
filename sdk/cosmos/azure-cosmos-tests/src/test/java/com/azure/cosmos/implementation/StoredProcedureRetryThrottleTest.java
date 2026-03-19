@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 package com.azure.cosmos.implementation;
+import com.azure.cosmos.rx.TestSuiteBase;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
@@ -29,7 +30,7 @@ public class StoredProcedureRetryThrottleTest extends TestSuiteBase {
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void storedProcedureRetryThrottle() {
-        client = SpyClientUnderTestFactory.createClientWithGatewaySpy(createGatewayRxDocumentClient());
+        client = SpyClientUnderTestFactory.createClientWithGatewaySpy(createInternalGatewayRxDocumentClient());
 
         StoredProcedure storedProcedure = new StoredProcedure();
         storedProcedure.setId(UUID.randomUUID().toString());
@@ -67,7 +68,7 @@ public class StoredProcedureRetryThrottleTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)
     public void before_RetryThrottleTest() {
-        createdCollection = SHARED_SINGLE_PARTITION_COLLECTION;
+        createdCollection = SHARED_SINGLE_PARTITION_COLLECTION_INTERNAL;
     }
 
     @AfterMethod(groups = { "emulator" })

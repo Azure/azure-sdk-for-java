@@ -21,7 +21,7 @@ public final class RankingOptions implements JsonSerializable<RankingOptions> {
      * The ranker to use for the file search.
      */
     @Generated
-    private RankingOptionsRanker ranker;
+    private RankerVersionType ranker;
 
     /*
      * The score threshold for the file search, a number between 0 and 1. Numbers closer to 1 will attempt to return
@@ -43,20 +43,8 @@ public final class RankingOptions implements JsonSerializable<RankingOptions> {
      * @return the ranker value.
      */
     @Generated
-    public RankingOptionsRanker getRanker() {
+    public RankerVersionType getRanker() {
         return this.ranker;
-    }
-
-    /**
-     * Set the ranker property: The ranker to use for the file search.
-     *
-     * @param ranker the ranker value to set.
-     * @return the RankingOptions object itself.
-     */
-    @Generated
-    public RankingOptions setRanker(RankingOptionsRanker ranker) {
-        this.ranker = ranker;
-        return this;
     }
 
     /**
@@ -92,6 +80,7 @@ public final class RankingOptions implements JsonSerializable<RankingOptions> {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("ranker", this.ranker == null ? null : this.ranker.toString());
         jsonWriter.writeNumberField("score_threshold", this.scoreThreshold);
+        jsonWriter.writeJsonField("hybrid_search", this.hybridSearch);
         return jsonWriter.writeEndObject();
     }
 
@@ -111,14 +100,59 @@ public final class RankingOptions implements JsonSerializable<RankingOptions> {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("ranker".equals(fieldName)) {
-                    deserializedRankingOptions.ranker = RankingOptionsRanker.fromString(reader.getString());
+                    deserializedRankingOptions.ranker = RankerVersionType.fromString(reader.getString());
                 } else if ("score_threshold".equals(fieldName)) {
                     deserializedRankingOptions.scoreThreshold = reader.getNullable(JsonReader::getDouble);
+                } else if ("hybrid_search".equals(fieldName)) {
+                    deserializedRankingOptions.hybridSearch = HybridSearchOptions.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedRankingOptions;
         });
+    }
+
+    /*
+     * Weights that control how reciprocal rank fusion balances semantic embedding matches versus sparse keyword matches
+     * when hybrid search is enabled.
+     */
+    @Generated
+    private HybridSearchOptions hybridSearch;
+
+    /**
+     * Set the ranker property: The ranker to use for the file search.
+     *
+     * @param ranker the ranker value to set.
+     * @return the RankingOptions object itself.
+     */
+    @Generated
+    public RankingOptions setRanker(RankerVersionType ranker) {
+        this.ranker = ranker;
+        return this;
+    }
+
+    /**
+     * Get the hybridSearch property: Weights that control how reciprocal rank fusion balances semantic embedding
+     * matches versus sparse keyword matches when hybrid search is enabled.
+     *
+     * @return the hybridSearch value.
+     */
+    @Generated
+    public HybridSearchOptions getHybridSearch() {
+        return this.hybridSearch;
+    }
+
+    /**
+     * Set the hybridSearch property: Weights that control how reciprocal rank fusion balances semantic embedding
+     * matches versus sparse keyword matches when hybrid search is enabled.
+     *
+     * @param hybridSearch the hybridSearch value to set.
+     * @return the RankingOptions object itself.
+     */
+    @Generated
+    public RankingOptions setHybridSearch(HybridSearchOptions hybridSearch) {
+        this.hybridSearch = hybridSearch;
+        return this;
     }
 }

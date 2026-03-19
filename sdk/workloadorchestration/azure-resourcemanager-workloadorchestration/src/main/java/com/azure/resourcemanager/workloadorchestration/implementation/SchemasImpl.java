@@ -37,12 +37,8 @@ public final class SchemasImpl implements Schemas {
         Context context) {
         Response<SchemaInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, schemaName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new SchemaImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new SchemaImpl(inner.getValue(), this.manager()));
     }
 
     public Schema getByResourceGroup(String resourceGroupName, String schemaName) {
@@ -86,12 +82,8 @@ public final class SchemasImpl implements Schemas {
         VersionParameter body, Context context) {
         Response<RemoveVersionResponseInner> inner
             = this.serviceClient().removeVersionWithResponse(resourceGroupName, schemaName, body, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new RemoveVersionResponseImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new RemoveVersionResponseImpl(inner.getValue(), this.manager()));
     }
 
     public RemoveVersionResponse removeVersion(String resourceGroupName, String schemaName, VersionParameter body) {

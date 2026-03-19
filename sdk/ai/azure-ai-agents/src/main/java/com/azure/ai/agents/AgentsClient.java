@@ -4,19 +4,18 @@
 package com.azure.ai.agents;
 
 import com.azure.ai.agents.implementation.AgentsImpl;
-import com.azure.ai.agents.implementation.models.CreateAgentFromManifestRequest1;
-import com.azure.ai.agents.implementation.models.CreateAgentRequest1;
-import com.azure.ai.agents.implementation.models.CreateAgentVersionFromManifestRequest1;
-import com.azure.ai.agents.implementation.models.CreateAgentVersionRequest1;
-import com.azure.ai.agents.implementation.models.UpdateAgentFromManifestRequest1;
-import com.azure.ai.agents.implementation.models.UpdateAgentRequest1;
+import com.azure.ai.agents.implementation.models.CreateAgentFromManifestRequest;
+import com.azure.ai.agents.implementation.models.CreateAgentRequest;
+import com.azure.ai.agents.implementation.models.CreateAgentVersionFromManifestRequest;
+import com.azure.ai.agents.implementation.models.CreateAgentVersionRequest;
+import com.azure.ai.agents.implementation.models.UpdateAgentFromManifestRequest;
+import com.azure.ai.agents.implementation.models.UpdateAgentRequest;
 import com.azure.ai.agents.models.AgentDefinition;
+import com.azure.ai.agents.models.AgentDefinitionOptInKeys;
 import com.azure.ai.agents.models.AgentDetails;
 import com.azure.ai.agents.models.AgentKind;
 import com.azure.ai.agents.models.AgentVersionDetails;
-import com.azure.ai.agents.models.DeleteAgentResponse;
-import com.azure.ai.agents.models.DeleteAgentVersionResponse;
-import com.azure.ai.agents.models.ListAgentsRequestOrder;
+import com.azure.ai.agents.models.PageOrder;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -25,10 +24,12 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.openai.models.conversations.Conversation;
 import java.util.Map;
 
 /**
@@ -47,7 +48,7 @@ public final class AgentsClient {
      * <pre>
      * {@code
      * {
-     *     object: String (Required)
+     *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *     id: String (Required)
      *     name: String (Required)
      *     versions (Required): {
@@ -55,14 +56,14 @@ public final class AgentsClient {
      *             metadata (Required): {
      *                 String: String (Required)
      *             }
-     *             object: String (Required)
+     *             object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *             id: String (Required)
      *             name: String (Required)
      *             version: String (Required)
      *             description: String (Optional)
      *             created_at: long (Required)
      *             definition (Required): {
-     *                 kind: String(prompt/hosted/container_app/workflow) (Required)
+     *                 kind: String(prompt/hosted/workflow) (Required)
      *                 rai_config (Optional): {
      *                     rai_policy_name: String (Required)
      *                 }
@@ -88,103 +89,16 @@ public final class AgentsClient {
     }
 
     /**
-     * Deletes an agent.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     object: String (Required)
-     *     name: String (Required)
-     *     deleted: boolean (Required)
-     * }
-     * }
-     * </pre>
-     *
-     * @param agentName The name of the agent to delete.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a deleted agent Object along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> deleteAgentWithResponse(String agentName, RequestOptions requestOptions) {
-        return this.serviceClient.deleteAgentWithResponse(agentName, requestOptions);
-    }
-
-    /**
-     * Returns the list of all agents.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>kind</td><td>String</td><td>No</td><td>Filter agents by kind. If not provided, all agents are returned.
-     * Allowed values: "prompt", "hosted", "container_app", "workflow".</td></tr>
-     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
-     * between 1 and 100, and the
-     * default is 20.</td></tr>
-     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
-     * for ascending order and`desc`
-     * for descending order. Allowed values: "asc", "desc".</td></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
-     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     object: String (Required)
-     *     id: String (Required)
-     *     name: String (Required)
-     *     versions (Required): {
-     *         latest (Required): {
-     *             metadata (Required): {
-     *                 String: String (Required)
-     *             }
-     *             object: String (Required)
-     *             id: String (Required)
-     *             name: String (Required)
-     *             version: String (Required)
-     *             description: String (Optional)
-     *             created_at: long (Required)
-     *             definition (Required): {
-     *                 kind: String(prompt/hosted/container_app/workflow) (Required)
-     *                 rai_config (Optional): {
-     *                     rai_policy_name: String (Required)
-     *                 }
-     *             }
-     *         }
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listAgents(RequestOptions requestOptions) {
-        return this.serviceClient.listAgents(requestOptions);
-    }
-
-    /**
      * Create a new agent version.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
+     * "WorkflowAgents=V1Preview".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -195,7 +109,7 @@ public final class AgentsClient {
      *     }
      *     description: String (Optional)
      *     definition (Required): {
-     *         kind: String(prompt/hosted/container_app/workflow) (Required)
+     *         kind: String(prompt/hosted/workflow) (Required)
      *         rai_config (Optional): {
      *             rai_policy_name: String (Required)
      *         }
@@ -212,14 +126,14 @@ public final class AgentsClient {
      *     metadata (Required): {
      *         String: String (Required)
      *     }
-     *     object: String (Required)
+     *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *     id: String (Required)
      *     name: String (Required)
      *     version: String (Required)
      *     description: String (Optional)
      *     created_at: long (Required)
      *     definition (Required): {
-     *         kind: String(prompt/hosted/container_app/workflow) (Required)
+     *         kind: String(prompt/hosted/workflow) (Required)
      *         rai_config (Optional): {
      *             rai_policy_name: String (Required)
      *         }
@@ -232,7 +146,7 @@ public final class AgentsClient {
      * - Must start and end with alphanumeric characters,
      * - Can contain hyphens in the middle
      * - Must not exceed 63 characters.
-     * @param createAgentVersionRequest1 The createAgentVersionRequest1 parameter.
+     * @param createAgentVersionRequest The createAgentVersionRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -242,9 +156,9 @@ public final class AgentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createAgentVersionWithResponse(String agentName, BinaryData createAgentVersionRequest1,
+    public Response<BinaryData> createAgentVersionWithResponse(String agentName, BinaryData createAgentVersionRequest,
         RequestOptions requestOptions) {
-        return this.serviceClient.createAgentVersionWithResponse(agentName, createAgentVersionRequest1, requestOptions);
+        return this.serviceClient.createAgentVersionWithResponse(agentName, createAgentVersionRequest, requestOptions);
     }
 
     /**
@@ -254,7 +168,7 @@ public final class AgentsClient {
      * <pre>
      * {@code
      * {
-     *     object: String (Required)
+     *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *     name: String (Required)
      *     version: String (Required)
      *     deleted: boolean (Required)
@@ -276,6 +190,23 @@ public final class AgentsClient {
     public Response<BinaryData> deleteAgentVersionWithResponse(String agentName, String agentVersion,
         RequestOptions requestOptions) {
         return this.serviceClient.deleteAgentVersionWithResponse(agentName, agentVersion, requestOptions);
+    }
+
+    /**
+     * Deletes a specific version of an agent.
+     *
+     * @param agentName The name of the agent to delete.
+     * @param agentVersion The version of the agent to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteAgentVersion(String agentName, String agentVersion) {
+        deleteAgentVersionWithResponse(agentName, agentVersion, new RequestOptions());
     }
 
     /**
@@ -308,14 +239,14 @@ public final class AgentsClient {
      *     metadata (Required): {
      *         String: String (Required)
      *     }
-     *     object: String (Required)
+     *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *     id: String (Required)
      *     name: String (Required)
      *     version: String (Required)
      *     description: String (Optional)
      *     created_at: long (Required)
      *     definition (Required): {
-     *         kind: String(prompt/hosted/container_app/workflow) (Required)
+     *         kind: String(prompt/hosted/workflow) (Required)
      *         rai_config (Optional): {
      *             rai_policy_name: String (Required)
      *         }
@@ -359,26 +290,6 @@ public final class AgentsClient {
     }
 
     /**
-     * Deletes an agent.
-     *
-     * @param agentName The name of the agent to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deleted agent Object.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeleteAgentResponse deleteAgent(String agentName) {
-        // Generated convenience method for deleteAgentWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return deleteAgentWithResponse(agentName, requestOptions).getValue().toObject(DeleteAgentResponse.class);
-    }
-
-    /**
      * Returns the list of all agents.
      *
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -395,28 +306,6 @@ public final class AgentsClient {
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.listAgents(requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentDetails.class));
-    }
-
-    /**
-     * Deletes a specific version of an agent.
-     *
-     * @param agentName The name of the agent to delete.
-     * @param agentVersion The version of the agent to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deleted agent version Object.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeleteAgentVersionResponse deleteAgentVersion(String agentName, String agentVersion) {
-        // Generated convenience method for deleteAgentVersionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return deleteAgentVersionWithResponse(agentName, agentVersion, requestOptions).getValue()
-            .toObject(DeleteAgentVersionResponse.class);
     }
 
     /**
@@ -438,6 +327,671 @@ public final class AgentsClient {
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.listAgentVersions(agentName, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentVersionDetails.class));
+    }
+
+    /**
+     * Create a new agent version.
+     *
+     * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
+     * - Must start and end with alphanumeric characters,
+     * - Can contain hyphens in the middle
+     * - Must not exceed 63 characters.
+     * @param definition The agent definition. This can be a workflow, hosted agent, or a simple agent definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AgentVersionDetails createAgentVersion(String agentName, AgentDefinition definition) {
+        // Generated convenience method for createAgentVersionWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        CreateAgentVersionRequest createAgentVersionRequestObj = new CreateAgentVersionRequest(definition);
+        BinaryData createAgentVersionRequest = BinaryData.fromObject(createAgentVersionRequestObj);
+        return createAgentVersionWithResponse(agentName, createAgentVersionRequest, requestOptions).getValue()
+            .toObject(AgentVersionDetails.class);
+    }
+
+    /**
+     * Creates the agent.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
+     * "WorkflowAgents=V1Preview".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
+     *     description: String (Optional)
+     *     definition (Required): {
+     *         kind: String(prompt/hosted/workflow) (Required)
+     *         rai_config (Optional): {
+     *             rai_policy_name: String (Required)
+     *         }
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
+     *     id: String (Required)
+     *     name: String (Required)
+     *     versions (Required): {
+     *         latest (Required): {
+     *             metadata (Required): {
+     *                 String: String (Required)
+     *             }
+     *             object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
+     *             id: String (Required)
+     *             name: String (Required)
+     *             version: String (Required)
+     *             description: String (Optional)
+     *             created_at: long (Required)
+     *             definition (Required): {
+     *                 kind: String(prompt/hosted/workflow) (Required)
+     *                 rai_config (Optional): {
+     *                     rai_policy_name: String (Required)
+     *                 }
+     *             }
+     *         }
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param createAgentRequest The createAgentRequest parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<BinaryData> createAgentWithResponse(BinaryData createAgentRequest, RequestOptions requestOptions) {
+        return this.serviceClient.createAgentWithResponse(createAgentRequest, requestOptions);
+    }
+
+    /**
+     * Updates the agent by adding a new version if there are any changes to the agent definition.
+     * If no changes, returns the existing agent version.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources. Allowed values: "HostedAgents=V1Preview",
+     * "WorkflowAgents=V1Preview".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
+     *     description: String (Optional)
+     *     definition (Required): {
+     *         kind: String(prompt/hosted/workflow) (Required)
+     *         rai_config (Optional): {
+     *             rai_policy_name: String (Required)
+     *         }
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
+     *     id: String (Required)
+     *     name: String (Required)
+     *     versions (Required): {
+     *         latest (Required): {
+     *             metadata (Required): {
+     *                 String: String (Required)
+     *             }
+     *             object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
+     *             id: String (Required)
+     *             name: String (Required)
+     *             version: String (Required)
+     *             description: String (Optional)
+     *             created_at: long (Required)
+     *             definition (Required): {
+     *                 kind: String(prompt/hosted/workflow) (Required)
+     *                 rai_config (Optional): {
+     *                     rai_policy_name: String (Required)
+     *                 }
+     *             }
+     *         }
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param agentName The name of the agent to retrieve.
+     * @param updateAgentRequest The updateAgentRequest parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<BinaryData> updateAgentWithResponse(String agentName, BinaryData updateAgentRequest,
+        RequestOptions requestOptions) {
+        return this.serviceClient.updateAgentWithResponse(agentName, updateAgentRequest, requestOptions);
+    }
+
+    /**
+     * Creates the agent.
+     *
+     * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
+     * - Must start and end with alphanumeric characters,
+     * - Can contain hyphens in the middle
+     * - Must not exceed 63 characters.
+     * @param definition The agent definition. This can be a workflow, hosted agent, or a simple agent definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AgentDetails createAgent(String agentName, AgentDefinition definition) {
+        // Generated convenience method for createAgentWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        CreateAgentRequest createAgentRequestObj = new CreateAgentRequest(agentName, definition);
+        BinaryData createAgentRequest = BinaryData.fromObject(createAgentRequestObj);
+        return createAgentWithResponse(createAgentRequest, requestOptions).getValue().toObject(AgentDetails.class);
+    }
+
+    /**
+     * Updates the agent by adding a new version if there are any changes to the agent definition.
+     * If no changes, returns the existing agent version.
+     *
+     * @param agentName The name of the agent to retrieve.
+     * @param definition The agent definition. This can be a workflow, hosted agent, or a simple agent definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AgentDetails updateAgent(String agentName, AgentDefinition definition) {
+        // Generated convenience method for updateAgentWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        UpdateAgentRequest updateAgentRequestObj = new UpdateAgentRequest(definition);
+        BinaryData updateAgentRequest = BinaryData.fromObject(updateAgentRequestObj);
+        return updateAgentWithResponse(agentName, updateAgentRequest, requestOptions).getValue()
+            .toObject(AgentDetails.class);
+    }
+
+    /**
+     * Initializes an instance of AgentsClient class.
+     *
+     * @param serviceClient the service client implementation.
+     */
+    @Generated
+    AgentsClient(AgentsImpl serviceClient) {
+        this.serviceClient = serviceClient;
+    }
+
+    /**
+     * Creates an agent from a manifest.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
+     *     description: String (Optional)
+     *     manifest_id: String (Required)
+     *     parameter_values (Required): {
+     *         String: BinaryData (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
+     *     id: String (Required)
+     *     name: String (Required)
+     *     versions (Required): {
+     *         latest (Required): {
+     *             metadata (Required): {
+     *                 String: String (Required)
+     *             }
+     *             object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
+     *             id: String (Required)
+     *             name: String (Required)
+     *             version: String (Required)
+     *             description: String (Optional)
+     *             created_at: long (Required)
+     *             definition (Required): {
+     *                 kind: String(prompt/hosted/workflow) (Required)
+     *                 rai_config (Optional): {
+     *                     rai_policy_name: String (Required)
+     *                 }
+     *             }
+     *         }
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param createAgentFromManifestRequest The createAgentFromManifestRequest parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<BinaryData> createAgentFromManifestWithResponse(BinaryData createAgentFromManifestRequest,
+        RequestOptions requestOptions) {
+        return this.serviceClient.createAgentFromManifestWithResponse(createAgentFromManifestRequest, requestOptions);
+    }
+
+    /**
+     * Updates the agent from a manifest by adding a new version if there are any changes to the agent definition.
+     * If no changes, returns the existing agent version.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
+     *     description: String (Optional)
+     *     manifest_id: String (Required)
+     *     parameter_values (Required): {
+     *         String: BinaryData (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
+     *     id: String (Required)
+     *     name: String (Required)
+     *     versions (Required): {
+     *         latest (Required): {
+     *             metadata (Required): {
+     *                 String: String (Required)
+     *             }
+     *             object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
+     *             id: String (Required)
+     *             name: String (Required)
+     *             version: String (Required)
+     *             description: String (Optional)
+     *             created_at: long (Required)
+     *             definition (Required): {
+     *                 kind: String(prompt/hosted/workflow) (Required)
+     *                 rai_config (Optional): {
+     *                     rai_policy_name: String (Required)
+     *                 }
+     *             }
+     *         }
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param agentName The name of the agent to update.
+     * @param updateAgentFromManifestRequest The updateAgentFromManifestRequest parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<BinaryData> updateAgentFromManifestWithResponse(String agentName,
+        BinaryData updateAgentFromManifestRequest, RequestOptions requestOptions) {
+        return this.serviceClient.updateAgentFromManifestWithResponse(agentName, updateAgentFromManifestRequest,
+            requestOptions);
+    }
+
+    /**
+     * Create a new agent version from a manifest.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
+     *     description: String (Optional)
+     *     manifest_id: String (Required)
+     *     parameter_values (Required): {
+     *         String: BinaryData (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
+     *     id: String (Required)
+     *     name: String (Required)
+     *     version: String (Required)
+     *     description: String (Optional)
+     *     created_at: long (Required)
+     *     definition (Required): {
+     *         kind: String(prompt/hosted/workflow) (Required)
+     *         rai_config (Optional): {
+     *             rai_policy_name: String (Required)
+     *         }
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
+     * - Must start and end with alphanumeric characters,
+     * - Can contain hyphens in the middle
+     * - Must not exceed 63 characters.
+     * @param createAgentVersionFromManifestRequest The createAgentVersionFromManifestRequest parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> createAgentVersionFromManifestWithResponse(String agentName,
+        BinaryData createAgentVersionFromManifestRequest, RequestOptions requestOptions) {
+        return this.serviceClient.createAgentVersionFromManifestWithResponse(agentName,
+            createAgentVersionFromManifestRequest, requestOptions);
+    }
+
+    /**
+     * Creates an agent from a manifest.
+     *
+     * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
+     * - Must start and end with alphanumeric characters,
+     * - Can contain hyphens in the middle
+     * - Must not exceed 63 characters.
+     * @param manifestId The manifest ID to import the agent version from.
+     * @param parameterValues The inputs to the manifest that will result in a fully materialized Agent.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AgentDetails createAgentFromManifest(String agentName, String manifestId, Map<String, BinaryData> parameterValues) {
+        // Generated convenience method for createAgentFromManifestWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        CreateAgentFromManifestRequest createAgentFromManifestRequestObj
+            = new CreateAgentFromManifestRequest(agentName, manifestId, parameterValues);
+        BinaryData createAgentFromManifestRequest = BinaryData.fromObject(createAgentFromManifestRequestObj);
+        return createAgentFromManifestWithResponse(createAgentFromManifestRequest, requestOptions).getValue()
+            .toObject(AgentDetails.class);
+    }
+
+    /**
+     * Updates the agent from a manifest by adding a new version if there are any changes to the agent definition.
+     * If no changes, returns the existing agent version.
+     *
+     * @param agentName The name of the agent to update.
+     * @param manifestId The manifest ID to import the agent version from.
+     * @param parameterValues The inputs to the manifest that will result in a fully materialized Agent.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AgentDetails updateAgentFromManifest(String agentName, String manifestId, Map<String, BinaryData> parameterValues) {
+        // Generated convenience method for updateAgentFromManifestWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        UpdateAgentFromManifestRequest updateAgentFromManifestRequestObj
+            = new UpdateAgentFromManifestRequest(manifestId, parameterValues);
+        BinaryData updateAgentFromManifestRequest = BinaryData.fromObject(updateAgentFromManifestRequestObj);
+        return updateAgentFromManifestWithResponse(agentName, updateAgentFromManifestRequest, requestOptions).getValue()
+            .toObject(AgentDetails.class);
+    }
+
+    /**
+     * Create a new agent version from a manifest.
+     *
+     * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
+     * - Must start and end with alphanumeric characters,
+     * - Can contain hyphens in the middle
+     * - Must not exceed 63 characters.
+     * @param manifestId The manifest ID to import the agent version from.
+     * @param parameterValues The inputs to the manifest that will result in a fully materialized Agent.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AgentVersionDetails createAgentVersionFromManifest(String agentName, String manifestId,
+        Map<String, BinaryData> parameterValues) {
+        // Generated convenience method for createAgentVersionFromManifestWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        CreateAgentVersionFromManifestRequest createAgentVersionFromManifestRequestObj
+            = new CreateAgentVersionFromManifestRequest(manifestId, parameterValues);
+        BinaryData createAgentVersionFromManifestRequest
+            = BinaryData.fromObject(createAgentVersionFromManifestRequestObj);
+        return createAgentVersionFromManifestWithResponse(agentName, createAgentVersionFromManifestRequest,
+            requestOptions).getValue().toObject(AgentVersionDetails.class);
+    }
+
+    /**
+     * Updates the agent from a manifest by adding a new version if there are any changes to the agent definition.
+     * If no changes, returns the existing agent version.
+     *
+     * @param agentName The name of the agent to update.
+     * @param manifestId The manifest ID to import the agent version from.
+     * @param parameterValues The inputs to the manifest that will result in a fully materialized Agent.
+     * @param metadata Set of 16 key-value pairs that can be attached to an object. This can be
+     * useful for storing additional information about the object in a structured
+     * format, and querying for objects via API or the dashboard.
+     *
+     * Keys are strings with a maximum length of 64 characters. Values are strings
+     * with a maximum length of 512 characters.
+     * @param description A human-readable description of the agent.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AgentDetails updateAgentFromManifest(String agentName, String manifestId, Map<String, BinaryData> parameterValues,
+        Map<String, String> metadata, String description) {
+        // Generated convenience method for updateAgentFromManifestWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        UpdateAgentFromManifestRequest updateAgentFromManifestRequestObj
+            = new UpdateAgentFromManifestRequest(manifestId, parameterValues).setMetadata(metadata)
+                .setDescription(description);
+        BinaryData updateAgentFromManifestRequest = BinaryData.fromObject(updateAgentFromManifestRequestObj);
+        return updateAgentFromManifestWithResponse(agentName, updateAgentFromManifestRequest, requestOptions).getValue()
+            .toObject(AgentDetails.class);
+    }
+
+    /**
+     * Create a new agent version from a manifest.
+     *
+     * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
+     * - Must start and end with alphanumeric characters,
+     * - Can contain hyphens in the middle
+     * - Must not exceed 63 characters.
+     * @param manifestId The manifest ID to import the agent version from.
+     * @param parameterValues The inputs to the manifest that will result in a fully materialized Agent.
+     * @param metadata Set of 16 key-value pairs that can be attached to an object. This can be
+     * useful for storing additional information about the object in a structured
+     * format, and querying for objects via API or the dashboard.
+     *
+     * Keys are strings with a maximum length of 64 characters. Values are strings
+     * with a maximum length of 512 characters.
+     * @param description A human-readable description of the agent.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AgentVersionDetails createAgentVersionFromManifest(String agentName, String manifestId,
+        Map<String, BinaryData> parameterValues, Map<String, String> metadata, String description) {
+        // Generated convenience method for createAgentVersionFromManifestWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        CreateAgentVersionFromManifestRequest createAgentVersionFromManifestRequestObj
+            = new CreateAgentVersionFromManifestRequest(manifestId, parameterValues).setMetadata(metadata)
+                .setDescription(description);
+        BinaryData createAgentVersionFromManifestRequest
+            = BinaryData.fromObject(createAgentVersionFromManifestRequestObj);
+        return createAgentVersionFromManifestWithResponse(agentName, createAgentVersionFromManifestRequest,
+            requestOptions).getValue().toObject(AgentVersionDetails.class);
+    }
+
+    /**
+     * Retrieves a specific version of an agent.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
+     *     id: String (Required)
+     *     name: String (Required)
+     *     version: String (Required)
+     *     description: String (Optional)
+     *     created_at: long (Required)
+     *     definition (Required): {
+     *         kind: String(prompt/hosted/workflow) (Required)
+     *         rai_config (Optional): {
+     *             rai_policy_name: String (Required)
+     *         }
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param agentName The name of the agent to retrieve.
+     * @param agentVersion The version of the agent to retrieve.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getAgentVersionDetailsWithResponse(String agentName, String agentVersion,
+        RequestOptions requestOptions) {
+        return this.serviceClient.getAgentVersionDetailsWithResponse(agentName, agentVersion, requestOptions);
+    }
+
+    /**
+     * Retrieves a specific version of an agent.
+     *
+     * @param agentName The name of the agent to retrieve.
+     * @param agentVersion The version of the agent to retrieve.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AgentVersionDetails getAgentVersionDetails(String agentName, String agentVersion) {
+        // Generated convenience method for getAgentVersionDetailsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getAgentVersionDetailsWithResponse(agentName, agentVersion, requestOptions).getValue()
+            .toObject(AgentVersionDetails.class);
     }
 
     /**
@@ -464,8 +1018,8 @@ public final class AgentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AgentDetails> listAgents(AgentKind kind, Integer limit, ListAgentsRequestOrder order,
-        String after, String before) {
+    public PagedIterable<AgentDetails> listAgents(AgentKind kind, Integer limit, PageOrder order, String after,
+        String before) {
         // Generated convenience method for listAgents
         RequestOptions requestOptions = new RequestOptions();
         if (kind != null) {
@@ -511,8 +1065,8 @@ public final class AgentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AgentVersionDetails> listAgentVersions(String agentName, Integer limit,
-        ListAgentsRequestOrder order, String after, String before) {
+    public PagedIterable<AgentVersionDetails> listAgentVersions(String agentName, Integer limit, PageOrder order,
+        String after, String before) {
         // Generated convenience method for listAgentVersions
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
@@ -532,60 +1086,35 @@ public final class AgentsClient {
     }
 
     /**
-     * Create a new agent version.
-     *
-     * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
-     * - Must start and end with alphanumeric characters,
-     * - Can contain hyphens in the middle
-     * - Must not exceed 63 characters.
-     * @param definition The agent definition. This can be a workflow, hosted agent, or a simple agent definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentVersionDetails createAgentVersion(String agentName, AgentDefinition definition) {
-        // Generated convenience method for createAgentVersionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        CreateAgentVersionRequest1 createAgentVersionRequest1Obj = new CreateAgentVersionRequest1(definition);
-        BinaryData createAgentVersionRequest1 = BinaryData.fromObject(createAgentVersionRequest1Obj);
-        return createAgentVersionWithResponse(agentName, createAgentVersionRequest1, requestOptions).getValue()
-            .toObject(AgentVersionDetails.class);
-    }
-
-    /**
-     * Creates the agent.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     name: String (Required)
-     *     metadata (Optional): {
-     *         String: String (Required)
-     *     }
-     *     description: String (Optional)
-     *     definition (Required): {
-     *         kind: String(prompt/hosted/container_app/workflow) (Required)
-     *         rai_config (Optional): {
-     *             rai_policy_name: String (Required)
-     *         }
-     *     }
-     * }
-     * }
-     * </pre>
-     * 
+     * Returns the list of all agents.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>kind</td><td>String</td><td>No</td><td>Filter agents by kind. If not provided, all agents are returned.
+     * Allowed values: "prompt", "hosted", "workflow".</td></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the
+     * default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
+     * for ascending order and`desc`
+     * for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
      * {@code
      * {
-     *     object: String (Required)
+     *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *     id: String (Required)
      *     name: String (Required)
      *     versions (Required): {
@@ -593,14 +1122,14 @@ public final class AgentsClient {
      *             metadata (Required): {
      *                 String: String (Required)
      *             }
-     *             object: String (Required)
+     *             object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
      *             id: String (Required)
      *             name: String (Required)
      *             version: String (Required)
      *             description: String (Optional)
      *             created_at: long (Required)
      *             definition (Required): {
-     *                 kind: String(prompt/hosted/container_app/workflow) (Required)
+     *                 kind: String(prompt/hosted/workflow) (Required)
      *                 rai_config (Optional): {
      *                     rai_policy_name: String (Required)
      *                 }
@@ -611,510 +1140,23 @@ public final class AgentsClient {
      * }
      * </pre>
      *
-     * @param createAgentRequest1 The createAgentRequest1 parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response}.
+     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
      */
     @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createAgentWithResponse(BinaryData createAgentRequest1, RequestOptions requestOptions) {
-        return this.serviceClient.createAgentWithResponse(createAgentRequest1, requestOptions);
-    }
-
-    /**
-     * Updates the agent by adding a new version if there are any changes to the agent definition.
-     * If no changes, returns the existing agent version.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     metadata (Optional): {
-     *         String: String (Required)
-     *     }
-     *     description: String (Optional)
-     *     definition (Required): {
-     *         kind: String(prompt/hosted/container_app/workflow) (Required)
-     *         rai_config (Optional): {
-     *             rai_policy_name: String (Required)
-     *         }
-     *     }
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     object: String (Required)
-     *     id: String (Required)
-     *     name: String (Required)
-     *     versions (Required): {
-     *         latest (Required): {
-     *             metadata (Required): {
-     *                 String: String (Required)
-     *             }
-     *             object: String (Required)
-     *             id: String (Required)
-     *             name: String (Required)
-     *             version: String (Required)
-     *             description: String (Optional)
-     *             created_at: long (Required)
-     *             definition (Required): {
-     *                 kind: String(prompt/hosted/container_app/workflow) (Required)
-     *                 rai_config (Optional): {
-     *                     rai_policy_name: String (Required)
-     *                 }
-     *             }
-     *         }
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param agentName The name of the agent to retrieve.
-     * @param updateAgentRequest1 The updateAgentRequest1 parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateAgentWithResponse(String agentName, BinaryData updateAgentRequest1,
-        RequestOptions requestOptions) {
-        return this.serviceClient.updateAgentWithResponse(agentName, updateAgentRequest1, requestOptions);
-    }
-
-    /**
-     * Creates the agent.
-     *
-     * @param name The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
-     * - Must start and end with alphanumeric characters,
-     * - Can contain hyphens in the middle
-     * - Must not exceed 63 characters.
-     * @param definition The agent definition. This can be a workflow, hosted agent, or a simple agent definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentDetails createAgent(String name, AgentDefinition definition) {
-        // Generated convenience method for createAgentWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        CreateAgentRequest1 createAgentRequest1Obj = new CreateAgentRequest1(name, definition);
-        BinaryData createAgentRequest1 = BinaryData.fromObject(createAgentRequest1Obj);
-        return createAgentWithResponse(createAgentRequest1, requestOptions).getValue().toObject(AgentDetails.class);
-    }
-
-    /**
-     * Updates the agent by adding a new version if there are any changes to the agent definition.
-     * If no changes, returns the existing agent version.
-     *
-     * @param agentName The name of the agent to retrieve.
-     * @param definition The agent definition. This can be a workflow, hosted agent, or a simple agent definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentDetails updateAgent(String agentName, AgentDefinition definition) {
-        // Generated convenience method for updateAgentWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        UpdateAgentRequest1 updateAgentRequest1Obj = new UpdateAgentRequest1(definition);
-        BinaryData updateAgentRequest1 = BinaryData.fromObject(updateAgentRequest1Obj);
-        return updateAgentWithResponse(agentName, updateAgentRequest1, requestOptions).getValue()
-            .toObject(AgentDetails.class);
-    }
-
-    /**
-     * Initializes an instance of AgentsClient class.
-     *
-     * @param serviceClient the service client implementation.
-     */
-    @Generated
-    AgentsClient(AgentsImpl serviceClient) {
-        this.serviceClient = serviceClient;
-    }
-
-    /**
-     * Creates an agent from a manifest.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     name: String (Required)
-     *     metadata (Optional): {
-     *         String: String (Required)
-     *     }
-     *     description: String (Optional)
-     *     manifest_id: String (Required)
-     *     parameter_values (Required): {
-     *         String: BinaryData (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     object: String (Required)
-     *     id: String (Required)
-     *     name: String (Required)
-     *     versions (Required): {
-     *         latest (Required): {
-     *             metadata (Required): {
-     *                 String: String (Required)
-     *             }
-     *             object: String (Required)
-     *             id: String (Required)
-     *             name: String (Required)
-     *             version: String (Required)
-     *             description: String (Optional)
-     *             created_at: long (Required)
-     *             definition (Required): {
-     *                 kind: String(prompt/hosted/container_app/workflow) (Required)
-     *                 rai_config (Optional): {
-     *                     rai_policy_name: String (Required)
-     *                 }
-     *             }
-     *         }
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param createAgentFromManifestRequest1 The createAgentFromManifestRequest1 parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createAgentFromManifestWithResponse(BinaryData createAgentFromManifestRequest1,
-        RequestOptions requestOptions) {
-        return this.serviceClient.createAgentFromManifestWithResponse(createAgentFromManifestRequest1, requestOptions);
-    }
-
-    /**
-     * Updates the agent from a manifest by adding a new version if there are any changes to the agent definition.
-     * If no changes, returns the existing agent version.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     metadata (Optional): {
-     *         String: String (Required)
-     *     }
-     *     description: String (Optional)
-     *     manifest_id: String (Required)
-     *     parameter_values (Required): {
-     *         String: BinaryData (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     object: String (Required)
-     *     id: String (Required)
-     *     name: String (Required)
-     *     versions (Required): {
-     *         latest (Required): {
-     *             metadata (Required): {
-     *                 String: String (Required)
-     *             }
-     *             object: String (Required)
-     *             id: String (Required)
-     *             name: String (Required)
-     *             version: String (Required)
-     *             description: String (Optional)
-     *             created_at: long (Required)
-     *             definition (Required): {
-     *                 kind: String(prompt/hosted/container_app/workflow) (Required)
-     *                 rai_config (Optional): {
-     *                     rai_policy_name: String (Required)
-     *                 }
-     *             }
-     *         }
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param agentName The name of the agent to update.
-     * @param updateAgentFromManifestRequest1 The updateAgentFromManifestRequest1 parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateAgentFromManifestWithResponse(String agentName,
-        BinaryData updateAgentFromManifestRequest1, RequestOptions requestOptions) {
-        return this.serviceClient.updateAgentFromManifestWithResponse(agentName, updateAgentFromManifestRequest1,
-            requestOptions);
-    }
-
-    /**
-     * Create a new agent version from a manifest.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     metadata (Optional): {
-     *         String: String (Required)
-     *     }
-     *     description: String (Optional)
-     *     manifest_id: String (Required)
-     *     parameter_values (Required): {
-     *         String: BinaryData (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     metadata (Required): {
-     *         String: String (Required)
-     *     }
-     *     object: String (Required)
-     *     id: String (Required)
-     *     name: String (Required)
-     *     version: String (Required)
-     *     description: String (Optional)
-     *     created_at: long (Required)
-     *     definition (Required): {
-     *         kind: String(prompt/hosted/container_app/workflow) (Required)
-     *         rai_config (Optional): {
-     *             rai_policy_name: String (Required)
-     *         }
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
-     * - Must start and end with alphanumeric characters,
-     * - Can contain hyphens in the middle
-     * - Must not exceed 63 characters.
-     * @param createAgentVersionFromManifestRequest1 The createAgentVersionFromManifestRequest1 parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createAgentVersionFromManifestWithResponse(String agentName,
-        BinaryData createAgentVersionFromManifestRequest1, RequestOptions requestOptions) {
-        return this.serviceClient.createAgentVersionFromManifestWithResponse(agentName,
-            createAgentVersionFromManifestRequest1, requestOptions);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listAgents(RequestOptions requestOptions) {
+        return this.serviceClient.listAgents(requestOptions);
     }
 
     /**
      * Creates an agent from a manifest.
      *
-     * @param name The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
-     * - Must start and end with alphanumeric characters,
-     * - Can contain hyphens in the middle
-     * - Must not exceed 63 characters.
-     * @param manifestId The manifest ID to import the agent version from.
-     * @param parameterValues The inputs to the manifest that will result in a fully materialized Agent.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentDetails createAgentFromManifest(String name, String manifestId,
-        Map<String, BinaryData> parameterValues) {
-        // Generated convenience method for createAgentFromManifestWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        CreateAgentFromManifestRequest1 createAgentFromManifestRequest1Obj
-            = new CreateAgentFromManifestRequest1(name, manifestId, parameterValues);
-        BinaryData createAgentFromManifestRequest1 = BinaryData.fromObject(createAgentFromManifestRequest1Obj);
-        return createAgentFromManifestWithResponse(createAgentFromManifestRequest1, requestOptions).getValue()
-            .toObject(AgentDetails.class);
-    }
-
-    /**
-     * Updates the agent from a manifest by adding a new version if there are any changes to the agent definition.
-     * If no changes, returns the existing agent version.
-     *
-     * @param agentName The name of the agent to update.
-     * @param manifestId The manifest ID to import the agent version from.
-     * @param parameterValues The inputs to the manifest that will result in a fully materialized Agent.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentDetails updateAgentFromManifest(String agentName, String manifestId,
-        Map<String, BinaryData> parameterValues) {
-        // Generated convenience method for updateAgentFromManifestWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        UpdateAgentFromManifestRequest1 updateAgentFromManifestRequest1Obj
-            = new UpdateAgentFromManifestRequest1(manifestId, parameterValues);
-        BinaryData updateAgentFromManifestRequest1 = BinaryData.fromObject(updateAgentFromManifestRequest1Obj);
-        return updateAgentFromManifestWithResponse(agentName, updateAgentFromManifestRequest1, requestOptions)
-            .getValue()
-            .toObject(AgentDetails.class);
-    }
-
-    /**
-     * Create a new agent version from a manifest.
-     *
      * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
-     * - Must start and end with alphanumeric characters,
-     * - Can contain hyphens in the middle
-     * - Must not exceed 63 characters.
-     * @param manifestId The manifest ID to import the agent version from.
-     * @param parameterValues The inputs to the manifest that will result in a fully materialized Agent.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentVersionDetails createAgentVersionFromManifest(String agentName, String manifestId,
-        Map<String, BinaryData> parameterValues) {
-        // Generated convenience method for createAgentVersionFromManifestWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        CreateAgentVersionFromManifestRequest1 createAgentVersionFromManifestRequest1Obj
-            = new CreateAgentVersionFromManifestRequest1(manifestId, parameterValues);
-        BinaryData createAgentVersionFromManifestRequest1
-            = BinaryData.fromObject(createAgentVersionFromManifestRequest1Obj);
-        return createAgentVersionFromManifestWithResponse(agentName, createAgentVersionFromManifestRequest1,
-            requestOptions).getValue().toObject(AgentVersionDetails.class);
-    }
-
-    /**
-     * Creates the agent.
-     *
-     * @param name The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
-     * - Must start and end with alphanumeric characters,
-     * - Can contain hyphens in the middle
-     * - Must not exceed 63 characters.
-     * @param definition The agent definition. This can be a workflow, hosted agent, or a simple agent definition.
-     * @param metadata Set of 16 key-value pairs that can be attached to an object. This can be
-     * useful for storing additional information about the object in a structured
-     * format, and querying for objects via API or the dashboard.
-     *
-     * Keys are strings with a maximum length of 64 characters. Values are strings
-     * with a maximum length of 512 characters.
-     * @param description A human-readable description of the agent.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentDetails createAgent(String name, AgentDefinition definition, Map<String, String> metadata,
-        String description) {
-        // Generated convenience method for createAgentWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        CreateAgentRequest1 createAgentRequest1Obj
-            = new CreateAgentRequest1(name, definition).setMetadata(metadata).setDescription(description);
-        BinaryData createAgentRequest1 = BinaryData.fromObject(createAgentRequest1Obj);
-        return createAgentWithResponse(createAgentRequest1, requestOptions).getValue().toObject(AgentDetails.class);
-    }
-
-    /**
-     * Updates the agent by adding a new version if there are any changes to the agent definition.
-     * If no changes, returns the existing agent version.
-     *
-     * @param agentName The name of the agent to retrieve.
-     * @param definition The agent definition. This can be a workflow, hosted agent, or a simple agent definition.
-     * @param metadata Set of 16 key-value pairs that can be attached to an object. This can be
-     * useful for storing additional information about the object in a structured
-     * format, and querying for objects via API or the dashboard.
-     *
-     * Keys are strings with a maximum length of 64 characters. Values are strings
-     * with a maximum length of 512 characters.
-     * @param description A human-readable description of the agent.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentDetails updateAgent(String agentName, AgentDefinition definition, Map<String, String> metadata,
-        String description) {
-        // Generated convenience method for updateAgentWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        UpdateAgentRequest1 updateAgentRequest1Obj
-            = new UpdateAgentRequest1(definition).setMetadata(metadata).setDescription(description);
-        BinaryData updateAgentRequest1 = BinaryData.fromObject(updateAgentRequest1Obj);
-        return updateAgentWithResponse(agentName, updateAgentRequest1, requestOptions).getValue()
-            .toObject(AgentDetails.class);
-    }
-
-    /**
-     * Creates an agent from a manifest.
-     *
-     * @param name The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
      * - Must start and end with alphanumeric characters,
      * - Can contain hyphens in the middle
      * - Must not exceed 63 characters.
@@ -1137,25 +1179,28 @@ public final class AgentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentDetails createAgentFromManifest(String name, String manifestId, Map<String, BinaryData> parameterValues,
+    AgentDetails createAgentFromManifest(String agentName, String manifestId, Map<String, BinaryData> parameterValues,
         Map<String, String> metadata, String description) {
         // Generated convenience method for createAgentFromManifestWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        CreateAgentFromManifestRequest1 createAgentFromManifestRequest1Obj
-            = new CreateAgentFromManifestRequest1(name, manifestId, parameterValues).setMetadata(metadata)
+        CreateAgentFromManifestRequest createAgentFromManifestRequestObj
+            = new CreateAgentFromManifestRequest(agentName, manifestId, parameterValues).setMetadata(metadata)
                 .setDescription(description);
-        BinaryData createAgentFromManifestRequest1 = BinaryData.fromObject(createAgentFromManifestRequest1Obj);
-        return createAgentFromManifestWithResponse(createAgentFromManifestRequest1, requestOptions).getValue()
+        BinaryData createAgentFromManifestRequest = BinaryData.fromObject(createAgentFromManifestRequestObj);
+        return createAgentFromManifestWithResponse(createAgentFromManifestRequest, requestOptions).getValue()
             .toObject(AgentDetails.class);
     }
 
     /**
-     * Updates the agent from a manifest by adding a new version if there are any changes to the agent definition.
-     * If no changes, returns the existing agent version.
+     * Creates the agent.
      *
-     * @param agentName The name of the agent to update.
-     * @param manifestId The manifest ID to import the agent version from.
-     * @param parameterValues The inputs to the manifest that will result in a fully materialized Agent.
+     * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
+     * - Must start and end with alphanumeric characters,
+     * - Can contain hyphens in the middle
+     * - Must not exceed 63 characters.
+     * @param definition The agent definition. This can be a workflow, hosted agent, or a simple agent definition.
+     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
+     * preview resources.
      * @param metadata Set of 16 key-value pairs that can be attached to an object. This can be
      * useful for storing additional information about the object in a structured
      * format, and querying for objects via API or the dashboard.
@@ -1173,16 +1218,55 @@ public final class AgentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentDetails updateAgentFromManifest(String agentName, String manifestId,
-        Map<String, BinaryData> parameterValues, Map<String, String> metadata, String description) {
-        // Generated convenience method for updateAgentFromManifestWithResponse
+    AgentDetails createAgent(String agentName, AgentDefinition definition, AgentDefinitionOptInKeys foundryFeatures,
+        Map<String, String> metadata, String description) {
+        // Generated convenience method for createAgentWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        UpdateAgentFromManifestRequest1 updateAgentFromManifestRequest1Obj
-            = new UpdateAgentFromManifestRequest1(manifestId, parameterValues).setMetadata(metadata)
-                .setDescription(description);
-        BinaryData updateAgentFromManifestRequest1 = BinaryData.fromObject(updateAgentFromManifestRequest1Obj);
-        return updateAgentFromManifestWithResponse(agentName, updateAgentFromManifestRequest1, requestOptions)
-            .getValue()
+        CreateAgentRequest createAgentRequestObj
+            = new CreateAgentRequest(agentName, definition).setMetadata(metadata).setDescription(description);
+        BinaryData createAgentRequest = BinaryData.fromObject(createAgentRequestObj);
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
+        return createAgentWithResponse(createAgentRequest, requestOptions).getValue().toObject(AgentDetails.class);
+    }
+
+    /**
+     * Updates the agent by adding a new version if there are any changes to the agent definition.
+     * If no changes, returns the existing agent version.
+     *
+     * @param agentName The name of the agent to retrieve.
+     * @param definition The agent definition. This can be a workflow, hosted agent, or a simple agent definition.
+     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
+     * preview resources.
+     * @param metadata Set of 16 key-value pairs that can be attached to an object. This can be
+     * useful for storing additional information about the object in a structured
+     * format, and querying for objects via API or the dashboard.
+     *
+     * Keys are strings with a maximum length of 64 characters. Values are strings
+     * with a maximum length of 512 characters.
+     * @param description A human-readable description of the agent.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AgentDetails updateAgent(String agentName, AgentDefinition definition, AgentDefinitionOptInKeys foundryFeatures,
+        Map<String, String> metadata, String description) {
+        // Generated convenience method for updateAgentWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        UpdateAgentRequest updateAgentRequestObj
+            = new UpdateAgentRequest(definition).setMetadata(metadata).setDescription(description);
+        BinaryData updateAgentRequest = BinaryData.fromObject(updateAgentRequestObj);
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
+        return updateAgentWithResponse(agentName, updateAgentRequest, requestOptions).getValue()
             .toObject(AgentDetails.class);
     }
 
@@ -1194,6 +1278,8 @@ public final class AgentsClient {
      * - Can contain hyphens in the middle
      * - Must not exceed 63 characters.
      * @param definition The agent definition. This can be a workflow, hosted agent, or a simple agent definition.
+     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
+     * preview resources.
      * @param metadata Set of 16 key-value pairs that can be attached to an object. This can be
      * useful for storing additional information about the object in a structured
      * format, and querying for objects via API or the dashboard.
@@ -1212,116 +1298,188 @@ public final class AgentsClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AgentVersionDetails createAgentVersion(String agentName, AgentDefinition definition,
-        Map<String, String> metadata, String description) {
+        AgentDefinitionOptInKeys foundryFeatures, Map<String, String> metadata, String description) {
         // Generated convenience method for createAgentVersionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        CreateAgentVersionRequest1 createAgentVersionRequest1Obj
-            = new CreateAgentVersionRequest1(definition).setMetadata(metadata).setDescription(description);
-        BinaryData createAgentVersionRequest1 = BinaryData.fromObject(createAgentVersionRequest1Obj);
-        return createAgentVersionWithResponse(agentName, createAgentVersionRequest1, requestOptions).getValue()
+        CreateAgentVersionRequest createAgentVersionRequestObj
+            = new CreateAgentVersionRequest(definition).setMetadata(metadata).setDescription(description);
+        BinaryData createAgentVersionRequest = BinaryData.fromObject(createAgentVersionRequestObj);
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
+        return createAgentVersionWithResponse(agentName, createAgentVersionRequest, requestOptions).getValue()
             .toObject(AgentVersionDetails.class);
     }
 
     /**
-     * Create a new agent version from a manifest.
-     *
-     * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
-     * - Must start and end with alphanumeric characters,
-     * - Can contain hyphens in the middle
-     * - Must not exceed 63 characters.
-     * @param manifestId The manifest ID to import the agent version from.
-     * @param parameterValues The inputs to the manifest that will result in a fully materialized Agent.
-     * @param metadata Set of 16 key-value pairs that can be attached to an object. This can be
-     * useful for storing additional information about the object in a structured
-     * format, and querying for objects via API or the dashboard.
-     *
-     * Keys are strings with a maximum length of 64 characters. Values are strings
-     * with a maximum length of 512 characters.
-     * @param description A human-readable description of the agent.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentVersionDetails createAgentVersionFromManifest(String agentName, String manifestId,
-        Map<String, BinaryData> parameterValues, Map<String, String> metadata, String description) {
-        // Generated convenience method for createAgentVersionFromManifestWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        CreateAgentVersionFromManifestRequest1 createAgentVersionFromManifestRequest1Obj
-            = new CreateAgentVersionFromManifestRequest1(manifestId, parameterValues).setMetadata(metadata)
-                .setDescription(description);
-        BinaryData createAgentVersionFromManifestRequest1
-            = BinaryData.fromObject(createAgentVersionFromManifestRequest1Obj);
-        return createAgentVersionFromManifestWithResponse(agentName, createAgentVersionFromManifestRequest1,
-            requestOptions).getValue().toObject(AgentVersionDetails.class);
-    }
-
-    /**
-     * Retrieves a specific version of an agent.
+     * Returns the list of all conversations.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the
+     * default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
+     * for ascending order and`desc`
+     * for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
+     * <tr><td>agent_name</td><td>String</td><td>No</td><td>Filter by agent name. If provided, only items associated
+     * with the specified agent will be returned.</td></tr>
+     * <tr><td>agent_id</td><td>String</td><td>No</td><td>Filter by agent ID in the format `name:version`. If provided,
+     * only items associated with the specified agent ID will be returned.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
      * {@code
      * {
-     *     metadata (Required): {
-     *         String: String (Required)
-     *     }
-     *     object: String (Required)
      *     id: String (Required)
-     *     name: String (Required)
-     *     version: String (Required)
-     *     description: String (Optional)
-     *     created_at: long (Required)
-     *     definition (Required): {
-     *         kind: String(prompt/hosted/container_app/workflow) (Required)
-     *         rai_config (Optional): {
-     *             rai_policy_name: String (Required)
+     *     object: String (Required)
+     *     metadata (Required): {
+     *          (Optional): {
+     *             String: String (Required)
      *         }
      *     }
+     *     created_at: long (Required)
      * }
      * }
      * </pre>
      *
-     * @param agentName The name of the agent to retrieve.
-     * @param agentVersion The version of the agent to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response}.
+     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
      */
     @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getAgentVersionDetailsWithResponse(String agentName, String agentVersion,
-        RequestOptions requestOptions) {
-        return this.serviceClient.getAgentVersionDetailsWithResponse(agentName, agentVersion, requestOptions);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listAgentConversations(RequestOptions requestOptions) {
+        return this.serviceClient.listAgentConversations(requestOptions);
     }
 
     /**
-     * Retrieves a specific version of an agent.
+     * Returns the list of all conversations.
      *
-     * @param agentName The name of the agent to retrieve.
-     * @param agentVersion The version of the agent to retrieve.
+     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the
+     * default is 20.
+     * @param order Sort order by the `created_at` timestamp of the objects. `asc` for ascending order and`desc`
+     * for descending order.
+     * @param after A cursor for use in pagination. `after` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.
+     * @param before A cursor for use in pagination. `before` is an object ID that defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.
+     * @param agentName Filter by agent name. If provided, only items associated with the specified agent will be
+     * returned.
+     * @param agentId Filter by agent ID in the format `name:version`. If provided, only items associated with the
+     * specified agent ID will be returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<Conversation> listAgentConversations(Integer limit, PageOrder order, String after,
+        String before, String agentName, String agentId) {
+        // Generated convenience method for listAgentConversations
+        RequestOptions requestOptions = new RequestOptions();
+        if (limit != null) {
+            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
+        }
+        if (order != null) {
+            requestOptions.addQueryParam("order", order.toString(), false);
+        }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
+        if (before != null) {
+            requestOptions.addQueryParam("before", before, false);
+        }
+        if (agentName != null) {
+            requestOptions.addQueryParam("agent_name", agentName, false);
+        }
+        if (agentId != null) {
+            requestOptions.addQueryParam("agent_id", agentId, false);
+        }
+        return serviceClient.listAgentConversations(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(Conversation.class));
+    }
+
+    /**
+     * Returns the list of all conversations.
+     *
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<Conversation> listAgentConversations() {
+        // Generated convenience method for listAgentConversations
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient.listAgentConversations(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(Conversation.class));
+    }
+
+    /**
+     * Deletes an agent.
+     *
+     * @param agentName The name of the agent to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteAgent(String agentName) {
+        deleteAgentWithResponse(agentName, new RequestOptions());
+    }
+
+    /**
+     * Deletes an agent.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
+     *     name: String (Required)
+     *     deleted: boolean (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param agentName The name of the agent to delete.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a deleted agent Object along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentVersionDetails getAgentVersionDetails(String agentName, String agentVersion) {
-        // Generated convenience method for getAgentVersionDetailsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getAgentVersionDetailsWithResponse(agentName, agentVersion, requestOptions).getValue()
-            .toObject(AgentVersionDetails.class);
+    public Response<BinaryData> deleteAgentWithResponse(String agentName, RequestOptions requestOptions) {
+        return this.serviceClient.deleteAgentWithResponse(agentName, requestOptions);
     }
 }

@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.managedops.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.managedops.models.ChangeTrackingInformationEnablementStatus;
 import com.azure.resourcemanager.managedops.models.DefenderCspmInformation;
+import com.azure.resourcemanager.managedops.models.EnablementState;
 import org.junit.jupiter.api.Assertions;
 
 public final class DefenderCspmInformationTests {
@@ -14,6 +14,6 @@ public final class DefenderCspmInformationTests {
     public void testDeserialize() throws Exception {
         DefenderCspmInformation model
             = BinaryData.fromString("{\"enablementStatus\":\"Enabled\"}").toObject(DefenderCspmInformation.class);
-        Assertions.assertEquals(ChangeTrackingInformationEnablementStatus.ENABLED, model.enablementStatus());
+        Assertions.assertEquals(EnablementState.ENABLED, model.enablementStatus());
     }
 }

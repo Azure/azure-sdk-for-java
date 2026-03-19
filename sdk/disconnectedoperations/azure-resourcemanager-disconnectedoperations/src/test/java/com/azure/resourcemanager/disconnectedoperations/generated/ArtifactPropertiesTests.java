@@ -11,7 +11,7 @@ public final class ArtifactPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ArtifactProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Succeeded\",\"artifactOrder\":958772842,\"title\":\"mdgbbjfdd\",\"description\":\"mbmbexppbh\",\"size\":7863810899973495328}")
+            "{\"provisioningState\":\"Failed\",\"artifactOrder\":1778385162,\"title\":\"idf\",\"description\":\"zwdzuh\",\"size\":6116347242940995661}")
             .toObject(ArtifactProperties.class);
     }
 }

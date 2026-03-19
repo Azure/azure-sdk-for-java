@@ -18,12 +18,6 @@ import java.io.IOException;
 public final class BlobReference implements JsonSerializable<BlobReference> {
 
     /*
-     * Blob URI path for client to upload data. Example: `https://blob.windows.core.net/Container/Path`
-     */
-    @Generated
-    private final String blobUri;
-
-    /*
      * ARM ID of the storage account to use.
      */
     @Generated
@@ -38,26 +32,15 @@ public final class BlobReference implements JsonSerializable<BlobReference> {
     /**
      * Creates an instance of BlobReference class.
      *
-     * @param blobUri the blobUri value to set.
+     * @param blobUrl the blobUrl value to set.
      * @param storageAccountArmId the storageAccountArmId value to set.
      * @param credential the credential value to set.
      */
     @Generated
-    private BlobReference(String blobUri, String storageAccountArmId, BlobReferenceSasCredential credential) {
-        this.blobUri = blobUri;
+    private BlobReference(String blobUrl, String storageAccountArmId, BlobReferenceSasCredential credential) {
+        this.blobUrl = blobUrl;
         this.storageAccountArmId = storageAccountArmId;
         this.credential = credential;
-    }
-
-    /**
-     * Get the blobUri property: Blob URI path for client to upload data. Example:
-     * `https://blob.windows.core.net/Container/Path`.
-     *
-     * @return the blobUri value.
-     */
-    @Generated
-    public String getBlobUri() {
-        return this.blobUri;
     }
 
     /**
@@ -87,7 +70,7 @@ public final class BlobReference implements JsonSerializable<BlobReference> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("blobUri", this.blobUri);
+        jsonWriter.writeStringField("blobUri", this.blobUrl);
         jsonWriter.writeStringField("storageAccountArmId", this.storageAccountArmId);
         jsonWriter.writeJsonField("credential", this.credential);
         return jsonWriter.writeEndObject();
@@ -105,14 +88,14 @@ public final class BlobReference implements JsonSerializable<BlobReference> {
     @Generated
     public static BlobReference fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String blobUri = null;
+            String blobUrl = null;
             String storageAccountArmId = null;
             BlobReferenceSasCredential credential = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("blobUri".equals(fieldName)) {
-                    blobUri = reader.getString();
+                    blobUrl = reader.getString();
                 } else if ("storageAccountArmId".equals(fieldName)) {
                     storageAccountArmId = reader.getString();
                 } else if ("credential".equals(fieldName)) {
@@ -121,7 +104,24 @@ public final class BlobReference implements JsonSerializable<BlobReference> {
                     reader.skipChildren();
                 }
             }
-            return new BlobReference(blobUri, storageAccountArmId, credential);
+            return new BlobReference(blobUrl, storageAccountArmId, credential);
         });
+    }
+
+    /*
+     * Blob URI path for client to upload data. Example: `https://blob.windows.core.net/Container/Path`
+     */
+    @Generated
+    private final String blobUrl;
+
+    /**
+     * Get the blobUrl property: Blob URI path for client to upload data. Example:
+     * `https://blob.windows.core.net/Container/Path`.
+     *
+     * @return the blobUrl value.
+     */
+    @Generated
+    public String getBlobUrl() {
+        return this.blobUrl;
     }
 }

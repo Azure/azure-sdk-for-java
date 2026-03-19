@@ -36,7 +36,7 @@ public final class AgentVersionDetails implements JsonSerializable<AgentVersionD
      * The object type, which is always 'agent.version'.
      */
     @Generated
-    private final String object = "agent.version";
+    private final AgentObjectType object = AgentObjectType.AGENT_VERSION;
 
     /*
      * The unique identifier of the agent version.
@@ -121,7 +121,7 @@ public final class AgentVersionDetails implements JsonSerializable<AgentVersionD
      * @return the object value.
      */
     @Generated
-    public String getObject() {
+    public AgentObjectType getObject() {
         return this.object;
     }
 
@@ -194,7 +194,7 @@ public final class AgentVersionDetails implements JsonSerializable<AgentVersionD
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeStringField("object", this.object);
+        jsonWriter.writeStringField("object", this.object == null ? null : this.object.toString());
         jsonWriter.writeStringField("id", this.id);
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("version", this.version);

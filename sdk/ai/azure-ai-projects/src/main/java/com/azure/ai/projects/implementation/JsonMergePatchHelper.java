@@ -4,10 +4,10 @@
 
 package com.azure.ai.projects.implementation;
 
+import com.azure.ai.projects.models.AIProjectIndex;
 import com.azure.ai.projects.models.DatasetVersion;
 import com.azure.ai.projects.models.EmbeddingConfiguration;
 import com.azure.ai.projects.models.FieldMapping;
-import com.azure.ai.projects.models.Index;
 import java.util.Map;
 
 /**
@@ -46,30 +46,30 @@ public class JsonMergePatchHelper {
         return datasetVersionAccessor;
     }
 
-    private static IndexAccessor indexAccessor;
+    private static AIProjectIndexAccessor aIProjectIndexAccessor;
 
-    public interface IndexAccessor {
-        Index prepareModelForJsonMergePatch(Index index, boolean jsonMergePatchEnabled);
+    public interface AIProjectIndexAccessor {
+        AIProjectIndex prepareModelForJsonMergePatch(AIProjectIndex aIProjectIndex, boolean jsonMergePatchEnabled);
 
-        boolean isJsonMergePatch(Index index);
+        boolean isJsonMergePatch(AIProjectIndex aIProjectIndex);
 
-        void setId(Index index, String id);
+        void setId(AIProjectIndex aIProjectIndex, String id);
 
-        void setName(Index index, String name);
+        void setName(AIProjectIndex aIProjectIndex, String name);
 
-        void setVersion(Index index, String version);
+        void setVersion(AIProjectIndex aIProjectIndex, String version);
 
-        void setDescription(Index index, String description);
+        void setDescription(AIProjectIndex aIProjectIndex, String description);
 
-        void setTags(Index index, Map<String, String> tags);
+        void setTags(AIProjectIndex aIProjectIndex, Map<String, String> tags);
     }
 
-    public static void setIndexAccessor(IndexAccessor accessor) {
-        indexAccessor = accessor;
+    public static void setAIProjectIndexAccessor(AIProjectIndexAccessor accessor) {
+        aIProjectIndexAccessor = accessor;
     }
 
-    public static IndexAccessor getIndexAccessor() {
-        return indexAccessor;
+    public static AIProjectIndexAccessor getAIProjectIndexAccessor() {
+        return aIProjectIndexAccessor;
     }
 
     private static FieldMappingAccessor fieldMappingAccessor;

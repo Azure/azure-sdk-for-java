@@ -11,7 +11,7 @@ import com.azure.resourcemanager.netapp.models.ElasticBackup;
  */
 public final class ElasticBackupsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/ElasticBackups_Update.json
+     * x-ms-original-file: 2025-12-15-preview/ElasticBackups_Update.json
      */
     /**
      * Sample code: ElasticBackups_Update.

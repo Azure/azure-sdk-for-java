@@ -10,13 +10,13 @@ import com.openai.models.responses.ResponseCreateParams;
 
 public class CreateResponse {
     public static void main(String[] args) {
-        String endpoint = Configuration.getGlobalConfiguration().get("AZURE_AGENTS_ENDPOINT");
-        String model = Configuration.getGlobalConfiguration().get("AZURE_AGENTS_MODEL");
+        String endpoint = Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT");
+        String model = Configuration.getGlobalConfiguration().get("FOUNDRY_MODEL_NAME");
         // Code sample for creating a response
         ResponsesClient responsesClient = new AgentsClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(endpoint)
-                .serviceVersion(AgentsServiceVersion.V2025_11_15_PREVIEW)
+                .serviceVersion(AgentsServiceVersion.getLatest())
                 .buildResponsesClient();
 
         ResponseCreateParams responseRequest = new ResponseCreateParams.Builder()

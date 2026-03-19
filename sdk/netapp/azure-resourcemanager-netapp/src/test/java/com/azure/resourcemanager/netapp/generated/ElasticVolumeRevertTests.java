@@ -12,14 +12,14 @@ public final class ElasticVolumeRevertTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ElasticVolumeRevert model
-            = BinaryData.fromString("{\"snapshotResourceId\":\"ibph\"}").toObject(ElasticVolumeRevert.class);
-        Assertions.assertEquals("ibph", model.snapshotResourceId());
+            = BinaryData.fromString("{\"snapshotResourceId\":\"dxotng\"}").toObject(ElasticVolumeRevert.class);
+        Assertions.assertEquals("dxotng", model.snapshotResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ElasticVolumeRevert model = new ElasticVolumeRevert().withSnapshotResourceId("ibph");
+        ElasticVolumeRevert model = new ElasticVolumeRevert().withSnapshotResourceId("dxotng");
         model = BinaryData.fromObject(model).toObject(ElasticVolumeRevert.class);
-        Assertions.assertEquals("ibph", model.snapshotResourceId());
+        Assertions.assertEquals("dxotng", model.snapshotResourceId());
     }
 }

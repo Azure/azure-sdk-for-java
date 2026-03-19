@@ -32,12 +32,8 @@ public final class RelationshipsImpl implements Relationships {
         String relationshipName, Context context) {
         Response<RelationshipInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, healthModelName, relationshipName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new RelationshipImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new RelationshipImpl(inner.getValue(), this.manager()));
     }
 
     public Relationship get(String resourceGroupName, String healthModelName, String relationshipName) {

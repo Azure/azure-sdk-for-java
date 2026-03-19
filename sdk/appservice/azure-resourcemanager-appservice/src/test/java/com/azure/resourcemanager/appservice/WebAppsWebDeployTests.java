@@ -54,6 +54,11 @@ public class WebAppsWebDeployTests extends AppServiceTest {
         Assertions.assertEquals(Region.US_WEST3, plan1.region());
         Assertions.assertEquals(PricingTier.BASIC_B1, plan1.pricingTier());
 
+        if (!isPlaybackMode()) {
+            // wait a bit to avoid status code 409
+            ResourceManagerUtils.sleep(Duration.ofSeconds(60));
+        }
+
         WebDeployment deployment = webApp1.deploy()
             .withPackageUri(
                 "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/appservice/azure-resourcemanager-appservice/src/test/resources/webapps.zip")

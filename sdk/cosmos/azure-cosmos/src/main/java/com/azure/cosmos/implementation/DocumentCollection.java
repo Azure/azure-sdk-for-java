@@ -4,7 +4,6 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.caches.SerializableWrapper;
 import com.azure.cosmos.models.ChangeFeedPolicy;
 import com.azure.cosmos.models.ClientEncryptionPolicy;
 import com.azure.cosmos.models.ComputedProperty;
@@ -19,9 +18,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -513,35 +509,38 @@ public final class DocumentCollection extends Resource {
         return super.toJson();
     }
 
-    public static class SerializableDocumentCollection implements SerializableWrapper<DocumentCollection> {
-        private static final long serialVersionUID = 2l;
-        private static final ObjectMapper OBJECT_MAPPER = Utils.getSimpleObjectMapperWithAllowDuplicates();
-        public static SerializableDocumentCollection from(DocumentCollection documentCollection) {
-            SerializableDocumentCollection serializableDocumentCollection = new SerializableDocumentCollection();
-            serializableDocumentCollection.documentCollection = documentCollection;
-            return serializableDocumentCollection;
-        }
+    /**
+     * Serializes this DocumentCollection to a Jackson ObjectNode for JSON-based cache serialization.
+     * The result includes the collection property bag and the altLink.
+     */
+    public ObjectNode toSerializableObjectNode() {
+        this.populatePropertyBag();
+        ObjectMapper objectMapper = Utils.getSimpleObjectMapperWithAllowDuplicates();
+        ObjectNode node = objectMapper.createObjectNode();
+        node.set(COLLECTIONS_ROOT_PROPERTY_NAME, this.getPropertyBag());
+        node.set(ALT_LINK_PROPERTY_NAME, TextNode.valueOf(this.getAltLink()));
+        return node;
+    }
 
-        transient DocumentCollection documentCollection;
-
-        public DocumentCollection getWrappedItem() {
-            return documentCollection;
+    /**
+     * Deserializes a DocumentCollection from a Jackson ObjectNode produced by {@link #toSerializableObjectNode()}.
+     *
+     * @param objectNode the ObjectNode containing "col" and "altLink" fields
+     * @return the reconstructed DocumentCollection
+     * @throws IllegalArgumentException if the node is missing required fields
+     */
+    public static DocumentCollection fromSerializableObjectNode(ObjectNode objectNode) {
+        if (objectNode == null) {
+            throw new IllegalArgumentException("objectNode must not be null");
         }
-
-        private void writeObject(ObjectOutputStream objectOutputStream) throws IOException {
-            documentCollection.populatePropertyBag();
-            ObjectNode docCollectionNode = OBJECT_MAPPER.createObjectNode();
-            docCollectionNode.set(COLLECTIONS_ROOT_PROPERTY_NAME, documentCollection.getPropertyBag());
-            docCollectionNode.set(ALT_LINK_PROPERTY_NAME, TextNode.valueOf(documentCollection.getAltLink()));
-            objectOutputStream.writeObject(docCollectionNode);
+        if (!objectNode.has(COLLECTIONS_ROOT_PROPERTY_NAME) || !objectNode.has(ALT_LINK_PROPERTY_NAME)) {
+            throw new IllegalArgumentException(
+                "objectNode must contain '" + COLLECTIONS_ROOT_PROPERTY_NAME + "' and '" + ALT_LINK_PROPERTY_NAME + "' fields");
         }
-
-        private void readObject(ObjectInputStream objectInputStream) throws IOException, ClassNotFoundException {
-            ObjectNode objectNode = (ObjectNode) objectInputStream.readObject();
-            ObjectNode collectionNode = (ObjectNode)objectNode.get(COLLECTIONS_ROOT_PROPERTY_NAME);
-            String altLink = objectNode.get(ALT_LINK_PROPERTY_NAME).asText();
-            this.documentCollection = new DocumentCollection(collectionNode);
-            this.documentCollection.setAltLink(altLink);
-        }
+        ObjectNode collectionNode = (ObjectNode) objectNode.get(COLLECTIONS_ROOT_PROPERTY_NAME);
+        String altLink = objectNode.get(ALT_LINK_PROPERTY_NAME).asText();
+        DocumentCollection collection = new DocumentCollection(collectionNode);
+        collection.setAltLink(altLink);
+        return collection;
     }
 }

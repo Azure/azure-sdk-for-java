@@ -56,71 +56,68 @@ public class FileTests extends BatchClientTestBase {
         String taskId = "mytask";
         int taskCompleteTimeoutInSeconds = 60; // 60 seconds timeout
 
-        try {
-            BatchPoolInfo poolInfo = new BatchPoolInfo();
-            poolInfo.setPoolId(poolId);
+        BatchPoolInfo poolInfo = new BatchPoolInfo();
+        poolInfo.setPoolId(poolId);
 
-            // Create job
-            SyncAsyncExtension.execute(() -> batchClient.createJob(new BatchJobCreateParameters(jobId, poolInfo)),
-                () -> batchAsyncClient.createJob(new BatchJobCreateParameters(jobId, poolInfo)));
+        // Create job
+        SyncAsyncExtension.execute(() -> batchClient.createJob(new BatchJobCreateParameters(jobId, poolInfo)),
+            () -> batchAsyncClient.createJob(new BatchJobCreateParameters(jobId, poolInfo)));
 
-            // Create task
-            BatchTaskCreateParameters taskToCreate = new BatchTaskCreateParameters(taskId, "cmd /c echo hello");
+        // Create task
+        BatchTaskCreateParameters taskToCreate = new BatchTaskCreateParameters(taskId, "cmd /c echo hello");
 
-            SyncAsyncExtension.execute(() -> batchClient.createTask(jobId, taskToCreate),
-                () -> batchAsyncClient.createTask(jobId, taskToCreate));
+        SyncAsyncExtension.execute(() -> batchClient.createTask(jobId, taskToCreate),
+            () -> batchAsyncClient.createTask(jobId, taskToCreate));
 
-            // Use matching client for wait logic
-            boolean completed = SyncAsyncExtension
-                .execute(() -> waitForTasksToComplete(batchClient, jobId, taskCompleteTimeoutInSeconds), () -> Mono
-                    .fromCallable(() -> waitForTasksToComplete(batchAsyncClient, jobId, taskCompleteTimeoutInSeconds)));
+        // Use matching client for wait logic
+        boolean completed = SyncAsyncExtension
+            .execute(() -> waitForTasksToComplete(batchClient, jobId, taskCompleteTimeoutInSeconds), () -> Mono
+                .fromCallable(() -> waitForTasksToComplete(batchAsyncClient, jobId, taskCompleteTimeoutInSeconds)));
 
-            if (completed) {
-                // List task files
-                Iterable<BatchNodeFile> filesIterable
-                    = SyncAsyncExtension.execute(() -> batchClient.listTaskFiles(jobId, taskId),
-                        () -> Mono.fromCallable(() -> batchAsyncClient.listTaskFiles(jobId, taskId).toIterable()));
+        if (completed) {
+            // List task files
+            Iterable<BatchNodeFile> filesIterable
+                = SyncAsyncExtension.execute(() -> batchClient.listTaskFiles(jobId, taskId),
+                    () -> Mono.fromCallable(() -> batchAsyncClient.listTaskFiles(jobId, taskId).toIterable()));
 
-                boolean found = false;
-                for (BatchNodeFile f : filesIterable) {
-                    if (f.getName().equals("stdout.txt")) {
-                        found = true;
-                        break;
-                    }
+            boolean found = false;
+            for (BatchNodeFile f : filesIterable) {
+                if (f.getName().equals("stdout.txt")) {
+                    found = true;
+                    break;
                 }
-                Assertions.assertTrue(found);
-
-                // Get task file content
-                BinaryData binaryData
-                    = SyncAsyncExtension.execute(() -> batchClient.getTaskFile(jobId, taskId, "stdout.txt"),
-                        () -> batchAsyncClient.getTaskFile(jobId, taskId, "stdout.txt"));
-
-                String fileContent = new String(binaryData.toBytes(), StandardCharsets.UTF_8);
-                Assertions.assertEquals("hello\r\n", fileContent);
-
-                // Get task file properties
-                Response<Void> getFilePropertiesResponse = SyncAsyncExtension.execute(
-                    () -> batchClient.getTaskFilePropertiesWithResponse(jobId, taskId, "stdout.txt", null),
-                    () -> batchAsyncClient.getTaskFilePropertiesWithResponse(jobId, taskId, "stdout.txt", null));
-
-                Assertions.assertEquals("7",
-                    getFilePropertiesResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH));
-            } else {
-                throw new TimeoutException("Task did not complete within the specified timeout");
             }
+            Assertions.assertTrue(found);
 
-        } finally {
-            // DELETE
-            try {
-                SyncPoller<BatchJob, Void> deletePoller = setPlaybackSyncPollerPollInterval(
-                    SyncAsyncExtension.execute(() -> batchClient.beginDeleteJob(jobId),
-                        () -> Mono.fromCallable(() -> batchAsyncClient.beginDeleteJob(jobId).getSyncPoller())));
+            // Get task file content
+            BinaryData binaryData
+                = SyncAsyncExtension.execute(() -> batchClient.getTaskFile(jobId, taskId, "stdout.txt"),
+                    () -> batchAsyncClient.getTaskFile(jobId, taskId, "stdout.txt"));
 
-                deletePoller.waitForCompletion();
-            } catch (Exception e) {
-                System.err.println("Cleanup failed for job: " + jobId);
-                e.printStackTrace();
-            }
+            String fileContent = new String(binaryData.toBytes(), StandardCharsets.UTF_8);
+            Assertions.assertEquals("hello\r\n", fileContent);
+
+            // Get task file properties
+            Response<Void> getFilePropertiesResponse = SyncAsyncExtension.execute(
+                () -> batchClient.getTaskFilePropertiesWithResponse(jobId, taskId, "stdout.txt", null),
+                () -> batchAsyncClient.getTaskFilePropertiesWithResponse(jobId, taskId, "stdout.txt", null));
+
+            Assertions.assertEquals("7",
+                getFilePropertiesResponse.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH));
+        } else {
+            throw new TimeoutException("Task did not complete within the specified timeout");
+        }
+
+        // DELETE
+        try {
+            SyncPoller<BatchJob, Void> deletePoller
+                = setPlaybackSyncPollerPollInterval(SyncAsyncExtension.execute(() -> batchClient.beginDeleteJob(jobId),
+                    () -> Mono.fromCallable(() -> batchAsyncClient.beginDeleteJob(jobId).getSyncPoller())));
+
+            deletePoller.waitForCompletion();
+        } catch (Exception e) {
+            System.err.println("Cleanup failed for job: " + jobId);
+            e.printStackTrace();
         }
     }
 
@@ -132,85 +129,82 @@ public class FileTests extends BatchClientTestBase {
         String taskId = "mytask-";
         int taskCompleteTimeoutInSeconds = 60; // 60 seconds timeout
 
-        try {
-            BatchPoolInfo poolInfo = new BatchPoolInfo();
-            poolInfo.setPoolId(poolId);
+        BatchPoolInfo poolInfo = new BatchPoolInfo();
+        poolInfo.setPoolId(poolId);
 
-            // Create job
-            SyncAsyncExtension.execute(() -> batchClient.createJob(new BatchJobCreateParameters(jobId, poolInfo)),
-                () -> batchAsyncClient.createJob(new BatchJobCreateParameters(jobId, poolInfo)));
+        // Create job
+        SyncAsyncExtension.execute(() -> batchClient.createJob(new BatchJobCreateParameters(jobId, poolInfo)),
+            () -> batchAsyncClient.createJob(new BatchJobCreateParameters(jobId, poolInfo)));
 
-            // Create task
-            BatchTaskCreateParameters taskToCreate = new BatchTaskCreateParameters(taskId, "cmd /c echo hello");
+        // Create task
+        BatchTaskCreateParameters taskToCreate = new BatchTaskCreateParameters(taskId, "cmd /c echo hello");
 
-            SyncAsyncExtension.execute(() -> batchClient.createTask(jobId, taskToCreate),
-                () -> batchAsyncClient.createTask(jobId, taskToCreate));
+        SyncAsyncExtension.execute(() -> batchClient.createTask(jobId, taskToCreate),
+            () -> batchAsyncClient.createTask(jobId, taskToCreate));
 
-            // Wait for task completion
-            boolean completed = SyncAsyncExtension
-                .execute(() -> waitForTasksToComplete(batchClient, jobId, taskCompleteTimeoutInSeconds), () -> Mono
-                    .fromCallable(() -> waitForTasksToComplete(batchAsyncClient, jobId, taskCompleteTimeoutInSeconds)));
+        // Wait for task completion
+        boolean completed = SyncAsyncExtension
+            .execute(() -> waitForTasksToComplete(batchClient, jobId, taskCompleteTimeoutInSeconds), () -> Mono
+                .fromCallable(() -> waitForTasksToComplete(batchAsyncClient, jobId, taskCompleteTimeoutInSeconds)));
 
-            if (completed) {
-                // Get task
-                BatchTask task = SyncAsyncExtension.execute(() -> batchClient.getTask(jobId, taskId),
-                    () -> batchAsyncClient.getTask(jobId, taskId));
+        if (completed) {
+            // Get task
+            BatchTask task = SyncAsyncExtension.execute(() -> batchClient.getTask(jobId, taskId),
+                () -> batchAsyncClient.getTask(jobId, taskId));
 
-                String nodeId = task.getNodeInfo().getNodeId();
+            String nodeId = task.getNodeInfo().getNodeId();
 
-                // List node files
-                BatchNodeFilesListOptions options = new BatchNodeFilesListOptions();
-                options.setRecursive(true);
+            // List node files
+            BatchNodeFilesListOptions options = new BatchNodeFilesListOptions();
+            options.setRecursive(true);
 
-                Iterable<BatchNodeFile> files
-                    = SyncAsyncExtension.execute(() -> batchClient.listNodeFiles(poolId, nodeId, options), () -> Mono
-                        .fromCallable(() -> batchAsyncClient.listNodeFiles(poolId, nodeId, options).toIterable()));
+            Iterable<BatchNodeFile> files = SyncAsyncExtension.execute(
+                () -> batchClient.listNodeFiles(poolId, nodeId, options),
+                () -> Mono.fromCallable(() -> batchAsyncClient.listNodeFiles(poolId, nodeId, options).toIterable()));
 
-                String fileName = null;
-                for (BatchNodeFile f : files) {
-                    if (f.getName().endsWith("stdout.txt")) {
-                        fileName = f.getName();
-                        break;
-                    }
+            String fileName = null;
+            for (BatchNodeFile f : files) {
+                if (f.getName().endsWith("stdout.txt")) {
+                    fileName = f.getName();
+                    break;
                 }
-                Assertions.assertNotNull(fileName);
-
-                final String finalFileName = fileName;
-
-                // Get node file content
-                BinaryData binaryData = SyncAsyncExtension.execute(
-                    () -> batchClient.getNodeFileWithResponse(poolId, nodeId, finalFileName, null).getValue(),
-                    () -> Mono.fromCallable(
-                        () -> batchAsyncClient.getNodeFileWithResponse(poolId, nodeId, finalFileName, null)
-                            .block()
-                            .getValue()));
-
-                String fileContent = new String(binaryData.toBytes(), StandardCharsets.UTF_8);
-                Assertions.assertEquals("hello\r\n", fileContent);
-
-                // Get node file properties
-                BatchFileProperties fileProperties
-                    = SyncAsyncExtension.execute(() -> batchClient.getNodeFileProperties(poolId, nodeId, finalFileName),
-                        () -> batchAsyncClient.getNodeFileProperties(poolId, nodeId, finalFileName));
-
-                Assertions.assertEquals(7, fileProperties.getContentLength());
-
-            } else {
-                throw new TimeoutException("Task did not complete within the specified timeout");
             }
+            Assertions.assertNotNull(fileName);
 
-        } finally {
-            // DELETE
-            try {
-                SyncPoller<BatchJob, Void> deletePoller = setPlaybackSyncPollerPollInterval(
-                    SyncAsyncExtension.execute(() -> batchClient.beginDeleteJob(jobId),
-                        () -> Mono.fromCallable(() -> batchAsyncClient.beginDeleteJob(jobId).getSyncPoller())));
+            final String finalFileName = fileName;
 
-                deletePoller.waitForCompletion();
-            } catch (Exception e) {
-                System.err.println("Cleanup failed for job: " + jobId);
-                e.printStackTrace();
-            }
+            // Get node file content
+            BinaryData binaryData = SyncAsyncExtension.execute(
+                () -> batchClient.getNodeFileWithResponse(poolId, nodeId, finalFileName, null).getValue(),
+                () -> Mono
+                    .fromCallable(() -> batchAsyncClient.getNodeFileWithResponse(poolId, nodeId, finalFileName, null)
+                        .block()
+                        .getValue()));
+
+            String fileContent = new String(binaryData.toBytes(), StandardCharsets.UTF_8);
+            Assertions.assertEquals("hello\r\n", fileContent);
+
+            // Get node file properties
+            BatchFileProperties fileProperties
+                = SyncAsyncExtension.execute(() -> batchClient.getNodeFileProperties(poolId, nodeId, finalFileName),
+                    () -> batchAsyncClient.getNodeFileProperties(poolId, nodeId, finalFileName));
+
+            Assertions.assertEquals(7, fileProperties.getContentLength());
+
+        } else {
+            throw new TimeoutException("Task did not complete within the specified timeout");
+        }
+
+        // DELETE
+        try {
+            SyncPoller<BatchJob, Void> deletePoller
+                = setPlaybackSyncPollerPollInterval(SyncAsyncExtension.execute(() -> batchClient.beginDeleteJob(jobId),
+                    () -> Mono.fromCallable(() -> batchAsyncClient.beginDeleteJob(jobId).getSyncPoller())));
+
+            deletePoller.waitForCompletion();
+        } catch (Exception e) {
+            System.err.println("Cleanup failed for job: " + jobId);
+            e.printStackTrace();
         }
     }
 

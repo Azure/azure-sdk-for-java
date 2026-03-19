@@ -11,9 +11,9 @@ import com.azure.core.util.ServiceVersion;
  */
 public enum AIProjectsServiceVersion implements ServiceVersion {
     /**
-     * Enum value 2025-11-15-preview.
+     * Enum value v1.
      */
-    V2025_11_15_PREVIEW("2025-11-15-preview");
+    V1("v1");
 
     private final String version;
 
@@ -35,6 +35,6 @@ public enum AIProjectsServiceVersion implements ServiceVersion {
      * @return The latest {@link AIProjectsServiceVersion}.
      */
     public static AIProjectsServiceVersion getLatest() {
-        return V2025_11_15_PREVIEW;
+        return V1;
     }
 }

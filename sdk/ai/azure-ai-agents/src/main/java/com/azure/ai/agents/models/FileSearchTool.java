@@ -9,10 +9,14 @@ import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.openai.models.ComparisonFilter;
+import com.openai.models.CompoundFilter;
 import java.io.IOException;
 import java.util.List;
 
 /**
+ * File search
+ *
  * A tool that searches for relevant content from uploaded files. Learn more about the [file search
  * tool](https://platform.openai.com/docs/guides/tools-file-search).
  */
@@ -38,7 +42,7 @@ public final class FileSearchTool extends Tool {
     private RankingOptions rankingOptions;
 
     /*
-     * A filter to apply.
+     * The filters property.
      */
     @Generated
     private BinaryData filters;
@@ -97,28 +101,6 @@ public final class FileSearchTool extends Tool {
     }
 
     /**
-     * Get the filters property: A filter to apply.
-     *
-     * @return the filters value.
-     */
-    @Generated
-    public BinaryData getFilters() {
-        return this.filters;
-    }
-
-    /**
-     * Set the filters property: A filter to apply.
-     *
-     * @param filters the filters value to set.
-     * @return the FileSearchTool object itself.
-     */
-    @Generated
-    public FileSearchTool setFilters(BinaryData filters) {
-        this.filters = filters;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -151,7 +133,7 @@ public final class FileSearchTool extends Tool {
         return jsonReader.readObject(reader -> {
             List<String> vectorStoreIds = null;
             ToolType type = ToolType.FILE_SEARCH;
-            Integer maxResults = null;
+            Long maxResults = null;
             RankingOptions rankingOptions = null;
             BinaryData filters = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -162,7 +144,7 @@ public final class FileSearchTool extends Tool {
                 } else if ("type".equals(fieldName)) {
                     type = ToolType.fromString(reader.getString());
                 } else if ("max_num_results".equals(fieldName)) {
-                    maxResults = reader.getNullable(JsonReader::getInt);
+                    maxResults = reader.getNullable(JsonReader::getLong);
                 } else if ("ranking_options".equals(fieldName)) {
                     rankingOptions = RankingOptions.fromJson(reader);
                 } else if ("filters".equals(fieldName)) {
@@ -184,7 +166,7 @@ public final class FileSearchTool extends Tool {
      * The maximum number of results to return. This number should be between 1 and 50 inclusive.
      */
     @Generated
-    private Integer maxResults;
+    private Long maxResults;
 
     /**
      * Get the maxResults property: The maximum number of results to return. This number should be between 1 and 50
@@ -193,7 +175,7 @@ public final class FileSearchTool extends Tool {
      * @return the maxResults value.
      */
     @Generated
-    public Integer getMaxResults() {
+    public Long getMaxResults() {
         return this.maxResults;
     }
 
@@ -205,8 +187,60 @@ public final class FileSearchTool extends Tool {
      * @return the FileSearchTool object itself.
      */
     @Generated
-    public FileSearchTool setMaxResults(Integer maxResults) {
+    public FileSearchTool setMaxResults(Long maxResults) {
         this.maxResults = maxResults;
+        return this;
+    }
+
+    /**
+     * Get the filters property: The filters property.
+     *
+     * @return the filters value.
+     */
+    BinaryData getFilters() {
+        // AI Tooling: union type
+        return this.filters;
+    }
+
+    /**
+     * Set the filters property: The filters property.
+     *
+     * @param filters the filters value to set.
+     * @return the FileSearchTool object itself.
+     */
+    FileSearchTool setFilters(BinaryData filters) {
+        // AI Tooling: union type
+        this.filters = filters;
+        return this;
+    }
+
+    /**
+     * Sets the file search filters using an openai-java {@link ComparisonFilter}.
+     * <p>
+     * The provided filter is serialized using the openai-java JSON schema and stored in the
+     * {@code filters} property as {@link com.azure.core.util.BinaryData}.
+     *
+     * @param filter the openai-java ComparisonFilter to apply, or null to clear.
+     * @return the FileSearchTool object itself.
+     */
+    public FileSearchTool setComparisonFilter(ComparisonFilter filter) {
+        // AI Tooling: openai-java de-dup
+        this.filters = com.azure.ai.agents.implementation.OpenAIJsonHelper.toBinaryData(filter);
+        return this;
+    }
+
+    /**
+     * Sets the file search filters using an openai-java {@link CompoundFilter}.
+     * <p>
+     * The provided filter is serialized using the openai-java JSON schema and stored in the
+     * {@code filters} property as {@link BinaryData}.
+     *
+     * @param filter the openai-java CompoundFilter to apply, or null to clear.
+     * @return the FileSearchTool object itself.
+     */
+    public FileSearchTool setCompoundFilter(CompoundFilter filter) {
+        // AI Tooling: openai-java de-dup
+        this.filters = com.azure.ai.agents.implementation.OpenAIJsonHelper.toBinaryData(filter);
         return this;
     }
 }

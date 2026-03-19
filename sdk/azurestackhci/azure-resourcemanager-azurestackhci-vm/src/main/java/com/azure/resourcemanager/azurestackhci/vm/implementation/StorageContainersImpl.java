@@ -31,12 +31,8 @@ public final class StorageContainersImpl implements StorageContainers {
         String storageContainerName, Context context) {
         Response<StorageContainerInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, storageContainerName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new StorageContainerImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new StorageContainerImpl(inner.getValue(), this.manager()));
     }
 
     public StorageContainer getByResourceGroup(String resourceGroupName, String storageContainerName) {

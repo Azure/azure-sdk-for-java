@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.netapp.models.AzureKeyVaultDetails;
 import com.azure.resourcemanager.netapp.models.BucketPermissions;
 import com.azure.resourcemanager.netapp.models.BucketServerProperties;
 import com.azure.resourcemanager.netapp.models.CredentialsStatus;
@@ -58,6 +59,21 @@ public final class BucketProperties implements JsonSerializable<BucketProperties
      * during bucket creation.
      */
     private BucketPermissions permissions;
+
+    /*
+     * Specifies the Azure Key Vault settings. These are used when
+     * a) retrieving the bucket server certificate, and
+     * b) storing the bucket credentials
+     * 
+     * Notes:
+     * 
+     * 1. If a bucket certificate was previously provided directly using the certificateObject property, it is possible
+     * to subsequently use the Azure Key Vault for certificate management by using these 'akvDetails' properties.
+     * However, once Azure Key Vault is configured, it is no longer possible to provide the certificate directly via the
+     * certificateObject property.
+     * 2. These properties are mutually exclusive with the server.certificateObject property.
+     */
+    private AzureKeyVaultDetails akvDetails;
 
     /**
      * Creates an instance of BucketProperties class.
@@ -176,6 +192,46 @@ public final class BucketProperties implements JsonSerializable<BucketProperties
     }
 
     /**
+     * Get the akvDetails property: Specifies the Azure Key Vault settings. These are used when
+     * a) retrieving the bucket server certificate, and
+     * b) storing the bucket credentials
+     * 
+     * Notes:
+     * 
+     * 1. If a bucket certificate was previously provided directly using the certificateObject property, it is possible
+     * to subsequently use the Azure Key Vault for certificate management by using these 'akvDetails' properties.
+     * However, once Azure Key Vault is configured, it is no longer possible to provide the certificate directly via the
+     * certificateObject property.
+     * 2. These properties are mutually exclusive with the server.certificateObject property.
+     * 
+     * @return the akvDetails value.
+     */
+    public AzureKeyVaultDetails akvDetails() {
+        return this.akvDetails;
+    }
+
+    /**
+     * Set the akvDetails property: Specifies the Azure Key Vault settings. These are used when
+     * a) retrieving the bucket server certificate, and
+     * b) storing the bucket credentials
+     * 
+     * Notes:
+     * 
+     * 1. If a bucket certificate was previously provided directly using the certificateObject property, it is possible
+     * to subsequently use the Azure Key Vault for certificate management by using these 'akvDetails' properties.
+     * However, once Azure Key Vault is configured, it is no longer possible to provide the certificate directly via the
+     * certificateObject property.
+     * 2. These properties are mutually exclusive with the server.certificateObject property.
+     * 
+     * @param akvDetails the akvDetails value to set.
+     * @return the BucketProperties object itself.
+     */
+    public BucketProperties withAkvDetails(AzureKeyVaultDetails akvDetails) {
+        this.akvDetails = akvDetails;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -186,6 +242,9 @@ public final class BucketProperties implements JsonSerializable<BucketProperties
         }
         if (server() != null) {
             server().validate();
+        }
+        if (akvDetails() != null) {
+            akvDetails().validate();
         }
     }
 
@@ -199,6 +258,7 @@ public final class BucketProperties implements JsonSerializable<BucketProperties
         jsonWriter.writeJsonField("fileSystemUser", this.fileSystemUser);
         jsonWriter.writeJsonField("server", this.server);
         jsonWriter.writeStringField("permissions", this.permissions == null ? null : this.permissions.toString());
+        jsonWriter.writeJsonField("akvDetails", this.akvDetails);
         return jsonWriter.writeEndObject();
     }
 
@@ -229,6 +289,8 @@ public final class BucketProperties implements JsonSerializable<BucketProperties
                     deserializedBucketProperties.server = BucketServerProperties.fromJson(reader);
                 } else if ("permissions".equals(fieldName)) {
                     deserializedBucketProperties.permissions = BucketPermissions.fromString(reader.getString());
+                } else if ("akvDetails".equals(fieldName)) {
+                    deserializedBucketProperties.akvDetails = AzureKeyVaultDetails.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

@@ -5,16 +5,18 @@
 package com.azure.ai.agents;
 
 import com.azure.ai.agents.implementation.OpenAIJsonHelper;
-import com.azure.ai.agents.models.AgentReference;
+import com.azure.ai.agents.implementation.StreamingUtils;
+import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.core.annotation.ServiceClient;
 import com.openai.client.OpenAIClientAsync;
 import com.openai.core.JsonValue;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
+import com.openai.models.responses.ResponseStreamEvent;
 import com.openai.services.async.ResponseServiceAsync;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -23,7 +25,7 @@ import java.util.Objects;
  */
 @ServiceClient(builder = AgentsClientBuilder.class, isAsync = true)
 public final class ResponsesAsyncClient {
-    private final ResponseServiceAsync openAIResponsesClientAsync;
+    private final ResponseServiceAsync responseServiceAsync;
 
     /**
      * Initializes an instance of ResponsesAsyncClient class using the official OpenAI client library.
@@ -31,7 +33,7 @@ public final class ResponsesAsyncClient {
      * @param openAIClientAsync the OpenAI async client.
      */
     ResponsesAsyncClient(OpenAIClientAsync openAIClientAsync) {
-        this.openAIResponsesClientAsync = openAIClientAsync.responses();
+        this.responseServiceAsync = openAIClientAsync.responses();
     }
 
     /**
@@ -40,30 +42,42 @@ public final class ResponsesAsyncClient {
      * @return the OpenAI response service client.
      */
     public ResponseServiceAsync getResponseServiceAsync() {
-        return this.openAIResponsesClientAsync;
+        return this.responseServiceAsync;
     }
 
     /**
-     * Creates a response with an agent conversation.
+     * Creates a response passing additional Azure-specific properties (such as an {@link com.azure.ai.agents.models.AgentReference})
+     * through the {@link AzureCreateResponseOptions}
      *
-     * @param agentReference The agent reference.
-     * @param conversationId The conversation ID.
+     * @param createResponse The Azure-specific create response properties.
      * @param params The parameters to create the response.
-     * @return A Mono that emits the created Response.
+     * @return The created Response.
      */
-    public Mono<Response> createWithAgentConversation(AgentReference agentReference, String conversationId,
+    public Mono<Response> createAzureResponse(AzureCreateResponseOptions createResponse,
         ResponseCreateParams.Builder params) {
-        Objects.requireNonNull(agentReference, "agentReference cannot be null");
-        Objects.requireNonNull(conversationId, "conversationId cannot be null");
+        Objects.requireNonNull(createResponse, "createResponse cannot be null");
         Objects.requireNonNull(params, "params cannot be null");
 
-        JsonValue agentRefJsonValue = OpenAIJsonHelper.toJsonValue(agentReference);
-
-        Map<String, JsonValue> additionalBodyProperties = new HashMap<>();
-        params.conversation(conversationId);
-        additionalBodyProperties.put("agent", agentRefJsonValue);
-
+        Map<String, JsonValue> additionalBodyProperties = OpenAIJsonHelper.toJsonValueMap(createResponse);
         params.additionalBodyProperties(additionalBodyProperties);
-        return Mono.fromFuture(this.openAIResponsesClientAsync.create(params.build()));
+        return Mono.fromFuture(this.responseServiceAsync.create(params.build()));
+    }
+
+    /**
+     * Creates a streaming response passing additional Azure-specific properties (such as an {@link com.azure.ai.agents.models.AgentReference})
+     * through the {@link AzureCreateResponseOptions}
+     *
+     * @param createResponse The Azure-specific create response properties.
+     * @param params The parameters to create the response.
+     * @return A {@link Flux} stream of {@link ResponseStreamEvent} items.
+     */
+    public Flux<ResponseStreamEvent> createStreamingAzureResponse(AzureCreateResponseOptions createResponse,
+        ResponseCreateParams.Builder params) {
+        Objects.requireNonNull(createResponse, "createResponse cannot be null");
+        Objects.requireNonNull(params, "params cannot be null");
+
+        Map<String, JsonValue> additionalBodyProperties = OpenAIJsonHelper.toJsonValueMap(createResponse);
+        params.additionalBodyProperties(additionalBodyProperties);
+        return StreamingUtils.toFlux(this.responseServiceAsync.createStreaming(params.build()));
     }
 }

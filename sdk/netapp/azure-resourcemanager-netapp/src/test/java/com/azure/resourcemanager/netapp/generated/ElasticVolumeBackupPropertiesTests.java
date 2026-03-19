@@ -13,22 +13,22 @@ public final class ElasticVolumeBackupPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ElasticVolumeBackupProperties model = BinaryData.fromString(
-            "{\"elasticBackupPolicyResourceId\":\"cxy\",\"policyEnforcement\":\"NotEnforced\",\"elasticBackupVaultResourceId\":\"jhlimmbcxfhbcpo\"}")
+            "{\"elasticBackupPolicyResourceId\":\"mes\",\"policyEnforcement\":\"NotEnforced\",\"elasticBackupVaultResourceId\":\"pagzrcxfailcfxwm\"}")
             .toObject(ElasticVolumeBackupProperties.class);
-        Assertions.assertEquals("cxy", model.elasticBackupPolicyResourceId());
+        Assertions.assertEquals("mes", model.elasticBackupPolicyResourceId());
         Assertions.assertEquals(ElasticVolumePolicyEnforcement.NOT_ENFORCED, model.policyEnforcement());
-        Assertions.assertEquals("jhlimmbcxfhbcpo", model.elasticBackupVaultResourceId());
+        Assertions.assertEquals("pagzrcxfailcfxwm", model.elasticBackupVaultResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ElasticVolumeBackupProperties model
-            = new ElasticVolumeBackupProperties().withElasticBackupPolicyResourceId("cxy")
+            = new ElasticVolumeBackupProperties().withElasticBackupPolicyResourceId("mes")
                 .withPolicyEnforcement(ElasticVolumePolicyEnforcement.NOT_ENFORCED)
-                .withElasticBackupVaultResourceId("jhlimmbcxfhbcpo");
+                .withElasticBackupVaultResourceId("pagzrcxfailcfxwm");
         model = BinaryData.fromObject(model).toObject(ElasticVolumeBackupProperties.class);
-        Assertions.assertEquals("cxy", model.elasticBackupPolicyResourceId());
+        Assertions.assertEquals("mes", model.elasticBackupPolicyResourceId());
         Assertions.assertEquals(ElasticVolumePolicyEnforcement.NOT_ENFORCED, model.policyEnforcement());
-        Assertions.assertEquals("jhlimmbcxfhbcpo", model.elasticBackupVaultResourceId());
+        Assertions.assertEquals("pagzrcxfailcfxwm", model.elasticBackupVaultResourceId());
     }
 }

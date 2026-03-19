@@ -166,7 +166,7 @@ public final class IndexesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> createOrUpdate(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> createOrUpdateVersion(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
             @HeaderParam("Content-Type") String contentType, @PathParam("version") String version,
             @HeaderParam("Accept") String accept, @BodyParam("application/merge-patch+json") BinaryData index,
@@ -178,7 +178,7 @@ public final class IndexesImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> createOrUpdateSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> createOrUpdateVersionSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
             @HeaderParam("Content-Type") String contentType, @PathParam("version") String version,
             @HeaderParam("Accept") String accept, @BodyParam("application/merge-patch+json") BinaryData index,
@@ -670,13 +670,13 @@ public final class IndexesImpl {
      * @return index resource Definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(String name, String version, BinaryData index,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createOrUpdateVersionWithResponseAsync(String name, String version,
+        BinaryData index, RequestOptions requestOptions) {
         final String contentType = "application/merge-patch+json";
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-                name, contentType, version, accept, index, requestOptions, context));
+        return FluxUtil.withContext(context -> service.createOrUpdateVersion(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), name, contentType, version, accept, index, requestOptions,
+            context));
     }
 
     /**
@@ -726,12 +726,13 @@ public final class IndexesImpl {
      * @return index resource Definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateWithResponse(String name, String version, BinaryData index,
+    public Response<BinaryData> createOrUpdateVersionWithResponse(String name, String version, BinaryData index,
         RequestOptions requestOptions) {
         final String contentType = "application/merge-patch+json";
         final String accept = "application/json";
-        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), name,
-            contentType, version, accept, index, requestOptions, Context.NONE);
+        return service.createOrUpdateVersionSync(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), name, contentType, version, accept, index, requestOptions,
+            Context.NONE);
     }
 
     /**
