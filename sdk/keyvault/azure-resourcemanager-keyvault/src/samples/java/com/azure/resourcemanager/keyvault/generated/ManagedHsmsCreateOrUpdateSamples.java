@@ -19,7 +19,7 @@ import java.util.UUID;
  */
 public final class ManagedHsmsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-05-01/ManagedHsm_CreateOrUpdate.json
+     * x-ms-original-file: 2026-02-01/ManagedHsm_CreateOrUpdate.json
      */
     /**
      * Sample code: Create a new managed HSM Pool or update an existing managed HSM Pool.
@@ -37,10 +37,9 @@ public final class ManagedHsmsCreateOrUpdateSamples {
                         .withEnableSoftDelete(true)
                         .withSoftDeleteRetentionInDays(90)
                         .withEnablePurgeProtection(false))
-                .withTags(mapOf("Dept", "hsm", "Environment", "dogfood"))
+                .withSku(new ManagedHsmSku().withFamily(ManagedHsmSkuFamily.B).withName(ManagedHsmSkuName.STANDARD_B1))
                 .withLocation("westus")
-                .withSku(new ManagedHsmSku().withFamily(ManagedHsmSkuFamily.B).withName(ManagedHsmSkuName.STANDARD_B1)),
-                com.azure.core.util.Context.NONE);
+                .withTags(mapOf("Dept", "hsm", "Environment", "dogfood")), com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

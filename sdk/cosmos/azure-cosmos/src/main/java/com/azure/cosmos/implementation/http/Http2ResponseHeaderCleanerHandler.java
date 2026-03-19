@@ -4,7 +4,6 @@
 package com.azure.cosmos.implementation.http;
 
 import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.codec.http2.Http2Headers;
@@ -20,8 +19,7 @@ public class Http2ResponseHeaderCleanerHandler extends ChannelInboundHandlerAdap
 
     private static final Logger logger = LoggerFactory.getLogger(Http2ResponseHeaderCleanerHandler.class);
     private static final AsciiString SERVER_VERSION_KEY = AsciiString.of(HttpConstants.HttpHeaders.SERVER_VERSION);
-
-
+    
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         if (msg instanceof Http2HeadersFrame) {

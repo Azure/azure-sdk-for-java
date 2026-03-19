@@ -185,11 +185,13 @@ abstract class SyncBenchmark<T> implements Benchmark {
                     CompletableFuture<PojoizedJson> futureResult = CompletableFuture.supplyAsync(() -> {
 
                         int maxRetries = 5;
+                        Exception lastException = null;
                         for (int attempt = 0; attempt <= maxRetries; attempt++) {
                             try {
                                 CosmosItemResponse<PojoizedJson> itemResponse = cosmosContainer.createItem(newDoc);
                                 return toPojoizedJson(itemResponse);
                             } catch (CosmosException ce) {
+                                lastException = ce;
                                 if (ce.getStatusCode() == 409) {
                                     // conflict — document already exists, read it back
                                     try {
@@ -214,10 +216,11 @@ abstract class SyncBenchmark<T> implements Benchmark {
                                 }
                                 throw propagate(ce);
                             } catch (Exception e) {
+                                lastException = e;
                                 throw propagate(e);
                             }
                         }
-                        throw new RuntimeException("Exhausted retries for createItem");
+                        throw new RuntimeException("Exhausted retries for createItem", lastException);
 
                     }, executorService);
 

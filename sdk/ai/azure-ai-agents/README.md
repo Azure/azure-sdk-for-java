@@ -207,7 +207,11 @@ And the final step that ties everything together, we pass the `AgentReference` a
 
 ```java com.azure.ai.agents.create_response
 AgentReference agentReference = new AgentReference(agent.getName()).setVersion(agent.getVersion());
-Response response = responsesClient.createWithAgentConversation(agentReference, conversation.id());
+Response response = responsesClient.createAzureResponse(
+    new AzureCreateResponseOptions().setAgentReference(agentReference),
+    ResponseCreateParams.builder().conversation(conversation.id()));
+// To extract Azure-specific response details:
+AzureCreateResponseDetails azureResults = ResponsesUtils.getAzureFields(response);
 ```
 
 ### Using Agent tools
@@ -378,7 +382,7 @@ AzureFunctionTool azureFunctionTool = new AzureFunctionTool(
 );
 ```
 
-*After calling `responsesClient.createWithAgent()`, the agent enqueues function arguments to the input queue. Your Azure Function processes the request and returns results via the output queue.*
+*After calling `responsesClient.createAzureResponse()`, the agent enqueues function arguments to the input queue. Your Azure Function processes the request and returns results via the output queue.*
 
 See the full sample in [AzureFunctionSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/AzureFunctionSync.java).
 
@@ -576,7 +580,8 @@ ResponseAccumulator responseAccumulator = ResponseAccumulator.create();
 
 // Stream response - text is printed as it arrives
 IterableStream<ResponseStreamEvent> events =
-    responsesClient.createStreamingWithAgent(agentReference,
+    responsesClient.createStreamingAzureResponse(
+        new AzureCreateResponseOptions().setAgentReference(agentReference),
         ResponseCreateParams.builder()
             .input("Tell me a short story about a brave explorer."));
 
@@ -603,7 +608,8 @@ The asynchronous streaming methods return `Flux<ResponseStreamEvent>`, integrati
 ResponseAccumulator responseAccumulator = ResponseAccumulator.create();
 
 // Stream response asynchronously - text is printed as each chunk arrives
-return responsesAsyncClient.createStreamingWithAgent(agentReference,
+return responsesAsyncClient.createStreamingAzureResponse(
+        new AzureCreateResponseOptions().setAgentReference(agentReference),
         ResponseCreateParams.builder()
             .input("Tell me a short story about a brave explorer."))
     .doOnNext(event -> {
@@ -620,6 +626,56 @@ return responsesAsyncClient.createStreamingWithAgent(agentReference,
 ```
 
 See the full samples in [SimpleStreamingAsync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/streaming/SimpleStreamingAsync.java), [FunctionCallStreamingAsync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/streaming/FunctionCallStreamingAsync.java), and [CodeInterpreterStreamingAsync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/streaming/CodeInterpreterStreamingAsync.java).
+
+---
+
+### Structured inputs
+
+Structured inputs allow you to define named parameters on an agent that get substituted into its prompt template at runtime. This is useful when you want the same agent definition to handle different users or contexts by simply changing the input values.
+
+#### Define structured inputs on an agent
+
+When creating the agent, declare each structured input with a description and whether it is required. Use `{{inputName}}` placeholders in the instructions to reference them:
+
+```java com.azure.ai.agents.define_structured_inputs
+// Create an agent with structured input definitions
+Map<String, StructuredInputDefinition> structuredInputDefinitions = new LinkedHashMap<>();
+structuredInputDefinitions.put("userName",
+    new StructuredInputDefinition().setDescription("User's name").setRequired(true));
+structuredInputDefinitions.put("userRole",
+    new StructuredInputDefinition().setDescription("User's role").setRequired(true));
+
+AgentVersionDetails agent = agentsClient.createAgentVersion("structured-input-agent",
+    new PromptAgentDefinition(model)
+        .setInstructions("You are a helpful assistant. "
+            + "The user's name is {{userName}} and their role is {{userRole}}. "
+            + "Greet them and confirm their details.")
+        .setStructuredInputs(structuredInputDefinitions));
+```
+
+#### Create a response with structured input values
+
+When creating a response, pass a `Map<String, BinaryData>` whose keys match the structured input names declared on the agent. The values are substituted into the prompt template before the model processes the request:
+
+```java com.azure.ai.agents.create_response_with_structured_input
+// Build the structured input values that match the agent's definitions
+Map<String, BinaryData> structuredInputValues = new LinkedHashMap<>();
+structuredInputValues.put("userName", BinaryData.fromObject("Alice Smith"));
+structuredInputValues.put("userRole", BinaryData.fromObject("Senior Developer"));
+
+// Create a response using AzureCreateResponse, which flattens agent_reference
+// and structured_inputs as top-level properties in the request body
+Response response = responsesClient.createAzureResponse(
+    new AzureCreateResponseOptions()
+        .setAgentReference(new AgentReference(agent.getName()).setVersion(agent.getVersion()))
+        .setStructuredInputs(structuredInputValues),
+    ResponseCreateParams.builder().input("Hello! Can you confirm my details?")
+);
+```
+
+Streaming is also supported via `createStreamingAzureResponse`, which returns an `IterableStream<ResponseStreamEvent>` (sync) or `Flux<ResponseStreamEvent>` (async).
+
+See the full sample in [CreateResponseWithStructuredInput.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/CreateResponseWithStructuredInput.java).
 
 ---
 
