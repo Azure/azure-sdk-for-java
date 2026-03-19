@@ -188,8 +188,8 @@ public class BlobServiceSasModelsTests extends BlobTestBase {
     @ParameterizedTest
     @MethodSource("ensureStateResourceAndPermissionSupplier")
     public void ensureStateResourceAndPermission(String container, String blob, String snapshot, String versionId,
-        boolean isDirectory, Integer directoryDepth, BlobContainerSasPermission blobContainerSasPermission, BlobSasPermission blobSasPermission,
-        String resource, String permissionString) {
+        boolean isDirectory, Integer directoryDepth, BlobContainerSasPermission blobContainerSasPermission,
+        BlobSasPermission blobSasPermission, String resource, String permissionString) {
         OffsetDateTime expiryTime = testResourceNamer.now().plusDays(1);
 
         BlobServiceSasSignatureValues values = blobContainerSasPermission != null
@@ -209,8 +209,8 @@ public class BlobServiceSasModelsTests extends BlobTestBase {
             // container , blob , snapshot , versionId , isDirectory , directoryDepth , containerSasPermission , blobSasPermission , resource , permissionString
             Arguments.of("container", null, null, null, false, null,
                 new BlobContainerSasPermission().setReadPermission(true).setListPermission(true), null, "c", "rl"),
-            Arguments.of("container", "blob", null, null, false, null, null, new BlobSasPermission().setReadPermission(true),
-                "b", "r"),
+            Arguments.of("container", "blob", null, null, false, null, null,
+                new BlobSasPermission().setReadPermission(true), "b", "r"),
             Arguments.of("container", "blob", "snapshot", null, false, null, null,
                 new BlobSasPermission().setReadPermission(true), "bs", "r"),
             Arguments.of("container", "blob", null, "version", false, null, null,
@@ -221,7 +221,7 @@ public class BlobServiceSasModelsTests extends BlobTestBase {
                 new BlobSasPermission().setReadPermission(true), "d", "r"),
             Arguments.of("container", "foo/", null, null, true, 1, null,
                 new BlobSasPermission().setReadPermission(true), "d", "r"),
-            Arguments.of("container", "/", null, null, true, 0, null,
-                new BlobSasPermission().setReadPermission(true), "d", "r"));
+            Arguments.of("container", "/", null, null, true, 0, null, new BlobSasPermission().setReadPermission(true),
+                "d", "r"));
     }
 }
