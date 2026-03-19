@@ -49,7 +49,8 @@ Write-Information "ArtifactName is: $ArtifactName"
 Write-Information "ReleaseVersion is: $ReleaseVersion"
 Write-Information "ServiceDirectoryName is: $ServiceDirectoryName"
 
-$MainRemoteUrl = 'https://github.com/Azure/azure-sdk-for-java.git'
+$MainRemoteHttpsUrl = 'https://github.com/Azure/azure-sdk-for-java.git'
+$MainRemoteSshUrl = 'git@github.com:Azure/azure-sdk-for-java.git'
 $RepoRoot = Resolve-Path "${PSScriptRoot}..\..\.."
 $EngDir = Join-Path $RepoRoot "eng"
 $EngCommonScriptsDir = Join-Path $EngDir "common" "scripts"
@@ -77,10 +78,10 @@ function GetPatchVersion($ReleaseVersion) {
   return $null
 }
 
-function GetRemoteName($MainRemoteUrl) {
+function GetRemoteName($MainRemoteHttpsUrl, $MainRemoteSshUrl) {
   foreach($Remote in git remote show) {
     $RemoteUrl = git remote get-url $Remote
-    if($RemoteUrl -eq $MainRemoteUrl) {
+    if(($RemoteUrl -eq $MainRemoteHttpsUrl) -or ($RemoteUrl -eq $MainRemoteSshUrl)) {
       return $Remote
     }
   }
@@ -292,9 +293,9 @@ if(!$PatchVersion) {
 }
 Write-Information "PatchVersion is: $PatchVersion"
 
-$RemoteName = GetRemoteName -MainRemoteUrl $MainRemoteUrl
+$RemoteName = GetRemoteName -MainRemoteHttpsUrl $MainRemoteHttpsUrl -MainRemoteSshUrl $MainRemoteSshUrl
 if(!$RemoteName) {
-    LogError "Could not fetch the remote name for the URL $MainRemoteUrl Exiting ..."
+    LogError "Could not fetch the remote name for the URL $MainRemoteHttpsUrl or $MainRemoteSshUrl. Exiting ..."
     exit 1
 }
 Write-Information "RemoteName is: $RemoteName"

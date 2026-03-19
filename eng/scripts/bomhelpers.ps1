@@ -78,7 +78,8 @@ function GetPatchVersion([String]$ReleaseVersion) {
 
 # Get remote name
 function GetRemoteName() {
-  $mainRemoteUrl = "https://github.com/Azure/azure-sdk-for-java"
+  $mainRemoteHttpsUrl = "https://github.com/Azure/azure-sdk-for-java"
+  $mainRemoteSshUrl = "git@github.com:Azure/azure-sdk-for-java"
   $remoteName = "origin"
   Write-Host "git remote show"
   $remoteNames = git remote show
@@ -86,7 +87,7 @@ function GetRemoteName() {
     Write-Host "git remote get-url $rem"
     $remoteUrl = git remote get-url $rem
     $remoteString = [string]$remoteUrl
-    if ($remoteString -Match $mainRemoteUrl) {
+    if (($remoteString -Match $mainRemoteHttpsUrl) -or ($remoteString -Match $mainRemoteSshUrl)) {
       $remoteName = $rem
       break;
     }
