@@ -106,28 +106,28 @@
 
 #### `models.ScheduledActions` was modified
 
-* `virtualMachinesSubmitDeallocate(java.lang.String,models.SubmitDeallocateRequest)` was removed
-* `virtualMachinesExecuteCreateWithResponse(java.lang.String,models.ExecuteCreateRequest,com.azure.core.util.Context)` was removed
-* `virtualMachinesSubmitStart(java.lang.String,models.SubmitStartRequest)` was removed
-* `virtualMachinesSubmitHibernateWithResponse(java.lang.String,models.SubmitHibernateRequest,com.azure.core.util.Context)` was removed
-* `virtualMachinesExecuteStart(java.lang.String,models.ExecuteStartRequest)` was removed
-* `virtualMachinesSubmitDeallocateWithResponse(java.lang.String,models.SubmitDeallocateRequest,com.azure.core.util.Context)` was removed
-* `virtualMachinesGetOperationErrors(java.lang.String,models.GetOperationErrorsRequest)` was removed
-* `virtualMachinesCancelOperationsWithResponse(java.lang.String,models.CancelOperationsRequest,com.azure.core.util.Context)` was removed
-* `virtualMachinesExecuteStartWithResponse(java.lang.String,models.ExecuteStartRequest,com.azure.core.util.Context)` was removed
-* `virtualMachinesExecuteDeleteWithResponse(java.lang.String,models.ExecuteDeleteRequest,com.azure.core.util.Context)` was removed
-* `virtualMachinesCancelOperations(java.lang.String,models.CancelOperationsRequest)` was removed
-* `virtualMachinesGetOperationErrorsWithResponse(java.lang.String,models.GetOperationErrorsRequest,com.azure.core.util.Context)` was removed
-* `virtualMachinesExecuteDeallocate(java.lang.String,models.ExecuteDeallocateRequest)` was removed
-* `virtualMachinesSubmitHibernate(java.lang.String,models.SubmitHibernateRequest)` was removed
-* `virtualMachinesGetOperationStatusWithResponse(java.lang.String,models.GetOperationStatusRequest,com.azure.core.util.Context)` was removed
-* `virtualMachinesExecuteCreate(java.lang.String,models.ExecuteCreateRequest)` was removed
 * `virtualMachinesGetOperationStatus(java.lang.String,models.GetOperationStatusRequest)` was removed
-* `virtualMachinesSubmitStartWithResponse(java.lang.String,models.SubmitStartRequest,com.azure.core.util.Context)` was removed
-* `virtualMachinesExecuteDeallocateWithResponse(java.lang.String,models.ExecuteDeallocateRequest,com.azure.core.util.Context)` was removed
-* `virtualMachinesExecuteDelete(java.lang.String,models.ExecuteDeleteRequest)` was removed
-* `virtualMachinesExecuteHibernate(java.lang.String,models.ExecuteHibernateRequest)` was removed
+* `virtualMachinesExecuteCreate(java.lang.String,models.ExecuteCreateRequest)` was removed
 * `virtualMachinesExecuteHibernateWithResponse(java.lang.String,models.ExecuteHibernateRequest,com.azure.core.util.Context)` was removed
+* `virtualMachinesExecuteStartWithResponse(java.lang.String,models.ExecuteStartRequest,com.azure.core.util.Context)` was removed
+* `virtualMachinesCancelOperations(java.lang.String,models.CancelOperationsRequest)` was removed
+* `virtualMachinesExecuteDelete(java.lang.String,models.ExecuteDeleteRequest)` was removed
+* `virtualMachinesCancelOperationsWithResponse(java.lang.String,models.CancelOperationsRequest,com.azure.core.util.Context)` was removed
+* `virtualMachinesSubmitStart(java.lang.String,models.SubmitStartRequest)` was removed
+* `virtualMachinesSubmitDeallocateWithResponse(java.lang.String,models.SubmitDeallocateRequest,com.azure.core.util.Context)` was removed
+* `virtualMachinesExecuteDeallocate(java.lang.String,models.ExecuteDeallocateRequest)` was removed
+* `virtualMachinesSubmitStartWithResponse(java.lang.String,models.SubmitStartRequest,com.azure.core.util.Context)` was removed
+* `virtualMachinesExecuteHibernate(java.lang.String,models.ExecuteHibernateRequest)` was removed
+* `virtualMachinesGetOperationStatusWithResponse(java.lang.String,models.GetOperationStatusRequest,com.azure.core.util.Context)` was removed
+* `virtualMachinesExecuteCreateWithResponse(java.lang.String,models.ExecuteCreateRequest,com.azure.core.util.Context)` was removed
+* `virtualMachinesGetOperationErrors(java.lang.String,models.GetOperationErrorsRequest)` was removed
+* `virtualMachinesGetOperationErrorsWithResponse(java.lang.String,models.GetOperationErrorsRequest,com.azure.core.util.Context)` was removed
+* `virtualMachinesExecuteStart(java.lang.String,models.ExecuteStartRequest)` was removed
+* `virtualMachinesSubmitDeallocate(java.lang.String,models.SubmitDeallocateRequest)` was removed
+* `virtualMachinesExecuteDeleteWithResponse(java.lang.String,models.ExecuteDeleteRequest,com.azure.core.util.Context)` was removed
+* `virtualMachinesSubmitHibernateWithResponse(java.lang.String,models.SubmitHibernateRequest,com.azure.core.util.Context)` was removed
+* `virtualMachinesSubmitHibernate(java.lang.String,models.SubmitHibernateRequest)` was removed
+* `virtualMachinesExecuteDeallocateWithResponse(java.lang.String,models.ExecuteDeallocateRequest,com.azure.core.util.Context)` was removed
 
 #### `models.Error` was modified
 
@@ -223,8 +223,8 @@
 
 #### `models.RetryPolicy` was modified
 
-* `onFailureAction()` was added
 * `withOnFailureAction(models.ResourceOperationType)` was added
+* `onFailureAction()` was added
 
 #### `models.ResourceOperationType` was modified
 
@@ -233,30 +233,30 @@
 
 #### `models.ScheduledActions` was modified
 
-* `virtualMachinesExecuteDeallocate(java.lang.String,models.ExecuteDeallocateContent)` was added
-* `virtualMachinesSubmitHibernate(java.lang.String,models.SubmitHibernateContent)` was added
-* `virtualMachinesExecuteStartWithResponse(java.lang.String,models.ExecuteStartContent,com.azure.core.util.Context)` was added
+* `virtualMachinesSubmitDeallocate(java.lang.String,models.SubmitDeallocateContent)` was added
+* `virtualMachinesGetOperationErrorsWithResponse(java.lang.String,models.GetOperationErrorsContent,com.azure.core.util.Context)` was added
+* `virtualMachinesSubmitDeallocateWithResponse(java.lang.String,models.SubmitDeallocateContent,com.azure.core.util.Context)` was added
 * `virtualMachinesGetOperationStatus(java.lang.String,models.GetOperationStatusContent)` was added
+* `virtualMachinesExecuteDeleteWithResponse(java.lang.String,models.ExecuteDeleteContent,com.azure.core.util.Context)` was added
+* `virtualMachinesExecuteStart(java.lang.String,models.ExecuteStartContent)` was added
+* `virtualMachinesGetOperationErrors(java.lang.String,models.GetOperationErrorsContent)` was added
 * `virtualMachinesExecuteCreateWithResponse(java.lang.String,models.ExecuteCreateContent,com.azure.core.util.Context)` was added
-* `virtualMachinesGetOperationStatusWithResponse(java.lang.String,models.GetOperationStatusContent,com.azure.core.util.Context)` was added
+* `virtualMachinesSubmitStartWithResponse(java.lang.String,models.SubmitStartContent,com.azure.core.util.Context)` was added
+* `virtualMachinesSubmitHibernate(java.lang.String,models.SubmitHibernateContent)` was added
+* `virtualMachinesExecuteDeallocateWithResponse(java.lang.String,models.ExecuteDeallocateContent,com.azure.core.util.Context)` was added
+* `virtualMachinesCancelOperations(java.lang.String,models.CancelOperationsContent)` was added
+* `virtualMachinesSubmitStart(java.lang.String,models.SubmitStartContent)` was added
 * `virtualMachinesSubmitHibernateWithResponse(java.lang.String,models.SubmitHibernateContent,com.azure.core.util.Context)` was added
 * `virtualMachinesCancelOperationsWithResponse(java.lang.String,models.CancelOperationsContent,com.azure.core.util.Context)` was added
 * `virtualMachinesExecuteCreateFlexWithResponse(java.lang.String,models.ExecuteCreateFlexContent,com.azure.core.util.Context)` was added
-* `virtualMachinesSubmitDeallocateWithResponse(java.lang.String,models.SubmitDeallocateContent,com.azure.core.util.Context)` was added
-* `virtualMachinesExecuteCreate(java.lang.String,models.ExecuteCreateContent)` was added
-* `virtualMachinesCancelOperations(java.lang.String,models.CancelOperationsContent)` was added
-* `virtualMachinesGetOperationErrorsWithResponse(java.lang.String,models.GetOperationErrorsContent,com.azure.core.util.Context)` was added
-* `virtualMachinesExecuteDeallocateWithResponse(java.lang.String,models.ExecuteDeallocateContent,com.azure.core.util.Context)` was added
-* `virtualMachinesSubmitStartWithResponse(java.lang.String,models.SubmitStartContent,com.azure.core.util.Context)` was added
-* `virtualMachinesExecuteCreateFlex(java.lang.String,models.ExecuteCreateFlexContent)` was added
-* `virtualMachinesSubmitDeallocate(java.lang.String,models.SubmitDeallocateContent)` was added
-* `virtualMachinesExecuteDelete(java.lang.String,models.ExecuteDeleteContent)` was added
-* `virtualMachinesExecuteHibernate(java.lang.String,models.ExecuteHibernateContent)` was added
-* `virtualMachinesGetOperationErrors(java.lang.String,models.GetOperationErrorsContent)` was added
-* `virtualMachinesSubmitStart(java.lang.String,models.SubmitStartContent)` was added
+* `virtualMachinesExecuteStartWithResponse(java.lang.String,models.ExecuteStartContent,com.azure.core.util.Context)` was added
 * `virtualMachinesExecuteHibernateWithResponse(java.lang.String,models.ExecuteHibernateContent,com.azure.core.util.Context)` was added
-* `virtualMachinesExecuteDeleteWithResponse(java.lang.String,models.ExecuteDeleteContent,com.azure.core.util.Context)` was added
-* `virtualMachinesExecuteStart(java.lang.String,models.ExecuteStartContent)` was added
+* `virtualMachinesExecuteCreate(java.lang.String,models.ExecuteCreateContent)` was added
+* `virtualMachinesGetOperationStatusWithResponse(java.lang.String,models.GetOperationStatusContent,com.azure.core.util.Context)` was added
+* `virtualMachinesExecuteDelete(java.lang.String,models.ExecuteDeleteContent)` was added
+* `virtualMachinesExecuteCreateFlex(java.lang.String,models.ExecuteCreateFlexContent)` was added
+* `virtualMachinesExecuteHibernate(java.lang.String,models.ExecuteHibernateContent)` was added
+* `virtualMachinesExecuteDeallocate(java.lang.String,models.ExecuteDeallocateContent)` was added
 
 #### `models.ResourceOperationDetails` was modified
 
