@@ -18,12 +18,9 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.ThroughputProperties;
-import com.codahale.metrics.Meter;
-import com.codahale.metrics.MetricRegistry;
-import com.codahale.metrics.Timer;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.mpierce.metrics.reservoir.hdrhistogram.HdrHistogramResetOnSnapshotReservoir;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,15 +42,12 @@ abstract class SyncBenchmark<T> implements Benchmark {
     private static final ImplementationBridgeHelpers.CosmosClientBuilderHelper.CosmosClientBuilderAccessor clientBuilderAccessor
         = ImplementationBridgeHelpers.CosmosClientBuilderHelper.getCosmosClientBuilderAccessor();
 
-    private final MetricRegistry metricsRegistry;
     private final ExecutorService executorService;
 
-    private Meter successMeter;
-    private Meter failureMeter;
     private boolean databaseCreated;
     private boolean collectionCreated;
 
-    final Logger logger;
+    static final Logger logger = LoggerFactory.getLogger(SyncBenchmark.class);
     final CosmosClient benchmarkWorkloadClient;
     CosmosContainer cosmosContainer;
     CosmosDatabase cosmosDatabase;
@@ -62,7 +56,6 @@ abstract class SyncBenchmark<T> implements Benchmark {
     final TenantWorkloadConfig workloadConfig;
     final List<PojoizedJson> docsToRead;
     final Semaphore concurrencyControlSemaphore;
-    Timer latency;
 
     static abstract class ResultHandler<T, Throwable> implements BiFunction<T, Throwable, T> {
         ResultHandler() {
@@ -75,32 +68,9 @@ abstract class SyncBenchmark<T> implements Benchmark {
         abstract public T apply(T o, Throwable throwable);
     }
 
-    static class LatencyListener<T> extends ResultHandler<T, Throwable> {
-        private final ResultHandler<T, Throwable> baseFunction;
-        private final Timer latencyTimer;
-        Timer.Context context;
-        LatencyListener(ResultHandler<T, Throwable> baseFunction, Timer latencyTimer) {
-            this.baseFunction = baseFunction;
-            this.latencyTimer = latencyTimer;
-        }
-
-        protected void init() {
-            super.init();
-            context = latencyTimer.time();
-        }
-
-        @Override
-        public T apply(T o, Throwable throwable) {
-            context.stop();
-            return baseFunction.apply(o, throwable);
-        }
-    }
-
-    SyncBenchmark(TenantWorkloadConfig workloadCfg, MetricRegistry sharedRegistry) throws Exception {
+    SyncBenchmark(TenantWorkloadConfig workloadCfg) throws Exception {
         executorService = Executors.newFixedThreadPool(workloadCfg.getConcurrency());
         workloadConfig = workloadCfg;
-        metricsRegistry = sharedRegistry;
-        logger = LoggerFactory.getLogger(this.getClass());
 
         boolean isManagedIdentityRequired = workloadCfg.isManagedIdentityRequired();
 
@@ -203,8 +173,7 @@ abstract class SyncBenchmark<T> implements Benchmark {
 
             ArrayList<CompletableFuture<PojoizedJson>> createDocumentFutureList = new ArrayList<>();
 
-            if (workloadCfg.getOperationType() != Operation.WriteLatency
-                    && workloadCfg.getOperationType() != Operation.WriteThroughput
+            if (workloadCfg.getOperationType() != Operation.WriteThroughput
                     && workloadCfg.getOperationType() != Operation.ReadMyWrites) {
                 String dataFieldValue = RandomStringUtils.randomAlphabetic(workloadCfg.getDocumentDataFieldSize());
                 for (int i = 0; i < workloadCfg.getNumberOfPreCreatedDocuments(); i++) {
@@ -215,13 +184,43 @@ abstract class SyncBenchmark<T> implements Benchmark {
                             workloadCfg.getDocumentDataFieldCount());
                     CompletableFuture<PojoizedJson> futureResult = CompletableFuture.supplyAsync(() -> {
 
-                        try {
-                            CosmosItemResponse<PojoizedJson> itemResponse = cosmosContainer.createItem(newDoc);
-                            return toPojoizedJson(itemResponse);
-
-                        } catch (Exception e) {
-                            throw propagate(e);
+                        int maxRetries = 5;
+                        Exception lastException = null;
+                        for (int attempt = 0; attempt <= maxRetries; attempt++) {
+                            try {
+                                CosmosItemResponse<PojoizedJson> itemResponse = cosmosContainer.createItem(newDoc);
+                                return toPojoizedJson(itemResponse);
+                            } catch (CosmosException ce) {
+                                lastException = ce;
+                                if (ce.getStatusCode() == 409) {
+                                    // conflict — document already exists, read it back
+                                    try {
+                                        return cosmosContainer.readItem(
+                                            uuid, new PartitionKey(uuid), PojoizedJson.class).getItem();
+                                    } catch (Exception readEx) {
+                                        throw propagate(readEx);
+                                    }
+                                }
+                                int statusCode = ce.getStatusCode();
+                                boolean isTransient = statusCode == 408 || statusCode == 410
+                                    || statusCode == 429 || statusCode == 449
+                                    || statusCode == 500 || statusCode == 503;
+                                if (isTransient && attempt < maxRetries) {
+                                    try {
+                                        Thread.sleep(1000L * (attempt + 1));
+                                    } catch (InterruptedException ie) {
+                                        Thread.currentThread().interrupt();
+                                        throw propagate(ce);
+                                    }
+                                    continue;
+                                }
+                                throw propagate(ce);
+                            } catch (Exception e) {
+                                lastException = e;
+                                throw propagate(e);
+                            }
                         }
+                        throw new RuntimeException("Exhausted retries for createItem", lastException);
 
                     }, executorService);
 
@@ -261,29 +260,6 @@ abstract class SyncBenchmark<T> implements Benchmark {
 
     public void run() throws Exception {
 
-        successMeter = metricsRegistry.meter(TenantWorkloadConfig.SUCCESS_COUNTER_METER_NAME);
-        failureMeter = metricsRegistry.meter(TenantWorkloadConfig.FAILURE_COUNTER_METER_NAME);
-
-        switch (workloadConfig.getOperationType()) {
-            case ReadLatency:
-            case WriteLatency:
-                // TODO: support for other operationTypes will be added later
-//            case QueryInClauseParallel:
-//            case QueryCross:
-//            case QuerySingle:
-//            case QuerySingleMany:
-//            case QueryParallel:
-//            case QueryOrderby:
-//            case QueryAggregate:
-//            case QueryAggregateTopOrderby:
-//            case QueryTopOrderby:
-            case Mixed:
-                latency = metricsRegistry.register(TenantWorkloadConfig.LATENCY_METER_NAME, new Timer(new HdrHistogramResetOnSnapshotReservoir()));
-                break;
-            default:
-                break;
-        }
-
         long startTime = System.currentTimeMillis();
 
         AtomicLong count = new AtomicLong(0);
@@ -294,7 +270,6 @@ abstract class SyncBenchmark<T> implements Benchmark {
             ResultHandler<T, Throwable> resultHandler = new ResultHandler<T, Throwable>() {
                 @Override
                 public T apply(T t, Throwable throwable) {
-                    successMeter.mark();
                     concurrencyControlSemaphore.release();
                     if (t != null) {
                         assert(throwable == null);
@@ -306,7 +281,6 @@ abstract class SyncBenchmark<T> implements Benchmark {
                     } else {
                         assert(throwable != null);
 
-                        failureMeter.mark();
                         logger.error("Encountered failure {} on thread {}" ,
                                      throwable.getMessage(), Thread.currentThread().getName(), throwable);
                         concurrencyControlSemaphore.release();
@@ -324,28 +298,6 @@ abstract class SyncBenchmark<T> implements Benchmark {
 
             concurrencyControlSemaphore.acquire();
             final long cnt = i;
-
-            switch (workloadConfig.getOperationType()) {
-                case ReadLatency:
-                case WriteLatency:
-                    // TODO: support for other operation types will be added later
-//                case QueryInClauseParallel:
-//                case QueryCross:
-//                case QuerySingle:
-//                case QuerySingleMany:
-//                case QueryParallel:
-//                case QueryOrderby:
-//                case QueryAggregate:
-//                case QueryAggregateTopOrderby:
-//                case QueryTopOrderby:
-//                case Mixed:
-                    LatencyListener<T> latencyListener = new LatencyListener(resultHandler, latency);
-                    latencyListener.context = latency.time();
-                    resultHandler = latencyListener;
-                    break;
-                default:
-                    break;
-            }
 
             final ResultHandler<T, Throwable> finalResultHandler = resultHandler;
 

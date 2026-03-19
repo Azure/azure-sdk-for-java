@@ -30,12 +30,8 @@ public final class ProtectionPolicyOperationStatusesImpl implements ProtectionPo
         String operationId, Context context) {
         Response<OperationStatusInner> inner
             = this.serviceClient().getWithResponse(vaultName, resourceGroupName, policyName, operationId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new OperationStatusImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new OperationStatusImpl(inner.getValue(), this.manager()));
     }
 
     public OperationStatus get(String vaultName, String resourceGroupName, String policyName, String operationId) {

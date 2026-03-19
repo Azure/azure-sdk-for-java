@@ -3,32 +3,27 @@
 
 package com.azure.cosmos.benchmark;
 
-import com.codahale.metrics.ConsoleReporter;
-import com.codahale.metrics.CsvReporter;
-import com.codahale.metrics.ScheduledReporter;
-import com.azure.cosmos.CosmosClient;
-import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.benchmark.ctl.AsyncCtlWorkload;
 import com.azure.cosmos.benchmark.encryption.AsyncEncryptionQueryBenchmark;
 import com.azure.cosmos.benchmark.encryption.AsyncEncryptionQuerySinglePartitionMultiple;
 import com.azure.cosmos.benchmark.encryption.AsyncEncryptionReadBenchmark;
 import com.azure.cosmos.benchmark.encryption.AsyncEncryptionWriteBenchmark;
 import com.azure.cosmos.benchmark.linkedin.LICtlWorkload;
-import com.codahale.metrics.MetricRegistry;
-import com.codahale.metrics.jvm.CachedThreadStatesGaugeSet;
-import com.codahale.metrics.jvm.GarbageCollectorMetricSet;
-import com.codahale.metrics.jvm.MemoryUsageGaugeSet;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Metrics;
-
+import io.micrometer.core.instrument.binder.jvm.JvmGcMetrics;
+import io.micrometer.core.instrument.binder.jvm.JvmMemoryMetrics;
+import io.micrometer.core.instrument.binder.jvm.JvmThreadMetrics;
+import io.micrometer.core.instrument.composite.CompositeMeterRegistry;
+import io.micrometer.core.instrument.logging.LoggingMeterRegistry;
+import io.micrometer.core.instrument.logging.LoggingRegistryConfig;
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
-import org.apache.commons.lang3.StringUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -56,7 +51,7 @@ public class BenchmarkOrchestrator {
         logger.info("  Cycles:    {}", config.getCycles());
         logger.info("  Tenants:   {}", config.getTenantWorkloads().size());
         logger.info("  Run ID:    {}", testRunId);
-        logger.info("  Output:    {}", config.getReportingDirectory());
+        logger.info("  Output:    {}", config.getReportingDestination());
 
         if (config.getTenantWorkloads().isEmpty()) {
             logger.error("No tenants provided");
@@ -65,124 +60,139 @@ public class BenchmarkOrchestrator {
 
         setGlobalSystemProperties(config);
 
-        // Set up shared metric registry
-        MetricRegistry registry = new MetricRegistry();
+        CompositeMeterRegistry compositeRegistry = new CompositeMeterRegistry();
+
+        // Console logging is always active — provides real-time visibility regardless of destination.
+        LoggingMeterRegistry loggingRegistry = LoggingMeterRegistry.builder(
+            new LoggingRegistryConfig() {
+                @Override
+                public String get(String key) { return null; }
+
+                @Override
+                public java.time.Duration step() {
+                    return java.time.Duration.ofSeconds(config.getPrintingInterval());
+                }
+            }).build();
+        compositeRegistry.add(loggingRegistry);
+        logger.info("Console reporter started (LoggingMeterRegistry, interval={}s)",
+            config.getPrintingInterval());
+
+        JvmGcMetrics gcMetrics = null;
+        ThreadPrefixGaugeSet threadPrefixGaugeSet = null;
+
         if (config.isEnableJvmStats()) {
-            registry.register("gc", new GarbageCollectorMetricSet());
-            registry.register("threads", new CachedThreadStatesGaugeSet(10, TimeUnit.SECONDS));
-            registry.register("memory", new MemoryUsageGaugeSet());
-            registry.register("threadPrefix", new ThreadPrefixGaugeSet());
-            logger.info("JVM stats enabled (gc, threads, memory, threadPrefix)");
+            gcMetrics = new JvmGcMetrics();
+            gcMetrics.bindTo(compositeRegistry);
+            new JvmMemoryMetrics().bindTo(compositeRegistry);
+            new JvmThreadMetrics().bindTo(compositeRegistry);
+            threadPrefixGaugeSet = new ThreadPrefixGaugeSet(config.getPrintingInterval());
+            threadPrefixGaugeSet.bindTo(compositeRegistry);
+            logger.info("JVM stats enabled (gc, memory, threads, threadPrefix)");
         }
 
-        // Prepare all tenants (inject shared state, set defaults)
-        prepareTenants(config);
+        // Prepare all tenants (inject shared registry for SDK telemetry)
+        prepareTenants(config, compositeRegistry);
 
-        // Reporter selection: CSV > Console
-        ScheduledReporter reporter;
-        if (config.getReportingDirectory() != null) {
-            Path metricsDir = Paths.get(config.getReportingDirectory(), "metrics");
-            Files.createDirectories(metricsDir);
-            reporter = CsvReporter.forRegistry(registry)
-                .convertDurationsTo(TimeUnit.MILLISECONDS)
-                .convertRatesTo(TimeUnit.SECONDS)
-                .build(metricsDir.toFile());
-            logger.info("CSV metrics reporter started -> {}", metricsDir);
-        } else {
-            reporter = ConsoleReporter.forRegistry(registry)
-                .convertDurationsTo(TimeUnit.MILLISECONDS)
-                .convertRatesTo(TimeUnit.SECONDS)
-                .build();
-            logger.info("Console reporter started");
-        }
-        reporter.start(config.getPrintingInterval(), TimeUnit.SECONDS);
+        ReportingDestination destination = config.getReportingDestination();
+        CsvMetricsReporter csvReporter = null;
+        CosmosMetricsReporter cosmosReporter = null;
+        MeterRegistry appInsightsRegistry = null;
 
-        // Optional: Result uploader
-        CosmosClient resultUploaderClient = null;
-        CosmosTotalResultReporter resultReporter = null;
-        if (config.getResultUploadDatabase() != null
-            && config.getResultUploadContainer() != null
-            && config.getResultUploadEndpoint() != null) {
-            resultUploaderClient = new CosmosClientBuilder()
-                .endpoint(config.getResultUploadEndpoint())
-                .key(config.getResultUploadKey())
-                .buildClient();
-            Set<String> ops = new LinkedHashSet<>();
-            int totalConcurrency = 0;
-            for (TenantWorkloadConfig t : config.getTenantWorkloads()) {
-                ops.add(t.getOperation() != null ? t.getOperation() : "Unknown");
-                totalConcurrency += t.getConcurrency();
+        if (destination != null) {
+            switch (destination) {
+                case CSV:
+                    SimpleMeterRegistry csvSimpleRegistry = new SimpleMeterRegistry();
+                    compositeRegistry.add(csvSimpleRegistry);
+                    csvReporter = new CsvMetricsReporter(
+                        csvSimpleRegistry, config.getCsvReporterConfig().getReportingDirectory());
+                    csvReporter.start(config.getPrintingInterval(), TimeUnit.SECONDS);
+                    break;
+
+                case COSMOSDB:
+                    // The SDK's ClientTelemetryMetrics owns a static CompositeMeterRegistry
+                    // and adds our compositeRegistry as a child. Meters are registered on the
+                    // SDK's composite and flow *down* into child registries, but
+                    // CompositeMeterRegistry.getMeters() only returns meters registered
+                    // directly on that instance — not meters propagated from a parent.
+                    // Therefore the reporter must iterate the SimpleMeterRegistry (where
+                    // the actual meter data is stored), not the composite wrapper.
+                    SimpleMeterRegistry simpleMeterRegistry = new SimpleMeterRegistry();
+                    compositeRegistry.add(simpleMeterRegistry);
+                    Set<String> ops = new LinkedHashSet<>();
+                    int totalConcurrency = 0;
+                    for (TenantWorkloadConfig t : config.getTenantWorkloads()) {
+                        ops.add(t.getOperation() != null ? t.getOperation() : "Unknown");
+                        totalConcurrency += t.getConcurrency();
+                    }
+                    cosmosReporter = CosmosMetricsReporter.create(
+                        simpleMeterRegistry, config.getCosmosReporterConfig(),
+                        String.join("+", ops), totalConcurrency);
+                    cosmosReporter.start(config.getPrintingInterval(), TimeUnit.SECONDS);
+                    break;
+
+                case APPLICATION_INSIGHTS:
+                    appInsightsRegistry = buildAppInsightsMeterRegistry(config.getAppInsightsReporterConfig());
+                    if (appInsightsRegistry != null) {
+                        compositeRegistry.add(appInsightsRegistry);
+                        logger.info("Application Insights registry added");
+                    } else {
+                        logger.warn("APPLICATION_INSIGHTS destination selected but no connection configured");
+                    }
+                    break;
             }
-            String operationSummary = String.join("+", ops);
-            resultReporter = CosmosTotalResultReporter
-                .forRegistry(registry,
-                    resultUploaderClient
-                        .getDatabase(config.getResultUploadDatabase())
-                        .getContainer(config.getResultUploadContainer()),
-                    operationSummary,
-                    config.getTestVariationName(),
-                    config.getBranchName(),
-                    config.getCommitId(),
-                    totalConcurrency)
-                .convertRatesTo(TimeUnit.SECONDS)
-                .convertDurationsTo(TimeUnit.MILLISECONDS)
-                .build();
-            resultReporter.start(config.getPrintingInterval(), TimeUnit.SECONDS);
-            logger.info("Result reporter started -> {}/{}",
-                config.getResultUploadDatabase(), config.getResultUploadContainer());
         }
 
-        // Netty HTTP connection pool metrics reporter (only when enabled)
-        NettyHttpMetricsReporter nettyMetricsReporter = null;
-        SimpleMeterRegistry nettyHttpMeterRegistry = null;
-        // Add a SimpleMeterRegistry to globalRegistry when netty metrics are enabled,
-        if (config.isEnableNettyHttpMetrics() && config.getReportingDirectory() != null) {
-            nettyHttpMeterRegistry = new SimpleMeterRegistry();
-            Metrics.addRegistry(nettyHttpMeterRegistry);
-            logger.info("SimpleMeterRegistry added to globalRegistry for Reactor Netty pool gauge backing");
-
-            Path nettyMetricsDir = Paths.get(config.getReportingDirectory());
-            nettyMetricsReporter = new NettyHttpMetricsReporter(nettyHttpMeterRegistry, nettyMetricsDir);
-            nettyMetricsReporter.start(config.getPrintingInterval(), TimeUnit.SECONDS);
+        // Netty HTTP connection pool metrics: when enabled, add the composite registry
+        // to Metrics.globalRegistry so Reactor Netty pool gauges flow through to
+        // whichever reporting destination is active.
+        boolean addedToGlobalRegistry = false;
+        if (config.isEnableNettyHttpMetrics()) {
+            Metrics.addRegistry(compositeRegistry);
+            addedToGlobalRegistry = true;
+            logger.info("CompositeRegistry added to globalRegistry for Reactor Netty pool metrics");
         }
 
-        reporter.report();
         logger.info("[LIFECYCLE] PRE_CREATE timestamp={}", Instant.now());
         logger.info("BenchmarkConfig: {}", config);
 
         // ======== Lifecycle loop ========
         try {
-            runLifecycleLoop(config, registry, reporter);
+            runLifecycleLoop(config);
         } finally {
-            // Cleanup reporters
-            reporter.report();
-            reporter.stop();
-            if (resultReporter != null) {
-                resultReporter.report();
-                resultReporter.stop();
+            if (csvReporter != null) {
+                csvReporter.stop();
             }
-            if (resultUploaderClient != null) {
-                resultUploaderClient.close();
+            if (cosmosReporter != null) {
+                cosmosReporter.stop();
             }
-            if (nettyMetricsReporter != null) {
-                nettyMetricsReporter.stop();
+            if (appInsightsRegistry != null) {
+                appInsightsRegistry.close();
             }
-            if (nettyHttpMeterRegistry != null) {
-                Metrics.removeRegistry(nettyHttpMeterRegistry);
+            loggingRegistry.close();
+            if (addedToGlobalRegistry) {
+                Metrics.removeRegistry(compositeRegistry);
             }
+            if (gcMetrics != null) {
+                gcMetrics.close();
+            }
+            if (threadPrefixGaugeSet != null) {
+                threadPrefixGaugeSet.close();
+            }
+            compositeRegistry.close();
             clearGlobalSystemProperties();
         }
     }
 
     // ======== Lifecycle loop (create -> run -> close -> settle x N) ========
 
-    private void runLifecycleLoop(BenchmarkConfig config, MetricRegistry registry,
-                                  ScheduledReporter reporter) throws Exception {
+    private void runLifecycleLoop(BenchmarkConfig config) throws Exception {
         int totalCycles = config.getCycles();
         List<TenantWorkloadConfig> tenants = config.getTenantWorkloads();
 
         logger.info("Starting benchmark: {} cycles x {} tenants", totalCycles, tenants.size());
         long startTime = System.currentTimeMillis();
+
+        Scheduler benchmarkScheduler = Schedulers.parallel();
 
         AtomicInteger threadCounter = new AtomicInteger(0);
         ExecutorService executor = Executors.newFixedThreadPool(tenants.size(), r -> {
@@ -193,28 +203,30 @@ public class BenchmarkOrchestrator {
 
         try {
             for (int cycle = 1; cycle <= totalCycles; cycle++) {
-                reporter.report();
                 logger.info("[LIFECYCLE] CYCLE_START cycle={} timestamp={}", cycle, Instant.now());
 
-                // 1. Create clients
-                List<Benchmark> benchmarks = createBenchmarks(config, registry);
-                reporter.report();
+                // 1. Capture baseline CPU before benchmark creation (which includes data ingestion)
+                double baselineCpu = CpuMonitor.captureProcessCpuLoad();
+
+                // 2. Create clients (constructors perform data ingestion)
+                List<Benchmark> benchmarks = createBenchmarks(config, benchmarkScheduler);
                 logger.info("[LIFECYCLE] POST_CREATE cycle={} clients={} timestamp={}",
                     cycle, benchmarks.size(), Instant.now());
 
-                // 2. Run workload in parallel
+                // 3. Cool-down: wait for CPU to settle after data ingestion before measuring workload
+                CpuMonitor.awaitCoolDown(baselineCpu);
+
+                // 4. Run workload in parallel
                 runWorkload(benchmarks, cycle, executor);
-                reporter.report();
                 logger.info("[LIFECYCLE] POST_WORKLOAD cycle={} timestamp={}", cycle, Instant.now());
 
-                // 3. Close all clients
+                // 5. Close all clients
                 shutdownBenchmarks(benchmarks, cycle);
-                reporter.report();
                 logger.info("[LIFECYCLE] POST_CLOSE cycle={} timestamp={}", cycle, Instant.now());
 
-                // 4. Settle
+                // 6. Settle
                 if (config.getSettleTimeMs() > 0) {
-                    logger.info("  Settling for {}ms...", config.getSettleTimeMs());
+                    logger.info(" Settling for {}ms...", config.getSettleTimeMs());
                     long halfSettle = config.getSettleTimeMs() / 2;
                     Thread.sleep(halfSettle);
                     if (config.isGcBetweenCycles()) {
@@ -225,10 +237,10 @@ public class BenchmarkOrchestrator {
                         System.gc();
                     }
                 }
-                reporter.report();
                 logger.info("[LIFECYCLE] POST_SETTLE cycle={} timestamp={}", cycle, Instant.now());
             }
         } finally {
+            logger.info("[LIFECYCLE] Shutting down executor...");
             executor.shutdown();
             try {
                 if (!executor.awaitTermination(60, TimeUnit.SECONDS)) {
@@ -250,10 +262,10 @@ public class BenchmarkOrchestrator {
             totalCycles, durationSec, Instant.now());
     }
 
-    private List<Benchmark> createBenchmarks(BenchmarkConfig config, MetricRegistry registry) throws Exception {
+    private List<Benchmark> createBenchmarks(BenchmarkConfig config, Scheduler scheduler) throws Exception {
         List<Benchmark> benchmarks = new ArrayList<>();
         for (TenantWorkloadConfig tenant : config.getTenantWorkloads()) {
-            benchmarks.add(createBenchmarkForOperation(tenant, registry));
+            benchmarks.add(createBenchmarkForOperation(tenant, scheduler));
         }
         return benchmarks;
     }
@@ -291,15 +303,10 @@ public class BenchmarkOrchestrator {
      * Centralizes all tenant mutation: suppressCleanup, applicationName suffix,
      * micrometer registry injection.
      */
-    private void prepareTenants(BenchmarkConfig config) {
-        MeterRegistry cosmosMicrometerRegistry = buildCosmosMicrometerRegistry();
-        if (cosmosMicrometerRegistry != null) {
-            logger.info("Cosmos micrometer registry: {}", cosmosMicrometerRegistry.getClass().getSimpleName());
-        }
-
+    private void prepareTenants(BenchmarkConfig config, MeterRegistry sharedRegistry) {
         for (TenantWorkloadConfig tenant : config.getTenantWorkloads()) {
-            // Inject shared micrometer registry
-            tenant.setCosmosMicrometerRegistry(cosmosMicrometerRegistry);
+            // Inject shared micrometer registry for SDK telemetry
+            tenant.setCosmosMicrometerRegistry(sharedRegistry);
 
             // Propagate suppressCleanup from orchestrator config
             if (config.isSuppressCleanup()) {
@@ -317,16 +324,14 @@ public class BenchmarkOrchestrator {
 
     // ======== Benchmark factory ========
 
-    private Benchmark createBenchmarkForOperation(TenantWorkloadConfig cfg, MetricRegistry registry) throws Exception {
+    private Benchmark createBenchmarkForOperation(TenantWorkloadConfig cfg, Scheduler scheduler) throws Exception {
         // Sync benchmarks
         if (cfg.isSync()) {
             switch (cfg.getOperationType()) {
                 case ReadThroughput:
-                case ReadLatency:
-                    return new SyncReadBenchmark(cfg, registry);
+                    return new SyncReadBenchmark(cfg);
                 case WriteThroughput:
-                case WriteLatency:
-                    return new SyncWriteBenchmark(cfg, registry);
+                    return new SyncWriteBenchmark(cfg);
                 default:
                     throw new IllegalArgumentException(
                         "Sync mode is not supported for operation: " + cfg.getOperationType());
@@ -335,30 +340,28 @@ public class BenchmarkOrchestrator {
 
         // CTL workloads
         if (cfg.getOperationType() == Operation.CtlWorkload) {
-            return new AsyncCtlWorkload(cfg, registry);
+            return new AsyncCtlWorkload(cfg, scheduler);
         }
         if (cfg.getOperationType() == Operation.LinkedInCtlWorkload) {
-            return new LICtlWorkload(cfg, registry);
+            return new LICtlWorkload(cfg);
         }
 
         // Encryption benchmarks
         if (cfg.isEncryptionEnabled()) {
             switch (cfg.getOperationType()) {
                 case WriteThroughput:
-                case WriteLatency:
-                    return new AsyncEncryptionWriteBenchmark(cfg, registry);
+                    return new AsyncEncryptionWriteBenchmark(cfg, scheduler);
                 case ReadThroughput:
-                case ReadLatency:
-                    return new AsyncEncryptionReadBenchmark(cfg, registry);
+                    return new AsyncEncryptionReadBenchmark(cfg, scheduler);
                 case QueryCross:
                 case QuerySingle:
                 case QueryParallel:
                 case QueryOrderby:
                 case QueryTopOrderby:
                 case QueryInClauseParallel:
-                    return new AsyncEncryptionQueryBenchmark(cfg, registry);
+                    return new AsyncEncryptionQueryBenchmark(cfg, scheduler);
                 case QuerySingleMany:
-                    return new AsyncEncryptionQuerySinglePartitionMultiple(cfg, registry);
+                    return new AsyncEncryptionQuerySinglePartitionMultiple(cfg, scheduler);
                 default:
                     throw new IllegalArgumentException(
                         "Encryption is not supported for operation: " + cfg.getOperationType());
@@ -368,11 +371,9 @@ public class BenchmarkOrchestrator {
         // Default: async benchmarks
         switch (cfg.getOperationType()) {
             case ReadThroughput:
-            case ReadLatency:
-                return new AsyncReadBenchmark(cfg, registry);
+                return new AsyncReadBenchmark(cfg, scheduler);
             case WriteThroughput:
-            case WriteLatency:
-                return new AsyncWriteBenchmark(cfg, registry);
+                return new AsyncWriteBenchmark(cfg, scheduler);
             case QueryCross:
             case QuerySingle:
             case QueryParallel:
@@ -382,60 +383,45 @@ public class BenchmarkOrchestrator {
             case QueryAggregateTopOrderby:
             case QueryInClauseParallel:
             case ReadAllItemsOfLogicalPartition:
-                return new AsyncQueryBenchmark(cfg, registry);
-            case ReadManyLatency:
+                return new AsyncQueryBenchmark(cfg, scheduler);
             case ReadManyThroughput:
-                return new AsyncReadManyBenchmark(cfg, registry);
+                return new AsyncReadManyBenchmark(cfg, scheduler);
             case Mixed:
-                return new AsyncMixedBenchmark(cfg, registry);
+                return new AsyncMixedBenchmark(cfg, scheduler);
             case QuerySingleMany:
-                return new AsyncQuerySinglePartitionMultiple(cfg, registry);
+                return new AsyncQuerySinglePartitionMultiple(cfg, scheduler);
             case ReadMyWrites:
-                return new ReadMyWriteWorkflow(cfg, registry);
+                return new ReadMyWriteWorkflow(cfg, scheduler);
             default:
                 throw new IllegalArgumentException("Unsupported operation: " + cfg.getOperationType());
         }
     }
 
-    // ======== Cosmos micrometer registry ========
+    // ======== Application Insights registry ========
 
-    private MeterRegistry buildCosmosMicrometerRegistry() {
-        String instrumentationKey = System.getProperty("azure.cosmos.monitoring.azureMonitor.instrumentationKey",
-            StringUtils.defaultString(
-                com.google.common.base.Strings.emptyToNull(
-                    System.getenv("AZURE_INSTRUMENTATION_KEY")), null));
-        String appInsightsConnStr = System.getProperty("applicationinsights.connection.string",
-            StringUtils.defaultString(
-                com.google.common.base.Strings.emptyToNull(
-                    System.getenv("APPLICATIONINSIGHTS_CONNECTION_STRING")), null));
-        if (instrumentationKey == null && appInsightsConnStr == null) {
+    private MeterRegistry buildAppInsightsMeterRegistry(AppInsightsReporterConfig config) {
+        String connStr = config.getConnectionString();
+
+        if (connStr == null) {
             return null;
         }
 
-        java.time.Duration step = java.time.Duration.ofSeconds(
-            Integer.getInteger("azure.cosmos.monitoring.azureMonitor.step", 10));
-        String testCategoryTag = System.getProperty("azure.cosmos.monitoring.azureMonitor.testCategory");
-        boolean enabled = !Boolean.getBoolean("azure.cosmos.monitoring.azureMonitor.disabled");
+        java.time.Duration step = java.time.Duration.ofSeconds(config.getStepSeconds());
+        String testCategoryTag = config.getTestCategory();
 
-        final String connStr = appInsightsConnStr;
-        final String instrKey = instrumentationKey;
+        final String finalConnStr = connStr;
         final io.micrometer.azuremonitor.AzureMonitorConfig amConfig = new io.micrometer.azuremonitor.AzureMonitorConfig() {
             @Override
             public String get(String key) { return null; }
 
             @Override
-            public String instrumentationKey() {
-                return connStr != null ? null : instrKey;
-            }
-
-            @Override
-            public String connectionString() { return connStr; }
+            public String connectionString() { return finalConnStr; }
 
             @Override
             public java.time.Duration step() { return step; }
 
             @Override
-            public boolean enabled() { return enabled; }
+            public boolean enabled() { return true; }
         };
 
         String roleName = System.getenv("APPLICATIONINSIGHTS_ROLE_NAME");
@@ -446,7 +432,7 @@ public class BenchmarkOrchestrator {
         MeterRegistry registry = new io.micrometer.azuremonitor.AzureMonitorMeterRegistry(
             amConfig, io.micrometer.core.instrument.Clock.SYSTEM);
         java.util.List<io.micrometer.core.instrument.Tag> globalTags = new java.util.ArrayList<>();
-        if (!com.google.common.base.Strings.isNullOrEmpty(testCategoryTag)) {
+        if (testCategoryTag != null && !testCategoryTag.isEmpty()) {
             globalTags.add(io.micrometer.core.instrument.Tag.of("TestCategory", testCategoryTag));
         }
 

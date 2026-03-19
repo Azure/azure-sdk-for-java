@@ -31,12 +31,8 @@ public final class NetAppResourceQuotaLimitsAccountsImpl implements NetAppResour
         String quotaLimitName, Context context) {
         Response<SubscriptionQuotaItemInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, accountName, quotaLimitName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new SubscriptionQuotaItemImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new SubscriptionQuotaItemImpl(inner.getValue(), this.manager()));
     }
 
     public SubscriptionQuotaItem get(String resourceGroupName, String accountName, String quotaLimitName) {

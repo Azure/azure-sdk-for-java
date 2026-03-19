@@ -31,12 +31,8 @@ public final class AutoScaleVCoresImpl implements AutoScaleVCores {
         Context context) {
         Response<AutoScaleVCoreInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, vcoreName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new AutoScaleVCoreImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new AutoScaleVCoreImpl(inner.getValue(), this.manager()));
     }
 
     public AutoScaleVCore getByResourceGroup(String resourceGroupName, String vcoreName) {

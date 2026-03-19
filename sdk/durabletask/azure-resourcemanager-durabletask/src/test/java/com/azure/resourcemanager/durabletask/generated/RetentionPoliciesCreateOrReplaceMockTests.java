@@ -26,7 +26,7 @@ public final class RetentionPoliciesCreateOrReplaceMockTests {
     @Test
     public void testCreateOrReplace() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"retentionPolicies\":[{\"retentionPeriodInDays\":994913433,\"orchestrationState\":\"Terminated\"}]},\"id\":\"s\",\"name\":\"mddystkiiux\",\"type\":\"qyud\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"retentionPolicies\":[{\"retentionPeriodInDays\":681452902,\"orchestrationState\":\"Completed\"},{\"retentionPeriodInDays\":181978704,\"orchestrationState\":\"Failed\"},{\"retentionPeriodInDays\":1627840881,\"orchestrationState\":\"Canceled\"},{\"retentionPeriodInDays\":372150678,\"orchestrationState\":\"Completed\"}]},\"id\":\"dslgnayqigynduh\",\"name\":\"vhqlkthumaqo\",\"type\":\"bgycduiertgccym\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,14 +36,21 @@ public final class RetentionPoliciesCreateOrReplaceMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RetentionPolicy response = manager.retentionPolicies()
-            .createOrReplace("u", "kthfui",
-                new RetentionPolicyInner().withProperties(new RetentionPolicyProperties().withRetentionPolicies(
-                    Arrays.asList(new RetentionPolicyDetails().withRetentionPeriodInDays(2105680522)
-                        .withOrchestrationState(PurgeableOrchestrationState.FAILED)))),
+            .createOrReplace("tpvjzbexilzznfqq", "vwpm",
+                new RetentionPolicyInner()
+                    .withProperties(new RetentionPolicyProperties().withRetentionPolicies(Arrays.asList(
+                        new RetentionPolicyDetails().withRetentionPeriodInDays(477944589)
+                            .withOrchestrationState(PurgeableOrchestrationState.CANCELED),
+                        new RetentionPolicyDetails().withRetentionPeriodInDays(1757000388)
+                            .withOrchestrationState(PurgeableOrchestrationState.TERMINATED),
+                        new RetentionPolicyDetails().withRetentionPeriodInDays(1426920839)
+                            .withOrchestrationState(PurgeableOrchestrationState.CANCELED),
+                        new RetentionPolicyDetails().withRetentionPeriodInDays(1420775781)
+                            .withOrchestrationState(PurgeableOrchestrationState.CANCELED)))),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(994913433, response.properties().retentionPolicies().get(0).retentionPeriodInDays());
-        Assertions.assertEquals(PurgeableOrchestrationState.TERMINATED,
+        Assertions.assertEquals(681452902, response.properties().retentionPolicies().get(0).retentionPeriodInDays());
+        Assertions.assertEquals(PurgeableOrchestrationState.COMPLETED,
             response.properties().retentionPolicies().get(0).orchestrationState());
     }
 }

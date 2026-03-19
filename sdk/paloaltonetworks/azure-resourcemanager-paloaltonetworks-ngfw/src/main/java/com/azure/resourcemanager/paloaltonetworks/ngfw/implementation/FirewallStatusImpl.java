@@ -31,12 +31,8 @@ public final class FirewallStatusImpl implements FirewallStatus {
         Context context) {
         Response<FirewallStatusResourceInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, firewallName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new FirewallStatusResourceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new FirewallStatusResourceImpl(inner.getValue(), this.manager()));
     }
 
     public FirewallStatusResource get(String resourceGroupName, String firewallName) {

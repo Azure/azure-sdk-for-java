@@ -29,12 +29,8 @@ public final class BillingContainersImpl implements BillingContainers {
 
     public Response<BillingContainer> getWithResponse(String billingContainerName, Context context) {
         Response<BillingContainerInner> inner = this.serviceClient().getWithResponse(billingContainerName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new BillingContainerImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new BillingContainerImpl(inner.getValue(), this.manager()));
     }
 
     public BillingContainer get(String billingContainerName) {

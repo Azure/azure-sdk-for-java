@@ -9,7 +9,6 @@ import com.azure.cosmos.benchmark.linkedin.data.EntityConfiguration;
 import com.azure.cosmos.benchmark.linkedin.data.Key;
 import com.azure.cosmos.benchmark.linkedin.impl.exceptions.AccessorException;
 import com.azure.cosmos.benchmark.linkedin.impl.models.GetRequestOptions;
-import com.codahale.metrics.MetricRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,9 +26,8 @@ public class GetTestRunner extends TestRunner {
 
     GetTestRunner(final TenantWorkloadConfig workloadConfig,
         final CosmosAsyncClient client,
-        final MetricRegistry metricsRegistry,
         final EntityConfiguration entityConfiguration) {
-        super(workloadConfig, client, metricsRegistry, entityConfiguration);
+        super(workloadConfig, client, entityConfiguration);
     }
 
     @Override

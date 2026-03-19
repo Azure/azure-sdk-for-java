@@ -1,14 +1,16 @@
 # Release History
 
-## 2.55.0-beta.1 (Unreleased)
-
-### Features Added
+## 2.55.0 (2026-03-17)
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.ManagedHsmResource` was removed
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2026-02-01`.
 
 ## 2.54.2 (2026-01-29)
 

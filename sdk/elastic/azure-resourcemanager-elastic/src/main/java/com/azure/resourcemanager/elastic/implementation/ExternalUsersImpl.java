@@ -31,12 +31,8 @@ public final class ExternalUsersImpl implements ExternalUsers {
         String monitorName, ExternalUserInfo body, Context context) {
         Response<ExternalUserCreationResponseInner> inner
             = this.serviceClient().createOrUpdateWithResponse(resourceGroupName, monitorName, body, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ExternalUserCreationResponseImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ExternalUserCreationResponseImpl(inner.getValue(), this.manager()));
     }
 
     public ExternalUserCreationResponse createOrUpdate(String resourceGroupName, String monitorName) {

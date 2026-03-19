@@ -39,12 +39,8 @@ public final class StoragePoolsImpl implements StoragePools {
         Context context) {
         Response<StoragePoolInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, storagePoolName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new StoragePoolImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new StoragePoolImpl(inner.getValue(), this.manager()));
     }
 
     public StoragePool getByResourceGroup(String resourceGroupName, String storagePoolName) {
@@ -88,12 +84,8 @@ public final class StoragePoolsImpl implements StoragePools {
         Context context) {
         Response<StoragePoolHealthInfoInner> inner
             = this.serviceClient().getHealthStatusWithResponse(resourceGroupName, storagePoolName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new StoragePoolHealthInfoImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new StoragePoolHealthInfoImpl(inner.getValue(), this.manager()));
     }
 
     public StoragePoolHealthInfo getHealthStatus(String resourceGroupName, String storagePoolName) {
@@ -109,12 +101,8 @@ public final class StoragePoolsImpl implements StoragePools {
         Context context) {
         Response<AvsConnectionInner> inner
             = this.serviceClient().getAvsConnectionWithResponse(resourceGroupName, storagePoolName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new AvsConnectionImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new AvsConnectionImpl(inner.getValue(), this.manager()));
     }
 
     public AvsConnection getAvsConnection(String resourceGroupName, String storagePoolName) {
@@ -130,12 +118,8 @@ public final class StoragePoolsImpl implements StoragePools {
         Context context) {
         Response<AvsStatusInner> inner
             = this.serviceClient().getAvsStatusWithResponse(resourceGroupName, storagePoolName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new AvsStatusImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new AvsStatusImpl(inner.getValue(), this.manager()));
     }
 
     public AvsStatus getAvsStatus(String resourceGroupName, String storagePoolName) {

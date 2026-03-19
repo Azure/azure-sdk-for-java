@@ -50,9 +50,7 @@ public class TenantWorkloadConfig {
 
     // ======== Meter name constants (used by AsyncBenchmark + CosmosTotalResultReporter) ========
 
-    public static final String SUCCESS_COUNTER_METER_NAME = "#Successful Operations";
-    public static final String FAILURE_COUNTER_METER_NAME = "#Unsuccessful Operations";
-    public static final String LATENCY_METER_NAME = "Latency";
+
     public static final String DEFAULT_PARTITION_KEY_PATH = "/pk";
 
     // ======== Account connection ========
@@ -102,9 +100,6 @@ public class TenantWorkloadConfig {
 
     @JsonProperty("throughput")
     private Integer throughput;
-
-    @JsonProperty("skipWarmUpOperations")
-    private Integer skipWarmUpOperations;
 
     @JsonProperty("documentDataFieldSize")
     private Integer documentDataFieldSize;
@@ -207,6 +202,12 @@ public class TenantWorkloadConfig {
     @JsonProperty("connectionSharingAcrossClientsEnabled")
     private Boolean connectionSharingAcrossClientsEnabled;
 
+    @JsonProperty("http2Enabled")
+    private Boolean http2Enabled;
+
+    @JsonProperty("http2MaxConcurrentStreams")
+    private Integer http2MaxConcurrentStreams;
+
     @JsonProperty("preferredRegionsList")
     private String preferredRegionsList;
 
@@ -254,7 +255,6 @@ public class TenantWorkloadConfig {
     public int getNumberOfOperations() { return numberOfOperations != null ? numberOfOperations : 100000; }
     public int getNumberOfPreCreatedDocuments() { return numberOfPreCreatedDocuments != null ? numberOfPreCreatedDocuments : 1000; }
     public int getThroughput() { return throughput != null ? throughput : 100000; }
-    public int getSkipWarmUpOperations() { return skipWarmUpOperations != null ? skipWarmUpOperations : 0; }
     public int getDocumentDataFieldSize() { return documentDataFieldSize != null ? documentDataFieldSize : 20; }
     public int getDocumentDataFieldCount() { return documentDataFieldCount != null ? documentDataFieldCount : 5; }
     public boolean isContentResponseOnWriteEnabled() { return contentResponseOnWriteEnabled != null ? contentResponseOnWriteEnabled : true; }
@@ -335,6 +335,12 @@ public class TenantWorkloadConfig {
 
     public ConsistencyLevel getConsistencyLevel() {
         if (consistencyLevel == null) return ConsistencyLevel.SESSION;
+        for (ConsistencyLevel level : ConsistencyLevel.values()) {
+            if (level.toString().equalsIgnoreCase(consistencyLevel)
+                || level.name().equalsIgnoreCase(consistencyLevel)) {
+                return level;
+            }
+        }
         return ConsistencyLevel.valueOf(consistencyLevel.toUpperCase());
     }
 
@@ -342,6 +348,14 @@ public class TenantWorkloadConfig {
 
     public boolean isConnectionSharingAcrossClientsEnabled() {
         return connectionSharingAcrossClientsEnabled != null && connectionSharingAcrossClientsEnabled;
+    }
+
+    public boolean isHttp2Enabled() {
+        return http2Enabled != null && http2Enabled;
+    }
+
+    public Integer getHttp2MaxConcurrentStreams() {
+        return http2MaxConcurrentStreams;
     }
 
     public List<String> getPreferredRegionsList() {
@@ -446,8 +460,6 @@ public class TenantWorkloadConfig {
                     if (overwrite || numberOfOperations == null) numberOfOperations = Integer.parseInt(value); break;
                 case "numberOfPreCreatedDocuments":
                     if (overwrite || numberOfPreCreatedDocuments == null) numberOfPreCreatedDocuments = Integer.parseInt(value); break;
-                case "skipWarmUpOperations":
-                    if (overwrite || skipWarmUpOperations == null) skipWarmUpOperations = Integer.parseInt(value); break;
                 case "throughput":
                     if (overwrite || throughput == null) throughput = Integer.parseInt(value); break;
                 case "documentDataFieldSize":
@@ -516,6 +528,10 @@ public class TenantWorkloadConfig {
                     if (overwrite || environment == null) environment = value; break;
                 case "useSync":
                     if (overwrite || useSync == null) useSync = Boolean.parseBoolean(value); break;
+                case "http2Enabled":
+                    if (overwrite || http2Enabled == null) http2Enabled = Boolean.parseBoolean(value); break;
+                case "http2MaxConcurrentStreams":
+                    if (overwrite || http2MaxConcurrentStreams == null) http2MaxConcurrentStreams = Integer.parseInt(value); break;
                 // JVM-global properties (minConnectionPoolSizePerEndpoint, isPartitionLevelCircuitBreakerEnabled,
                 // isPerPartitionAutomaticFailoverRequired) are handled in BenchmarkConfig, not per-tenant.
                 case "minConnectionPoolSizePerEndpoint":
