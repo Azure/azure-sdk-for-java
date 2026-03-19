@@ -4,10 +4,16 @@
 
 ### Features Added
 
+- Added `generateInsight(Insight, FoundryFeaturesOptInKeys)` convenience method to `InsightsClient` and `InsightsAsyncClient`.
+
 ### Breaking Changes
 
 - `FoundryFeaturesOptInKeys` changed from an `ExpandableStringEnum`-based class to a standard Java `enum` type. The `values()` method now returns an array instead of a `Collection`, and the deprecated no-arg constructor is removed.
 - The `timeZone` property in `RecurrenceTrigger` changed from `String` to `java.util.TimeZone`.
+- Removed `EvaluationsClient` and `EvaluationsAsyncClient`. Use `builder.buildOpenAIClient().evals()` (returns `EvalService`) and `builder.buildOpenAIAsyncClient().evals()` (returns `EvalServiceAsync`) from the Stainless OpenAI SDK directly. The corresponding `buildEvaluationsClient()` and `buildEvaluationsAsyncClient()` methods on `AIProjectClientBuilder` have also been removed.
+- `InsightsClient` and `InsightsAsyncClient` no longer auto-set the `Foundry-Features: Insights=V1Preview` header. The `FoundryFeaturesOptInKeys` parameter must now be passed explicitly to `generateInsight()`, `getInsight()`, and `listInsights()` overloads that require it.
+- `getInsight(String, Boolean)` overload removed; replaced by `getInsight(String)` and `getInsight(String, FoundryFeaturesOptInKeys, Boolean)`.
+- `listInsights(InsightType, String, String, String, Boolean)` signature changed to `listInsights(FoundryFeaturesOptInKeys, InsightType, String, String, String, Boolean)`.
 
 ### Bugs Fixed
 
