@@ -5,7 +5,6 @@ package com.azure.ai.projects;
 import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.models.AgentVersionDetails;
-import com.azure.ai.agents.models.DeleteAgentResponse;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -28,10 +27,7 @@ public class AgentsAsyncSample {
         System.out.println("Agent Name: " + agent.getName());
         System.out.println("Agent Version: " + agent.getVersion());
 
-        DeleteAgentResponse agentDeletion = agentsClient.deleteAgent(agent.getName()).block();
-
-        System.out.println("Deleted agent with the following details:");
-        System.out.println("\tAgent Name: " + agentDeletion.getName());
-        System.out.println("\tAgent was deleted: " + agentDeletion.isDeleted());
+        agentsClient.deleteAgent(agent.getName()).block();
+        System.out.println("\tAgent was deleted.");
     }
 }
