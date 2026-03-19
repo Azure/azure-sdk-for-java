@@ -265,8 +265,9 @@ public class BlobSasImplUtil {
                 this.delegatedUserObjectId);
         }
 
-        tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_DIRECTORY_DEPTH,
-            this.isDirectory != null && this.isDirectory ? this.directoryDepth : 0);
+        if (this.isDirectory != null && this.isDirectory) {
+            tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_DIRECTORY_DEPTH, this.directoryDepth);
+        }
 
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_RESOURCE, this.resource);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_PERMISSIONS, this.permissions);
@@ -294,7 +295,8 @@ public class BlobSasImplUtil {
      *    a. If "BlobName" is _not_ set, it is a container resource.
      *    b. Otherwise, if "SnapshotId" is set, it is a blob snapshot resource.
      *    c. Otherwise, if "VersionId" is set, it is a blob version resource.
-     *    d. Otherwise, it is a blob resource.
+     *    d. Otherwise, if "IsDirectory" is set to true, it is a blob directory resource.
+     *    e. Otherwise, it is a blob resource.
      * 4. Reparse permissions depending on what the resource is. If it is an unrecognized resource, do nothing. </p>
      *
      * Taken from:
@@ -333,20 +335,22 @@ public class BlobSasImplUtil {
                     permissions = BlobContainerSasPermission.parse(permissions).toString();
                     break;
 
-                case SAS_BLOB_DIRECTORY_CONSTANT:
-                    if (!blobName.equalsIgnoreCase("/")) {
-                        directoryDepth = blobName.trim().replaceAll("^/+|/+$", "").split("/").length;
-                    } else {
-                        directoryDepth = 0;
-                    }
-                    permissions = BlobSasPermission.parse(permissions).toString();
-                    break;
-
                 default:
                     // We won't reparse the permissions if we don't know the type.
                     LOGGER.info("Not re-parsing permissions. Resource type '{}' is unknown.", resource);
                     break;
             }
+        }
+
+        if (resource.equals(SAS_BLOB_DIRECTORY_CONSTANT)) {
+            // Normalize backslashes to forward slashes to align directory depth with canonical name computation.
+            String normalizedBlobName = blobName.replace('\\', '/');
+            if (!normalizedBlobName.equalsIgnoreCase("/")) {
+                directoryDepth = normalizedBlobName.trim().replaceAll("^/+|/+$", "").split("/").length;
+            } else {
+                directoryDepth = 0;
+            }
+            permissions = BlobSasPermission.parse(permissions).toString();
         }
     }
 

@@ -657,10 +657,10 @@ public final class BlobServiceSasSignatureValues {
     }
 
     /**
-    * Gets whether the {@code blobName} is a virtual directory. Required when the {@code resource} is set to "d".
-    *
-    * @return Whether the {@code blobName} is a virtual directory. Required when the resource is set to "d".
-    */
+     * Gets whether the {@code blobName} is a virtual directory. Required when the {@code resource} is set to "d".
+     *
+     * @return Whether the {@code blobName} is a virtual directory. Required when the resource is set to "d".
+     */
     public Boolean isDirectory() {
         return isDirectory;
     }
