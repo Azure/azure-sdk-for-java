@@ -382,7 +382,7 @@ AzureFunctionTool azureFunctionTool = new AzureFunctionTool(
 );
 ```
 
-*After calling `responsesClient.createWithAgent()`, the agent enqueues function arguments to the input queue. Your Azure Function processes the request and returns results via the output queue.*
+*After calling `responsesClient.createAzureResponse()`, the agent enqueues function arguments to the input queue. Your Azure Function processes the request and returns results via the output queue.*
 
 See the full sample in [AzureFunctionSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/AzureFunctionSync.java).
 
@@ -673,7 +673,7 @@ Response response = responsesClient.createAzureResponse(
 );
 ```
 
-Streaming is also supported via `createStreamingWithAgentStructuredInput`, which returns an `IterableStream<ResponseStreamEvent>` (sync) or `Flux<ResponseStreamEvent>` (async).
+Streaming is also supported via `createStreamingAzureResponse`, which returns an `IterableStream<ResponseStreamEvent>` (sync) or `Flux<ResponseStreamEvent>` (async).
 
 See the full sample in [CreateResponseWithStructuredInput.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/CreateResponseWithStructuredInput.java).
 

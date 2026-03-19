@@ -24,6 +24,7 @@
 
 ### Breaking Changes
 
+- Removed deprecated convenience methods from `ResponsesClient` and `ResponsesAsyncClient`: `createWithAgent`, `createWithAgentConversation`, `createStreamingWithAgent`, `createStreamingWithAgentConversation`, `createWithAgentStructuredInput`, and `createStreamingWithAgentStructuredInput`. Use `createAzureResponse` and `createStreamingAzureResponse` with `AzureCreateResponseOptions` instead.
 - `deleteAgent(String)` on `AgentsClient` now returns `void` instead of `DeleteAgentResponse`. The corresponding async method on `AgentsAsyncClient` now returns `Mono<Void>` instead of `Mono<DeleteAgentResponse>`. The public protocol method `deleteAgentWithResponse` has been removed; use the convenience method instead.
 - `deleteAgentVersion(String, String)` on `AgentsClient` now returns `void` instead of `DeleteAgentVersionResponse`. The corresponding async method on `AgentsAsyncClient` now returns `Mono<Void>` instead of `Mono<DeleteAgentVersionResponse>`.
 - `DeleteAgentResponse` removed from `com.azure.ai.agents.models` and is no longer part of the public API.
@@ -40,6 +41,7 @@
 
 ### Other Changes
 
+- Updated all samples and tests to use the new `createAzureResponse` and `createStreamingAzureResponse` API.
 - Added `ToolsTests` and `ToolsAsyncTests` with recorded end-to-end test coverage for OpenAPI, Code Interpreter, Function Call, Web Search, MCP, and File Search tools.
 - Added `StreamingTests` and `StreamingAsyncTests` with recorded test coverage for streaming responses (simple prompt, function calling, and Code Interpreter scenarios).
 - Added structured input test coverage to `AgentsTests`, `AgentsAsyncTests`, `StreamingTests`, and `StreamingAsyncTests`.
