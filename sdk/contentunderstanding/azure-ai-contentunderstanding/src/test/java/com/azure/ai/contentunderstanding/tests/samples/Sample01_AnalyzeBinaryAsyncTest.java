@@ -315,6 +315,34 @@ public class Sample01_AnalyzeBinaryAsyncTest extends ContentUnderstandingClientT
         assertTrue(fullDoc.getPages().size() > rangeDoc.getPages().size());
         assertTrue(fullDoc.getMarkdown().length() > rangeDoc.getMarkdown().length());
 
+        // ---- Combine(Pages(1,3), Page(5), PagesFrom(9)) — combined page ranges ----
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> bigCombineOperation
+            = contentUnderstandingAsyncClient.beginAnalyzeBinary("prebuilt-documentSearch", binaryData,
+                ContentRange.combine(ContentRange.pages(1, 3), ContentRange.page(5), ContentRange.pagesFrom(9)),
+                "application/octet-stream", null);
+        AnalysisResult bigCombineResult = bigCombineOperation.last().flatMap(pollResponse -> {
+            if (pollResponse.getStatus().isComplete()) {
+                return pollResponse.getFinalResult();
+            } else {
+                return Mono.error(
+                    new RuntimeException("Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+            }
+        }).block();
+        DocumentContent bigCombineDoc = (DocumentContent) bigCombineResult.getContents().get(0);
+
+        assertNotNull(bigCombineResult);
+        assertNotNull(bigCombineResult.getContents());
+        assertEquals(6, bigCombineDoc.getPages().size(),
+            "Combine(Pages(1,3), Page(5), PagesFrom(9)) should return exactly 6 pages");
+        java.util.List<Integer> combineRangePageNumbers = bigCombineDoc.getPages()
+            .stream()
+            .map(p -> p.getPageNumber())
+            .sorted()
+            .collect(java.util.stream.Collectors.toList());
+        assertEquals(java.util.Arrays.asList(1, 2, 3, 5, 9, 10), combineRangePageNumbers,
+            "Combine(Pages(1,3), Page(5), PagesFrom(9)) should extract pages 1, 2, 3, 5, 9, 10");
+        assertTrue(fullDoc.getMarkdown().length() >= bigCombineDoc.getMarkdown().length());
+
         // ---- Page(2) — single page ----
         PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> page2Operation
             = contentUnderstandingAsyncClient.beginAnalyzeBinary("prebuilt-documentSearch", binaryData,
@@ -380,12 +408,11 @@ public class Sample01_AnalyzeBinaryAsyncTest extends ContentUnderstandingClientT
         assertEquals(4, combineDoc.getEndPageNumber(), "Combine should end at page 4");
         assertTrue(fullDoc.getMarkdown().length() >= combineDoc.getMarkdown().length());
 
-        // ---- Combine(Pages(1,3), Page(5), PagesFrom(9)) — combined page ranges ----
-        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> bigCombineOperation
+        // ---- Raw string "3-" — pages from, equivalent to ContentRange.pagesFrom(3) ----
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> rawPagesFrom3Operation
             = contentUnderstandingAsyncClient.beginAnalyzeBinary("prebuilt-documentSearch", binaryData,
-                ContentRange.combine(ContentRange.pages(1, 3), ContentRange.page(5), ContentRange.pagesFrom(9)),
-                "application/octet-stream", null);
-        AnalysisResult bigCombineResult = bigCombineOperation.last().flatMap(pollResponse -> {
+                new ContentRange("3-"), "application/octet-stream", null);
+        AnalysisResult rawPagesFrom3Result = rawPagesFrom3Operation.last().flatMap(pollResponse -> {
             if (pollResponse.getStatus().isComplete()) {
                 return pollResponse.getFinalResult();
             } else {
@@ -393,20 +420,32 @@ public class Sample01_AnalyzeBinaryAsyncTest extends ContentUnderstandingClientT
                     new RuntimeException("Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
             }
         }).block();
-        DocumentContent bigCombineDoc = (DocumentContent) bigCombineResult.getContents().get(0);
+        DocumentContent rawPagesFrom3Doc = (DocumentContent) rawPagesFrom3Result.getContents().get(0);
+        assertEquals(8, rawPagesFrom3Doc.getPages().size(),
+            "Raw ContentRange('3-') should return 8 pages (pages 3-10)");
+        assertEquals(3, rawPagesFrom3Doc.getStartPageNumber(), "Raw ContentRange('3-') should start at page 3");
+        assertEquals(10, rawPagesFrom3Doc.getEndPageNumber(), "Raw ContentRange('3-') should end at page 10");
+        assertEquals(rangeDoc.getMarkdown().length(), rawPagesFrom3Doc.getMarkdown().length(),
+            "Raw ContentRange('3-') should return same markdown length as PagesFrom(3)");
 
-        assertNotNull(bigCombineResult);
-        assertNotNull(bigCombineResult.getContents());
-        assertEquals(6, bigCombineDoc.getPages().size(),
-            "Combine(Pages(1,3), Page(5), PagesFrom(9)) should return exactly 6 pages");
-        java.util.List<Integer> combineRangePageNumbers = bigCombineDoc.getPages()
-            .stream()
-            .map(p -> p.getPageNumber())
-            .sorted()
-            .collect(java.util.stream.Collectors.toList());
-        assertEquals(java.util.Arrays.asList(1, 2, 3, 5, 9, 10), combineRangePageNumbers,
-            "Combine(Pages(1,3), Page(5), PagesFrom(9)) should extract pages 1, 2, 3, 5, 9, 10");
-        assertTrue(fullDoc.getMarkdown().length() >= bigCombineDoc.getMarkdown().length());
+        // ---- Raw string "1-3,5,9-" — combine, equivalent to Combine(Pages(1,3), Page(5), PagesFrom(9)) ----
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> rawRangeOperation
+            = contentUnderstandingAsyncClient.beginAnalyzeBinary("prebuilt-documentSearch", binaryData,
+                new ContentRange("1-3,5,9-"), "application/octet-stream", null);
+        AnalysisResult rawRangeResult = rawRangeOperation.last().flatMap(pollResponse -> {
+            if (pollResponse.getStatus().isComplete()) {
+                return pollResponse.getFinalResult();
+            } else {
+                return Mono.error(
+                    new RuntimeException("Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+            }
+        }).block();
+        DocumentContent rawRangeDoc = (DocumentContent) rawRangeResult.getContents().get(0);
+        assertEquals(6, rawRangeDoc.getPages().size(), "Raw ContentRange('1-3,5,9-') should return exactly 6 pages");
+        assertEquals(bigCombineDoc.getPages().size(), rawRangeDoc.getPages().size(),
+            "Raw ContentRange('1-3,5,9-') should return same page count as Combine equivalent");
+        assertEquals(bigCombineDoc.getMarkdown().length(), rawRangeDoc.getMarkdown().length(),
+            "Raw ContentRange('1-3,5,9-') should return same markdown length as Combine equivalent");
 
         // ---- Raw string "2" — single page, equivalent to ContentRange.page(2) ----
         PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> rawPage2Operation
@@ -446,11 +485,11 @@ public class Sample01_AnalyzeBinaryAsyncTest extends ContentUnderstandingClientT
         assertEquals(pages13Doc.getMarkdown().length(), rawPages13Doc.getMarkdown().length(),
             "Raw ContentRange('1-3') should return same markdown length as Pages(1,3)");
 
-        // ---- Raw string "3-" — pages from, equivalent to ContentRange.pagesFrom(3) ----
-        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> rawPagesFrom3Operation
+        // ---- Raw string "1,3-4" — combined page ranges, equivalent to ContentRange.combine(page(1), pages(3, 4)) ----
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> rawCombineOperation
             = contentUnderstandingAsyncClient.beginAnalyzeBinary("prebuilt-documentSearch", binaryData,
-                new ContentRange("3-"), "application/octet-stream", null);
-        AnalysisResult rawPagesFrom3Result = rawPagesFrom3Operation.last().flatMap(pollResponse -> {
+                new ContentRange("1,3-4"), "application/octet-stream", null);
+        AnalysisResult rawCombineResult = rawCombineOperation.last().flatMap(pollResponse -> {
             if (pollResponse.getStatus().isComplete()) {
                 return pollResponse.getFinalResult();
             } else {
@@ -458,33 +497,29 @@ public class Sample01_AnalyzeBinaryAsyncTest extends ContentUnderstandingClientT
                     new RuntimeException("Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
             }
         }).block();
-        DocumentContent rawPagesFrom3Doc = (DocumentContent) rawPagesFrom3Result.getContents().get(0);
-        assertEquals(8, rawPagesFrom3Doc.getPages().size(),
-            "Raw ContentRange('3-') should return 8 pages (pages 3-10)");
-        assertEquals(3, rawPagesFrom3Doc.getStartPageNumber(), "Raw ContentRange('3-') should start at page 3");
-        assertEquals(10, rawPagesFrom3Doc.getEndPageNumber(), "Raw ContentRange('3-') should end at page 10");
-        assertEquals(rangeDoc.getMarkdown().length(), rawPagesFrom3Doc.getMarkdown().length(),
-            "Raw ContentRange('3-') should return same markdown length as PagesFrom(3)");
+        DocumentContent rawCombineDoc = (DocumentContent) rawCombineResult.getContents().get(0);
+        assertEquals(3, rawCombineDoc.getPages().size(), "Raw ContentRange('1,3-4') should return exactly 3 pages");
+        java.util.List<Integer> rawCombinePageNumbers = rawCombineDoc.getPages()
+            .stream()
+            .map(p -> p.getPageNumber())
+            .sorted()
+            .collect(java.util.stream.Collectors.toList());
+        assertEquals(java.util.Arrays.asList(1, 3, 4), rawCombinePageNumbers,
+            "Raw ContentRange('1,3-4') should extract pages 1, 3, 4");
+        assertEquals(combineDoc.getPages().size(), rawCombineDoc.getPages().size(),
+            "Raw ContentRange('1,3-4') should return same page count as Combine equivalent");
+        assertEquals(combineDoc.getMarkdown().length(), rawCombineDoc.getMarkdown().length(),
+            "Raw ContentRange('1,3-4') should return same markdown length as Combine equivalent");
 
-        // ---- Raw string "1-3,5,9-" — combine, equivalent to Combine(Pages(1,3), Page(5), PagesFrom(9)) ----
-        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> rawRangeOperation
-            = contentUnderstandingAsyncClient.beginAnalyzeBinary("prebuilt-documentSearch", binaryData,
-                new ContentRange("1-3,5,9-"), "application/octet-stream", null);
-        AnalysisResult rawRangeResult = rawRangeOperation.last().flatMap(pollResponse -> {
-            if (pollResponse.getStatus().isComplete()) {
-                return pollResponse.getFinalResult();
-            } else {
-                return Mono.error(
-                    new RuntimeException("Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
-            }
-        }).block();
-        DocumentContent rawRangeDoc = (DocumentContent) rawRangeResult.getContents().get(0);
-        assertTrue(rawRangeDoc.getPages().size() > 0, "Raw ContentRange should return at least one page");
-        assertEquals(bigCombineDoc.getPages().size(), rawRangeDoc.getPages().size(),
-            "Raw ContentRange('1-3,5,9-') should return same page count as Combine equivalent");
-        assertEquals(bigCombineDoc.getMarkdown().length(), rawRangeDoc.getMarkdown().length(),
-            "Raw ContentRange('1-3,5,9-') should return same markdown length as Combine equivalent");
+        System.out.println("Raw ContentRange('3-'): " + rawPagesFrom3Doc.getPages().size() + " pages, "
+            + rawPagesFrom3Doc.getMarkdown().length() + " chars");
         System.out.println("Raw ContentRange('1-3,5,9-'): " + rawRangeDoc.getPages().size() + " pages, "
             + rawRangeDoc.getMarkdown().length() + " chars");
+        System.out.println("Raw ContentRange('2'): " + rawPage2Doc.getPages().size() + " page, "
+            + rawPage2Doc.getMarkdown().length() + " chars");
+        System.out.println("Raw ContentRange('1-3'): " + rawPages13Doc.getPages().size() + " pages, "
+            + rawPages13Doc.getMarkdown().length() + " chars");
+        System.out.println("Raw ContentRange('1,3-4'): " + rawCombineDoc.getPages().size() + " pages, "
+            + rawCombineDoc.getMarkdown().length() + " chars");
     }
 }
