@@ -63,6 +63,7 @@ $GroupId = "com.azure"
 TestPathThrow -Path $RepoRoot -PathName 'RepoRoot'
 
 . (Join-Path $EngCommonScriptsDir common.ps1)
+. (Join-Path $PSScriptRoot bomhelpers.ps1)
 
 function GetPatchVersion($ReleaseVersion) {
   $parsedSemver = [AzureEngSemanticVersion]::ParseVersionString($ReleaseVersion)
@@ -203,41 +204,11 @@ function CreatePatchRelease($ArtifactName, $ServiceDirectoryName, $PatchVersion,
     exit 1
   }
 
-  # Resolve new dependency versions for the changelog. Uses pom.xml versions
-  # (post update_versions.py) but substitutes prerelease versions with
-  # version_client.txt column 2 (GA/released version) to avoid showing beta
-  # versions in the changelog.
-  # Key by groupId:artifactId to avoid collisions (e.g., com.azure vs com.azure.v2).
-  $versionClientLookup = @{}
-  foreach ($line in Get-Content -Path $VersionClientPath) {
-    $trimmed = $line.Trim()
-    if ($trimmed.StartsWith('#') -or [string]::IsNullOrWhiteSpace($trimmed)) { continue }
-    $parts = $trimmed.Split(';')
-    if ($parts.Length -ge 2) {
-      $versionClientLookup[$parts[0].Trim()] = $parts[1].Trim()
-    }
-  }
-
-  $newDependenciesToVersion = New-Object "System.Collections.Generic.Dictionary``2[System.String,System.String]"
-  $pomFileContent = [xml](Get-Content -Path $PomFilePath)
-  foreach ($dependency in $pomFileContent.project.dependencies.dependency) {
-    $scope = $dependency.scope
-    if ($scope -ne 'test') {
-      $artifactId = $dependency.artifactId
-      $groupId = $dependency.groupId
-      $pomVersion = $dependency.version
-      $key = "${groupId}:${artifactId}"
-      if ($pomVersion -match '-beta\.|_beta\.|BETA|-alpha\.|_alpha\.|ALPHA|-preview\.|_preview\.|PREVIEW|-SNAPSHOT') {
-        if ($versionClientLookup.ContainsKey($key)) {
-          $newDependenciesToVersion[$key] = $versionClientLookup[$key]
-        } else {
-          $newDependenciesToVersion[$key] = $pomVersion
-        }
-      } else {
-        $newDependenciesToVersion[$key] = $pomVersion
-      }
-    }
-  }
+  # Resolve new dependency versions for the changelog.
+  # Reuses GetResolvedDependencyVersions from bomhelpers.ps1 which substitutes
+  # prerelease versions with version_client.txt column 2 (GA/released version)
+  # to avoid showing beta versions in the changelog.
+  $newDependenciesToVersion = GetResolvedDependencyVersions -PomFilePath $PomFilePath -VersionClientPath $VersionClientPath
 
 
   $releaseStatus = "$(Get-Date -Format $CHANGELOG_DATE_FORMAT)"
