@@ -7,7 +7,7 @@ package com.azure.resourcemanager.computeschedule.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.computeschedule.models.AllocationStrategy;
 import com.azure.resourcemanager.computeschedule.models.DistributionStrategy;
-import com.azure.resourcemanager.computeschedule.models.ExecuteCreateFlexRequest;
+import com.azure.resourcemanager.computeschedule.models.ExecuteCreateFlexContent;
 import com.azure.resourcemanager.computeschedule.models.ExecutionParameters;
 import com.azure.resourcemanager.computeschedule.models.FlexProperties;
 import com.azure.resourcemanager.computeschedule.models.OptimizationPreference;
@@ -26,12 +26,12 @@ import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 
-public final class ExecuteCreateFlexRequestTests {
+public final class ExecuteCreateFlexContentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExecuteCreateFlexRequest model = BinaryData.fromString(
+        ExecuteCreateFlexContent model = BinaryData.fromString(
             "{\"resourceConfigParameters\":{\"baseProfile\":{\"hejkotynqgou\":\"\\\"datasgcbac\\\"\",\"kgfg\":\"\\\"datazndlikwy\\\"\",\"qsrxybzqqed\":\"\\\"databmadgak\\\"\",\"iqfouflmmnkz\":\"\\\"dataytb\\\"\"},\"resourceOverrides\":[{\"mutduqktaps\":\"\\\"datamglougpbkw\\\"\",\"rtumkdosvq\":\"\\\"datawgcu\\\"\"},{\"bjf\":\"\\\"databmdg\\\"\",\"bexppb\":\"\\\"datadgmb\\\"\",\"rolfpfp\":\"\\\"datatq\\\"\"}],\"resourceCount\":1189352281,\"resourcePrefix\":\"gbquxigj\",\"flexProperties\":{\"vmSizeProfiles\":[{\"name\":\"gzjaoyfhrtxilne\",\"rank\":1275359394},{\"name\":\"ujysvle\",\"rank\":867367638},{\"name\":\"vfqawrlyxwjkcpr\",\"rank\":1705333634}],\"osType\":\"Windows\",\"priorityProfile\":{\"type\":\"Regular\",\"allocationStrategy\":\"CapacityOptimized\"},\"zoneAllocationPolicy\":{\"distributionStrategy\":\"Prioritized\",\"zonePreferences\":[{\"zone\":\"ysszdnrujqguh\",\"rank\":931696713}]}}},\"executionParameters\":{\"optimizationPreference\":\"Cost\",\"retryPolicy\":{\"retryCount\":1747028439,\"retryWindowInMinutes\":326786210,\"onFailureAction\":\"Start\"}},\"correlationid\":\"nguitnwuizgazxu\"}")
-            .toObject(ExecuteCreateFlexRequest.class);
+            .toObject(ExecuteCreateFlexContent.class);
         Assertions.assertEquals(1189352281, model.resourceConfigParameters().resourceCount());
         Assertions.assertEquals("gbquxigj", model.resourceConfigParameters().resourcePrefix());
         Assertions.assertEquals("gzjaoyfhrtxilne",
@@ -59,7 +59,7 @@ public final class ExecuteCreateFlexRequestTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExecuteCreateFlexRequest model = new ExecuteCreateFlexRequest()
+        ExecuteCreateFlexContent model = new ExecuteCreateFlexContent()
             .withResourceConfigParameters(new ResourceProvisionFlexPayload()
                 .withBaseProfile(
                     mapOf("hejkotynqgou", BinaryData.fromBytes("\"datasgcbac\"".getBytes(StandardCharsets.UTF_8)),
@@ -92,7 +92,7 @@ public final class ExecuteCreateFlexRequestTests {
                     .withRetryWindowInMinutes(326786210)
                     .withOnFailureAction(ResourceOperationType.START)))
             .withCorrelationid("nguitnwuizgazxu");
-        model = BinaryData.fromObject(model).toObject(ExecuteCreateFlexRequest.class);
+        model = BinaryData.fromObject(model).toObject(ExecuteCreateFlexContent.class);
         Assertions.assertEquals(1189352281, model.resourceConfigParameters().resourceCount());
         Assertions.assertEquals("gbquxigj", model.resourceConfigParameters().resourcePrefix());
         Assertions.assertEquals("gzjaoyfhrtxilne",

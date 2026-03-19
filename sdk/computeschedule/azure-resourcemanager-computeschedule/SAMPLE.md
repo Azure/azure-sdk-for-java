@@ -827,7 +827,7 @@ public final class ScheduledActionsVirtualMachinesExecuteCreateSamples {
 ```java
 import com.azure.resourcemanager.computeschedule.models.AllocationStrategy;
 import com.azure.resourcemanager.computeschedule.models.DistributionStrategy;
-import com.azure.resourcemanager.computeschedule.models.ExecuteCreateFlexRequest;
+import com.azure.resourcemanager.computeschedule.models.ExecuteCreateFlexContent;
 import com.azure.resourcemanager.computeschedule.models.ExecutionParameters;
 import com.azure.resourcemanager.computeschedule.models.FlexProperties;
 import com.azure.resourcemanager.computeschedule.models.OptimizationPreference;
@@ -860,7 +860,7 @@ public final class ScheduledActionsVirtualMachinesExecuteCreateFlexSamples {
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
             .virtualMachinesExecuteCreateFlexWithResponse("bnadpwmpjyfduxue",
-                new ExecuteCreateFlexRequest()
+                new ExecuteCreateFlexContent()
                     .withResourceConfigParameters(
                         new ResourceProvisionFlexPayload().withBaseProfile(mapOf())
                             .withResourceOverrides(Arrays.asList(mapOf()))

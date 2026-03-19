@@ -31,7 +31,7 @@ import com.azure.resourcemanager.computeschedule.models.CreateResourceOperationR
 import com.azure.resourcemanager.computeschedule.models.DeallocateResourceOperationResponse;
 import com.azure.resourcemanager.computeschedule.models.DeleteResourceOperationResponse;
 import com.azure.resourcemanager.computeschedule.models.ExecuteCreateContent;
-import com.azure.resourcemanager.computeschedule.models.ExecuteCreateFlexRequest;
+import com.azure.resourcemanager.computeschedule.models.ExecuteCreateFlexContent;
 import com.azure.resourcemanager.computeschedule.models.ExecuteDeallocateContent;
 import com.azure.resourcemanager.computeschedule.models.ExecuteDeleteContent;
 import com.azure.resourcemanager.computeschedule.models.ExecuteHibernateContent;
@@ -182,7 +182,7 @@ public final class ScheduledActionsImpl implements ScheduledActions {
     }
 
     public Response<CreateFlexResourceOperationResponse> virtualMachinesExecuteCreateFlexWithResponse(
-        String locationparameter, ExecuteCreateFlexRequest body, Context context) {
+        String locationparameter, ExecuteCreateFlexContent body, Context context) {
         Response<CreateFlexResourceOperationResponseInner> inner
             = this.serviceClient().virtualMachinesExecuteCreateFlexWithResponse(locationparameter, body, context);
         return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
@@ -190,7 +190,7 @@ public final class ScheduledActionsImpl implements ScheduledActions {
     }
 
     public CreateFlexResourceOperationResponse virtualMachinesExecuteCreateFlex(String locationparameter,
-        ExecuteCreateFlexRequest body) {
+        ExecuteCreateFlexContent body) {
         CreateFlexResourceOperationResponseInner inner
             = this.serviceClient().virtualMachinesExecuteCreateFlex(locationparameter, body);
         if (inner != null) {

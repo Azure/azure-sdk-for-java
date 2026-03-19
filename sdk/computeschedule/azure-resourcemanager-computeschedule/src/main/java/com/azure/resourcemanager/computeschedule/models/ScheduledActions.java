@@ -196,7 +196,7 @@ public interface ScheduledActions {
      * @return the response from a create flex request along with {@link Response}.
      */
     Response<CreateFlexResourceOperationResponse> virtualMachinesExecuteCreateFlexWithResponse(String locationparameter,
-        ExecuteCreateFlexRequest body, Context context);
+        ExecuteCreateFlexContent body, Context context);
 
     /**
      * VirtualMachinesExecuteCreateFlex: Execute create operation for a batch of virtual machines with flex properties,
@@ -210,7 +210,7 @@ public interface ScheduledActions {
      * @return the response from a create flex request.
      */
     CreateFlexResourceOperationResponse virtualMachinesExecuteCreateFlex(String locationparameter,
-        ExecuteCreateFlexRequest body);
+        ExecuteCreateFlexContent body);
 
     /**
      * [PRIVATE PREVIEW]: VirtualMachinesExecuteCreate: Execute create operation for a batch of virtual machines, this

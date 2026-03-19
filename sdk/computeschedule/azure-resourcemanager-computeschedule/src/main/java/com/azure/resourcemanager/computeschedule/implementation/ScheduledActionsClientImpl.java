@@ -53,7 +53,7 @@ import com.azure.resourcemanager.computeschedule.implementation.models.Scheduled
 import com.azure.resourcemanager.computeschedule.models.CancelOccurrenceRequest;
 import com.azure.resourcemanager.computeschedule.models.CancelOperationsContent;
 import com.azure.resourcemanager.computeschedule.models.ExecuteCreateContent;
-import com.azure.resourcemanager.computeschedule.models.ExecuteCreateFlexRequest;
+import com.azure.resourcemanager.computeschedule.models.ExecuteCreateFlexContent;
 import com.azure.resourcemanager.computeschedule.models.ExecuteDeallocateContent;
 import com.azure.resourcemanager.computeschedule.models.ExecuteDeleteContent;
 import com.azure.resourcemanager.computeschedule.models.ExecuteHibernateContent;
@@ -230,7 +230,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("locationparameter") String locationparameter, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") ExecuteCreateFlexRequest body,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") ExecuteCreateFlexContent body,
             Context context);
 
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesExecuteCreateFlex")
@@ -240,7 +240,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
             @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("locationparameter") String locationparameter, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") ExecuteCreateFlexRequest body,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") ExecuteCreateFlexContent body,
             Context context);
 
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesExecuteCreate")
@@ -1156,7 +1156,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CreateFlexResourceOperationResponseInner>>
-        virtualMachinesExecuteCreateFlexWithResponseAsync(String locationparameter, ExecuteCreateFlexRequest body) {
+        virtualMachinesExecuteCreateFlexWithResponseAsync(String locationparameter, ExecuteCreateFlexContent body) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -1179,7 +1179,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CreateFlexResourceOperationResponseInner>
-        virtualMachinesExecuteCreateFlexAsync(String locationparameter, ExecuteCreateFlexRequest body) {
+        virtualMachinesExecuteCreateFlexAsync(String locationparameter, ExecuteCreateFlexContent body) {
         return virtualMachinesExecuteCreateFlexWithResponseAsync(locationparameter, body)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -1198,7 +1198,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CreateFlexResourceOperationResponseInner> virtualMachinesExecuteCreateFlexWithResponse(
-        String locationparameter, ExecuteCreateFlexRequest body, Context context) {
+        String locationparameter, ExecuteCreateFlexContent body, Context context) {
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.virtualMachinesExecuteCreateFlexSync(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1218,7 +1218,7 @@ public final class ScheduledActionsClientImpl implements ScheduledActionsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CreateFlexResourceOperationResponseInner virtualMachinesExecuteCreateFlex(String locationparameter,
-        ExecuteCreateFlexRequest body) {
+        ExecuteCreateFlexContent body) {
         return virtualMachinesExecuteCreateFlexWithResponse(locationparameter, body, Context.NONE).getValue();
     }
 

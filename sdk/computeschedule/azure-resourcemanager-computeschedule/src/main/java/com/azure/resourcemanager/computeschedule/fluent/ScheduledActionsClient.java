@@ -27,7 +27,7 @@ import com.azure.resourcemanager.computeschedule.fluent.models.StartResourceOper
 import com.azure.resourcemanager.computeschedule.models.CancelOccurrenceRequest;
 import com.azure.resourcemanager.computeschedule.models.CancelOperationsContent;
 import com.azure.resourcemanager.computeschedule.models.ExecuteCreateContent;
-import com.azure.resourcemanager.computeschedule.models.ExecuteCreateFlexRequest;
+import com.azure.resourcemanager.computeschedule.models.ExecuteCreateFlexContent;
 import com.azure.resourcemanager.computeschedule.models.ExecuteDeallocateContent;
 import com.azure.resourcemanager.computeschedule.models.ExecuteDeleteContent;
 import com.azure.resourcemanager.computeschedule.models.ExecuteHibernateContent;
@@ -244,7 +244,7 @@ public interface ScheduledActionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<CreateFlexResourceOperationResponseInner> virtualMachinesExecuteCreateFlexWithResponse(
-        String locationparameter, ExecuteCreateFlexRequest body, Context context);
+        String locationparameter, ExecuteCreateFlexContent body, Context context);
 
     /**
      * VirtualMachinesExecuteCreateFlex: Execute create operation for a batch of virtual machines with flex properties,
@@ -259,7 +259,7 @@ public interface ScheduledActionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     CreateFlexResourceOperationResponseInner virtualMachinesExecuteCreateFlex(String locationparameter,
-        ExecuteCreateFlexRequest body);
+        ExecuteCreateFlexContent body);
 
     /**
      * [PRIVATE PREVIEW]: VirtualMachinesExecuteCreate: Execute create operation for a batch of virtual machines, this
