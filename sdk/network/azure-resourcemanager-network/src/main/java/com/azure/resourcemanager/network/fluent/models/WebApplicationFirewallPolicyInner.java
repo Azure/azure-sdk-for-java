@@ -12,8 +12,8 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ApplicationGatewayForContainersReferenceDefinition;
 import com.azure.resourcemanager.network.models.ManagedRulesDefinition;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
 import com.azure.resourcemanager.network.models.PolicySettings;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.WebApplicationFirewallCustomRule;
 import com.azure.resourcemanager.network.models.WebApplicationFirewallPolicyResourceState;
 import java.io.IOException;
@@ -192,7 +192,7 @@ public final class WebApplicationFirewallPolicyInner extends Resource {
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 

@@ -24,7 +24,7 @@ public final class VerifierWorkspaceProperties implements JsonSerializable<Verif
     /*
      * Provisioning states of a resource.
      */
-    private ProvisioningState provisioningState;
+    private BaseProvisioningState provisioningState;
 
     /**
      * Creates an instance of VerifierWorkspaceProperties class.
@@ -57,7 +57,7 @@ public final class VerifierWorkspaceProperties implements JsonSerializable<Verif
      * 
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public BaseProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -98,7 +98,7 @@ public final class VerifierWorkspaceProperties implements JsonSerializable<Verif
                     deserializedVerifierWorkspaceProperties.description = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedVerifierWorkspaceProperties.provisioningState
-                        = ProvisioningState.fromString(reader.getString());
+                        = BaseProvisioningState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

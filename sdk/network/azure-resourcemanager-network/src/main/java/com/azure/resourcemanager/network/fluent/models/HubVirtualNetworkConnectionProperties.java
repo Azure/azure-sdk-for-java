@@ -10,7 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.RoutingConfiguration;
 import java.io.IOException;
 
@@ -48,7 +48,7 @@ public final class HubVirtualNetworkConnectionProperties
     /*
      * The provisioning state of the hub virtual network connection resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of HubVirtualNetworkConnectionProperties class.
@@ -164,7 +164,7 @@ public final class HubVirtualNetworkConnectionProperties
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -226,7 +226,7 @@ public final class HubVirtualNetworkConnectionProperties
                         = RoutingConfiguration.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedHubVirtualNetworkConnectionProperties.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

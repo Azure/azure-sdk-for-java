@@ -10,7 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ApplicationGatewayRewriteRule;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 import java.util.List;
 
@@ -28,7 +28,7 @@ public final class ApplicationGatewayRewriteRuleSetPropertiesFormat
     /*
      * The provisioning state of the rewrite rule set resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of ApplicationGatewayRewriteRuleSetPropertiesFormat class.
@@ -62,7 +62,7 @@ public final class ApplicationGatewayRewriteRuleSetPropertiesFormat
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -109,7 +109,7 @@ public final class ApplicationGatewayRewriteRuleSetPropertiesFormat
                     deserializedApplicationGatewayRewriteRuleSetPropertiesFormat.rewriteRules = rewriteRules;
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedApplicationGatewayRewriteRuleSetPropertiesFormat.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

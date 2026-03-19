@@ -10,7 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.GroupMemberType;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 
 /**
@@ -31,7 +31,7 @@ public final class NetworkGroupProperties implements JsonSerializable<NetworkGro
     /*
      * The provisioning state of the scope assignment resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * Unique identifier for this resource.
@@ -89,7 +89,7 @@ public final class NetworkGroupProperties implements JsonSerializable<NetworkGro
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -142,7 +142,7 @@ public final class NetworkGroupProperties implements JsonSerializable<NetworkGro
                     deserializedNetworkGroupProperties.memberType = GroupMemberType.fromString(reader.getString());
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedNetworkGroupProperties.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else if ("resourceGuid".equals(fieldName)) {
                     deserializedNetworkGroupProperties.resourceGuid = reader.getString();
                 } else {

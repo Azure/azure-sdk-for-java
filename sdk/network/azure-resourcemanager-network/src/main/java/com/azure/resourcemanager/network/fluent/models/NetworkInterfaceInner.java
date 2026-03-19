@@ -16,7 +16,7 @@ import com.azure.resourcemanager.network.models.NetworkInterfaceAuxiliarySku;
 import com.azure.resourcemanager.network.models.NetworkInterfaceDnsSettings;
 import com.azure.resourcemanager.network.models.NetworkInterfaceMigrationPhase;
 import com.azure.resourcemanager.network.models.NetworkInterfaceNicType;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -396,7 +396,7 @@ public final class NetworkInterfaceInner extends Resource {
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 

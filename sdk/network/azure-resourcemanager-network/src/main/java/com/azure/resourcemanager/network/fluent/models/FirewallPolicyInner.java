@@ -21,7 +21,7 @@ import com.azure.resourcemanager.network.models.FirewallPolicySku;
 import com.azure.resourcemanager.network.models.FirewallPolicyThreatIntelWhitelist;
 import com.azure.resourcemanager.network.models.FirewallPolicyTransportSecurity;
 import com.azure.resourcemanager.network.models.ManagedServiceIdentity;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -187,7 +187,7 @@ public final class FirewallPolicyInner extends Resource {
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 

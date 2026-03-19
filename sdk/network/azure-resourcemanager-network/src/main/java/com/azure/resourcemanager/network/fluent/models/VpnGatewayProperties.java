@@ -11,7 +11,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.BgpSettings;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.VpnGatewayIpConfiguration;
 import java.io.IOException;
 import java.util.List;
@@ -39,7 +39,7 @@ public final class VpnGatewayProperties implements JsonSerializable<VpnGatewayPr
     /*
      * The provisioning state of the VPN gateway resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * The scale unit for this vpn gateway.
@@ -137,7 +137,7 @@ public final class VpnGatewayProperties implements JsonSerializable<VpnGatewayPr
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -293,7 +293,7 @@ public final class VpnGatewayProperties implements JsonSerializable<VpnGatewayPr
                     deserializedVpnGatewayProperties.bgpSettings = BgpSettings.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedVpnGatewayProperties.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else if ("vpnGatewayScaleUnit".equals(fieldName)) {
                     deserializedVpnGatewayProperties.vpnGatewayScaleUnit = reader.getNullable(JsonReader::getInt);
                 } else if ("ipConfigurations".equals(fieldName)) {

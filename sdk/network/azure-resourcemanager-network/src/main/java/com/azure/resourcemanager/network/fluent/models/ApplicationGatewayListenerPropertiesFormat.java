@@ -11,7 +11,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ApplicationGatewayProtocol;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 import java.util.List;
 
@@ -49,7 +49,7 @@ public final class ApplicationGatewayListenerPropertiesFormat
     /*
      * The provisioning state of the listener resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * List of Server Name Indications(SNI) for TLS Multi-site Listener that allows special wildcard characters as well.
@@ -167,7 +167,7 @@ public final class ApplicationGatewayListenerPropertiesFormat
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -247,7 +247,7 @@ public final class ApplicationGatewayListenerPropertiesFormat
                     deserializedApplicationGatewayListenerPropertiesFormat.sslProfile = SubResource.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedApplicationGatewayListenerPropertiesFormat.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else if ("hostNames".equals(fieldName)) {
                     List<String> hostNames = reader.readArray(reader1 -> reader1.getString());
                     deserializedApplicationGatewayListenerPropertiesFormat.hostNames = hostNames;

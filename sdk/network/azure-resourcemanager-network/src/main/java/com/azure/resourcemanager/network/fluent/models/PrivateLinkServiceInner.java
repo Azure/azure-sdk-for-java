@@ -11,9 +11,9 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.AccessMode;
 import com.azure.resourcemanager.network.models.ExtendedLocation;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
 import com.azure.resourcemanager.network.models.PrivateLinkServicePropertiesAutoApproval;
 import com.azure.resourcemanager.network.models.PrivateLinkServicePropertiesVisibility;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -265,7 +265,7 @@ public final class PrivateLinkServiceInner extends Resource {
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 

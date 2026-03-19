@@ -9,7 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 
 /**
@@ -30,7 +30,7 @@ public final class VirtualRouterPeeringProperties implements JsonSerializable<Vi
     /*
      * The provisioning state of the resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of VirtualRouterPeeringProperties class.
@@ -83,7 +83,7 @@ public final class VirtualRouterPeeringProperties implements JsonSerializable<Vi
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -128,7 +128,7 @@ public final class VirtualRouterPeeringProperties implements JsonSerializable<Vi
                     deserializedVirtualRouterPeeringProperties.peerIp = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedVirtualRouterPeeringProperties.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

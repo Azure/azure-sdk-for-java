@@ -13,8 +13,8 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.AddressSpace;
 import com.azure.resourcemanager.network.models.BgpSettings;
 import com.azure.resourcemanager.network.models.DeviceProperties;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
 import com.azure.resourcemanager.network.models.O365PolicyProperties;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.ResourceWithRequiredLocation;
 import java.io.IOException;
 import java.util.List;
@@ -259,7 +259,7 @@ public final class VpnSiteInner extends ResourceWithRequiredLocation {
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 

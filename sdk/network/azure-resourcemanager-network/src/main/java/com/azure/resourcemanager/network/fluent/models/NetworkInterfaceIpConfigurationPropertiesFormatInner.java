@@ -14,7 +14,7 @@ import com.azure.resourcemanager.network.models.ApplicationGatewayBackendAddress
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.IpVersion;
 import com.azure.resourcemanager.network.models.NetworkInterfaceIPConfigurationPrivateLinkConnectionProperties;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 import java.util.List;
 
@@ -94,7 +94,7 @@ public final class NetworkInterfaceIPConfigurationPropertiesFormatInner
     /*
      * The provisioning state of the network interface IP configuration.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * PrivateLinkConnection properties for the network interface.
@@ -390,7 +390,7 @@ public final class NetworkInterfaceIPConfigurationPropertiesFormatInner
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -532,7 +532,7 @@ public final class NetworkInterfaceIPConfigurationPropertiesFormatInner
                         = applicationSecurityGroups;
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedNetworkInterfaceIPConfigurationPropertiesFormatInner.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else if ("privateLinkConnectionProperties".equals(fieldName)) {
                     deserializedNetworkInterfaceIPConfigurationPropertiesFormatInner.privateLinkConnectionProperties
                         = NetworkInterfaceIPConfigurationPrivateLinkConnectionProperties.fromJson(reader);

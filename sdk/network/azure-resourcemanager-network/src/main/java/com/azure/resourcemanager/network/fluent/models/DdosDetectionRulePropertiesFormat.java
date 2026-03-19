@@ -10,7 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.DdosDetectionMode;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.TrafficDetectionRule;
 import java.io.IOException;
 
@@ -22,7 +22,7 @@ public final class DdosDetectionRulePropertiesFormat implements JsonSerializable
     /*
      * The provisioning state of the DDoS detection rule.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * The detection mode for the DDoS detection rule.
@@ -45,7 +45,7 @@ public final class DdosDetectionRulePropertiesFormat implements JsonSerializable
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -129,7 +129,7 @@ public final class DdosDetectionRulePropertiesFormat implements JsonSerializable
 
                 if ("provisioningState".equals(fieldName)) {
                     deserializedDdosDetectionRulePropertiesFormat.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else if ("detectionMode".equals(fieldName)) {
                     deserializedDdosDetectionRulePropertiesFormat.detectionMode
                         = DdosDetectionMode.fromString(reader.getString());

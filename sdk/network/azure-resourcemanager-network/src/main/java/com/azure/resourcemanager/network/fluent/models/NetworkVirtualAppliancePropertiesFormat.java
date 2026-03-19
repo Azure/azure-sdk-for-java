@@ -12,10 +12,10 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.DelegationProperties;
 import com.azure.resourcemanager.network.models.InternetIngressPublicIpsProperties;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
 import com.azure.resourcemanager.network.models.NetworkVirtualAppliancePropertiesFormatNetworkProfile;
 import com.azure.resourcemanager.network.models.NvaInterfaceConfigurationsProperties;
 import com.azure.resourcemanager.network.models.PartnerManagedResourceProperties;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.VirtualApplianceAdditionalNicProperties;
 import com.azure.resourcemanager.network.models.VirtualApplianceNicProperties;
 import com.azure.resourcemanager.network.models.VirtualApplianceSkuProperties;
@@ -107,7 +107,7 @@ public final class NetworkVirtualAppliancePropertiesFormat
     /*
      * The provisioning state of the resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * The deployment type. PartnerManaged for the SaaS NVA
@@ -400,7 +400,7 @@ public final class NetworkVirtualAppliancePropertiesFormat
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -612,7 +612,7 @@ public final class NetworkVirtualAppliancePropertiesFormat
                     deserializedNetworkVirtualAppliancePropertiesFormat.inboundSecurityRules = inboundSecurityRules;
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedNetworkVirtualAppliancePropertiesFormat.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else if ("deploymentType".equals(fieldName)) {
                     deserializedNetworkVirtualAppliancePropertiesFormat.deploymentType = reader.getString();
                 } else if ("delegation".equals(fieldName)) {

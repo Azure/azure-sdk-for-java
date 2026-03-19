@@ -10,7 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.AuthorizationUseStatus;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 
 /**
@@ -36,7 +36,7 @@ public final class AuthorizationPropertiesFormat implements JsonSerializable<Aut
     /*
      * The provisioning state of the authorization resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of AuthorizationPropertiesFormat class.
@@ -99,7 +99,7 @@ public final class AuthorizationPropertiesFormat implements JsonSerializable<Aut
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -148,7 +148,7 @@ public final class AuthorizationPropertiesFormat implements JsonSerializable<Aut
                     deserializedAuthorizationPropertiesFormat.connectionResourceUri = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedAuthorizationPropertiesFormat.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

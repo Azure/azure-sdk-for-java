@@ -16,7 +16,7 @@ import com.azure.resourcemanager.network.models.ConnectivityTopology;
 import com.azure.resourcemanager.network.models.DeleteExistingPeering;
 import com.azure.resourcemanager.network.models.Hub;
 import com.azure.resourcemanager.network.models.IsGlobal;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 import java.util.List;
 
@@ -265,7 +265,7 @@ public final class ConnectivityConfigurationInner extends ChildResource {
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 

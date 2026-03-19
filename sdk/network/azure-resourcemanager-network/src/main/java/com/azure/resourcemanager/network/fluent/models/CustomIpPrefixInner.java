@@ -14,7 +14,7 @@ import com.azure.resourcemanager.network.models.CommissionedState;
 import com.azure.resourcemanager.network.models.CustomIpPrefixType;
 import com.azure.resourcemanager.network.models.ExtendedLocation;
 import com.azure.resourcemanager.network.models.Geo;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -452,7 +452,7 @@ public final class CustomIpPrefixInner extends Resource {
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 

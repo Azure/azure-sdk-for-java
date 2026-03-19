@@ -11,7 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.InboundSecurityRuleType;
 import com.azure.resourcemanager.network.models.InboundSecurityRules;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 import java.util.List;
 
@@ -34,7 +34,7 @@ public final class InboundSecurityRuleProperties implements JsonSerializable<Inb
     /*
      * The provisioning state of the resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of InboundSecurityRuleProperties class.
@@ -89,7 +89,7 @@ public final class InboundSecurityRuleProperties implements JsonSerializable<Inb
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -140,7 +140,7 @@ public final class InboundSecurityRuleProperties implements JsonSerializable<Inb
                     deserializedInboundSecurityRuleProperties.rules = rules;
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedInboundSecurityRuleProperties.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

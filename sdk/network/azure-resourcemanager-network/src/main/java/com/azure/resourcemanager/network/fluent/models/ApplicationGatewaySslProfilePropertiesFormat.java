@@ -12,7 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ApplicationGatewayClientAuthConfiguration;
 import com.azure.resourcemanager.network.models.ApplicationGatewaySslPolicy;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 import java.util.List;
 
@@ -40,7 +40,7 @@ public final class ApplicationGatewaySslProfilePropertiesFormat
     /*
      * The provisioning state of the HTTP listener resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of ApplicationGatewaySslProfilePropertiesFormat class.
@@ -119,7 +119,7 @@ public final class ApplicationGatewaySslProfilePropertiesFormat
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -179,7 +179,7 @@ public final class ApplicationGatewaySslProfilePropertiesFormat
                         = ApplicationGatewayClientAuthConfiguration.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedApplicationGatewaySslProfilePropertiesFormat.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

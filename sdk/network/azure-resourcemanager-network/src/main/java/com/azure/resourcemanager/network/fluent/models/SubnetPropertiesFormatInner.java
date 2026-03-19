@@ -12,7 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.Delegation;
 import com.azure.resourcemanager.network.models.IpamPoolPrefixAllocation;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.ResourceNavigationLink;
 import com.azure.resourcemanager.network.models.ServiceAssociationLink;
 import com.azure.resourcemanager.network.models.ServiceEndpointPropertiesFormat;
@@ -106,7 +106,7 @@ public final class SubnetPropertiesFormatInner implements JsonSerializable<Subne
     /*
      * The provisioning state of the subnet resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * Enable or Disable apply network policies on private end point in the subnet.
@@ -392,7 +392,7 @@ public final class SubnetPropertiesFormatInner implements JsonSerializable<Subne
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -693,7 +693,7 @@ public final class SubnetPropertiesFormatInner implements JsonSerializable<Subne
                     deserializedSubnetPropertiesFormatInner.purpose = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedSubnetPropertiesFormatInner.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else if ("privateEndpointNetworkPolicies".equals(fieldName)) {
                     deserializedSubnetPropertiesFormatInner.privateEndpointNetworkPolicies
                         = VirtualNetworkPrivateEndpointNetworkPolicies.fromString(reader.getString());

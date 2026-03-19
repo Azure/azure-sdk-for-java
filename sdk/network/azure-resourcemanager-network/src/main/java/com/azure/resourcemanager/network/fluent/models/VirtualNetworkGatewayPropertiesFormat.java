@@ -13,7 +13,7 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.AddressSpace;
 import com.azure.resourcemanager.network.models.AdminState;
 import com.azure.resourcemanager.network.models.BgpSettings;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.ResiliencyModel;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayAutoScaleConfiguration;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayMigrationStatus;
@@ -129,7 +129,7 @@ public final class VirtualNetworkGatewayPropertiesFormat
     /*
      * The provisioning state of the virtual network gateway resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * Whether dns forwarding is enabled or not.
@@ -561,7 +561,7 @@ public final class VirtualNetworkGatewayPropertiesFormat
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -889,7 +889,7 @@ public final class VirtualNetworkGatewayPropertiesFormat
                     deserializedVirtualNetworkGatewayPropertiesFormat.resourceGuid = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedVirtualNetworkGatewayPropertiesFormat.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else if ("enableDnsForwarding".equals(fieldName)) {
                     deserializedVirtualNetworkGatewayPropertiesFormat.enableDnsForwarding
                         = reader.getNullable(JsonReader::getBoolean);

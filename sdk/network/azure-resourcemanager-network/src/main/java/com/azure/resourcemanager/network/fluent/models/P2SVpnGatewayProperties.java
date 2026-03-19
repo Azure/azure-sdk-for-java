@@ -10,8 +10,8 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
 import com.azure.resourcemanager.network.models.P2SConnectionConfiguration;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.VpnClientConnectionHealth;
 import java.io.IOException;
 import java.util.List;
@@ -34,7 +34,7 @@ public final class P2SVpnGatewayProperties implements JsonSerializable<P2SVpnGat
     /*
      * The provisioning state of the P2S VPN gateway resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * The scale unit for this p2s vpn gateway.
@@ -113,7 +113,7 @@ public final class P2SVpnGatewayProperties implements JsonSerializable<P2SVpnGat
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -262,7 +262,7 @@ public final class P2SVpnGatewayProperties implements JsonSerializable<P2SVpnGat
                     deserializedP2SVpnGatewayProperties.p2SConnectionConfigurations = p2SConnectionConfigurations;
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedP2SVpnGatewayProperties.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else if ("vpnGatewayScaleUnit".equals(fieldName)) {
                     deserializedP2SVpnGatewayProperties.vpnGatewayScaleUnit = reader.getNullable(JsonReader::getInt);
                 } else if ("vpnServerConfiguration".equals(fieldName)) {

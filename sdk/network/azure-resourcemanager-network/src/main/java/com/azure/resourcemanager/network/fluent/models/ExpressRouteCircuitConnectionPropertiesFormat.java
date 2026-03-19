@@ -12,7 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.CircuitConnectionStatus;
 import com.azure.resourcemanager.network.models.Ipv6CircuitConnectionConfig;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 
 /**
@@ -54,7 +54,7 @@ public final class ExpressRouteCircuitConnectionPropertiesFormat
     /*
      * The provisioning state of the express route circuit connection resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of ExpressRouteCircuitConnectionPropertiesFormat class.
@@ -185,7 +185,7 @@ public final class ExpressRouteCircuitConnectionPropertiesFormat
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -248,7 +248,7 @@ public final class ExpressRouteCircuitConnectionPropertiesFormat
                         = CircuitConnectionStatus.fromString(reader.getString());
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedExpressRouteCircuitConnectionPropertiesFormat.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

@@ -10,7 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 import java.util.List;
 
@@ -28,7 +28,7 @@ public final class DdosProtectionPlanPropertiesFormat implements JsonSerializabl
     /*
      * The provisioning state of the DDoS protection plan resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * The list of public IPs associated with the DDoS protection plan resource. This list is read-only.
@@ -62,7 +62,7 @@ public final class DdosProtectionPlanPropertiesFormat implements JsonSerializabl
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -123,7 +123,7 @@ public final class DdosProtectionPlanPropertiesFormat implements JsonSerializabl
                     deserializedDdosProtectionPlanPropertiesFormat.resourceGuid = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedDdosProtectionPlanPropertiesFormat.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else if ("publicIPAddresses".equals(fieldName)) {
                     List<SubResource> publicIpAddresses = reader.readArray(reader1 -> SubResource.fromJson(reader1));
                     deserializedDdosProtectionPlanPropertiesFormat.publicIpAddresses = publicIpAddresses;

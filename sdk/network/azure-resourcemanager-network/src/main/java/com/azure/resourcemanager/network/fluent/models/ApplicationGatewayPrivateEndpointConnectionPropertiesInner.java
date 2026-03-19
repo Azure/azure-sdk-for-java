@@ -9,8 +9,8 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
 import com.azure.resourcemanager.network.models.PrivateLinkServiceConnectionState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 
 /**
@@ -32,7 +32,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionPropertiesInner
     /*
      * The provisioning state of the application gateway private endpoint connection resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * The consumer link id.
@@ -83,7 +83,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionPropertiesInner
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -146,7 +146,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionPropertiesInner
                         = PrivateLinkServiceConnectionState.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedApplicationGatewayPrivateEndpointConnectionPropertiesInner.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else if ("linkIdentifier".equals(fieldName)) {
                     deserializedApplicationGatewayPrivateEndpointConnectionPropertiesInner.linkIdentifier
                         = reader.getString();

@@ -11,7 +11,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitServiceProviderProperties;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.ServiceProviderProvisioningState;
 import java.io.IOException;
 import java.util.List;
@@ -80,7 +80,7 @@ public final class ExpressRouteCircuitPropertiesFormat
     /*
      * The provisioning state of the express route circuit resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * The GatewayManager Etag.
@@ -334,7 +334,7 @@ public final class ExpressRouteCircuitPropertiesFormat
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -519,7 +519,7 @@ public final class ExpressRouteCircuitPropertiesFormat
                     deserializedExpressRouteCircuitPropertiesFormat.stag = reader.getNullable(JsonReader::getInt);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedExpressRouteCircuitPropertiesFormat.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else if ("gatewayManagerEtag".equals(fieldName)) {
                     deserializedExpressRouteCircuitPropertiesFormat.gatewayManagerEtag = reader.getString();
                 } else if ("globalReachEnabled".equals(fieldName)) {

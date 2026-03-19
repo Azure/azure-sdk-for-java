@@ -10,8 +10,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
 import com.azure.resourcemanager.network.models.P2SConnectionConfiguration;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.ResourceWithRequiredLocation;
 import com.azure.resourcemanager.network.models.VpnClientConnectionHealth;
 import java.io.IOException;
@@ -166,7 +166,7 @@ public final class P2SVpnGatewayInner extends ResourceWithRequiredLocation {
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 

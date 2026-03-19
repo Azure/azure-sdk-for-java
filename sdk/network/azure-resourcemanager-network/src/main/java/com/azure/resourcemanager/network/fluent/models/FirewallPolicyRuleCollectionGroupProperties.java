@@ -10,7 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.FirewallPolicyRuleCollection;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 import java.util.List;
 
@@ -38,7 +38,7 @@ public final class FirewallPolicyRuleCollectionGroupProperties
     /*
      * The provisioning state of the firewall policy rule collection group resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of FirewallPolicyRuleCollectionGroupProperties class.
@@ -102,7 +102,7 @@ public final class FirewallPolicyRuleCollectionGroupProperties
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -156,7 +156,7 @@ public final class FirewallPolicyRuleCollectionGroupProperties
                     deserializedFirewallPolicyRuleCollectionGroupProperties.ruleCollections = ruleCollections;
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedFirewallPolicyRuleCollectionGroupProperties.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

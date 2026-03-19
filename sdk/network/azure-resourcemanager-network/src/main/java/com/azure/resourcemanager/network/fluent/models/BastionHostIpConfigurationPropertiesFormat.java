@@ -12,7 +12,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 
 /**
@@ -34,7 +34,7 @@ public final class BastionHostIPConfigurationPropertiesFormat
     /*
      * The provisioning state of the bastion host IP configuration resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * Private IP allocation method.
@@ -92,7 +92,7 @@ public final class BastionHostIPConfigurationPropertiesFormat
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -169,7 +169,7 @@ public final class BastionHostIPConfigurationPropertiesFormat
                         = SubResource.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedBastionHostIPConfigurationPropertiesFormat.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else if ("privateIPAllocationMethod".equals(fieldName)) {
                     deserializedBastionHostIPConfigurationPropertiesFormat.privateIpAllocationMethod
                         = IpAllocationMethod.fromString(reader.getString());

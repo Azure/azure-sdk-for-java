@@ -11,7 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.AzureFirewallNetworkRule;
 import com.azure.resourcemanager.network.models.AzureFirewallRCAction;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 import java.util.List;
 
@@ -39,7 +39,7 @@ public final class AzureFirewallNetworkRuleCollectionPropertiesFormat
     /*
      * The provisioning state of the network rule collection resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of AzureFirewallNetworkRuleCollectionPropertiesFormat class.
@@ -112,7 +112,7 @@ public final class AzureFirewallNetworkRuleCollectionPropertiesFormat
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -171,7 +171,7 @@ public final class AzureFirewallNetworkRuleCollectionPropertiesFormat
                     deserializedAzureFirewallNetworkRuleCollectionPropertiesFormat.rules = rules;
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedAzureFirewallNetworkRuleCollectionPropertiesFormat.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

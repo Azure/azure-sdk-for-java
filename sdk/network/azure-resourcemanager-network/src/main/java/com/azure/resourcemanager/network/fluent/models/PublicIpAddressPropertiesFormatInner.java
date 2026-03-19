@@ -15,7 +15,7 @@ import com.azure.resourcemanager.network.models.DeleteOptions;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.IpTag;
 import com.azure.resourcemanager.network.models.IpVersion;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.PublicIPAddressMigrationPhase;
 import com.azure.resourcemanager.network.models.PublicIpAddressDnsSettings;
 import java.io.IOException;
@@ -80,7 +80,7 @@ public final class PublicIPAddressPropertiesFormatInner
     /*
      * The provisioning state of the public IP address resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * The service public IP address of the public IP address resource.
@@ -297,7 +297,7 @@ public final class PublicIPAddressPropertiesFormatInner
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -500,7 +500,7 @@ public final class PublicIPAddressPropertiesFormatInner
                     deserializedPublicIPAddressPropertiesFormatInner.resourceGuid = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedPublicIPAddressPropertiesFormatInner.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else if ("servicePublicIPAddress".equals(fieldName)) {
                     deserializedPublicIPAddressPropertiesFormatInner.servicePublicIpAddress
                         = PublicIpAddressInner.fromJson(reader);

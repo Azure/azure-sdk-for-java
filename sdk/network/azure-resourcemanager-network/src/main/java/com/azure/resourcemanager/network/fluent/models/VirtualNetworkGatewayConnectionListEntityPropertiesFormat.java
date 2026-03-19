@@ -13,7 +13,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.GatewayCustomBgpIpAddressIpConfiguration;
 import com.azure.resourcemanager.network.models.IpsecPolicy;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.TrafficSelectorPolicy;
 import com.azure.resourcemanager.network.models.TunnelConnectionHealth;
 import com.azure.resourcemanager.network.models.VirtualNetworkConnectionGatewayReference;
@@ -135,7 +135,7 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat
     /*
      * The provisioning state of the virtual network gateway connection resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * Bypass ExpressRoute Gateway for data forwarding.
@@ -342,7 +342,7 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -524,7 +524,7 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat
                         = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedVirtualNetworkGatewayConnectionListEntityPropertiesFormat.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else if ("expressRouteGatewayBypass".equals(fieldName)) {
                     deserializedVirtualNetworkGatewayConnectionListEntityPropertiesFormat.expressRouteGatewayBypass
                         = reader.getNullable(JsonReader::getBoolean);

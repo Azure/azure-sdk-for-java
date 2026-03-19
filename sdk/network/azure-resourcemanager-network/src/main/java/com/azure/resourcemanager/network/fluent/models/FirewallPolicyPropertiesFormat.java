@@ -20,7 +20,7 @@ import com.azure.resourcemanager.network.models.FirewallPolicySQL;
 import com.azure.resourcemanager.network.models.FirewallPolicySku;
 import com.azure.resourcemanager.network.models.FirewallPolicyThreatIntelWhitelist;
 import com.azure.resourcemanager.network.models.FirewallPolicyTransportSecurity;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 import java.util.List;
 
@@ -42,7 +42,7 @@ public final class FirewallPolicyPropertiesFormat implements JsonSerializable<Fi
     /*
      * The provisioning state of the firewall policy resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * The parent firewall policy from which rules are inherited.
@@ -139,7 +139,7 @@ public final class FirewallPolicyPropertiesFormat implements JsonSerializable<Fi
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -461,7 +461,7 @@ public final class FirewallPolicyPropertiesFormat implements JsonSerializable<Fi
                     deserializedFirewallPolicyPropertiesFormat.ruleCollectionGroups = ruleCollectionGroups;
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedFirewallPolicyPropertiesFormat.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else if ("basePolicy".equals(fieldName)) {
                     deserializedFirewallPolicyPropertiesFormat.basePolicy = SubResource.fromJson(reader);
                 } else if ("firewalls".equals(fieldName)) {

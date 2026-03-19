@@ -19,7 +19,7 @@ import com.azure.resourcemanager.network.models.AzureFirewallNetworkRuleCollecti
 import com.azure.resourcemanager.network.models.AzureFirewallSku;
 import com.azure.resourcemanager.network.models.AzureFirewallThreatIntelMode;
 import com.azure.resourcemanager.network.models.HubIPAddresses;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -57,7 +57,7 @@ public final class AzureFirewallPropertiesFormat implements JsonSerializable<Azu
     /*
      * The provisioning state of the Azure firewall resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * The operation mode for Threat Intelligence.
@@ -214,7 +214,7 @@ public final class AzureFirewallPropertiesFormat implements JsonSerializable<Azu
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -469,7 +469,7 @@ public final class AzureFirewallPropertiesFormat implements JsonSerializable<Azu
                         = AzureFirewallIPConfiguration.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedAzureFirewallPropertiesFormat.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else if ("threatIntelMode".equals(fieldName)) {
                     deserializedAzureFirewallPropertiesFormat.threatIntelMode
                         = AzureFirewallThreatIntelMode.fromString(reader.getString());

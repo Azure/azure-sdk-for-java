@@ -15,7 +15,7 @@ import com.azure.resourcemanager.network.models.NetworkInterfaceAuxiliarySku;
 import com.azure.resourcemanager.network.models.NetworkInterfaceDnsSettings;
 import com.azure.resourcemanager.network.models.NetworkInterfaceMigrationPhase;
 import com.azure.resourcemanager.network.models.NetworkInterfaceNicType;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 import java.util.List;
 
@@ -109,7 +109,7 @@ public final class NetworkInterfacePropertiesFormatInner
     /*
      * The provisioning state of the network interface resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * WorkloadType of the NetworkInterface for BareMetal resources
@@ -369,7 +369,7 @@ public final class NetworkInterfacePropertiesFormatInner
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -606,7 +606,7 @@ public final class NetworkInterfacePropertiesFormatInner
                     deserializedNetworkInterfacePropertiesFormatInner.resourceGuid = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedNetworkInterfacePropertiesFormatInner.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else if ("workloadType".equals(fieldName)) {
                     deserializedNetworkInterfacePropertiesFormatInner.workloadType = reader.getString();
                 } else if ("nicType".equals(fieldName)) {

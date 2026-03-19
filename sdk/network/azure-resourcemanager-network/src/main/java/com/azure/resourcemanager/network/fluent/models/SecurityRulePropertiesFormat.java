@@ -10,7 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.SecurityRuleAccess;
 import com.azure.resourcemanager.network.models.SecurityRuleDirection;
 import com.azure.resourcemanager.network.models.SecurityRuleProtocol;
@@ -105,7 +105,7 @@ public final class SecurityRulePropertiesFormat implements JsonSerializable<Secu
     /*
      * The provisioning state of the security rule resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of SecurityRulePropertiesFormat class.
@@ -438,7 +438,7 @@ public final class SecurityRulePropertiesFormat implements JsonSerializable<Secu
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -563,7 +563,7 @@ public final class SecurityRulePropertiesFormat implements JsonSerializable<Secu
                     deserializedSecurityRulePropertiesFormat.destinationPortRanges = destinationPortRanges;
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedSecurityRulePropertiesFormat.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

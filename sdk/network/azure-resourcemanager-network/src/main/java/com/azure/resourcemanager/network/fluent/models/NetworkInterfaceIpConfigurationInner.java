@@ -13,7 +13,7 @@ import com.azure.resourcemanager.network.models.ApplicationGatewayBackendAddress
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.IpVersion;
 import com.azure.resourcemanager.network.models.NetworkInterfaceIPConfigurationPrivateLinkConnectionProperties;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.SubResourceModel;
 import java.io.IOException;
 import java.util.List;
@@ -408,7 +408,7 @@ public final class NetworkInterfaceIpConfigurationInner extends SubResourceModel
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 

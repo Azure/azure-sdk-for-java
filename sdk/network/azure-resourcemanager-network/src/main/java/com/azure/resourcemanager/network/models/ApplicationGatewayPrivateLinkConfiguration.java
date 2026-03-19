@@ -129,7 +129,7 @@ public final class ApplicationGatewayPrivateLinkConfiguration extends SubResourc
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 

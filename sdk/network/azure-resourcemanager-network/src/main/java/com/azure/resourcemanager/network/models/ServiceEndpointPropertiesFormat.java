@@ -36,7 +36,7 @@ public final class ServiceEndpointPropertiesFormat implements JsonSerializable<S
     /*
      * The provisioning state of the service endpoint resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of ServiceEndpointPropertiesFormat class.
@@ -109,7 +109,7 @@ public final class ServiceEndpointPropertiesFormat implements JsonSerializable<S
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -158,7 +158,7 @@ public final class ServiceEndpointPropertiesFormat implements JsonSerializable<S
                     deserializedServiceEndpointPropertiesFormat.locations = locations;
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedServiceEndpointPropertiesFormat.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

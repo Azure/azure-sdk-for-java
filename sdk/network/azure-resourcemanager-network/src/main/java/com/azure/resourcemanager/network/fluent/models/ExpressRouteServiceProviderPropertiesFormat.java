@@ -10,7 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ExpressRouteServiceProviderBandwidthsOffered;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 import java.util.List;
 
@@ -33,7 +33,7 @@ public final class ExpressRouteServiceProviderPropertiesFormat
     /*
      * The provisioning state of the express route service provider resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of ExpressRouteServiceProviderPropertiesFormat class.
@@ -64,7 +64,7 @@ public final class ExpressRouteServiceProviderPropertiesFormat
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -117,7 +117,7 @@ public final class ExpressRouteServiceProviderPropertiesFormat
                     deserializedExpressRouteServiceProviderPropertiesFormat.bandwidthsOffered = bandwidthsOffered;
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedExpressRouteServiceProviderPropertiesFormat.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

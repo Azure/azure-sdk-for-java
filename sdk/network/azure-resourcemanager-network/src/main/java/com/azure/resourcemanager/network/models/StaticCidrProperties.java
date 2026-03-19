@@ -41,7 +41,7 @@ public final class StaticCidrProperties implements JsonSerializable<StaticCidrPr
     /*
      * Provisioning states of a resource.
      */
-    private ProvisioningState provisioningState;
+    private BaseProvisioningState provisioningState;
 
     /**
      * Creates an instance of StaticCidrProperties class.
@@ -125,7 +125,7 @@ public final class StaticCidrProperties implements JsonSerializable<StaticCidrPr
      * 
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public BaseProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -176,7 +176,7 @@ public final class StaticCidrProperties implements JsonSerializable<StaticCidrPr
                     deserializedStaticCidrProperties.totalNumberOfIPAddresses = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedStaticCidrProperties.provisioningState
-                        = ProvisioningState.fromString(reader.getString());
+                        = BaseProvisioningState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

@@ -11,7 +11,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.FlowLogFormatParameters;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.RetentionPolicyParameters;
 import com.azure.resourcemanager.network.models.TrafficAnalyticsProperties;
 import java.io.IOException;
@@ -73,7 +73,7 @@ public final class FlowLogPropertiesFormat implements JsonSerializable<FlowLogPr
     /*
      * The provisioning state of the flow log.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of FlowLogPropertiesFormat class.
@@ -266,7 +266,7 @@ public final class FlowLogPropertiesFormat implements JsonSerializable<FlowLogPr
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -353,7 +353,7 @@ public final class FlowLogPropertiesFormat implements JsonSerializable<FlowLogPr
                         = TrafficAnalyticsProperties.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedFlowLogPropertiesFormat.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

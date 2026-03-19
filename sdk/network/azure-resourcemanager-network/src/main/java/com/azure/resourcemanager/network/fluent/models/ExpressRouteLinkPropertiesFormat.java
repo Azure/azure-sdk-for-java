@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ExpressRouteLinkAdminState;
 import com.azure.resourcemanager.network.models.ExpressRouteLinkConnectorType;
 import com.azure.resourcemanager.network.models.ExpressRouteLinkMacSecConfig;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 
 /**
@@ -60,7 +60,7 @@ public final class ExpressRouteLinkPropertiesFormat implements JsonSerializable<
     /*
      * The provisioning state of the express route link resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * MacSec configuration.
@@ -152,7 +152,7 @@ public final class ExpressRouteLinkPropertiesFormat implements JsonSerializable<
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -232,7 +232,7 @@ public final class ExpressRouteLinkPropertiesFormat implements JsonSerializable<
                         = ExpressRouteLinkAdminState.fromString(reader.getString());
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedExpressRouteLinkPropertiesFormat.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else if ("macSecConfig".equals(fieldName)) {
                     deserializedExpressRouteLinkPropertiesFormat.macSecConfig
                         = ExpressRouteLinkMacSecConfig.fromJson(reader);

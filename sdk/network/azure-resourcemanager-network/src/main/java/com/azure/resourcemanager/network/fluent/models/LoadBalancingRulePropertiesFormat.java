@@ -12,7 +12,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.LoadDistribution;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.TransportProtocol;
 import java.io.IOException;
 import java.util.List;
@@ -98,7 +98,7 @@ public final class LoadBalancingRulePropertiesFormat implements JsonSerializable
     /*
      * The provisioning state of the load balancing rule resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of LoadBalancingRulePropertiesFormat class.
@@ -389,7 +389,7 @@ public final class LoadBalancingRulePropertiesFormat implements JsonSerializable
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -486,7 +486,7 @@ public final class LoadBalancingRulePropertiesFormat implements JsonSerializable
                         = reader.getNullable(JsonReader::getBoolean);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedLoadBalancingRulePropertiesFormat.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

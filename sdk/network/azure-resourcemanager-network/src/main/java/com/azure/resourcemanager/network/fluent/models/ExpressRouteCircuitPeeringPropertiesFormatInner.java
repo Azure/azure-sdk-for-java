@@ -15,7 +15,7 @@ import com.azure.resourcemanager.network.models.ExpressRouteConnectionId;
 import com.azure.resourcemanager.network.models.ExpressRoutePeeringState;
 import com.azure.resourcemanager.network.models.ExpressRoutePeeringType;
 import com.azure.resourcemanager.network.models.Ipv6ExpressRouteCircuitPeeringConfig;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 import java.util.List;
 
@@ -88,7 +88,7 @@ public final class ExpressRouteCircuitPeeringPropertiesFormatInner
     /*
      * The provisioning state of the express route circuit peering resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * The GatewayManager Etag.
@@ -379,7 +379,7 @@ public final class ExpressRouteCircuitPeeringPropertiesFormatInner
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -610,7 +610,7 @@ public final class ExpressRouteCircuitPeeringPropertiesFormatInner
                         = ExpressRouteCircuitStatsInner.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedExpressRouteCircuitPeeringPropertiesFormatInner.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else if ("gatewayManagerEtag".equals(fieldName)) {
                     deserializedExpressRouteCircuitPeeringPropertiesFormatInner.gatewayManagerEtag = reader.getString();
                 } else if ("lastModifiedBy".equals(fieldName)) {

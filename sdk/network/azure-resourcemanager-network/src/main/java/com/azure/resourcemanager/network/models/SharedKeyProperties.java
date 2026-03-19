@@ -29,7 +29,7 @@ public final class SharedKeyProperties implements JsonSerializable<SharedKeyProp
     /*
      * The provisioning state of the SharedKey resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of SharedKeyProperties class.
@@ -82,7 +82,7 @@ public final class SharedKeyProperties implements JsonSerializable<SharedKeyProp
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -126,7 +126,7 @@ public final class SharedKeyProperties implements JsonSerializable<SharedKeyProp
                     deserializedSharedKeyProperties.sharedKeyLength = reader.getNullable(JsonReader::getInt);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedSharedKeyProperties.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

@@ -15,7 +15,7 @@ import com.azure.resourcemanager.network.models.CertificateAuthentication;
 import com.azure.resourcemanager.network.models.ConnectionAuthenticationType;
 import com.azure.resourcemanager.network.models.GatewayCustomBgpIpAddressIpConfiguration;
 import com.azure.resourcemanager.network.models.IpsecPolicy;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.TrafficSelectorPolicy;
 import com.azure.resourcemanager.network.models.TunnelConnectionHealth;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionMode;
@@ -160,7 +160,7 @@ public final class VirtualNetworkGatewayConnectionPropertiesFormatInner
     /*
      * The provisioning state of the virtual network gateway connection resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * Bypass ExpressRoute Gateway for data forwarding.
@@ -652,7 +652,7 @@ public final class VirtualNetworkGatewayConnectionPropertiesFormatInner
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -934,7 +934,7 @@ public final class VirtualNetworkGatewayConnectionPropertiesFormatInner
                     deserializedVirtualNetworkGatewayConnectionPropertiesFormatInner.resourceGuid = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedVirtualNetworkGatewayConnectionPropertiesFormatInner.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else if ("expressRouteGatewayBypass".equals(fieldName)) {
                     deserializedVirtualNetworkGatewayConnectionPropertiesFormatInner.expressRouteGatewayBypass
                         = reader.getNullable(JsonReader::getBoolean);

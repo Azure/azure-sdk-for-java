@@ -13,7 +13,7 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ApplicationGatewayConnectionDraining;
 import com.azure.resourcemanager.network.models.ApplicationGatewayCookieBasedAffinity;
 import com.azure.resourcemanager.network.models.ApplicationGatewayProtocol;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 import java.util.List;
 
@@ -116,7 +116,7 @@ public final class ApplicationGatewayBackendHttpSettingsPropertiesFormat
     /*
      * The provisioning state of the backend HTTP settings resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of ApplicationGatewayBackendHttpSettingsPropertiesFormat class.
@@ -492,7 +492,7 @@ public final class ApplicationGatewayBackendHttpSettingsPropertiesFormat
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -607,7 +607,7 @@ public final class ApplicationGatewayBackendHttpSettingsPropertiesFormat
                     deserializedApplicationGatewayBackendHttpSettingsPropertiesFormat.sniName = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedApplicationGatewayBackendHttpSettingsPropertiesFormat.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

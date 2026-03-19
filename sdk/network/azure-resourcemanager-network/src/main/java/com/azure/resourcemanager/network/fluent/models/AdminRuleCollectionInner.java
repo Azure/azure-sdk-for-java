@@ -9,9 +9,9 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.network.models.BaseProvisioningState;
 import com.azure.resourcemanager.network.models.ChildResource;
 import com.azure.resourcemanager.network.models.NetworkManagerSecurityGroupItem;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 import java.util.List;
 
@@ -165,7 +165,7 @@ public final class AdminRuleCollectionInner extends ChildResource {
      * 
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public BaseProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 

@@ -13,7 +13,7 @@ import com.azure.resourcemanager.network.models.ExpressRouteCircuitPeeringConfig
 import com.azure.resourcemanager.network.models.ExpressRoutePeeringState;
 import com.azure.resourcemanager.network.models.ExpressRoutePeeringType;
 import com.azure.resourcemanager.network.models.Ipv6ExpressRouteCircuitPeeringConfig;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 
 /**
@@ -80,7 +80,7 @@ public final class ExpressRouteCrossConnectionPeeringProperties
     /*
      * The provisioning state of the express route cross connection peering resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * The GatewayManager Etag.
@@ -298,7 +298,7 @@ public final class ExpressRouteCrossConnectionPeeringProperties
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -433,7 +433,7 @@ public final class ExpressRouteCrossConnectionPeeringProperties
                         = ExpressRouteCircuitPeeringConfig.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedExpressRouteCrossConnectionPeeringProperties.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else if ("gatewayManagerEtag".equals(fieldName)) {
                     deserializedExpressRouteCrossConnectionPeeringProperties.gatewayManagerEtag = reader.getString();
                 } else if ("lastModifiedBy".equals(fieldName)) {

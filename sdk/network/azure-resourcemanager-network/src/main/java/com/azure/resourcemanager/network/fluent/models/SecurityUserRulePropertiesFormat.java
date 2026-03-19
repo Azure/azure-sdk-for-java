@@ -11,7 +11,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.AddressPrefixItem;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.SecurityConfigurationRuleDirection;
 import com.azure.resourcemanager.network.models.SecurityConfigurationRuleProtocol;
 import java.io.IOException;
@@ -60,7 +60,7 @@ public final class SecurityUserRulePropertiesFormat implements JsonSerializable<
     /*
      * The provisioning state of the security configuration user rule resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * Unique identifier for this resource.
@@ -218,7 +218,7 @@ public final class SecurityUserRulePropertiesFormat implements JsonSerializable<
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -315,7 +315,7 @@ public final class SecurityUserRulePropertiesFormat implements JsonSerializable<
                     deserializedSecurityUserRulePropertiesFormat.destinationPortRanges = destinationPortRanges;
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedSecurityUserRulePropertiesFormat.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else if ("resourceGuid".equals(fieldName)) {
                     deserializedSecurityUserRulePropertiesFormat.resourceGuid = reader.getString();
                 } else {

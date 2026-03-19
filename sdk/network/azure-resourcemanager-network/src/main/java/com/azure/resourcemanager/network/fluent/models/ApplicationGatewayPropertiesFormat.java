@@ -32,7 +32,7 @@ import com.azure.resourcemanager.network.models.ApplicationGatewaySslProfile;
 import com.azure.resourcemanager.network.models.ApplicationGatewayTrustedClientCertificate;
 import com.azure.resourcemanager.network.models.ApplicationGatewayTrustedRootCertificate;
 import com.azure.resourcemanager.network.models.ApplicationGatewayWebApplicationFirewallConfiguration;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 import java.util.List;
 
@@ -209,7 +209,7 @@ public final class ApplicationGatewayPropertiesFormat implements JsonSerializabl
     /*
      * The provisioning state of the application gateway resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * Custom error configurations of the application gateway resource.
@@ -894,7 +894,7 @@ public final class ApplicationGatewayPropertiesFormat implements JsonSerializabl
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -1303,7 +1303,7 @@ public final class ApplicationGatewayPropertiesFormat implements JsonSerializabl
                     deserializedApplicationGatewayPropertiesFormat.resourceGuid = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedApplicationGatewayPropertiesFormat.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else if ("customErrorConfigurations".equals(fieldName)) {
                     List<ApplicationGatewayCustomError> customErrorConfigurations
                         = reader.readArray(reader1 -> ApplicationGatewayCustomError.fromJson(reader1));

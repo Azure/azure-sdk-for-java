@@ -9,7 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 import java.util.List;
 
@@ -37,7 +37,7 @@ public final class ServiceEndpointPolicyPropertiesFormat
     /*
      * The provisioning state of the service endpoint policy resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * The alias indicating if the policy belongs to a service
@@ -101,7 +101,7 @@ public final class ServiceEndpointPolicyPropertiesFormat
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -202,7 +202,7 @@ public final class ServiceEndpointPolicyPropertiesFormat
                     deserializedServiceEndpointPolicyPropertiesFormat.resourceGuid = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedServiceEndpointPolicyPropertiesFormat.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else if ("serviceAlias".equals(fieldName)) {
                     deserializedServiceEndpointPolicyPropertiesFormat.serviceAlias = reader.getString();
                 } else if ("contextualServiceEndpointPolicies".equals(fieldName)) {

@@ -9,7 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 
 /**
@@ -20,7 +20,7 @@ public final class NetworkWatcherPropertiesFormat implements JsonSerializable<Ne
     /*
      * The provisioning state of the network watcher resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of NetworkWatcherPropertiesFormat class.
@@ -33,7 +33,7 @@ public final class NetworkWatcherPropertiesFormat implements JsonSerializable<Ne
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -72,7 +72,7 @@ public final class NetworkWatcherPropertiesFormat implements JsonSerializable<Ne
 
                 if ("provisioningState".equals(fieldName)) {
                     deserializedNetworkWatcherPropertiesFormat.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

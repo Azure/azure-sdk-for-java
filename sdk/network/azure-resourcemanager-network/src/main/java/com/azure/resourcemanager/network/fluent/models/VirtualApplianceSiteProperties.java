@@ -9,8 +9,8 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
 import com.azure.resourcemanager.network.models.Office365PolicyProperties;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 
 /**
@@ -31,7 +31,7 @@ public final class VirtualApplianceSiteProperties implements JsonSerializable<Vi
     /*
      * The provisioning state of the resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of VirtualApplianceSiteProperties class.
@@ -84,7 +84,7 @@ public final class VirtualApplianceSiteProperties implements JsonSerializable<Vi
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -132,7 +132,7 @@ public final class VirtualApplianceSiteProperties implements JsonSerializable<Vi
                     deserializedVirtualApplianceSiteProperties.o365Policy = Office365PolicyProperties.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedVirtualApplianceSiteProperties.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

@@ -12,7 +12,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.LoadBalancerOutboundRuleProtocol;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 import java.util.List;
 
@@ -39,7 +39,7 @@ public final class OutboundRulePropertiesFormat implements JsonSerializable<Outb
     /*
      * The provisioning state of the outbound rule resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * The protocol for the outbound rule in load balancer.
@@ -130,7 +130,7 @@ public final class OutboundRulePropertiesFormat implements JsonSerializable<Outb
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -267,7 +267,7 @@ public final class OutboundRulePropertiesFormat implements JsonSerializable<Outb
                         = reader.getNullable(JsonReader::getInt);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedOutboundRulePropertiesFormat.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else if ("enableTcpReset".equals(fieldName)) {
                     deserializedOutboundRulePropertiesFormat.enableTcpReset
                         = reader.getNullable(JsonReader::getBoolean);

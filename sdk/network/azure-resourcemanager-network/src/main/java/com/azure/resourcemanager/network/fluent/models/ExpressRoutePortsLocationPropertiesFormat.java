@@ -10,7 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ExpressRoutePortsLocationBandwidths;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 import java.util.List;
 
@@ -40,7 +40,7 @@ public final class ExpressRoutePortsLocationPropertiesFormat
     /*
      * The provisioning state of the express route port location resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of ExpressRoutePortsLocationPropertiesFormat class.
@@ -80,7 +80,7 @@ public final class ExpressRoutePortsLocationPropertiesFormat
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -132,7 +132,7 @@ public final class ExpressRoutePortsLocationPropertiesFormat
                     deserializedExpressRoutePortsLocationPropertiesFormat.availableBandwidths = availableBandwidths;
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedExpressRoutePortsLocationPropertiesFormat.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

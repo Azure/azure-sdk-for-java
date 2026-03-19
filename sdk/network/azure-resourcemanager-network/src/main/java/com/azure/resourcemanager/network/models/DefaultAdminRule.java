@@ -240,7 +240,7 @@ public final class DefaultAdminRule extends BaseAdminRuleInner {
      * 
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public BaseProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 

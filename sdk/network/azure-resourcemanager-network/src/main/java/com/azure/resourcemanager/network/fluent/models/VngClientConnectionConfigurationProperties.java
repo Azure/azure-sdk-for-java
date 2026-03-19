@@ -12,7 +12,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.AddressSpace;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 import java.util.List;
 
@@ -35,7 +35,7 @@ public final class VngClientConnectionConfigurationProperties
     /*
      * The provisioning state of the VngClientConnectionConfiguration resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of VngClientConnectionConfigurationProperties class.
@@ -91,7 +91,7 @@ public final class VngClientConnectionConfigurationProperties
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -156,7 +156,7 @@ public final class VngClientConnectionConfigurationProperties
                         = virtualNetworkGatewayPolicyGroups;
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedVngClientConnectionConfigurationProperties.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

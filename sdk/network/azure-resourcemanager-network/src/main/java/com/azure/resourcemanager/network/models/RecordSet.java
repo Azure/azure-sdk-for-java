@@ -35,7 +35,7 @@ public final class RecordSet implements JsonSerializable<RecordSet> {
     /*
      * The provisioning state of the recordset.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * Recordset time to live.
@@ -85,7 +85,7 @@ public final class RecordSet implements JsonSerializable<RecordSet> {
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -151,7 +151,7 @@ public final class RecordSet implements JsonSerializable<RecordSet> {
                 } else if ("fqdn".equals(fieldName)) {
                     deserializedRecordSet.fqdn = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {
-                    deserializedRecordSet.provisioningState = NetworkProvisioningState.fromString(reader.getString());
+                    deserializedRecordSet.provisioningState = ProvisioningState.fromString(reader.getString());
                 } else if ("ttl".equals(fieldName)) {
                     deserializedRecordSet.ttl = reader.getNullable(JsonReader::getInt);
                 } else if ("ipAddresses".equals(fieldName)) {

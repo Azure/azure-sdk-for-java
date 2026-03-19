@@ -11,7 +11,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ApplicationGatewayRequestRoutingRuleType;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 
 /**
@@ -73,7 +73,7 @@ public final class ApplicationGatewayRequestRoutingRulePropertiesFormat
     /*
      * The provisioning state of the request routing rule resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of ApplicationGatewayRequestRoutingRulePropertiesFormat class.
@@ -293,7 +293,7 @@ public final class ApplicationGatewayRequestRoutingRulePropertiesFormat
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -373,7 +373,7 @@ public final class ApplicationGatewayRequestRoutingRulePropertiesFormat
                         = SubResource.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedApplicationGatewayRequestRoutingRulePropertiesFormat.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

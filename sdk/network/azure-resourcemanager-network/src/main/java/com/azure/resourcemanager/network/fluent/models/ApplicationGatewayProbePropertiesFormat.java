@@ -11,7 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ApplicationGatewayProbeHealthResponseMatch;
 import com.azure.resourcemanager.network.models.ApplicationGatewayProtocol;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 
 /**
@@ -83,7 +83,7 @@ public final class ApplicationGatewayProbePropertiesFormat
     /*
      * The provisioning state of the probe resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * Custom port which will be used for probing the backend servers. The valid value ranges from 1 to 65535. In case
@@ -339,7 +339,7 @@ public final class ApplicationGatewayProbePropertiesFormat
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -448,7 +448,7 @@ public final class ApplicationGatewayProbePropertiesFormat
                         = reader.getNullable(JsonReader::getBoolean);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedApplicationGatewayProbePropertiesFormat.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else if ("port".equals(fieldName)) {
                     deserializedApplicationGatewayProbePropertiesFormat.port = reader.getNullable(JsonReader::getInt);
                 } else {

@@ -10,7 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.VpnNatRuleMapping;
 import com.azure.resourcemanager.network.models.VpnNatRuleMode;
 import com.azure.resourcemanager.network.models.VpnNatRuleType;
@@ -25,7 +25,7 @@ public final class VpnGatewayNatRuleProperties implements JsonSerializable<VpnGa
     /*
      * The provisioning state of the NAT Rule resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * The type of NAT rule for VPN NAT.
@@ -73,7 +73,7 @@ public final class VpnGatewayNatRuleProperties implements JsonSerializable<VpnGa
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -242,7 +242,7 @@ public final class VpnGatewayNatRuleProperties implements JsonSerializable<VpnGa
 
                 if ("provisioningState".equals(fieldName)) {
                     deserializedVpnGatewayNatRuleProperties.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else if ("type".equals(fieldName)) {
                     deserializedVpnGatewayNatRuleProperties.type = VpnNatRuleType.fromString(reader.getString());
                 } else if ("mode".equals(fieldName)) {

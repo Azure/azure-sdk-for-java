@@ -9,7 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 
 /**
@@ -21,7 +21,7 @@ public final class AzureFirewallFqdnTagPropertiesFormat
     /*
      * The provisioning state of the Azure firewall FQDN tag resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * The name of this FQDN Tag.
@@ -39,7 +39,7 @@ public final class AzureFirewallFqdnTagPropertiesFormat
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -87,7 +87,7 @@ public final class AzureFirewallFqdnTagPropertiesFormat
 
                 if ("provisioningState".equals(fieldName)) {
                     deserializedAzureFirewallFqdnTagPropertiesFormat.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else if ("fqdnTagName".equals(fieldName)) {
                     deserializedAzureFirewallFqdnTagPropertiesFormat.fqdnTagName = reader.getString();
                 } else {

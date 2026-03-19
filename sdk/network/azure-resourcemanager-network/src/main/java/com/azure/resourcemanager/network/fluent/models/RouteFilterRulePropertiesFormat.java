@@ -11,7 +11,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.Access;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.RouteFilterRuleType;
 import java.io.IOException;
 import java.util.List;
@@ -39,7 +39,7 @@ public final class RouteFilterRulePropertiesFormat implements JsonSerializable<R
     /*
      * The provisioning state of the route filter rule resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of RouteFilterRulePropertiesFormat class.
@@ -114,7 +114,7 @@ public final class RouteFilterRulePropertiesFormat implements JsonSerializable<R
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -183,7 +183,7 @@ public final class RouteFilterRulePropertiesFormat implements JsonSerializable<R
                     deserializedRouteFilterRulePropertiesFormat.communities = communities;
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedRouteFilterRulePropertiesFormat.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

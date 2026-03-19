@@ -16,7 +16,7 @@ import com.azure.resourcemanager.network.models.ConnectionMonitorSource;
 import com.azure.resourcemanager.network.models.ConnectionMonitorTestConfiguration;
 import com.azure.resourcemanager.network.models.ConnectionMonitorTestGroup;
 import com.azure.resourcemanager.network.models.ConnectionMonitorType;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -29,7 +29,7 @@ public final class ConnectionMonitorResultProperties extends ConnectionMonitorPa
     /*
      * The provisioning state of the connection monitor.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * The date and time when the connection monitor was started.
@@ -57,7 +57,7 @@ public final class ConnectionMonitorResultProperties extends ConnectionMonitorPa
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -181,7 +181,7 @@ public final class ConnectionMonitorResultProperties extends ConnectionMonitorPa
                     deserializedConnectionMonitorResultProperties.withNotes(reader.getString());
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedConnectionMonitorResultProperties.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else if ("startTime".equals(fieldName)) {
                     deserializedConnectionMonitorResultProperties.startTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));

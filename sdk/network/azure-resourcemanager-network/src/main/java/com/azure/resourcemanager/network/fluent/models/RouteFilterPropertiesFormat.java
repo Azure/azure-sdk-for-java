@@ -9,7 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 import java.util.List;
 
@@ -36,7 +36,7 @@ public final class RouteFilterPropertiesFormat implements JsonSerializable<Route
     /*
      * The provisioning state of the route filter resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of RouteFilterPropertiesFormat class.
@@ -87,7 +87,7 @@ public final class RouteFilterPropertiesFormat implements JsonSerializable<Route
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -147,7 +147,7 @@ public final class RouteFilterPropertiesFormat implements JsonSerializable<Route
                     deserializedRouteFilterPropertiesFormat.ipv6Peerings = ipv6Peerings;
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedRouteFilterPropertiesFormat.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

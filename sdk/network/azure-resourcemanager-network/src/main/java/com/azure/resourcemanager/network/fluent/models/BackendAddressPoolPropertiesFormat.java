@@ -12,7 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.GatewayLoadBalancerTunnelInterface;
 import com.azure.resourcemanager.network.models.LoadBalancerBackendAddress;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.SyncMode;
 import java.io.IOException;
 import java.util.List;
@@ -65,7 +65,7 @@ public final class BackendAddressPoolPropertiesFormat implements JsonSerializabl
     /*
      * The provisioning state of the backend address pool resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * Amount of seconds Load Balancer waits for before sending RESET to client and backend address.
@@ -201,7 +201,7 @@ public final class BackendAddressPoolPropertiesFormat implements JsonSerializabl
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -345,7 +345,7 @@ public final class BackendAddressPoolPropertiesFormat implements JsonSerializabl
                     deserializedBackendAddressPoolPropertiesFormat.inboundNatRules = inboundNatRules;
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedBackendAddressPoolPropertiesFormat.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else if ("drainPeriodInSeconds".equals(fieldName)) {
                     deserializedBackendAddressPoolPropertiesFormat.drainPeriodInSeconds
                         = reader.getNullable(JsonReader::getInt);

@@ -10,8 +10,8 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.AddressSpaceAggregationOption;
+import com.azure.resourcemanager.network.models.BaseProvisioningState;
 import com.azure.resourcemanager.network.models.NetworkIntentPolicyBasedService;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 import java.util.List;
 
@@ -39,7 +39,7 @@ public final class SecurityAdminConfigurationPropertiesFormat
     /*
      * The provisioning state of the resource.
      */
-    private ProvisioningState provisioningState;
+    private BaseProvisioningState provisioningState;
 
     /*
      * Unique identifier for this resource.
@@ -121,7 +121,7 @@ public final class SecurityAdminConfigurationPropertiesFormat
      * 
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public BaseProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -187,7 +187,7 @@ public final class SecurityAdminConfigurationPropertiesFormat
                         = AddressSpaceAggregationOption.fromString(reader.getString());
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedSecurityAdminConfigurationPropertiesFormat.provisioningState
-                        = ProvisioningState.fromString(reader.getString());
+                        = BaseProvisioningState.fromString(reader.getString());
                 } else if ("resourceGuid".equals(fieldName)) {
                     deserializedSecurityAdminConfigurationPropertiesFormat.resourceGuid = reader.getString();
                 } else {

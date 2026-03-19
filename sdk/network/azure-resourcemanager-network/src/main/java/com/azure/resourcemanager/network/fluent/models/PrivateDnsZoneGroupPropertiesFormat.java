@@ -9,8 +9,8 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
 import com.azure.resourcemanager.network.models.PrivateDnsZoneConfig;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 import java.util.List;
 
@@ -23,7 +23,7 @@ public final class PrivateDnsZoneGroupPropertiesFormat
     /*
      * The provisioning state of the private dns zone group resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * A collection of private dns zone configurations of the private dns zone group.
@@ -41,7 +41,7 @@ public final class PrivateDnsZoneGroupPropertiesFormat
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -108,7 +108,7 @@ public final class PrivateDnsZoneGroupPropertiesFormat
 
                 if ("provisioningState".equals(fieldName)) {
                     deserializedPrivateDnsZoneGroupPropertiesFormat.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else if ("privateDnsZoneConfigs".equals(fieldName)) {
                     List<PrivateDnsZoneConfig> privateDnsZoneConfigs
                         = reader.readArray(reader1 -> PrivateDnsZoneConfig.fromJson(reader1));

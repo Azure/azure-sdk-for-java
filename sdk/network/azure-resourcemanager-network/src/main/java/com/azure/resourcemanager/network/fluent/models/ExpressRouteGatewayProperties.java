@@ -11,7 +11,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ExpressRouteGatewayPropertiesAutoScaleConfiguration;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.VirtualHubId;
 import java.io.IOException;
 import java.util.List;
@@ -34,7 +34,7 @@ public final class ExpressRouteGatewayProperties implements JsonSerializable<Exp
     /*
      * The provisioning state of the express route gateway resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * The Virtual Hub where the ExpressRoute gateway is or will be deployed.
@@ -99,7 +99,7 @@ public final class ExpressRouteGatewayProperties implements JsonSerializable<Exp
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -210,7 +210,7 @@ public final class ExpressRouteGatewayProperties implements JsonSerializable<Exp
                     deserializedExpressRouteGatewayProperties.expressRouteConnections = expressRouteConnections;
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedExpressRouteGatewayProperties.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else if ("allowNonVirtualWanTraffic".equals(fieldName)) {
                     deserializedExpressRouteGatewayProperties.allowNonVirtualWanTraffic
                         = reader.getNullable(JsonReader::getBoolean);

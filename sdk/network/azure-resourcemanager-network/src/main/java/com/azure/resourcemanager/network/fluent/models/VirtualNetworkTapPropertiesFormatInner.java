@@ -9,7 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 import java.util.List;
 
@@ -32,7 +32,7 @@ public final class VirtualNetworkTapPropertiesFormatInner
     /*
      * The provisioning state of the virtual network tap resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * The reference to the private IP Address of the collector nic that will receive the tap.
@@ -79,7 +79,7 @@ public final class VirtualNetworkTapPropertiesFormatInner
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -206,7 +206,7 @@ public final class VirtualNetworkTapPropertiesFormatInner
                     deserializedVirtualNetworkTapPropertiesFormatInner.resourceGuid = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedVirtualNetworkTapPropertiesFormatInner.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else if ("destinationNetworkInterfaceIPConfiguration".equals(fieldName)) {
                     deserializedVirtualNetworkTapPropertiesFormatInner.destinationNetworkInterfaceIPConfiguration
                         = NetworkInterfaceIpConfigurationInner.fromJson(reader);

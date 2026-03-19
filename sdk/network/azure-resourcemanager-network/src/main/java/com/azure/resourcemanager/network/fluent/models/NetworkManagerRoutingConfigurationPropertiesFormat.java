@@ -9,7 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.RouteTableUsageMode;
 import java.io.IOException;
 
@@ -27,7 +27,7 @@ public final class NetworkManagerRoutingConfigurationPropertiesFormat
     /*
      * The provisioning state of the resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * Unique identifier for this resource.
@@ -71,7 +71,7 @@ public final class NetworkManagerRoutingConfigurationPropertiesFormat
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -148,7 +148,7 @@ public final class NetworkManagerRoutingConfigurationPropertiesFormat
                     deserializedNetworkManagerRoutingConfigurationPropertiesFormat.description = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedNetworkManagerRoutingConfigurationPropertiesFormat.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else if ("resourceGuid".equals(fieldName)) {
                     deserializedNetworkManagerRoutingConfigurationPropertiesFormat.resourceGuid = reader.getString();
                 } else if ("routeTableUsageMode".equals(fieldName)) {

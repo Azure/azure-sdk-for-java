@@ -11,7 +11,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.AddressSpace;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.RoutingConfiguration;
 import java.io.IOException;
 import java.util.List;
@@ -50,7 +50,7 @@ public final class P2SConnectionConfigurationProperties
     /*
      * The provisioning state of the P2SConnectionConfiguration resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of P2SConnectionConfigurationProperties class.
@@ -162,7 +162,7 @@ public final class P2SConnectionConfigurationProperties
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -234,7 +234,7 @@ public final class P2SConnectionConfigurationProperties
                         = previousConfigurationPolicyGroupAssociations;
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedP2SConnectionConfigurationProperties.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

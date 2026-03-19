@@ -10,7 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.HubRoute;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 import java.util.List;
 
@@ -42,7 +42,7 @@ public final class HubRouteTableProperties implements JsonSerializable<HubRouteT
     /*
      * The provisioning state of the RouteTable resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of HubRouteTableProperties class.
@@ -113,7 +113,7 @@ public final class HubRouteTableProperties implements JsonSerializable<HubRouteT
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -168,7 +168,7 @@ public final class HubRouteTableProperties implements JsonSerializable<HubRouteT
                     deserializedHubRouteTableProperties.propagatingConnections = propagatingConnections;
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedHubRouteTableProperties.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

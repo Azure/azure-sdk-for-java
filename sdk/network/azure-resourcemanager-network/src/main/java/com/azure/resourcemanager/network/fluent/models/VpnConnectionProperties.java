@@ -11,7 +11,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.IpsecPolicy;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.RoutingConfiguration;
 import com.azure.resourcemanager.network.models.TrafficSelectorPolicy;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionProtocol;
@@ -107,7 +107,7 @@ public final class VpnConnectionProperties implements JsonSerializable<VpnConnec
     /*
      * The provisioning state of the VPN connection resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * List of all vpn site link connections to the gateway.
@@ -418,7 +418,7 @@ public final class VpnConnectionProperties implements JsonSerializable<VpnConnec
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -570,7 +570,7 @@ public final class VpnConnectionProperties implements JsonSerializable<VpnConnec
                         = reader.getNullable(JsonReader::getBoolean);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedVpnConnectionProperties.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else if ("vpnLinkConnections".equals(fieldName)) {
                     List<VpnSiteLinkConnectionInner> vpnLinkConnections
                         = reader.readArray(reader1 -> VpnSiteLinkConnectionInner.fromJson(reader1));

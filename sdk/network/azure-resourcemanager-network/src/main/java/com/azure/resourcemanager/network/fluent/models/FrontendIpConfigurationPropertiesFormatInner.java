@@ -12,7 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.IpVersion;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 import java.util.List;
 
@@ -80,7 +80,7 @@ public final class FrontendIPConfigurationPropertiesFormatInner
     /*
      * The provisioning state of the frontend IP configuration resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of FrontendIPConfigurationPropertiesFormatInner class.
@@ -272,7 +272,7 @@ public final class FrontendIPConfigurationPropertiesFormatInner
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -357,7 +357,7 @@ public final class FrontendIPConfigurationPropertiesFormatInner
                         = SubResource.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedFrontendIPConfigurationPropertiesFormatInner.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

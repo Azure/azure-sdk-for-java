@@ -10,9 +10,9 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.AccessMode;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
 import com.azure.resourcemanager.network.models.PrivateLinkServicePropertiesAutoApproval;
 import com.azure.resourcemanager.network.models.PrivateLinkServicePropertiesVisibility;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 import java.util.List;
 
@@ -49,7 +49,7 @@ public final class PrivateLinkServiceProperties implements JsonSerializable<Priv
     /*
      * The provisioning state of the private link service resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * An array of list about connections to the private endpoint.
@@ -186,7 +186,7 @@ public final class PrivateLinkServiceProperties implements JsonSerializable<Priv
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -367,7 +367,7 @@ public final class PrivateLinkServiceProperties implements JsonSerializable<Priv
                     deserializedPrivateLinkServiceProperties.networkInterfaces = networkInterfaces;
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedPrivateLinkServiceProperties.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else if ("privateEndpointConnections".equals(fieldName)) {
                     List<PrivateEndpointConnectionInner> privateEndpointConnections
                         = reader.readArray(reader1 -> PrivateEndpointConnectionInner.fromJson(reader1));

@@ -9,8 +9,8 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
 import com.azure.resourcemanager.network.models.PrivateLinkServiceConnectionState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 import java.util.List;
 
@@ -23,7 +23,7 @@ public final class PrivateLinkServiceConnectionProperties
     /*
      * The provisioning state of the private link service connection resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * The resource id of private link service.
@@ -56,7 +56,7 @@ public final class PrivateLinkServiceConnectionProperties
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -189,7 +189,7 @@ public final class PrivateLinkServiceConnectionProperties
 
                 if ("provisioningState".equals(fieldName)) {
                     deserializedPrivateLinkServiceConnectionProperties.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else if ("privateLinkServiceId".equals(fieldName)) {
                     deserializedPrivateLinkServiceConnectionProperties.privateLinkServiceId = reader.getString();
                 } else if ("groupIds".equals(fieldName)) {

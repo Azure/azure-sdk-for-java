@@ -10,7 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 import java.util.List;
 
@@ -53,7 +53,7 @@ public final class ApplicationGatewayPathRulePropertiesFormat
     /*
      * The provisioning state of the path rule resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * Reference to the FirewallPolicy resource.
@@ -191,7 +191,7 @@ public final class ApplicationGatewayPathRulePropertiesFormat
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -275,7 +275,7 @@ public final class ApplicationGatewayPathRulePropertiesFormat
                         = SubResource.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedApplicationGatewayPathRulePropertiesFormat.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else if ("firewallPolicy".equals(fieldName)) {
                     deserializedApplicationGatewayPathRulePropertiesFormat.firewallPolicy
                         = SubResource.fromJson(reader);

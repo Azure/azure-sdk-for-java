@@ -11,7 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.InboundNatPool;
 import com.azure.resourcemanager.network.models.LoadBalancerScope;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 import java.util.List;
 
@@ -71,7 +71,7 @@ public final class LoadBalancerPropertiesFormat implements JsonSerializable<Load
     /*
      * The provisioning state of the load balancer resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * Indicates the scope of the load balancer: external (Public) or internal (Private).
@@ -257,7 +257,7 @@ public final class LoadBalancerPropertiesFormat implements JsonSerializable<Load
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -378,7 +378,7 @@ public final class LoadBalancerPropertiesFormat implements JsonSerializable<Load
                     deserializedLoadBalancerPropertiesFormat.resourceGuid = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedLoadBalancerPropertiesFormat.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else if ("scope".equals(fieldName)) {
                     deserializedLoadBalancerPropertiesFormat.scope = LoadBalancerScope.fromString(reader.getString());
                 } else {

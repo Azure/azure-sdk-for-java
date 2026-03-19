@@ -10,7 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.RouteNextHopType;
 import java.io.IOException;
 
@@ -38,7 +38,7 @@ public final class RoutePropertiesFormat implements JsonSerializable<RouteProper
     /*
      * The provisioning state of the route resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * A value indicating whether this route overrides overlapping BGP routes regardless of LPM.
@@ -118,7 +118,7 @@ public final class RoutePropertiesFormat implements JsonSerializable<RouteProper
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -183,7 +183,7 @@ public final class RoutePropertiesFormat implements JsonSerializable<RouteProper
                     deserializedRoutePropertiesFormat.nextHopIpAddress = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedRoutePropertiesFormat.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else if ("hasBgpOverride".equals(fieldName)) {
                     deserializedRoutePropertiesFormat.hasBgpOverride = reader.getNullable(JsonReader::getBoolean);
                 } else {

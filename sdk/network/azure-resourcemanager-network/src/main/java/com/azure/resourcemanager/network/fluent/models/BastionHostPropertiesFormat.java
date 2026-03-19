@@ -12,7 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.BastionHostIPConfiguration;
 import com.azure.resourcemanager.network.models.BastionHostPropertiesFormatNetworkAcls;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 import java.util.List;
 
@@ -44,7 +44,7 @@ public final class BastionHostPropertiesFormat implements JsonSerializable<Basti
     /*
      * The provisioning state of the bastion host resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * The scale units for the Bastion Host resource.
@@ -184,7 +184,7 @@ public final class BastionHostPropertiesFormat implements JsonSerializable<Basti
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -433,7 +433,7 @@ public final class BastionHostPropertiesFormat implements JsonSerializable<Basti
                         = BastionHostPropertiesFormatNetworkAcls.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedBastionHostPropertiesFormat.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else if ("scaleUnits".equals(fieldName)) {
                     deserializedBastionHostPropertiesFormat.scaleUnits = reader.getNullable(JsonReader::getInt);
                 } else if ("disableCopyPaste".equals(fieldName)) {

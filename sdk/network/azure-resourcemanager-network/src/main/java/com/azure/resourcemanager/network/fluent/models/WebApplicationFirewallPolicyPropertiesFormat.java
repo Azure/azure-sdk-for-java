@@ -13,8 +13,8 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ApplicationGatewayForContainersReferenceDefinition;
 import com.azure.resourcemanager.network.models.ManagedRulesDefinition;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
 import com.azure.resourcemanager.network.models.PolicySettings;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.WebApplicationFirewallCustomRule;
 import com.azure.resourcemanager.network.models.WebApplicationFirewallPolicyResourceState;
 import java.io.IOException;
@@ -44,7 +44,7 @@ public final class WebApplicationFirewallPolicyPropertiesFormat
     /*
      * The provisioning state of the web application firewall policy resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * Resource status of the policy.
@@ -132,7 +132,7 @@ public final class WebApplicationFirewallPolicyPropertiesFormat
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -267,7 +267,7 @@ public final class WebApplicationFirewallPolicyPropertiesFormat
                     deserializedWebApplicationFirewallPolicyPropertiesFormat.applicationGateways = applicationGateways;
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedWebApplicationFirewallPolicyPropertiesFormat.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else if ("resourceState".equals(fieldName)) {
                     deserializedWebApplicationFirewallPolicyPropertiesFormat.resourceState
                         = WebApplicationFirewallPolicyResourceState.fromString(reader.getString());

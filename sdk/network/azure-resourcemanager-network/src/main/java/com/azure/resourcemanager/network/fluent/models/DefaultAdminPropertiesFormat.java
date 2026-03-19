@@ -10,7 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.AddressPrefixItem;
-import com.azure.resourcemanager.network.models.ProvisioningState;
+import com.azure.resourcemanager.network.models.BaseProvisioningState;
 import com.azure.resourcemanager.network.models.SecurityConfigurationRuleAccess;
 import com.azure.resourcemanager.network.models.SecurityConfigurationRuleDirection;
 import com.azure.resourcemanager.network.models.SecurityConfigurationRuleProtocol;
@@ -76,7 +76,7 @@ public final class DefaultAdminPropertiesFormat implements JsonSerializable<Defa
     /*
      * The provisioning state of the resource.
      */
-    private ProvisioningState provisioningState;
+    private BaseProvisioningState provisioningState;
 
     /*
      * Unique identifier for this resource.
@@ -197,7 +197,7 @@ public final class DefaultAdminPropertiesFormat implements JsonSerializable<Defa
      * 
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public BaseProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -279,7 +279,7 @@ public final class DefaultAdminPropertiesFormat implements JsonSerializable<Defa
                         = SecurityConfigurationRuleDirection.fromString(reader.getString());
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedDefaultAdminPropertiesFormat.provisioningState
-                        = ProvisioningState.fromString(reader.getString());
+                        = BaseProvisioningState.fromString(reader.getString());
                 } else if ("resourceGuid".equals(fieldName)) {
                     deserializedDefaultAdminPropertiesFormat.resourceGuid = reader.getString();
                 } else {

@@ -12,7 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.IpTag;
 import com.azure.resourcemanager.network.models.IpVersion;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.ReferencedPublicIpAddress;
 import java.io.IOException;
 import java.util.List;
@@ -66,7 +66,7 @@ public final class PublicIPPrefixPropertiesFormatInner
     /*
      * The provisioning state of the public IP prefix resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * NatGateway of Public IP Prefix.
@@ -201,7 +201,7 @@ public final class PublicIPPrefixPropertiesFormatInner
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -297,7 +297,7 @@ public final class PublicIPPrefixPropertiesFormatInner
                     deserializedPublicIPPrefixPropertiesFormatInner.resourceGuid = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedPublicIPPrefixPropertiesFormatInner.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else if ("natGateway".equals(fieldName)) {
                     deserializedPublicIPPrefixPropertiesFormatInner.natGateway = NatGatewayInner.fromJson(reader);
                 } else {

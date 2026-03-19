@@ -9,7 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.RouteMapRule;
 import java.io.IOException;
 import java.util.List;
@@ -37,7 +37,7 @@ public final class RouteMapProperties implements JsonSerializable<RouteMapProper
     /*
      * The provisioning state of the RouteMap resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of RouteMapProperties class.
@@ -114,7 +114,7 @@ public final class RouteMapProperties implements JsonSerializable<RouteMapProper
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -168,8 +168,7 @@ public final class RouteMapProperties implements JsonSerializable<RouteMapProper
                     List<RouteMapRule> rules = reader.readArray(reader1 -> RouteMapRule.fromJson(reader1));
                     deserializedRouteMapProperties.rules = rules;
                 } else if ("provisioningState".equals(fieldName)) {
-                    deserializedRouteMapProperties.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                    deserializedRouteMapProperties.provisioningState = ProvisioningState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

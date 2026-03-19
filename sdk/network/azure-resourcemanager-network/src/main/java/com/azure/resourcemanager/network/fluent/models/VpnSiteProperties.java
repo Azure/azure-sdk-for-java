@@ -13,8 +13,8 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.AddressSpace;
 import com.azure.resourcemanager.network.models.BgpSettings;
 import com.azure.resourcemanager.network.models.DeviceProperties;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
 import com.azure.resourcemanager.network.models.O365PolicyProperties;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 import java.util.List;
 
@@ -56,7 +56,7 @@ public final class VpnSiteProperties implements JsonSerializable<VpnSiteProperti
     /*
      * The provisioning state of the VPN site resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * IsSecuritySite flag.
@@ -204,7 +204,7 @@ public final class VpnSiteProperties implements JsonSerializable<VpnSiteProperti
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -337,8 +337,7 @@ public final class VpnSiteProperties implements JsonSerializable<VpnSiteProperti
                 } else if ("bgpProperties".equals(fieldName)) {
                     deserializedVpnSiteProperties.bgpProperties = BgpSettings.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
-                    deserializedVpnSiteProperties.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                    deserializedVpnSiteProperties.provisioningState = ProvisioningState.fromString(reader.getString());
                 } else if ("isSecuritySite".equals(fieldName)) {
                     deserializedVpnSiteProperties.isSecuritySite = reader.getNullable(JsonReader::getBoolean);
                 } else if ("vpnSiteLinks".equals(fieldName)) {

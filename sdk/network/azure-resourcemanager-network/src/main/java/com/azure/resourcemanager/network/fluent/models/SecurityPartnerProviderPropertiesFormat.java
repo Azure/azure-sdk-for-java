@@ -10,7 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.SecurityPartnerProviderConnectionStatus;
 import com.azure.resourcemanager.network.models.SecurityProviderName;
 import java.io.IOException;
@@ -24,7 +24,7 @@ public final class SecurityPartnerProviderPropertiesFormat
     /*
      * The provisioning state of the Security Partner Provider resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * The security provider name.
@@ -52,7 +52,7 @@ public final class SecurityPartnerProviderPropertiesFormat
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -143,7 +143,7 @@ public final class SecurityPartnerProviderPropertiesFormat
 
                 if ("provisioningState".equals(fieldName)) {
                     deserializedSecurityPartnerProviderPropertiesFormat.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else if ("securityProviderName".equals(fieldName)) {
                     deserializedSecurityPartnerProviderPropertiesFormat.securityProviderName
                         = SecurityProviderName.fromString(reader.getString());

@@ -21,7 +21,7 @@ public final class ReachabilityAnalysisIntentProperties
     /*
      * Provisioning states of a resource.
      */
-    private ProvisioningState provisioningState;
+    private BaseProvisioningState provisioningState;
 
     /*
      * The description property.
@@ -54,7 +54,7 @@ public final class ReachabilityAnalysisIntentProperties
      * 
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public BaseProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -203,7 +203,7 @@ public final class ReachabilityAnalysisIntentProperties
                     deserializedReachabilityAnalysisIntentProperties.ipTraffic = IPTraffic.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedReachabilityAnalysisIntentProperties.provisioningState
-                        = ProvisioningState.fromString(reader.getString());
+                        = BaseProvisioningState.fromString(reader.getString());
                 } else if ("description".equals(fieldName)) {
                     deserializedReachabilityAnalysisIntentProperties.description = reader.getString();
                 } else {

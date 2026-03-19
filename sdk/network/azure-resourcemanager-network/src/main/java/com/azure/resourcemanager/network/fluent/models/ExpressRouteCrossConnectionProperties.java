@@ -10,7 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitReference;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.ServiceProviderProvisioningState;
 import java.io.IOException;
 import java.util.List;
@@ -64,7 +64,7 @@ public final class ExpressRouteCrossConnectionProperties
     /*
      * The provisioning state of the express route cross connection resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * The list of peerings.
@@ -191,7 +191,7 @@ public final class ExpressRouteCrossConnectionProperties
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -280,7 +280,7 @@ public final class ExpressRouteCrossConnectionProperties
                     deserializedExpressRouteCrossConnectionProperties.serviceProviderNotes = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedExpressRouteCrossConnectionProperties.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else if ("peerings".equals(fieldName)) {
                     List<ExpressRouteCrossConnectionPeeringInner> peerings
                         = reader.readArray(reader1 -> ExpressRouteCrossConnectionPeeringInner.fromJson(reader1));

@@ -9,7 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.VpnLinkBgpSettings;
 import com.azure.resourcemanager.network.models.VpnLinkProviderProperties;
 import java.io.IOException;
@@ -42,7 +42,7 @@ public final class VpnSiteLinkProperties implements JsonSerializable<VpnSiteLink
     /*
      * The provisioning state of the VPN site link resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of VpnSiteLinkProperties class.
@@ -135,7 +135,7 @@ public final class VpnSiteLinkProperties implements JsonSerializable<VpnSiteLink
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -191,7 +191,7 @@ public final class VpnSiteLinkProperties implements JsonSerializable<VpnSiteLink
                     deserializedVpnSiteLinkProperties.bgpProperties = VpnLinkBgpSettings.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedVpnSiteLinkProperties.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

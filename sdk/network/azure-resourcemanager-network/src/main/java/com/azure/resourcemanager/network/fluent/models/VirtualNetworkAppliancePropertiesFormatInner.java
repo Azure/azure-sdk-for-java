@@ -9,7 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.VirtualNetworkApplianceIpConfiguration;
 import java.io.IOException;
 import java.util.List;
@@ -33,7 +33,7 @@ public final class VirtualNetworkAppliancePropertiesFormatInner
     /*
      * The provisioning state of the virtual network appliance resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * The resource GUID property of the virtual network appliance resource.
@@ -85,7 +85,7 @@ public final class VirtualNetworkAppliancePropertiesFormatInner
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -167,7 +167,7 @@ public final class VirtualNetworkAppliancePropertiesFormatInner
                     deserializedVirtualNetworkAppliancePropertiesFormatInner.ipConfigurations = ipConfigurations;
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedVirtualNetworkAppliancePropertiesFormatInner.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else if ("resourceGuid".equals(fieldName)) {
                     deserializedVirtualNetworkAppliancePropertiesFormatInner.resourceGuid = reader.getString();
                 } else if ("subnet".equals(fieldName)) {

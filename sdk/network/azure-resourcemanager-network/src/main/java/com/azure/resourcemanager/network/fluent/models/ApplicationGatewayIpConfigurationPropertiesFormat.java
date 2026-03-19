@@ -10,7 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 
 /**
@@ -27,7 +27,7 @@ public final class ApplicationGatewayIPConfigurationPropertiesFormat
     /*
      * The provisioning state of the application gateway IP configuration resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of ApplicationGatewayIPConfigurationPropertiesFormat class.
@@ -62,7 +62,7 @@ public final class ApplicationGatewayIPConfigurationPropertiesFormat
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -104,7 +104,7 @@ public final class ApplicationGatewayIPConfigurationPropertiesFormat
                     deserializedApplicationGatewayIPConfigurationPropertiesFormat.subnet = SubResource.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedApplicationGatewayIPConfigurationPropertiesFormat.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

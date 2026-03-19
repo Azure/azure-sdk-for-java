@@ -8,28 +8,13 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Provisioning states of a resource.
+ * The current provisioning state.
  */
 public final class ProvisioningState extends ExpandableStringEnum<ProvisioningState> {
-    /**
-     * Failed.
-     */
-    public static final ProvisioningState FAILED = fromString("Failed");
-
     /**
      * Succeeded.
      */
     public static final ProvisioningState SUCCEEDED = fromString("Succeeded");
-
-    /**
-     * Canceled.
-     */
-    public static final ProvisioningState CANCELED = fromString("Canceled");
-
-    /**
-     * Creating.
-     */
-    public static final ProvisioningState CREATING = fromString("Creating");
 
     /**
      * Updating.
@@ -40,6 +25,11 @@ public final class ProvisioningState extends ExpandableStringEnum<ProvisioningSt
      * Deleting.
      */
     public static final ProvisioningState DELETING = fromString("Deleting");
+
+    /**
+     * Failed.
+     */
+    public static final ProvisioningState FAILED = fromString("Failed");
 
     /**
      * Creates a new instance of ProvisioningState value.

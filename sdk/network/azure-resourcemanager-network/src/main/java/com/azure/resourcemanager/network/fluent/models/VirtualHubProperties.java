@@ -11,8 +11,8 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.HubRoutingPreference;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
 import com.azure.resourcemanager.network.models.PreferredRoutingGateway;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.RoutingState;
 import com.azure.resourcemanager.network.models.VirtualHubRouteTable;
 import com.azure.resourcemanager.network.models.VirtualRouterAutoScaleConfiguration;
@@ -67,7 +67,7 @@ public final class VirtualHubProperties implements JsonSerializable<VirtualHubPr
     /*
      * The provisioning state of the virtual hub resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * The Security Provider name.
@@ -305,7 +305,7 @@ public final class VirtualHubProperties implements JsonSerializable<VirtualHubPr
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -608,7 +608,7 @@ public final class VirtualHubProperties implements JsonSerializable<VirtualHubPr
                     deserializedVirtualHubProperties.routeTable = VirtualHubRouteTable.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedVirtualHubProperties.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else if ("securityProviderName".equals(fieldName)) {
                     deserializedVirtualHubProperties.securityProviderName = reader.getString();
                 } else if ("virtualHubRouteTableV2s".equals(fieldName)) {

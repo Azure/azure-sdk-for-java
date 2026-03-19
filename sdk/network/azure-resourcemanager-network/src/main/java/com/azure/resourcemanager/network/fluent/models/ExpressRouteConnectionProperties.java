@@ -11,7 +11,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitPeeringId;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.RoutingConfiguration;
 import java.io.IOException;
 
@@ -23,7 +23,7 @@ public final class ExpressRouteConnectionProperties implements JsonSerializable<
     /*
      * The provisioning state of the express route connection resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * The ExpressRoute circuit peering.
@@ -72,7 +72,7 @@ public final class ExpressRouteConnectionProperties implements JsonSerializable<
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -279,7 +279,7 @@ public final class ExpressRouteConnectionProperties implements JsonSerializable<
                         = ExpressRouteCircuitPeeringId.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedExpressRouteConnectionProperties.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else if ("authorizationKey".equals(fieldName)) {
                     deserializedExpressRouteConnectionProperties.authorizationKey = reader.getString();
                 } else if ("routingWeight".equals(fieldName)) {

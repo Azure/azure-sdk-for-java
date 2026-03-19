@@ -10,7 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 
 /**
@@ -42,7 +42,7 @@ public final class IPConfigurationPropertiesFormatInner
     /*
      * The provisioning state of the IP configuration resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of IPConfigurationPropertiesFormatInner class.
@@ -91,7 +91,7 @@ public final class IPConfigurationPropertiesFormatInner
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -151,7 +151,7 @@ public final class IPConfigurationPropertiesFormatInner
                         = PublicIpAddressInner.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedIPConfigurationPropertiesFormatInner.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

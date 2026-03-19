@@ -12,7 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.DisableBgpRoutePropagation;
 import com.azure.resourcemanager.network.models.NetworkManagerRoutingGroupItem;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 import java.util.List;
 
@@ -30,7 +30,7 @@ public final class RoutingRuleCollectionPropertiesFormat
     /*
      * The provisioning state of the resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * Unique identifier for this resource.
@@ -78,7 +78,7 @@ public final class RoutingRuleCollectionPropertiesFormat
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -189,7 +189,7 @@ public final class RoutingRuleCollectionPropertiesFormat
                     deserializedRoutingRuleCollectionPropertiesFormat.description = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedRoutingRuleCollectionPropertiesFormat.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else if ("resourceGuid".equals(fieldName)) {
                     deserializedRoutingRuleCollectionPropertiesFormat.resourceGuid = reader.getString();
                 } else if ("disableBgpRoutePropagation".equals(fieldName)) {

@@ -10,7 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.RoutingRuleNextHop;
 import com.azure.resourcemanager.network.models.RoutingRuleRouteDestination;
 import java.io.IOException;
@@ -28,7 +28,7 @@ public final class RoutingRulePropertiesFormat implements JsonSerializable<Routi
     /*
      * The provisioning state of the resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * Unique identifier for this resource.
@@ -76,7 +76,7 @@ public final class RoutingRulePropertiesFormat implements JsonSerializable<Routi
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -189,7 +189,7 @@ public final class RoutingRulePropertiesFormat implements JsonSerializable<Routi
                     deserializedRoutingRulePropertiesFormat.description = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedRoutingRulePropertiesFormat.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else if ("resourceGuid".equals(fieldName)) {
                     deserializedRoutingRulePropertiesFormat.resourceGuid = reader.getString();
                 } else {

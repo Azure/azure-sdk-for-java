@@ -9,7 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.RoutingPolicy;
 import java.io.IOException;
 import java.util.List;
@@ -27,7 +27,7 @@ public final class RoutingIntentProperties implements JsonSerializable<RoutingIn
     /*
      * The provisioning state of the RoutingIntent resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of RoutingIntentProperties class.
@@ -60,7 +60,7 @@ public final class RoutingIntentProperties implements JsonSerializable<RoutingIn
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -106,7 +106,7 @@ public final class RoutingIntentProperties implements JsonSerializable<RoutingIn
                     deserializedRoutingIntentProperties.routingPolicies = routingPolicies;
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedRoutingIntentProperties.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

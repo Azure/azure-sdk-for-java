@@ -45,7 +45,7 @@ public final class ReachabilityAnalysisRunProperties implements JsonSerializable
     /*
      * Provisioning states of a resource.
      */
-    private ProvisioningState provisioningState;
+    private BaseProvisioningState provisioningState;
 
     /**
      * Creates an instance of ReachabilityAnalysisRunProperties class.
@@ -125,7 +125,7 @@ public final class ReachabilityAnalysisRunProperties implements JsonSerializable
      * 
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public BaseProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -187,7 +187,7 @@ public final class ReachabilityAnalysisRunProperties implements JsonSerializable
                     deserializedReachabilityAnalysisRunProperties.errorMessage = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedReachabilityAnalysisRunProperties.provisioningState
-                        = ProvisioningState.fromString(reader.getString());
+                        = BaseProvisioningState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

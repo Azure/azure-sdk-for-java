@@ -16,7 +16,7 @@ import com.azure.resourcemanager.network.models.ConnectivityTopology;
 import com.azure.resourcemanager.network.models.DeleteExistingPeering;
 import com.azure.resourcemanager.network.models.Hub;
 import com.azure.resourcemanager.network.models.IsGlobal;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 import java.util.List;
 
@@ -60,7 +60,7 @@ public final class ConnectivityConfigurationProperties
     /*
      * The provisioning state of the connectivity configuration resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * Flag if need to remove current existing peerings.
@@ -206,7 +206,7 @@ public final class ConnectivityConfigurationProperties
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -322,7 +322,7 @@ public final class ConnectivityConfigurationProperties
                         = ConnectivityConfigurationPropertiesConnectivityCapabilities.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedConnectivityConfigurationProperties.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else if ("deleteExistingPeering".equals(fieldName)) {
                     deserializedConnectivityConfigurationProperties.deleteExistingPeering
                         = DeleteExistingPeering.fromString(reader.getString());

@@ -12,7 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.GatewayCustomBgpIpAddressIpConfiguration;
 import com.azure.resourcemanager.network.models.IpsecPolicy;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionProtocol;
 import com.azure.resourcemanager.network.models.VpnConnectionStatus;
 import com.azure.resourcemanager.network.models.VpnLinkConnectionMode;
@@ -104,7 +104,7 @@ public final class VpnSiteLinkConnectionProperties implements JsonSerializable<V
     /*
      * The provisioning state of the VPN site link connection resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * List of ingress NatRules.
@@ -405,7 +405,7 @@ public final class VpnSiteLinkConnectionProperties implements JsonSerializable<V
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -573,7 +573,7 @@ public final class VpnSiteLinkConnectionProperties implements JsonSerializable<V
                         = reader.getNullable(JsonReader::getBoolean);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedVpnSiteLinkConnectionProperties.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else if ("ingressNatRules".equals(fieldName)) {
                     List<SubResource> ingressNatRules = reader.readArray(reader1 -> SubResource.fromJson(reader1));
                     deserializedVpnSiteLinkConnectionProperties.ingressNatRules = ingressNatRules;

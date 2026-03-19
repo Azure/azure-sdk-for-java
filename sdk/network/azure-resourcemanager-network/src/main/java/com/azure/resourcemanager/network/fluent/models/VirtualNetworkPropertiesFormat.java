@@ -12,8 +12,8 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.AddressSpace;
 import com.azure.resourcemanager.network.models.DhcpOptions;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
 import com.azure.resourcemanager.network.models.PrivateEndpointVNetPolicies;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.VirtualNetworkBgpCommunities;
 import com.azure.resourcemanager.network.models.VirtualNetworkEncryption;
 import java.io.IOException;
@@ -57,7 +57,7 @@ public final class VirtualNetworkPropertiesFormat implements JsonSerializable<Vi
     /*
      * The provisioning state of the virtual network resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * Indicates if DDoS protection is enabled for all the protected resources in the virtual network. It requires a
@@ -230,7 +230,7 @@ public final class VirtualNetworkPropertiesFormat implements JsonSerializable<Vi
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -488,7 +488,7 @@ public final class VirtualNetworkPropertiesFormat implements JsonSerializable<Vi
                     deserializedVirtualNetworkPropertiesFormat.resourceGuid = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedVirtualNetworkPropertiesFormat.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else if ("enableDdosProtection".equals(fieldName)) {
                     deserializedVirtualNetworkPropertiesFormat.enableDdosProtection
                         = reader.getNullable(JsonReader::getBoolean);

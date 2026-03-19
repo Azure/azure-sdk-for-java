@@ -9,12 +9,12 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
 import com.azure.resourcemanager.network.models.PacketCaptureFilter;
 import com.azure.resourcemanager.network.models.PacketCaptureMachineScope;
 import com.azure.resourcemanager.network.models.PacketCaptureSettings;
 import com.azure.resourcemanager.network.models.PacketCaptureStorageLocation;
 import com.azure.resourcemanager.network.models.PacketCaptureTargetType;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 import java.util.List;
 
@@ -26,7 +26,7 @@ public final class PacketCaptureResultProperties extends PacketCaptureParameters
     /*
      * The provisioning state of the packet capture session.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of PacketCaptureResultProperties class.
@@ -39,7 +39,7 @@ public final class PacketCaptureResultProperties extends PacketCaptureParameters
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -142,7 +142,7 @@ public final class PacketCaptureResultProperties extends PacketCaptureParameters
                         .withCaptureSettings(PacketCaptureSettings.fromJson(reader));
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedPacketCaptureResultProperties.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

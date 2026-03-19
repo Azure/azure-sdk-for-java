@@ -24,7 +24,7 @@ public final class DelegationProperties implements JsonSerializable<DelegationPr
     /*
      * Provisioning states of a resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of DelegationProperties class.
@@ -57,7 +57,7 @@ public final class DelegationProperties implements JsonSerializable<DelegationPr
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -98,7 +98,7 @@ public final class DelegationProperties implements JsonSerializable<DelegationPr
                     deserializedDelegationProperties.serviceName = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedDelegationProperties.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

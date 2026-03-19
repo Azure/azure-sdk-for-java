@@ -13,7 +13,7 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.CommissionedState;
 import com.azure.resourcemanager.network.models.CustomIpPrefixType;
 import com.azure.resourcemanager.network.models.Geo;
-import com.azure.resourcemanager.network.models.NetworkProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 import java.util.List;
 
@@ -95,7 +95,7 @@ public final class CustomIpPrefixPropertiesFormat implements JsonSerializable<Cu
     /*
      * The provisioning state of the custom IP prefix resource.
      */
-    private NetworkProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of CustomIpPrefixPropertiesFormat class.
@@ -344,7 +344,7 @@ public final class CustomIpPrefixPropertiesFormat implements JsonSerializable<Cu
      * 
      * @return the provisioningState value.
      */
-    public NetworkProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -429,7 +429,7 @@ public final class CustomIpPrefixPropertiesFormat implements JsonSerializable<Cu
                     deserializedCustomIpPrefixPropertiesFormat.failedReason = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedCustomIpPrefixPropertiesFormat.provisioningState
-                        = NetworkProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
