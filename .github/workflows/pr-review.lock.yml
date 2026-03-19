@@ -27,12 +27,12 @@
 #     - xinlian12/sdk-auto-pr-review/.github/workflows/shared/mcp-tools.md@main
 #     - xinlian12/sdk-auto-pr-review/.github/workflows/shared/pr-review-pipeline.md@main
 #   Includes:
-#     - C:/Users/xinlian/AppData/Local/Temp/gh-aw-include-3032897295.md
-#     - C:/Users/xinlian/AppData/Local/Temp/gh-aw-include-343746048.md
-#     - C:/Users/xinlian/AppData/Local/Temp/gh-aw-include-3690212700.md
-#     - C:/Users/xinlian/AppData/Local/Temp/gh-aw-include-4189230043.md
-#     - C:/Users/xinlian/AppData/Local/Temp/gh-aw-include-802850312.md
-#     - C:/Users/xinlian/AppData/Local/Temp/gh-aw-include-888007527.md
+#     - C:/Users/xinlian/AppData/Local/Temp/gh-aw-include-1514912677.md
+#     - C:/Users/xinlian/AppData/Local/Temp/gh-aw-include-2244138698.md
+#     - C:/Users/xinlian/AppData/Local/Temp/gh-aw-include-3720901876.md
+#     - C:/Users/xinlian/AppData/Local/Temp/gh-aw-include-4093213976.md
+#     - C:/Users/xinlian/AppData/Local/Temp/gh-aw-include-4222059246.md
+#     - C:/Users/xinlian/AppData/Local/Temp/gh-aw-include-47491679.md
 #
 # gh-aw-metadata: {"schema_version":"v2","frontmatter_hash":"53b9a8d0cb1a71711bda301b387d41f3ef79576d0afa73be375ad04128162780","compiler_version":"v0.62.1","strict":true}
 
@@ -193,10 +193,10 @@ jobs:
           </system>
           GH_AW_PROMPT_EOF
           cat << 'GH_AW_PROMPT_EOF'
-          {{#runtime-import .github/aw/imports/xinlian12/sdk-auto-pr-review/d8a749acec4250cfcc656e747ae6c2d55aebbad8/.github_workflows_shared_pr-review-pipeline.md}}
+          {{#runtime-import .github/aw/imports/xinlian12/sdk-auto-pr-review/a287d1594f7e8622047c254283417fb988503910/.github_workflows_shared_pr-review-pipeline.md}}
           GH_AW_PROMPT_EOF
           cat << 'GH_AW_PROMPT_EOF'
-          {{#runtime-import .github/aw/imports/xinlian12/sdk-auto-pr-review/d8a749acec4250cfcc656e747ae6c2d55aebbad8/.github_workflows_shared_mcp-tools.md}}
+          {{#runtime-import .github/aw/imports/xinlian12/sdk-auto-pr-review/a287d1594f7e8622047c254283417fb988503910/.github_workflows_shared_mcp-tools.md}}
           GH_AW_PROMPT_EOF
           cat << 'GH_AW_PROMPT_EOF'
           {{#runtime-import .github/workflows/pr-review.md}}
@@ -652,44 +652,6 @@ jobs:
                 },
                 "handler": "git-show-stat.sh",
                 "timeout": 60
-              },
-              {
-                "name": "post-review-comment",
-                "description": "Post a review comment on the PR. Supports both general and inline comments.",
-                "inputSchema": {
-                  "properties": {
-                    "body": {
-                      "description": "",
-                      "type": "string"
-                    },
-                    "line": {
-                      "description": "",
-                      "type": "number"
-                    },
-                    "path": {
-                      "description": "",
-                      "type": "string"
-                    },
-                    "pr_number": {
-                      "description": "",
-                      "type": "number"
-                    },
-                    "start_line": {
-                      "description": "",
-                      "type": "number"
-                    }
-                  },
-                  "required": [
-                    "body",
-                    "pr_number"
-                  ],
-                  "type": "object"
-                },
-                "handler": "post-review-comment.sh",
-                "env": {
-                  "GH_TOKEN": "GH_TOKEN"
-                },
-                "timeout": 60
               }
             ]
           }
@@ -726,7 +688,6 @@ jobs:
           else
             echo "ERROR: file not found: $INPUT_PATH"
           fi
-          
           
           GH_AW_MCP_SCRIPTS_SH_FILE-LINE-COUNT_EOF
           chmod +x ${RUNNER_TEMP}/gh-aw/mcp-scripts/file-line-count.sh
@@ -811,28 +772,6 @@ jobs:
           
           GH_AW_MCP_SCRIPTS_SH_GIT-SHOW-STAT_EOF
           chmod +x ${RUNNER_TEMP}/gh-aw/mcp-scripts/git-show-stat.sh
-          cat > ${RUNNER_TEMP}/gh-aw/mcp-scripts/post-review-comment.sh << 'GH_AW_MCP_SCRIPTS_SH_POST-REVIEW-COMMENT_EOF'
-          #!/bin/bash
-          # Auto-generated mcp-script tool: post-review-comment
-          # Post a review comment on the PR. Supports both general and inline comments.
-          
-          set -euo pipefail
-          
-          BODY_JSON=$(echo "$INPUT_BODY" | jq -Rs .)
-          if [ -n "$INPUT_PATH" ]; then
-            COMMENT="{\"path\":\"$INPUT_PATH\",\"body\":$BODY_JSON"
-            if [ -n "$INPUT_LINE" ]; then COMMENT="$COMMENT,\"line\":$INPUT_LINE"; fi
-            if [ -n "$INPUT_START_LINE" ]; then COMMENT="$COMMENT,\"start_line\":$INPUT_START_LINE"; fi
-            COMMENT="$COMMENT}"
-            echo "{\"event\":\"COMMENT\",\"body\":\"\",\"comments\":[$COMMENT]}" | \
-              gh api repos/$GITHUB_REPOSITORY/pulls/$INPUT_PR_NUMBER/reviews --input -
-          else
-            echo "{\"body\":$BODY_JSON}" | \
-              gh api repos/$GITHUB_REPOSITORY/issues/$INPUT_PR_NUMBER/comments --input -
-          fi
-          
-          GH_AW_MCP_SCRIPTS_SH_POST-REVIEW-COMMENT_EOF
-          chmod +x ${RUNNER_TEMP}/gh-aw/mcp-scripts/post-review-comment.sh
           
       - name: Generate MCP Scripts Server Config
         id: mcp-scripts-config
