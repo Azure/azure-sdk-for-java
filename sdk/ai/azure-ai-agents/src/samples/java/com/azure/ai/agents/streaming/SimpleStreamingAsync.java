@@ -7,6 +7,7 @@ import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.ResponsesAsyncClient;
 import com.azure.ai.agents.models.AgentReference;
+import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.util.Configuration;
@@ -59,7 +60,8 @@ public class SimpleStreamingAsync {
                 ResponseAccumulator responseAccumulator = ResponseAccumulator.create();
 
                 // Stream response asynchronously - text is printed as each chunk arrives
-                return responsesAsyncClient.createStreamingWithAgent(agentReference,
+                return responsesAsyncClient.createStreamingAzureResponse(
+                        new AzureCreateResponseOptions().setAgentReference(agentReference),
                         ResponseCreateParams.builder()
                             .input("Tell me a short story about a brave explorer."))
                     .doOnNext(event -> {
