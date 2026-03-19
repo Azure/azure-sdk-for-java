@@ -441,11 +441,14 @@ class CosmosClientConfigurationSpec extends UnitSpec {
     configuration.additionalHeaders shouldBe None
   }
 
-  // Verifies that spark.cosmos.additionalHeaders accepts multiple headers at the parsing level.
-  // The JSON is valid and CosmosClientConfiguration stores it as-is.
-  // The CosmosHeaderName.fromString() validation happens later in CosmosClientCache when
-  // converting to Map[CosmosHeaderName, String] for CosmosClientBuilder.additionalHeaders().
-  it should "reject unknown additional headers" in {
+  // Verifies that unknown header names in spark.cosmos.additionalHeaders are rejected
+  // at config-parse time. This ensures Spark jobs fail fast during configuration rather than
+  // starting, allocating cluster resources, and only failing later at runtime when
+  // CosmosClientCache tries to create the client.
+  // Note: CosmosConfigEntry.parse() wraps all parsing exceptions in RuntimeException,
+  // so the IllegalArgumentException from CosmosHeaderName.fromString() surfaces as
+  // RuntimeException with the original IllegalArgumentException as the cause.
+  it should "reject unknown additional headers at parse time" in {
     val userConfig = Map(
       "spark.cosmos.accountEndpoint" -> "https://localhost:8081",
       "spark.cosmos.accountKey" -> "xyz",
@@ -453,12 +456,11 @@ class CosmosClientConfigurationSpec extends UnitSpec {
     )
 
     val readConsistencyStrategy = ReadConsistencyStrategy.DEFAULT
-    val configuration = CosmosClientConfiguration(userConfig, readConsistencyStrategy, sparkEnvironmentInfo = "")
-
-    // Parsing succeeds — the JSON is valid and CosmosClientConfiguration stores it as-is.
-    // The CosmosHeaderName.fromString() validation happens later in CosmosClientCache
-    configuration.additionalHeaders shouldBe defined
-    configuration.additionalHeaders.get should have size 2
+    val thrown = the [RuntimeException] thrownBy {
+      CosmosClientConfiguration(userConfig, readConsistencyStrategy, sparkEnvironmentInfo = "")
+    }
+    thrown.getCause shouldBe a [IllegalArgumentException]
+    thrown.getCause.getMessage should include ("x-custom-header")
   }
 
   // Verifies that spark.cosmos.additionalHeaders handles an empty JSON object ("{}") gracefully,

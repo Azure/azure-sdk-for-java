@@ -713,8 +713,8 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
       }
 
       // Apply additional HTTP headers (e.g., workload-id) to the builder if configured.
-      // These headers are attached to every Cosmos DB request made by this client instance.
-      // Converts Map[String, String] from Spark config to Map[CosmosHeaderName, String] for the builder.
+      // Header name validation already happened at config-parse time in CosmosConfig.AdditionalHeadersConfig,
+      // so CosmosHeaderName.fromString() here is just a type conversion for already-validated keys.
       if (cosmosClientConfiguration.additionalHeaders.isDefined) {
         val headerMap = new java.util.HashMap[CosmosHeaderName, String]()
         for ((key, value) <- cosmosClientConfiguration.additionalHeaders.get) {

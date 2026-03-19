@@ -4,7 +4,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.core.management.AzureEnvironment
-import com.azure.cosmos.{CosmosAsyncClient, CosmosClientBuilder, ReadConsistencyStrategy, spark}
+import com.azure.cosmos.{CosmosAsyncClient, CosmosClientBuilder, CosmosHeaderName, ReadConsistencyStrategy, spark}
 import com.azure.cosmos.implementation.batch.BatchRequestResponseConstants
 import com.azure.cosmos.implementation.routing.LocationHelper
 import com.azure.cosmos.implementation.{Configs, SparkBridgeImplementationInternal, Strings, Utils}
@@ -740,14 +740,29 @@ private object CosmosAccountConfig extends BasicLoggingTrait {
   // {"x-ms-cosmos-workload-id": "15"} into a Scala Map[String, String] using Jackson.
   // These headers are converted to Map[CosmosHeaderName, String] and passed to
   // CosmosClientBuilder.additionalHeaders() in CosmosClientCache.
+  //
+  // Validation: After JSON parsing, every header name is validated via CosmosHeaderName.fromString()
+  // to fail fast at config-parse time rather than at runtime during client creation.
+  // This prevents Spark jobs from starting, allocating cluster resources, and only failing
+  // later when CosmosClientCache tries to convert String keys to CosmosHeaderName instances.
   private val AdditionalHeadersConfig = CosmosConfigEntry[Map[String, String]](
     key = CosmosConfigNames.AdditionalHeaders,
     mandatory = false,
     parseFromStringFunction = headersJson => {
       try {
         val typeRef = new com.fasterxml.jackson.core.`type`.TypeReference[java.util.Map[String, String]]() {}
-        Utils.getSimpleObjectMapperWithAllowDuplicates.readValue(headersJson, typeRef).asScala.toMap
+        val parsed = Utils.getSimpleObjectMapperWithAllowDuplicates.readValue(headersJson, typeRef).asScala.toMap
+
+        // Fail fast: validate every header name is a known CosmosHeaderName at parse time.
+        // Without this, unknown headers like {"x-bad-header": "value"} would parse successfully
+        // and only blow up at runtime in CosmosClientCache when CosmosHeaderName.fromString() is called.
+        for (key <- parsed.keys) {
+          CosmosHeaderName.fromString(key) // throws IllegalArgumentException for unknown headers
+        }
+
+        parsed
       } catch {
+        case e: IllegalArgumentException => throw e
         case e: Exception => throw new IllegalArgumentException(
           s"Invalid JSON for '${CosmosConfigNames.AdditionalHeaders}': '$headersJson'. " +
             "Expected format: {\"x-ms-cosmos-workload-id\": \"15\"}", e)
