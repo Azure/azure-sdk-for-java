@@ -8,7 +8,6 @@ import com.azure.ai.agents.implementation.models.CreateAgentFromManifestRequest;
 import com.azure.ai.agents.implementation.models.CreateAgentRequest;
 import com.azure.ai.agents.implementation.models.CreateAgentVersionFromManifestRequest;
 import com.azure.ai.agents.implementation.models.CreateAgentVersionRequest;
-import com.azure.ai.agents.implementation.models.DeleteAgentResponse;
 import com.azure.ai.agents.implementation.models.UpdateAgentFromManifestRequest;
 import com.azure.ai.agents.implementation.models.UpdateAgentRequest;
 import com.azure.ai.agents.models.AgentDefinition;
@@ -16,7 +15,6 @@ import com.azure.ai.agents.models.AgentDefinitionOptInKeys;
 import com.azure.ai.agents.models.AgentDetails;
 import com.azure.ai.agents.models.AgentKind;
 import com.azure.ai.agents.models.AgentVersionDetails;
-import com.azure.ai.agents.models.DeleteAgentVersionResponse;
 import com.azure.ai.agents.models.PageOrder;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
@@ -195,6 +193,34 @@ public final class AgentsClient {
     }
 
     /**
+     * Deletes a specific version of an agent.
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     object: String(agent/agent.version/agent.deleted/agent.version.deleted/agent.container) (Required)
+     *     name: String (Required)
+     *     version: String (Required)
+     *     deleted: boolean (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param agentName The name of the agent to delete.
+     * @param agentVersion The version of the agent to delete.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteAgentVersion(String agentName, String agentVersion, RequestOptions requestOptions) {
+        deleteAgentVersionWithResponse(agentName, agentVersion, new RequestOptions());
+    }
+
+    /**
      * Returns the list of versions of an agent.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -291,28 +317,6 @@ public final class AgentsClient {
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.listAgents(requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(AgentDetails.class));
-    }
-
-    /**
-     * Deletes a specific version of an agent.
-     *
-     * @param agentName The name of the agent to delete.
-     * @param agentVersion The version of the agent to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deleted agent version Object.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeleteAgentVersionResponse deleteAgentVersion(String agentName, String agentVersion) {
-        // Generated convenience method for deleteAgentVersionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return deleteAgentVersionWithResponse(agentName, agentVersion, requestOptions).getValue()
-            .toObject(DeleteAgentVersionResponse.class);
     }
 
     /**
@@ -1448,6 +1452,22 @@ public final class AgentsClient {
 
     /**
      * Deletes an agent.
+     *
+     * @param agentName The name of the agent to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteAgent(String agentName) {
+        deleteAgentWithResponse(agentName, new RequestOptions());
+    }
+
+    /**
+     * Deletes an agent.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -1470,44 +1490,7 @@ public final class AgentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> internalDeleteAgentWithResponse(String agentName, RequestOptions requestOptions) {
-        return this.serviceClient.internalDeleteAgentWithResponse(agentName, requestOptions);
-    }
-
-    /**
-     * Deletes an agent.
-     *
-     * @param agentName The name of the agent to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deleted agent Object.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DeleteAgentResponse internalDeleteAgent(String agentName) {
-        // Generated convenience method for internalDeleteAgentWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return internalDeleteAgentWithResponse(agentName, requestOptions).getValue()
-            .toObject(DeleteAgentResponse.class);
-    }
-
-    /**
-     * Deletes an agent.
-     *
-     * @param agentName The name of the agent to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteAgent(String agentName) {
-        internalDeleteAgent(agentName);
+    public Response<BinaryData> deleteAgentWithResponse(String agentName, RequestOptions requestOptions) {
+        return this.serviceClient.deleteAgentWithResponse(agentName, requestOptions);
     }
 }
