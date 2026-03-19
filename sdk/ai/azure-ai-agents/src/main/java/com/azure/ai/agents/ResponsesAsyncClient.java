@@ -69,7 +69,7 @@ public final class ResponsesAsyncClient {
      *
      * @param createResponse The Azure-specific create response properties.
      * @param params The parameters to create the response.
-     * @return An IterableStream of ResponseStreamEvent.
+     * @return A {@link Flux} stream of {@link ResponseStreamEvent} items.
      */
     public Flux<ResponseStreamEvent> createStreamingAzureResponse(AzureCreateResponseOptions createResponse,
         ResponseCreateParams.Builder params) {
