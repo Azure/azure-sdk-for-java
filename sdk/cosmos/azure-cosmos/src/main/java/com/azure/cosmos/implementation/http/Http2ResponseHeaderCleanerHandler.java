@@ -19,12 +19,13 @@ public class Http2ResponseHeaderCleanerHandler extends ChannelInboundHandlerAdap
 
     private static final Logger logger = LoggerFactory.getLogger(Http2ResponseHeaderCleanerHandler.class);
     private static final AsciiString SERVER_VERSION_KEY = AsciiString.of(HttpConstants.HttpHeaders.SERVER_VERSION);
-    
+
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         if (msg instanceof Http2HeadersFrame) {
             Http2HeadersFrame headersFrame = (Http2HeadersFrame) msg;
             Http2Headers headers = headersFrame.headers();
+            
 
             // Direct O(1) hash lookup instead of O(n) forEach iteration over all headers
             CharSequence serverVersion = headers.get(SERVER_VERSION_KEY);
