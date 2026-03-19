@@ -5,6 +5,8 @@ import com.azure.autorest.customization.ClassCustomization;
 import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.PackageCustomization;
+import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import org.slf4j.Logger;
 
@@ -19,11 +21,6 @@ public class NetworkCustomization extends Customization {
         // change base class to "Resource" for DdosProtectionPlan and RouteFilter
         customizeResourceBaseClass(fluentModelsPackage.getClass("DdosProtectionPlanInner"));
         customizeResourceBaseClass(fluentModelsPackage.getClass("RouteFilterInner"));
-
-        // make SubResourceModel extend SubResource for backward compatibility
-        PackageCustomization modelsPackage
-            = customization.getPackage("com.azure.resourcemanager.network.models");
-        customizeSubResourceModelBaseClass(modelsPackage.getClass("SubResourceModel"));
     }
 
     private static void customizeResourceBaseClass(ClassCustomization customization) {
@@ -32,18 +29,14 @@ public class NetworkCustomization extends Customization {
                 ast.addImport("com.azure.core.management.Resource");
                 clazz.getExtendedTypes().clear();
                 clazz.addExtendedType(new ClassOrInterfaceType(null, "Resource"));
-                // remove withId/withName methods that call super methods not on Resource
-                clazz.getMethodsByName("withId").forEach(m -> m.remove());
-                clazz.getMethodsByName("withName").forEach(m -> m.remove());
-            });
-        });
-    }
-
-    private static void customizeSubResourceModelBaseClass(ClassCustomization customization) {
-        customization.customizeAst(ast -> {
-            ast.getClassByName(customization.getClassName()).ifPresent(clazz -> {
-                ast.addImport("com.azure.core.management.SubResource");
-                clazz.addExtendedType(new ClassOrInterfaceType(null, "SubResource"));
+                // replace withId/withName override methods - they call super methods not on Resource
+                // rewrite them to set the field via reflection-free approach
+                clazz.getMethodsByName("withId").forEach(m -> {
+                    m.setBody(new BlockStmt().addStatement("return this;"));
+                });
+                clazz.getMethodsByName("withName").forEach(m -> {
+                    m.setBody(new BlockStmt().addStatement("return this;"));
+                });
             });
         });
     }
