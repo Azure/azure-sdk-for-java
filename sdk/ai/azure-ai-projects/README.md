@@ -51,7 +51,6 @@ ConnectionsClient connectionsClient = builder.buildConnectionsClient();
 DatasetsClient datasetsClient = builder.buildDatasetsClient();
 DeploymentsClient deploymentsClient = builder.buildDeploymentsClient();
 EvaluationRulesClient evaluationRulesClient = builder.buildEvaluationRulesClient();
-EvaluationsClient evaluationsClient = builder.buildEvaluationsClient();
 EvaluationTaxonomiesClient evaluationTaxonomiesClient = builder.buildEvaluationTaxonomiesClient();
 EvaluatorsClient evaluatorsClient = builder.buildEvaluatorsClient();
 IndexesClient indexesClient = builder.buildIndexesClient();
@@ -60,10 +59,11 @@ RedTeamsClient redTeamsClient = builder.buildRedTeamsClient();
 SchedulesClient schedulesClient = builder.buildSchedulesClient();
 ```
 
-In the particular case of the `EvaluationsClient`, this client library exposes [OpenAI's official SDK][openai_java_sdk] directly, so you can use the [official OpenAI docs][openai_api_docs] to access this feature.
+In the particular case of the `Evals` feature, this client library exposes [OpenAI's official SDK][openai_java_sdk] directly, so you can use the [official OpenAI docs][openai_api_docs] to access this feature.
 
-```java com.azure.ai.projects.evaluationsClientInit
-EvalService evalService = evaluationsClient.getEvalService();
+```java com.azure.ai.projects.evalsServices
+EvalService evalService = builder.buildOpenAIClient().evals();
+EvalServiceAsync evalAsyncService = builder.buildOpenAIAsyncClient().evals();
 ```
 
 For the Agents operation, you can use the `azure-ai-agents` package which is available as transitive dependency:
@@ -91,13 +91,12 @@ Several operation groups in the AI Projects client library are in **preview** an
 |---|---|
 | `EvaluatorsClient` | `Evaluations=V1Preview` |
 | `EvaluationTaxonomiesClient` | `Evaluations=V1Preview` |
-| `InsightsClient` | `Insights=V1Preview` |
 | `RedTeamsClient` | `RedTeams=V1Preview` |
 | `SchedulesClient` | `Schedules=V1Preview` |
 
-The `EvaluationRulesClient` also supports the `Foundry-Features` header, but it is **not** automatically set. Instead, you can pass a `FoundryFeaturesOptInKeys` value when calling `createOrUpdateEvaluationRule()`.
+The `EvaluationRulesClient` and `InsightsClient` also support the `Foundry-Features` header, but it is **not** automatically set. Instead, you can pass a `FoundryFeaturesOptInKeys` value when calling their methods (e.g., `generateInsight()`, `getInsight()`, `listInsights()`, or `createOrUpdateEvaluationRule()`).
 
-The `FoundryFeaturesOptInKeys` enum defines all known opt-in keys: `CONTAINER_AGENTS_V1_PREVIEW`, `HOSTED_AGENTS_V1_PREVIEW`, `WORKFLOW_AGENTS_V1_PREVIEW`, `EVALUATIONS_V1_PREVIEW`, `SCHEDULES_V1_PREVIEW`, `RED_TEAMS_V1_PREVIEW`, `INSIGHTS_V1_PREVIEW`, `MEMORY_STORES_V1_PREVIEW`.
+The `FoundryFeaturesOptInKeys` enum defines all known opt-in keys: `EVALUATIONS_V1_PREVIEW`, `SCHEDULES_V1_PREVIEW`, `RED_TEAMS_V1_PREVIEW`, `INSIGHTS_V1_PREVIEW`, `MEMORY_STORES_V1_PREVIEW`.
 
 ## Examples
 

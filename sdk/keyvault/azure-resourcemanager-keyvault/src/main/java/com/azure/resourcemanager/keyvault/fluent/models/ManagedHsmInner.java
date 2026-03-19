@@ -27,16 +27,6 @@ public final class ManagedHsmInner extends Resource {
     private ManagedHsmProperties properties;
 
     /*
-     * Resource tags.
-     */
-    private Map<String, String> tags;
-
-    /*
-     * The geo-location where the resource lives
-     */
-    private String location;
-
-    /*
      * SKU details
      */
     private ManagedHsmSku sku;
@@ -45,6 +35,16 @@ public final class ManagedHsmInner extends Resource {
      * Managed service identity
      */
     private ManagedServiceIdentity identity;
+
+    /*
+     * The geo-location where the resource lives
+     */
+    private String location;
+
+    /*
+     * Resource tags.
+     */
+    private Map<String, String> tags;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -93,46 +93,6 @@ public final class ManagedHsmInner extends Resource {
     }
 
     /**
-     * Get the tags property: Resource tags.
-     *
-     * @return the tags value.
-     */
-    public Map<String, String> tags() {
-        return this.tags;
-    }
-
-    /**
-     * Set the tags property: Resource tags.
-     *
-     * @param tags the tags value to set.
-     * @return the ManagedHsmInner object itself.
-     */
-    public ManagedHsmInner withTags(Map<String, String> tags) {
-        this.tags = tags;
-        return this;
-    }
-
-    /**
-     * Get the location property: The geo-location where the resource lives.
-     *
-     * @return the location value.
-     */
-    public String location() {
-        return this.location;
-    }
-
-    /**
-     * Set the location property: The geo-location where the resource lives.
-     *
-     * @param location the location value to set.
-     * @return the ManagedHsmInner object itself.
-     */
-    public ManagedHsmInner withLocation(String location) {
-        this.location = location;
-        return this;
-    }
-
-    /**
      * Get the sku property: SKU details.
      *
      * @return the sku value.
@@ -169,6 +129,46 @@ public final class ManagedHsmInner extends Resource {
      */
     public ManagedHsmInner withIdentity(ManagedServiceIdentity identity) {
         this.identity = identity;
+        return this;
+    }
+
+    /**
+     * Get the location property: The geo-location where the resource lives.
+     *
+     * @return the location value.
+     */
+    public String location() {
+        return this.location;
+    }
+
+    /**
+     * Set the location property: The geo-location where the resource lives.
+     *
+     * @param location the location value to set.
+     * @return the ManagedHsmInner object itself.
+     */
+    public ManagedHsmInner withLocation(String location) {
+        this.location = location;
+        return this;
+    }
+
+    /**
+     * Get the tags property: Resource tags.
+     *
+     * @return the tags value.
+     */
+    public Map<String, String> tags() {
+        return this.tags;
+    }
+
+    /**
+     * Set the tags property: Resource tags.
+     *
+     * @param tags the tags value to set.
+     * @return the ManagedHsmInner object itself.
+     */
+    public ManagedHsmInner withTags(Map<String, String> tags) {
+        this.tags = tags;
         return this;
     }
 
@@ -235,10 +235,10 @@ public final class ManagedHsmInner extends Resource {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("properties", this.properties);
-        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeStringField("location", this.location);
         jsonWriter.writeJsonField("sku", this.sku);
         jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -265,15 +265,15 @@ public final class ManagedHsmInner extends Resource {
                     deserializedManagedHsmInner.type = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedManagedHsmInner.properties = ManagedHsmProperties.fromJson(reader);
-                } else if ("tags".equals(fieldName)) {
-                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                    deserializedManagedHsmInner.tags = tags;
-                } else if ("location".equals(fieldName)) {
-                    deserializedManagedHsmInner.location = reader.getString();
                 } else if ("sku".equals(fieldName)) {
                     deserializedManagedHsmInner.sku = ManagedHsmSku.fromJson(reader);
                 } else if ("identity".equals(fieldName)) {
                     deserializedManagedHsmInner.identity = ManagedServiceIdentity.fromJson(reader);
+                } else if ("location".equals(fieldName)) {
+                    deserializedManagedHsmInner.location = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedManagedHsmInner.tags = tags;
                 } else if ("systemData".equals(fieldName)) {
                     deserializedManagedHsmInner.systemData = SystemData.fromJson(reader);
                 } else {
