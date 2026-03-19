@@ -7344,16 +7344,17 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             idempotentWriteRetriesEnabled,
             nonNullRequestOptions);
 
-        // For PPAF write hedging on single-writer accounts, build a map of region name → RegionalRoutingContext
+        // For PPAF write availability strategy on single-writer accounts, build a map of region name → RegionalRoutingContext
         // so hedged requests can be force-routed to specific read regions via routeToLocation.
         // This bypasses the excluded-regions mechanism which cannot route writes to read regions.
-        boolean isPpafWriteHedging = operationType.isWriteOperation()
+        boolean applyAvailabilityStrategyForWritesForPpaf = operationType.isWriteOperation()
             && !this.globalEndpointManager.canUseMultipleWriteLocations()
             && this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.isPerPartitionAutomaticFailoverEnabled()
             && Configs.isWriteAvailabilityStrategyEnabledWithPpaf();
 
-        Map<String, RegionalRoutingContext> regionToRoutingContext = new HashMap<>();
-        if (isPpafWriteHedging) {
+        Map<String, RegionalRoutingContext> regionToRoutingContext;
+        if (applyAvailabilityStrategyForWritesForPpaf) {
+            regionToRoutingContext = new HashMap<>();
             // Use ALL account-level read regions (not just preferred regions) as hedge candidates.
             // PPAF write failover can target any read region, not just the ones in the preferred list.
             List<RegionalRoutingContext> readRoutingContexts =
@@ -7365,6 +7366,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     regionToRoutingContext.put(regionName.toLowerCase(Locale.ROOT), rrc);
                 }
             }
+        } else {
+            regionToRoutingContext = Collections.emptyMap();
         }
 
         AtomicBoolean isOperationSuccessful = new AtomicBoolean(false);
@@ -7480,9 +7483,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         perPartitionCircuitBreakerInfoHolder,
                         perPartitionAutomaticFailoverInfoHolder);
 
-                    // For PPAF write hedging, set the target read region so ClientRetryPolicy
+                    // For PPAF write availability strategy, set the target read region so ClientRetryPolicy
                     // routes the hedged write there via routeToLocation instead of excluded-regions.
-                    if (isPpafWriteHedging) {
+                    if (applyAvailabilityStrategyForWritesForPpaf) {
                         RegionalRoutingContext targetRegion = regionToRoutingContext.get(region.toLowerCase(Locale.ROOT));
                         if (targetRegion != null) {
                             crossRegionAvailabilityContextForHedgedRequest.setPpafWriteHedgeTargetRegion(targetRegion);
@@ -7826,7 +7829,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             }
         }
 
-        // For PPAF-enabled single-writer accounts, allow write hedging using read regions.
+        // For PPAF-enabled single-writer accounts, allow write availability strategy using read regions.
         // In PPAF, a partition can fail over to a read region for writes, so read regions
         // are valid hedge targets even when the account has only one write region.
         //
@@ -7835,14 +7838,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         // at read regions for failed-over partitions. Without this, write hedging would
         // never activate for the most common PPAF scenario (single-writer accounts),
         // leaving the customer waiting up to 60-120s for the retry-based failover path.
-        boolean isPpafWriteHedgingApplicable = operationType.isWriteOperation()
+        boolean applyAvailabilityStrategyForWritesForPpaf = operationType.isWriteOperation()
             && !this.globalEndpointManager.canUseMultipleWriteLocations()
             && this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.isPerPartitionAutomaticFailoverEnabled()
             && Configs.isWriteAvailabilityStrategyEnabledWithPpaf();
 
         if (operationType.isWriteOperation()
             && !this.globalEndpointManager.canUseMultipleWriteLocations()
-            && !isPpafWriteHedgingApplicable) {
+            && !applyAvailabilityStrategyForWritesForPpaf) {
             return EMPTY_REGION_LIST;
         }
 
@@ -7850,10 +7853,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             return EMPTY_REGION_LIST;
         }
 
-        // For PPAF write hedging on single-writer accounts, use ALL account-level read regions
+        // For PPAF write availability strategy on single-writer accounts, use ALL account-level read regions
         // as hedge candidates (not just preferred regions). PPAF failover can target any read region.
         List<RegionalRoutingContext> regionalRoutingContextList =
-            isPpafWriteHedgingApplicable
+            applyAvailabilityStrategyForWritesForPpaf
                 ? withoutNulls(new ArrayList<>(this.globalEndpointManager.getAvailableReadRoutingContexts()))
                 : getApplicableEndPoints(operationType, excludedRegions);
 
@@ -7864,9 +7867,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         List<String> orderedRegionsForSpeculation = new ArrayList<>();
         regionalRoutingContextList.forEach(consolidatedLocationEndpoints -> {
-            // For PPAF write hedging, resolve region names against read endpoints since
+            // For PPAF write availability strategy, resolve region names against read endpoints since
             // the hedged write targets are read regions (not write regions).
-            String regionName = isPpafWriteHedgingApplicable
+            String regionName = applyAvailabilityStrategyForWritesForPpaf
                 ? this.globalEndpointManager.getRegionName(consolidatedLocationEndpoints.getGatewayRegionalEndpoint(), OperationType.Read)
                 : this.globalEndpointManager.getRegionName(consolidatedLocationEndpoints.getGatewayRegionalEndpoint(), operationType);
             if (!normalizedExcludedRegions.contains(regionName.toLowerCase(Locale.ROOT))) {
