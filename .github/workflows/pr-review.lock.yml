@@ -27,12 +27,12 @@
 #     - xinlian12/sdk-auto-pr-review/.github/workflows/shared/mcp-tools.md@main
 #     - xinlian12/sdk-auto-pr-review/.github/workflows/shared/pr-review-pipeline.md@main
 #   Includes:
-#     - C:/Users/xinlian/AppData/Local/Temp/gh-aw-include-1375472578.md
-#     - C:/Users/xinlian/AppData/Local/Temp/gh-aw-include-1996015015.md
-#     - C:/Users/xinlian/AppData/Local/Temp/gh-aw-include-2690551103.md
-#     - C:/Users/xinlian/AppData/Local/Temp/gh-aw-include-274512218.md
-#     - C:/Users/xinlian/AppData/Local/Temp/gh-aw-include-3225234967.md
-#     - C:/Users/xinlian/AppData/Local/Temp/gh-aw-include-778494006.md
+#     - C:/Users/xinlian/AppData/Local/Temp/gh-aw-include-1390202396.md
+#     - C:/Users/xinlian/AppData/Local/Temp/gh-aw-include-1491314413.md
+#     - C:/Users/xinlian/AppData/Local/Temp/gh-aw-include-1757093464.md
+#     - C:/Users/xinlian/AppData/Local/Temp/gh-aw-include-3312059695.md
+#     - C:/Users/xinlian/AppData/Local/Temp/gh-aw-include-3445832631.md
+#     - C:/Users/xinlian/AppData/Local/Temp/gh-aw-include-713754741.md
 #
 # gh-aw-metadata: {"schema_version":"v2","frontmatter_hash":"51864786b7583b055680c50ed9b7978735656e1151d607d039e75b3d90df0bae","compiler_version":"v0.62.1","strict":true}
 
@@ -193,10 +193,10 @@ jobs:
           </system>
           GH_AW_PROMPT_EOF
           cat << 'GH_AW_PROMPT_EOF'
-          {{#runtime-import .github/aw/imports/xinlian12/sdk-auto-pr-review/3aa0798d9f8e03355b961f0c63fa0e9c25c4172f/.github_workflows_shared_pr-review-pipeline.md}}
+          {{#runtime-import .github/aw/imports/xinlian12/sdk-auto-pr-review/f1b753353600d9c74833df6772274b79590d6d82/.github_workflows_shared_pr-review-pipeline.md}}
           GH_AW_PROMPT_EOF
           cat << 'GH_AW_PROMPT_EOF'
-          {{#runtime-import .github/aw/imports/xinlian12/sdk-auto-pr-review/3aa0798d9f8e03355b961f0c63fa0e9c25c4172f/.github_workflows_shared_mcp-tools.md}}
+          {{#runtime-import .github/aw/imports/xinlian12/sdk-auto-pr-review/f1b753353600d9c74833df6772274b79590d6d82/.github_workflows_shared_mcp-tools.md}}
           GH_AW_PROMPT_EOF
           cat << 'GH_AW_PROMPT_EOF'
           {{#runtime-import .github/workflows/pr-review.md}}
@@ -532,6 +532,9 @@ jobs:
                   "type": "object"
                 },
                 "handler": "get-pr-comments.sh",
+                "env": {
+                  "GH_TOKEN": "GH_TOKEN"
+                },
                 "timeout": 60
               },
               {
@@ -550,6 +553,9 @@ jobs:
                   "type": "object"
                 },
                 "handler": "get-pr-diff.sh",
+                "env": {
+                  "GH_TOKEN": "GH_TOKEN"
+                },
                 "timeout": 60
               },
               {
@@ -568,6 +574,9 @@ jobs:
                   "type": "object"
                 },
                 "handler": "get-pr-metadata.sh",
+                "env": {
+                  "GH_TOKEN": "GH_TOKEN"
+                },
                 "timeout": 60
               },
               {
@@ -624,6 +633,44 @@ jobs:
                 },
                 "handler": "git-show-stat.sh",
                 "timeout": 60
+              },
+              {
+                "name": "post-review-comment",
+                "description": "Post a review comment on the PR. Supports both general and inline comments.",
+                "inputSchema": {
+                  "properties": {
+                    "body": {
+                      "description": "",
+                      "type": "string"
+                    },
+                    "line": {
+                      "description": "",
+                      "type": "number"
+                    },
+                    "path": {
+                      "description": "",
+                      "type": "string"
+                    },
+                    "pr_number": {
+                      "description": "",
+                      "type": "number"
+                    },
+                    "start_line": {
+                      "description": "",
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "body",
+                    "pr_number"
+                  ],
+                  "type": "object"
+                },
+                "handler": "post-review-comment.sh",
+                "env": {
+                  "GH_TOKEN": "GH_TOKEN"
+                },
+                "timeout": 60
               }
             ]
           }
@@ -660,6 +707,7 @@ jobs:
           else
             echo "ERROR: file not found: $INPUT_PATH"
           fi
+          
           
           GH_AW_MCP_SCRIPTS_SH_FILE-LINE-COUNT_EOF
           chmod +x ${RUNNER_TEMP}/gh-aw/mcp-scripts/file-line-count.sh
@@ -744,6 +792,28 @@ jobs:
           
           GH_AW_MCP_SCRIPTS_SH_GIT-SHOW-STAT_EOF
           chmod +x ${RUNNER_TEMP}/gh-aw/mcp-scripts/git-show-stat.sh
+          cat > ${RUNNER_TEMP}/gh-aw/mcp-scripts/post-review-comment.sh << 'GH_AW_MCP_SCRIPTS_SH_POST-REVIEW-COMMENT_EOF'
+          #!/bin/bash
+          # Auto-generated mcp-script tool: post-review-comment
+          # Post a review comment on the PR. Supports both general and inline comments.
+          
+          set -euo pipefail
+          
+          BODY_JSON=$(echo "$INPUT_BODY" | jq -Rs .)
+          if [ -n "$INPUT_PATH" ]; then
+            COMMENT="{\"path\":\"$INPUT_PATH\",\"body\":$BODY_JSON"
+            if [ -n "$INPUT_LINE" ]; then COMMENT="$COMMENT,\"line\":$INPUT_LINE"; fi
+            if [ -n "$INPUT_START_LINE" ]; then COMMENT="$COMMENT,\"start_line\":$INPUT_START_LINE"; fi
+            COMMENT="$COMMENT}"
+            echo "{\"event\":\"COMMENT\",\"body\":\"\",\"comments\":[$COMMENT]}" | \
+              gh api repos/$GITHUB_REPOSITORY/pulls/$INPUT_PR_NUMBER/reviews --input -
+          else
+            echo "{\"body\":$BODY_JSON}" | \
+              gh api repos/$GITHUB_REPOSITORY/issues/$INPUT_PR_NUMBER/comments --input -
+          fi
+          
+          GH_AW_MCP_SCRIPTS_SH_POST-REVIEW-COMMENT_EOF
+          chmod +x ${RUNNER_TEMP}/gh-aw/mcp-scripts/post-review-comment.sh
           
       - name: Generate MCP Scripts Server Config
         id: mcp-scripts-config
@@ -769,6 +839,7 @@ jobs:
           DEBUG: '*'
           GH_AW_MCP_SCRIPTS_PORT: ${{ steps.mcp-scripts-config.outputs.mcp_scripts_port }}
           GH_AW_MCP_SCRIPTS_API_KEY: ${{ steps.mcp-scripts-config.outputs.mcp_scripts_api_key }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           # Environment variables are set above to prevent template injection
           export DEBUG
@@ -785,6 +856,7 @@ jobs:
           GH_AW_SAFE_OUTPUTS: ${{ env.GH_AW_SAFE_OUTPUTS }}
           GH_AW_SAFE_OUTPUTS_API_KEY: ${{ steps.safe-outputs-start.outputs.api_key }}
           GH_AW_SAFE_OUTPUTS_PORT: ${{ steps.safe-outputs-start.outputs.port }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_MCP_GUARD_MIN_INTEGRITY: ${{ steps.determine-automatic-lockdown.outputs.min_integrity }}
           GITHUB_MCP_GUARD_REPOS: ${{ steps.determine-automatic-lockdown.outputs.repos }}
           GITHUB_MCP_SERVER_TOKEN: ${{ secrets.GH_AW_GITHUB_MCP_SERVER_TOKEN || secrets.GH_AW_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
@@ -804,7 +876,7 @@ jobs:
           export DEBUG="*"
           
           export GH_AW_ENGINE="copilot"
-          export MCP_GATEWAY_DOCKER_COMMAND='docker run -i --rm --network host -v /var/run/docker.sock:/var/run/docker.sock -e MCP_GATEWAY_PORT -e MCP_GATEWAY_DOMAIN -e MCP_GATEWAY_API_KEY -e MCP_GATEWAY_PAYLOAD_DIR -e MCP_GATEWAY_PAYLOAD_SIZE_THRESHOLD -e DEBUG -e MCP_GATEWAY_LOG_DIR -e GH_AW_MCP_LOG_DIR -e GH_AW_SAFE_OUTPUTS -e GH_AW_SAFE_OUTPUTS_CONFIG_PATH -e GH_AW_SAFE_OUTPUTS_TOOLS_PATH -e GH_AW_ASSETS_BRANCH -e GH_AW_ASSETS_MAX_SIZE_KB -e GH_AW_ASSETS_ALLOWED_EXTS -e DEFAULT_BRANCH -e GITHUB_MCP_SERVER_TOKEN -e GITHUB_MCP_GUARD_MIN_INTEGRITY -e GITHUB_MCP_GUARD_REPOS -e GITHUB_REPOSITORY -e GITHUB_SERVER_URL -e GITHUB_SHA -e GITHUB_WORKSPACE -e GITHUB_TOKEN -e GITHUB_RUN_ID -e GITHUB_RUN_NUMBER -e GITHUB_RUN_ATTEMPT -e GITHUB_JOB -e GITHUB_ACTION -e GITHUB_EVENT_NAME -e GITHUB_EVENT_PATH -e GITHUB_ACTOR -e GITHUB_ACTOR_ID -e GITHUB_TRIGGERING_ACTOR -e GITHUB_WORKFLOW -e GITHUB_WORKFLOW_REF -e GITHUB_WORKFLOW_SHA -e GITHUB_REF -e GITHUB_REF_NAME -e GITHUB_REF_TYPE -e GITHUB_HEAD_REF -e GITHUB_BASE_REF -e GH_AW_MCP_SCRIPTS_PORT -e GH_AW_MCP_SCRIPTS_API_KEY -e GH_AW_SAFE_OUTPUTS_PORT -e GH_AW_SAFE_OUTPUTS_API_KEY -v /tmp/gh-aw/mcp-payloads:/tmp/gh-aw/mcp-payloads:rw -v /opt:/opt:ro -v /tmp:/tmp:rw -v '"${GITHUB_WORKSPACE}"':'"${GITHUB_WORKSPACE}"':rw ghcr.io/github/gh-aw-mcpg:v0.1.19'
+          export MCP_GATEWAY_DOCKER_COMMAND='docker run -i --rm --network host -v /var/run/docker.sock:/var/run/docker.sock -e MCP_GATEWAY_PORT -e MCP_GATEWAY_DOMAIN -e MCP_GATEWAY_API_KEY -e MCP_GATEWAY_PAYLOAD_DIR -e MCP_GATEWAY_PAYLOAD_SIZE_THRESHOLD -e DEBUG -e MCP_GATEWAY_LOG_DIR -e GH_AW_MCP_LOG_DIR -e GH_AW_SAFE_OUTPUTS -e GH_AW_SAFE_OUTPUTS_CONFIG_PATH -e GH_AW_SAFE_OUTPUTS_TOOLS_PATH -e GH_AW_ASSETS_BRANCH -e GH_AW_ASSETS_MAX_SIZE_KB -e GH_AW_ASSETS_ALLOWED_EXTS -e DEFAULT_BRANCH -e GITHUB_MCP_SERVER_TOKEN -e GITHUB_MCP_GUARD_MIN_INTEGRITY -e GITHUB_MCP_GUARD_REPOS -e GITHUB_REPOSITORY -e GITHUB_SERVER_URL -e GITHUB_SHA -e GITHUB_WORKSPACE -e GITHUB_TOKEN -e GITHUB_RUN_ID -e GITHUB_RUN_NUMBER -e GITHUB_RUN_ATTEMPT -e GITHUB_JOB -e GITHUB_ACTION -e GITHUB_EVENT_NAME -e GITHUB_EVENT_PATH -e GITHUB_ACTOR -e GITHUB_ACTOR_ID -e GITHUB_TRIGGERING_ACTOR -e GITHUB_WORKFLOW -e GITHUB_WORKFLOW_REF -e GITHUB_WORKFLOW_SHA -e GITHUB_REF -e GITHUB_REF_NAME -e GITHUB_REF_TYPE -e GITHUB_HEAD_REF -e GITHUB_BASE_REF -e GH_AW_MCP_SCRIPTS_PORT -e GH_AW_MCP_SCRIPTS_API_KEY -e GH_AW_SAFE_OUTPUTS_PORT -e GH_AW_SAFE_OUTPUTS_API_KEY -e GH_TOKEN -v /tmp/gh-aw/mcp-payloads:/tmp/gh-aw/mcp-payloads:rw -v /opt:/opt:ro -v /tmp:/tmp:rw -v '"${GITHUB_WORKSPACE}"':'"${GITHUB_WORKSPACE}"':rw ghcr.io/github/gh-aw-mcpg:v0.1.19'
           
           mkdir -p /home/runner/.copilot
           cat << GH_AW_MCP_CONFIG_EOF | bash ${RUNNER_TEMP}/gh-aw/actions/start_mcp_gateway.sh
@@ -890,6 +962,7 @@ jobs:
           GH_AW_PROMPT: /tmp/gh-aw/aw-prompts/prompt.txt
           GH_AW_SAFE_OUTPUTS: ${{ env.GH_AW_SAFE_OUTPUTS }}
           GH_AW_VERSION: v0.62.1
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_API_URL: ${{ github.api_url }}
           GITHUB_AW: true
           GITHUB_HEAD_REF: ${{ github.head_ref }}
