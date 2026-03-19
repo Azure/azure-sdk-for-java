@@ -6,7 +6,6 @@ on:
     types: [opened, synchronize, ready_for_review]
 engine: copilot
 safe-outputs:
-  add-comment: {}
   create-pull-request-review-comment: {}
 permissions:
   contents: read
