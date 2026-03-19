@@ -53,6 +53,7 @@ public final class ResponsesClient {
      * @param conversationId The conversation ID.
      * @return The created Response.
      */
+    @Deprecated
     public Response createWithAgentConversation(AgentReference agentReference, String conversationId) {
         return createWithAgentConversation(agentReference, conversationId, new ResponseCreateParams.Builder());
     }
@@ -65,6 +66,7 @@ public final class ResponsesClient {
      * @param params The parameters to create the response.
      * @return The created Response.
      */
+    @Deprecated
     public Response createWithAgentConversation(AgentReference agentReference, String conversationId,
         ResponseCreateParams.Builder params) {
         Objects.requireNonNull(agentReference, "agentReference cannot be null");
@@ -88,6 +90,7 @@ public final class ResponsesClient {
      * @param params The parameters to create the response.
      * @return The created Response.
      */
+    @Deprecated
     public Response createWithAgent(AgentReference agentReference, ResponseCreateParams.Builder params) {
         Objects.requireNonNull(agentReference, "agentReference cannot be null");
         Objects.requireNonNull(params, "params cannot be null");
@@ -107,16 +110,14 @@ public final class ResponsesClient {
      * @param agentReference The agent reference.
      * @return The created Response.
      */
+    @Deprecated
     public Response createWithAgent(AgentReference agentReference) {
         return createWithAgent(agentReference, new ResponseCreateParams.Builder());
     }
 
     /**
-     * Creates a response using Azure-specific properties.
-     *
-     * <p>The properties from {@link AzureCreateResponseOptions} (e.g., {@code agent_reference},
-     * {@code structured_inputs}) are flattened into the request body as top-level fields
-     * alongside the standard OpenAI parameters.</p>
+     * Creates a response passing additional Azure-specific properties (such as an {@link com.azure.ai.agents.models.AgentReference})
+     * through the {@link AzureCreateResponseOptions}
      *
      * @param createResponse The Azure-specific create response properties.
      * @param params The parameters to create the response.
@@ -132,11 +133,8 @@ public final class ResponsesClient {
     }
 
     /**
-     * Creates a streaming response using Azure-specific properties.
-     *
-     * <p>The properties from {@link AzureCreateResponseOptions} (e.g., {@code agent_reference},
-     * {@code structured_inputs}) are flattened into the request body as top-level fields
-     * alongside the standard OpenAI parameters.</p>
+     * Creates a streaming response passing additional Azure-specific properties (such as an {@link com.azure.ai.agents.models.AgentReference})
+     * through the {@link AzureCreateResponseOptions}
      *
      * @param createResponse The Azure-specific create response properties.
      * @param params The parameters to create the response.
@@ -159,6 +157,7 @@ public final class ResponsesClient {
      * @param params The parameters to create the response.
      * @return An IterableStream of ResponseStreamEvent.
      */
+    @Deprecated
     public IterableStream<ResponseStreamEvent> createStreamingWithAgent(AgentReference agentReference,
         ResponseCreateParams.Builder params) {
         Objects.requireNonNull(agentReference, "agentReference cannot be null");
@@ -181,6 +180,7 @@ public final class ResponsesClient {
      * @param params The parameters to create the response.
      * @return An IterableStream of ResponseStreamEvent.
      */
+    @Deprecated
     public IterableStream<ResponseStreamEvent> createStreamingWithAgentConversation(AgentReference agentReference,
         String conversationId, ResponseCreateParams.Builder params) {
         Objects.requireNonNull(agentReference, "agentReference cannot be null");
