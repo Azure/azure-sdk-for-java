@@ -26,7 +26,6 @@ import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -37,7 +36,6 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
 
     private static final Logger logger = LoggerFactory.getLogger(CosmosNotFoundTests.class);
 
-    private static final String thinClientEndpointIndicator = ":10250/";
     private static final ImplementationBridgeHelpers.CosmosAsyncClientHelper.CosmosAsyncClientAccessor accessor =
         ImplementationBridgeHelpers.CosmosAsyncClientHelper.getCosmosAsyncClientAccessor();
 
