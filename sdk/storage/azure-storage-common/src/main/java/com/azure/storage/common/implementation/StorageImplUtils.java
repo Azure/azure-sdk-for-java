@@ -270,7 +270,7 @@ public class StorageImplUtils {
         return accountName;
     }
 
-    public static String getAccountName(URL url, String serviceSubDomain) throws MalformedURLException {
+    public static String getAccountName(URL url, String serviceSubDomain) {
         String host = url.getHost();
         return getAccountNameFromHost(host, serviceSubDomain);
     }

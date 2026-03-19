@@ -477,40 +477,52 @@ public final class Constants {
     /**
      * Constants for the File service subdomain.
      */
-    public static class File {
+    public static final class File {
         /**
          * The URI subdomain for file storage.
          */
         public static final String URI_SUBDOMAIN = "file";
+
+        private File(){
+        }
     }
 
     /**
      * Constants for the Queue service subdomain.
      */
-    public static class Queue {
+    public static final class Queue {
         /**
          * The URI subdomain for queue storage.
          */
         public static final String URI_SUBDOMAIN = "queue";
+
+        private Queue(){
+        }
     }
 
     /**
      * Constants for the Table service subdomain.
      */
-    public static class Table {
+    public static final class Table {
         /**
          * The URI subdomain for table storage.
          */
         public static final String URI_SUBDOMAIN = "table";
+
+        private Table(){
+        }
     }
 
     /**
      * Constants for the DFS (Data Lake) service subdomain.
      */
-    public static class Dfs {
+    public static final class Dfs {
         /**
          * The URI subdomain for Data Lake Storage.
          */
         public static final String URI_SUBDOMAIN = "dfs";
+
+        private Dfs(){
+        }
     }
 }
