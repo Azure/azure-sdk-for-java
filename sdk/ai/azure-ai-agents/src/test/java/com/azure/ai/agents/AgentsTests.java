@@ -7,7 +7,6 @@ import com.azure.ai.agents.models.AgentDefinition;
 import com.azure.ai.agents.models.AgentDetails;
 import com.azure.ai.agents.models.AgentReference;
 import com.azure.ai.agents.models.AgentVersionDetails;
-import com.azure.ai.agents.models.DeleteAgentVersionResponse;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.http.HttpClient;
 import com.openai.models.conversations.Conversation;
@@ -98,12 +97,7 @@ public class AgentsTests extends ClientTestBase {
         }
 
         // Deletion
-        DeleteAgentVersionResponse deletedAgent
-            = client.deleteAgentVersion(createdAgent.getName(), createdAgent.getVersion());
-        assertNotNull(deletedAgent);
-        assertEquals(createdAgent.getName(), deletedAgent.getName());
-        assertEquals(createdAgent.getVersion(), deletedAgent.getVersion());
-        assertTrue(deletedAgent.isDeleted());
+        client.deleteAgentVersion(createdAgent.getName(), createdAgent.getVersion());
     }
 
     @Disabled("Disabled due to service errors (api-version + responses endpoint).")

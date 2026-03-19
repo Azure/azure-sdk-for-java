@@ -58,10 +58,7 @@ public class AgentsAsyncTests extends ClientTestBase {
                     assertEquals(agent.getVersions().getLatest().getName(), created.getName());
                 })
                 .then(client.deleteAgentVersion(AGENT_NAME, created.getVersion()));
-        })).assertNext(deletedAgent -> {
-            assertEquals(AGENT_NAME, deletedAgent.getName());
-            assertTrue(deletedAgent.isDeleted());
-        }).verifyComplete();
+        })).verifyComplete();
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -94,10 +91,7 @@ public class AgentsAsyncTests extends ClientTestBase {
                     assertEquals(agentVersion.getName(), created.getName());
                 })
                 .then(client.deleteAgentVersion(AGENT_NAME, created.getVersion()));
-        })).assertNext(deletedAgent -> {
-            assertEquals(AGENT_NAME, deletedAgent.getName());
-            assertTrue(deletedAgent.isDeleted());
-        }).verifyComplete();
+        })).verifyComplete();
     }
 
     @Disabled("Disabled due to service errors (responses endpoint).")

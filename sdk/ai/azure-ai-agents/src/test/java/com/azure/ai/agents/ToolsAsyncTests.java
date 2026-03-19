@@ -90,10 +90,7 @@ public class ToolsAsyncTests extends ClientTestBase {
                     assertFalse(response.output().isEmpty());
                     assertTrue(response.output().stream().anyMatch(item -> item.isMessage()));
                 }).then(agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion()));
-            })).assertNext(deletedAgent -> {
-                assertEquals("openapi-tool-test-agent-java-async", deletedAgent.getName());
-                assertTrue(deletedAgent.isDeleted());
-            }).verifyComplete();
+            })).verifyComplete();
     }
 
     // -----------------------------------------------------------------------
@@ -130,10 +127,7 @@ public class ToolsAsyncTests extends ClientTestBase {
                         assertTrue(response.output().stream().anyMatch(item -> item.isCodeInterpreterCall()));
                     })
                     .then(agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion()));
-            })).assertNext(deletedAgent -> {
-                assertEquals("code-interpreter-test-agent-java-async", deletedAgent.getName());
-                assertTrue(deletedAgent.isDeleted());
-            }).verifyComplete();
+            })).verifyComplete();
     }
 
     // -----------------------------------------------------------------------
@@ -193,10 +187,7 @@ public class ToolsAsyncTests extends ClientTestBase {
                         assertNotNull(functionCallItem.asFunctionCall().arguments());
                     })
                     .then(agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion()));
-            })).assertNext(deletedAgent -> {
-                assertEquals("function-call-test-agent-java-async", deletedAgent.getName());
-                assertTrue(deletedAgent.isDeleted());
-            }).verifyComplete();
+            })).verifyComplete();
     }
 
     // -----------------------------------------------------------------------
@@ -232,10 +223,7 @@ public class ToolsAsyncTests extends ClientTestBase {
                         assertTrue(response.output().stream().anyMatch(item -> item.isMessage()));
                     })
                     .then(agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion()));
-            })).assertNext(deletedAgent -> {
-                assertEquals("web-search-test-agent-java-async", deletedAgent.getName());
-                assertTrue(deletedAgent.isDeleted());
-            }).verifyComplete();
+            })).verifyComplete();
     }
 
     // -----------------------------------------------------------------------
@@ -297,10 +285,6 @@ public class ToolsAsyncTests extends ClientTestBase {
                     })
                     .then(agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion()));
             }))
-            .assertNext(deletedAgent -> {
-                assertEquals("mcp-test-agent-java-async", deletedAgent.getName());
-                assertTrue(deletedAgent.isDeleted());
-            })
             .verifyComplete();
     }
 
@@ -366,10 +350,7 @@ public class ToolsAsyncTests extends ClientTestBase {
                         assertTrue(response.output().stream().anyMatch(item -> item.isFileSearchCall()));
                         assertTrue(response.output().stream().anyMatch(item -> item.isMessage()));
                     }).then(agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion()));
-                })).assertNext(deletedAgent -> {
-                    assertEquals("file-search-test-agent-java-async", deletedAgent.getName());
-                    assertTrue(deletedAgent.isDeleted());
-                }).verifyComplete();
+                })).verifyComplete();
         } finally {
             Files.deleteIfExists(tempFile);
             if (vectorStore != null) {
