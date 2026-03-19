@@ -15,13 +15,13 @@
     "dir": "../appservice/azure-resourcemanager-appservice",
     "source": "specification/certificateregistration/resource-manager/Microsoft.CertificateRegistration/CertificateRegistration/readme.md",
     "package": "com.azure.resourcemanager.appservice",
-    "args": "--tag=package-2024-11 --title=CertificateRegistrationManagementClient --metadata-suffix=certificateregistration --add-inner=AppServiceCertificate,NameIdentifier --enable-sync-stack=false"
+    "args": "--tag=package-2024-11 --service-name=AppService --title=CertificateRegistrationManagementClient --metadata-suffix=certificateregistration --add-inner=AppServiceCertificate,NameIdentifier --enable-sync-stack=false"
   },
   "domainregistration": {
     "dir": "../appservice/azure-resourcemanager-appservice",
     "source": "specification/domainregistration/resource-manager/Microsoft.DomainRegistration/DomainRegistration/readme.md",
     "package": "com.azure.resourcemanager.appservice",
-    "args": "--tag=package-2024-11 --title=DomainRegistrationManagementClient --metadata-suffix=domainregistration --enable-sync-stack=false"
+    "args": "--tag=package-2024-11 --service-name=AppService --title=DomainRegistrationManagementClient --metadata-suffix=domainregistration --enable-sync-stack=false"
   },
   "authorization": {
     "dir": "../authorization/azure-resourcemanager-authorization",
@@ -57,7 +57,7 @@
     "dir": "../containerregistry/azure-resourcemanager-containerregistry",
     "source": "specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/readme.md",
     "package": "com.azure.resourcemanager.containerregistry",
-    "args": "--tag=package-2019-06-preview --generate-samples=false --title=ContainerRegistryTasksManagementClient --rename-operation-group:Registries:RegistryTasks --rename-model=DockerBuildStep:DockerTaskStep --modelerfour.lenient-model-deduplication --metadata-suffix=registrytasks --enable-sync-stack=false",
+    "args": "--tag=package-2019-06-preview --service-name=ContainerRegistry --generate-samples=false --title=ContainerRegistryTasksManagementClient --rename-operation-group:Registries:RegistryTasks --rename-model=DockerBuildStep:DockerTaskStep --modelerfour.lenient-model-deduplication --metadata-suffix=registrytasks --enable-sync-stack=false",
     "note": "Use commit 09695f5a97dfcf201766ea2f2e7e3b53aec49144 for Swagger before TypeSpec migration"
   },
   "containerservice": {
@@ -88,14 +88,14 @@
     "dir": "../resources/azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/Microsoft.Features/features/readme.md",
     "package": "com.azure.resourcemanager.resources",
-    "args": "--tag=package-features-2021-07 --metadata-suffix=feature --enable-sync-stack=false"
+    "args": "--tag=package-features-2021-07 --service-name=Resource --metadata-suffix=feature --enable-sync-stack=false"
   },
   "msgraph": {
     "spec": ".",
     "dir": "azure-resourcemanager-authorization",
     "source": "azure-resourcemanager-authorization/swagger/swagger.md",
     "package": "com.azure.resourcemanager.authorization",
-    "args": "--tag=v1.0 --metadata-suffix=msgraph --title=MicrosoftGraphClient --models-subpackage=fluent.models --enable-sync-stack=false"
+    "args": "--tag=v1.0 --service-name=Authorization --metadata-suffix=msgraph --title=MicrosoftGraphClient --models-subpackage=fluent.models --enable-sync-stack=false"
   },
   "keyvault": {
     "dir": "../keyvault/azure-resourcemanager-keyvault",
@@ -108,7 +108,7 @@
     "dir": "../resources/azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/Microsoft.Authorization/locks/readme.md",
     "package": "com.azure.resourcemanager.resources",
-    "args": "--tag=package-locks-2017-04 --metadata-suffix=lock --enable-sync-stack=false"
+    "args": "--tag=package-locks-2017-04 --service-name=Resource --metadata-suffix=lock --enable-sync-stack=false"
   },
   "monitor": {
     "dir": "../monitor/azure-resourcemanager-monitor",
@@ -127,7 +127,7 @@
     "dir": "../resources/azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/Microsoft.Authorization/policy/readme.md",
     "package": "com.azure.resourcemanager.resources",
-    "args": "--tag=package-policy-2025-03-java --metadata-suffix=policy --modelerfour.lenient-model-deduplication --rename-model=UserAssignedIdentitiesValue:IdentityUserAssignedIdentitiesValue --enable-sync-stack=false",
+    "args": "--tag=package-policy-2025-03-java --service-name=Resource --metadata-suffix=policy --modelerfour.lenient-model-deduplication --rename-model=UserAssignedIdentitiesValue:IdentityUserAssignedIdentitiesValue --enable-sync-stack=false",
     "note": "Remove policyVariables.json and policyVariableValues.json from tag, as they are still in preview."
   },
   "privatedns": {
@@ -160,13 +160,13 @@
     "dir": "../resources/azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/Microsoft.Resources/deployments/readme.md",
     "package": "com.azure.resourcemanager.resources",
-    "args": "--tag=package-2025-04 --title=DeploymentsManagementClient --uuid-as-string=false --client-flattened-annotation-target=none --add-inner=Deployment,Provider --metadata-suffix=deployments --enable-sync-stack=false"
+    "args": "--tag=package-2025-04 --service-name=Resource --title=DeploymentsManagementClient --uuid-as-string=false --client-flattened-annotation-target=none --add-inner=Deployment,Provider --metadata-suffix=deployments --enable-sync-stack=false"
   },
   "deploymentstacks": {
     "dir": "../resources/azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/Microsoft.Resources/deploymentStacks/readme.md",
     "package": "com.azure.resourcemanager.resources",
-    "args": "--tag=package-2024-03-java --metadata-suffix=deploymentstacks --generate-samples=false --enable-sync-stack=false"
+    "args": "--tag=package-2024-03-java --service-name=Resource --metadata-suffix=deploymentstacks --generate-samples=false --enable-sync-stack=false"
   },
   "search": {
     "dir": "../search/azure-resourcemanager-search",
@@ -198,7 +198,7 @@
     "dir": "../resources/azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/Microsoft.Resources/subscriptions/readme.md",
     "package": "com.azure.resourcemanager.resources",
-    "args": "--tag=package-subscriptions-2022-12 --metadata-suffix=subscription --modelerfour.lenient-model-deduplication --name-for-ungrouped-operations=ResourceName --remove-operation-group=Operations --enable-sync-stack=false"
+    "args": "--tag=package-subscriptions-2022-12 --service-name=Resource --metadata-suffix=subscription --modelerfour.lenient-model-deduplication --name-for-ungrouped-operations=ResourceName --remove-operation-group=Operations --enable-sync-stack=false"
   },
   "trafficmanager": {
     "dir": "../trafficmanager/azure-resourcemanager-trafficmanager",
@@ -216,12 +216,12 @@
     "dir": "../resources/azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/Microsoft.Resources/changes/readme.md",
     "package": "com.azure.resourcemanager.resources",
-    "args": "--tag=package-changes-2022-05 --metadata-suffix=change --rename-model=ChangeType:ResourceChangeType,PropertyChangeType:ResourcePropertyChangeType --enable-sync-stack=false"
+    "args": "--tag=package-changes-2022-05 --service-name=Resource --metadata-suffix=change --rename-model=ChangeType:ResourceChangeType,PropertyChangeType:ResourcePropertyChangeType --enable-sync-stack=false"
   },
   "databoundaries": {
     "dir": "../resources/azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/Microsoft.Resources/databoundaries/readme.md",
     "package": "com.azure.resourcemanager.resources",
-    "args": "--tag=package-databoundaries-2024-08 --title=DataBoundariesManagementClient --metadata-suffix=databoundary --remove-operation-group=Operations --enable-sync-stack=false"
+    "args": "--tag=package-databoundaries-2024-08 --service-name=Resource --title=DataBoundariesManagementClient --metadata-suffix=databoundary --remove-operation-group=Operations --enable-sync-stack=false"
   }
 }
