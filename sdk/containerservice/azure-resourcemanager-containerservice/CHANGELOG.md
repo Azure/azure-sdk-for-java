@@ -6,11 +6,14 @@
 
 ### Breaking Changes
 
-- Pageable model classes (`AgentPoolListResult`, `ManagedClusterListResult`, `SnapshotListResult`, `TrustedAccessRoleBindingListResult`, `TrustedAccessRoleListResult`, `MachineListResult`, `MaintenanceConfigurationListResult`, `ManagedNamespaceListResult`, `MeshRevisionProfileList`, `MeshUpgradeProfileList`, `OperationListResult`, `OutboundEnvironmentEndpointCollection`) were moved to `implementation.models` package.
-- Constructors of output-only models (`CompatibleVersions`, `CredentialResult`, `EndpointDependency`, `EndpointDetail`, `KubernetesPatchVersion`, `KubernetesVersion`, `MachineIpAddress`, `MachineNetworkProperties`, `MachineProperties`, `TrustedAccessRoleRule`) are now private.
-- Setters (`with*` methods) were removed from output-only immutable models.
-- Some read-only properties' getters were removed from output-only models.
-- `ManagedClusterAddonProfileIdentity::withClientId`, `withObjectId`, `withResourceId` return type changed from `ManagedClusterAddonProfileIdentity` to `UserAssignedIdentity`.
+- Moved `ContainerServiceManager.serviceClient().getOpenShiftManagedClusters()` to `ContainerServiceManager.openShiftClient().getOpenShiftManagedClusters()`.
+- Moved `ContainerServiceManager.serviceClient().getContainerServices()` to `ContainerServiceManager.orchestratorClient().getContainerServices()`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2026-01-01`.
 
 ## 2.57.1 (2026-01-29)
 
