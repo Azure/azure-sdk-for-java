@@ -285,13 +285,13 @@ com.azure.resourcemanager:azure-resourcemanager-containerservice;2.57.1;2.58.0-b
 com.azure.resourcemanager:azure-resourcemanager-cosmos;2.54.1;2.55.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-dns;2.53.6;2.54.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-eventhubs;2.53.6;2.54.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-keyvault;2.54.2;2.55.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-keyvault;2.54.2;2.55.0
 com.azure.resourcemanager:azure-resourcemanager-monitor;2.53.6;2.54.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-msi;2.53.6;2.54.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-network;2.58.0;2.59.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-privatedns;2.53.6;2.54.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-resources;2.53.6;2.54.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-resources;2.53.6;2.54.0
 com.azure.resourcemanager:azure-resourcemanager-redis;2.53.6;2.54.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-samples;2.0.0-beta.1;2.0.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-search;2.54.5;2.55.0-beta.1
@@ -480,7 +480,7 @@ com.azure.resourcemanager:azure-resourcemanager-iotoperations;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-containerorchestratorruntime;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-terraform;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-connectedcache;1.0.0-beta.2;1.0.0-beta.3
-com.azure.resourcemanager:azure-resourcemanager-neonpostgres;1.0.1;1.0.1
+com.azure.resourcemanager:azure-resourcemanager-neonpostgres;1.0.1;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-pineconevectordb;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-impactreporting;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-migration-assessment;1.0.0-beta.1;1.0.0-beta.2
@@ -542,7 +542,7 @@ io.clientcore:core;1.0.0-beta.11;1.0.0-beta.12
 io.clientcore:http-netty4;1.0.0-beta.1;1.0.0-beta.1
 io.clientcore:http-okhttp3;1.0.0-beta.2;1.0.0-beta.3
 io.clientcore:http-stress;1.0.0-beta.1;1.0.0-beta.1
-io.clientcore:linting-extensions;1.0.0-beta.1;1.0.0-beta.2
+io.clientcore:linting-extensions;1.0.0-beta.2;1.0.0-beta.3
 io.clientcore:optional-dependency-tests;1.0.0-beta.1;1.0.0-beta.1
 
 # Unreleased dependencies: Copy the entry from above, prepend "unreleased_" and remove the current
@@ -558,7 +558,6 @@ unreleased_com.azure.v2:azure-core;2.0.0-beta.1
 unreleased_com.azure.v2:azure-identity;2.0.0-beta.1
 unreleased_com.azure.v2:azure-data-appconfiguration;2.0.0-beta.1
 unreleased_io.clientcore:http-netty4;1.0.0-beta.1
-unreleased_io.clientcore:linting-extensions;1.0.0-beta.2
 
 # Released Beta dependencies: Copy the entry from above, prepend "beta_", remove the current
 # version and set the version to the released beta. Released beta dependencies are only valid

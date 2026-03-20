@@ -2,7 +2,8 @@
 name: "sdkReviewAgent"
 description: "AI-powered multi-agent deep PR review for Azure SDK for Java"
 on:
-  slash_command: sdkReviewAgent
+  pull_request:
+    types: [opened, synchronize, ready_for_review]
 engine: copilot
 network:
   allowed:

@@ -788,6 +788,21 @@
           "justification": "\"Reason\" enum has changed from sealed to expandable."
         },
         {
+          "code": "java.class.removed",
+          "old": "class com.azure.resourcemanager.keyvault.models.ManagedHsmResource",
+          "justification": "TypeSpec fix for base resource class."
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method java.lang.String com.azure.resourcemanager.keyvault.models.MhsmPrivateLinkResource::location()",
+          "justification": "Override was dropped because the method now comes from the com.azure.core.management.Resource base class; functionality is unchanged."
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method java.util.Map<java.lang.String, java.lang.String> com.azure.resourcemanager.keyvault.models.MhsmPrivateLinkResource::tags()",
+          "justification": "Override was dropped because the method now comes from the com.azure.core.management.Resource base class; functionality is unchanged."
+        },
+        {
           "code" : "java.field.addedStaticField",
           "new" : "field com.azure.resourcemanager.network.models.PublicIPSkuType.STANDARD_V2",
           "justification" : "Not a break."

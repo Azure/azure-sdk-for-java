@@ -10,6 +10,10 @@
 
 ### Other Changes
 
+### azure-resourcemanager-resources
+
+- Updated `api-version` of policy to `2025-03-01`.
+
 ## 2.60.0 (2026-02-26)
 
 ### azure-resourcemanager-network

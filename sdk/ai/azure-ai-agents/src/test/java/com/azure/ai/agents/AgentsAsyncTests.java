@@ -4,6 +4,8 @@
 package com.azure.ai.agents;
 
 import com.azure.ai.agents.models.AgentReference;
+import com.azure.ai.agents.models.AzureCreateResponseOptions;
+import com.azure.core.util.BinaryData;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.ai.agents.models.StructuredInputDefinition;
 import com.azure.core.http.HttpClient;
@@ -134,7 +136,9 @@ public class AgentsAsyncTests extends ClientTestBase {
 
                 ResponseCreateParams.Builder paramsBuilder = ResponseCreateParams.builder().inputOfResponse(inputItems);
 
-                return responsesClient.createWithAgentConversation(agentReference, conversation.id(), paramsBuilder)
+                return responsesClient
+                    .createAzureResponse(new AzureCreateResponseOptions().setAgentReference(agentReference),
+                        paramsBuilder.conversation(conversation.id()))
                     .doOnNext(response -> {
                         assertNotNull(response);
                         assertTrue(response.id().startsWith("resp"));
@@ -184,14 +188,16 @@ public class AgentsAsyncTests extends ClientTestBase {
                     assertNotNull(createdAgent.getId());
                     assertEquals(AGENT_NAME, createdAgent.getName());
 
-                    Map<String, Object> structuredInputValues = new LinkedHashMap<>();
-                    structuredInputValues.put("userName", "Alice Smith");
-                    structuredInputValues.put("userRole", "Senior Developer");
+                    Map<String, BinaryData> structuredInputValues = new LinkedHashMap<>();
+                    structuredInputValues.put("userName", BinaryData.fromObject("Alice Smith"));
+                    structuredInputValues.put("userRole", BinaryData.fromObject("Senior Developer"));
 
                     return responsesClient
-                        .createWithAgentStructuredInput(
-                            new AgentReference(createdAgent.getName()).setVersion(createdAgent.getVersion()),
-                            structuredInputValues,
+                        .createAzureResponse(
+                            new AzureCreateResponseOptions()
+                                .setAgentReference(
+                                    new AgentReference(createdAgent.getName()).setVersion(createdAgent.getVersion()))
+                                .setStructuredInputs(structuredInputValues),
                             ResponseCreateParams.builder().input("Hello! Can you confirm my details?"))
                         .flatMap(response -> agentsClient
                             .deleteAgentVersion(createdAgent.getName(), createdAgent.getVersion())
