@@ -8,21 +8,9 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.resourcemanager.containerservice.fluent.AgentPoolsClient;
 import com.azure.resourcemanager.containerservice.fluent.ContainerServiceManagementClient;
 import com.azure.resourcemanager.containerservice.fluent.ContainerServicesClient;
-import com.azure.resourcemanager.containerservice.fluent.MachinesClient;
-import com.azure.resourcemanager.containerservice.fluent.MaintenanceConfigurationsClient;
-import com.azure.resourcemanager.containerservice.fluent.ManagedClustersClient;
-import com.azure.resourcemanager.containerservice.fluent.ManagedNamespacesClient;
 import com.azure.resourcemanager.containerservice.fluent.OpenShiftManagedClustersClient;
-import com.azure.resourcemanager.containerservice.fluent.OperationsClient;
-import com.azure.resourcemanager.containerservice.fluent.PrivateEndpointConnectionsClient;
-import com.azure.resourcemanager.containerservice.fluent.PrivateLinkResourcesClient;
-import com.azure.resourcemanager.containerservice.fluent.ResolvePrivateLinkServiceIdsClient;
-import com.azure.resourcemanager.containerservice.fluent.SnapshotsClient;
-import com.azure.resourcemanager.containerservice.fluent.TrustedAccessRoleBindingsClient;
-import com.azure.resourcemanager.containerservice.fluent.TrustedAccessRolesClient;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import java.time.Duration;
 
@@ -133,174 +121,6 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
     }
 
     /**
-     * The OperationsClient object to access its operations.
-     */
-    private final OperationsClient operations;
-
-    /**
-     * Gets the OperationsClient object to access its operations.
-     * 
-     * @return the OperationsClient object.
-     */
-    public OperationsClient getOperations() {
-        return this.operations;
-    }
-
-    /**
-     * The ManagedClustersClient object to access its operations.
-     */
-    private final ManagedClustersClient managedClusters;
-
-    /**
-     * Gets the ManagedClustersClient object to access its operations.
-     * 
-     * @return the ManagedClustersClient object.
-     */
-    public ManagedClustersClient getManagedClusters() {
-        return this.managedClusters;
-    }
-
-    /**
-     * The MaintenanceConfigurationsClient object to access its operations.
-     */
-    private final MaintenanceConfigurationsClient maintenanceConfigurations;
-
-    /**
-     * Gets the MaintenanceConfigurationsClient object to access its operations.
-     * 
-     * @return the MaintenanceConfigurationsClient object.
-     */
-    public MaintenanceConfigurationsClient getMaintenanceConfigurations() {
-        return this.maintenanceConfigurations;
-    }
-
-    /**
-     * The ManagedNamespacesClient object to access its operations.
-     */
-    private final ManagedNamespacesClient managedNamespaces;
-
-    /**
-     * Gets the ManagedNamespacesClient object to access its operations.
-     * 
-     * @return the ManagedNamespacesClient object.
-     */
-    public ManagedNamespacesClient getManagedNamespaces() {
-        return this.managedNamespaces;
-    }
-
-    /**
-     * The AgentPoolsClient object to access its operations.
-     */
-    private final AgentPoolsClient agentPools;
-
-    /**
-     * Gets the AgentPoolsClient object to access its operations.
-     * 
-     * @return the AgentPoolsClient object.
-     */
-    public AgentPoolsClient getAgentPools() {
-        return this.agentPools;
-    }
-
-    /**
-     * The PrivateEndpointConnectionsClient object to access its operations.
-     */
-    private final PrivateEndpointConnectionsClient privateEndpointConnections;
-
-    /**
-     * Gets the PrivateEndpointConnectionsClient object to access its operations.
-     * 
-     * @return the PrivateEndpointConnectionsClient object.
-     */
-    public PrivateEndpointConnectionsClient getPrivateEndpointConnections() {
-        return this.privateEndpointConnections;
-    }
-
-    /**
-     * The PrivateLinkResourcesClient object to access its operations.
-     */
-    private final PrivateLinkResourcesClient privateLinkResources;
-
-    /**
-     * Gets the PrivateLinkResourcesClient object to access its operations.
-     * 
-     * @return the PrivateLinkResourcesClient object.
-     */
-    public PrivateLinkResourcesClient getPrivateLinkResources() {
-        return this.privateLinkResources;
-    }
-
-    /**
-     * The ResolvePrivateLinkServiceIdsClient object to access its operations.
-     */
-    private final ResolvePrivateLinkServiceIdsClient resolvePrivateLinkServiceIds;
-
-    /**
-     * Gets the ResolvePrivateLinkServiceIdsClient object to access its operations.
-     * 
-     * @return the ResolvePrivateLinkServiceIdsClient object.
-     */
-    public ResolvePrivateLinkServiceIdsClient getResolvePrivateLinkServiceIds() {
-        return this.resolvePrivateLinkServiceIds;
-    }
-
-    /**
-     * The SnapshotsClient object to access its operations.
-     */
-    private final SnapshotsClient snapshots;
-
-    /**
-     * Gets the SnapshotsClient object to access its operations.
-     * 
-     * @return the SnapshotsClient object.
-     */
-    public SnapshotsClient getSnapshots() {
-        return this.snapshots;
-    }
-
-    /**
-     * The TrustedAccessRoleBindingsClient object to access its operations.
-     */
-    private final TrustedAccessRoleBindingsClient trustedAccessRoleBindings;
-
-    /**
-     * Gets the TrustedAccessRoleBindingsClient object to access its operations.
-     * 
-     * @return the TrustedAccessRoleBindingsClient object.
-     */
-    public TrustedAccessRoleBindingsClient getTrustedAccessRoleBindings() {
-        return this.trustedAccessRoleBindings;
-    }
-
-    /**
-     * The TrustedAccessRolesClient object to access its operations.
-     */
-    private final TrustedAccessRolesClient trustedAccessRoles;
-
-    /**
-     * Gets the TrustedAccessRolesClient object to access its operations.
-     * 
-     * @return the TrustedAccessRolesClient object.
-     */
-    public TrustedAccessRolesClient getTrustedAccessRoles() {
-        return this.trustedAccessRoles;
-    }
-
-    /**
-     * The MachinesClient object to access its operations.
-     */
-    private final MachinesClient machines;
-
-    /**
-     * Gets the MachinesClient object to access its operations.
-     * 
-     * @return the MachinesClient object.
-     */
-    public MachinesClient getMachines() {
-        return this.machines;
-    }
-
-    /**
      * Initializes an instance of ContainerServiceManagementClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
@@ -321,17 +141,5 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
         this.endpoint = endpoint;
         this.openShiftManagedClusters = new OpenShiftManagedClustersClientImpl(this);
         this.containerServices = new ContainerServicesClientImpl(this);
-        this.operations = new OperationsClientImpl(this);
-        this.managedClusters = new ManagedClustersClientImpl(this);
-        this.maintenanceConfigurations = new MaintenanceConfigurationsClientImpl(this);
-        this.managedNamespaces = new ManagedNamespacesClientImpl(this);
-        this.agentPools = new AgentPoolsClientImpl(this);
-        this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
-        this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
-        this.resolvePrivateLinkServiceIds = new ResolvePrivateLinkServiceIdsClientImpl(this);
-        this.snapshots = new SnapshotsClientImpl(this);
-        this.trustedAccessRoleBindings = new TrustedAccessRoleBindingsClientImpl(this);
-        this.trustedAccessRoles = new TrustedAccessRolesClientImpl(this);
-        this.machines = new MachinesClientImpl(this);
     }
 }
