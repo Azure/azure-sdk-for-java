@@ -894,6 +894,7 @@
               <org.slf4j.simpleLogger.log.com.azure>debug</org.slf4j.simpleLogger.log.com.azure>
             </systemPropertyVariables>
             <forkCount>1</forkCount>
+            <forkedProcessTimeoutInSeconds>600</forkedProcessTimeoutInSeconds>
             <testFailureIgnore>false</testFailureIgnore>
             <argLine>
               ${defaultSurefireArgLine}
