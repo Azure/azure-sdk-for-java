@@ -22,12 +22,6 @@ import java.util.Map;
 public final class MemoryStoreDetails implements JsonSerializable<MemoryStoreDetails> {
 
     /*
-     * The object type, which is always 'memory_store'.
-     */
-    @Generated
-    private final MemoryStoreObjectType object = MemoryStoreObjectType.MEMORY_STORE;
-
-    /*
      * The unique identifier of the memory store.
      */
     @Generated
@@ -94,16 +88,6 @@ public final class MemoryStoreDetails implements JsonSerializable<MemoryStoreDet
         }
         this.name = name;
         this.definition = definition;
-    }
-
-    /**
-     * Get the object property: The object type, which is always 'memory_store'.
-     *
-     * @return the object value.
-     */
-    @Generated
-    public MemoryStoreObjectType getObject() {
-        return this.object;
     }
 
     /**
@@ -183,7 +167,7 @@ public final class MemoryStoreDetails implements JsonSerializable<MemoryStoreDet
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("object", this.object == null ? null : this.object.toString());
+        jsonWriter.writeStringField("object", this.sobjectType == null ? null : this.sobjectType.toString());
         jsonWriter.writeStringField("id", this.id);
         jsonWriter.writeLongField("created_at", this.createdAt);
         jsonWriter.writeLongField("updated_at", this.updatedAt);
@@ -240,5 +224,21 @@ public final class MemoryStoreDetails implements JsonSerializable<MemoryStoreDet
             deserializedMemoryStoreDetails.metadata = metadata;
             return deserializedMemoryStoreDetails;
         });
+    }
+
+    /*
+     * The object type, which is always 'memory_store'.
+     */
+    @Generated
+    private final MemoryStoreObjectType sobjectType = MemoryStoreObjectType.MEMORY_STORE;
+
+    /**
+     * Get the sobjectType property: The object type, which is always 'memory_store'.
+     *
+     * @return the sobjectType value.
+     */
+    @Generated
+    public MemoryStoreObjectType getSobjectType() {
+        return this.sobjectType;
     }
 }
