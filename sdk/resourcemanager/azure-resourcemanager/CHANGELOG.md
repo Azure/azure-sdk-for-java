@@ -12,12 +12,14 @@
 
 ### azure-resourcemanager-containerservice
 
-- This release migrates the SDK from AutoRest to TypeSpec, based on API version `2026-01-01`.
-
 #### Breaking Changes
 
 - Moved `ContainerServiceManager.serviceClient().getOpenShiftManagedClusters()` to `ContainerServiceManager.openShiftClient().getOpenShiftManagedClusters()`.
 - Moved `ContainerServiceManager.serviceClient().getContainerServices()` to `ContainerServiceManager.orchestratorClient().getContainerServices()`.
+
+#### Dependency Updates
+
+- Updated `api-version` to `2026-01-01`.
 
 ### azure-resourcemanager-resources
 
