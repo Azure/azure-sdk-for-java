@@ -51,7 +51,7 @@ Find the most specific signal in the failure log and jump directly:
 [ERROR] Failed to execute goal ... maven-checkstyle-plugin ... There are N errors reported by Checkstyle
 ```
 
-**Root cause:** One `.`-separated segment in the namespace exceeds 32 characters (Checkstyle package rules).
+**Root cause:** The namespace does not match the repository's Checkstyle `PackageName` rule.
 
 **Solution:**
 
@@ -61,7 +61,7 @@ Find the most specific signal in the failure log and jump directly:
      <!-- Suppress the long package name in yourservice -->
      <suppress checks="PackageName" files="com.azure.resourcemanager.yourverylongservicename.*" />
      ```
-2. **If the namespace is not approved**, use a shorter namespace so that each `.`-separated segment is within 32 characters and the whole package name stays within typical limits.
+2. **If the namespace is not approved**, rename or shorten the namespace until it matches the `PackageName` rule shown in the error log. In practice, check the generated package name against the regex and reduce any part of the namespace that causes the mismatch, such as an overly long segment or an overall package name that is too long.
 
 ### 1.2 Unsupported Emitter Option (Fluent Premium)
 
@@ -96,14 +96,24 @@ Line |
 ```
 
 **Root cause:**
-The **Verify Swagger and TypeSpec Code Generation** step in the Java SDK PR pipeline re-generates SDKs using only repository-local configuration (tspconfig.yaml, etc.). If api-version is not explicitly fixed in tspconfig.yaml, it defaults to the latest version, causing a mismatch between the api-version used by the generation pipeline and the api-version in the type specification, which causes the failure.
+The **Verify Swagger and TypeSpec Code Generation** step in the Java SDK PR pipeline re-runs code generation using repository-local configuration and compares regenerated output with committed code. This check usually fails because regeneration produces large diffs.
+Common causes include:
+- `tspconfig.yaml` has incorrect Java emitter settings.
+- In `tspconfig.yaml`, `api-version` changes can directly change operation/model counts.
+- In `tspconfig.yaml`, `enable-sync-stack` changes can add or remove a large set of sync client classes.
+- In `tspconfig.yaml`, `flavor` changes (for example, `azure` vs `standard`) change generated code style and shape.
+
+When operation counts change significantly, **api-version drift** is the most common cause. If `api-version` is not explicitly fixed in `tspconfig.yaml`, it may default to the latest version, which can differ from the version used when the checked-in SDK was originally generated.
 
 **Solution:**
-Explicitly fix the intended api-version in tspconfig.yaml so that the Verify step and SDK generation use the same version. Example:
+1. Check the pipeline code-generation diff, re-run local generation with the same repository configuration, compare against the SDK output in the generated PR, and update the relevant `tspconfig.yaml` settings (for example `api-version`, `enable-sync-stack`, `flavor`).
+2. Update `tspconfig.yaml` in the spec repo PR, commit the change, and rerun generation to regenerate the SDK PR.
+
+Example (API version mismatch): pin `api-version` in `tspconfig.yaml` so the Verify step and SDK generation use the same version, then rerun generation.
 ```yaml
 options:
   "@azure-tools/typespec-java":
-    api-version: "2025-12-01"   # ✅
+    api-version: "2025-12-01"   # ✅ pin the api-version used for generation
 ```
 
 ---
