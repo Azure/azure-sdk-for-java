@@ -2,8 +2,6 @@
 
 ## 2.58.0-beta.2 (2026-03-20)
 
-- This release migrates the SDK from AutoRest to TypeSpec, based on API version `2026-01-01`.
-
 ### Breaking Changes
 
 - Moved `ContainerServiceManager.serviceClient().getOpenShiftManagedClusters()` to `ContainerServiceManager.openShiftClient().getOpenShiftManagedClusters()`.
