@@ -61,4 +61,17 @@ public class RegionalRoutingContextTest {
 
         assertThat(ctx.toString()).contains("https://region1.documents.azure.com:443/");
     }
+
+    @Test(groups = "unit")
+    public void toStringShouldNotChangeAfterSettingThinclientEndpoint() throws URISyntaxException {
+        URI gw = new URI("https://region1.documents.azure.com:443/");
+        URI tc = new URI("https://region1.documents.azure.com:10250/");
+
+        RegionalRoutingContext ctx = new RegionalRoutingContext(gw);
+        String beforeSet = ctx.toString();
+        ctx.setThinclientRegionalEndpoint(tc);
+        String afterSet = ctx.toString();
+
+        assertThat(beforeSet).isEqualTo(afterSet);
+    }
 }
