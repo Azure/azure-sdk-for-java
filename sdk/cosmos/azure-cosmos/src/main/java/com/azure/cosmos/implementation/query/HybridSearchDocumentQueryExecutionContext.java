@@ -163,15 +163,12 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
             for (FeedRangeEpkImpl feedRangeEpk : statisticsTargetRanges) {
                 partitionKeyRangeToContinuationToken.put(feedRangeEpk, null);
             }
-            super.initialize(collection,
+
+            List<DocumentProducer<Document>> globalStatsProducers = createProducers(
+                collection,
                 partitionKeyRangeToContinuationToken,
                 initialPageSize,
-                new SqlQuerySpec(hybridSearchQueryInfo.getGlobalStatisticsQuery(), this.querySpec.getParameters())
-            );
-
-            // Capture the producers into a local variable to avoid ConcurrentModificationException
-            // if documentProducers field is later reassigned by getComponentQueryResults.
-            List<DocumentProducer<Document>> globalStatsProducers = new ArrayList<>(this.documentProducers);
+                new SqlQuerySpec(hybridSearchQueryInfo.getGlobalStatisticsQuery(), this.querySpec.getParameters()));
 
             aggregatedGlobalStatistics = Flux.fromIterable(globalStatsProducers)
                 .flatMap(producer -> producer.produceAsync()
@@ -411,27 +408,40 @@ public class HybridSearchDocumentQueryExecutionContext extends ParallelDocumentQ
         });
     }
 
+    /**
+     * Creates document producers for the given feed ranges and query, returning them as an isolated
+     * local list. This avoids relying on the shared mutable {@code documentProducers} field in
+     * {@link ParallelDocumentQueryExecutionContextBase}, preventing race conditions when multiple
+     * logical operations (global statistics, component queries) each need their own producer set.
+     */
+    private List<DocumentProducer<Document>> createProducers(
+        DocumentCollection collection,
+        Map<FeedRangeEpkImpl, String> feedRangeToContinuationTokenMap,
+        int initialPageSize,
+        SqlQuerySpec querySpecForInit) {
+
+        documentProducers = new ArrayList<>();
+        super.initialize(collection, feedRangeToContinuationTokenMap, initialPageSize, querySpecForInit);
+        List<DocumentProducer<Document>> result = new ArrayList<>(documentProducers);
+        documentProducers = new ArrayList<>();
+        return result;
+    }
+
     private Flux<Document> getComponentQueryResults(List<FeedRangeEpkImpl> targetFeedRanges, int initialPageSize, DocumentCollection collection, Flux<QueryInfo> rewrittenQueryInfos) {
-        // Use concatMap to serialize component query initialization. The parent class has shared mutable
-        // state (documentProducers, metrics trackers) that is not thread-safe for concurrent access.
-        // Each component query still executes its partition queries in parallel via the inner flatMap.
-        // TODO: Refactor to pass producer list as a local variable instead of relying on the shared
-        //  mutable documentProducers field in ParallelDocumentQueryExecutionContextBase, which would
-        //  allow safe re-introduction of flatMap concurrency across component queries.
+        // Use concatMap to serialize component query initialization. Each component query still
+        // executes its partition queries in parallel via the inner flatMap.
         return rewrittenQueryInfos.concatMap(queryInfo -> {
             Map<FeedRangeEpkImpl, String> partitionKeyRangeToContinuationToken = new HashMap<>();
             for (FeedRangeEpkImpl feedRangeEpk : targetFeedRanges) {
-                partitionKeyRangeToContinuationToken.put(feedRangeEpk,
-                    null);
+                partitionKeyRangeToContinuationToken.put(feedRangeEpk, null);
             }
-            documentProducers = new ArrayList<>();
-            super.initialize(collection,
+
+            List<DocumentProducer<Document>> componentProducers = createProducers(
+                collection,
                 partitionKeyRangeToContinuationToken,
                 initialPageSize,
                 new SqlQuerySpec(queryInfo.getRewrittenQuery(), this.querySpec.getParameters()));
 
-            // Capture into a local copy to avoid CME if the field is later reassigned/modified.
-            List<DocumentProducer<Document>> componentProducers = new ArrayList<>(documentProducers);
             return Flux.fromIterable(componentProducers)
                 .flatMap(DocumentProducer::produceAsync)
                 .flatMap(response -> Flux.fromIterable(response.pageResult.getResults()));
