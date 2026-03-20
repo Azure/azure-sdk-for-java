@@ -136,6 +136,7 @@
         <module>azure-spring-data-cosmos</module>
       </modules>
     </profile>
+
     <profile>
       <id>monitor</id>
       <modules>
