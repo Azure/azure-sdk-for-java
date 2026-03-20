@@ -62,7 +62,10 @@ public class WorkloadIdE2ETests extends TestSuiteBase {
         Map<CosmosHeaderName, String> headers = new HashMap<>();
         headers.put(CosmosHeaderName.WORKLOAD_ID, "15");
 
-        clientWithWorkloadId = getClientBuilder()
+        // Clone the shared builder before setting additionalHeaders.
+        // getClientBuilder() returns the same mutable instance from the data provider.
+        // Calling .additionalHeaders() directly on it would mutate the shared builder,
+        clientWithWorkloadId = copyCosmosClientBuilder(getClientBuilder())
             .additionalHeaders(headers)
             .buildAsyncClient();
 
