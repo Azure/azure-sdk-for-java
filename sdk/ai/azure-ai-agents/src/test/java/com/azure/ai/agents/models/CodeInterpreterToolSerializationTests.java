@@ -170,7 +170,8 @@ public class CodeInterpreterToolSerializationTests {
         CodeInterpreterTool deserialized = deserializeFromJson(json);
 
         assertNotNull(deserialized);
-        AutoCodeInterpreterToolParameter deserializedParam = deserialized.getContainerAsAutoCodeInterpreterToolParameter();
+        AutoCodeInterpreterToolParameter deserializedParam
+            = deserialized.getContainerAsAutoCodeInterpreterToolParameter();
         assertNotNull(deserializedParam);
         assertEquals("auto", deserializedParam.getType());
         assertEquals(2, deserializedParam.getFileIds().size());
