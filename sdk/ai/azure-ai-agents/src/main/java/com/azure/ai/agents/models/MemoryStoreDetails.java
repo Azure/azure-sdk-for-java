@@ -167,7 +167,7 @@ public final class MemoryStoreDetails implements JsonSerializable<MemoryStoreDet
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("object", this.sobjectType == null ? null : this.sobjectType.toString());
+        jsonWriter.writeStringField("object", this.objectType == null ? null : this.objectType.toString());
         jsonWriter.writeStringField("id", this.id);
         jsonWriter.writeLongField("created_at", this.createdAt);
         jsonWriter.writeLongField("updated_at", this.updatedAt);
@@ -230,15 +230,15 @@ public final class MemoryStoreDetails implements JsonSerializable<MemoryStoreDet
      * The object type, which is always 'memory_store'.
      */
     @Generated
-    private final MemoryStoreObjectType sobjectType = MemoryStoreObjectType.MEMORY_STORE;
+    private final MemoryStoreObjectType objectType = MemoryStoreObjectType.MEMORY_STORE;
 
     /**
-     * Get the sobjectType property: The object type, which is always 'memory_store'.
+     * Get the objectType property: The object type, which is always 'memory_store'.
      *
-     * @return the sobjectType value.
+     * @return the objectType value.
      */
     @Generated
-    public MemoryStoreObjectType getSobjectType() {
-        return this.sobjectType;
+    public MemoryStoreObjectType getObjectType() {
+        return this.objectType;
     }
 }
