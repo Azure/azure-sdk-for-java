@@ -1,6 +1,6 @@
 # Release History
 
-## 2.0.0-beta.3 (Unreleased)
+## 2.0.0-beta.3 (2026-03-19)
 
 ### Features Added
 
@@ -24,6 +24,11 @@
 
 ### Breaking Changes
 
+- Removed deprecated convenience methods from `ResponsesClient` and `ResponsesAsyncClient`: `createWithAgent`, `createWithAgentConversation`, `createStreamingWithAgent`, `createStreamingWithAgentConversation`, `createWithAgentStructuredInput`, and `createStreamingWithAgentStructuredInput`. Use `createAzureResponse` and `createStreamingAzureResponse` with `AzureCreateResponseOptions` instead.
+- `deleteAgent(String)` on `AgentsClient` now returns `void` instead of `DeleteAgentResponse`. The corresponding async method on `AgentsAsyncClient` now returns `Mono<Void>` instead of `Mono<DeleteAgentResponse>`. The public protocol method `deleteAgentWithResponse` has been removed; use the convenience method instead.
+- `deleteAgentVersion(String, String)` on `AgentsClient` now returns `void` instead of `DeleteAgentVersionResponse`. The corresponding async method on `AgentsAsyncClient` now returns `Mono<Void>` instead of `Mono<DeleteAgentVersionResponse>`.
+- `DeleteAgentResponse` removed from `com.azure.ai.agents.models` and is no longer part of the public API.
+- `DeleteAgentVersionResponse` removed from `com.azure.ai.agents.models` and is no longer part of the public API.
 - `AgentDefinitionOptInKeys` and `FoundryFeaturesOptInKeys` changed from `ExpandableStringEnum`-based classes to standard Java `enum` types. The `values()` method now returns an array instead of a `Collection`, and the deprecated no-arg constructor is removed.
 - The `timezone` property in `ApproximateLocation` and `WebSearchApproximateLocation` changed from `String` to `java.util.TimeZone`.
 - The `container` property on `CodeInterpreterTool` no longer exposes `BinaryData` getter/setter publicly. Use the new typed accessors instead (e.g., `setContainer("container-id")` or `setContainer(new AutoCodeInterpreterToolParam())`).
@@ -32,10 +37,9 @@
 - The `reasoning` property on `PromptAgentDefinition` now uses `com.openai.models.Reasoning` from the openai-java library instead of the previously generated `Reasoning` class. Use `Reasoning.builder().effort(ReasoningEffort.HIGH).build()` to construct values.
 - Removed `ComparisonFilter`, `ComparisonFilterType`, `CompoundFilter`, `CompoundFilterType`, `Reasoning`, `ReasoningEffort`, `ReasoningSummary`, and `ReasoningGenerateSummary` from `com.azure.ai.agents.models`. Use the equivalent types from `com.openai.models` instead (e.g., `com.openai.models.ComparisonFilter`, `com.openai.models.Reasoning`).
 
-### Bugs Fixed
-
 ### Other Changes
 
+- Updated all samples and tests to use the new `createAzureResponse` and `createStreamingAzureResponse` API.
 - Added `ToolsTests` and `ToolsAsyncTests` with recorded end-to-end test coverage for OpenAPI, Code Interpreter, Function Call, Web Search, MCP, and File Search tools.
 - Added `StreamingTests` and `StreamingAsyncTests` with recorded test coverage for streaming responses (simple prompt, function calling, and Code Interpreter scenarios).
 - Added structured input test coverage to `AgentsTests`, `AgentsAsyncTests`, `StreamingTests`, and `StreamingAsyncTests`.
