@@ -1,9 +1,13 @@
 ---
 name: "sdkReviewAgent"
-description: "AI-powered multi-agent PR review for Azure SDK for Java"
+description: "AI-powered multi-agent deep PR review for Azure SDK for Java"
 on:
   slash_command: sdkReviewAgent
 engine: copilot
+network:
+  allowed:
+    - defaults
+    - github
 safe-outputs:
   create-pull-request-review-comment: {}
 permissions:
@@ -11,7 +15,7 @@ permissions:
   pull-requests: read
   issues: read
 imports:
-  - xinlian12/sdk-auto-pr-review/.github/workflows/shared/pr-review-pipeline.md@main
+  - xinlian12/sdk-copilot-toolkit/.github/workflows/shared/pr-review-pipeline.md@reviewAgentEnhancements
 ---
 
-{{#import xinlian12/sdk-auto-pr-review/.github/workflows/shared/pr-review-pipeline.md@main}}
+{{#import xinlian12/sdk-copilot-toolkit/.github/workflows/shared/pr-review-pipeline.md@reviewAgentEnhancements}}
