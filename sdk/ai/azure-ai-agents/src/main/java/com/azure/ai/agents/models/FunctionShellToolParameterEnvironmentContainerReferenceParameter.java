@@ -11,10 +11,11 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The FunctionShellToolParamEnvironmentContainerReferenceParam model.
+ * The FunctionShellToolParameterEnvironmentContainerReferenceParameter model.
  */
 @Immutable
-public final class FunctionShellToolParamEnvironmentContainerReferenceParam extends FunctionShellToolParamEnvironment {
+public final class FunctionShellToolParameterEnvironmentContainerReferenceParameter
+    extends FunctionShellToolParamEnvironment {
 
     /*
      * The type property.
@@ -29,12 +30,12 @@ public final class FunctionShellToolParamEnvironmentContainerReferenceParam exte
     private final String containerId;
 
     /**
-     * Creates an instance of FunctionShellToolParamEnvironmentContainerReferenceParam class.
+     * Creates an instance of FunctionShellToolParameterEnvironmentContainerReferenceParameter class.
      *
      * @param containerId the containerId value to set.
      */
     @Generated
-    public FunctionShellToolParamEnvironmentContainerReferenceParam(String containerId) {
+    public FunctionShellToolParameterEnvironmentContainerReferenceParameter(String containerId) {
         this.containerId = containerId;
     }
 
@@ -72,17 +73,17 @@ public final class FunctionShellToolParamEnvironmentContainerReferenceParam exte
     }
 
     /**
-     * Reads an instance of FunctionShellToolParamEnvironmentContainerReferenceParam from the JsonReader.
+     * Reads an instance of FunctionShellToolParameterEnvironmentContainerReferenceParameter from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of FunctionShellToolParamEnvironmentContainerReferenceParam if the JsonReader was pointing to
-     * an instance of it, or null if it was pointing to JSON null.
+     * @return An instance of FunctionShellToolParameterEnvironmentContainerReferenceParameter if the JsonReader was
+     * pointing to an instance of it, or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the
-     * FunctionShellToolParamEnvironmentContainerReferenceParam.
+     * FunctionShellToolParameterEnvironmentContainerReferenceParameter.
      */
     @Generated
-    public static FunctionShellToolParamEnvironmentContainerReferenceParam fromJson(JsonReader jsonReader)
+    public static FunctionShellToolParameterEnvironmentContainerReferenceParameter fromJson(JsonReader jsonReader)
         throws IOException {
         return jsonReader.readObject(reader -> {
             String containerId = null;
@@ -98,10 +99,10 @@ public final class FunctionShellToolParamEnvironmentContainerReferenceParam exte
                     reader.skipChildren();
                 }
             }
-            FunctionShellToolParamEnvironmentContainerReferenceParam deserializedFunctionShellToolParamEnvironmentContainerReferenceParam
-                = new FunctionShellToolParamEnvironmentContainerReferenceParam(containerId);
-            deserializedFunctionShellToolParamEnvironmentContainerReferenceParam.type = type;
-            return deserializedFunctionShellToolParamEnvironmentContainerReferenceParam;
+            FunctionShellToolParameterEnvironmentContainerReferenceParameter deserializedFunctionShellToolParameterEnvironmentContainerReferenceParameter
+                = new FunctionShellToolParameterEnvironmentContainerReferenceParameter(containerId);
+            deserializedFunctionShellToolParameterEnvironmentContainerReferenceParameter.type = type;
+            return deserializedFunctionShellToolParameterEnvironmentContainerReferenceParameter;
         });
     }
 }

@@ -12,10 +12,10 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The LocalSkillParam model.
+ * The LocalSkillParameter model.
  */
 @Immutable
-public final class LocalSkillParam implements JsonSerializable<LocalSkillParam> {
+public final class LocalSkillParameter implements JsonSerializable<LocalSkillParameter> {
 
     /*
      * The name of the skill.
@@ -36,14 +36,14 @@ public final class LocalSkillParam implements JsonSerializable<LocalSkillParam> 
     private final String path;
 
     /**
-     * Creates an instance of LocalSkillParam class.
+     * Creates an instance of LocalSkillParameter class.
      *
      * @param name the name value to set.
      * @param description the description value to set.
      * @param path the path value to set.
      */
     @Generated
-    public LocalSkillParam(String name, String description, String path) {
+    public LocalSkillParameter(String name, String description, String path) {
         this.name = name;
         this.description = description;
         this.path = path;
@@ -93,16 +93,16 @@ public final class LocalSkillParam implements JsonSerializable<LocalSkillParam> 
     }
 
     /**
-     * Reads an instance of LocalSkillParam from the JsonReader.
+     * Reads an instance of LocalSkillParameter from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of LocalSkillParam if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of LocalSkillParameter if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the LocalSkillParam.
+     * @throws IOException If an error occurs while reading the LocalSkillParameter.
      */
     @Generated
-    public static LocalSkillParam fromJson(JsonReader jsonReader) throws IOException {
+    public static LocalSkillParameter fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String name = null;
             String description = null;
@@ -120,7 +120,7 @@ public final class LocalSkillParam implements JsonSerializable<LocalSkillParam> 
                     reader.skipChildren();
                 }
             }
-            return new LocalSkillParam(name, description, path);
+            return new LocalSkillParameter(name, description, path);
         });
     }
 }

@@ -15,7 +15,7 @@ import java.io.IOException;
  * Inline skill payload.
  */
 @Immutable
-public final class InlineSkillSourceParam implements JsonSerializable<InlineSkillSourceParam> {
+public final class InlineSkillSourceParameter implements JsonSerializable<InlineSkillSourceParameter> {
 
     /*
      * The type of the inline skill source. Must be `base64`.
@@ -36,12 +36,12 @@ public final class InlineSkillSourceParam implements JsonSerializable<InlineSkil
     private final String data;
 
     /**
-     * Creates an instance of InlineSkillSourceParam class.
+     * Creates an instance of InlineSkillSourceParameter class.
      *
      * @param data the data value to set.
      */
     @Generated
-    public InlineSkillSourceParam(String data) {
+    public InlineSkillSourceParameter(String data) {
         this.data = data;
     }
 
@@ -89,16 +89,16 @@ public final class InlineSkillSourceParam implements JsonSerializable<InlineSkil
     }
 
     /**
-     * Reads an instance of InlineSkillSourceParam from the JsonReader.
+     * Reads an instance of InlineSkillSourceParameter from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of InlineSkillSourceParam if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
+     * @return An instance of InlineSkillSourceParameter if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the InlineSkillSourceParam.
+     * @throws IOException If an error occurs while reading the InlineSkillSourceParameter.
      */
     @Generated
-    public static InlineSkillSourceParam fromJson(JsonReader jsonReader) throws IOException {
+    public static InlineSkillSourceParameter fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String data = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -110,7 +110,7 @@ public final class InlineSkillSourceParam implements JsonSerializable<InlineSkil
                     reader.skipChildren();
                 }
             }
-            return new InlineSkillSourceParam(data);
+            return new InlineSkillSourceParameter(data);
         });
     }
 }

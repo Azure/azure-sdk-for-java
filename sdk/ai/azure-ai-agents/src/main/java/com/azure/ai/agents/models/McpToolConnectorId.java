@@ -5,9 +5,9 @@
 package com.azure.ai.agents.models;
 
 /**
- * Defines values for MCPToolConnectorId.
+ * Defines values for McpToolConnectorId.
  */
-public enum MCPToolConnectorId {
+public enum McpToolConnectorId {
     /**
      * Enum value connector_dropbox.
      */
@@ -49,26 +49,26 @@ public enum MCPToolConnectorId {
     CONNECTOR_SHAREPOINT("connector_sharepoint");
 
     /**
-     * The actual serialized value for a MCPToolConnectorId instance.
+     * The actual serialized value for a McpToolConnectorId instance.
      */
     private final String value;
 
-    MCPToolConnectorId(String value) {
+    McpToolConnectorId(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a MCPToolConnectorId instance.
+     * Parses a serialized value to a McpToolConnectorId instance.
      * 
      * @param value the serialized value to parse.
-     * @return the parsed MCPToolConnectorId object, or null if unable to parse.
+     * @return the parsed McpToolConnectorId object, or null if unable to parse.
      */
-    public static MCPToolConnectorId fromString(String value) {
+    public static McpToolConnectorId fromString(String value) {
         if (value == null) {
             return null;
         }
-        MCPToolConnectorId[] items = MCPToolConnectorId.values();
-        for (MCPToolConnectorId item : items) {
+        McpToolConnectorId[] items = McpToolConnectorId.values();
+        for (McpToolConnectorId item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
