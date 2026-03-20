@@ -735,43 +735,6 @@
         },
         {
           "ignore": true,
-          "code": "java.missing.newSuperType",
-          "new" : "class com.azure.resourcemanager.containerservice.models.ResourceIdentityType",
-          "justification": "ResourceIdentityType changed from enum to expandable string union."
-        },
-        {
-          "ignore": true,
-          "code": "java.class.kindChanged",
-          "old" : "enum com.azure.resourcemanager.containerservice.models.ResourceIdentityType",
-          "new" : "class com.azure.resourcemanager.containerservice.models.ResourceIdentityType",
-          "justification": "ResourceIdentityType changed from enum to expandable string union."
-        },
-        {
-          "ignore": true,
-          "code": "java.class.noLongerImplementsInterface",
-          "old" : "enum com.azure.resourcemanager.containerservice.models.ResourceIdentityType",
-          "justification": "ResourceIdentityType changed from enum to expandable string union."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.removed",
-          "old" : {
-            "matcher": "regex",
-            "match": "method .* java\\.lang\\.Enum.*\\:\\:.*\\(.*\\) @ com\\.azure\\.resourcemanager\\.containerservice\\.models\\.ResourceIdentityType"
-          },
-          "justification": "ResourceIdentityType changed from enum to expandable string union."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.visibilityIncreased",
-          "old" : {
-            "matcher": "regex",
-            "match": "method .* com\\.azure\\.resourcemanager\\.containerservice\\.models\\.ResourceIdentityType\\:\\:.*\\(.*\\)"
-          },
-          "justification": "ResourceIdentityType changed from enum to expandable string union."
-        },
-        {
-          "ignore": true,
           "code": "java.method.removed",
           "old" : {
             "matcher": "regex",
@@ -787,12 +750,6 @@
             "match": "method .* com\\.azure\\.resourcemanager\\.containerservice\\.models\\.UserAssignedIdentity\\:\\:with.*\\(.*\\) @ com\\.azure\\.resourcemanager\\.containerservice\\.models\\.ManagedClusterAddonProfileIdentity"
           },
           "justification": "ManagedClusterAddonProfileIdentity covariant overrides removed, inherited methods return parent type."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.returnTypeChanged",
-          "old": "method com.azure.resourcemanager.containerservice.models.ResourceIdentityType[] com.azure.resourcemanager.containerservice.models.ResourceIdentityType::values()",
-          "justification": "ResourceIdentityType changed from enum to expandable string union."
         },
         {
           "ignore": true,
@@ -820,32 +777,6 @@
             "match": "class com\\.azure\\.resourcemanager\\.containerservice\\.models\\..*(ListResult|List|Collection)"
           },
           "justification": "Pageable models moved to implementation package. Unlikely used by user."
-        },
-        {
-          "regex": true,
-          "ignore": true,
-          "code": "java\\.missing\\.(oldSuperType|newSuperType)",
-          "old" : "class com\\.azure\\.resourcemanager\\.containerservice\\.models\\..*",
-          "justification": "TypeSpec fix for base resource class."
-        },
-        {
-          "ignore": true,
-          "code": "java.missing.newSuperType",
-          "new" : "class com.azure.resourcemanager.containerservice.models.ResourceIdentityType",
-          "justification": "ResourceIdentityType changed from enum to expandable string union."
-        },
-        {
-          "ignore": true,
-          "code": "java.class.kindChanged",
-          "old" : "enum com.azure.resourcemanager.containerservice.models.ResourceIdentityType",
-          "new" : "class com.azure.resourcemanager.containerservice.models.ResourceIdentityType",
-          "justification": "ResourceIdentityType changed from enum to expandable string union."
-        },
-        {
-          "ignore": true,
-          "code": "java.class.noLongerImplementsInterface",
-          "old" : "enum com.azure.resourcemanager.containerservice.models.ResourceIdentityType",
-          "justification": "ResourceIdentityType changed from enum to expandable string union."
         },
         {
           "ignore": true,

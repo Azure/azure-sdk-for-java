@@ -4,57 +4,62 @@
 
 package com.azure.resourcemanager.containerservice.models;
 
-import com.azure.core.util.ExpandableStringEnum;
-import java.util.Collection;
-
 /**
  * The type of identity used for the managed cluster. For more information see [use managed identities in
  * AKS](https://docs.microsoft.com/azure/aks/use-managed-identity).
  */
-public final class ResourceIdentityType extends ExpandableStringEnum<ResourceIdentityType> {
+public enum ResourceIdentityType {
     /**
      * Use an implicitly created system assigned managed identity to manage cluster resources. Master components in the
      * control plane such as kube-controller-manager will use the system assigned managed identity to manipulate Azure
      * resources.
      */
-    public static final ResourceIdentityType SYSTEM_ASSIGNED = fromString("SystemAssigned");
+    SYSTEM_ASSIGNED("SystemAssigned"),
 
     /**
      * Use a user-specified identity to manage cluster resources. Master components in the control plane such as
      * kube-controller-manager will use the specified user assigned managed identity to manipulate Azure resources.
      */
-    public static final ResourceIdentityType USER_ASSIGNED = fromString("UserAssigned");
+    USER_ASSIGNED("UserAssigned"),
 
     /**
      * Do not use a managed identity for the Managed Cluster, service principal will be used instead.
      */
-    public static final ResourceIdentityType NONE = fromString("None");
+    NONE("None");
 
     /**
-     * Creates a new instance of ResourceIdentityType value.
-     * 
-     * @deprecated Use the {@link #fromString(String)} factory method.
+     * The actual serialized value for a ResourceIdentityType instance.
      */
-    @Deprecated
-    public ResourceIdentityType() {
+    private final String value;
+
+    ResourceIdentityType(String value) {
+        this.value = value;
     }
 
     /**
-     * Creates or finds a ResourceIdentityType from its string representation.
+     * Parses a serialized value to a ResourceIdentityType instance.
      * 
-     * @param name a name to look for.
-     * @return the corresponding ResourceIdentityType.
+     * @param value the serialized value to parse.
+     * @return the parsed ResourceIdentityType object, or null if unable to parse.
      */
-    public static ResourceIdentityType fromString(String name) {
-        return fromString(name, ResourceIdentityType.class);
+    public static ResourceIdentityType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
+        ResourceIdentityType[] items = ResourceIdentityType.values();
+        for (ResourceIdentityType item : items) {
+            if (item.toString().equalsIgnoreCase(value)) {
+                return item;
+            }
+        }
+        return null;
     }
 
     /**
-     * Gets known ResourceIdentityType values.
-     * 
-     * @return known ResourceIdentityType values.
+     * {@inheritDoc}
      */
-    public static Collection<ResourceIdentityType> values() {
-        return values(ResourceIdentityType.class);
+    @Override
+    public String toString() {
+        return this.value;
     }
 }
