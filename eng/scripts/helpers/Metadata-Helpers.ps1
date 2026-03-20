@@ -8,7 +8,7 @@
 .DESCRIPTION
     This file provides helper functions for updating parent-level and root-level
     pom.xml files, as well as ci.yml files for Java SDK packages.
-    Logic is ported from eng/automation/utils.py (Python).
+    Logic is ported from eng/automation/utils.py and parameters.py (Python).
 #>
 
 function Get-ServiceAndModuleFromPath {
@@ -384,6 +384,304 @@ function Update-ServicePom {
         Set-Content -Path $pomFile -Value $result.Content -NoNewline
         if (Get-Command LogInfo -ErrorAction SilentlyContinue) {
             LogInfo "[POM][Success] Write to service pom.xml"
+        }
+    }
+}
+
+# ============================================================================
+# CI.yml update functions
+# Ported from eng/automation/utils.py update_service_files_for_new_lib() and
+# eng/automation/parameters.py CI_FORMAT / CI_HEADER
+# ============================================================================
+
+function New-CiYmlContent {
+    <#
+    .SYNOPSIS
+        Generates a new ci.yml content string from template.
+
+    .PARAMETER Service
+        The service directory name (e.g., "network").
+
+    .PARAMETER Module
+        The artifact/module name (e.g., "azure-resourcemanager-network").
+
+    .OUTPUTS
+        String representing the ci.yml content.
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$Service,
+
+        [Parameter(Mandatory = $true)]
+        [string]$Module
+    )
+
+    # Matches Python CI_HEADER + CI_FORMAT from parameters.py
+    return @"
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/${Service}/ci.yml
+      - sdk/${Service}/${Module}/
+    exclude:
+      - sdk/${Service}/pom.xml
+      - sdk/${Service}/${Module}/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/${Service}/ci.yml
+      - sdk/${Service}/${Module}/
+    exclude:
+      - sdk/${Service}/pom.xml
+      - sdk/${Service}/${Module}/pom.xml
+
+parameters: []
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: ${Service}
+    Artifacts: []
+"@
+}
+
+function Add-ArtifactToCiYml {
+    <#
+    .SYNOPSIS
+        Adds an artifact entry to a parsed ci.yml object.
+
+    .DESCRIPTION
+        Handles two modes based on whether the ci.yml has a parameters list:
+        - With parameters: adds artifact with releaseInBatch and a release parameter
+        - Without parameters: adds artifact without releaseInBatch
+
+    .PARAMETER CiYml
+        The parsed ci.yml as a hashtable/ordered dictionary (from ConvertFrom-Yaml).
+
+    .PARAMETER Module
+        The artifact/module name.
+
+    .PARAMETER GroupId
+        The Maven groupId.
+
+    .OUTPUTS
+        Boolean indicating whether the artifact was added.
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        $CiYml,
+
+        [Parameter(Mandatory = $true)]
+        [string]$Module,
+
+        [Parameter(Mandatory = $true)]
+        [string]$GroupId
+    )
+
+    # Validate structure
+    $extends = $CiYml["extends"]
+    if (-not ($extends -is [System.Collections.IDictionary])) {
+        if (Get-Command LogError -ErrorAction SilentlyContinue) {
+            LogError "[CI][Skip] Unexpected ci.yml format: missing 'extends'"
+        }
+        return $false
+    }
+    $params = $extends["parameters"]
+    if (-not ($params -is [System.Collections.IDictionary])) {
+        if (Get-Command LogError -ErrorAction SilentlyContinue) {
+            LogError "[CI][Skip] Unexpected ci.yml format: missing 'extends.parameters'"
+        }
+        return $false
+    }
+    $artifacts = $params["Artifacts"]
+    if (-not ($artifacts -is [System.Collections.IList])) {
+        if (Get-Command LogError -ErrorAction SilentlyContinue) {
+            LogError "[CI][Skip] Unexpected ci.yml format: 'Artifacts' is not a list"
+        }
+        return $false
+    }
+
+    # Check if module already exists
+    foreach ($artifact in $artifacts) {
+        if ($artifact["name"] -eq $Module -and $artifact["groupId"] -eq $GroupId) {
+            if (Get-Command LogInfo -ErrorAction SilentlyContinue) {
+                LogInfo "[CI][Skip] ci.yml already has module $Module"
+            }
+            return $false
+        }
+    }
+
+    $safeName = $Module.Replace("-", "")
+
+    # Check if ci.yml has a parameters list (not just empty/null)
+    $ciParameters = $CiYml["parameters"]
+    $hasParametersList = ($ciParameters -is [System.Collections.IList]) -and ($ciParameters.Count -gt 0)
+
+    if ($hasParametersList) {
+        # Add artifact with releaseInBatch reference
+        $releaseParameterName = "release_$safeName"
+        $releaseInBatchRef = "`${{ parameters.$releaseParameterName }}"
+
+        $newArtifact = [ordered]@{
+            name           = $Module
+            groupId        = $GroupId
+            safeName       = $safeName
+            releaseInBatch = $releaseInBatchRef
+        }
+        $artifacts.Add($newArtifact)
+
+        # True for data-plane, False for management-plane
+        $releaseInBatchDefault = -not ($Module -match "-resourcemanager-")
+
+        $newParam = [ordered]@{
+            name        = $releaseParameterName
+            displayName = $Module
+            type        = "boolean"
+            default     = $releaseInBatchDefault
+        }
+        $ciParameters.Add($newParam)
+    }
+    else {
+        # Add artifact without releaseInBatch
+        $newArtifact = [ordered]@{
+            name    = $Module
+            groupId = $GroupId
+            safeName = $safeName
+        }
+        $artifacts.Add($newArtifact)
+    }
+
+    return $true
+}
+
+function ConvertTo-CiYmlString {
+    <#
+    .SYNOPSIS
+        Converts a ci.yml object back to a YAML string with proper formatting.
+
+    .DESCRIPTION
+        Uses powershell-yaml to serialize, then applies formatting fixes to match
+        the expected ci.yml style (blank lines between top-level sections).
+
+    .PARAMETER CiYml
+        The ci.yml object to serialize.
+
+    .OUTPUTS
+        String representing the formatted YAML content.
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        $CiYml
+    )
+
+    $yamlStr = ConvertTo-Yaml $CiYml
+
+    # Add blank line before each top-level key (matches Python: re.sub(r"(\n\S)", r"\n\1", ci_yml_str))
+    $yamlStr = $yamlStr -replace '(\n)(\S)', "`$1`n`$2"
+
+    # Add CI header
+    $header = "# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.`n`n"
+
+    return $header + $yamlStr
+}
+
+function Update-CiYml {
+    <#
+    .SYNOPSIS
+        Updates or creates the ci.yml file for a service.
+
+    .DESCRIPTION
+        Ported from Python update_service_files_for_new_lib() CI logic.
+        Cases:
+        1. ci.yml doesn't exist → create from template, add artifact
+        2. ci.yml exists with SDKType=data → rename to ci.data.yml, create new, add artifact
+        3. ci.yml exists, module already present → skip
+        4. ci.yml exists, module not present → add artifact (with or without release param)
+
+    .PARAMETER SdkRepoPath
+        Absolute path to the SDK repository root.
+
+    .PARAMETER Service
+        The service directory name.
+
+    .PARAMETER Module
+        The artifact/module name.
+
+    .PARAMETER GroupId
+        The Maven groupId for the artifact.
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$SdkRepoPath,
+
+        [Parameter(Mandatory = $true)]
+        [string]$Service,
+
+        [Parameter(Mandatory = $true)]
+        [string]$Module,
+
+        [Parameter(Mandatory = $true)]
+        [string]$GroupId
+    )
+
+    $ciYmlFile = Join-Path $SdkRepoPath "sdk" $Service "ci.yml"
+
+    if (Test-Path $ciYmlFile) {
+        $ciYmlContent = Get-Content -Path $ciYmlFile -Raw
+        $ciYml = ConvertFrom-Yaml $ciYmlContent -Ordered
+
+        # Check for SDKType=data → rename and create new
+        $sdkType = ""
+        try {
+            $sdkType = $ciYml["extends"]["parameters"]["SDKType"]
+        } catch {}
+
+        if ($sdkType -is [string] -and $sdkType.ToLower() -eq "data") {
+            $ciDataFile = Join-Path $SdkRepoPath "sdk" $Service "ci.data.yml"
+            Move-Item -Path $ciYmlFile -Destination $ciDataFile -Force
+            if (Get-Command LogInfo -ErrorAction SilentlyContinue) {
+                LogInfo "[CI][Process] Renamed existing ci.yml (SDKType=data) to ci.data.yml"
+            }
+            $ciYmlContent = New-CiYmlContent -Service $Service -Module $Module
+            $ciYml = ConvertFrom-Yaml $ciYmlContent -Ordered
+        }
+    }
+    else {
+        if (Get-Command LogInfo -ErrorAction SilentlyContinue) {
+            LogInfo "[CI][Process] Creating new ci.yml for service: $Service"
+        }
+        $ciYmlContent = New-CiYmlContent -Service $Service -Module $Module
+        $ciYml = ConvertFrom-Yaml $ciYmlContent -Ordered
+    }
+
+    $added = Add-ArtifactToCiYml -CiYml $ciYml -Module $Module -GroupId $GroupId
+    if ($added) {
+        $outputStr = ConvertTo-CiYmlString -CiYml $ciYml
+        $ciDir = Split-Path $ciYmlFile -Parent
+        if (-not (Test-Path $ciDir)) {
+            New-Item -ItemType Directory -Path $ciDir -Force | Out-Null
+        }
+        Set-Content -Path $ciYmlFile -Value $outputStr -NoNewline
+        if (Get-Command LogInfo -ErrorAction SilentlyContinue) {
+            LogInfo "[CI][Success] Write to ci.yml"
         }
     }
 }

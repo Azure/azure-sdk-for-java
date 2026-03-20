@@ -3,16 +3,18 @@
 
 <#
 .SYNOPSIS
-    Updates parent-level and root-level pom.xml files for a Java SDK package.
+    Updates parent-level and root-level pom.xml files, and ci.yml for a Java SDK package.
 
 .DESCRIPTION
     This script handles two cases:
     Case 1 - Service exists, new resourcemanager package:
         - Skips root pom (service already listed)
         - Updates service-level pom.xml with new module
+        - Updates ci.yml with new artifact entry
     Case 2 - Brand new service:
         - Updates root pom.xml with new service module
         - Creates service-level pom.xml from template
+        - Creates ci.yml from template with new artifact entry
 
 .PARAMETER PackagePath
     Absolute path to the root folder of the local SDK project (containing pom.xml).
@@ -64,6 +66,18 @@ try {
 
     LogInfo "Step 3: Updating service-level pom.xml..."
     Update-ServicePom -SdkRepoPath $SdkRepoPath -Service $service -Module $module
+    LogInfo ""
+
+    LogInfo "Step 4: Updating ci.yml..."
+    $packagePomPath = Join-Path $PackagePath "pom.xml"
+    if (Test-Path $packagePomPath) {
+        $groupId = Get-GroupIdFromPom -PomPath $packagePomPath
+        LogInfo "  GroupId: $groupId"
+        Update-CiYml -SdkRepoPath $SdkRepoPath -Service $service -Module $module -GroupId $groupId
+    }
+    else {
+        LogInfo "[CI][Skip] No pom.xml found at package path, skipping ci.yml update"
+    }
     LogInfo ""
 
     LogInfo "✅ Metadata updated successfully!"

@@ -19,6 +19,9 @@
 #>
 
 BeforeAll {
+    # Import YAML module for CI tests
+    Import-Module powershell-yaml -ErrorAction Stop
+
     # Import metadata helper functions
     $helperPath = Join-Path $PSScriptRoot ".." "helpers" "Metadata-Helpers.ps1"
     . $helperPath
@@ -102,6 +105,113 @@ BeforeAll {
     </profile>
   </profiles>
 </project>
+"@
+
+    # Sample ci.yml with no parameters (simple artifact)
+    $script:SampleCiYmlNoParams = @"
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/communication/azure-resourcemanager-communication/
+    exclude:
+      - sdk/communication/azure-resourcemanager-communication/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/communication/azure-resourcemanager-communication/
+    exclude:
+      - sdk/communication/azure-resourcemanager-communication/pom.xml
+
+extends:
+  template: /eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: communication/azure-resourcemanager-communication
+    Artifacts:
+      - name: azure-resourcemanager-communication
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagercommunication
+"@
+
+    # Sample ci.yml with release parameters
+    $script:SampleCiYmlWithParams = @"
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/network/
+    exclude:
+      - sdk/network/pom.xml
+      - sdk/network/azure-resourcemanager-network/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/network/
+    exclude:
+      - sdk/network/pom.xml
+      - sdk/network/azure-resourcemanager-network/pom.xml
+
+parameters:
+- name: release_azureresourcemanagernetwork
+  displayName: 'azure-resourcemanager-network'
+  type: boolean
+  default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: network
+    Artifacts:
+      - name: azure-resourcemanager-network
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagernetwork
+        releaseInBatch: `${{ parameters.release_azureresourcemanagernetwork }}
+"@
+
+    # Sample ci.yml with SDKType=data
+    $script:SampleCiYmlDataType = @"
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: myservice
+    SDKType: data
+    Artifacts:
+      - name: azure-myservice
+        groupId: com.azure
+        safeName: azuremyservice
 "@
 }
 
@@ -485,6 +595,10 @@ Describe "Script Integration" {
         Get-Command Add-ModuleToDefaultProfile -ErrorAction SilentlyContinue | Should -Not -BeNullOrEmpty
         Get-Command Update-RootPom -ErrorAction SilentlyContinue | Should -Not -BeNullOrEmpty
         Get-Command Update-ServicePom -ErrorAction SilentlyContinue | Should -Not -BeNullOrEmpty
+        Get-Command New-CiYmlContent -ErrorAction SilentlyContinue | Should -Not -BeNullOrEmpty
+        Get-Command Add-ArtifactToCiYml -ErrorAction SilentlyContinue | Should -Not -BeNullOrEmpty
+        Get-Command ConvertTo-CiYmlString -ErrorAction SilentlyContinue | Should -Not -BeNullOrEmpty
+        Get-Command Update-CiYml -ErrorAction SilentlyContinue | Should -Not -BeNullOrEmpty
     }
 
     It "Should verify swagger_to_sdk_config.json references the metadata script" {
@@ -622,5 +736,286 @@ Describe "End-to-End: New Service" {
 
         $rootPom2 | Should -Be $rootPom1
         $svcPom2 | Should -Be $svcPom1
+    }
+}
+
+# ============================================================================
+# New-CiYmlContent tests
+# ============================================================================
+Describe "New-CiYmlContent" {
+    It "Should generate valid YAML with correct service and module" {
+        $result = New-CiYmlContent -Service "network" -Module "azure-resourcemanager-network"
+
+        $result | Should -Match "sdk/network/ci.yml"
+        $result | Should -Match "sdk/network/azure-resourcemanager-network/"
+        $result | Should -Match "sdk/network/azure-resourcemanager-network/pom.xml"
+        $result | Should -Match "ServiceDirectory: network"
+        $result | Should -Match "Artifacts: \[\]"
+    }
+
+    It "Should be parseable YAML" {
+        $content = New-CiYmlContent -Service "compute" -Module "azure-resourcemanager-compute"
+        $parsed = ConvertFrom-Yaml $content -Ordered
+        $parsed["trigger"] | Should -Not -BeNullOrEmpty
+        $parsed["pr"] | Should -Not -BeNullOrEmpty
+        $parsed["extends"]["parameters"]["ServiceDirectory"] | Should -Be "compute"
+    }
+}
+
+# ============================================================================
+# Add-ArtifactToCiYml tests
+# ============================================================================
+Describe "Add-ArtifactToCiYml" {
+    It "Should add artifact without releaseInBatch when no parameters exist" {
+        $content = New-CiYmlContent -Service "newservice" -Module "azure-resourcemanager-newservice"
+        $ciYml = ConvertFrom-Yaml $content -Ordered
+
+        $result = Add-ArtifactToCiYml -CiYml $ciYml -Module "azure-resourcemanager-newservice" -GroupId "com.azure.resourcemanager"
+
+        $result | Should -Be $true
+        $artifacts = $ciYml["extends"]["parameters"]["Artifacts"]
+        $artifacts.Count | Should -Be 1
+        $artifacts[0]["name"] | Should -Be "azure-resourcemanager-newservice"
+        $artifacts[0]["groupId"] | Should -Be "com.azure.resourcemanager"
+        $artifacts[0]["safeName"] | Should -Be "azureresourcemanagernewservice"
+        $artifacts[0].Keys | Should -Not -Contain "releaseInBatch"
+    }
+
+    It "Should add artifact with releaseInBatch when parameters list exists" {
+        $ciYml = ConvertFrom-Yaml $script:SampleCiYmlWithParams -Ordered
+
+        $result = Add-ArtifactToCiYml -CiYml $ciYml -Module "azure-resourcemanager-network-extra" -GroupId "com.azure.resourcemanager"
+
+        $result | Should -Be $true
+        $artifacts = $ciYml["extends"]["parameters"]["Artifacts"]
+        $artifacts.Count | Should -Be 2
+        $newArtifact = $artifacts[1]
+        $newArtifact["name"] | Should -Be "azure-resourcemanager-network-extra"
+        $newArtifact["releaseInBatch"] | Should -Not -BeNullOrEmpty
+
+        # Check release parameter was added
+        $params = $ciYml["parameters"]
+        $params.Count | Should -Be 2
+        $newParam = $params[1]
+        $newParam["name"] | Should -Be "release_azureresourcemanagernetworkextra"
+        $newParam["default"] | Should -Be $false  # management-plane
+    }
+
+    It "Should set release param default=true for data-plane packages" {
+        $ciYml = ConvertFrom-Yaml $script:SampleCiYmlWithParams -Ordered
+
+        $result = Add-ArtifactToCiYml -CiYml $ciYml -Module "azure-storage-blob" -GroupId "com.azure"
+
+        $result | Should -Be $true
+        $params = $ciYml["parameters"]
+        $newParam = $params | Where-Object { $_["name"] -eq "release_azurestorageblob" }
+        $newParam["default"] | Should -Be $true  # data-plane
+    }
+
+    It "Should skip when module already exists" {
+        $ciYml = ConvertFrom-Yaml $script:SampleCiYmlWithParams -Ordered
+
+        $result = Add-ArtifactToCiYml -CiYml $ciYml -Module "azure-resourcemanager-network" -GroupId "com.azure.resourcemanager"
+
+        $result | Should -Be $false
+        $ciYml["extends"]["parameters"]["Artifacts"].Count | Should -Be 1
+    }
+
+    It "Should return false for unexpected format" {
+        $ciYml = [ordered]@{ "trigger" = @{} }
+
+        $result = Add-ArtifactToCiYml -CiYml $ciYml -Module "azure-test" -GroupId "com.azure"
+
+        $result | Should -Be $false
+    }
+}
+
+# ============================================================================
+# Update-CiYml tests
+# ============================================================================
+Describe "Update-CiYml" {
+    BeforeEach {
+        $script:CiTestRoot = Join-Path $script:TestRoot "ci-test-$(New-Guid)"
+        New-Item -ItemType Directory -Path $script:CiTestRoot -Force | Out-Null
+    }
+
+    AfterEach {
+        if (Test-Path $script:CiTestRoot) {
+            Remove-Item -Path $script:CiTestRoot -Recurse -Force
+        }
+    }
+
+    It "Should create ci.yml when it does not exist" {
+        $svcDir = Join-Path $script:CiTestRoot "sdk" "newservice"
+        New-Item -ItemType Directory -Path $svcDir -Force | Out-Null
+
+        Update-CiYml -SdkRepoPath $script:CiTestRoot -Service "newservice" -Module "azure-resourcemanager-newservice" -GroupId "com.azure.resourcemanager"
+
+        $ciFile = Join-Path $svcDir "ci.yml"
+        Test-Path $ciFile | Should -Be $true
+
+        $content = Get-Content $ciFile -Raw
+        $content | Should -Match "azure-resourcemanager-newservice"
+        $content | Should -Match "com.azure.resourcemanager"
+        $content | Should -Match "azureresourcemanagernewservice"
+    }
+
+    It "Should add artifact to existing ci.yml without parameters" {
+        $svcDir = Join-Path $script:CiTestRoot "sdk" "communication"
+        New-Item -ItemType Directory -Path $svcDir -Force | Out-Null
+        Set-Content -Path (Join-Path $svcDir "ci.yml") -Value $script:SampleCiYmlNoParams
+
+        Update-CiYml -SdkRepoPath $script:CiTestRoot -Service "communication" -Module "azure-resourcemanager-communication-extra" -GroupId "com.azure.resourcemanager"
+
+        $content = Get-Content (Join-Path $svcDir "ci.yml") -Raw
+        $content | Should -Match "azure-resourcemanager-communication"
+        $content | Should -Match "azure-resourcemanager-communication-extra"
+    }
+
+    It "Should add artifact to existing ci.yml with release parameters" {
+        $svcDir = Join-Path $script:CiTestRoot "sdk" "network"
+        New-Item -ItemType Directory -Path $svcDir -Force | Out-Null
+        Set-Content -Path (Join-Path $svcDir "ci.yml") -Value $script:SampleCiYmlWithParams
+
+        Update-CiYml -SdkRepoPath $script:CiTestRoot -Service "network" -Module "azure-resourcemanager-network-extra" -GroupId "com.azure.resourcemanager"
+
+        $content = Get-Content (Join-Path $svcDir "ci.yml") -Raw
+        $content | Should -Match "azure-resourcemanager-network-extra"
+        $content | Should -Match "release_azureresourcemanagernetworkextra"
+    }
+
+    It "Should skip when module already exists in ci.yml" {
+        $svcDir = Join-Path $script:CiTestRoot "sdk" "network"
+        New-Item -ItemType Directory -Path $svcDir -Force | Out-Null
+        Set-Content -Path (Join-Path $svcDir "ci.yml") -Value $script:SampleCiYmlWithParams
+
+        $before = Get-Content (Join-Path $svcDir "ci.yml") -Raw
+
+        Update-CiYml -SdkRepoPath $script:CiTestRoot -Service "network" -Module "azure-resourcemanager-network" -GroupId "com.azure.resourcemanager"
+
+        $after = Get-Content (Join-Path $svcDir "ci.yml") -Raw
+        $after | Should -Be $before
+    }
+
+    It "Should rename ci.yml to ci.data.yml when SDKType=data and create new ci.yml" {
+        $svcDir = Join-Path $script:CiTestRoot "sdk" "myservice"
+        New-Item -ItemType Directory -Path $svcDir -Force | Out-Null
+        Set-Content -Path (Join-Path $svcDir "ci.yml") -Value $script:SampleCiYmlDataType
+
+        Update-CiYml -SdkRepoPath $script:CiTestRoot -Service "myservice" -Module "azure-resourcemanager-myservice" -GroupId "com.azure.resourcemanager"
+
+        # ci.data.yml should exist
+        Test-Path (Join-Path $svcDir "ci.data.yml") | Should -Be $true
+
+        # New ci.yml should have the new module
+        $content = Get-Content (Join-Path $svcDir "ci.yml") -Raw
+        $content | Should -Match "azure-resourcemanager-myservice"
+        $content | Should -Not -Match "SDKType"
+    }
+
+    It "Should be idempotent when run twice" {
+        $svcDir = Join-Path $script:CiTestRoot "sdk" "network"
+        New-Item -ItemType Directory -Path $svcDir -Force | Out-Null
+        Set-Content -Path (Join-Path $svcDir "ci.yml") -Value $script:SampleCiYmlWithParams
+
+        Update-CiYml -SdkRepoPath $script:CiTestRoot -Service "network" -Module "azure-resourcemanager-network-extra" -GroupId "com.azure.resourcemanager"
+        $content1 = Get-Content (Join-Path $svcDir "ci.yml") -Raw
+
+        Update-CiYml -SdkRepoPath $script:CiTestRoot -Service "network" -Module "azure-resourcemanager-network-extra" -GroupId "com.azure.resourcemanager"
+        $content2 = Get-Content (Join-Path $svcDir "ci.yml") -Raw
+
+        $content2 | Should -Be $content1
+    }
+}
+
+# ============================================================================
+# End-to-end: CI.yml with POM - Existing service, new package
+# ============================================================================
+Describe "End-to-End: Existing Service with CI update" {
+    BeforeEach {
+        $script:E2ERoot = Join-Path $script:TestRoot "e2e-ci-case1-$(New-Guid)"
+        New-Item -ItemType Directory -Path $script:E2ERoot -Force | Out-Null
+
+        Set-Content -Path (Join-Path $script:E2ERoot "pom.xml") -Value $script:SampleRootPomXml
+        $svcDir = Join-Path $script:E2ERoot "sdk" "network"
+        New-Item -ItemType Directory -Path $svcDir -Force | Out-Null
+        Set-Content -Path (Join-Path $svcDir "pom.xml") -Value $script:SampleServicePomXml
+        Set-Content -Path (Join-Path $svcDir "ci.yml") -Value $script:SampleCiYmlWithParams
+
+        $pkgDir = Join-Path $svcDir "azure-resourcemanager-network-extra"
+        New-Item -ItemType Directory -Path $pkgDir -Force | Out-Null
+        Set-Content -Path (Join-Path $pkgDir "pom.xml") -Value $script:SamplePomXml
+    }
+
+    AfterEach {
+        if (Test-Path $script:E2ERoot) {
+            Remove-Item -Path $script:E2ERoot -Recurse -Force
+        }
+    }
+
+    It "Should update service pom, ci.yml, and skip root pom" {
+        $service = "network"
+        $module = "azure-resourcemanager-network-extra"
+        $groupId = "com.azure.resourcemanager"
+
+        Update-RootPom -SdkRepoPath $script:E2ERoot -Service $service
+        Update-ServicePom -SdkRepoPath $script:E2ERoot -Service $service -Module $module
+        Update-CiYml -SdkRepoPath $script:E2ERoot -Service $service -Module $module -GroupId $groupId
+
+        # Service pom has the new module
+        $svcPomContent = Get-Content (Join-Path $script:E2ERoot "sdk" "network" "pom.xml") -Raw
+        $svcPomContent | Should -Match "<module>azure-resourcemanager-network-extra</module>"
+
+        # ci.yml has the new artifact
+        $ciContent = Get-Content (Join-Path $script:E2ERoot "sdk" "network" "ci.yml") -Raw
+        $ciContent | Should -Match "azure-resourcemanager-network-extra"
+        $ciContent | Should -Match "release_azureresourcemanagernetworkextra"
+    }
+}
+
+# ============================================================================
+# End-to-end: CI.yml with POM - Brand new service
+# ============================================================================
+Describe "End-to-End: New Service with CI update" {
+    BeforeEach {
+        $script:E2ERoot = Join-Path $script:TestRoot "e2e-ci-case2-$(New-Guid)"
+        New-Item -ItemType Directory -Path $script:E2ERoot -Force | Out-Null
+
+        Set-Content -Path (Join-Path $script:E2ERoot "pom.xml") -Value $script:SampleRootPomXml
+        $pkgDir = Join-Path $script:E2ERoot "sdk" "compute" "azure-resourcemanager-compute"
+        New-Item -ItemType Directory -Path $pkgDir -Force | Out-Null
+        Set-Content -Path (Join-Path $pkgDir "pom.xml") -Value $script:SamplePomXml
+    }
+
+    AfterEach {
+        if (Test-Path $script:E2ERoot) {
+            Remove-Item -Path $script:E2ERoot -Recurse -Force
+        }
+    }
+
+    It "Should create ci.yml, service pom, and update root pom" {
+        $service = "compute"
+        $module = "azure-resourcemanager-compute"
+        $groupId = "com.azure.resourcemanager"
+
+        Update-RootPom -SdkRepoPath $script:E2ERoot -Service $service
+        Update-ServicePom -SdkRepoPath $script:E2ERoot -Service $service -Module $module
+        Update-CiYml -SdkRepoPath $script:E2ERoot -Service $service -Module $module -GroupId $groupId
+
+        # Root pom updated
+        $rootPom = Get-Content (Join-Path $script:E2ERoot "pom.xml") -Raw
+        $rootPom | Should -Match "<module>sdk/compute</module>"
+
+        # Service pom created
+        $svcPom = Get-Content (Join-Path $script:E2ERoot "sdk" "compute" "pom.xml") -Raw
+        $svcPom | Should -Match "<module>azure-resourcemanager-compute</module>"
+
+        # ci.yml created with artifact
+        $ciFile = Join-Path $script:E2ERoot "sdk" "compute" "ci.yml"
+        Test-Path $ciFile | Should -Be $true
+        $ciContent = Get-Content $ciFile -Raw
+        $ciContent | Should -Match "azure-resourcemanager-compute"
+        $ciContent | Should -Match "com.azure.resourcemanager"
+        $ciContent | Should -Match "ServiceDirectory: compute"
     }
 }
