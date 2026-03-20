@@ -16,10 +16,10 @@ public final class ContainerServicesListOrchestratorsSamples {
     /**
      * Sample code: List Container Service Orchestrators.
      * 
-     * @param manager Entry point to ContainerServiceManager.
+     * @param manager Entry point to OrchestratorManager.
      */
     public static void
-        listContainerServiceOrchestrators(com.azure.resourcemanager.containerservice.ContainerServiceManager manager) {
+        listContainerServiceOrchestrators(com.azure.resourcemanager.containerservice.OrchestratorManager manager) {
         manager.serviceClient()
             .getContainerServices()
             .listOrchestratorsWithResponse("location1", null, com.azure.core.util.Context.NONE);
