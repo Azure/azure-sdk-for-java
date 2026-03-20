@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests for CodeInterpreterTool serialization, focusing on the container union type handling.
- * The container property is a union type: string (container ID) | AutoCodeInterpreterToolParam.
+ * The container property is a union type: string (container ID) | AutoCodeInterpreterToolParameter.
  */
 public class CodeInterpreterToolSerializationTests {
 
@@ -54,12 +54,12 @@ public class CodeInterpreterToolSerializationTests {
     }
 
     /**
-     * Tests serialization with container set to an AutoCodeInterpreterToolParam.
+     * Tests serialization with container set to an AutoCodeInterpreterToolParameter.
      */
     @Test
-    public void testSerializationWithAutoCodeInterpreterToolParam() throws IOException {
-        AutoCodeInterpreterToolParam autoParam
-            = new AutoCodeInterpreterToolParam().setFileIds(Arrays.asList("file-1", "file-2"))
+    public void testSerializationWithAutoCodeInterpreterToolParameter() throws IOException {
+        AutoCodeInterpreterToolParameter autoParam
+            = new AutoCodeInterpreterToolParameter().setFileIds(Arrays.asList("file-1", "file-2"))
                 .setMemoryLimit(ContainerMemoryLimit.MEMORY_4GB);
 
         CodeInterpreterTool tool = new CodeInterpreterTool();
@@ -75,11 +75,11 @@ public class CodeInterpreterToolSerializationTests {
     }
 
     /**
-     * Tests serialization with a minimal AutoCodeInterpreterToolParam (no file IDs).
+     * Tests serialization with a minimal AutoCodeInterpreterToolParameter (no file IDs).
      */
     @Test
-    public void testSerializationWithMinimalAutoCodeInterpreterToolParam() throws IOException {
-        AutoCodeInterpreterToolParam autoParam = new AutoCodeInterpreterToolParam();
+    public void testSerializationWithMinimalAutoCodeInterpreterToolParameter() throws IOException {
+        AutoCodeInterpreterToolParameter autoParam = new AutoCodeInterpreterToolParameter();
 
         CodeInterpreterTool tool = new CodeInterpreterTool();
         tool.setContainer(autoParam);
@@ -107,10 +107,10 @@ public class CodeInterpreterToolSerializationTests {
     }
 
     /**
-     * Tests deserialization with container set to an AutoCodeInterpreterToolParam object.
+     * Tests deserialization with container set to an AutoCodeInterpreterToolParameter object.
      */
     @Test
-    public void testDeserializationWithAutoCodeInterpreterToolParam() throws IOException {
+    public void testDeserializationWithAutoCodeInterpreterToolParameter() throws IOException {
         String json
             = "{\"type\":\"code_interpreter\",\"container\":{\"type\":\"auto\",\"file_ids\":[\"file-1\",\"file-2\"]}}";
 
@@ -118,8 +118,8 @@ public class CodeInterpreterToolSerializationTests {
 
         assertNotNull(tool);
         assertEquals(ToolType.CODE_INTERPRETER, tool.getType());
-        assertNotNull(tool.getContainerAsAutoCodeInterpreterToolParam());
-        AutoCodeInterpreterToolParam autoParam = tool.getContainerAsAutoCodeInterpreterToolParam();
+        assertNotNull(tool.getContainerAsAutoCodeInterpreterToolParameter());
+        AutoCodeInterpreterToolParameter autoParam = tool.getContainerAsAutoCodeInterpreterToolParameter();
         assertEquals("auto", autoParam.getType());
         assertNotNull(autoParam.getFileIds());
         assertEquals(2, autoParam.getFileIds().size());
@@ -136,7 +136,7 @@ public class CodeInterpreterToolSerializationTests {
 
         assertNotNull(tool);
         assertNull(tool.getContainerAsString());
-        assertNull(tool.getContainerAsAutoCodeInterpreterToolParam());
+        assertNull(tool.getContainerAsAutoCodeInterpreterToolParameter());
     }
 
     /**
@@ -156,12 +156,12 @@ public class CodeInterpreterToolSerializationTests {
     }
 
     /**
-     * Tests round-trip serialization/deserialization with an AutoCodeInterpreterToolParam.
+     * Tests round-trip serialization/deserialization with an AutoCodeInterpreterToolParameter.
      */
     @Test
-    public void testRoundTripWithAutoCodeInterpreterToolParam() throws IOException {
-        AutoCodeInterpreterToolParam autoParam
-            = new AutoCodeInterpreterToolParam().setFileIds(Arrays.asList("file-a", "file-b"));
+    public void testRoundTripWithAutoCodeInterpreterToolParameter() throws IOException {
+        AutoCodeInterpreterToolParameter autoParam
+            = new AutoCodeInterpreterToolParameter().setFileIds(Arrays.asList("file-a", "file-b"));
 
         CodeInterpreterTool original = new CodeInterpreterTool();
         original.setContainer(autoParam);
@@ -170,7 +170,7 @@ public class CodeInterpreterToolSerializationTests {
         CodeInterpreterTool deserialized = deserializeFromJson(json);
 
         assertNotNull(deserialized);
-        AutoCodeInterpreterToolParam deserializedParam = deserialized.getContainerAsAutoCodeInterpreterToolParam();
+        AutoCodeInterpreterToolParameter deserializedParam = deserialized.getContainerAsAutoCodeInterpreterToolParameter();
         assertNotNull(deserializedParam);
         assertEquals("auto", deserializedParam.getType());
         assertEquals(2, deserializedParam.getFileIds().size());
