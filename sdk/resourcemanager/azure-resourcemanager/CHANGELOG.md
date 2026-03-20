@@ -10,17 +10,6 @@
 
 ### Other Changes
 
-### azure-resourcemanager-containerservice
-
-#### Breaking Changes
-
-- Moved `ContainerServiceManager.serviceClient().getOpenShiftManagedClusters()` to `ContainerServiceManager.openShiftClient().getOpenShiftManagedClusters()`.
-- Moved `ContainerServiceManager.serviceClient().getContainerServices()` to `ContainerServiceManager.orchestratorClient().getContainerServices()`.
-
-#### Dependency Updates
-
-- Updated `api-version` to `2026-01-01`.
-
 ### azure-resourcemanager-resources
 
 - Updated `api-version` of policy to `2025-03-01`.
