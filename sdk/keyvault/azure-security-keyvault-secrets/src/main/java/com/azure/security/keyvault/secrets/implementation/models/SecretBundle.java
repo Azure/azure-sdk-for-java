@@ -62,6 +62,13 @@ public final class SecretBundle implements JsonSerializable<SecretBundle> {
     @Generated
     private Boolean managed;
 
+    /*
+     * The version of the previous certificate, if applicable. Applies only to certificates created after June 1, 2025.
+     * Certificates created before this date are not retroactively updated.
+     */
+    @Generated
+    private String previousVersion;
+
     /**
      * Creates an instance of SecretBundle class.
      */
@@ -142,6 +149,17 @@ public final class SecretBundle implements JsonSerializable<SecretBundle> {
     }
 
     /**
+     * Get the previousVersion property: The version of the previous certificate, if applicable. Applies only to
+     * certificates created after June 1, 2025. Certificates created before this date are not retroactively updated.
+     * 
+     * @return the previousVersion value.
+     */
+    @Generated
+    public String getPreviousVersion() {
+        return this.previousVersion;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -187,6 +205,8 @@ public final class SecretBundle implements JsonSerializable<SecretBundle> {
                     deserializedSecretBundle.kid = reader.getString();
                 } else if ("managed".equals(fieldName)) {
                     deserializedSecretBundle.managed = reader.getNullable(JsonReader::getBoolean);
+                } else if ("previousVersion".equals(fieldName)) {
+                    deserializedSecretBundle.previousVersion = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
