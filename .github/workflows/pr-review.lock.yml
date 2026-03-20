@@ -27,28 +27,48 @@
 #     - xinlian12/sdk-auto-pr-review/.github/workflows/shared/mcp-tools.md@main
 #     - xinlian12/sdk-auto-pr-review/.github/workflows/shared/pr-review-pipeline.md@main
 #   Includes:
-#     - C:/Users/xinlian/AppData/Local/Temp/gh-aw-include-1514912677.md
-#     - C:/Users/xinlian/AppData/Local/Temp/gh-aw-include-2244138698.md
-#     - C:/Users/xinlian/AppData/Local/Temp/gh-aw-include-3720901876.md
-#     - C:/Users/xinlian/AppData/Local/Temp/gh-aw-include-4093213976.md
-#     - C:/Users/xinlian/AppData/Local/Temp/gh-aw-include-4222059246.md
-#     - C:/Users/xinlian/AppData/Local/Temp/gh-aw-include-47491679.md
+#     - C:/Users/xinlian/AppData/Local/Temp/gh-aw-include-1248626788.md
+#     - C:/Users/xinlian/AppData/Local/Temp/gh-aw-include-1875949292.md
+#     - C:/Users/xinlian/AppData/Local/Temp/gh-aw-include-2034883225.md
+#     - C:/Users/xinlian/AppData/Local/Temp/gh-aw-include-2163311383.md
+#     - C:/Users/xinlian/AppData/Local/Temp/gh-aw-include-2419473350.md
+#     - C:/Users/xinlian/AppData/Local/Temp/gh-aw-include-2500573127.md
 #
-# gh-aw-metadata: {"schema_version":"v2","frontmatter_hash":"53b9a8d0cb1a71711bda301b387d41f3ef79576d0afa73be375ad04128162780","compiler_version":"v0.62.1","strict":true}
+# gh-aw-metadata: {"schema_version":"v2","frontmatter_hash":"95ea8bb475e7c294125aadea606c778c0161f2f14849087f83eeff828e72d80e","compiler_version":"v0.62.1","strict":true}
 
 name: "sdkReviewAgent"
 "on":
+  discussion:
+    types:
+    - created
+    - edited
+  discussion_comment:
+    types:
+    - created
+    - edited
+  issue_comment:
+    types:
+    - created
+    - edited
+  issues:
+    types:
+    - opened
+    - edited
+    - reopened
   pull_request:
     types:
     - opened
-    - synchronize
-    - ready_for_review
+    - edited
+    - reopened
+  pull_request_review_comment:
+    types:
+    - created
+    - edited
 
 permissions: {}
 
 concurrency:
-  group: "gh-aw-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref || github.run_id }}"
-  cancel-in-progress: true
+  group: "gh-aw-${{ github.workflow }}-${{ github.event.issue.number || github.event.pull_request.number || github.run_id }}"
 
 run-name: "sdkReviewAgent"
 
@@ -56,17 +76,31 @@ jobs:
   activation:
     needs: pre_activation
     if: >
-      (needs.pre_activation.outputs.activated == 'true') && ((github.event_name != 'pull_request') || (github.event.pull_request.head.repo.id == github.repository_id))
+      (needs.pre_activation.outputs.activated == 'true') && ((github.event_name == 'issues') && ((startsWith(github.event.issue.body, '/sdkReviewAgent ')) ||
+      (github.event.issue.body == '/sdkReviewAgent')) || (github.event_name == 'issue_comment') && (((startsWith(github.event.comment.body, '/sdkReviewAgent ')) ||
+      (github.event.comment.body == '/sdkReviewAgent')) && (github.event.issue.pull_request == null)) || (github.event_name == 'issue_comment') &&
+      (((startsWith(github.event.comment.body, '/sdkReviewAgent ')) || (github.event.comment.body == '/sdkReviewAgent')) &&
+      (github.event.issue.pull_request != null)) || (github.event_name == 'pull_request_review_comment') &&
+      ((startsWith(github.event.comment.body, '/sdkReviewAgent ')) || (github.event.comment.body == '/sdkReviewAgent')) ||
+      (github.event_name == 'pull_request') && ((startsWith(github.event.pull_request.body, '/sdkReviewAgent ')) ||
+      (github.event.pull_request.body == '/sdkReviewAgent')) || (github.event_name == 'discussion') && ((startsWith(github.event.discussion.body, '/sdkReviewAgent ')) ||
+      (github.event.discussion.body == '/sdkReviewAgent')) || (github.event_name == 'discussion_comment') &&
+      ((startsWith(github.event.comment.body, '/sdkReviewAgent ')) || (github.event.comment.body == '/sdkReviewAgent')))
     runs-on: ubuntu-slim
     permissions:
       contents: read
+      discussions: write
+      issues: write
+      pull-requests: write
     outputs:
       body: ${{ steps.sanitized.outputs.body }}
-      comment_id: ""
-      comment_repo: ""
+      comment_id: ${{ steps.add-comment.outputs.comment-id }}
+      comment_repo: ${{ steps.add-comment.outputs.comment-repo }}
+      comment_url: ${{ steps.add-comment.outputs.comment-url }}
       lockdown_check_failed: ${{ steps.generate_aw_info.outputs.lockdown_check_failed == 'true' }}
       model: ${{ steps.generate_aw_info.outputs.model }}
       secret_verification_result: ${{ steps.validate-secret.outputs.verification_result }}
+      slash_command: ${{ needs.pre_activation.outputs.matched_command }}
       text: ${{ steps.sanitized.outputs.text }}
       title: ${{ steps.sanitized.outputs.title }}
     steps:
@@ -100,6 +134,19 @@ jobs:
             setupGlobals(core, github, context, exec, io);
             const { main } = require('${{ runner.temp }}/gh-aw/actions/generate_aw_info.cjs');
             await main(core, context);
+      - name: Add eyes reaction for immediate feedback
+        id: react
+        if: github.event_name == 'issues' || github.event_name == 'issue_comment' || github.event_name == 'pull_request_review_comment' || github.event_name == 'discussion' || github.event_name == 'discussion_comment' || (github.event_name == 'pull_request') && (github.event.pull_request.head.repo.id == github.repository_id)
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+        env:
+          GH_AW_REACTION: "eyes"
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { setupGlobals } = require('${{ runner.temp }}/gh-aw/actions/setup_globals.cjs');
+            setupGlobals(core, github, context, exec, io);
+            const { main } = require('${{ runner.temp }}/gh-aw/actions/add_reaction.cjs');
+            await main();
       - name: Validate COPILOT_GITHUB_TOKEN secret
         id: validate-secret
         run: ${RUNNER_TEMP}/gh-aw/actions/validate_multi_secret.sh COPILOT_GITHUB_TOKEN 'GitHub Copilot CLI' https://github.github.com/gh-aw/reference/engines/#github-copilot-default
@@ -133,6 +180,18 @@ jobs:
             setupGlobals(core, github, context, exec, io);
             const { main } = require('${{ runner.temp }}/gh-aw/actions/compute_text.cjs');
             await main();
+      - name: Add comment with workflow run link
+        id: add-comment
+        if: github.event_name == 'issues' || github.event_name == 'issue_comment' || github.event_name == 'pull_request_review_comment' || github.event_name == 'discussion' || github.event_name == 'discussion_comment' || (github.event_name == 'pull_request') && (github.event.pull_request.head.repo.id == github.repository_id)
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+        env:
+          GH_AW_WORKFLOW_NAME: "sdkReviewAgent"
+        with:
+          script: |
+            const { setupGlobals } = require('${{ runner.temp }}/gh-aw/actions/setup_globals.cjs');
+            setupGlobals(core, github, context, exec, io);
+            const { main } = require('${{ runner.temp }}/gh-aw/actions/add_workflow_run_comment.cjs');
+            await main();
       - name: Create prompt with built-in context
         env:
           GH_AW_PROMPT: /tmp/gh-aw/aw-prompts/prompt.txt
@@ -145,6 +204,7 @@ jobs:
           GH_AW_GITHUB_REPOSITORY: ${{ github.repository }}
           GH_AW_GITHUB_RUN_ID: ${{ github.run_id }}
           GH_AW_GITHUB_WORKSPACE: ${{ github.workspace }}
+          GH_AW_IS_PR_COMMENT: ${{ github.event.issue.pull_request && 'true' || '' }}
         run: |
           bash ${RUNNER_TEMP}/gh-aw/actions/create_prompt_first.sh
           {
@@ -189,14 +249,17 @@ jobs:
           
           GH_AW_PROMPT_EOF
           cat "${RUNNER_TEMP}/gh-aw/prompts/github_mcp_tools_with_safeoutputs_prompt.md"
+          if [ "$GITHUB_EVENT_NAME" = "issue_comment" ] && [ -n "$GH_AW_IS_PR_COMMENT" ] || [ "$GITHUB_EVENT_NAME" = "pull_request_review_comment" ] || [ "$GITHUB_EVENT_NAME" = "pull_request_review" ]; then
+            cat "${RUNNER_TEMP}/gh-aw/prompts/pr_context_prompt.md"
+          fi
           cat << 'GH_AW_PROMPT_EOF'
           </system>
           GH_AW_PROMPT_EOF
           cat << 'GH_AW_PROMPT_EOF'
-          {{#runtime-import .github/aw/imports/xinlian12/sdk-auto-pr-review/a287d1594f7e8622047c254283417fb988503910/.github_workflows_shared_pr-review-pipeline.md}}
+          {{#runtime-import .github/aw/imports/xinlian12/sdk-auto-pr-review/e94e6b9647705e23ca03bfb001f1ff42029c041a/.github_workflows_shared_pr-review-pipeline.md}}
           GH_AW_PROMPT_EOF
           cat << 'GH_AW_PROMPT_EOF'
-          {{#runtime-import .github/aw/imports/xinlian12/sdk-auto-pr-review/a287d1594f7e8622047c254283417fb988503910/.github_workflows_shared_mcp-tools.md}}
+          {{#runtime-import .github/aw/imports/xinlian12/sdk-auto-pr-review/e94e6b9647705e23ca03bfb001f1ff42029c041a/.github_workflows_shared_mcp-tools.md}}
           GH_AW_PROMPT_EOF
           cat << 'GH_AW_PROMPT_EOF'
           {{#runtime-import .github/workflows/pr-review.md}}
@@ -224,7 +287,9 @@ jobs:
           GH_AW_GITHUB_REPOSITORY: ${{ github.repository }}
           GH_AW_GITHUB_RUN_ID: ${{ github.run_id }}
           GH_AW_GITHUB_WORKSPACE: ${{ github.workspace }}
+          GH_AW_IS_PR_COMMENT: ${{ github.event.issue.pull_request && 'true' || '' }}
           GH_AW_NEEDS_PRE_ACTIVATION_OUTPUTS_ACTIVATED: ${{ needs.pre_activation.outputs.activated }}
+          GH_AW_NEEDS_PRE_ACTIVATION_OUTPUTS_MATCHED_COMMAND: ${{ needs.pre_activation.outputs.matched_command }}
         with:
           script: |
             const { setupGlobals } = require('${{ runner.temp }}/gh-aw/actions/setup_globals.cjs');
@@ -244,7 +309,9 @@ jobs:
                 GH_AW_GITHUB_REPOSITORY: process.env.GH_AW_GITHUB_REPOSITORY,
                 GH_AW_GITHUB_RUN_ID: process.env.GH_AW_GITHUB_RUN_ID,
                 GH_AW_GITHUB_WORKSPACE: process.env.GH_AW_GITHUB_WORKSPACE,
-                GH_AW_NEEDS_PRE_ACTIVATION_OUTPUTS_ACTIVATED: process.env.GH_AW_NEEDS_PRE_ACTIVATION_OUTPUTS_ACTIVATED
+                GH_AW_IS_PR_COMMENT: process.env.GH_AW_IS_PR_COMMENT,
+                GH_AW_NEEDS_PRE_ACTIVATION_OUTPUTS_ACTIVATED: process.env.GH_AW_NEEDS_PRE_ACTIVATION_OUTPUTS_ACTIVATED,
+                GH_AW_NEEDS_PRE_ACTIVATION_OUTPUTS_MATCHED_COMMAND: process.env.GH_AW_NEEDS_PRE_ACTIVATION_OUTPUTS_MATCHED_COMMAND
               }
             });
       - name: Validate prompt placeholders
@@ -1009,6 +1076,7 @@ jobs:
           GH_AW_ALLOWED_DOMAINS: "api.business.githubcopilot.com,api.enterprise.githubcopilot.com,api.github.com,api.githubcopilot.com,api.individual.githubcopilot.com,api.snapcraft.io,archive.ubuntu.com,azure.archive.ubuntu.com,crl.geotrust.com,crl.globalsign.com,crl.identrust.com,crl.sectigo.com,crl.thawte.com,crl.usertrust.com,crl.verisign.com,crl3.digicert.com,crl4.digicert.com,crls.ssl.com,github.com,host.docker.internal,json-schema.org,json.schemastore.org,keyserver.ubuntu.com,ocsp.digicert.com,ocsp.geotrust.com,ocsp.globalsign.com,ocsp.identrust.com,ocsp.sectigo.com,ocsp.ssl.com,ocsp.thawte.com,ocsp.usertrust.com,ocsp.verisign.com,packagecloud.io,packages.cloud.google.com,packages.microsoft.com,ppa.launchpad.net,raw.githubusercontent.com,registry.npmjs.org,s.symcb.com,s.symcd.com,security.ubuntu.com,telemetry.enterprise.githubcopilot.com,ts-crl.ws.symantec.com,ts-ocsp.ws.symantec.com,www.googleapis.com"
           GITHUB_SERVER_URL: ${{ github.server_url }}
           GITHUB_API_URL: ${{ github.api_url }}
+          GH_AW_COMMAND: sdkReviewAgent
         with:
           script: |
             const { setupGlobals } = require('${{ runner.temp }}/gh-aw/actions/setup_globals.cjs');
@@ -1305,19 +1373,47 @@ jobs:
             setupGlobals(core, github, context, exec, io);
             const { main } = require('${{ runner.temp }}/gh-aw/actions/handle_noop_message.cjs');
             await main();
+      - name: Update reaction comment with completion status
+        id: conclusion
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+        env:
+          GH_AW_AGENT_OUTPUT: ${{ env.GH_AW_AGENT_OUTPUT }}
+          GH_AW_COMMENT_ID: ${{ needs.activation.outputs.comment_id }}
+          GH_AW_COMMENT_REPO: ${{ needs.activation.outputs.comment_repo }}
+          GH_AW_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          GH_AW_WORKFLOW_NAME: "sdkReviewAgent"
+          GH_AW_AGENT_CONCLUSION: ${{ needs.agent.result }}
+          GH_AW_DETECTION_CONCLUSION: ${{ needs.agent.outputs.detection_conclusion }}
+        with:
+          github-token: ${{ secrets.GH_AW_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
+          script: |
+            const { setupGlobals } = require('${{ runner.temp }}/gh-aw/actions/setup_globals.cjs');
+            setupGlobals(core, github, context, exec, io);
+            const { main } = require('${{ runner.temp }}/gh-aw/actions/notify_comment_error.cjs');
+            await main();
 
   pre_activation:
-    if: (github.event_name != 'pull_request') || (github.event.pull_request.head.repo.id == github.repository_id)
+    if: >
+      (github.event_name == 'issues') && ((startsWith(github.event.issue.body, '/sdkReviewAgent ')) || (github.event.issue.body == '/sdkReviewAgent')) ||
+      (github.event_name == 'issue_comment') && (((startsWith(github.event.comment.body, '/sdkReviewAgent ')) ||
+      (github.event.comment.body == '/sdkReviewAgent')) && (github.event.issue.pull_request == null)) || (github.event_name == 'issue_comment') &&
+      (((startsWith(github.event.comment.body, '/sdkReviewAgent ')) || (github.event.comment.body == '/sdkReviewAgent')) &&
+      (github.event.issue.pull_request != null)) || (github.event_name == 'pull_request_review_comment') &&
+      ((startsWith(github.event.comment.body, '/sdkReviewAgent ')) || (github.event.comment.body == '/sdkReviewAgent')) ||
+      (github.event_name == 'pull_request') && ((startsWith(github.event.pull_request.body, '/sdkReviewAgent ')) ||
+      (github.event.pull_request.body == '/sdkReviewAgent')) || (github.event_name == 'discussion') && ((startsWith(github.event.discussion.body, '/sdkReviewAgent ')) ||
+      (github.event.discussion.body == '/sdkReviewAgent')) || (github.event_name == 'discussion_comment') &&
+      ((startsWith(github.event.comment.body, '/sdkReviewAgent ')) || (github.event.comment.body == '/sdkReviewAgent'))
     runs-on: ubuntu-slim
     outputs:
-      activated: ${{ steps.check_membership.outputs.is_team_member == 'true' }}
-      matched_command: ''
+      activated: ${{ (steps.check_membership.outputs.is_team_member == 'true') && (steps.check_command_position.outputs.command_position_ok == 'true') }}
+      matched_command: ${{ steps.check_command_position.outputs.matched_command }}
     steps:
       - name: Setup Scripts
         uses: github/gh-aw-actions/setup@95c4e2aa6adbdf63ff0b0fbf09945ad4f4716fea # v0.62.1
         with:
           destination: ${{ runner.temp }}/gh-aw/actions
-      - name: Check team membership for workflow
+      - name: Check team membership for command workflow
         id: check_membership
         uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         env:
@@ -1328,6 +1424,17 @@ jobs:
             const { setupGlobals } = require('${{ runner.temp }}/gh-aw/actions/setup_globals.cjs');
             setupGlobals(core, github, context, exec, io);
             const { main } = require('${{ runner.temp }}/gh-aw/actions/check_membership.cjs');
+            await main();
+      - name: Check command position
+        id: check_command_position
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+        env:
+          GH_AW_COMMANDS: "[\"sdkReviewAgent\"]"
+        with:
+          script: |
+            const { setupGlobals } = require('${{ runner.temp }}/gh-aw/actions/setup_globals.cjs');
+            setupGlobals(core, github, context, exec, io);
+            const { main } = require('${{ runner.temp }}/gh-aw/actions/check_command_position.cjs');
             await main();
 
   safe_outputs:

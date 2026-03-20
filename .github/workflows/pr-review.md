@@ -2,8 +2,7 @@
 name: "sdkReviewAgent"
 description: "AI-powered multi-agent PR review for Azure SDK for Java"
 on:
-  pull_request:
-    types: [opened, synchronize, ready_for_review]
+  slash_command: sdkReviewAgent
 engine: copilot
 safe-outputs:
   create-pull-request-review-comment: {}
