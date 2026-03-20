@@ -33,10 +33,12 @@ import java.net.URISyntaxException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Function;
@@ -155,6 +157,7 @@ public class CosmosClientBuilder implements
     private boolean serverCertValidationDisabled = false;
 
     private Function<CosmosAsyncContainer, CosmosAsyncContainer> containerFactory = null;
+    private Map<CosmosHeaderName, String> additionalHeaders;
 
     /**
      * Instantiates a new Cosmos client builder.
@@ -732,6 +735,58 @@ public class CosmosClientBuilder implements
     public CosmosClientBuilder userAgentSuffix(String userAgentSuffix) {
         this.userAgentSuffix = userAgentSuffix;
         return this;
+    }
+
+    /**
+     * Sets additional HTTP headers that will be included with every request from this client.
+     * <p>
+     * {@link CosmosHeaderName} defines exactly which headers are supported. Currently
+     * the only supported header is {@link CosmosHeaderName#WORKLOAD_ID}
+     * ({@code x-ms-cosmos-workload-id}).
+     * <p>
+     * This restriction exists because in Direct mode (RNTBD), only headers with explicit
+     * encoding support are sent on the wire. Using {@link CosmosHeaderName} ensures consistent
+     * behavior across both Gateway and Direct modes.
+     * <p>
+     * If the same header is also set on request options (e.g.,
+     * {@code CosmosItemRequestOptions.setAdditionalHeaders(Map)}),
+     * the request-level value takes precedence over the client-level value.
+     *
+     * @param additionalHeaders map of {@link CosmosHeaderName} to value
+     * @return current CosmosClientBuilder
+     * @throws IllegalArgumentException if the workload-id value is not a valid integer
+     */
+    public CosmosClientBuilder additionalHeaders(Map<CosmosHeaderName, String> additionalHeaders) {
+        CosmosHeaderName.validateAdditionalHeaders(additionalHeaders);
+        this.additionalHeaders = additionalHeaders != null
+            ? new HashMap<>(additionalHeaders)
+            : null;
+        return this;
+    }
+
+    /**
+     * Gets the additional headers configured on this builder, converted to a
+     * {@code Map<String, String>} for internal use.
+     * @return the additional headers map with string keys, or null if not set
+     */
+    Map<String, String> getAdditionalHeaders() {
+        if (this.additionalHeaders == null) {
+            return null;
+        }
+        Map<String, String> result = new HashMap<>();
+        for (Map.Entry<CosmosHeaderName, String> entry : this.additionalHeaders.entrySet()) {
+            result.put(entry.getKey().getHeaderName(), entry.getValue());
+        }
+        return result;
+    }
+
+    /**
+     * Gets the additional headers configured on this builder in their original
+     * {@code Map<CosmosHeaderName, String>} form.
+     * @return the additional headers map, or null if not set
+     */
+    Map<CosmosHeaderName, String> getAdditionalHeadersRaw() {
+        return this.additionalHeaders;
     }
 
     /**

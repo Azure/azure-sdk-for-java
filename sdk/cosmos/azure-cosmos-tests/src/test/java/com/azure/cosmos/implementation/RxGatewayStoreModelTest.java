@@ -27,6 +27,8 @@ import reactor.test.StepVerifier;
 import java.net.SocketException;
 import java.net.URI;
 import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
@@ -102,6 +104,7 @@ public class RxGatewayStoreModelTest {
                 userAgentContainer,
                 globalEndpointManager,
                 httpClient,
+            null,
             null);
         storeModel.setGatewayServiceConfigurationReader(gatewayServiceConfigurationReader);
 
@@ -146,6 +149,7 @@ public class RxGatewayStoreModelTest {
             userAgentContainer,
             globalEndpointManager,
             httpClient,
+            null,
             null);
         storeModel.setGatewayServiceConfigurationReader(gatewayServiceConfigurationReader);
 
@@ -205,7 +209,8 @@ public class RxGatewayStoreModelTest {
             new UserAgentContainer(),
             globalEndpointManager,
             httpClient,
-            apiType);
+            apiType,
+            null);
         storeModel.setGatewayServiceConfigurationReader(gatewayServiceConfigurationReader);
 
         RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(
@@ -277,7 +282,8 @@ public class RxGatewayStoreModelTest {
             new UserAgentContainer(),
             globalEndpointManager,
             httpClient,
-            apiType);
+            apiType,
+            null);
 
         RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(
             clientContext,
@@ -391,6 +397,7 @@ public class RxGatewayStoreModelTest {
             new UserAgentContainer(),
             globalEndpointManager,
             httpClient,
+            null,
             null);
         storeModel.setGatewayServiceConfigurationReader(gatewayServiceConfigurationReader);
 
@@ -426,6 +433,167 @@ public class RxGatewayStoreModelTest {
             return true; // leaked
         }
         return false;
+    }
+
+    /**
+     * Verifies that client-level additionalHeaders (e.g., workload-id) are injected into
+     * outgoing HTTP requests by performRequest(). This covers metadata requests
+     * (collection cache, partition key range) that don't go through getRequestHeaders().
+     */
+    @Test(groups = "unit")
+    public void additionalHeadersInjectedInPerformRequest() throws Exception {
+        DiagnosticsClientContext clientContext = mockDiagnosticsClientContext();
+        ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);
+        GlobalEndpointManager globalEndpointManager = Mockito.mock(GlobalEndpointManager.class);
+
+        Mockito.doReturn(new RegionalRoutingContext(new URI("https://localhost")))
+            .when(globalEndpointManager).resolveServiceEndpoint(any());
+
+        HttpClient httpClient = Mockito.mock(HttpClient.class);
+        ArgumentCaptor<HttpRequest> httpClientRequestCaptor = ArgumentCaptor.forClass(HttpRequest.class);
+        Mockito.when(httpClient.send(any(), any())).thenReturn(Mono.error(new ConnectTimeoutException()));
+
+        Map<String, String> additionalHeaders = new HashMap<>();
+        additionalHeaders.put(HttpConstants.HttpHeaders.WORKLOAD_ID, "25");
+
+        RxGatewayStoreModel storeModel = new RxGatewayStoreModel(
+            clientContext,
+            sessionContainer,
+            ConsistencyLevel.SESSION,
+            QueryCompatibilityMode.Default,
+            new UserAgentContainer(),
+            globalEndpointManager,
+            httpClient,
+            null,
+            additionalHeaders);
+
+        // Simulate a metadata request (e.g., collection cache lookup) — no additionalHeaders on the request itself
+        RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(
+            clientContext,
+            OperationType.Read,
+            "/dbs/db/colls/col",
+            ResourceType.DocumentCollection);
+        dsr.requestContext = new DocumentServiceRequestContext();
+        dsr.requestContext.regionalRoutingContextToRoute = new RegionalRoutingContext(new URI("https://localhost"));
+
+        try {
+            storeModel.performRequest(dsr).block();
+            fail("Request should fail");
+        } catch (Exception e) {
+            // expected
+        }
+
+        Mockito.verify(httpClient).send(httpClientRequestCaptor.capture(), any());
+        HttpRequest httpRequest = httpClientRequestCaptor.getValue();
+        HttpHeaders headers = ReflectionUtils.getHttpHeaders(httpRequest);
+        assertThat(headers.toMap().get(HttpConstants.HttpHeaders.WORKLOAD_ID)).isEqualTo("25");
+    }
+
+    /**
+     * Verifies that request-level headers take precedence over client-level additionalHeaders.
+     * If a request already has workload-id set (e.g., via getRequestHeaders()), performRequest()
+     * should NOT overwrite it.
+     */
+    @Test(groups = "unit")
+    public void requestLevelHeadersTakePrecedenceOverAdditionalHeaders() throws Exception {
+        DiagnosticsClientContext clientContext = mockDiagnosticsClientContext();
+        ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);
+        GlobalEndpointManager globalEndpointManager = Mockito.mock(GlobalEndpointManager.class);
+
+        Mockito.doReturn(new RegionalRoutingContext(new URI("https://localhost")))
+            .when(globalEndpointManager).resolveServiceEndpoint(any());
+
+        HttpClient httpClient = Mockito.mock(HttpClient.class);
+        ArgumentCaptor<HttpRequest> httpClientRequestCaptor = ArgumentCaptor.forClass(HttpRequest.class);
+        Mockito.when(httpClient.send(any(), any())).thenReturn(Mono.error(new ConnectTimeoutException()));
+
+        Map<String, String> additionalHeaders = new HashMap<>();
+        additionalHeaders.put(HttpConstants.HttpHeaders.WORKLOAD_ID, "10");
+
+        RxGatewayStoreModel storeModel = new RxGatewayStoreModel(
+            clientContext,
+            sessionContainer,
+            ConsistencyLevel.SESSION,
+            QueryCompatibilityMode.Default,
+            new UserAgentContainer(),
+            globalEndpointManager,
+            httpClient,
+            null,
+            additionalHeaders);
+
+        RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(
+            clientContext,
+            OperationType.Read,
+            "/dbs/db/colls/col/docs/doc1",
+            ResourceType.Document);
+        dsr.requestContext = new DocumentServiceRequestContext();
+        dsr.requestContext.regionalRoutingContextToRoute = new RegionalRoutingContext(new URI("https://localhost"));
+
+        // Simulate request-level header already set (e.g., by getRequestHeaders())
+        dsr.getHeaders().put(HttpConstants.HttpHeaders.WORKLOAD_ID, "42");
+
+        try {
+            storeModel.performRequest(dsr).block();
+            fail("Request should fail");
+        } catch (Exception e) {
+            // expected
+        }
+
+        Mockito.verify(httpClient).send(httpClientRequestCaptor.capture(), any());
+        HttpRequest httpRequest = httpClientRequestCaptor.getValue();
+        HttpHeaders headers = ReflectionUtils.getHttpHeaders(httpRequest);
+        // Request-level header "42" should win over client-level "10"
+        assertThat(headers.toMap().get(HttpConstants.HttpHeaders.WORKLOAD_ID)).isEqualTo("42");
+    }
+
+    /**
+     * Verifies that when additionalHeaders is null, performRequest() still works normally
+     * without injecting any extra headers.
+     */
+    @Test(groups = "unit")
+    public void nullAdditionalHeadersDoesNotAffectPerformRequest() throws Exception {
+        DiagnosticsClientContext clientContext = mockDiagnosticsClientContext();
+        ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);
+        GlobalEndpointManager globalEndpointManager = Mockito.mock(GlobalEndpointManager.class);
+
+        Mockito.doReturn(new RegionalRoutingContext(new URI("https://localhost")))
+            .when(globalEndpointManager).resolveServiceEndpoint(any());
+
+        HttpClient httpClient = Mockito.mock(HttpClient.class);
+        ArgumentCaptor<HttpRequest> httpClientRequestCaptor = ArgumentCaptor.forClass(HttpRequest.class);
+        Mockito.when(httpClient.send(any(), any())).thenReturn(Mono.error(new ConnectTimeoutException()));
+
+        RxGatewayStoreModel storeModel = new RxGatewayStoreModel(
+            clientContext,
+            sessionContainer,
+            ConsistencyLevel.SESSION,
+            QueryCompatibilityMode.Default,
+            new UserAgentContainer(),
+            globalEndpointManager,
+            httpClient,
+            null,
+            null);
+
+        RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(
+            clientContext,
+            OperationType.Read,
+            "/dbs/db/colls/col",
+            ResourceType.DocumentCollection);
+        dsr.requestContext = new DocumentServiceRequestContext();
+        dsr.requestContext.regionalRoutingContextToRoute = new RegionalRoutingContext(new URI("https://localhost"));
+
+        try {
+            storeModel.performRequest(dsr).block();
+            fail("Request should fail");
+        } catch (Exception e) {
+            // expected
+        }
+
+        Mockito.verify(httpClient).send(httpClientRequestCaptor.capture(), any());
+        HttpRequest httpRequest = httpClientRequestCaptor.getValue();
+        HttpHeaders headers = ReflectionUtils.getHttpHeaders(httpRequest);
+        // No workload-id header should be present
+        assertThat(headers.toMap().get(HttpConstants.HttpHeaders.WORKLOAD_ID)).isNull();
     }
 
     enum SessionTokenType {

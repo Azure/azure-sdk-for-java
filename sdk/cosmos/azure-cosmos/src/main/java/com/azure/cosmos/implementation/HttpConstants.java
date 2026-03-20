@@ -300,6 +300,9 @@ public class HttpConstants {
 
         // Region affinity headers
         public static final String HUB_REGION_PROCESSING_ONLY = "x-ms-cosmos-hub-region-processing-only";
+
+        // Workload ID header for Azure Monitor metrics attribution
+        public static final String WORKLOAD_ID = "x-ms-cosmos-workload-id";
     }
 
     public static class A_IMHeaderValues {

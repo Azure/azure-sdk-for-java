@@ -57,6 +57,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -145,6 +146,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                 null,
                 ConnectionPolicy.getDefaultPolicy(),
                 null,
+                null,
                 null);
 
         for (int i = 0; i < 2; i++) {
@@ -185,6 +187,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                             null,
                                                             null,
                                                             ConnectionPolicy.getDefaultPolicy(),
+                                                            null,
                                                             null,
                                                             null);
 
@@ -238,6 +241,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                             null,
                                                             ConnectionPolicy.getDefaultPolicy(),
                                                             proactiveOpenConnectionsProcessorMock,
+                                                            null,
                                                             null);
 
         RxDocumentServiceRequest req =
@@ -296,6 +300,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                             null,
                                                             ConnectionPolicy.getDefaultPolicy(),
                                                             proactiveOpenConnectionsProcessorMock,
+                                                            null,
                                                             null);
 
         String collectionRid = createdCollection.getResourceId();
@@ -366,6 +371,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                             null,
                                                             ConnectionPolicy.getDefaultPolicy(),
                                                             proactiveOpenConnectionsProcessorMock,
+                                                            null,
                                                             null);
 
         String collectionRid = createdCollection.getResourceId();
@@ -472,6 +478,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                                 null,
                                                                 ConnectionPolicy.getDefaultPolicy(),
                                                                 proactiveOpenConnectionsProcessorMock,
+                                                                null,
                                                                 null);
 
         String collectionRid = createdCollection.getResourceId();
@@ -614,6 +621,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                             null,
                                                             null,
                                                             null,
+                                                            null,
                                                             null);
 
         RxDocumentServiceRequest req =
@@ -666,6 +674,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                             null,
                                                             ConnectionPolicy.getDefaultPolicy(),
                                                             null,
+                                                            null,
                                                             null);
 
         RxDocumentServiceRequest req =
@@ -716,6 +725,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                             null,
                                                             null,
                                                             ConnectionPolicy.getDefaultPolicy(),
+                                                            null,
                                                             null,
                                                             null);
 
@@ -774,6 +784,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                                 ApiType.SQL,
                                                                 null,
                                                                 ConnectionPolicy.getDefaultPolicy(),
+                                                                null,
                                                                 null,
                                                                 null);
 
@@ -872,6 +883,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                                 null,
                                                                 null,
                                                                 ConnectionPolicy.getDefaultPolicy(),
+                                                                null,
                                                                 null,
                                                                 null);
 
@@ -990,6 +1002,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                 null,
                 ConnectionPolicy.getDefaultPolicy(),
                 proactiveOpenConnectionsProcessorMock,
+                null,
                 null);
 
         RxDocumentServiceRequest req =
@@ -1152,6 +1165,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                 null,
                 ConnectionPolicy.getDefaultPolicy(),
                 proactiveOpenConnectionsProcessorMock,
+                null,
                 null);
 
         RxDocumentServiceRequest req =
@@ -1214,6 +1228,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                 null,
                 ConnectionPolicy.getDefaultPolicy(),
                 proactiveOpenConnectionsProcessorMock,
+                null,
                 null);
 
         RxDocumentServiceRequest req =
@@ -1304,6 +1319,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
             null,
             ConnectionPolicy.getDefaultPolicy(),
             proactiveOpenConnectionsProcessorMock,
+            null,
             null);
 
         RxDocumentServiceRequest req =
@@ -1396,6 +1412,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                 null,
                 ConnectionPolicy.getDefaultPolicy(),
                 proactiveOpenConnectionsProcessorMock,
+                null,
                 null);
 
         Mockito.when(proactiveOpenConnectionsProcessorMock.submitOpenConnectionTaskOutsideLoop(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyInt())).thenReturn(dummyOpenConnectionsTask);
@@ -1494,6 +1511,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                 null,
                 null,
                 ConnectionPolicy.getDefaultPolicy(),
+                null,
                 null,
                 null);
 
@@ -1626,6 +1644,113 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
     private HttpClientUnderTestWrapper getHttpClientUnderTestWrapper(Configs configs) {
         HttpClient origHttpClient = getHttpClient(configs);
         return new HttpClientUnderTestWrapper(origHttpClient);
+    }
+
+    /**
+     * Verifies that client-level additionalHeaders (e.g., workload-id) are included in
+     * GatewayAddressCache's defaultRequestHeaders, which are sent on every address
+     * resolution request.
+     */
+    @Test(groups = { "unit" })
+    public void additionalHeadersIncludedInDefaultRequestHeaders() throws Exception {
+        URI serviceEndpoint = new URI("https://localhost");
+
+        Map<String, String> additionalHeaders = new HashMap<>();
+        additionalHeaders.put(HttpConstants.HttpHeaders.WORKLOAD_ID, "25");
+
+        GatewayAddressCache cache = new GatewayAddressCache(
+            mockDiagnosticsClientContext(),
+            serviceEndpoint,
+            Protocol.HTTPS,
+            Mockito.mock(IAuthorizationTokenProvider.class),
+            null,
+            Mockito.mock(HttpClient.class),
+            null,
+            null,
+            null,
+            null,
+            null,
+            additionalHeaders);
+
+        Field defaultRequestHeadersField = GatewayAddressCache.class.getDeclaredField("defaultRequestHeaders");
+        defaultRequestHeadersField.setAccessible(true);
+        @SuppressWarnings("unchecked")
+        HashMap<String, String> defaultRequestHeaders = (HashMap<String, String>) defaultRequestHeadersField.get(cache);
+
+        assertThat(defaultRequestHeaders).containsEntry(HttpConstants.HttpHeaders.WORKLOAD_ID, "25");
+    }
+
+    /**
+     * Verifies that additionalHeaders do NOT overwrite SDK system headers (USER_AGENT, VERSION, etc.)
+     * in GatewayAddressCache's defaultRequestHeaders. putIfAbsent is used so SDK headers
+     * set before additionalHeaders are preserved.
+     */
+    @Test(groups = { "unit" })
+    public void additionalHeadersDoNotOverwriteSdkSystemHeaders() throws Exception {
+        URI serviceEndpoint = new URI("https://localhost");
+
+        Map<String, String> additionalHeaders = new HashMap<>();
+        additionalHeaders.put(HttpConstants.HttpHeaders.USER_AGENT, "malicious-agent");
+        additionalHeaders.put(HttpConstants.HttpHeaders.VERSION, "bad-version");
+        additionalHeaders.put(HttpConstants.HttpHeaders.WORKLOAD_ID, "25");
+
+        GatewayAddressCache cache = new GatewayAddressCache(
+            mockDiagnosticsClientContext(),
+            serviceEndpoint,
+            Protocol.HTTPS,
+            Mockito.mock(IAuthorizationTokenProvider.class),
+            null,
+            Mockito.mock(HttpClient.class),
+            null,
+            null,
+            null,
+            null,
+            null,
+            additionalHeaders);
+
+        Field defaultRequestHeadersField = GatewayAddressCache.class.getDeclaredField("defaultRequestHeaders");
+        defaultRequestHeadersField.setAccessible(true);
+        @SuppressWarnings("unchecked")
+        HashMap<String, String> defaultRequestHeaders = (HashMap<String, String>) defaultRequestHeadersField.get(cache);
+
+        // SDK headers should NOT be overwritten
+        assertThat(defaultRequestHeaders.get(HttpConstants.HttpHeaders.USER_AGENT)).isNotEqualTo("malicious-agent");
+        assertThat(defaultRequestHeaders.get(HttpConstants.HttpHeaders.VERSION)).isEqualTo(HttpConstants.Versions.CURRENT_VERSION);
+        // Additional header should still be added
+        assertThat(defaultRequestHeaders).containsEntry(HttpConstants.HttpHeaders.WORKLOAD_ID, "25");
+    }
+
+    /**
+     * Verifies that when additionalHeaders is null, GatewayAddressCache's defaultRequestHeaders
+     * contains only SDK system headers and no extra entries.
+     */
+    @Test(groups = { "unit" })
+    public void nullAdditionalHeadersDoesNotAffectDefaultRequestHeaders() throws Exception {
+        URI serviceEndpoint = new URI("https://localhost");
+
+        GatewayAddressCache cache = new GatewayAddressCache(
+            mockDiagnosticsClientContext(),
+            serviceEndpoint,
+            Protocol.HTTPS,
+            Mockito.mock(IAuthorizationTokenProvider.class),
+            null,
+            Mockito.mock(HttpClient.class),
+            null,
+            null,
+            null,
+            null,
+            null,
+            null);
+
+        Field defaultRequestHeadersField = GatewayAddressCache.class.getDeclaredField("defaultRequestHeaders");
+        defaultRequestHeadersField.setAccessible(true);
+        @SuppressWarnings("unchecked")
+        HashMap<String, String> defaultRequestHeaders = (HashMap<String, String>) defaultRequestHeadersField.get(cache);
+
+        // Should only contain SDK system headers, no workload-id
+        assertThat(defaultRequestHeaders).containsKey(HttpConstants.HttpHeaders.USER_AGENT);
+        assertThat(defaultRequestHeaders).containsKey(HttpConstants.HttpHeaders.VERSION);
+        assertThat(defaultRequestHeaders).doesNotContainKey(HttpConstants.HttpHeaders.WORKLOAD_ID);
     }
 
     public String getNameBasedCollectionLink() {

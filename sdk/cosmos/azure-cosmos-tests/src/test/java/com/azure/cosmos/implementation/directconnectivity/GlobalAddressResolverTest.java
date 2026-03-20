@@ -110,7 +110,7 @@ public class GlobalAddressResolverTest {
 
         GlobalAddressResolver globalAddressResolver = new GlobalAddressResolver(mockDiagnosticsClientContext(), httpClient, endpointManager, Protocol.HTTPS, authorizationTokenProvider, collectionCache, routingMapProvider,
                 userAgentContainer,
-                serviceConfigReader, connectionPolicy, null);
+                serviceConfigReader, connectionPolicy, null, null);
         RxDocumentServiceRequest request;
         request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
                 OperationType.Read,
@@ -145,6 +145,7 @@ public class GlobalAddressResolverTest {
                         userAgentContainer,
                         serviceConfigReader,
                         connectionPolicy,
+                        null,
                         null);
         GlobalAddressResolver.EndpointCache endpointCache = new GlobalAddressResolver.EndpointCache();
         GatewayAddressCache gatewayAddressCache = Mockito.mock(GatewayAddressCache.class);
