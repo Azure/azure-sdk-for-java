@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed `ServiceBusAdministrationClient.updateSubscription()` silently ignoring `defaultMessageTimeToLive` changes. The property was incorrectly nullified before serialization. ([#48495](https://github.com/Azure/azure-sdk-for-java/issues/48495))
+
 ### Other Changes
 
 ## 7.17.17 (2026-01-29)
