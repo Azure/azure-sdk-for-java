@@ -255,12 +255,13 @@ extends:
   parameters:
     ServiceDirectory: spring
     PreBuildSteps:
-      - pwsh: |
-          $scriptPath = "$(Build.SourcesDirectory)/eng/pipelines/scripts/Monitor-Java-Processes.ps1"
-          $stagingDir = "$(System.DefaultWorkingDirectory)"
-          Write-Host "Starting Java process monitor in background..."
-          Start-Process -NoNewWindow -FilePath "pwsh" -ArgumentList "-File", $scriptPath, "-StagingDirectory", $stagingDir, "-IntervalSeconds", "180", "-DurationMinutes", "55"
-          Write-Host "Java process monitor started."
+      - bash: |
+          nohup pwsh -File "$(Build.SourcesDirectory)/eng/pipelines/scripts/Monitor-Java-Processes.ps1" \
+            -StagingDirectory "$(System.DefaultWorkingDirectory)" \
+            -IntervalSeconds 180 \
+            -DurationMinutes 55 \
+            > /dev/null 2>&1 &
+          echo "Java process monitor started in background (PID: $!)"
         displayName: 'Start Java process monitor (background)'
         continueOnError: true
         condition: always()
