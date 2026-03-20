@@ -8,9 +8,9 @@ import com.azure.core.http.HttpPipeline;
 import java.time.Duration;
 
 /**
- * The interface for ContainerServiceManagementClient class.
+ * The interface for OpenShiftManagementClient class.
  */
-public interface ContainerServiceManagementClient {
+public interface OpenShiftManagementClient {
     /**
      * Gets Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
      * part of the URI for every service call.
@@ -25,6 +25,13 @@ public interface ContainerServiceManagementClient {
      * @return the endpoint value.
      */
     String getEndpoint();
+
+    /**
+     * Gets Api Version.
+     * 
+     * @return the apiVersion value.
+     */
+    String getApiVersion();
 
     /**
      * Gets The HTTP pipeline to send requests through.
@@ -46,11 +53,4 @@ public interface ContainerServiceManagementClient {
      * @return the OpenShiftManagedClustersClient object.
      */
     OpenShiftManagedClustersClient getOpenShiftManagedClusters();
-
-    /**
-     * Gets the ContainerServicesClient object to access its operations.
-     * 
-     * @return the ContainerServicesClient object.
-     */
-    ContainerServicesClient getContainerServices();
 }

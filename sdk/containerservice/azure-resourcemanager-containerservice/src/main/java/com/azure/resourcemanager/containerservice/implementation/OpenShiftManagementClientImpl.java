@@ -8,18 +8,16 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.resourcemanager.containerservice.fluent.ContainerServiceManagementClient;
-import com.azure.resourcemanager.containerservice.fluent.ContainerServicesClient;
 import com.azure.resourcemanager.containerservice.fluent.OpenShiftManagedClustersClient;
+import com.azure.resourcemanager.containerservice.fluent.OpenShiftManagementClient;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import java.time.Duration;
 
 /**
- * Initializes a new instance of the ContainerServiceManagementClientImpl type.
+ * Initializes a new instance of the OpenShiftManagementClientImpl type.
  */
-@ServiceClient(builder = ContainerServiceManagementClientBuilder.class)
-public final class ContainerServiceManagementClientImpl extends AzureServiceClient
-    implements ContainerServiceManagementClient {
+@ServiceClient(builder = OpenShiftManagementClientBuilder.class)
+public final class OpenShiftManagementClientImpl extends AzureServiceClient implements OpenShiftManagementClient {
     /**
      * Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of
      * the URI for every service call.
@@ -48,6 +46,20 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
      */
     public String getEndpoint() {
         return this.endpoint;
+    }
+
+    /**
+     * Api Version.
+     */
+    private final String apiVersion;
+
+    /**
+     * Gets Api Version.
+     * 
+     * @return the apiVersion value.
+     */
+    public String getApiVersion() {
+        return this.apiVersion;
     }
 
     /**
@@ -107,21 +119,7 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
     }
 
     /**
-     * The ContainerServicesClient object to access its operations.
-     */
-    private final ContainerServicesClient containerServices;
-
-    /**
-     * Gets the ContainerServicesClient object to access its operations.
-     * 
-     * @return the ContainerServicesClient object.
-     */
-    public ContainerServicesClient getContainerServices() {
-        return this.containerServices;
-    }
-
-    /**
-     * Initializes an instance of ContainerServiceManagementClient client.
+     * Initializes an instance of OpenShiftManagementClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
@@ -131,7 +129,7 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
      * subscription ID forms part of the URI for every service call.
      * @param endpoint server parameter.
      */
-    ContainerServiceManagementClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
+    OpenShiftManagementClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
         Duration defaultPollInterval, AzureEnvironment environment, String subscriptionId, String endpoint) {
         super(httpPipeline, serializerAdapter, environment);
         this.httpPipeline = httpPipeline;
@@ -139,7 +137,7 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
+        this.apiVersion = "2019-04-30";
         this.openShiftManagedClusters = new OpenShiftManagedClustersClientImpl(this);
-        this.containerServices = new ContainerServicesClientImpl(this);
     }
 }

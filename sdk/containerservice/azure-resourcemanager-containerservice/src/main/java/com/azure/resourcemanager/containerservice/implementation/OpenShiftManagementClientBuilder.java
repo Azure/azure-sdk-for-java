@@ -15,10 +15,10 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
 /**
- * A builder for creating a new instance of the ContainerServiceManagementClientImpl type.
+ * A builder for creating a new instance of the OpenShiftManagementClientImpl type.
  */
-@ServiceClientBuilder(serviceClients = { ContainerServiceManagementClientImpl.class })
-public final class ContainerServiceManagementClientBuilder {
+@ServiceClientBuilder(serviceClients = { OpenShiftManagementClientImpl.class })
+public final class OpenShiftManagementClientBuilder {
     /*
      * Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of
      * the URI for every service call.
@@ -30,9 +30,9 @@ public final class ContainerServiceManagementClientBuilder {
      * part of the URI for every service call.
      * 
      * @param subscriptionId the subscriptionId value.
-     * @return the ContainerServiceManagementClientBuilder.
+     * @return the OpenShiftManagementClientBuilder.
      */
-    public ContainerServiceManagementClientBuilder subscriptionId(String subscriptionId) {
+    public OpenShiftManagementClientBuilder subscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
         return this;
     }
@@ -46,9 +46,9 @@ public final class ContainerServiceManagementClientBuilder {
      * Sets server parameter.
      * 
      * @param endpoint the endpoint value.
-     * @return the ContainerServiceManagementClientBuilder.
+     * @return the OpenShiftManagementClientBuilder.
      */
-    public ContainerServiceManagementClientBuilder endpoint(String endpoint) {
+    public OpenShiftManagementClientBuilder endpoint(String endpoint) {
         this.endpoint = endpoint;
         return this;
     }
@@ -62,9 +62,9 @@ public final class ContainerServiceManagementClientBuilder {
      * Sets The environment to connect to.
      * 
      * @param environment the environment value.
-     * @return the ContainerServiceManagementClientBuilder.
+     * @return the OpenShiftManagementClientBuilder.
      */
-    public ContainerServiceManagementClientBuilder environment(AzureEnvironment environment) {
+    public OpenShiftManagementClientBuilder environment(AzureEnvironment environment) {
         this.environment = environment;
         return this;
     }
@@ -78,9 +78,9 @@ public final class ContainerServiceManagementClientBuilder {
      * Sets The HTTP pipeline to send requests through.
      * 
      * @param pipeline the pipeline value.
-     * @return the ContainerServiceManagementClientBuilder.
+     * @return the OpenShiftManagementClientBuilder.
      */
-    public ContainerServiceManagementClientBuilder pipeline(HttpPipeline pipeline) {
+    public OpenShiftManagementClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
         return this;
     }
@@ -94,9 +94,9 @@ public final class ContainerServiceManagementClientBuilder {
      * Sets The default poll interval for long-running operation.
      * 
      * @param defaultPollInterval the defaultPollInterval value.
-     * @return the ContainerServiceManagementClientBuilder.
+     * @return the OpenShiftManagementClientBuilder.
      */
-    public ContainerServiceManagementClientBuilder defaultPollInterval(Duration defaultPollInterval) {
+    public OpenShiftManagementClientBuilder defaultPollInterval(Duration defaultPollInterval) {
         this.defaultPollInterval = defaultPollInterval;
         return this;
     }
@@ -110,19 +110,19 @@ public final class ContainerServiceManagementClientBuilder {
      * Sets The serializer to serialize an object into a string.
      * 
      * @param serializerAdapter the serializerAdapter value.
-     * @return the ContainerServiceManagementClientBuilder.
+     * @return the OpenShiftManagementClientBuilder.
      */
-    public ContainerServiceManagementClientBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
+    public OpenShiftManagementClientBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
         this.serializerAdapter = serializerAdapter;
         return this;
     }
 
     /**
-     * Builds an instance of ContainerServiceManagementClientImpl with the provided parameters.
+     * Builds an instance of OpenShiftManagementClientImpl with the provided parameters.
      * 
-     * @return an instance of ContainerServiceManagementClientImpl.
+     * @return an instance of OpenShiftManagementClientImpl.
      */
-    public ContainerServiceManagementClientImpl buildClient() {
+    public OpenShiftManagementClientImpl buildClient() {
         String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
         AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
         HttpPipeline localPipeline = (pipeline != null)
@@ -133,8 +133,8 @@ public final class ContainerServiceManagementClientBuilder {
         SerializerAdapter localSerializerAdapter = (serializerAdapter != null)
             ? serializerAdapter
             : SerializerFactory.createDefaultManagementSerializerAdapter();
-        ContainerServiceManagementClientImpl client = new ContainerServiceManagementClientImpl(localPipeline,
-            localSerializerAdapter, localDefaultPollInterval, localEnvironment, this.subscriptionId, localEndpoint);
+        OpenShiftManagementClientImpl client = new OpenShiftManagementClientImpl(localPipeline, localSerializerAdapter,
+            localDefaultPollInterval, localEnvironment, this.subscriptionId, localEndpoint);
         return client;
     }
 }

@@ -20,10 +20,10 @@ public final class OpenShiftManagedClustersUpdateTagsSamples {
     /**
      * Sample code: Update OpenShift Managed Cluster Tags.
      * 
-     * @param manager Entry point to ContainerServiceManager.
+     * @param manager Entry point to OpenShiftManager.
      */
     public static void
-        updateOpenShiftManagedClusterTags(com.azure.resourcemanager.containerservice.ContainerServiceManager manager) {
+        updateOpenShiftManagedClusterTags(com.azure.resourcemanager.containerservice.OpenShiftManager manager) {
         manager.serviceClient()
             .getOpenShiftManagedClusters()
             .updateTags("rg1", "clustername1", new TagsObject().withTags(mapOf("archv3", "", "tier", "testing")),

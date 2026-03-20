@@ -16,9 +16,9 @@ public final class OpenShiftManagedClustersListSamples {
     /**
      * Sample code: List Managed Clusters.
      * 
-     * @param manager Entry point to ContainerServiceManager.
+     * @param manager Entry point to OpenShiftManager.
      */
-    public static void listManagedClusters(com.azure.resourcemanager.containerservice.ContainerServiceManager manager) {
+    public static void listManagedClusters(com.azure.resourcemanager.containerservice.OpenShiftManager manager) {
         manager.serviceClient().getOpenShiftManagedClusters().list(com.azure.core.util.Context.NONE);
     }
 }

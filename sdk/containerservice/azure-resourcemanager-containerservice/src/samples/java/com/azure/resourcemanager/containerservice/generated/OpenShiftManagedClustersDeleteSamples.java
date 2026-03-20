@@ -16,10 +16,10 @@ public final class OpenShiftManagedClustersDeleteSamples {
     /**
      * Sample code: Delete OpenShift Managed Cluster.
      * 
-     * @param manager Entry point to ContainerServiceManager.
+     * @param manager Entry point to OpenShiftManager.
      */
     public static void
-        deleteOpenShiftManagedCluster(com.azure.resourcemanager.containerservice.ContainerServiceManager manager) {
+        deleteOpenShiftManagedCluster(com.azure.resourcemanager.containerservice.OpenShiftManager manager) {
         manager.serviceClient()
             .getOpenShiftManagedClusters()
             .delete("rg1", "clustername1", com.azure.core.util.Context.NONE);

@@ -16,10 +16,10 @@ public final class OpenShiftManagedClustersListByResourceGroupSamples {
     /**
      * Sample code: Get Managed Clusters by Resource Group.
      * 
-     * @param manager Entry point to ContainerServiceManager.
+     * @param manager Entry point to OpenShiftManager.
      */
     public static void
-        getManagedClustersByResourceGroup(com.azure.resourcemanager.containerservice.ContainerServiceManager manager) {
+        getManagedClustersByResourceGroup(com.azure.resourcemanager.containerservice.OpenShiftManager manager) {
         manager.serviceClient()
             .getOpenShiftManagedClusters()
             .listByResourceGroup("rg1", com.azure.core.util.Context.NONE);

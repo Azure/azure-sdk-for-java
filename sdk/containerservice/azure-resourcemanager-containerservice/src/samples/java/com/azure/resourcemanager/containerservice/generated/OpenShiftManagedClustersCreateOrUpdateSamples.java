@@ -31,10 +31,10 @@ public final class OpenShiftManagedClustersCreateOrUpdateSamples {
     /**
      * Sample code: Create/Update OpenShift Managed Cluster.
      * 
-     * @param manager Entry point to ContainerServiceManager.
+     * @param manager Entry point to OpenShiftManager.
      */
-    public static void createUpdateOpenShiftManagedCluster(
-        com.azure.resourcemanager.containerservice.ContainerServiceManager manager) {
+    public static void
+        createUpdateOpenShiftManagedCluster(com.azure.resourcemanager.containerservice.OpenShiftManager manager) {
         manager.serviceClient()
             .getOpenShiftManagedClusters()
             .createOrUpdate("rg1", "clustername1",
