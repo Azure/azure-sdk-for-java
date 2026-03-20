@@ -18,12 +18,6 @@ import java.io.IOException;
 public final class DeleteMemoryStoreResult implements JsonSerializable<DeleteMemoryStoreResult> {
 
     /*
-     * The object type. Always 'memory_store.deleted'.
-     */
-    @Generated
-    private final MemoryStoreObjectType object = MemoryStoreObjectType.MEMORY_STORE_DELETED;
-
-    /*
      * The name of the memory store.
      */
     @Generated
@@ -45,16 +39,6 @@ public final class DeleteMemoryStoreResult implements JsonSerializable<DeleteMem
     private DeleteMemoryStoreResult(String name, boolean deleted) {
         this.name = name;
         this.deleted = deleted;
-    }
-
-    /**
-     * Get the object property: The object type. Always 'memory_store.deleted'.
-     *
-     * @return the object value.
-     */
-    @Generated
-    public MemoryStoreObjectType getObject() {
-        return this.object;
     }
 
     /**
@@ -84,7 +68,7 @@ public final class DeleteMemoryStoreResult implements JsonSerializable<DeleteMem
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("object", this.object == null ? null : this.object.toString());
+        jsonWriter.writeStringField("object", this.objectType == null ? null : this.objectType.toString());
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeBooleanField("deleted", this.deleted);
         return jsonWriter.writeEndObject();
@@ -117,5 +101,21 @@ public final class DeleteMemoryStoreResult implements JsonSerializable<DeleteMem
             }
             return new DeleteMemoryStoreResult(name, deleted);
         });
+    }
+
+    /*
+     * The object type. Always 'memory_store.deleted'.
+     */
+    @Generated
+    private final MemoryStoreObjectType objectType = MemoryStoreObjectType.MEMORY_STORE_DELETED;
+
+    /**
+     * Get the objectType property: The object type. Always 'memory_store.deleted'.
+     *
+     * @return the objectType value.
+     */
+    @Generated
+    public MemoryStoreObjectType getObjectType() {
+        return this.objectType;
     }
 }

@@ -4,6 +4,7 @@
 package com.azure.ai.agents;
 
 import com.azure.ai.agents.models.AgentReference;
+import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.util.Configuration;
@@ -53,10 +54,11 @@ public class CreateResponseWithConversation {
             System.out.println("Created conversation: " + conversationId);
 
             // Create a response using the conversation
-            Response response = responsesClient.createWithAgentConversation(
-                agentReference,
-                conversationId,
-                ResponseCreateParams.builder().input("Hi, how can you help me?"));
+            Response response = responsesClient.createAzureResponse(
+                new AzureCreateResponseOptions().setAgentReference(agentReference),
+                ResponseCreateParams.builder()
+                    .conversation(conversationId)
+                    .input("Hi, how can you help me?"));
 
             // Process and display the response
             System.out.println("\n=== Agent Response ===");

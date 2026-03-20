@@ -4,6 +4,7 @@
 package com.azure.ai.agents;
 
 import com.azure.ai.agents.models.AgentReference;
+import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.MemorySearchPreviewTool;
 import com.azure.ai.agents.models.MemoryStoreDefaultDefinition;
@@ -80,8 +81,11 @@ public class MemorySearchAgent {
             System.out.println("Created conversation (id: " + firstConversationId + ")");
 
 
-            Response response = responsesClient.createWithAgentConversation(agentReference, firstConversationId,
-                    ResponseCreateParams.builder().input("I prefer dark roast coffee"));
+            Response response = responsesClient.createAzureResponse(
+                    new AzureCreateResponseOptions().setAgentReference(agentReference),
+                    ResponseCreateParams.builder()
+                        .conversation(firstConversationId)
+                        .input("I prefer dark roast coffee"));
             System.out.println("Response output: " + getResponseText(response));
 
             System.out.println("Waiting for memories to be stored...");
@@ -91,8 +95,11 @@ public class MemorySearchAgent {
             followUpConversationId = newConversation.id();
             System.out.println("Created new conversation (id: " + followUpConversationId + ")");
 
-            Response followUpResponse = responsesClient.createWithAgentConversation(agentReference,
-                    followUpConversationId, ResponseCreateParams.builder().input("Please order my usual coffee"));
+            Response followUpResponse = responsesClient.createAzureResponse(
+                    new AzureCreateResponseOptions().setAgentReference(agentReference),
+                    ResponseCreateParams.builder()
+                        .conversation(followUpConversationId)
+                        .input("Please order my usual coffee"));
             System.out.println("Response output: " + getResponseText(followUpResponse));
 
             System.out.println("Sample completed successfully.");

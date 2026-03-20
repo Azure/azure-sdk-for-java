@@ -7,6 +7,7 @@ import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.ResponsesAsyncClient;
 import com.azure.ai.agents.models.AgentReference;
+import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.McpTool;
 import com.azure.ai.agents.models.PromptAgentDefinition;
@@ -66,7 +67,8 @@ public class McpWithConnectionAsync {
                 AgentReference agentReference = new AgentReference(agent.getName())
                     .setVersion(agent.getVersion());
 
-                return responsesAsyncClient.createWithAgent(agentReference,
+                return responsesAsyncClient.createAzureResponse(
+                    new AzureCreateResponseOptions().setAgentReference(agentReference),
                     ResponseCreateParams.builder()
                         .input("What is my username in GitHub profile?"));
             })
@@ -93,7 +95,8 @@ public class McpWithConnectionAsync {
 
                 if (!approvals.isEmpty()) {
                     System.out.println("Sending " + approvals.size() + " approval(s)...");
-                    return responsesAsyncClient.createWithAgent(agentReference,
+                    return responsesAsyncClient.createAzureResponse(
+                        new AzureCreateResponseOptions().setAgentReference(agentReference),
                         ResponseCreateParams.builder()
                             .inputOfResponse(approvals)
                             .previousResponseId(response.id()));
