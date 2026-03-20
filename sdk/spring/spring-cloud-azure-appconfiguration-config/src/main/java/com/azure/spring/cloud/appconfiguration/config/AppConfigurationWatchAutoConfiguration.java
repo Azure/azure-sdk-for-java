@@ -41,10 +41,14 @@ public class AppConfigurationWatchAutoConfiguration {
         AppConfigurationReplicaClientFactory clientFactory = context.getOrElse(AppConfigurationReplicaClientFactory.class, null);
         ReplicaLookUp replicaLookUp = context.getOrElse(ReplicaLookUp.class, null);
 
-        StateHolder stateHolder = context.get(StateHolder.class);
+        StateHolder stateHolder = context.getOrElse(StateHolder.class, null);
 
         if (clientFactory == null || replicaLookUp == null) {
             return null;
+        }
+        
+        if (stateHolder == null) {
+            stateHolder = new StateHolder();
         }
 
         return new AppConfigurationPullRefresh(clientFactory, properties.getRefreshInterval(), replicaLookUp,
