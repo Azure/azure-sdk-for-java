@@ -4,6 +4,7 @@
 package com.azure.ai.agents;
 
 import com.azure.ai.agents.models.AgentReference;
+import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.PromptAgentDefinition;
 import com.azure.core.util.Configuration;
@@ -13,6 +14,7 @@ import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
 import com.openai.models.responses.ResponseOutputItem;
 import com.openai.models.responses.ResponseOutputMessage;
+import com.openai.services.blocking.ConversationService;
 
 /**
  * This sample demonstrates how to use the createWithAgentConversation helper method
@@ -20,8 +22,8 @@ import com.openai.models.responses.ResponseOutputMessage;
  */
 public class CreateResponseWithConversation {
     public static void main(String[] args) {
-        String endpoint = Configuration.getGlobalConfiguration().get("AZURE_AGENTS_ENDPOINT");
-        String model = Configuration.getGlobalConfiguration().get("AZURE_AGENTS_MODEL");
+        String endpoint = Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT");
+        String model = Configuration.getGlobalConfiguration().get("FOUNDRY_MODEL_NAME");
 
         AgentsClientBuilder builder = new AgentsClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
@@ -29,7 +31,7 @@ public class CreateResponseWithConversation {
             .endpoint(endpoint);
 
         AgentsClient agentsClient = builder.buildAgentsClient();
-        ConversationsClient conversationsClient = builder.buildConversationsClient();
+        ConversationService conversationService = builder.buildOpenAIClient().conversations();
         ResponsesClient responsesClient = builder.buildResponsesClient();
 
         AgentVersionDetails agent = null;
@@ -47,15 +49,16 @@ public class CreateResponseWithConversation {
                 .setVersion(agent.getVersion());
 
             // Create a conversation
-            Conversation conversation = conversationsClient.getConversationService().create();
+            Conversation conversation = conversationService.create();
             conversationId = conversation.id();
             System.out.println("Created conversation: " + conversationId);
 
             // Create a response using the conversation
-            Response response = responsesClient.createWithAgentConversation(
-                agentReference,
-                conversationId,
-                ResponseCreateParams.builder().input("Hi, how can you help me?"));
+            Response response = responsesClient.createAzureResponse(
+                new AzureCreateResponseOptions().setAgentReference(agentReference),
+                ResponseCreateParams.builder()
+                    .conversation(conversationId)
+                    .input("Hi, how can you help me?"));
 
             // Process and display the response
             System.out.println("\n=== Agent Response ===");
@@ -76,7 +79,7 @@ public class CreateResponseWithConversation {
         } finally {
             // Cleanup conversation
             if (conversationId != null) {
-                conversationsClient.getConversationService().delete(conversationId);
+                conversationService.delete(conversationId);
                 System.out.println("Conversation deleted.");
             }
             // Cleanup agent
