@@ -203,9 +203,10 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
                         if (collectionHolder.v != null) {
                             request.setPartitionKeyDefinition(collectionHolder.v.getPartitionKey());
                         } else {
-                            logger.warn(
-                                "Collection cache returned null for request {}",
-                                request.getResourceAddress());
+                            throw new NullPointerException(
+                                "Collection cache returned null for request to "
+                                    + request.getResourceAddress()
+                                    + ". Cannot resolve partitionKeyDefinition for client-side EPK computation.");
                         }
                         return super.performRequestInternal(request, requestUri);
                     });
