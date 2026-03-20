@@ -453,8 +453,14 @@ public final class BlobUrlParts {
         parts.setHost(host);
 
         // Parse host to get account name
-        // host will look like this : <accountname>.blob.core.windows.net
-        parts.setAccountName(StorageImplUtils.getAccountNameFromHost(host, Constants.Blob.URI_SUBDOMAIN));
+        if (url.toString().contains(Constants.Blob.URI_SUBDOMAIN)) {
+            parts.setAccountName(StorageImplUtils.getAccountNameFromHost(host, Constants.Blob.URI_SUBDOMAIN));
+        } else if (url.toString().contains(Constants.Dfs.URI_SUBDOMAIN)) {
+            parts.setAccountName(StorageImplUtils.getAccountNameFromHost(host, Constants.Dfs.URI_SUBDOMAIN));
+        } else {
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Host does not contain the expected subdomain. Host: " + host));
+        }
 
         // find the container & blob names (if any)
         String path = url.getPath();
