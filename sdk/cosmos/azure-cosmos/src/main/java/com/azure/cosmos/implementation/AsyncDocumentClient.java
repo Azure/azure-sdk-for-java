@@ -409,7 +409,9 @@ public interface AsyncDocumentClient {
      *
      * @param suffix the suffix to append.
      */
-    void appendUserAgentSuffix(String suffix);
+    default void appendUserAgentSuffix(String suffix) {
+        // no-op default for binary compatibility
+    }
 
     /**
      * Gets the boolean which indicates whether to only return the headers and status code in Cosmos DB response
