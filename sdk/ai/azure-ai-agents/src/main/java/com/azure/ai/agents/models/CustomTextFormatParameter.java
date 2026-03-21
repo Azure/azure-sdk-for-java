@@ -16,7 +16,7 @@ import java.io.IOException;
  * Unconstrained free-form text.
  */
 @Immutable
-public final class CustomTextFormatParam extends CustomToolParamFormat {
+public final class CustomTextFormatParameter extends CustomToolParamFormat {
 
     /*
      * The type property.
@@ -25,10 +25,10 @@ public final class CustomTextFormatParam extends CustomToolParamFormat {
     private CustomToolParamFormatType type = CustomToolParamFormatType.TEXT;
 
     /**
-     * Creates an instance of CustomTextFormatParam class.
+     * Creates an instance of CustomTextFormatParameter class.
      */
     @Generated
-    public CustomTextFormatParam() {
+    public CustomTextFormatParameter() {
     }
 
     /**
@@ -54,27 +54,28 @@ public final class CustomTextFormatParam extends CustomToolParamFormat {
     }
 
     /**
-     * Reads an instance of CustomTextFormatParam from the JsonReader.
+     * Reads an instance of CustomTextFormatParameter from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of CustomTextFormatParam if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the CustomTextFormatParam.
+     * @return An instance of CustomTextFormatParameter if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CustomTextFormatParameter.
      */
     @Generated
-    public static CustomTextFormatParam fromJson(JsonReader jsonReader) throws IOException {
+    public static CustomTextFormatParameter fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            CustomTextFormatParam deserializedCustomTextFormatParam = new CustomTextFormatParam();
+            CustomTextFormatParameter deserializedCustomTextFormatParameter = new CustomTextFormatParameter();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("type".equals(fieldName)) {
-                    deserializedCustomTextFormatParam.type = CustomToolParamFormatType.fromString(reader.getString());
+                    deserializedCustomTextFormatParameter.type
+                        = CustomToolParamFormatType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedCustomTextFormatParam;
+            return deserializedCustomTextFormatParameter;
         });
     }
 }

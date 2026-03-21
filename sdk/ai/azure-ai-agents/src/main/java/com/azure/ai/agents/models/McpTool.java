@@ -56,7 +56,7 @@ public final class McpTool extends Tool {
      * - SharePoint: `connector_sharepoint`
      */
     @Generated
-    private MCPToolConnectorId connectorType;
+    private McpToolConnectorId connectorType;
 
     /*
      * An OAuth access token that can be used with a remote MCP server, either
@@ -169,31 +169,8 @@ public final class McpTool extends Tool {
      * @return the connectorType value.
      */
     @Generated
-    public MCPToolConnectorId getConnectorType() {
+    public McpToolConnectorId getConnectorType() {
         return this.connectorType;
-    }
-
-    /**
-     * Set the connectorType property: Identifier for service connectors, like those available in ChatGPT. One of
-     * `server_url` or `connector_id` must be provided. Learn more about service
-     * connectors [here](/docs/guides/tools-remote-mcp#connectors).
-     * Currently supported `connector_id` values are:
-     * - Dropbox: `connector_dropbox`
-     * - Gmail: `connector_gmail`
-     * - Google Calendar: `connector_googlecalendar`
-     * - Google Drive: `connector_googledrive`
-     * - Microsoft Teams: `connector_microsoftteams`
-     * - Outlook Calendar: `connector_outlookcalendar`
-     * - Outlook Email: `connector_outlookemail`
-     * - SharePoint: `connector_sharepoint`.
-     *
-     * @param connectorType the connectorType value to set.
-     * @return the McpTool object itself.
-     */
-    @Generated
-    public McpTool setConnectorType(MCPToolConnectorId connectorType) {
-        this.connectorType = connectorType;
-        return this;
     }
 
     /**
@@ -476,7 +453,7 @@ public final class McpTool extends Tool {
             String serverLabel = null;
             ToolType type = ToolType.MCP;
             String serverUrl = null;
-            MCPToolConnectorId connectorType = null;
+            McpToolConnectorId connectorType = null;
             String authorization = null;
             String serverDescription = null;
             Map<String, String> headers = null;
@@ -493,7 +470,7 @@ public final class McpTool extends Tool {
                 } else if ("server_url".equals(fieldName)) {
                     serverUrl = reader.getString();
                 } else if ("connector_id".equals(fieldName)) {
-                    connectorType = MCPToolConnectorId.fromString(reader.getString());
+                    connectorType = McpToolConnectorId.fromString(reader.getString());
                 } else if ("authorization".equals(fieldName)) {
                     authorization = reader.getString();
                 } else if ("server_description".equals(fieldName)) {
@@ -524,5 +501,28 @@ public final class McpTool extends Tool {
             deserializedMcpTool.projectConnectionId = projectConnectionId;
             return deserializedMcpTool;
         });
+    }
+
+    /**
+     * Set the connectorType property: Identifier for service connectors, like those available in ChatGPT. One of
+     * `server_url` or `connector_id` must be provided. Learn more about service
+     * connectors [here](/docs/guides/tools-remote-mcp#connectors).
+     * Currently supported `connector_id` values are:
+     * - Dropbox: `connector_dropbox`
+     * - Gmail: `connector_gmail`
+     * - Google Calendar: `connector_googlecalendar`
+     * - Google Drive: `connector_googledrive`
+     * - Microsoft Teams: `connector_microsoftteams`
+     * - Outlook Calendar: `connector_outlookcalendar`
+     * - Outlook Email: `connector_outlookemail`
+     * - SharePoint: `connector_sharepoint`.
+     *
+     * @param connectorType the connectorType value to set.
+     * @return the McpTool object itself.
+     */
+    @Generated
+    public McpTool setConnectorType(McpToolConnectorId connectorType) {
+        this.connectorType = connectorType;
+        return this;
     }
 }

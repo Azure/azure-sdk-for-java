@@ -12,10 +12,10 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The ContainerNetworkPolicyAllowlistParam model.
+ * The ContainerNetworkPolicyAllowlistParameter model.
  */
 @Fluent
-public final class ContainerNetworkPolicyAllowlistParam extends ContainerNetworkPolicyParam {
+public final class ContainerNetworkPolicyAllowlistParameter extends ContainerNetworkPolicyParameter {
 
     /*
      * The type property.
@@ -33,15 +33,15 @@ public final class ContainerNetworkPolicyAllowlistParam extends ContainerNetwork
      * Optional domain-scoped secrets for allowlisted domains.
      */
     @Generated
-    private List<ContainerNetworkPolicyDomainSecretParam> domainSecrets;
+    private List<ContainerNetworkPolicyDomainSecretParameter> domainSecrets;
 
     /**
-     * Creates an instance of ContainerNetworkPolicyAllowlistParam class.
+     * Creates an instance of ContainerNetworkPolicyAllowlistParameter class.
      *
      * @param allowedDomains the allowedDomains value to set.
      */
     @Generated
-    public ContainerNetworkPolicyAllowlistParam(List<String> allowedDomains) {
+    public ContainerNetworkPolicyAllowlistParameter(List<String> allowedDomains) {
         this.allowedDomains = allowedDomains;
     }
 
@@ -72,7 +72,7 @@ public final class ContainerNetworkPolicyAllowlistParam extends ContainerNetwork
      * @return the domainSecrets value.
      */
     @Generated
-    public List<ContainerNetworkPolicyDomainSecretParam> getDomainSecrets() {
+    public List<ContainerNetworkPolicyDomainSecretParameter> getDomainSecrets() {
         return this.domainSecrets;
     }
 
@@ -80,11 +80,11 @@ public final class ContainerNetworkPolicyAllowlistParam extends ContainerNetwork
      * Set the domainSecrets property: Optional domain-scoped secrets for allowlisted domains.
      *
      * @param domainSecrets the domainSecrets value to set.
-     * @return the ContainerNetworkPolicyAllowlistParam object itself.
+     * @return the ContainerNetworkPolicyAllowlistParameter object itself.
      */
     @Generated
-    public ContainerNetworkPolicyAllowlistParam
-        setDomainSecrets(List<ContainerNetworkPolicyDomainSecretParam> domainSecrets) {
+    public ContainerNetworkPolicyAllowlistParameter
+        setDomainSecrets(List<ContainerNetworkPolicyDomainSecretParameter> domainSecrets) {
         this.domainSecrets = domainSecrets;
         return this;
     }
@@ -105,20 +105,20 @@ public final class ContainerNetworkPolicyAllowlistParam extends ContainerNetwork
     }
 
     /**
-     * Reads an instance of ContainerNetworkPolicyAllowlistParam from the JsonReader.
+     * Reads an instance of ContainerNetworkPolicyAllowlistParameter from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ContainerNetworkPolicyAllowlistParam if the JsonReader was pointing to an instance of it,
-     * or null if it was pointing to JSON null.
+     * @return An instance of ContainerNetworkPolicyAllowlistParameter if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ContainerNetworkPolicyAllowlistParam.
+     * @throws IOException If an error occurs while reading the ContainerNetworkPolicyAllowlistParameter.
      */
     @Generated
-    public static ContainerNetworkPolicyAllowlistParam fromJson(JsonReader jsonReader) throws IOException {
+    public static ContainerNetworkPolicyAllowlistParameter fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             List<String> allowedDomains = null;
             ContainerNetworkPolicyParamType type = ContainerNetworkPolicyParamType.ALLOWLIST;
-            List<ContainerNetworkPolicyDomainSecretParam> domainSecrets = null;
+            List<ContainerNetworkPolicyDomainSecretParameter> domainSecrets = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -128,16 +128,16 @@ public final class ContainerNetworkPolicyAllowlistParam extends ContainerNetwork
                     type = ContainerNetworkPolicyParamType.fromString(reader.getString());
                 } else if ("domain_secrets".equals(fieldName)) {
                     domainSecrets
-                        = reader.readArray(reader1 -> ContainerNetworkPolicyDomainSecretParam.fromJson(reader1));
+                        = reader.readArray(reader1 -> ContainerNetworkPolicyDomainSecretParameter.fromJson(reader1));
                 } else {
                     reader.skipChildren();
                 }
             }
-            ContainerNetworkPolicyAllowlistParam deserializedContainerNetworkPolicyAllowlistParam
-                = new ContainerNetworkPolicyAllowlistParam(allowedDomains);
-            deserializedContainerNetworkPolicyAllowlistParam.type = type;
-            deserializedContainerNetworkPolicyAllowlistParam.domainSecrets = domainSecrets;
-            return deserializedContainerNetworkPolicyAllowlistParam;
+            ContainerNetworkPolicyAllowlistParameter deserializedContainerNetworkPolicyAllowlistParameter
+                = new ContainerNetworkPolicyAllowlistParameter(allowedDomains);
+            deserializedContainerNetworkPolicyAllowlistParameter.type = type;
+            deserializedContainerNetworkPolicyAllowlistParameter.domainSecrets = domainSecrets;
+            return deserializedContainerNetworkPolicyAllowlistParameter;
         });
     }
 }

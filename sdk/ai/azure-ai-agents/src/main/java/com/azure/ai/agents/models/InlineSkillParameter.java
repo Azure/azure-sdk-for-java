@@ -11,10 +11,10 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The InlineSkillParam model.
+ * The InlineSkillParameter model.
  */
 @Immutable
-public final class InlineSkillParam extends ContainerSkill {
+public final class InlineSkillParameter extends ContainerSkill {
 
     /*
      * The type property.
@@ -38,17 +38,17 @@ public final class InlineSkillParam extends ContainerSkill {
      * Inline skill payload
      */
     @Generated
-    private final InlineSkillSourceParam source;
+    private final InlineSkillSourceParameter source;
 
     /**
-     * Creates an instance of InlineSkillParam class.
+     * Creates an instance of InlineSkillParameter class.
      *
      * @param name the name value to set.
      * @param description the description value to set.
      * @param source the source value to set.
      */
     @Generated
-    public InlineSkillParam(String name, String description, InlineSkillSourceParam source) {
+    public InlineSkillParameter(String name, String description, InlineSkillSourceParameter source) {
         this.name = name;
         this.description = description;
         this.source = source;
@@ -91,7 +91,7 @@ public final class InlineSkillParam extends ContainerSkill {
      * @return the source value.
      */
     @Generated
-    public InlineSkillSourceParam getSource() {
+    public InlineSkillSourceParameter getSource() {
         return this.source;
     }
 
@@ -110,20 +110,20 @@ public final class InlineSkillParam extends ContainerSkill {
     }
 
     /**
-     * Reads an instance of InlineSkillParam from the JsonReader.
+     * Reads an instance of InlineSkillParameter from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of InlineSkillParam if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     * @return An instance of InlineSkillParameter if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the InlineSkillParam.
+     * @throws IOException If an error occurs while reading the InlineSkillParameter.
      */
     @Generated
-    public static InlineSkillParam fromJson(JsonReader jsonReader) throws IOException {
+    public static InlineSkillParameter fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String name = null;
             String description = null;
-            InlineSkillSourceParam source = null;
+            InlineSkillSourceParameter source = null;
             ContainerSkillType type = ContainerSkillType.INLINE;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -133,16 +133,16 @@ public final class InlineSkillParam extends ContainerSkill {
                 } else if ("description".equals(fieldName)) {
                     description = reader.getString();
                 } else if ("source".equals(fieldName)) {
-                    source = InlineSkillSourceParam.fromJson(reader);
+                    source = InlineSkillSourceParameter.fromJson(reader);
                 } else if ("type".equals(fieldName)) {
                     type = ContainerSkillType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            InlineSkillParam deserializedInlineSkillParam = new InlineSkillParam(name, description, source);
-            deserializedInlineSkillParam.type = type;
-            return deserializedInlineSkillParam;
+            InlineSkillParameter deserializedInlineSkillParameter = new InlineSkillParameter(name, description, source);
+            deserializedInlineSkillParameter.type = type;
+            return deserializedInlineSkillParameter;
         });
     }
 }

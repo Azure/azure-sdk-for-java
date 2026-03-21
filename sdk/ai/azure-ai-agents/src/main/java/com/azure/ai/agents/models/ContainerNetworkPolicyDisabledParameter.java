@@ -11,10 +11,10 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The ContainerNetworkPolicyDisabledParam model.
+ * The ContainerNetworkPolicyDisabledParameter model.
  */
 @Immutable
-public final class ContainerNetworkPolicyDisabledParam extends ContainerNetworkPolicyParam {
+public final class ContainerNetworkPolicyDisabledParameter extends ContainerNetworkPolicyParameter {
 
     /*
      * The type property.
@@ -23,10 +23,10 @@ public final class ContainerNetworkPolicyDisabledParam extends ContainerNetworkP
     private ContainerNetworkPolicyParamType type = ContainerNetworkPolicyParamType.DISABLED;
 
     /**
-     * Creates an instance of ContainerNetworkPolicyDisabledParam class.
+     * Creates an instance of ContainerNetworkPolicyDisabledParameter class.
      */
     @Generated
-    public ContainerNetworkPolicyDisabledParam() {
+    public ContainerNetworkPolicyDisabledParameter() {
     }
 
     /**
@@ -52,29 +52,29 @@ public final class ContainerNetworkPolicyDisabledParam extends ContainerNetworkP
     }
 
     /**
-     * Reads an instance of ContainerNetworkPolicyDisabledParam from the JsonReader.
+     * Reads an instance of ContainerNetworkPolicyDisabledParameter from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ContainerNetworkPolicyDisabledParam if the JsonReader was pointing to an instance of it,
-     * or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the ContainerNetworkPolicyDisabledParam.
+     * @return An instance of ContainerNetworkPolicyDisabledParameter if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ContainerNetworkPolicyDisabledParameter.
      */
     @Generated
-    public static ContainerNetworkPolicyDisabledParam fromJson(JsonReader jsonReader) throws IOException {
+    public static ContainerNetworkPolicyDisabledParameter fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ContainerNetworkPolicyDisabledParam deserializedContainerNetworkPolicyDisabledParam
-                = new ContainerNetworkPolicyDisabledParam();
+            ContainerNetworkPolicyDisabledParameter deserializedContainerNetworkPolicyDisabledParameter
+                = new ContainerNetworkPolicyDisabledParameter();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("type".equals(fieldName)) {
-                    deserializedContainerNetworkPolicyDisabledParam.type
+                    deserializedContainerNetworkPolicyDisabledParameter.type
                         = ContainerNetworkPolicyParamType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedContainerNetworkPolicyDisabledParam;
+            return deserializedContainerNetworkPolicyDisabledParameter;
         });
     }
 }

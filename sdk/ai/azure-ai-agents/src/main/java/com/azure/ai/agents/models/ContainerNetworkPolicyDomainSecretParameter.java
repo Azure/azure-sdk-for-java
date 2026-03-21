@@ -12,11 +12,11 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The ContainerNetworkPolicyDomainSecretParam model.
+ * The ContainerNetworkPolicyDomainSecretParameter model.
  */
 @Immutable
-public final class ContainerNetworkPolicyDomainSecretParam
-    implements JsonSerializable<ContainerNetworkPolicyDomainSecretParam> {
+public final class ContainerNetworkPolicyDomainSecretParameter
+    implements JsonSerializable<ContainerNetworkPolicyDomainSecretParameter> {
 
     /*
      * The domain associated with the secret.
@@ -37,14 +37,14 @@ public final class ContainerNetworkPolicyDomainSecretParam
     private final String value;
 
     /**
-     * Creates an instance of ContainerNetworkPolicyDomainSecretParam class.
+     * Creates an instance of ContainerNetworkPolicyDomainSecretParameter class.
      *
      * @param domain the domain value to set.
      * @param name the name value to set.
      * @param value the value value to set.
      */
     @Generated
-    public ContainerNetworkPolicyDomainSecretParam(String domain, String name, String value) {
+    public ContainerNetworkPolicyDomainSecretParameter(String domain, String name, String value) {
         this.domain = domain;
         this.name = name;
         this.value = value;
@@ -94,16 +94,16 @@ public final class ContainerNetworkPolicyDomainSecretParam
     }
 
     /**
-     * Reads an instance of ContainerNetworkPolicyDomainSecretParam from the JsonReader.
+     * Reads an instance of ContainerNetworkPolicyDomainSecretParameter from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ContainerNetworkPolicyDomainSecretParam if the JsonReader was pointing to an instance of
-     * it, or null if it was pointing to JSON null.
+     * @return An instance of ContainerNetworkPolicyDomainSecretParameter if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ContainerNetworkPolicyDomainSecretParam.
+     * @throws IOException If an error occurs while reading the ContainerNetworkPolicyDomainSecretParameter.
      */
     @Generated
-    public static ContainerNetworkPolicyDomainSecretParam fromJson(JsonReader jsonReader) throws IOException {
+    public static ContainerNetworkPolicyDomainSecretParameter fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String domain = null;
             String name = null;
@@ -121,7 +121,7 @@ public final class ContainerNetworkPolicyDomainSecretParam
                     reader.skipChildren();
                 }
             }
-            return new ContainerNetworkPolicyDomainSecretParam(domain, name, value);
+            return new ContainerNetworkPolicyDomainSecretParameter(domain, name, value);
         });
     }
 }

@@ -6,25 +6,22 @@ package com.azure.ai.agents.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
 
 /**
- * Automatic Code Interpreter Tool Parameters
- *
- * Configuration for a code interpreter container. Optionally specify the IDs of the files to run the code on.
+ * The ContainerAutoParameter model.
  */
 @Fluent
-public final class AutoCodeInterpreterToolParam implements JsonSerializable<AutoCodeInterpreterToolParam> {
+public final class ContainerAutoParameter extends FunctionShellToolParamEnvironment {
 
     /*
-     * Always `auto`.
+     * The type property.
      */
     @Generated
-    private final String type = "auto";
+    private FunctionShellToolParamEnvironmentType type = FunctionShellToolParamEnvironmentType.CONTAINER_AUTO;
 
     /*
      * An optional list of uploaded files to make available to your code.
@@ -39,25 +36,32 @@ public final class AutoCodeInterpreterToolParam implements JsonSerializable<Auto
     private ContainerMemoryLimit memoryLimit;
 
     /*
+     * An optional list of skills referenced by id or inline data.
+     */
+    @Generated
+    private List<ContainerSkill> skills;
+
+    /*
      * The network_policy property.
      */
     @Generated
-    private ContainerNetworkPolicyParam networkPolicy;
+    private ContainerNetworkPolicyParameter networkPolicy;
 
     /**
-     * Creates an instance of AutoCodeInterpreterToolParam class.
+     * Creates an instance of ContainerAutoParameter class.
      */
     @Generated
-    public AutoCodeInterpreterToolParam() {
+    public ContainerAutoParameter() {
     }
 
     /**
-     * Get the type property: Always `auto`.
+     * Get the type property: The type property.
      *
      * @return the type value.
      */
     @Generated
-    public String getType() {
+    @Override
+    public FunctionShellToolParamEnvironmentType getType() {
         return this.type;
     }
 
@@ -75,10 +79,10 @@ public final class AutoCodeInterpreterToolParam implements JsonSerializable<Auto
      * Set the fileIds property: An optional list of uploaded files to make available to your code.
      *
      * @param fileIds the fileIds value to set.
-     * @return the AutoCodeInterpreterToolParam object itself.
+     * @return the ContainerAutoParameter object itself.
      */
     @Generated
-    public AutoCodeInterpreterToolParam setFileIds(List<String> fileIds) {
+    public ContainerAutoParameter setFileIds(List<String> fileIds) {
         this.fileIds = fileIds;
         return this;
     }
@@ -97,11 +101,33 @@ public final class AutoCodeInterpreterToolParam implements JsonSerializable<Auto
      * Set the memoryLimit property: The memory_limit property.
      *
      * @param memoryLimit the memoryLimit value to set.
-     * @return the AutoCodeInterpreterToolParam object itself.
+     * @return the ContainerAutoParameter object itself.
      */
     @Generated
-    public AutoCodeInterpreterToolParam setMemoryLimit(ContainerMemoryLimit memoryLimit) {
+    public ContainerAutoParameter setMemoryLimit(ContainerMemoryLimit memoryLimit) {
         this.memoryLimit = memoryLimit;
+        return this;
+    }
+
+    /**
+     * Get the skills property: An optional list of skills referenced by id or inline data.
+     *
+     * @return the skills value.
+     */
+    @Generated
+    public List<ContainerSkill> getSkills() {
+        return this.skills;
+    }
+
+    /**
+     * Set the skills property: An optional list of skills referenced by id or inline data.
+     *
+     * @param skills the skills value to set.
+     * @return the ContainerAutoParameter object itself.
+     */
+    @Generated
+    public ContainerAutoParameter setSkills(List<ContainerSkill> skills) {
+        this.skills = skills;
         return this;
     }
 
@@ -111,7 +137,7 @@ public final class AutoCodeInterpreterToolParam implements JsonSerializable<Auto
      * @return the networkPolicy value.
      */
     @Generated
-    public ContainerNetworkPolicyParam getNetworkPolicy() {
+    public ContainerNetworkPolicyParameter getNetworkPolicy() {
         return this.networkPolicy;
     }
 
@@ -119,10 +145,10 @@ public final class AutoCodeInterpreterToolParam implements JsonSerializable<Auto
      * Set the networkPolicy property: The network_policy property.
      *
      * @param networkPolicy the networkPolicy value to set.
-     * @return the AutoCodeInterpreterToolParam object itself.
+     * @return the ContainerAutoParameter object itself.
      */
     @Generated
-    public AutoCodeInterpreterToolParam setNetworkPolicy(ContainerNetworkPolicyParam networkPolicy) {
+    public ContainerAutoParameter setNetworkPolicy(ContainerNetworkPolicyParameter networkPolicy) {
         this.networkPolicy = networkPolicy;
         return this;
     }
@@ -134,43 +160,48 @@ public final class AutoCodeInterpreterToolParam implements JsonSerializable<Auto
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeArrayField("file_ids", this.fileIds, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("memory_limit", this.memoryLimit == null ? null : this.memoryLimit.toString());
+        jsonWriter.writeArrayField("skills", this.skills, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("network_policy", this.networkPolicy);
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of AutoCodeInterpreterToolParam from the JsonReader.
+     * Reads an instance of ContainerAutoParameter from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of AutoCodeInterpreterToolParam if the JsonReader was pointing to an instance of it, or null
-     * if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the AutoCodeInterpreterToolParam.
+     * @return An instance of ContainerAutoParameter if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ContainerAutoParameter.
      */
     @Generated
-    public static AutoCodeInterpreterToolParam fromJson(JsonReader jsonReader) throws IOException {
+    public static ContainerAutoParameter fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AutoCodeInterpreterToolParam deserializedAutoCodeInterpreterToolParam = new AutoCodeInterpreterToolParam();
+            ContainerAutoParameter deserializedContainerAutoParameter = new ContainerAutoParameter();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("file_ids".equals(fieldName)) {
+                if ("type".equals(fieldName)) {
+                    deserializedContainerAutoParameter.type
+                        = FunctionShellToolParamEnvironmentType.fromString(reader.getString());
+                } else if ("file_ids".equals(fieldName)) {
                     List<String> fileIds = reader.readArray(reader1 -> reader1.getString());
-                    deserializedAutoCodeInterpreterToolParam.fileIds = fileIds;
+                    deserializedContainerAutoParameter.fileIds = fileIds;
                 } else if ("memory_limit".equals(fieldName)) {
-                    deserializedAutoCodeInterpreterToolParam.memoryLimit
+                    deserializedContainerAutoParameter.memoryLimit
                         = ContainerMemoryLimit.fromString(reader.getString());
+                } else if ("skills".equals(fieldName)) {
+                    List<ContainerSkill> skills = reader.readArray(reader1 -> ContainerSkill.fromJson(reader1));
+                    deserializedContainerAutoParameter.skills = skills;
                 } else if ("network_policy".equals(fieldName)) {
-                    deserializedAutoCodeInterpreterToolParam.networkPolicy
-                        = ContainerNetworkPolicyParam.fromJson(reader);
+                    deserializedContainerAutoParameter.networkPolicy = ContainerNetworkPolicyParameter.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedAutoCodeInterpreterToolParam;
+            return deserializedContainerAutoParameter;
         });
     }
 }

@@ -11,10 +11,10 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The SkillReferenceParam model.
+ * The SkillReferenceParameter model.
  */
 @Fluent
-public final class SkillReferenceParam extends ContainerSkill {
+public final class SkillReferenceParameter extends ContainerSkill {
 
     /*
      * The type property.
@@ -35,12 +35,12 @@ public final class SkillReferenceParam extends ContainerSkill {
     private String version;
 
     /**
-     * Creates an instance of SkillReferenceParam class.
+     * Creates an instance of SkillReferenceParameter class.
      *
      * @param skillId the skillId value to set.
      */
     @Generated
-    public SkillReferenceParam(String skillId) {
+    public SkillReferenceParameter(String skillId) {
         this.skillId = skillId;
     }
 
@@ -79,10 +79,10 @@ public final class SkillReferenceParam extends ContainerSkill {
      * Set the version property: Optional skill version. Use a positive integer or 'latest'. Omit for default.
      *
      * @param version the version value to set.
-     * @return the SkillReferenceParam object itself.
+     * @return the SkillReferenceParameter object itself.
      */
     @Generated
-    public SkillReferenceParam setVersion(String version) {
+    public SkillReferenceParameter setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -101,16 +101,16 @@ public final class SkillReferenceParam extends ContainerSkill {
     }
 
     /**
-     * Reads an instance of SkillReferenceParam from the JsonReader.
+     * Reads an instance of SkillReferenceParameter from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of SkillReferenceParam if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     * @return An instance of SkillReferenceParameter if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the SkillReferenceParam.
+     * @throws IOException If an error occurs while reading the SkillReferenceParameter.
      */
     @Generated
-    public static SkillReferenceParam fromJson(JsonReader jsonReader) throws IOException {
+    public static SkillReferenceParameter fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String skillId = null;
             ContainerSkillType type = ContainerSkillType.SKILL_REFERENCE;
@@ -128,10 +128,10 @@ public final class SkillReferenceParam extends ContainerSkill {
                     reader.skipChildren();
                 }
             }
-            SkillReferenceParam deserializedSkillReferenceParam = new SkillReferenceParam(skillId);
-            deserializedSkillReferenceParam.type = type;
-            deserializedSkillReferenceParam.version = version;
-            return deserializedSkillReferenceParam;
+            SkillReferenceParameter deserializedSkillReferenceParameter = new SkillReferenceParameter(skillId);
+            deserializedSkillReferenceParameter.type = type;
+            deserializedSkillReferenceParameter.version = version;
+            return deserializedSkillReferenceParameter;
         });
     }
 }

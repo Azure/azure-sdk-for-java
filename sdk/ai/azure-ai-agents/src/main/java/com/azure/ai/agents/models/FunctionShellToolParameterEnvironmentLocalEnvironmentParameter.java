@@ -12,10 +12,11 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The FunctionShellToolParamEnvironmentLocalEnvironmentParam model.
+ * The FunctionShellToolParameterEnvironmentLocalEnvironmentParameter model.
  */
 @Fluent
-public final class FunctionShellToolParamEnvironmentLocalEnvironmentParam extends FunctionShellToolParamEnvironment {
+public final class FunctionShellToolParameterEnvironmentLocalEnvironmentParameter
+    extends FunctionShellToolParamEnvironment {
 
     /*
      * The type property.
@@ -27,13 +28,13 @@ public final class FunctionShellToolParamEnvironmentLocalEnvironmentParam extend
      * An optional list of skills.
      */
     @Generated
-    private List<LocalSkillParam> skills;
+    private List<LocalSkillParameter> skills;
 
     /**
-     * Creates an instance of FunctionShellToolParamEnvironmentLocalEnvironmentParam class.
+     * Creates an instance of FunctionShellToolParameterEnvironmentLocalEnvironmentParameter class.
      */
     @Generated
-    public FunctionShellToolParamEnvironmentLocalEnvironmentParam() {
+    public FunctionShellToolParameterEnvironmentLocalEnvironmentParameter() {
     }
 
     /**
@@ -53,7 +54,7 @@ public final class FunctionShellToolParamEnvironmentLocalEnvironmentParam extend
      * @return the skills value.
      */
     @Generated
-    public List<LocalSkillParam> getSkills() {
+    public List<LocalSkillParameter> getSkills() {
         return this.skills;
     }
 
@@ -61,10 +62,10 @@ public final class FunctionShellToolParamEnvironmentLocalEnvironmentParam extend
      * Set the skills property: An optional list of skills.
      *
      * @param skills the skills value to set.
-     * @return the FunctionShellToolParamEnvironmentLocalEnvironmentParam object itself.
+     * @return the FunctionShellToolParameterEnvironmentLocalEnvironmentParameter object itself.
      */
     @Generated
-    public FunctionShellToolParamEnvironmentLocalEnvironmentParam setSkills(List<LocalSkillParam> skills) {
+    public FunctionShellToolParameterEnvironmentLocalEnvironmentParameter setSkills(List<LocalSkillParameter> skills) {
         this.skills = skills;
         return this;
     }
@@ -82,33 +83,35 @@ public final class FunctionShellToolParamEnvironmentLocalEnvironmentParam extend
     }
 
     /**
-     * Reads an instance of FunctionShellToolParamEnvironmentLocalEnvironmentParam from the JsonReader.
+     * Reads an instance of FunctionShellToolParameterEnvironmentLocalEnvironmentParameter from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of FunctionShellToolParamEnvironmentLocalEnvironmentParam if the JsonReader was pointing to
-     * an instance of it, or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the FunctionShellToolParamEnvironmentLocalEnvironmentParam.
+     * @return An instance of FunctionShellToolParameterEnvironmentLocalEnvironmentParameter if the JsonReader was
+     * pointing to an instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the
+     * FunctionShellToolParameterEnvironmentLocalEnvironmentParameter.
      */
     @Generated
-    public static FunctionShellToolParamEnvironmentLocalEnvironmentParam fromJson(JsonReader jsonReader)
+    public static FunctionShellToolParameterEnvironmentLocalEnvironmentParameter fromJson(JsonReader jsonReader)
         throws IOException {
         return jsonReader.readObject(reader -> {
-            FunctionShellToolParamEnvironmentLocalEnvironmentParam deserializedFunctionShellToolParamEnvironmentLocalEnvironmentParam
-                = new FunctionShellToolParamEnvironmentLocalEnvironmentParam();
+            FunctionShellToolParameterEnvironmentLocalEnvironmentParameter deserializedFunctionShellToolParameterEnvironmentLocalEnvironmentParameter
+                = new FunctionShellToolParameterEnvironmentLocalEnvironmentParameter();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("type".equals(fieldName)) {
-                    deserializedFunctionShellToolParamEnvironmentLocalEnvironmentParam.type
+                    deserializedFunctionShellToolParameterEnvironmentLocalEnvironmentParameter.type
                         = FunctionShellToolParamEnvironmentType.fromString(reader.getString());
                 } else if ("skills".equals(fieldName)) {
-                    List<LocalSkillParam> skills = reader.readArray(reader1 -> LocalSkillParam.fromJson(reader1));
-                    deserializedFunctionShellToolParamEnvironmentLocalEnvironmentParam.skills = skills;
+                    List<LocalSkillParameter> skills
+                        = reader.readArray(reader1 -> LocalSkillParameter.fromJson(reader1));
+                    deserializedFunctionShellToolParameterEnvironmentLocalEnvironmentParameter.skills = skills;
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedFunctionShellToolParamEnvironmentLocalEnvironmentParam;
+            return deserializedFunctionShellToolParameterEnvironmentLocalEnvironmentParameter;
         });
     }
 }
