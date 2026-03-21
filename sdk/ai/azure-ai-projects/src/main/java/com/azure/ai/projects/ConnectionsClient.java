@@ -18,6 +18,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.logging.ClientLogger;
 
 /**
  * Initializes a new instance of the synchronous AIProjectClient type.
@@ -25,6 +26,7 @@ import com.azure.core.util.BinaryData;
 @ServiceClient(builder = AIProjectClientBuilder.class)
 public final class ConnectionsClient {
 
+    private static final ClientLogger LOGGER = new ClientLogger(ConnectionsClient.class);
     @Generated
     private final ConnectionsImpl serviceClient;
 
@@ -284,6 +286,7 @@ public final class ConnectionsClient {
         for (Connection connection : listConnections(connectionType, true)) {
             return getConnection(connection.getName(), includeCredentials);
         }
-        throw new IllegalStateException("No default connection found for type: " + connectionType);
+        throw LOGGER
+            .logExceptionAsError(new IllegalStateException("No default connection found for type: " + connectionType));
     }
 }

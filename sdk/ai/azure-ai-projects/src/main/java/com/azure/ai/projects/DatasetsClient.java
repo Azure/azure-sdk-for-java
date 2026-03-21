@@ -177,14 +177,14 @@ public final class DatasetsClient {
      * @throws IllegalArgumentException If the provided path is not a file
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public FileDatasetVersion createDatasetWithFile(String datasetName, String version, Path filePath) {
-        return createDatasetWithFile(datasetName, version, filePath, null);
+    public FileDatasetVersion createDatasetWithFile(String name, String version, Path filePath) {
+        return createDatasetWithFile(name, version, filePath, null);
     }
 
     /**
      * Creates a dataset from a single file. Uploads the file to blob storage and registers the dataset.
      *
-     * @param datasetName The name of the dataset.
+     * @param name The name of the dataset.
      * @param version The specific version id of the DatasetVersion to create or replace.
      * @param filePath The path to the file to upload.
      * @param connectionName The name of an Azure Storage Account connection to use for uploading.
@@ -193,8 +193,7 @@ public final class DatasetsClient {
      * @throws IllegalArgumentException If the provided path is not a file.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public FileDatasetVersion createDatasetWithFile(String datasetName, String version, Path filePath,
-        String connectionName) {
+    public FileDatasetVersion createDatasetWithFile(String name, String version, Path filePath, String connectionName) {
         if (!Files.isRegularFile(filePath)) {
             throw LOGGER
                 .logThrowableAsError(new IllegalArgumentException("The provided path is not a file: " + filePath));
@@ -203,7 +202,7 @@ public final class DatasetsClient {
         if (connectionName != null) {
             body.setConnectionName(connectionName);
         }
-        PendingUploadResponse pendingUploadResponse = this.pendingUpload(datasetName, version, body);
+        PendingUploadResponse pendingUploadResponse = this.pendingUpload(name, version, body);
         BlobReferenceSasCredential credential = pendingUploadResponse.getBlobReference().getCredential();
         BlobClient blobClient = new BlobClientBuilder().endpoint(credential.getSasUrl())
             .blobName(filePath.getFileName().toString())
@@ -211,7 +210,7 @@ public final class DatasetsClient {
         blobClient.upload(BinaryData.fromFile(filePath));
         RequestOptions requestOptions = new RequestOptions();
         FileDatasetVersion datasetVersion = this
-            .createOrUpdateVersionWithResponse(datasetName, version,
+            .createOrUpdateVersionWithResponse(name, version,
                 BinaryData.fromObject(new FileDatasetVersion().setDataUri(blobClient.getBlobUrl())), requestOptions)
             .getValue()
             .toObject(FileDatasetVersion.class);
@@ -229,15 +228,15 @@ public final class DatasetsClient {
      * @throws IOException if an I/ O error is thrown when accessing the starting file
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public FolderDatasetVersion createDatasetWithFolder(String datasetName, String version, Path folderPath)
+    public FolderDatasetVersion createDatasetWithFolder(String name, String version, Path folderPath)
         throws IOException {
-        return createDatasetWithFolder(datasetName, version, folderPath, null);
+        return createDatasetWithFolder(name, version, folderPath, null);
     }
 
     /**
      * Creates a dataset from a folder. Uploads all files in the folder to blob storage and registers the dataset.
      *
-     * @param datasetName The name of the dataset.
+     * @param name The name of the dataset.
      * @param version The specific version id of the DatasetVersion to create or replace.
      * @param folderPath The path to the folder containing files to upload.
      * @param connectionName The name of an Azure Storage Account connection to use for uploading.
@@ -247,7 +246,7 @@ public final class DatasetsClient {
      * @throws IOException if an I/O error is thrown when accessing the starting file
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public FolderDatasetVersion createDatasetWithFolder(String datasetName, String version, Path folderPath,
+    public FolderDatasetVersion createDatasetWithFolder(String name, String version, Path folderPath,
         String connectionName) throws IOException {
         if (!Files.isDirectory(folderPath)) {
             throw LOGGER
@@ -257,7 +256,7 @@ public final class DatasetsClient {
         if (connectionName != null) {
             request.setConnectionName(connectionName);
         }
-        PendingUploadResponse pendingUploadResponse = this.pendingUpload(datasetName, version, request);
+        PendingUploadResponse pendingUploadResponse = this.pendingUpload(name, version, request);
         String containerUrl = pendingUploadResponse.getBlobReference().getBlobUrl();
         BlobReferenceSasCredential credential = pendingUploadResponse.getBlobReference().getCredential();
         BlobContainerClient containerClient
@@ -269,7 +268,7 @@ public final class DatasetsClient {
         });
         RequestOptions requestOptions = new RequestOptions();
         FolderDatasetVersion datasetVersion = this
-            .createOrUpdateVersionWithResponse(datasetName, version,
+            .createOrUpdateVersionWithResponse(name, version,
                 BinaryData.fromObject(new FolderDatasetVersion().setDataUri(containerUrl)), requestOptions)
             .getValue()
             .toObject(FolderDatasetVersion.class);

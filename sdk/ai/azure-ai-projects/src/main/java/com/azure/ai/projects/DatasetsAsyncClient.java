@@ -186,21 +186,21 @@ public final class DatasetsAsyncClient {
     /**
      * Creates a dataset from a file.
      *
-     * @param datasetName The name of the dataset.
+     * @param name The name of the dataset.
      * @param version The specific version id of the DatasetVersion to create or replace.
      * @param filePath The path to the file to upload.
      * @return A Mono that completes with a FileDatasetVersion representing the created dataset.
      * @throws IllegalArgumentException If the provided path is not a file
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FileDatasetVersion> createDatasetWithFile(String datasetName, String version, Path filePath) {
-        return createDatasetWithFile(datasetName, version, filePath, null);
+    public Mono<FileDatasetVersion> createDatasetWithFile(String name, String version, Path filePath) {
+        return createDatasetWithFile(name, version, filePath, null);
     }
 
     /**
      * Creates a dataset from a single file. Uploads the file to blob storage and registers the dataset.
      *
-     * @param datasetName The name of the dataset.
+     * @param name The name of the dataset.
      * @param version The specific version id of the DatasetVersion to create or replace.
      * @param filePath The path to the file to upload.
      * @param connectionName The name of an Azure Storage Account connection to use for uploading.
@@ -209,7 +209,7 @@ public final class DatasetsAsyncClient {
      * @throws IllegalArgumentException If the provided path is not a file
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FileDatasetVersion> createDatasetWithFile(String datasetName, String version, Path filePath,
+    public Mono<FileDatasetVersion> createDatasetWithFile(String name, String version, Path filePath,
         String connectionName) {
         if (!Files.isRegularFile(filePath)) {
             return Mono.error(new IllegalArgumentException("The provided path is not a file: " + filePath));
@@ -218,7 +218,7 @@ public final class DatasetsAsyncClient {
         if (connectionName != null) {
             request.setConnectionName(connectionName);
         }
-        return this.pendingUpload(datasetName, version, request).flatMap(pendingUploadResponse -> {
+        return this.pendingUpload(name, version, request).flatMap(pendingUploadResponse -> {
             String sasUri = pendingUploadResponse.getBlobReference().getCredential().getSasUrl();
             BlobAsyncClient blobClient = new BlobClientBuilder().endpoint(sasUri)
                 .blobName(filePath.getFileName().toString())
@@ -228,8 +228,7 @@ public final class DatasetsAsyncClient {
             RequestOptions requestOptions = new RequestOptions();
             FileDatasetVersion fileDataset = new FileDatasetVersion().setDataUri(blobUrl);
             return this
-                .createOrUpdateVersionWithResponse(datasetName, version, BinaryData.fromObject(fileDataset),
-                    requestOptions)
+                .createOrUpdateVersionWithResponse(name, version, BinaryData.fromObject(fileDataset), requestOptions)
                 .flatMap(FluxUtil::toMono)
                 .map(data -> data.toObject(FileDatasetVersion.class));
         });
@@ -238,21 +237,21 @@ public final class DatasetsAsyncClient {
     /**
      * Creates a dataset from a folder.
      *
-     * @param datasetName The name of the dataset.
+     * @param name The name of the dataset.
      * @param version The specific version id of the DatasetVersion to create or replace.
      * @param folderPath The path to the folder containing files to upload.
      * @return A Mono that completes with a FolderDatasetVersion representing the created dataset.
      * @throws IllegalArgumentException If the provided path is not a directory.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FolderDatasetVersion> createDatasetWithFolder(String datasetName, String version, Path folderPath) {
-        return createDatasetWithFolder(datasetName, version, folderPath, null);
+    public Mono<FolderDatasetVersion> createDatasetWithFolder(String name, String version, Path folderPath) {
+        return createDatasetWithFolder(name, version, folderPath, null);
     }
 
     /**
      * Creates a dataset from a folder. Uploads all files in the folder to blob storage and registers the dataset.
      *
-     * @param datasetName The name of the dataset.
+     * @param name The name of the dataset.
      * @param version The specific version id of the DatasetVersion to create or replace.
      * @param folderPath The path to the folder containing files to upload.
      * @param connectionName The name of an Azure Storage Account connection to use for uploading.
@@ -261,7 +260,7 @@ public final class DatasetsAsyncClient {
      * @throws IllegalArgumentException If the provided path is not a directory.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FolderDatasetVersion> createDatasetWithFolder(String datasetName, String version, Path folderPath,
+    public Mono<FolderDatasetVersion> createDatasetWithFolder(String name, String version, Path folderPath,
         String connectionName) {
         if (!Files.isDirectory(folderPath)) {
             return Mono.error(new IllegalArgumentException("The provided path is not a folder: " + folderPath));
@@ -270,7 +269,7 @@ public final class DatasetsAsyncClient {
         if (connectionName != null) {
             request.setConnectionName(connectionName);
         }
-        return this.pendingUpload(datasetName, version, request).flatMap(pendingUploadResponse -> {
+        return this.pendingUpload(name, version, request).flatMap(pendingUploadResponse -> {
             String containerUrl = pendingUploadResponse.getBlobReference().getBlobUrl();
             String sasUri = pendingUploadResponse.getBlobReference().getCredential().getSasUrl();
             BlobContainerAsyncClient containerClient
@@ -288,8 +287,7 @@ public final class DatasetsAsyncClient {
             RequestOptions requestOptions = new RequestOptions();
             FolderDatasetVersion folderDataset = new FolderDatasetVersion().setDataUri(containerUrl);
             return this
-                .createOrUpdateVersionWithResponse(datasetName, version, BinaryData.fromObject(folderDataset),
-                    requestOptions)
+                .createOrUpdateVersionWithResponse(name, version, BinaryData.fromObject(folderDataset), requestOptions)
                 .flatMap(FluxUtil::toMono)
                 .map(data -> data.toObject(FolderDatasetVersion.class));
         });
