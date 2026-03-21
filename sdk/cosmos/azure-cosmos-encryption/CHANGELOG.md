@@ -4,7 +4,7 @@
 
 #### Features Added
 * Added user agent tracking for the encryption SDK. The user agent string now includes `azure-cosmos-encryption/{version}` to enable telemetry tracking of encryption SDK adoption and version distribution. - See [PR 48505](https://github.com/Azure/azure-sdk-for-java/pull/48505)
-* GA'd `deleteAllItemsByPartitionKey` API in `CosmosEncryptionAsyncContainer` and `CosmosEncryptionContainer`. - See [PR 48505](https://github.com/Azure/azure-sdk-for-java/pull/48505)
+* GA'd `deleteAllItemsByPartitionKey` and `queryChangeFeed` APIs in `CosmosEncryptionAsyncContainer` and `CosmosEncryptionContainer`. - See [PR 48505](https://github.com/Azure/azure-sdk-for-java/pull/48505)
 
 #### Breaking Changes
 

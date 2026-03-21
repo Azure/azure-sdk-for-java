@@ -5,12 +5,15 @@ package com.azure.cosmos.encryption.implementation;
 
 import com.azure.core.util.CoreUtils;
 
+import java.util.Map;
+
 public class Constants {
     public static final int CACHED_ENCRYPTION_SETTING_DEFAULT_DEFAULT_TTL_IN_MINUTES = 60;
 
     public static final String PROPERTIES_FILE_NAME = "azure-cosmos-encryption.properties";
-    public static final String CURRENT_VERSION = CoreUtils.getProperties(PROPERTIES_FILE_NAME).get("version");
-    public static final String CURRENT_NAME = CoreUtils.getProperties(PROPERTIES_FILE_NAME).get("name");
+    private static final Map<String, String> PROPERTIES = CoreUtils.getProperties(PROPERTIES_FILE_NAME);
+    public static final String CURRENT_NAME = PROPERTIES.getOrDefault("name", "azure-cosmos-encryption");
+    public static final String CURRENT_VERSION = PROPERTIES.getOrDefault("version", "unknown");
     public static final String USER_AGENT_SUFFIX = CURRENT_NAME + "/" + CURRENT_VERSION;
 
     public static final String INTENDED_COLLECTION_RID_HEADER = "x-ms-cosmos-intended-collection-rid";
