@@ -61,10 +61,10 @@ public abstract class SingleGroupAggregator {
     }
 
     /**
-     * Adds the payload for group by values
-     * @param values
+     * Adds the payload for group by values.
+     * @param values the payload values to aggregate
      */
-    public abstract void addValues(Document values);
+    public abstract void addValues(Object values);
 
     /**
      * Forms the final result of the grouping.
@@ -92,7 +92,7 @@ public abstract class SingleGroupAggregator {
         }
 
         @Override
-        public void addValues(Document values) {
+        public void addValues(Object values) {
             this.aggregateValue.addValue(values);
         }
 
@@ -163,11 +163,12 @@ public abstract class SingleGroupAggregator {
         }
 
         @Override
-        public void addValues(Document values) {
+        public void addValues(Object values) {
+            Document doc = (Document) values;
             for (Map.Entry<String, AggregateValue> aliasAndValue : this.aliasToValue.entrySet()) {
                 String alias = aliasAndValue.getKey();
                 AggregateValue aggregateValue = aliasAndValue.getValue();
-                aggregateValue.addValue(values.get(alias));
+                aggregateValue.addValue(doc.get(alias));
             }
         }
 
