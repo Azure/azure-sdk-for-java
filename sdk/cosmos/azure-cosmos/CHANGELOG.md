@@ -7,6 +7,7 @@
 * Added support for Query Advisor feature - See [48160](https://github.com/Azure/azure-sdk-for-java/pull/48160) 
 
 #### Breaking Changes
+* `ReadConsistencyStrategy` is now blocked when using Gateway connection mode. Setting a non-DEFAULT `ReadConsistencyStrategy` on `CosmosClientBuilder` or request options while using Gateway mode will throw `IllegalArgumentException`. `ReadConsistencyStrategy` is only supported in DIRECT connection mode.
 
 #### Bugs Fixed
 * Fixed Remote Code Execution (RCE) vulnerability (CWE-502) by replacing Java deserialization with JSON-based serialization in `CosmosClientMetadataCachesSnapshot`, `AsyncCache`, and `DocumentCollection`. The metadata cache snapshot now uses Jackson for serialization/deserialization, eliminating the entire class of Java deserialization attacks. - [PR 47971](https://github.com/Azure/azure-sdk-for-java/pull/47971)

@@ -300,7 +300,7 @@ implements IDocumentQueryExecutionContext<T> {
         if (cosmosQueryRequestOptions.getReadConsistencyStrategy() != null) {
 
             String readConsistencyStrategyName = cosmosQueryRequestOptions.getReadConsistencyStrategy().toString();
-            this.client.validateAndLogNonDefaultReadConsistencyStrategy(readConsistencyStrategyName);
+            this.client.validateNonDefaultReadConsistencyStrategy(readConsistencyStrategyName);
             requestHeaders.put(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY, readConsistencyStrategyName);
 
             consistencyLevelOverrideApplicable =
@@ -309,7 +309,7 @@ implements IDocumentQueryExecutionContext<T> {
 
         if (consistencyLevelOverrideApplicable && this.client.getReadConsistencyStrategy() != null) {
             String readConsistencyStrategyName = this.client.getReadConsistencyStrategy().toString();
-            this.client.validateAndLogNonDefaultReadConsistencyStrategy(readConsistencyStrategyName);
+            this.client.validateNonDefaultReadConsistencyStrategy(readConsistencyStrategyName);
             requestHeaders.put(
                 HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY,
                 readConsistencyStrategyName);

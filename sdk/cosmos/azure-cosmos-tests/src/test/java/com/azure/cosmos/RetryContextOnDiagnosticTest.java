@@ -900,7 +900,6 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
             String query = String.format("select * from c where c.id = '%s'", testPojo.getId());
             CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
             options.setPartitionKey(new PartitionKey(testPojo.getMypk()));
-            options.setReadConsistencyStrategy(ReadConsistencyStrategy.EVENTUAL);
             Iterator<FeedResponse<InternalObjectNode>> iterator = cosmosContainer.queryItems(query,
                                                                                      options, InternalObjectNode.class)
                                                                                  .iterableByPage(1)
