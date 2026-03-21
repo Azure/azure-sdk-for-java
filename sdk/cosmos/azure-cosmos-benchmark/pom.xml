@@ -632,6 +632,14 @@ Licensed under the MIT License.
                 <io.netty.leakDetection.level>paranoid</io.netty.leakDetection.level>
               </systemPropertyVariables>
             </configuration>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>integration-test</goal>
+                  <goal>verify</goal>
+                </goals>
+              </execution>
+            </executions>
           </plugin>
         </plugins>
       </build>
