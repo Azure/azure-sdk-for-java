@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -101,7 +102,8 @@ public class DatasetsAsyncClientTest extends ClientTestBase {
 
         Path filePath = getPath("product_info.md");
 
-        datasetsAsyncClient.createDatasetWithFile(datasetName, datasetVersionString, filePath).block();
+        datasetsAsyncClient.createDatasetWithFile(datasetName, datasetVersionString, filePath)
+            .block(Duration.ofSeconds(20));
 
         StepVerifier.create(datasetsAsyncClient.getDatasetVersion(datasetName, datasetVersionString))
             .assertNext(dataset -> assertDatasetVersion(dataset, datasetName, datasetVersionString))

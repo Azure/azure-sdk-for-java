@@ -30,7 +30,7 @@ public class DeploymentsAsyncClientTest extends ClientTestBase {
 
         // Collect all deployments and verify
         List<Deployment> deployments = new ArrayList<>();
-        deploymentsFlux.collectList().block(Duration.ofSeconds(30));
+        deploymentsFlux.collectList().block(Duration.ofSeconds(20));
 
         System.out.println("Deployment list retrieved successfully"
             + (deployments.size() > 0 ? " with " + deployments.size() + " deployments" : " (empty list)"));

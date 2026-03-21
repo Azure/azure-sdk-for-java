@@ -4,6 +4,7 @@ package com.azure.ai.projects;
 
 import com.azure.ai.projects.models.Connection;
 import com.azure.ai.projects.models.ConnectionType;
+import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedFlux;
 import org.junit.jupiter.api.Assertions;
@@ -66,7 +67,7 @@ public class ConnectionsAsyncClientTest extends ClientTestBase {
 
         // Discover a real connection name from the list
         String connectionName
-            = connectionsAsyncClient.listConnections().next().map(Connection::getName).block(Duration.ofSeconds(30));
+            = connectionsAsyncClient.listConnections().next().map(Connection::getName).block(Duration.ofSeconds(20));
         Assertions.assertNotNull(connectionName, "Expected at least one connection");
 
         StepVerifier.create(connectionsAsyncClient.getConnection(connectionName)).assertNext(connection -> {
@@ -83,7 +84,7 @@ public class ConnectionsAsyncClientTest extends ClientTestBase {
 
         // Discover a real connection name from the list
         String connectionName
-            = connectionsAsyncClient.listConnections().next().map(Connection::getName).block(Duration.ofSeconds(30));
+            = connectionsAsyncClient.listConnections().next().map(Connection::getName).block(Duration.ofSeconds(20));
         Assertions.assertNotNull(connectionName, "Expected at least one connection");
 
         StepVerifier.create(connectionsAsyncClient.getConnectionWithCredentials(connectionName))
@@ -116,7 +117,7 @@ public class ConnectionsAsyncClientTest extends ClientTestBase {
         ConnectionsAsyncClient connectionsAsyncClient = getConnectionsAsyncClient(httpClient, serviceVersion);
 
         StepVerifier.create(connectionsAsyncClient.getDefaultConnection(ConnectionType.COSMOS_DB, false))
-            .expectError(IllegalStateException.class)
+            .expectError(ResourceNotFoundException.class)
             .verify();
     }
 }

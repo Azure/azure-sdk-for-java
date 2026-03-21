@@ -34,6 +34,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -275,7 +276,10 @@ public final class DatasetsAsyncClient {
             BlobContainerAsyncClient containerClient
                 = new BlobContainerClientBuilder().endpoint(sasUri).buildAsyncClient();
             try {
-                List<Path> files = Files.walk(folderPath).filter(Files::isRegularFile).collect(Collectors.toList());
+                List<Path> files;
+                try (Stream<Path> fileStream = Files.walk(folderPath)) {
+                    files = fileStream.filter(Files::isRegularFile).collect(Collectors.toList());
+                }
                 return Flux.fromIterable(files).flatMap(filePath -> {
                     String relativePath = folderPath.relativize(filePath).toString().replace('\\', '/');
                     return containerClient.getBlobAsyncClient(relativePath).upload(BinaryData.fromFile(filePath), true);

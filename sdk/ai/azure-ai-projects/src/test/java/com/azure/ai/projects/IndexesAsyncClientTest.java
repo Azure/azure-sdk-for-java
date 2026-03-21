@@ -28,7 +28,8 @@ public class IndexesAsyncClientTest extends ClientTestBase {
 
         StepVerifier.create(indexesAsyncClient.listLatest().doOnNext(indexList::add))
             .thenConsumeWhile(index -> true)
-            .verifyComplete();
+            .expectComplete()
+            .verify(Duration.ofSeconds(20));
 
         // Verify we got results
         Assertions.assertFalse(indexList.isEmpty(), "Expected at least one index");
@@ -45,7 +46,7 @@ public class IndexesAsyncClientTest extends ClientTestBase {
             .filter(index -> index.getName() != null)
             .next()
             .map(AIProjectIndex::getName)
-            .block(Duration.ofSeconds(30));
+            .block(Duration.ofSeconds(20));
 
         if (indexName == null) {
             System.out.println("No indexes available - skipping version listing test");
@@ -56,7 +57,8 @@ public class IndexesAsyncClientTest extends ClientTestBase {
 
         StepVerifier.create(indexesAsyncClient.listVersions(indexName).doOnNext(versionList::add))
             .thenConsumeWhile(index -> true)
-            .verifyComplete();
+            .expectComplete()
+            .verify(Duration.ofSeconds(20));
 
         Assertions.assertFalse(versionList.isEmpty(), "Expected at least one version for index: " + indexName);
         System.out
@@ -72,7 +74,7 @@ public class IndexesAsyncClientTest extends ClientTestBase {
         AIProjectIndex existingIndex = indexesAsyncClient.listLatest()
             .filter(index -> index.getName() != null && index.getVersion() != null)
             .next()
-            .block(Duration.ofSeconds(30));
+            .block(Duration.ofSeconds(20));
 
         if (existingIndex == null) {
             System.out.println("No indexes available - skipping get test");
@@ -86,7 +88,7 @@ public class IndexesAsyncClientTest extends ClientTestBase {
             assertValidIndex(index, indexName, indexVersion);
             System.out
                 .println("Index retrieved successfully: " + index.getName() + " (version " + index.getVersion() + ")");
-        }).verifyComplete();
+        }).expectComplete().verify(Duration.ofSeconds(20));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -111,9 +113,10 @@ public class IndexesAsyncClientTest extends ClientTestBase {
                 Assertions.assertEquals(aiSearchIndexName, createdSearchIndex.getIndexName());
                 System.out.println("Index created/updated successfully: " + createdIndex.getName());
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(Duration.ofSeconds(20));
 
         // Clean up
-        indexesAsyncClient.deleteVersion(indexName, indexVersion).block(Duration.ofSeconds(30));
+        indexesAsyncClient.deleteVersion(indexName, indexVersion).block(Duration.ofSeconds(20));
     }
 }

@@ -32,6 +32,7 @@ import com.azure.storage.blob.BlobContainerClientBuilder;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.stream.Stream;
 
 /**
  * Initializes a new instance of the synchronous AIProjectClient type.
@@ -207,7 +208,7 @@ public final class DatasetsClient {
         BlobClient blobClient = new BlobClientBuilder().endpoint(credential.getSasUrl())
             .blobName(filePath.getFileName().toString())
             .buildClient();
-        blobClient.upload(BinaryData.fromFile(filePath));
+        blobClient.upload(BinaryData.fromFile(filePath), true);
         RequestOptions requestOptions = new RequestOptions();
         FileDatasetVersion datasetVersion = this
             .createOrUpdateVersionWithResponse(name, version,
@@ -262,10 +263,12 @@ public final class DatasetsClient {
         BlobContainerClient containerClient
             = new BlobContainerClientBuilder().endpoint(credential.getSasUrl()).buildClient();
         // Upload all files in the directory
-        Files.walk(folderPath).filter(Files::isRegularFile).forEach(filePath -> {
-            String relativePath = folderPath.relativize(filePath).toString().replace('\\', '/');
-            containerClient.getBlobClient(relativePath).upload(BinaryData.fromFile(filePath), true);
-        });
+        try (Stream<Path> fileStream = Files.walk(folderPath)) {
+            fileStream.filter(Files::isRegularFile).forEach(filePath -> {
+                String relativePath = folderPath.relativize(filePath).toString().replace('\\', '/');
+                containerClient.getBlobClient(relativePath).upload(BinaryData.fromFile(filePath), true);
+            });
+        }
         RequestOptions requestOptions = new RequestOptions();
         FolderDatasetVersion datasetVersion = this
             .createOrUpdateVersionWithResponse(name, version,

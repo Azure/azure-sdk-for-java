@@ -279,14 +279,17 @@ public final class ConnectionsClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the default connection for the given type.
-     * @throws IllegalStateException if no default connection is found for the given type.
+     * @throws ResourceNotFoundException if no default connection is found for the given type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Connection getDefaultConnection(ConnectionType connectionType, boolean includeCredentials) {
+        if (connectionType == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("connectionType cannot be null."));
+        }
         for (Connection connection : listConnections(connectionType, true)) {
             return getConnection(connection.getName(), includeCredentials);
         }
-        throw LOGGER
-            .logExceptionAsError(new IllegalStateException("No default connection found for type: " + connectionType));
+        throw LOGGER.logExceptionAsError(
+            new ResourceNotFoundException("No default connection found for type: " + connectionType, null));
     }
 }
