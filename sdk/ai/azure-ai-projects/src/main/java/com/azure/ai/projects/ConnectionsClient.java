@@ -27,6 +27,7 @@ import com.azure.core.util.logging.ClientLogger;
 public final class ConnectionsClient {
 
     private static final ClientLogger LOGGER = new ClientLogger(ConnectionsClient.class);
+
     @Generated
     private final ConnectionsImpl serviceClient;
 
