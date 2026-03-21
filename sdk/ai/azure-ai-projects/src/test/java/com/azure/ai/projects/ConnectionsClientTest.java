@@ -104,4 +104,26 @@ public class ConnectionsClientTest extends ClientTestBase {
         System.out.println("Connection with credentials retrieved successfully: " + connection.getName());
         System.out.println("Credential type: " + connection.getCredentials().getType());
     }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
+    public void testGetDefaultConnection(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
+        ConnectionsClient connectionsClient = getConnectionsClient(httpClient, serviceVersion);
+
+        Connection connection = connectionsClient.getDefaultConnection(ConnectionType.AZURE_OPEN_AI, false);
+
+        assertValidConnection(connection, null, ConnectionType.AZURE_OPEN_AI, null);
+        Assertions.assertNotNull(connection.getCredentials().getType());
+
+        System.out.println("Default connection retrieved: " + connection.getName());
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
+    public void testGetDefaultConnectionNotFound(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
+        ConnectionsClient connectionsClient = getConnectionsClient(httpClient, serviceVersion);
+
+        Assertions.assertThrows(IllegalStateException.class,
+            () -> connectionsClient.getDefaultConnection(ConnectionType.COSMOS_DB, false));
+    }
 }

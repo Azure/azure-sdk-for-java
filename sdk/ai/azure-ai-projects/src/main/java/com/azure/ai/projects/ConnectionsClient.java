@@ -264,4 +264,26 @@ public final class ConnectionsClient {
             return getConnection(name);
         }
     }
+
+    /**
+     * Get the default connection for a given connection type.
+     *
+     * @param connectionType The type of the connection. Required.
+     * @param includeCredentials Whether to include credentials in the response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the default connection for the given type.
+     * @throws IllegalStateException if no default connection is found for the given type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Connection getDefaultConnection(ConnectionType connectionType, boolean includeCredentials) {
+        for (Connection connection : listConnections(connectionType, true)) {
+            return getConnection(connection.getName(), includeCredentials);
+        }
+        throw new IllegalStateException("No default connection found for type: " + connectionType);
+    }
 }

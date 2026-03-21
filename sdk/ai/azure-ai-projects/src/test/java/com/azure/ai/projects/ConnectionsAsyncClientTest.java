@@ -95,4 +95,28 @@ public class ConnectionsAsyncClientTest extends ClientTestBase {
             })
             .verifyComplete();
     }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
+    public void testGetDefaultConnectionAsync(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
+        ConnectionsAsyncClient connectionsAsyncClient = getConnectionsAsyncClient(httpClient, serviceVersion);
+
+        StepVerifier.create(connectionsAsyncClient.getDefaultConnection(ConnectionType.AZURE_OPEN_AI, false))
+            .assertNext(connection -> {
+                assertValidConnection(connection, null, ConnectionType.AZURE_OPEN_AI, null);
+                Assertions.assertNotNull(connection.getCredentials().getType());
+                System.out.println("Default connection retrieved: " + connection.getName());
+            })
+            .verifyComplete();
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
+    public void testGetDefaultConnectionNotFoundAsync(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
+        ConnectionsAsyncClient connectionsAsyncClient = getConnectionsAsyncClient(httpClient, serviceVersion);
+
+        StepVerifier.create(connectionsAsyncClient.getDefaultConnection(ConnectionType.COSMOS_DB, false))
+            .expectError(IllegalStateException.class)
+            .verify();
+    }
 }
