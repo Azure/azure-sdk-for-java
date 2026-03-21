@@ -4,7 +4,6 @@ package com.azure.ai.projects;
 
 import com.azure.ai.projects.models.Connection;
 import com.azure.ai.projects.models.ConnectionType;
-import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -124,7 +123,7 @@ public class ConnectionsClientTest extends ClientTestBase {
     public void testGetDefaultConnectionNotFound(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
         ConnectionsClient connectionsClient = getConnectionsClient(httpClient, serviceVersion);
 
-        Assertions.assertThrows(ResourceNotFoundException.class,
+        Assertions.assertThrows(IllegalStateException.class,
             () -> connectionsClient.getDefaultConnection(ConnectionType.COSMOS_DB, false));
     }
 }

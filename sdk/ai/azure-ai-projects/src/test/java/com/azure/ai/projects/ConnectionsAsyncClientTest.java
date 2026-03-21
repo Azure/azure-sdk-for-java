@@ -4,7 +4,6 @@ package com.azure.ai.projects;
 
 import com.azure.ai.projects.models.Connection;
 import com.azure.ai.projects.models.ConnectionType;
-import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedFlux;
 import org.junit.jupiter.api.Assertions;
@@ -117,7 +116,7 @@ public class ConnectionsAsyncClientTest extends ClientTestBase {
         ConnectionsAsyncClient connectionsAsyncClient = getConnectionsAsyncClient(httpClient, serviceVersion);
 
         StepVerifier.create(connectionsAsyncClient.getDefaultConnection(ConnectionType.COSMOS_DB, false))
-            .expectError(ResourceNotFoundException.class)
+            .expectError(IllegalStateException.class)
             .verify();
     }
 }
