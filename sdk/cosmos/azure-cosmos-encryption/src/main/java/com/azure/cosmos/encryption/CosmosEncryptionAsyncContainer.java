@@ -324,8 +324,7 @@ public final class CosmosEncryptionAsyncContainer {
      * @param requestOptions the request options.
      * @return an {@link Mono} containing the Cosmos item resource response.
      */
-    // TODO Make this api public once it is GA in cosmos core library
-    Mono<CosmosItemResponse<Object>> deleteAllItemsByPartitionKey(PartitionKey partitionKey, CosmosItemRequestOptions requestOptions) {
+    public Mono<CosmosItemResponse<Object>> deleteAllItemsByPartitionKey(PartitionKey partitionKey, CosmosItemRequestOptions requestOptions) {
         final CosmosItemRequestOptions options = Optional.ofNullable(requestOptions)
             .orElse(new CosmosItemRequestOptions());
 

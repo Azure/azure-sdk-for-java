@@ -132,6 +132,29 @@ public class UserAgentContainerTest {
 
     }
 
+    @Test(groups = {"unit"})
+    public void appendUserAgentSuffix() {
+        String expectedStringFixedPart = getUserAgentFixedPart();
+
+        // Append to empty suffix
+        UserAgentContainer userAgentContainer = new UserAgentContainer();
+        String suffix = "azure-cosmos-encryption/2.28.0";
+        userAgentContainer.setSuffix(suffix);
+        String expectedString = expectedStringFixedPart + SPACE + suffix;
+        assertThat(userAgentContainer.getUserAgent()).isEqualTo(expectedString);
+
+        // Append to existing suffix (simulating appendUserAgentSuffix behavior)
+        userAgentContainer = new UserAgentContainer();
+        String customerSuffix = "my-app";
+        userAgentContainer.setSuffix(customerSuffix);
+        String combinedSuffix = customerSuffix + " " + suffix;
+        userAgentContainer.setSuffix(combinedSuffix);
+        expectedString = expectedStringFixedPart + SPACE + combinedSuffix;
+        assertThat(userAgentContainer.getUserAgent()).isEqualTo(expectedString);
+        assertThat(userAgentContainer.getUserAgent()).contains("my-app");
+        assertThat(userAgentContainer.getUserAgent()).contains("azure-cosmos-encryption/2.28.0");
+    }
+
     private String getUserAgentFixedPart() {
         String osName = System.getProperty("os.name");
         if (osName == null) {

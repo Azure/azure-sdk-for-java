@@ -123,8 +123,7 @@ public final class CosmosEncryptionContainer {
      * @param options the options.
      * @return the Cosmos item response
      */
-    // TODO Make this api public once it is GA in cosmos core library
-    CosmosItemResponse<Object> deleteAllItemsByPartitionKey(PartitionKey partitionKey, CosmosItemRequestOptions options) {
+    public CosmosItemResponse<Object> deleteAllItemsByPartitionKey(PartitionKey partitionKey, CosmosItemRequestOptions options) {
         return this.blockDeleteItemResponse(this.cosmosEncryptionAsyncContainer.deleteAllItemsByPartitionKey(partitionKey, options));
     }
 

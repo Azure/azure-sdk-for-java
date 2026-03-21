@@ -13,6 +13,7 @@
 * Fixed availability strategy for Gateway V2 (thin client) by ensuring `RegionalRoutingContext` identity is based only on the immutable gateway endpoint. - See [PR 48432](https://github.com/Azure/azure-sdk-for-java/pull/48432)
 
 #### Other Changes
+* Added `appendUserAgentSuffix` method to `AsyncDocumentClient` to allow downstream libraries to append to the user agent after client construction. - See [PR 48505](https://github.com/Azure/azure-sdk-for-java/pull/48505)
 * Added aggressive HTTP timeout policies for document operations routed to Gateway V2. - [PR 47879](https://github.com/Azure/azure-sdk-for-java/pull/47879)
 * Added a default connect timeout of 5s for Gateway V2 (thin client) data-plane endpoints. - See [PR 48174](https://github.com/Azure/azure-sdk-for-java/pull/48174)
 
