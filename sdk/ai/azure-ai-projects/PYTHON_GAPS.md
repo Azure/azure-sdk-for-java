@@ -4,8 +4,8 @@
 
 | Feature | Python | Java | Status |
 |---|---|---|---|
-| `upload_file` / `createDatasetWithFile` | ✅ Takes `connection_name` param | ✅ No `connection_name` param | ⚠️ **Gap** — Java doesn't pass `connection_name` to `pendingUpload`. Works today because service defaults, but diverges from Python API surface. |
-| `upload_folder` / `createDatasetWithFolder` | ✅ Takes `connection_name` param, `file_pattern` regex filter | ✅ No `connection_name`, no `file_pattern` | ⚠️ **Gap** — Java is missing both optional params. Python lets you filter which files to upload via regex. |
+| `upload_file` / `createDatasetWithFile` | ✅ Takes `connection_name` param | ✅ Takes `connectionName` param | ✅ Same |
+| `upload_folder` / `createDatasetWithFolder` | ✅ Takes `connection_name` param, `file_pattern` regex filter | ✅ Takes `connectionName` param, no `file_pattern` | ⚠️ **Gap** — Java is missing `file_pattern`. Python lets you filter which files to upload via regex. |
 | `list` / `listLatestVersion` | ✅ | ✅ | ✅ Same |
 | `list_versions` / `listVersions` | ✅ | ✅ | ✅ Same |
 | `get` / `getDatasetVersion` | ✅ | ✅ | ✅ Same |
@@ -19,8 +19,8 @@
 | Feature | Python | Java | Status |
 |---|---|---|---|
 | `list` / `listConnections` | ✅ | ✅ | ✅ Same |
-| `get(name, include_credentials=)` | ✅ Single method with flag | ✅ Custom `getConnection(name, includeCredentials)` | ✅ Same pattern |
-| `get_default(connection_type, include_credentials=)` | ✅ Custom convenience method | ❌ **Missing** | 🔴 **Gap** — Python has `connections.get_default(ConnectionType.AZURE_STORAGE_ACCOUNT)` which lists default connections filtered by type and returns the first. Java has no equivalent. |
+| `get(name, include_credentials=)` | ✅ Single method with flag | ✅ `getConnection(name, includeCredentials)` | ✅ Same |
+| `get_default(connection_type, include_credentials=)` | ✅ | ✅ `getDefaultConnection(connectionType, includeCredentials)` | ✅ Same |
 
 ## Deployments
 
@@ -49,8 +49,8 @@
 
 | Feature | Python | Java | Status |
 |---|---|---|---|
-| `beta.memory_stores.search_memories()` | ✅ Custom patch with OpenAI `ResponseInputParam` support | ❌ **Not in this SDK** | ⚠️ This lives in `azure-ai-agents` in Java, so may not be a gap here. |
-| `beta.memory_stores.begin_update_memories()` | ✅ Custom LRO poller | ❌ Same | ⚠️ Same note |
+| `beta.memory_stores.search_memories()` | ✅ Custom patch with OpenAI `ResponseInputParam` support | ✅ Surfaced in `azure-ai-agents` SDK | ✅ Different SDK, not a gap |
+| `beta.memory_stores.begin_update_memories()` | ✅ Custom LRO poller | ✅ Surfaced in `azure-ai-agents` SDK | ✅ Different SDK, not a gap |
 
 ## Top-level Client
 

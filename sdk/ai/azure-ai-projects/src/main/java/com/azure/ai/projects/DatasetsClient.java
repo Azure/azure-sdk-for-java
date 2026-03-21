@@ -177,20 +177,41 @@ public final class DatasetsClient {
      * @throws IllegalArgumentException If the provided path is not a file
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public FileDatasetVersion createDatasetWithFile(String name, String version, Path filePath) {
+    public FileDatasetVersion createDatasetWithFile(String datasetName, String version, Path filePath) {
+        return createDatasetWithFile(datasetName, version, filePath, null);
+    }
+
+    /**
+     * Creates a dataset from a single file. Uploads the file to blob storage and registers the dataset.
+     *
+     * @param datasetName The name of the dataset.
+     * @param version The specific version id of the DatasetVersion to create or replace.
+     * @param filePath The path to the file to upload.
+     * @param connectionName The name of an Azure Storage Account connection to use for uploading.
+     * If null, the default Azure Storage Account connection will be used.
+     * @return A FileDatasetVersion representing the created dataset.
+     * @throws IllegalArgumentException If the provided path is not a file.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public FileDatasetVersion createDatasetWithFile(String datasetName, String version, Path filePath,
+        String connectionName) {
         if (!Files.isRegularFile(filePath)) {
             throw LOGGER
                 .logThrowableAsError(new IllegalArgumentException("The provided path is not a file: " + filePath));
         }
         PendingUploadRequest body = new PendingUploadRequest();
-        PendingUploadResponse pendingUploadResponse = this.pendingUpload(name, version, body);
+        if (connectionName != null) {
+            body.setConnectionName(connectionName);
+        }
+        PendingUploadResponse pendingUploadResponse = this.pendingUpload(datasetName, version, body);
         BlobReferenceSasCredential credential = pendingUploadResponse.getBlobReference().getCredential();
-        String blobUri = pendingUploadResponse.getBlobReference().getBlobUrl();
-        BlobClient blobClient = new BlobClientBuilder().endpoint(credential.getSasUrl()).blobName(name).buildClient();
+        BlobClient blobClient = new BlobClientBuilder().endpoint(credential.getSasUrl())
+            .blobName(filePath.getFileName().toString())
+            .buildClient();
         blobClient.upload(BinaryData.fromFile(filePath));
         RequestOptions requestOptions = new RequestOptions();
         FileDatasetVersion datasetVersion = this
-            .createOrUpdateVersionWithResponse(name, version,
+            .createOrUpdateVersionWithResponse(datasetName, version,
                 BinaryData.fromObject(new FileDatasetVersion().setDataUri(blobClient.getBlobUrl())), requestOptions)
             .getValue()
             .toObject(FileDatasetVersion.class);
@@ -208,31 +229,47 @@ public final class DatasetsClient {
      * @throws IOException if an I/ O error is thrown when accessing the starting file
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public FolderDatasetVersion createDatasetWithFolder(String name, String version, Path folderPath)
+    public FolderDatasetVersion createDatasetWithFolder(String datasetName, String version, Path folderPath)
         throws IOException {
+        return createDatasetWithFolder(datasetName, version, folderPath, null);
+    }
+
+    /**
+     * Creates a dataset from a folder. Uploads all files in the folder to blob storage and registers the dataset.
+     *
+     * @param datasetName The name of the dataset.
+     * @param version The specific version id of the DatasetVersion to create or replace.
+     * @param folderPath The path to the folder containing files to upload.
+     * @param connectionName The name of an Azure Storage Account connection to use for uploading.
+     * If null, the default Azure Storage Account connection will be used.
+     * @return A FolderDatasetVersion representing the created dataset.
+     * @throws IllegalArgumentException If the provided path is not a directory.
+     * @throws IOException if an I/O error is thrown when accessing the starting file
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public FolderDatasetVersion createDatasetWithFolder(String datasetName, String version, Path folderPath,
+        String connectionName) throws IOException {
         if (!Files.isDirectory(folderPath)) {
             throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("The provided path is not a folder: " + folderPath));
         }
-        // Request a pending upload for the folder
         PendingUploadRequest request = new PendingUploadRequest();
-        PendingUploadResponse pendingUploadResponse = this.pendingUpload(name, version, request);
+        if (connectionName != null) {
+            request.setConnectionName(connectionName);
+        }
+        PendingUploadResponse pendingUploadResponse = this.pendingUpload(datasetName, version, request);
+        String containerUrl = pendingUploadResponse.getBlobReference().getBlobUrl();
         BlobReferenceSasCredential credential = pendingUploadResponse.getBlobReference().getCredential();
-        // Create a container client from the SAS URL (mirrors Python's ContainerClient.from_container_url)
         BlobContainerClient containerClient
             = new BlobContainerClientBuilder().endpoint(credential.getSasUrl()).buildClient();
         // Upload all files in the directory
         Files.walk(folderPath).filter(Files::isRegularFile).forEach(filePath -> {
-            // Calculate relative path from the base folder
             String relativePath = folderPath.relativize(filePath).toString().replace('\\', '/');
-            // Upload each file using the container client
             containerClient.getBlobClient(relativePath).upload(BinaryData.fromFile(filePath), true);
         });
-        // Get the clean container URL (without SAS token) as the data URI
-        String containerUrl = containerClient.getBlobContainerUrl();
         RequestOptions requestOptions = new RequestOptions();
         FolderDatasetVersion datasetVersion = this
-            .createOrUpdateVersionWithResponse(name, version,
+            .createOrUpdateVersionWithResponse(datasetName, version,
                 BinaryData.fromObject(new FolderDatasetVersion().setDataUri(containerUrl)), requestOptions)
             .getValue()
             .toObject(FolderDatasetVersion.class);
