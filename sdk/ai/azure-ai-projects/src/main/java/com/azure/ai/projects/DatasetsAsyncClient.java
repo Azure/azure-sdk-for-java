@@ -28,6 +28,8 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClientBuilder;
+import com.azure.storage.blob.BlobContainerAsyncClient;
+import com.azure.storage.blob.BlobContainerClientBuilder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
@@ -228,9 +230,12 @@ public final class DatasetsAsyncClient {
         // Request a pending upload for the folder
         PendingUploadRequest request = new PendingUploadRequest();
         return this.pendingUpload(name, version, request).flatMap(pendingUploadResponse -> {
-            String blobContainerUri = pendingUploadResponse.getBlobReference().getBlobUrl();
             String sasUri = pendingUploadResponse.getBlobReference().getCredential().getSasUrl();
-            String containerUrl = blobContainerUri.substring(0, blobContainerUri.lastIndexOf('/'));
+            // Create a container client from the SAS URL (mirrors Python's ContainerClient.from_container_url)
+            BlobContainerAsyncClient containerClient
+                = new BlobContainerClientBuilder().endpoint(sasUri).buildAsyncClient();
+            // Get the clean container URL (without SAS token)
+            String containerUrl = containerClient.getBlobContainerUrl();
             // Find all files in the directory
             try {
                 List<Path> files = Files.walk(folderPath).filter(Files::isRegularFile).collect(Collectors.toList());
@@ -238,11 +243,8 @@ public final class DatasetsAsyncClient {
                 return Flux.fromIterable(files).flatMap(filePath -> {
                     // Calculate relative path from the base folder
                     String relativePath = folderPath.relativize(filePath).toString().replace('\\', '/');
-                    // Create blob client for each file
-                    BlobAsyncClient blobClient
-                        = new BlobClientBuilder().endpoint(sasUri).blobName(relativePath).buildAsyncClient();
-                    // Upload the file
-                    return blobClient.upload(BinaryData.fromFile(filePath), true);
+                    // Upload each file using the container client
+                    return containerClient.getBlobAsyncClient(relativePath).upload(BinaryData.fromFile(filePath), true);
                 }).then(Mono.just(containerUrl));
             } catch (Exception e) {
                 return Mono.error(new RuntimeException("Error walking through folder path", e));

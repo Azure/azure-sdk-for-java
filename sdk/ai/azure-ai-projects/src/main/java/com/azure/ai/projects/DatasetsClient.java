@@ -27,6 +27,8 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
+import com.azure.storage.blob.BlobContainerClient;
+import com.azure.storage.blob.BlobContainerClientBuilder;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -215,20 +217,19 @@ public final class DatasetsClient {
         // Request a pending upload for the folder
         PendingUploadRequest request = new PendingUploadRequest();
         PendingUploadResponse pendingUploadResponse = this.pendingUpload(name, version, request);
-        String blobContainerUri = pendingUploadResponse.getBlobReference().getBlobUrl();
         BlobReferenceSasCredential credential = pendingUploadResponse.getBlobReference().getCredential();
-        String containerUrl = blobContainerUri.substring(0, blobContainerUri.lastIndexOf('/'));
+        // Create a container client from the SAS URL (mirrors Python's ContainerClient.from_container_url)
+        BlobContainerClient containerClient
+            = new BlobContainerClientBuilder().endpoint(credential.getSasUrl()).buildClient();
         // Upload all files in the directory
         Files.walk(folderPath).filter(Files::isRegularFile).forEach(filePath -> {
             // Calculate relative path from the base folder
             String relativePath = folderPath.relativize(filePath).toString().replace('\\', '/');
-            // Create blob client for each file
-            BlobClient blobClient
-                = new BlobClientBuilder().endpoint(credential.getSasUrl()).blobName(relativePath).buildClient();
-            // Upload the file
-            blobClient.upload(BinaryData.fromFile(filePath), true);
+            // Upload each file using the container client
+            containerClient.getBlobClient(relativePath).upload(BinaryData.fromFile(filePath), true);
         });
-        // Create a FolderDatasetVersion with the container URL
+        // Get the clean container URL (without SAS token) as the data URI
+        String containerUrl = containerClient.getBlobContainerUrl();
         RequestOptions requestOptions = new RequestOptions();
         FolderDatasetVersion datasetVersion = this
             .createOrUpdateVersionWithResponse(name, version,
