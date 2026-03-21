@@ -185,7 +185,7 @@ public final class DatasetsClient {
     /**
      * Creates a dataset from a single file. Uploads the file to blob storage and registers the dataset.
      *
-     * @param name The name of the dataset.
+     * @param name The name of the resource.
      * @param version The specific version id of the DatasetVersion to create or replace.
      * @param filePath The path to the file to upload.
      * @param connectionName The name of an Azure Storage Account connection to use for uploading.
@@ -237,7 +237,7 @@ public final class DatasetsClient {
     /**
      * Creates a dataset from a folder. Uploads all files in the folder to blob storage and registers the dataset.
      *
-     * @param name The name of the dataset.
+     * @param name The name of the resource.
      * @param version The specific version id of the DatasetVersion to create or replace.
      * @param folderPath The path to the folder containing files to upload.
      * @param connectionName The name of an Azure Storage Account connection to use for uploading.
