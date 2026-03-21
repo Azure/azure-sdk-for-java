@@ -1079,6 +1079,18 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
+    public void appendUserAgentSuffix(String suffix) {
+        if (StringUtils.isNotEmpty(suffix)) {
+            String currentSuffix = this.userAgentContainer.getSuffix();
+            if (StringUtils.isNotEmpty(currentSuffix)) {
+                this.userAgentContainer.setSuffix(currentSuffix + " " + suffix);
+            } else {
+                this.userAgentContainer.setSuffix(suffix);
+            }
+        }
+    }
+
+    @Override
     public CosmosDiagnostics getMostRecentlyCreatedDiagnostics() {
         return mostRecentlyCreatedDiagnostics.get();
     }

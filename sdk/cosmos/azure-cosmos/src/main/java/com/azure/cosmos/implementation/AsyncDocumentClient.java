@@ -405,6 +405,13 @@ public interface AsyncDocumentClient {
     String getUserAgent();
 
     /**
+     * Appends an additional suffix to the user agent string.
+     *
+     * @param suffix the suffix to append.
+     */
+    void appendUserAgentSuffix(String suffix);
+
+    /**
      * Gets the boolean which indicates whether to only return the headers and status code in Cosmos DB response
      * in case of Create, Update and Delete operations on CosmosItem.
      * <p>
