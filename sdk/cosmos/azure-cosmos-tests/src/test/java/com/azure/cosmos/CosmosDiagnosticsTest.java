@@ -1361,7 +1361,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             int testItemLength = OBJECT_MAPPER.writeValueAsBytes(testItem).length;
             CosmosContainer container = client1.getDatabase(this.cosmosAsyncContainer.getDatabase().getId()).getContainer(this.cosmosAsyncContainer.getId());
 
-            Thread.sleep(1000);
+            Thread.sleep(200);
 
             // create
             // initializes the rntbd service endpoint
@@ -1369,12 +1369,12 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             CosmosItemResponse<TestItem> operation1Response = container.upsertItem(testItem);
             Instant afterInitializingRntbdServiceEndpoint = Instant.now();
 
-            Thread.sleep(1000);
+            Thread.sleep(200);
             Instant beforeOperation2 = Instant.now();
             CosmosItemResponse<TestItem> operation2Response = container.upsertItem(testItem);
             Instant afterOperation2 = Instant.now();
 
-            Thread.sleep(1000);
+            Thread.sleep(200);
             Instant beforeOperation3 = Instant.now();
             CosmosItemResponse<TestItem> operation3Response = container.upsertItem(testItem);
             Instant afterOperation3 = Instant.now();
