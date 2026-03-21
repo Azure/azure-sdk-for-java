@@ -203,12 +203,17 @@ public class GroupByQueryTests extends TestSuiteBase {
 
         assertThat(queryResults.size()).isEqualTo(expectedCounts.size());
 
-        long totalFromResults = 0;
-        for (JsonNode result : queryResults) {
-            assertThat(result.isNumber()).isTrue();
-            totalFromResults += result.asLong();
-        }
-        assertThat(totalFromResults).isEqualTo(INSERT_DOCUMENTS_CNT);
+        List<Long> expectedCountValues = expectedCounts.values()
+            .stream()
+            .sorted()
+            .collect(Collectors.toList());
+
+        List<Long> actualCountValues = queryResults.stream()
+            .map(JsonNode::asLong)
+            .sorted()
+            .collect(Collectors.toList());
+
+        assertThat(actualCountValues).isEqualTo(expectedCountValues);
 
         double totalRequestCharge = queryResultPages.stream()
             .collect(Collectors.summingDouble(FeedResponse::getRequestCharge));
@@ -227,18 +232,24 @@ public class GroupByQueryTests extends TestSuiteBase {
         List<JsonNode> queryResults = new ArrayList<>();
         queryResultPages.forEach(feedResponse -> queryResults.addAll(feedResponse.getResults()));
 
+        long distinctCities = personList.stream().map(Person::getCity).distinct().count();
+        assertThat(queryResults.size()).isEqualTo((int) distinctCities);
+
         Map<City, Integer> expectedSums = personList.stream()
             .collect(Collectors.groupingBy(Person::getCity, Collectors.summingInt(Person::getAge)));
 
-        assertThat(queryResults.size()).isEqualTo(expectedSums.size());
+        List<Long> expectedSumValues = expectedSums.values()
+            .stream()
+            .map(Integer::longValue)
+            .sorted()
+            .collect(Collectors.toList());
 
-        long totalSum = 0;
-        long expectedTotal = personList.stream().mapToInt(Person::getAge).sum();
-        for (JsonNode result : queryResults) {
-            assertThat(result.isNumber()).isTrue();
-            totalSum += result.asLong();
-        }
-        assertThat(totalSum).isEqualTo(expectedTotal);
+        List<Long> actualSumValues = queryResults.stream()
+            .map(JsonNode::asLong)
+            .sorted()
+            .collect(Collectors.toList());
+
+        assertThat(actualSumValues).isEqualTo(expectedSumValues);
     }
 
     @Test(groups = {"query"}, timeOut = TIMEOUT)

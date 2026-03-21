@@ -164,6 +164,11 @@ public abstract class SingleGroupAggregator {
 
         @Override
         public void addValues(Object values) {
+            if (!(values instanceof Document)) {
+                throw new IllegalArgumentException(
+                    "SelectListAggregateValues expects Document payload, got: "
+                        + (values == null ? "null" : values.getClass().getSimpleName()));
+            }
             Document doc = (Document) values;
             for (Map.Entry<String, AggregateValue> aliasAndValue : this.aliasToValue.entrySet()) {
                 String alias = aliasAndValue.getKey();

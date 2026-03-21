@@ -199,16 +199,14 @@ public final class GroupByDocumentQueryExecutionContext implements
             }
 
             JsonNode payloadNode = this.getPropertyBag().get(PAYLOAD_PROPERTY_NAME);
-            if (payloadNode instanceof ObjectNode) {
-                return new Document((ObjectNode) payloadNode);
+
+            // SELECT VALUE payloads may be wrapped in a single-element array; always unwrap the first element
+            if (payloadNode != null && payloadNode.isArray() && payloadNode.size() == 1) {
+                payloadNode = payloadNode.get(0);
             }
 
-            // SELECT VALUE payloads may be wrapped in a single-element array
-            if (payloadNode.isArray() && payloadNode.size() == 1) {
-                JsonNode firstElement = payloadNode.get(0);
-                if (firstElement instanceof ObjectNode) {
-                    return new Document((ObjectNode) firstElement);
-                }
+            if (payloadNode instanceof ObjectNode) {
+                return new Document((ObjectNode) payloadNode);
             }
 
             return payloadNode;
