@@ -27,6 +27,7 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.implementation.batch.BatchResponseParser;
 import com.azure.cosmos.implementation.batch.PartitionKeyRangeServerBatchRequest;
+import com.azure.cosmos.implementation.PartitionKeyRangeWrapper;
 import com.azure.cosmos.implementation.batch.ServerBatchRequest;
 import com.azure.cosmos.implementation.batch.SinglePartitionKeyServerBatchRequest;
 import com.azure.cosmos.implementation.caches.AsyncCache;
@@ -7495,6 +7496,22 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     Mono<NonTransientPointOperationResult> regionalCrossRegionRetryMono =
                         callback.apply(clonedOptions, endToEndPolicyConfig, diagnosticsFactory, crossRegionAvailabilityContextForHedgedRequest)
                             .map(NonTransientPointOperationResult::new)
+                            .doOnNext(result -> {
+                                // For PPAF write hedging: only when the hedged write succeeds, persist
+                                // the failover entry so subsequent writes route directly to this region.
+                                if (applyAvailabilityStrategyForWritesForPpaf && !result.isError()) {
+                                    PartitionKeyRangeWrapper resolvedWrapper =
+                                        crossRegionAvailabilityContextForHedgedRequest
+                                            .getResolvedPartitionKeyRangeWrapperForPpafWriteHedge();
+                                    RegionalRoutingContext targetRegion =
+                                        crossRegionAvailabilityContextForHedgedRequest
+                                            .getWriteRegionRoutingContextForPpafAvailabilityStrategy();
+                                    if (resolvedWrapper != null && targetRegion != null) {
+                                        this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover
+                                            .tryRecordSuccessfulWriteHedge(resolvedWrapper, targetRegion);
+                                    }
+                                }
+                            })
                             .onErrorResume(
                                 RxDocumentClientImpl::isNonTransientCosmosException,
                                 t -> Mono.just(

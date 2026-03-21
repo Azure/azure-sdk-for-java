@@ -39,6 +39,14 @@ public class CrossRegionAvailabilityContextForRxDocumentServiceRequest {
      */
     private volatile RegionalRoutingContext writeRegionRoutingContextForPpafAvailabilityStrategy;
 
+    /**
+     * Captures the resolved {@link PartitionKeyRangeWrapper} during
+     * {@code tryAddPartitionLevelLocationOverride} so the availability strategy
+     * success callback can persist the failover entry via
+     * {@code tryRecordSuccessfulWriteHedge}.
+     */
+    private volatile PartitionKeyRangeWrapper resolvedPartitionKeyRangeWrapperForPpafWriteHedge;
+
     public CrossRegionAvailabilityContextForRxDocumentServiceRequest(
         FeedOperationContextForCircuitBreaker feedOperationContextForCircuitBreaker,
         PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker,
@@ -113,5 +121,13 @@ public class CrossRegionAvailabilityContextForRxDocumentServiceRequest {
 
     public void setWriteRegionRoutingContextForPpafAvailabilityStrategy(RegionalRoutingContext writeRegionRoutingContextForPpafAvailabilityStrategy) {
         this.writeRegionRoutingContextForPpafAvailabilityStrategy = writeRegionRoutingContextForPpafAvailabilityStrategy;
+    }
+
+    public PartitionKeyRangeWrapper getResolvedPartitionKeyRangeWrapperForPpafWriteHedge() {
+        return this.resolvedPartitionKeyRangeWrapperForPpafWriteHedge;
+    }
+
+    public void setResolvedPartitionKeyRangeWrapperForPpafWriteHedge(PartitionKeyRangeWrapper resolvedPartitionKeyRangeWrapperForPpafWriteHedge) {
+        this.resolvedPartitionKeyRangeWrapperForPpafWriteHedge = resolvedPartitionKeyRangeWrapperForPpafWriteHedge;
     }
 }

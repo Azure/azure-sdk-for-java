@@ -191,9 +191,14 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
                 request.requestContext.setPerPartitionAutomaticFailoverInfoHolder(existingFailoverInfo);
             } else {
                 // No existing entry — route directly to the hedge target WITHOUT creating an override.
-                // The override will only be created if this hedged request succeeds.
+                // The override will only be created if this hedged request succeeds (via
+                // tryRecordSuccessfulWriteHedge called from the doOnNext callback).
                 request.requestContext.routeToLocation(hedgeTarget);
             }
+
+            // Capture the resolved partition key range on the cross-region context so
+            // the availability strategy success callback can persist the failover entry.
+            crossRegionCtx.setResolvedPartitionKeyRangeWrapperForPpafWriteHedge(partitionKeyRangeWrapper);
 
             if (logger.isInfoEnabled()) {
                 logger.info(
@@ -207,6 +212,33 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
         }
 
         return false;
+    }
+
+    /**
+     * Persists a failover entry for a partition after a successful hedged write.
+     * Called from the availability strategy success path — only when a hedged write
+     * to a read region succeeds, creating the ConcurrentHashMap entry so that
+     * subsequent writes to this partition route directly to the failover region.
+     */
+    public void tryRecordSuccessfulWriteHedge(
+        PartitionKeyRangeWrapper partitionKeyRangeWrapper,
+        RegionalRoutingContext successfulRegion) {
+
+        if (partitionKeyRangeWrapper == null || successfulRegion == null) {
+            return;
+        }
+
+        this.partitionKeyRangeToFailoverInfo.computeIfAbsent(
+            partitionKeyRangeWrapper,
+            key -> new PartitionLevelAutomaticFailoverInfo(successfulRegion, this.globalEndpointManager));
+
+        if (logger.isInfoEnabled()) {
+            logger.info(
+                "PPAF write availability strategy: recorded successful hedge for partition key range {} and collection rid {} to region {}",
+                partitionKeyRangeWrapper.getPartitionKeyRange(),
+                partitionKeyRangeWrapper.getCollectionResourceId(),
+                successfulRegion.getGatewayRegionalEndpoint());
+        }
     }
 
     public boolean tryMarkEndpointAsUnavailableForPartitionKeyRange(RxDocumentServiceRequest request, boolean isEndToEndTimeoutHit) {
