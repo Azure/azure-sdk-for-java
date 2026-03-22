@@ -27,6 +27,7 @@ import com.azure.security.keyvault.certificates.models.IssuerProperties;
 import com.azure.security.keyvault.certificates.models.KeyVaultCertificate;
 import com.azure.security.keyvault.certificates.models.KeyVaultCertificateWithPolicy;
 import com.azure.security.keyvault.certificates.models.MergeCertificateOptions;
+import com.azure.security.keyvault.certificates.models.SubjectAlternativeNames;
 import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.asn1.x509.AlgorithmIdentifier;
 import org.bouncycastle.asn1.x509.Certificate;
@@ -966,6 +967,45 @@ public class CertificateClientTest extends CertificateClientTestBase {
             () -> certificateClient.mergeCertificate(new MergeCertificateOptions(
                 testResourceNamer.randomName("testCert", 20), Collections.singletonList("test".getBytes()))),
             ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void createCertificateWithSanIpAndUri(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
+        // IP address and URI SAN fields require API version >= 2025-06-01-preview.
+        if (serviceVersion.getVersion().compareTo("2025") < 0) {
+            return;
+        }
+
+        createCertificateClient(httpClient, serviceVersion);
+
+        createCertificateWithSanIpAndUriRunner((certificatePolicy) -> {
+            String certName = testResourceNamer.randomName("testSanCert", 25);
+            SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller
+                = setPlaybackSyncPollerPollInterval(
+                    certificateClient.beginCreateCertificate(certName, certificatePolicy));
+
+            certPoller.waitForCompletion();
+
+            KeyVaultCertificateWithPolicy createdCert = certPoller.getFinalResult();
+
+            assertNotNull(createdCert);
+            assertEquals(certName, createdCert.getName());
+
+            SubjectAlternativeNames san = createdCert.getPolicy().getSubjectAlternativeNames();
+
+            assertNotNull(san);
+            assertNotNull(san.getIpAddresses());
+            assertEquals(2, san.getIpAddresses().size());
+            assertTrue(san.getIpAddresses().contains("10.0.0.1"));
+            assertTrue(san.getIpAddresses().contains("192.168.1.100"));
+            assertNotNull(san.getUniformResourceIdentifiers());
+            assertEquals(2, san.getUniformResourceIdentifiers().size());
+            assertTrue(san.getUniformResourceIdentifiers().contains("https://example.com/api"));
+            assertTrue(san.getUniformResourceIdentifiers().contains("spiffe://cluster.local/ns/default/sa/myapp"));
+
+            deleteAndPurgeCertificate(certName);
+        });
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
