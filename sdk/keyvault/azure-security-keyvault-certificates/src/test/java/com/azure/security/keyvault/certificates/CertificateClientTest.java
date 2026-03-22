@@ -973,7 +973,9 @@ public class CertificateClientTest extends CertificateClientTestBase {
     @MethodSource("getTestParameters")
     public void createCertificateWithSanIpAndUri(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
         // IP address and URI SAN fields require API version >= 2025-06-01-preview.
-        if (serviceVersion.getVersion().compareTo("2025") < 0) {
+        // Old-style versions (7.x) don't support these fields, and "7.6" > "2025" lexicographically,
+        // so we check for date-based versioning instead.
+        if (!serviceVersion.getVersion().startsWith("20")) {
             return;
         }
 
