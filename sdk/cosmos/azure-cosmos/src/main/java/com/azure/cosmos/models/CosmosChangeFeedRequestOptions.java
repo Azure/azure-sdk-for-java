@@ -575,6 +575,10 @@ public final class CosmosChangeFeedRequestOptions {
      * <p>
      * If the same header is also set at the client level, the request-level value
      * takes precedence.
+     * <p>
+     * <b>Note:</b> This method uses additive (merge) semantics — headers from multiple
+     * calls are merged into the existing set. Passing {@code null} or an empty map does
+     * <i>not</i> clear previously set headers. To reset headers, create a new options instance.
      *
      * @param additionalHeaders map of {@link CosmosHeaderName} to value
      * @return the CosmosChangeFeedRequestOptions.
