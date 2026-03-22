@@ -49,6 +49,36 @@ import scala.collection.JavaConverters._
 // scalastyle:off multiple.string.literals
 private[spark] object CosmosClientCache extends BasicLoggingTrait {
 
+  // Spark-side mapping of known header name strings to CosmosHeaderName instances.
+  // This follows the same pattern as CosmosPriorityLevel in the Kafka connector:
+  // the connector defines its own known-values mapping and converts to SDK types,
+  private val knownHeaders: Map[String, CosmosHeaderName] = Map(
+    CosmosHeaderName.WORKLOAD_ID.getHeaderName.toLowerCase(java.util.Locale.ROOT) -> CosmosHeaderName.WORKLOAD_ID
+  )
+
+  /**
+   * Validates that a header name string is a known CosmosHeaderName.
+   * @param headerName the raw header name string from user config
+   * @throws IllegalArgumentException if the header name is not recognized
+   */
+  def validateKnownHeader(headerName: String): Unit = {
+    if (!knownHeaders.contains(headerName.trim.toLowerCase(java.util.Locale.ROOT))) {
+      throw new IllegalArgumentException(
+        s"Unknown header: '$headerName'. Allowed headers: ${knownHeaders.keys.mkString(", ")}")
+    }
+  }
+
+  /**
+   * Resolves a header name string to its CosmosHeaderName instance.
+   * Call [[validateKnownHeader]] first during config parsing for fail-fast behavior.
+   */
+  def resolveHeaderName(headerName: String): CosmosHeaderName = {
+    val normalized = headerName.trim.toLowerCase(java.util.Locale.ROOT)
+    knownHeaders.getOrElse(normalized,
+      throw new IllegalArgumentException(
+        s"Unknown header: '$headerName'. Allowed headers: ${knownHeaders.keys.mkString(", ")}"))
+  }
+
   SparkBridgeImplementationInternal.setUserAgentWithSnapshotInsteadOfBeta()
   System.setProperty("COSMOS.SWITCH_OFF_IO_THREAD_FOR_RESPONSE", "true")
   SparkBridgeImplementationInternal.overrideDefaultTcpOptionsForSparkUsage()
@@ -713,12 +743,11 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
       }
 
       // Apply additional HTTP headers (e.g., workload-id) to the builder if configured.
-      // Header name validation already happened at config-parse time in CosmosConfig.AdditionalHeadersConfig,
-      // so CosmosHeaderName.fromString() here is just a type conversion for already-validated keys.
+      // Header name validation already happened at config-parse time in CosmosConfig.AdditionalHeadersConfig.
       if (cosmosClientConfiguration.additionalHeaders.isDefined) {
         val headerMap = new java.util.HashMap[CosmosHeaderName, String]()
         for ((key, value) <- cosmosClientConfiguration.additionalHeaders.get) {
-          headerMap.put(CosmosHeaderName.fromString(key), value)
+          headerMap.put(resolveHeaderName(key), value)
         }
         builder.additionalHeaders(headerMap)
       }

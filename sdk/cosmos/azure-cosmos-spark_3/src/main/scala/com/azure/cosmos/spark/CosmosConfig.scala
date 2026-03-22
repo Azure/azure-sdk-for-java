@@ -741,7 +741,7 @@ private object CosmosAccountConfig extends BasicLoggingTrait {
   // These headers are converted to Map[CosmosHeaderName, String] and passed to
   // CosmosClientBuilder.additionalHeaders() in CosmosClientCache.
   //
-  // Validation: After JSON parsing, every header name is validated via CosmosHeaderName.fromString()
+  // Validation: After JSON parsing, every header name is validated against the known headers map
   // to fail fast at config-parse time rather than at runtime during client creation.
   // This prevents Spark jobs from starting, allocating cluster resources, and only failing
   // later when CosmosClientCache tries to convert String keys to CosmosHeaderName instances.
@@ -755,9 +755,9 @@ private object CosmosAccountConfig extends BasicLoggingTrait {
 
         // Fail fast: validate every header name is a known CosmosHeaderName at parse time.
         // Without this, unknown headers like {"x-bad-header": "value"} would parse successfully
-        // and only blow up at runtime in CosmosClientCache when CosmosHeaderName.fromString() is called.
+        // and only blow up at runtime in CosmosClientCache when building the client.
         for (key <- parsed.keys) {
-          CosmosHeaderName.fromString(key) // throws IllegalArgumentException for unknown headers
+          CosmosClientCache.validateKnownHeader(key)
         }
 
         parsed

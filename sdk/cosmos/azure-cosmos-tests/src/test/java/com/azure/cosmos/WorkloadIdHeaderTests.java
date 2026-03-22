@@ -58,22 +58,6 @@ public class WorkloadIdHeaderTests {
         assertThat(CosmosHeaderName.WORKLOAD_ID.getHeaderName()).isEqualTo("x-ms-cosmos-workload-id");
     }
 
-    @Test(groups = { "unit" })
-    public void cosmosHeaderNameFromStringResolvesKnownHeader() {
-        assertThat(CosmosHeaderName.fromString("x-ms-cosmos-workload-id")).isEqualTo(CosmosHeaderName.WORKLOAD_ID);
-    }
-
-    @Test(groups = { "unit" })
-    public void cosmosHeaderNameFromStringIsCaseInsensitive() {
-        assertThat(CosmosHeaderName.fromString("X-MS-COSMOS-WORKLOAD-ID")).isEqualTo(CosmosHeaderName.WORKLOAD_ID);
-    }
-
-    @Test(groups = { "unit" })
-    public void cosmosHeaderNameFromStringRejectsUnknownHeader() {
-        assertThatThrownBy(() -> CosmosHeaderName.fromString("x-ms-custom-header"))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessageContaining("x-ms-custom-header");
-    }
 
     // ==============================================================================================
     // 2. CosmosClientBuilder — additionalHeaders()

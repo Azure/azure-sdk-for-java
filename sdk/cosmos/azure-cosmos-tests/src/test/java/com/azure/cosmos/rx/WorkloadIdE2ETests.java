@@ -287,17 +287,30 @@ public class WorkloadIdE2ETests extends TestSuiteBase {
     /**
      * Verifies that the {@link CosmosHeaderName} allowlist rejects unknown
      * header names at client build time. Attempting to set an unrecognized header via
-     * {@code additionalHeaders()} should throw {@link IllegalArgumentException} from
-     * {@link CosmosHeaderName#fromString(String)}, preventing arbitrary headers from
-     * being sent.
+     * The {@code CosmosClientBuilder.additionalHeaders()} API uses
+     * {@link CosmosHeaderName} as the key type, which restricts callers to only
+     * the predefined header constants (e.g., {@link CosmosHeaderName#WORKLOAD_ID}).
+     * Since the constructor is private and no public factory method exists,
+     * callers cannot construct arbitrary {@link CosmosHeaderName} instances.
+     * <p>
+     * This test verifies the positive case: that a map with known header constants
+     * is accepted by the builder without error.
      */
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT,
-        expectedExceptions = IllegalArgumentException.class)
-    public void unknownAdditionalHeadersRejectedByAllowlist() {
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    public void additionalHeadersOnlyAcceptKnownCosmosHeaderNames() {
+        // The type system enforces that only CosmosHeaderName instances can be used as keys.
+        // Since CosmosHeaderName has a private constructor and no public fromString(),
+        // the only valid keys are the predefined constants like WORKLOAD_ID.
         Map<CosmosHeaderName, String> headers = new HashMap<>();
         headers.put(CosmosHeaderName.WORKLOAD_ID, "15");
-        // Use fromString with an unknown header — should throw IllegalArgumentException
-        CosmosHeaderName.fromString("x-unknown-header");
+
+        // Verify builder accepts a map with known header constants — no exception thrown
+        CosmosClientBuilder builder = new CosmosClientBuilder()
+            .endpoint("https://localhost:8081")
+            .key("dGVzdEtleQ==")
+            .additionalHeaders(headers);
+
+        assertThat(builder).isNotNull();
     }
 
     @AfterClass(groups = { "emulator" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)

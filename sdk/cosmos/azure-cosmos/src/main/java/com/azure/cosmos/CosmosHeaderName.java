@@ -4,12 +4,8 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.HttpConstants;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import java.util.StringJoiner;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -44,11 +40,6 @@ public final class CosmosHeaderName {
     public static final CosmosHeaderName WORKLOAD_ID = new CosmosHeaderName(
         HttpConstants.HttpHeaders.WORKLOAD_ID);
 
-    // IMPORTANT: ADDITIONAL_HEADERS must be declared AFTER all public static final fields above,
-    // because Java initializes static fields in declaration order. If this map were declared
-    // before WORKLOAD_ID, the map would contain null values.
-    private static final Map<String, CosmosHeaderName> ADDITIONAL_HEADERS = createAdditionalHeadersMap();
-
     /**
      * Gets the canonical HTTP header name string (e.g., {@code "x-ms-cosmos-workload-id"}).
      *
@@ -56,31 +47,6 @@ public final class CosmosHeaderName {
      */
     public String getHeaderName() {
         return this.headerName;
-    }
-
-    /**
-     * Converts a header name string to the corresponding {@link CosmosHeaderName} instance.
-     * <p>
-     * This is primarily used by the Spark connector, which parses header names from JSON
-     * configuration strings and needs to convert them to {@link CosmosHeaderName} instances
-     * before calling {@link CosmosClientBuilder#additionalHeaders(java.util.Map)}.
-     *
-     * @param headerName the header name string (e.g., {@code "x-ms-cosmos-workload-id"})
-     * @return the matching {@link CosmosHeaderName}
-     * @throws IllegalArgumentException if the header name does not match any known value
-     */
-    public static CosmosHeaderName fromString(String headerName) {
-        checkNotNull(headerName, "Argument 'headerName' must not be null.");
-
-        String normalizedName = headerName.trim().toLowerCase(Locale.ROOT);
-        CosmosHeaderName result = ADDITIONAL_HEADERS.getOrDefault(normalizedName, null);
-
-        if (result == null) {
-            throw new IllegalArgumentException(
-                "Unknown header: '" + headerName + "'. Allowed headers: " + getValidValues());
-        }
-
-        return result;
     }
 
     /**
@@ -142,19 +108,5 @@ public final class CosmosHeaderName {
 
         CosmosHeaderName other = (CosmosHeaderName) obj;
         return Objects.equals(this.headerName, other.headerName);
-    }
-
-    private static Map<String, CosmosHeaderName> createAdditionalHeadersMap() {
-        Map<String, CosmosHeaderName> map = new HashMap<>();
-        map.put(HttpConstants.HttpHeaders.WORKLOAD_ID.toLowerCase(Locale.ROOT), WORKLOAD_ID);
-        return Collections.unmodifiableMap(map);
-    }
-
-    private static String getValidValues() {
-        StringJoiner sj = new StringJoiner(", ");
-        for (CosmosHeaderName header : ADDITIONAL_HEADERS.values()) {
-            sj.add(header.headerName);
-        }
-        return sj.toString();
     }
 }

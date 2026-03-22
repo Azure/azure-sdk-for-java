@@ -446,7 +446,7 @@ class CosmosClientConfigurationSpec extends UnitSpec {
   // starting, allocating cluster resources, and only failing later at runtime when
   // CosmosClientCache tries to create the client.
   // Note: CosmosConfigEntry.parse() wraps all parsing exceptions in RuntimeException,
-  // so the IllegalArgumentException from CosmosHeaderName.fromString() surfaces as
+  // so the IllegalArgumentException from the known-headers validation surfaces as
   // RuntimeException with the original IllegalArgumentException as the cause.
   it should "reject unknown additional headers at parse time" in {
     val userConfig = Map(
