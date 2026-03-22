@@ -338,7 +338,7 @@ public class BlobSasImplUtil {
                 case SAS_BLOB_DIRECTORY_CONSTANT:
                     // Normalize backslashes to forward slashes to align directory depth with canonical name computation.
                     String normalizedBlobName = blobName.replace('\\', '/');
-                    if (!normalizedBlobName.equalsIgnoreCase("/")) {
+                    if (!"/".equalsIgnoreCase(normalizedBlobName)) {
                         directoryDepth = normalizedBlobName.trim().replaceAll("^/+|/+$", "").split("/").length;
                     } else {
                         directoryDepth = 0;
