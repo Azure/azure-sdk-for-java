@@ -757,7 +757,7 @@ private object CosmosAccountConfig extends BasicLoggingTrait {
         // Without this, unknown headers like {"x-bad-header": "value"} would parse successfully
         // and only blow up at runtime in CosmosClientCache when building the client.
         for (key <- parsed.keys) {
-          CosmosClientCache.validateKnownHeader(key)
+          CosmosClientCache.resolveHeaderName(key) // throws IllegalArgumentException for unknown headers
         }
 
         parsed

@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.CosmosHeaderName;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
@@ -832,5 +833,32 @@ public class Utils {
         BridgeInternal.setSubStatusCode(exceptionToThrow, substatusCode);
 
         return exceptionToThrow;
+    }
+
+    /**
+     * Validates all entries in an additional-headers map.
+     * Currently validates that {@link CosmosHeaderName#WORKLOAD_ID} values are valid integers.
+     *
+     * @param additionalHeaders the map to validate (may be null — no-op in that case)
+     * @throws IllegalArgumentException if any header value fails validation
+     */
+    public static void validateAdditionalHeaders(Map<CosmosHeaderName, String> additionalHeaders) {
+        if (additionalHeaders == null) {
+            return;
+        }
+        for (Map.Entry<CosmosHeaderName, String> entry : additionalHeaders.entrySet()) {
+            CosmosHeaderName key = entry.getKey();
+            String value = entry.getValue();
+
+            if (CosmosHeaderName.WORKLOAD_ID.equals(key) && value != null) {
+                try {
+                    Integer.parseInt(value);
+                } catch (NumberFormatException e) {
+                    throw new IllegalArgumentException(
+                        "Invalid value '" + value + "' for header '" + key.getHeaderName()
+                            + "'. The value must be a valid integer.", e);
+                }
+            }
+        }
     }
 }

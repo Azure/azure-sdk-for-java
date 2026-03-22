@@ -3,6 +3,7 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.CosmosHeaderName;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.RequestOptions;
 
@@ -162,7 +163,7 @@ public final class CosmosContainerRequestOptions {
      * @throws IllegalArgumentException if the workload-id value is not a valid integer
      */
     public CosmosContainerRequestOptions setAdditionalHeaders(Map<CosmosHeaderName, String> additionalHeaders) {
-        CosmosHeaderName.validateAdditionalHeaders(additionalHeaders);
+        Utils.validateAdditionalHeaders(additionalHeaders);
         if (additionalHeaders != null) {
             for (Map.Entry<CosmosHeaderName, String> entry : additionalHeaders.entrySet()) {
                 this.setHeader(entry.getKey().getHeaderName(), entry.getValue());

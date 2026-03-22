@@ -14,6 +14,7 @@ import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot;
 import com.azure.cosmos.implementation.DiagnosticsProvider;
 import com.azure.cosmos.implementation.Strings;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.WriteRetryPolicy;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -757,7 +758,7 @@ public class CosmosClientBuilder implements
      * @throws IllegalArgumentException if the workload-id value is not a valid integer
      */
     public CosmosClientBuilder additionalHeaders(Map<CosmosHeaderName, String> additionalHeaders) {
-        CosmosHeaderName.validateAdditionalHeaders(additionalHeaders);
+        Utils.validateAdditionalHeaders(additionalHeaders);
         this.additionalHeaders = additionalHeaders != null
             ? new HashMap<>(additionalHeaders)
             : null;

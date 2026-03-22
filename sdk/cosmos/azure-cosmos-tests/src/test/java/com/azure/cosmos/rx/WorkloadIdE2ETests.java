@@ -285,15 +285,12 @@ public class WorkloadIdE2ETests extends TestSuiteBase {
 
 
     /**
-     * Verifies that the {@link CosmosHeaderName} allowlist rejects unknown
-     * header names at client build time. Attempting to set an unrecognized header via
-     * The {@code CosmosClientBuilder.additionalHeaders()} API uses
-     * {@link CosmosHeaderName} as the key type, which restricts callers to only
-     * the predefined header constants (e.g., {@link CosmosHeaderName#WORKLOAD_ID}).
-     * Since the constructor is private and no public factory method exists,
-     * callers cannot construct arbitrary {@link CosmosHeaderName} instances.
+     * Verifies that the {@code CosmosClientBuilder.additionalHeaders()} API accepts
+     * a map keyed by {@link CosmosHeaderName} constants.
      * <p>
-     * This test verifies the positive case: that a map with known header constants
+     * {@link CosmosHeaderName} has a private constructor and no public factory method,
+     * so callers can only use the predefined constants (e.g., {@link CosmosHeaderName#WORKLOAD_ID}).
+     * This test verifies the positive case: a map with known header constants
      * is accepted by the builder without error.
      */
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)

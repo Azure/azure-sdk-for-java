@@ -4,7 +4,6 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.HttpConstants;
 
-import java.util.Map;
 import java.util.Objects;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -49,40 +48,6 @@ public final class CosmosHeaderName {
         return this.headerName;
     }
 
-    /**
-     * Validates all entries in an additional-headers map.
-     * <p>
-     * Each {@link CosmosHeaderName} instance carries its own validation rules. Currently:
-     * <ul>
-     *   <li>{@link #WORKLOAD_ID}: value must be a valid integer string</li>
-     * </ul>
-     * <p>
-     * This method is called by {@link CosmosClientBuilder#additionalHeaders(Map)} and
-     * by every request-options class's {@code setAdditionalHeaders} method, so the
-     * validation logic lives in one place.
-     *
-     * @param additionalHeaders the map to validate (may be null — no-op in that case)
-     * @throws IllegalArgumentException if any header value fails validation
-     */
-    public static void validateAdditionalHeaders(Map<CosmosHeaderName, String> additionalHeaders) {
-        if (additionalHeaders == null) {
-            return;
-        }
-        for (Map.Entry<CosmosHeaderName, String> entry : additionalHeaders.entrySet()) {
-            CosmosHeaderName key = entry.getKey();
-            String value = entry.getValue();
-
-            if (WORKLOAD_ID.equals(key) && value != null) {
-                try {
-                    Integer.parseInt(value);
-                } catch (NumberFormatException e) {
-                    throw new IllegalArgumentException(
-                        "Invalid value '" + value + "' for header '" + key.getHeaderName()
-                            + "'. The value must be a valid integer.", e);
-                }
-            }
-        }
-    }
 
     @Override
     public String toString() {

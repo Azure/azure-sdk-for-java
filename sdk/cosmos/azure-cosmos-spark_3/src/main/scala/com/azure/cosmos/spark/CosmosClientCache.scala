@@ -52,25 +52,19 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
   // Spark-side mapping of known header name strings to CosmosHeaderName instances.
   // This follows the same pattern as CosmosPriorityLevel in the Kafka connector:
   // the connector defines its own known-values mapping and converts to SDK types,
+  // rather than relying on a fromString() public API on the SDK type.
   private val knownHeaders: Map[String, CosmosHeaderName] = Map(
     CosmosHeaderName.WORKLOAD_ID.getHeaderName.toLowerCase(java.util.Locale.ROOT) -> CosmosHeaderName.WORKLOAD_ID
   )
 
   /**
-   * Validates that a header name string is a known CosmosHeaderName.
-   * @param headerName the raw header name string from user config
-   * @throws IllegalArgumentException if the header name is not recognized
-   */
-  def validateKnownHeader(headerName: String): Unit = {
-    if (!knownHeaders.contains(headerName.trim.toLowerCase(java.util.Locale.ROOT))) {
-      throw new IllegalArgumentException(
-        s"Unknown header: '$headerName'. Allowed headers: ${knownHeaders.keys.mkString(", ")}")
-    }
-  }
-
-  /**
    * Resolves a header name string to its CosmosHeaderName instance.
-   * Call [[validateKnownHeader]] first during config parsing for fail-fast behavior.
+   * Also serves as validation — throws IllegalArgumentException for unknown headers.
+   * Called at config-parse time (fail-fast) and at client-build time (type conversion).
+   *
+   * @param headerName the raw header name string from user config
+   * @return the matching CosmosHeaderName instance
+   * @throws IllegalArgumentException if the header name is not recognized
    */
   def resolveHeaderName(headerName: String): CosmosHeaderName = {
     val normalized = headerName.trim.toLowerCase(java.util.Locale.ROOT)
