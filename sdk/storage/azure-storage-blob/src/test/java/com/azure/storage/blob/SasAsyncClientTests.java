@@ -1610,7 +1610,19 @@ public class SasAsyncClientTests extends BlobTestBase {
             = getBlobAsyncClient(sasToken, ccAsync.getBlobContainerUrl(), blobName + "/test", null)
                 .getAppendBlobAsyncClient();
 
-        StepVerifier.create(appendBlobClient1.create().flatMap(ignored -> appendBlobClient2.create()).then())
+        String blobUrl = appendBlobClient1.getBlobUrl();
+        assertTrue(BlobSasPermission
+            .parse(BlobUrlParts.parse(blobUrl + '?' + sasToken).getCommonSasQueryParameters().getPermissions())
+            .hasReadPermission());
+
+        Mono<Void> verifySasRead = appendBlobClient1.getProperties()
+            .doOnNext(p -> assertTrue(validateSasProperties(p)))
+            .then(appendBlobClient2.getProperties())
+            .doOnNext(p -> assertTrue(validateSasProperties(p)))
+            .then();
+
+        StepVerifier
+            .create(appendBlobClient1.create().flatMap(ignored -> appendBlobClient2.create()).then(verifySasRead))
             .verifyComplete();
     }
 
@@ -1658,7 +1670,22 @@ public class SasAsyncClientTests extends BlobTestBase {
                     AppendBlobAsyncClient appendBlobClient2
                         = getBlobAsyncClient(sasToken, identityContainerClient.getBlobContainerUrl(),
                             blobName + "/test", null).getAppendBlobAsyncClient();
-                    return appendBlobClient1.create().flatMap(ignored -> appendBlobClient2.create()).then();
+
+                    String blobUrl = appendBlobClient1.getBlobUrl();
+                    assertTrue(BlobSasPermission
+                        .parse(
+                            BlobUrlParts.parse(blobUrl + '?' + sasToken).getCommonSasQueryParameters().getPermissions())
+                        .hasReadPermission());
+
+                    Mono<Void> verifySasRead = appendBlobClient1.getProperties()
+                        .doOnNext(p -> assertTrue(validateSasProperties(p)))
+                        .then(appendBlobClient2.getProperties())
+                        .doOnNext(p -> assertTrue(validateSasProperties(p)))
+                        .then();
+
+                    return appendBlobClient1.create()
+                        .flatMap(ignored -> appendBlobClient2.create())
+                        .then(verifySasRead);
                 }));
 
             StepVerifier.create(response).verifyComplete();

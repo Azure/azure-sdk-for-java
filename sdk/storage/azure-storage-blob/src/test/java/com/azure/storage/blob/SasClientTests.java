@@ -1476,12 +1476,20 @@ public class SasClientTests extends BlobTestBase {
         // Test using same name as SAS
         AppendBlobClient appendBlobClient1
             = getBlobClient(sasToken, cc.getBlobContainerUrl(), blobName).getAppendBlobClient();
-        appendBlobClient1.create();
-
         // Test using SAS name + suffix
         AppendBlobClient appendBlobClient2
             = getBlobClient(sasToken, cc.getBlobContainerUrl(), blobName + "/test").getAppendBlobClient();
+
+        String blobUrl = appendBlobClient1.getBlobUrl();
+        assertTrue(BlobSasPermission
+            .parse(BlobUrlParts.parse(blobUrl + '?' + sasToken).getCommonSasQueryParameters().getPermissions())
+            .hasReadPermission());
+
+        appendBlobClient1.create();
         appendBlobClient2.create();
+
+        assertTrue(validateSasProperties(appendBlobClient1.getProperties()));
+        assertTrue(validateSasProperties(appendBlobClient2.getProperties()));
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-02-10")
@@ -1526,13 +1534,21 @@ public class SasClientTests extends BlobTestBase {
             AppendBlobClient appendBlobClient1
                 = getBlobClient(sasToken, identityContainerClient.getBlobContainerUrl(), blobName)
                     .getAppendBlobClient();
-            appendBlobClient1.create();
-
             // Test using SAS name + suffix
             AppendBlobClient appendBlobClient2
                 = getBlobClient(sasToken, identityContainerClient.getBlobContainerUrl(), blobName + "/test")
                     .getAppendBlobClient();
+
+            String blobUrl = appendBlobClient1.getBlobUrl();
+            assertTrue(BlobSasPermission
+                .parse(BlobUrlParts.parse(blobUrl + '?' + sasToken).getCommonSasQueryParameters().getPermissions())
+                .hasReadPermission());
+
+            appendBlobClient1.create();
             appendBlobClient2.create();
+
+            assertTrue(validateSasProperties(appendBlobClient1.getProperties()));
+            assertTrue(validateSasProperties(appendBlobClient2.getProperties()));
         });
     }
 
