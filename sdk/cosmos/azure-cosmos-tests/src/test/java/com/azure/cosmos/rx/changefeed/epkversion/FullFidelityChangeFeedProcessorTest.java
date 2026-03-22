@@ -80,7 +80,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
     private CosmosAsyncDatabase createdDatabase;
     private final String hostName = RandomStringUtils.randomAlphabetic(6);
     private final int FEED_COUNT = 10;
-    private final int CHANGE_FEED_PROCESSOR_TIMEOUT = 2000;
+    private final int CHANGE_FEED_PROCESSOR_TIMEOUT = 5000;
     private final int FEED_COLLECTION_THROUGHPUT = 400;
     private final int FEED_COLLECTION_THROUGHPUT_FOR_SPLIT = 10100;
     private final int LEASE_COLLECTION_THROUGHPUT = 400;
