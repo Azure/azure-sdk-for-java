@@ -37,7 +37,7 @@ com.azure:azure-data-sdk-parent;1.3.0;1.3.0
 com.azure:azure-sdk-parent;1.6.0;1.6.0
 com.azure:azure-client-sdk-parent;1.7.0;1.7.0
 com.azure:azure-ai-agents-persistent;1.0.0-beta.2;1.0.0-beta.3
-com.azure:azure-ai-agents;2.0.0-beta.2;2.0.0-beta.3
+com.azure:azure-ai-agents;2.0.0-beta.3;2.0.0-beta.4
 com.azure:azure-ai-anomalydetector;3.0.0-beta.5;3.0.0-beta.6
 com.azure:azure-ai-contentsafety;1.0.17;1.1.0-beta.1
 com.azure:azure-ai-contentunderstanding;1.0.0;1.1.0-beta.1
@@ -53,7 +53,7 @@ com.azure:azure-ai-openai-assistants;1.0.0-beta.5;1.0.0-beta.6
 com.azure:azure-ai-openai-realtime;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-ai-openai-stainless;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-ai-personalizer;1.0.0-beta.1;1.0.0-beta.2
-com.azure:azure-ai-projects;2.0.0-beta.2;2.0.0-beta.3
+com.azure:azure-ai-projects;2.0.0-beta.3;2.0.0-beta.4
 com.azure:azure-ai-speech-transcription;1.0.0-beta.2;1.0.0-beta.3
 com.azure:azure-ai-textanalytics;5.5.12;5.6.0-beta.1
 com.azure:azure-ai-textanalytics-perf;1.0.0-beta.1;1.0.0-beta.1
@@ -113,11 +113,11 @@ com.azure.cosmos.spark:azure-cosmos-spark_3-5;0.0.1-beta.1;0.0.1-beta.1
 com.azure:azure-cosmos-encryption;2.27.0;2.28.0-beta.1
 com.azure.cosmos.spark:azure-cosmos-spark-account-data-resolver-sample;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-cosmos-test;1.0.0-beta.17;1.0.0-beta.18
-com.azure.cosmos.spark:azure-cosmos-spark_3-3_2-12;4.44.2;4.45.0
-com.azure.cosmos.spark:azure-cosmos-spark_3-4_2-12;4.44.2;4.45.0
-com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12;4.44.2;4.45.0
-com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-13;4.44.2;4.45.0
-com.azure.cosmos.spark:azure-cosmos-spark_4-0_2-13;4.44.2;4.45.0
+com.azure.cosmos.spark:azure-cosmos-spark_3-3_2-12;4.45.0;4.46.0-beta.1
+com.azure.cosmos.spark:azure-cosmos-spark_3-4_2-12;4.45.0;4.46.0-beta.1
+com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12;4.45.0;4.46.0-beta.1
+com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-13;4.45.0;4.46.0-beta.1
+com.azure.cosmos.spark:azure-cosmos-spark_4-0_2-13;4.45.0;4.46.0-beta.1
 com.azure.cosmos.spark:fabric-cosmos-spark-auth_3;1.1.0;1.2.0-beta.1
 com.azure:azure-cosmos-tests;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-data-appconfiguration;1.9.1;1.10.0-beta.1
@@ -129,7 +129,7 @@ com.azure:azure-data-schemaregistry-jsonschema;1.0.7;1.1.0-beta.1
 com.azure:azure-data-tables;12.5.9;12.6.0-beta.1
 com.azure:azure-data-tables-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-developer-devcenter;1.0.14;1.1.0-beta.1
-com.azure:azure-developer-loadtesting;1.0.28;1.2.0-beta.1
+com.azure:azure-developer-loadtesting;1.0.28;1.2.0-beta.2
 com.azure:azure-digitaltwins-core;1.5.5;1.6.0-beta.1
 com.azure:azure-e2e;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-health-deidentification;1.0.0;1.1.0-beta.2
@@ -280,18 +280,18 @@ com.azure.resourcemanager:azure-resourcemanager-authorization;2.53.7;2.54.0-beta
 com.azure.resourcemanager:azure-resourcemanager-cdn;2.53.6;2.54.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-compute;2.56.2;2.57.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-containerinstance;2.53.8;2.54.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-containerregistry;2.54.2;2.55.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-containerregistry;2.55.0;2.56.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-containerservice;2.57.1;2.58.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-cosmos;2.54.1;2.55.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-dns;2.53.6;2.54.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-eventhubs;2.53.6;2.54.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-keyvault;2.54.2;2.55.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-keyvault;2.54.2;2.55.0
 com.azure.resourcemanager:azure-resourcemanager-monitor;2.53.6;2.54.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-msi;2.53.6;2.54.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-network;2.58.0;2.59.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-privatedns;2.53.6;2.54.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-resources;2.53.6;2.54.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-resources;2.54.0;2.55.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-redis;2.53.6;2.54.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-samples;2.0.0-beta.1;2.0.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-search;2.54.5;2.55.0-beta.1
@@ -369,7 +369,7 @@ com.azure.resourcemanager:azure-resourcemanager-marketplaceordering;1.0.0;1.1.0-
 com.azure.resourcemanager:azure-resourcemanager-timeseriesinsights;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-streamanalytics;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-operationsmanagement;1.0.0-beta.3;1.0.0-beta.4
-com.azure.resourcemanager:azure-resourcemanager-batch;2.0.0;2.1.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-batch;2.0.0;3.0.0
 com.azure.resourcemanager:azure-resourcemanager-datalakeanalytics;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-datalakestore;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-iotcentral;1.0.0;1.1.0-beta.3
@@ -422,7 +422,7 @@ com.azure.resourcemanager:azure-resourcemanager-fluidrelay;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-devcenter;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-connectedvmware;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-alertsmanagement;1.0.0-beta.2;1.0.0-beta.3
-com.azure.resourcemanager:azure-resourcemanager-nginx;1.0.0;1.1.0-beta.5
+com.azure.resourcemanager:azure-resourcemanager-nginx;1.0.0;1.1.0
 com.azure.resourcemanager:azure-resourcemanager-agrifood;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-devhub;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-elasticsan;1.2.0;1.3.0-beta.1
@@ -480,7 +480,7 @@ com.azure.resourcemanager:azure-resourcemanager-iotoperations;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-containerorchestratorruntime;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-terraform;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-connectedcache;1.0.0-beta.2;1.0.0-beta.3
-com.azure.resourcemanager:azure-resourcemanager-neonpostgres;1.0.0;1.1.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-neonpostgres;1.0.1;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-pineconevectordb;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-impactreporting;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-migration-assessment;1.0.0-beta.1;1.0.0-beta.2
@@ -508,7 +508,7 @@ com.azure.resourcemanager:azure-resourcemanager-resources-deploymentstacks;1.1.0
 com.azure.resourcemanager:azure-resourcemanager-kubernetesconfiguration-privatelinkscopes;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-resources-bicep;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-playwright;1.0.0;1.1.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-managedops;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-managedops;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-storagediscovery;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-containerservicesafeguards;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-azurestackhci-vm;1.0.0-beta.1;1.0.0-beta.2
@@ -516,7 +516,7 @@ com.azure.resourcemanager:azure-resourcemanager-workloadorchestration;1.0.0-beta
 com.azure.resourcemanager:azure-resourcemanager-disconnectedoperations;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-compute-recommender;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-computelimit;1.0.0-beta.1;1.0.0-beta.2
-com.azure.resourcemanager:azure-resourcemanager-containerregistry-tasks;1.0.0-beta.1;1.0.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-containerregistry-tasks;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-virtualenclaves;1.0.0-beta.1;1.0.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-edgeactions;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-computebulkactions;1.0.0-beta.1;1.0.0-beta.2
@@ -542,7 +542,7 @@ io.clientcore:core;1.0.0-beta.11;1.0.0-beta.12
 io.clientcore:http-netty4;1.0.0-beta.1;1.0.0-beta.1
 io.clientcore:http-okhttp3;1.0.0-beta.2;1.0.0-beta.3
 io.clientcore:http-stress;1.0.0-beta.1;1.0.0-beta.1
-io.clientcore:linting-extensions;1.0.0-beta.1;1.0.0-beta.2
+io.clientcore:linting-extensions;1.0.0-beta.2;1.0.0-beta.3
 io.clientcore:optional-dependency-tests;1.0.0-beta.1;1.0.0-beta.1
 
 # Unreleased dependencies: Copy the entry from above, prepend "unreleased_" and remove the current
@@ -558,7 +558,6 @@ unreleased_com.azure.v2:azure-core;2.0.0-beta.1
 unreleased_com.azure.v2:azure-identity;2.0.0-beta.1
 unreleased_com.azure.v2:azure-data-appconfiguration;2.0.0-beta.1
 unreleased_io.clientcore:http-netty4;1.0.0-beta.1
-unreleased_io.clientcore:linting-extensions;1.0.0-beta.2
 
 # Released Beta dependencies: Copy the entry from above, prepend "beta_", remove the current
 # version and set the version to the released beta. Released beta dependencies are only valid

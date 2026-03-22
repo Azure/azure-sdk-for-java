@@ -18,6 +18,8 @@ import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.openai.services.async.EvalServiceAsync;
+import com.openai.services.blocking.EvalService;
 import org.junit.jupiter.api.Assertions;
 
 import java.io.File;
@@ -125,14 +127,14 @@ public class ClientTestBase extends TestProxyTestBase {
         return getClientBuilder(httpClient, aiProjectsServiceVersion).buildDeploymentsAsyncClient();
     }
 
-    protected EvaluationsClient getEvaluationsClient(HttpClient httpClient,
+    protected EvalService getEvaluationsClient(HttpClient httpClient,
         AIProjectsServiceVersion aiProjectsServiceVersion) {
-        return getClientBuilder(httpClient, aiProjectsServiceVersion).buildEvaluationsClient();
+        return getClientBuilder(httpClient, aiProjectsServiceVersion).buildOpenAIClient().evals();
     }
 
-    protected EvaluationsAsyncClient getEvaluationsAsyncClient(HttpClient httpClient,
+    protected EvalServiceAsync getEvaluationsAsyncClient(HttpClient httpClient,
         AIProjectsServiceVersion aiProjectsServiceVersion) {
-        return getClientBuilder(httpClient, aiProjectsServiceVersion).buildEvaluationsAsyncClient();
+        return getClientBuilder(httpClient, aiProjectsServiceVersion).buildOpenAIAsyncClient().evals();
     }
 
     protected IndexesClient getIndexesClient(HttpClient httpClient, AIProjectsServiceVersion aiProjectsServiceVersion) {

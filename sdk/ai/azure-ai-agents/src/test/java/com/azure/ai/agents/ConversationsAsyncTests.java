@@ -15,6 +15,7 @@ import com.openai.models.conversations.ConversationUpdateParams;
 import com.openai.models.conversations.Message;
 import com.openai.models.conversations.items.*;
 import com.openai.models.responses.EasyInputMessage;
+import com.openai.services.async.ConversationServiceAsync;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -35,10 +36,10 @@ public class ConversationsAsyncTests extends ClientTestBase {
     @MethodSource("com.azure.ai.agents.TestUtils#getTestParameters")
     public void basicCRUDOperations(HttpClient httpClient, AgentsServiceVersion serviceVersion)
         throws ExecutionException, InterruptedException {
-        ConversationsAsyncClient client = getConversationsAsyncClient(httpClient, serviceVersion);
+        ConversationServiceAsync client = getConversationsAsyncClient(httpClient, serviceVersion);
 
         // creation
-        Conversation createdConversation = client.getConversationServiceAsync().create().get();
+        Conversation createdConversation = client.create().get();
         String conversationId = createdConversation.id();
         assertNotNull(conversationId);
         assertTrue(StringUtils.isNotBlank(conversationId));
@@ -49,20 +50,18 @@ public class ConversationsAsyncTests extends ClientTestBase {
             .putAdditionalProperty("metadata_key", JsonValue.from("metadata_value"))
             .build();
         ConversationUpdateParams.Builder params = ConversationUpdateParams.builder().metadata(metadata);
-        Conversation updatedConversation
-            = client.getConversationServiceAsync().update(conversationId, params.build()).get();
+        Conversation updatedConversation = client.update(conversationId, params.build()).get();
 
         assertEquals(JsonValue.from(metadata), updatedConversation._metadata());
         assertEquals(createdConversation.id(), updatedConversation.id());
 
         // retrieve
-        Conversation retrievedConversation = client.getConversationServiceAsync().retrieve(conversationId).get();
+        Conversation retrievedConversation = client.retrieve(conversationId).get();
         assertEquals(updatedConversation.id(), retrievedConversation.id());
         assertEquals(updatedConversation._metadata(), retrievedConversation._metadata());
 
         // deletion
-        ConversationDeletedResource deletedConversationResource
-            = client.getConversationServiceAsync().delete(conversationId).get();
+        ConversationDeletedResource deletedConversationResource = client.delete(conversationId).get();
         assertEquals(conversationId, deletedConversationResource.id());
         assertTrue(deletedConversationResource.deleted());
     }
@@ -71,17 +70,16 @@ public class ConversationsAsyncTests extends ClientTestBase {
     @MethodSource("com.azure.ai.agents.TestUtils#getTestParameters")
     public void basicItemCRUDOperations(HttpClient httpClient, AgentsServiceVersion serviceVersion)
         throws ExecutionException, InterruptedException {
-        ConversationsAsyncClient client = getConversationsAsyncClient(httpClient, serviceVersion);
+        ConversationServiceAsync client = getConversationsAsyncClient(httpClient, serviceVersion);
 
         // creation - conversation
-        Conversation createdConversation = client.getConversationServiceAsync().create().get();
+        Conversation createdConversation = client.create().get();
         String conversationId = createdConversation.id();
         assertNotNull(conversationId);
         assertTrue(StringUtils.isNotBlank(conversationId));
 
         // creation - conversation item
-        ConversationItemList conversationItem = client.getConversationServiceAsync()
-            .items()
+        ConversationItemList conversationItem = client.items()
             .create(ItemCreateParams.builder()
                 .conversationId(conversationId)
                 .addItem(EasyInputMessage.builder()
@@ -102,8 +100,7 @@ public class ConversationsAsyncTests extends ClientTestBase {
         assertEquals("Hello, agent!", createdConversationItem.content().get(0).asInputText().text());
 
         // retrieve - conversation item
-        ConversationItem retrievedItem = client.getConversationServiceAsync()
-            .items()
+        ConversationItem retrievedItem = client.items()
             .retrieve(ItemRetrieveParams.builder()
                 .itemId(createdConversationItem.id())
                 .conversationId(conversationId)
@@ -114,8 +111,7 @@ public class ConversationsAsyncTests extends ClientTestBase {
         assertEquals("Hello, agent!", retrievedItem.asMessage().content().get(0).asInputText().text());
 
         // retrieve - conversation item with ID
-        ConversationItem retrievedItemWithId = client.getConversationServiceAsync()
-            .items()
+        ConversationItem retrievedItemWithId = client.items()
             .retrieve(ItemRetrieveParams.builder()
                 .conversationId(conversationId)
                 .itemId(retrievedItem.asMessage().id())
@@ -126,8 +122,7 @@ public class ConversationsAsyncTests extends ClientTestBase {
         assertEquals("Hello, agent!", retrievedItemWithId.asMessage().content().get(0).asInputText().text());
 
         // deletion - conversation
-        Conversation conversationWithDeletedItem = client.getConversationServiceAsync()
-            .items()
+        Conversation conversationWithDeletedItem = client.items()
             .delete(ItemDeleteParams.builder()
                 .conversationId(conversationId)
                 .itemId(retrievedItemWithId.asMessage().id())
@@ -142,12 +137,11 @@ public class ConversationsAsyncTests extends ClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.agents.TestUtils#getTestParameters")
     public void timeoutResponse(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
-        ConversationsAsyncClient client = getConversationsAsyncClient(httpClient, serviceVersion);
+        ConversationServiceAsync client = getConversationsAsyncClient(httpClient, serviceVersion);
         RequestOptions requestOptions
             = RequestOptions.builder().timeout(Timeout.builder().read(Duration.ofMillis(1)).build()).build();
 
-        ExecutionException thrown = assertThrows(ExecutionException.class,
-            () -> client.getConversationServiceAsync().create(requestOptions).get());
+        ExecutionException thrown = assertThrows(ExecutionException.class, () -> client.create(requestOptions).get());
         assertInstanceOf(TimeoutException.class, thrown.getCause());
     }
 }

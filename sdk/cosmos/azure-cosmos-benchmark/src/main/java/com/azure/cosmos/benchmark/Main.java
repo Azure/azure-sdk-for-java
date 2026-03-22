@@ -48,18 +48,16 @@ public class Main {
 
     private static void validateConfiguration(TenantWorkloadConfig workloadCfg) {
         switch (workloadCfg.getOperationType()) {
-            case WriteLatency:
             case WriteThroughput:
                 break;
             default:
                 if (!workloadCfg.isContentResponseOnWriteEnabled()) {
                     throw new IllegalArgumentException("contentResponseOnWriteEnabled parameter can only be set to false " +
-                        "for write latency and write throughput operations");
+                        "for write operations");
                 }
         }
 
         switch (workloadCfg.getOperationType()) {
-            case ReadLatency:
             case ReadThroughput:
                 break;
             default:

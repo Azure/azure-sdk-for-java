@@ -10,7 +10,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 public class ConnectionsSample {
 
     private static ConnectionsClient connectionsClient
-        = new AIProjectClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("AZURE_AI_PROJECTS_ENDPOINT", "endpoint"))
+        = new AIProjectClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT", "endpoint"))
         .credential(new DefaultAzureCredentialBuilder().build())
         .buildConnectionsClient();
 

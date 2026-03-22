@@ -7,6 +7,7 @@ import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.ResponsesAsyncClient;
 import com.azure.ai.agents.models.AgentReference;
+import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.BrowserAutomationPreviewTool;
 import com.azure.ai.agents.models.BrowserAutomationToolConnectionParameters;
@@ -27,14 +28,14 @@ import reactor.core.publisher.Mono;
  * <p>Before running the sample, set these environment variables:</p>
  * <ul>
  *   <li>FOUNDRY_PROJECT_ENDPOINT - The Azure AI Project endpoint.</li>
- *   <li>FOUNDRY_MODEL_DEPLOYMENT_NAME - The model deployment name.</li>
+ *   <li>FOUNDRY_MODEL_NAME - The model deployment name.</li>
  *   <li>BROWSER_AUTOMATION_PROJECT_CONNECTION_ID - The browser automation connection ID.</li>
  * </ul>
  */
 public class BrowserAutomationAsync {
     public static void main(String[] args) {
         String endpoint = Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT");
-        String model = Configuration.getGlobalConfiguration().get("FOUNDRY_MODEL_DEPLOYMENT_NAME");
+        String model = Configuration.getGlobalConfiguration().get("FOUNDRY_MODEL_NAME");
         String connectionId = Configuration.getGlobalConfiguration().get("BROWSER_AUTOMATION_PROJECT_CONNECTION_ID");
 
         AgentsClientBuilder builder = new AgentsClientBuilder()
@@ -65,7 +66,8 @@ public class BrowserAutomationAsync {
                 AgentReference agentReference = new AgentReference(agent.getName())
                     .setVersion(agent.getVersion());
 
-                return responsesAsyncClient.createWithAgent(agentReference,
+                return responsesAsyncClient.createAzureResponse(
+                    new AzureCreateResponseOptions().setAgentReference(agentReference),
                     ResponseCreateParams.builder()
                         .input("Navigate to microsoft.com and summarize the main content"));
             })
