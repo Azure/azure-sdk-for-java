@@ -285,6 +285,31 @@ public final class Constants {
     public static final class UrlConstants {
 
         /**
+         * DNS subdomain label for the Blob service ({@code account}.blob.{suffix}).
+         */
+        public static final String BLOB_URI_SUBDOMAIN = "blob";
+
+        /**
+         * DNS subdomain label for the Azure Files service ({@code account}.file.{suffix}).
+         */
+        public static final String FILE_URI_SUBDOMAIN = "file";
+
+        /**
+         * DNS subdomain label for the Queue service ({@code account}.queue.{suffix}).
+         */
+        public static final String QUEUE_URI_SUBDOMAIN = "queue";
+
+        /**
+         * DNS subdomain label for the Table service ({@code account}.table.{suffix}).
+         */
+        public static final String TABLE_URI_SUBDOMAIN = "table";
+
+        /**
+         * DNS subdomain label for Data Lake Storage ({@code account}.dfs.{suffix}).
+         */
+        public static final String DFS_URI_SUBDOMAIN = "dfs";
+
+        /**
          * The snapshot parameters.
          */
         public static final String SNAPSHOT_QUERY_PARAMETER = "snapshot";
@@ -464,65 +489,4 @@ public final class Constants {
         }
     }
 
-    /**
-     * Constants for the Blob service subdomain.
-     */
-    public static class Blob {
-        /**
-         * The URI subdomain for blob storage.
-         */
-        public static final String URI_SUBDOMAIN = "blob";
-    }
-
-    /**
-     * Constants for the File service subdomain.
-     */
-    public static final class File {
-        /**
-         * The URI subdomain for file storage.
-         */
-        public static final String URI_SUBDOMAIN = "file";
-
-        private File() {
-        }
-    }
-
-    /**
-     * Constants for the Queue service subdomain.
-     */
-    public static final class Queue {
-        /**
-         * The URI subdomain for queue storage.
-         */
-        public static final String URI_SUBDOMAIN = "queue";
-
-        private Queue() {
-        }
-    }
-
-    /**
-     * Constants for the Table service subdomain.
-     */
-    public static final class Table {
-        /**
-         * The URI subdomain for table storage.
-         */
-        public static final String URI_SUBDOMAIN = "table";
-
-        private Table() {
-        }
-    }
-
-    /**
-     * Constants for the DFS (Data Lake) service subdomain.
-     */
-    public static final class Dfs {
-        /**
-         * The URI subdomain for Data Lake Storage.
-         */
-        public static final String URI_SUBDOMAIN = "dfs";
-
-        private Dfs() {
-        }
-    }
 }

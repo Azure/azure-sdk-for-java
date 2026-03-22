@@ -108,7 +108,8 @@ public final class BuilderHelper {
             } else {
                 // URL is using a pattern of http://accountName.queue.core.windows.net/queueName
                 String host = url.getHost();
-                String accountName = StorageImplUtils.getAccountNameFromHost(host, Constants.Queue.URI_SUBDOMAIN);
+                String accountName
+                    = StorageImplUtils.getAccountNameFromHost(host, Constants.UrlConstants.QUEUE_URI_SUBDOMAIN);
 
                 parts.setAccountName(accountName);
 

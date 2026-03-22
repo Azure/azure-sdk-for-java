@@ -208,7 +208,7 @@ public final class BuilderHelper {
         } else {
             // URL is using a pattern of http://accountName.file.core.windows.net
             String host = url.getHost();
-            return StorageImplUtils.getAccountNameFromHost(host, Constants.File.URI_SUBDOMAIN);
+            return StorageImplUtils.getAccountNameFromHost(host, Constants.UrlConstants.FILE_URI_SUBDOMAIN);
         }
     }
 
@@ -260,7 +260,8 @@ public final class BuilderHelper {
             } else {
                 // URL is using a pattern of http://accountName.file.core.windows.net/shareName
                 String host = url.getHost();
-                String accountName = StorageImplUtils.getAccountNameFromHost(host, Constants.File.URI_SUBDOMAIN);
+                String accountName
+                    = StorageImplUtils.getAccountNameFromHost(host, Constants.UrlConstants.FILE_URI_SUBDOMAIN);
 
                 parts.setAccountName(accountName);
 

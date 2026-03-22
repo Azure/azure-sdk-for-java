@@ -453,10 +453,12 @@ public final class BlobUrlParts {
         parts.setHost(host);
 
         // Parse host to get account name
-        if (url.toString().contains(Constants.Blob.URI_SUBDOMAIN)) {
-            parts.setAccountName(StorageImplUtils.getAccountNameFromHost(host, Constants.Blob.URI_SUBDOMAIN));
+        if (url.toString().contains(Constants.UrlConstants.BLOB_URI_SUBDOMAIN)) {
+            parts.setAccountName(
+                StorageImplUtils.getAccountNameFromHost(host, Constants.UrlConstants.BLOB_URI_SUBDOMAIN));
         } else {
-            parts.setAccountName(StorageImplUtils.getAccountNameFromHost(host, Constants.Dfs.URI_SUBDOMAIN));
+            parts.setAccountName(
+                StorageImplUtils.getAccountNameFromHost(host, Constants.UrlConstants.DFS_URI_SUBDOMAIN));
         }
 
         // find the container & blob names (if any)
