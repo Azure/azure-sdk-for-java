@@ -33,12 +33,6 @@ public final class AgentVersionDetails implements JsonSerializable<AgentVersionD
     private final Map<String, String> metadata;
 
     /*
-     * The object type, which is always 'agent.version'.
-     */
-    @Generated
-    private final AgentObjectType object = AgentObjectType.AGENT_VERSION;
-
-    /*
      * The unique identifier of the agent version.
      */
     @Generated
@@ -116,16 +110,6 @@ public final class AgentVersionDetails implements JsonSerializable<AgentVersionD
     }
 
     /**
-     * Get the object property: The object type, which is always 'agent.version'.
-     *
-     * @return the object value.
-     */
-    @Generated
-    public AgentObjectType getObject() {
-        return this.object;
-    }
-
-    /**
      * Get the id property: The unique identifier of the agent version.
      *
      * @return the id value.
@@ -194,7 +178,7 @@ public final class AgentVersionDetails implements JsonSerializable<AgentVersionD
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeStringField("object", this.object == null ? null : this.object.toString());
+        jsonWriter.writeStringField("object", this.objectType == null ? null : this.objectType.toString());
         jsonWriter.writeStringField("id", this.id);
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("version", this.version);
@@ -249,5 +233,21 @@ public final class AgentVersionDetails implements JsonSerializable<AgentVersionD
             deserializedAgentVersionDetails.description = description;
             return deserializedAgentVersionDetails;
         });
+    }
+
+    /*
+     * The object type, which is always 'agent.version'.
+     */
+    @Generated
+    private final AgentObjectType objectType = AgentObjectType.AGENT_VERSION;
+
+    /**
+     * Get the objectType property: The object type, which is always 'agent.version'.
+     *
+     * @return the objectType value.
+     */
+    @Generated
+    public AgentObjectType getObjectType() {
+        return this.objectType;
     }
 }
