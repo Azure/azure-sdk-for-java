@@ -11,6 +11,7 @@
 * Fixed Remote Code Execution (RCE) vulnerability (CWE-502) by replacing Java deserialization with JSON-based serialization in `CosmosClientMetadataCachesSnapshot`, `AsyncCache`, and `DocumentCollection`. The metadata cache snapshot now uses Jackson for serialization/deserialization, eliminating the entire class of Java deserialization attacks. - [PR 47971](https://github.com/Azure/azure-sdk-for-java/pull/47971)
 
 #### Other Changes
+* Promoted the following `@Beta` APIs to GA: `CosmosContainerProperties.getFullTextPolicy()`/`setFullTextPolicy()`, `IndexingPolicy.getCosmosFullTextIndexes()`/`setCosmosFullTextIndexes()`, `ThroughputControlGroupConfigBuilder.setGroupName()`/`setTargetThroughput()`/`setTargetThroughputThreshold()`/`setDefault()`, `CosmosDiagnostics.getRegionsContacted()`, and `EncryptionKeyWrapMetadata(String, String, String)`. - See [PR 48538](https://github.com/Azure/azure-sdk-for-java/pull/48538)
 
 ### 4.78.0 (2026-02-10)
 
