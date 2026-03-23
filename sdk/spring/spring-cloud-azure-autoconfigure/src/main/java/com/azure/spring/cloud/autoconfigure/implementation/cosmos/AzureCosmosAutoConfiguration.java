@@ -5,6 +5,8 @@ package com.azure.spring.cloud.autoconfigure.implementation.cosmos;
 
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.spring.cloud.autoconfigure.implementation.cosmos.properties.AzureCosmosPropertiesConfiguration;
+import com.azure.spring.cloud.autoconfigure.implementation.data.cosmos.CosmosDataAutoConfiguration;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Import;
@@ -19,5 +21,6 @@ import org.springframework.context.annotation.Import;
     CosmosClientConfiguration.class
 })
 @ConditionalOnClass(CosmosClientBuilder.class)
+@AutoConfigureAfter(CosmosDataAutoConfiguration.class)
 public class AzureCosmosAutoConfiguration {
 }

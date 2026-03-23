@@ -13,6 +13,7 @@ import com.azure.ai.voicelive.models.SessionUpdateSessionUpdated;
 import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
 import com.azure.core.test.annotation.LiveOnly;
 import org.junit.jupiter.api.Assertions;
+import reactor.core.Disposable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -43,6 +44,7 @@ public class VoiceLiveSessionTests extends VoiceLiveTestBase {
         AtomicReference<SessionUpdateSessionUpdated> receivedEvent = new AtomicReference<>();
         CountDownLatch eventLatch = new CountDownLatch(1);
         VoiceLiveSessionAsyncClient session = null;
+        Disposable subscription = null;
 
         try {
             VoiceLiveSessionOptions sessionOptions
@@ -55,7 +57,7 @@ public class VoiceLiveSessionTests extends VoiceLiveTestBase {
             Assertions.assertNotNull(session, "Session should be created successfully");
             Assertions.assertTrue(session.isConnected(), "Session should be connected");
 
-            session.receiveEvents().subscribe(event -> {
+            subscription = session.receiveEvents().subscribe(event -> {
                 ServerEventType eventType = event.getType();
 
                 if (eventType == ServerEventType.SESSION_UPDATED) {
@@ -85,6 +87,9 @@ public class VoiceLiveSessionTests extends VoiceLiveTestBase {
         } catch (Exception e) {
             Assertions.fail("Test failed with exception: " + e.getMessage());
         } finally {
+            if (subscription != null) {
+                subscription.dispose();
+            }
             closeSession(session);
         }
     }
