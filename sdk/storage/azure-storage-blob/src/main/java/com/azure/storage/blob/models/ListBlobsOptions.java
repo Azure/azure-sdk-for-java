@@ -19,6 +19,8 @@ public final class ListBlobsOptions {
     private String prefix;
     private String startFrom;
     private Integer maxResultsPerPage;
+    private Boolean useArrow = false;
+    private String endBefore;
 
     /**
      * Constructs an unpopulated {@link ListBlobsOptions}.
@@ -89,6 +91,24 @@ public final class ListBlobsOptions {
      */
     public ListBlobsOptions setStartFrom(String startFrom) {
         this.startFrom = startFrom;
+        return this;
+    }
+
+    public String getEndBefore() {
+        return endBefore;
+    }
+
+    public ListBlobsOptions setEndBefore(String endBefore) {
+        this.endBefore = endBefore;
+        return this;
+    }
+
+    public Boolean getUseArrow() {
+        return useArrow;
+    }
+
+    public ListBlobsOptions setUseArrow(Boolean useArrow) {
+        this.useArrow = useArrow;
         return this;
     }
 
