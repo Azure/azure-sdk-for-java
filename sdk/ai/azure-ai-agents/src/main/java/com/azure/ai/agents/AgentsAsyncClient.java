@@ -194,7 +194,7 @@ public final class AgentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> deleteAgentVersionWithResponse(String agentName, String agentVersion,
+    Mono<Response<BinaryData>> deleteAgentVersionWithResponse(String agentName, String agentVersion,
         RequestOptions requestOptions) {
         return this.serviceClient.deleteAgentVersionWithResponseAsync(agentName, agentVersion, requestOptions);
     }
