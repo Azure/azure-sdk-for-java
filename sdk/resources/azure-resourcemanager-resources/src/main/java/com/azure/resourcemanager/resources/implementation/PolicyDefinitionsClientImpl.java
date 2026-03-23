@@ -63,7 +63,7 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "PolicyClientPolicyDe")
+    @ServiceInterface(name = "PolicyClientPolicyDefinitions")
     public interface PolicyDefinitionsService {
         @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyDefinitions/{policyDefinitionName}")
@@ -214,7 +214,7 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-04-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -255,7 +255,7 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-04-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), policyDefinitionName,
@@ -342,7 +342,7 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter policyDefinitionName is required and cannot be null."));
         }
-        final String apiVersion = "2023-04-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -376,7 +376,7 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter policyDefinitionName is required and cannot be null."));
         }
-        final String apiVersion = "2023-04-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), policyDefinitionName,
@@ -456,7 +456,7 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter policyDefinitionName is required and cannot be null."));
         }
-        final String apiVersion = "2023-04-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -490,7 +490,7 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter policyDefinitionName is required and cannot be null."));
         }
-        final String apiVersion = "2023-04-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), policyDefinitionName, apiVersion,
@@ -567,7 +567,7 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter policyDefinitionName is required and cannot be null."));
         }
-        final String apiVersion = "2023-04-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil.withContext(
             context -> service.getBuiltIn(this.client.getEndpoint(), policyDefinitionName, apiVersion, accept, context))
@@ -597,7 +597,7 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter policyDefinitionName is required and cannot be null."));
         }
-        final String apiVersion = "2023-04-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getBuiltIn(this.client.getEndpoint(), policyDefinitionName, apiVersion, accept, context);
@@ -685,7 +685,7 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-04-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdateAtManagementGroup(this.client.getEndpoint(),
@@ -727,7 +727,7 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-04-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdateAtManagementGroup(this.client.getEndpoint(), managementGroupId,
@@ -822,7 +822,7 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter policyDefinitionName is required and cannot be null."));
         }
-        final String apiVersion = "2023-04-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.deleteAtManagementGroup(this.client.getEndpoint(), managementGroupId,
@@ -858,7 +858,7 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter policyDefinitionName is required and cannot be null."));
         }
-        final String apiVersion = "2023-04-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.deleteAtManagementGroup(this.client.getEndpoint(), managementGroupId, policyDefinitionName,
@@ -945,7 +945,7 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter policyDefinitionName is required and cannot be null."));
         }
-        final String apiVersion = "2023-04-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getAtManagementGroup(this.client.getEndpoint(), managementGroupId,
@@ -981,7 +981,7 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter policyDefinitionName is required and cannot be null."));
         }
-        final String apiVersion = "2023-04-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getAtManagementGroup(this.client.getEndpoint(), managementGroupId, policyDefinitionName,
@@ -1079,7 +1079,7 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-04-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1127,7 +1127,7 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-04-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1308,7 +1308,7 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        final String apiVersion = "2023-04-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1348,7 +1348,7 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        final String apiVersion = "2023-04-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listBuiltIn(this.client.getEndpoint(), apiVersion, filter, top, accept, context)
@@ -1520,7 +1520,7 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter managementGroupId is required and cannot be null."));
         }
-        final String apiVersion = "2023-04-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByManagementGroup(this.client.getEndpoint(), apiVersion,
@@ -1569,7 +1569,7 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter managementGroupId is required and cannot be null."));
         }
-        final String apiVersion = "2023-04-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1736,6 +1736,8 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
     }
 
     /**
+     * Retrieves policy definitions in a subscription
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1761,6 +1763,8 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
     }
 
     /**
+     * Retrieves policy definitions in a subscription
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1787,6 +1791,8 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
     }
 
     /**
+     * Retrieve built-in policy definitions
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1813,6 +1819,8 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
     }
 
     /**
+     * Retrieve built-in policy definitions
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1840,6 +1848,8 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
     }
 
     /**
+     * Retrieve policy definitions in a management group
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1867,6 +1877,8 @@ public final class PolicyDefinitionsClientImpl implements PolicyDefinitionsClien
     }
 
     /**
+     * Retrieve policy definitions in a management group
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.

@@ -21,7 +21,7 @@ public final class DefaultWafPoliciesListWithResponseMockTests {
     @Test
     public void testListWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"filepath\":\"vwxnbkfe\"},{\"filepath\":\"scyhwz\"}],\"nextLink\":\"irujbz\"}";
+            = "{\"value\":[{\"filepath\":\"cypsxjv\"},{\"filepath\":\"mwks\"},{\"filepath\":\"cizjxvydfceacvl\"},{\"filepath\":\"gdyftumrtwna\"}],\"nextLink\":\"slbi\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,9 @@ public final class DefaultWafPoliciesListWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         NginxDeploymentDefaultWafPolicyListResponse response = manager.defaultWafPolicies()
-            .listWithResponse("hpjbib", "jmfxumvf", com.azure.core.util.Context.NONE)
+            .listWithResponse("ih", "jqgwzp", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("irujbz", response.nextLink());
+        Assertions.assertEquals("slbi", response.nextLink());
     }
 }

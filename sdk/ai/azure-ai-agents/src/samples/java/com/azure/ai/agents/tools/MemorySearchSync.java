@@ -5,9 +5,9 @@ package com.azure.ai.agents.tools;
 
 import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.ConversationsClient;
 import com.azure.ai.agents.ResponsesClient;
 import com.azure.ai.agents.models.AgentReference;
+import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.MemorySearchPreviewTool;
 import com.azure.ai.agents.models.MemoryStoreDefaultDefinition;
@@ -21,6 +21,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.openai.models.conversations.Conversation;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
+import com.openai.services.blocking.ConversationService;
 
 import java.util.Collections;
 import java.util.concurrent.TimeUnit;
@@ -32,7 +33,7 @@ import java.util.concurrent.TimeUnit;
  * <p>Before running the sample, set these environment variables:</p>
  * <ul>
  *   <li>FOUNDRY_PROJECT_ENDPOINT - The Azure AI Project endpoint.</li>
- *   <li>FOUNDRY_MODEL_DEPLOYMENT_NAME - The model deployment name.</li>
+ *   <li>FOUNDRY_MODEL_NAME - The model deployment name.</li>
  *   <li>AZURE_AI_CHAT_MODEL_DEPLOYMENT_NAME - The chat model deployment name for memory.</li>
  *   <li>AZURE_AI_EMBEDDING_MODEL_DEPLOYMENT_NAME - The embedding model deployment name for memory.</li>
  * </ul>
@@ -42,7 +43,7 @@ public class MemorySearchSync {
 
     public static void main(String[] args) {
         String endpoint = Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT");
-        String model = Configuration.getGlobalConfiguration().get("FOUNDRY_MODEL_DEPLOYMENT_NAME");
+        String model = Configuration.getGlobalConfiguration().get("FOUNDRY_MODEL_NAME");
         String chatModel = Configuration.getGlobalConfiguration().get("AZURE_AI_CHAT_MODEL_DEPLOYMENT_NAME");
         String embeddingModel = Configuration.getGlobalConfiguration().get("AZURE_AI_EMBEDDING_MODEL_DEPLOYMENT_NAME");
 
@@ -52,7 +53,7 @@ public class MemorySearchSync {
 
         AgentsClient agentsClient = builder.buildAgentsClient();
         MemoryStoresClient memoryStoresClient = builder.buildMemoryStoresClient();
-        ConversationsClient conversationsClient = builder.buildConversationsClient();
+        ConversationService conversationService = builder.buildOpenAIClient().conversations();
         ResponsesClient responsesClient = builder.buildResponsesClient();
 
         String memoryStoreName = "my_memory_store";
@@ -91,13 +92,15 @@ public class MemorySearchSync {
                 .setVersion(agent.getVersion());
 
             // First conversation: teach the agent a preference
-            Conversation conversation = conversationsClient.getConversationService().create();
+            Conversation conversation = conversationService.create();
             firstConversationId = conversation.id();
             System.out.println("Created conversation (id: " + firstConversationId + ")");
 
-            Response response = responsesClient.createWithAgentConversation(
-                agentReference, firstConversationId,
-                ResponseCreateParams.builder().input("I prefer dark roast coffee"));
+            Response response = responsesClient.createAzureResponse(
+                new AzureCreateResponseOptions().setAgentReference(agentReference),
+                ResponseCreateParams.builder()
+                    .conversation(firstConversationId)
+                    .input("I prefer dark roast coffee"));
             System.out.println("Response: " + getResponseText(response));
 
             // Wait for memories to be extracted and stored
@@ -105,20 +108,22 @@ public class MemorySearchSync {
             TimeUnit.SECONDS.sleep(MEMORY_WRITE_DELAY_SECONDS);
 
             // Second conversation: test memory recall
-            Conversation newConversation = conversationsClient.getConversationService().create();
+            Conversation newConversation = conversationService.create();
             followUpConversationId = newConversation.id();
             System.out.println("Created new conversation (id: " + followUpConversationId + ")");
 
-            Response followUpResponse = responsesClient.createWithAgentConversation(
-                agentReference, followUpConversationId,
-                ResponseCreateParams.builder().input("Please order my usual coffee"));
+            Response followUpResponse = responsesClient.createAzureResponse(
+                new AzureCreateResponseOptions().setAgentReference(agentReference),
+                ResponseCreateParams.builder()
+                    .conversation(followUpConversationId)
+                    .input("Please order my usual coffee"));
             System.out.println("Response: " + getResponseText(followUpResponse));
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             throw new RuntimeException("Sleep interrupted", e);
         } finally {
-            deleteConversationQuietly(conversationsClient, firstConversationId);
-            deleteConversationQuietly(conversationsClient, followUpConversationId);
+            deleteConversationQuietly(conversationService, firstConversationId);
+            deleteConversationQuietly(conversationService, followUpConversationId);
             if (agent != null) {
                 agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion());
                 System.out.println("Agent deleted");
@@ -136,12 +141,12 @@ public class MemorySearchSync {
         }
     }
 
-    private static void deleteConversationQuietly(ConversationsClient client, String id) {
+    private static void deleteConversationQuietly(ConversationService client, String id) {
         if (id == null) {
             return;
         }
         try {
-            client.getConversationService().delete(id);
+            client.delete(id);
         } catch (Exception ignored) {
             // best-effort cleanup
         }

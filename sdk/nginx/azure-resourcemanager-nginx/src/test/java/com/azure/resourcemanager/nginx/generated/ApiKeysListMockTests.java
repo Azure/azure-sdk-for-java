@@ -22,7 +22,7 @@ public final class ApiKeysListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"hint\":\"d\",\"endDateTime\":\"2021-04-19T09:17:54Z\"},\"id\":\"oruzfgsquyfxrxx\",\"name\":\"eptra\",\"type\":\"xje\"}]}";
+            = "{\"value\":[{\"properties\":{\"hint\":\"nuj\",\"endDateTime\":\"2021-09-22T15:19:18Z\"},\"id\":\"sbvdkcrodtjinfw\",\"name\":\"lfltka\",\"type\":\"jvefkdlfoakggkfp\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,9 +32,9 @@ public final class ApiKeysListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<NginxDeploymentApiKeyResponse> response
-            = manager.apiKeys().list("qbrqubpaxhexiili", "pdtii", com.azure.core.util.Context.NONE);
+            = manager.apiKeys().list("atdooaojkniod", "oo", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-19T09:17:54Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-22T15:19:18Z"),
             response.iterator().next().properties().endDateTime());
     }
 }

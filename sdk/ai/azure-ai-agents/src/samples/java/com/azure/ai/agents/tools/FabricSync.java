@@ -7,6 +7,7 @@ import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.ResponsesClient;
 import com.azure.ai.agents.models.AgentReference;
+import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.FabricDataAgentToolParameters;
 import com.azure.ai.agents.models.MicrosoftFabricPreviewTool;
@@ -27,14 +28,14 @@ import java.util.Arrays;
  * <p>Before running the sample, set these environment variables:</p>
  * <ul>
  *   <li>FOUNDRY_PROJECT_ENDPOINT - The Azure AI Project endpoint.</li>
- *   <li>FOUNDRY_MODEL_DEPLOYMENT_NAME - The model deployment name.</li>
+ *   <li>FOUNDRY_MODEL_NAME - The model deployment name.</li>
  *   <li>FABRIC_PROJECT_CONNECTION_ID - The Microsoft Fabric connection ID.</li>
  * </ul>
  */
 public class FabricSync {
     public static void main(String[] args) {
         String endpoint = Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT");
-        String model = Configuration.getGlobalConfiguration().get("FOUNDRY_MODEL_DEPLOYMENT_NAME");
+        String model = Configuration.getGlobalConfiguration().get("FOUNDRY_MODEL_NAME");
         String fabricConnectionId = Configuration.getGlobalConfiguration().get("FABRIC_PROJECT_CONNECTION_ID");
 
         AgentsClientBuilder builder = new AgentsClientBuilder()
@@ -67,8 +68,8 @@ public class FabricSync {
             AgentReference agentReference = new AgentReference(agent.getName())
                 .setVersion(agent.getVersion());
 
-            Response response = responsesClient.createWithAgent(
-                agentReference,
+            Response response = responsesClient.createAzureResponse(
+                new AzureCreateResponseOptions().setAgentReference(agentReference),
                 ResponseCreateParams.builder()
                     .input("Query the latest sales data from Microsoft Fabric"));
 
