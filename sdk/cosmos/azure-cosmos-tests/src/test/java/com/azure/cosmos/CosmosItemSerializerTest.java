@@ -28,6 +28,8 @@ import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.rx.TestSuiteBase;
+import com.azure.cosmos.implementation.DefaultCosmosItemSerializer;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -270,6 +272,42 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
             onBeforePatch,
             requestLevelSerializer,
             ObjectNode.class);
+    }
+
+    @Test(groups = { "fast", "emulator" }, dataProvider = "testConfigs_requestLevelSerializer", timeOut = TIMEOUT * 1000000)
+    public void replaceItemRespectsCustomObjectMapper(CosmosItemSerializer ignored) {
+        ObjectMapper customMapper = new ObjectMapper()
+            .setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        CosmosItemSerializer customSerializer = new DefaultCosmosItemSerializer(customMapper);
+        CosmosItemRequestOptions options = new CosmosItemRequestOptions()
+            .setCustomItemSerializer(customSerializer);
+
+        String id = UUID.randomUUID().toString();
+        TestDocumentWithNullableField doc = new TestDocumentWithNullableField();
+        doc.id = id;
+        doc.mypk = id;
+        doc.someValue = "hello";
+        doc.nullableField = null;
+
+        container.createItem(doc, new PartitionKey(id), options);
+
+        ObjectNode rawAfterCreate = container
+            .readItem(id, new PartitionKey(id), options, ObjectNode.class)
+            .getItem();
+        assertThat(rawAfterCreate.has("nullableField"))
+            .as("createItem should respect NON_NULL and omit null fields")
+            .isFalse();
+
+        doc.someValue = "updated";
+        container.replaceItem(doc, id, new PartitionKey(id), options);
+
+        ObjectNode rawAfterReplace = container
+            .readItem(id, new PartitionKey(id), options, ObjectNode.class)
+            .getItem();
+        assertThat(rawAfterReplace.get("someValue").asText()).isEqualTo("updated");
+        assertThat(rawAfterReplace.has("nullableField"))
+            .as("replaceItem should respect NON_NULL and omit null fields")
+            .isFalse();
     }
 
     private <T> void runPointOperationAndQueryTestCase(
@@ -876,6 +914,13 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
                 assertThat(deserializedDoc.someChildObjectArray[i].someNumber).isEqualTo(doc.someChildObjectArray[i].someNumber);
             }
         }
+    }
+
+    private static class TestDocumentWithNullableField {
+        public String id;
+        public String mypk;
+        public String someValue;
+        public String nullableField;
     }
 
     private static class TestDocumentWrappedInEnvelope {
