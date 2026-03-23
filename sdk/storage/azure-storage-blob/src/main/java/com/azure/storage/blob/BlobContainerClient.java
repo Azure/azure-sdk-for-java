@@ -25,6 +25,7 @@ import com.azure.storage.blob.implementation.models.ContainersFilterBlobsHeaders
 import com.azure.storage.blob.implementation.models.ContainersGetAccessPolicyHeaders;
 import com.azure.storage.blob.implementation.models.ContainersGetAccountInfoHeaders;
 import com.azure.storage.blob.implementation.models.ContainersGetPropertiesHeaders;
+import com.azure.storage.blob.implementation.models.ContainersListBlobFlatSegmentApacheArrowHeaders;
 import com.azure.storage.blob.implementation.models.ContainersListBlobFlatSegmentHeaders;
 import com.azure.storage.blob.implementation.models.ContainersListBlobHierarchySegmentHeaders;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
@@ -57,6 +58,7 @@ import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
+import java.io.InputStream;
 import java.net.URI;
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -1029,6 +1031,10 @@ public final class BlobContainerClient {
                     .setStartFrom(options.getStartFrom())
                     .setDetails(options.getDetails());
 
+                if (options.getUseArrow()) {
+                    finalOptions.setUseArrow(true).setEndBefore(options.getEndBefore());
+                }
+
             }
             /*
             If pageSize was not set in a .byPage(int) method, the page size from options will be preserved.
@@ -1040,26 +1046,35 @@ public final class BlobContainerClient {
             ArrayList<ListBlobsIncludeItem> include
                 = finalOptions.getDetails().toList().isEmpty() ? null : finalOptions.getDetails().toList();
 
-            Callable<ResponseBase<ContainersListBlobFlatSegmentHeaders, ListBlobsFlatSegmentResponse>> operation
-                = () -> this.azureBlobStorage.getContainers()
-                    .listBlobFlatSegmentWithResponse(containerName, finalOptions.getPrefix(), nextMarker,
-                        finalOptions.getMaxResultsPerPage(), include, finalOptions.getStartFrom(), null, null,
-                        Context.NONE);
+            if (finalOptions.getUseArrow()) {
+                // Potential implementation for returning Apache Arrow format.
+//                Callable<ResponseBase<ContainersListBlobFlatSegmentApacheArrowHeaders, InputStream>> operation
+//                    = () -> this.azureBlobStorage.getContainers()
+//                        .listBlobFlatSegmentApacheArrowWithResponse(containerName, null, finalOptions.getPrefix(),
+//                            nextMarker, finalOptions.getMaxResultsPerPage(), include, null, finalOptions.getStartFrom(),
+//                            finalOptions.getEndBefore(), null, Context.NONE);
+                return null;
+            } else {
+                Callable<ResponseBase<ContainersListBlobFlatSegmentHeaders, ListBlobsFlatSegmentResponse>> operation
+                    = () -> this.azureBlobStorage.getContainers()
+                        .listBlobFlatSegmentWithResponse(containerName, finalOptions.getPrefix(), nextMarker,
+                            finalOptions.getMaxResultsPerPage(), include, finalOptions.getStartFrom(), null, null,
+                            Context.NONE);
+                ResponseBase<ContainersListBlobFlatSegmentHeaders, ListBlobsFlatSegmentResponse> response
+                    = StorageImplUtils.sendRequest(operation, timeout, BlobStorageException.class);
 
-            ResponseBase<ContainersListBlobFlatSegmentHeaders, ListBlobsFlatSegmentResponse> response
-                = StorageImplUtils.sendRequest(operation, timeout, BlobStorageException.class);
+                List<BlobItem> value = response.getValue().getSegment() == null
+                    ? Collections.emptyList()
+                    : response.getValue()
+                        .getSegment()
+                        .getBlobItems()
+                        .stream()
+                        .map(ModelHelper::populateBlobItem)
+                        .collect(Collectors.toList());
 
-            List<BlobItem> value = response.getValue().getSegment() == null
-                ? Collections.emptyList()
-                : response.getValue()
-                    .getSegment()
-                    .getBlobItems()
-                    .stream()
-                    .map(ModelHelper::populateBlobItem)
-                    .collect(Collectors.toList());
-
-            return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                value, response.getValue().getNextMarker(), response.getDeserializedHeaders());
+                return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                    value, response.getValue().getNextMarker(), response.getDeserializedHeaders());
+            }
         };
 
         return new PagedIterable<>(pageSize -> retriever.apply(continuationToken, pageSize), retriever);
