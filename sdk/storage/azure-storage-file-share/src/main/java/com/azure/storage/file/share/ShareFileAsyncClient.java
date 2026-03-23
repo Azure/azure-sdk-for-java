@@ -488,7 +488,7 @@ public class ShareFileAsyncClient {
                 smbPropertiesLocal.getFileChangeTimeString(), requestConditionsLocal.getLeaseId(),
                 filePosixPropertiesLocal.getOwner(), filePosixPropertiesLocal.getGroup(),
                 filePosixPropertiesLocal.getFileMode(), filePosixPropertiesLocal.getFileType(), fluxMD5wrapper.getMd5(),
-                filePropertySemantics, contentLength, fluxMD5wrapper.getData(), httpHeaders, contextLocal)
+                filePropertySemantics, contentLength, null, null, fluxMD5wrapper.getData(), httpHeaders, contextLocal)
             .map(ModelHelper::createFileInfoResponse));
     }
 
