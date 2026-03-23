@@ -10,14 +10,15 @@
 ## Table of Contents
 
 1. [Goals & Motivation](#1-goals--motivation)
-2. [Architectural Overview](#2-architectural-overview)
-3. [Eviction Predicate Design](#3-eviction-predicate-design)
-4. [Http2PingHealthHandler](#4-http2pinghealthhandler)
-5. [Per-Connection Jitter](#5-per-connection-jitter)
-6. [Configuration](#6-configuration)
-7. [.NET Parity](#7-net-parity)
-8. [Testing & CI](#8-testing--ci)
-9. [Known Gaps & Future Work](#9-known-gaps--future-work)
+2. [Key Design Choices](#2-key-design-choices)
+3. [Architectural Overview](#3-architectural-overview)
+4. [Eviction Predicate Design](#4-eviction-predicate-design)
+5. [Http2PingHealthHandler](#5-http2pinghealthhandler)
+6. [Per-Connection Jitter](#6-per-connection-jitter)
+7. [Configuration](#7-configuration)
+8. [.NET Parity](#8-net-parity)
+9. [Testing & CI](#9-testing--ci)
+10. [Known Gaps & Future Work](#10-known-gaps--future-work)
 
 ---
 
@@ -34,16 +35,19 @@ to a stale IP for the lifetime of the process.
 is resolved fresh. JVM DNS cache TTL is 30s by default (live-verified on JDK 18 via
 `InetAddressCachePolicy.get()`), well under our 300s max lifetime.
 
-### Goal 2: Connection Liveness in Sparse Workloads
+### Goal 2: Connection Liveness
 
 HTTP/2 connections can become silently degraded — packet black-holes, half-open TCP,
-NAT/firewall timeout — without the SDK knowing. In sparse workloads, two problems arise:
+NAT/firewall timeout — without the SDK knowing. Two problems arise:
 
-1. **Silent degradation detection**: The next request discovers the dead connection via response
-   timeout (6s/6s/10s escalation), adding unnecessary latency.
-2. **Idle connection reaping**: Intermediate network infrastructure (NAT gateways, firewalls,
-   load balancers) silently drops idle TCP connections after their own timeout. Without traffic
-   on the wire, the SDK believes the connection is alive, but the next request hits a dead path.
+1. **Silent degradation detection**: Affects both sparse and high-throughput workloads. The next
+   request discovers the dead connection via response timeout (6s/6s/10s escalation), adding
+   unnecessary latency. Under high throughput, many requests can pile up on a degraded
+   connection before the timeout fires.
+2. **Idle connection reaping**: Primarily affects sparse workloads. Intermediate network
+   infrastructure (NAT gateways, firewalls, load balancers) silently drops idle TCP connections
+   after their own timeout. Without traffic on the wire, the SDK believes the connection is
+   alive, but the next request hits a dead path.
 
 **PING health probing** addresses both: periodic PING frames keep the connection alive in the
 eyes of intermediate infrastructure (keepalive), and ACK tracking detects when a connection has
@@ -61,24 +65,63 @@ reactor-netty 1.2.13 (our version) has `maxLifeTime(Duration)`, but:
    built-in `maxLifeTime` and `maxIdleTime` handling is replaced entirely.
 
 reactor-netty 1.3.4 introduces `maxLifeTimeVariance(double)` for per-connection jitter — exactly
-what we want. But the SDK is on 1.2.13. See [§9](#9-known-gaps--future-work) for the upgrade
-path.
+what we want. But the SDK is on 1.2.13. See [§10](#10-known-gaps--future-work) for the upgrade
+path. **Tracking item**: Integrate `maxLifeTimeVariance` when reactor-netty 1.3.4+ is available
+in the SDK dependency chain (Spring Boot 4 track has 1.3.3 — follow up with Central team).
 
 ---
 
-## 2. Architectural Overview
+## 2. Key Design Choices
+
+These choices shape the architecture. Read these first to understand why the system is
+structured the way it is.
+
+1. **Custom eviction predicate replaces all built-in eviction** — reactor-netty 1.2.13:
+   *"Otherwise only the custom eviction predicate is invoked."* Since we need custom logic
+   for PING health, we must re-implement idle timeout and lifetime in the predicate.
+
+2. **Max lifetime and PING health are independent** — Disabling PING (`PING_INTERVAL=0`)
+   must not disable max lifetime, and vice versa. They are installed via separate code paths
+   in `doOnConnected`: `stampConnectionExpiry()` for lifetime, `installOnParentIfAbsent()`
+   for PING.
+
+3. **Per-connection jitter, not per-pool or per-evaluation** — Each connection gets a
+   deterministic expiry stamped once at creation via `CONNECTION_EXPIRY_NANOS` channel
+   attribute. Avoids .NET's sync-lock problem (per-pool) and the non-determinism of
+   re-rolling jitter each sweep (per-evaluation).
+
+4. **Two-phase eviction for lifetime (Phase 3)** — Instead of immediately closing a
+   connection past its lifetime (which RST_STREAMs active H2 streams), the predicate marks
+   it as `PENDING_EVICTION_NANOS` on first detection, then evicts when idle or after a 10s
+   drain grace period. PING-stale eviction (Phase 2) remains immediate — degraded connections
+   should be closed fast.
+
+5. **Eviction rate limiter** — At most 1 connection evicted per sweep cycle (dead channels
+   exempt). Prevents cliff eviction when a sustained network blip makes all PING ACKs stale
+   simultaneously.
+
+6. **Derived sweep interval** — `clamp(min(idleTimeout, pingAckTimeout, baseMaxLifetime) / 2, 1s, 5s)`.
+   Adapts to configured thresholds so the sweep is always faster than the smallest eviction
+   threshold.
+
+---
+
+## 3. Architectural Overview
 
 ```
 ┌──────────────────────────────────────────────────────────────────────┐
 │                 ConnectionProvider (reactor-netty 1.2.13)            │
 │                                                                      │
-│  evictInBackground(5s) sweeps all connections through:               │
+│  evictInBackground(derived interval) sweeps all connections through: │
 │                                                                      │
 │  evictionPredicate((connection, metadata) -> boolean)                │
-│    Phase 0: !channel.isActive()            → evict (dead)           │
+│    Phase 0: !channel.isActive()            → evict (dead, no limit) │
+│    ── rate limiter: max 1 eviction per cycle (Phases 1-3) ──        │
 │    Phase 1: idleTime > 60s                 → evict (idle)           │
-│    Phase 2: PING ACK stale > ackTimeout    → evict (degraded)      │
-│    Phase 3: nanoTime > CONNECTION_EXPIRY    → evict (max lifetime)  │
+│    Phase 2: PING ACK stale > ackTimeout    → evict (immediate)     │
+│    Phase 3: nanoTime > CONNECTION_EXPIRY    → two-phase eviction:   │
+│             1st sweep: mark PENDING_EVICTION_NANOS, return false    │
+│             next sweep: evict if idle OR 10s grace period expired   │
 │                                                                      │
 ├──────────────────────────────────────────────────────────────────────┤
 │                                                                      │
@@ -88,38 +131,42 @@ path.
 │      ↓                                                               │
 │    Http2ResponseHeaderCleanerHandler (existing)                     │
 │      ↓                                                               │
-│    Http2PingHealthHandler (NEW)                                     │
+│    Http2PingHealthHandler (installed only if PING interval > 0)     │
 │      ├─ Sends PING every 10s via scheduleAtFixedRate                │
-│      ├─ On PING ACK → stamps LAST_PING_ACK_NANOS attribute         │
-│      └─ On install  → stamps CONNECTION_EXPIRY_NANOS attribute      │
+│      └─ On PING ACK → stamps LAST_PING_ACK_NANOS attribute         │
 │                                                                      │
 │  Channel Attributes (per connection):                                │
-│    LAST_PING_ACK_NANOS      (read by Phase 2)                      │
-│    CONNECTION_EXPIRY_NANOS   (read by Phase 3)                      │
-│    HANDLER_INSTALLED         (one-time install guard)               │
+│    CONNECTION_EXPIRY_NANOS   (stamped by stampConnectionExpiry)      │
+│    LAST_PING_ACK_NANOS      (stamped by Http2PingHealthHandler)     │
+│    PENDING_EVICTION_NANOS   (stamped by eviction predicate Phase 3) │
+│    HANDLER_INSTALLED         (one-time PING install guard)          │
 │                                                                      │
 ├──────────────────────────────────────────────────────────────────────┤
 │                                                                      │
-│  ReactorNettyClient.doOnConnected()                                 │
+│  ReactorNettyClient.doOnConnected()  (two independent paths)        │
+│                                                                      │
 │    1. Install Http2ResponseHeaderCleanerHandler (existing)           │
-│    2. Install Http2PingHealthHandler.installOnParentIfAbsent()      │
-│       → stamps CONNECTION_EXPIRY_NANOS = now + base + jitter        │
-│       → seeds LAST_PING_ACK_NANOS = now                             │
-│       → starts periodic PING schedule                                │
+│    2. If maxLifetimeSeconds > 0:                                     │
+│         stampConnectionExpiry(channel, baseMaxLife, jitterRange)     │
+│         → stamps CONNECTION_EXPIRY_NANOS = now + base + jitter      │
+│    3. If pingIntervalSeconds > 0:                                    │
+│         installOnParentIfAbsent(channel, pingInterval)              │
+│         → seeds LAST_PING_ACK_NANOS = now                           │
+│         → starts periodic PING schedule                              │
 │                                                                      │
 └──────────────────────────────────────────────────────────────────────┘
 ```
 
-**Key design principle**: The `Http2PingHealthHandler` writes channel attributes; the eviction
-predicate reads them. The two components communicate only via `AttributeKey<Long>` on the
-channel — no shared objects, no locks, no coupling.
+**Key design principle**: Channel attributes are the sole communication mechanism between the
+handler, the install paths, and the eviction predicate. No shared objects, no locks, no coupling
+between components.
 
 ---
 
-## 3. Eviction Predicate Design
+## 4. Eviction Predicate Design
 
 Set on `ConnectionProvider.Builder.evictionPredicate()`. Evaluated by reactor-netty's background
-sweep every 5 seconds against every connection in the pool. **Replaces all built-in eviction**
+sweep (derived interval) against every connection in the pool. **Replaces all built-in eviction**
 (idle, lifetime) — confirmed from reactor-netty 1.2.13 source.
 
 ### Phase 0: Dead Channel
@@ -136,23 +183,43 @@ if (maxIdleTimeMs > 0 && metadata.idleTime() > maxIdleTimeMs) return true;
 Re-implements reactor-netty's built-in `maxIdleTime` behavior (60s default), which is
 bypassed when a custom eviction predicate is set.
 
-### Phase 2: PING Liveness
+### Phase 2: PING Liveness (Immediate Eviction)
 ```java
 Long lastAckNanos = parentChannel.attr(LAST_PING_ACK_NANOS).get();
 if (lastAckNanos != null && System.nanoTime() - lastAckNanos > pingAckTimeoutNanos)
     return true;
 ```
 Reads the attribute stamped by `Http2PingHealthHandler`. If no PING ACK has arrived within
-the timeout (default 30s), the connection is silently degraded.
+the timeout (default 30s), the connection is silently degraded. **Immediate eviction** —
+degraded connections should be closed fast; active streams are already failing.
 
 **Null-safety**: `hasAttr` check ensures HTTP/1.1 connections (no PING handler) are unaffected.
+Also unaffected when PING is disabled (`PING_INTERVAL=0`) — attribute is never stamped.
 
-### Phase 3: Per-Connection Max Lifetime
+### Phase 3: Per-Connection Max Lifetime (Two-Phase Eviction)
+
+Reads `CONNECTION_EXPIRY_NANOS` stamped by `stampConnectionExpiry()` in `doOnConnected`
+(independent of PING handler — see §2 design choice #2). Includes per-connection jitter.
+
+Instead of immediately evicting (which RST_STREAMs active H2 streams), Phase 3 uses two-phase
+eviction to allow active streams to drain:
+
 ```java
 Long expiryNanos = parentChannel.attr(CONNECTION_EXPIRY_NANOS).get();
-if (expiryNanos != null && System.nanoTime() > expiryNanos) return true;
+if (expiryNanos != null && now > expiryNanos) {
+    Long pendingSince = parentChannel.attr(PENDING_EVICTION_NANOS).get();
+    if (pendingSince == null) {
+        // First detection — mark as pending, don't evict yet
+        parentChannel.attr(PENDING_EVICTION_NANOS).set(now);
+        return false;
+    }
+    // Already pending — evict if idle or 10s grace period expired
+    if (metadata.idleTime() > 0 || now - pendingSince > 10_000_000_000L) {
+        return true;
+    }
+    return false; // active streams — wait for next sweep
+}
 ```
-Reads the attribute stamped once at connection creation (§5). Includes per-connection jitter.
 
 ### Eviction Rate Limiter
 
@@ -199,7 +266,7 @@ sweepInterval = clamp(min(idleTimeout, pingAckTimeout, baseMaxLifetime) / 2, 1s,
 
 ---
 
-## 4. Http2PingHealthHandler
+## 5. Http2PingHealthHandler
 
 `ChannelDuplexHandler` installed on the parent H2 TCP channel. One instance per connection.
 
@@ -223,7 +290,7 @@ sweepInterval = clamp(min(idleTimeout, pingAckTimeout, baseMaxLifetime) / 2, 1s,
 
 ---
 
-## 5. Per-Connection Jitter
+## 6. Per-Connection Jitter
 
 ### Problem
 
@@ -257,7 +324,7 @@ targetChannel.attr(CONNECTION_EXPIRY_NANOS).set(expiryNanos);
 
 ---
 
-## 6. Configuration
+## 7. Configuration
 
 All configurations use the existing `Configs` system property pattern. Not exposed as public API.
 
@@ -275,7 +342,7 @@ All configurations use the existing `Configs` system property pattern. Not expos
 
 ---
 
-## 7. .NET Parity
+## 8. .NET Parity
 
 Reference: `CosmosHttpClientCore.cs` line 151, `azure-cosmos-dotnet-v3` @ `4cbe83b1`.
 
@@ -289,7 +356,7 @@ Reference: `CosmosHttpClientCore.cs` line 151, `azure-cosmos-dotnet-v3` @ `4cbe8
 
 ---
 
-## 8. Testing & CI
+## 9. Testing & CI
 
 ### Test Cases
 
@@ -312,7 +379,7 @@ New stage `Cosmos_Live_Test_HttpNetworkFault` in `tests.yml`:
 
 ---
 
-## 9. Known Gaps & Future Work
+## 10. Known Gaps & Future Work
 
 | Gap | Impact | Mitigation / Future Work |
 |-----|--------|-------------------------|
@@ -321,7 +388,7 @@ New stage `Cosmos_Live_Test_HttpNetworkFault` in `tests.yml`:
 | **Customer `networkaddress.cache.ttl=-1`** | Max lifetime evicts connections, but new ones resolve to cached (stale) IP. Goal 1 defeated. | Do not override customer's JVM DNS setting. Document as known limitation. |
 | **reactor-netty 1.3.4 upgrade** | Native `maxLifeTimeVariance()` would simplify Phase 3 and remove channel attribute. | Spring Boot 4 track has 1.3.3. Track 1.3.4+ availability with Central team. |
 
-### 9.1 Design: Decouple Max Lifetime from PING Health
+### 10.1 Design: Decouple Max Lifetime from PING Health
 
 **Problem**: `CONNECTION_EXPIRY_NANOS` is stamped inside `Http2PingHealthHandler.installOnParentIfAbsent`.
 If PING is disabled (`COSMOS.HTTP2_PING_INTERVAL_IN_SECONDS=0`), the handler is never installed,
@@ -372,7 +439,7 @@ public static void stampConnectionExpiry(Channel channel, long baseMaxLifetimeMs
 | ✅ | ❌ | Phase 0 (dead) + Phase 1 (idle) + Phase 2 (PING). No Phase 3 (lifetime). |
 | ❌ | ❌ | No eviction predicate set at all (current behavior). |
 
-### 9.2 Design: Graceful Eviction (Avoid RST_STREAM on Active Streams)
+### 10.2 Design: Graceful Eviction (Avoid RST_STREAM on Active Streams)
 
 **Problem**: When the eviction predicate returns `true`, reactor-netty closes the parent TCP
 connection. Active H2 streams on that connection receive `RST_STREAM`. For lifetime eviction
