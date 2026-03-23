@@ -1,14 +1,117 @@
 # Release History
 
-## 2.4.0-beta.1 (Unreleased)
+## 2.4.0 (2026-03-23)
 
-### Features Added
+- Azure Resource Manager Communication client library for Java. This package contains Microsoft Azure SDK for Communication Management SDK. REST API for Email Services/Domains/SuppressionLists. Package api-version 2026-03-18. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.SuppressionListAddressResourceCollection` was removed
 
-### Other Changes
+#### `models.DomainResourceList` was removed
+
+#### `models.OperationListResult` was removed
+
+#### `models.SmtpUsernameResourceCollection` was removed
+
+#### `models.CommunicationServiceResourceList` was removed
+
+#### `models.SenderUsernameResourceCollection` was removed
+
+#### `models.SuppressionListResourceCollection` was removed
+
+#### `models.EmailServiceResourceList` was removed
+
+#### `models.VerificationStatusRecord` was modified
+
+* `VerificationStatusRecord()` was changed to private access
+* `validate()` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `OperationDisplay()` was changed to private access
+* `validate()` was removed
+
+#### `models.UpdateDomainRequestParameters` was modified
+
+* `validate()` was removed
+
+#### `models.LinkNotificationHubParameters` was modified
+
+* `validate()` was removed
+
+#### `models.NameAvailabilityParameters` was modified
+
+* `validate()` was removed
+
+#### `models.CommunicationServiceResourceUpdate` was modified
+
+* `validate()` was removed
+
+#### `models.DnsRecord` was modified
+
+* `DnsRecord()` was changed to private access
+* `validate()` was removed
+
+#### `models.ManagedServiceIdentity` was modified
+
+* `validate()` was removed
+
+#### `models.DomainPropertiesVerificationStates` was modified
+
+* `DomainPropertiesVerificationStates()` was changed to private access
+* `withDkim(models.VerificationStatusRecord)` was removed
+* `withDomain(models.VerificationStatusRecord)` was removed
+* `withDkim2(models.VerificationStatusRecord)` was removed
+* `withDmarc(models.VerificationStatusRecord)` was removed
+* `validate()` was removed
+* `withSpf(models.VerificationStatusRecord)` was removed
+
+#### `models.EmailServiceResourceUpdate` was modified
+
+* `validate()` was removed
+
+#### `models.VerificationParameter` was modified
+
+* `validate()` was removed
+
+#### `models.RegenerateKeyParameters` was modified
+
+* `validate()` was removed
+
+#### `models.SuppressionListResource` was modified
+
+* `lastUpdatedTimestamp()` was removed
+* `createdTimestamp()` was removed
+
+#### `models.TaggedResource` was modified
+
+* `validate()` was removed
+
+#### `models.CheckNameAvailabilityRequest` was modified
+
+* `validate()` was removed
+
+#### `models.DomainPropertiesVerificationRecords` was modified
+
+* `DomainPropertiesVerificationRecords()` was changed to private access
+* `withSpf(models.DnsRecord)` was removed
+* `withDomain(models.DnsRecord)` was removed
+* `validate()` was removed
+* `withDkim(models.DnsRecord)` was removed
+* `withDmarc(models.DnsRecord)` was removed
+* `withDkim2(models.DnsRecord)` was removed
+
+#### `models.UserAssignedIdentity` was modified
+
+* `validate()` was removed
+
+### Features Added
+
+#### `models.SuppressionListResource` was modified
+
+* `createdTimeStamp()` was added
+* `lastUpdatedTimeStamp()` was added
 
 ## 2.3.0 (2026-01-22)
 
