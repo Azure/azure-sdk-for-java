@@ -1,4 +1,4 @@
-# HTTP/2 Connection Lifecycle Management
+# HTTP Connection Lifecycle Management
 
 **Status**: Draft — PR [#48420](https://github.com/Azure/azure-sdk-for-java/pull/48420)
 **Author**: Abhijeet Mohanty
@@ -11,11 +11,13 @@
 1. **DNS re-resolution** — Force periodic connection rotation so that DNS changes (failover,
    migration, scaling) are picked up within a bounded window. TCP connections never re-resolve
    DNS on their own; max lifetime is the mechanism that forces new connection creation.
+   **Applies to both HTTP/1.1 and HTTP/2 connections.**
 
-2. **Connection keepalive** — Prevent intermediate infrastructure (NAT gateways, firewalls,
-   load balancers) from silently reaping idle HTTP/2 connections. HTTP/2 PING frames serve as
-   application-layer keepalive, distinct from TCP keepalive which operates below TLS and may
-   not be visible to L7 middleboxes.
+2. **Connection keepalive (HTTP/2 only)** — Prevent intermediate infrastructure (NAT gateways,
+   firewalls, load balancers) from silently reaping idle HTTP/2 connections. HTTP/2 PING frames
+   serve as application-layer keepalive, distinct from TCP keepalive which operates below TLS
+   and may not be visible to L7 middleboxes. Not applicable to HTTP/1.1 (connection-per-request
+   model, short-lived).
 
 ## Non-Goals
 
@@ -23,6 +25,19 @@
   timeout and max life of connection. We do not evict connections based on stale PING ACKs.
   Degraded connections are handled by the existing response timeout retry path (6s/6s/10s
   escalation → cross-region failover). PING serves only as keepalive.
+
+## Protocol Split (Production Evidence)
+
+Kusto query against `ComputeRequest5M` for `legacy-conversations-prod-0` (2026-03-23):
+
+| Operation | Protocol | Volume (6h) |
+|-----------|----------|-------------|
+| Read, Upsert, Query, Batch, Patch, Create | HTTP/2 | ~43.8M |
+| **ChangeFeed/Incremental** | **HTTP/1.1** | ~978K |
+| Read (some), Batch (some), ReadFeed | HTTP/1.1 | ~147K |
+
+Both protocols coexist on the same account. Max lifetime must cover both pools to achieve
+Goal 1 (DNS re-resolution) for all operation types including ChangeFeed.
 
 ---
 
@@ -47,11 +62,19 @@ infrastructure where TCP keepalive alone is insufficient.
 
 1. **Custom eviction predicate replaces all built-in eviction** — reactor-netty 1.2.13:
    custom `evictionPredicate` bypasses built-in `maxIdleTime` and `maxLifeTime`. We must
-   re-implement idle timeout in the predicate.
+   re-implement idle timeout in the predicate. Applies to all connections (H1.1 and H2).
 
-2. **Max lifetime and PING keepalive are independent features** — Separate install paths
-   in `doOnConnected`: `stampConnectionExpiry()` for lifetime, `installOnParentIfAbsent()`
-   for PING. Disabling one does not affect the other. Both gated by explicit boolean configs.
+2. **Max lifetime covers both HTTP/1.1 and HTTP/2** — The eviction predicate and
+   `CONNECTION_EXPIRY_NANOS` attribute apply to all connections in the pool. This ensures
+   DNS re-resolution for all operation types, including ChangeFeed (HTTP/1.1).
+
+3. **PING keepalive is HTTP/2 only** — HTTP/1.1 uses connection-per-request; connections
+   are short-lived and don't need keepalive. PING handler is installed only on parent H2
+   channels. Separate install path, separate config toggle.
+
+4. **Max lifetime and PING keepalive are independent features** — Separate install paths
+   in `doOnConnected`: `stampConnectionExpiry()` for lifetime (all connections),
+   `installOnParentIfAbsent()` for PING (H2 only). Disabling one does not affect the other.
 
 3. **Per-connection jitter** — Each connection gets a deterministic expiry stamped once at
    creation (`CONNECTION_EXPIRY_NANOS` channel attribute). Avoids .NET's per-pool sync-lock
@@ -75,12 +98,15 @@ infrastructure where TCP keepalive alone is insufficient.
 
 ## Architecture
 
+The eviction predicate and max lifetime apply to **all** connections in the pool (HTTP/1.1
+and HTTP/2). PING keepalive is HTTP/2 only — installed on the parent H2 TCP channel.
+
 ```
 ConnectionProvider (reactor-netty 1.2.13)
 │
 ├─ evictInBackground(derived interval)
 │  │
-│  └─ evictionPredicate:
+│  └─ evictionPredicate (applies to ALL connections — H1.1 and H2):
 │       Phase 0: !channel.isActive()         → evict (dead, no rate limit)
 │       ── rate limiter: max 1 per cycle ──
 │       Phase 1: idleTime > 60s              → evict (idle)
@@ -88,22 +114,24 @@ ConnectionProvider (reactor-netty 1.2.13)
 │                1st sweep: mark PENDING_EVICTION_NANOS
 │                next: evict if idle OR 10s grace period expired
 │
-├─ doOnConnected (two independent paths):
+├─ doOnConnected:
 │  │
-│  ├─ If max lifetime enabled:
-│  │    stampConnectionExpiry(channel, base + jitter)
-│  │    → stamps CONNECTION_EXPIRY_NANOS attribute
+│  ├─ For ALL connections (H1.1 and H2):
+│  │    If max lifetime enabled:
+│  │      stampConnectionExpiry(channel, base + jitter)
+│  │      → stamps CONNECTION_EXPIRY_NANOS attribute
 │  │
-│  └─ If PING keepalive enabled:
-│       installOnParentIfAbsent(channel, interval)
-│       → installs Http2PingHealthHandler on parent H2 channel
-│       → sends PING frames every 10s (keepalive, not eviction)
+│  └─ For H2 connections only:
+│       If PING keepalive enabled:
+│         installOnParentIfAbsent(channel, interval)
+│         → installs Http2PingHealthHandler on parent H2 channel
+│         → sends PING frames every 10s (keepalive, not eviction)
 │
 └─ Channel Attributes:
-     CONNECTION_EXPIRY_NANOS    (stamped by stampConnectionExpiry)
-     PENDING_EVICTION_NANOS    (stamped by eviction predicate)
-     LAST_PING_ACK_NANOS       (stamped by PING handler, for future use)
-     HANDLER_INSTALLED          (one-time PING install guard)
+     CONNECTION_EXPIRY_NANOS    (all connections — stamped by stampConnectionExpiry)
+     PENDING_EVICTION_NANOS    (all connections — stamped by eviction predicate)
+     LAST_PING_ACK_NANOS       (H2 only — stamped by PING handler, for future use)
+     HANDLER_INSTALLED          (H2 only — one-time PING install guard)
 ```
 
 ---
