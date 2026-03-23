@@ -2,7 +2,7 @@
 
 Azure Resource Manager DataFactory client library for Java.
 
-This package contains Microsoft Azure SDK for DataFactory Management SDK.  Package api-version 2018-06-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+This package contains Microsoft Azure SDK for DataFactory Management SDK. The Azure Data Factory V2 management API provides a RESTful set of web services that interact with Azure Data Factory V2 services. Package tag package-2018-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ## We'd love to hear your feedback
 
@@ -32,7 +32,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-datafactory</artifactId>
-    <version>1.3.0-beta.1</version>
+    <version>1.2.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -99,8 +99,8 @@ blobClient.upload(BinaryData.fromString("data"));
 // data factory
 Factory dataFactory = manager.factories()
     .define(DATA_FACTORY)
-    .withRegion(REGION)
     .withExistingResourceGroup(resourceGroup)
+    .withRegion(REGION)
     .create();
 
 // linked service
