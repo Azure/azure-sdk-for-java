@@ -17,78 +17,6 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class PathsReadHeaders {
     /*
-     * The x-ms-version property.
-     */
-    @Generated
-    private String xMsVersion;
-
-    /*
-     * The x-ms-lease-status property.
-     */
-    @Generated
-    private String xMsLeaseStatus;
-
-    /*
-     * The Content-Range property.
-     */
-    @Generated
-    private String contentRange;
-
-    /*
-     * The x-ms-lease-state property.
-     */
-    @Generated
-    private String xMsLeaseState;
-
-    /*
-     * The x-ms-content-md5 property.
-     */
-    @Generated
-    private String xMsContentMd5;
-
-    /*
-     * The Last-Modified property.
-     */
-    @Generated
-    private DateTimeRfc1123 lastModified;
-
-    /*
-     * The x-ms-properties property.
-     */
-    @Generated
-    private String xMsProperties;
-
-    /*
-     * The x-ms-encryption-key-sha256 property.
-     */
-    @Generated
-    private String xMsEncryptionKeySha256;
-
-    /*
-     * The x-ms-request-server-encrypted property.
-     */
-    @Generated
-    private Boolean xMsRequestServerEncrypted;
-
-    /*
-     * The Date property.
-     */
-    @Generated
-    private DateTimeRfc1123 date;
-
-    /*
-     * The x-ms-resource-type property.
-     */
-    @Generated
-    private String xMsResourceType;
-
-    /*
-     * The Content-MD5 property.
-     */
-    @Generated
-    private String contentMD5;
-
-    /*
      * The Accept-Ranges property.
      */
     @Generated
@@ -99,12 +27,6 @@ public final class PathsReadHeaders {
      */
     @Generated
     private String cacheControl;
-
-    /*
-     * The ETag property.
-     */
-    @Generated
-    private String eTag;
 
     /*
      * The Content-Disposition property.
@@ -119,10 +41,10 @@ public final class PathsReadHeaders {
     private String contentEncoding;
 
     /*
-     * The x-ms-lease-duration property.
+     * The Content-Language property.
      */
     @Generated
-    private String xMsLeaseDuration;
+    private String contentLanguage;
 
     /*
      * The Content-Length property.
@@ -131,16 +53,10 @@ public final class PathsReadHeaders {
     private Long contentLength;
 
     /*
-     * The x-ms-request-id property.
+     * The Content-Range property.
      */
     @Generated
-    private String xMsRequestId;
-
-    /*
-     * The Content-Language property.
-     */
-    @Generated
-    private String contentLanguage;
+    private String contentRange;
 
     /*
      * The Content-Type property.
@@ -148,25 +64,109 @@ public final class PathsReadHeaders {
     @Generated
     private String contentType;
 
+    /*
+     * The Content-MD5 property.
+     */
+    @Generated
+    private String contentMD5;
+
+    /*
+     * The Date property.
+     */
+    @Generated
+    private DateTimeRfc1123 date;
+
+    /*
+     * The ETag property.
+     */
+    @Generated
+    private String eTag;
+
+    /*
+     * The Last-Modified property.
+     */
+    @Generated
+    private DateTimeRfc1123 lastModified;
+
+    /*
+     * The x-ms-request-id property.
+     */
+    @Generated
+    private String xMsRequestId;
+
+    /*
+     * The x-ms-version property.
+     */
+    @Generated
+    private String xMsVersion;
+
+    /*
+     * The x-ms-resource-type property.
+     */
+    @Generated
+    private String xMsResourceType;
+
+    /*
+     * The x-ms-properties property.
+     */
+    @Generated
+    private String xMsProperties;
+
+    /*
+     * The x-ms-lease-duration property.
+     */
+    @Generated
+    private String xMsLeaseDuration;
+
+    /*
+     * The x-ms-lease-state property.
+     */
+    @Generated
+    private String xMsLeaseState;
+
+    /*
+     * The x-ms-lease-status property.
+     */
+    @Generated
+    private String xMsLeaseStatus;
+
+    /*
+     * The x-ms-request-server-encrypted property.
+     */
+    @Generated
+    private Boolean xMsRequestServerEncrypted;
+
+    /*
+     * The x-ms-encryption-key-sha256 property.
+     */
+    @Generated
+    private String xMsEncryptionKeySha256;
+
+    /*
+     * The x-ms-content-md5 property.
+     */
+    @Generated
+    private String xMsContentMd5;
+
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
 
-    private static final HttpHeaderName X_MS_LEASE_STATUS = HttpHeaderName.fromString("x-ms-lease-status");
-
-    private static final HttpHeaderName X_MS_LEASE_STATE = HttpHeaderName.fromString("x-ms-lease-state");
-
-    private static final HttpHeaderName X_MS_CONTENT_MD5 = HttpHeaderName.fromString("x-ms-content-md5");
+    private static final HttpHeaderName X_MS_RESOURCE_TYPE = HttpHeaderName.fromString("x-ms-resource-type");
 
     private static final HttpHeaderName X_MS_PROPERTIES = HttpHeaderName.fromString("x-ms-properties");
 
-    private static final HttpHeaderName X_MS_ENCRYPTION_KEY_SHA256
-        = HttpHeaderName.fromString("x-ms-encryption-key-sha256");
+    private static final HttpHeaderName X_MS_LEASE_DURATION = HttpHeaderName.fromString("x-ms-lease-duration");
+
+    private static final HttpHeaderName X_MS_LEASE_STATE = HttpHeaderName.fromString("x-ms-lease-state");
+
+    private static final HttpHeaderName X_MS_LEASE_STATUS = HttpHeaderName.fromString("x-ms-lease-status");
 
     private static final HttpHeaderName X_MS_REQUEST_SERVER_ENCRYPTED
         = HttpHeaderName.fromString("x-ms-request-server-encrypted");
 
-    private static final HttpHeaderName X_MS_RESOURCE_TYPE = HttpHeaderName.fromString("x-ms-resource-type");
+    private static final HttpHeaderName X_MS_ENCRYPTION_KEY_SHA256
+        = HttpHeaderName.fromString("x-ms-encryption-key-sha256");
 
-    private static final HttpHeaderName X_MS_LEASE_DURATION = HttpHeaderName.fromString("x-ms-lease-duration");
+    private static final HttpHeaderName X_MS_CONTENT_MD5 = HttpHeaderName.fromString("x-ms-content-md5");
 
     // HttpHeaders containing the raw property values.
     /**
@@ -175,326 +175,48 @@ public final class PathsReadHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public PathsReadHeaders(HttpHeaders rawHeaders) {
-        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
-        this.xMsLeaseStatus = rawHeaders.getValue(X_MS_LEASE_STATUS);
-        this.contentRange = rawHeaders.getValue(HttpHeaderName.CONTENT_RANGE);
-        this.xMsLeaseState = rawHeaders.getValue(X_MS_LEASE_STATE);
-        this.xMsContentMd5 = rawHeaders.getValue(X_MS_CONTENT_MD5);
-        String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
-        if (lastModified != null) {
-            this.lastModified = new DateTimeRfc1123(lastModified);
-        } else {
-            this.lastModified = null;
-        }
-        this.xMsProperties = rawHeaders.getValue(X_MS_PROPERTIES);
-        this.xMsEncryptionKeySha256 = rawHeaders.getValue(X_MS_ENCRYPTION_KEY_SHA256);
-        String xMsRequestServerEncrypted = rawHeaders.getValue(X_MS_REQUEST_SERVER_ENCRYPTED);
-        if (xMsRequestServerEncrypted != null) {
-            this.xMsRequestServerEncrypted = Boolean.parseBoolean(xMsRequestServerEncrypted);
-        } else {
-            this.xMsRequestServerEncrypted = null;
-        }
-        String date = rawHeaders.getValue(HttpHeaderName.DATE);
-        if (date != null) {
-            this.date = new DateTimeRfc1123(date);
-        } else {
-            this.date = null;
-        }
-        this.xMsResourceType = rawHeaders.getValue(X_MS_RESOURCE_TYPE);
-        this.contentMD5 = rawHeaders.getValue(HttpHeaderName.CONTENT_MD5);
         this.acceptRanges = rawHeaders.getValue(HttpHeaderName.ACCEPT_RANGES);
         this.cacheControl = rawHeaders.getValue(HttpHeaderName.CACHE_CONTROL);
-        this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
         this.contentDisposition = rawHeaders.getValue(HttpHeaderName.CONTENT_DISPOSITION);
         this.contentEncoding = rawHeaders.getValue(HttpHeaderName.CONTENT_ENCODING);
-        this.xMsLeaseDuration = rawHeaders.getValue(X_MS_LEASE_DURATION);
+        this.contentLanguage = rawHeaders.getValue(HttpHeaderName.CONTENT_LANGUAGE);
         String contentLength = rawHeaders.getValue(HttpHeaderName.CONTENT_LENGTH);
         if (contentLength != null) {
             this.contentLength = Long.parseLong(contentLength);
         } else {
             this.contentLength = null;
         }
-        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
-        this.contentLanguage = rawHeaders.getValue(HttpHeaderName.CONTENT_LANGUAGE);
+        this.contentRange = rawHeaders.getValue(HttpHeaderName.CONTENT_RANGE);
         this.contentType = rawHeaders.getValue(HttpHeaderName.CONTENT_TYPE);
-    }
-
-    /**
-     * Get the xMsVersion property: The x-ms-version property.
-     * 
-     * @return the xMsVersion value.
-     */
-    @Generated
-    public String getXMsVersion() {
-        return this.xMsVersion;
-    }
-
-    /**
-     * Set the xMsVersion property: The x-ms-version property.
-     * 
-     * @param xMsVersion the xMsVersion value to set.
-     * @return the PathsReadHeaders object itself.
-     */
-    @Generated
-    public PathsReadHeaders setXMsVersion(String xMsVersion) {
-        this.xMsVersion = xMsVersion;
-        return this;
-    }
-
-    /**
-     * Get the xMsLeaseStatus property: The x-ms-lease-status property.
-     * 
-     * @return the xMsLeaseStatus value.
-     */
-    @Generated
-    public String getXMsLeaseStatus() {
-        return this.xMsLeaseStatus;
-    }
-
-    /**
-     * Set the xMsLeaseStatus property: The x-ms-lease-status property.
-     * 
-     * @param xMsLeaseStatus the xMsLeaseStatus value to set.
-     * @return the PathsReadHeaders object itself.
-     */
-    @Generated
-    public PathsReadHeaders setXMsLeaseStatus(String xMsLeaseStatus) {
-        this.xMsLeaseStatus = xMsLeaseStatus;
-        return this;
-    }
-
-    /**
-     * Get the contentRange property: The Content-Range property.
-     * 
-     * @return the contentRange value.
-     */
-    @Generated
-    public String getContentRange() {
-        return this.contentRange;
-    }
-
-    /**
-     * Set the contentRange property: The Content-Range property.
-     * 
-     * @param contentRange the contentRange value to set.
-     * @return the PathsReadHeaders object itself.
-     */
-    @Generated
-    public PathsReadHeaders setContentRange(String contentRange) {
-        this.contentRange = contentRange;
-        return this;
-    }
-
-    /**
-     * Get the xMsLeaseState property: The x-ms-lease-state property.
-     * 
-     * @return the xMsLeaseState value.
-     */
-    @Generated
-    public String getXMsLeaseState() {
-        return this.xMsLeaseState;
-    }
-
-    /**
-     * Set the xMsLeaseState property: The x-ms-lease-state property.
-     * 
-     * @param xMsLeaseState the xMsLeaseState value to set.
-     * @return the PathsReadHeaders object itself.
-     */
-    @Generated
-    public PathsReadHeaders setXMsLeaseState(String xMsLeaseState) {
-        this.xMsLeaseState = xMsLeaseState;
-        return this;
-    }
-
-    /**
-     * Get the xMsContentMd5 property: The x-ms-content-md5 property.
-     * 
-     * @return the xMsContentMd5 value.
-     */
-    @Generated
-    public String getXMsContentMd5() {
-        return this.xMsContentMd5;
-    }
-
-    /**
-     * Set the xMsContentMd5 property: The x-ms-content-md5 property.
-     * 
-     * @param xMsContentMd5 the xMsContentMd5 value to set.
-     * @return the PathsReadHeaders object itself.
-     */
-    @Generated
-    public PathsReadHeaders setXMsContentMd5(String xMsContentMd5) {
-        this.xMsContentMd5 = xMsContentMd5;
-        return this;
-    }
-
-    /**
-     * Get the lastModified property: The Last-Modified property.
-     * 
-     * @return the lastModified value.
-     */
-    @Generated
-    public OffsetDateTime getLastModified() {
-        if (this.lastModified == null) {
-            return null;
-        }
-        return this.lastModified.getDateTime();
-    }
-
-    /**
-     * Set the lastModified property: The Last-Modified property.
-     * 
-     * @param lastModified the lastModified value to set.
-     * @return the PathsReadHeaders object itself.
-     */
-    @Generated
-    public PathsReadHeaders setLastModified(OffsetDateTime lastModified) {
-        if (lastModified == null) {
-            this.lastModified = null;
-        } else {
-            this.lastModified = new DateTimeRfc1123(lastModified);
-        }
-        return this;
-    }
-
-    /**
-     * Get the xMsProperties property: The x-ms-properties property.
-     * 
-     * @return the xMsProperties value.
-     */
-    @Generated
-    public String getXMsProperties() {
-        return this.xMsProperties;
-    }
-
-    /**
-     * Set the xMsProperties property: The x-ms-properties property.
-     * 
-     * @param xMsProperties the xMsProperties value to set.
-     * @return the PathsReadHeaders object itself.
-     */
-    @Generated
-    public PathsReadHeaders setXMsProperties(String xMsProperties) {
-        this.xMsProperties = xMsProperties;
-        return this;
-    }
-
-    /**
-     * Get the xMsEncryptionKeySha256 property: The x-ms-encryption-key-sha256 property.
-     * 
-     * @return the xMsEncryptionKeySha256 value.
-     */
-    @Generated
-    public String getXMsEncryptionKeySha256() {
-        return this.xMsEncryptionKeySha256;
-    }
-
-    /**
-     * Set the xMsEncryptionKeySha256 property: The x-ms-encryption-key-sha256 property.
-     * 
-     * @param xMsEncryptionKeySha256 the xMsEncryptionKeySha256 value to set.
-     * @return the PathsReadHeaders object itself.
-     */
-    @Generated
-    public PathsReadHeaders setXMsEncryptionKeySha256(String xMsEncryptionKeySha256) {
-        this.xMsEncryptionKeySha256 = xMsEncryptionKeySha256;
-        return this;
-    }
-
-    /**
-     * Get the xMsRequestServerEncrypted property: The x-ms-request-server-encrypted property.
-     * 
-     * @return the xMsRequestServerEncrypted value.
-     */
-    @Generated
-    public Boolean isXMsRequestServerEncrypted() {
-        return this.xMsRequestServerEncrypted;
-    }
-
-    /**
-     * Set the xMsRequestServerEncrypted property: The x-ms-request-server-encrypted property.
-     * 
-     * @param xMsRequestServerEncrypted the xMsRequestServerEncrypted value to set.
-     * @return the PathsReadHeaders object itself.
-     */
-    @Generated
-    public PathsReadHeaders setXMsRequestServerEncrypted(Boolean xMsRequestServerEncrypted) {
-        this.xMsRequestServerEncrypted = xMsRequestServerEncrypted;
-        return this;
-    }
-
-    /**
-     * Get the date property: The Date property.
-     * 
-     * @return the date value.
-     */
-    @Generated
-    public OffsetDateTime getDate() {
-        if (this.date == null) {
-            return null;
-        }
-        return this.date.getDateTime();
-    }
-
-    /**
-     * Set the date property: The Date property.
-     * 
-     * @param date the date value to set.
-     * @return the PathsReadHeaders object itself.
-     */
-    @Generated
-    public PathsReadHeaders setDate(OffsetDateTime date) {
-        if (date == null) {
-            this.date = null;
-        } else {
+        this.contentMD5 = rawHeaders.getValue(HttpHeaderName.CONTENT_MD5);
+        String date = rawHeaders.getValue(HttpHeaderName.DATE);
+        if (date != null) {
             this.date = new DateTimeRfc1123(date);
+        } else {
+            this.date = null;
         }
-        return this;
-    }
-
-    /**
-     * Get the xMsResourceType property: The x-ms-resource-type property.
-     * 
-     * @return the xMsResourceType value.
-     */
-    @Generated
-    public String getXMsResourceType() {
-        return this.xMsResourceType;
-    }
-
-    /**
-     * Set the xMsResourceType property: The x-ms-resource-type property.
-     * 
-     * @param xMsResourceType the xMsResourceType value to set.
-     * @return the PathsReadHeaders object itself.
-     */
-    @Generated
-    public PathsReadHeaders setXMsResourceType(String xMsResourceType) {
-        this.xMsResourceType = xMsResourceType;
-        return this;
-    }
-
-    /**
-     * Get the contentMD5 property: The Content-MD5 property.
-     * 
-     * @return the contentMD5 value.
-     */
-    @Generated
-    public String getContentMD5() {
-        return this.contentMD5;
-    }
-
-    /**
-     * Set the contentMD5 property: The Content-MD5 property.
-     * 
-     * @param contentMD5 the contentMD5 value to set.
-     * @return the PathsReadHeaders object itself.
-     */
-    @Generated
-    public PathsReadHeaders setContentMD5(String contentMD5) {
-        this.contentMD5 = contentMD5;
-        return this;
+        this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
+        String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
+        if (lastModified != null) {
+            this.lastModified = new DateTimeRfc1123(lastModified);
+        } else {
+            this.lastModified = null;
+        }
+        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
+        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
+        this.xMsResourceType = rawHeaders.getValue(X_MS_RESOURCE_TYPE);
+        this.xMsProperties = rawHeaders.getValue(X_MS_PROPERTIES);
+        this.xMsLeaseDuration = rawHeaders.getValue(X_MS_LEASE_DURATION);
+        this.xMsLeaseState = rawHeaders.getValue(X_MS_LEASE_STATE);
+        this.xMsLeaseStatus = rawHeaders.getValue(X_MS_LEASE_STATUS);
+        String xMsRequestServerEncrypted = rawHeaders.getValue(X_MS_REQUEST_SERVER_ENCRYPTED);
+        if (xMsRequestServerEncrypted != null) {
+            this.xMsRequestServerEncrypted = Boolean.parseBoolean(xMsRequestServerEncrypted);
+        } else {
+            this.xMsRequestServerEncrypted = null;
+        }
+        this.xMsEncryptionKeySha256 = rawHeaders.getValue(X_MS_ENCRYPTION_KEY_SHA256);
+        this.xMsContentMd5 = rawHeaders.getValue(X_MS_CONTENT_MD5);
     }
 
     /**
@@ -538,28 +260,6 @@ public final class PathsReadHeaders {
     @Generated
     public PathsReadHeaders setCacheControl(String cacheControl) {
         this.cacheControl = cacheControl;
-        return this;
-    }
-
-    /**
-     * Get the eTag property: The ETag property.
-     * 
-     * @return the eTag value.
-     */
-    @Generated
-    public String getETag() {
-        return this.eTag;
-    }
-
-    /**
-     * Set the eTag property: The ETag property.
-     * 
-     * @param eTag the eTag value to set.
-     * @return the PathsReadHeaders object itself.
-     */
-    @Generated
-    public PathsReadHeaders setETag(String eTag) {
-        this.eTag = eTag;
         return this;
     }
 
@@ -608,24 +308,24 @@ public final class PathsReadHeaders {
     }
 
     /**
-     * Get the xMsLeaseDuration property: The x-ms-lease-duration property.
+     * Get the contentLanguage property: The Content-Language property.
      * 
-     * @return the xMsLeaseDuration value.
+     * @return the contentLanguage value.
      */
     @Generated
-    public String getXMsLeaseDuration() {
-        return this.xMsLeaseDuration;
+    public String getContentLanguage() {
+        return this.contentLanguage;
     }
 
     /**
-     * Set the xMsLeaseDuration property: The x-ms-lease-duration property.
+     * Set the contentLanguage property: The Content-Language property.
      * 
-     * @param xMsLeaseDuration the xMsLeaseDuration value to set.
+     * @param contentLanguage the contentLanguage value to set.
      * @return the PathsReadHeaders object itself.
      */
     @Generated
-    public PathsReadHeaders setXMsLeaseDuration(String xMsLeaseDuration) {
-        this.xMsLeaseDuration = xMsLeaseDuration;
+    public PathsReadHeaders setContentLanguage(String contentLanguage) {
+        this.contentLanguage = contentLanguage;
         return this;
     }
 
@@ -652,46 +352,24 @@ public final class PathsReadHeaders {
     }
 
     /**
-     * Get the xMsRequestId property: The x-ms-request-id property.
+     * Get the contentRange property: The Content-Range property.
      * 
-     * @return the xMsRequestId value.
+     * @return the contentRange value.
      */
     @Generated
-    public String getXMsRequestId() {
-        return this.xMsRequestId;
+    public String getContentRange() {
+        return this.contentRange;
     }
 
     /**
-     * Set the xMsRequestId property: The x-ms-request-id property.
+     * Set the contentRange property: The Content-Range property.
      * 
-     * @param xMsRequestId the xMsRequestId value to set.
+     * @param contentRange the contentRange value to set.
      * @return the PathsReadHeaders object itself.
      */
     @Generated
-    public PathsReadHeaders setXMsRequestId(String xMsRequestId) {
-        this.xMsRequestId = xMsRequestId;
-        return this;
-    }
-
-    /**
-     * Get the contentLanguage property: The Content-Language property.
-     * 
-     * @return the contentLanguage value.
-     */
-    @Generated
-    public String getContentLanguage() {
-        return this.contentLanguage;
-    }
-
-    /**
-     * Set the contentLanguage property: The Content-Language property.
-     * 
-     * @param contentLanguage the contentLanguage value to set.
-     * @return the PathsReadHeaders object itself.
-     */
-    @Generated
-    public PathsReadHeaders setContentLanguage(String contentLanguage) {
-        this.contentLanguage = contentLanguage;
+    public PathsReadHeaders setContentRange(String contentRange) {
+        this.contentRange = contentRange;
         return this;
     }
 
@@ -714,6 +392,328 @@ public final class PathsReadHeaders {
     @Generated
     public PathsReadHeaders setContentType(String contentType) {
         this.contentType = contentType;
+        return this;
+    }
+
+    /**
+     * Get the contentMD5 property: The Content-MD5 property.
+     * 
+     * @return the contentMD5 value.
+     */
+    @Generated
+    public String getContentMD5() {
+        return this.contentMD5;
+    }
+
+    /**
+     * Set the contentMD5 property: The Content-MD5 property.
+     * 
+     * @param contentMD5 the contentMD5 value to set.
+     * @return the PathsReadHeaders object itself.
+     */
+    @Generated
+    public PathsReadHeaders setContentMD5(String contentMD5) {
+        this.contentMD5 = contentMD5;
+        return this;
+    }
+
+    /**
+     * Get the date property: The Date property.
+     * 
+     * @return the date value.
+     */
+    @Generated
+    public OffsetDateTime getDate() {
+        if (this.date == null) {
+            return null;
+        }
+        return this.date.getDateTime();
+    }
+
+    /**
+     * Set the date property: The Date property.
+     * 
+     * @param date the date value to set.
+     * @return the PathsReadHeaders object itself.
+     */
+    @Generated
+    public PathsReadHeaders setDate(OffsetDateTime date) {
+        if (date == null) {
+            this.date = null;
+        } else {
+            this.date = new DateTimeRfc1123(date);
+        }
+        return this;
+    }
+
+    /**
+     * Get the eTag property: The ETag property.
+     * 
+     * @return the eTag value.
+     */
+    @Generated
+    public String getETag() {
+        return this.eTag;
+    }
+
+    /**
+     * Set the eTag property: The ETag property.
+     * 
+     * @param eTag the eTag value to set.
+     * @return the PathsReadHeaders object itself.
+     */
+    @Generated
+    public PathsReadHeaders setETag(String eTag) {
+        this.eTag = eTag;
+        return this;
+    }
+
+    /**
+     * Get the lastModified property: The Last-Modified property.
+     * 
+     * @return the lastModified value.
+     */
+    @Generated
+    public OffsetDateTime getLastModified() {
+        if (this.lastModified == null) {
+            return null;
+        }
+        return this.lastModified.getDateTime();
+    }
+
+    /**
+     * Set the lastModified property: The Last-Modified property.
+     * 
+     * @param lastModified the lastModified value to set.
+     * @return the PathsReadHeaders object itself.
+     */
+    @Generated
+    public PathsReadHeaders setLastModified(OffsetDateTime lastModified) {
+        if (lastModified == null) {
+            this.lastModified = null;
+        } else {
+            this.lastModified = new DateTimeRfc1123(lastModified);
+        }
+        return this;
+    }
+
+    /**
+     * Get the xMsRequestId property: The x-ms-request-id property.
+     * 
+     * @return the xMsRequestId value.
+     */
+    @Generated
+    public String getXMsRequestId() {
+        return this.xMsRequestId;
+    }
+
+    /**
+     * Set the xMsRequestId property: The x-ms-request-id property.
+     * 
+     * @param xMsRequestId the xMsRequestId value to set.
+     * @return the PathsReadHeaders object itself.
+     */
+    @Generated
+    public PathsReadHeaders setXMsRequestId(String xMsRequestId) {
+        this.xMsRequestId = xMsRequestId;
+        return this;
+    }
+
+    /**
+     * Get the xMsVersion property: The x-ms-version property.
+     * 
+     * @return the xMsVersion value.
+     */
+    @Generated
+    public String getXMsVersion() {
+        return this.xMsVersion;
+    }
+
+    /**
+     * Set the xMsVersion property: The x-ms-version property.
+     * 
+     * @param xMsVersion the xMsVersion value to set.
+     * @return the PathsReadHeaders object itself.
+     */
+    @Generated
+    public PathsReadHeaders setXMsVersion(String xMsVersion) {
+        this.xMsVersion = xMsVersion;
+        return this;
+    }
+
+    /**
+     * Get the xMsResourceType property: The x-ms-resource-type property.
+     * 
+     * @return the xMsResourceType value.
+     */
+    @Generated
+    public String getXMsResourceType() {
+        return this.xMsResourceType;
+    }
+
+    /**
+     * Set the xMsResourceType property: The x-ms-resource-type property.
+     * 
+     * @param xMsResourceType the xMsResourceType value to set.
+     * @return the PathsReadHeaders object itself.
+     */
+    @Generated
+    public PathsReadHeaders setXMsResourceType(String xMsResourceType) {
+        this.xMsResourceType = xMsResourceType;
+        return this;
+    }
+
+    /**
+     * Get the xMsProperties property: The x-ms-properties property.
+     * 
+     * @return the xMsProperties value.
+     */
+    @Generated
+    public String getXMsProperties() {
+        return this.xMsProperties;
+    }
+
+    /**
+     * Set the xMsProperties property: The x-ms-properties property.
+     * 
+     * @param xMsProperties the xMsProperties value to set.
+     * @return the PathsReadHeaders object itself.
+     */
+    @Generated
+    public PathsReadHeaders setXMsProperties(String xMsProperties) {
+        this.xMsProperties = xMsProperties;
+        return this;
+    }
+
+    /**
+     * Get the xMsLeaseDuration property: The x-ms-lease-duration property.
+     * 
+     * @return the xMsLeaseDuration value.
+     */
+    @Generated
+    public String getXMsLeaseDuration() {
+        return this.xMsLeaseDuration;
+    }
+
+    /**
+     * Set the xMsLeaseDuration property: The x-ms-lease-duration property.
+     * 
+     * @param xMsLeaseDuration the xMsLeaseDuration value to set.
+     * @return the PathsReadHeaders object itself.
+     */
+    @Generated
+    public PathsReadHeaders setXMsLeaseDuration(String xMsLeaseDuration) {
+        this.xMsLeaseDuration = xMsLeaseDuration;
+        return this;
+    }
+
+    /**
+     * Get the xMsLeaseState property: The x-ms-lease-state property.
+     * 
+     * @return the xMsLeaseState value.
+     */
+    @Generated
+    public String getXMsLeaseState() {
+        return this.xMsLeaseState;
+    }
+
+    /**
+     * Set the xMsLeaseState property: The x-ms-lease-state property.
+     * 
+     * @param xMsLeaseState the xMsLeaseState value to set.
+     * @return the PathsReadHeaders object itself.
+     */
+    @Generated
+    public PathsReadHeaders setXMsLeaseState(String xMsLeaseState) {
+        this.xMsLeaseState = xMsLeaseState;
+        return this;
+    }
+
+    /**
+     * Get the xMsLeaseStatus property: The x-ms-lease-status property.
+     * 
+     * @return the xMsLeaseStatus value.
+     */
+    @Generated
+    public String getXMsLeaseStatus() {
+        return this.xMsLeaseStatus;
+    }
+
+    /**
+     * Set the xMsLeaseStatus property: The x-ms-lease-status property.
+     * 
+     * @param xMsLeaseStatus the xMsLeaseStatus value to set.
+     * @return the PathsReadHeaders object itself.
+     */
+    @Generated
+    public PathsReadHeaders setXMsLeaseStatus(String xMsLeaseStatus) {
+        this.xMsLeaseStatus = xMsLeaseStatus;
+        return this;
+    }
+
+    /**
+     * Get the xMsRequestServerEncrypted property: The x-ms-request-server-encrypted property.
+     * 
+     * @return the xMsRequestServerEncrypted value.
+     */
+    @Generated
+    public Boolean isXMsRequestServerEncrypted() {
+        return this.xMsRequestServerEncrypted;
+    }
+
+    /**
+     * Set the xMsRequestServerEncrypted property: The x-ms-request-server-encrypted property.
+     * 
+     * @param xMsRequestServerEncrypted the xMsRequestServerEncrypted value to set.
+     * @return the PathsReadHeaders object itself.
+     */
+    @Generated
+    public PathsReadHeaders setXMsRequestServerEncrypted(Boolean xMsRequestServerEncrypted) {
+        this.xMsRequestServerEncrypted = xMsRequestServerEncrypted;
+        return this;
+    }
+
+    /**
+     * Get the xMsEncryptionKeySha256 property: The x-ms-encryption-key-sha256 property.
+     * 
+     * @return the xMsEncryptionKeySha256 value.
+     */
+    @Generated
+    public String getXMsEncryptionKeySha256() {
+        return this.xMsEncryptionKeySha256;
+    }
+
+    /**
+     * Set the xMsEncryptionKeySha256 property: The x-ms-encryption-key-sha256 property.
+     * 
+     * @param xMsEncryptionKeySha256 the xMsEncryptionKeySha256 value to set.
+     * @return the PathsReadHeaders object itself.
+     */
+    @Generated
+    public PathsReadHeaders setXMsEncryptionKeySha256(String xMsEncryptionKeySha256) {
+        this.xMsEncryptionKeySha256 = xMsEncryptionKeySha256;
+        return this;
+    }
+
+    /**
+     * Get the xMsContentMd5 property: The x-ms-content-md5 property.
+     * 
+     * @return the xMsContentMd5 value.
+     */
+    @Generated
+    public String getXMsContentMd5() {
+        return this.xMsContentMd5;
+    }
+
+    /**
+     * Set the xMsContentMd5 property: The x-ms-content-md5 property.
+     * 
+     * @param xMsContentMd5 the xMsContentMd5 value to set.
+     * @return the PathsReadHeaders object itself.
+     */
+    @Generated
+    public PathsReadHeaders setXMsContentMd5(String xMsContentMd5) {
+        this.xMsContentMd5 = xMsContentMd5;
         return this;
     }
 }
