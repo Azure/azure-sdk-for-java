@@ -7,6 +7,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Added hierarchical partition key (HPK) support for CREATE CONTAINER in the AAD-based catalog client (`CosmosCatalogManagementSDKClient`). - See [PR 48534](https://github.com/Azure/azure-sdk-for-java/pull/48534)
 
 #### Other Changes
 
