@@ -7,7 +7,7 @@ import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.Index;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.util.Beta;
+
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
@@ -317,7 +317,6 @@ public final class IndexingPolicy {
      *
      * @return the full text indexes.
      */
-    @Beta(value = Beta.SinceVersion.V4_65_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public List<CosmosFullTextIndex> getCosmosFullTextIndexes() {
         if (this.cosmosFullTextIndexes == null) {
             this.cosmosFullTextIndexes = this.jsonSerializable.getList(Constants.Properties.FULL_TEXT_INDEXES, CosmosFullTextIndex.class);
@@ -336,7 +335,6 @@ public final class IndexingPolicy {
      * @param cosmosFullTextIndexes the fullText indexes
      * @return the excluded paths
      */
-    @Beta(value = Beta.SinceVersion.V4_65_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public IndexingPolicy setCosmosFullTextIndexes(List<CosmosFullTextIndex> cosmosFullTextIndexes) {
         this.cosmosFullTextIndexes = cosmosFullTextIndexes;
         this.jsonSerializable.set(Constants.Properties.FULL_TEXT_INDEXES, cosmosFullTextIndexes);
