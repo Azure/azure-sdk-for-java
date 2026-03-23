@@ -76,7 +76,10 @@ while ((Get-Date) -lt $endTime) {
     }
 
     # Extract PIDs from ps output and take jstack dumps
-    # Detect the JDK used by the running Java process (may differ from JAVA_HOME)
+    # IMPORTANT: Only jstack the Maven launcher process, NOT ForkedBooter processes.
+    # jstack uses SIGQUIT (signal 3) as part of the HotSpot attach mechanism on Linux.
+    # ForkedBooter processes running native code (Docker/Netty/JNA) can crash with
+    # exit code 131 (128+3=SIGQUIT) if the signal arrives during a native call.
     # Note: $PID is a read-only automatic variable in PowerShell, so we use $javaPid instead
     if ($IsLinux -or $IsMacOS) {
         try {
@@ -89,6 +92,14 @@ while ((Get-Date) -lt $endTime) {
                     if ($line -match '^\s*(\d+)\s+(.*)') {
                         $javaPid = $Matches[1]
                         $cmdLine = $Matches[2]
+
+                        # Skip ForkedBooter processes — only jstack the Maven launcher.
+                        # ForkedBooter forks run test code with native libs (Docker, Netty epoll, JNA)
+                        # and are vulnerable to SIGQUIT crashes during native calls.
+                        if ($cmdLine -match 'ForkedBooter') {
+                            Add-Content -Path $outputFile -Value "`n--- Skipping jstack for ForkedBooter PID $javaPid (SIGQUIT unsafe for native code) ---"
+                            continue
+                        }
                         
                         # Try to find jstack from the same JDK as the running java process
                         $jstackForPid = $null
