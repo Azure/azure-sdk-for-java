@@ -12,6 +12,7 @@ import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.sas.CommonSasQueryParameters;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.StorageImplUtils;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -451,17 +452,13 @@ public final class BlobUrlParts {
         String host = url.getHost();
         parts.setHost(host);
 
-        //Parse host to get account name
-        // host will look like this : <accountname>.blob.core.windows.net
-        if (!CoreUtils.isNullOrEmpty(host)) {
-            int accountNameIndex = host.indexOf('.');
-            if (accountNameIndex == -1) {
-                // host only contains account name
-                parts.setAccountName(host);
-            } else {
-                // if host is separated by .
-                parts.setAccountName(host.substring(0, accountNameIndex));
-            }
+        // Parse host to get account name
+        if (url.toString().contains(Constants.UrlConstants.BLOB_URI_SUBDOMAIN)) {
+            parts.setAccountName(
+                StorageImplUtils.getAccountNameFromHost(host, Constants.UrlConstants.BLOB_URI_SUBDOMAIN));
+        } else {
+            parts.setAccountName(
+                StorageImplUtils.getAccountNameFromHost(host, Constants.UrlConstants.DFS_URI_SUBDOMAIN));
         }
 
         // find the container & blob names (if any)
