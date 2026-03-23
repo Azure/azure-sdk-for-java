@@ -19,6 +19,23 @@
 - [Remove](#defaultaccounts_remove)
 - [Set](#defaultaccounts_set)
 
+## Features
+
+- [AccountGet](#features_accountget)
+- [SubscriptionGet](#features_subscriptionget)
+
+## IngestionPrivateEndpointConnections
+
+- [List](#ingestionprivateendpointconnections_list)
+- [UpdateStatus](#ingestionprivateendpointconnections_updatestatus)
+
+## KafkaConfigurations
+
+- [CreateOrUpdate](#kafkaconfigurations_createorupdate)
+- [Delete](#kafkaconfigurations_delete)
+- [Get](#kafkaconfigurations_get)
+- [ListByAccount](#kafkaconfigurations_listbyaccount)
+
 ## Operations
 
 - [List](#operations_list)
@@ -34,6 +51,10 @@
 
 - [GetByGroupId](#privatelinkresources_getbygroupid)
 - [ListByAccount](#privatelinkresources_listbyaccount)
+
+## Usages
+
+- [Get](#usages_get)
 ### Accounts_AddRootCollectionAdmin
 
 ```java
@@ -44,8 +65,7 @@ import com.azure.resourcemanager.purview.models.CollectionAdminUpdate;
  */
 public final class AccountsAddRootCollectionAdminSamples {
     /*
-     * x-ms-original-file: specification/purview/resource-manager/Microsoft.Purview/stable/2021-07-01/examples/
-     * Accounts_AddRootCollectionAdmin.json
+     * x-ms-original-file: 2024-04-01-preview/Accounts_AddRootCollectionAdmin.json
      */
     /**
      * Sample code: Accounts_AddRootCollectionAdmin.
@@ -71,8 +91,7 @@ import com.azure.resourcemanager.purview.models.CheckNameAvailabilityRequest;
  */
 public final class AccountsCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/purview/resource-manager/Microsoft.Purview/stable/2021-07-01/examples/
-     * Accounts_CheckNameAvailability.json
+     * x-ms-original-file: 2024-04-01-preview/Accounts_CheckNameAvailability.json
      */
     /**
      * Sample code: Accounts_CheckNameAvailability.
@@ -96,8 +115,7 @@ public final class AccountsCheckNameAvailabilitySamples {
  */
 public final class AccountsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/purview/resource-manager/Microsoft.Purview/stable/2021-07-01/examples/Accounts_CreateOrUpdate.json
+     * x-ms-original-file: 2024-04-01-preview/Accounts_CreateOrUpdate.json
      */
     /**
      * Sample code: Accounts_CreateOrUpdate.
@@ -107,9 +125,8 @@ public final class AccountsCreateOrUpdateSamples {
     public static void accountsCreateOrUpdate(com.azure.resourcemanager.purview.PurviewManager manager) {
         manager.accounts()
             .define("account1")
-            .withRegion("West US 2")
             .withExistingResourceGroup("SampleResourceGroup")
-            .withManagedResourceGroupName("custom-rgname")
+            .withRegion("West US 2")
             .create();
     }
 }
@@ -123,8 +140,7 @@ public final class AccountsCreateOrUpdateSamples {
  */
 public final class AccountsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/purview/resource-manager/Microsoft.Purview/stable/2021-07-01/examples/Accounts_Delete.json
+     * x-ms-original-file: 2024-04-01-preview/Accounts_Delete.json
      */
     /**
      * Sample code: Accounts_Delete.
@@ -145,8 +161,7 @@ public final class AccountsDeleteSamples {
  */
 public final class AccountsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/purview/resource-manager/Microsoft.Purview/stable/2021-07-01/examples/Accounts_Get.json
+     * x-ms-original-file: 2024-04-01-preview/Accounts_Get.json
      */
     /**
      * Sample code: Accounts_Get.
@@ -168,9 +183,7 @@ public final class AccountsGetByResourceGroupSamples {
  */
 public final class AccountsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/purview/resource-manager/Microsoft.Purview/stable/2021-07-01/examples/Accounts_ListBySubscription.
-     * json
+     * x-ms-original-file: 2024-04-01-preview/Accounts_ListBySubscription.json
      */
     /**
      * Sample code: Accounts_ListBySubscription.
@@ -191,9 +204,7 @@ public final class AccountsListSamples {
  */
 public final class AccountsListByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/purview/resource-manager/Microsoft.Purview/stable/2021-07-01/examples/Accounts_ListByResourceGroup.
-     * json
+     * x-ms-original-file: 2024-04-01-preview/Accounts_ListByResourceGroup.json
      */
     /**
      * Sample code: Accounts_ListByResourceGroup.
@@ -214,8 +225,7 @@ public final class AccountsListByResourceGroupSamples {
  */
 public final class AccountsListKeysSamples {
     /*
-     * x-ms-original-file:
-     * specification/purview/resource-manager/Microsoft.Purview/stable/2021-07-01/examples/Accounts_ListKeys.json
+     * x-ms-original-file: 2024-04-01-preview/Accounts_ListKeys.json
      */
     /**
      * Sample code: Accounts_ListKeys.
@@ -232,6 +242,9 @@ public final class AccountsListKeysSamples {
 
 ```java
 import com.azure.resourcemanager.purview.models.Account;
+import com.azure.resourcemanager.purview.models.CloudConnectors;
+import com.azure.resourcemanager.purview.models.IngestionStorage;
+import com.azure.resourcemanager.purview.models.PublicNetworkAccess;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -240,8 +253,7 @@ import java.util.Map;
  */
 public final class AccountsUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/purview/resource-manager/Microsoft.Purview/stable/2021-07-01/examples/Accounts_Update.json
+     * x-ms-original-file: 2024-04-01-preview/Accounts_Update.json
      */
     /**
      * Sample code: Accounts_Update.
@@ -252,7 +264,13 @@ public final class AccountsUpdateSamples {
         Account resource = manager.accounts()
             .getByResourceGroupWithResponse("SampleResourceGroup", "account1", com.azure.core.util.Context.NONE)
             .getValue();
-        resource.update().withTags(mapOf("newTag", "New tag value.")).apply();
+        resource.update()
+            .withTags(mapOf("newTag", "New tag value."))
+            .withCloudConnectors(new CloudConnectors())
+            .withIngestionStorage(new IngestionStorage().withPublicNetworkAccess(PublicNetworkAccess.DISABLED))
+            .withManagedResourcesPublicNetworkAccess(PublicNetworkAccess.DISABLED)
+            .withPublicNetworkAccess(PublicNetworkAccess.DISABLED)
+            .apply();
     }
 
     // Use "Map.of" if available
@@ -273,15 +291,13 @@ public final class AccountsUpdateSamples {
 
 ```java
 import com.azure.resourcemanager.purview.models.ScopeType;
-import java.util.UUID;
 
 /**
  * Samples for DefaultAccounts Get.
  */
 public final class DefaultAccountsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/purview/resource-manager/Microsoft.Purview/stable/2021-07-01/examples/DefaultAccounts_Get.json
+     * x-ms-original-file: 2024-04-01-preview/DefaultAccounts_Get.json
      */
     /**
      * Sample code: DefaultAccounts_Get.
@@ -290,8 +306,8 @@ public final class DefaultAccountsGetSamples {
      */
     public static void defaultAccountsGet(com.azure.resourcemanager.purview.PurviewManager manager) {
         manager.defaultAccounts()
-            .getWithResponse(UUID.fromString("11733A4E-BA84-46FF-91D1-AFF1A3215A90"), ScopeType.TENANT,
-                "11733A4E-BA84-46FF-91D1-AFF1A3215A90", com.azure.core.util.Context.NONE);
+            .getWithResponse("ee85a74c-405e-4adc-bb47-ffa8ca0c9f31", ScopeType.TENANT,
+                "12345678-1234-1234-1234-12345678abcd", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -300,15 +316,13 @@ public final class DefaultAccountsGetSamples {
 
 ```java
 import com.azure.resourcemanager.purview.models.ScopeType;
-import java.util.UUID;
 
 /**
  * Samples for DefaultAccounts Remove.
  */
 public final class DefaultAccountsRemoveSamples {
     /*
-     * x-ms-original-file:
-     * specification/purview/resource-manager/Microsoft.Purview/stable/2021-07-01/examples/DefaultAccounts_Remove.json
+     * x-ms-original-file: 2024-04-01-preview/DefaultAccounts_Remove.json
      */
     /**
      * Sample code: DefaultAccounts_Remove.
@@ -317,8 +331,8 @@ public final class DefaultAccountsRemoveSamples {
      */
     public static void defaultAccountsRemove(com.azure.resourcemanager.purview.PurviewManager manager) {
         manager.defaultAccounts()
-            .removeWithResponse(UUID.fromString("11733A4E-BA84-46FF-91D1-AFF1A3215A90"), ScopeType.TENANT,
-                "11733A4E-BA84-46FF-91D1-AFF1A3215A90", com.azure.core.util.Context.NONE);
+            .removeWithResponse("ee85a74c-405e-4adc-bb47-ffa8ca0c9f31", ScopeType.TENANT,
+                "12345678-1234-1234-1234-12345678abcd", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -334,8 +348,7 @@ import com.azure.resourcemanager.purview.models.ScopeType;
  */
 public final class DefaultAccountsSetSamples {
     /*
-     * x-ms-original-file:
-     * specification/purview/resource-manager/Microsoft.Purview/stable/2021-07-01/examples/DefaultAccounts_Set.json
+     * x-ms-original-file: 2024-04-01-preview/DefaultAccounts_Set.json
      */
     /**
      * Sample code: DefaultAccounts_Set.
@@ -346,10 +359,221 @@ public final class DefaultAccountsSetSamples {
         manager.defaultAccounts()
             .setWithResponse(new DefaultAccountPayloadInner().withAccountName("myDefaultAccount")
                 .withResourceGroupName("rg-1")
-                .withScope("11733A4E-BA84-46FF-91D1-AFF1A3215A90")
-                .withScopeTenantId("11733A4E-BA84-46FF-91D1-AFF1A3215A90")
+                .withScope("12345678-1234-1234-1234-12345678abcd")
+                .withScopeTenantId("12345678-1234-1234-1234-12345678abcd")
                 .withScopeType(ScopeType.TENANT)
-                .withSubscriptionId("12345678-1234-1234-12345678aaa"), com.azure.core.util.Context.NONE);
+                .withSubscriptionId("12345678-1234-1234-1234-12345678aaaa"), com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Features_AccountGet
+
+```java
+import com.azure.resourcemanager.purview.models.BatchFeatureRequest;
+import java.util.Arrays;
+
+/**
+ * Samples for Features AccountGet.
+ */
+public final class FeaturesAccountGetSamples {
+    /*
+     * x-ms-original-file: 2024-04-01-preview/Features_AccountGet.json
+     */
+    /**
+     * Sample code: Features_AccountGet.
+     * 
+     * @param manager Entry point to PurviewManager.
+     */
+    public static void featuresAccountGet(com.azure.resourcemanager.purview.PurviewManager manager) {
+        manager.features()
+            .accountGetWithResponse("SampleResourceGroup", "account1",
+                new BatchFeatureRequest().withFeatures(Arrays.asList("Feature1", "Feature2", "FeatureThatDoesntExist")),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Features_SubscriptionGet
+
+```java
+import com.azure.resourcemanager.purview.models.BatchFeatureRequest;
+import java.util.Arrays;
+
+/**
+ * Samples for Features SubscriptionGet.
+ */
+public final class FeaturesSubscriptionGetSamples {
+    /*
+     * x-ms-original-file: 2024-04-01-preview/Features_SubscriptionGet.json
+     */
+    /**
+     * Sample code: Features_SubscriptionGet.
+     * 
+     * @param manager Entry point to PurviewManager.
+     */
+    public static void featuresSubscriptionGet(com.azure.resourcemanager.purview.PurviewManager manager) {
+        manager.features()
+            .subscriptionGetWithResponse("eastus",
+                new BatchFeatureRequest().withFeatures(Arrays.asList("Feature1", "Feature2", "FeatureThatDoesntExist")),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### IngestionPrivateEndpointConnections_List
+
+```java
+/**
+ * Samples for IngestionPrivateEndpointConnections List.
+ */
+public final class IngestionPrivateEndpointConnectionsListSamples {
+    /*
+     * x-ms-original-file: 2024-04-01-preview/IngestionPrivateEndpointConnections_List.json
+     */
+    /**
+     * Sample code: IngestionPrivateEndpointConnections_List.
+     * 
+     * @param manager Entry point to PurviewManager.
+     */
+    public static void
+        ingestionPrivateEndpointConnectionsList(com.azure.resourcemanager.purview.PurviewManager manager) {
+        manager.ingestionPrivateEndpointConnections()
+            .list("SampleResourceGroup", "account1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### IngestionPrivateEndpointConnections_UpdateStatus
+
+```java
+import com.azure.resourcemanager.purview.models.PrivateEndpointConnectionStatusUpdateRequest;
+
+/**
+ * Samples for IngestionPrivateEndpointConnections UpdateStatus.
+ */
+public final class IngestionPrivateEndpointConnectionsUpdateStatusSamples {
+    /*
+     * x-ms-original-file: 2024-04-01-preview/IngestionPrivateEndpointConnections_UpdateStatus.json
+     */
+    /**
+     * Sample code: IngestionPrivateEndpointConnections_UpdateStatus.
+     * 
+     * @param manager Entry point to PurviewManager.
+     */
+    public static void
+        ingestionPrivateEndpointConnectionsUpdateStatus(com.azure.resourcemanager.purview.PurviewManager manager) {
+        manager.ingestionPrivateEndpointConnections()
+            .updateStatusWithResponse("SampleResourceGroup", "account1",
+                new PrivateEndpointConnectionStatusUpdateRequest().withPrivateEndpointId(
+                    "/subscriptions/12345678-1234-1234-12345678abc/resourceGroups/SampleResourceGroup/providers/Microsoft.Purview/accounts/account1/privateEndpointConnections/privateEndpointConnection1")
+                    .withStatus("Approved"),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### KafkaConfigurations_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.purview.models.Credentials;
+import com.azure.resourcemanager.purview.models.EventHubType;
+import com.azure.resourcemanager.purview.models.EventStreamingState;
+import com.azure.resourcemanager.purview.models.EventStreamingType;
+import com.azure.resourcemanager.purview.models.KafkaConfigurationIdentityType;
+
+/**
+ * Samples for KafkaConfigurations CreateOrUpdate.
+ */
+public final class KafkaConfigurationsCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2024-04-01-preview/KafkaConfigurations_CreateOrUpdate.json
+     */
+    /**
+     * Sample code: KafkaConfigurations_CreateOrUpdate.
+     * 
+     * @param manager Entry point to PurviewManager.
+     */
+    public static void kafkaConfigurationsCreateOrUpdate(com.azure.resourcemanager.purview.PurviewManager manager) {
+        manager.kafkaConfigurations()
+            .define("kafkaConfigName")
+            .withExistingAccount("rgpurview", "account1")
+            .withConsumerGroup("consumerGroup")
+            .withCredentials(new Credentials().withIdentityId(
+                "/subscriptions/47e8596d-ee73-4eb2-b6b4-cc13c2b87ssd/resourceGroups/testRG/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testId")
+                .withType(KafkaConfigurationIdentityType.USER_ASSIGNED))
+            .withEventHubPartitionId("partitionId")
+            .withEventHubResourceId(
+                "/subscriptions/225be6fe-ec1c-4d51-a368-f69348d2e6c5/resourceGroups/testRG/providers/Microsoft.EventHub/namespaces/eventHubNameSpaceName")
+            .withEventHubType(EventHubType.NOTIFICATION)
+            .withEventStreamingState(EventStreamingState.ENABLED)
+            .withEventStreamingType(EventStreamingType.AZURE)
+            .create();
+    }
+}
+```
+
+### KafkaConfigurations_Delete
+
+```java
+/**
+ * Samples for KafkaConfigurations Delete.
+ */
+public final class KafkaConfigurationsDeleteSamples {
+    /*
+     * x-ms-original-file: 2024-04-01-preview/KafkaConfigurations_Delete.json
+     */
+    /**
+     * Sample code: KafkaConfigurations_Delete.
+     * 
+     * @param manager Entry point to PurviewManager.
+     */
+    public static void kafkaConfigurationsDelete(com.azure.resourcemanager.purview.PurviewManager manager) {
+        manager.kafkaConfigurations()
+            .deleteWithResponse("rgpurview", "account1", "kafkaConfigName", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### KafkaConfigurations_Get
+
+```java
+/**
+ * Samples for KafkaConfigurations Get.
+ */
+public final class KafkaConfigurationsGetSamples {
+    /*
+     * x-ms-original-file: 2024-04-01-preview/KafkaConfigurations_Get.json
+     */
+    /**
+     * Sample code: KafkaConfigurations_Get.
+     * 
+     * @param manager Entry point to PurviewManager.
+     */
+    public static void kafkaConfigurationsGet(com.azure.resourcemanager.purview.PurviewManager manager) {
+        manager.kafkaConfigurations()
+            .getWithResponse("rgpurview", "account1", "kafkaConfigName", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### KafkaConfigurations_ListByAccount
+
+```java
+/**
+ * Samples for KafkaConfigurations ListByAccount.
+ */
+public final class KafkaConfigurationsListByAccountSamples {
+    /*
+     * x-ms-original-file: 2024-04-01-preview/KafkaConfigurations_ListByAccount.json
+     */
+    /**
+     * Sample code: KafkaConfigurations_ListByAccount.
+     * 
+     * @param manager Entry point to PurviewManager.
+     */
+    public static void kafkaConfigurationsListByAccount(com.azure.resourcemanager.purview.PurviewManager manager) {
+        manager.kafkaConfigurations().listByAccount("rgpurview", "account1", "token", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -362,8 +586,7 @@ public final class DefaultAccountsSetSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/purview/resource-manager/Microsoft.Purview/stable/2021-07-01/examples/Operations_List.json
+     * x-ms-original-file: 2024-04-01-preview/Operations_List.json
      */
     /**
      * Sample code: Operations_List.
@@ -387,8 +610,7 @@ import com.azure.resourcemanager.purview.models.Status;
  */
 public final class PrivateEndpointConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/purview/resource-manager/Microsoft.Purview/stable/2021-07-01/examples/
-     * PrivateEndpointConnections_CreateOrUpdate.json
+     * x-ms-original-file: 2024-04-01-preview/PrivateEndpointConnections_CreateOrUpdate.json
      */
     /**
      * Sample code: PrivateEndpointConnections_CreateOrUpdate.
@@ -416,8 +638,7 @@ public final class PrivateEndpointConnectionsCreateOrUpdateSamples {
  */
 public final class PrivateEndpointConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/purview/resource-manager/Microsoft.Purview/stable/2021-07-01/examples/
-     * PrivateEndpointConnections_Delete.json
+     * x-ms-original-file: 2024-04-01-preview/PrivateEndpointConnections_Delete.json
      */
     /**
      * Sample code: PrivateEndpointConnections_Delete.
@@ -439,8 +660,7 @@ public final class PrivateEndpointConnectionsDeleteSamples {
  */
 public final class PrivateEndpointConnectionsGetSamples {
     /*
-     * x-ms-original-file: specification/purview/resource-manager/Microsoft.Purview/stable/2021-07-01/examples/
-     * PrivateEndpointConnections_Get.json
+     * x-ms-original-file: 2024-04-01-preview/PrivateEndpointConnections_Get.json
      */
     /**
      * Sample code: PrivateEndpointConnections_Get.
@@ -463,8 +683,7 @@ public final class PrivateEndpointConnectionsGetSamples {
  */
 public final class PrivateEndpointConnectionsListByAccountSamples {
     /*
-     * x-ms-original-file: specification/purview/resource-manager/Microsoft.Purview/stable/2021-07-01/examples/
-     * PrivateEndpointConnections_ListByAccount.json
+     * x-ms-original-file: 2024-04-01-preview/PrivateEndpointConnections_ListByAccount.json
      */
     /**
      * Sample code: PrivateEndpointConnections_ListByAccount.
@@ -487,8 +706,7 @@ public final class PrivateEndpointConnectionsListByAccountSamples {
  */
 public final class PrivateLinkResourcesGetByGroupIdSamples {
     /*
-     * x-ms-original-file: specification/purview/resource-manager/Microsoft.Purview/stable/2021-07-01/examples/
-     * PrivateLinkResources_GetByGroupId.json
+     * x-ms-original-file: 2024-04-01-preview/PrivateLinkResources_GetByGroupId.json
      */
     /**
      * Sample code: PrivateLinkResources_GetByGroupId.
@@ -510,8 +728,7 @@ public final class PrivateLinkResourcesGetByGroupIdSamples {
  */
 public final class PrivateLinkResourcesListByAccountSamples {
     /*
-     * x-ms-original-file: specification/purview/resource-manager/Microsoft.Purview/stable/2021-07-01/examples/
-     * PrivateLinkResources_ListByAccount.json
+     * x-ms-original-file: 2024-04-01-preview/PrivateLinkResources_ListByAccount.json
      */
     /**
      * Sample code: PrivateLinkResources_ListByAccount.
@@ -521,6 +738,27 @@ public final class PrivateLinkResourcesListByAccountSamples {
     public static void privateLinkResourcesListByAccount(com.azure.resourcemanager.purview.PurviewManager manager) {
         manager.privateLinkResources()
             .listByAccount("SampleResourceGroup", "account1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Usages_Get
+
+```java
+/**
+ * Samples for Usages Get.
+ */
+public final class UsagesGetSamples {
+    /*
+     * x-ms-original-file: 2024-04-01-preview/Usages_Get.json
+     */
+    /**
+     * Sample code: Usages_Get.
+     * 
+     * @param manager Entry point to PurviewManager.
+     */
+    public static void usagesGet(com.azure.resourcemanager.purview.PurviewManager manager) {
+        manager.usages().getWithResponse("West US 2", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
