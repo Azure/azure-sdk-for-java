@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -271,6 +272,32 @@ public class GroupByQueryTests extends TestSuiteBase {
         for (JsonNode result : queryResults) {
             assertThat(result.isTextual()).isTrue();
         }
+
+        Set<String> expectedCities = personList.stream()
+            .map(p -> p.getCity().toString())
+            .collect(Collectors.toSet());
+
+        Set<String> actualCities = queryResults.stream()
+            .map(JsonNode::asText)
+            .collect(Collectors.toSet());
+
+        assertThat(actualCities).isEqualTo(expectedCities);
+    }
+
+    @Test(groups = {"query"}, timeOut = TIMEOUT)
+    public void querySelectValueUndefinedFieldGroupBy() {
+        String query = "SELECT VALUE SUM(c.doesNotExist) FROM c GROUP BY c.city";
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+        options.setMaxDegreeOfParallelism(2);
+
+        CosmosPagedFlux<JsonNode> queryObservable = createdCollection.queryItems(query, options, JsonNode.class);
+        List<FeedResponse<JsonNode>> queryResultPages = queryObservable.byPage().collectList().block();
+
+        List<JsonNode> queryResults = new ArrayList<>();
+        queryResultPages.forEach(feedResponse -> queryResults.addAll(feedResponse.getResults()));
+
+        long distinctCities = personList.stream().map(Person::getCity).distinct().count();
+        assertThat(queryResults.size()).isEqualTo((int) distinctCities);
     }
 
     @AfterClass(groups = {"query"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)

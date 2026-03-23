@@ -200,7 +200,9 @@ public final class GroupByDocumentQueryExecutionContext implements
 
             JsonNode payloadNode = this.getPropertyBag().get(PAYLOAD_PROPERTY_NAME);
 
-            // SELECT VALUE payloads may be wrapped in a single-element array; always unwrap the first element
+            // SELECT VALUE payloads may be wrapped in a single-element array by the backend.
+            // Empty arrays (size == 0) are not expected — undefined fields produce no payload.
+            // Multi-element arrays (size > 1) are not produced by the backend for GROUP BY.
             if (payloadNode != null && payloadNode.isArray() && payloadNode.size() == 1) {
                 payloadNode = payloadNode.get(0);
             }
