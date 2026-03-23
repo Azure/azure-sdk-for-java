@@ -24,7 +24,7 @@
 
   "tenants": [
     {
-      "operation": "ReadLatency",
+      "operation": "ReadThroughput",
       "numberOfOperations": 100000
     }
   ]
