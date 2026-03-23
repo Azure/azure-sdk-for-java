@@ -7,13 +7,12 @@ import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPr
 import com.azure.spring.cloud.autoconfigure.implementation.cosmos.AzureCosmosAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.data.cosmos.CosmosDataAutoConfiguration;
 import com.azure.spring.data.cosmos.core.mapping.GeneratedValue;
+import com.azure.spring.data.cosmos.core.mapping.PartitionKey;
 import com.azure.spring.data.cosmos.repository.CosmosRepository;
 import com.azure.spring.data.cosmos.repository.config.EnableCosmosRepositories;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.condition.OS;
-import org.junit.jupiter.api.io.TempDir;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
@@ -26,14 +25,6 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.CertificateException;
 import java.time.Duration;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -43,34 +34,38 @@ import static org.assertj.core.api.Assertions.assertThat;
 @EnabledOnOs(OS.LINUX)
 class CosmosContainerConnectionDetailsFactoryTests {
 
-    @TempDir
-    private static File tempFolder;
-
     @Container
     @ServiceConnection
-    private static final CosmosDBEmulatorContainer COSMOS_DB_EMULATOR_CONTAINER = new CosmosDBEmulatorContainer(DockerImageName.parse("mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:latest"))
-        .waitingFor(Wait.forHttps("/_explorer/emulator.pem").forStatusCode(200).allowInsecure())
-        .withStartupTimeout(Duration.ofMinutes(3));
+    private static final CosmosDBEmulatorContainer COSMOS_DB_EMULATOR_CONTAINER = createEmulatorContainer();
+
+    private static CosmosDBEmulatorContainer createEmulatorContainer() {
+        // Must be set before RxGatewayStoreModel class is loaded, as the flag is cached in a static final field.
+        // The vnext emulator only supports HTTP (not HTTPS).
+        System.setProperty("COSMOS.HTTP_CONNECTION_WITHOUT_TLS_ALLOWED", "true");
+
+        // The legacy emulator image (latest tag) has a .NET CoreCLR GC heap initialization bug (exit code 255),
+        // so we use the vnext emulator which is lighter weight and HTTP-only.
+        CosmosDBEmulatorContainer container = new CosmosDBEmulatorContainer(
+            DockerImageName.parse("mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:vnext-preview-testcontainers")) {
+            @Override
+            public String getEmulatorEndpoint() {
+                return "http://" + getHost() + ":" + getMappedPort(8081);
+            }
+        };
+        container.waitingFor(Wait.forHttp("/").forPort(8081).forStatusCode(200));
+        container.withStartupTimeout(Duration.ofMinutes(3));
+        return container;
+    }
+
 
     @Autowired
     private PersonRepository personRepository;
 
-    @BeforeAll
-    static void beforeAll() throws IOException, CertificateException, KeyStoreException, NoSuchAlgorithmException {
-        Path keyStoreFile = new File(tempFolder, "azure-cosmos-emulator.keystore").toPath();
-        KeyStore keyStore = COSMOS_DB_EMULATOR_CONTAINER.buildNewKeyStore();
-        keyStore.store(Files.newOutputStream(keyStoreFile.toFile().toPath()), COSMOS_DB_EMULATOR_CONTAINER.getEmulatorKey().toCharArray());
-
-        System.setProperty("javax.net.ssl.trustStore", keyStoreFile.toString());
-        System.setProperty("javax.net.ssl.trustStorePassword", COSMOS_DB_EMULATOR_CONTAINER.getEmulatorKey());
-        System.setProperty("javax.net.ssl.trustStoreType", "PKCS12");
-    }
-
     @Test
     void test() {
-        assertThat(this.personRepository.count()).isEqualTo(0);
+        assertThat(this.personRepository.findAll()).hasSize(0);
         this.personRepository.save(new Person("Peter"));
-        assertThat(this.personRepository.count()).isEqualTo(1);
+        assertThat(this.personRepository.findAll()).hasSize(1);
     }
 
     interface PersonRepository extends CosmosRepository<Person, String> {
@@ -82,6 +77,7 @@ class CosmosContainerConnectionDetailsFactoryTests {
         @Id
         @GeneratedValue
         private String id;
+        @PartitionKey
         private String name;
 
         Person() {
