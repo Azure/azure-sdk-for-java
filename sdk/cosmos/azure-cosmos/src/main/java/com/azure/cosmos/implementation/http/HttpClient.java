@@ -59,11 +59,8 @@ public interface HttpClient {
 
         int maxLifetimeSeconds = Configs.isHttpConnectionMaxLifetimeEnabled()
             ? Configs.getHttpConnectionMaxLifetimeInSeconds() : 0;
-        int pingAckTimeoutSeconds = Configs.isHttp2PingHealthEnabled()
-            ? Configs.getHttp2PingAckTimeoutInSeconds() : 0;
-        if (maxLifetimeSeconds > 0 || pingAckTimeoutSeconds > 0) {
+        if (maxLifetimeSeconds > 0) {
             long maxIdleTimeMs = httpClientConfig.getMaxIdleConnectionTimeout().toMillis();
-            long pingAckTimeoutNanos = pingAckTimeoutSeconds > 0 ? pingAckTimeoutSeconds * 1_000_000_000L : 0;
 
             // Derive sweep interval: must be less than the smallest eviction threshold,
             // otherwise we overshoot (a connection sits past its threshold until the next sweep).
@@ -72,9 +69,6 @@ public interface HttpClient {
             if (maxIdleTimeMs > 0) {
                 minThresholdSeconds = Math.min(minThresholdSeconds, maxIdleTimeMs / 1000);
             }
-            if (pingAckTimeoutSeconds > 0) {
-                minThresholdSeconds = Math.min(minThresholdSeconds, pingAckTimeoutSeconds);
-            }
             if (maxLifetimeSeconds > 0) {
                 minThresholdSeconds = Math.min(minThresholdSeconds, maxLifetimeSeconds);
             }
@@ -82,8 +76,7 @@ public interface HttpClient {
             long sweepIntervalNanos = sweepSeconds * 1_000_000_000L;
 
             // Eviction rate limiter: at most 1 connection evicted per sweep cycle.
-            // Prevents cliff eviction (e.g., sustained network blip makes all PING ACKs stale
-            // simultaneously → all connections evicted in one sweep → pool drops to 0).
+            // Prevents cliff eviction when multiple connections expire in the same window.
             // Dead channels (Phase 0) are exempt — they're already unusable.
             final AtomicInteger evictedThisCycle = new AtomicInteger(0);
             final AtomicLong cycleStartNanos = new AtomicLong(System.nanoTime());
@@ -116,19 +109,12 @@ public interface HttpClient {
                     return true;
                 }
 
-                // Phase 2: PING liveness — if PING ACK is stale, connection is silently degraded
-                if (pingAckTimeoutNanos > 0) {
-                    Channel parentChannel = connection.channel();
-                    Long lastAckNanos = parentChannel.hasAttr(Http2PingHealthHandler.LAST_PING_ACK_NANOS)
-                        ? parentChannel.attr(Http2PingHealthHandler.LAST_PING_ACK_NANOS).get()
-                        : null;
-                    if (lastAckNanos != null && now - lastAckNanos > pingAckTimeoutNanos) {
-                        evictedThisCycle.incrementAndGet();
-                        return true;
-                    }
-                }
+                // NOTE: No PING-based eviction. Http2PingHealthHandler sends PING frames as
+                // keepalive (prevents NAT/firewall idle reaping) but does NOT trigger eviction
+                // on stale ACKs. Degraded connections are handled by the response timeout retry
+                // path (6s/6s/10s escalation → cross-region failover).
 
-                // Phase 3: Per-connection max lifetime with jitter — two-phase eviction.
+                // Phase 2: Per-connection max lifetime with jitter — two-phase eviction.
                 // CONNECTION_EXPIRY_NANOS is stamped once per connection in doOnConnected
                 // (via Http2PingHealthHandler.stampConnectionExpiry) with baseMaxLifetime + random jitter.
                 //
