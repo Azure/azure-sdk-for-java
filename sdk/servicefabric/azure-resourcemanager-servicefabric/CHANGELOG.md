@@ -1,14 +1,362 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.1.0-beta.1 (2026-03-23)
 
-### Features Added
+- Azure Resource Manager Service Fabric client library for Java. This package contains Microsoft Azure SDK for Service Fabric Management SDK. Service Fabric Management Client. Package api-version 2026-03-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.ManagedIdentity` was removed
 
-### Other Changes
+#### `models.ServiceResourceList` was removed
+
+#### `models.ClusterListResult` was removed
+
+#### `models.AvailableOperationDisplay` was removed
+
+#### `models.ManagedIdentityType` was removed
+
+#### `models.ApplicationTypeResourceList` was removed
+
+#### `models.ServicePlacementPolicyType` was removed
+
+#### `models.ApplicationTypeVersionResourceList` was removed
+
+#### `models.OperationListResult` was removed
+
+#### `models.OperationResult` was removed
+
+#### `models.ApplicationResourceList` was removed
+
+#### `models.StatefulServiceProperties` was modified
+
+* `validate()` was removed
+
+#### `models.SettingsSectionDescription` was modified
+
+* `validate()` was removed
+
+#### `models.SingletonPartitionSchemeDescription` was modified
+
+* `validate()` was removed
+
+#### `models.ServiceCorrelationDescription` was modified
+
+* `validate()` was removed
+
+#### `models.UpgradableVersionsDescription` was modified
+
+* `validate()` was removed
+
+#### `models.AzureActiveDirectory` was modified
+
+* `validate()` was removed
+
+#### `models.ServiceTypeDeltaHealthPolicy` was modified
+
+* `validate()` was removed
+
+#### `models.StatelessServiceProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ServiceLoadMetricDescription` was modified
+
+* `validate()` was removed
+
+#### `models.ApplicationResourceUpdate` was modified
+
+* `etag()` was removed
+* `location()` was removed
+* `withLocation(java.lang.String)` was removed
+* `validate()` was removed
+
+#### `models.ApplicationResource$Definition` was modified
+
+* `withIdentity(models.ManagedIdentity)` was removed
+
+#### `models.ApplicationDeltaHealthPolicy` was modified
+
+* `validate()` was removed
+
+#### `models.StatefulServiceUpdateProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ArmServiceTypeHealthPolicy` was modified
+
+* `validate()` was removed
+
+#### `models.ClusterHealthPolicy` was modified
+
+* `validate()` was removed
+
+#### `models.NotificationTarget` was modified
+
+* `validate()` was removed
+
+#### `models.ClusterUpdateParameters` was modified
+
+* `validate()` was removed
+
+#### `models.ServiceResourceUpdate` was modified
+
+* `etag()` was removed
+* `validate()` was removed
+
+#### `models.NodeTypeDescription` was modified
+
+* `validate()` was removed
+
+#### `models.ApplicationHealthPolicy` was modified
+
+* `validate()` was removed
+
+#### `models.ClusterCodeVersionsResult` was modified
+
+* `ClusterCodeVersionsResult()` was changed to private access
+* `validate()` was removed
+* `withId(java.lang.String)` was removed
+* `withName(java.lang.String)` was removed
+* `withType(java.lang.String)` was removed
+* `withEnvironment(models.ClusterEnvironment)` was removed
+* `withSupportExpiryUtc(java.lang.String)` was removed
+* `withCodeVersion(java.lang.String)` was removed
+
+#### `models.ApplicationUpgradePolicy` was modified
+
+* `validate()` was removed
+
+#### `models.SettingsParameterDescription` was modified
+
+* `validate()` was removed
+
+#### `models.ApplicationMetricDescription` was modified
+
+* `validate()` was removed
+
+#### `models.CertificateDescription` was modified
+
+* `validate()` was removed
+
+#### `models.ServiceResource` was modified
+
+* `etag()` was removed
+
+#### `models.NamedPartitionSchemeDescription` was modified
+
+* `validate()` was removed
+
+#### `models.UserAssignedIdentity` was modified
+
+* `validate()` was removed
+
+#### `models.ClientCertificateCommonName` was modified
+
+* `validate()` was removed
+
+#### `models.DiagnosticsStorageAccountConfig` was modified
+
+* `validate()` was removed
+
+#### `models.ArmRollingUpgradeMonitoringPolicy` was modified
+
+* `validate()` was removed
+
+#### `models.ServiceResourceUpdateProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ApplicationUserAssignedIdentity` was modified
+
+* `validate()` was removed
+
+#### `models.ServiceTypeHealthPolicy` was modified
+
+* `validate()` was removed
+
+#### `models.PartitionSchemeDescription` was modified
+
+* `validate()` was removed
+
+#### `models.ServerCertificateCommonName` was modified
+
+* `validate()` was removed
+
+#### `models.ServiceResource$Update` was modified
+
+* `withProperties(models.ServiceResourceUpdateProperties)` was removed
+
+#### `models.ServerCertificateCommonNames` was modified
+
+* `validate()` was removed
+
+#### `models.ClientCertificateThumbprint` was modified
+
+* `validate()` was removed
+
+#### `models.ServiceResourcePropertiesBase` was modified
+
+* `validate()` was removed
+
+#### `models.ClusterUpgradePolicy` was modified
+
+* `validate()` was removed
+
+#### `models.UniformInt64RangePartitionSchemeDescription` was modified
+
+* `validate()` was removed
+
+#### `models.ArmApplicationHealthPolicy` was modified
+
+* `validate()` was removed
+
+#### `models.Notification` was modified
+
+* `validate()` was removed
+
+#### `models.ServiceResourceProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ApplicationTypeVersionsCleanupPolicy` was modified
+
+* `validate()` was removed
+
+#### `models.ApplicationResource` was modified
+
+* `models.ManagedIdentity identity()` -> `models.ManagedServiceIdentity identity()`
+
+#### `models.StatelessServiceUpdateProperties` was modified
+
+* `validate()` was removed
+
+#### `models.EndpointRangeDescription` was modified
+
+* `validate()` was removed
+
+#### `models.ServicePlacementPolicyDescription` was modified
+
+* `validate()` was removed
+* `type()` was removed
+
+#### `models.ClusterUpgradeDeltaHealthPolicy` was modified
+
+* `validate()` was removed
+
+### Features Added
+
+* `models.VMSizeResource` was added
+
+* `models.ManagedServiceIdentityType` was added
+
+* `models.ActionType` was added
+
+* `models.UnsupportedVmSizes` was added
+
+* `models.ManagedServiceIdentity` was added
+
+* `models.ProxyResourceApplicationResourceUpdateProperties` was added
+
+* `models.OperationDisplay` was added
+
+* `models.Origin` was added
+
+* `models.VMSize` was added
+
+* `models.Operation` was added
+
+#### `models.Cluster$Definition` was modified
+
+* `withEnableHttpGatewayExclusiveAuthMode(java.lang.Boolean)` was added
+
+#### `models.StatelessServiceProperties` was modified
+
+* `minInstanceCount()` was added
+* `withMinInstanceCount(java.lang.Integer)` was added
+* `withMinInstancePercentage(byte[])` was added
+* `minInstancePercentage()` was added
+
+#### `models.ApplicationResourceUpdate` was modified
+
+* `withProperties(fluent.models.ApplicationResourceUpdateProperties)` was added
+
+#### `models.ApplicationResource$Definition` was modified
+
+* `withIdentity(models.ManagedServiceIdentity)` was added
+
+#### `models.Applications` was modified
+
+* `update(java.lang.String,java.lang.String,java.lang.String,models.ApplicationResourceUpdate)` was added
+* `update(java.lang.String,java.lang.String,java.lang.String,models.ApplicationResourceUpdate,com.azure.core.util.Context)` was added
+
+#### `models.Cluster$Update` was modified
+
+* `withDiagnosticsStorageAccountConfig(models.DiagnosticsStorageAccountConfig)` was added
+* `withReverseProxyCertificateCommonNames(models.ServerCertificateCommonNames)` was added
+* `withManagementEndpoint(java.lang.String)` was added
+* `withAzureActiveDirectory(models.AzureActiveDirectory)` was added
+* `withVmImage(java.lang.String)` was added
+* `withEnableHttpGatewayExclusiveAuthMode(java.lang.Boolean)` was added
+
+#### `models.ClusterUpdateParameters` was modified
+
+* `withEnableHttpGatewayExclusiveAuthMode(java.lang.Boolean)` was added
+* `enableHttpGatewayExclusiveAuthMode()` was added
+
+#### `models.ServiceResourceUpdate` was modified
+
+* `eTag()` was added
+
+#### `models.ApplicationTypeResource$Update` was modified
+
+* `withTags(java.util.Map)` was added
+
+#### `models.NodeTypeDescription` was modified
+
+* `withHttpGatewayTokenAuthEndpointPort(java.lang.Integer)` was added
+* `httpGatewayTokenAuthEndpointPort()` was added
+
+#### `models.ClusterCodeVersionsResult` was modified
+
+* `systemData()` was added
+
+#### `models.ServiceResource` was modified
+
+* `eTag()` was added
+
+#### `models.Cluster` was modified
+
+* `enableHttpGatewayExclusiveAuthMode()` was added
+
+#### `models.ApplicationResource$Update` was modified
+
+* `withTags(java.util.Map)` was added
+* `withTypeName(java.lang.String)` was added
+* `withIdentity(models.ManagedServiceIdentity)` was added
+
+#### `models.Clusters` was modified
+
+* `update(java.lang.String,java.lang.String,models.ClusterUpdateParameters,com.azure.core.util.Context)` was added
+* `update(java.lang.String,java.lang.String,models.ClusterUpdateParameters)` was added
+
+#### `models.ServiceResource$Update` was modified
+
+* `withProperties(models.ServiceResourceProperties)` was added
+* `withTags(java.util.Map)` was added
+
+#### `ServiceFabricManager` was modified
+
+* `unsupportedVmSizes()` was added
+
+#### `models.ApplicationTypeVersionResource$Update` was modified
+
+* `withTags(java.util.Map)` was added
+
+#### `models.Services` was modified
+
+* `update(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.ServiceResourceUpdate)` was added
+* `update(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.ServiceResourceUpdate,com.azure.core.util.Context)` was added
 
 ## 1.0.0 (2024-12-24)
 
