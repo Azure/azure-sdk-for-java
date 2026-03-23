@@ -155,19 +155,26 @@ CI stage: `Cosmos_Live_Test_HttpNetworkFault` on Ubuntu VMs, `MaxParallel: 1`.
 ### End-to-End DNS Rotation Validation
 
 The Cosmos DB front-end DNS (`<account>-<region>.documents.azure.com:443` and `:10250`)
-resolves to multiple IPs behind the same hostname. To validate that max lifetime actually
-achieves DNS re-resolution and traffic redistribution:
+resolves to multiple IPs behind the same hostname. To validate that max lifetime achieves
+DNS re-resolution and traffic redistribution, tests use a `FilterableDnsResolverGroup` —
+a custom Netty `AddressResolverGroup` that wraps JVM resolution but dynamically filters
+out blocked IPs at runtime. No OS-level hacks (no `/etc/hosts`, no `iptables`, no external
+DNS server).
 
-1. Resolve the endpoint to enumerate available IPs (e.g., `dig` or `nslookup`).
-2. Establish connections and capture the resolved IP from the parent channel's
-   `remoteAddress()`.
-3. Use `iptables` to block traffic to one specific IP, forcing DNS to resolve to
-   an alternate IP on the next connection.
-4. Wait for max lifetime to expire and the connection to rotate.
-5. Assert the new connection's `remoteAddress()` is the alternate IP.
+Wired via `HttpClient.resolver(resolverGroup)` in reactor-netty.
+
+**Test flow:**
+1. Create `FilterableDnsResolverGroup`, wire into client builder
+2. Resolve endpoint → enumerate IPs (IP1, IP2)
+3. Run workload, capture `remoteAddress()` from parent channel → connections on IP1
+4. Mid-workload: `resolver.blockIp(IP1)` — dynamic, no restart
+5. Wait for max lifetime → eviction → new connection → resolver returns IP2 only
+6. Assert new connection's `remoteAddress()` is IP2
+7. `resolver.unblockIp(IP1)` → next rotation may return to IP1
 
 This validates the full chain: max lifetime → eviction → pool creates new connection →
-DNS re-resolution → traffic moves to a different backend IP.
+DNS re-resolution → traffic moves to a different backend IP. The dynamic block/unblock
+cycle proves the behavior is repeatable under a running workload.
 
 ---
 
