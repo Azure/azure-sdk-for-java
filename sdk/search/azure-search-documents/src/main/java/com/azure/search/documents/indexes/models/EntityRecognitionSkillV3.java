@@ -88,10 +88,8 @@ public final class EntityRecognitionSkillV3 extends SearchIndexerSkill {
      * @param categories the categories value to set.
      * @return the EntityRecognitionSkillV3 object itself.
      */
-    public EntityRecognitionSkillV3 setCategories(String... categories) {
-        this.categories = (categories == null)
-            ? null
-            : Arrays.stream(categories).map(EntityCategory::fromString).collect(java.util.stream.Collectors.toList());
+    public EntityRecognitionSkillV3 setCategories(EntityCategory... categories) {
+        this.categories = (categories == null) ? null : Arrays.asList(categories);
         return this;
     }
 
