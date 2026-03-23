@@ -62,6 +62,12 @@ public final class FilesCreateHeaders {
     private DateTimeRfc1123 lastModified;
 
     /*
+     * The x-ms-structured-body property.
+     */
+    @Generated
+    private String xMsStructuredBody;
+
+    /*
      * The x-ms-request-server-encrypted property.
      */
     @Generated
@@ -146,6 +152,8 @@ public final class FilesCreateHeaders {
 
     private static final HttpHeaderName X_MS_FILE_FILE_TYPE = HttpHeaderName.fromString("x-ms-file-file-type");
 
+    private static final HttpHeaderName X_MS_STRUCTURED_BODY = HttpHeaderName.fromString("x-ms-structured-body");
+
     private static final HttpHeaderName X_MS_REQUEST_SERVER_ENCRYPTED
         = HttpHeaderName.fromString("x-ms-request-server-encrypted");
 
@@ -191,6 +199,7 @@ public final class FilesCreateHeaders {
         } else {
             this.lastModified = null;
         }
+        this.xMsStructuredBody = rawHeaders.getValue(X_MS_STRUCTURED_BODY);
         String xMsRequestServerEncrypted = rawHeaders.getValue(X_MS_REQUEST_SERVER_ENCRYPTED);
         if (xMsRequestServerEncrypted != null) {
             this.xMsRequestServerEncrypted = Boolean.parseBoolean(xMsRequestServerEncrypted);
@@ -393,6 +402,28 @@ public final class FilesCreateHeaders {
         } else {
             this.lastModified = new DateTimeRfc1123(lastModified);
         }
+        return this;
+    }
+
+    /**
+     * Get the xMsStructuredBody property: The x-ms-structured-body property.
+     * 
+     * @return the xMsStructuredBody value.
+     */
+    @Generated
+    public String getXMsStructuredBody() {
+        return this.xMsStructuredBody;
+    }
+
+    /**
+     * Set the xMsStructuredBody property: The x-ms-structured-body property.
+     * 
+     * @param xMsStructuredBody the xMsStructuredBody value to set.
+     * @return the FilesCreateHeaders object itself.
+     */
+    @Generated
+    public FilesCreateHeaders setXMsStructuredBody(String xMsStructuredBody) {
+        this.xMsStructuredBody = xMsStructuredBody;
         return this;
     }
 

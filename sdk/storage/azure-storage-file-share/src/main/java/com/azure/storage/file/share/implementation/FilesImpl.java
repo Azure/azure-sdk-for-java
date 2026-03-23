@@ -130,6 +130,8 @@ public final class FilesImpl {
             @HeaderParam("Content-MD5") String contentMD5,
             @HeaderParam("x-ms-file-property-semantics") FilePropertySemantics filePropertySemantics,
             @HeaderParam("Content-Length") Long contentLength,
+            @HeaderParam("x-ms-structured-body") String structuredBodyType,
+            @HeaderParam("x-ms-structured-content-length") Long structuredContentLength,
             @BodyParam("application/octet-stream") Flux<ByteBuffer> optionalbody, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -159,6 +161,8 @@ public final class FilesImpl {
             @HeaderParam("Content-MD5") String contentMD5,
             @HeaderParam("x-ms-file-property-semantics") FilePropertySemantics filePropertySemantics,
             @HeaderParam("Content-Length") Long contentLength,
+            @HeaderParam("x-ms-structured-body") String structuredBodyType,
+            @HeaderParam("x-ms-structured-content-length") Long structuredContentLength,
             @BodyParam("application/octet-stream") Flux<ByteBuffer> optionalbody, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -188,6 +192,8 @@ public final class FilesImpl {
             @HeaderParam("Content-MD5") String contentMD5,
             @HeaderParam("x-ms-file-property-semantics") FilePropertySemantics filePropertySemantics,
             @HeaderParam("Content-Length") Long contentLength,
+            @HeaderParam("x-ms-structured-body") String structuredBodyType,
+            @HeaderParam("x-ms-structured-content-length") Long structuredContentLength,
             @BodyParam("application/octet-stream") BinaryData optionalbody, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -217,6 +223,8 @@ public final class FilesImpl {
             @HeaderParam("Content-MD5") String contentMD5,
             @HeaderParam("x-ms-file-property-semantics") FilePropertySemantics filePropertySemantics,
             @HeaderParam("Content-Length") Long contentLength,
+            @HeaderParam("x-ms-structured-body") String structuredBodyType,
+            @HeaderParam("x-ms-structured-content-length") Long structuredContentLength,
             @BodyParam("application/octet-stream") BinaryData optionalbody, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -246,6 +254,8 @@ public final class FilesImpl {
             @HeaderParam("Content-MD5") String contentMD5,
             @HeaderParam("x-ms-file-property-semantics") FilePropertySemantics filePropertySemantics,
             @HeaderParam("Content-Length") Long contentLength,
+            @HeaderParam("x-ms-structured-body") String structuredBodyType,
+            @HeaderParam("x-ms-structured-content-length") Long structuredContentLength,
             @BodyParam("application/octet-stream") BinaryData optionalbody, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -275,6 +285,8 @@ public final class FilesImpl {
             @HeaderParam("Content-MD5") String contentMD5,
             @HeaderParam("x-ms-file-property-semantics") FilePropertySemantics filePropertySemantics,
             @HeaderParam("Content-Length") Long contentLength,
+            @HeaderParam("x-ms-structured-body") String structuredBodyType,
+            @HeaderParam("x-ms-structured-content-length") Long structuredContentLength,
             @BodyParam("application/octet-stream") BinaryData optionalbody, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -1502,7 +1514,7 @@ public final class FilesImpl {
     }
 
     /**
-     * Creates a new file or replaces a file. Note it only initializes the file with no content.
+     * Creates a new file or replaces a file. Can also initialize the file with content.
      *
      * @param shareName The name of the target share.
      * @param fileName The path of the target file.
@@ -1522,8 +1534,8 @@ public final class FilesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: �Archive� for file
+     * and �Directory� for directory. �None� can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
@@ -1541,6 +1553,10 @@ public final class FilesImpl {
      * Restore will apply changes without further modification.
      * @param contentLength Specifies the number of bytes being transmitted in the request body. When the x-ms-write
      * header is set to clear, the value of this header must be set to zero.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param optionalbody Initial data.
      * @param shareFileHttpHeaders Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1554,18 +1570,19 @@ public final class FilesImpl {
         FilePermissionFormat filePermissionFormat, String filePermissionKey, String fileAttributes,
         String fileCreationTime, String fileLastWriteTime, String fileChangeTime, String leaseId, String owner,
         String group, String fileMode, NfsFileType nfsFileType, byte[] contentMD5,
-        FilePropertySemantics filePropertySemantics, Long contentLength, Flux<ByteBuffer> optionalbody,
-        ShareFileHttpHeaders shareFileHttpHeaders) {
+        FilePropertySemantics filePropertySemantics, Long contentLength, String structuredBodyType,
+        Long structuredContentLength, Flux<ByteBuffer> optionalbody, ShareFileHttpHeaders shareFileHttpHeaders) {
         return FluxUtil
             .withContext(context -> createWithResponseAsync(shareName, fileName, fileContentLength, timeout, metadata,
                 filePermission, filePermissionFormat, filePermissionKey, fileAttributes, fileCreationTime,
                 fileLastWriteTime, fileChangeTime, leaseId, owner, group, fileMode, nfsFileType, contentMD5,
-                filePropertySemantics, contentLength, optionalbody, shareFileHttpHeaders, context))
+                filePropertySemantics, contentLength, structuredBodyType, structuredContentLength, optionalbody,
+                shareFileHttpHeaders, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
-     * Creates a new file or replaces a file. Note it only initializes the file with no content.
+     * Creates a new file or replaces a file. Can also initialize the file with content.
      *
      * @param shareName The name of the target share.
      * @param fileName The path of the target file.
@@ -1585,8 +1602,8 @@ public final class FilesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: �Archive� for file
+     * and �Directory� for directory. �None� can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
@@ -1604,6 +1621,10 @@ public final class FilesImpl {
      * Restore will apply changes without further modification.
      * @param contentLength Specifies the number of bytes being transmitted in the request body. When the x-ms-write
      * header is set to clear, the value of this header must be set to zero.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param optionalbody Initial data.
      * @param shareFileHttpHeaders Parameter group.
      * @param context The context to associate with this operation.
@@ -1618,8 +1639,9 @@ public final class FilesImpl {
         FilePermissionFormat filePermissionFormat, String filePermissionKey, String fileAttributes,
         String fileCreationTime, String fileLastWriteTime, String fileChangeTime, String leaseId, String owner,
         String group, String fileMode, NfsFileType nfsFileType, byte[] contentMD5,
-        FilePropertySemantics filePropertySemantics, Long contentLength, Flux<ByteBuffer> optionalbody,
-        ShareFileHttpHeaders shareFileHttpHeaders, Context context) {
+        FilePropertySemantics filePropertySemantics, Long contentLength, String structuredBodyType,
+        Long structuredContentLength, Flux<ByteBuffer> optionalbody, ShareFileHttpHeaders shareFileHttpHeaders,
+        Context context) {
         final String fileTypeConstant = "file";
         final String accept = "application/xml";
         String contentTypeInternal = null;
@@ -1660,12 +1682,13 @@ public final class FilesImpl {
                 contentLanguage, cacheControl, contentMd5Converted, contentDisposition, metadata, filePermission,
                 filePermissionFormat, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime,
                 fileChangeTime, leaseId, this.client.getFileRequestIntent(), owner, group, fileMode, nfsFileType,
-                contentMD5Converted, filePropertySemantics, contentLength, optionalbody, accept, context)
+                contentMD5Converted, filePropertySemantics, contentLength, structuredBodyType, structuredContentLength,
+                optionalbody, accept, context)
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
-     * Creates a new file or replaces a file. Note it only initializes the file with no content.
+     * Creates a new file or replaces a file. Can also initialize the file with content.
      *
      * @param shareName The name of the target share.
      * @param fileName The path of the target file.
@@ -1685,8 +1708,8 @@ public final class FilesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: �Archive� for file
+     * and �Directory� for directory. �None� can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
@@ -1704,6 +1727,10 @@ public final class FilesImpl {
      * Restore will apply changes without further modification.
      * @param contentLength Specifies the number of bytes being transmitted in the request body. When the x-ms-write
      * header is set to clear, the value of this header must be set to zero.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param optionalbody Initial data.
      * @param shareFileHttpHeaders Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1716,18 +1743,18 @@ public final class FilesImpl {
         Map<String, String> metadata, String filePermission, FilePermissionFormat filePermissionFormat,
         String filePermissionKey, String fileAttributes, String fileCreationTime, String fileLastWriteTime,
         String fileChangeTime, String leaseId, String owner, String group, String fileMode, NfsFileType nfsFileType,
-        byte[] contentMD5, FilePropertySemantics filePropertySemantics, Long contentLength,
-        Flux<ByteBuffer> optionalbody, ShareFileHttpHeaders shareFileHttpHeaders) {
+        byte[] contentMD5, FilePropertySemantics filePropertySemantics, Long contentLength, String structuredBodyType,
+        Long structuredContentLength, Flux<ByteBuffer> optionalbody, ShareFileHttpHeaders shareFileHttpHeaders) {
         return createWithResponseAsync(shareName, fileName, fileContentLength, timeout, metadata, filePermission,
             filePermissionFormat, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime,
             fileChangeTime, leaseId, owner, group, fileMode, nfsFileType, contentMD5, filePropertySemantics,
-            contentLength, optionalbody, shareFileHttpHeaders)
+            contentLength, structuredBodyType, structuredContentLength, optionalbody, shareFileHttpHeaders)
                 .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
                 .flatMap(ignored -> Mono.empty());
     }
 
     /**
-     * Creates a new file or replaces a file. Note it only initializes the file with no content.
+     * Creates a new file or replaces a file. Can also initialize the file with content.
      *
      * @param shareName The name of the target share.
      * @param fileName The path of the target file.
@@ -1747,8 +1774,8 @@ public final class FilesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: �Archive� for file
+     * and �Directory� for directory. �None� can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
@@ -1766,6 +1793,10 @@ public final class FilesImpl {
      * Restore will apply changes without further modification.
      * @param contentLength Specifies the number of bytes being transmitted in the request body. When the x-ms-write
      * header is set to clear, the value of this header must be set to zero.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param optionalbody Initial data.
      * @param shareFileHttpHeaders Parameter group.
      * @param context The context to associate with this operation.
@@ -1779,18 +1810,19 @@ public final class FilesImpl {
         Map<String, String> metadata, String filePermission, FilePermissionFormat filePermissionFormat,
         String filePermissionKey, String fileAttributes, String fileCreationTime, String fileLastWriteTime,
         String fileChangeTime, String leaseId, String owner, String group, String fileMode, NfsFileType nfsFileType,
-        byte[] contentMD5, FilePropertySemantics filePropertySemantics, Long contentLength,
-        Flux<ByteBuffer> optionalbody, ShareFileHttpHeaders shareFileHttpHeaders, Context context) {
+        byte[] contentMD5, FilePropertySemantics filePropertySemantics, Long contentLength, String structuredBodyType,
+        Long structuredContentLength, Flux<ByteBuffer> optionalbody, ShareFileHttpHeaders shareFileHttpHeaders,
+        Context context) {
         return createWithResponseAsync(shareName, fileName, fileContentLength, timeout, metadata, filePermission,
             filePermissionFormat, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime,
             fileChangeTime, leaseId, owner, group, fileMode, nfsFileType, contentMD5, filePropertySemantics,
-            contentLength, optionalbody, shareFileHttpHeaders, context)
+            contentLength, structuredBodyType, structuredContentLength, optionalbody, shareFileHttpHeaders, context)
                 .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
                 .flatMap(ignored -> Mono.empty());
     }
 
     /**
-     * Creates a new file or replaces a file. Note it only initializes the file with no content.
+     * Creates a new file or replaces a file. Can also initialize the file with content.
      *
      * @param shareName The name of the target share.
      * @param fileName The path of the target file.
@@ -1810,8 +1842,8 @@ public final class FilesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: �Archive� for file
+     * and �Directory� for directory. �None� can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
@@ -1829,6 +1861,10 @@ public final class FilesImpl {
      * Restore will apply changes without further modification.
      * @param contentLength Specifies the number of bytes being transmitted in the request body. When the x-ms-write
      * header is set to clear, the value of this header must be set to zero.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param optionalbody Initial data.
      * @param shareFileHttpHeaders Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1842,18 +1878,19 @@ public final class FilesImpl {
         FilePermissionFormat filePermissionFormat, String filePermissionKey, String fileAttributes,
         String fileCreationTime, String fileLastWriteTime, String fileChangeTime, String leaseId, String owner,
         String group, String fileMode, NfsFileType nfsFileType, byte[] contentMD5,
-        FilePropertySemantics filePropertySemantics, Long contentLength, Flux<ByteBuffer> optionalbody,
-        ShareFileHttpHeaders shareFileHttpHeaders) {
+        FilePropertySemantics filePropertySemantics, Long contentLength, String structuredBodyType,
+        Long structuredContentLength, Flux<ByteBuffer> optionalbody, ShareFileHttpHeaders shareFileHttpHeaders) {
         return FluxUtil
             .withContext(context -> createNoCustomHeadersWithResponseAsync(shareName, fileName, fileContentLength,
                 timeout, metadata, filePermission, filePermissionFormat, filePermissionKey, fileAttributes,
                 fileCreationTime, fileLastWriteTime, fileChangeTime, leaseId, owner, group, fileMode, nfsFileType,
-                contentMD5, filePropertySemantics, contentLength, optionalbody, shareFileHttpHeaders, context))
+                contentMD5, filePropertySemantics, contentLength, structuredBodyType, structuredContentLength,
+                optionalbody, shareFileHttpHeaders, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
-     * Creates a new file or replaces a file. Note it only initializes the file with no content.
+     * Creates a new file or replaces a file. Can also initialize the file with content.
      *
      * @param shareName The name of the target share.
      * @param fileName The path of the target file.
@@ -1873,8 +1910,8 @@ public final class FilesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: �Archive� for file
+     * and �Directory� for directory. �None� can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
@@ -1892,6 +1929,10 @@ public final class FilesImpl {
      * Restore will apply changes without further modification.
      * @param contentLength Specifies the number of bytes being transmitted in the request body. When the x-ms-write
      * header is set to clear, the value of this header must be set to zero.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param optionalbody Initial data.
      * @param shareFileHttpHeaders Parameter group.
      * @param context The context to associate with this operation.
@@ -1906,8 +1947,9 @@ public final class FilesImpl {
         FilePermissionFormat filePermissionFormat, String filePermissionKey, String fileAttributes,
         String fileCreationTime, String fileLastWriteTime, String fileChangeTime, String leaseId, String owner,
         String group, String fileMode, NfsFileType nfsFileType, byte[] contentMD5,
-        FilePropertySemantics filePropertySemantics, Long contentLength, Flux<ByteBuffer> optionalbody,
-        ShareFileHttpHeaders shareFileHttpHeaders, Context context) {
+        FilePropertySemantics filePropertySemantics, Long contentLength, String structuredBodyType,
+        Long structuredContentLength, Flux<ByteBuffer> optionalbody, ShareFileHttpHeaders shareFileHttpHeaders,
+        Context context) {
         final String fileTypeConstant = "file";
         final String accept = "application/xml";
         String contentTypeInternal = null;
@@ -1948,12 +1990,13 @@ public final class FilesImpl {
                 contentLanguage, cacheControl, contentMd5Converted, contentDisposition, metadata, filePermission,
                 filePermissionFormat, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime,
                 fileChangeTime, leaseId, this.client.getFileRequestIntent(), owner, group, fileMode, nfsFileType,
-                contentMD5Converted, filePropertySemantics, contentLength, optionalbody, accept, context)
+                contentMD5Converted, filePropertySemantics, contentLength, structuredBodyType, structuredContentLength,
+                optionalbody, accept, context)
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
-     * Creates a new file or replaces a file. Note it only initializes the file with no content.
+     * Creates a new file or replaces a file. Can also initialize the file with content.
      *
      * @param shareName The name of the target share.
      * @param fileName The path of the target file.
@@ -1973,8 +2016,8 @@ public final class FilesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: �Archive� for file
+     * and �Directory� for directory. �None� can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
@@ -1992,6 +2035,10 @@ public final class FilesImpl {
      * Restore will apply changes without further modification.
      * @param contentLength Specifies the number of bytes being transmitted in the request body. When the x-ms-write
      * header is set to clear, the value of this header must be set to zero.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param optionalbody Initial data.
      * @param shareFileHttpHeaders Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2005,18 +2052,19 @@ public final class FilesImpl {
         FilePermissionFormat filePermissionFormat, String filePermissionKey, String fileAttributes,
         String fileCreationTime, String fileLastWriteTime, String fileChangeTime, String leaseId, String owner,
         String group, String fileMode, NfsFileType nfsFileType, byte[] contentMD5,
-        FilePropertySemantics filePropertySemantics, Long contentLength, BinaryData optionalbody,
-        ShareFileHttpHeaders shareFileHttpHeaders) {
+        FilePropertySemantics filePropertySemantics, Long contentLength, String structuredBodyType,
+        Long structuredContentLength, BinaryData optionalbody, ShareFileHttpHeaders shareFileHttpHeaders) {
         return FluxUtil
             .withContext(context -> createWithResponseAsync(shareName, fileName, fileContentLength, timeout, metadata,
                 filePermission, filePermissionFormat, filePermissionKey, fileAttributes, fileCreationTime,
                 fileLastWriteTime, fileChangeTime, leaseId, owner, group, fileMode, nfsFileType, contentMD5,
-                filePropertySemantics, contentLength, optionalbody, shareFileHttpHeaders, context))
+                filePropertySemantics, contentLength, structuredBodyType, structuredContentLength, optionalbody,
+                shareFileHttpHeaders, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
-     * Creates a new file or replaces a file. Note it only initializes the file with no content.
+     * Creates a new file or replaces a file. Can also initialize the file with content.
      *
      * @param shareName The name of the target share.
      * @param fileName The path of the target file.
@@ -2036,8 +2084,8 @@ public final class FilesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: �Archive� for file
+     * and �Directory� for directory. �None� can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
@@ -2055,6 +2103,10 @@ public final class FilesImpl {
      * Restore will apply changes without further modification.
      * @param contentLength Specifies the number of bytes being transmitted in the request body. When the x-ms-write
      * header is set to clear, the value of this header must be set to zero.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param optionalbody Initial data.
      * @param shareFileHttpHeaders Parameter group.
      * @param context The context to associate with this operation.
@@ -2069,8 +2121,9 @@ public final class FilesImpl {
         FilePermissionFormat filePermissionFormat, String filePermissionKey, String fileAttributes,
         String fileCreationTime, String fileLastWriteTime, String fileChangeTime, String leaseId, String owner,
         String group, String fileMode, NfsFileType nfsFileType, byte[] contentMD5,
-        FilePropertySemantics filePropertySemantics, Long contentLength, BinaryData optionalbody,
-        ShareFileHttpHeaders shareFileHttpHeaders, Context context) {
+        FilePropertySemantics filePropertySemantics, Long contentLength, String structuredBodyType,
+        Long structuredContentLength, BinaryData optionalbody, ShareFileHttpHeaders shareFileHttpHeaders,
+        Context context) {
         final String fileTypeConstant = "file";
         final String accept = "application/xml";
         String contentTypeInternal = null;
@@ -2111,12 +2164,13 @@ public final class FilesImpl {
                 contentLanguage, cacheControl, contentMd5Converted, contentDisposition, metadata, filePermission,
                 filePermissionFormat, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime,
                 fileChangeTime, leaseId, this.client.getFileRequestIntent(), owner, group, fileMode, nfsFileType,
-                contentMD5Converted, filePropertySemantics, contentLength, optionalbody, accept, context)
+                contentMD5Converted, filePropertySemantics, contentLength, structuredBodyType, structuredContentLength,
+                optionalbody, accept, context)
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
-     * Creates a new file or replaces a file. Note it only initializes the file with no content.
+     * Creates a new file or replaces a file. Can also initialize the file with content.
      *
      * @param shareName The name of the target share.
      * @param fileName The path of the target file.
@@ -2136,8 +2190,8 @@ public final class FilesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: �Archive� for file
+     * and �Directory� for directory. �None� can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
@@ -2155,6 +2209,10 @@ public final class FilesImpl {
      * Restore will apply changes without further modification.
      * @param contentLength Specifies the number of bytes being transmitted in the request body. When the x-ms-write
      * header is set to clear, the value of this header must be set to zero.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param optionalbody Initial data.
      * @param shareFileHttpHeaders Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2167,18 +2225,18 @@ public final class FilesImpl {
         Map<String, String> metadata, String filePermission, FilePermissionFormat filePermissionFormat,
         String filePermissionKey, String fileAttributes, String fileCreationTime, String fileLastWriteTime,
         String fileChangeTime, String leaseId, String owner, String group, String fileMode, NfsFileType nfsFileType,
-        byte[] contentMD5, FilePropertySemantics filePropertySemantics, Long contentLength, BinaryData optionalbody,
-        ShareFileHttpHeaders shareFileHttpHeaders) {
+        byte[] contentMD5, FilePropertySemantics filePropertySemantics, Long contentLength, String structuredBodyType,
+        Long structuredContentLength, BinaryData optionalbody, ShareFileHttpHeaders shareFileHttpHeaders) {
         return createWithResponseAsync(shareName, fileName, fileContentLength, timeout, metadata, filePermission,
             filePermissionFormat, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime,
             fileChangeTime, leaseId, owner, group, fileMode, nfsFileType, contentMD5, filePropertySemantics,
-            contentLength, optionalbody, shareFileHttpHeaders)
+            contentLength, structuredBodyType, structuredContentLength, optionalbody, shareFileHttpHeaders)
                 .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
                 .flatMap(ignored -> Mono.empty());
     }
 
     /**
-     * Creates a new file or replaces a file. Note it only initializes the file with no content.
+     * Creates a new file or replaces a file. Can also initialize the file with content.
      *
      * @param shareName The name of the target share.
      * @param fileName The path of the target file.
@@ -2198,8 +2256,8 @@ public final class FilesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: �Archive� for file
+     * and �Directory� for directory. �None� can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
@@ -2217,6 +2275,10 @@ public final class FilesImpl {
      * Restore will apply changes without further modification.
      * @param contentLength Specifies the number of bytes being transmitted in the request body. When the x-ms-write
      * header is set to clear, the value of this header must be set to zero.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param optionalbody Initial data.
      * @param shareFileHttpHeaders Parameter group.
      * @param context The context to associate with this operation.
@@ -2230,18 +2292,19 @@ public final class FilesImpl {
         Map<String, String> metadata, String filePermission, FilePermissionFormat filePermissionFormat,
         String filePermissionKey, String fileAttributes, String fileCreationTime, String fileLastWriteTime,
         String fileChangeTime, String leaseId, String owner, String group, String fileMode, NfsFileType nfsFileType,
-        byte[] contentMD5, FilePropertySemantics filePropertySemantics, Long contentLength, BinaryData optionalbody,
-        ShareFileHttpHeaders shareFileHttpHeaders, Context context) {
+        byte[] contentMD5, FilePropertySemantics filePropertySemantics, Long contentLength, String structuredBodyType,
+        Long structuredContentLength, BinaryData optionalbody, ShareFileHttpHeaders shareFileHttpHeaders,
+        Context context) {
         return createWithResponseAsync(shareName, fileName, fileContentLength, timeout, metadata, filePermission,
             filePermissionFormat, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime,
             fileChangeTime, leaseId, owner, group, fileMode, nfsFileType, contentMD5, filePropertySemantics,
-            contentLength, optionalbody, shareFileHttpHeaders, context)
+            contentLength, structuredBodyType, structuredContentLength, optionalbody, shareFileHttpHeaders, context)
                 .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
                 .flatMap(ignored -> Mono.empty());
     }
 
     /**
-     * Creates a new file or replaces a file. Note it only initializes the file with no content.
+     * Creates a new file or replaces a file. Can also initialize the file with content.
      *
      * @param shareName The name of the target share.
      * @param fileName The path of the target file.
@@ -2261,8 +2324,8 @@ public final class FilesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: �Archive� for file
+     * and �Directory� for directory. �None� can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
@@ -2280,6 +2343,10 @@ public final class FilesImpl {
      * Restore will apply changes without further modification.
      * @param contentLength Specifies the number of bytes being transmitted in the request body. When the x-ms-write
      * header is set to clear, the value of this header must be set to zero.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param optionalbody Initial data.
      * @param shareFileHttpHeaders Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2293,18 +2360,19 @@ public final class FilesImpl {
         FilePermissionFormat filePermissionFormat, String filePermissionKey, String fileAttributes,
         String fileCreationTime, String fileLastWriteTime, String fileChangeTime, String leaseId, String owner,
         String group, String fileMode, NfsFileType nfsFileType, byte[] contentMD5,
-        FilePropertySemantics filePropertySemantics, Long contentLength, BinaryData optionalbody,
-        ShareFileHttpHeaders shareFileHttpHeaders) {
+        FilePropertySemantics filePropertySemantics, Long contentLength, String structuredBodyType,
+        Long structuredContentLength, BinaryData optionalbody, ShareFileHttpHeaders shareFileHttpHeaders) {
         return FluxUtil
             .withContext(context -> createNoCustomHeadersWithResponseAsync(shareName, fileName, fileContentLength,
                 timeout, metadata, filePermission, filePermissionFormat, filePermissionKey, fileAttributes,
                 fileCreationTime, fileLastWriteTime, fileChangeTime, leaseId, owner, group, fileMode, nfsFileType,
-                contentMD5, filePropertySemantics, contentLength, optionalbody, shareFileHttpHeaders, context))
+                contentMD5, filePropertySemantics, contentLength, structuredBodyType, structuredContentLength,
+                optionalbody, shareFileHttpHeaders, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
-     * Creates a new file or replaces a file. Note it only initializes the file with no content.
+     * Creates a new file or replaces a file. Can also initialize the file with content.
      *
      * @param shareName The name of the target share.
      * @param fileName The path of the target file.
@@ -2324,8 +2392,8 @@ public final class FilesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: �Archive� for file
+     * and �Directory� for directory. �None� can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
@@ -2343,6 +2411,10 @@ public final class FilesImpl {
      * Restore will apply changes without further modification.
      * @param contentLength Specifies the number of bytes being transmitted in the request body. When the x-ms-write
      * header is set to clear, the value of this header must be set to zero.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param optionalbody Initial data.
      * @param shareFileHttpHeaders Parameter group.
      * @param context The context to associate with this operation.
@@ -2357,8 +2429,9 @@ public final class FilesImpl {
         FilePermissionFormat filePermissionFormat, String filePermissionKey, String fileAttributes,
         String fileCreationTime, String fileLastWriteTime, String fileChangeTime, String leaseId, String owner,
         String group, String fileMode, NfsFileType nfsFileType, byte[] contentMD5,
-        FilePropertySemantics filePropertySemantics, Long contentLength, BinaryData optionalbody,
-        ShareFileHttpHeaders shareFileHttpHeaders, Context context) {
+        FilePropertySemantics filePropertySemantics, Long contentLength, String structuredBodyType,
+        Long structuredContentLength, BinaryData optionalbody, ShareFileHttpHeaders shareFileHttpHeaders,
+        Context context) {
         final String fileTypeConstant = "file";
         final String accept = "application/xml";
         String contentTypeInternal = null;
@@ -2399,12 +2472,13 @@ public final class FilesImpl {
                 contentLanguage, cacheControl, contentMd5Converted, contentDisposition, metadata, filePermission,
                 filePermissionFormat, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime,
                 fileChangeTime, leaseId, this.client.getFileRequestIntent(), owner, group, fileMode, nfsFileType,
-                contentMD5Converted, filePropertySemantics, contentLength, optionalbody, accept, context)
+                contentMD5Converted, filePropertySemantics, contentLength, structuredBodyType, structuredContentLength,
+                optionalbody, accept, context)
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
-     * Creates a new file or replaces a file. Note it only initializes the file with no content.
+     * Creates a new file or replaces a file. Can also initialize the file with content.
      *
      * @param shareName The name of the target share.
      * @param fileName The path of the target file.
@@ -2424,8 +2498,8 @@ public final class FilesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: �Archive� for file
+     * and �Directory� for directory. �None� can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
@@ -2443,6 +2517,10 @@ public final class FilesImpl {
      * Restore will apply changes without further modification.
      * @param contentLength Specifies the number of bytes being transmitted in the request body. When the x-ms-write
      * header is set to clear, the value of this header must be set to zero.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param optionalbody Initial data.
      * @param shareFileHttpHeaders Parameter group.
      * @param context The context to associate with this operation.
@@ -2457,8 +2535,9 @@ public final class FilesImpl {
         FilePermissionFormat filePermissionFormat, String filePermissionKey, String fileAttributes,
         String fileCreationTime, String fileLastWriteTime, String fileChangeTime, String leaseId, String owner,
         String group, String fileMode, NfsFileType nfsFileType, byte[] contentMD5,
-        FilePropertySemantics filePropertySemantics, Long contentLength, BinaryData optionalbody,
-        ShareFileHttpHeaders shareFileHttpHeaders, Context context) {
+        FilePropertySemantics filePropertySemantics, Long contentLength, String structuredBodyType,
+        Long structuredContentLength, BinaryData optionalbody, ShareFileHttpHeaders shareFileHttpHeaders,
+        Context context) {
         try {
             final String fileTypeConstant = "file";
             final String accept = "application/xml";
@@ -2499,14 +2578,15 @@ public final class FilesImpl {
                 contentLanguage, cacheControl, contentMd5Converted, contentDisposition, metadata, filePermission,
                 filePermissionFormat, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime,
                 fileChangeTime, leaseId, this.client.getFileRequestIntent(), owner, group, fileMode, nfsFileType,
-                contentMD5Converted, filePropertySemantics, contentLength, optionalbody, accept, context);
+                contentMD5Converted, filePropertySemantics, contentLength, structuredBodyType, structuredContentLength,
+                optionalbody, accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
     }
 
     /**
-     * Creates a new file or replaces a file. Note it only initializes the file with no content.
+     * Creates a new file or replaces a file. Can also initialize the file with content.
      *
      * @param shareName The name of the target share.
      * @param fileName The path of the target file.
@@ -2526,8 +2606,8 @@ public final class FilesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: �Archive� for file
+     * and �Directory� for directory. �None� can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
@@ -2545,6 +2625,10 @@ public final class FilesImpl {
      * Restore will apply changes without further modification.
      * @param contentLength Specifies the number of bytes being transmitted in the request body. When the x-ms-write
      * header is set to clear, the value of this header must be set to zero.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param optionalbody Initial data.
      * @param shareFileHttpHeaders Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2556,16 +2640,17 @@ public final class FilesImpl {
         Map<String, String> metadata, String filePermission, FilePermissionFormat filePermissionFormat,
         String filePermissionKey, String fileAttributes, String fileCreationTime, String fileLastWriteTime,
         String fileChangeTime, String leaseId, String owner, String group, String fileMode, NfsFileType nfsFileType,
-        byte[] contentMD5, FilePropertySemantics filePropertySemantics, Long contentLength, BinaryData optionalbody,
-        ShareFileHttpHeaders shareFileHttpHeaders) {
+        byte[] contentMD5, FilePropertySemantics filePropertySemantics, Long contentLength, String structuredBodyType,
+        Long structuredContentLength, BinaryData optionalbody, ShareFileHttpHeaders shareFileHttpHeaders) {
         createWithResponse(shareName, fileName, fileContentLength, timeout, metadata, filePermission,
             filePermissionFormat, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime,
             fileChangeTime, leaseId, owner, group, fileMode, nfsFileType, contentMD5, filePropertySemantics,
-            contentLength, optionalbody, shareFileHttpHeaders, Context.NONE);
+            contentLength, structuredBodyType, structuredContentLength, optionalbody, shareFileHttpHeaders,
+            Context.NONE);
     }
 
     /**
-     * Creates a new file or replaces a file. Note it only initializes the file with no content.
+     * Creates a new file or replaces a file. Can also initialize the file with content.
      *
      * @param shareName The name of the target share.
      * @param fileName The path of the target file.
@@ -2585,8 +2670,8 @@ public final class FilesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: �Archive� for file
+     * and �Directory� for directory. �None� can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
@@ -2604,6 +2689,10 @@ public final class FilesImpl {
      * Restore will apply changes without further modification.
      * @param contentLength Specifies the number of bytes being transmitted in the request body. When the x-ms-write
      * header is set to clear, the value of this header must be set to zero.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param optionalbody Initial data.
      * @param shareFileHttpHeaders Parameter group.
      * @param context The context to associate with this operation.
@@ -2617,8 +2706,9 @@ public final class FilesImpl {
         Integer timeout, Map<String, String> metadata, String filePermission, FilePermissionFormat filePermissionFormat,
         String filePermissionKey, String fileAttributes, String fileCreationTime, String fileLastWriteTime,
         String fileChangeTime, String leaseId, String owner, String group, String fileMode, NfsFileType nfsFileType,
-        byte[] contentMD5, FilePropertySemantics filePropertySemantics, Long contentLength, BinaryData optionalbody,
-        ShareFileHttpHeaders shareFileHttpHeaders, Context context) {
+        byte[] contentMD5, FilePropertySemantics filePropertySemantics, Long contentLength, String structuredBodyType,
+        Long structuredContentLength, BinaryData optionalbody, ShareFileHttpHeaders shareFileHttpHeaders,
+        Context context) {
         try {
             final String fileTypeConstant = "file";
             final String accept = "application/xml";
@@ -2659,8 +2749,8 @@ public final class FilesImpl {
                 fileTypeConstant, contentType, contentEncoding, contentLanguage, cacheControl, contentMd5Converted,
                 contentDisposition, metadata, filePermission, filePermissionFormat, filePermissionKey, fileAttributes,
                 fileCreationTime, fileLastWriteTime, fileChangeTime, leaseId, this.client.getFileRequestIntent(), owner,
-                group, fileMode, nfsFileType, contentMD5Converted, filePropertySemantics, contentLength, optionalbody,
-                accept, context);
+                group, fileMode, nfsFileType, contentMD5Converted, filePropertySemantics, contentLength,
+                structuredBodyType, structuredContentLength, optionalbody, accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
@@ -3413,8 +3503,8 @@ public final class FilesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: �Archive� for file
+     * and �Directory� for directory. �None� can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
@@ -3462,8 +3552,8 @@ public final class FilesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: �Archive� for file
+     * and �Directory� for directory. �None� can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
@@ -3547,8 +3637,8 @@ public final class FilesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: �Archive� for file
+     * and �Directory� for directory. �None� can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
@@ -3595,8 +3685,8 @@ public final class FilesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: �Archive� for file
+     * and �Directory� for directory. �None� can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
@@ -3644,8 +3734,8 @@ public final class FilesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: �Archive� for file
+     * and �Directory� for directory. �None� can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
@@ -3694,8 +3784,8 @@ public final class FilesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: �Archive� for file
+     * and �Directory� for directory. �None� can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
@@ -3780,8 +3870,8 @@ public final class FilesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: �Archive� for file
+     * and �Directory� for directory. �None� can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
@@ -3868,8 +3958,8 @@ public final class FilesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: �Archive� for file
+     * and �Directory� for directory. �None� can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
@@ -3913,8 +4003,8 @@ public final class FilesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: �Archive� for file
+     * and �Directory� for directory. �None� can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
@@ -7969,7 +8059,7 @@ public final class FilesImpl {
      *
      * @param shareName The name of the target share.
      * @param fileName The path of the target file.
-     * @param handleId Specifies handle ID opened on the file or directory to be closed. Asterisk (‘*’) is a wildcard
+     * @param handleId Specifies handle ID opened on the file or directory to be closed. Asterisk (�*�) is a wildcard
      * that specifies all handles.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
@@ -7999,7 +8089,7 @@ public final class FilesImpl {
      *
      * @param shareName The name of the target share.
      * @param fileName The path of the target file.
-     * @param handleId Specifies handle ID opened on the file or directory to be closed. Asterisk (‘*’) is a wildcard
+     * @param handleId Specifies handle ID opened on the file or directory to be closed. Asterisk (�*�) is a wildcard
      * that specifies all handles.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
@@ -8033,7 +8123,7 @@ public final class FilesImpl {
      *
      * @param shareName The name of the target share.
      * @param fileName The path of the target file.
-     * @param handleId Specifies handle ID opened on the file or directory to be closed. Asterisk (‘*’) is a wildcard
+     * @param handleId Specifies handle ID opened on the file or directory to be closed. Asterisk (�*�) is a wildcard
      * that specifies all handles.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
@@ -8062,7 +8152,7 @@ public final class FilesImpl {
      *
      * @param shareName The name of the target share.
      * @param fileName The path of the target file.
-     * @param handleId Specifies handle ID opened on the file or directory to be closed. Asterisk (‘*’) is a wildcard
+     * @param handleId Specifies handle ID opened on the file or directory to be closed. Asterisk (�*�) is a wildcard
      * that specifies all handles.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
@@ -8092,7 +8182,7 @@ public final class FilesImpl {
      *
      * @param shareName The name of the target share.
      * @param fileName The path of the target file.
-     * @param handleId Specifies handle ID opened on the file or directory to be closed. Asterisk (‘*’) is a wildcard
+     * @param handleId Specifies handle ID opened on the file or directory to be closed. Asterisk (�*�) is a wildcard
      * that specifies all handles.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
@@ -8122,7 +8212,7 @@ public final class FilesImpl {
      *
      * @param shareName The name of the target share.
      * @param fileName The path of the target file.
-     * @param handleId Specifies handle ID opened on the file or directory to be closed. Asterisk (‘*’) is a wildcard
+     * @param handleId Specifies handle ID opened on the file or directory to be closed. Asterisk (�*�) is a wildcard
      * that specifies all handles.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
@@ -8156,7 +8246,7 @@ public final class FilesImpl {
      *
      * @param shareName The name of the target share.
      * @param fileName The path of the target file.
-     * @param handleId Specifies handle ID opened on the file or directory to be closed. Asterisk (‘*’) is a wildcard
+     * @param handleId Specifies handle ID opened on the file or directory to be closed. Asterisk (�*�) is a wildcard
      * that specifies all handles.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
@@ -8192,7 +8282,7 @@ public final class FilesImpl {
      *
      * @param shareName The name of the target share.
      * @param fileName The path of the target file.
-     * @param handleId Specifies handle ID opened on the file or directory to be closed. Asterisk (‘*’) is a wildcard
+     * @param handleId Specifies handle ID opened on the file or directory to be closed. Asterisk (�*�) is a wildcard
      * that specifies all handles.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
@@ -8218,7 +8308,7 @@ public final class FilesImpl {
      *
      * @param shareName The name of the target share.
      * @param fileName The path of the target file.
-     * @param handleId Specifies handle ID opened on the file or directory to be closed. Asterisk (‘*’) is a wildcard
+     * @param handleId Specifies handle ID opened on the file or directory to be closed. Asterisk (�*�) is a wildcard
      * that specifies all handles.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
@@ -8261,7 +8351,7 @@ public final class FilesImpl {
      * @param replaceIfExists Optional. A boolean value for if the destination file already exists, whether this request
      * will overwrite the file or not. If true, the rename will succeed and will overwrite the destination file. If not
      * provided or if false and the destination file does exist, the request will not overwrite the destination file. If
-     * provided and the destination file doesn’t exist, the rename will succeed. Note: This value does not override the
+     * provided and the destination file doesn�t exist, the rename will succeed. Note: This value does not override the
      * x-ms-file-copy-ignore-read-only header value.
      * @param ignoreReadOnly Optional. A boolean value that specifies whether the ReadOnly attribute on a preexisting
      * destination file should be respected. If true, the rename will succeed, otherwise, a previous file at the
@@ -8312,7 +8402,7 @@ public final class FilesImpl {
      * @param replaceIfExists Optional. A boolean value for if the destination file already exists, whether this request
      * will overwrite the file or not. If true, the rename will succeed and will overwrite the destination file. If not
      * provided or if false and the destination file does exist, the request will not overwrite the destination file. If
-     * provided and the destination file doesn’t exist, the rename will succeed. Note: This value does not override the
+     * provided and the destination file doesn�t exist, the rename will succeed. Note: This value does not override the
      * x-ms-file-copy-ignore-read-only header value.
      * @param ignoreReadOnly Optional. A boolean value that specifies whether the ReadOnly attribute on a preexisting
      * destination file should be respected. If true, the rename will succeed, otherwise, a previous file at the
@@ -8404,7 +8494,7 @@ public final class FilesImpl {
      * @param replaceIfExists Optional. A boolean value for if the destination file already exists, whether this request
      * will overwrite the file or not. If true, the rename will succeed and will overwrite the destination file. If not
      * provided or if false and the destination file does exist, the request will not overwrite the destination file. If
-     * provided and the destination file doesn’t exist, the rename will succeed. Note: This value does not override the
+     * provided and the destination file doesn�t exist, the rename will succeed. Note: This value does not override the
      * x-ms-file-copy-ignore-read-only header value.
      * @param ignoreReadOnly Optional. A boolean value that specifies whether the ReadOnly attribute on a preexisting
      * destination file should be respected. If true, the rename will succeed, otherwise, a previous file at the
@@ -8456,7 +8546,7 @@ public final class FilesImpl {
      * @param replaceIfExists Optional. A boolean value for if the destination file already exists, whether this request
      * will overwrite the file or not. If true, the rename will succeed and will overwrite the destination file. If not
      * provided or if false and the destination file does exist, the request will not overwrite the destination file. If
-     * provided and the destination file doesn’t exist, the rename will succeed. Note: This value does not override the
+     * provided and the destination file doesn�t exist, the rename will succeed. Note: This value does not override the
      * x-ms-file-copy-ignore-read-only header value.
      * @param ignoreReadOnly Optional. A boolean value that specifies whether the ReadOnly attribute on a preexisting
      * destination file should be respected. If true, the rename will succeed, otherwise, a previous file at the
@@ -8509,7 +8599,7 @@ public final class FilesImpl {
      * @param replaceIfExists Optional. A boolean value for if the destination file already exists, whether this request
      * will overwrite the file or not. If true, the rename will succeed and will overwrite the destination file. If not
      * provided or if false and the destination file does exist, the request will not overwrite the destination file. If
-     * provided and the destination file doesn’t exist, the rename will succeed. Note: This value does not override the
+     * provided and the destination file doesn�t exist, the rename will succeed. Note: This value does not override the
      * x-ms-file-copy-ignore-read-only header value.
      * @param ignoreReadOnly Optional. A boolean value that specifies whether the ReadOnly attribute on a preexisting
      * destination file should be respected. If true, the rename will succeed, otherwise, a previous file at the
@@ -8560,7 +8650,7 @@ public final class FilesImpl {
      * @param replaceIfExists Optional. A boolean value for if the destination file already exists, whether this request
      * will overwrite the file or not. If true, the rename will succeed and will overwrite the destination file. If not
      * provided or if false and the destination file does exist, the request will not overwrite the destination file. If
-     * provided and the destination file doesn’t exist, the rename will succeed. Note: This value does not override the
+     * provided and the destination file doesn�t exist, the rename will succeed. Note: This value does not override the
      * x-ms-file-copy-ignore-read-only header value.
      * @param ignoreReadOnly Optional. A boolean value that specifies whether the ReadOnly attribute on a preexisting
      * destination file should be respected. If true, the rename will succeed, otherwise, a previous file at the
@@ -8652,7 +8742,7 @@ public final class FilesImpl {
      * @param replaceIfExists Optional. A boolean value for if the destination file already exists, whether this request
      * will overwrite the file or not. If true, the rename will succeed and will overwrite the destination file. If not
      * provided or if false and the destination file does exist, the request will not overwrite the destination file. If
-     * provided and the destination file doesn’t exist, the rename will succeed. Note: This value does not override the
+     * provided and the destination file doesn�t exist, the rename will succeed. Note: This value does not override the
      * x-ms-file-copy-ignore-read-only header value.
      * @param ignoreReadOnly Optional. A boolean value that specifies whether the ReadOnly attribute on a preexisting
      * destination file should be respected. If true, the rename will succeed, otherwise, a previous file at the
@@ -8746,7 +8836,7 @@ public final class FilesImpl {
      * @param replaceIfExists Optional. A boolean value for if the destination file already exists, whether this request
      * will overwrite the file or not. If true, the rename will succeed and will overwrite the destination file. If not
      * provided or if false and the destination file does exist, the request will not overwrite the destination file. If
-     * provided and the destination file doesn’t exist, the rename will succeed. Note: This value does not override the
+     * provided and the destination file doesn�t exist, the rename will succeed. Note: This value does not override the
      * x-ms-file-copy-ignore-read-only header value.
      * @param ignoreReadOnly Optional. A boolean value that specifies whether the ReadOnly attribute on a preexisting
      * destination file should be respected. If true, the rename will succeed, otherwise, a previous file at the
@@ -8794,7 +8884,7 @@ public final class FilesImpl {
      * @param replaceIfExists Optional. A boolean value for if the destination file already exists, whether this request
      * will overwrite the file or not. If true, the rename will succeed and will overwrite the destination file. If not
      * provided or if false and the destination file does exist, the request will not overwrite the destination file. If
-     * provided and the destination file doesn’t exist, the rename will succeed. Note: This value does not override the
+     * provided and the destination file doesn�t exist, the rename will succeed. Note: This value does not override the
      * x-ms-file-copy-ignore-read-only header value.
      * @param ignoreReadOnly Optional. A boolean value that specifies whether the ReadOnly attribute on a preexisting
      * destination file should be respected. If true, the rename will succeed, otherwise, a previous file at the
