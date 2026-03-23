@@ -696,6 +696,31 @@ Always ensure that the chosen API version is fully supported and operational for
 
 ## Troubleshooting
 
+### Enable client logging
+
+You can set the `AZURE_LOG_LEVEL` environment variable to view logging statements made in the client library. For
+example, setting `AZURE_LOG_LEVEL=2` would show all informational, warning, and error log messages. The log levels can
+be found here: [log levels][logLevels].
+
+To log full HTTP request and response bodies (including headers), set:
+
+```bash
+export AZURE_LOG_LEVEL=verbose
+export AZURE_HTTP_LOG_DETAIL_LEVEL=body_and_headers
+```
+
+### Default HTTP Client
+
+All client libraries by default use the Netty HTTP client. Configuring or changing the HTTP client is detailed in the
+[HTTP clients wiki](https://learn.microsoft.com/azure/developer/java/sdk/http-client-pipeline#http-clients).
+
+### Default SSL library
+
+All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL
+operations. The Boring SSL library is an uber jar containing native libraries for Linux / macOS / Windows, and provides
+better performance compared to the default SSL implementation within the JDK. For more information, including how to
+reduce the dependency size, refer to the [performance tuning][performance_tuning] section of the wiki.
+
 ## Next steps
 
 ## Contributing
@@ -717,3 +742,5 @@ For details on contributing to this repository, see the [contributing guide](htt
 [openai_java_sdk]: https://github.com/openai/openai-java/
 [openai_responses_api_docs]: https://platform.openai.com/docs/api-reference/responses
 [openai_conversations_api_docs]: https://platform.openai.com/docs/api-reference/conversations
+[logLevels]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/util/logging/LogLevel.java
+[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning

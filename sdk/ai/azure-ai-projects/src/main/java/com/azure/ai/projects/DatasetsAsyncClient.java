@@ -28,10 +28,13 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClientBuilder;
+import com.azure.storage.blob.BlobContainerAsyncClient;
+import com.azure.storage.blob.BlobContainerClientBuilder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -192,14 +195,35 @@ public final class DatasetsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FileDatasetVersion> createDatasetWithFile(String name, String version, Path filePath) {
+        return createDatasetWithFile(name, version, filePath, null);
+    }
+
+    /**
+     * Creates a dataset from a single file. Uploads the file to blob storage and registers the dataset.
+     *
+     * @param name The name of the resource.
+     * @param version The specific version id of the DatasetVersion to create or replace.
+     * @param filePath The path to the file to upload.
+     * @param connectionName The name of an Azure Storage Account connection to use for uploading.
+     * If null, the default Azure Storage Account connection will be used.
+     * @return A Mono that completes with a FileDatasetVersion representing the created dataset.
+     * @throws IllegalArgumentException If the provided path is not a file
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<FileDatasetVersion> createDatasetWithFile(String name, String version, Path filePath,
+        String connectionName) {
         if (!Files.isRegularFile(filePath)) {
             return Mono.error(new IllegalArgumentException("The provided path is not a file: " + filePath));
         }
         PendingUploadRequest request = new PendingUploadRequest();
+        if (connectionName != null) {
+            request.setConnectionName(connectionName);
+        }
         return this.pendingUpload(name, version, request).flatMap(pendingUploadResponse -> {
-            String blobUri = pendingUploadResponse.getBlobReference().getBlobUrl();
             String sasUri = pendingUploadResponse.getBlobReference().getCredential().getSasUrl();
-            BlobAsyncClient blobClient = new BlobClientBuilder().endpoint(sasUri).blobName(name).buildAsyncClient();
+            BlobAsyncClient blobClient = new BlobClientBuilder().endpoint(sasUri)
+                .blobName(filePath.getFileName().toString())
+                .buildAsyncClient();
             return blobClient.upload(BinaryData.fromFile(filePath), true).thenReturn(blobClient.getBlobUrl());
         }).flatMap(blobUrl -> {
             RequestOptions requestOptions = new RequestOptions();
@@ -222,33 +246,48 @@ public final class DatasetsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FolderDatasetVersion> createDatasetWithFolder(String name, String version, Path folderPath) {
+        return createDatasetWithFolder(name, version, folderPath, null);
+    }
+
+    /**
+     * Creates a dataset from a folder. Uploads all files in the folder to blob storage and registers the dataset.
+     *
+     * @param name The name of the resource.
+     * @param version The specific version id of the DatasetVersion to create or replace.
+     * @param folderPath The path to the folder containing files to upload.
+     * @param connectionName The name of an Azure Storage Account connection to use for uploading.
+     * If null, the default Azure Storage Account connection will be used.
+     * @return A Mono that completes with a FolderDatasetVersion representing the created dataset.
+     * @throws IllegalArgumentException If the provided path is not a directory.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<FolderDatasetVersion> createDatasetWithFolder(String name, String version, Path folderPath,
+        String connectionName) {
         if (!Files.isDirectory(folderPath)) {
             return Mono.error(new IllegalArgumentException("The provided path is not a folder: " + folderPath));
         }
-        // Request a pending upload for the folder
         PendingUploadRequest request = new PendingUploadRequest();
+        if (connectionName != null) {
+            request.setConnectionName(connectionName);
+        }
         return this.pendingUpload(name, version, request).flatMap(pendingUploadResponse -> {
-            String blobContainerUri = pendingUploadResponse.getBlobReference().getBlobUrl();
+            String containerUrl = pendingUploadResponse.getBlobReference().getBlobUrl();
             String sasUri = pendingUploadResponse.getBlobReference().getCredential().getSasUrl();
-            String containerUrl = blobContainerUri.substring(0, blobContainerUri.lastIndexOf('/'));
-            // Find all files in the directory
+            BlobContainerAsyncClient containerClient
+                = new BlobContainerClientBuilder().endpoint(sasUri).buildAsyncClient();
             try {
-                List<Path> files = Files.walk(folderPath).filter(Files::isRegularFile).collect(Collectors.toList());
-                // Upload each file in the directory one after another
+                List<Path> files;
+                try (Stream<Path> fileStream = Files.walk(folderPath)) {
+                    files = fileStream.filter(Files::isRegularFile).collect(Collectors.toList());
+                }
                 return Flux.fromIterable(files).flatMap(filePath -> {
-                    // Calculate relative path from the base folder
                     String relativePath = folderPath.relativize(filePath).toString().replace('\\', '/');
-                    // Create blob client for each file
-                    BlobAsyncClient blobClient
-                        = new BlobClientBuilder().endpoint(sasUri).blobName(relativePath).buildAsyncClient();
-                    // Upload the file
-                    return blobClient.upload(BinaryData.fromFile(filePath), true);
+                    return containerClient.getBlobAsyncClient(relativePath).upload(BinaryData.fromFile(filePath), true);
                 }).then(Mono.just(containerUrl));
             } catch (Exception e) {
                 return Mono.error(new RuntimeException("Error walking through folder path", e));
             }
         }).flatMap(containerUrl -> {
-            // Create a FolderDatasetVersion with the container URL
             RequestOptions requestOptions = new RequestOptions();
             FolderDatasetVersion folderDataset = new FolderDatasetVersion().setDataUri(containerUrl);
             return this

@@ -1,17 +1,208 @@
 # Release History
 
-## 2.58.0-beta.2 (2026-03-23)
+## 2.58.0 (2026-03-20)
 
 ### Breaking Changes
 
-- Moved `ContainerServiceManager.serviceClient().getOpenShiftManagedClusters()` to `ContainerServiceManager.openShiftClient().getOpenShiftManagedClusters()`.
-- Moved `ContainerServiceManager.serviceClient().getContainerServices()` to `ContainerServiceManager.orchestratorClient().getContainerServices()`.
+#### `models.OperationListResult` was removed
 
-### Other Changes
+#### `models.ManagedClusterListResult` was removed
 
-#### Dependency Updates
+#### `models.AgentPoolListResult` was removed
 
-- Updated `api-version` to `2026-01-01`.
+#### `models.OutboundEnvironmentEndpointCollection` was removed
+
+#### `models.SnapshotListResult` was removed
+
+#### `models.MeshUpgradeProfileList` was removed
+
+#### `models.MeshRevisionProfileList` was removed
+
+#### `models.MachineListResult` was removed
+
+#### `models.TrustedAccessRoleListResult` was removed
+
+#### `models.ManagedNamespaceListResult` was removed
+
+#### `models.MaintenanceConfigurationListResult` was removed
+
+#### `models.TrustedAccessRoleBindingListResult` was removed
+
+#### `models.MeshRevisionProfileProperties` was modified
+
+* `MeshRevisionProfileProperties()` was changed to private access
+* `withMeshRevisions(java.util.List)` was removed
+
+#### `models.ManagedClusterPoolUpgradeProfileUpgradesItem` was modified
+
+* `ManagedClusterPoolUpgradeProfileUpgradesItem()` was changed to private access
+* `withIsPreview(java.lang.Boolean)` was removed
+* `withKubernetesVersion(java.lang.String)` was removed
+
+#### `models.MachineNetworkProperties` was modified
+
+* `MachineNetworkProperties()` was changed to private access
+
+#### `models.ManagedClustersGetCommandResultHeaders` was modified
+
+* `withLocation(java.lang.String)` was removed
+
+#### `models.ManagedClusterPodIdentityProvisioningErrorBody` was modified
+
+* `ManagedClusterPodIdentityProvisioningErrorBody()` was changed to private access
+* `withDetails(java.util.List)` was removed
+* `withCode(java.lang.String)` was removed
+* `withMessage(java.lang.String)` was removed
+* `withTarget(java.lang.String)` was removed
+
+#### `models.AgentPoolUpgradeProfilePropertiesUpgradesItem` was modified
+
+* `AgentPoolUpgradeProfilePropertiesUpgradesItem()` was changed to private access
+* `withIsPreview(java.lang.Boolean)` was removed
+* `withKubernetesVersion(java.lang.String)` was removed
+
+#### `models.ManagedClusterPodIdentityProvisioningError` was modified
+
+* `ManagedClusterPodIdentityProvisioningError()` was changed to private access
+* `withError(models.ManagedClusterPodIdentityProvisioningErrorBody)` was removed
+
+#### `models.MachineIpAddress` was modified
+
+* `MachineIpAddress()` was changed to private access
+
+#### `models.AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem` was modified
+
+* `AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem()` was changed to private access
+* `withIsPreview(java.lang.Boolean)` was removed
+* `withDefaultProperty(java.lang.Boolean)` was removed
+* `withKubernetesVersion(java.lang.String)` was removed
+
+#### `models.KubernetesVersionCapabilities` was modified
+
+* `KubernetesVersionCapabilities()` was changed to private access
+* `withSupportPlan(java.util.List)` was removed
+
+#### `models.CompatibleVersions` was modified
+
+* `CompatibleVersions()` was changed to private access
+* `withVersions(java.util.List)` was removed
+* `withName(java.lang.String)` was removed
+
+#### `models.ManagedClusterPodIdentityProvisioningInfo` was modified
+
+* `ManagedClusterPodIdentityProvisioningInfo()` was changed to private access
+* `withError(models.ManagedClusterPodIdentityProvisioningError)` was removed
+
+#### `models.MeshRevision` was modified
+
+* `models.MeshRevision withRevision(java.lang.String)` -> `models.MeshRevision withRevision(java.lang.String)`
+* `models.MeshRevision withUpgrades(java.util.List)` -> `models.MeshRevision withUpgrades(java.util.List)`
+* `models.MeshRevision withCompatibleWith(java.util.List)` -> `models.MeshRevision withCompatibleWith(java.util.List)`
+
+#### `models.KubernetesVersion` was modified
+
+* `KubernetesVersion()` was changed to private access
+* `withPatchVersions(java.util.Map)` was removed
+* `withIsPreview(java.lang.Boolean)` was removed
+* `withVersion(java.lang.String)` was removed
+* `withIsDefault(java.lang.Boolean)` was removed
+* `withCapabilities(models.KubernetesVersionCapabilities)` was removed
+
+#### `models.MeshUpgradeProfileProperties` was modified
+
+* `MeshUpgradeProfileProperties()` was changed to private access
+* `withCompatibleWith(java.util.List)` was removed
+* `withRevision(java.lang.String)` was removed
+* `withUpgrades(java.util.List)` was removed
+
+#### `models.EndpointDependency` was modified
+
+* `EndpointDependency()` was changed to private access
+* `withEndpointDetails(java.util.List)` was removed
+* `withDomainName(java.lang.String)` was removed
+
+#### `models.KubernetesPatchVersion` was modified
+
+* `KubernetesPatchVersion()` was changed to private access
+* `withUpgrades(java.util.List)` was removed
+
+#### `models.ManagedClusterPoolUpgradeProfile` was modified
+
+* `ManagedClusterPoolUpgradeProfile()` was changed to private access
+* `withUpgrades(java.util.List)` was removed
+* `withName(java.lang.String)` was removed
+* `withOsType(models.OSType)` was removed
+* `withKubernetesVersion(java.lang.String)` was removed
+
+#### `models.ManagedClusterAddonProfileIdentity` was modified
+
+* `ManagedClusterAddonProfileIdentity()` was changed to private access
+* `withClientId(java.lang.String)` was removed
+* `withObjectId(java.lang.String)` was removed
+* `withResourceId(java.lang.String)` was removed
+
+#### `models.TrustedAccessRoleRule` was modified
+
+* `TrustedAccessRoleRule()` was changed to private access
+
+#### `models.MachineProperties` was modified
+
+* `MachineProperties()` was changed to private access
+
+#### `models.CredentialResult` was modified
+
+* `CredentialResult()` was changed to private access
+
+#### `models.EndpointDetail` was modified
+
+* `EndpointDetail()` was changed to private access
+* `withIpAddress(java.lang.String)` was removed
+* `withPort(java.lang.Integer)` was removed
+* `withDescription(java.lang.String)` was removed
+* `withProtocol(java.lang.String)` was removed
+
+### Features Added
+
+* `models.AccelerationMode` was added
+
+* `models.AdvancedNetworkingSecurityTransitEncryption` was added
+
+* `models.AdvancedNetworkingPerformance` was added
+
+* `models.ProxyRedirectionMechanism` was added
+
+* `models.TransitEncryptionType` was added
+
+#### `models.AdvancedNetworkingSecurity` was modified
+
+* `transitEncryption()` was added
+* `withTransitEncryption(models.AdvancedNetworkingSecurityTransitEncryption)` was added
+
+#### `models.ManagedClusterHttpProxyConfig` was modified
+
+* `enabled()` was added
+* `withEnabled(java.lang.Boolean)` was added
+
+#### `ContainerServiceManager` was modified
+
+* `orchestratorClient()` was added
+* `openShiftClient()` was added
+
+#### `models.AdvancedNetworking` was modified
+
+* `withPerformance(models.AdvancedNetworkingPerformance)` was added
+* `performance()` was added
+
+#### `models.IstioComponents` was modified
+
+* `withProxyRedirectionMechanism(models.ProxyRedirectionMechanism)` was added
+* `proxyRedirectionMechanism()` was added
+
+#### `models.MeshUpgradeProfileProperties` was modified
+
+* `compatibleWith()` was added
+* `upgrades()` was added
+* `revision()` was added
 
 ## 2.57.1 (2026-01-29)
 
