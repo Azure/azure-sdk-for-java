@@ -23,8 +23,27 @@
 
 ## Maps
 
-- [List](#maps_list)
 - [ListOperations](#maps_listoperations)
+
+## OperationResult
+
+- [Get](#operationresult_get)
+
+## OperationStatus
+
+- [Get](#operationstatus_get)
+
+## PrivateEndpointConnections
+
+- [Create](#privateendpointconnections_create)
+- [Delete](#privateendpointconnections_delete)
+- [Get](#privateendpointconnections_get)
+- [ListByAccount](#privateendpointconnections_listbyaccount)
+
+## PrivateLinkResources
+
+- [Get](#privatelinkresources_get)
+- [ListByAccount](#privatelinkresources_listbyaccount)
 ### Accounts_CreateOrUpdate
 
 ```java
@@ -37,6 +56,7 @@ import com.azure.resourcemanager.maps.models.Encryption;
 import com.azure.resourcemanager.maps.models.IdentityType;
 import com.azure.resourcemanager.maps.models.Kind;
 import com.azure.resourcemanager.maps.models.LinkedResource;
+import com.azure.resourcemanager.maps.models.LocationsItem;
 import com.azure.resourcemanager.maps.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.maps.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.maps.models.Name;
@@ -51,8 +71,7 @@ import java.util.Map;
  */
 public final class AccountsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/CreateAccountGen2.json
+     * x-ms-original-file: 2025-10-01-preview/CreateAccountGen2.json
      */
     /**
      * Sample code: Create Gen2 Account.
@@ -66,16 +85,16 @@ public final class AccountsCreateOrUpdateSamples {
             .withExistingResourceGroup("myResourceGroup")
             .withSku(new Sku().withName(Name.G2))
             .withTags(mapOf("test", "true"))
-            .withKind(Kind.GEN2)
             .withProperties(new MapsAccountProperties().withDisableLocalAuth(true)
                 .withCors(new CorsRules().withCorsRules(Arrays.asList(new CorsRule()
-                    .withAllowedOrigins(Arrays.asList("http://www.contoso.com", "http://www.fabrikam.com"))))))
+                    .withAllowedOrigins(Arrays.asList("http://www.contoso.com", "http://www.fabrikam.com")))))
+                .withLocations(Arrays.asList(new LocationsItem().withLocationName("northeurope"))))
+            .withKind(Kind.GEN2)
             .create();
     }
 
     /*
-     * x-ms-original-file:
-     * specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/CreateAccountEncryption.json
+     * x-ms-original-file: 2025-10-01-preview/CreateAccountEncryption.json
      */
     /**
      * Sample code: Create Account with Encryption.
@@ -88,11 +107,6 @@ public final class AccountsCreateOrUpdateSamples {
             .withRegion("eastus")
             .withExistingResourceGroup("myResourceGroup")
             .withSku(new Sku().withName(Name.G2))
-            .withKind(Kind.GEN2)
-            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                .withUserAssignedIdentities(mapOf(
-                    "/subscriptions/21a9967a-e8a9-4656-a70b-96ff1c4d05a0/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identityName",
-                    new UserAssignedIdentity())))
             .withProperties(new MapsAccountProperties()
                 .withEncryption(new Encryption().withCustomerManagedKeyEncryption(new CustomerManagedKeyEncryption()
                     .withKeyEncryptionKeyIdentity(new CustomerManagedKeyEncryptionKeyIdentity()
@@ -100,35 +114,16 @@ public final class AccountsCreateOrUpdateSamples {
                         .withUserAssignedIdentityResourceId(
                             "/subscriptions/21a9967a-e8a9-4656-a70b-96ff1c4d05a0/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identityName"))
                     .withKeyEncryptionKeyUrl("fakeTokenPlaceholder"))))
+            .withKind(Kind.GEN2)
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/21a9967a-e8a9-4656-a70b-96ff1c4d05a0/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identityName",
+                    new UserAssignedIdentity())))
             .create();
     }
 
     /*
-     * x-ms-original-file:
-     * specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/CreateAccount.json
-     */
-    /**
-     * Sample code: Create Gen1 Account.
-     * 
-     * @param manager Entry point to AzureMapsManager.
-     */
-    public static void createGen1Account(com.azure.resourcemanager.maps.AzureMapsManager manager) {
-        manager.accounts()
-            .define("myMapsAccount")
-            .withRegion("eastus")
-            .withExistingResourceGroup("myResourceGroup")
-            .withSku(new Sku().withName(Name.S0))
-            .withTags(mapOf("test", "true"))
-            .withKind(Kind.GEN1)
-            .withProperties(new MapsAccountProperties().withDisableLocalAuth(false)
-                .withCors(new CorsRules().withCorsRules(Arrays.asList(new CorsRule()
-                    .withAllowedOrigins(Arrays.asList("http://www.contoso.com", "http://www.fabrikam.com"))))))
-            .create();
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/CreateAccountManagedIdentity.json
+     * x-ms-original-file: 2025-10-01-preview/CreateAccountManagedIdentity.json
      */
     /**
      * Sample code: Create Account with Managed Identities.
@@ -142,12 +137,6 @@ public final class AccountsCreateOrUpdateSamples {
             .withExistingResourceGroup("myResourceGroup")
             .withSku(new Sku().withName(Name.G2))
             .withTags(mapOf("test", "true"))
-            .withKind(Kind.GEN2)
-            .withIdentity(new ManagedServiceIdentity()
-                .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                .withUserAssignedIdentities(mapOf(
-                    "/subscriptions/21a9967a-e8a9-4656-a70b-96ff1c4d05a0/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identityName",
-                    new UserAssignedIdentity())))
             .withProperties(new MapsAccountProperties().withDisableLocalAuth(false)
                 .withLinkedResources(Arrays.asList(new LinkedResource().withUniqueName("myBatchStorageAccount")
                     .withId(
@@ -155,6 +144,12 @@ public final class AccountsCreateOrUpdateSamples {
                     new LinkedResource().withUniqueName("myBlobDataSource")
                         .withId(
                             "/subscriptions/21a9967a-e8a9-4656-a70b-96ff1c4d05a0/resourceGroups/myResourceGroup/providers/Microsoft.Storage/accounts/mystorageacc"))))
+            .withKind(Kind.GEN2)
+            .withIdentity(new ManagedServiceIdentity()
+                .withType(ManagedServiceIdentityType.fromString("SystemAssigned, UserAssigned"))
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/21a9967a-e8a9-4656-a70b-96ff1c4d05a0/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identityName",
+                    new UserAssignedIdentity())))
             .create();
     }
 
@@ -180,8 +175,7 @@ public final class AccountsCreateOrUpdateSamples {
  */
 public final class AccountsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/DeleteAccount.json
+     * x-ms-original-file: 2025-10-01-preview/DeleteAccount.json
      */
     /**
      * Sample code: DeleteAccount.
@@ -203,7 +197,7 @@ public final class AccountsDeleteSamples {
  */
 public final class AccountsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/GetAccount.json
+     * x-ms-original-file: 2025-10-01-preview/GetAccount.json
      */
     /**
      * Sample code: GetAccount.
@@ -225,8 +219,7 @@ public final class AccountsGetByResourceGroupSamples {
  */
 public final class AccountsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/ListAccountsBySubscription.json
+     * x-ms-original-file: 2025-10-01-preview/ListAccountsBySubscription.json
      */
     /**
      * Sample code: List Accounts By Subscription.
@@ -247,8 +240,7 @@ public final class AccountsListSamples {
  */
 public final class AccountsListByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/ListAccountsByResourceGroup.json
+     * x-ms-original-file: 2025-10-01-preview/ListAccountsByResourceGroup.json
      */
     /**
      * Sample code: List Accounts By Resource Group.
@@ -269,7 +261,7 @@ public final class AccountsListByResourceGroupSamples {
  */
 public final class AccountsListKeysSamples {
     /*
-     * x-ms-original-file: specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/ListKeys.json
+     * x-ms-original-file: 2025-10-01-preview/ListKeys.json
      */
     /**
      * Sample code: List Keys.
@@ -294,8 +286,7 @@ import java.util.Arrays;
  */
 public final class AccountsListSasSamples {
     /*
-     * x-ms-original-file:
-     * specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/AccountListSAS.json
+     * x-ms-original-file: 2025-10-01-preview/AccountListSAS.json
      */
     /**
      * Sample code: List Account Sas.
@@ -327,8 +318,7 @@ import com.azure.resourcemanager.maps.models.MapsKeySpecification;
  */
 public final class AccountsRegenerateKeysSamples {
     /*
-     * x-ms-original-file:
-     * specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/RegenerateKey.json
+     * x-ms-original-file: 2025-10-01-preview/RegenerateKey.json
      */
     /**
      * Sample code: Regenerate Key.
@@ -367,8 +357,7 @@ import java.util.Map;
  */
 public final class AccountsUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/UpdateAccountGen2.json
+     * x-ms-original-file: 2025-10-01-preview/UpdateAccountGen2.json
      */
     /**
      * Sample code: Update to Gen2 Account.
@@ -383,8 +372,7 @@ public final class AccountsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/UpdateAccount.json
+     * x-ms-original-file: 2025-10-01-preview/UpdateAccount.json
      */
     /**
      * Sample code: Update Account Tags.
@@ -399,8 +387,7 @@ public final class AccountsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/UpdateAccountManagedIdentity.json
+     * x-ms-original-file: 2025-10-01-preview/UpdateAccountManagedIdentity.json
      */
     /**
      * Sample code: Update Account Managed Identities.
@@ -415,7 +402,7 @@ public final class AccountsUpdateSamples {
             .withKind(Kind.GEN2)
             .withSku(new Sku().withName(Name.G2))
             .withIdentity(new ManagedServiceIdentity()
-                .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                .withType(ManagedServiceIdentityType.fromString("SystemAssigned, UserAssigned"))
                 .withUserAssignedIdentities(mapOf(
                     "/subscriptions/21a9967a-e8a9-4656-a70b-96ff1c4d05a0/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identityName",
                     new UserAssignedIdentity())))
@@ -426,24 +413,7 @@ public final class AccountsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/UpdateAccountGen1.json
-     */
-    /**
-     * Sample code: Update to Gen1 Account.
-     * 
-     * @param manager Entry point to AzureMapsManager.
-     */
-    public static void updateToGen1Account(com.azure.resourcemanager.maps.AzureMapsManager manager) {
-        MapsAccount resource = manager.accounts()
-            .getByResourceGroupWithResponse("myResourceGroup", "myMapsAccount", com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update().withKind(Kind.GEN1).withSku(new Sku().withName(Name.S1)).apply();
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/UpdateAccountEncryption.json
+     * x-ms-original-file: 2025-10-01-preview/UpdateAccountEncryption.json
      */
     /**
      * Sample code: Update Account Encryption.
@@ -492,8 +462,7 @@ import java.util.Map;
  */
 public final class CreatorsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/CreateMapsCreator.json
+     * x-ms-original-file: 2025-10-01-preview/CreateMapsCreator.json
      */
     /**
      * Sample code: Create Creator Resource.
@@ -532,8 +501,7 @@ public final class CreatorsCreateOrUpdateSamples {
  */
 public final class CreatorsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/DeleteMapsCreator.json
+     * x-ms-original-file: 2025-10-01-preview/DeleteMapsCreator.json
      */
     /**
      * Sample code: Delete Creator Resource.
@@ -555,8 +523,7 @@ public final class CreatorsDeleteSamples {
  */
 public final class CreatorsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/GetMapsCreator.json
+     * x-ms-original-file: 2025-10-01-preview/GetMapsCreator.json
      */
     /**
      * Sample code: Get Creator Resource.
@@ -578,8 +545,7 @@ public final class CreatorsGetSamples {
  */
 public final class CreatorsListByAccountSamples {
     /*
-     * x-ms-original-file:
-     * specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/ListMapsCreatorsByAccount.json
+     * x-ms-original-file: 2025-10-01-preview/ListMapsCreatorsByAccount.json
      */
     /**
      * Sample code: List Creator Resources By Account.
@@ -604,8 +570,7 @@ import java.util.Map;
  */
 public final class CreatorsUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/UpdateMapsCreator.json
+     * x-ms-original-file: 2025-10-01-preview/UpdateMapsCreator.json
      */
     /**
      * Sample code: Update Creator Resource.
@@ -633,28 +598,6 @@ public final class CreatorsUpdateSamples {
 }
 ```
 
-### Maps_List
-
-```java
-/**
- * Samples for Maps List.
- */
-public final class MapsListSamples {
-    /*
-     * x-ms-original-file:
-     * specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/GetOperationsSubscription.json
-     */
-    /**
-     * Sample code: Get Operations by Subscription.
-     * 
-     * @param manager Entry point to AzureMapsManager.
-     */
-    public static void getOperationsBySubscription(com.azure.resourcemanager.maps.AzureMapsManager manager) {
-        manager.maps().list(com.azure.core.util.Context.NONE);
-    }
-}
-```
-
 ### Maps_ListOperations
 
 ```java
@@ -663,8 +606,7 @@ public final class MapsListSamples {
  */
 public final class MapsListOperationsSamples {
     /*
-     * x-ms-original-file:
-     * specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/GetOperations.json
+     * x-ms-original-file: 2025-10-01-preview/GetOperations.json
      */
     /**
      * Sample code: Get Operations.
@@ -673,6 +615,193 @@ public final class MapsListOperationsSamples {
      */
     public static void getOperations(com.azure.resourcemanager.maps.AzureMapsManager manager) {
         manager.maps().listOperations(com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### OperationResult_Get
+
+```java
+/**
+ * Samples for OperationResult Get.
+ */
+public final class OperationResultGetSamples {
+    /*
+     * x-ms-original-file: 2025-10-01-preview/GetOperationResult.json
+     */
+    /**
+     * Sample code: OperationResult_Get.
+     * 
+     * @param manager Entry point to AzureMapsManager.
+     */
+    public static void operationResultGet(com.azure.resourcemanager.maps.AzureMapsManager manager) {
+        manager.operationResults()
+            .get("eastus", "01234567-89ab-4def-0123-456789abcdef", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### OperationStatus_Get
+
+```java
+/**
+ * Samples for OperationStatus Get.
+ */
+public final class OperationStatusGetSamples {
+    /*
+     * x-ms-original-file: 2025-10-01-preview/GetOperationStatus.json
+     */
+    /**
+     * Sample code: OperationStatus_Get.
+     * 
+     * @param manager Entry point to AzureMapsManager.
+     */
+    public static void operationStatusGet(com.azure.resourcemanager.maps.AzureMapsManager manager) {
+        manager.operationStatus()
+            .getWithResponse("eastus", "01234567-89ab-4def-0123-456789abcdef", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### PrivateEndpointConnections_Create
+
+```java
+import com.azure.resourcemanager.maps.models.PrivateEndpointServiceConnectionStatus;
+import com.azure.resourcemanager.maps.models.PrivateLinkServiceConnectionState;
+
+/**
+ * Samples for PrivateEndpointConnections Create.
+ */
+public final class PrivateEndpointConnectionsCreateSamples {
+    /*
+     * x-ms-original-file: 2025-10-01-preview/PrivateEndpointConnections_Update.json
+     */
+    /**
+     * Sample code: PrivateEndpointConnections_Create.
+     * 
+     * @param manager Entry point to AzureMapsManager.
+     */
+    public static void privateEndpointConnectionsCreate(com.azure.resourcemanager.maps.AzureMapsManager manager) {
+        manager.privateEndpointConnections()
+            .define("privateEndpointConnectionName")
+            .withExistingAccount("myResourceGroup", "myMapsAccount")
+            .withPrivateLinkServiceConnectionState(
+                new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
+                    .withDescription("Auto-Approved"))
+            .create();
+    }
+}
+```
+
+### PrivateEndpointConnections_Delete
+
+```java
+/**
+ * Samples for PrivateEndpointConnections Delete.
+ */
+public final class PrivateEndpointConnectionsDeleteSamples {
+    /*
+     * x-ms-original-file: 2025-10-01-preview/PrivateEndpointConnections_Delete.json
+     */
+    /**
+     * Sample code: PrivateEndpointConnections_Delete.
+     * 
+     * @param manager Entry point to AzureMapsManager.
+     */
+    public static void privateEndpointConnectionsDelete(com.azure.resourcemanager.maps.AzureMapsManager manager) {
+        manager.privateEndpointConnections()
+            .delete("myResourceGroup", "myMapsAccount", "privateEndpointConnectionName",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### PrivateEndpointConnections_Get
+
+```java
+/**
+ * Samples for PrivateEndpointConnections Get.
+ */
+public final class PrivateEndpointConnectionsGetSamples {
+    /*
+     * x-ms-original-file: 2025-10-01-preview/PrivateEndpointConnections_Get.json
+     */
+    /**
+     * Sample code: PrivateEndpointConnections_Get.
+     * 
+     * @param manager Entry point to AzureMapsManager.
+     */
+    public static void privateEndpointConnectionsGet(com.azure.resourcemanager.maps.AzureMapsManager manager) {
+        manager.privateEndpointConnections()
+            .getWithResponse("myResourceGroup", "myMapsAccount", "privateEndpointConnectionName",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### PrivateEndpointConnections_ListByAccount
+
+```java
+/**
+ * Samples for PrivateEndpointConnections ListByAccount.
+ */
+public final class PrivateEndpointConnectionsListByAccountSamples {
+    /*
+     * x-ms-original-file: 2025-10-01-preview/PrivateEndpointConnections_ListByAccount.json
+     */
+    /**
+     * Sample code: PrivateEndpointConnections_ListByAccount.
+     * 
+     * @param manager Entry point to AzureMapsManager.
+     */
+    public static void
+        privateEndpointConnectionsListByAccount(com.azure.resourcemanager.maps.AzureMapsManager manager) {
+        manager.privateEndpointConnections()
+            .listByAccount("myResourceGroup", "myMapsAccount", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### PrivateLinkResources_Get
+
+```java
+/**
+ * Samples for PrivateLinkResources Get.
+ */
+public final class PrivateLinkResourcesGetSamples {
+    /*
+     * x-ms-original-file: 2025-10-01-preview/PrivateLinkResources_Get.json
+     */
+    /**
+     * Sample code: Get a private link resource.
+     * 
+     * @param manager Entry point to AzureMapsManager.
+     */
+    public static void getAPrivateLinkResource(com.azure.resourcemanager.maps.AzureMapsManager manager) {
+        manager.privateLinkResources()
+            .getWithResponse("myResourceGroup", "myMapsAccount", "mapsAccount", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### PrivateLinkResources_ListByAccount
+
+```java
+/**
+ * Samples for PrivateLinkResources ListByAccount.
+ */
+public final class PrivateLinkResourcesListByAccountSamples {
+    /*
+     * x-ms-original-file: 2025-10-01-preview/PrivateLinkResources_List.json
+     */
+    /**
+     * Sample code: PrivateLinkResources_List.
+     * 
+     * @param manager Entry point to AzureMapsManager.
+     */
+    public static void privateLinkResourcesList(com.azure.resourcemanager.maps.AzureMapsManager manager) {
+        manager.privateLinkResources()
+            .listByAccount("myResourceGroup", "myMapsAccount", com.azure.core.util.Context.NONE);
     }
 }
 ```

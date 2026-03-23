@@ -1,14 +1,181 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.2.0-beta.1 (2026-03-23)
 
-### Features Added
+- Azure Resource Manager Azure Maps client library for Java. This package contains Microsoft Azure SDK for Azure Maps Management SDK. Resource Provider. Package api-version 2025-10-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.OperationDetail` was removed
 
-### Other Changes
+#### `models.MetricSpecification` was removed
+
+#### `models.Dimension` was removed
+
+#### `models.MapsOperations` was removed
+
+#### `models.MapsAccounts` was removed
+
+#### `models.ServiceSpecification` was removed
+
+#### `models.CreatorList` was removed
+
+#### `models.LinkedResource` was modified
+
+* `validate()` was removed
+
+#### `models.MapsAccountUpdateParameters` was modified
+
+* `validate()` was removed
+
+#### `models.Sku` was modified
+
+* `validate()` was removed
+
+#### `models.UserAssignedIdentity` was modified
+
+* `java.util.UUID clientId()` -> `java.lang.String clientId()`
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
+* `validate()` was removed
+
+#### `models.CorsRule` was modified
+
+* `validate()` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `OperationDisplay()` was changed to private access
+* `withDescription(java.lang.String)` was removed
+* `withOperation(java.lang.String)` was removed
+* `withResource(java.lang.String)` was removed
+* `withProvider(java.lang.String)` was removed
+* `validate()` was removed
+
+#### `models.CustomerManagedKeyEncryption` was modified
+
+* `validate()` was removed
+
+#### `models.ManagedServiceIdentity` was modified
+
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
+* `validate()` was removed
+* `java.util.UUID tenantId()` -> `java.lang.String tenantId()`
+
+#### `models.CorsRules` was modified
+
+* `validate()` was removed
+
+#### `models.MapsKeySpecification` was modified
+
+* `validate()` was removed
+
+#### `models.AccountSasParameters` was modified
+
+* `validate()` was removed
+
+#### `models.Maps` was modified
+
+* `list(com.azure.core.util.Context)` was removed
+* `list()` was removed
+
+#### `models.Kind` was modified
+
+* `GEN1` was removed
+
+#### `models.CreatorUpdateParameters` was modified
+
+* `validate()` was removed
+
+#### `models.CustomerManagedKeyEncryptionKeyIdentity` was modified
+
+* `validate()` was removed
+* `withDelegatedIdentityClientId(java.util.UUID)` was removed
+* `java.util.UUID delegatedIdentityClientId()` -> `java.lang.String delegatedIdentityClientId()`
+
+#### `models.Name` was modified
+
+* `S0` was removed
+* `S1` was removed
+
+#### `models.Encryption` was modified
+
+* `validate()` was removed
+
+### Features Added
+
+* `models.PrivateEndpoint` was added
+
+* `models.OperationStatusResult` was added
+
+* `models.Operation` was added
+
+* `models.PrivateEndpointConnectionProvisioningState` was added
+
+* `models.OperationResults` was added
+
+* `models.PrivateLinkResources` was added
+
+* `models.PrivateLinkServiceConnectionState` was added
+
+* `models.ActionType` was added
+
+* `models.PrivateEndpointServiceConnectionStatus` was added
+
+* `models.Origin` was added
+
+* `models.PublicNetworkAccess` was added
+
+* `models.LocationsItem` was added
+
+* `models.PrivateEndpointConnections` was added
+
+* `models.PrivateEndpointConnection$Definition` was added
+
+* `models.OperationStatus` was added
+
+* `models.PrivateEndpointConnection$DefinitionStages` was added
+
+* `models.PrivateLinkResource` was added
+
+* `models.PrivateEndpointConnection` was added
+
+#### `models.MapsAccountUpdateParameters` was modified
+
+* `publicNetworkAccess()` was added
+* `withLocations(java.util.List)` was added
+* `withPublicNetworkAccess(models.PublicNetworkAccess)` was added
+* `locations()` was added
+* `privateEndpointConnections()` was added
+
+#### `AzureMapsManager` was modified
+
+* `operationResults()` was added
+* `operationStatus()` was added
+* `privateLinkResources()` was added
+* `privateEndpointConnections()` was added
+
+#### `models.MapsAccount$Update` was modified
+
+* `withPublicNetworkAccess(models.PublicNetworkAccess)` was added
+* `withLocations(java.util.List)` was added
+
+#### `models.CreatorUpdateParameters` was modified
+
+* `consumedStorageUnitSizeInBytes()` was added
+* `withTotalStorageUnitSizeInBytes(java.lang.Integer)` was added
+* `withConsumedStorageUnitSizeInBytes(java.lang.Integer)` was added
+* `totalStorageUnitSizeInBytes()` was added
+
+#### `models.CustomerManagedKeyEncryptionKeyIdentity` was modified
+
+* `withFederatedClientId(java.lang.String)` was added
+* `federatedClientId()` was added
+* `withDelegatedIdentityClientId(java.lang.String)` was added
+
+#### `models.Creator$Update` was modified
+
+* `withConsumedStorageUnitSizeInBytes(java.lang.Integer)` was added
+* `withTotalStorageUnitSizeInBytes(java.lang.Integer)` was added
 
 ## 1.1.0 (2024-12-11)
 
