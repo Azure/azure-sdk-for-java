@@ -21,6 +21,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.testcontainers.containers.CosmosDBEmulatorContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
+import org.testcontainers.containers.wait.strategy.WaitAllStrategy;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
@@ -52,8 +53,10 @@ class CosmosContainerConnectionDetailsFactoryTests {
                 return "http://" + getHost() + ":" + getMappedPort(8081);
             }
         };
-        container.waitingFor(Wait.forHttp("/").forPort(8081).forStatusCode(200));
-        container.withStartupTimeout(Duration.ofMinutes(3));
+        container.waitingFor(new WaitAllStrategy()
+            .withStrategy(Wait.forLogMessage("(?s).*Started.*", 1))
+            .withStrategy(Wait.forHttp("/").forPort(8081).forStatusCode(200))
+            .withStartupTimeout(Duration.ofMinutes(5)));
         return container;
     }
 
