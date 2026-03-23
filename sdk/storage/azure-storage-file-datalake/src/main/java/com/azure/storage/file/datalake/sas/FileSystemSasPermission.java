@@ -311,11 +311,11 @@ public final class FileSystemSasPermission {
     /**
      * Sets the tags permission status.
      *
-     * @param tagsPermission Permission status to set
+     * @param hasTagsPermission Permission status to set
      * @return the updated FileSystemSasPermission object.
      */
-    public FileSystemSasPermission setTagsPermission(boolean tagsPermission) {
-        this.tagsPermission = tagsPermission;
+    public FileSystemSasPermission setTagsPermission(boolean hasTagsPermission) {
+        this.tagsPermission = hasTagsPermission;
         return this;
     }
 

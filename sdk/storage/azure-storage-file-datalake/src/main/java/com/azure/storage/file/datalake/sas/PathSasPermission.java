@@ -311,11 +311,11 @@ public final class PathSasPermission {
     /**
      * Sets the tags permission status.
      *
-     * @param tagsPermission Permission status to set
+     * @param hasTagsPermission Permission status to set
      * @return the updated PathSasPermission object.
      */
-    public PathSasPermission setTagsPermission(boolean tagsPermission) {
-        this.tagsPermission = tagsPermission;
+    public PathSasPermission setTagsPermission(boolean hasTagsPermission) {
+        this.tagsPermission = hasTagsPermission;
         return this;
     }
 
