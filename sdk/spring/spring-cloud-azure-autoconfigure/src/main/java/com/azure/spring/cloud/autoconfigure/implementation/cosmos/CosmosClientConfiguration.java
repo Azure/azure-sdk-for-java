@@ -26,7 +26,6 @@ class CosmosClientConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    // TODO (xiada): spring data cosmos also defines a CosmosAsyncClient
     CosmosAsyncClient azureCosmosAsyncClient(CosmosClientBuilder builder) {
         return builder.buildAsyncClient();
     }

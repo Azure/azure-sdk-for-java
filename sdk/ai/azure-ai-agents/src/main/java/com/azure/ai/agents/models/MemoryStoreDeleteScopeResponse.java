@@ -18,12 +18,6 @@ import java.io.IOException;
 public final class MemoryStoreDeleteScopeResponse implements JsonSerializable<MemoryStoreDeleteScopeResponse> {
 
     /*
-     * The object type. Always 'memory_store.scope.deleted'.
-     */
-    @Generated
-    private final MemoryStoreObjectType object = MemoryStoreObjectType.MEMORY_STORE_SCOPE_DELETED;
-
-    /*
      * The name of the memory store.
      */
     @Generated
@@ -53,16 +47,6 @@ public final class MemoryStoreDeleteScopeResponse implements JsonSerializable<Me
         this.name = name;
         this.scope = scope;
         this.deleted = deleted;
-    }
-
-    /**
-     * Get the object property: The object type. Always 'memory_store.scope.deleted'.
-     *
-     * @return the object value.
-     */
-    @Generated
-    public MemoryStoreObjectType getObject() {
-        return this.object;
     }
 
     /**
@@ -102,7 +86,7 @@ public final class MemoryStoreDeleteScopeResponse implements JsonSerializable<Me
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("object", this.object == null ? null : this.object.toString());
+        jsonWriter.writeStringField("object", this.objectType == null ? null : this.objectType.toString());
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("scope", this.scope);
         jsonWriter.writeBooleanField("deleted", this.deleted);
@@ -139,5 +123,21 @@ public final class MemoryStoreDeleteScopeResponse implements JsonSerializable<Me
             }
             return new MemoryStoreDeleteScopeResponse(name, scope, deleted);
         });
+    }
+
+    /*
+     * The object type. Always 'memory_store.scope.deleted'.
+     */
+    @Generated
+    private final MemoryStoreObjectType objectType = MemoryStoreObjectType.MEMORY_STORE_SCOPE_DELETED;
+
+    /**
+     * Get the objectType property: The object type. Always 'memory_store.scope.deleted'.
+     *
+     * @return the objectType value.
+     */
+    @Generated
+    public MemoryStoreObjectType getObjectType() {
+        return this.objectType;
     }
 }
