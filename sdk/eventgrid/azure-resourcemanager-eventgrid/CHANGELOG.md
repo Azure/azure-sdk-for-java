@@ -1,14 +1,761 @@
 # Release History
 
-## 1.3.0-beta.2 (Unreleased)
+## 1.3.0-beta.2 (2026-03-23)
 
-### Features Added
+- Azure Resource Manager EventGrid client library for Java. This package contains Microsoft Azure SDK for EventGrid Management SDK. Azure EventGrid Management Client. Package api-version 2025-07-15-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.EventSubscriptionsListResult` was removed
 
-### Other Changes
+#### `models.PrivateEndpointConnectionListResult` was removed
+
+#### `models.SubscriptionsListResult` was removed
+
+#### `models.NamespaceTopicsListResult` was removed
+
+#### `models.OperationsListResult` was removed
+
+#### `models.DomainsListResult` was removed
+
+#### `models.TopicSpacesListResult` was removed
+
+#### `models.TopicsListResult` was removed
+
+#### `models.DomainTopicsListResult` was removed
+
+#### `models.ChannelsListResult` was removed
+
+#### `models.CaCertificatesListResult` was removed
+
+#### `models.VerifiedPartnersListResult` was removed
+
+#### `models.NetworkSecurityPerimeterConfigurationList` was removed
+
+#### `models.EventTypesListResult` was removed
+
+#### `models.NamespacesListResult` was removed
+
+#### `models.PartnerConfigurationsListResult` was removed
+
+#### `models.PrivateLinkResourcesListResult` was removed
+
+#### `models.PermissionBindingsListResult` was removed
+
+#### `models.ClientsListResult` was removed
+
+#### `models.PartnerNamespacesListResult` was removed
+
+#### `models.ClientGroupsListResult` was removed
+
+#### `models.PartnerRegistrationsListResult` was removed
+
+#### `models.SystemTopicsListResult` was removed
+
+#### `models.TopicTypesListResult` was removed
+
+#### `models.PartnerTopicsListResult` was removed
+
+#### `models.PartnerDestinationsListResult` was removed
+
+#### `models.PartnerDestinationInfo` was modified
+
+* `validate()` was removed
+
+#### `models.PartnerUpdateDestinationInfo` was modified
+
+* `validate()` was removed
+
+#### `models.PrivateEndpoint` was modified
+
+* `validate()` was removed
+
+#### `models.StringNotBeginsWithAdvancedFilter` was modified
+
+* `validate()` was removed
+
+#### `models.ConnectionState` was modified
+
+* `validate()` was removed
+
+#### `models.StringEndsWithFilter` was modified
+
+* `validate()` was removed
+
+#### `models.InlineEventProperties` was modified
+
+* `validate()` was removed
+
+#### `models.WebhookEventSubscriptionDestination` was modified
+
+* `validate()` was removed
+
+#### `models.StringEndsWithAdvancedFilter` was modified
+
+* `validate()` was removed
+
+#### `models.NumberInRangeAdvancedFilter` was modified
+
+* `validate()` was removed
+
+#### `models.IsNotNullAdvancedFilter` was modified
+
+* `validate()` was removed
+
+#### `models.BoolEqualsFilter` was modified
+
+* `validate()` was removed
+
+#### `models.UpdateTopicSpacesConfigurationInfo` was modified
+
+* `validate()` was removed
+
+#### `models.DeliveryConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.PartnerConfigurationUpdateParameters` was modified
+
+* `validate()` was removed
+
+#### `models.UpdateTopicsConfigurationInfo` was modified
+
+* `validate()` was removed
+
+#### `models.StringNotEndsWithFilter` was modified
+
+* `validate()` was removed
+
+#### `models.ServiceBusQueueEventSubscriptionDestination` was modified
+
+* `validate()` was removed
+
+#### `models.UserIdentityProperties` was modified
+
+* `validate()` was removed
+
+#### `models.TopicUpdateParameters` was modified
+
+* `validate()` was removed
+
+#### `models.IsNullOrUndefinedAdvancedFilter` was modified
+
+* `validate()` was removed
+
+#### `models.NumberLessThanFilter` was modified
+
+* `validate()` was removed
+
+#### `models.StringNotBeginsWithFilter` was modified
+
+* `validate()` was removed
+
+#### `models.PartnerDestination$Definition` was modified
+
+* `withPartnerRegistrationImmutableId(java.util.UUID)` was removed
+
+#### `models.PartnerTopic$Definition` was modified
+
+* `withPartnerRegistrationImmutableId(java.util.UUID)` was removed
+
+#### `models.StringContainsFilter` was modified
+
+* `validate()` was removed
+
+#### `models.Filter` was modified
+
+* `validate()` was removed
+
+#### `models.ResourceSku` was modified
+
+* `validate()` was removed
+
+#### `models.StringNotInFilter` was modified
+
+* `validate()` was removed
+
+#### `models.PartnerClientAuthentication` was modified
+
+* `validate()` was removed
+
+#### `models.ClientCertificateAuthentication` was modified
+
+* `validate()` was removed
+
+#### `models.RoutingEnrichments` was modified
+
+* `validate()` was removed
+
+#### `models.WebhookAuthenticationSettings` was modified
+
+* `validate()` was removed
+
+#### `models.NumberNotInFilter` was modified
+
+* `validate()` was removed
+
+#### `models.StringBeginsWithAdvancedFilter` was modified
+
+* `validate()` was removed
+
+#### `models.TopicsConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.DeliveryAttributeMapping` was modified
+
+* `validate()` was removed
+
+#### `models.DomainUpdateParameters` was modified
+
+* `validate()` was removed
+
+#### `models.PartnerRegistration$Definition` was modified
+
+* `withPartnerRegistrationImmutableId(java.util.UUID)` was removed
+
+#### `models.StringNotEndsWithAdvancedFilter` was modified
+
+* `validate()` was removed
+
+#### `models.NumberGreaterThanAdvancedFilter` was modified
+
+* `validate()` was removed
+
+#### `models.StringBeginsWithFilter` was modified
+
+* `validate()` was removed
+
+#### `models.NetworkSecurityPerimeterConfigurationIssues` was modified
+
+* `NetworkSecurityPerimeterConfigurationIssues()` was changed to private access
+* `validate()` was removed
+* `withDescription(java.lang.String)` was removed
+* `withSuggestedAccessRules(java.util.List)` was removed
+* `withSuggestedResourceIds(java.util.List)` was removed
+* `withIssueType(models.NetworkSecurityPerimeterConfigurationIssueType)` was removed
+* `withName(java.lang.String)` was removed
+* `withSeverity(models.NetworkSecurityPerimeterConfigurationIssueSeverity)` was removed
+
+#### `models.BoolEqualsAdvancedFilter` was modified
+
+* `validate()` was removed
+
+#### `models.StringNotInAdvancedFilter` was modified
+
+* `validate()` was removed
+
+#### `models.NumberLessThanAdvancedFilter` was modified
+
+* `validate()` was removed
+
+#### `models.StringInFilter` was modified
+
+* `validate()` was removed
+
+#### `models.TopicSpacesConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.StaticDeliveryAttributeMapping` was modified
+
+* `validate()` was removed
+
+#### `models.EventSubscriptionDestination` was modified
+
+* `validate()` was removed
+
+#### `models.DeliveryWithResourceIdentity` was modified
+
+* `validate()` was removed
+
+#### `models.NamespaceSku` was modified
+
+* `validate()` was removed
+
+#### `models.PartnerDestination` was modified
+
+* `java.util.UUID partnerRegistrationImmutableId()` -> `java.lang.String partnerRegistrationImmutableId()`
+
+#### `models.AzureFunctionEventSubscriptionDestination` was modified
+
+* `validate()` was removed
+
+#### `models.DeadLetterDestination` was modified
+
+* `validate()` was removed
+
+#### `models.DynamicDeliveryAttributeMapping` was modified
+
+* `validate()` was removed
+
+#### `models.NumberInFilter` was modified
+
+* `validate()` was removed
+
+#### `models.PartnerRegistration` was modified
+
+* `java.util.UUID partnerRegistrationImmutableId()` -> `java.lang.String partnerRegistrationImmutableId()`
+
+#### `models.StorageBlobDeadLetterDestination` was modified
+
+* `validate()` was removed
+
+#### `models.EncodedIssuerCertificateInfo` was modified
+
+* `validate()` was removed
+
+#### `models.JsonField` was modified
+
+* `validate()` was removed
+
+#### `models.CustomJwtAuthenticationSettings` was modified
+
+* `validate()` was removed
+
+#### `models.NetworkSecurityPerimeterConfigurationProfile` was modified
+
+* `NetworkSecurityPerimeterConfigurationProfile()` was changed to private access
+* `withAccessRulesVersion(java.lang.String)` was removed
+* `withDiagnosticSettingsVersion(java.lang.String)` was removed
+* `validate()` was removed
+* `withAccessRules(java.util.List)` was removed
+* `withName(java.lang.String)` was removed
+* `withEnabledLogCategories(java.util.List)` was removed
+
+#### `models.NumberLessThanOrEqualsFilter` was modified
+
+* `validate()` was removed
+
+#### `models.PartnerTopicInfo` was modified
+
+* `validate()` was removed
+
+#### `models.StaticStringRoutingEnrichment` was modified
+
+* `validate()` was removed
+
+#### `models.ResourceMoveChangeHistory` was modified
+
+* `validate()` was removed
+
+#### `models.CustomDomainConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.StringNotContainsFilter` was modified
+
+* `validate()` was removed
+
+#### `models.PartnerTopic` was modified
+
+* `java.util.UUID partnerRegistrationImmutableId()` -> `java.lang.String partnerRegistrationImmutableId()`
+
+#### `models.WebhookPartnerDestinationInfo` was modified
+
+* `validate()` was removed
+
+#### `models.PartnerNamespaceRegenerateKeyRequest` was modified
+
+* `validate()` was removed
+
+#### `models.PartnerAuthorization` was modified
+
+* `validate()` was removed
+
+#### `models.NumberGreaterThanOrEqualsFilter` was modified
+
+* `validate()` was removed
+
+#### `models.RetryPolicy` was modified
+
+* `validate()` was removed
+
+#### `models.JsonInputSchemaMapping` was modified
+
+* `validate()` was removed
+
+#### `models.DynamicRoutingEnrichment` was modified
+
+* `validate()` was removed
+
+#### `models.EventSubscriptionIdentity` was modified
+
+* `validate()` was removed
+
+#### `models.CustomJwtAuthenticationManagedIdentity` was modified
+
+* `validate()` was removed
+
+#### `models.EventSubscriptionFilter` was modified
+
+* `validate()` was removed
+
+#### `models.PartnerUpdateTopicInfo` was modified
+
+* `validate()` was removed
+
+#### `models.InboundIpRule` was modified
+
+* `validate()` was removed
+
+#### `models.PartnerEventSubscriptionDestination` was modified
+
+* `validate()` was removed
+
+#### `models.DeadLetterWithResourceIdentity` was modified
+
+* `validate()` was removed
+
+#### `models.StorageQueueEventSubscriptionDestination` was modified
+
+* `validate()` was removed
+
+#### `models.IsNotNullFilter` was modified
+
+* `validate()` was removed
+
+#### `models.OperationInfo` was modified
+
+* `OperationInfo()` was changed to private access
+* `withDescription(java.lang.String)` was removed
+* `validate()` was removed
+* `withResource(java.lang.String)` was removed
+* `withProvider(java.lang.String)` was removed
+* `withOperation(java.lang.String)` was removed
+
+#### `models.StringInAdvancedFilter` was modified
+
+* `validate()` was removed
+
+#### `models.ClientAuthenticationSettings` was modified
+
+* `validate()` was removed
+
+#### `models.QueueInfo` was modified
+
+* `validate()` was removed
+
+#### `models.PartnerTopicUpdateParameters` was modified
+
+* `validate()` was removed
+
+#### `models.PushInfo` was modified
+
+* `validate()` was removed
+
+#### `models.PartnerDetails` was modified
+
+* `PartnerDetails()` was changed to private access
+* `withSetupUri(java.lang.String)` was removed
+* `validate()` was removed
+* `withDescription(java.lang.String)` was removed
+* `withLongDescription(java.lang.String)` was removed
+
+#### `models.ResourceAssociation` was modified
+
+* `ResourceAssociation()` was changed to private access
+* `withAccessMode(models.NetworkSecurityPerimeterAssociationAccessMode)` was removed
+* `validate()` was removed
+* `withName(java.lang.String)` was removed
+
+#### `models.PartnerDestinationUpdateParameters` was modified
+
+* `validate()` was removed
+
+#### `models.StringContainsAdvancedFilter` was modified
+
+* `validate()` was removed
+
+#### `models.FiltersConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.DomainRegenerateKeyRequest` was modified
+
+* `validate()` was removed
+
+#### `models.NumberNotInRangeAdvancedFilter` was modified
+
+* `validate()` was removed
+
+#### `models.NamespaceUpdateParameters` was modified
+
+* `validate()` was removed
+
+#### `models.NumberGreaterThanFilter` was modified
+
+* `validate()` was removed
+
+#### `models.TopicTypeAdditionalEnforcedPermission` was modified
+
+* `TopicTypeAdditionalEnforcedPermission()` was changed to private access
+* `withPermissionName(java.lang.String)` was removed
+* `validate()` was removed
+* `withIsDataAction(java.lang.Boolean)` was removed
+
+#### `models.IdentityInfo` was modified
+
+* `validate()` was removed
+
+#### `models.NumberNotInAdvancedFilter` was modified
+
+* `validate()` was removed
+
+#### `models.MonitorAlertEventSubscriptionDestination` was modified
+
+* `validate()` was removed
+
+#### `models.EventTypeInfo` was modified
+
+* `validate()` was removed
+
+#### `models.ServiceBusTopicEventSubscriptionDestination` was modified
+
+* `validate()` was removed
+
+#### `models.WebhookUpdatePartnerDestinationInfo` was modified
+
+* `validate()` was removed
+
+#### `models.CustomWebhookAuthenticationManagedIdentity` was modified
+
+* `validate()` was removed
+
+#### `models.RoutingIdentityInfo` was modified
+
+* `validate()` was removed
+
+#### `models.SystemTopicUpdateParameters` was modified
+
+* `validate()` was removed
+
+#### `models.NamespaceTopicEventSubscriptionDestination` was modified
+
+* `validate()` was removed
+
+#### `models.PartnerNamespaceUpdateParameters` was modified
+
+* `validate()` was removed
+
+#### `models.AdvancedFilter` was modified
+
+* `validate()` was removed
+
+#### `models.FederatedIdentityCredentialInfo` was modified
+
+* `java.util.UUID federatedClientId()` -> `java.lang.String federatedClientId()`
+* `validate()` was removed
+* `withFederatedClientId(java.util.UUID)` was removed
+
+#### `models.NetworkSecurityPerimeterSubscription` was modified
+
+* `NetworkSecurityPerimeterSubscription()` was changed to private access
+* `validate()` was removed
+* `withId(java.lang.String)` was removed
+
+#### `models.SubscriptionUpdateParameters` was modified
+
+* `validate()` was removed
+
+#### `models.NetworkSecurityPerimeterProfileAccessRule` was modified
+
+* `NetworkSecurityPerimeterProfileAccessRule()` was changed to private access
+* `withAddressPrefixes(java.util.List)` was removed
+* `withFullyQualifiedArmId(java.lang.String)` was removed
+* `withFullyQualifiedDomainNames(java.util.List)` was removed
+* `withName(java.lang.String)` was removed
+* `withSubscriptions(java.util.List)` was removed
+* `withEmailAddresses(java.util.List)` was removed
+* `withNetworkSecurityPerimeters(java.util.List)` was removed
+* `withPhoneNumbers(java.util.List)` was removed
+* `validate()` was removed
+* `withDirection(models.NetworkSecurityPerimeterProfileAccessRuleDirection)` was removed
+* `withType(java.lang.String)` was removed
+
+#### `models.NamespaceTopicUpdateParameters` was modified
+
+* `validate()` was removed
+
+#### `models.TopicRegenerateKeyRequest` was modified
+
+* `validate()` was removed
+
+#### `models.PartnerRegistrationUpdateParameters` was modified
+
+* `validate()` was removed
+
+#### `models.CustomDomainIdentity` was modified
+
+* `validate()` was removed
+
+#### `models.NetworkSecurityPerimeterInfo` was modified
+
+* `NetworkSecurityPerimeterInfo()` was changed to private access
+* `withId(java.lang.String)` was removed
+* `validate()` was removed
+* `withPerimeterGuid(java.lang.String)` was removed
+* `withLocation(java.lang.String)` was removed
+
+#### `models.StaticRoutingEnrichment` was modified
+
+* `validate()` was removed
+
+#### `models.AzureADPartnerClientAuthentication` was modified
+
+* `validate()` was removed
+
+#### `models.NumberGreaterThanOrEqualsAdvancedFilter` was modified
+
+* `validate()` was removed
+
+#### `models.HybridConnectionEventSubscriptionDestination` was modified
+
+* `validate()` was removed
+
+#### `models.NumberInRangeFilter` was modified
+
+* `validate()` was removed
+
+#### `models.IsNullOrUndefinedFilter` was modified
+
+* `validate()` was removed
+
+#### `models.InputSchemaMapping` was modified
+
+* `validate()` was removed
+
+#### `models.ChannelUpdateParameters` was modified
+
+* `validate()` was removed
+
+#### `models.StringNotContainsAdvancedFilter` was modified
+
+* `validate()` was removed
+
+#### `models.EventHubEventSubscriptionDestination` was modified
+
+* `validate()` was removed
+
+#### `models.IssuerCertificateInfo` was modified
+
+* `validate()` was removed
+
+#### `models.NamespaceRegenerateKeyRequest` was modified
+
+* `validate()` was removed
+
+#### `models.NumberLessThanOrEqualsAdvancedFilter` was modified
+
+* `validate()` was removed
+
+#### `models.NumberNotInRangeFilter` was modified
+
+* `validate()` was removed
+
+#### `models.ExtendedLocation` was modified
+
+* `validate()` was removed
+
+#### `models.JsonFieldWithDefault` was modified
+
+* `validate()` was removed
+
+#### `models.VerifiedPartner` was modified
+
+* `java.util.UUID partnerRegistrationImmutableId()` -> `java.lang.String partnerRegistrationImmutableId()`
+
+#### `models.Partner` was modified
+
+* `java.util.UUID partnerRegistrationImmutableId()` -> `java.lang.String partnerRegistrationImmutableId()`
+* `validate()` was removed
+* `withPartnerRegistrationImmutableId(java.util.UUID)` was removed
+
+#### `models.NumberInAdvancedFilter` was modified
+
+* `validate()` was removed
+
+#### `models.EventSubscriptionUpdateParameters` was modified
+
+* `validate()` was removed
+
+### Features Added
+
+* `models.ConfidentialCompute` was added
+
+* `models.PlatformCapabilities` was added
+
+* `models.ConfidentialComputeMode` was added
+
+* `models.KeyEncryptionKeyIdentity` was added
+
+* `models.KeyEncryption` was added
+
+* `models.KeyEncryptionIdentityType` was added
+
+* `models.CustomerManagedKeyEncryption` was added
+
+* `models.KeyEncryptionKeyStatus` was added
+
+#### `models.SystemTopic` was modified
+
+* `platformCapabilities()` was added
+* `encryption()` was added
+
+#### `models.PartnerDestination$Definition` was modified
+
+* `withPartnerRegistrationImmutableId(java.lang.String)` was added
+
+#### `models.PartnerTopic$Definition` was modified
+
+* `withPartnerRegistrationImmutableId(java.lang.String)` was added
+
+#### `models.Topic$Definition` was modified
+
+* `withPlatformCapabilities(models.PlatformCapabilities)` was added
+* `withEncryption(models.KeyEncryption)` was added
+
+#### `models.PrivateEndpointConnection` was modified
+
+* `systemData()` was added
+
+#### `models.PartnerRegistration$Definition` was modified
+
+* `withPartnerRegistrationImmutableId(java.lang.String)` was added
+
+#### `models.EventType` was modified
+
+* `systemData()` was added
+
+#### `models.WebhookPartnerDestinationInfo` was modified
+
+* `resourceMoveChangeHistory()` was added
+
+#### `models.Topic` was modified
+
+* `encryption()` was added
+* `platformCapabilities()` was added
+
+#### `models.SystemTopic$Definition` was modified
+
+* `withEncryption(models.KeyEncryption)` was added
+* `withPlatformCapabilities(models.PlatformCapabilities)` was added
+
+#### `models.FederatedIdentityCredentialInfo` was modified
+
+* `withFederatedClientId(java.lang.String)` was added
+
+#### `models.TopicTypeInfo` was modified
+
+* `systemData()` was added
+
+#### `models.Partner` was modified
+
+* `withPartnerRegistrationImmutableId(java.lang.String)` was added
+
+#### `models.NetworkSecurityPerimeterConfiguration` was modified
+
+* `systemData()` was added
 
 ## 1.3.0-beta.1 (2025-07-25)
 
