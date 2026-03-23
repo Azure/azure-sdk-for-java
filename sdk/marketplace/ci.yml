@@ -1,0 +1,46 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/marketplace/ci.yml
+      - sdk/marketplace/azure-resourcemanager-marketplace/
+    exclude:
+      - sdk/marketplace/pom.xml
+      - sdk/marketplace/azure-resourcemanager-marketplace/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/marketplace/ci.yml
+      - sdk/marketplace/azure-resourcemanager-marketplace/
+    exclude:
+      - sdk/marketplace/pom.xml
+      - sdk/marketplace/azure-resourcemanager-marketplace/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagermarketplace
+    displayName: azure-resourcemanager-marketplace
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: marketplace
+    Artifacts:
+      - name: azure-resourcemanager-marketplace
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagermarketplace
+        releaseInBatch: ${{ parameters.release_azureresourcemanagermarketplace }}

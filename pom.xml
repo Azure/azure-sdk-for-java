@@ -163,6 +163,7 @@
     <module>sdk/managementgroups</module>
     <module>sdk/maps</module>
     <module>sdk/mariadb</module>
+    <module>sdk/marketplace</module>
     <module>sdk/marketplaceordering</module>
     <module>sdk/mediaservices</module>
     <module>sdk/metricsadvisor</module>
