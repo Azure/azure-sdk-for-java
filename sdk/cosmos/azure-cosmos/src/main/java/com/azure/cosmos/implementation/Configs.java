@@ -150,16 +150,15 @@ public class Configs {
     private static final String HTTP_CONNECTION_MAX_LIFETIME_IN_SECONDS = "COSMOS.HTTP_CONNECTION_MAX_LIFETIME_IN_SECONDS";
     public static final int HTTP_CONNECTION_MAX_LIFETIME_JITTER_IN_SECONDS = 30;
 
-    // HTTP/2 PING health check — detects silently degraded connections and keeps connections alive for sparse workloads.
+    // HTTP/2 PING keepalive — keeps connections alive for sparse workloads by preventing
+    // intermediate infrastructure (NAT gateways, firewalls, load balancers) from silently
+    // reaping idle connections. PING is NOT used for eviction — degraded connections are
+    // handled by the response timeout retry path.
     // Guarded by an explicit enable flag; default ON. Set COSMOS.HTTP2_PING_HEALTH_ENABLED=false to disable.
-    // Interval: how often to send PING frames on each parent H2 connection.
-    // Timeout: if no PING ACK is received within this duration, the connection is considered unhealthy.
     private static final boolean DEFAULT_HTTP2_PING_HEALTH_ENABLED = true;
     private static final String HTTP2_PING_HEALTH_ENABLED = "COSMOS.HTTP2_PING_HEALTH_ENABLED";
     private static final int DEFAULT_HTTP2_PING_INTERVAL_IN_SECONDS = 10;
     private static final String HTTP2_PING_INTERVAL_IN_SECONDS = "COSMOS.HTTP2_PING_INTERVAL_IN_SECONDS";
-    private static final int DEFAULT_HTTP2_PING_ACK_TIMEOUT_IN_SECONDS = 30;
-    private static final String HTTP2_PING_ACK_TIMEOUT_IN_SECONDS = "COSMOS.HTTP2_PING_ACK_TIMEOUT_IN_SECONDS";
 
     private static final int DEFAULT_HTTP_RESPONSE_TIMEOUT_IN_SECONDS = 60;
     private static final int DEFAULT_QUERY_PLAN_RESPONSE_TIMEOUT_IN_SECONDS = 5;
@@ -685,12 +684,6 @@ public class Configs {
         return getJVMConfigAsInt(
             HTTP2_PING_INTERVAL_IN_SECONDS,
             DEFAULT_HTTP2_PING_INTERVAL_IN_SECONDS);
-    }
-
-    public static int getHttp2PingAckTimeoutInSeconds() {
-        return getJVMConfigAsInt(
-            HTTP2_PING_ACK_TIMEOUT_IN_SECONDS,
-            DEFAULT_HTTP2_PING_ACK_TIMEOUT_IN_SECONDS);
     }
 
     public static int getQueryPlanResponseTimeoutInSeconds() {

@@ -19,9 +19,10 @@
 
 ## Non-Goals
 
-- **PING-based eviction** — We do not evict connections based on stale PING ACKs. Degraded
-  connections are handled by the existing response timeout retry path (6s/6s/10s escalation
-  → cross-region failover). PING serves only as keepalive.
+- **PING-based eviction** — Client-driven connection closure will only be driven by idle
+  timeout and max life of connection. We do not evict connections based on stale PING ACKs.
+  Degraded connections are handled by the existing response timeout retry path (6s/6s/10s
+  escalation → cross-region failover). PING serves only as keepalive.
 
 ---
 
@@ -139,6 +140,8 @@ All internal — not exposed as public API. System property pattern.
 
 ## Testing
 
+### Unit / Integration Tests
+
 Test group: `manual-http-network-fault`. Linux with `tc`/`iptables`.
 
 | Test | Validates |
@@ -148,6 +151,23 @@ Test group: `manual-http-network-fault`. Linux with `tc`/`iptables`.
 | `connectionEvictedAfterMaxLifetimeEvenWithHealthyPings` | Lifetime eviction fires even when PINGs succeed |
 
 CI stage: `Cosmos_Live_Test_HttpNetworkFault` on Ubuntu VMs, `MaxParallel: 1`.
+
+### End-to-End DNS Rotation Validation
+
+The Cosmos DB front-end DNS (`<account>-<region>.documents.azure.com:443` and `:10250`)
+resolves to multiple IPs behind the same hostname. To validate that max lifetime actually
+achieves DNS re-resolution and traffic redistribution:
+
+1. Resolve the endpoint to enumerate available IPs (e.g., `dig` or `nslookup`).
+2. Establish connections and capture the resolved IP from the parent channel's
+   `remoteAddress()`.
+3. Use `iptables` to block traffic to one specific IP, forcing DNS to resolve to
+   an alternate IP on the next connection.
+4. Wait for max lifetime to expire and the connection to rotate.
+5. Assert the new connection's `remoteAddress()` is the alternate IP.
+
+This validates the full chain: max lifetime → eviction → pool creates new connection →
+DNS re-resolution → traffic moves to a different backend IP.
 
 ---
 

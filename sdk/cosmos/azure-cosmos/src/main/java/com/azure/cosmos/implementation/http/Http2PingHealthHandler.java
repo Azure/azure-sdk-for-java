@@ -17,11 +17,16 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * HTTP/2 PING-based health checker for parent HTTP/2 connections.
+ * HTTP/2 PING keepalive handler for parent HTTP/2 connections.
  * <p>
  * Installed on the parent TCP channel (not child H2 streams). Periodically sends
- * HTTP/2 PING frames and tracks last ACK timestamp. The connection pool's
- * eviction predicate reads {@link #LAST_PING_ACK_NANOS} to determine liveness.
+ * HTTP/2 PING frames to keep connections alive — prevents intermediate infrastructure
+ * (NAT gateways, firewalls, load balancers) from silently reaping idle connections.
+ * <p>
+ * PING is NOT used for eviction. Degraded connections are handled by the response
+ * timeout retry path (6s/6s/10s escalation → cross-region failover).
+ * {@link #LAST_PING_ACK_NANOS} is tracked for potential future use but not currently
+ * read by the eviction predicate.
  * <p>
  * Lifecycle: one instance per parent H2 connection. The handler is guarded by
  * {@link #HANDLER_INSTALLED} to prevent duplicate installation when multiple
@@ -34,8 +39,8 @@ public class Http2PingHealthHandler extends ChannelDuplexHandler {
     /**
      * Nano timestamp of the last PING ACK received on this parent channel.
      * Updated ONLY when an Http2PingFrame with ack=true arrives — NOT on arbitrary reads.
-     * Http2FrameCodec propagates PING ACK frames to downstream handlers (addLast position).
-     * When the network is blackholed, no PING ACKs arrive, this goes stale, eviction triggers.
+     * Currently tracked for diagnostics and potential future eviction use, but NOT read
+     * by the eviction predicate.
      */
     public static final AttributeKey<Long> LAST_PING_ACK_NANOS =
         AttributeKey.valueOf("cosmos.h2.lastPingAckNanos");
@@ -82,8 +87,7 @@ public class Http2PingHealthHandler extends ChannelDuplexHandler {
 
     @Override
     public void handlerAdded(ChannelHandlerContext ctx) {
-        // Seed the last-ack timestamp so the eviction predicate doesn't immediately
-        // consider a brand-new connection as "PING-stale"
+        // Seed the last-ack timestamp for diagnostics tracking
         ctx.channel().attr(LAST_PING_ACK_NANOS).set(System.nanoTime());
 
         // The handler is installed from a child stream's doOnConnected, so the parent
