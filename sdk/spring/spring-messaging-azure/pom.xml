@@ -49,6 +49,16 @@
       <version>7.0.6</version> <!-- {x-version-update;springboot4_org.springframework:spring-messaging;external_dependency} -->
     </dependency>
     <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>2.21.1</version> <!-- {x-version-update;springboot4_com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-annotations</artifactId>
+      <version>2.21</version> <!-- {x-version-update;springboot4_com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
+    </dependency>
+    <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-tx</artifactId>
       <version>7.0.6</version> <!-- {x-version-update;springboot4_org.springframework:spring-tx;external_dependency} -->
@@ -164,6 +174,8 @@
                 <include>org.springframework:spring-messaging:[7.0.6]</include> <!-- {x-include-update;springboot4_org.springframework:spring-messaging;external_dependency} -->
                 <include>org.springframework:spring-tx:[7.0.6]</include> <!-- {x-include-update;springboot4_org.springframework:spring-tx;external_dependency} -->
                 <include>org.springframework.retry:spring-retry:[2.0.12]</include> <!-- {x-include-update;springboot4_org.springframework.retry:spring-retry;external_dependency} -->
+                <include>com.fasterxml.jackson.core:jackson-annotations:[2.21]</include> <!-- {x-include-update;springboot4_com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
+                <include>com.fasterxml.jackson.core:jackson-databind:[2.21.1]</include> <!-- {x-include-update;springboot4_com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
