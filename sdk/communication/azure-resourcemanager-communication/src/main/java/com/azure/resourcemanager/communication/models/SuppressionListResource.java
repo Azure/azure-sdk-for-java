@@ -49,18 +49,18 @@ public interface SuppressionListResource {
     String listName();
 
     /**
-     * Gets the lastUpdatedTimeStamp property: The date the resource was last updated.
+     * Gets the lastUpdatedTimestamp property: The date the resource was last updated.
      * 
-     * @return the lastUpdatedTimeStamp value.
+     * @return the lastUpdatedTimestamp value.
      */
-    String lastUpdatedTimeStamp();
+    String lastUpdatedTimestamp();
 
     /**
-     * Gets the createdTimeStamp property: The date the resource was created.
+     * Gets the createdTimestamp property: The date the resource was created.
      * 
-     * @return the createdTimeStamp value.
+     * @return the createdTimestamp value.
      */
-    String createdTimeStamp();
+    String createdTimestamp();
 
     /**
      * Gets the dataLocation property: The location where the SuppressionListAddress data is stored at rest. This value

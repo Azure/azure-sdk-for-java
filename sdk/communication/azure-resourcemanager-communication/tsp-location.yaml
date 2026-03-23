@@ -1,4 +1,4 @@
 directory: specification/communication/Communication.Management
-commit: 9259fc183f207a60ad2e199b4eb684acec449513
+commit: 5881ac63e247d639912832bb38dbc7a0bf028ad9
 repo: Azure/azure-rest-api-specs
 additionalDirectories: 

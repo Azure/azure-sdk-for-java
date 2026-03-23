@@ -61,11 +61,11 @@
 
 * `DomainPropertiesVerificationStates()` was changed to private access
 * `withDkim(models.VerificationStatusRecord)` was removed
-* `withDomain(models.VerificationStatusRecord)` was removed
-* `withDkim2(models.VerificationStatusRecord)` was removed
+* `withSpf(models.VerificationStatusRecord)` was removed
 * `withDmarc(models.VerificationStatusRecord)` was removed
 * `validate()` was removed
-* `withSpf(models.VerificationStatusRecord)` was removed
+* `withDomain(models.VerificationStatusRecord)` was removed
+* `withDkim2(models.VerificationStatusRecord)` was removed
 
 #### `models.EmailServiceResourceUpdate` was modified
 
@@ -79,11 +79,6 @@
 
 * `validate()` was removed
 
-#### `models.SuppressionListResource` was modified
-
-* `lastUpdatedTimestamp()` was removed
-* `createdTimestamp()` was removed
-
 #### `models.TaggedResource` was modified
 
 * `validate()` was removed
@@ -96,22 +91,15 @@
 
 * `DomainPropertiesVerificationRecords()` was changed to private access
 * `withSpf(models.DnsRecord)` was removed
+* `withDmarc(models.DnsRecord)` was removed
+* `withDkim2(models.DnsRecord)` was removed
 * `withDomain(models.DnsRecord)` was removed
 * `validate()` was removed
 * `withDkim(models.DnsRecord)` was removed
-* `withDmarc(models.DnsRecord)` was removed
-* `withDkim2(models.DnsRecord)` was removed
 
 #### `models.UserAssignedIdentity` was modified
 
 * `validate()` was removed
-
-### Features Added
-
-#### `models.SuppressionListResource` was modified
-
-* `createdTimeStamp()` was added
-* `lastUpdatedTimeStamp()` was added
 
 ## 2.3.0 (2026-01-22)
 

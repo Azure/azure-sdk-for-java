@@ -122,21 +122,21 @@ public final class SuppressionListResourceInner extends ProxyResource {
     }
 
     /**
-     * Get the lastUpdatedTimeStamp property: The date the resource was last updated.
+     * Get the lastUpdatedTimestamp property: The date the resource was last updated.
      * 
-     * @return the lastUpdatedTimeStamp value.
+     * @return the lastUpdatedTimestamp value.
      */
-    public String lastUpdatedTimeStamp() {
-        return this.innerProperties() == null ? null : this.innerProperties().lastUpdatedTimeStamp();
+    public String lastUpdatedTimestamp() {
+        return this.innerProperties() == null ? null : this.innerProperties().lastUpdatedTimestamp();
     }
 
     /**
-     * Get the createdTimeStamp property: The date the resource was created.
+     * Get the createdTimestamp property: The date the resource was created.
      * 
-     * @return the createdTimeStamp value.
+     * @return the createdTimestamp value.
      */
-    public String createdTimeStamp() {
-        return this.innerProperties() == null ? null : this.innerProperties().createdTimeStamp();
+    public String createdTimestamp() {
+        return this.innerProperties() == null ? null : this.innerProperties().createdTimestamp();
     }
 
     /**

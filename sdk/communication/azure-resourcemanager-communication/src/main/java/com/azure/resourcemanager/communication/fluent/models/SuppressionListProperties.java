@@ -24,12 +24,12 @@ public final class SuppressionListProperties implements JsonSerializable<Suppres
     /*
      * The date the resource was last updated.
      */
-    private String lastUpdatedTimeStamp;
+    private String lastUpdatedTimestamp;
 
     /*
      * The date the resource was created.
      */
-    private String createdTimeStamp;
+    private String createdTimestamp;
 
     /*
      * The location where the SuppressionListAddress data is stored at rest. This value is inherited from the parent
@@ -66,21 +66,21 @@ public final class SuppressionListProperties implements JsonSerializable<Suppres
     }
 
     /**
-     * Get the lastUpdatedTimeStamp property: The date the resource was last updated.
+     * Get the lastUpdatedTimestamp property: The date the resource was last updated.
      * 
-     * @return the lastUpdatedTimeStamp value.
+     * @return the lastUpdatedTimestamp value.
      */
-    public String lastUpdatedTimeStamp() {
-        return this.lastUpdatedTimeStamp;
+    public String lastUpdatedTimestamp() {
+        return this.lastUpdatedTimestamp;
     }
 
     /**
-     * Get the createdTimeStamp property: The date the resource was created.
+     * Get the createdTimestamp property: The date the resource was created.
      * 
-     * @return the createdTimeStamp value.
+     * @return the createdTimestamp value.
      */
-    public String createdTimeStamp() {
-        return this.createdTimeStamp;
+    public String createdTimestamp() {
+        return this.createdTimestamp;
     }
 
     /**
@@ -121,9 +121,9 @@ public final class SuppressionListProperties implements JsonSerializable<Suppres
                 if ("listName".equals(fieldName)) {
                     deserializedSuppressionListProperties.listName = reader.getString();
                 } else if ("lastUpdatedTimeStamp".equals(fieldName)) {
-                    deserializedSuppressionListProperties.lastUpdatedTimeStamp = reader.getString();
+                    deserializedSuppressionListProperties.lastUpdatedTimestamp = reader.getString();
                 } else if ("createdTimeStamp".equals(fieldName)) {
-                    deserializedSuppressionListProperties.createdTimeStamp = reader.getString();
+                    deserializedSuppressionListProperties.createdTimestamp = reader.getString();
                 } else if ("dataLocation".equals(fieldName)) {
                     deserializedSuppressionListProperties.dataLocation = reader.getString();
                 } else {

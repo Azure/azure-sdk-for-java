@@ -35,12 +35,12 @@ public final class SuppressionListResourceImpl
         return this.innerModel().listName();
     }
 
-    public String lastUpdatedTimeStamp() {
-        return this.innerModel().lastUpdatedTimeStamp();
+    public String lastUpdatedTimestamp() {
+        return this.innerModel().lastUpdatedTimestamp();
     }
 
-    public String createdTimeStamp() {
-        return this.innerModel().createdTimeStamp();
+    public String createdTimestamp() {
+        return this.innerModel().createdTimestamp();
     }
 
     public String dataLocation() {
