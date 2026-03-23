@@ -66,10 +66,10 @@
 
 #### `models.ApplicationResourceUpdate` was modified
 
-* `location()` was removed
 * `etag()` was removed
-* `validate()` was removed
 * `withLocation(java.lang.String)` was removed
+* `validate()` was removed
+* `location()` was removed
 
 #### `models.ApplicationDeltaHealthPolicy` was modified
 
@@ -98,7 +98,6 @@
 #### `models.ServiceResourceUpdate` was modified
 
 * `validate()` was removed
-* `etag()` was removed
 
 #### `models.NodeTypeDescription` was modified
 
@@ -110,18 +109,18 @@
 
 #### `models.ManagedIdentityType` was modified
 
-* `valueOf(java.lang.String)` was removed
 * `models.ManagedIdentityType[] values()` -> `java.util.Collection values()`
 * `toString()` was removed
+* `valueOf(java.lang.String)` was removed
 
 #### `models.ClusterCodeVersionsResult` was modified
 
 * `ClusterCodeVersionsResult()` was changed to private access
 * `withEnvironment(models.ClusterEnvironment)` was removed
 * `withId(java.lang.String)` was removed
-* `withName(java.lang.String)` was removed
-* `validate()` was removed
 * `withSupportExpiryUtc(java.lang.String)` was removed
+* `validate()` was removed
+* `withName(java.lang.String)` was removed
 * `withCodeVersion(java.lang.String)` was removed
 * `withType(java.lang.String)` was removed
 
@@ -140,10 +139,6 @@
 #### `models.CertificateDescription` was modified
 
 * `validate()` was removed
-
-#### `models.ServiceResource` was modified
-
-* `etag()` was removed
 
 #### `models.NamedPartitionSchemeDescription` was modified
 
@@ -235,8 +230,8 @@
 
 #### `models.ServicePlacementPolicyDescription` was modified
 
-* `validate()` was removed
 * `type()` was removed
+* `validate()` was removed
 
 #### `models.ClusterUpgradeDeltaHealthPolicy` was modified
 
@@ -266,8 +261,8 @@
 
 #### `models.StatelessServiceProperties` was modified
 
-* `withMinInstanceCount(java.lang.Integer)` was added
 * `minInstanceCount()` was added
+* `withMinInstanceCount(java.lang.Integer)` was added
 * `minInstancePercentage()` was added
 * `withMinInstancePercentage(byte[])` was added
 
@@ -277,26 +272,22 @@
 
 #### `models.Applications` was modified
 
-* `update(java.lang.String,java.lang.String,java.lang.String,models.ApplicationResourceUpdate,com.azure.core.util.Context)` was added
 * `update(java.lang.String,java.lang.String,java.lang.String,models.ApplicationResourceUpdate)` was added
+* `update(java.lang.String,java.lang.String,java.lang.String,models.ApplicationResourceUpdate,com.azure.core.util.Context)` was added
 
 #### `models.Cluster$Update` was modified
 
 * `withVmImage(java.lang.String)` was added
+* `withAzureActiveDirectory(models.AzureActiveDirectory)` was added
 * `withReverseProxyCertificateCommonNames(models.ServerCertificateCommonNames)` was added
 * `withDiagnosticsStorageAccountConfig(models.DiagnosticsStorageAccountConfig)` was added
-* `withEnableHttpGatewayExclusiveAuthMode(java.lang.Boolean)` was added
 * `withManagementEndpoint(java.lang.String)` was added
-* `withAzureActiveDirectory(models.AzureActiveDirectory)` was added
+* `withEnableHttpGatewayExclusiveAuthMode(java.lang.Boolean)` was added
 
 #### `models.ClusterUpdateParameters` was modified
 
 * `enableHttpGatewayExclusiveAuthMode()` was added
 * `withEnableHttpGatewayExclusiveAuthMode(java.lang.Boolean)` was added
-
-#### `models.ServiceResourceUpdate` was modified
-
-* `eTag()` was added
 
 #### `models.ApplicationTypeResource$Update` was modified
 
@@ -315,29 +306,25 @@
 
 * `systemData()` was added
 
-#### `models.ServiceResource` was modified
-
-* `eTag()` was added
-
 #### `models.Cluster` was modified
 
 * `enableHttpGatewayExclusiveAuthMode()` was added
 
 #### `models.ApplicationResource$Update` was modified
 
-* `withTypeName(java.lang.String)` was added
-* `withIdentity(models.ManagedIdentity)` was added
 * `withTags(java.util.Map)` was added
+* `withIdentity(models.ManagedIdentity)` was added
+* `withTypeName(java.lang.String)` was added
 
 #### `models.Clusters` was modified
 
-* `update(java.lang.String,java.lang.String,models.ClusterUpdateParameters)` was added
 * `update(java.lang.String,java.lang.String,models.ClusterUpdateParameters,com.azure.core.util.Context)` was added
+* `update(java.lang.String,java.lang.String,models.ClusterUpdateParameters)` was added
 
 #### `models.ServiceResource$Update` was modified
 
-* `withProperties(models.ServiceResourceProperties)` was added
 * `withTags(java.util.Map)` was added
+* `withProperties(models.ServiceResourceProperties)` was added
 
 #### `ServiceFabricManager` was modified
 
@@ -349,8 +336,8 @@
 
 #### `models.Services` was modified
 
-* `update(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.ServiceResourceUpdate)` was added
 * `update(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.ServiceResourceUpdate,com.azure.core.util.Context)` was added
+* `update(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.ServiceResourceUpdate)` was added
 
 ## 1.0.0 (2024-12-24)
 

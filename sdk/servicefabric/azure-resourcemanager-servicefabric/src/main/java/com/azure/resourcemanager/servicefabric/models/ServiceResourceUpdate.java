@@ -39,7 +39,7 @@ public final class ServiceResourceUpdate extends ProxyResource {
      * tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section
      * 14.27) header fields.
      */
-    private String eTag;
+    private String etag;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -128,15 +128,15 @@ public final class ServiceResourceUpdate extends ProxyResource {
     }
 
     /**
-     * Get the eTag property: If eTag is provided in the response body, it may also be provided as a header per the
+     * Get the etag property: If eTag is provided in the response body, it may also be provided as a header per the
      * normal etag convention. Entity tags are used for comparing two or more entities from the same requested resource.
      * HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26),
      * and If-Range (section 14.27) header fields.
      * 
-     * @return the eTag value.
+     * @return the etag value.
      */
-    public String eTag() {
-        return this.eTag;
+    public String etag() {
+        return this.etag;
     }
 
     /**
@@ -220,7 +220,7 @@ public final class ServiceResourceUpdate extends ProxyResource {
                 } else if ("location".equals(fieldName)) {
                     deserializedServiceResourceUpdate.location = reader.getString();
                 } else if ("eTag".equals(fieldName)) {
-                    deserializedServiceResourceUpdate.eTag = reader.getString();
+                    deserializedServiceResourceUpdate.etag = reader.getString();
                 } else if ("systemData".equals(fieldName)) {
                     deserializedServiceResourceUpdate.systemData = SystemData.fromJson(reader);
                 } else {

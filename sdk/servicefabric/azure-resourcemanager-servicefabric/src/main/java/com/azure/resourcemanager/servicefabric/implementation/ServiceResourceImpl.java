@@ -47,8 +47,8 @@ public final class ServiceResourceImpl implements ServiceResource, ServiceResour
         return this.innerModel().location();
     }
 
-    public String eTag() {
-        return this.innerModel().eTag();
+    public String etag() {
+        return this.innerModel().etag();
     }
 
     public SystemData systemData() {
