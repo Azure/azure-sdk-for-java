@@ -215,6 +215,16 @@ cycle proves the behavior is repeatable under a running workload.
 - **PING-based eviction**: Currently scoped to keepalive only. If production data shows
   value in evicting on stale ACKs, the `LAST_PING_ACK_NANOS` attribute is already tracked —
   adding an eviction phase is a predicate-only change.
+- **HTTP/1.1 application-layer keepalive**: HTTP/1.1 has no PING equivalent. HTTP/2 PING
+  frames keep connections alive through L7 middleboxes, but HTTP/1.1 connections rely solely
+  on TCP keepalive — invisible to L7 proxies/load balancers. Explore sending periodic
+  `OPTIONS` requests as an application-layer keepalive for HTTP/1.1 connections in sparse
+  workloads. Kusto evidence (2026-03-23, `legacy-conversations-prod-0`, 6h window): HTTP/1.1
+  traffic is **100% ChangeFeed/Incremental** (~388M requests) from two SDK versions —
+  `4.75.0-alpha.20251008.4` (348M, 90%) and `1.1.2-openai-release` (40M, 10%). ChangeFeed
+  is long-polling so rarely truly idle, making this low risk today — but worth addressing if
+  future HTTP/1.1 workloads beyond ChangeFeed emerge. (Thin-client proxy uses only HTTP/2,
+  so this gap does not affect thin-client scenarios.)
 - **JVM DNS cache**: Default TTL is 30s (verified JDK 18). If a customer sets `-1` (cache
   forever), max lifetime still rotates connections but new ones resolve to the cached IP.
   We do not override the customer's JVM DNS setting.
