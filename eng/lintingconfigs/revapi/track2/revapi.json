@@ -735,15 +735,6 @@
         },
         {
           "ignore": true,
-          "code": "java.method.removed",
-          "old" : {
-            "matcher": "regex",
-            "match": "method .* com\\.azure\\.resourcemanager\\.containerservice\\.models\\..*\\:\\:.*\\(.*\\)"
-          },
-          "justification": "Read-only properties' getter removed in TypeSpec migration."
-        },
-        {
-          "ignore": true,
           "code": "java.method.returnTypeChanged",
           "new" : {
             "matcher": "regex",
