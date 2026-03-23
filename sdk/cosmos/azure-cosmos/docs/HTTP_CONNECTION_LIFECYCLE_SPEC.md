@@ -13,10 +13,11 @@
    DNS on their own; max lifetime is the mechanism that forces new connection creation.
    **Applies to both HTTP/1.1 and HTTP/2 connections.**
 
-2. **Connection keepalive** — Prevent intermediate infrastructure (NAT gateways, firewalls,
-   load balancers) from silently reaping idle connections. HTTP/2 PING frames serve as
-   application-layer keepalive, distinct from TCP keepalive which operates below TLS and may
-   not be visible to L7 middleboxes. Applies to both HTTP/1.1 and HTTP/2 connections.
+2. **Connection keepalive (HTTP/2)** — Prevent intermediate infrastructure (NAT gateways,
+   firewalls, load balancers) from silently reaping idle HTTP/2 connections. HTTP/2 PING
+   frames serve as application-layer keepalive, distinct from TCP keepalive which operates
+   below TLS and may not be visible to L7 middleboxes. HTTP/1.1 keepalive is a separate
+   future concern (see Future Work).
 
 ## Non-Goals
 
@@ -67,31 +68,31 @@ infrastructure where TCP keepalive alone is insufficient.
    `CONNECTION_EXPIRY_NANOS` attribute apply to all connections in the pool. This ensures
    DNS re-resolution for all operation types, including ChangeFeed (HTTP/1.1).
 
-3. **PING keepalive applies to both HTTP/1.1 and HTTP/2** — Both protocol paths benefit
-   from keepalive. HTTP/2 uses PING frames on the parent channel. HTTP/1.1 connections in
-   reactor-netty's pool also traverse L7 infrastructure and benefit from the same keepalive
-   mechanism — the handler is installed on any connection where the PING config is enabled.
+3. **PING keepalive is HTTP/2 only** — PING is an HTTP/2 protocol frame — it cannot be
+   sent on HTTP/1.1 connections. The handler is installed only when H2 is enabled
+   (`isH2Enabled && PING_HEALTH_ENABLED`). HTTP/1.1 keepalive is a separate future concern
+   (see Future Work).
 
 4. **Max lifetime and PING keepalive are independent features** — Separate install paths
-   in `doOnConnected`: `stampConnectionExpiry()` for lifetime, `installOnParentIfAbsent()`
-   for PING. Both apply to all connections. Disabling one does not affect the other.
+   in `doOnConnected`: `stampConnectionExpiry()` for lifetime (all connections),
+   `installOnParentIfAbsent()` for PING (H2 only). Disabling one does not affect the other.
 
-3. **Per-connection jitter** — Each connection gets a deterministic expiry stamped once at
+5. **Per-connection jitter** — Each connection gets a deterministic expiry stamped once at
    creation (`CONNECTION_EXPIRY_NANOS` channel attribute). Avoids .NET's per-pool sync-lock
    (all connections expire together) and the non-determinism of re-rolling jitter each sweep.
    Matches reactor-netty 1.3.4's `maxLifeTimeVariance` semantics for easy migration.
 
-4. **Two-phase eviction for lifetime** — Instead of immediately closing a connection past
+6. **Two-phase eviction for lifetime** — Instead of immediately closing a connection past
    its lifetime (which RST_STREAMs active H2 streams), mark as `PENDING_EVICTION_NANOS` on
    first detection, then evict when idle or after a 10s drain grace period.
 
-5. **Eviction rate limiter** — At most 1 connection evicted per sweep cycle (dead channels
+7. **Eviction rate limiter** — At most 1 connection evicted per sweep cycle (dead channels
    exempt). Prevents cliff eviction when multiple connections expire in the same window.
 
-6. **Derived sweep interval** — `clamp(min(idleTimeout, baseMaxLifetime) / 2, 1s, 5s)`.
+8. **Derived sweep interval** — `clamp(min(idleTimeout, baseMaxLifetime) / 2, 1s, 5s)`.
    Always faster than the smallest eviction threshold.
 
-7. **30-minute default (defensive)** — .NET uses 5 minutes. We start at 30 minutes with
+9. **30-minute default (defensive)** — .NET uses 5 minutes. We start at 30 minutes with
    `[30:01, 30:30]` effective range. Can be tuned down after production validation.
 
 ---
@@ -121,9 +122,9 @@ ConnectionProvider (reactor-netty 1.2.13)
 │  │    stampConnectionExpiry(channel, base + jitter)
 │  │    → stamps CONNECTION_EXPIRY_NANOS attribute
 │  │
-│  └─ If PING keepalive enabled:
+│  └─ If PING keepalive enabled AND H2 enabled:
 │       installOnParentIfAbsent(channel, interval)
-│       → installs Http2PingHealthHandler
+│       → installs Http2PingHealthHandler (H2 only — PING is an HTTP/2 frame)
 │       → sends PING frames every 10s (keepalive, not eviction)
 │
 ├─ doOnConnected (H2 only — if H2 enabled):
