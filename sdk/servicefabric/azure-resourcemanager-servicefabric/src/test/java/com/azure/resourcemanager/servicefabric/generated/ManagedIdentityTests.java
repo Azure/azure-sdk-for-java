@@ -5,30 +5,29 @@
 package com.azure.resourcemanager.servicefabric.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.servicefabric.models.ManagedServiceIdentity;
-import com.azure.resourcemanager.servicefabric.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.servicefabric.models.ManagedIdentity;
+import com.azure.resourcemanager.servicefabric.models.ManagedIdentityType;
 import com.azure.resourcemanager.servicefabric.models.UserAssignedIdentity;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 
-public final class ManagedServiceIdentityTests {
+public final class ManagedIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagedServiceIdentity model = BinaryData.fromString(
+        ManagedIdentity model = BinaryData.fromString(
             "{\"principalId\":\"hjpglkf\",\"tenantId\":\"hdneuelfph\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"zx\":{\"principalId\":\"ozfikdowwq\",\"clientId\":\"v\"},\"osggbhc\":{\"principalId\":\"vithh\",\"clientId\":\"o\"},\"fgdkzzew\":{\"principalId\":\"fwdsj\",\"clientId\":\"aljutiiswac\"}}}")
-            .toObject(ManagedServiceIdentity.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.type());
+            .toObject(ManagedIdentity.class);
+        Assertions.assertEquals(ManagedIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedServiceIdentity model
-            = new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                .withUserAssignedIdentities(mapOf("zx", new UserAssignedIdentity(), "osggbhc",
-                    new UserAssignedIdentity(), "fgdkzzew", new UserAssignedIdentity()));
-        model = BinaryData.fromObject(model).toObject(ManagedServiceIdentity.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.type());
+        ManagedIdentity model = new ManagedIdentity().withType(ManagedIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+            .withUserAssignedIdentities(mapOf("zx", new UserAssignedIdentity(), "osggbhc", new UserAssignedIdentity(),
+                "fgdkzzew", new UserAssignedIdentity()));
+        model = BinaryData.fromObject(model).toObject(ManagedIdentity.class);
+        Assertions.assertEquals(ManagedIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.type());
     }
 
     // Use "Map.of" if available

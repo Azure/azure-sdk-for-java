@@ -13,8 +13,8 @@ import com.azure.resourcemanager.servicefabric.models.ArmApplicationHealthPolicy
 import com.azure.resourcemanager.servicefabric.models.ArmRollingUpgradeMonitoringPolicy;
 import com.azure.resourcemanager.servicefabric.models.ArmServiceTypeHealthPolicy;
 import com.azure.resourcemanager.servicefabric.models.ArmUpgradeFailureAction;
-import com.azure.resourcemanager.servicefabric.models.ManagedServiceIdentity;
-import com.azure.resourcemanager.servicefabric.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.servicefabric.models.ManagedIdentity;
+import com.azure.resourcemanager.servicefabric.models.ManagedIdentityType;
 import com.azure.resourcemanager.servicefabric.models.RollingUpgradeMode;
 import com.azure.resourcemanager.servicefabric.models.UserAssignedIdentity;
 import java.util.Arrays;
@@ -30,7 +30,7 @@ public final class ApplicationResourceInnerTests {
             .toObject(ApplicationResourceInner.class);
         Assertions.assertEquals("savjcbpwxqps", model.tags().get("knftguvriuh"));
         Assertions.assertEquals("wmdyvxqtay", model.location());
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals(ManagedIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
         Assertions.assertEquals("lmqkrhahvlj", model.typeName());
         Assertions.assertEquals("haquhcdh", model.typeVersion());
         Assertions.assertEquals("alaexqpvfadmwsrc", model.parameters().get("gvxp"));
@@ -99,9 +99,8 @@ public final class ApplicationResourceInnerTests {
     public void testSerialize() throws Exception {
         ApplicationResourceInner model = new ApplicationResourceInner().withTags(mapOf("knftguvriuh", "savjcbpwxqps"))
             .withLocation("wmdyvxqtay")
-            .withIdentity(
-                new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                    .withUserAssignedIdentities(mapOf("j", new UserAssignedIdentity())))
+            .withIdentity(new ManagedIdentity().withType(ManagedIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf("j", new UserAssignedIdentity())))
             .withTypeName("lmqkrhahvlj")
             .withTypeVersion("haquhcdh")
             .withParameters(
@@ -153,7 +152,7 @@ public final class ApplicationResourceInnerTests {
         model = BinaryData.fromObject(model).toObject(ApplicationResourceInner.class);
         Assertions.assertEquals("savjcbpwxqps", model.tags().get("knftguvriuh"));
         Assertions.assertEquals("wmdyvxqtay", model.location());
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals(ManagedIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
         Assertions.assertEquals("lmqkrhahvlj", model.typeName());
         Assertions.assertEquals("haquhcdh", model.typeVersion());
         Assertions.assertEquals("alaexqpvfadmwsrc", model.parameters().get("gvxp"));

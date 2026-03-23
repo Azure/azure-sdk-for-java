@@ -12,7 +12,7 @@ import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.servicefabric.ServiceFabricManager;
 import com.azure.resourcemanager.servicefabric.models.ApplicationResource;
 import com.azure.resourcemanager.servicefabric.models.ArmUpgradeFailureAction;
-import com.azure.resourcemanager.servicefabric.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.servicefabric.models.ManagedIdentityType;
 import com.azure.resourcemanager.servicefabric.models.RollingUpgradeMode;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -39,7 +39,7 @@ public final class ApplicationsGetWithResponseMockTests {
 
         Assertions.assertEquals("eyqxtjjfzql", response.tags().get("hycav"));
         Assertions.assertEquals("wn", response.location());
-        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.identity().type());
+        Assertions.assertEquals(ManagedIdentityType.NONE, response.identity().type());
         Assertions.assertEquals("yuvvfonkp", response.typeName());
         Assertions.assertEquals("qyikvy", response.typeVersion());
         Assertions.assertEquals("yavluwmncstt", response.parameters().get("jfybvpoekrsgsgb"));

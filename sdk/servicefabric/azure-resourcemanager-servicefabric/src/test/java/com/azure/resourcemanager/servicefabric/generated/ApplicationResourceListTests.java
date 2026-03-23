@@ -7,7 +7,7 @@ package com.azure.resourcemanager.servicefabric.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.servicefabric.implementation.models.ApplicationResourceList;
 import com.azure.resourcemanager.servicefabric.models.ArmUpgradeFailureAction;
-import com.azure.resourcemanager.servicefabric.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.servicefabric.models.ManagedIdentityType;
 import com.azure.resourcemanager.servicefabric.models.RollingUpgradeMode;
 import org.junit.jupiter.api.Assertions;
 
@@ -19,7 +19,7 @@ public final class ApplicationResourceListTests {
             .toObject(ApplicationResourceList.class);
         Assertions.assertEquals("or", model.value().get(0).tags().get("altol"));
         Assertions.assertEquals("r", model.value().get(0).location());
-        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.value().get(0).identity().type());
+        Assertions.assertEquals(ManagedIdentityType.NONE, model.value().get(0).identity().type());
         Assertions.assertEquals("ofwq", model.value().get(0).typeName());
         Assertions.assertEquals("qal", model.value().get(0).typeVersion());
         Assertions.assertEquals("njijpxacqqudf", model.value().get(0).parameters().get("byxbaaabjy"));

@@ -13,7 +13,7 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.servicefabric.models.ApplicationMetricDescription;
 import com.azure.resourcemanager.servicefabric.models.ApplicationUpgradePolicy;
 import com.azure.resourcemanager.servicefabric.models.ApplicationUserAssignedIdentity;
-import com.azure.resourcemanager.servicefabric.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.servicefabric.models.ManagedIdentity;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -47,7 +47,7 @@ public final class ApplicationResourceInner extends ProxyResource {
     /*
      * The managed service identities assigned to this resource.
      */
-    private ManagedServiceIdentity identity;
+    private ManagedIdentity identity;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -141,7 +141,7 @@ public final class ApplicationResourceInner extends ProxyResource {
      * 
      * @return the identity value.
      */
-    public ManagedServiceIdentity identity() {
+    public ManagedIdentity identity() {
         return this.identity;
     }
 
@@ -151,7 +151,7 @@ public final class ApplicationResourceInner extends ProxyResource {
      * @param identity the identity value to set.
      * @return the ApplicationResourceInner object itself.
      */
-    public ApplicationResourceInner withIdentity(ManagedServiceIdentity identity) {
+    public ApplicationResourceInner withIdentity(ManagedIdentity identity) {
         this.identity = identity;
         return this;
     }
@@ -472,7 +472,7 @@ public final class ApplicationResourceInner extends ProxyResource {
                 } else if ("etag".equals(fieldName)) {
                     deserializedApplicationResourceInner.etag = reader.getString();
                 } else if ("identity".equals(fieldName)) {
-                    deserializedApplicationResourceInner.identity = ManagedServiceIdentity.fromJson(reader);
+                    deserializedApplicationResourceInner.identity = ManagedIdentity.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {
                     deserializedApplicationResourceInner.systemData = SystemData.fromJson(reader);
                 } else {

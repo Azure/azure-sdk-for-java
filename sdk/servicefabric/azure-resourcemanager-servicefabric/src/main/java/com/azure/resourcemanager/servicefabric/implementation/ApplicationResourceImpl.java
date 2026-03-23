@@ -12,7 +12,7 @@ import com.azure.resourcemanager.servicefabric.models.ApplicationMetricDescripti
 import com.azure.resourcemanager.servicefabric.models.ApplicationResource;
 import com.azure.resourcemanager.servicefabric.models.ApplicationUpgradePolicy;
 import com.azure.resourcemanager.servicefabric.models.ApplicationUserAssignedIdentity;
-import com.azure.resourcemanager.servicefabric.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.servicefabric.models.ManagedIdentity;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -52,7 +52,7 @@ public final class ApplicationResourceImpl
         return this.innerModel().etag();
     }
 
-    public ManagedServiceIdentity identity() {
+    public ManagedIdentity identity() {
         return this.innerModel().identity();
     }
 
@@ -225,7 +225,7 @@ public final class ApplicationResourceImpl
         return this;
     }
 
-    public ApplicationResourceImpl withIdentity(ManagedServiceIdentity identity) {
+    public ApplicationResourceImpl withIdentity(ManagedIdentity identity) {
         this.innerModel().withIdentity(identity);
         return this;
     }

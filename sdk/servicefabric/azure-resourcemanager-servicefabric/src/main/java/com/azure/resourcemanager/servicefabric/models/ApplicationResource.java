@@ -65,7 +65,7 @@ public interface ApplicationResource {
      * 
      * @return the identity value.
      */
-    ManagedServiceIdentity identity();
+    ManagedIdentity identity();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -280,7 +280,7 @@ public interface ApplicationResource {
              * @param identity The managed service identities assigned to this resource.
              * @return the next definition stage.
              */
-            WithCreate withIdentity(ManagedServiceIdentity identity);
+            WithCreate withIdentity(ManagedIdentity identity);
         }
 
         /**
@@ -475,7 +475,7 @@ public interface ApplicationResource {
              * @param identity The managed service identities assigned to this resource.
              * @return the next definition stage.
              */
-            Update withIdentity(ManagedServiceIdentity identity);
+            Update withIdentity(ManagedIdentity identity);
         }
 
         /**

@@ -6,15 +6,11 @@
 
 ### Breaking Changes
 
-#### `models.ManagedIdentity` was removed
-
 #### `models.ServiceResourceList` was removed
 
 #### `models.ClusterListResult` was removed
 
 #### `models.AvailableOperationDisplay` was removed
-
-#### `models.ManagedIdentityType` was removed
 
 #### `models.ApplicationTypeResourceList` was removed
 
@@ -33,6 +29,10 @@
 * `validate()` was removed
 
 #### `models.SettingsSectionDescription` was modified
+
+* `validate()` was removed
+
+#### `models.ManagedIdentity` was modified
 
 * `validate()` was removed
 
@@ -66,14 +66,10 @@
 
 #### `models.ApplicationResourceUpdate` was modified
 
-* `etag()` was removed
 * `location()` was removed
-* `withLocation(java.lang.String)` was removed
+* `etag()` was removed
 * `validate()` was removed
-
-#### `models.ApplicationResource$Definition` was modified
-
-* `withIdentity(models.ManagedIdentity)` was removed
+* `withLocation(java.lang.String)` was removed
 
 #### `models.ApplicationDeltaHealthPolicy` was modified
 
@@ -101,8 +97,8 @@
 
 #### `models.ServiceResourceUpdate` was modified
 
-* `etag()` was removed
 * `validate()` was removed
+* `etag()` was removed
 
 #### `models.NodeTypeDescription` was modified
 
@@ -112,16 +108,22 @@
 
 * `validate()` was removed
 
+#### `models.ManagedIdentityType` was modified
+
+* `valueOf(java.lang.String)` was removed
+* `models.ManagedIdentityType[] values()` -> `java.util.Collection values()`
+* `toString()` was removed
+
 #### `models.ClusterCodeVersionsResult` was modified
 
 * `ClusterCodeVersionsResult()` was changed to private access
-* `validate()` was removed
+* `withEnvironment(models.ClusterEnvironment)` was removed
 * `withId(java.lang.String)` was removed
 * `withName(java.lang.String)` was removed
-* `withType(java.lang.String)` was removed
-* `withEnvironment(models.ClusterEnvironment)` was removed
+* `validate()` was removed
 * `withSupportExpiryUtc(java.lang.String)` was removed
 * `withCodeVersion(java.lang.String)` was removed
+* `withType(java.lang.String)` was removed
 
 #### `models.ApplicationUpgradePolicy` was modified
 
@@ -223,10 +225,6 @@
 
 * `validate()` was removed
 
-#### `models.ApplicationResource` was modified
-
-* `models.ManagedIdentity identity()` -> `models.ManagedServiceIdentity identity()`
-
 #### `models.StatelessServiceUpdateProperties` was modified
 
 * `validate()` was removed
@@ -248,13 +246,9 @@
 
 * `models.VMSizeResource` was added
 
-* `models.ManagedServiceIdentityType` was added
-
 * `models.ActionType` was added
 
 * `models.UnsupportedVmSizes` was added
-
-* `models.ManagedServiceIdentity` was added
 
 * `models.ProxyResourceApplicationResourceUpdateProperties` was added
 
@@ -272,37 +266,33 @@
 
 #### `models.StatelessServiceProperties` was modified
 
-* `minInstanceCount()` was added
 * `withMinInstanceCount(java.lang.Integer)` was added
-* `withMinInstancePercentage(byte[])` was added
+* `minInstanceCount()` was added
 * `minInstancePercentage()` was added
+* `withMinInstancePercentage(byte[])` was added
 
 #### `models.ApplicationResourceUpdate` was modified
 
 * `withProperties(fluent.models.ApplicationResourceUpdateProperties)` was added
 
-#### `models.ApplicationResource$Definition` was modified
-
-* `withIdentity(models.ManagedServiceIdentity)` was added
-
 #### `models.Applications` was modified
 
-* `update(java.lang.String,java.lang.String,java.lang.String,models.ApplicationResourceUpdate)` was added
 * `update(java.lang.String,java.lang.String,java.lang.String,models.ApplicationResourceUpdate,com.azure.core.util.Context)` was added
+* `update(java.lang.String,java.lang.String,java.lang.String,models.ApplicationResourceUpdate)` was added
 
 #### `models.Cluster$Update` was modified
 
-* `withDiagnosticsStorageAccountConfig(models.DiagnosticsStorageAccountConfig)` was added
+* `withVmImage(java.lang.String)` was added
 * `withReverseProxyCertificateCommonNames(models.ServerCertificateCommonNames)` was added
+* `withDiagnosticsStorageAccountConfig(models.DiagnosticsStorageAccountConfig)` was added
+* `withEnableHttpGatewayExclusiveAuthMode(java.lang.Boolean)` was added
 * `withManagementEndpoint(java.lang.String)` was added
 * `withAzureActiveDirectory(models.AzureActiveDirectory)` was added
-* `withVmImage(java.lang.String)` was added
-* `withEnableHttpGatewayExclusiveAuthMode(java.lang.Boolean)` was added
 
 #### `models.ClusterUpdateParameters` was modified
 
-* `withEnableHttpGatewayExclusiveAuthMode(java.lang.Boolean)` was added
 * `enableHttpGatewayExclusiveAuthMode()` was added
+* `withEnableHttpGatewayExclusiveAuthMode(java.lang.Boolean)` was added
 
 #### `models.ServiceResourceUpdate` was modified
 
@@ -314,8 +304,12 @@
 
 #### `models.NodeTypeDescription` was modified
 
-* `withHttpGatewayTokenAuthEndpointPort(java.lang.Integer)` was added
 * `httpGatewayTokenAuthEndpointPort()` was added
+* `withHttpGatewayTokenAuthEndpointPort(java.lang.Integer)` was added
+
+#### `models.ManagedIdentityType` was modified
+
+* `ManagedIdentityType()` was added
 
 #### `models.ClusterCodeVersionsResult` was modified
 
@@ -331,14 +325,14 @@
 
 #### `models.ApplicationResource$Update` was modified
 
-* `withTags(java.util.Map)` was added
 * `withTypeName(java.lang.String)` was added
-* `withIdentity(models.ManagedServiceIdentity)` was added
+* `withIdentity(models.ManagedIdentity)` was added
+* `withTags(java.util.Map)` was added
 
 #### `models.Clusters` was modified
 
-* `update(java.lang.String,java.lang.String,models.ClusterUpdateParameters,com.azure.core.util.Context)` was added
 * `update(java.lang.String,java.lang.String,models.ClusterUpdateParameters)` was added
+* `update(java.lang.String,java.lang.String,models.ClusterUpdateParameters,com.azure.core.util.Context)` was added
 
 #### `models.ServiceResource$Update` was modified
 
