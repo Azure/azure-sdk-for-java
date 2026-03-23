@@ -26,14 +26,10 @@ pr:
       - sdk/containerservice/pom.xml
 
 parameters:
-  - name: release_azureresourcemanagercontainerservice
-    displayName: azure-resourcemanager-containerservice
-    type: boolean
-    default: false
-  - name: release_azureresourcemanagercontainerservicegenerated
-    displayName: azure-resourcemanager-containerservice-generated
-    type: boolean
-    default: false
+- name: release_azureresourcemanagercontainerservice
+  displayName: 'azure-resourcemanager-containerservice'
+  type: boolean
+  default: false
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -44,7 +40,3 @@ extends:
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagercontainerservice
         releaseInBatch: ${{ parameters.release_azureresourcemanagercontainerservice }}
-      - name: azure-resourcemanager-containerservice-generated
-        groupId: com.azure.resourcemanager
-        safeName: azureresourcemanagercontainerservicegenerated
-        releaseInBatch: ${{ parameters.release_azureresourcemanagercontainerservicegenerated }}
