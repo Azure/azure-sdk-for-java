@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class DownloadContentAsyncUnitTests {
 
     private static final String CONTENTS = "VideoContents";
-    private static final String AMS_ENDPOINT = "https://url.com";
+    private static final String AMS_ENDPOINT = "https://url.asm.skype.com";
 
     private CallRecordingAsync callRecording;
 
