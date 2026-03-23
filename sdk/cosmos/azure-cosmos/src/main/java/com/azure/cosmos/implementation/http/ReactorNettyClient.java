@@ -168,10 +168,16 @@ public class ReactorNettyClient implements HttpClient {
                     // Install HTTP/2 PING health checker on the parent TCP channel.
                     // doOnConnected fires for the parent H2 connection; installOnParentIfAbsent
                     // ensures the handler is added exactly once per parent connection.
+                    // Also stamps per-connection expiry (baseMaxLifetime + jitter) for the eviction predicate.
                     int pingIntervalSeconds = Configs.getHttp2PingIntervalInSeconds();
                     if (pingIntervalSeconds > 0) {
+                        int maxLifetimeSeconds = Configs.getHttpConnectionMaxLifetimeInSeconds();
+                        int jitterRangeSeconds = Configs.HTTP_CONNECTION_MAX_LIFETIME_JITTER_IN_SECONDS;
                         Http2PingHealthHandler.installOnParentIfAbsent(
-                            connection.channel(), pingIntervalSeconds * 1000L);
+                            connection.channel(),
+                            pingIntervalSeconds * 1000L,
+                            maxLifetimeSeconds > 0 ? maxLifetimeSeconds * 1000L : 0,
+                            jitterRangeSeconds * 1000L);
                     }
                 }));
         }
