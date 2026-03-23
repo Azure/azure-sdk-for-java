@@ -15,43 +15,42 @@ public final class ApplicationResourceListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApplicationResourceList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"wbpokulpiujwaasi\",\"typeName\":\"i\",\"typeVersion\":\"byuqerpqlp\",\"parameters\":{\"t\":\"ciuqgbdb\",\"mhykojoxafnndl\":\"uvfbtkuwh\",\"kkpwdreqnovvq\":\"ichkoymkcdyhb\",\"syrsndsytgadgvra\":\"ovljxywsu\"},\"upgradePolicy\":{\"upgradeReplicaSetCheckTimeout\":\"neqn\",\"forceRestart\":true,\"rollingUpgradeMonitoringPolicy\":{\"failureAction\":\"Manual\",\"healthCheckWaitDuration\":\"uu\",\"healthCheckStableDuration\":\"fqka\",\"healthCheckRetryTimeout\":\"wiipfpub\",\"upgradeTimeout\":\"bwwift\",\"upgradeDomainTimeout\":\"qkvpuvksgplsakn\"},\"applicationHealthPolicy\":{\"considerWarningAsError\":true,\"maxPercentUnhealthyDeployedApplications\":10368328,\"defaultServiceTypeHealthPolicy\":{},\"serviceTypeHealthPolicyMap\":{\"huopxodlqiynto\":{}}},\"upgradeMode\":\"UnmonitoredAuto\",\"recreateApplication\":true},\"minimumNodes\":7214726266840032976,\"maximumNodes\":6516526116347833160,\"removeApplicationCapacity\":true,\"metrics\":[{\"name\":\"yzrpzbchckqqzq\",\"maximumCapacity\":2883333077456564654,\"reservationCapacity\":5019226881517033472,\"totalApplicationCapacity\":335810871861495992},{\"name\":\"nkedyatrwyhqmib\",\"maximumCapacity\":3831030822063036154,\"reservationCapacity\":3835671102059625578,\"totalApplicationCapacity\":5859643880021118717},{\"name\":\"ynpcdpumnzgmwznm\",\"maximumCapacity\":559257102745250984,\"reservationCapacity\":4706804969500995125,\"totalApplicationCapacity\":1220872931019622796},{\"name\":\"xbldtlwwrlkdmtn\",\"maximumCapacity\":1432676738631996688,\"reservationCapacity\":6962891099773209923,\"totalApplicationCapacity\":2765803061420771171}],\"managedIdentities\":[{\"name\":\"gsyocogj\",\"principalId\":\"tdtbnnhadooc\"}]},\"identity\":{\"principalId\":\"cikhnv\",\"tenantId\":\"mqg\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"ccjzkzivgvv\":{\"principalId\":\"ik\",\"clientId\":\"ggxkallatmelwuip\"},\"kwqqtchealmf\":{\"principalId\":\"ayrhyrnx\",\"clientId\":\"ueedndrdvs\"},\"piohgwxrtfu\":{\"principalId\":\"d\",\"clientId\":\"ygdvwv\"}}},\"location\":\"epxgyqagvr\",\"tags\":{\"dblx\":\"pkukghi\",\"fnjhfjxwmszkkfo\":\"wi\",\"kzikfjawneaivxwc\":\"rey\",\"fatkld\":\"elpcirelsfeaenwa\"},\"etag\":\"bjhwuaan\",\"id\":\"jos\",\"name\":\"hyoulpjr\",\"type\":\"xagl\"},{\"properties\":{\"provisioningState\":\"mjwosytx\",\"typeName\":\"cskfcktqumiekk\",\"typeVersion\":\"zikhl\",\"parameters\":{\"unygaeqid\":\"hdgqggeb\",\"a\":\"qfatpxllrxcyjm\",\"arm\":\"su\",\"rw\":\"wdmjsjqbjhhyx\"},\"upgradePolicy\":{\"upgradeReplicaSetCheckTimeout\":\"oduhp\",\"forceRestart\":true,\"rollingUpgradeMonitoringPolicy\":{\"failureAction\":\"Manual\",\"healthCheckWaitDuration\":\"re\",\"healthCheckStableDuration\":\"ajxq\",\"healthCheckRetryTimeout\":\"jhkycub\",\"upgradeTimeout\":\"dgssofwqmzqal\",\"upgradeDomainTimeout\":\"mnjijpxacqqudf\"},\"applicationHealthPolicy\":{\"considerWarningAsError\":true,\"maxPercentUnhealthyDeployedApplications\":701185139,\"defaultServiceTypeHealthPolicy\":{},\"serviceTypeHealthPolicyMap\":{\"jyvayffimrzrtuz\":{},\"ogs\":{}}},\"upgradeMode\":\"UnmonitoredAuto\",\"recreateApplication\":true},\"minimumNodes\":3349292627980189663,\"maximumNodes\":2199712032932609839,\"removeApplicationCapacity\":true,\"metrics\":[{\"name\":\"yyceuzsoi\",\"maximumCapacity\":1778964673623605649,\"reservationCapacity\":7807862752001472042,\"totalApplicationCapacity\":7599641624551569114},{\"name\":\"hzv\",\"maximumCapacity\":8358866216552319675,\"reservationCapacity\":2591492749868625461,\"totalApplicationCapacity\":5679594705932183570},{\"name\":\"bpaxhexiilivpdt\",\"maximumCapacity\":62353218674748426,\"reservationCapacity\":233619173932499743,\"totalApplicationCapacity\":3812395507646425429}],\"managedIdentities\":[{\"name\":\"uzf\",\"principalId\":\"squyfxrxxlep\"}]},\"identity\":{\"principalId\":\"mxjezwlw\",\"tenantId\":\"xuqlcvydypat\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"vdkcrodtj\":{\"principalId\":\"kniod\",\"clientId\":\"oebwnujhemms\"},\"f\":{\"principalId\":\"fw\",\"clientId\":\"fltkacjv\"}}},\"location\":\"lfoakg\",\"tags\":{\"pulpqblylsyxk\":\"pagao\",\"zuempsbzkf\":\"jnsjervtiagxsd\",\"dxrbuukzcle\":\"beyvpnqicvinvkjj\"},\"etag\":\"hmlwpaztzpo\",\"id\":\"cckwyfzqwhxxbu\",\"name\":\"qa\",\"type\":\"zfeqztppri\"}],\"nextLink\":\"xorjaltolmncwsob\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"uicpd\",\"typeName\":\"kzzlvmbmpaxmodf\",\"typeVersion\":\"efyw\",\"parameters\":{\"rfouyftaakcpw\":\"fvmwy\",\"nubexk\":\"yzvqt\",\"quxvypomgkop\":\"zksmondj\"},\"upgradePolicy\":{\"upgradeReplicaSetCheckTimeout\":\"ojvpa\",\"forceRestart\":true,\"rollingUpgradeMonitoringPolicy\":{\"failureAction\":\"Rollback\",\"healthCheckWaitDuration\":\"ocmbqfqvmkcxoza\",\"healthCheckStableDuration\":\"helxprglya\",\"healthCheckRetryTimeout\":\"dckcbc\",\"upgradeTimeout\":\"jrjxgciqibrhosx\",\"upgradeDomainTimeout\":\"qrhzoymibmrqyib\"},\"applicationHealthPolicy\":{\"considerWarningAsError\":false,\"maxPercentUnhealthyDeployedApplications\":898647722,\"defaultServiceTypeHealthPolicy\":{},\"serviceTypeHealthPolicyMap\":{\"tmhrkwofyyvoqacp\":{},\"expbtg\":{},\"wbwo\":{},\"nwashrtd\":{}}},\"upgradeMode\":\"Monitored\",\"recreateApplication\":true},\"minimumNodes\":8545363856594134553,\"maximumNodes\":2025396993774877433,\"removeApplicationCapacity\":false,\"metrics\":[{\"name\":\"jwaa\",\"maximumCapacity\":1202571290361403211,\"reservationCapacity\":4704412525137839440,\"totalApplicationCapacity\":2901020239591748865},{\"name\":\"erpqlpqwcciuqg\",\"maximumCapacity\":8266840378456200507,\"reservationCapacity\":7190603076442530209,\"totalApplicationCapacity\":4381546425309848486}],\"managedIdentities\":[{\"name\":\"uwhhmhykojoxafn\",\"principalId\":\"dlpichkoymkcdyhb\"},{\"name\":\"kkpwdreqnovvq\",\"principalId\":\"ovljxywsu\"}]},\"identity\":{\"principalId\":\"rsndsytgadgvra\",\"tenantId\":\"en\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"e\":{\"principalId\":\"rwlqu\",\"clientId\":\"jfqka\"},\"qkvpuvksgplsakn\":{\"principalId\":\"ipfpubji\",\"clientId\":\"wifto\"}}},\"location\":\"fsynljphuop\",\"tags\":{\"osjswsr\":\"lqiyntorzihl\",\"qioxi\":\"slyzrpzbchckqq\",\"wyhqmibzyhwits\":\"suiizynkedyat\"},\"etag\":\"pyy\",\"id\":\"cdpu\",\"name\":\"nzgmwznmabik\",\"type\":\"sorgj\"},{\"properties\":{\"provisioningState\":\"ldtlwwr\",\"typeName\":\"dmtnc\",\"typeVersion\":\"kotl\",\"parameters\":{\"cogjltdtbn\":\"yhgsy\"},\"upgradePolicy\":{\"upgradeReplicaSetCheckTimeout\":\"d\",\"forceRestart\":true,\"rollingUpgradeMonitoringPolicy\":{\"failureAction\":\"Manual\",\"healthCheckWaitDuration\":\"ikhnvpamqgxqq\",\"healthCheckStableDuration\":\"zikywgg\",\"healthCheckRetryTimeout\":\"allatmelwuipic\",\"upgradeTimeout\":\"zkzivgvvcnay\",\"upgradeDomainTimeout\":\"yrnxxmueedn\"},\"applicationHealthPolicy\":{\"considerWarningAsError\":false,\"maxPercentUnhealthyDeployedApplications\":817024636,\"defaultServiceTypeHealthPolicy\":{},\"serviceTypeHealthPolicyMap\":{\"qtc\":{},\"ealmfmtdaaygdvwv\":{}}},\"upgradeMode\":\"UnmonitoredManual\",\"recreateApplication\":true},\"minimumNodes\":4193737199619746585,\"maximumNodes\":9199034685951751946,\"removeApplicationCapacity\":false,\"metrics\":[{\"name\":\"xg\",\"maximumCapacity\":2932477024589855825,\"reservationCapacity\":8204459365601972318,\"totalApplicationCapacity\":4744038705838577883},{\"name\":\"ukghimdblxgw\",\"maximumCapacity\":7611617377471579634,\"reservationCapacity\":4226937584221368790,\"totalApplicationCapacity\":2192828191882361978},{\"name\":\"szkkfoqre\",\"maximumCapacity\":8338807266312513089,\"reservationCapacity\":2185206310902116436,\"totalApplicationCapacity\":2140423423373896312}],\"managedIdentities\":[{\"name\":\"a\",\"principalId\":\"vxwc\"},{\"name\":\"elpcirelsfeaenwa\",\"principalId\":\"fatkld\"},{\"name\":\"xbjhwuaanozjosph\",\"principalId\":\"oulpjrv\"}]},\"identity\":{\"principalId\":\"l\",\"tenantId\":\"imjwosyt\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"yf\":{\"principalId\":\"fcktqumiekke\",\"clientId\":\"ikh\"}}},\"location\":\"dgqggebdu\",\"tags\":{\"xcyjmoadsuvarmy\":\"aeqidbqfatpxll\"},\"etag\":\"mjsjqb\",\"id\":\"hyxxrwlycoduhpk\",\"name\":\"kgymareqnajxqug\",\"type\":\"hky\"}],\"nextLink\":\"beddgssofw\"}")
             .toObject(ApplicationResourceList.class);
-        Assertions.assertEquals(ManagedIdentityType.USER_ASSIGNED, model.value().get(0).identity().type());
-        Assertions.assertEquals("epxgyqagvr", model.value().get(0).location());
-        Assertions.assertEquals("pkukghi", model.value().get(0).tags().get("dblx"));
-        Assertions.assertEquals("i", model.value().get(0).typeName());
-        Assertions.assertEquals("byuqerpqlp", model.value().get(0).typeVersion());
-        Assertions.assertEquals("ciuqgbdb", model.value().get(0).parameters().get("t"));
-        Assertions.assertEquals("neqn", model.value().get(0).upgradePolicy().upgradeReplicaSetCheckTimeout());
+        Assertions.assertEquals(ManagedIdentityType.SYSTEM_ASSIGNED, model.value().get(0).identity().type());
+        Assertions.assertEquals("fsynljphuop", model.value().get(0).location());
+        Assertions.assertEquals("lqiyntorzihl", model.value().get(0).tags().get("osjswsr"));
+        Assertions.assertEquals("kzzlvmbmpaxmodf", model.value().get(0).typeName());
+        Assertions.assertEquals("efyw", model.value().get(0).typeVersion());
+        Assertions.assertEquals("fvmwy", model.value().get(0).parameters().get("rfouyftaakcpw"));
+        Assertions.assertEquals("ojvpa", model.value().get(0).upgradePolicy().upgradeReplicaSetCheckTimeout());
         Assertions.assertTrue(model.value().get(0).upgradePolicy().forceRestart());
-        Assertions.assertEquals(ArmUpgradeFailureAction.MANUAL,
+        Assertions.assertEquals(ArmUpgradeFailureAction.ROLLBACK,
             model.value().get(0).upgradePolicy().rollingUpgradeMonitoringPolicy().failureAction());
-        Assertions.assertEquals("uu",
+        Assertions.assertEquals("ocmbqfqvmkcxoza",
             model.value().get(0).upgradePolicy().rollingUpgradeMonitoringPolicy().healthCheckWaitDuration());
-        Assertions.assertEquals("fqka",
+        Assertions.assertEquals("helxprglya",
             model.value().get(0).upgradePolicy().rollingUpgradeMonitoringPolicy().healthCheckStableDuration());
-        Assertions.assertEquals("wiipfpub",
+        Assertions.assertEquals("dckcbc",
             model.value().get(0).upgradePolicy().rollingUpgradeMonitoringPolicy().healthCheckRetryTimeout());
-        Assertions.assertEquals("bwwift",
+        Assertions.assertEquals("jrjxgciqibrhosx",
             model.value().get(0).upgradePolicy().rollingUpgradeMonitoringPolicy().upgradeTimeout());
-        Assertions.assertEquals("qkvpuvksgplsakn",
+        Assertions.assertEquals("qrhzoymibmrqyib",
             model.value().get(0).upgradePolicy().rollingUpgradeMonitoringPolicy().upgradeDomainTimeout());
-        Assertions.assertTrue(model.value().get(0).upgradePolicy().applicationHealthPolicy().considerWarningAsError());
-        Assertions.assertEquals(10368328,
+        Assertions.assertFalse(model.value().get(0).upgradePolicy().applicationHealthPolicy().considerWarningAsError());
+        Assertions.assertEquals(898647722,
             model.value().get(0).upgradePolicy().applicationHealthPolicy().maxPercentUnhealthyDeployedApplications());
-        Assertions.assertEquals(RollingUpgradeMode.UNMONITORED_AUTO,
-            model.value().get(0).upgradePolicy().upgradeMode());
+        Assertions.assertEquals(RollingUpgradeMode.MONITORED, model.value().get(0).upgradePolicy().upgradeMode());
         Assertions.assertTrue(model.value().get(0).upgradePolicy().recreateApplication());
-        Assertions.assertEquals(7214726266840032976L, model.value().get(0).minimumNodes());
-        Assertions.assertEquals(6516526116347833160L, model.value().get(0).maximumNodes());
-        Assertions.assertTrue(model.value().get(0).removeApplicationCapacity());
-        Assertions.assertEquals("yzrpzbchckqqzq", model.value().get(0).metrics().get(0).name());
-        Assertions.assertEquals(2883333077456564654L, model.value().get(0).metrics().get(0).maximumCapacity());
-        Assertions.assertEquals(5019226881517033472L, model.value().get(0).metrics().get(0).reservationCapacity());
-        Assertions.assertEquals(335810871861495992L, model.value().get(0).metrics().get(0).totalApplicationCapacity());
-        Assertions.assertEquals("gsyocogj", model.value().get(0).managedIdentities().get(0).name());
-        Assertions.assertEquals("tdtbnnhadooc", model.value().get(0).managedIdentities().get(0).principalId());
-        Assertions.assertEquals("xorjaltolmncwsob", model.nextLink());
+        Assertions.assertEquals(8545363856594134553L, model.value().get(0).minimumNodes());
+        Assertions.assertEquals(2025396993774877433L, model.value().get(0).maximumNodes());
+        Assertions.assertFalse(model.value().get(0).removeApplicationCapacity());
+        Assertions.assertEquals("jwaa", model.value().get(0).metrics().get(0).name());
+        Assertions.assertEquals(1202571290361403211L, model.value().get(0).metrics().get(0).maximumCapacity());
+        Assertions.assertEquals(4704412525137839440L, model.value().get(0).metrics().get(0).reservationCapacity());
+        Assertions.assertEquals(2901020239591748865L, model.value().get(0).metrics().get(0).totalApplicationCapacity());
+        Assertions.assertEquals("uwhhmhykojoxafn", model.value().get(0).managedIdentities().get(0).name());
+        Assertions.assertEquals("dlpichkoymkcdyhb", model.value().get(0).managedIdentities().get(0).principalId());
+        Assertions.assertEquals("beddgssofw", model.nextLink());
     }
 }

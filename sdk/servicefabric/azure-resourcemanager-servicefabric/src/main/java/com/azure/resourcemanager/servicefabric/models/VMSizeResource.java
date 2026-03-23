@@ -33,18 +33,18 @@ public interface VMSizeResource {
     String type();
 
     /**
-     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     * 
-     * @return the systemData value.
-     */
-    SystemData systemData();
-
-    /**
      * Gets the properties property: VM Size properties.
      * 
      * @return the properties value.
      */
     VMSize properties();
+
+    /**
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    SystemData systemData();
 
     /**
      * Gets the inner com.azure.resourcemanager.servicefabric.fluent.models.VMSizeResourceInner object.

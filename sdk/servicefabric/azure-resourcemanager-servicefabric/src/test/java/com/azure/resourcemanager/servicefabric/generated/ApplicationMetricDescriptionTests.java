@@ -12,24 +12,24 @@ public final class ApplicationMetricDescriptionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApplicationMetricDescription model = BinaryData.fromString(
-            "{\"name\":\"cxogaokonzm\",\"maximumCapacity\":2991398819380628456,\"reservationCapacity\":8469142941370576820,\"totalApplicationCapacity\":2221156921299108498}")
+            "{\"name\":\"dbh\",\"maximumCapacity\":4869129234818624936,\"reservationCapacity\":2718310291361024894,\"totalApplicationCapacity\":4128477649983650964}")
             .toObject(ApplicationMetricDescription.class);
-        Assertions.assertEquals("cxogaokonzm", model.name());
-        Assertions.assertEquals(2991398819380628456L, model.maximumCapacity());
-        Assertions.assertEquals(8469142941370576820L, model.reservationCapacity());
-        Assertions.assertEquals(2221156921299108498L, model.totalApplicationCapacity());
+        Assertions.assertEquals("dbh", model.name());
+        Assertions.assertEquals(4869129234818624936L, model.maximumCapacity());
+        Assertions.assertEquals(2718310291361024894L, model.reservationCapacity());
+        Assertions.assertEquals(4128477649983650964L, model.totalApplicationCapacity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApplicationMetricDescription model = new ApplicationMetricDescription().withName("cxogaokonzm")
-            .withMaximumCapacity(2991398819380628456L)
-            .withReservationCapacity(8469142941370576820L)
-            .withTotalApplicationCapacity(2221156921299108498L);
+        ApplicationMetricDescription model = new ApplicationMetricDescription().withName("dbh")
+            .withMaximumCapacity(4869129234818624936L)
+            .withReservationCapacity(2718310291361024894L)
+            .withTotalApplicationCapacity(4128477649983650964L);
         model = BinaryData.fromObject(model).toObject(ApplicationMetricDescription.class);
-        Assertions.assertEquals("cxogaokonzm", model.name());
-        Assertions.assertEquals(2991398819380628456L, model.maximumCapacity());
-        Assertions.assertEquals(8469142941370576820L, model.reservationCapacity());
-        Assertions.assertEquals(2221156921299108498L, model.totalApplicationCapacity());
+        Assertions.assertEquals("dbh", model.name());
+        Assertions.assertEquals(4869129234818624936L, model.maximumCapacity());
+        Assertions.assertEquals(2718310291361024894L, model.reservationCapacity());
+        Assertions.assertEquals(4128477649983650964L, model.totalApplicationCapacity());
     }
 }

@@ -24,79 +24,85 @@ public final class ServiceResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServiceResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"serviceKind\":\"ServiceResourceProperties\",\"provisioningState\":\"sdbnwdcfhucqdpf\",\"serviceTypeName\":\"glsbjjc\",\"partitionDescription\":{\"partitionScheme\":\"PartitionSchemeDescription\"},\"servicePackageActivationMode\":\"SharedProcess\",\"serviceDnsName\":\"vtvudutncormr\",\"placementConstraints\":\"qtvcofudflvkgj\",\"correlationScheme\":[{\"scheme\":\"AlignedAffinity\",\"serviceName\":\"knnqvsaznq\"},{\"scheme\":\"Invalid\",\"serviceName\":\"orudsgsa\"}],\"serviceLoadMetrics\":[{\"name\":\"yc\",\"weight\":\"Medium\",\"primaryDefaultLoad\":1064161892,\"secondaryDefaultLoad\":1286362135,\"defaultLoad\":515836708},{\"name\":\"aeburuvdmo\",\"weight\":\"Zero\",\"primaryDefaultLoad\":28452682,\"secondaryDefaultLoad\":866846651,\"defaultLoad\":45388045},{\"name\":\"mqoefkifrvtpuqu\",\"weight\":\"Low\",\"primaryDefaultLoad\":829159187,\"secondaryDefaultLoad\":288305104,\"defaultLoad\":604272323}],\"servicePlacementPolicies\":[{},{}],\"defaultMoveCost\":\"Low\"},\"location\":\"n\",\"tags\":{\"ujitcjedftww\":\"cn\",\"foqouicybx\":\"ezkojvdcp\"},\"etag\":\"zg\",\"id\":\"ufoxc\",\"name\":\"q\",\"type\":\"p\"}")
+            "{\"properties\":{\"serviceKind\":\"ServiceResourceProperties\",\"provisioningState\":\"qal\",\"serviceTypeName\":\"mnjijpxacqqudf\",\"partitionDescription\":{\"partitionScheme\":\"PartitionSchemeDescription\"},\"servicePackageActivationMode\":\"ExclusiveProcess\",\"serviceDnsName\":\"aaabjyvayff\",\"placementConstraints\":\"rzrtuzqogsex\",\"correlationScheme\":[{\"scheme\":\"Invalid\",\"serviceName\":\"dnw\"},{\"scheme\":\"Affinity\",\"serviceName\":\"mewzsyyc\"},{\"scheme\":\"Affinity\",\"serviceName\":\"zsoibjudpfrxtr\"},{\"scheme\":\"Invalid\",\"serviceName\":\"zvaytdwkqbr\"}],\"serviceLoadMetrics\":[{\"name\":\"paxh\",\"weight\":\"High\",\"primaryDefaultLoad\":1604306980,\"secondaryDefaultLoad\":1229152021,\"defaultLoad\":1833047663},{\"name\":\"tiirqtdqoa\",\"weight\":\"Zero\",\"primaryDefaultLoad\":849949401,\"secondaryDefaultLoad\":1556470071,\"defaultLoad\":1294640448},{\"name\":\"uyfxrxxleptramxj\",\"weight\":\"Medium\",\"primaryDefaultLoad\":800812531,\"secondaryDefaultLoad\":2125136939,\"defaultLoad\":2099315083},{\"name\":\"qlcvydy\",\"weight\":\"Low\",\"primaryDefaultLoad\":1972932814,\"secondaryDefaultLoad\":118793173,\"defaultLoad\":2084460640}],\"servicePlacementPolicies\":[{},{},{}],\"defaultMoveCost\":\"Zero\"},\"location\":\"kooebwnu\",\"tags\":{\"wj\":\"mmsbvdkcrodtjin\",\"f\":\"fltkacjv\",\"gaowpulpqblylsyx\":\"dlfoakggkfp\"},\"etag\":\"jnsjervtiagxsd\",\"id\":\"uem\",\"name\":\"sbzkf\",\"type\":\"beyvpnqicvinvkjj\"}")
             .toObject(ServiceResourceInner.class);
-        Assertions.assertEquals("qtvcofudflvkgj", model.properties().placementConstraints());
-        Assertions.assertEquals(ServiceCorrelationScheme.ALIGNED_AFFINITY,
+        Assertions.assertEquals("rzrtuzqogsex", model.properties().placementConstraints());
+        Assertions.assertEquals(ServiceCorrelationScheme.INVALID,
             model.properties().correlationScheme().get(0).scheme());
-        Assertions.assertEquals("knnqvsaznq", model.properties().correlationScheme().get(0).serviceName());
-        Assertions.assertEquals("yc", model.properties().serviceLoadMetrics().get(0).name());
-        Assertions.assertEquals(ServiceLoadMetricWeight.MEDIUM,
-            model.properties().serviceLoadMetrics().get(0).weight());
-        Assertions.assertEquals(1064161892, model.properties().serviceLoadMetrics().get(0).primaryDefaultLoad());
-        Assertions.assertEquals(1286362135, model.properties().serviceLoadMetrics().get(0).secondaryDefaultLoad());
-        Assertions.assertEquals(515836708, model.properties().serviceLoadMetrics().get(0).defaultLoad());
-        Assertions.assertEquals(MoveCost.LOW, model.properties().defaultMoveCost());
-        Assertions.assertEquals("glsbjjc", model.properties().serviceTypeName());
-        Assertions.assertEquals(ArmServicePackageActivationMode.SHARED_PROCESS,
+        Assertions.assertEquals("dnw", model.properties().correlationScheme().get(0).serviceName());
+        Assertions.assertEquals("paxh", model.properties().serviceLoadMetrics().get(0).name());
+        Assertions.assertEquals(ServiceLoadMetricWeight.HIGH, model.properties().serviceLoadMetrics().get(0).weight());
+        Assertions.assertEquals(1604306980, model.properties().serviceLoadMetrics().get(0).primaryDefaultLoad());
+        Assertions.assertEquals(1229152021, model.properties().serviceLoadMetrics().get(0).secondaryDefaultLoad());
+        Assertions.assertEquals(1833047663, model.properties().serviceLoadMetrics().get(0).defaultLoad());
+        Assertions.assertEquals(MoveCost.ZERO, model.properties().defaultMoveCost());
+        Assertions.assertEquals("mnjijpxacqqudf", model.properties().serviceTypeName());
+        Assertions.assertEquals(ArmServicePackageActivationMode.EXCLUSIVE_PROCESS,
             model.properties().servicePackageActivationMode());
-        Assertions.assertEquals("vtvudutncormr", model.properties().serviceDnsName());
-        Assertions.assertEquals("n", model.location());
-        Assertions.assertEquals("cn", model.tags().get("ujitcjedftww"));
+        Assertions.assertEquals("aaabjyvayff", model.properties().serviceDnsName());
+        Assertions.assertEquals("kooebwnu", model.location());
+        Assertions.assertEquals("mmsbvdkcrodtjin", model.tags().get("wj"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceResourceInner model = new ServiceResourceInner()
-            .withProperties(new ServiceResourceProperties().withPlacementConstraints("qtvcofudflvkgj")
-                .withCorrelationScheme(Arrays.asList(
-                    new ServiceCorrelationDescription().withScheme(ServiceCorrelationScheme.ALIGNED_AFFINITY)
-                        .withServiceName("knnqvsaznq"),
-                    new ServiceCorrelationDescription().withScheme(ServiceCorrelationScheme.INVALID)
-                        .withServiceName("orudsgsa")))
-                .withServiceLoadMetrics(Arrays.asList(
-                    new ServiceLoadMetricDescription().withName("yc")
-                        .withWeight(ServiceLoadMetricWeight.MEDIUM)
-                        .withPrimaryDefaultLoad(1064161892)
-                        .withSecondaryDefaultLoad(1286362135)
-                        .withDefaultLoad(515836708),
-                    new ServiceLoadMetricDescription().withName("aeburuvdmo")
-                        .withWeight(ServiceLoadMetricWeight.ZERO)
-                        .withPrimaryDefaultLoad(28452682)
-                        .withSecondaryDefaultLoad(866846651)
-                        .withDefaultLoad(45388045),
-                    new ServiceLoadMetricDescription().withName("mqoefkifrvtpuqu")
-                        .withWeight(ServiceLoadMetricWeight.LOW)
-                        .withPrimaryDefaultLoad(829159187)
-                        .withSecondaryDefaultLoad(288305104)
-                        .withDefaultLoad(604272323)))
-                .withServicePlacementPolicies(
-                    Arrays.asList(new ServicePlacementPolicyDescription(), new ServicePlacementPolicyDescription()))
-                .withDefaultMoveCost(MoveCost.LOW)
-                .withServiceTypeName("glsbjjc")
-                .withPartitionDescription(new PartitionSchemeDescription())
-                .withServicePackageActivationMode(ArmServicePackageActivationMode.SHARED_PROCESS)
-                .withServiceDnsName("vtvudutncormr"))
-            .withLocation("n")
-            .withTags(mapOf("ujitcjedftww", "cn", "foqouicybx", "ezkojvdcp"));
+        ServiceResourceInner model = new ServiceResourceInner().withProperties(new ServiceResourceProperties()
+            .withPlacementConstraints("rzrtuzqogsex")
+            .withCorrelationScheme(Arrays.asList(
+                new ServiceCorrelationDescription().withScheme(ServiceCorrelationScheme.INVALID).withServiceName("dnw"),
+                new ServiceCorrelationDescription().withScheme(ServiceCorrelationScheme.AFFINITY)
+                    .withServiceName("mewzsyyc"),
+                new ServiceCorrelationDescription().withScheme(ServiceCorrelationScheme.AFFINITY)
+                    .withServiceName("zsoibjudpfrxtr"),
+                new ServiceCorrelationDescription().withScheme(ServiceCorrelationScheme.INVALID)
+                    .withServiceName("zvaytdwkqbr")))
+            .withServiceLoadMetrics(Arrays.asList(
+                new ServiceLoadMetricDescription().withName("paxh")
+                    .withWeight(ServiceLoadMetricWeight.HIGH)
+                    .withPrimaryDefaultLoad(1604306980)
+                    .withSecondaryDefaultLoad(1229152021)
+                    .withDefaultLoad(1833047663),
+                new ServiceLoadMetricDescription().withName("tiirqtdqoa")
+                    .withWeight(ServiceLoadMetricWeight.ZERO)
+                    .withPrimaryDefaultLoad(849949401)
+                    .withSecondaryDefaultLoad(1556470071)
+                    .withDefaultLoad(1294640448),
+                new ServiceLoadMetricDescription().withName("uyfxrxxleptramxj")
+                    .withWeight(ServiceLoadMetricWeight.MEDIUM)
+                    .withPrimaryDefaultLoad(800812531)
+                    .withSecondaryDefaultLoad(2125136939)
+                    .withDefaultLoad(2099315083),
+                new ServiceLoadMetricDescription().withName("qlcvydy")
+                    .withWeight(ServiceLoadMetricWeight.LOW)
+                    .withPrimaryDefaultLoad(1972932814)
+                    .withSecondaryDefaultLoad(118793173)
+                    .withDefaultLoad(2084460640)))
+            .withServicePlacementPolicies(Arrays.asList(new ServicePlacementPolicyDescription(),
+                new ServicePlacementPolicyDescription(), new ServicePlacementPolicyDescription()))
+            .withDefaultMoveCost(MoveCost.ZERO)
+            .withServiceTypeName("mnjijpxacqqudf")
+            .withPartitionDescription(new PartitionSchemeDescription())
+            .withServicePackageActivationMode(ArmServicePackageActivationMode.EXCLUSIVE_PROCESS)
+            .withServiceDnsName("aaabjyvayff"))
+            .withLocation("kooebwnu")
+            .withTags(mapOf("wj", "mmsbvdkcrodtjin", "f", "fltkacjv", "gaowpulpqblylsyx", "dlfoakggkfp"));
         model = BinaryData.fromObject(model).toObject(ServiceResourceInner.class);
-        Assertions.assertEquals("qtvcofudflvkgj", model.properties().placementConstraints());
-        Assertions.assertEquals(ServiceCorrelationScheme.ALIGNED_AFFINITY,
+        Assertions.assertEquals("rzrtuzqogsex", model.properties().placementConstraints());
+        Assertions.assertEquals(ServiceCorrelationScheme.INVALID,
             model.properties().correlationScheme().get(0).scheme());
-        Assertions.assertEquals("knnqvsaznq", model.properties().correlationScheme().get(0).serviceName());
-        Assertions.assertEquals("yc", model.properties().serviceLoadMetrics().get(0).name());
-        Assertions.assertEquals(ServiceLoadMetricWeight.MEDIUM,
-            model.properties().serviceLoadMetrics().get(0).weight());
-        Assertions.assertEquals(1064161892, model.properties().serviceLoadMetrics().get(0).primaryDefaultLoad());
-        Assertions.assertEquals(1286362135, model.properties().serviceLoadMetrics().get(0).secondaryDefaultLoad());
-        Assertions.assertEquals(515836708, model.properties().serviceLoadMetrics().get(0).defaultLoad());
-        Assertions.assertEquals(MoveCost.LOW, model.properties().defaultMoveCost());
-        Assertions.assertEquals("glsbjjc", model.properties().serviceTypeName());
-        Assertions.assertEquals(ArmServicePackageActivationMode.SHARED_PROCESS,
+        Assertions.assertEquals("dnw", model.properties().correlationScheme().get(0).serviceName());
+        Assertions.assertEquals("paxh", model.properties().serviceLoadMetrics().get(0).name());
+        Assertions.assertEquals(ServiceLoadMetricWeight.HIGH, model.properties().serviceLoadMetrics().get(0).weight());
+        Assertions.assertEquals(1604306980, model.properties().serviceLoadMetrics().get(0).primaryDefaultLoad());
+        Assertions.assertEquals(1229152021, model.properties().serviceLoadMetrics().get(0).secondaryDefaultLoad());
+        Assertions.assertEquals(1833047663, model.properties().serviceLoadMetrics().get(0).defaultLoad());
+        Assertions.assertEquals(MoveCost.ZERO, model.properties().defaultMoveCost());
+        Assertions.assertEquals("mnjijpxacqqudf", model.properties().serviceTypeName());
+        Assertions.assertEquals(ArmServicePackageActivationMode.EXCLUSIVE_PROCESS,
             model.properties().servicePackageActivationMode());
-        Assertions.assertEquals("vtvudutncormr", model.properties().serviceDnsName());
-        Assertions.assertEquals("n", model.location());
-        Assertions.assertEquals("cn", model.tags().get("ujitcjedftww"));
+        Assertions.assertEquals("aaabjyvayff", model.properties().serviceDnsName());
+        Assertions.assertEquals("kooebwnu", model.location());
+        Assertions.assertEquals("mmsbvdkcrodtjin", model.tags().get("wj"));
     }
 
     // Use "Map.of" if available

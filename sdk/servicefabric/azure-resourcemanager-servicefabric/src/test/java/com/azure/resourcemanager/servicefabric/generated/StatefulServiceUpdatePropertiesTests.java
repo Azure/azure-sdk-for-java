@@ -20,74 +20,71 @@ public final class StatefulServiceUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StatefulServiceUpdateProperties model = BinaryData.fromString(
-            "{\"serviceKind\":\"Stateful\",\"targetReplicaSetSize\":1756672367,\"minReplicaSetSize\":401482588,\"replicaRestartWaitDuration\":\"2021-01-22T23:27:50Z\",\"quorumLossWaitDuration\":\"2021-07-19T10:32:01Z\",\"standByReplicaKeepDuration\":\"2021-04-12T00:35:59Z\",\"placementConstraints\":\"sexso\",\"correlationScheme\":[{\"scheme\":\"AlignedAffinity\",\"serviceName\":\"uqhhahhxvrh\"}],\"serviceLoadMetrics\":[{\"name\":\"wpjgwws\",\"weight\":\"High\",\"primaryDefaultLoad\":1207010106,\"secondaryDefaultLoad\":334008363,\"defaultLoad\":1898497705},{\"name\":\"hqxujxukndxdi\",\"weight\":\"Low\",\"primaryDefaultLoad\":1599924393,\"secondaryDefaultLoad\":1040551397,\"defaultLoad\":1159016951},{\"name\":\"msyqtfi\",\"weight\":\"High\",\"primaryDefaultLoad\":970693674,\"secondaryDefaultLoad\":110136090,\"defaultLoad\":562718876},{\"name\":\"gamv\",\"weight\":\"Zero\",\"primaryDefaultLoad\":897249136,\"secondaryDefaultLoad\":1799279870,\"defaultLoad\":1534302042}],\"servicePlacementPolicies\":[{},{},{},{}],\"defaultMoveCost\":\"High\"}")
+            "{\"serviceKind\":\"Stateful\",\"targetReplicaSetSize\":1905526604,\"minReplicaSetSize\":1093949584,\"replicaRestartWaitDuration\":\"2021-02-11T03:05:15Z\",\"quorumLossWaitDuration\":\"2021-07-04T05:46:22Z\",\"standByReplicaKeepDuration\":\"2021-03-04T04:22:45Z\",\"placementConstraints\":\"vfvpdbodaciz\",\"correlationScheme\":[{\"scheme\":\"NonAlignedAffinity\",\"serviceName\":\"hkr\"}],\"serviceLoadMetrics\":[{\"name\":\"deibqip\",\"weight\":\"High\",\"primaryDefaultLoad\":1234217414,\"secondaryDefaultLoad\":370586550,\"defaultLoad\":939289474},{\"name\":\"wm\",\"weight\":\"Low\",\"primaryDefaultLoad\":1155749150,\"secondaryDefaultLoad\":754811246,\"defaultLoad\":1983061775},{\"name\":\"rwkq\",\"weight\":\"Low\",\"primaryDefaultLoad\":234711061,\"secondaryDefaultLoad\":132694968,\"defaultLoad\":809935790}],\"servicePlacementPolicies\":[{},{}],\"defaultMoveCost\":\"Low\"}")
             .toObject(StatefulServiceUpdateProperties.class);
-        Assertions.assertEquals("sexso", model.placementConstraints());
-        Assertions.assertEquals(ServiceCorrelationScheme.ALIGNED_AFFINITY, model.correlationScheme().get(0).scheme());
-        Assertions.assertEquals("uqhhahhxvrh", model.correlationScheme().get(0).serviceName());
-        Assertions.assertEquals("wpjgwws", model.serviceLoadMetrics().get(0).name());
+        Assertions.assertEquals("vfvpdbodaciz", model.placementConstraints());
+        Assertions.assertEquals(ServiceCorrelationScheme.NON_ALIGNED_AFFINITY,
+            model.correlationScheme().get(0).scheme());
+        Assertions.assertEquals("hkr", model.correlationScheme().get(0).serviceName());
+        Assertions.assertEquals("deibqip", model.serviceLoadMetrics().get(0).name());
         Assertions.assertEquals(ServiceLoadMetricWeight.HIGH, model.serviceLoadMetrics().get(0).weight());
-        Assertions.assertEquals(1207010106, model.serviceLoadMetrics().get(0).primaryDefaultLoad());
-        Assertions.assertEquals(334008363, model.serviceLoadMetrics().get(0).secondaryDefaultLoad());
-        Assertions.assertEquals(1898497705, model.serviceLoadMetrics().get(0).defaultLoad());
-        Assertions.assertEquals(MoveCost.HIGH, model.defaultMoveCost());
-        Assertions.assertEquals(1756672367, model.targetReplicaSetSize());
-        Assertions.assertEquals(401482588, model.minReplicaSetSize());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-22T23:27:50Z"), model.replicaRestartWaitDuration());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-19T10:32:01Z"), model.quorumLossWaitDuration());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-12T00:35:59Z"), model.standByReplicaKeepDuration());
+        Assertions.assertEquals(1234217414, model.serviceLoadMetrics().get(0).primaryDefaultLoad());
+        Assertions.assertEquals(370586550, model.serviceLoadMetrics().get(0).secondaryDefaultLoad());
+        Assertions.assertEquals(939289474, model.serviceLoadMetrics().get(0).defaultLoad());
+        Assertions.assertEquals(MoveCost.LOW, model.defaultMoveCost());
+        Assertions.assertEquals(1905526604, model.targetReplicaSetSize());
+        Assertions.assertEquals(1093949584, model.minReplicaSetSize());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-11T03:05:15Z"), model.replicaRestartWaitDuration());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-04T05:46:22Z"), model.quorumLossWaitDuration());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-04T04:22:45Z"), model.standByReplicaKeepDuration());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StatefulServiceUpdateProperties model = new StatefulServiceUpdateProperties().withPlacementConstraints("sexso")
-            .withCorrelationScheme(
-                Arrays.asList(new ServiceCorrelationDescription().withScheme(ServiceCorrelationScheme.ALIGNED_AFFINITY)
-                    .withServiceName("uqhhahhxvrh")))
+        StatefulServiceUpdateProperties model = new StatefulServiceUpdateProperties()
+            .withPlacementConstraints("vfvpdbodaciz")
+            .withCorrelationScheme(Arrays
+                .asList(new ServiceCorrelationDescription().withScheme(ServiceCorrelationScheme.NON_ALIGNED_AFFINITY)
+                    .withServiceName("hkr")))
             .withServiceLoadMetrics(Arrays.asList(
-                new ServiceLoadMetricDescription().withName("wpjgwws")
+                new ServiceLoadMetricDescription().withName("deibqip")
                     .withWeight(ServiceLoadMetricWeight.HIGH)
-                    .withPrimaryDefaultLoad(1207010106)
-                    .withSecondaryDefaultLoad(334008363)
-                    .withDefaultLoad(1898497705),
-                new ServiceLoadMetricDescription().withName("hqxujxukndxdi")
+                    .withPrimaryDefaultLoad(1234217414)
+                    .withSecondaryDefaultLoad(370586550)
+                    .withDefaultLoad(939289474),
+                new ServiceLoadMetricDescription().withName("wm")
                     .withWeight(ServiceLoadMetricWeight.LOW)
-                    .withPrimaryDefaultLoad(1599924393)
-                    .withSecondaryDefaultLoad(1040551397)
-                    .withDefaultLoad(1159016951),
-                new ServiceLoadMetricDescription().withName("msyqtfi")
-                    .withWeight(ServiceLoadMetricWeight.HIGH)
-                    .withPrimaryDefaultLoad(970693674)
-                    .withSecondaryDefaultLoad(110136090)
-                    .withDefaultLoad(562718876),
-                new ServiceLoadMetricDescription().withName("gamv")
-                    .withWeight(ServiceLoadMetricWeight.ZERO)
-                    .withPrimaryDefaultLoad(897249136)
-                    .withSecondaryDefaultLoad(1799279870)
-                    .withDefaultLoad(1534302042)))
+                    .withPrimaryDefaultLoad(1155749150)
+                    .withSecondaryDefaultLoad(754811246)
+                    .withDefaultLoad(1983061775),
+                new ServiceLoadMetricDescription().withName("rwkq")
+                    .withWeight(ServiceLoadMetricWeight.LOW)
+                    .withPrimaryDefaultLoad(234711061)
+                    .withSecondaryDefaultLoad(132694968)
+                    .withDefaultLoad(809935790)))
             .withServicePlacementPolicies(
-                Arrays.asList(new ServicePlacementPolicyDescription(), new ServicePlacementPolicyDescription(),
-                    new ServicePlacementPolicyDescription(), new ServicePlacementPolicyDescription()))
-            .withDefaultMoveCost(MoveCost.HIGH)
-            .withTargetReplicaSetSize(1756672367)
-            .withMinReplicaSetSize(401482588)
-            .withReplicaRestartWaitDuration(OffsetDateTime.parse("2021-01-22T23:27:50Z"))
-            .withQuorumLossWaitDuration(OffsetDateTime.parse("2021-07-19T10:32:01Z"))
-            .withStandByReplicaKeepDuration(OffsetDateTime.parse("2021-04-12T00:35:59Z"));
+                Arrays.asList(new ServicePlacementPolicyDescription(), new ServicePlacementPolicyDescription()))
+            .withDefaultMoveCost(MoveCost.LOW)
+            .withTargetReplicaSetSize(1905526604)
+            .withMinReplicaSetSize(1093949584)
+            .withReplicaRestartWaitDuration(OffsetDateTime.parse("2021-02-11T03:05:15Z"))
+            .withQuorumLossWaitDuration(OffsetDateTime.parse("2021-07-04T05:46:22Z"))
+            .withStandByReplicaKeepDuration(OffsetDateTime.parse("2021-03-04T04:22:45Z"));
         model = BinaryData.fromObject(model).toObject(StatefulServiceUpdateProperties.class);
-        Assertions.assertEquals("sexso", model.placementConstraints());
-        Assertions.assertEquals(ServiceCorrelationScheme.ALIGNED_AFFINITY, model.correlationScheme().get(0).scheme());
-        Assertions.assertEquals("uqhhahhxvrh", model.correlationScheme().get(0).serviceName());
-        Assertions.assertEquals("wpjgwws", model.serviceLoadMetrics().get(0).name());
+        Assertions.assertEquals("vfvpdbodaciz", model.placementConstraints());
+        Assertions.assertEquals(ServiceCorrelationScheme.NON_ALIGNED_AFFINITY,
+            model.correlationScheme().get(0).scheme());
+        Assertions.assertEquals("hkr", model.correlationScheme().get(0).serviceName());
+        Assertions.assertEquals("deibqip", model.serviceLoadMetrics().get(0).name());
         Assertions.assertEquals(ServiceLoadMetricWeight.HIGH, model.serviceLoadMetrics().get(0).weight());
-        Assertions.assertEquals(1207010106, model.serviceLoadMetrics().get(0).primaryDefaultLoad());
-        Assertions.assertEquals(334008363, model.serviceLoadMetrics().get(0).secondaryDefaultLoad());
-        Assertions.assertEquals(1898497705, model.serviceLoadMetrics().get(0).defaultLoad());
-        Assertions.assertEquals(MoveCost.HIGH, model.defaultMoveCost());
-        Assertions.assertEquals(1756672367, model.targetReplicaSetSize());
-        Assertions.assertEquals(401482588, model.minReplicaSetSize());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-22T23:27:50Z"), model.replicaRestartWaitDuration());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-19T10:32:01Z"), model.quorumLossWaitDuration());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-12T00:35:59Z"), model.standByReplicaKeepDuration());
+        Assertions.assertEquals(1234217414, model.serviceLoadMetrics().get(0).primaryDefaultLoad());
+        Assertions.assertEquals(370586550, model.serviceLoadMetrics().get(0).secondaryDefaultLoad());
+        Assertions.assertEquals(939289474, model.serviceLoadMetrics().get(0).defaultLoad());
+        Assertions.assertEquals(MoveCost.LOW, model.defaultMoveCost());
+        Assertions.assertEquals(1905526604, model.targetReplicaSetSize());
+        Assertions.assertEquals(1093949584, model.minReplicaSetSize());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-11T03:05:15Z"), model.replicaRestartWaitDuration());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-04T05:46:22Z"), model.quorumLossWaitDuration());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-04T04:22:45Z"), model.standByReplicaKeepDuration());
     }
 }

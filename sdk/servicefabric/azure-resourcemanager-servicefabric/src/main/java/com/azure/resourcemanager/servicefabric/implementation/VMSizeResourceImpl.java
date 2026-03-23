@@ -32,12 +32,12 @@ public final class VMSizeResourceImpl implements VMSizeResource {
         return this.innerModel().type();
     }
 
-    public SystemData systemData() {
-        return this.innerModel().systemData();
-    }
-
     public VMSize properties() {
         return this.innerModel().properties();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public VMSizeResourceInner innerModel() {

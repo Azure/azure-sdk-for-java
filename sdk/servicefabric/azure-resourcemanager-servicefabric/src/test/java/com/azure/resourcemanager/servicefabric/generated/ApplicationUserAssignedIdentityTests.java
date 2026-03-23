@@ -11,19 +11,18 @@ import org.junit.jupiter.api.Assertions;
 public final class ApplicationUserAssignedIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApplicationUserAssignedIdentity model
-            = BinaryData.fromString("{\"name\":\"qqkdltfzxmhhvhgu\",\"principalId\":\"eodkwobda\"}")
-                .toObject(ApplicationUserAssignedIdentity.class);
-        Assertions.assertEquals("qqkdltfzxmhhvhgu", model.name());
-        Assertions.assertEquals("eodkwobda", model.principalId());
+        ApplicationUserAssignedIdentity model = BinaryData.fromString("{\"name\":\"rsc\",\"principalId\":\"ntnev\"}")
+            .toObject(ApplicationUserAssignedIdentity.class);
+        Assertions.assertEquals("rsc", model.name());
+        Assertions.assertEquals("ntnev", model.principalId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ApplicationUserAssignedIdentity model
-            = new ApplicationUserAssignedIdentity().withName("qqkdltfzxmhhvhgu").withPrincipalId("eodkwobda");
+            = new ApplicationUserAssignedIdentity().withName("rsc").withPrincipalId("ntnev");
         model = BinaryData.fromObject(model).toObject(ApplicationUserAssignedIdentity.class);
-        Assertions.assertEquals("qqkdltfzxmhhvhgu", model.name());
-        Assertions.assertEquals("eodkwobda", model.principalId());
+        Assertions.assertEquals("rsc", model.name());
+        Assertions.assertEquals("ntnev", model.principalId());
     }
 }

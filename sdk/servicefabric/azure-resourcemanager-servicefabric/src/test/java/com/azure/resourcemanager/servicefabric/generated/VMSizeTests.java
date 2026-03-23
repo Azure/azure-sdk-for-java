@@ -10,6 +10,6 @@ import com.azure.resourcemanager.servicefabric.models.VMSize;
 public final class VMSizeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VMSize model = BinaryData.fromString("{\"size\":\"cbonqvpk\"}").toObject(VMSize.class);
+        VMSize model = BinaryData.fromString("{\"size\":\"al\"}").toObject(VMSize.class);
     }
 }

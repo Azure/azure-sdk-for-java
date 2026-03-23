@@ -13,27 +13,27 @@ public final class ServiceLoadMetricDescriptionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServiceLoadMetricDescription model = BinaryData.fromString(
-            "{\"name\":\"izsjqlhkrr\",\"weight\":\"Low\",\"primaryDefaultLoad\":1915789936,\"secondaryDefaultLoad\":961472543,\"defaultLoad\":207210136}")
+            "{\"name\":\"iuiefozbhdmsm\",\"weight\":\"Low\",\"primaryDefaultLoad\":1130868680,\"secondaryDefaultLoad\":280296096,\"defaultLoad\":1411362875}")
             .toObject(ServiceLoadMetricDescription.class);
-        Assertions.assertEquals("izsjqlhkrr", model.name());
+        Assertions.assertEquals("iuiefozbhdmsm", model.name());
         Assertions.assertEquals(ServiceLoadMetricWeight.LOW, model.weight());
-        Assertions.assertEquals(1915789936, model.primaryDefaultLoad());
-        Assertions.assertEquals(961472543, model.secondaryDefaultLoad());
-        Assertions.assertEquals(207210136, model.defaultLoad());
+        Assertions.assertEquals(1130868680, model.primaryDefaultLoad());
+        Assertions.assertEquals(280296096, model.secondaryDefaultLoad());
+        Assertions.assertEquals(1411362875, model.defaultLoad());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceLoadMetricDescription model = new ServiceLoadMetricDescription().withName("izsjqlhkrr")
+        ServiceLoadMetricDescription model = new ServiceLoadMetricDescription().withName("iuiefozbhdmsm")
             .withWeight(ServiceLoadMetricWeight.LOW)
-            .withPrimaryDefaultLoad(1915789936)
-            .withSecondaryDefaultLoad(961472543)
-            .withDefaultLoad(207210136);
+            .withPrimaryDefaultLoad(1130868680)
+            .withSecondaryDefaultLoad(280296096)
+            .withDefaultLoad(1411362875);
         model = BinaryData.fromObject(model).toObject(ServiceLoadMetricDescription.class);
-        Assertions.assertEquals("izsjqlhkrr", model.name());
+        Assertions.assertEquals("iuiefozbhdmsm", model.name());
         Assertions.assertEquals(ServiceLoadMetricWeight.LOW, model.weight());
-        Assertions.assertEquals(1915789936, model.primaryDefaultLoad());
-        Assertions.assertEquals(961472543, model.secondaryDefaultLoad());
-        Assertions.assertEquals(207210136, model.defaultLoad());
+        Assertions.assertEquals(1130868680, model.primaryDefaultLoad());
+        Assertions.assertEquals(280296096, model.secondaryDefaultLoad());
+        Assertions.assertEquals(1411362875, model.defaultLoad());
     }
 }

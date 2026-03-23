@@ -96,11 +96,11 @@
 #### `models.AvailableOperationDisplay` was modified
 
 * `AvailableOperationDisplay()` was changed to private access
-* `withOperation(java.lang.String)` was removed
-* `withProvider(java.lang.String)` was removed
 * `validate()` was removed
 * `withDescription(java.lang.String)` was removed
 * `withResource(java.lang.String)` was removed
+* `withProvider(java.lang.String)` was removed
+* `withOperation(java.lang.String)` was removed
 
 #### `models.NodeTypeDescription` was modified
 
@@ -113,12 +113,12 @@
 #### `models.ClusterCodeVersionsResult` was modified
 
 * `ClusterCodeVersionsResult()` was changed to private access
-* `withEnvironment(models.ClusterEnvironment)` was removed
 * `withId(java.lang.String)` was removed
-* `validate()` was removed
+* `withType(java.lang.String)` was removed
+* `withEnvironment(models.ClusterEnvironment)` was removed
 * `withName(java.lang.String)` was removed
 * `withCodeVersion(java.lang.String)` was removed
-* `withType(java.lang.String)` was removed
+* `validate()` was removed
 * `withSupportExpiryUtc(java.lang.String)` was removed
 
 #### `models.ApplicationUpgradePolicy` was modified
@@ -223,8 +223,8 @@
 
 #### `models.ServicePlacementPolicyDescription` was modified
 
-* `type()` was removed
 * `validate()` was removed
+* `type()` was removed
 
 #### `models.ClusterUpgradeDeltaHealthPolicy` was modified
 
@@ -236,8 +236,6 @@
 
 * `models.UnsupportedVmSizes` was added
 
-* `models.ArmProxyResource` was added
-
 * `models.VMSize` was added
 
 #### `models.Cluster$Definition` was modified
@@ -246,10 +244,10 @@
 
 #### `models.StatelessServiceProperties` was modified
 
-* `minInstancePercentage()` was added
 * `minInstanceCount()` was added
-* `withMinInstancePercentage(byte[])` was added
 * `withMinInstanceCount(java.lang.Integer)` was added
+* `minInstancePercentage()` was added
+* `withMinInstancePercentage(byte[])` was added
 
 #### `models.ApplicationResourceUpdate` was modified
 

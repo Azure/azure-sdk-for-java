@@ -14,23 +14,22 @@ public final class ApplicationTypeVersionResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApplicationTypeVersionResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"ejzicwifsjtt\",\"appPackageUrl\":\"zfbishcbkhaj\",\"defaultParameterList\":{\"agalpbuxwgipwhon\":\"eamdp\",\"kix\":\"wkgshwa\",\"eputtmrywnuzoqf\":\"bin\",\"qvyxlwhzlsicoho\":\"iyqzrnk\"}},\"location\":\"nwvlryavwhheunmm\",\"tags\":{\"noc\":\"yxzk\",\"uconuqszfkbey\":\"koklya\"},\"etag\":\"wrmjmwvvjektc\",\"id\":\"enhwlrs\",\"name\":\"frzpwvlqdqgb\",\"type\":\"qylihkaetckt\"}")
+            "{\"properties\":{\"provisioningState\":\"xxbczwtr\",\"appPackageUrl\":\"wiqzbqjvsovmyo\",\"defaultParameterList\":{\"lb\":\"spkwlhzdobpxjm\",\"wzjuqk\":\"vnchrkcci\",\"iwkuofos\":\"rsa\",\"ugidyjrr\":\"ghsauuimjmvxied\"}},\"location\":\"y\",\"tags\":{\"xc\":\"v\",\"hocohslkev\":\"onpc\",\"hfmvfaxkffe\":\"eggzfb\",\"sbbzo\":\"ithlvmezyvshxm\"},\"etag\":\"igrxwburvjxxjn\",\"id\":\"ydptkoen\",\"name\":\"ou\",\"type\":\"nvudwtiukb\"}")
             .toObject(ApplicationTypeVersionResourceInner.class);
-        Assertions.assertEquals("nwvlryavwhheunmm", model.location());
-        Assertions.assertEquals("yxzk", model.tags().get("noc"));
-        Assertions.assertEquals("zfbishcbkhaj", model.appPackageUrl());
+        Assertions.assertEquals("y", model.location());
+        Assertions.assertEquals("v", model.tags().get("xc"));
+        Assertions.assertEquals("wiqzbqjvsovmyo", model.appPackageUrl());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApplicationTypeVersionResourceInner model
-            = new ApplicationTypeVersionResourceInner().withLocation("nwvlryavwhheunmm")
-                .withTags(mapOf("noc", "yxzk", "uconuqszfkbey", "koklya"))
-                .withAppPackageUrl("zfbishcbkhaj");
+        ApplicationTypeVersionResourceInner model = new ApplicationTypeVersionResourceInner().withLocation("y")
+            .withTags(mapOf("xc", "v", "hocohslkev", "onpc", "hfmvfaxkffe", "eggzfb", "sbbzo", "ithlvmezyvshxm"))
+            .withAppPackageUrl("wiqzbqjvsovmyo");
         model = BinaryData.fromObject(model).toObject(ApplicationTypeVersionResourceInner.class);
-        Assertions.assertEquals("nwvlryavwhheunmm", model.location());
-        Assertions.assertEquals("yxzk", model.tags().get("noc"));
-        Assertions.assertEquals("zfbishcbkhaj", model.appPackageUrl());
+        Assertions.assertEquals("y", model.location());
+        Assertions.assertEquals("v", model.tags().get("xc"));
+        Assertions.assertEquals("wiqzbqjvsovmyo", model.appPackageUrl());
     }
 
     // Use "Map.of" if available

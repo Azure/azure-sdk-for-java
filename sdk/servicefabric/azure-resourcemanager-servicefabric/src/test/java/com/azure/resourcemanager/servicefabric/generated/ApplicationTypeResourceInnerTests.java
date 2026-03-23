@@ -14,20 +14,19 @@ public final class ApplicationTypeResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApplicationTypeResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"vfyexfw\"},\"location\":\"bcibvyvdcsitynn\",\"tags\":{\"eypvhezrkg\":\"dectehfiqsc\",\"sle\":\"hcjrefovgmk\",\"cattpngjcrcczsq\":\"yvxyqjp\",\"mdajv\":\"jh\"},\"etag\":\"sounqecanoaeu\",\"id\":\"hy\",\"name\":\"ltrpmopj\",\"type\":\"cma\"}")
+            "{\"properties\":{\"provisioningState\":\"bavo\"},\"location\":\"zdmohctbqvu\",\"tags\":{\"ujjugwdkcglh\":\"dndnvow\"},\"etag\":\"azjdyggd\",\"id\":\"ixhbkuofqweykhm\",\"name\":\"n\",\"type\":\"vfyexfw\"}")
             .toObject(ApplicationTypeResourceInner.class);
-        Assertions.assertEquals("bcibvyvdcsitynn", model.location());
-        Assertions.assertEquals("dectehfiqsc", model.tags().get("eypvhezrkg"));
+        Assertions.assertEquals("zdmohctbqvu", model.location());
+        Assertions.assertEquals("dndnvow", model.tags().get("ujjugwdkcglh"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApplicationTypeResourceInner model = new ApplicationTypeResourceInner().withLocation("bcibvyvdcsitynn")
-            .withTags(
-                mapOf("eypvhezrkg", "dectehfiqsc", "sle", "hcjrefovgmk", "cattpngjcrcczsq", "yvxyqjp", "mdajv", "jh"));
+        ApplicationTypeResourceInner model
+            = new ApplicationTypeResourceInner().withLocation("zdmohctbqvu").withTags(mapOf("ujjugwdkcglh", "dndnvow"));
         model = BinaryData.fromObject(model).toObject(ApplicationTypeResourceInner.class);
-        Assertions.assertEquals("bcibvyvdcsitynn", model.location());
-        Assertions.assertEquals("dectehfiqsc", model.tags().get("eypvhezrkg"));
+        Assertions.assertEquals("zdmohctbqvu", model.location());
+        Assertions.assertEquals("dndnvow", model.tags().get("ujjugwdkcglh"));
     }
 
     // Use "Map.of" if available

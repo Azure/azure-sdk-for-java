@@ -22,7 +22,7 @@ public final class ApplicationTypeVersionsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"dwl\",\"appPackageUrl\":\"w\",\"defaultParameterList\":{\"ubdyhgk\":\"upfgfbk\",\"tsttktlahbq\":\"minsgowzf\"}},\"location\":\"tx\",\"tags\":{\"m\":\"ukxit\",\"qqxhrnxrxcpj\":\"tg\",\"dzf\":\"isavok\",\"atnwxyiopi\":\"azivjlfrqttbajl\"},\"etag\":\"qqfkuv\",\"id\":\"xkdmligo\",\"name\":\"ibrxkp\",\"type\":\"loazuruocbgoo\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"jyxgtczh\",\"appPackageUrl\":\"ydbsd\",\"defaultParameterList\":{\"aehvbbxuri\":\"kx\"}},\"location\":\"tfnhtbaxkgxywr\",\"tags\":{\"gzibthostgktstv\":\"yklyhpluodpvruud\",\"odqkdlwwqfb\":\"xeclzedqbcvhzlhp\",\"lmbtxhwgfwsrt\":\"mlkxtrqjfs\",\"kh\":\"wcoezbrhub\"},\"etag\":\"ygo\",\"id\":\"kkqfqjbvle\",\"name\":\"rfmluiqtq\",\"type\":\"fa\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,11 @@ public final class ApplicationTypeVersionsListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<ApplicationTypeVersionResource> response
-            = manager.applicationTypeVersions().list("pi", "lqol", "xkcgxxlxsffgcvi", com.azure.core.util.Context.NONE);
+        PagedIterable<ApplicationTypeVersionResource> response = manager.applicationTypeVersions()
+            .list("qioknssxmojm", "vpkjpr", "kwcf", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("tx", response.iterator().next().location());
-        Assertions.assertEquals("ukxit", response.iterator().next().tags().get("m"));
-        Assertions.assertEquals("w", response.iterator().next().appPackageUrl());
+        Assertions.assertEquals("tfnhtbaxkgxywr", response.iterator().next().location());
+        Assertions.assertEquals("yklyhpluodpvruud", response.iterator().next().tags().get("gzibthostgktstv"));
+        Assertions.assertEquals("ydbsd", response.iterator().next().appPackageUrl());
     }
 }

@@ -21,7 +21,7 @@ public final class ApplicationTypeVersionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"biipuip\",\"appPackageUrl\":\"oqonma\",\"defaultParameterList\":{\"izsh\":\"k\"}},\"location\":\"cimpevfg\",\"tags\":{\"wrwfscjfnyns\":\"rrilbywdxsmic\"},\"etag\":\"ujiz\",\"id\":\"oqytibyowbblgy\",\"name\":\"vutpthjoxo\",\"type\":\"smsks\"}";
+            = "{\"properties\":{\"provisioningState\":\"nfqn\",\"appPackageUrl\":\"cypsxjv\",\"defaultParameterList\":{\"ircizjxvy\":\"mwks\",\"ftumrtwnawjslbiw\":\"fceacvlhvygd\",\"fmznba\":\"ojgcyzt\"}},\"location\":\"ph\",\"tags\":{\"ehuwrykqgaifmvik\":\"nrnrp\",\"xcv\":\"bydvkhbejdz\",\"v\":\"srhnjivo\",\"jdftuljltd\":\"novqfzge\"},\"etag\":\"eamtmcz\",\"id\":\"m\",\"name\":\"jw\",\"type\":\"w\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,11 @@ public final class ApplicationTypeVersionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ApplicationTypeVersionResource response = manager.applicationTypeVersions()
-            .getWithResponse("ox", "gdufiqnd", "euzaof", "chvcyyysfgdo", com.azure.core.util.Context.NONE)
+            .getWithResponse("lw", "cesutrgjupauut", "woqhihe", "qg", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("cimpevfg", response.location());
-        Assertions.assertEquals("rrilbywdxsmic", response.tags().get("wrwfscjfnyns"));
-        Assertions.assertEquals("oqonma", response.appPackageUrl());
+        Assertions.assertEquals("ph", response.location());
+        Assertions.assertEquals("nrnrp", response.tags().get("ehuwrykqgaifmvik"));
+        Assertions.assertEquals("cypsxjv", response.appPackageUrl());
     }
 }

@@ -12,19 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class NamedPartitionSchemeDescriptionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NamedPartitionSchemeDescription model = BinaryData
-            .fromString("{\"partitionScheme\":\"Named\",\"count\":972824299,\"names\":[\"ghvxndzwmkrefa\"]}")
-            .toObject(NamedPartitionSchemeDescription.class);
-        Assertions.assertEquals(972824299, model.count());
-        Assertions.assertEquals("ghvxndzwmkrefa", model.names().get(0));
+        NamedPartitionSchemeDescription model
+            = BinaryData.fromString("{\"partitionScheme\":\"Named\",\"count\":1813126235,\"names\":[\"equi\"]}")
+                .toObject(NamedPartitionSchemeDescription.class);
+        Assertions.assertEquals(1813126235, model.count());
+        Assertions.assertEquals("equi", model.names().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NamedPartitionSchemeDescription model
-            = new NamedPartitionSchemeDescription().withCount(972824299).withNames(Arrays.asList("ghvxndzwmkrefa"));
+            = new NamedPartitionSchemeDescription().withCount(1813126235).withNames(Arrays.asList("equi"));
         model = BinaryData.fromObject(model).toObject(NamedPartitionSchemeDescription.class);
-        Assertions.assertEquals(972824299, model.count());
-        Assertions.assertEquals("ghvxndzwmkrefa", model.names().get(0));
+        Assertions.assertEquals(1813126235, model.count());
+        Assertions.assertEquals("equi", model.names().get(0));
     }
 }

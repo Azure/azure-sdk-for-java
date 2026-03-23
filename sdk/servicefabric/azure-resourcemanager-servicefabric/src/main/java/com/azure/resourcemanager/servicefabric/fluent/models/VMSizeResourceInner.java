@@ -5,11 +5,11 @@
 package com.azure.resourcemanager.servicefabric.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.servicefabric.models.ArmProxyResource;
 import com.azure.resourcemanager.servicefabric.models.VMSize;
 import java.io.IOException;
 
@@ -17,7 +17,7 @@ import java.io.IOException;
  * Describes a VM Sizes.
  */
 @Immutable
-public final class VMSizeResourceInner extends ArmProxyResource {
+public final class VMSizeResourceInner extends ProxyResource {
     /*
      * VM Size properties.
      */
@@ -63,7 +63,6 @@ public final class VMSizeResourceInner extends ArmProxyResource {
      * 
      * @return the systemData value.
      */
-    @Override
     public SystemData systemData() {
         return this.systemData;
     }
@@ -129,10 +128,10 @@ public final class VMSizeResourceInner extends ArmProxyResource {
                     deserializedVMSizeResourceInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedVMSizeResourceInner.type = reader.getString();
-                } else if ("systemData".equals(fieldName)) {
-                    deserializedVMSizeResourceInner.systemData = SystemData.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {
                     deserializedVMSizeResourceInner.properties = VMSize.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedVMSizeResourceInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
