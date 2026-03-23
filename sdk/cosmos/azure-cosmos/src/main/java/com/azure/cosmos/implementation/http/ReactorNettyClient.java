@@ -165,21 +165,25 @@ public class ReactorNettyClient implements HttpClient {
                             new Http2ResponseHeaderCleanerHandler());
                     }
 
-                    // Stamp per-connection expiry if max lifetime is configured — independent of PING.
-                    int maxLifetimeSeconds = Configs.getHttpConnectionMaxLifetimeInSeconds();
-                    if (maxLifetimeSeconds > 0) {
-                        int jitterRangeSeconds = Configs.HTTP_CONNECTION_MAX_LIFETIME_JITTER_IN_SECONDS;
-                        Http2PingHealthHandler.stampConnectionExpiry(
-                            connection.channel(),
-                            maxLifetimeSeconds * 1000L,
-                            jitterRangeSeconds * 1000L);
+                    // Stamp per-connection expiry if max lifetime is enabled and configured.
+                    if (Configs.isHttpConnectionMaxLifetimeEnabled()) {
+                        int maxLifetimeSeconds = Configs.getHttpConnectionMaxLifetimeInSeconds();
+                        if (maxLifetimeSeconds > 0) {
+                            int jitterRangeSeconds = Configs.HTTP_CONNECTION_MAX_LIFETIME_JITTER_IN_SECONDS;
+                            Http2PingHealthHandler.stampConnectionExpiry(
+                                connection.channel(),
+                                maxLifetimeSeconds * 1000L,
+                                jitterRangeSeconds * 1000L);
+                        }
                     }
 
-                    // Install PING health handler if PING interval is configured — independent of max lifetime.
-                    int pingIntervalSeconds = Configs.getHttp2PingIntervalInSeconds();
-                    if (pingIntervalSeconds > 0) {
-                        Http2PingHealthHandler.installOnParentIfAbsent(
-                            connection.channel(), pingIntervalSeconds * 1000L);
+                    // Install PING health handler if PING health is enabled and interval is configured.
+                    if (Configs.isHttp2PingHealthEnabled()) {
+                        int pingIntervalSeconds = Configs.getHttp2PingIntervalInSeconds();
+                        if (pingIntervalSeconds > 0) {
+                            Http2PingHealthHandler.installOnParentIfAbsent(
+                                connection.channel(), pingIntervalSeconds * 1000L);
+                        }
                     }
                 }));
         }

@@ -309,7 +309,7 @@ targetChannel.attr(CONNECTION_EXPIRY_NANOS).set(expiryNanos);
 | Property | Value |
 |----------|-------|
 | Jitter range | `[1s, 30s]` |
-| Effective lifetime | `[301s, 330s]` with defaults |
+| Effective lifetime | `[1801s, 1830s]` = `[30:01, 30:30]` with defaults |
 | Scope | Per-connection (one random draw at creation) |
 | Determinism | Deterministic for the connection's lifetime |
 | Thread safety | `ThreadLocalRandom` — lock-free, safe for concurrent event loops |
@@ -330,15 +330,17 @@ All configurations use the existing `Configs` system property pattern. Not expos
 
 | Config | System Property | Default | Purpose |
 |--------|----------------|---------|---------|
-| Max lifetime | `COSMOS.HTTP_CONNECTION_MAX_LIFETIME_IN_SECONDS` | `300` (5 min) | Base connection lifetime |
+| **Max lifetime enabled** | `COSMOS.HTTP_CONNECTION_MAX_LIFETIME_ENABLED` | `true` | Master toggle for connection max lifetime |
+| Max lifetime | `COSMOS.HTTP_CONNECTION_MAX_LIFETIME_IN_SECONDS` | `1800` (30 min) | Base connection lifetime (defensive — 6× .NET's 5 min) |
 | Jitter range | Compile-time constant | `30` seconds | Per-connection random offset `[1s, 30s]` |
+| **PING health enabled** | `COSMOS.HTTP2_PING_HEALTH_ENABLED` | `true` | Master toggle for PING health probing |
 | PING interval | `COSMOS.HTTP2_PING_INTERVAL_IN_SECONDS` | `10` seconds | PING frame send frequency |
 | PING ACK timeout | `COSMOS.HTTP2_PING_ACK_TIMEOUT_IN_SECONDS` | `30` seconds | Evict if no ACK within this window |
 | Eviction sweep | Derived | `5` seconds | `clamp(min(idleTimeout, pingAckTimeout, baseMaxLifetime) / 2, 1s, 5s)` |
 | Max evictions per cycle | Hard-coded | `1` | Rate limits Phases 1–3 to prevent cliff drain. Dead channels (Phase 0) exempt. |
 
-**Disable lifetime eviction**: `COSMOS.HTTP_CONNECTION_MAX_LIFETIME_IN_SECONDS=0`
-**Disable PING health**: `COSMOS.HTTP2_PING_INTERVAL_IN_SECONDS=0`
+**Disable lifetime eviction**: `COSMOS.HTTP_CONNECTION_MAX_LIFETIME_ENABLED=false`
+**Disable PING health**: `COSMOS.HTTP2_PING_HEALTH_ENABLED=false`
 
 ---
 

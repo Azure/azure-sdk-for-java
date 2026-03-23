@@ -57,8 +57,10 @@ public interface HttpClient {
         fixedConnectionProviderBuilder.pendingAcquireTimeout(httpClientConfig.getConnectionAcquireTimeout());
         fixedConnectionProviderBuilder.maxIdleTime(httpClientConfig.getMaxIdleConnectionTimeout());
 
-        int maxLifetimeSeconds = Configs.getHttpConnectionMaxLifetimeInSeconds();
-        int pingAckTimeoutSeconds = Configs.getHttp2PingAckTimeoutInSeconds();
+        int maxLifetimeSeconds = Configs.isHttpConnectionMaxLifetimeEnabled()
+            ? Configs.getHttpConnectionMaxLifetimeInSeconds() : 0;
+        int pingAckTimeoutSeconds = Configs.isHttp2PingHealthEnabled()
+            ? Configs.getHttp2PingAckTimeoutInSeconds() : 0;
         if (maxLifetimeSeconds > 0 || pingAckTimeoutSeconds > 0) {
             long maxIdleTimeMs = httpClientConfig.getMaxIdleConnectionTimeout().toMillis();
             long pingAckTimeoutNanos = pingAckTimeoutSeconds > 0 ? pingAckTimeoutSeconds * 1_000_000_000L : 0;
