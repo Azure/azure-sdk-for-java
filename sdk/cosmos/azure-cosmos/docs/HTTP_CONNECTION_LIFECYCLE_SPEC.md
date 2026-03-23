@@ -13,11 +13,10 @@
    DNS on their own; max lifetime is the mechanism that forces new connection creation.
    **Applies to both HTTP/1.1 and HTTP/2 connections.**
 
-2. **Connection keepalive (HTTP/2 only)** — Prevent intermediate infrastructure (NAT gateways,
-   firewalls, load balancers) from silently reaping idle HTTP/2 connections. HTTP/2 PING frames
-   serve as application-layer keepalive, distinct from TCP keepalive which operates below TLS
-   and may not be visible to L7 middleboxes. Not applicable to HTTP/1.1 (connection-per-request
-   model, short-lived).
+2. **Connection keepalive** — Prevent intermediate infrastructure (NAT gateways, firewalls,
+   load balancers) from silently reaping idle connections. HTTP/2 PING frames serve as
+   application-layer keepalive, distinct from TCP keepalive which operates below TLS and may
+   not be visible to L7 middleboxes. Applies to both HTTP/1.1 and HTTP/2 connections.
 
 ## Non-Goals
 
@@ -68,13 +67,14 @@ infrastructure where TCP keepalive alone is insufficient.
    `CONNECTION_EXPIRY_NANOS` attribute apply to all connections in the pool. This ensures
    DNS re-resolution for all operation types, including ChangeFeed (HTTP/1.1).
 
-3. **PING keepalive is HTTP/2 only** — HTTP/1.1 uses connection-per-request; connections
-   are short-lived and don't need keepalive. PING handler is installed only on parent H2
-   channels. Separate install path, separate config toggle.
+3. **PING keepalive applies to both HTTP/1.1 and HTTP/2** — Both protocol paths benefit
+   from keepalive. HTTP/2 uses PING frames on the parent channel. HTTP/1.1 connections in
+   reactor-netty's pool also traverse L7 infrastructure and benefit from the same keepalive
+   mechanism — the handler is installed on any connection where the PING config is enabled.
 
 4. **Max lifetime and PING keepalive are independent features** — Separate install paths
-   in `doOnConnected`: `stampConnectionExpiry()` for lifetime (all connections),
-   `installOnParentIfAbsent()` for PING (H2 only). Disabling one does not affect the other.
+   in `doOnConnected`: `stampConnectionExpiry()` for lifetime, `installOnParentIfAbsent()`
+   for PING. Both apply to all connections. Disabling one does not affect the other.
 
 3. **Per-connection jitter** — Each connection gets a deterministic expiry stamped once at
    creation (`CONNECTION_EXPIRY_NANOS` channel attribute). Avoids .NET's per-pool sync-lock
@@ -98,15 +98,16 @@ infrastructure where TCP keepalive alone is insufficient.
 
 ## Architecture
 
-The eviction predicate and max lifetime apply to **all** connections in the pool (HTTP/1.1
-and HTTP/2). PING keepalive is HTTP/2 only — installed on the parent H2 TCP channel.
+The eviction predicate, max lifetime, and PING keepalive apply to **all** connections in the
+pool (HTTP/1.1 and HTTP/2). The H2-specific `doOnConnected` block handles only H2 pipeline
+handlers (header cleaner, H2 settings).
 
 ```
 ConnectionProvider (reactor-netty 1.2.13)
 │
 ├─ evictInBackground(derived interval)
 │  │
-│  └─ evictionPredicate (applies to ALL connections — H1.1 and H2):
+│  └─ evictionPredicate (ALL connections — H1.1 and H2):
 │       Phase 0: !channel.isActive()         → evict (dead, no rate limit)
 │       ── rate limiter: max 1 per cycle ──
 │       Phase 1: idleTime > 60s              → evict (idle)
@@ -114,24 +115,25 @@ ConnectionProvider (reactor-netty 1.2.13)
 │                1st sweep: mark PENDING_EVICTION_NANOS
 │                next: evict if idle OR 10s grace period expired
 │
-├─ doOnConnected:
+├─ doOnConnected (shared — ALL connections):
 │  │
-│  ├─ For ALL connections (H1.1 and H2):
-│  │    If max lifetime enabled:
-│  │      stampConnectionExpiry(channel, base + jitter)
-│  │      → stamps CONNECTION_EXPIRY_NANOS attribute
+│  ├─ If max lifetime enabled:
+│  │    stampConnectionExpiry(channel, base + jitter)
+│  │    → stamps CONNECTION_EXPIRY_NANOS attribute
 │  │
-│  └─ For H2 connections only:
-│       If PING keepalive enabled:
-│         installOnParentIfAbsent(channel, interval)
-│         → installs Http2PingHealthHandler on parent H2 channel
-│         → sends PING frames every 10s (keepalive, not eviction)
+│  └─ If PING keepalive enabled:
+│       installOnParentIfAbsent(channel, interval)
+│       → installs Http2PingHealthHandler
+│       → sends PING frames every 10s (keepalive, not eviction)
 │
-└─ Channel Attributes:
-     CONNECTION_EXPIRY_NANOS    (all connections — stamped by stampConnectionExpiry)
-     PENDING_EVICTION_NANOS    (all connections — stamped by eviction predicate)
-     LAST_PING_ACK_NANOS       (H2 only — stamped by PING handler, for future use)
-     HANDLER_INSTALLED          (H2 only — one-time PING install guard)
+├─ doOnConnected (H2 only — if H2 enabled):
+│    Http2ResponseHeaderCleanerHandler installation
+│
+└─ Channel Attributes (per connection):
+     CONNECTION_EXPIRY_NANOS    (stamped by stampConnectionExpiry)
+     PENDING_EVICTION_NANOS    (stamped by eviction predicate)
+     LAST_PING_ACK_NANOS       (stamped by PING handler, for future use)
+     HANDLER_INSTALLED          (one-time PING install guard)
 ```
 
 ---

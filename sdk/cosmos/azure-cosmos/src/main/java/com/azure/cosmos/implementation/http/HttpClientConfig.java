@@ -7,6 +7,7 @@ import com.azure.core.http.ProxyOptions;
 import com.azure.cosmos.Http2ConnectionConfig;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import io.netty.resolver.AddressResolverGroup;
 
 import java.time.Duration;
 
@@ -33,6 +34,7 @@ public class HttpClientConfig {
     private boolean connectionKeepAlive = true;
     private boolean serverCertValidationDisabled = false;
     private Http2ConnectionConfig http2ConnectionConfig;
+    private AddressResolverGroup<?> addressResolverGroup;
 
     // Eagerly resolved thin client connect timeout — avoids per-request System.getProperty/getenv calls.
     private final int thinClientConnectTimeoutMs;
@@ -185,6 +187,15 @@ public class HttpClientConfig {
      */
     public int getThinClientConnectTimeoutMs() {
         return this.thinClientConnectTimeoutMs;
+    }
+
+    public AddressResolverGroup<?> getAddressResolverGroup() {
+        return this.addressResolverGroup;
+    }
+
+    public HttpClientConfig withAddressResolverGroup(AddressResolverGroup<?> resolverGroup) {
+        this.addressResolverGroup = resolverGroup;
+        return this;
     }
 
     public String toDiagnosticsString() {

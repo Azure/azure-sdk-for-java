@@ -12,6 +12,7 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.ChannelPipeline;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.logging.LogLevel;
+import io.netty.resolver.AddressResolverGroup;
 import io.netty.resolver.DefaultAddressResolverGroup;
 import io.netty.util.ReferenceCountUtil;
 import io.netty.util.ResourceLeakDetector;
@@ -65,10 +66,13 @@ public class ReactorNettyClient implements HttpClient {
         reactorNettyClient.httpClientConfig = httpClientConfig;
         reactorNettyClient.reactorNetworkLogCategory = httpClientConfig.getReactorNetworkLogCategory();
         reactorNettyClient.wireTapLogger = LoggerFactory.getLogger(reactorNettyClient.reactorNetworkLogCategory);
+        AddressResolverGroup<?> resolverGroup = httpClientConfig.getAddressResolverGroup() != null
+            ? httpClientConfig.getAddressResolverGroup()
+            : DefaultAddressResolverGroup.INSTANCE;
         reactorNettyClient.httpClient = reactor.netty.http.client.HttpClient
             .newConnection()
             .observe(getConnectionObserver())
-            .resolver(DefaultAddressResolverGroup.INSTANCE);
+            .resolver(resolverGroup);
         reactorNettyClient.configureChannelPipelineHandlers();
         attemptToWarmupHttpClient(reactorNettyClient);
         return reactorNettyClient;
@@ -83,10 +87,13 @@ public class ReactorNettyClient implements HttpClient {
         reactorNettyClient.httpClientConfig = httpClientConfig;
         reactorNettyClient.reactorNetworkLogCategory = httpClientConfig.getReactorNetworkLogCategory();
         reactorNettyClient.wireTapLogger = LoggerFactory.getLogger(reactorNettyClient.reactorNetworkLogCategory);
+        AddressResolverGroup<?> resolverGroup = httpClientConfig.getAddressResolverGroup() != null
+            ? httpClientConfig.getAddressResolverGroup()
+            : DefaultAddressResolverGroup.INSTANCE;
         reactorNettyClient.httpClient = reactor.netty.http.client.HttpClient
             .create(connectionProvider)
             .observe(getConnectionObserver())
-            .resolver(DefaultAddressResolverGroup.INSTANCE);
+            .resolver(resolverGroup);
         reactorNettyClient.configureChannelPipelineHandlers();
         attemptToWarmupHttpClient(reactorNettyClient);
         return reactorNettyClient;
@@ -139,7 +146,38 @@ public class ReactorNettyClient implements HttpClient {
         ImplementationBridgeHelpers.Http2ConnectionConfigHelper.Http2ConnectionConfigAccessor http2CfgAccessor =
             ImplementationBridgeHelpers.Http2ConnectionConfigHelper.getHttp2ConnectionConfigAccessor();
         Http2ConnectionConfig http2Cfg = httpClientConfig.getHttp2ConnectionConfig();
-        if (http2CfgAccessor.isEffectivelyEnabled(http2Cfg)) {
+
+        // Max lifetime + PING keepalive: installed via doOnConnected.
+        // Max lifetime applies to ALL connections (H1.1 and H2) for DNS re-resolution.
+        // PING keepalive applies to H2 only (H1.1 is connection-per-request, short-lived).
+        boolean isH2Enabled = http2CfgAccessor.isEffectivelyEnabled(http2Cfg);
+        this.httpClient = this.httpClient.doOnConnected(connection -> {
+            // Stamp per-connection expiry for ALL connections (H1.1 and H2).
+            // Ensures DNS re-resolution for all operation types including ChangeFeed (HTTP/1.1).
+            if (Configs.isHttpConnectionMaxLifetimeEnabled()) {
+                int maxLifetimeSeconds = Configs.getHttpConnectionMaxLifetimeInSeconds();
+                if (maxLifetimeSeconds > 0) {
+                    int jitterRangeSeconds = Configs.HTTP_CONNECTION_MAX_LIFETIME_JITTER_IN_SECONDS;
+                    Http2PingHealthHandler.stampConnectionExpiry(
+                        connection.channel(),
+                        maxLifetimeSeconds * 1000L,
+                        jitterRangeSeconds * 1000L);
+                }
+            }
+
+            // Install PING keepalive handler — H2 only.
+            // HTTP/2 PING frames keep connections alive through L7 middleboxes.
+            // H1.1 connections are short-lived and don't need keepalive.
+            if (isH2Enabled && Configs.isHttp2PingHealthEnabled()) {
+                int pingIntervalSeconds = Configs.getHttp2PingIntervalInSeconds();
+                if (pingIntervalSeconds > 0) {
+                    Http2PingHealthHandler.installOnParentIfAbsent(
+                        connection.channel(), pingIntervalSeconds * 1000L);
+                }
+            }
+        });
+
+        if (isH2Enabled) {
             this.httpClient = this.httpClient
                 .secure(sslContextSpec ->
                     sslContextSpec.sslContext(
@@ -163,27 +201,6 @@ public class ReactorNettyClient implements HttpClient {
                             "reactor.left.httpCodec",
                             "customHeaderCleaner",
                             new Http2ResponseHeaderCleanerHandler());
-                    }
-
-                    // Stamp per-connection expiry if max lifetime is enabled and configured.
-                    if (Configs.isHttpConnectionMaxLifetimeEnabled()) {
-                        int maxLifetimeSeconds = Configs.getHttpConnectionMaxLifetimeInSeconds();
-                        if (maxLifetimeSeconds > 0) {
-                            int jitterRangeSeconds = Configs.HTTP_CONNECTION_MAX_LIFETIME_JITTER_IN_SECONDS;
-                            Http2PingHealthHandler.stampConnectionExpiry(
-                                connection.channel(),
-                                maxLifetimeSeconds * 1000L,
-                                jitterRangeSeconds * 1000L);
-                        }
-                    }
-
-                    // Install PING health handler if PING health is enabled and interval is configured.
-                    if (Configs.isHttp2PingHealthEnabled()) {
-                        int pingIntervalSeconds = Configs.getHttp2PingIntervalInSeconds();
-                        if (pingIntervalSeconds > 0) {
-                            Http2PingHealthHandler.installOnParentIfAbsent(
-                                connection.channel(), pingIntervalSeconds * 1000L);
-                        }
                     }
                 }));
         }
