@@ -1,14 +1,274 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.2.0 (2026-03-23)
 
-### Features Added
+- Azure Resource Manager Front Door client library for Java. This package contains Microsoft Azure SDK for Front Door Management SDK. APIs to manage web application firewall rules. Package api-version 2025-10-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.RulesEngineListResult` was removed
 
-### Other Changes
+#### `models.WebApplicationFirewallPolicyList` was removed
+
+#### `models.FrontDoorListResult` was removed
+
+#### `models.ManagedRuleSetDefinitionList` was removed
+
+#### `models.ExperimentList` was removed
+
+#### `models.FrontendEndpointsListResult` was removed
+
+#### `models.PreconfiguredEndpointList` was removed
+
+#### `models.ProfileList` was removed
+
+#### `models.ValidateCustomDomainInput` was modified
+
+* `validate()` was removed
+
+#### `models.LatencyMetric` was modified
+
+* `LatencyMetric()` was changed to private access
+* `validate()` was removed
+
+#### `models.HealthProbeSettingsModel` was modified
+
+* `validate()` was removed
+
+#### `models.CheckNameAvailabilityInput` was modified
+
+* `validate()` was removed
+
+#### `models.RoutingRuleUpdateParameters` was modified
+
+* `validate()` was removed
+
+#### `models.FrontendEndpointUpdateParameters` was modified
+
+* `validate()` was removed
+
+#### `models.ManagedRuleExclusion` was modified
+
+* `validate()` was removed
+
+#### `models.RoutingRuleLink` was modified
+
+* `RoutingRuleLink()` was changed to private access
+* `validate()` was removed
+* `withId(java.lang.String)` was removed
+
+#### `models.RulesEngineUpdateParameters` was modified
+
+* `validate()` was removed
+
+#### `models.BackendPoolUpdateParameters` was modified
+
+* `validate()` was removed
+
+#### `models.KeyVaultCertificateSourceParametersVault` was modified
+
+* `validate()` was removed
+
+#### `models.HealthProbeSettingsUpdateParameters` was modified
+
+* `validate()` was removed
+
+#### `models.CustomHttpsConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.ManagedRuleSetList` was modified
+
+* `validate()` was removed
+
+#### `models.FrontendEndpointLink` was modified
+
+* `FrontendEndpointLink()` was changed to private access
+* `validate()` was removed
+* `withId(java.lang.String)` was removed
+
+#### `models.ManagedRuleGroupDefinition` was modified
+
+* `ManagedRuleGroupDefinition()` was changed to private access
+* `validate()` was removed
+
+#### `models.ProfileUpdateModel` was modified
+
+* `validate()` was removed
+
+#### `models.Backend` was modified
+
+* `validate()` was removed
+
+#### `models.RedirectConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.GroupByVariable` was modified
+
+* `validate()` was removed
+
+#### `models.RoutingRule` was modified
+
+* `validate()` was removed
+
+#### `models.CustomRuleList` was modified
+
+* `validate()` was removed
+
+#### `models.Sku` was modified
+
+* `validate()` was removed
+
+#### `models.ManagedRuleDefinition` was modified
+
+* `ManagedRuleDefinition()` was changed to private access
+* `validate()` was removed
+
+#### `models.LoadBalancingSettingsUpdateParameters` was modified
+
+* `validate()` was removed
+
+#### `models.ManagedRuleSet` was modified
+
+* `validate()` was removed
+
+#### `models.TimeseriesDataPoint` was modified
+
+* `TimeseriesDataPoint()` was changed to private access
+* `validate()` was removed
+* `withDateTimeUtc(java.lang.String)` was removed
+* `withValue(java.lang.Float)` was removed
+
+#### `models.FrontendEndpointUpdateParametersWebApplicationFirewallPolicyLink` was modified
+
+* `validate()` was removed
+
+#### `models.CacheConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.RulesEngineAction` was modified
+
+* `validate()` was removed
+
+#### `models.HeaderAction` was modified
+
+* `validate()` was removed
+
+#### `models.ManagedRuleGroupOverride` was modified
+
+* `validate()` was removed
+
+#### `models.PurgeParameters` was modified
+
+* `validate()` was removed
+
+#### `models.Endpoint` was modified
+
+* `validate()` was removed
+
+#### `models.WebApplicationFirewallScrubbingRules` was modified
+
+* `validate()` was removed
+
+#### `models.BackendPool` was modified
+
+* `validate()` was removed
+
+#### `models.MatchCondition` was modified
+
+* `validate()` was removed
+
+#### `models.CustomRule` was modified
+
+* `validate()` was removed
+
+#### `models.RouteConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.PolicySettings` was modified
+
+* `validate()` was removed
+
+#### `models.LoadBalancingSettingsModel` was modified
+
+* `validate()` was removed
+
+#### `models.RulesEngineRule` was modified
+
+* `validate()` was removed
+
+#### `models.ExperimentUpdateModel` was modified
+
+* `validate()` was removed
+
+#### `models.ManagedRuleOverride` was modified
+
+* `validate()` was removed
+
+#### `models.RulesEngineMatchCondition` was modified
+
+* `validate()` was removed
+
+#### `models.BackendPoolsSettings` was modified
+
+* `validate()` was removed
+
+#### `models.TagsObject` was modified
+
+* `validate()` was removed
+
+#### `models.SecurityPolicyLink` was modified
+
+* `SecurityPolicyLink()` was changed to private access
+* `withId(java.lang.String)` was removed
+* `validate()` was removed
+
+#### `models.ForwardingConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.FrontDoorUpdateParameters` was modified
+
+* `validate()` was removed
+
+#### `models.RoutingRuleUpdateParametersWebApplicationFirewallPolicyLink` was modified
+
+* `validate()` was removed
+
+### Features Added
+
+* `models.BasicResource` was added
+
+* `models.ResourcewithSettableName` was added
+
+* `models.SensitivityType` was added
+
+* `models.BasicResourceWithSettableIDName` was added
+
+#### `models.ManagedRuleDefinition` was modified
+
+* `defaultSensitivity()` was added
+
+#### `models.ActionType` was modified
+
+* `CAPTCHA` was added
+
+#### `models.PolicySettings` was modified
+
+* `captchaExpirationInMinutes()` was added
+* `withCaptchaExpirationInMinutes(java.lang.Integer)` was added
+
+#### `models.Operator` was modified
+
+* `SERVICE_TAG_MATCH` was added
+
+#### `models.ManagedRuleOverride` was modified
+
+* `sensitivity()` was added
+* `withSensitivity(models.SensitivityType)` was added
 
 ## 1.1.0 (2024-12-19)
 

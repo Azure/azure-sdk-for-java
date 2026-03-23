@@ -85,8 +85,7 @@ import java.util.Arrays;
  */
 public final class EndpointsPurgeContentSamples {
     /*
-     * x-ms-original-file:
-     * specification/frontdoor/resource-manager/Microsoft.Network/stable/2021-06-01/examples/FrontdoorPurgeContent.json
+     * x-ms-original-file: 2025-10-01/FrontdoorPurgeContent.json
      */
     /**
      * Sample code: Purge content from Front Door.
@@ -113,8 +112,7 @@ import com.azure.resourcemanager.frontdoor.models.State;
  */
 public final class ExperimentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2019-11-01/examples/
-     * NetworkExperimentCreateExperiment.json
+     * x-ms-original-file: 2025-10-01/NetworkExperimentCreateExperiment.json
      */
     /**
      * Sample code: Creates an Experiment.
@@ -143,8 +141,7 @@ public final class ExperimentsCreateOrUpdateSamples {
  */
 public final class ExperimentsDeleteSamples {
     /*
-     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2019-11-01/examples/
-     * NetworkExperimentDeleteExperiment.json
+     * x-ms-original-file: 2025-10-01/NetworkExperimentDeleteExperiment.json
      */
     /**
      * Sample code: Deletes an Experiment.
@@ -165,8 +162,7 @@ public final class ExperimentsDeleteSamples {
  */
 public final class ExperimentsGetSamples {
     /*
-     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2019-11-01/examples/
-     * NetworkExperimentGetExperiment.json
+     * x-ms-original-file: 2025-10-01/NetworkExperimentGetExperiment.json
      */
     /**
      * Sample code: Gets an Experiment by ExperimentName.
@@ -188,8 +184,7 @@ public final class ExperimentsGetSamples {
  */
 public final class ExperimentsListByProfileSamples {
     /*
-     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2019-11-01/examples/
-     * NetworkExperimentListExperiments.json
+     * x-ms-original-file: 2025-10-01/NetworkExperimentListExperiments.json
      */
     /**
      * Sample code: Gets a list of Experiments.
@@ -213,8 +208,7 @@ import com.azure.resourcemanager.frontdoor.models.State;
  */
 public final class ExperimentsUpdateSamples {
     /*
-     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2019-11-01/examples/
-     * NetworkExperimentUpdateExperiment.json
+     * x-ms-original-file: 2025-10-01/NetworkExperimentUpdateExperiment.json
      */
     /**
      * Sample code: Updates an Experiment.
@@ -241,8 +235,7 @@ import com.azure.resourcemanager.frontdoor.models.ResourceType;
  */
 public final class FrontDoorNameAvailabilityCheckSamples {
     /*
-     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2021-06-01/examples/
-     * CheckFrontdoorNameAvailability.json
+     * x-ms-original-file: 2025-10-01/CheckFrontdoorNameAvailability.json
      */
     /**
      * Sample code: CheckNameAvailability.
@@ -268,8 +261,7 @@ import com.azure.resourcemanager.frontdoor.models.ResourceType;
  */
 public final class FrontDoorNameAvailabilityWithSubscriptionCheckSamples {
     /*
-     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2021-06-01/examples/
-     * CheckFrontdoorNameAvailabilityWithSubscription.json
+     * x-ms-original-file: 2025-10-01/CheckFrontdoorNameAvailabilityWithSubscription.json
      */
     /**
      * Sample code: CheckNameAvailabilityWithSubscription.
@@ -317,8 +309,7 @@ import java.util.Map;
  */
 public final class FrontDoorsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/frontdoor/resource-manager/Microsoft.Network/stable/2021-06-01/examples/FrontdoorCreate.json
+     * x-ms-original-file: 2025-10-01/FrontdoorCreate.json
      */
     /**
      * Sample code: Create or update specific Front Door.
@@ -420,8 +411,7 @@ public final class FrontDoorsCreateOrUpdateSamples {
  */
 public final class FrontDoorsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/frontdoor/resource-manager/Microsoft.Network/stable/2021-06-01/examples/FrontdoorDelete.json
+     * x-ms-original-file: 2025-10-01/FrontdoorDelete.json
      */
     /**
      * Sample code: Delete Front Door.
@@ -442,8 +432,7 @@ public final class FrontDoorsDeleteSamples {
  */
 public final class FrontDoorsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/frontdoor/resource-manager/Microsoft.Network/stable/2021-06-01/examples/FrontdoorGet.json
+     * x-ms-original-file: 2025-10-01/FrontdoorGet.json
      */
     /**
      * Sample code: Get Front Door.
@@ -464,8 +453,7 @@ public final class FrontDoorsGetByResourceGroupSamples {
  */
 public final class FrontDoorsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/frontdoor/resource-manager/Microsoft.Network/stable/2021-06-01/examples/FrontdoorListAll.json
+     * x-ms-original-file: 2025-10-01/FrontdoorListAll.json
      */
     /**
      * Sample code: List all Front Doors.
@@ -486,8 +474,7 @@ public final class FrontDoorsListSamples {
  */
 public final class FrontDoorsListByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/frontdoor/resource-manager/Microsoft.Network/stable/2021-06-01/examples/FrontdoorList.json
+     * x-ms-original-file: 2025-10-01/FrontdoorList.json
      */
     /**
      * Sample code: List Front Doors in a Resource Group.
@@ -510,8 +497,7 @@ import com.azure.resourcemanager.frontdoor.models.ValidateCustomDomainInput;
  */
 public final class FrontDoorsValidateCustomDomainSamples {
     /*
-     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2021-06-01/examples/
-     * FrontdoorValidateCustomDomain.json
+     * x-ms-original-file: 2025-10-01/FrontdoorValidateCustomDomain.json
      */
     /**
      * Sample code: FrontDoor_ValidateCustomDomain.
@@ -534,8 +520,7 @@ public final class FrontDoorsValidateCustomDomainSamples {
  */
 public final class FrontendEndpointsDisableHttpsSamples {
     /*
-     * x-ms-original-file:
-     * specification/frontdoor/resource-manager/Microsoft.Network/stable/2021-06-01/examples/FrontdoorDisableHttps.json
+     * x-ms-original-file: 2025-10-01/FrontdoorDisableHttps.json
      */
     /**
      * Sample code: FrontendEndpoints_DisableHttps.
@@ -563,8 +548,7 @@ import com.azure.resourcemanager.frontdoor.models.MinimumTlsVersion;
  */
 public final class FrontendEndpointsEnableHttpsSamples {
     /*
-     * x-ms-original-file:
-     * specification/frontdoor/resource-manager/Microsoft.Network/stable/2021-06-01/examples/FrontdoorEnableHttps.json
+     * x-ms-original-file: 2025-10-01/FrontdoorEnableHttps.json
      */
     /**
      * Sample code: FrontendEndpoints_EnableHttps.
@@ -594,8 +578,7 @@ public final class FrontendEndpointsEnableHttpsSamples {
  */
 public final class FrontendEndpointsGetSamples {
     /*
-     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2021-06-01/examples/
-     * FrontdoorFrontendEndpointGet.json
+     * x-ms-original-file: 2025-10-01/FrontdoorFrontendEndpointGet.json
      */
     /**
      * Sample code: Get Frontend Endpoint.
@@ -617,8 +600,7 @@ public final class FrontendEndpointsGetSamples {
  */
 public final class FrontendEndpointsListByFrontDoorSamples {
     /*
-     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2021-06-01/examples/
-     * FrontdoorFrontendEndpointList.json
+     * x-ms-original-file: 2025-10-01/FrontdoorFrontendEndpointList.json
      */
     /**
      * Sample code: List Frontend endpoints in a Front Door.
@@ -639,8 +621,7 @@ public final class FrontendEndpointsListByFrontDoorSamples {
  */
 public final class ManagedRuleSetsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/frontdoor/resource-manager/Microsoft.Network/stable/2024-02-01/examples/WafListManagedRuleSets.json
+     * x-ms-original-file: 2025-10-01/WafListManagedRuleSets.json
      */
     /**
      * Sample code: List Policies ManagedRuleSets in a Resource Group.
@@ -664,8 +645,7 @@ import com.azure.resourcemanager.frontdoor.models.State;
  */
 public final class NetworkExperimentProfilesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2019-11-01/examples/
-     * NetworkExperimentCreateProfile.json
+     * x-ms-original-file: 2025-10-01/NetworkExperimentCreateProfile.json
      */
     /**
      * Sample code: Creates an NetworkExperiment Profile in a Resource Group.
@@ -676,8 +656,8 @@ public final class NetworkExperimentProfilesCreateOrUpdateSamples {
         com.azure.resourcemanager.frontdoor.FrontDoorManager manager) {
         manager.networkExperimentProfiles()
             .define("MyProfile")
-            .withRegion("WestUs")
             .withExistingResourceGroup("MyResourceGroup")
+            .withRegion("WestUs")
             .withEnabledState(State.ENABLED)
             .create();
     }
@@ -692,8 +672,7 @@ public final class NetworkExperimentProfilesCreateOrUpdateSamples {
  */
 public final class NetworkExperimentProfilesDeleteSamples {
     /*
-     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2019-11-01/examples/
-     * NetworkExperimentDeleteProfile.json
+     * x-ms-original-file: 2025-10-01/NetworkExperimentDeleteProfile.json
      */
     /**
      * Sample code: Deletes an NetworkExperiment Profile by ProfileName.
@@ -715,9 +694,7 @@ public final class NetworkExperimentProfilesDeleteSamples {
  */
 public final class NetworkExperimentProfilesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/frontdoor/resource-manager/Microsoft.Network/stable/2019-11-01/examples/NetworkExperimentGetProfile
-     * .json
+     * x-ms-original-file: 2025-10-01/NetworkExperimentGetProfile.json
      */
     /**
      * Sample code: Gets an NetworkExperiment Profile by Profile Id.
@@ -740,8 +717,7 @@ public final class NetworkExperimentProfilesGetByResourceGroupSamples {
  */
 public final class NetworkExperimentProfilesListSamples {
     /*
-     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2019-11-01/examples/
-     * NetworkExperimentListProfiles.json
+     * x-ms-original-file: 2025-10-01/NetworkExperimentListProfiles.json
      */
     /**
      * Sample code: List NetworkExperiment Profiles in a Resource Group.
@@ -763,8 +739,7 @@ public final class NetworkExperimentProfilesListSamples {
  */
 public final class NetworkExperimentProfilesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2019-11-01/examples/
-     * NetworkExperimentListProfiles.json
+     * x-ms-original-file: 2025-10-01/NetworkExperimentListByResourceGroupProfiles.json
      */
     /**
      * Sample code: List NetworkExperiment Profiles in a Resource Group.
@@ -791,8 +766,7 @@ import java.util.Map;
  */
 public final class NetworkExperimentProfilesUpdateSamples {
     /*
-     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2019-11-01/examples/
-     * NetworkExperimentUpdateProfile.json
+     * x-ms-original-file: 2025-10-01/NetworkExperimentUpdateProfile.json
      */
     /**
      * Sample code: Updates an Experiment.
@@ -849,6 +823,7 @@ import com.azure.resourcemanager.frontdoor.models.RuleType;
 import com.azure.resourcemanager.frontdoor.models.ScrubbingRuleEntryMatchOperator;
 import com.azure.resourcemanager.frontdoor.models.ScrubbingRuleEntryMatchVariable;
 import com.azure.resourcemanager.frontdoor.models.ScrubbingRuleEntryState;
+import com.azure.resourcemanager.frontdoor.models.SensitivityType;
 import com.azure.resourcemanager.frontdoor.models.Sku;
 import com.azure.resourcemanager.frontdoor.models.SkuName;
 import com.azure.resourcemanager.frontdoor.models.TransformType;
@@ -861,9 +836,7 @@ import java.util.Arrays;
  */
 public final class PoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/frontdoor/resource-manager/Microsoft.Network/stable/2024-02-01/examples/WafPolicyCreateOrUpdate.
-     * json
+     * x-ms-original-file: 2025-10-01/WafPolicyCreateOrUpdate.json
      */
     /**
      * Sample code: Creates specific policy.
@@ -884,6 +857,7 @@ public final class PoliciesCreateOrUpdateSamples {
                     "PGh0bWw+CjxoZWFkZXI+PHRpdGxlPkhlbGxvPC90aXRsZT48L2hlYWRlcj4KPGJvZHk+CkhlbGxvIHdvcmxkCjwvYm9keT4KPC9odG1sPg==")
                 .withRequestBodyCheck(PolicyRequestBodyCheck.DISABLED)
                 .withJavascriptChallengeExpirationInMinutes(30)
+                .withCaptchaExpirationInMinutes(30)
                 .withState(WebApplicationFirewallScrubbingState.ENABLED)
                 .withScrubbingRules(Arrays.asList(new WebApplicationFirewallScrubbingRules()
                     .withMatchVariable(ScrubbingRuleEntryMatchVariable.REQUEST_IPADDRESS)
@@ -910,7 +884,15 @@ public final class PoliciesCreateOrUpdateSamples {
                             .withOperator(Operator.CONTAINS)
                             .withMatchValue(Arrays.asList("windows"))
                             .withTransforms(Arrays.asList(TransformType.LOWERCASE))))
-                    .withAction(ActionType.BLOCK))))
+                    .withAction(ActionType.BLOCK),
+                new CustomRule().withName("Rule3")
+                    .withPriority(1)
+                    .withRuleType(RuleType.RATE_LIMIT_RULE)
+                    .withRateLimitThreshold(1000)
+                    .withMatchConditions(Arrays.asList(new MatchCondition().withMatchVariable(MatchVariable.REMOTE_ADDR)
+                        .withOperator(Operator.SERVICE_TAG_MATCH)
+                        .withMatchValue(Arrays.asList("AzureBackup", "AzureBotService"))))
+                    .withAction(ActionType.CAPTCHA))))
             .withManagedRules(
                 new ManagedRuleSetList()
                     .withManagedRuleSets(
@@ -941,7 +923,15 @@ public final class PoliciesCreateOrUpdateSamples {
                                                         ManagedRuleExclusionSelectorMatchOperator.EQUALS)
                                                     .withSelector("query"))),
                                             new ManagedRuleOverride().withRuleId("942110")
-                                                .withEnabledState(ManagedRuleEnabledState.DISABLED))))))))
+                                                .withEnabledState(ManagedRuleEnabledState.DISABLED))))),
+                                new ManagedRuleSet().withRuleSetType("Microsoft_HTTPDDoSRuleSet")
+                                    .withRuleSetVersion("1.0")
+                                    .withRuleGroupOverrides(Arrays
+                                        .asList(new ManagedRuleGroupOverride().withRuleGroupName("ExcessiveRequests")
+                                            .withRules(Arrays.asList(new ManagedRuleOverride().withRuleId("500100")
+                                                .withEnabledState(ManagedRuleEnabledState.ENABLED)
+                                                .withAction(ActionType.BLOCK)
+                                                .withSensitivity(SensitivityType.HIGH))))))))
             .create();
     }
 }
@@ -955,8 +945,7 @@ public final class PoliciesCreateOrUpdateSamples {
  */
 public final class PoliciesDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/frontdoor/resource-manager/Microsoft.Network/stable/2024-02-01/examples/WafPolicyDelete.json
+     * x-ms-original-file: 2025-10-01/WafPolicyDelete.json
      */
     /**
      * Sample code: Delete protection policy.
@@ -977,8 +966,7 @@ public final class PoliciesDeleteSamples {
  */
 public final class PoliciesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/frontdoor/resource-manager/Microsoft.Network/stable/2024-02-01/examples/WafPolicyGet.json
+     * x-ms-original-file: 2025-10-01/WafPolicyGet.json
      */
     /**
      * Sample code: Get Policy.
@@ -999,8 +987,7 @@ public final class PoliciesGetByResourceGroupSamples {
  */
 public final class PoliciesListSamples {
     /*
-     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2024-02-01/examples/
-     * WafListPoliciesUnderSubscription.json
+     * x-ms-original-file: 2025-10-01/WafListPoliciesUnderSubscription.json
      */
     /**
      * Sample code: Get all Policies in a Resource Group.
@@ -1021,8 +1008,7 @@ public final class PoliciesListSamples {
  */
 public final class PoliciesListByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/frontdoor/resource-manager/Microsoft.Network/stable/2024-02-01/examples/WafListPolicies.json
+     * x-ms-original-file: 2025-10-01/WafListPolicies.json
      */
     /**
      * Sample code: Get all Policies in a Resource Group.
@@ -1047,8 +1033,7 @@ import java.util.Map;
  */
 public final class PoliciesUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/frontdoor/resource-manager/Microsoft.Network/stable/2024-02-01/examples/WafPolicyPatch.json
+     * x-ms-original-file: 2025-10-01/WafPolicyPatch.json
      */
     /**
      * Sample code: Patches specific policy.
@@ -1084,8 +1069,7 @@ public final class PoliciesUpdateSamples {
  */
 public final class PreconfiguredEndpointsListSamples {
     /*
-     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2019-11-01/examples/
-     * NetworkExperimentGetPreconfiguredEndpoints.json
+     * x-ms-original-file: 2025-10-01/NetworkExperimentGetPreconfiguredEndpoints.json
      */
     /**
      * Sample code: Gets a list of Preconfigured Endpoints.
@@ -1108,8 +1092,7 @@ import com.azure.resourcemanager.frontdoor.models.LatencyScorecardAggregationInt
  */
 public final class ReportsGetLatencyScorecardsSamples {
     /*
-     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2019-11-01/examples/
-     * NetworkExperimentGetLatencyScorecard.json
+     * x-ms-original-file: 2025-10-01/NetworkExperimentGetLatencyScorecard.json
      */
     /**
      * Sample code: Gets a Latency Scorecard for a given Experiment.
@@ -1137,8 +1120,7 @@ import java.time.OffsetDateTime;
  */
 public final class ReportsGetTimeseriesSamples {
     /*
-     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2019-11-01/examples/
-     * NetworkExperimentGetTimeseries.json
+     * x-ms-original-file: 2025-10-01/NetworkExperimentGetTimeseries.json
      */
     /**
      * Sample code: Gets a Timeseries for a given Experiment.
@@ -1185,9 +1167,7 @@ import java.util.Arrays;
  */
 public final class RulesEnginesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/frontdoor/resource-manager/Microsoft.Network/stable/2021-06-01/examples/FrontdoorRulesEngineCreate.
-     * json
+     * x-ms-original-file: 2025-10-01/FrontdoorRulesEngineCreate.json
      */
     /**
      * Sample code: Create or update a specific Rules Engine Configuration.
@@ -1256,9 +1236,7 @@ public final class RulesEnginesCreateOrUpdateSamples {
  */
 public final class RulesEnginesDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/frontdoor/resource-manager/Microsoft.Network/stable/2021-06-01/examples/FrontdoorRulesEngineDelete.
-     * json
+     * x-ms-original-file: 2025-10-01/FrontdoorRulesEngineDelete.json
      */
     /**
      * Sample code: Delete Rules Engine Configuration.
@@ -1279,9 +1257,7 @@ public final class RulesEnginesDeleteSamples {
  */
 public final class RulesEnginesGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/frontdoor/resource-manager/Microsoft.Network/stable/2021-06-01/examples/FrontdoorRulesEngineGet.
-     * json
+     * x-ms-original-file: 2025-10-01/FrontdoorRulesEngineGet.json
      */
     /**
      * Sample code: Get Rules Engine Configuration.
@@ -1302,9 +1278,7 @@ public final class RulesEnginesGetSamples {
  */
 public final class RulesEnginesListByFrontDoorSamples {
     /*
-     * x-ms-original-file:
-     * specification/frontdoor/resource-manager/Microsoft.Network/stable/2021-06-01/examples/FrontdoorRulesEngineList.
-     * json
+     * x-ms-original-file: 2025-10-01/FrontdoorRulesEngineList.json
      */
     /**
      * Sample code: List Rules Engine Configurations in a Front Door.
