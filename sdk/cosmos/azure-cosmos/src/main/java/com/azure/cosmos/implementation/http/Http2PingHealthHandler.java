@@ -41,13 +41,22 @@ public class Http2PingHealthHandler extends ChannelDuplexHandler {
         AttributeKey.valueOf("cosmos.h2.lastPingAckNanos");
 
     /**
-     * Per-connection expiry timestamp (nanos). Stamped once at handler installation with
+     * Per-connection expiry timestamp (nanos). Stamped once at connection creation with
      * baseMaxLifetime + per-connection jitter. The eviction predicate reads this to determine
      * if a connection has exceeded its jittered max lifetime. Per-connection jitter prevents
      * thundering-herd expiry when many connections are created around the same time.
      */
     public static final AttributeKey<Long> CONNECTION_EXPIRY_NANOS =
         AttributeKey.valueOf("cosmos.h2.connectionExpiryNanos");
+
+    /**
+     * Nano timestamp when a connection was marked for pending eviction (two-phase eviction).
+     * Used by Phase 3 (lifetime) to allow active streams to drain before closing the connection.
+     * The eviction predicate marks a connection as pending, then evicts it when idle or after
+     * a grace period expires.
+     */
+    public static final AttributeKey<Long> PENDING_EVICTION_NANOS =
+        AttributeKey.valueOf("cosmos.h2.pendingEvictionNanos");
 
     /**
      * Guard attribute to prevent duplicate handler installation on the same parent channel.
@@ -168,22 +177,42 @@ public class Http2PingHealthHandler extends ChannelDuplexHandler {
     }
 
     /**
-     * Installs this handler on the parent H2 channel if not already installed.
+     * Stamps a per-connection expiry timestamp on the parent H2 channel.
+     * Independent of PING health — max lifetime works even if PING is disabled.
+     * Safe to call multiple times; only the first call stamps the attribute.
+     *
+     * @param channel the channel from doOnConnected (parent H2 or child stream)
+     * @param baseMaxLifetimeMs base max lifetime in milliseconds
+     * @param jitterRangeMs max jitter in milliseconds (e.g., 30_000 for [1s, 30s] range)
+     */
+    public static void stampConnectionExpiry(Channel channel, long baseMaxLifetimeMs, long jitterRangeMs) {
+        Channel targetChannel = channel.parent() != null ? channel.parent() : channel;
+
+        if (!targetChannel.hasAttr(CONNECTION_EXPIRY_NANOS)) {
+            long jitterMs = ThreadLocalRandom.current().nextLong(1000, jitterRangeMs + 1);
+            long expiryNanos = System.nanoTime() + (baseMaxLifetimeMs + jitterMs) * 1_000_000L;
+            targetChannel.attr(CONNECTION_EXPIRY_NANOS).set(expiryNanos);
+
+            if (logger.isDebugEnabled()) {
+                logger.debug("Stamped connection expiry on channel {}: maxLifetime={}ms, jitter={}ms",
+                    targetChannel.id().asShortText(), baseMaxLifetimeMs, jitterMs);
+            }
+        }
+    }
+
+    /**
+     * Installs the PING health handler on the parent H2 channel if not already installed.
      * Safe to call from any child stream's doOnConnected callback — will navigate
      * to the parent channel and install exactly once.
      *
-     * <p>Also stamps a per-connection expiry timestamp ({@link #CONNECTION_EXPIRY_NANOS})
-     * computed as {@code now + baseMaxLifetimeMs + jitter}. The jitter is drawn once per
-     * connection from {@code [1s, jitterRangeMs]} to stagger expiry across connections
-     * created around the same time (avoids thundering-herd reconnection).</p>
+     * <p>This method is independent of max lifetime — PING health works even if
+     * max lifetime is disabled. For max lifetime, call {@link #stampConnectionExpiry}
+     * separately.</p>
      *
      * @param channel the channel from doOnConnected (parent H2 or child stream)
      * @param pingIntervalMs PING interval in milliseconds
-     * @param baseMaxLifetimeMs base max lifetime in milliseconds (0 = no lifetime eviction)
-     * @param jitterRangeMs max jitter in milliseconds (e.g., 30_000 for [1s, 30s] range)
      */
-    public static void installOnParentIfAbsent(Channel channel, long pingIntervalMs,
-                                               long baseMaxLifetimeMs, long jitterRangeMs) {
+    public static void installOnParentIfAbsent(Channel channel, long pingIntervalMs) {
         // In reactor-netty H2 mode, doOnConnected fires for the PARENT TCP channel
         // (not child streams). channel.parent() is null because we're already on the parent.
         // For child streams (if they ever fire), navigate to parent.
@@ -194,19 +223,11 @@ public class Http2PingHealthHandler extends ChannelDuplexHandler {
             return; // already installed
         }
 
-        // Stamp per-connection expiry: baseMaxLifetime + random jitter in [1s, jitterRange]
-        if (baseMaxLifetimeMs > 0 && jitterRangeMs > 0) {
-            long jitterMs = ThreadLocalRandom.current().nextLong(1000, jitterRangeMs + 1);
-            long expiryNanos = System.nanoTime() + (baseMaxLifetimeMs + jitterMs) * 1_000_000L;
-            targetChannel.attr(CONNECTION_EXPIRY_NANOS).set(expiryNanos);
-        }
-
         targetChannel.pipeline().addLast(HANDLER_NAME, new Http2PingHealthHandler(pingIntervalMs));
 
         if (logger.isDebugEnabled()) {
-            logger.debug("Installed Http2PingHealthHandler on channel {} with {}ms interval, " +
-                    "maxLifetime={}ms, jitterRange={}ms",
-                targetChannel.id().asShortText(), pingIntervalMs, baseMaxLifetimeMs, jitterRangeMs);
+            logger.debug("Installed Http2PingHealthHandler on channel {} with {}ms interval",
+                targetChannel.id().asShortText(), pingIntervalMs);
         }
     }
 }

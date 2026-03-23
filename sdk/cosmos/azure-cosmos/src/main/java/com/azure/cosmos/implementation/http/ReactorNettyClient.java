@@ -165,19 +165,21 @@ public class ReactorNettyClient implements HttpClient {
                             new Http2ResponseHeaderCleanerHandler());
                     }
 
-                    // Install HTTP/2 PING health checker on the parent TCP channel.
-                    // doOnConnected fires for the parent H2 connection; installOnParentIfAbsent
-                    // ensures the handler is added exactly once per parent connection.
-                    // Also stamps per-connection expiry (baseMaxLifetime + jitter) for the eviction predicate.
+                    // Stamp per-connection expiry if max lifetime is configured — independent of PING.
+                    int maxLifetimeSeconds = Configs.getHttpConnectionMaxLifetimeInSeconds();
+                    if (maxLifetimeSeconds > 0) {
+                        int jitterRangeSeconds = Configs.HTTP_CONNECTION_MAX_LIFETIME_JITTER_IN_SECONDS;
+                        Http2PingHealthHandler.stampConnectionExpiry(
+                            connection.channel(),
+                            maxLifetimeSeconds * 1000L,
+                            jitterRangeSeconds * 1000L);
+                    }
+
+                    // Install PING health handler if PING interval is configured — independent of max lifetime.
                     int pingIntervalSeconds = Configs.getHttp2PingIntervalInSeconds();
                     if (pingIntervalSeconds > 0) {
-                        int maxLifetimeSeconds = Configs.getHttpConnectionMaxLifetimeInSeconds();
-                        int jitterRangeSeconds = Configs.HTTP_CONNECTION_MAX_LIFETIME_JITTER_IN_SECONDS;
                         Http2PingHealthHandler.installOnParentIfAbsent(
-                            connection.channel(),
-                            pingIntervalSeconds * 1000L,
-                            maxLifetimeSeconds > 0 ? maxLifetimeSeconds * 1000L : 0,
-                            jitterRangeSeconds * 1000L);
+                            connection.channel(), pingIntervalSeconds * 1000L);
                     }
                 }));
         }

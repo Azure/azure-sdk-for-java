@@ -126,18 +126,38 @@ public interface HttpClient {
                     }
                 }
 
-                // Phase 3: Per-connection max lifetime with jitter — deterministic per connection.
+                // Phase 3: Per-connection max lifetime with jitter — two-phase eviction.
                 // CONNECTION_EXPIRY_NANOS is stamped once per connection in doOnConnected
-                // (via Http2PingHealthHandler.installOnParentIfAbsent) with baseMaxLifetime + random jitter.
-                // This avoids thundering-herd reconnection when many connections are created together.
+                // (via Http2PingHealthHandler.stampConnectionExpiry) with baseMaxLifetime + random jitter.
+                //
+                // Two-phase: instead of evicting immediately (which RST_STREAMs active H2 streams),
+                // mark the connection as pending eviction. On subsequent sweeps, evict when idle
+                // or after the drain grace period expires.
                 if (maxLifetimeSeconds > 0) {
                     Channel parentChannel = connection.channel();
                     Long expiryNanos = parentChannel.hasAttr(Http2PingHealthHandler.CONNECTION_EXPIRY_NANOS)
                         ? parentChannel.attr(Http2PingHealthHandler.CONNECTION_EXPIRY_NANOS).get()
                         : null;
                     if (expiryNanos != null && now > expiryNanos) {
-                        evictedThisCycle.incrementAndGet();
-                        return true;
+                        // Check if already marked for pending eviction
+                        Long pendingSince = parentChannel.hasAttr(Http2PingHealthHandler.PENDING_EVICTION_NANOS)
+                            ? parentChannel.attr(Http2PingHealthHandler.PENDING_EVICTION_NANOS).get()
+                            : null;
+
+                        if (pendingSince == null) {
+                            // First detection — mark as pending, don't evict yet
+                            parentChannel.attr(Http2PingHealthHandler.PENDING_EVICTION_NANOS).set(now);
+                            return false;
+                        }
+
+                        // Already pending — evict if idle or grace period (10s) expired
+                        long drainGraceNanos = 10_000_000_000L; // 10 seconds
+                        if (metadata.idleTime() > 0 || now - pendingSince > drainGraceNanos) {
+                            evictedThisCycle.incrementAndGet();
+                            return true;
+                        }
+
+                        return false; // active streams — wait for next sweep
                     }
                 }
 

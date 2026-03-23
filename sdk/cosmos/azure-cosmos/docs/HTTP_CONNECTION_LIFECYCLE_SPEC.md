@@ -320,3 +320,118 @@ New stage `Cosmos_Live_Test_HttpNetworkFault` in `tests.yml`:
 | **Goal 1 is reactive** | If DNS hasn't changed, rotation reconnects to same IP. No active load redistribution. | Acceptable — the goal is re-resolution after failover/migration, not active balancing. |
 | **Customer `networkaddress.cache.ttl=-1`** | Max lifetime evicts connections, but new ones resolve to cached (stale) IP. Goal 1 defeated. | Do not override customer's JVM DNS setting. Document as known limitation. |
 | **reactor-netty 1.3.4 upgrade** | Native `maxLifeTimeVariance()` would simplify Phase 3 and remove channel attribute. | Spring Boot 4 track has 1.3.3. Track 1.3.4+ availability with Central team. |
+
+### 9.1 Design: Decouple Max Lifetime from PING Health
+
+**Problem**: `CONNECTION_EXPIRY_NANOS` is stamped inside `Http2PingHealthHandler.installOnParentIfAbsent`.
+If PING is disabled (`COSMOS.HTTP2_PING_INTERVAL_IN_SECONDS=0`), the handler is never installed,
+and max lifetime silently stops working. These are conceptually independent features coupled
+through a single install path.
+
+**Proposed fix**: Separate the concerns in `ReactorNettyClient.doOnConnected()`:
+
+```java
+// Always stamp per-connection expiry if max lifetime is configured — independent of PING.
+int maxLifetimeSeconds = Configs.getHttpConnectionMaxLifetimeInSeconds();
+if (maxLifetimeSeconds > 0) {
+    Http2PingHealthHandler.stampConnectionExpiry(
+        connection.channel(),
+        maxLifetimeSeconds * 1000L,
+        Configs.HTTP_CONNECTION_MAX_LIFETIME_JITTER_IN_SECONDS * 1000L);
+}
+
+// Install PING handler only if PING interval is configured — independent of max lifetime.
+int pingIntervalSeconds = Configs.getHttp2PingIntervalInSeconds();
+if (pingIntervalSeconds > 0) {
+    Http2PingHealthHandler.installOnParentIfAbsent(
+        connection.channel(), pingIntervalSeconds * 1000L);
+}
+```
+
+`stampConnectionExpiry` becomes a static method that only handles the expiry attribute:
+
+```java
+public static void stampConnectionExpiry(Channel channel, long baseMaxLifetimeMs, long jitterRangeMs) {
+    Channel target = channel.parent() != null ? channel.parent() : channel;
+    if (!target.hasAttr(CONNECTION_EXPIRY_NANOS)) {
+        long jitterMs = ThreadLocalRandom.current().nextLong(1000, jitterRangeMs + 1);
+        target.attr(CONNECTION_EXPIRY_NANOS).set(
+            System.nanoTime() + (baseMaxLifetimeMs + jitterMs) * 1_000_000L);
+    }
+}
+```
+
+`installOnParentIfAbsent` drops the lifetime parameters and only handles PING installation.
+
+**Independence matrix after fix**:
+
+| PING enabled | Max lifetime enabled | Behavior |
+|-------------|---------------------|----------|
+| ✅ | ✅ | All 4 phases active (current default) |
+| ❌ | ✅ | Phase 0 (dead) + Phase 1 (idle) + Phase 3 (lifetime). No Phase 2 (PING). |
+| ✅ | ❌ | Phase 0 (dead) + Phase 1 (idle) + Phase 2 (PING). No Phase 3 (lifetime). |
+| ❌ | ❌ | No eviction predicate set at all (current behavior). |
+
+### 9.2 Design: Graceful Eviction (Avoid RST_STREAM on Active Streams)
+
+**Problem**: When the eviction predicate returns `true`, reactor-netty closes the parent TCP
+connection. Active H2 streams on that connection receive `RST_STREAM`. For lifetime eviction
+(Phase 3), per-connection jitter makes this unlikely during peak traffic — the connection
+expires during a naturally idle moment. But for PING-stale eviction (Phase 2), the connection
+may have active streams that are already experiencing timeouts due to the degraded network path.
+
+**Key question**: Does reactor-netty's H2 pool evaluate the eviction predicate against
+connections that currently have active streams? In HTTP/2, a parent connection can simultaneously
+be "available for new streams" and "serving existing streams." If the background sweep evaluates
+all connections (including those with active streams), eviction can interrupt in-flight requests.
+
+**Proposed fix: Two-phase eviction via `PENDING_EVICTION_NANOS` attribute**
+
+Instead of returning `true` immediately, stamp a `PENDING_EVICTION_NANOS` attribute and
+return `false`. On subsequent sweeps, if the connection is still pending eviction AND has been
+idle (from the pool's perspective), then return `true`.
+
+```java
+// Phase 2/3 hits a threshold — mark for pending eviction instead of immediate evict
+if (shouldEvict) {
+    Channel ch = connection.channel();
+    if (!ch.hasAttr(PENDING_EVICTION_NANOS)) {
+        ch.attr(PENDING_EVICTION_NANOS).set(System.nanoTime());
+        return false; // don't evict yet — let active streams drain
+    }
+
+    // Already pending — check if enough time has passed for streams to drain
+    long pendingSince = ch.attr(PENDING_EVICTION_NANOS).get();
+    long gracePeriodNanos = EVICTION_DRAIN_GRACE_PERIOD.toNanos(); // e.g., 10s
+    if (System.nanoTime() - pendingSince > gracePeriodNanos) {
+        return true; // grace period expired — evict regardless
+    }
+
+    // Within grace period — only evict if connection is idle
+    if (metadata.idleTime() > 0) {
+        return true; // no active streams — safe to evict now
+    }
+
+    return false; // active streams — wait for next sweep
+}
+```
+
+**Trade-offs**:
+
+| Aspect | Immediate eviction (current) | Two-phase eviction (proposed) |
+|--------|-------|-------------|
+| Active stream impact | RST_STREAM on all active streams | Streams complete naturally (up to grace period) |
+| Detection-to-eviction latency | 1 sweep cycle | 1–2 sweep cycles + up to grace period |
+| Complexity | Simple boolean | Additional attribute + grace period logic |
+| PING-stale connections | Evicted fast (good — they're degraded) | Delayed eviction (bad — active streams on degraded connection continue failing) |
+
+**Recommendation**: Implement two-phase eviction for **Phase 3 (lifetime) only**. Phase 2
+(PING-stale) should continue with immediate eviction — if the connection is degraded, active
+streams are already failing, and keeping them alive provides no benefit.
+
+```
+Phase 0 (dead):       → immediate evict (always)
+Phase 1 (idle):       → immediate evict (no active streams by definition)
+Phase 2 (PING-stale): → immediate evict (connection is degraded, streams are already failing)
+Phase 3 (lifetime):   → two-phase: mark pending → evict when idle or grace period expires
+```
