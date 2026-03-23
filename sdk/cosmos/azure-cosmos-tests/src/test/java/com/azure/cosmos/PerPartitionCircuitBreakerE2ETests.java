@@ -4,6 +4,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.faultinjection.FaultInjectionTestBase;
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DatabaseAccountLocation;
@@ -237,7 +238,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
         super(cosmosClientBuilder);
     }
 
-    @BeforeClass(groups = {"circuit-breaker-misc-gateway", "circuit-breaker-misc-direct", "circuit-breaker-read-all-read-many", "multi-region"})
+    @BeforeClass(groups = {"circuit-breaker-misc-gateway", "circuit-breaker-misc-direct", "circuit-breaker-read-all-read-many", "multi-region", "fi-thinclient-multi-master"})
     public void beforeClass() {
         try (CosmosAsyncClient testClient = getClientBuilder().buildAsyncClient()) {
             RxDocumentClientImpl documentClient = (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(testClient);
@@ -2800,7 +2801,7 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
 
     // Added FlakyTestRetryAnalyzer to handle transient failures in circuit breaker tests with fault injection
     // Increased timeout from 4*TIMEOUT to 5*TIMEOUT (200 seconds) to allow for timing variations in CI
-    @Test(groups = {"circuit-breaker-misc-gateway"}, dataProvider = "miscellaneousOpTestConfigsGateway", timeOut = 5 * TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
+    @Test(groups = {"circuit-breaker-misc-gateway", "fi-thinclient-multi-master"}, dataProvider = "miscellaneousOpTestConfigsGateway", timeOut = 5 * TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void miscellaneousDocumentOperationHitsTerminalExceptionAcrossKRegionsGateway(
         String testId,
         FaultInjectionRuleParamsWrapper faultInjectionRuleParamsWrapper,
@@ -2904,6 +2905,11 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
 
         if (!allowedConnectionModes.contains(connectionPolicy.getConnectionMode())) {
             throw new SkipException(String.format("Test is not applicable to %s connectivity mode!", connectionPolicy.getConnectionMode()));
+        }
+
+        // Thin client only supports GATEWAY mode - skip DIRECT mode tests
+        if (connectionPolicy.getConnectionMode() == ConnectionMode.DIRECT && Configs.isThinClientEnabled() && Configs.isHttp2Enabled()) {
+            throw new SkipException("DIRECT connection mode is not supported with thin client - skipping.");
         }
 
         CosmosAsyncClient asyncClient = null;
@@ -3650,6 +3656,13 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
                             validateRegionsContactedWhenShortCircuitingHasKickedIn.accept(response.batchResponse.getDiagnostics().getDiagnosticsContext());
                         }
                     }
+
+                    if (Configs.isThinClientEnabled() && Configs.isHttp2Enabled() && response.cosmosException == null) {
+                        CosmosDiagnosticsContext ctx = getDiagnosticsContext(response);
+                        if (ctx != null) {
+                            assertThinClientEndpointUsed(ctx);
+                        }
+                    }
                 }
 
                 // Ensure circuit breaker has kicked in before fail back
@@ -3692,6 +3705,13 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
 
                         validateRegionsContactedWhenShortCircuitRegionMarkedAsHealthyOrHealthyTentative.accept(response.batchResponse.getDiagnostics().getDiagnosticsContext());
                     }
+
+                    if (Configs.isThinClientEnabled() && Configs.isHttp2Enabled() && response.cosmosException == null) {
+                        CosmosDiagnosticsContext ctx = getDiagnosticsContext(response);
+                        if (ctx != null) {
+                            assertThinClientEndpointUsed(ctx);
+                        }
+                    }
                 }
             }
         } catch (InterruptedException ex) {
@@ -3703,6 +3723,19 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
             System.clearProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG");
             safeClose(client);
         }
+    }
+
+    private static CosmosDiagnosticsContext getDiagnosticsContext(ResponseWrapper<?> response) {
+        if (response.cosmosItemResponse != null) {
+            return response.cosmosItemResponse.getDiagnostics().getDiagnosticsContext();
+        } else if (response.feedResponse != null) {
+            return response.feedResponse.getCosmosDiagnostics().getDiagnosticsContext();
+        } else if (response.cosmosException != null) {
+            return response.cosmosException.getDiagnostics().getDiagnosticsContext();
+        } else if (response.batchResponse != null) {
+            return response.batchResponse.getDiagnostics().getDiagnosticsContext();
+        }
+        return null;
     }
 
     private static int resolveTestObjectCountToBootstrapFrom(FaultInjectionOperationType faultInjectionOperationType, int opCount) {
@@ -4529,18 +4562,18 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
         }
     }
 
-    @BeforeMethod(groups = { "circuit-breaker-misc-gateway", "circuit-breaker-misc-direct", "circuit-breaker-read-all-read-many", "multi-region" }, timeOut = 2 * SETUP_TIMEOUT, alwaysRun = true)
+    @BeforeMethod(groups = { "circuit-breaker-misc-gateway", "circuit-breaker-misc-direct", "circuit-breaker-read-all-read-many", "multi-region", "fi-thinclient-multi-master" }, timeOut = 2 * SETUP_TIMEOUT, alwaysRun = true)
     public void beforeMethod() throws Exception {
         // add a cool off time
         CosmosNettyLeakDetectorFactory.resetIdentifiedLeaks();
     }
 
-    @AfterMethod(groups = { "circuit-breaker-misc-gateway", "circuit-breaker-misc-direct", "circuit-breaker-read-all-read-many", "multi-region" }, timeOut = SETUP_TIMEOUT, alwaysRun = true)
+    @AfterMethod(groups = { "circuit-breaker-misc-gateway", "circuit-breaker-misc-direct", "circuit-breaker-read-all-read-many", "multi-region", "fi-thinclient-multi-master" }, timeOut = SETUP_TIMEOUT, alwaysRun = true)
     public void afterMethod() throws Exception {
         logger.info("captureNettyLeaks: {}", captureNettyLeaks());
     }
 
-    @AfterClass(groups = { "circuit-breaker-misc-gateway", "circuit-breaker-misc-direct", "circuit-breaker-read-all-read-many", "multi-region" })
+    @AfterClass(groups = { "circuit-breaker-misc-gateway", "circuit-breaker-misc-direct", "circuit-breaker-read-all-read-many", "multi-region", "fi-thinclient-multi-master" })
     public void afterClass() {
         CosmosClientBuilder clientBuilder = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
