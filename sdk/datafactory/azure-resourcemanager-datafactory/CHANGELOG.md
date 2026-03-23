@@ -1,14 +1,3246 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
+## 1.3.0-beta.1 (2026-03-23)
 
-### Features Added
+- Azure Resource Manager DataFactory client library for Java. This package contains Microsoft Azure SDK for DataFactory Management SDK.  Package api-version 2018-06-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.ManagedVirtualNetworkListResponse` was removed
 
-### Other Changes
+#### `models.FactoryListResponse` was removed
+
+#### `models.TriggerListResponse` was removed
+
+#### `models.ChangeDataCaptureListResponse` was removed
+
+#### `models.QueryDataFlowDebugSessionsResponse` was removed
+
+#### `models.OperationListResponse` was removed
+
+#### `models.DataFlowListResponse` was removed
+
+#### `models.DatasetListResponse` was removed
+
+#### `models.GlobalParameterListResponse` was removed
+
+#### `models.IntegrationRuntimeListResponse` was removed
+
+#### `models.CredentialListResponse` was removed
+
+#### `models.LinkedServiceListResponse` was removed
+
+#### `models.GetDataFactoryOperationStatusResponse` was removed
+
+#### `models.PrivateEndpointConnectionListResponse` was removed
+
+#### `models.PipelineListResponse` was removed
+
+#### `models.ManagedPrivateEndpointListResponse` was removed
+
+#### `models.CmkIdentityDefinition` was modified
+
+* `validate()` was removed
+
+#### `models.CosmosDbMongoDbApiSource` was modified
+
+* `validate()` was removed
+
+#### `models.SqlMISink` was modified
+
+* `validate()` was removed
+
+#### `models.QuickBooksSource` was modified
+
+* `validate()` was removed
+
+#### `models.SapEccLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.SmartsheetLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.TarReadSettings` was modified
+
+* `validate()` was removed
+
+#### `models.TwilioLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.Activity` was modified
+
+* `validate()` was removed
+
+#### `models.Expression` was modified
+
+* `java.lang.String type()` -> `models.ExpressionType type()`
+* `validate()` was removed
+
+#### `models.HBaseLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.AzureDataLakeStoreLocation` was modified
+
+* `validate()` was removed
+
+#### `models.MicrosoftAccessTableDataset` was modified
+
+* `validate()` was removed
+
+#### `models.DrillLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.GoogleBigQuerySource` was modified
+
+* `validate()` was removed
+
+#### `models.LinkedIntegrationRuntimeRequest` was modified
+
+* `validate()` was removed
+
+#### `models.ServiceNowObjectDataset` was modified
+
+* `validate()` was removed
+
+#### `models.LinkedIntegrationRuntimeKeyAuthorization` was modified
+
+* `validate()` was removed
+
+#### `models.PowerQuerySource` was modified
+
+* `validate()` was removed
+
+#### `models.SsisEnvironmentReference` was modified
+
+* `SsisEnvironmentReference()` was changed to private access
+* `validate()` was removed
+* `withEnvironmentFolderName(java.lang.String)` was removed
+* `withId(java.lang.Long)` was removed
+* `withEnvironmentName(java.lang.String)` was removed
+* `withReferenceType(java.lang.String)` was removed
+
+#### `models.ScriptActivityParameter` was modified
+
+* `validate()` was removed
+
+#### `models.WarehouseTableDataset` was modified
+
+* `validate()` was removed
+
+#### `models.CopyActivityLogSettings` was modified
+
+* `validate()` was removed
+
+#### `models.CopySink` was modified
+
+* `validate()` was removed
+
+#### `models.SnowflakeLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.ExecutePipelineActivityPolicy` was modified
+
+* `validate()` was removed
+
+#### `models.FileShareDataset` was modified
+
+* `validate()` was removed
+
+#### `models.SapOdpLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.WebLinkedServiceTypeProperties` was modified
+
+* `validate()` was removed
+
+#### `models.DelimitedTextSource` was modified
+
+* `validate()` was removed
+
+#### `models.RemotePrivateEndpointConnection` was modified
+
+* `RemotePrivateEndpointConnection()` was changed to private access
+* `withPrivateEndpoint(models.ArmIdWrapper)` was removed
+* `withPrivateLinkServiceConnectionState(models.PrivateLinkConnectionState)` was removed
+* `validate()` was removed
+
+#### `models.SqlUpsertSettings` was modified
+
+* `validate()` was removed
+
+#### `models.Trigger` was modified
+
+* `validate()` was removed
+
+#### `models.MongoDbAtlasLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.IntegrationRuntime` was modified
+
+* `validate()` was removed
+
+#### `models.WebBasicAuthentication` was modified
+
+* `validate()` was removed
+
+#### `models.PrivateLinkResource` was modified
+
+* `PrivateLinkResource()` was changed to private access
+* `withProperties(models.PrivateLinkResourceProperties)` was removed
+* `validate()` was removed
+* `withId(java.lang.String)` was removed
+
+#### `models.EloquaObjectDataset` was modified
+
+* `validate()` was removed
+
+#### `models.CustomDataset` was modified
+
+* `validate()` was removed
+
+#### `models.PrivateLinkConnectionApprovalRequest` was modified
+
+* `validate()` was removed
+
+#### `models.FileServerWriteSettings` was modified
+
+* `validate()` was removed
+
+#### `models.SsisLogLocation` was modified
+
+* `validate()` was removed
+
+#### `models.RedirectIncompatibleRowSettings` was modified
+
+* `validate()` was removed
+
+#### `models.OdbcTableDataset` was modified
+
+* `validate()` was removed
+
+#### `models.PipelineFolder` was modified
+
+* `validate()` was removed
+
+#### `models.IntegrationRuntimeOutboundNetworkDependenciesEndpoint` was modified
+
+* `IntegrationRuntimeOutboundNetworkDependenciesEndpoint()` was changed to private access
+* `withDomainName(java.lang.String)` was removed
+* `validate()` was removed
+* `withEndpointDetails(java.util.List)` was removed
+
+#### `models.TumblingWindowTrigger` was modified
+
+* `validate()` was removed
+
+#### `models.AzureFileStorageLocation` was modified
+
+* `validate()` was removed
+
+#### `models.SapOpenHubLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.AzureFileStorageWriteSettings` was modified
+
+* `validate()` was removed
+
+#### `models.SsisProject` was modified
+
+* `SsisProject()` was changed to private access
+* `withName(java.lang.String)` was removed
+* `withId(java.lang.Long)` was removed
+* `withEnvironmentRefs(java.util.List)` was removed
+* `withVersion(java.lang.Long)` was removed
+* `withDescription(java.lang.String)` was removed
+* `validate()` was removed
+* `withFolderId(java.lang.Long)` was removed
+* `withParameters(java.util.List)` was removed
+
+#### `models.SapHanaTableDataset` was modified
+
+* `validate()` was removed
+
+#### `models.SalesforceSource` was modified
+
+* `validate()` was removed
+
+#### `models.SqlServerSink` was modified
+
+* `validate()` was removed
+
+#### `models.CosmosDbSqlApiSink` was modified
+
+* `validate()` was removed
+
+#### `models.SalesforceServiceCloudSource` was modified
+
+* `validate()` was removed
+
+#### `models.HubspotObjectDataset` was modified
+
+* `validate()` was removed
+
+#### `models.NetezzaSource` was modified
+
+* `validate()` was removed
+
+#### `models.AmazonMwsObjectDataset` was modified
+
+* `validate()` was removed
+
+#### `models.VerticaLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.DatasetStorageFormat` was modified
+
+* `validate()` was removed
+
+#### `models.HDInsightOnDemandLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.OrcFormat` was modified
+
+* `validate()` was removed
+
+#### `models.TumblingWindowTriggerDependencyReference` was modified
+
+* `validate()` was removed
+
+#### `models.SqlServerBaseLinkedServiceTypeProperties` was modified
+
+* `validate()` was removed
+
+#### `models.AzureTableSink` was modified
+
+* `validate()` was removed
+
+#### `models.DatasetLocation` was modified
+
+* `validate()` was removed
+
+#### `models.PostgreSqlV2TableDataset` was modified
+
+* `validate()` was removed
+
+#### `models.AzureTableStorageLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.MySqlSource` was modified
+
+* `validate()` was removed
+
+#### `models.FileServerLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.DataFlowDebugCommandRequest` was modified
+
+* `validate()` was removed
+
+#### `models.SqlMISource` was modified
+
+* `validate()` was removed
+
+#### `models.UpdateIntegrationRuntimeNodeRequest` was modified
+
+* `validate()` was removed
+
+#### `models.AzureDataLakeStoreReadSettings` was modified
+
+* `validate()` was removed
+
+#### `models.SelfDependencyTumblingWindowTriggerReference` was modified
+
+* `validate()` was removed
+
+#### `models.AzurePostgreSqlSinkUpsertSettings` was modified
+
+* `validate()` was removed
+
+#### `models.ScriptActivity` was modified
+
+* `validate()` was removed
+
+#### `models.ParquetFormat` was modified
+
+* `validate()` was removed
+
+#### `models.InformixTableDataset` was modified
+
+* `validate()` was removed
+
+#### `models.PurviewConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.GoogleBigQueryObjectDataset` was modified
+
+* `validate()` was removed
+
+#### `models.SynapseNotebookReference` was modified
+
+* `validate()` was removed
+
+#### `models.OracleServiceCloudObjectDataset` was modified
+
+* `validate()` was removed
+
+#### `models.MongoDbCollectionDataset` was modified
+
+* `validate()` was removed
+
+#### `models.HDInsightSparkActivity` was modified
+
+* `validate()` was removed
+
+#### `models.AmazonS3LinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.NetezzaLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.DocumentDbCollectionSink` was modified
+
+* `validate()` was removed
+
+#### `models.JsonFormat` was modified
+
+* `validate()` was removed
+
+#### `models.DependencyReference` was modified
+
+* `validate()` was removed
+
+#### `models.ManagedIdentityCredential` was modified
+
+* `validate()` was removed
+
+#### `models.IntegrationRuntimeCustomerVirtualNetwork` was modified
+
+* `validate()` was removed
+
+#### `models.FormatReadSettings` was modified
+
+* `validate()` was removed
+
+#### `models.MagentoLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.InformixLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.EnvironmentVariableSetup` was modified
+
+* `validate()` was removed
+
+#### `models.IntegrationRuntimeComputeProperties` was modified
+
+* `validate()` was removed
+
+#### `models.WebActivity` was modified
+
+* `validate()` was removed
+
+#### `models.ManagedPrivateEndpoint` was modified
+
+* `validate()` was removed
+
+#### `models.AzureMariaDBTableDataset` was modified
+
+* `validate()` was removed
+
+#### `models.VerticaTableDataset` was modified
+
+* `validate()` was removed
+
+#### `models.PaypalSource` was modified
+
+* `validate()` was removed
+
+#### `models.MapperPolicy` was modified
+
+* `validate()` was removed
+
+#### `models.ParquetSink` was modified
+
+* `validate()` was removed
+
+#### `models.ServicePrincipalCredential` was modified
+
+* `validate()` was removed
+
+#### `models.UserAccessPolicy` was modified
+
+* `validate()` was removed
+
+#### `models.HttpReadSettings` was modified
+
+* `validate()` was removed
+
+#### `models.GetMetadataActivity` was modified
+
+* `validate()` was removed
+
+#### `models.SalesforceObjectDataset` was modified
+
+* `validate()` was removed
+
+#### `models.SalesforceV2Source` was modified
+
+* `validate()` was removed
+
+#### `models.ZohoSource` was modified
+
+* `validate()` was removed
+
+#### `models.ActivityPolicy` was modified
+
+* `validate()` was removed
+
+#### `models.GoogleAdWordsObjectDataset` was modified
+
+* `validate()` was removed
+
+#### `models.PackageStore` was modified
+
+* `validate()` was removed
+
+#### `models.FilterActivity` was modified
+
+* `validate()` was removed
+
+#### `models.Dataset` was modified
+
+* `validate()` was removed
+
+#### `models.ExpressionV2` was modified
+
+* `validate()` was removed
+* `withValue(java.lang.String)` was removed
+* `java.lang.String value()` -> `java.lang.Object value()`
+
+#### `models.Office365Source` was modified
+
+* `validate()` was removed
+
+#### `models.HttpLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.SapOpenHubSource` was modified
+
+* `validate()` was removed
+
+#### `models.HttpServerLocation` was modified
+
+* `validate()` was removed
+
+#### `models.GreenplumLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.ParquetWriteSettings` was modified
+
+* `validate()` was removed
+
+#### `models.PostgreSqlLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.ForEachActivity` was modified
+
+* `validate()` was removed
+
+#### `models.BinaryDataset` was modified
+
+* `validate()` was removed
+
+#### `models.CommonDataServiceForAppsLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.DataFlowDebugCommandPayload` was modified
+
+* `validate()` was removed
+
+#### `models.ExecuteWranglingDataflowActivity` was modified
+
+* `validate()` was removed
+
+#### `models.PrivateLinkConnectionApprovalRequestResource` was modified
+
+* `validate()` was removed
+
+#### `models.SsisPackageLocation` was modified
+
+* `validate()` was removed
+
+#### `models.SquareLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.FactoryRepoConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.LakeHouseTableDataset` was modified
+
+* `validate()` was removed
+
+#### `models.AmazonS3CompatibleLocation` was modified
+
+* `validate()` was removed
+
+#### `models.AzurePostgreSqlTableDataset` was modified
+
+* `validate()` was removed
+
+#### `models.SnowflakeDataset` was modified
+
+* `validate()` was removed
+
+#### `models.HttpSource` was modified
+
+* `validate()` was removed
+
+#### `models.DynamicsCrmSink` was modified
+
+* `validate()` was removed
+
+#### `models.AzureBlobFSReadSettings` was modified
+
+* `validate()` was removed
+
+#### `models.HiveSource` was modified
+
+* `validate()` was removed
+
+#### `models.NetezzaPartitionSettings` was modified
+
+* `validate()` was removed
+
+#### `models.SalesforceServiceCloudV2LinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.ManagedIntegrationRuntimeOperationResult` was modified
+
+* `ManagedIntegrationRuntimeOperationResult()` was changed to private access
+* `withAdditionalProperties(java.util.Map)` was removed
+* `validate()` was removed
+
+#### `models.IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails` was modified
+
+* `IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails()` was changed to private access
+* `validate()` was removed
+* `withPort(java.lang.Integer)` was removed
+
+#### `models.BinarySource` was modified
+
+* `validate()` was removed
+
+#### `models.AmazonMwsSource` was modified
+
+* `validate()` was removed
+
+#### `models.IcebergSink` was modified
+
+* `validate()` was removed
+
+#### `models.CassandraTableDataset` was modified
+
+* `validate()` was removed
+
+#### `models.SalesforceSink` was modified
+
+* `validate()` was removed
+
+#### `models.MicrosoftAccessSink` was modified
+
+* `validate()` was removed
+
+#### `models.DelimitedTextWriteSettings` was modified
+
+* `validate()` was removed
+
+#### `models.InformixSink` was modified
+
+* `validate()` was removed
+
+#### `models.AzureTableSource` was modified
+
+* `validate()` was removed
+
+#### `models.AzureDatabricksDeltaLakeExportCommand` was modified
+
+* `validate()` was removed
+
+#### `models.StagingSettings` was modified
+
+* `validate()` was removed
+
+#### `models.AppFiguresLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.AmazonRdsForOracleSource` was modified
+
+* `validate()` was removed
+
+#### `models.DataFlowDebugPackageDebugSettings` was modified
+
+* `validate()` was removed
+
+#### `models.SynapseSparkJobReference` was modified
+
+* `validate()` was removed
+
+#### `models.ComponentSetup` was modified
+
+* `validate()` was removed
+
+#### `models.AzureBatchLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.MongoDbLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.SubResourceDebugResource` was modified
+
+* `validate()` was removed
+
+#### `models.MongoDbAtlasCollectionDataset` was modified
+
+* `validate()` was removed
+
+#### `models.DataFlowSourceSetting` was modified
+
+* `validate()` was removed
+
+#### `models.DatabricksNotebookActivity` was modified
+
+* `validate()` was removed
+
+#### `models.AzureDataExplorerTableDataset` was modified
+
+* `validate()` was removed
+
+#### `models.DistcpSettings` was modified
+
+* `validate()` was removed
+
+#### `models.DocumentDbCollectionDataset` was modified
+
+* `validate()` was removed
+
+#### `models.GoogleBigQueryV2Source` was modified
+
+* `validate()` was removed
+
+#### `models.PostgreSqlV2Source` was modified
+
+* `validate()` was removed
+
+#### `models.SapHanaLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.WaitActivity` was modified
+
+* `validate()` was removed
+
+#### `models.OracleCloudStorageLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.CopyActivity` was modified
+
+* `validate()` was removed
+
+#### `models.SnowflakeSink` was modified
+
+* `validate()` was removed
+
+#### `models.VariableSpecification` was modified
+
+* `validate()` was removed
+
+#### `models.CmdkeySetup` was modified
+
+* `validate()` was removed
+
+#### `models.LogStorageSettings` was modified
+
+* `validate()` was removed
+
+#### `models.WarehouseSource` was modified
+
+* `validate()` was removed
+
+#### `models.AzurePostgreSqlSource` was modified
+
+* `validate()` was removed
+
+#### `models.DataFlowDebugPackage` was modified
+
+* `validate()` was removed
+
+#### `models.IfConditionActivity` was modified
+
+* `validate()` was removed
+
+#### `models.SqlDWSink` was modified
+
+* `validate()` was removed
+
+#### `models.ActivityDependency` was modified
+
+* `validate()` was removed
+
+#### `models.RunQueryOrderBy` was modified
+
+* `validate()` was removed
+
+#### `models.SsisParameter` was modified
+
+* `SsisParameter()` was changed to private access
+* `withValueType(java.lang.String)` was removed
+* `withName(java.lang.String)` was removed
+* `withDataType(java.lang.String)` was removed
+* `withId(java.lang.Long)` was removed
+* `withSensitive(java.lang.Boolean)` was removed
+* `withDefaultValue(java.lang.String)` was removed
+* `validate()` was removed
+* `withVariable(java.lang.String)` was removed
+* `withRequired(java.lang.Boolean)` was removed
+* `withValueSet(java.lang.Boolean)` was removed
+* `withDescription(java.lang.String)` was removed
+* `withDesignDefaultValue(java.lang.String)` was removed
+* `withSensitiveDefaultValue(java.lang.String)` was removed
+
+#### `models.PrestoSource` was modified
+
+* `validate()` was removed
+
+#### `models.AzureDataLakeStoreSource` was modified
+
+* `validate()` was removed
+
+#### `models.AzureSynapseArtifactsLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.TeamDeskLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.AsanaLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.SalesforceServiceCloudV2ObjectDataset` was modified
+
+* `validate()` was removed
+
+#### `models.DataFlowStagingInfo` was modified
+
+* `validate()` was removed
+
+#### `models.DatasetReference` was modified
+
+* `validate()` was removed
+* `java.lang.String type()` -> `models.DatasetReferenceType type()`
+
+#### `models.ShopifyObjectDataset` was modified
+
+* `validate()` was removed
+
+#### `models.ExecutionActivity` was modified
+
+* `validate()` was removed
+
+#### `models.SapTableResourceDataset` was modified
+
+* `validate()` was removed
+
+#### `models.WebhookActivity` was modified
+
+* `validate()` was removed
+
+#### `models.SapCloudForCustomerSource` was modified
+
+* `validate()` was removed
+
+#### `models.Office365Dataset` was modified
+
+* `validate()` was removed
+
+#### `models.MicrosoftAccessSource` was modified
+
+* `validate()` was removed
+
+#### `models.ServiceNowV2LinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.UserProperty` was modified
+
+* `validate()` was removed
+
+#### `models.ValidationActivity` was modified
+
+* `validate()` was removed
+
+#### `models.LakeHouseLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.LinkedIntegrationRuntime` was modified
+
+* `LinkedIntegrationRuntime()` was changed to private access
+* `validate()` was removed
+
+#### `models.ConcurLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.SquareObjectDataset` was modified
+
+* `validate()` was removed
+
+#### `models.BlobSink` was modified
+
+* `validate()` was removed
+
+#### `models.JsonWriteSettings` was modified
+
+* `validate()` was removed
+
+#### `models.SapTablePartitionSettings` was modified
+
+* `validate()` was removed
+
+#### `models.PipelineRunInvokedBy` was modified
+
+* `PipelineRunInvokedBy()` was changed to private access
+* `validate()` was removed
+
+#### `models.ConnectionStateProperties` was modified
+
+* `validate()` was removed
+
+#### `models.AvroSink` was modified
+
+* `validate()` was removed
+
+#### `models.CustomActivity` was modified
+
+* `validate()` was removed
+
+#### `models.OracleTableDataset` was modified
+
+* `validate()` was removed
+
+#### `models.AzureMariaDBSource` was modified
+
+* `validate()` was removed
+
+#### `models.XeroObjectDataset` was modified
+
+* `validate()` was removed
+
+#### `models.CustomEventsTrigger` was modified
+
+* `validate()` was removed
+
+#### `models.IntegrationRuntimeSsisProperties` was modified
+
+* `validate()` was removed
+
+#### `models.IntegrationRuntimeReference` was modified
+
+* `validate()` was removed
+* `java.lang.String type()` -> `models.IntegrationRuntimeReferenceType type()`
+
+#### `models.PowerQuerySinkMapping` was modified
+
+* `validate()` was removed
+
+#### `models.SynapseNotebookActivity` was modified
+
+* `validate()` was removed
+
+#### `models.AmazonRedshiftTableDataset` was modified
+
+* `validate()` was removed
+
+#### `models.MariaDBLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.XeroLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.SnowflakeSource` was modified
+
+* `validate()` was removed
+
+#### `models.AzurePostgreSqlSink` was modified
+
+* `validate()` was removed
+
+#### `models.AzureSqlDWTableDataset` was modified
+
+* `validate()` was removed
+
+#### `models.OrcWriteSettings` was modified
+
+* `validate()` was removed
+
+#### `models.ServiceNowV2ObjectDataset` was modified
+
+* `validate()` was removed
+
+#### `models.GoogleAdWordsSource` was modified
+
+* `validate()` was removed
+
+#### `models.HiveObjectDataset` was modified
+
+* `validate()` was removed
+
+#### `models.SapOdpResourceDataset` was modified
+
+* `validate()` was removed
+
+#### `models.WarehouseSink` was modified
+
+* `validate()` was removed
+
+#### `models.TeradataTableDataset` was modified
+
+* `validate()` was removed
+
+#### `models.ConcurObjectDataset` was modified
+
+* `validate()` was removed
+
+#### `models.MultiplePipelineTrigger` was modified
+
+* `validate()` was removed
+
+#### `models.ServiceNowV2Source` was modified
+
+* `validate()` was removed
+
+#### `models.CouchbaseTableDataset` was modified
+
+* `validate()` was removed
+
+#### `models.OdbcSink` was modified
+
+* `validate()` was removed
+
+#### `models.MariaDBSource` was modified
+
+* `validate()` was removed
+
+#### `models.SecureInputOutputPolicy` was modified
+
+* `validate()` was removed
+
+#### `models.AzureFileStorageReadSettings` was modified
+
+* `validate()` was removed
+
+#### `models.RestSource` was modified
+
+* `validate()` was removed
+
+#### `models.FtpServerLocation` was modified
+
+* `validate()` was removed
+
+#### `models.AzureMLServiceLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.SapEccSource` was modified
+
+* `validate()` was removed
+
+#### `models.FtpReadSettings` was modified
+
+* `validate()` was removed
+
+#### `models.SapOpenHubTableDataset` was modified
+
+* `validate()` was removed
+
+#### `models.CassandraSource` was modified
+
+* `validate()` was removed
+
+#### `models.IntegrationRuntimeDataFlowProperties` was modified
+
+* `validate()` was removed
+
+#### `models.RerunTumblingWindowTrigger` was modified
+
+* `validate()` was removed
+
+#### `models.AzureDataLakeStoreDataset` was modified
+
+* `validate()` was removed
+
+#### `models.SapTableSource` was modified
+
+* `validate()` was removed
+
+#### `models.ArmIdWrapper` was modified
+
+* `ArmIdWrapper()` was changed to private access
+* `validate()` was removed
+
+#### `models.CommonDataServiceForAppsSource` was modified
+
+* `validate()` was removed
+
+#### `models.ScriptActivityScriptBlock` was modified
+
+* `validate()` was removed
+
+#### `models.OracleSource` was modified
+
+* `validate()` was removed
+
+#### `models.LakeHouseWriteSettings` was modified
+
+* `validate()` was removed
+
+#### `models.DynamicsAXLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.AzureBlobFSWriteSettings` was modified
+
+* `validate()` was removed
+
+#### `models.FileServerReadSettings` was modified
+
+* `validate()` was removed
+
+#### `models.DataFlowDebugResource` was modified
+
+* `validate()` was removed
+
+#### `models.HdfsSource` was modified
+
+* `validate()` was removed
+
+#### `models.TabularTranslator` was modified
+
+* `validate()` was removed
+
+#### `models.CopySource` was modified
+
+* `validate()` was removed
+
+#### `models.MongoDbV2LinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.MySqlTableDataset` was modified
+
+* `validate()` was removed
+
+#### `models.SalesforceServiceCloudV2Source` was modified
+
+* `validate()` was removed
+
+#### `models.PrestoLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.CosmosDbMongoDbApiCollectionDataset` was modified
+
+* `validate()` was removed
+
+#### `models.WebSource` was modified
+
+* `validate()` was removed
+
+#### `models.ChangeDataCaptureFolder` was modified
+
+* `validate()` was removed
+
+#### `models.DynamicsCrmEntityDataset` was modified
+
+* `validate()` was removed
+
+#### `models.AzureMLBatchExecutionActivity` was modified
+
+* `validate()` was removed
+
+#### `models.AmazonRdsForOracleLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.DataFlowReference` was modified
+
+* `validate()` was removed
+
+#### `models.Db2TableDataset` was modified
+
+* `validate()` was removed
+
+#### `models.DatasetCompression` was modified
+
+* `validate()` was removed
+
+#### `models.DrillSource` was modified
+
+* `validate()` was removed
+
+#### `models.AzureStorageLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.SsisChildPackage` was modified
+
+* `validate()` was removed
+
+#### `models.SetVariableActivity` was modified
+
+* `validate()` was removed
+
+#### `models.PrivateLinkResourceProperties` was modified
+
+* `PrivateLinkResourceProperties()` was changed to private access
+* `validate()` was removed
+
+#### `models.SalesforceLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.MongoDbCursorMethodsProperties` was modified
+
+* `validate()` was removed
+
+#### `models.AzureMLWebServiceFile` was modified
+
+* `validate()` was removed
+
+#### `models.PowerQuerySink` was modified
+
+* `validate()` was removed
+
+#### `models.FactoryRepoUpdate` was modified
+
+* `validate()` was removed
+
+#### `models.MetadataItem` was modified
+
+* `validate()` was removed
+
+#### `models.RestResourceDataset` was modified
+
+* `validate()` was removed
+
+#### `models.SapBWLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.SsisFolder` was modified
+
+* `SsisFolder()` was changed to private access
+* `withDescription(java.lang.String)` was removed
+* `validate()` was removed
+* `withId(java.lang.Long)` was removed
+* `withName(java.lang.String)` was removed
+
+#### `models.RetryPolicy` was modified
+
+* `validate()` was removed
+
+#### `models.SharePointOnlineListResourceDataset` was modified
+
+* `validate()` was removed
+
+#### `models.ZohoLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.SapTableLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.RecurrenceScheduleOccurrence` was modified
+
+* `validate()` was removed
+
+#### `models.ServiceNowSource` was modified
+
+* `validate()` was removed
+
+#### `models.WebActivityAuthentication` was modified
+
+* `validate()` was removed
+
+#### `models.MongoDbSource` was modified
+
+* `validate()` was removed
+
+#### `models.JiraLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.PostgreSqlTableDataset` was modified
+
+* `validate()` was removed
+
+#### `models.LakeHouseReadSettings` was modified
+
+* `validate()` was removed
+
+#### `models.JsonReadSettings` was modified
+
+* `validate()` was removed
+
+#### `models.DynamicsAXResourceDataset` was modified
+
+* `validate()` was removed
+
+#### `models.InformixSource` was modified
+
+* `validate()` was removed
+
+#### `models.PolybaseSettings` was modified
+
+* `validate()` was removed
+
+#### `models.AzureFileStorageLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.SparkObjectDataset` was modified
+
+* `validate()` was removed
+
+#### `models.ParameterSpecification` was modified
+
+* `validate()` was removed
+
+#### `models.RecurrenceSchedule` was modified
+
+* `validate()` was removed
+
+#### `models.AvroDataset` was modified
+
+* `validate()` was removed
+
+#### `models.ParquetSource` was modified
+
+* `validate()` was removed
+
+#### `models.SftpWriteSettings` was modified
+
+* `validate()` was removed
+
+#### `models.ScheduleTrigger` was modified
+
+* `validate()` was removed
+
+#### `models.DeleteDataFlowDebugSessionRequest` was modified
+
+* `validate()` was removed
+
+#### `models.ConcurSource` was modified
+
+* `validate()` was removed
+
+#### `models.DataLakeAnalyticsUsqlActivity` was modified
+
+* `validate()` was removed
+
+#### `models.AmazonRdsForSqlServerSource` was modified
+
+* `validate()` was removed
+
+#### `models.ImportSettings` was modified
+
+* `validate()` was removed
+
+#### `models.FactoryGitHubConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.OrcSink` was modified
+
+* `validate()` was removed
+
+#### `models.PhoenixSource` was modified
+
+* `validate()` was removed
+
+#### `models.CosmosDbMongoDbApiSink` was modified
+
+* `validate()` was removed
+
+#### `models.JiraObjectDataset` was modified
+
+* `validate()` was removed
+
+#### `models.BinaryReadSettings` was modified
+
+* `validate()` was removed
+
+#### `models.DataFlow` was modified
+
+* `validate()` was removed
+
+#### `models.ParquetDataset` was modified
+
+* `validate()` was removed
+
+#### `models.AzureSqlDatabaseLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.AzureSqlDWLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.LinkedServiceReference` was modified
+
+* `validate()` was removed
+* `java.lang.String type()` -> `models.Type type()`
+
+#### `models.SsisPackage` was modified
+
+* `SsisPackage()` was changed to private access
+* `withName(java.lang.String)` was removed
+* `validate()` was removed
+* `withProjectVersion(java.lang.Long)` was removed
+* `withDescription(java.lang.String)` was removed
+* `withFolderId(java.lang.Long)` was removed
+* `withId(java.lang.Long)` was removed
+* `withParameters(java.util.List)` was removed
+* `withProjectId(java.lang.Long)` was removed
+
+#### `models.AzureMLExecutePipelineActivity` was modified
+
+* `validate()` was removed
+
+#### `models.SalesforceMarketingCloudSource` was modified
+
+* `validate()` was removed
+
+#### `models.WranglingDataFlow` was modified
+
+* `validate()` was removed
+
+#### `models.DatabricksSparkJarActivity` was modified
+
+* `validate()` was removed
+
+#### `models.GitHubClientSecret` was modified
+
+* `validate()` was removed
+
+#### `models.RedshiftUnloadSettings` was modified
+
+* `validate()` was removed
+
+#### `models.ShopifyLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.PipelineReference` was modified
+
+* `validate()` was removed
+* `java.lang.String type()` -> `models.PipelineReferenceType type()`
+
+#### `models.TeradataSource` was modified
+
+* `validate()` was removed
+
+#### `models.DrillTableDataset` was modified
+
+* `validate()` was removed
+
+#### `models.MapperSourceConnectionsInfo` was modified
+
+* `validate()` was removed
+
+#### `models.PrestoObjectDataset` was modified
+
+* `validate()` was removed
+
+#### `models.GreenplumSource` was modified
+
+* `validate()` was removed
+
+#### `models.SalesforceServiceCloudSink` was modified
+
+* `validate()` was removed
+
+#### `models.SalesforceV2LinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.TeradataLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.SapBwSource` was modified
+
+* `validate()` was removed
+
+#### `models.OdbcSource` was modified
+
+* `validate()` was removed
+
+#### `models.ManagedIntegrationRuntime` was modified
+
+* `validate()` was removed
+
+#### `models.DelimitedTextSink` was modified
+
+* `validate()` was removed
+
+#### `models.AmazonRdsForOraclePartitionSettings` was modified
+
+* `validate()` was removed
+
+#### `models.DynamicsCrmSource` was modified
+
+* `validate()` was removed
+
+#### `models.AzureDataLakeStoreWriteSettings` was modified
+
+* `validate()` was removed
+
+#### `models.SapHanaSource` was modified
+
+* `validate()` was removed
+
+#### `models.DelimitedTextReadSettings` was modified
+
+* `validate()` was removed
+
+#### `models.LogLocationSettings` was modified
+
+* `validate()` was removed
+
+#### `models.SparkLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.FactoryIdentity` was modified
+
+* `validate()` was removed
+* `java.util.UUID tenantId()` -> `java.lang.String tenantId()`
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
+
+#### `models.OraclePartitionSettings` was modified
+
+* `validate()` was removed
+
+#### `models.ScriptAction` was modified
+
+* `validate()` was removed
+
+#### `models.SapCloudForCustomerSink` was modified
+
+* `validate()` was removed
+
+#### `models.OracleServiceCloudLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.SnowflakeExportCopyCommand` was modified
+
+* `validate()` was removed
+
+#### `models.AzureBlobStorageLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.SsisPropertyOverride` was modified
+
+* `validate()` was removed
+
+#### `models.Transformation` was modified
+
+* `validate()` was removed
+
+#### `models.SnowflakeV2Sink` was modified
+
+* `validate()` was removed
+
+#### `models.ODataResourceDataset` was modified
+
+* `validate()` was removed
+
+#### `models.SsisAccessCredential` was modified
+
+* `validate()` was removed
+
+#### `models.AzureBlobFSSource` was modified
+
+* `validate()` was removed
+
+#### `models.BlobEventsTrigger` was modified
+
+* `validate()` was removed
+
+#### `models.AzureBlobStorageLocation` was modified
+
+* `validate()` was removed
+
+#### `models.TriggerDependencyReference` was modified
+
+* `validate()` was removed
+
+#### `models.SquareSource` was modified
+
+* `validate()` was removed
+
+#### `models.ContinuationSettingsReference` was modified
+
+* `validate()` was removed
+
+#### `models.AzureDataLakeStoreLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.BigDataPoolParametrizationReference` was modified
+
+* `validate()` was removed
+
+#### `models.TeradataPartitionSettings` was modified
+
+* `validate()` was removed
+
+#### `models.CustomDataSourceLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.WebAnonymousAuthentication` was modified
+
+* `validate()` was removed
+
+#### `models.ServiceNowLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.OrcDataset` was modified
+
+* `validate()` was removed
+
+#### `models.SqlServerTableDataset` was modified
+
+* `validate()` was removed
+
+#### `models.TriggerFilterParameters` was modified
+
+* `validate()` was removed
+
+#### `models.DynamicsSource` was modified
+
+* `validate()` was removed
+
+#### `models.AzureMySqlTableDataset` was modified
+
+* `validate()` was removed
+
+#### `models.AzureSearchLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.IntegrationRuntimeDebugResource` was modified
+
+* `validate()` was removed
+
+#### `models.TeradataSink` was modified
+
+* `validate()` was removed
+
+#### `models.HBaseObjectDataset` was modified
+
+* `validate()` was removed
+
+#### `models.ScriptActivityTypePropertiesLogSettings` was modified
+
+* `validate()` was removed
+
+#### `models.AmazonS3Location` was modified
+
+* `validate()` was removed
+
+#### `models.DynamicsSink` was modified
+
+* `validate()` was removed
+
+#### `models.StoreWriteSettings` was modified
+
+* `validate()` was removed
+
+#### `models.ExcelDataset` was modified
+
+* `validate()` was removed
+
+#### `models.JsonDataset` was modified
+
+* `validate()` was removed
+
+#### `models.ExecuteSsisPackageActivity` was modified
+
+* `validate()` was removed
+
+#### `models.ImpalaSource` was modified
+
+* `validate()` was removed
+
+#### `models.SybaseTableDataset` was modified
+
+* `validate()` was removed
+
+#### `models.SsisObjectMetadata` was modified
+
+* `models.SsisObjectMetadata withName(java.lang.String)` -> `models.SsisObjectMetadata withName(java.lang.String)`
+* `models.SsisObjectMetadata withDescription(java.lang.String)` -> `models.SsisObjectMetadata withDescription(java.lang.String)`
+* `models.SsisObjectMetadata withId(java.lang.Long)` -> `models.SsisObjectMetadata withId(java.lang.Long)`
+* `validate()` was removed
+
+#### `models.UntilActivity` was modified
+
+* `validate()` was removed
+
+#### `models.IcebergDataset` was modified
+
+* `validate()` was removed
+
+#### `models.AzureBlobFSLocation` was modified
+
+* `validate()` was removed
+
+#### `models.DeleteActivity` was modified
+
+* `validate()` was removed
+
+#### `models.AzureMySqlLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.EntityReference` was modified
+
+* `validate()` was removed
+
+#### `models.LakeHouseLocation` was modified
+
+* `validate()` was removed
+
+#### `models.Credential` was modified
+
+* `validate()` was removed
+
+#### `models.AzureQueueSink` was modified
+
+* `validate()` was removed
+
+#### `models.JsonSink` was modified
+
+* `validate()` was removed
+
+#### `models.SynapseSparkJobDefinitionActivity` was modified
+
+* `validate()` was removed
+
+#### `models.ExecuteDataFlowActivityTypePropertiesCompute` was modified
+
+* `validate()` was removed
+
+#### `models.HubspotLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.AzureSqlMITableDataset` was modified
+
+* `validate()` was removed
+
+#### `models.SalesforceV2ObjectDataset` was modified
+
+* `validate()` was removed
+
+#### `models.ZohoObjectDataset` was modified
+
+* `validate()` was removed
+
+#### `models.SapOdpSource` was modified
+
+* `validate()` was removed
+
+#### `models.SwitchCase` was modified
+
+* `validate()` was removed
+
+#### `models.IcebergWriteSettings` was modified
+
+* `validate()` was removed
+
+#### `models.OperationMetricSpecification` was modified
+
+* `OperationMetricSpecification()` was changed to private access
+* `withSourceMdmAccount(java.lang.String)` was removed
+* `withEnableRegionalMdmAccount(java.lang.String)` was removed
+* `withDisplayName(java.lang.String)` was removed
+* `withUnit(java.lang.String)` was removed
+* `withDimensions(java.util.List)` was removed
+* `withSourceMdmNamespace(java.lang.String)` was removed
+* `withDisplayDescription(java.lang.String)` was removed
+* `validate()` was removed
+* `withAvailabilities(java.util.List)` was removed
+* `withAggregationType(java.lang.String)` was removed
+* `withName(java.lang.String)` was removed
+
+#### `models.SnowflakeV2LinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.AzureTableDataset` was modified
+
+* `validate()` was removed
+
+#### `models.SapEccResourceDataset` was modified
+
+* `validate()` was removed
+
+#### `models.ControlActivity` was modified
+
+* `validate()` was removed
+
+#### `models.AmazonS3CompatibleReadSettings` was modified
+
+* `validate()` was removed
+
+#### `models.CommonDataServiceForAppsEntityDataset` was modified
+
+* `validate()` was removed
+
+#### `models.MappingDataFlow` was modified
+
+* `validate()` was removed
+
+#### `models.AzureBlobStorageWriteSettings` was modified
+
+* `validate()` was removed
+
+#### `models.HDInsightPigActivity` was modified
+
+* `validate()` was removed
+
+#### `models.SapBwCubeDataset` was modified
+
+* `validate()` was removed
+
+#### `models.CustomSetupBase` was modified
+
+* `validate()` was removed
+
+#### `models.SybaseSource` was modified
+
+* `validate()` was removed
+
+#### `models.MapperDslConnectorProperties` was modified
+
+* `validate()` was removed
+
+#### `models.JiraSource` was modified
+
+* `validate()` was removed
+
+#### `models.ManagedVirtualNetworkReference` was modified
+
+* `validate()` was removed
+
+#### `models.SftpLocation` was modified
+
+* `validate()` was removed
+
+#### `models.AzureBlobDataset` was modified
+
+* `validate()` was removed
+
+#### `models.DWCopyCommandSettings` was modified
+
+* `validate()` was removed
+
+#### `models.SkipErrorFile` was modified
+
+* `validate()` was removed
+
+#### `models.DynamicsLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.SqlDWUpsertSettings` was modified
+
+* `validate()` was removed
+
+#### `models.SqlAlwaysEncryptedProperties` was modified
+
+* `validate()` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `OperationDisplay()` was changed to private access
+* `withDescription(java.lang.String)` was removed
+* `withProvider(java.lang.String)` was removed
+* `withResource(java.lang.String)` was removed
+* `withOperation(java.lang.String)` was removed
+* `validate()` was removed
+
+#### `models.WebTableDataset` was modified
+
+* `validate()` was removed
+
+#### `models.CassandraLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.AvroFormat` was modified
+
+* `validate()` was removed
+
+#### `models.CreateDataFlowDebugSessionRequest` was modified
+
+* `validate()` was removed
+
+#### `models.SftpReadSettings` was modified
+
+* `validate()` was removed
+
+#### `models.MapperConnectionReference` was modified
+
+* `validate()` was removed
+
+#### `models.ODataLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.GoogleAdWordsLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.TypeConversionSettings` was modified
+
+* `validate()` was removed
+
+#### `models.IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint` was modified
+
+* `IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint()` was changed to private access
+* `withCategory(java.lang.String)` was removed
+* `withEndpoints(java.util.List)` was removed
+* `validate()` was removed
+
+#### `models.HDInsightLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.GoogleCloudStorageLocation` was modified
+
+* `validate()` was removed
+
+#### `models.AzureBlobStorageReadSettings` was modified
+
+* `validate()` was removed
+
+#### `models.ResponsysSource` was modified
+
+* `validate()` was removed
+
+#### `models.RestServiceLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.CosmosDbLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.AzureBlobFSLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.JsonSource` was modified
+
+* `validate()` was removed
+
+#### `models.SapCloudForCustomerResourceDataset` was modified
+
+* `validate()` was removed
+
+#### `models.SparkSource` was modified
+
+* `validate()` was removed
+
+#### `models.RestSink` was modified
+
+* `validate()` was removed
+
+#### `models.CopyTranslator` was modified
+
+* `validate()` was removed
+
+#### `models.IntegrationRuntimeDataFlowPropertiesCustomPropertiesItem` was modified
+
+* `validate()` was removed
+
+#### `models.MongoDbAtlasSink` was modified
+
+* `validate()` was removed
+
+#### `models.ExposureControlBatchRequest` was modified
+
+* `validate()` was removed
+
+#### `models.HBaseSource` was modified
+
+* `validate()` was removed
+
+#### `models.SelfHostedIntegrationRuntime` was modified
+
+* `validate()` was removed
+
+#### `models.BinarySink` was modified
+
+* `validate()` was removed
+
+#### `models.ManagedIntegrationRuntimeNode` was modified
+
+* `ManagedIntegrationRuntimeNode()` was changed to private access
+* `validate()` was removed
+* `withAdditionalProperties(java.util.Map)` was removed
+* `withErrors(java.util.List)` was removed
+
+#### `models.AmazonS3ReadSettings` was modified
+
+* `validate()` was removed
+
+#### `models.OracleCloudStorageLocation` was modified
+
+* `validate()` was removed
+
+#### `models.VerticaSource` was modified
+
+* `validate()` was removed
+
+#### `models.SqlServerSource` was modified
+
+* `validate()` was removed
+
+#### `models.SwitchActivity` was modified
+
+* `validate()` was removed
+
+#### `models.DatasetDebugResource` was modified
+
+* `validate()` was removed
+
+#### `models.AzureDataLakeAnalyticsLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.ScheduleTriggerRecurrence` was modified
+
+* `validate()` was removed
+
+#### `models.MariaDBTableDataset` was modified
+
+* `validate()` was removed
+
+#### `models.BlobSource` was modified
+
+* `validate()` was removed
+
+#### `models.HiveLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.CopyComputeScaleProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ExportSettings` was modified
+
+* `validate()` was removed
+
+#### `models.SnowflakeV2Dataset` was modified
+
+* `validate()` was removed
+
+#### `models.StoreReadSettings` was modified
+
+* `validate()` was removed
+
+#### `models.AzureDatabricksDeltaLakeSink` was modified
+
+* `validate()` was removed
+
+#### `models.OperationLogSpecification` was modified
+
+* `OperationLogSpecification()` was changed to private access
+* `withBlobDuration(java.lang.String)` was removed
+* `withDisplayName(java.lang.String)` was removed
+* `withName(java.lang.String)` was removed
+* `validate()` was removed
+
+#### `models.AzureDatabricksDeltaLakeLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.HttpDataset` was modified
+
+* `validate()` was removed
+
+#### `models.TriggerRun` was modified
+
+* `TriggerRun()` was changed to private access
+* `validate()` was removed
+* `withAdditionalProperties(java.util.Map)` was removed
+
+#### `models.LogSettings` was modified
+
+* `validate()` was removed
+
+#### `models.HdfsLocation` was modified
+
+* `validate()` was removed
+
+#### `models.LakeHouseTableSource` was modified
+
+* `validate()` was removed
+
+#### `models.AmazonRedshiftSource` was modified
+
+* `validate()` was removed
+
+#### `models.GoogleSheetsLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.MarketoSource` was modified
+
+* `validate()` was removed
+
+#### `models.ZipDeflateReadSettings` was modified
+
+* `validate()` was removed
+
+#### `models.EloquaLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.MongoDbV2CollectionDataset` was modified
+
+* `validate()` was removed
+
+#### `models.CompressionReadSettings` was modified
+
+* `validate()` was removed
+
+#### `models.SapHanaPartitionSettings` was modified
+
+* `validate()` was removed
+
+#### `models.AzureMLUpdateResourceActivity` was modified
+
+* `validate()` was removed
+
+#### `models.OperationServiceSpecification` was modified
+
+* `OperationServiceSpecification()` was changed to private access
+* `withLogSpecifications(java.util.List)` was removed
+* `validate()` was removed
+* `withMetricSpecifications(java.util.List)` was removed
+
+#### `models.NetezzaTableDataset` was modified
+
+* `validate()` was removed
+
+#### `models.SqlDWSource` was modified
+
+* `validate()` was removed
+
+#### `models.AzureFunctionActivity` was modified
+
+* `validate()` was removed
+
+#### `models.IntegrationRuntimeStatus` was modified
+
+* `models.IntegrationRuntimeStatus withAdditionalProperties(java.util.Map)` -> `models.IntegrationRuntimeStatus withAdditionalProperties(java.util.Map)`
+* `validate()` was removed
+
+#### `models.AzPowerShellSetup` was modified
+
+* `validate()` was removed
+
+#### `models.ExecutePipelineActivity` was modified
+
+* `validate()` was removed
+
+#### `models.XeroSource` was modified
+
+* `validate()` was removed
+
+#### `models.AzureMySqlSource` was modified
+
+* `validate()` was removed
+
+#### `models.IntegrationRuntimeDataProxyProperties` was modified
+
+* `validate()` was removed
+
+#### `models.IntegrationRuntimeVNetProperties` was modified
+
+* `validate()` was removed
+
+#### `models.ODataSource` was modified
+
+* `validate()` was removed
+
+#### `models.AzureSearchIndexDataset` was modified
+
+* `validate()` was removed
+
+#### `models.AzureDatabricksDeltaLakeImportCommand` was modified
+
+* `validate()` was removed
+
+#### `models.HDInsightHiveActivity` was modified
+
+* `validate()` was removed
+
+#### `models.SapCloudForCustomerLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.GoogleCloudStorageLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.FailActivity` was modified
+
+* `validate()` was removed
+
+#### `models.XmlSource` was modified
+
+* `validate()` was removed
+
+#### `models.MapperAttributeMapping` was modified
+
+* `validate()` was removed
+
+#### `models.OdbcLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.ManagedIntegrationRuntimeError` was modified
+
+* `ManagedIntegrationRuntimeError()` was changed to private access
+* `withAdditionalProperties(java.util.Map)` was removed
+* `validate()` was removed
+
+#### `models.MongoDbAtlasSource` was modified
+
+* `validate()` was removed
+
+#### `models.TabularSource` was modified
+
+* `validate()` was removed
+
+#### `models.FileSystemSink` was modified
+
+* `validate()` was removed
+
+#### `models.LinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.WarehouseLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.RelationalSource` was modified
+
+* `validate()` was removed
+
+#### `models.DataFlowFolder` was modified
+
+* `validate()` was removed
+
+#### `models.HdfsLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.SalesforceMarketingCloudObjectDataset` was modified
+
+* `validate()` was removed
+
+#### `models.SnowflakeV2Source` was modified
+
+* `validate()` was removed
+
+#### `models.TextFormat` was modified
+
+* `validate()` was removed
+
+#### `models.PaypalObjectDataset` was modified
+
+* `validate()` was removed
+
+#### `models.AzurePostgreSqlLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.SharePointOnlineListSource` was modified
+
+* `validate()` was removed
+
+#### `models.SqlPartitionSettings` was modified
+
+* `validate()` was removed
+
+#### `models.BlobTrigger` was modified
+
+* `validate()` was removed
+
+#### `models.OracleSink` was modified
+
+* `validate()` was removed
+
+#### `models.SnowflakeImportCopyCommand` was modified
+
+* `validate()` was removed
+
+#### `models.OperationMetricAvailability` was modified
+
+* `OperationMetricAvailability()` was changed to private access
+* `withBlobDuration(java.lang.String)` was removed
+* `withTimeGrain(java.lang.String)` was removed
+* `validate()` was removed
+
+#### `models.SparkConfigurationParametrizationReference` was modified
+
+* `validate()` was removed
+
+#### `models.UpdateIntegrationRuntimeRequest` was modified
+
+* `validate()` was removed
+
+#### `models.WebClientCertificateAuthentication` was modified
+
+* `validate()` was removed
+
+#### `models.AzureDatabricksDeltaLakeDataset` was modified
+
+* `validate()` was removed
+
+#### `models.IntegrationRuntimeRegenerateKeyParameters` was modified
+
+* `validate()` was removed
+
+#### `models.AzureMLLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.SalesforceServiceCloudV2Sink` was modified
+
+* `validate()` was removed
+
+#### `models.OracleLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.SqlSink` was modified
+
+* `validate()` was removed
+
+#### `models.AzureFunctionLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.FactoryUpdateParameters` was modified
+
+* `validate()` was removed
+
+#### `models.IntegrationRuntimeSsisCatalogInfo` was modified
+
+* `validate()` was removed
+
+#### `models.AzureSqlSink` was modified
+
+* `validate()` was removed
+
+#### `models.AzureBlobFSDataset` was modified
+
+* `validate()` was removed
+
+#### `models.PostgreSqlSource` was modified
+
+* `validate()` was removed
+
+#### `models.HdfsReadSettings` was modified
+
+* `validate()` was removed
+
+#### `models.PrivateLinkConnectionState` was modified
+
+* `validate()` was removed
+
+#### `models.AmazonS3CompatibleLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.MongoDbV2Source` was modified
+
+* `validate()` was removed
+
+#### `models.DelimitedTextDataset` was modified
+
+* `validate()` was removed
+
+#### `models.PaypalLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.ParquetReadSettings` was modified
+
+* `validate()` was removed
+
+#### `models.SalesforceMarketingCloudLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.GitHubAccessTokenRequest` was modified
+
+* `validate()` was removed
+
+#### `models.AzureDataExplorerSource` was modified
+
+* `validate()` was removed
+
+#### `models.ExposureControlRequest` was modified
+
+* `validate()` was removed
+
+#### `models.SsisExecutionParameter` was modified
+
+* `validate()` was removed
+
+#### `models.TarGZipReadSettings` was modified
+
+* `validate()` was removed
+
+#### `models.AzureSqlTableDataset` was modified
+
+* `validate()` was removed
+
+#### `models.FormatWriteSettings` was modified
+
+* `validate()` was removed
+
+#### `models.AzureDatabricksLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.GoogleBigQueryV2LinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.AmazonS3Dataset` was modified
+
+* `validate()` was removed
+
+#### `models.SelfHostedIntegrationRuntimeStatus` was modified
+
+* `SelfHostedIntegrationRuntimeStatus()` was changed to private access
+* `withNodes(java.util.List)` was removed
+* `validate()` was removed
+* `withLinks(java.util.List)` was removed
+
+#### `models.PostgreSqlV2LinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.PhoenixObjectDataset` was modified
+
+* `validate()` was removed
+
+#### `models.MarketoObjectDataset` was modified
+
+* `validate()` was removed
+
+#### `models.LinkedServiceDebugResource` was modified
+
+* `validate()` was removed
+
+#### `models.EncryptionConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.SqlSource` was modified
+
+* `validate()` was removed
+
+#### `models.QuickbaseLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.ResponsysObjectDataset` was modified
+
+* `validate()` was removed
+
+#### `models.DWCopyCommandDefaultValue` was modified
+
+* `validate()` was removed
+
+#### `models.AzureDatabricksDeltaLakeSource` was modified
+
+* `validate()` was removed
+
+#### `models.MicrosoftAccessLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.CommonDataServiceForAppsSink` was modified
+
+* `validate()` was removed
+
+#### `models.GlobalParameterSpecification` was modified
+
+* `validate()` was removed
+
+#### `models.DatabricksSparkPythonActivity` was modified
+
+* `validate()` was removed
+
+#### `models.OracleServiceCloudSource` was modified
+
+* `validate()` was removed
+
+#### `models.CosmosDbSqlApiCollectionDataset` was modified
+
+* `validate()` was removed
+
+#### `models.SecretBase` was modified
+
+* `validate()` was removed
+
+#### `models.AzureMariaDBLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.OrcSource` was modified
+
+* `validate()` was removed
+
+#### `models.LinkedIntegrationRuntimeRbacAuthorization` was modified
+
+* `validate()` was removed
+
+#### `models.ExecuteDataFlowActivity` was modified
+
+* `validate()` was removed
+
+#### `models.SqlServerLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.DynamicsEntityDataset` was modified
+
+* `validate()` was removed
+
+#### `models.DocumentDbCollectionSource` was modified
+
+* `validate()` was removed
+
+#### `models.AzureBlobFSSink` was modified
+
+* `validate()` was removed
+
+#### `models.AmazonRedshiftLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.MapperTargetConnectionsInfo` was modified
+
+* `validate()` was removed
+
+#### `models.CreateLinkedIntegrationRuntimeRequest` was modified
+
+* `validate()` was removed
+
+#### `models.CosmosDbSqlApiSource` was modified
+
+* `validate()` was removed
+
+#### `models.MapperAttributeMappings` was modified
+
+* `validate()` was removed
+
+#### `models.MapperAttributeReference` was modified
+
+* `validate()` was removed
+
+#### `models.ResponsysLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.SsisExecutionCredential` was modified
+
+* `validate()` was removed
+
+#### `models.ImpalaLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.FileSystemSource` was modified
+
+* `validate()` was removed
+
+#### `models.FileServerLocation` was modified
+
+* `validate()` was removed
+
+#### `models.SftpServerLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.AzureKeyVaultSecretReference` was modified
+
+* `validate()` was removed
+
+#### `models.MySqlLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.MagentoSource` was modified
+
+* `validate()` was removed
+
+#### `models.LakeHouseTableSink` was modified
+
+* `validate()` was removed
+
+#### `models.CouchbaseSource` was modified
+
+* `validate()` was removed
+
+#### `models.HDInsightStreamingActivity` was modified
+
+* `validate()` was removed
+
+#### `models.PhoenixLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.Db2LinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.RunQueryFilter` was modified
+
+* `validate()` was removed
+
+#### `models.DynamicsCrmLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.LookupActivity` was modified
+
+* `validate()` was removed
+
+#### `models.FtpServerLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.XmlDataset` was modified
+
+* `validate()` was removed
+
+#### `models.QuickBooksLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.GreenplumTableDataset` was modified
+
+* `validate()` was removed
+
+#### `models.DatasetSchemaDataElement` was modified
+
+* `validate()` was removed
+
+#### `models.SsisVariable` was modified
+
+* `SsisVariable()` was changed to private access
+* `withId(java.lang.Long)` was removed
+* `withDataType(java.lang.String)` was removed
+* `validate()` was removed
+* `withValue(java.lang.String)` was removed
+* `withSensitive(java.lang.Boolean)` was removed
+* `withSensitiveValue(java.lang.String)` was removed
+* `withName(java.lang.String)` was removed
+* `withDescription(java.lang.String)` was removed
+
+#### `models.NotebookParameter` was modified
+
+* `validate()` was removed
+
+#### `models.SalesforceServiceCloudLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.SecureString` was modified
+
+* `validate()` was removed
+
+#### `models.AvroSource` was modified
+
+* `validate()` was removed
+
+#### `models.GoogleCloudStorageReadSettings` was modified
+
+* `validate()` was removed
+
+#### `models.SalesforceServiceCloudObjectDataset` was modified
+
+* `validate()` was removed
+
+#### `models.SalesforceV2Sink` was modified
+
+* `validate()` was removed
+
+#### `models.AzureDataExplorerLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.Db2Source` was modified
+
+* `validate()` was removed
+
+#### `models.OperationMetricDimension` was modified
+
+* `OperationMetricDimension()` was changed to private access
+* `validate()` was removed
+* `withDisplayName(java.lang.String)` was removed
+* `withName(java.lang.String)` was removed
+* `withToBeExportedForShoebox(java.lang.Boolean)` was removed
+
+#### `models.HubspotSource` was modified
+
+* `validate()` was removed
+
+#### `models.CouchbaseLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.MagentoObjectDataset` was modified
+
+* `validate()` was removed
+
+#### `models.SharePointOnlineListLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.AppendVariableActivity` was modified
+
+* `validate()` was removed
+
+#### `models.MapperConnection` was modified
+
+* `validate()` was removed
+
+#### `models.SybaseLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.SsisEnvironment` was modified
+
+* `SsisEnvironment()` was changed to private access
+* `withName(java.lang.String)` was removed
+* `withId(java.lang.Long)` was removed
+* `withFolderId(java.lang.Long)` was removed
+* `withVariables(java.util.List)` was removed
+* `validate()` was removed
+* `withDescription(java.lang.String)` was removed
+
+#### `models.PrivateEndpoint` was modified
+
+* `validate()` was removed
+
+#### `models.FactoryVstsConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.TeradataImportCommand` was modified
+
+* `validate()` was removed
+
+#### `models.Flowlet` was modified
+
+* `validate()` was removed
+
+#### `models.HDInsightMapReduceActivity` was modified
+
+* `validate()` was removed
+
+#### `models.AmazonMwsLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.MongoDbV2Sink` was modified
+
+* `validate()` was removed
+
+#### `models.QuickBooksObjectDataset` was modified
+
+* `validate()` was removed
+
+#### `models.CosmosDbMongoDbApiLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.DatasetFolder` was modified
+
+* `validate()` was removed
+
+#### `models.RelationalTableDataset` was modified
+
+* `validate()` was removed
+
+#### `models.GoogleBigQueryLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.DataFlowSink` was modified
+
+* `validate()` was removed
+
+#### `models.MapperTable` was modified
+
+* `validate()` was removed
+
+#### `models.AmazonRdsForOracleTableDataset` was modified
+
+* `validate()` was removed
+
+#### `models.SqlServerStoredProcedureActivity` was modified
+
+* `validate()` was removed
+
+#### `models.AzureSqlSource` was modified
+
+* `validate()` was removed
+
+#### `models.DataworldLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.PipelineElapsedTimeMetricPolicy` was modified
+
+* `validate()` was removed
+
+#### `models.ExcelSource` was modified
+
+* `validate()` was removed
+
+#### `models.IntegrationRuntimeNodeMonitoringData` was modified
+
+* `IntegrationRuntimeNodeMonitoringData()` was changed to private access
+* `validate()` was removed
+* `withAdditionalProperties(java.util.Map)` was removed
+
+#### `models.AzureKeyVaultLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.ManagedIntegrationRuntimeStatus` was modified
+
+* `ManagedIntegrationRuntimeStatus()` was changed to private access
+* `validate()` was removed
+
+#### `models.OracleCloudStorageReadSettings` was modified
+
+* `validate()` was removed
+
+#### `models.AzureSearchIndexSink` was modified
+
+* `validate()` was removed
+
+#### `models.DataMapperMapping` was modified
+
+* `validate()` was removed
+
+#### `models.AzureDataExplorerCommandActivity` was modified
+
+* `validate()` was removed
+
+#### `models.AzureSqlMILinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.LinkedIntegrationRuntimeType` was modified
+
+* `validate()` was removed
+
+#### `models.TriggerReference` was modified
+
+* `validate()` was removed
+
+#### `models.ImpalaObjectDataset` was modified
+
+* `validate()` was removed
+
+#### `models.PipelinePolicy` was modified
+
+* `validate()` was removed
+
+#### `models.ManagedVirtualNetwork` was modified
+
+* `validate()` was removed
+
+#### `models.DataFlowSource` was modified
+
+* `validate()` was removed
+
+#### `models.AmazonRdsForSqlServerTableDataset` was modified
+
+* `validate()` was removed
+
+#### `models.PipelineExternalComputeScaleProperties` was modified
+
+* `validate()` was removed
+
+#### `models.AzureDataExplorerSink` was modified
+
+* `validate()` was removed
+
+#### `models.AzureMySqlSink` was modified
+
+* `validate()` was removed
+
+#### `models.GetSsisObjectMetadataRequest` was modified
+
+* `validate()` was removed
+
+#### `models.Office365LinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.XmlReadSettings` was modified
+
+* `validate()` was removed
+
+#### `models.MapperTableSchema` was modified
+
+* `validate()` was removed
+
+#### `models.EloquaSource` was modified
+
+* `validate()` was removed
+
+#### `models.AzureDataLakeStoreSink` was modified
+
+* `validate()` was removed
+
+#### `models.AvroWriteSettings` was modified
+
+* `validate()` was removed
+
+#### `models.TriggerPipelineReference` was modified
+
+* `validate()` was removed
+
+#### `models.ChainingTrigger` was modified
+
+* `validate()` was removed
+
+#### `models.AmazonRdsForSqlServerLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.ActivityRun` was modified
+
+* `ActivityRun()` was changed to private access
+* `withAdditionalProperties(java.util.Map)` was removed
+* `validate()` was removed
+
+#### `models.WebLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.MapperPolicyRecurrence` was modified
+
+* `validate()` was removed
+
+#### `models.CredentialReference` was modified
+
+* `validate()` was removed
+
+#### `models.ZendeskLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.MarketoLinkedService` was modified
+
+* `validate()` was removed
+
+#### `models.ShopifySource` was modified
+
+* `validate()` was removed
+
+#### `models.CustomActivityReferenceObject` was modified
+
+* `validate()` was removed
+
+#### `models.GoogleBigQueryV2ObjectDataset` was modified
+
+* `validate()` was removed
+
+#### `models.DynamicsAXSource` was modified
+
+* `validate()` was removed
+
+#### `models.RunFilterParameters` was modified
+
+* `validate()` was removed
+
+#### `models.IntegrationRuntimeCustomSetupScriptProperties` was modified
+
+* `validate()` was removed
+
+### Features Added
+
+* `models.LakehouseAuthenticationType` was added
+
+* `models.InteractiveCapabilityStatus` was added
+
+* `models.PipelineReferenceType` was added
+
+* `models.NetezzaSecurityLevelType` was added
+
+* `models.IntegrationRuntimeReferenceType` was added
+
+* `models.WarehouseAuthenticationType` was added
+
+* `models.DatasetReferenceType` was added
+
+* `models.HDInsightOndemandClusterResourceGroupAuthenticationType` was added
+
+* `models.DatabricksJobActivity` was added
+
+* `models.InteractiveQueryProperties` was added
+
+* `models.Type` was added
+
+* `models.EnableInteractiveQueryRequest` was added
+
+* `models.ExpressionType` was added
+
+* `models.HDInsightClusterAuthenticationType` was added
+
+* `models.IntegrationRuntimeOperations` was added
+
+#### `models.Expression` was modified
+
+* `withType(models.ExpressionType)` was added
+
+#### `models.HDInsightOnDemandLinkedService` was modified
+
+* `clusterResourceGroupAuthType()` was added
+* `withClusterResourceGroupAuthType(models.HDInsightOndemandClusterResourceGroupAuthenticationType)` was added
+
+#### `models.ScriptActivity` was modified
+
+* `withTreatDecimalAsString(java.lang.Object)` was added
+* `treatDecimalAsString()` was added
+
+#### `models.NetezzaLinkedService` was modified
+
+* `uid()` was added
+* `withPort(java.lang.Object)` was added
+* `withDatabase(java.lang.Object)` was added
+* `port()` was added
+* `server()` was added
+* `database()` was added
+* `securityLevel()` was added
+* `withSecurityLevel(models.NetezzaSecurityLevelType)` was added
+* `withServer(java.lang.Object)` was added
+* `withUid(java.lang.Object)` was added
+
+#### `models.DataFlowResource` was modified
+
+* `systemData()` was added
+
+#### `models.GlobalParameterResource` was modified
+
+* `systemData()` was added
+
+#### `DataFactoryManager` was modified
+
+* `integrationRuntimeOperations()` was added
+
+#### `models.SalesforceV2Source` was modified
+
+* `withPartitionOption(java.lang.Object)` was added
+* `partitionOption()` was added
+
+#### `models.ExpressionV2` was modified
+
+* `withValue(java.lang.Object)` was added
+
+#### `models.PrivateEndpointConnectionResource` was modified
+
+* `systemData()` was added
+
+#### `models.AmazonRdsForOracleSource` was modified
+
+* `withNumberScale(java.lang.Object)` was added
+* `numberPrecision()` was added
+* `numberScale()` was added
+* `withNumberPrecision(java.lang.Object)` was added
+
+#### `models.ManagedPrivateEndpointResource` was modified
+
+* `systemData()` was added
+
+#### `models.DatasetReference` was modified
+
+* `withType(models.DatasetReferenceType)` was added
+
+#### `models.TriggerResource` was modified
+
+* `systemData()` was added
+
+#### `models.LakeHouseLinkedService` was modified
+
+* `authenticationType()` was added
+* `withAuthenticationType(models.LakehouseAuthenticationType)` was added
+* `withCredential(models.CredentialReference)` was added
+* `credential()` was added
+
+#### `models.DatasetResource` was modified
+
+* `systemData()` was added
+
+#### `models.IntegrationRuntimeReference` was modified
+
+* `withType(models.IntegrationRuntimeReferenceType)` was added
+
+#### `models.OracleSource` was modified
+
+* `numberScale()` was added
+* `numberPrecision()` was added
+* `withNumberPrecision(java.lang.Object)` was added
+* `withNumberScale(java.lang.Object)` was added
+
+#### `models.ManagedVirtualNetworkResource` was modified
+
+* `systemData()` was added
+
+#### `models.JiraObjectDataset` was modified
+
+* `schemaTypePropertiesSchema()` was added
+* `table()` was added
+* `withSchemaTypePropertiesSchema(java.lang.Object)` was added
+* `withTable(java.lang.Object)` was added
+
+#### `models.LinkedServiceReference` was modified
+
+* `withType(models.Type)` was added
+
+#### `models.PipelineReference` was modified
+
+* `withType(models.PipelineReferenceType)` was added
+
+#### `models.ManagedIntegrationRuntime` was modified
+
+* `interactiveQuery()` was added
+* `withInteractiveQuery(models.InteractiveQueryProperties)` was added
+
+#### `models.SnowflakeV2LinkedService` was modified
+
+* `withUseUtcTimestamps(java.lang.Object)` was added
+* `useUtcTimestamps()` was added
+
+#### `models.CredentialResource` was modified
+
+* `systemData()` was added
+
+#### `models.Factory` was modified
+
+* `systemData()` was added
+
+#### `models.HDInsightLinkedService` was modified
+
+* `withClusterAuthType(models.HDInsightClusterAuthenticationType)` was added
+* `credential()` was added
+* `withCredential(models.CredentialReference)` was added
+* `clusterAuthType()` was added
+
+#### `models.IntegrationRuntimeResource` was modified
+
+* `systemData()` was added
+
+#### `models.WarehouseLinkedService` was modified
+
+* `withAuthenticationType(models.WarehouseAuthenticationType)` was added
+* `authenticationType()` was added
+* `credential()` was added
+* `withCredential(models.CredentialReference)` was added
+
+#### `models.ChangeDataCaptureResource` was modified
+
+* `systemData()` was added
+
+#### `models.LinkedServiceResource` was modified
+
+* `systemData()` was added
+
+#### `models.LookupActivity` was modified
+
+* `treatDecimalAsString()` was added
+* `withTreatDecimalAsString(java.lang.Object)` was added
+
+#### `models.QuickBooksLinkedService` was modified
+
+* `withRefreshToken(models.SecretBase)` was added
+* `refreshToken()` was added
+
+#### `models.PipelineResource` was modified
+
+* `systemData()` was added
 
 ## 1.2.0 (2025-05-27)
 
