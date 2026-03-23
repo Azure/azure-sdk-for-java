@@ -13,19 +13,19 @@ public final class ServiceCorrelationDescriptionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServiceCorrelationDescription model
-            = BinaryData.fromString("{\"scheme\":\"Invalid\",\"serviceName\":\"nbsazejjoqkag\"}")
+            = BinaryData.fromString("{\"scheme\":\"Invalid\",\"serviceName\":\"vfgbvfvpdboda\"}")
                 .toObject(ServiceCorrelationDescription.class);
         Assertions.assertEquals(ServiceCorrelationScheme.INVALID, model.scheme());
-        Assertions.assertEquals("nbsazejjoqkag", model.serviceName());
+        Assertions.assertEquals("vfgbvfvpdboda", model.serviceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ServiceCorrelationDescription model
             = new ServiceCorrelationDescription().withScheme(ServiceCorrelationScheme.INVALID)
-                .withServiceName("nbsazejjoqkag");
+                .withServiceName("vfgbvfvpdboda");
         model = BinaryData.fromObject(model).toObject(ServiceCorrelationDescription.class);
         Assertions.assertEquals(ServiceCorrelationScheme.INVALID, model.scheme());
-        Assertions.assertEquals("nbsazejjoqkag", model.serviceName());
+        Assertions.assertEquals("vfgbvfvpdboda", model.serviceName());
     }
 }

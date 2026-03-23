@@ -40,7 +40,7 @@ public interface UnsupportedVmSizes {
     /**
      * Get the lists of unsupported vm sizes for Service Fabric Clusters.
      * 
-     * @param location The location for the unsupported VM size(s). This is different from cluster location.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -52,7 +52,7 @@ public interface UnsupportedVmSizes {
     /**
      * Get the lists of unsupported vm sizes for Service Fabric Clusters.
      * 
-     * @param location The location for the unsupported VM size(s). This is different from cluster location.
+     * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

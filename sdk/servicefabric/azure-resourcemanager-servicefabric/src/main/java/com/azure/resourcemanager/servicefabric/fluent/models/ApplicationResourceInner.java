@@ -29,28 +29,27 @@ public final class ApplicationResourceInner extends ProxyResource {
     private ApplicationResourceProperties innerProperties;
 
     /*
-     * Resource tags.
-     */
-    private Map<String, String> tags;
-
-    /*
-     * The geo-location where the resource lives
-     */
-    private String location;
-
-    /*
-     * "If etag is provided in the response body, it may also be provided as a header per the normal etag convention.  Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header fields."
-     * )
-     */
-    private String etag;
-
-    /*
      * The managed service identities assigned to this resource.
      */
     private ManagedIdentity identity;
 
     /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * It will be deprecated in New API, resource location depends on the parent resource.
+     */
+    private String location;
+
+    /*
+     * Azure resource tags.
+     */
+    private Map<String, String> tags;
+
+    /*
+     * Azure resource etag.
+     */
+    private String etag;
+
+    /*
+     * Metadata pertaining to creation and last modification of the resource.
      */
     private SystemData systemData;
 
@@ -85,58 +84,6 @@ public final class ApplicationResourceInner extends ProxyResource {
     }
 
     /**
-     * Get the tags property: Resource tags.
-     * 
-     * @return the tags value.
-     */
-    public Map<String, String> tags() {
-        return this.tags;
-    }
-
-    /**
-     * Set the tags property: Resource tags.
-     * 
-     * @param tags the tags value to set.
-     * @return the ApplicationResourceInner object itself.
-     */
-    public ApplicationResourceInner withTags(Map<String, String> tags) {
-        this.tags = tags;
-        return this;
-    }
-
-    /**
-     * Get the location property: The geo-location where the resource lives.
-     * 
-     * @return the location value.
-     */
-    public String location() {
-        return this.location;
-    }
-
-    /**
-     * Set the location property: The geo-location where the resource lives.
-     * 
-     * @param location the location value to set.
-     * @return the ApplicationResourceInner object itself.
-     */
-    public ApplicationResourceInner withLocation(String location) {
-        this.location = location;
-        return this;
-    }
-
-    /**
-     * Get the etag property: "If etag is provided in the response body, it may also be provided as a header per the
-     * normal etag convention. Entity tags are used for comparing two or more entities from the same requested resource.
-     * HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26),
-     * and If-Range (section 14.27) header fields.").
-     * 
-     * @return the etag value.
-     */
-    public String etag() {
-        return this.etag;
-    }
-
-    /**
      * Get the identity property: The managed service identities assigned to this resource.
      * 
      * @return the identity value.
@@ -157,12 +104,72 @@ public final class ApplicationResourceInner extends ProxyResource {
     }
 
     /**
-     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * Get the location property: It will be deprecated in New API, resource location depends on the parent resource.
+     * 
+     * @return the location value.
+     */
+    public String location() {
+        return this.location;
+    }
+
+    /**
+     * Set the location property: It will be deprecated in New API, resource location depends on the parent resource.
+     * 
+     * @param location the location value to set.
+     * @return the ApplicationResourceInner object itself.
+     */
+    public ApplicationResourceInner withLocation(String location) {
+        this.location = location;
+        return this;
+    }
+
+    /**
+     * Get the tags property: Azure resource tags.
+     * 
+     * @return the tags value.
+     */
+    public Map<String, String> tags() {
+        return this.tags;
+    }
+
+    /**
+     * Set the tags property: Azure resource tags.
+     * 
+     * @param tags the tags value to set.
+     * @return the ApplicationResourceInner object itself.
+     */
+    public ApplicationResourceInner withTags(Map<String, String> tags) {
+        this.tags = tags;
+        return this;
+    }
+
+    /**
+     * Get the etag property: Azure resource etag.
+     * 
+     * @return the etag value.
+     */
+    public String etag() {
+        return this.etag;
+    }
+
+    /**
+     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
      * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
+    }
+
+    /**
+     * Set the systemData property: Metadata pertaining to creation and last modification of the resource.
+     * 
+     * @param systemData the systemData value to set.
+     * @return the ApplicationResourceInner object itself.
+     */
+    public ApplicationResourceInner withSystemData(SystemData systemData) {
+        this.systemData = systemData;
+        return this;
     }
 
     /**
@@ -433,9 +440,10 @@ public final class ApplicationResourceInner extends ProxyResource {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("properties", this.innerProperties);
-        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeStringField("location", this.location);
         jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("systemData", this.systemData);
         return jsonWriter.writeEndObject();
     }
 
@@ -464,15 +472,15 @@ public final class ApplicationResourceInner extends ProxyResource {
                 } else if ("properties".equals(fieldName)) {
                     deserializedApplicationResourceInner.innerProperties
                         = ApplicationResourceProperties.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedApplicationResourceInner.identity = ManagedIdentity.fromJson(reader);
+                } else if ("location".equals(fieldName)) {
+                    deserializedApplicationResourceInner.location = reader.getString();
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedApplicationResourceInner.tags = tags;
-                } else if ("location".equals(fieldName)) {
-                    deserializedApplicationResourceInner.location = reader.getString();
                 } else if ("etag".equals(fieldName)) {
                     deserializedApplicationResourceInner.etag = reader.getString();
-                } else if ("identity".equals(fieldName)) {
-                    deserializedApplicationResourceInner.identity = ManagedIdentity.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {
                     deserializedApplicationResourceInner.systemData = SystemData.fromJson(reader);
                 } else {

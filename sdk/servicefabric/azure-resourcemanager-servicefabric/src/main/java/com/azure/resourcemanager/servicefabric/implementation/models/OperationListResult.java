@@ -9,23 +9,22 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.servicefabric.fluent.models.OperationInner;
+import com.azure.resourcemanager.servicefabric.fluent.models.OperationResultInner;
 import java.io.IOException;
 import java.util.List;
 
 /**
- * A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of
- * results.
+ * Describes the result of the request to list Service Fabric resource provider operations.
  */
 @Immutable
 public final class OperationListResult implements JsonSerializable<OperationListResult> {
     /*
-     * The Operation items on this page
+     * List of operations supported by the Service Fabric resource provider.
      */
-    private List<OperationInner> value;
+    private List<OperationResultInner> value;
 
     /*
-     * The link to the next page of items
+     * URL to get the next set of operation list results if there are any.
      */
     private String nextLink;
 
@@ -36,16 +35,16 @@ public final class OperationListResult implements JsonSerializable<OperationList
     }
 
     /**
-     * Get the value property: The Operation items on this page.
+     * Get the value property: List of operations supported by the Service Fabric resource provider.
      * 
      * @return the value value.
      */
-    public List<OperationInner> value() {
+    public List<OperationResultInner> value() {
         return this.value;
     }
 
     /**
-     * Get the nextLink property: The link to the next page of items.
+     * Get the nextLink property: URL to get the next set of operation list results if there are any.
      * 
      * @return the nextLink value.
      */
@@ -70,7 +69,6 @@ public final class OperationListResult implements JsonSerializable<OperationList
      * @param jsonReader The JsonReader being read.
      * @return An instance of OperationListResult if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the OperationListResult.
      */
     public static OperationListResult fromJson(JsonReader jsonReader) throws IOException {
@@ -81,7 +79,8 @@ public final class OperationListResult implements JsonSerializable<OperationList
                 reader.nextToken();
 
                 if ("value".equals(fieldName)) {
-                    List<OperationInner> value = reader.readArray(reader1 -> OperationInner.fromJson(reader1));
+                    List<OperationResultInner> value
+                        = reader.readArray(reader1 -> OperationResultInner.fromJson(reader1));
                     deserializedOperationListResult.value = value;
                 } else if ("nextLink".equals(fieldName)) {
                     deserializedOperationListResult.nextLink = reader.getString();

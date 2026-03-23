@@ -2,6 +2,7 @@
 
 ## 1.1.0-beta.1 (2026-03-23)
 
+- Azure Resource Manager Service Fabric client library for Java. This package contains Microsoft Azure SDK for Service Fabric Management SDK. Azure Service Fabric Resource Provider API Client. Package api-version 2026-03-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 - Azure Resource Manager Service Fabric client library for Java. This package contains Microsoft Azure SDK for Service Fabric Management SDK. Service Fabric Management Client. Package api-version 2026-03-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
@@ -10,8 +11,6 @@
 
 #### `models.ClusterListResult` was removed
 
-#### `models.AvailableOperationDisplay` was removed
-
 #### `models.ApplicationTypeResourceList` was removed
 
 #### `models.ServicePlacementPolicyType` was removed
@@ -19,8 +18,6 @@
 #### `models.ApplicationTypeVersionResourceList` was removed
 
 #### `models.OperationListResult` was removed
-
-#### `models.OperationResult` was removed
 
 #### `models.ApplicationResourceList` was removed
 
@@ -66,10 +63,7 @@
 
 #### `models.ApplicationResourceUpdate` was modified
 
-* `etag()` was removed
-* `withLocation(java.lang.String)` was removed
 * `validate()` was removed
-* `location()` was removed
 
 #### `models.ApplicationDeltaHealthPolicy` was modified
 
@@ -99,6 +93,15 @@
 
 * `validate()` was removed
 
+#### `models.AvailableOperationDisplay` was modified
+
+* `AvailableOperationDisplay()` was changed to private access
+* `withOperation(java.lang.String)` was removed
+* `withProvider(java.lang.String)` was removed
+* `validate()` was removed
+* `withDescription(java.lang.String)` was removed
+* `withResource(java.lang.String)` was removed
+
 #### `models.NodeTypeDescription` was modified
 
 * `validate()` was removed
@@ -107,22 +110,16 @@
 
 * `validate()` was removed
 
-#### `models.ManagedIdentityType` was modified
-
-* `models.ManagedIdentityType[] values()` -> `java.util.Collection values()`
-* `toString()` was removed
-* `valueOf(java.lang.String)` was removed
-
 #### `models.ClusterCodeVersionsResult` was modified
 
 * `ClusterCodeVersionsResult()` was changed to private access
 * `withEnvironment(models.ClusterEnvironment)` was removed
 * `withId(java.lang.String)` was removed
-* `withSupportExpiryUtc(java.lang.String)` was removed
 * `validate()` was removed
 * `withName(java.lang.String)` was removed
 * `withCodeVersion(java.lang.String)` was removed
 * `withType(java.lang.String)` was removed
+* `withSupportExpiryUtc(java.lang.String)` was removed
 
 #### `models.ApplicationUpgradePolicy` was modified
 
@@ -179,10 +176,6 @@
 #### `models.ServerCertificateCommonName` was modified
 
 * `validate()` was removed
-
-#### `models.ServiceResource$Update` was modified
-
-* `withProperties(models.ServiceResourceUpdateProperties)` was removed
 
 #### `models.ServerCertificateCommonNames` was modified
 
@@ -241,19 +234,11 @@
 
 * `models.VMSizeResource` was added
 
-* `models.ActionType` was added
-
 * `models.UnsupportedVmSizes` was added
 
-* `models.ProxyResourceApplicationResourceUpdateProperties` was added
-
-* `models.OperationDisplay` was added
-
-* `models.Origin` was added
+* `models.ArmProxyResource` was added
 
 * `models.VMSize` was added
-
-* `models.Operation` was added
 
 #### `models.Cluster$Definition` was modified
 
@@ -261,50 +246,48 @@
 
 #### `models.StatelessServiceProperties` was modified
 
-* `minInstanceCount()` was added
-* `withMinInstanceCount(java.lang.Integer)` was added
 * `minInstancePercentage()` was added
+* `minInstanceCount()` was added
 * `withMinInstancePercentage(byte[])` was added
+* `withMinInstanceCount(java.lang.Integer)` was added
 
 #### `models.ApplicationResourceUpdate` was modified
 
-* `withProperties(fluent.models.ApplicationResourceUpdateProperties)` was added
+* `withSystemData(com.azure.core.management.SystemData)` was added
 
-#### `models.Applications` was modified
+#### `models.ApplicationResource$Definition` was modified
 
-* `update(java.lang.String,java.lang.String,java.lang.String,models.ApplicationResourceUpdate)` was added
-* `update(java.lang.String,java.lang.String,java.lang.String,models.ApplicationResourceUpdate,com.azure.core.util.Context)` was added
+* `withSystemData(com.azure.core.management.SystemData)` was added
+
+#### `models.ApplicationTypeResource$Definition` was modified
+
+* `withSystemData(com.azure.core.management.SystemData)` was added
 
 #### `models.Cluster$Update` was modified
 
-* `withVmImage(java.lang.String)` was added
-* `withAzureActiveDirectory(models.AzureActiveDirectory)` was added
-* `withReverseProxyCertificateCommonNames(models.ServerCertificateCommonNames)` was added
-* `withDiagnosticsStorageAccountConfig(models.DiagnosticsStorageAccountConfig)` was added
-* `withManagementEndpoint(java.lang.String)` was added
 * `withEnableHttpGatewayExclusiveAuthMode(java.lang.Boolean)` was added
+
+#### `models.ServiceResource$Definition` was modified
+
+* `withSystemData(com.azure.core.management.SystemData)` was added
 
 #### `models.ClusterUpdateParameters` was modified
 
 * `enableHttpGatewayExclusiveAuthMode()` was added
 * `withEnableHttpGatewayExclusiveAuthMode(java.lang.Boolean)` was added
 
+#### `models.ServiceResourceUpdate` was modified
+
+* `withSystemData(com.azure.core.management.SystemData)` was added
+
 #### `models.ApplicationTypeResource$Update` was modified
 
-* `withTags(java.util.Map)` was added
+* `withSystemData(com.azure.core.management.SystemData)` was added
 
 #### `models.NodeTypeDescription` was modified
 
 * `httpGatewayTokenAuthEndpointPort()` was added
 * `withHttpGatewayTokenAuthEndpointPort(java.lang.Integer)` was added
-
-#### `models.ManagedIdentityType` was modified
-
-* `ManagedIdentityType()` was added
-
-#### `models.ClusterCodeVersionsResult` was modified
-
-* `systemData()` was added
 
 #### `models.Cluster` was modified
 
@@ -312,19 +295,15 @@
 
 #### `models.ApplicationResource$Update` was modified
 
-* `withTags(java.util.Map)` was added
-* `withIdentity(models.ManagedIdentity)` was added
-* `withTypeName(java.lang.String)` was added
+* `withSystemData(com.azure.core.management.SystemData)` was added
 
-#### `models.Clusters` was modified
+#### `models.ApplicationTypeVersionResource$Definition` was modified
 
-* `update(java.lang.String,java.lang.String,models.ClusterUpdateParameters,com.azure.core.util.Context)` was added
-* `update(java.lang.String,java.lang.String,models.ClusterUpdateParameters)` was added
+* `withSystemData(com.azure.core.management.SystemData)` was added
 
 #### `models.ServiceResource$Update` was modified
 
-* `withTags(java.util.Map)` was added
-* `withProperties(models.ServiceResourceProperties)` was added
+* `withSystemData(com.azure.core.management.SystemData)` was added
 
 #### `ServiceFabricManager` was modified
 
@@ -332,12 +311,7 @@
 
 #### `models.ApplicationTypeVersionResource$Update` was modified
 
-* `withTags(java.util.Map)` was added
-
-#### `models.Services` was modified
-
-* `update(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.ServiceResourceUpdate,com.azure.core.util.Context)` was added
-* `update(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.ServiceResourceUpdate)` was added
+* `withSystemData(com.azure.core.management.SystemData)` was added
 
 ## 1.0.0 (2024-12-24)
 

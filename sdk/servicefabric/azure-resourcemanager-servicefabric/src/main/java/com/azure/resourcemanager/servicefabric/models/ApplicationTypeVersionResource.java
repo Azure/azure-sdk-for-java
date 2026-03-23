@@ -36,31 +36,28 @@ public interface ApplicationTypeVersionResource {
     String type();
 
     /**
-     * Gets the tags property: Resource tags.
-     * 
-     * @return the tags value.
-     */
-    Map<String, String> tags();
-
-    /**
-     * Gets the location property: The geo-location where the resource lives.
+     * Gets the location property: It will be deprecated in New API, resource location depends on the parent resource.
      * 
      * @return the location value.
      */
     String location();
 
     /**
-     * Gets the etag property: "If etag is provided in the response body, it may also be provided as a header per the
-     * normal etag convention. Entity tags are used for comparing two or more entities from the same requested resource.
-     * HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26),
-     * and If-Range (section 14.27) header fields.").
+     * Gets the tags property: Azure resource tags.
+     * 
+     * @return the tags value.
+     */
+    Map<String, String> tags();
+
+    /**
+     * Gets the etag property: Azure resource etag.
      * 
      * @return the etag value.
      */
     String etag();
 
     /**
-     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
      * 
      * @return the systemData value.
      */
@@ -154,8 +151,8 @@ public interface ApplicationTypeVersionResource {
          * The stage of the ApplicationTypeVersionResource definition which contains all the minimum required properties
          * for the resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithLocation, DefinitionStages.WithTags, DefinitionStages.WithAppPackageUrl {
+        interface WithCreate extends DefinitionStages.WithLocation, DefinitionStages.WithTags,
+            DefinitionStages.WithSystemData, DefinitionStages.WithAppPackageUrl {
             /**
              * Executes the create request.
              * 
@@ -179,7 +176,7 @@ public interface ApplicationTypeVersionResource {
             /**
              * Specifies the region for the resource.
              * 
-             * @param location The geo-location where the resource lives.
+             * @param location It will be deprecated in New API, resource location depends on the parent resource.
              * @return the next definition stage.
              */
             WithCreate withRegion(Region location);
@@ -187,7 +184,7 @@ public interface ApplicationTypeVersionResource {
             /**
              * Specifies the region for the resource.
              * 
-             * @param location The geo-location where the resource lives.
+             * @param location It will be deprecated in New API, resource location depends on the parent resource.
              * @return the next definition stage.
              */
             WithCreate withRegion(String location);
@@ -198,12 +195,26 @@ public interface ApplicationTypeVersionResource {
          */
         interface WithTags {
             /**
-             * Specifies the tags property: Resource tags..
+             * Specifies the tags property: Azure resource tags..
              * 
-             * @param tags Resource tags.
+             * @param tags Azure resource tags.
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
+        }
+
+        /**
+         * The stage of the ApplicationTypeVersionResource definition allowing to specify systemData.
+         */
+        interface WithSystemData {
+            /**
+             * Specifies the systemData property: Metadata pertaining to creation and last modification of the
+             * resource..
+             * 
+             * @param systemData Metadata pertaining to creation and last modification of the resource.
+             * @return the next definition stage.
+             */
+            WithCreate withSystemData(SystemData systemData);
         }
 
         /**
@@ -230,7 +241,7 @@ public interface ApplicationTypeVersionResource {
     /**
      * The template for ApplicationTypeVersionResource update.
      */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithAppPackageUrl {
+    interface Update extends UpdateStages.WithSystemData, UpdateStages.WithAppPackageUrl {
         /**
          * Executes the update request.
          * 
@@ -252,16 +263,17 @@ public interface ApplicationTypeVersionResource {
      */
     interface UpdateStages {
         /**
-         * The stage of the ApplicationTypeVersionResource update allowing to specify tags.
+         * The stage of the ApplicationTypeVersionResource update allowing to specify systemData.
          */
-        interface WithTags {
+        interface WithSystemData {
             /**
-             * Specifies the tags property: Resource tags..
+             * Specifies the systemData property: Metadata pertaining to creation and last modification of the
+             * resource..
              * 
-             * @param tags Resource tags.
+             * @param systemData Metadata pertaining to creation and last modification of the resource.
              * @return the next definition stage.
              */
-            Update withTags(Map<String, String> tags);
+            Update withSystemData(SystemData systemData);
         }
 
         /**

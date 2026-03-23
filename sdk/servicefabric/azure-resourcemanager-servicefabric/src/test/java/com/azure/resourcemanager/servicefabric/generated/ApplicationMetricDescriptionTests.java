@@ -12,24 +12,24 @@ public final class ApplicationMetricDescriptionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApplicationMetricDescription model = BinaryData.fromString(
-            "{\"name\":\"muvp\",\"maximumCapacity\":3813824125962693379,\"reservationCapacity\":7617442549431453664,\"totalApplicationCapacity\":411911013999749991}")
+            "{\"name\":\"cxogaokonzm\",\"maximumCapacity\":2991398819380628456,\"reservationCapacity\":8469142941370576820,\"totalApplicationCapacity\":2221156921299108498}")
             .toObject(ApplicationMetricDescription.class);
-        Assertions.assertEquals("muvp", model.name());
-        Assertions.assertEquals(3813824125962693379L, model.maximumCapacity());
-        Assertions.assertEquals(7617442549431453664L, model.reservationCapacity());
-        Assertions.assertEquals(411911013999749991L, model.totalApplicationCapacity());
+        Assertions.assertEquals("cxogaokonzm", model.name());
+        Assertions.assertEquals(2991398819380628456L, model.maximumCapacity());
+        Assertions.assertEquals(8469142941370576820L, model.reservationCapacity());
+        Assertions.assertEquals(2221156921299108498L, model.totalApplicationCapacity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApplicationMetricDescription model = new ApplicationMetricDescription().withName("muvp")
-            .withMaximumCapacity(3813824125962693379L)
-            .withReservationCapacity(7617442549431453664L)
-            .withTotalApplicationCapacity(411911013999749991L);
+        ApplicationMetricDescription model = new ApplicationMetricDescription().withName("cxogaokonzm")
+            .withMaximumCapacity(2991398819380628456L)
+            .withReservationCapacity(8469142941370576820L)
+            .withTotalApplicationCapacity(2221156921299108498L);
         model = BinaryData.fromObject(model).toObject(ApplicationMetricDescription.class);
-        Assertions.assertEquals("muvp", model.name());
-        Assertions.assertEquals(3813824125962693379L, model.maximumCapacity());
-        Assertions.assertEquals(7617442549431453664L, model.reservationCapacity());
-        Assertions.assertEquals(411911013999749991L, model.totalApplicationCapacity());
+        Assertions.assertEquals("cxogaokonzm", model.name());
+        Assertions.assertEquals(2991398819380628456L, model.maximumCapacity());
+        Assertions.assertEquals(8469142941370576820L, model.reservationCapacity());
+        Assertions.assertEquals(2221156921299108498L, model.totalApplicationCapacity());
     }
 }

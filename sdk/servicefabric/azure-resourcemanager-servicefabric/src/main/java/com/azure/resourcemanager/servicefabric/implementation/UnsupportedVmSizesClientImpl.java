@@ -182,7 +182,7 @@ public final class UnsupportedVmSizesClientImpl implements UnsupportedVmSizesCli
     /**
      * Get the lists of unsupported vm sizes for Service Fabric Clusters.
      * 
-     * @param location The location for the unsupported VM size(s). This is different from cluster location.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -203,7 +203,7 @@ public final class UnsupportedVmSizesClientImpl implements UnsupportedVmSizesCli
     /**
      * Get the lists of unsupported vm sizes for Service Fabric Clusters.
      * 
-     * @param location The location for the unsupported VM size(s). This is different from cluster location.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -218,7 +218,7 @@ public final class UnsupportedVmSizesClientImpl implements UnsupportedVmSizesCli
     /**
      * Get the lists of unsupported vm sizes for Service Fabric Clusters.
      * 
-     * @param location The location for the unsupported VM size(s). This is different from cluster location.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -236,7 +236,7 @@ public final class UnsupportedVmSizesClientImpl implements UnsupportedVmSizesCli
     /**
      * Get the lists of unsupported vm sizes for Service Fabric Clusters.
      * 
-     * @param location The location for the unsupported VM size(s). This is different from cluster location.
+     * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -255,7 +255,7 @@ public final class UnsupportedVmSizesClientImpl implements UnsupportedVmSizesCli
     /**
      * Get the lists of unsupported vm sizes for Service Fabric Clusters.
      * 
-     * @param location The location for the unsupported VM size(s). This is different from cluster location.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -270,7 +270,7 @@ public final class UnsupportedVmSizesClientImpl implements UnsupportedVmSizesCli
     /**
      * Get the lists of unsupported vm sizes for Service Fabric Clusters.
      * 
-     * @param location The location for the unsupported VM size(s). This is different from cluster location.
+     * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -285,6 +285,8 @@ public final class UnsupportedVmSizesClientImpl implements UnsupportedVmSizesCli
     }
 
     /**
+     * Get the lists of unsupported vm sizes for Service Fabric Clusters.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -304,6 +306,8 @@ public final class UnsupportedVmSizesClientImpl implements UnsupportedVmSizesCli
     }
 
     /**
+     * Get the lists of unsupported vm sizes for Service Fabric Clusters.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -321,6 +325,8 @@ public final class UnsupportedVmSizesClientImpl implements UnsupportedVmSizesCli
     }
 
     /**
+     * Get the lists of unsupported vm sizes for Service Fabric Clusters.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.

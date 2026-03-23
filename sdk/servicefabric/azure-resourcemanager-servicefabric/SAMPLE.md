@@ -454,12 +454,9 @@ public final class ApplicationsListSamples {
 ### Applications_Update
 
 ```java
-import com.azure.resourcemanager.servicefabric.fluent.models.ApplicationResourceUpdateProperties;
 import com.azure.resourcemanager.servicefabric.models.ApplicationMetricDescription;
-import com.azure.resourcemanager.servicefabric.models.ApplicationResourceUpdate;
+import com.azure.resourcemanager.servicefabric.models.ApplicationResource;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Samples for Applications Update.
@@ -474,35 +471,17 @@ public final class ApplicationsUpdateSamples {
      * @param manager Entry point to ServiceFabricManager.
      */
     public static void patchAnApplication(com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
-        manager.applications()
-            .update("resRg", "myCluster", "myApp",
-                new ApplicationResourceUpdate()
-                    .withProperties(new ApplicationResourceUpdateProperties().withTypeVersion("1.0")
-                        .withRemoveApplicationCapacity(false)
-                        .withMetrics(Arrays.asList(new ApplicationMetricDescription().withName("metric1")
-                            .withMaximumCapacity(3L)
-                            .withReservationCapacity(1L)
-                            .withTotalApplicationCapacity(5L))))
-                    .withTags(mapOf())
-                    .withTypeVersion("1.0")
-                    .withRemoveApplicationCapacity(false)
-                    .withMetrics(Arrays.asList(new ApplicationMetricDescription().withName("metric1")
-                        .withMaximumCapacity(3L)
-                        .withReservationCapacity(1L)
-                        .withTotalApplicationCapacity(5L))),
-                com.azure.core.util.Context.NONE);
-    }
-
-    // Use "Map.of" if available
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
-        }
-        return map;
+        ApplicationResource resource = manager.applications()
+            .getWithResponse("resRg", "myCluster", "myApp", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withTypeVersion("1.0")
+            .withRemoveApplicationCapacity(false)
+            .withMetrics(Arrays.asList(new ApplicationMetricDescription().withName("metric1")
+                .withMaximumCapacity(3L)
+                .withReservationCapacity(1L)
+                .withTotalApplicationCapacity(5L)))
+            .apply();
     }
 }
 ```
@@ -934,7 +913,7 @@ public final class ClustersListUpgradableVersionsSamples {
 ### Clusters_Update
 
 ```java
-import com.azure.resourcemanager.servicefabric.models.ClusterUpdateParameters;
+import com.azure.resourcemanager.servicefabric.models.Cluster;
 import com.azure.resourcemanager.servicefabric.models.ClusterUpgradeCadence;
 import com.azure.resourcemanager.servicefabric.models.DurabilityLevel;
 import com.azure.resourcemanager.servicefabric.models.EndpointRangeDescription;
@@ -959,11 +938,15 @@ public final class ClustersUpdateSamples {
      * @param manager Entry point to ServiceFabricManager.
      */
     public static void patchACluster(com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
-        manager.clusters()
-            .update("resRg", "myCluster",
-                new ClusterUpdateParameters().withTags(mapOf("a", "b"))
-                    .withEventStoreServiceEnabled(true)
-                    .withNodeTypes(Arrays.asList(
+        Cluster resource = manager.clusters()
+            .getByResourceGroupWithResponse("resRg", "myCluster", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withTags(mapOf("a", "b"))
+            .withEventStoreServiceEnabled(true)
+            .withNodeTypes(
+                Arrays
+                    .asList(
                         new NodeTypeDescription().withName("nt1vm")
                             .withClientConnectionEndpointPort(19000)
                             .withHttpGatewayEndpointPort(19007)
@@ -983,13 +966,13 @@ public final class ClustersUpdateSamples {
                             .withIsPrimary(false)
                             .withVmInstanceCount(3)
                             .withHttpGatewayTokenAuthEndpointPort(19081)))
-                    .withReliabilityLevel(ReliabilityLevel.BRONZE)
-                    .withUpgradeMode(UpgradeMode.AUTOMATIC)
-                    .withUpgradeWave(ClusterUpgradeCadence.fromString("Wave"))
-                    .withUpgradePauseStartTimestampUtc(OffsetDateTime.parse("2021-06-21T22:00:00Z"))
-                    .withUpgradePauseEndTimestampUtc(OffsetDateTime.parse("2021-06-25T22:00:00Z"))
-                    .withEnableHttpGatewayExclusiveAuthMode(true),
-                com.azure.core.util.Context.NONE);
+            .withReliabilityLevel(ReliabilityLevel.BRONZE)
+            .withUpgradeMode(UpgradeMode.AUTOMATIC)
+            .withUpgradeWave(ClusterUpgradeCadence.fromString("Wave"))
+            .withUpgradePauseStartTimestampUtc(OffsetDateTime.parse("2021-06-21T22:00:00Z"))
+            .withUpgradePauseEndTimestampUtc(OffsetDateTime.parse("2021-06-25T22:00:00Z"))
+            .withEnableHttpGatewayExclusiveAuthMode(true)
+            .apply();
     }
 
     // Use "Map.of" if available
@@ -1180,11 +1163,9 @@ public final class ServicesListSamples {
 ```java
 import com.azure.resourcemanager.servicefabric.models.ServiceLoadMetricDescription;
 import com.azure.resourcemanager.servicefabric.models.ServiceLoadMetricWeight;
-import com.azure.resourcemanager.servicefabric.models.ServiceResourceUpdate;
+import com.azure.resourcemanager.servicefabric.models.ServiceResource;
 import com.azure.resourcemanager.servicefabric.models.StatelessServiceUpdateProperties;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Samples for Services Update.
@@ -1199,23 +1180,13 @@ public final class ServicesUpdateSamples {
      * @param manager Entry point to ServiceFabricManager.
      */
     public static void patchAService(com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
-        manager.services()
-            .update("resRg", "myCluster", "myApp", "myService", new ServiceResourceUpdate()
-                .withProperties(new StatelessServiceUpdateProperties().withServiceLoadMetrics(Arrays.asList(
-                    new ServiceLoadMetricDescription().withName("metric1").withWeight(ServiceLoadMetricWeight.LOW))))
-                .withTags(mapOf()), com.azure.core.util.Context.NONE);
-    }
-
-    // Use "Map.of" if available
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
-        }
-        return map;
+        ServiceResource resource = manager.services()
+            .getWithResponse("resRg", "myCluster", "myApp", "myService", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withProperties(new StatelessServiceUpdateProperties().withServiceLoadMetrics(Arrays.asList(
+                new ServiceLoadMetricDescription().withName("metric1").withWeight(ServiceLoadMetricWeight.LOW))))
+            .apply();
     }
 }
 ```

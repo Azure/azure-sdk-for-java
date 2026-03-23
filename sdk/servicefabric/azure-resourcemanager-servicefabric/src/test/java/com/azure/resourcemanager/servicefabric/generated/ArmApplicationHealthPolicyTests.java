@@ -15,57 +15,49 @@ public final class ArmApplicationHealthPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ArmApplicationHealthPolicy model = BinaryData.fromString(
-            "{\"considerWarningAsError\":true,\"maxPercentUnhealthyDeployedApplications\":1269136735,\"defaultServiceTypeHealthPolicy\":{\"maxPercentUnhealthyServices\":299284831,\"maxPercentUnhealthyPartitionsPerService\":936740423,\"maxPercentUnhealthyReplicasPerPartition\":975056149},\"serviceTypeHealthPolicyMap\":{\"unkbebx\":{\"maxPercentUnhealthyServices\":1090180987,\"maxPercentUnhealthyPartitionsPerService\":1185146175,\"maxPercentUnhealthyReplicasPerPartition\":1647151619},\"wlrbqtkoievseo\":{\"maxPercentUnhealthyServices\":724512325,\"maxPercentUnhealthyPartitionsPerService\":2008169433,\"maxPercentUnhealthyReplicasPerPartition\":1611080667},\"muwlauwzizxbm\":{\"maxPercentUnhealthyServices\":143823433,\"maxPercentUnhealthyPartitionsPerService\":209864806,\"maxPercentUnhealthyReplicasPerPartition\":407342571}}}")
+            "{\"considerWarningAsError\":false,\"maxPercentUnhealthyDeployedApplications\":1760028504,\"defaultServiceTypeHealthPolicy\":{\"maxPercentUnhealthyServices\":334511461,\"maxPercentUnhealthyPartitionsPerService\":1235215837,\"maxPercentUnhealthyReplicasPerPartition\":121534339},\"serviceTypeHealthPolicyMap\":{\"iwubmwmbesldnk\":{\"maxPercentUnhealthyServices\":20287236,\"maxPercentUnhealthyPartitionsPerService\":1409341290,\"maxPercentUnhealthyReplicasPerPartition\":1404863035}}}")
             .toObject(ArmApplicationHealthPolicy.class);
-        Assertions.assertTrue(model.considerWarningAsError());
-        Assertions.assertEquals(1269136735, model.maxPercentUnhealthyDeployedApplications());
-        Assertions.assertEquals(299284831, model.defaultServiceTypeHealthPolicy().maxPercentUnhealthyServices());
-        Assertions.assertEquals(936740423,
+        Assertions.assertFalse(model.considerWarningAsError());
+        Assertions.assertEquals(1760028504, model.maxPercentUnhealthyDeployedApplications());
+        Assertions.assertEquals(334511461, model.defaultServiceTypeHealthPolicy().maxPercentUnhealthyServices());
+        Assertions.assertEquals(1235215837,
             model.defaultServiceTypeHealthPolicy().maxPercentUnhealthyPartitionsPerService());
-        Assertions.assertEquals(975056149,
+        Assertions.assertEquals(121534339,
             model.defaultServiceTypeHealthPolicy().maxPercentUnhealthyReplicasPerPartition());
-        Assertions.assertEquals(1090180987,
-            model.serviceTypeHealthPolicyMap().get("unkbebx").maxPercentUnhealthyServices());
-        Assertions.assertEquals(1185146175,
-            model.serviceTypeHealthPolicyMap().get("unkbebx").maxPercentUnhealthyPartitionsPerService());
-        Assertions.assertEquals(1647151619,
-            model.serviceTypeHealthPolicyMap().get("unkbebx").maxPercentUnhealthyReplicasPerPartition());
+        Assertions.assertEquals(20287236,
+            model.serviceTypeHealthPolicyMap().get("iwubmwmbesldnk").maxPercentUnhealthyServices());
+        Assertions.assertEquals(1409341290,
+            model.serviceTypeHealthPolicyMap().get("iwubmwmbesldnk").maxPercentUnhealthyPartitionsPerService());
+        Assertions.assertEquals(1404863035,
+            model.serviceTypeHealthPolicyMap().get("iwubmwmbesldnk").maxPercentUnhealthyReplicasPerPartition());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ArmApplicationHealthPolicy model = new ArmApplicationHealthPolicy().withConsiderWarningAsError(true)
-            .withMaxPercentUnhealthyDeployedApplications(1269136735)
+        ArmApplicationHealthPolicy model = new ArmApplicationHealthPolicy().withConsiderWarningAsError(false)
+            .withMaxPercentUnhealthyDeployedApplications(1760028504)
             .withDefaultServiceTypeHealthPolicy(
-                new ArmServiceTypeHealthPolicy().withMaxPercentUnhealthyServices(299284831)
-                    .withMaxPercentUnhealthyPartitionsPerService(936740423)
-                    .withMaxPercentUnhealthyReplicasPerPartition(975056149))
-            .withServiceTypeHealthPolicyMap(mapOf("unkbebx",
-                new ArmServiceTypeHealthPolicy().withMaxPercentUnhealthyServices(1090180987)
-                    .withMaxPercentUnhealthyPartitionsPerService(1185146175)
-                    .withMaxPercentUnhealthyReplicasPerPartition(1647151619),
-                "wlrbqtkoievseo",
-                new ArmServiceTypeHealthPolicy().withMaxPercentUnhealthyServices(724512325)
-                    .withMaxPercentUnhealthyPartitionsPerService(2008169433)
-                    .withMaxPercentUnhealthyReplicasPerPartition(1611080667),
-                "muwlauwzizxbm",
-                new ArmServiceTypeHealthPolicy().withMaxPercentUnhealthyServices(143823433)
-                    .withMaxPercentUnhealthyPartitionsPerService(209864806)
-                    .withMaxPercentUnhealthyReplicasPerPartition(407342571)));
+                new ArmServiceTypeHealthPolicy().withMaxPercentUnhealthyServices(334511461)
+                    .withMaxPercentUnhealthyPartitionsPerService(1235215837)
+                    .withMaxPercentUnhealthyReplicasPerPartition(121534339))
+            .withServiceTypeHealthPolicyMap(mapOf("iwubmwmbesldnk",
+                new ArmServiceTypeHealthPolicy().withMaxPercentUnhealthyServices(20287236)
+                    .withMaxPercentUnhealthyPartitionsPerService(1409341290)
+                    .withMaxPercentUnhealthyReplicasPerPartition(1404863035)));
         model = BinaryData.fromObject(model).toObject(ArmApplicationHealthPolicy.class);
-        Assertions.assertTrue(model.considerWarningAsError());
-        Assertions.assertEquals(1269136735, model.maxPercentUnhealthyDeployedApplications());
-        Assertions.assertEquals(299284831, model.defaultServiceTypeHealthPolicy().maxPercentUnhealthyServices());
-        Assertions.assertEquals(936740423,
+        Assertions.assertFalse(model.considerWarningAsError());
+        Assertions.assertEquals(1760028504, model.maxPercentUnhealthyDeployedApplications());
+        Assertions.assertEquals(334511461, model.defaultServiceTypeHealthPolicy().maxPercentUnhealthyServices());
+        Assertions.assertEquals(1235215837,
             model.defaultServiceTypeHealthPolicy().maxPercentUnhealthyPartitionsPerService());
-        Assertions.assertEquals(975056149,
+        Assertions.assertEquals(121534339,
             model.defaultServiceTypeHealthPolicy().maxPercentUnhealthyReplicasPerPartition());
-        Assertions.assertEquals(1090180987,
-            model.serviceTypeHealthPolicyMap().get("unkbebx").maxPercentUnhealthyServices());
-        Assertions.assertEquals(1185146175,
-            model.serviceTypeHealthPolicyMap().get("unkbebx").maxPercentUnhealthyPartitionsPerService());
-        Assertions.assertEquals(1647151619,
-            model.serviceTypeHealthPolicyMap().get("unkbebx").maxPercentUnhealthyReplicasPerPartition());
+        Assertions.assertEquals(20287236,
+            model.serviceTypeHealthPolicyMap().get("iwubmwmbesldnk").maxPercentUnhealthyServices());
+        Assertions.assertEquals(1409341290,
+            model.serviceTypeHealthPolicyMap().get("iwubmwmbesldnk").maxPercentUnhealthyPartitionsPerService());
+        Assertions.assertEquals(1404863035,
+            model.serviceTypeHealthPolicyMap().get("iwubmwmbesldnk").maxPercentUnhealthyReplicasPerPartition());
     }
 
     // Use "Map.of" if available

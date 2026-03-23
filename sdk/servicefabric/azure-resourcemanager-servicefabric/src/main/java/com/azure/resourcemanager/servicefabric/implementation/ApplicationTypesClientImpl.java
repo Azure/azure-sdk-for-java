@@ -165,6 +165,8 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
     }
 
     /**
+     * Gets a Service Fabric application type name resource.
+     * 
      * Get a Service Fabric application type name resource created or in the process of being created in the Service
      * Fabric cluster resource.
      * 
@@ -174,7 +176,9 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Service Fabric application type name resource created or in the process of being created in the Service
+     * @return a Service Fabric application type name resource.
+     * 
+     * Get a Service Fabric application type name resource created or in the process of being created in the Service
      * Fabric cluster resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -188,6 +192,8 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
     }
 
     /**
+     * Gets a Service Fabric application type name resource.
+     * 
      * Get a Service Fabric application type name resource created or in the process of being created in the Service
      * Fabric cluster resource.
      * 
@@ -197,7 +203,9 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Service Fabric application type name resource created or in the process of being created in the Service
+     * @return a Service Fabric application type name resource.
+     * 
+     * Get a Service Fabric application type name resource created or in the process of being created in the Service
      * Fabric cluster resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -208,6 +216,8 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
     }
 
     /**
+     * Gets a Service Fabric application type name resource.
+     * 
      * Get a Service Fabric application type name resource created or in the process of being created in the Service
      * Fabric cluster resource.
      * 
@@ -218,7 +228,9 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Service Fabric application type name resource created or in the process of being created in the Service
+     * @return a Service Fabric application type name resource.
+     * 
+     * Get a Service Fabric application type name resource created or in the process of being created in the Service
      * Fabric cluster resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -230,6 +242,8 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
     }
 
     /**
+     * Gets a Service Fabric application type name resource.
+     * 
      * Get a Service Fabric application type name resource created or in the process of being created in the Service
      * Fabric cluster resource.
      * 
@@ -239,7 +253,9 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Service Fabric application type name resource created or in the process of being created in the Service
+     * @return a Service Fabric application type name resource.
+     * 
+     * Get a Service Fabric application type name resource created or in the process of being created in the Service
      * Fabric cluster resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -248,6 +264,8 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
     }
 
     /**
+     * Creates or updates a Service Fabric application type name resource.
+     * 
      * Create or update a Service Fabric application type name resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -272,6 +290,8 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
     }
 
     /**
+     * Creates or updates a Service Fabric application type name resource.
+     * 
      * Create or update a Service Fabric application type name resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -291,6 +311,8 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
     }
 
     /**
+     * Creates or updates a Service Fabric application type name resource.
+     * 
      * Create or update a Service Fabric application type name resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -314,6 +336,8 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
     }
 
     /**
+     * Creates or updates a Service Fabric application type name resource.
+     * 
      * Create or update a Service Fabric application type name resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -333,6 +357,8 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
     }
 
     /**
+     * Deletes a Service Fabric application type name resource.
+     * 
      * Delete a Service Fabric application type name resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -353,6 +379,8 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
     }
 
     /**
+     * Deletes a Service Fabric application type name resource.
+     * 
      * Delete a Service Fabric application type name resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -371,6 +399,8 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
     }
 
     /**
+     * Deletes a Service Fabric application type name resource.
+     * 
      * Delete a Service Fabric application type name resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -390,6 +420,8 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
     }
 
     /**
+     * Deletes a Service Fabric application type name resource.
+     * 
      * Delete a Service Fabric application type name resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -410,6 +442,8 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
     }
 
     /**
+     * Deletes a Service Fabric application type name resource.
+     * 
      * Delete a Service Fabric application type name resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -428,6 +462,8 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
     }
 
     /**
+     * Deletes a Service Fabric application type name resource.
+     * 
      * Delete a Service Fabric application type name resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -448,6 +484,8 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
     }
 
     /**
+     * Deletes a Service Fabric application type name resource.
+     * 
      * Delete a Service Fabric application type name resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -465,6 +503,8 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
     }
 
     /**
+     * Deletes a Service Fabric application type name resource.
+     * 
      * Delete a Service Fabric application type name resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -480,6 +520,8 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
     }
 
     /**
+     * Deletes a Service Fabric application type name resource.
+     * 
      * Delete a Service Fabric application type name resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -496,6 +538,8 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
     }
 
     /**
+     * Gets the list of application type name resources created in the specified Service Fabric cluster resource.
+     * 
      * Gets all application type name resources created or in the process of being created in the Service Fabric cluster
      * resource.
      * 
@@ -504,8 +548,10 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all application type name resources created or in the process of being created in the Service Fabric
-     * cluster resource along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the list of application type name resources created in the specified Service Fabric cluster resource.
+     * 
+     * Gets all application type name resources created or in the process of being created in the Service Fabric cluster
+     * resource along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ApplicationTypeResourceInner>> listSinglePageAsync(String resourceGroupName,
@@ -520,6 +566,8 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
     }
 
     /**
+     * Gets the list of application type name resources created in the specified Service Fabric cluster resource.
+     * 
      * Gets all application type name resources created or in the process of being created in the Service Fabric cluster
      * resource.
      * 
@@ -528,8 +576,10 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all application type name resources created or in the process of being created in the Service Fabric
-     * cluster resource as paginated response with {@link PagedFlux}.
+     * @return the list of application type name resources created in the specified Service Fabric cluster resource.
+     * 
+     * Gets all application type name resources created or in the process of being created in the Service Fabric cluster
+     * resource as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ApplicationTypeResourceInner> listAsync(String resourceGroupName, String clusterName) {
@@ -538,6 +588,8 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
     }
 
     /**
+     * Gets the list of application type name resources created in the specified Service Fabric cluster resource.
+     * 
      * Gets all application type name resources created or in the process of being created in the Service Fabric cluster
      * resource.
      * 
@@ -546,8 +598,10 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all application type name resources created or in the process of being created in the Service Fabric
-     * cluster resource along with {@link PagedResponse}.
+     * @return the list of application type name resources created in the specified Service Fabric cluster resource.
+     * 
+     * Gets all application type name resources created or in the process of being created in the Service Fabric cluster
+     * resource along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ApplicationTypeResourceInner> listSinglePage(String resourceGroupName, String clusterName) {
@@ -560,6 +614,8 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
     }
 
     /**
+     * Gets the list of application type name resources created in the specified Service Fabric cluster resource.
+     * 
      * Gets all application type name resources created or in the process of being created in the Service Fabric cluster
      * resource.
      * 
@@ -569,8 +625,10 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all application type name resources created or in the process of being created in the Service Fabric
-     * cluster resource along with {@link PagedResponse}.
+     * @return the list of application type name resources created in the specified Service Fabric cluster resource.
+     * 
+     * Gets all application type name resources created or in the process of being created in the Service Fabric cluster
+     * resource along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ApplicationTypeResourceInner> listSinglePage(String resourceGroupName, String clusterName,
@@ -584,6 +642,8 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
     }
 
     /**
+     * Gets the list of application type name resources created in the specified Service Fabric cluster resource.
+     * 
      * Gets all application type name resources created or in the process of being created in the Service Fabric cluster
      * resource.
      * 
@@ -592,8 +652,10 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all application type name resources created or in the process of being created in the Service Fabric
-     * cluster resource as paginated response with {@link PagedIterable}.
+     * @return the list of application type name resources created in the specified Service Fabric cluster resource.
+     * 
+     * Gets all application type name resources created or in the process of being created in the Service Fabric cluster
+     * resource as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApplicationTypeResourceInner> list(String resourceGroupName, String clusterName) {
@@ -602,6 +664,8 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
     }
 
     /**
+     * Gets the list of application type name resources created in the specified Service Fabric cluster resource.
+     * 
      * Gets all application type name resources created or in the process of being created in the Service Fabric cluster
      * resource.
      * 
@@ -611,8 +675,10 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all application type name resources created or in the process of being created in the Service Fabric
-     * cluster resource as paginated response with {@link PagedIterable}.
+     * @return the list of application type name resources created in the specified Service Fabric cluster resource.
+     * 
+     * Gets all application type name resources created or in the process of being created in the Service Fabric cluster
+     * resource as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApplicationTypeResourceInner> list(String resourceGroupName, String clusterName,
@@ -622,14 +688,18 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
     }
 
     /**
+     * Gets the list of application type name resources created in the specified Service Fabric cluster resource.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all application type name resources created or in the process of being created in the Service Fabric
-     * cluster resource along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the list of application type name resources created in the specified Service Fabric cluster resource.
+     * 
+     * Gets all application type name resources created or in the process of being created in the Service Fabric cluster
+     * resource along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ApplicationTypeResourceInner>> listNextSinglePageAsync(String nextLink) {
@@ -641,14 +711,18 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
     }
 
     /**
+     * Gets the list of application type name resources created in the specified Service Fabric cluster resource.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all application type name resources created or in the process of being created in the Service Fabric
-     * cluster resource along with {@link PagedResponse}.
+     * @return the list of application type name resources created in the specified Service Fabric cluster resource.
+     * 
+     * Gets all application type name resources created or in the process of being created in the Service Fabric cluster
+     * resource along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ApplicationTypeResourceInner> listNextSinglePage(String nextLink) {
@@ -660,6 +734,8 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
     }
 
     /**
+     * Gets the list of application type name resources created in the specified Service Fabric cluster resource.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -667,8 +743,10 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all application type name resources created or in the process of being created in the Service Fabric
-     * cluster resource along with {@link PagedResponse}.
+     * @return the list of application type name resources created in the specified Service Fabric cluster resource.
+     * 
+     * Gets all application type name resources created or in the process of being created in the Service Fabric cluster
+     * resource along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ApplicationTypeResourceInner> listNextSinglePage(String nextLink, Context context) {

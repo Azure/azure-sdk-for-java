@@ -10,6 +10,7 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.servicefabric.fluent.models.ApplicationResourceInner;
 import com.azure.resourcemanager.servicefabric.models.ApplicationMetricDescription;
 import com.azure.resourcemanager.servicefabric.models.ApplicationResource;
+import com.azure.resourcemanager.servicefabric.models.ApplicationResourceUpdate;
 import com.azure.resourcemanager.servicefabric.models.ApplicationUpgradePolicy;
 import com.azure.resourcemanager.servicefabric.models.ApplicationUserAssignedIdentity;
 import com.azure.resourcemanager.servicefabric.models.ManagedIdentity;
@@ -35,6 +36,14 @@ public final class ApplicationResourceImpl
         return this.innerModel().type();
     }
 
+    public ManagedIdentity identity() {
+        return this.innerModel().identity();
+    }
+
+    public String location() {
+        return this.innerModel().location();
+    }
+
     public Map<String, String> tags() {
         Map<String, String> inner = this.innerModel().tags();
         if (inner != null) {
@@ -44,16 +53,8 @@ public final class ApplicationResourceImpl
         }
     }
 
-    public String location() {
-        return this.innerModel().location();
-    }
-
     public String etag() {
         return this.innerModel().etag();
-    }
-
-    public ManagedIdentity identity() {
-        return this.innerModel().identity();
     }
 
     public SystemData systemData() {
@@ -141,6 +142,8 @@ public final class ApplicationResourceImpl
 
     private String applicationName;
 
+    private ApplicationResourceUpdate updateParameters;
+
     public ApplicationResourceImpl withExistingCluster(String resourceGroupName, String clusterName) {
         this.resourceGroupName = resourceGroupName;
         this.clusterName = clusterName;
@@ -168,20 +171,21 @@ public final class ApplicationResourceImpl
     }
 
     public ApplicationResourceImpl update() {
+        this.updateParameters = new ApplicationResourceUpdate();
         return this;
     }
 
     public ApplicationResource apply() {
         this.innerObject = serviceManager.serviceClient()
             .getApplications()
-            .createOrUpdate(resourceGroupName, clusterName, applicationName, this.innerModel(), Context.NONE);
+            .update(resourceGroupName, clusterName, applicationName, updateParameters, Context.NONE);
         return this;
     }
 
     public ApplicationResource apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getApplications()
-            .createOrUpdate(resourceGroupName, clusterName, applicationName, this.innerModel(), context);
+            .update(resourceGroupName, clusterName, applicationName, updateParameters, context);
         return this;
     }
 
@@ -230,48 +234,102 @@ public final class ApplicationResourceImpl
         return this;
     }
 
+    public ApplicationResourceImpl withSystemData(SystemData systemData) {
+        if (isInCreateMode()) {
+            this.innerModel().withSystemData(systemData);
+            return this;
+        } else {
+            this.updateParameters.withSystemData(systemData);
+            return this;
+        }
+    }
+
     public ApplicationResourceImpl withTypeName(String typeName) {
         this.innerModel().withTypeName(typeName);
         return this;
     }
 
     public ApplicationResourceImpl withTypeVersion(String typeVersion) {
-        this.innerModel().withTypeVersion(typeVersion);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withTypeVersion(typeVersion);
+            return this;
+        } else {
+            this.updateParameters.withTypeVersion(typeVersion);
+            return this;
+        }
     }
 
     public ApplicationResourceImpl withParameters(Map<String, String> parameters) {
-        this.innerModel().withParameters(parameters);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withParameters(parameters);
+            return this;
+        } else {
+            this.updateParameters.withParameters(parameters);
+            return this;
+        }
     }
 
     public ApplicationResourceImpl withUpgradePolicy(ApplicationUpgradePolicy upgradePolicy) {
-        this.innerModel().withUpgradePolicy(upgradePolicy);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withUpgradePolicy(upgradePolicy);
+            return this;
+        } else {
+            this.updateParameters.withUpgradePolicy(upgradePolicy);
+            return this;
+        }
     }
 
     public ApplicationResourceImpl withMinimumNodes(Long minimumNodes) {
-        this.innerModel().withMinimumNodes(minimumNodes);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withMinimumNodes(minimumNodes);
+            return this;
+        } else {
+            this.updateParameters.withMinimumNodes(minimumNodes);
+            return this;
+        }
     }
 
     public ApplicationResourceImpl withMaximumNodes(Long maximumNodes) {
-        this.innerModel().withMaximumNodes(maximumNodes);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withMaximumNodes(maximumNodes);
+            return this;
+        } else {
+            this.updateParameters.withMaximumNodes(maximumNodes);
+            return this;
+        }
     }
 
     public ApplicationResourceImpl withRemoveApplicationCapacity(Boolean removeApplicationCapacity) {
-        this.innerModel().withRemoveApplicationCapacity(removeApplicationCapacity);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withRemoveApplicationCapacity(removeApplicationCapacity);
+            return this;
+        } else {
+            this.updateParameters.withRemoveApplicationCapacity(removeApplicationCapacity);
+            return this;
+        }
     }
 
     public ApplicationResourceImpl withMetrics(List<ApplicationMetricDescription> metrics) {
-        this.innerModel().withMetrics(metrics);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withMetrics(metrics);
+            return this;
+        } else {
+            this.updateParameters.withMetrics(metrics);
+            return this;
+        }
     }
 
     public ApplicationResourceImpl withManagedIdentities(List<ApplicationUserAssignedIdentity> managedIdentities) {
-        this.innerModel().withManagedIdentities(managedIdentities);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withManagedIdentities(managedIdentities);
+            return this;
+        } else {
+            this.updateParameters.withManagedIdentities(managedIdentities);
+            return this;
+        }
+    }
+
+    private boolean isInCreateMode() {
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

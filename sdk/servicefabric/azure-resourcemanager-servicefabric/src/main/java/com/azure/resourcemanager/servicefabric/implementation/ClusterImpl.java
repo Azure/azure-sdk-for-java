@@ -18,6 +18,7 @@ import com.azure.resourcemanager.servicefabric.models.ClientCertificateCommonNam
 import com.azure.resourcemanager.servicefabric.models.ClientCertificateThumbprint;
 import com.azure.resourcemanager.servicefabric.models.Cluster;
 import com.azure.resourcemanager.servicefabric.models.ClusterState;
+import com.azure.resourcemanager.servicefabric.models.ClusterUpdateParameters;
 import com.azure.resourcemanager.servicefabric.models.ClusterUpgradeCadence;
 import com.azure.resourcemanager.servicefabric.models.ClusterUpgradePolicy;
 import com.azure.resourcemanager.servicefabric.models.DiagnosticsStorageAccountConfig;
@@ -266,6 +267,8 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
 
     private String clusterName;
 
+    private ClusterUpdateParameters updateParameters;
+
     public ClusterImpl withExistingResourceGroup(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
         return this;
@@ -292,20 +295,21 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
     }
 
     public ClusterImpl update() {
+        this.updateParameters = new ClusterUpdateParameters();
         return this;
     }
 
     public Cluster apply() {
         this.innerObject = serviceManager.serviceClient()
             .getClusters()
-            .createOrUpdate(resourceGroupName, clusterName, this.innerModel(), Context.NONE);
+            .update(resourceGroupName, clusterName, updateParameters, Context.NONE);
         return this;
     }
 
     public Cluster apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getClusters()
-            .createOrUpdate(resourceGroupName, clusterName, this.innerModel(), context);
+            .update(resourceGroupName, clusterName, updateParameters, context);
         return this;
     }
 
@@ -353,13 +357,23 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
     }
 
     public ClusterImpl withTags(Map<String, String> tags) {
-        this.innerModel().withTags(tags);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withTags(tags);
+            return this;
+        } else {
+            this.updateParameters.withTags(tags);
+            return this;
+        }
     }
 
     public ClusterImpl withAddOnFeatures(List<AddOnFeatures> addOnFeatures) {
-        this.innerModel().withAddOnFeatures(addOnFeatures);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withAddOnFeatures(addOnFeatures);
+            return this;
+        } else {
+            this.updateParameters.withAddOnFeatures(addOnFeatures);
+            return this;
+        }
     }
 
     public ClusterImpl withAzureActiveDirectory(AzureActiveDirectory azureActiveDirectory) {
@@ -368,30 +382,55 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
     }
 
     public ClusterImpl withCertificate(CertificateDescription certificate) {
-        this.innerModel().withCertificate(certificate);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withCertificate(certificate);
+            return this;
+        } else {
+            this.updateParameters.withCertificate(certificate);
+            return this;
+        }
     }
 
     public ClusterImpl withCertificateCommonNames(ServerCertificateCommonNames certificateCommonNames) {
-        this.innerModel().withCertificateCommonNames(certificateCommonNames);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withCertificateCommonNames(certificateCommonNames);
+            return this;
+        } else {
+            this.updateParameters.withCertificateCommonNames(certificateCommonNames);
+            return this;
+        }
     }
 
     public ClusterImpl
         withClientCertificateCommonNames(List<ClientCertificateCommonName> clientCertificateCommonNames) {
-        this.innerModel().withClientCertificateCommonNames(clientCertificateCommonNames);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withClientCertificateCommonNames(clientCertificateCommonNames);
+            return this;
+        } else {
+            this.updateParameters.withClientCertificateCommonNames(clientCertificateCommonNames);
+            return this;
+        }
     }
 
     public ClusterImpl
         withClientCertificateThumbprints(List<ClientCertificateThumbprint> clientCertificateThumbprints) {
-        this.innerModel().withClientCertificateThumbprints(clientCertificateThumbprints);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withClientCertificateThumbprints(clientCertificateThumbprints);
+            return this;
+        } else {
+            this.updateParameters.withClientCertificateThumbprints(clientCertificateThumbprints);
+            return this;
+        }
     }
 
     public ClusterImpl withClusterCodeVersion(String clusterCodeVersion) {
-        this.innerModel().withClusterCodeVersion(clusterCodeVersion);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withClusterCodeVersion(clusterCodeVersion);
+            return this;
+        } else {
+            this.updateParameters.withClusterCodeVersion(clusterCodeVersion);
+            return this;
+        }
     }
 
     public ClusterImpl
@@ -401,13 +440,23 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
     }
 
     public ClusterImpl withEventStoreServiceEnabled(Boolean eventStoreServiceEnabled) {
-        this.innerModel().withEventStoreServiceEnabled(eventStoreServiceEnabled);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withEventStoreServiceEnabled(eventStoreServiceEnabled);
+            return this;
+        } else {
+            this.updateParameters.withEventStoreServiceEnabled(eventStoreServiceEnabled);
+            return this;
+        }
     }
 
     public ClusterImpl withFabricSettings(List<SettingsSectionDescription> fabricSettings) {
-        this.innerModel().withFabricSettings(fabricSettings);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withFabricSettings(fabricSettings);
+            return this;
+        } else {
+            this.updateParameters.withFabricSettings(fabricSettings);
+            return this;
+        }
     }
 
     public ClusterImpl withManagementEndpoint(String managementEndpoint) {
@@ -416,18 +465,33 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
     }
 
     public ClusterImpl withNodeTypes(List<NodeTypeDescription> nodeTypes) {
-        this.innerModel().withNodeTypes(nodeTypes);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withNodeTypes(nodeTypes);
+            return this;
+        } else {
+            this.updateParameters.withNodeTypes(nodeTypes);
+            return this;
+        }
     }
 
     public ClusterImpl withReliabilityLevel(ReliabilityLevel reliabilityLevel) {
-        this.innerModel().withReliabilityLevel(reliabilityLevel);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withReliabilityLevel(reliabilityLevel);
+            return this;
+        } else {
+            this.updateParameters.withReliabilityLevel(reliabilityLevel);
+            return this;
+        }
     }
 
     public ClusterImpl withReverseProxyCertificate(CertificateDescription reverseProxyCertificate) {
-        this.innerModel().withReverseProxyCertificate(reverseProxyCertificate);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withReverseProxyCertificate(reverseProxyCertificate);
+            return this;
+        } else {
+            this.updateParameters.withReverseProxyCertificate(reverseProxyCertificate);
+            return this;
+        }
     }
 
     public ClusterImpl
@@ -437,19 +501,34 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
     }
 
     public ClusterImpl withUpgradeDescription(ClusterUpgradePolicy upgradeDescription) {
-        this.innerModel().withUpgradeDescription(upgradeDescription);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withUpgradeDescription(upgradeDescription);
+            return this;
+        } else {
+            this.updateParameters.withUpgradeDescription(upgradeDescription);
+            return this;
+        }
     }
 
     public ClusterImpl withUpgradeMode(UpgradeMode upgradeMode) {
-        this.innerModel().withUpgradeMode(upgradeMode);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withUpgradeMode(upgradeMode);
+            return this;
+        } else {
+            this.updateParameters.withUpgradeMode(upgradeMode);
+            return this;
+        }
     }
 
     public ClusterImpl withApplicationTypeVersionsCleanupPolicy(
         ApplicationTypeVersionsCleanupPolicy applicationTypeVersionsCleanupPolicy) {
-        this.innerModel().withApplicationTypeVersionsCleanupPolicy(applicationTypeVersionsCleanupPolicy);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withApplicationTypeVersionsCleanupPolicy(applicationTypeVersionsCleanupPolicy);
+            return this;
+        } else {
+            this.updateParameters.withApplicationTypeVersionsCleanupPolicy(applicationTypeVersionsCleanupPolicy);
+            return this;
+        }
     }
 
     public ClusterImpl withVmImage(String vmImage) {
@@ -458,47 +537,96 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
     }
 
     public ClusterImpl withSfZonalUpgradeMode(SfZonalUpgradeMode sfZonalUpgradeMode) {
-        this.innerModel().withSfZonalUpgradeMode(sfZonalUpgradeMode);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withSfZonalUpgradeMode(sfZonalUpgradeMode);
+            return this;
+        } else {
+            this.updateParameters.withSfZonalUpgradeMode(sfZonalUpgradeMode);
+            return this;
+        }
     }
 
     public ClusterImpl withVmssZonalUpgradeMode(VmssZonalUpgradeMode vmssZonalUpgradeMode) {
-        this.innerModel().withVmssZonalUpgradeMode(vmssZonalUpgradeMode);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withVmssZonalUpgradeMode(vmssZonalUpgradeMode);
+            return this;
+        } else {
+            this.updateParameters.withVmssZonalUpgradeMode(vmssZonalUpgradeMode);
+            return this;
+        }
     }
 
     public ClusterImpl withInfrastructureServiceManager(Boolean infrastructureServiceManager) {
-        this.innerModel().withInfrastructureServiceManager(infrastructureServiceManager);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withInfrastructureServiceManager(infrastructureServiceManager);
+            return this;
+        } else {
+            this.updateParameters.withInfrastructureServiceManager(infrastructureServiceManager);
+            return this;
+        }
     }
 
     public ClusterImpl withUpgradeWave(ClusterUpgradeCadence upgradeWave) {
-        this.innerModel().withUpgradeWave(upgradeWave);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withUpgradeWave(upgradeWave);
+            return this;
+        } else {
+            this.updateParameters.withUpgradeWave(upgradeWave);
+            return this;
+        }
     }
 
     public ClusterImpl withUpgradePauseStartTimestampUtc(OffsetDateTime upgradePauseStartTimestampUtc) {
-        this.innerModel().withUpgradePauseStartTimestampUtc(upgradePauseStartTimestampUtc);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withUpgradePauseStartTimestampUtc(upgradePauseStartTimestampUtc);
+            return this;
+        } else {
+            this.updateParameters.withUpgradePauseStartTimestampUtc(upgradePauseStartTimestampUtc);
+            return this;
+        }
     }
 
     public ClusterImpl withUpgradePauseEndTimestampUtc(OffsetDateTime upgradePauseEndTimestampUtc) {
-        this.innerModel().withUpgradePauseEndTimestampUtc(upgradePauseEndTimestampUtc);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withUpgradePauseEndTimestampUtc(upgradePauseEndTimestampUtc);
+            return this;
+        } else {
+            this.updateParameters.withUpgradePauseEndTimestampUtc(upgradePauseEndTimestampUtc);
+            return this;
+        }
     }
 
     public ClusterImpl withWaveUpgradePaused(Boolean waveUpgradePaused) {
-        this.innerModel().withWaveUpgradePaused(waveUpgradePaused);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withWaveUpgradePaused(waveUpgradePaused);
+            return this;
+        } else {
+            this.updateParameters.withWaveUpgradePaused(waveUpgradePaused);
+            return this;
+        }
     }
 
     public ClusterImpl withNotifications(List<Notification> notifications) {
-        this.innerModel().withNotifications(notifications);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withNotifications(notifications);
+            return this;
+        } else {
+            this.updateParameters.withNotifications(notifications);
+            return this;
+        }
     }
 
     public ClusterImpl withEnableHttpGatewayExclusiveAuthMode(Boolean enableHttpGatewayExclusiveAuthMode) {
-        this.innerModel().withEnableHttpGatewayExclusiveAuthMode(enableHttpGatewayExclusiveAuthMode);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withEnableHttpGatewayExclusiveAuthMode(enableHttpGatewayExclusiveAuthMode);
+            return this;
+        } else {
+            this.updateParameters.withEnableHttpGatewayExclusiveAuthMode(enableHttpGatewayExclusiveAuthMode);
+            return this;
+        }
+    }
+
+    private boolean isInCreateMode() {
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

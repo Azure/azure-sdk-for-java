@@ -4,58 +4,63 @@
 
 package com.azure.resourcemanager.servicefabric.models;
 
-import com.azure.core.util.ExpandableStringEnum;
-import java.util.Collection;
-
 /**
- * Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
+ * The type of managed identity for the resource.
  */
-public final class ManagedIdentityType extends ExpandableStringEnum<ManagedIdentityType> {
+public enum ManagedIdentityType {
     /**
-     * No managed identity.
+     * Indicates that system assigned identity is associated with the resource.
      */
-    public static final ManagedIdentityType NONE = fromString("None");
+    SYSTEM_ASSIGNED("SystemAssigned"),
 
     /**
-     * System assigned managed identity.
+     * Indicates that user assigned identity is associated with the resource.
      */
-    public static final ManagedIdentityType SYSTEM_ASSIGNED = fromString("SystemAssigned");
+    USER_ASSIGNED("UserAssigned"),
 
     /**
-     * User assigned managed identity.
+     * Indicates that both system assigned and user assigned identity are associated with the resource.
      */
-    public static final ManagedIdentityType USER_ASSIGNED = fromString("UserAssigned");
+    SYSTEM_ASSIGNED_USER_ASSIGNED("SystemAssigned, UserAssigned"),
 
     /**
-     * System and user assigned managed identity.
+     * Indicates that no identity is associated with the resource.
      */
-    public static final ManagedIdentityType SYSTEM_ASSIGNED_USER_ASSIGNED = fromString("SystemAssigned,UserAssigned");
+    NONE("None");
 
     /**
-     * Creates a new instance of ManagedIdentityType value.
-     * 
-     * @deprecated Use the {@link #fromString(String)} factory method.
+     * The actual serialized value for a ManagedIdentityType instance.
      */
-    @Deprecated
-    public ManagedIdentityType() {
+    private final String value;
+
+    ManagedIdentityType(String value) {
+        this.value = value;
     }
 
     /**
-     * Creates or finds a ManagedIdentityType from its string representation.
+     * Parses a serialized value to a ManagedIdentityType instance.
      * 
-     * @param name a name to look for.
-     * @return the corresponding ManagedIdentityType.
+     * @param value the serialized value to parse.
+     * @return the parsed ManagedIdentityType object, or null if unable to parse.
      */
-    public static ManagedIdentityType fromString(String name) {
-        return fromString(name, ManagedIdentityType.class);
+    public static ManagedIdentityType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
+        ManagedIdentityType[] items = ManagedIdentityType.values();
+        for (ManagedIdentityType item : items) {
+            if (item.toString().equalsIgnoreCase(value)) {
+                return item;
+            }
+        }
+        return null;
     }
 
     /**
-     * Gets known ManagedIdentityType values.
-     * 
-     * @return known ManagedIdentityType values.
+     * {@inheritDoc}
      */
-    public static Collection<ManagedIdentityType> values() {
-        return values(ManagedIdentityType.class);
+    @Override
+    public String toString() {
+        return this.value;
     }
 }

@@ -4,12 +4,9 @@
 
 package com.azure.resourcemanager.servicefabric.generated;
 
-import com.azure.resourcemanager.servicefabric.fluent.models.ApplicationResourceUpdateProperties;
 import com.azure.resourcemanager.servicefabric.models.ApplicationMetricDescription;
-import com.azure.resourcemanager.servicefabric.models.ApplicationResourceUpdate;
+import com.azure.resourcemanager.servicefabric.models.ApplicationResource;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Samples for Applications Update.
@@ -24,34 +21,16 @@ public final class ApplicationsUpdateSamples {
      * @param manager Entry point to ServiceFabricManager.
      */
     public static void patchAnApplication(com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
-        manager.applications()
-            .update("resRg", "myCluster", "myApp",
-                new ApplicationResourceUpdate()
-                    .withProperties(new ApplicationResourceUpdateProperties().withTypeVersion("1.0")
-                        .withRemoveApplicationCapacity(false)
-                        .withMetrics(Arrays.asList(new ApplicationMetricDescription().withName("metric1")
-                            .withMaximumCapacity(3L)
-                            .withReservationCapacity(1L)
-                            .withTotalApplicationCapacity(5L))))
-                    .withTags(mapOf())
-                    .withTypeVersion("1.0")
-                    .withRemoveApplicationCapacity(false)
-                    .withMetrics(Arrays.asList(new ApplicationMetricDescription().withName("metric1")
-                        .withMaximumCapacity(3L)
-                        .withReservationCapacity(1L)
-                        .withTotalApplicationCapacity(5L))),
-                com.azure.core.util.Context.NONE);
-    }
-
-    // Use "Map.of" if available
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
-        }
-        return map;
+        ApplicationResource resource = manager.applications()
+            .getWithResponse("resRg", "myCluster", "myApp", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withTypeVersion("1.0")
+            .withRemoveApplicationCapacity(false)
+            .withMetrics(Arrays.asList(new ApplicationMetricDescription().withName("metric1")
+                .withMaximumCapacity(3L)
+                .withReservationCapacity(1L)
+                .withTotalApplicationCapacity(5L)))
+            .apply();
     }
 }

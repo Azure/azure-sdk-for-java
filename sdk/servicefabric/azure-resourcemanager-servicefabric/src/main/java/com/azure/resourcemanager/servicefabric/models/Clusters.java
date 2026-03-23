@@ -13,6 +13,8 @@ import com.azure.core.util.Context;
  */
 public interface Clusters {
     /**
+     * Gets a Service Fabric cluster resource.
+     * 
      * Get a Service Fabric cluster resource created or in the process of being created in the specified resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -21,12 +23,16 @@ public interface Clusters {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Service Fabric cluster resource created or in the process of being created in the specified resource
-     * group along with {@link Response}.
+     * @return a Service Fabric cluster resource.
+     * 
+     * Get a Service Fabric cluster resource created or in the process of being created in the specified resource group
+     * along with {@link Response}.
      */
     Response<Cluster> getByResourceGroupWithResponse(String resourceGroupName, String clusterName, Context context);
 
     /**
+     * Gets a Service Fabric cluster resource.
+     * 
      * Get a Service Fabric cluster resource created or in the process of being created in the specified resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -34,39 +40,15 @@ public interface Clusters {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Service Fabric cluster resource created or in the process of being created in the specified resource
-     * group.
+     * @return a Service Fabric cluster resource.
+     * 
+     * Get a Service Fabric cluster resource created or in the process of being created in the specified resource group.
      */
     Cluster getByResourceGroup(String resourceGroupName, String clusterName);
 
     /**
-     * Update the configuration of a Service Fabric cluster resource with the specified name.
+     * Deletes a Service Fabric cluster resource.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param parameters The parameters which contains the property value and property name which used to update the
-     * cluster configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void update(String resourceGroupName, String clusterName, ClusterUpdateParameters parameters);
-
-    /**
-     * Update the configuration of a Service Fabric cluster resource with the specified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param parameters The parameters which contains the property value and property name which used to update the
-     * cluster configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void update(String resourceGroupName, String clusterName, ClusterUpdateParameters parameters, Context context);
-
-    /**
      * Delete a Service Fabric cluster resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -80,6 +62,8 @@ public interface Clusters {
     Response<Void> deleteByResourceGroupWithResponse(String resourceGroupName, String clusterName, Context context);
 
     /**
+     * Deletes a Service Fabric cluster resource.
+     * 
      * Delete a Service Fabric cluster resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -91,18 +75,24 @@ public interface Clusters {
     void deleteByResourceGroup(String resourceGroupName, String clusterName);
 
     /**
+     * Gets the list of Service Fabric cluster resources created in the specified resource group.
+     * 
      * Gets all Service Fabric cluster resources created or in the process of being created in the resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Service Fabric cluster resources created or in the process of being created in the resource group as
+     * @return the list of Service Fabric cluster resources created in the specified resource group.
+     * 
+     * Gets all Service Fabric cluster resources created or in the process of being created in the resource group as
      * paginated response with {@link PagedIterable}.
      */
     PagedIterable<Cluster> listByResourceGroup(String resourceGroupName);
 
     /**
+     * Gets the list of Service Fabric cluster resources created in the specified resource group.
+     * 
      * Gets all Service Fabric cluster resources created or in the process of being created in the resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -110,34 +100,47 @@ public interface Clusters {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Service Fabric cluster resources created or in the process of being created in the resource group as
+     * @return the list of Service Fabric cluster resources created in the specified resource group.
+     * 
+     * Gets all Service Fabric cluster resources created or in the process of being created in the resource group as
      * paginated response with {@link PagedIterable}.
      */
     PagedIterable<Cluster> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
+     * Gets the list of Service Fabric cluster resources created in the specified subscription.
+     * 
      * Gets all Service Fabric cluster resources created or in the process of being created in the subscription.
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Service Fabric cluster resources created or in the process of being created in the subscription as
+     * @return the list of Service Fabric cluster resources created in the specified subscription.
+     * 
+     * Gets all Service Fabric cluster resources created or in the process of being created in the subscription as
      * paginated response with {@link PagedIterable}.
      */
     PagedIterable<Cluster> list();
 
     /**
+     * Gets the list of Service Fabric cluster resources created in the specified subscription.
+     * 
      * Gets all Service Fabric cluster resources created or in the process of being created in the subscription.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Service Fabric cluster resources created or in the process of being created in the subscription as
+     * @return the list of Service Fabric cluster resources created in the specified subscription.
+     * 
+     * Gets all Service Fabric cluster resources created or in the process of being created in the subscription as
      * paginated response with {@link PagedIterable}.
      */
     PagedIterable<Cluster> list(Context context);
 
     /**
+     * Operation to get the minimum and maximum upgradable version from the current cluster version, or the required
+     * path to get to the an specific target version.
+     * 
      * If a target is not provided, it will get the minimum and maximum versions available from the current cluster
      * version. If a target is given, it will provide the required path to get from the current cluster version to the
      * target version.
@@ -156,6 +159,9 @@ public interface Clusters {
         String clusterName, UpgradableVersionsDescription versionsDescription, Context context);
 
     /**
+     * Operation to get the minimum and maximum upgradable version from the current cluster version, or the required
+     * path to get to the an specific target version.
+     * 
      * If a target is not provided, it will get the minimum and maximum versions available from the current cluster
      * version. If a target is given, it will provide the required path to get from the current cluster version to the
      * target version.
@@ -171,18 +177,24 @@ public interface Clusters {
     UpgradableVersionPathResult listUpgradableVersions(String resourceGroupName, String clusterName);
 
     /**
+     * Gets a Service Fabric cluster resource.
+     * 
      * Get a Service Fabric cluster resource created or in the process of being created in the specified resource group.
      * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Service Fabric cluster resource created or in the process of being created in the specified resource
-     * group along with {@link Response}.
+     * @return a Service Fabric cluster resource.
+     * 
+     * Get a Service Fabric cluster resource created or in the process of being created in the specified resource group
+     * along with {@link Response}.
      */
     Cluster getById(String id);
 
     /**
+     * Gets a Service Fabric cluster resource.
+     * 
      * Get a Service Fabric cluster resource created or in the process of being created in the specified resource group.
      * 
      * @param id the resource ID.
@@ -190,12 +202,16 @@ public interface Clusters {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Service Fabric cluster resource created or in the process of being created in the specified resource
-     * group along with {@link Response}.
+     * @return a Service Fabric cluster resource.
+     * 
+     * Get a Service Fabric cluster resource created or in the process of being created in the specified resource group
+     * along with {@link Response}.
      */
     Response<Cluster> getByIdWithResponse(String id, Context context);
 
     /**
+     * Deletes a Service Fabric cluster resource.
+     * 
      * Delete a Service Fabric cluster resource with the specified name.
      * 
      * @param id the resource ID.
@@ -206,6 +222,8 @@ public interface Clusters {
     void deleteById(String id);
 
     /**
+     * Deletes a Service Fabric cluster resource.
+     * 
      * Delete a Service Fabric cluster resource with the specified name.
      * 
      * @param id the resource ID.

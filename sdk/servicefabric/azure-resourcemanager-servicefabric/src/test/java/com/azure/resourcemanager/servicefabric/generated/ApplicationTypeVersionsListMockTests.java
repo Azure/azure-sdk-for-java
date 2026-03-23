@@ -22,7 +22,7 @@ public final class ApplicationTypeVersionsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"dcgzul\",\"appPackageUrl\":\"mmrqz\",\"defaultParameterList\":{\"vqeevtoep\":\"jvpglydzgk\",\"vf\":\"yutnwytpzdmov\",\"z\":\"aawzqadfl\",\"ndtic\":\"riglaec\"}},\"tags\":{\"qtmldgxo\":\"vzm\"},\"location\":\"irclnpk\",\"etag\":\"ayzri\",\"id\":\"hya\",\"name\":\"fvjlboxqvkjlmx\",\"type\":\"omdynhdwdigum\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"dwl\",\"appPackageUrl\":\"w\",\"defaultParameterList\":{\"ubdyhgk\":\"upfgfbk\",\"tsttktlahbq\":\"minsgowzf\"}},\"location\":\"tx\",\"tags\":{\"m\":\"ukxit\",\"qqxhrnxrxcpj\":\"tg\",\"dzf\":\"isavok\",\"atnwxyiopi\":\"azivjlfrqttbajl\"},\"etag\":\"qqfkuv\",\"id\":\"xkdmligo\",\"name\":\"ibrxkp\",\"type\":\"loazuruocbgoo\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,11 @@ public final class ApplicationTypeVersionsListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<ApplicationTypeVersionResource> response = manager.applicationTypeVersions()
-            .list("zapeewchpx", "ktwkuziyc", "levufuztcktyhj", com.azure.core.util.Context.NONE);
+        PagedIterable<ApplicationTypeVersionResource> response
+            = manager.applicationTypeVersions().list("pi", "lqol", "xkcgxxlxsffgcvi", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("vzm", response.iterator().next().tags().get("qtmldgxo"));
-        Assertions.assertEquals("irclnpk", response.iterator().next().location());
-        Assertions.assertEquals("mmrqz", response.iterator().next().appPackageUrl());
+        Assertions.assertEquals("tx", response.iterator().next().location());
+        Assertions.assertEquals("ukxit", response.iterator().next().tags().get("m"));
+        Assertions.assertEquals("w", response.iterator().next().appPackageUrl());
     }
 }

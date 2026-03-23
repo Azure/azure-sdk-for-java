@@ -63,8 +63,8 @@ public final class ClusterVersionsClientImpl implements ClusterVersionsClient {
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ClusterCodeVersionsListResultInner>> get(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("location") String location,
-            @PathParam("subscriptionId") String subscriptionId, @PathParam("clusterVersion") String clusterVersion,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("location") String location, @PathParam("clusterVersion") String clusterVersion,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -72,8 +72,8 @@ public final class ClusterVersionsClientImpl implements ClusterVersionsClient {
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<ClusterCodeVersionsListResultInner> getSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("location") String location,
-            @PathParam("subscriptionId") String subscriptionId, @PathParam("clusterVersion") String clusterVersion,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("location") String location, @PathParam("clusterVersion") String clusterVersion,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -81,20 +81,18 @@ public final class ClusterVersionsClientImpl implements ClusterVersionsClient {
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ClusterCodeVersionsListResultInner>> getByEnvironment(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("location") String location,
-            @PathParam("environment") ClusterVersionsEnvironment environment,
-            @PathParam("subscriptionId") String subscriptionId, @PathParam("clusterVersion") String clusterVersion,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("location") String location, @PathParam("environment") ClusterVersionsEnvironment environment,
+            @PathParam("clusterVersion") String clusterVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ServiceFabric/locations/{location}/environments/{environment}/clusterVersions/{clusterVersion}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<ClusterCodeVersionsListResultInner> getByEnvironmentSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("location") String location,
-            @PathParam("environment") ClusterVersionsEnvironment environment,
-            @PathParam("subscriptionId") String subscriptionId, @PathParam("clusterVersion") String clusterVersion,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("location") String location, @PathParam("environment") ClusterVersionsEnvironment environment,
+            @PathParam("clusterVersion") String clusterVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ServiceFabric/locations/{location}/clusterVersions")
@@ -151,8 +149,8 @@ public final class ClusterVersionsClientImpl implements ClusterVersionsClient {
         String clusterVersion) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(), location,
-                this.client.getSubscriptionId(), clusterVersion, accept, context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), location, clusterVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -194,8 +192,8 @@ public final class ClusterVersionsClientImpl implements ClusterVersionsClient {
     public Response<ClusterCodeVersionsListResultInner> getWithResponse(String location, String clusterVersion,
         Context context) {
         final String accept = "application/json";
-        return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), location,
-            this.client.getSubscriptionId(), clusterVersion, accept, context);
+        return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            location, clusterVersion, accept, context);
     }
 
     /**
@@ -239,7 +237,7 @@ public final class ClusterVersionsClientImpl implements ClusterVersionsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByEnvironment(this.client.getEndpoint(), this.client.getApiVersion(),
-                location, environment, this.client.getSubscriptionId(), clusterVersion, accept, context))
+                this.client.getSubscriptionId(), location, environment, clusterVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -287,8 +285,8 @@ public final class ClusterVersionsClientImpl implements ClusterVersionsClient {
     public Response<ClusterCodeVersionsListResultInner> getByEnvironmentWithResponse(String location,
         ClusterVersionsEnvironment environment, String clusterVersion, Context context) {
         final String accept = "application/json";
-        return service.getByEnvironmentSync(this.client.getEndpoint(), this.client.getApiVersion(), location,
-            environment, this.client.getSubscriptionId(), clusterVersion, accept, context);
+        return service.getByEnvironmentSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), location, environment, clusterVersion, accept, context);
     }
 
     /**

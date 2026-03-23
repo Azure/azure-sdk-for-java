@@ -45,8 +45,7 @@ public final class ClusterInner extends Resource {
     private ClusterProperties innerProperties;
 
     /*
-     * "If etag is provided in the response body, it may also be provided as a header per the normal etag convention.  Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header fields."
-     * )
+     * Azure resource etag.
      */
     private String etag;
 
@@ -86,10 +85,7 @@ public final class ClusterInner extends Resource {
     }
 
     /**
-     * Get the etag property: "If etag is provided in the response body, it may also be provided as a header per the
-     * normal etag convention. Entity tags are used for comparing two or more entities from the same requested resource.
-     * HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26),
-     * and If-Range (section 14.27) header fields.").
+     * Get the etag property: Azure resource etag.
      * 
      * @return the etag value.
      */

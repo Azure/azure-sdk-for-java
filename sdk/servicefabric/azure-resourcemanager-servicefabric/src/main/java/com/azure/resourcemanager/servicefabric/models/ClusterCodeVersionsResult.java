@@ -5,9 +5,8 @@
 package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.management.ProxyResource;
-import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.servicefabric.fluent.models.ClusterVersionDetails;
@@ -17,31 +16,26 @@ import java.io.IOException;
  * The result of the Service Fabric runtime versions.
  */
 @Immutable
-public final class ClusterCodeVersionsResult extends ProxyResource {
+public final class ClusterCodeVersionsResult implements JsonSerializable<ClusterCodeVersionsResult> {
     /*
-     * The resource-specific properties for this resource.
+     * The identification of the result
      */
-    private ClusterVersionDetails innerProperties;
+    private String id;
 
     /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     */
-    private SystemData systemData;
-
-    /*
-     * The type of the resource.
-     */
-    private String type;
-
-    /*
-     * The name of the resource.
+     * The name of the result
      */
     private String name;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * The result resource type
      */
-    private String id;
+    private String type;
+
+    /*
+     * The detail of the Service Fabric runtime version result
+     */
+    private ClusterVersionDetails innerProperties;
 
     /**
      * Creates an instance of ClusterCodeVersionsResult class.
@@ -50,51 +44,39 @@ public final class ClusterCodeVersionsResult extends ProxyResource {
     }
 
     /**
-     * Get the innerProperties property: The resource-specific properties for this resource.
+     * Get the id property: The identification of the result.
      * 
-     * @return the innerProperties value.
+     * @return the id value.
      */
-    private ClusterVersionDetails innerProperties() {
-        return this.innerProperties;
+    public String id() {
+        return this.id;
     }
 
     /**
-     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     * 
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
-    }
-
-    /**
-     * Get the type property: The type of the resource.
-     * 
-     * @return the type value.
-     */
-    @Override
-    public String type() {
-        return this.type;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
+     * Get the name property: The name of the result.
      * 
      * @return the name value.
      */
-    @Override
     public String name() {
         return this.name;
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the type property: The result resource type.
      * 
-     * @return the id value.
+     * @return the type value.
      */
-    @Override
-    public String id() {
-        return this.id;
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the innerProperties property: The detail of the Service Fabric runtime version result.
+     * 
+     * @return the innerProperties value.
+     */
+    private ClusterVersionDetails innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -130,6 +112,9 @@ public final class ClusterCodeVersionsResult extends ProxyResource {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeJsonField("properties", this.innerProperties);
         return jsonWriter.writeEndObject();
     }
@@ -140,7 +125,6 @@ public final class ClusterCodeVersionsResult extends ProxyResource {
      * @param jsonReader The JsonReader being read.
      * @return An instance of ClusterCodeVersionsResult if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ClusterCodeVersionsResult.
      */
     public static ClusterCodeVersionsResult fromJson(JsonReader jsonReader) throws IOException {
@@ -158,8 +142,6 @@ public final class ClusterCodeVersionsResult extends ProxyResource {
                     deserializedClusterCodeVersionsResult.type = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedClusterCodeVersionsResult.innerProperties = ClusterVersionDetails.fromJson(reader);
-                } else if ("systemData".equals(fieldName)) {
-                    deserializedClusterCodeVersionsResult.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

@@ -11,18 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class ClientCertificateThumbprintTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClientCertificateThumbprint model = BinaryData.fromString("{\"isAdmin\":false,\"certificateThumbprint\":\"w\"}")
-            .toObject(ClientCertificateThumbprint.class);
+        ClientCertificateThumbprint model
+            = BinaryData.fromString("{\"isAdmin\":false,\"certificateThumbprint\":\"yoqpsoaccta\"}")
+                .toObject(ClientCertificateThumbprint.class);
         Assertions.assertFalse(model.isAdmin());
-        Assertions.assertEquals("w", model.certificateThumbprint());
+        Assertions.assertEquals("yoqpsoaccta", model.certificateThumbprint());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ClientCertificateThumbprint model
-            = new ClientCertificateThumbprint().withIsAdmin(false).withCertificateThumbprint("w");
+            = new ClientCertificateThumbprint().withIsAdmin(false).withCertificateThumbprint("yoqpsoaccta");
         model = BinaryData.fromObject(model).toObject(ClientCertificateThumbprint.class);
         Assertions.assertFalse(model.isAdmin());
-        Assertions.assertEquals("w", model.certificateThumbprint());
+        Assertions.assertEquals("yoqpsoaccta", model.certificateThumbprint());
     }
 }

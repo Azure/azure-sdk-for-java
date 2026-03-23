@@ -2,7 +2,7 @@
 
 Azure Resource Manager Service Fabric client library for Java.
 
-This package contains Microsoft Azure SDK for Service Fabric Management SDK. Service Fabric Management Client. Package api-version 2026-03-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+This package contains Microsoft Azure SDK for Service Fabric Management SDK. Azure Service Fabric Resource Provider API Client. Package api-version 2026-03-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ## We'd love to hear your feedback
 

@@ -54,10 +54,7 @@ public interface Cluster {
     Map<String, String> tags();
 
     /**
-     * Gets the etag property: "If etag is provided in the response body, it may also be provided as a header per the
-     * normal etag convention. Entity tags are used for comparing two or more entities from the same requested resource.
-     * HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26),
-     * and If-Range (section 14.27) header fields.").
+     * Gets the etag property: Azure resource etag.
      * 
      * @return the etag value.
      */
@@ -916,15 +913,13 @@ public interface Cluster {
     /**
      * The template for Cluster update.
      */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithAddOnFeatures,
-        UpdateStages.WithAzureActiveDirectory, UpdateStages.WithCertificate, UpdateStages.WithCertificateCommonNames,
-        UpdateStages.WithClientCertificateCommonNames, UpdateStages.WithClientCertificateThumbprints,
-        UpdateStages.WithClusterCodeVersion, UpdateStages.WithDiagnosticsStorageAccountConfig,
-        UpdateStages.WithEventStoreServiceEnabled, UpdateStages.WithFabricSettings, UpdateStages.WithManagementEndpoint,
-        UpdateStages.WithNodeTypes, UpdateStages.WithReliabilityLevel, UpdateStages.WithReverseProxyCertificate,
-        UpdateStages.WithReverseProxyCertificateCommonNames, UpdateStages.WithUpgradeDescription,
-        UpdateStages.WithUpgradeMode, UpdateStages.WithApplicationTypeVersionsCleanupPolicy, UpdateStages.WithVmImage,
-        UpdateStages.WithSfZonalUpgradeMode, UpdateStages.WithVmssZonalUpgradeMode,
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithAddOnFeatures, UpdateStages.WithCertificate,
+        UpdateStages.WithCertificateCommonNames, UpdateStages.WithClientCertificateCommonNames,
+        UpdateStages.WithClientCertificateThumbprints, UpdateStages.WithClusterCodeVersion,
+        UpdateStages.WithEventStoreServiceEnabled, UpdateStages.WithFabricSettings, UpdateStages.WithNodeTypes,
+        UpdateStages.WithReliabilityLevel, UpdateStages.WithReverseProxyCertificate,
+        UpdateStages.WithUpgradeDescription, UpdateStages.WithApplicationTypeVersionsCleanupPolicy,
+        UpdateStages.WithUpgradeMode, UpdateStages.WithSfZonalUpgradeMode, UpdateStages.WithVmssZonalUpgradeMode,
         UpdateStages.WithInfrastructureServiceManager, UpdateStages.WithUpgradeWave,
         UpdateStages.WithUpgradePauseStartTimestampUtc, UpdateStages.WithUpgradePauseEndTimestampUtc,
         UpdateStages.WithWaveUpgradePaused, UpdateStages.WithNotifications,
@@ -954,9 +949,9 @@ public interface Cluster {
          */
         interface WithTags {
             /**
-             * Specifies the tags property: Resource tags..
+             * Specifies the tags property: Cluster update parameters.
              * 
-             * @param tags Resource tags.
+             * @param tags Cluster update parameters.
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
@@ -973,19 +968,6 @@ public interface Cluster {
              * @return the next definition stage.
              */
             Update withAddOnFeatures(List<AddOnFeatures> addOnFeatures);
-        }
-
-        /**
-         * The stage of the Cluster update allowing to specify azureActiveDirectory.
-         */
-        interface WithAzureActiveDirectory {
-            /**
-             * Specifies the azureActiveDirectory property: The AAD authentication settings of the cluster..
-             * 
-             * @param azureActiveDirectory The AAD authentication settings of the cluster.
-             * @return the next definition stage.
-             */
-            Update withAzureActiveDirectory(AzureActiveDirectory azureActiveDirectory);
         }
 
         /**
@@ -1026,10 +1008,10 @@ public interface Cluster {
         interface WithClientCertificateCommonNames {
             /**
              * Specifies the clientCertificateCommonNames property: The list of client certificates referenced by common
-             * name that are allowed to manage the cluster..
+             * name that are allowed to manage the cluster. This will overwrite the existing list..
              * 
              * @param clientCertificateCommonNames The list of client certificates referenced by common name that are
-             * allowed to manage the cluster.
+             * allowed to manage the cluster. This will overwrite the existing list.
              * @return the next definition stage.
              */
             Update withClientCertificateCommonNames(List<ClientCertificateCommonName> clientCertificateCommonNames);
@@ -1041,10 +1023,10 @@ public interface Cluster {
         interface WithClientCertificateThumbprints {
             /**
              * Specifies the clientCertificateThumbprints property: The list of client certificates referenced by
-             * thumbprint that are allowed to manage the cluster..
+             * thumbprint that are allowed to manage the cluster. This will overwrite the existing list..
              * 
              * @param clientCertificateThumbprints The list of client certificates referenced by thumbprint that are
-             * allowed to manage the cluster.
+             * allowed to manage the cluster. This will overwrite the existing list.
              * @return the next definition stage.
              */
             Update withClientCertificateThumbprints(List<ClientCertificateThumbprint> clientCertificateThumbprints);
@@ -1072,21 +1054,6 @@ public interface Cluster {
         }
 
         /**
-         * The stage of the Cluster update allowing to specify diagnosticsStorageAccountConfig.
-         */
-        interface WithDiagnosticsStorageAccountConfig {
-            /**
-             * Specifies the diagnosticsStorageAccountConfig property: The storage account information for storing
-             * Service Fabric diagnostic logs..
-             * 
-             * @param diagnosticsStorageAccountConfig The storage account information for storing Service Fabric
-             * diagnostic logs.
-             * @return the next definition stage.
-             */
-            Update withDiagnosticsStorageAccountConfig(DiagnosticsStorageAccountConfig diagnosticsStorageAccountConfig);
-        }
-
-        /**
          * The stage of the Cluster update allowing to specify eventStoreServiceEnabled.
          */
         interface WithEventStoreServiceEnabled {
@@ -1104,25 +1071,14 @@ public interface Cluster {
          */
         interface WithFabricSettings {
             /**
-             * Specifies the fabricSettings property: The list of custom fabric settings to configure the cluster..
+             * Specifies the fabricSettings property: The list of custom fabric settings to configure the cluster. This
+             * will overwrite the existing list..
              * 
-             * @param fabricSettings The list of custom fabric settings to configure the cluster.
+             * @param fabricSettings The list of custom fabric settings to configure the cluster. This will overwrite
+             * the existing list.
              * @return the next definition stage.
              */
             Update withFabricSettings(List<SettingsSectionDescription> fabricSettings);
-        }
-
-        /**
-         * The stage of the Cluster update allowing to specify managementEndpoint.
-         */
-        interface WithManagementEndpoint {
-            /**
-             * Specifies the managementEndpoint property: The http management endpoint of the cluster..
-             * 
-             * @param managementEndpoint The http management endpoint of the cluster.
-             * @return the next definition stage.
-             */
-            Update withManagementEndpoint(String managementEndpoint);
         }
 
         /**
@@ -1130,9 +1086,10 @@ public interface Cluster {
          */
         interface WithNodeTypes {
             /**
-             * Specifies the nodeTypes property: The list of node types in the cluster..
+             * Specifies the nodeTypes property: The list of node types in the cluster. This will overwrite the existing
+             * list..
              * 
-             * @param nodeTypes The list of node types in the cluster.
+             * @param nodeTypes The list of node types in the cluster. This will overwrite the existing list.
              * @return the next definition stage.
              */
             Update withNodeTypes(List<NodeTypeDescription> nodeTypes);
@@ -1184,22 +1141,6 @@ public interface Cluster {
         }
 
         /**
-         * The stage of the Cluster update allowing to specify reverseProxyCertificateCommonNames.
-         */
-        interface WithReverseProxyCertificateCommonNames {
-            /**
-             * Specifies the reverseProxyCertificateCommonNames property: Describes a list of server certificates
-             * referenced by common name that are used to secure the cluster..
-             * 
-             * @param reverseProxyCertificateCommonNames Describes a list of server certificates referenced by common
-             * name that are used to secure the cluster.
-             * @return the next definition stage.
-             */
-            Update
-                withReverseProxyCertificateCommonNames(ServerCertificateCommonNames reverseProxyCertificateCommonNames);
-        }
-
-        /**
          * The stage of the Cluster update allowing to specify upgradeDescription.
          */
         interface WithUpgradeDescription {
@@ -1210,20 +1151,6 @@ public interface Cluster {
              * @return the next definition stage.
              */
             Update withUpgradeDescription(ClusterUpgradePolicy upgradeDescription);
-        }
-
-        /**
-         * The stage of the Cluster update allowing to specify upgradeMode.
-         */
-        interface WithUpgradeMode {
-            /**
-             * Specifies the upgradeMode property: The upgrade mode of the cluster when new Service Fabric runtime
-             * version is available..
-             * 
-             * @param upgradeMode The upgrade mode of the cluster when new Service Fabric runtime version is available.
-             * @return the next definition stage.
-             */
-            Update withUpgradeMode(UpgradeMode upgradeMode);
         }
 
         /**
@@ -1242,18 +1169,17 @@ public interface Cluster {
         }
 
         /**
-         * The stage of the Cluster update allowing to specify vmImage.
+         * The stage of the Cluster update allowing to specify upgradeMode.
          */
-        interface WithVmImage {
+        interface WithUpgradeMode {
             /**
-             * Specifies the vmImage property: The VM image VMSS has been configured with. Generic names such as Windows
-             * or Linux can be used..
+             * Specifies the upgradeMode property: The upgrade mode of the cluster when new Service Fabric runtime
+             * version is available..
              * 
-             * @param vmImage The VM image VMSS has been configured with. Generic names such as Windows or Linux can be
-             * used.
+             * @param upgradeMode The upgrade mode of the cluster when new Service Fabric runtime version is available.
              * @return the next definition stage.
              */
-            Update withVmImage(String vmImage);
+            Update withUpgradeMode(UpgradeMode upgradeMode);
         }
 
         /**
@@ -1322,11 +1248,11 @@ public interface Cluster {
          */
         interface WithUpgradePauseStartTimestampUtc {
             /**
-             * Specifies the upgradePauseStartTimestampUtc property: Indicates the start date and time to pause
-             * automatic runtime version upgrades on the cluster for an specific period of time on the cluster (UTC)..
+             * Specifies the upgradePauseStartTimestampUtc property: The start timestamp to pause runtime version
+             * upgrades on the cluster (UTC)..
              * 
-             * @param upgradePauseStartTimestampUtc Indicates the start date and time to pause automatic runtime version
-             * upgrades on the cluster for an specific period of time on the cluster (UTC).
+             * @param upgradePauseStartTimestampUtc The start timestamp to pause runtime version upgrades on the cluster
+             * (UTC).
              * @return the next definition stage.
              */
             Update withUpgradePauseStartTimestampUtc(OffsetDateTime upgradePauseStartTimestampUtc);
@@ -1337,11 +1263,11 @@ public interface Cluster {
          */
         interface WithUpgradePauseEndTimestampUtc {
             /**
-             * Specifies the upgradePauseEndTimestampUtc property: Indicates the end date and time to pause automatic
-             * runtime version upgrades on the cluster for an specific period of time on the cluster (UTC)..
+             * Specifies the upgradePauseEndTimestampUtc property: The end timestamp of pause runtime version upgrades
+             * on the cluster (UTC)..
              * 
-             * @param upgradePauseEndTimestampUtc Indicates the end date and time to pause automatic runtime version
-             * upgrades on the cluster for an specific period of time on the cluster (UTC).
+             * @param upgradePauseEndTimestampUtc The end timestamp of pause runtime version upgrades on the cluster
+             * (UTC).
              * @return the next definition stage.
              */
             Update withUpgradePauseEndTimestampUtc(OffsetDateTime upgradePauseEndTimestampUtc);
@@ -1408,6 +1334,9 @@ public interface Cluster {
     Cluster refresh(Context context);
 
     /**
+     * Operation to get the minimum and maximum upgradable version from the current cluster version, or the required
+     * path to get to the an specific target version.
+     * 
      * If a target is not provided, it will get the minimum and maximum versions available from the current cluster
      * version. If a target is given, it will provide the required path to get from the current cluster version to the
      * target version.
@@ -1424,6 +1353,9 @@ public interface Cluster {
         listUpgradableVersionsWithResponse(UpgradableVersionsDescription versionsDescription, Context context);
 
     /**
+     * Operation to get the minimum and maximum upgradable version from the current cluster version, or the required
+     * path to get to the an specific target version.
+     * 
      * If a target is not provided, it will get the minimum and maximum versions available from the current cluster
      * version. If a target is given, it will provide the required path to get from the current cluster version to the
      * target version.

@@ -26,7 +26,7 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.servicefabric.fluent.OperationsClient;
-import com.azure.resourcemanager.servicefabric.fluent.models.OperationInner;
+import com.azure.resourcemanager.servicefabric.fluent.models.OperationResultInner;
 import com.azure.resourcemanager.servicefabric.implementation.models.OperationListResult;
 import reactor.core.publisher.Mono;
 
@@ -92,46 +92,53 @@ public final class OperationsClientImpl implements OperationsClient {
     }
 
     /**
-     * List the operations for the provider.
+     * Lists all of the available Service Fabric resource provider API operations.
+     * 
+     * Get the list of available Service Fabric resource provider API operations.
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of REST API operations supported by an Azure Resource Provider along with {@link PagedResponse} on
-     * successful completion of {@link Mono}.
+     * @return describes the result of the request to list Service Fabric resource provider operations along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<OperationInner>> listSinglePageAsync() {
+    private Mono<PagedResponse<OperationResultInner>> listSinglePageAsync() {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(), accept, context))
-            .<PagedResponse<OperationInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
-                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .<PagedResponse<OperationResultInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * List the operations for the provider.
+     * Lists all of the available Service Fabric resource provider API operations.
+     * 
+     * Get the list of available Service Fabric resource provider API operations.
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of REST API operations supported by an Azure Resource Provider as paginated response with
-     * {@link PagedFlux}.
+     * @return describes the result of the request to list Service Fabric resource provider operations as paginated
+     * response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<OperationInner> listAsync() {
+    private PagedFlux<OperationResultInner> listAsync() {
         return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
-     * List the operations for the provider.
+     * Lists all of the available Service Fabric resource provider API operations.
+     * 
+     * Get the list of available Service Fabric resource provider API operations.
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of REST API operations supported by an Azure Resource Provider along with {@link PagedResponse}.
+     * @return describes the result of the request to list Service Fabric resource provider operations along with
+     * {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<OperationInner> listSinglePage() {
+    private PagedResponse<OperationResultInner> listSinglePage() {
         final String accept = "application/json";
         Response<OperationListResult> res
             = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), accept, Context.NONE);
@@ -140,16 +147,19 @@ public final class OperationsClientImpl implements OperationsClient {
     }
 
     /**
-     * List the operations for the provider.
+     * Lists all of the available Service Fabric resource provider API operations.
+     * 
+     * Get the list of available Service Fabric resource provider API operations.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of REST API operations supported by an Azure Resource Provider along with {@link PagedResponse}.
+     * @return describes the result of the request to list Service Fabric resource provider operations along with
+     * {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<OperationInner> listSinglePage(Context context) {
+    private PagedResponse<OperationResultInner> listSinglePage(Context context) {
         final String accept = "application/json";
         Response<OperationListResult> res
             = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), accept, context);
@@ -158,63 +168,72 @@ public final class OperationsClientImpl implements OperationsClient {
     }
 
     /**
-     * List the operations for the provider.
+     * Lists all of the available Service Fabric resource provider API operations.
+     * 
+     * Get the list of available Service Fabric resource provider API operations.
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of REST API operations supported by an Azure Resource Provider as paginated response with
-     * {@link PagedIterable}.
+     * @return describes the result of the request to list Service Fabric resource provider operations as paginated
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<OperationInner> list() {
+    public PagedIterable<OperationResultInner> list() {
         return new PagedIterable<>(() -> listSinglePage(), nextLink -> listNextSinglePage(nextLink));
     }
 
     /**
-     * List the operations for the provider.
+     * Lists all of the available Service Fabric resource provider API operations.
+     * 
+     * Get the list of available Service Fabric resource provider API operations.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of REST API operations supported by an Azure Resource Provider as paginated response with
-     * {@link PagedIterable}.
+     * @return describes the result of the request to list Service Fabric resource provider operations as paginated
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<OperationInner> list(Context context) {
+    public PagedIterable<OperationResultInner> list(Context context) {
         return new PagedIterable<>(() -> listSinglePage(context), nextLink -> listNextSinglePage(nextLink, context));
     }
 
     /**
+     * Lists all of the available Service Fabric resource provider API operations.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of REST API operations supported by an Azure Resource Provider along with {@link PagedResponse} on
-     * successful completion of {@link Mono}.
+     * @return describes the result of the request to list Service Fabric resource provider operations along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<OperationInner>> listNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<OperationResultInner>> listNextSinglePageAsync(String nextLink) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<OperationInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
-                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .<PagedResponse<OperationResultInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
+     * Lists all of the available Service Fabric resource provider API operations.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of REST API operations supported by an Azure Resource Provider along with {@link PagedResponse}.
+     * @return describes the result of the request to list Service Fabric resource provider operations along with
+     * {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<OperationInner> listNextSinglePage(String nextLink) {
+    private PagedResponse<OperationResultInner> listNextSinglePage(String nextLink) {
         final String accept = "application/json";
         Response<OperationListResult> res
             = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
@@ -223,6 +242,8 @@ public final class OperationsClientImpl implements OperationsClient {
     }
 
     /**
+     * Lists all of the available Service Fabric resource provider API operations.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -230,10 +251,11 @@ public final class OperationsClientImpl implements OperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of REST API operations supported by an Azure Resource Provider along with {@link PagedResponse}.
+     * @return describes the result of the request to list Service Fabric resource provider operations along with
+     * {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<OperationInner> listNextSinglePage(String nextLink, Context context) {
+    private PagedResponse<OperationResultInner> listNextSinglePage(String nextLink, Context context) {
         final String accept = "application/json";
         Response<OperationListResult> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),

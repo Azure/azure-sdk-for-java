@@ -30,6 +30,10 @@ public final class ApplicationTypeVersionResourceImpl implements ApplicationType
         return this.innerModel().type();
     }
 
+    public String location() {
+        return this.innerModel().location();
+    }
+
     public Map<String, String> tags() {
         Map<String, String> inner = this.innerModel().tags();
         if (inner != null) {
@@ -37,10 +41,6 @@ public final class ApplicationTypeVersionResourceImpl implements ApplicationType
         } else {
             return Collections.emptyMap();
         }
-    }
-
-    public String location() {
-        return this.innerModel().location();
     }
 
     public String etag() {
@@ -183,6 +183,11 @@ public final class ApplicationTypeVersionResourceImpl implements ApplicationType
 
     public ApplicationTypeVersionResourceImpl withTags(Map<String, String> tags) {
         this.innerModel().withTags(tags);
+        return this;
+    }
+
+    public ApplicationTypeVersionResourceImpl withSystemData(SystemData systemData) {
+        this.innerModel().withSystemData(systemData);
         return this;
     }
 

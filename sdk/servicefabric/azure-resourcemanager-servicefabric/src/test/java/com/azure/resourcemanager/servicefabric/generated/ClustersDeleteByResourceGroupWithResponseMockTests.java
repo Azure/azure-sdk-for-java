@@ -27,8 +27,7 @@ public final class ClustersDeleteByResourceGroupWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.clusters()
-            .deleteByResourceGroupWithResponse("buffkmrqemvvhm", "tdrjfutacoebj", com.azure.core.util.Context.NONE);
+        manager.clusters().deleteByResourceGroupWithResponse("upauut", "woqhihe", com.azure.core.util.Context.NONE);
 
     }
 }

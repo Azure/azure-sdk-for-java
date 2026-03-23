@@ -20,7 +20,7 @@ public final class UnsupportedVmSizesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"size\":\"wzsoldweyuqdunv\"},\"id\":\"nrwrbiork\",\"name\":\"alywjhhgdn\",\"type\":\"xmsivfomiloxggdu\"}";
+            = "{\"properties\":{\"size\":\"duceamtmc\"},\"id\":\"o\",\"name\":\"ejwcwwqiok\",\"type\":\"ssxmojms\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class UnsupportedVmSizesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         VMSizeResource response = manager.unsupportedVmSizes()
-            .getWithResponse("okwbqplh", "vnuuepzl", com.azure.core.util.Context.NONE)
+            .getWithResponse("lvtno", "qfzgemjdftul", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

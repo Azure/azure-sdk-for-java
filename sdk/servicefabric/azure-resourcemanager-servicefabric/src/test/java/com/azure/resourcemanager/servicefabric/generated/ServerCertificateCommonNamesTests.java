@@ -15,28 +15,24 @@ public final class ServerCertificateCommonNamesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServerCertificateCommonNames model = BinaryData.fromString(
-            "{\"commonNames\":[{\"certificateCommonName\":\"nhsjcnyej\",\"certificateIssuerThumbprint\":\"kryhtnapczwlokj\"},{\"certificateCommonName\":\"emkkvnipjox\",\"certificateIssuerThumbprint\":\"jnchgej\"},{\"certificateCommonName\":\"podmailzydehojwy\",\"certificateIssuerThumbprint\":\"huxinpmqnj\"},{\"certificateCommonName\":\"qwixjspro\",\"certificateIssuerThumbprint\":\"vcputegj\"}],\"x509StoreName\":\"Root\"}")
+            "{\"commonNames\":[{\"certificateCommonName\":\"deh\",\"certificateIssuerThumbprint\":\"jwyahuxinpmqnja\"},{\"certificateCommonName\":\"wixjsprozvcp\",\"certificateIssuerThumbprint\":\"tegjvwmf\"}],\"x509StoreName\":\"AddressBook\"}")
             .toObject(ServerCertificateCommonNames.class);
-        Assertions.assertEquals("nhsjcnyej", model.commonNames().get(0).certificateCommonName());
-        Assertions.assertEquals("kryhtnapczwlokj", model.commonNames().get(0).certificateIssuerThumbprint());
-        Assertions.assertEquals(StoreName.ROOT, model.x509StoreName());
+        Assertions.assertEquals("deh", model.commonNames().get(0).certificateCommonName());
+        Assertions.assertEquals("jwyahuxinpmqnja", model.commonNames().get(0).certificateIssuerThumbprint());
+        Assertions.assertEquals(StoreName.ADDRESS_BOOK, model.x509StoreName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ServerCertificateCommonNames model = new ServerCertificateCommonNames().withCommonNames(Arrays.asList(
-            new ServerCertificateCommonName().withCertificateCommonName("nhsjcnyej")
-                .withCertificateIssuerThumbprint("kryhtnapczwlokj"),
-            new ServerCertificateCommonName().withCertificateCommonName("emkkvnipjox")
-                .withCertificateIssuerThumbprint("jnchgej"),
-            new ServerCertificateCommonName().withCertificateCommonName("podmailzydehojwy")
-                .withCertificateIssuerThumbprint("huxinpmqnj"),
-            new ServerCertificateCommonName().withCertificateCommonName("qwixjspro")
-                .withCertificateIssuerThumbprint("vcputegj")))
-            .withX509StoreName(StoreName.ROOT);
+            new ServerCertificateCommonName().withCertificateCommonName("deh")
+                .withCertificateIssuerThumbprint("jwyahuxinpmqnja"),
+            new ServerCertificateCommonName().withCertificateCommonName("wixjsprozvcp")
+                .withCertificateIssuerThumbprint("tegjvwmf")))
+            .withX509StoreName(StoreName.ADDRESS_BOOK);
         model = BinaryData.fromObject(model).toObject(ServerCertificateCommonNames.class);
-        Assertions.assertEquals("nhsjcnyej", model.commonNames().get(0).certificateCommonName());
-        Assertions.assertEquals("kryhtnapczwlokj", model.commonNames().get(0).certificateIssuerThumbprint());
-        Assertions.assertEquals(StoreName.ROOT, model.x509StoreName());
+        Assertions.assertEquals("deh", model.commonNames().get(0).certificateCommonName());
+        Assertions.assertEquals("jwyahuxinpmqnja", model.commonNames().get(0).certificateIssuerThumbprint());
+        Assertions.assertEquals(StoreName.ADDRESS_BOOK, model.x509StoreName());
     }
 }

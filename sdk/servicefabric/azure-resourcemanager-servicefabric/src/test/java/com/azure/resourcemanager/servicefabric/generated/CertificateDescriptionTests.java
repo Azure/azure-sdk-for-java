@@ -13,21 +13,21 @@ public final class CertificateDescriptionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CertificateDescription model = BinaryData.fromString(
-            "{\"thumbprint\":\"ivyqniwbybrkxvd\",\"thumbprintSecondary\":\"jgrtfwvukxga\",\"x509StoreName\":\"Disallowed\"}")
+            "{\"thumbprint\":\"kvnipjoxz\",\"thumbprintSecondary\":\"chgejspodm\",\"x509StoreName\":\"TrustedPeople\"}")
             .toObject(CertificateDescription.class);
-        Assertions.assertEquals("ivyqniwbybrkxvd", model.thumbprint());
-        Assertions.assertEquals("jgrtfwvukxga", model.thumbprintSecondary());
-        Assertions.assertEquals(StoreName.DISALLOWED, model.x509StoreName());
+        Assertions.assertEquals("kvnipjoxz", model.thumbprint());
+        Assertions.assertEquals("chgejspodm", model.thumbprintSecondary());
+        Assertions.assertEquals(StoreName.TRUSTED_PEOPLE, model.x509StoreName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CertificateDescription model = new CertificateDescription().withThumbprint("ivyqniwbybrkxvd")
-            .withThumbprintSecondary("jgrtfwvukxga")
-            .withX509StoreName(StoreName.DISALLOWED);
+        CertificateDescription model = new CertificateDescription().withThumbprint("kvnipjoxz")
+            .withThumbprintSecondary("chgejspodm")
+            .withX509StoreName(StoreName.TRUSTED_PEOPLE);
         model = BinaryData.fromObject(model).toObject(CertificateDescription.class);
-        Assertions.assertEquals("ivyqniwbybrkxvd", model.thumbprint());
-        Assertions.assertEquals("jgrtfwvukxga", model.thumbprintSecondary());
-        Assertions.assertEquals(StoreName.DISALLOWED, model.x509StoreName());
+        Assertions.assertEquals("kvnipjoxz", model.thumbprint());
+        Assertions.assertEquals("chgejspodm", model.thumbprintSecondary());
+        Assertions.assertEquals(StoreName.TRUSTED_PEOPLE, model.x509StoreName());
     }
 }

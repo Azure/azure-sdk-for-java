@@ -19,45 +19,43 @@ public final class ServiceResourcePropertiesBaseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServiceResourcePropertiesBase model = BinaryData.fromString(
-            "{\"placementConstraints\":\"a\",\"correlationScheme\":[{\"scheme\":\"AlignedAffinity\",\"serviceName\":\"jreafxtsgum\"},{\"scheme\":\"NonAlignedAffinity\",\"serviceName\":\"glikkxwslolb\"},{\"scheme\":\"Affinity\",\"serviceName\":\"vuzlm\"}],\"serviceLoadMetrics\":[{\"name\":\"lfktgplcrpwjxe\",\"weight\":\"Zero\",\"primaryDefaultLoad\":900133641,\"secondaryDefaultLoad\":1406843727,\"defaultLoad\":76074858}],\"servicePlacementPolicies\":[{}],\"defaultMoveCost\":\"Zero\"}")
+            "{\"placementConstraints\":\"jc\",\"correlationScheme\":[{\"scheme\":\"AlignedAffinity\",\"serviceName\":\"tiugcxnav\"}],\"serviceLoadMetrics\":[{\"name\":\"qiby\",\"weight\":\"High\",\"primaryDefaultLoad\":601869733,\"secondaryDefaultLoad\":1874068657,\"defaultLoad\":1905526604}],\"servicePlacementPolicies\":[{},{},{},{}],\"defaultMoveCost\":\"High\"}")
             .toObject(ServiceResourcePropertiesBase.class);
-        Assertions.assertEquals("a", model.placementConstraints());
+        Assertions.assertEquals("jc", model.placementConstraints());
         Assertions.assertEquals(ServiceCorrelationScheme.ALIGNED_AFFINITY, model.correlationScheme().get(0).scheme());
-        Assertions.assertEquals("jreafxtsgum", model.correlationScheme().get(0).serviceName());
-        Assertions.assertEquals("lfktgplcrpwjxe", model.serviceLoadMetrics().get(0).name());
-        Assertions.assertEquals(ServiceLoadMetricWeight.ZERO, model.serviceLoadMetrics().get(0).weight());
-        Assertions.assertEquals(900133641, model.serviceLoadMetrics().get(0).primaryDefaultLoad());
-        Assertions.assertEquals(1406843727, model.serviceLoadMetrics().get(0).secondaryDefaultLoad());
-        Assertions.assertEquals(76074858, model.serviceLoadMetrics().get(0).defaultLoad());
-        Assertions.assertEquals(MoveCost.ZERO, model.defaultMoveCost());
+        Assertions.assertEquals("tiugcxnav", model.correlationScheme().get(0).serviceName());
+        Assertions.assertEquals("qiby", model.serviceLoadMetrics().get(0).name());
+        Assertions.assertEquals(ServiceLoadMetricWeight.HIGH, model.serviceLoadMetrics().get(0).weight());
+        Assertions.assertEquals(601869733, model.serviceLoadMetrics().get(0).primaryDefaultLoad());
+        Assertions.assertEquals(1874068657, model.serviceLoadMetrics().get(0).secondaryDefaultLoad());
+        Assertions.assertEquals(1905526604, model.serviceLoadMetrics().get(0).defaultLoad());
+        Assertions.assertEquals(MoveCost.HIGH, model.defaultMoveCost());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceResourcePropertiesBase model = new ServiceResourcePropertiesBase().withPlacementConstraints("a")
-            .withCorrelationScheme(Arrays.asList(
-                new ServiceCorrelationDescription().withScheme(ServiceCorrelationScheme.ALIGNED_AFFINITY)
-                    .withServiceName("jreafxtsgum"),
-                new ServiceCorrelationDescription().withScheme(ServiceCorrelationScheme.NON_ALIGNED_AFFINITY)
-                    .withServiceName("glikkxwslolb"),
-                new ServiceCorrelationDescription().withScheme(ServiceCorrelationScheme.AFFINITY)
-                    .withServiceName("vuzlm")))
-            .withServiceLoadMetrics(Arrays.asList(new ServiceLoadMetricDescription().withName("lfktgplcrpwjxe")
-                .withWeight(ServiceLoadMetricWeight.ZERO)
-                .withPrimaryDefaultLoad(900133641)
-                .withSecondaryDefaultLoad(1406843727)
-                .withDefaultLoad(76074858)))
-            .withServicePlacementPolicies(Arrays.asList(new ServicePlacementPolicyDescription()))
-            .withDefaultMoveCost(MoveCost.ZERO);
+        ServiceResourcePropertiesBase model = new ServiceResourcePropertiesBase().withPlacementConstraints("jc")
+            .withCorrelationScheme(
+                Arrays.asList(new ServiceCorrelationDescription().withScheme(ServiceCorrelationScheme.ALIGNED_AFFINITY)
+                    .withServiceName("tiugcxnav")))
+            .withServiceLoadMetrics(Arrays.asList(new ServiceLoadMetricDescription().withName("qiby")
+                .withWeight(ServiceLoadMetricWeight.HIGH)
+                .withPrimaryDefaultLoad(601869733)
+                .withSecondaryDefaultLoad(1874068657)
+                .withDefaultLoad(1905526604)))
+            .withServicePlacementPolicies(
+                Arrays.asList(new ServicePlacementPolicyDescription(), new ServicePlacementPolicyDescription(),
+                    new ServicePlacementPolicyDescription(), new ServicePlacementPolicyDescription()))
+            .withDefaultMoveCost(MoveCost.HIGH);
         model = BinaryData.fromObject(model).toObject(ServiceResourcePropertiesBase.class);
-        Assertions.assertEquals("a", model.placementConstraints());
+        Assertions.assertEquals("jc", model.placementConstraints());
         Assertions.assertEquals(ServiceCorrelationScheme.ALIGNED_AFFINITY, model.correlationScheme().get(0).scheme());
-        Assertions.assertEquals("jreafxtsgum", model.correlationScheme().get(0).serviceName());
-        Assertions.assertEquals("lfktgplcrpwjxe", model.serviceLoadMetrics().get(0).name());
-        Assertions.assertEquals(ServiceLoadMetricWeight.ZERO, model.serviceLoadMetrics().get(0).weight());
-        Assertions.assertEquals(900133641, model.serviceLoadMetrics().get(0).primaryDefaultLoad());
-        Assertions.assertEquals(1406843727, model.serviceLoadMetrics().get(0).secondaryDefaultLoad());
-        Assertions.assertEquals(76074858, model.serviceLoadMetrics().get(0).defaultLoad());
-        Assertions.assertEquals(MoveCost.ZERO, model.defaultMoveCost());
+        Assertions.assertEquals("tiugcxnav", model.correlationScheme().get(0).serviceName());
+        Assertions.assertEquals("qiby", model.serviceLoadMetrics().get(0).name());
+        Assertions.assertEquals(ServiceLoadMetricWeight.HIGH, model.serviceLoadMetrics().get(0).weight());
+        Assertions.assertEquals(601869733, model.serviceLoadMetrics().get(0).primaryDefaultLoad());
+        Assertions.assertEquals(1874068657, model.serviceLoadMetrics().get(0).secondaryDefaultLoad());
+        Assertions.assertEquals(1905526604, model.serviceLoadMetrics().get(0).defaultLoad());
+        Assertions.assertEquals(MoveCost.HIGH, model.defaultMoveCost());
     }
 }

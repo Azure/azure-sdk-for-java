@@ -4,18 +4,16 @@
 
 package com.azure.resourcemanager.servicefabric.implementation;
 
-import com.azure.resourcemanager.servicefabric.fluent.models.OperationInner;
-import com.azure.resourcemanager.servicefabric.models.ActionType;
-import com.azure.resourcemanager.servicefabric.models.Operation;
-import com.azure.resourcemanager.servicefabric.models.OperationDisplay;
-import com.azure.resourcemanager.servicefabric.models.Origin;
+import com.azure.resourcemanager.servicefabric.fluent.models.OperationResultInner;
+import com.azure.resourcemanager.servicefabric.models.AvailableOperationDisplay;
+import com.azure.resourcemanager.servicefabric.models.OperationResult;
 
-public final class OperationImpl implements Operation {
-    private OperationInner innerObject;
+public final class OperationResultImpl implements OperationResult {
+    private OperationResultInner innerObject;
 
     private final com.azure.resourcemanager.servicefabric.ServiceFabricManager serviceManager;
 
-    OperationImpl(OperationInner innerObject,
+    OperationResultImpl(OperationResultInner innerObject,
         com.azure.resourcemanager.servicefabric.ServiceFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -29,19 +27,19 @@ public final class OperationImpl implements Operation {
         return this.innerModel().isDataAction();
     }
 
-    public OperationDisplay display() {
+    public AvailableOperationDisplay display() {
         return this.innerModel().display();
     }
 
-    public Origin origin() {
+    public String origin() {
         return this.innerModel().origin();
     }
 
-    public ActionType actionType() {
-        return this.innerModel().actionType();
+    public String nextLink() {
+        return this.innerModel().nextLink();
     }
 
-    public OperationInner innerModel() {
+    public OperationResultInner innerModel() {
         return this.innerObject;
     }
 

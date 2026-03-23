@@ -19,6 +19,8 @@ import com.azure.resourcemanager.servicefabric.models.ServiceResourceUpdate;
  */
 public interface ServicesClient {
     /**
+     * Gets a Service Fabric service resource.
+     * 
      * Get a Service Fabric service resource created or in the process of being created in the Service Fabric
      * application resource.
      * 
@@ -30,7 +32,9 @@ public interface ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Service Fabric service resource created or in the process of being created in the Service Fabric
+     * @return a Service Fabric service resource.
+     * 
+     * Get a Service Fabric service resource created or in the process of being created in the Service Fabric
      * application resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -38,6 +42,8 @@ public interface ServicesClient {
         String serviceName, Context context);
 
     /**
+     * Gets a Service Fabric service resource.
+     * 
      * Get a Service Fabric service resource created or in the process of being created in the Service Fabric
      * application resource.
      * 
@@ -48,13 +54,17 @@ public interface ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Service Fabric service resource created or in the process of being created in the Service Fabric
+     * @return a Service Fabric service resource.
+     * 
+     * Get a Service Fabric service resource created or in the process of being created in the Service Fabric
      * application resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ServiceResourceInner get(String resourceGroupName, String clusterName, String applicationName, String serviceName);
 
     /**
+     * Creates or updates a Service Fabric service resource.
+     * 
      * Create or update a Service Fabric service resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -72,6 +82,8 @@ public interface ServicesClient {
         String clusterName, String applicationName, String serviceName, ServiceResourceInner parameters);
 
     /**
+     * Creates or updates a Service Fabric service resource.
+     * 
      * Create or update a Service Fabric service resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -91,6 +103,8 @@ public interface ServicesClient {
         Context context);
 
     /**
+     * Creates or updates a Service Fabric service resource.
+     * 
      * Create or update a Service Fabric service resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -108,6 +122,8 @@ public interface ServicesClient {
         String serviceName, ServiceResourceInner parameters);
 
     /**
+     * Creates or updates a Service Fabric service resource.
+     * 
      * Create or update a Service Fabric service resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -126,6 +142,8 @@ public interface ServicesClient {
         String serviceName, ServiceResourceInner parameters, Context context);
 
     /**
+     * Updates a Service Fabric service resource.
+     * 
      * Update a Service Fabric service resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -139,10 +157,52 @@ public interface ServicesClient {
      * @return the {@link SyncPoller} for polling of the service resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginUpdate(String resourceGroupName, String clusterName, String applicationName,
+    SyncPoller<PollResult<ServiceResourceInner>, ServiceResourceInner> beginUpdate(String resourceGroupName,
+        String clusterName, String applicationName, String serviceName, ServiceResourceUpdate parameters);
+
+    /**
+     * Updates a Service Fabric service resource.
+     * 
+     * Update a Service Fabric service resource with the specified name.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster resource.
+     * @param applicationName The name of the application resource.
+     * @param serviceName The name of the service resource in the format of {applicationName}~{serviceName}.
+     * @param parameters The service resource for patch operations.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the service resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ServiceResourceInner>, ServiceResourceInner> beginUpdate(String resourceGroupName,
+        String clusterName, String applicationName, String serviceName, ServiceResourceUpdate parameters,
+        Context context);
+
+    /**
+     * Updates a Service Fabric service resource.
+     * 
+     * Update a Service Fabric service resource with the specified name.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster resource.
+     * @param applicationName The name of the application resource.
+     * @param serviceName The name of the service resource in the format of {applicationName}~{serviceName}.
+     * @param parameters The service resource for patch operations.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the service resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ServiceResourceInner update(String resourceGroupName, String clusterName, String applicationName,
         String serviceName, ServiceResourceUpdate parameters);
 
     /**
+     * Updates a Service Fabric service resource.
+     * 
      * Update a Service Fabric service resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -154,46 +214,15 @@ public interface ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the service resource.
+     * @return the service resource.
      */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginUpdate(String resourceGroupName, String clusterName, String applicationName,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ServiceResourceInner update(String resourceGroupName, String clusterName, String applicationName,
         String serviceName, ServiceResourceUpdate parameters, Context context);
 
     /**
-     * Update a Service Fabric service resource with the specified name.
+     * Deletes a Service Fabric service resource.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationName The name of the application resource.
-     * @param serviceName The name of the service resource in the format of {applicationName}~{serviceName}.
-     * @param parameters The service resource for patch operations.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void update(String resourceGroupName, String clusterName, String applicationName, String serviceName,
-        ServiceResourceUpdate parameters);
-
-    /**
-     * Update a Service Fabric service resource with the specified name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationName The name of the application resource.
-     * @param serviceName The name of the service resource in the format of {applicationName}~{serviceName}.
-     * @param parameters The service resource for patch operations.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void update(String resourceGroupName, String clusterName, String applicationName, String serviceName,
-        ServiceResourceUpdate parameters, Context context);
-
-    /**
      * Delete a Service Fabric service resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -210,6 +239,8 @@ public interface ServicesClient {
         String serviceName);
 
     /**
+     * Deletes a Service Fabric service resource.
+     * 
      * Delete a Service Fabric service resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -227,6 +258,8 @@ public interface ServicesClient {
         String serviceName, Context context);
 
     /**
+     * Deletes a Service Fabric service resource.
+     * 
      * Delete a Service Fabric service resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -241,6 +274,8 @@ public interface ServicesClient {
     void delete(String resourceGroupName, String clusterName, String applicationName, String serviceName);
 
     /**
+     * Deletes a Service Fabric service resource.
+     * 
      * Delete a Service Fabric service resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -257,6 +292,8 @@ public interface ServicesClient {
         Context context);
 
     /**
+     * Gets the list of service resources created in the specified Service Fabric application resource.
+     * 
      * Gets all service resources created or in the process of being created in the Service Fabric application resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -265,13 +302,17 @@ public interface ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all service resources created or in the process of being created in the Service Fabric application
-     * resource as paginated response with {@link PagedIterable}.
+     * @return the list of service resources created in the specified Service Fabric application resource.
+     * 
+     * Gets all service resources created or in the process of being created in the Service Fabric application resource
+     * as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ServiceResourceInner> list(String resourceGroupName, String clusterName, String applicationName);
 
     /**
+     * Gets the list of service resources created in the specified Service Fabric application resource.
+     * 
      * Gets all service resources created or in the process of being created in the Service Fabric application resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -281,8 +322,10 @@ public interface ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all service resources created or in the process of being created in the Service Fabric application
-     * resource as paginated response with {@link PagedIterable}.
+     * @return the list of service resources created in the specified Service Fabric application resource.
+     * 
+     * Gets all service resources created or in the process of being created in the Service Fabric application resource
+     * as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ServiceResourceInner> list(String resourceGroupName, String clusterName, String applicationName,

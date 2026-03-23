@@ -26,7 +26,7 @@ public final class ServicesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"serviceKind\":\"ServiceResourceProperties\",\"provisioningState\":\"ijpxtx\",\"serviceTypeName\":\"wprtu\",\"partitionDescription\":{\"partitionScheme\":\"PartitionSchemeDescription\"},\"servicePackageActivationMode\":\"ExclusiveProcess\",\"serviceDnsName\":\"ddjib\",\"placementConstraints\":\"xvititvtz\",\"correlationScheme\":[{\"scheme\":\"Affinity\",\"serviceName\":\"vo\"}],\"serviceLoadMetrics\":[{\"name\":\"glecdmdqbwpypq\",\"weight\":\"Zero\",\"primaryDefaultLoad\":1969231562,\"secondaryDefaultLoad\":1790951604,\"defaultLoad\":462489227},{\"name\":\"lhhxudbxvodhtnsi\",\"weight\":\"Medium\",\"primaryDefaultLoad\":24434450,\"secondaryDefaultLoad\":593896600,\"defaultLoad\":1358436880},{\"name\":\"ckdlpag\",\"weight\":\"High\",\"primaryDefaultLoad\":1771051614,\"secondaryDefaultLoad\":1009217276,\"defaultLoad\":224865055}],\"servicePlacementPolicies\":[{},{}],\"defaultMoveCost\":\"Zero\"},\"tags\":{\"qobr\":\"oxdfgsftu\",\"knh\":\"lnacgcc\",\"zvulj\":\"kizvytn\"},\"location\":\"aeranokqgukkjqnv\",\"eTag\":\"oylaxxul\",\"id\":\"isdos\",\"name\":\"jbjsvgjrwh\",\"type\":\"yvycytdclxgcckn\"}]}";
+            = "{\"value\":[{\"properties\":{\"serviceKind\":\"ServiceResourceProperties\",\"provisioningState\":\"ypxiutcxap\",\"serviceTypeName\":\"y\",\"partitionDescription\":{\"partitionScheme\":\"PartitionSchemeDescription\"},\"servicePackageActivationMode\":\"ExclusiveProcess\",\"serviceDnsName\":\"g\",\"placementConstraints\":\"joxslhvnhla\",\"correlationScheme\":[{\"scheme\":\"Invalid\",\"serviceName\":\"kkzjcjbtrga\"}],\"serviceLoadMetrics\":[{\"name\":\"vibr\",\"weight\":\"Zero\",\"primaryDefaultLoad\":1984760036,\"secondaryDefaultLoad\":1344524900,\"defaultLoad\":480275151}],\"servicePlacementPolicies\":[{},{},{},{}],\"defaultMoveCost\":\"Zero\"},\"location\":\"ztmoobklftidg\",\"tags\":{\"yhohujswtwkozzwc\":\"qmpimaqxzhem\",\"wpfaj\":\"lkb\",\"talhsnvkcdmxzr\":\"jwltlwtjjgu\",\"aaomylweazu\":\"oaimlnw\"},\"etag\":\"sethwwn\",\"id\":\"hlf\",\"name\":\"swpchwahfbousn\",\"type\":\"epgfew\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,28 +36,28 @@ public final class ServicesListMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ServiceResource> response
-            = manager.services().list("g", "ojbmxv", "vrefdeesv", com.azure.core.util.Context.NONE);
+            = manager.services().list("brta", "metttwgd", "lqxihhrmooiz", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("xvititvtz", response.iterator().next().properties().placementConstraints());
-        Assertions.assertEquals(ServiceCorrelationScheme.AFFINITY,
+        Assertions.assertEquals("joxslhvnhla", response.iterator().next().properties().placementConstraints());
+        Assertions.assertEquals(ServiceCorrelationScheme.INVALID,
             response.iterator().next().properties().correlationScheme().get(0).scheme());
-        Assertions.assertEquals("vo", response.iterator().next().properties().correlationScheme().get(0).serviceName());
-        Assertions.assertEquals("glecdmdqbwpypq",
-            response.iterator().next().properties().serviceLoadMetrics().get(0).name());
+        Assertions.assertEquals("kkzjcjbtrga",
+            response.iterator().next().properties().correlationScheme().get(0).serviceName());
+        Assertions.assertEquals("vibr", response.iterator().next().properties().serviceLoadMetrics().get(0).name());
         Assertions.assertEquals(ServiceLoadMetricWeight.ZERO,
             response.iterator().next().properties().serviceLoadMetrics().get(0).weight());
-        Assertions.assertEquals(1969231562,
+        Assertions.assertEquals(1984760036,
             response.iterator().next().properties().serviceLoadMetrics().get(0).primaryDefaultLoad());
-        Assertions.assertEquals(1790951604,
+        Assertions.assertEquals(1344524900,
             response.iterator().next().properties().serviceLoadMetrics().get(0).secondaryDefaultLoad());
-        Assertions.assertEquals(462489227,
+        Assertions.assertEquals(480275151,
             response.iterator().next().properties().serviceLoadMetrics().get(0).defaultLoad());
         Assertions.assertEquals(MoveCost.ZERO, response.iterator().next().properties().defaultMoveCost());
-        Assertions.assertEquals("wprtu", response.iterator().next().properties().serviceTypeName());
+        Assertions.assertEquals("y", response.iterator().next().properties().serviceTypeName());
         Assertions.assertEquals(ArmServicePackageActivationMode.EXCLUSIVE_PROCESS,
             response.iterator().next().properties().servicePackageActivationMode());
-        Assertions.assertEquals("ddjib", response.iterator().next().properties().serviceDnsName());
-        Assertions.assertEquals("oxdfgsftu", response.iterator().next().tags().get("qobr"));
-        Assertions.assertEquals("aeranokqgukkjqnv", response.iterator().next().location());
+        Assertions.assertEquals("g", response.iterator().next().properties().serviceDnsName());
+        Assertions.assertEquals("ztmoobklftidg", response.iterator().next().location());
+        Assertions.assertEquals("qmpimaqxzhem", response.iterator().next().tags().get("yhohujswtwkozzwc"));
     }
 }

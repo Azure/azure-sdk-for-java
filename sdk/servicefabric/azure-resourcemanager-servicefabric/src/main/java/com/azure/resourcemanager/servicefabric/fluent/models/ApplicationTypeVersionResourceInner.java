@@ -24,23 +24,22 @@ public final class ApplicationTypeVersionResourceInner extends ProxyResource {
     private ApplicationTypeVersionResourceProperties innerProperties;
 
     /*
-     * Resource tags.
-     */
-    private Map<String, String> tags;
-
-    /*
-     * The geo-location where the resource lives
+     * It will be deprecated in New API, resource location depends on the parent resource.
      */
     private String location;
 
     /*
-     * "If etag is provided in the response body, it may also be provided as a header per the normal etag convention.  Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header fields."
-     * )
+     * Azure resource tags.
+     */
+    private Map<String, String> tags;
+
+    /*
+     * Azure resource etag.
      */
     private String etag;
 
     /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * Metadata pertaining to creation and last modification of the resource.
      */
     private SystemData systemData;
 
@@ -75,27 +74,7 @@ public final class ApplicationTypeVersionResourceInner extends ProxyResource {
     }
 
     /**
-     * Get the tags property: Resource tags.
-     * 
-     * @return the tags value.
-     */
-    public Map<String, String> tags() {
-        return this.tags;
-    }
-
-    /**
-     * Set the tags property: Resource tags.
-     * 
-     * @param tags the tags value to set.
-     * @return the ApplicationTypeVersionResourceInner object itself.
-     */
-    public ApplicationTypeVersionResourceInner withTags(Map<String, String> tags) {
-        this.tags = tags;
-        return this;
-    }
-
-    /**
-     * Get the location property: The geo-location where the resource lives.
+     * Get the location property: It will be deprecated in New API, resource location depends on the parent resource.
      * 
      * @return the location value.
      */
@@ -104,7 +83,7 @@ public final class ApplicationTypeVersionResourceInner extends ProxyResource {
     }
 
     /**
-     * Set the location property: The geo-location where the resource lives.
+     * Set the location property: It will be deprecated in New API, resource location depends on the parent resource.
      * 
      * @param location the location value to set.
      * @return the ApplicationTypeVersionResourceInner object itself.
@@ -115,10 +94,27 @@ public final class ApplicationTypeVersionResourceInner extends ProxyResource {
     }
 
     /**
-     * Get the etag property: "If etag is provided in the response body, it may also be provided as a header per the
-     * normal etag convention. Entity tags are used for comparing two or more entities from the same requested resource.
-     * HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26),
-     * and If-Range (section 14.27) header fields.").
+     * Get the tags property: Azure resource tags.
+     * 
+     * @return the tags value.
+     */
+    public Map<String, String> tags() {
+        return this.tags;
+    }
+
+    /**
+     * Set the tags property: Azure resource tags.
+     * 
+     * @param tags the tags value to set.
+     * @return the ApplicationTypeVersionResourceInner object itself.
+     */
+    public ApplicationTypeVersionResourceInner withTags(Map<String, String> tags) {
+        this.tags = tags;
+        return this;
+    }
+
+    /**
+     * Get the etag property: Azure resource etag.
      * 
      * @return the etag value.
      */
@@ -127,12 +123,23 @@ public final class ApplicationTypeVersionResourceInner extends ProxyResource {
     }
 
     /**
-     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
      * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
+    }
+
+    /**
+     * Set the systemData property: Metadata pertaining to creation and last modification of the resource.
+     * 
+     * @param systemData the systemData value to set.
+     * @return the ApplicationTypeVersionResourceInner object itself.
+     */
+    public ApplicationTypeVersionResourceInner withSystemData(SystemData systemData) {
+        this.systemData = systemData;
+        return this;
     }
 
     /**
@@ -215,8 +222,9 @@ public final class ApplicationTypeVersionResourceInner extends ProxyResource {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("properties", this.innerProperties);
-        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("systemData", this.systemData);
         return jsonWriter.writeEndObject();
     }
 
@@ -246,11 +254,11 @@ public final class ApplicationTypeVersionResourceInner extends ProxyResource {
                 } else if ("properties".equals(fieldName)) {
                     deserializedApplicationTypeVersionResourceInner.innerProperties
                         = ApplicationTypeVersionResourceProperties.fromJson(reader);
+                } else if ("location".equals(fieldName)) {
+                    deserializedApplicationTypeVersionResourceInner.location = reader.getString();
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedApplicationTypeVersionResourceInner.tags = tags;
-                } else if ("location".equals(fieldName)) {
-                    deserializedApplicationTypeVersionResourceInner.location = reader.getString();
                 } else if ("etag".equals(fieldName)) {
                     deserializedApplicationTypeVersionResourceInner.etag = reader.getString();
                 } else if ("systemData".equals(fieldName)) {

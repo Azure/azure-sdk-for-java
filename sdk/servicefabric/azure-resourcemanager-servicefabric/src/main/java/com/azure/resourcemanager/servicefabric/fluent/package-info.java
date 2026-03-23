@@ -4,6 +4,6 @@
 
 /**
  * Package containing the service clients for ServiceFabric.
- * Service Fabric Management Client.
+ * Azure Service Fabric Resource Provider API Client.
  */
 package com.azure.resourcemanager.servicefabric.fluent;

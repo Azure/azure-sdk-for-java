@@ -13,21 +13,21 @@ public final class ClientCertificateCommonNameTests {
     public void testDeserialize() throws Exception {
         ClientCertificateCommonName model = BinaryData
             .fromString(
-                "{\"isAdmin\":true,\"certificateCommonName\":\"zkrwfn\",\"certificateIssuerThumbprint\":\"iodjp\"}")
+                "{\"isAdmin\":false,\"certificateCommonName\":\"iodjp\",\"certificateIssuerThumbprint\":\"lwejdpv\"}")
             .toObject(ClientCertificateCommonName.class);
-        Assertions.assertTrue(model.isAdmin());
-        Assertions.assertEquals("zkrwfn", model.certificateCommonName());
-        Assertions.assertEquals("iodjp", model.certificateIssuerThumbprint());
+        Assertions.assertFalse(model.isAdmin());
+        Assertions.assertEquals("iodjp", model.certificateCommonName());
+        Assertions.assertEquals("lwejdpv", model.certificateIssuerThumbprint());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClientCertificateCommonName model = new ClientCertificateCommonName().withIsAdmin(true)
-            .withCertificateCommonName("zkrwfn")
-            .withCertificateIssuerThumbprint("iodjp");
+        ClientCertificateCommonName model = new ClientCertificateCommonName().withIsAdmin(false)
+            .withCertificateCommonName("iodjp")
+            .withCertificateIssuerThumbprint("lwejdpv");
         model = BinaryData.fromObject(model).toObject(ClientCertificateCommonName.class);
-        Assertions.assertTrue(model.isAdmin());
-        Assertions.assertEquals("zkrwfn", model.certificateCommonName());
-        Assertions.assertEquals("iodjp", model.certificateIssuerThumbprint());
+        Assertions.assertFalse(model.isAdmin());
+        Assertions.assertEquals("iodjp", model.certificateCommonName());
+        Assertions.assertEquals("lwejdpv", model.certificateIssuerThumbprint());
     }
 }

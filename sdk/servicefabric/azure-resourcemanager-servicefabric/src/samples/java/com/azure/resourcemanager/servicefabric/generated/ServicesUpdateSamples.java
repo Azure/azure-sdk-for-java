@@ -6,11 +6,9 @@ package com.azure.resourcemanager.servicefabric.generated;
 
 import com.azure.resourcemanager.servicefabric.models.ServiceLoadMetricDescription;
 import com.azure.resourcemanager.servicefabric.models.ServiceLoadMetricWeight;
-import com.azure.resourcemanager.servicefabric.models.ServiceResourceUpdate;
+import com.azure.resourcemanager.servicefabric.models.ServiceResource;
 import com.azure.resourcemanager.servicefabric.models.StatelessServiceUpdateProperties;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Samples for Services Update.
@@ -25,22 +23,12 @@ public final class ServicesUpdateSamples {
      * @param manager Entry point to ServiceFabricManager.
      */
     public static void patchAService(com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
-        manager.services()
-            .update("resRg", "myCluster", "myApp", "myService", new ServiceResourceUpdate()
-                .withProperties(new StatelessServiceUpdateProperties().withServiceLoadMetrics(Arrays.asList(
-                    new ServiceLoadMetricDescription().withName("metric1").withWeight(ServiceLoadMetricWeight.LOW))))
-                .withTags(mapOf()), com.azure.core.util.Context.NONE);
-    }
-
-    // Use "Map.of" if available
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
-        }
-        return map;
+        ServiceResource resource = manager.services()
+            .getWithResponse("resRg", "myCluster", "myApp", "myService", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withProperties(new StatelessServiceUpdateProperties().withServiceLoadMetrics(Arrays.asList(
+                new ServiceLoadMetricDescription().withName("metric1").withWeight(ServiceLoadMetricWeight.LOW))))
+            .apply();
     }
 }

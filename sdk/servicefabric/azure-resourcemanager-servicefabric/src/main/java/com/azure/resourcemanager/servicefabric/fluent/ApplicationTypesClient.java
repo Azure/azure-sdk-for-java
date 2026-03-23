@@ -18,6 +18,8 @@ import com.azure.resourcemanager.servicefabric.fluent.models.ApplicationTypeReso
  */
 public interface ApplicationTypesClient {
     /**
+     * Gets a Service Fabric application type name resource.
+     * 
      * Get a Service Fabric application type name resource created or in the process of being created in the Service
      * Fabric cluster resource.
      * 
@@ -28,7 +30,9 @@ public interface ApplicationTypesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Service Fabric application type name resource created or in the process of being created in the Service
+     * @return a Service Fabric application type name resource.
+     * 
+     * Get a Service Fabric application type name resource created or in the process of being created in the Service
      * Fabric cluster resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -36,6 +40,8 @@ public interface ApplicationTypesClient {
         String applicationTypeName, Context context);
 
     /**
+     * Gets a Service Fabric application type name resource.
+     * 
      * Get a Service Fabric application type name resource created or in the process of being created in the Service
      * Fabric cluster resource.
      * 
@@ -45,13 +51,17 @@ public interface ApplicationTypesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Service Fabric application type name resource created or in the process of being created in the Service
+     * @return a Service Fabric application type name resource.
+     * 
+     * Get a Service Fabric application type name resource created or in the process of being created in the Service
      * Fabric cluster resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ApplicationTypeResourceInner get(String resourceGroupName, String clusterName, String applicationTypeName);
 
     /**
+     * Creates or updates a Service Fabric application type name resource.
+     * 
      * Create or update a Service Fabric application type name resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -69,6 +79,8 @@ public interface ApplicationTypesClient {
         String applicationTypeName, ApplicationTypeResourceInner parameters, Context context);
 
     /**
+     * Creates or updates a Service Fabric application type name resource.
+     * 
      * Create or update a Service Fabric application type name resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -85,6 +97,8 @@ public interface ApplicationTypesClient {
         String applicationTypeName, ApplicationTypeResourceInner parameters);
 
     /**
+     * Deletes a Service Fabric application type name resource.
+     * 
      * Delete a Service Fabric application type name resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -100,6 +114,8 @@ public interface ApplicationTypesClient {
         String applicationTypeName);
 
     /**
+     * Deletes a Service Fabric application type name resource.
+     * 
      * Delete a Service Fabric application type name resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -116,6 +132,8 @@ public interface ApplicationTypesClient {
         String applicationTypeName, Context context);
 
     /**
+     * Deletes a Service Fabric application type name resource.
+     * 
      * Delete a Service Fabric application type name resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -129,6 +147,8 @@ public interface ApplicationTypesClient {
     void delete(String resourceGroupName, String clusterName, String applicationTypeName);
 
     /**
+     * Deletes a Service Fabric application type name resource.
+     * 
      * Delete a Service Fabric application type name resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -143,6 +163,8 @@ public interface ApplicationTypesClient {
     void delete(String resourceGroupName, String clusterName, String applicationTypeName, Context context);
 
     /**
+     * Gets the list of application type name resources created in the specified Service Fabric cluster resource.
+     * 
      * Gets all application type name resources created or in the process of being created in the Service Fabric cluster
      * resource.
      * 
@@ -151,13 +173,17 @@ public interface ApplicationTypesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all application type name resources created or in the process of being created in the Service Fabric
-     * cluster resource as paginated response with {@link PagedIterable}.
+     * @return the list of application type name resources created in the specified Service Fabric cluster resource.
+     * 
+     * Gets all application type name resources created or in the process of being created in the Service Fabric cluster
+     * resource as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ApplicationTypeResourceInner> list(String resourceGroupName, String clusterName);
 
     /**
+     * Gets the list of application type name resources created in the specified Service Fabric cluster resource.
+     * 
      * Gets all application type name resources created or in the process of being created in the Service Fabric cluster
      * resource.
      * 
@@ -167,8 +193,10 @@ public interface ApplicationTypesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all application type name resources created or in the process of being created in the Service Fabric
-     * cluster resource as paginated response with {@link PagedIterable}.
+     * @return the list of application type name resources created in the specified Service Fabric cluster resource.
+     * 
+     * Gets all application type name resources created or in the process of being created in the Service Fabric cluster
+     * resource as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ApplicationTypeResourceInner> list(String resourceGroupName, String clusterName, Context context);

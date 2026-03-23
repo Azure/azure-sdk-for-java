@@ -5,11 +5,13 @@
 package com.azure.resourcemanager.servicefabric.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.servicefabric.models.VMSize;
+import com.azure.resourcemanager.servicefabric.models.ArmProxyResource;
 
-public final class VMSizeTests {
+public final class ArmProxyResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VMSize model = BinaryData.fromString("{\"size\":\"cbonqvpk\"}").toObject(VMSize.class);
+        ArmProxyResource model
+            = BinaryData.fromString("{\"id\":\"al\",\"name\":\"nwsubisnj\",\"type\":\"mpmngnzscxaqwoo\"}")
+                .toObject(ArmProxyResource.class);
     }
 }

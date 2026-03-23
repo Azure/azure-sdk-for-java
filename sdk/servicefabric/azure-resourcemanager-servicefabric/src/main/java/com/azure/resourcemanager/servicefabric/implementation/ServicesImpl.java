@@ -12,7 +12,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.servicefabric.fluent.ServicesClient;
 import com.azure.resourcemanager.servicefabric.fluent.models.ServiceResourceInner;
 import com.azure.resourcemanager.servicefabric.models.ServiceResource;
-import com.azure.resourcemanager.servicefabric.models.ServiceResourceUpdate;
 import com.azure.resourcemanager.servicefabric.models.Services;
 
 public final class ServicesImpl implements Services {
@@ -45,16 +44,6 @@ public final class ServicesImpl implements Services {
         } else {
             return null;
         }
-    }
-
-    public void update(String resourceGroupName, String clusterName, String applicationName, String serviceName,
-        ServiceResourceUpdate parameters) {
-        this.serviceClient().update(resourceGroupName, clusterName, applicationName, serviceName, parameters);
-    }
-
-    public void update(String resourceGroupName, String clusterName, String applicationName, String serviceName,
-        ServiceResourceUpdate parameters, Context context) {
-        this.serviceClient().update(resourceGroupName, clusterName, applicationName, serviceName, parameters, context);
     }
 
     public void delete(String resourceGroupName, String clusterName, String applicationName, String serviceName) {

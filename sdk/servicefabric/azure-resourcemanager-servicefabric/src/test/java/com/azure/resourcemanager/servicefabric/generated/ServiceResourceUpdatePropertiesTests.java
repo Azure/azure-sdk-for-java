@@ -19,62 +19,59 @@ public final class ServiceResourceUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServiceResourceUpdateProperties model = BinaryData.fromString(
-            "{\"serviceKind\":\"ServiceResourceUpdateProperties\",\"placementConstraints\":\"fpncurdo\",\"correlationScheme\":[{\"scheme\":\"Affinity\",\"serviceName\":\"thtywub\"},{\"scheme\":\"Affinity\",\"serviceName\":\"bihwqknfdnt\"}],\"serviceLoadMetrics\":[{\"name\":\"hrdgoihxumwcto\",\"weight\":\"Zero\",\"primaryDefaultLoad\":1559126498,\"secondaryDefaultLoad\":2109639729,\"defaultLoad\":1280322998},{\"name\":\"dlwggytsbwtovv\",\"weight\":\"Medium\",\"primaryDefaultLoad\":2041049436,\"secondaryDefaultLoad\":800109726,\"defaultLoad\":405729519},{\"name\":\"ufxqknpirgnepttw\",\"weight\":\"Low\",\"primaryDefaultLoad\":1901745406,\"secondaryDefaultLoad\":1579066306,\"defaultLoad\":584179057},{\"name\":\"mqnrojlpijnkr\",\"weight\":\"Zero\",\"primaryDefaultLoad\":1655506118,\"secondaryDefaultLoad\":249986530,\"defaultLoad\":1033292086}],\"servicePlacementPolicies\":[{},{},{},{}],\"defaultMoveCost\":\"Medium\"}")
+            "{\"serviceKind\":\"ServiceResourceUpdateProperties\",\"placementConstraints\":\"j\",\"correlationScheme\":[{\"scheme\":\"NonAlignedAffinity\",\"serviceName\":\"fzxiavrmb\"},{\"scheme\":\"Invalid\",\"serviceName\":\"nokixrjqcirgz\"},{\"scheme\":\"Invalid\",\"serviceName\":\"rlazszrnw\"}],\"serviceLoadMetrics\":[{\"name\":\"ndfpwpj\",\"weight\":\"Medium\",\"primaryDefaultLoad\":1108840022,\"secondaryDefaultLoad\":85653434,\"defaultLoad\":775770123},{\"name\":\"sj\",\"weight\":\"Low\",\"primaryDefaultLoad\":402907816,\"secondaryDefaultLoad\":554003670,\"defaultLoad\":1868624750},{\"name\":\"bgofeljag\",\"weight\":\"Medium\",\"primaryDefaultLoad\":1903317968,\"secondaryDefaultLoad\":777528334,\"defaultLoad\":1378743202}],\"servicePlacementPolicies\":[{},{}],\"defaultMoveCost\":\"Low\"}")
             .toObject(ServiceResourceUpdateProperties.class);
-        Assertions.assertEquals("fpncurdo", model.placementConstraints());
-        Assertions.assertEquals(ServiceCorrelationScheme.AFFINITY, model.correlationScheme().get(0).scheme());
-        Assertions.assertEquals("thtywub", model.correlationScheme().get(0).serviceName());
-        Assertions.assertEquals("hrdgoihxumwcto", model.serviceLoadMetrics().get(0).name());
-        Assertions.assertEquals(ServiceLoadMetricWeight.ZERO, model.serviceLoadMetrics().get(0).weight());
-        Assertions.assertEquals(1559126498, model.serviceLoadMetrics().get(0).primaryDefaultLoad());
-        Assertions.assertEquals(2109639729, model.serviceLoadMetrics().get(0).secondaryDefaultLoad());
-        Assertions.assertEquals(1280322998, model.serviceLoadMetrics().get(0).defaultLoad());
-        Assertions.assertEquals(MoveCost.MEDIUM, model.defaultMoveCost());
+        Assertions.assertEquals("j", model.placementConstraints());
+        Assertions.assertEquals(ServiceCorrelationScheme.NON_ALIGNED_AFFINITY,
+            model.correlationScheme().get(0).scheme());
+        Assertions.assertEquals("fzxiavrmb", model.correlationScheme().get(0).serviceName());
+        Assertions.assertEquals("ndfpwpj", model.serviceLoadMetrics().get(0).name());
+        Assertions.assertEquals(ServiceLoadMetricWeight.MEDIUM, model.serviceLoadMetrics().get(0).weight());
+        Assertions.assertEquals(1108840022, model.serviceLoadMetrics().get(0).primaryDefaultLoad());
+        Assertions.assertEquals(85653434, model.serviceLoadMetrics().get(0).secondaryDefaultLoad());
+        Assertions.assertEquals(775770123, model.serviceLoadMetrics().get(0).defaultLoad());
+        Assertions.assertEquals(MoveCost.LOW, model.defaultMoveCost());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceResourceUpdateProperties model
-            = new ServiceResourceUpdateProperties().withPlacementConstraints("fpncurdo")
-                .withCorrelationScheme(Arrays.asList(
-                    new ServiceCorrelationDescription().withScheme(ServiceCorrelationScheme.AFFINITY)
-                        .withServiceName("thtywub"),
-                    new ServiceCorrelationDescription().withScheme(ServiceCorrelationScheme.AFFINITY)
-                        .withServiceName("bihwqknfdnt")))
-                .withServiceLoadMetrics(Arrays.asList(
-                    new ServiceLoadMetricDescription().withName("hrdgoihxumwcto")
-                        .withWeight(ServiceLoadMetricWeight.ZERO)
-                        .withPrimaryDefaultLoad(1559126498)
-                        .withSecondaryDefaultLoad(2109639729)
-                        .withDefaultLoad(1280322998),
-                    new ServiceLoadMetricDescription().withName("dlwggytsbwtovv")
-                        .withWeight(ServiceLoadMetricWeight.MEDIUM)
-                        .withPrimaryDefaultLoad(2041049436)
-                        .withSecondaryDefaultLoad(800109726)
-                        .withDefaultLoad(405729519),
-                    new ServiceLoadMetricDescription().withName("ufxqknpirgnepttw")
-                        .withWeight(ServiceLoadMetricWeight.LOW)
-                        .withPrimaryDefaultLoad(1901745406)
-                        .withSecondaryDefaultLoad(1579066306)
-                        .withDefaultLoad(584179057),
-                    new ServiceLoadMetricDescription().withName("mqnrojlpijnkr")
-                        .withWeight(ServiceLoadMetricWeight.ZERO)
-                        .withPrimaryDefaultLoad(1655506118)
-                        .withSecondaryDefaultLoad(249986530)
-                        .withDefaultLoad(1033292086)))
-                .withServicePlacementPolicies(
-                    Arrays.asList(new ServicePlacementPolicyDescription(), new ServicePlacementPolicyDescription(),
-                        new ServicePlacementPolicyDescription(), new ServicePlacementPolicyDescription()))
-                .withDefaultMoveCost(MoveCost.MEDIUM);
+        ServiceResourceUpdateProperties model = new ServiceResourceUpdateProperties().withPlacementConstraints("j")
+            .withCorrelationScheme(Arrays.asList(
+                new ServiceCorrelationDescription().withScheme(ServiceCorrelationScheme.NON_ALIGNED_AFFINITY)
+                    .withServiceName("fzxiavrmb"),
+                new ServiceCorrelationDescription().withScheme(ServiceCorrelationScheme.INVALID)
+                    .withServiceName("nokixrjqcirgz"),
+                new ServiceCorrelationDescription().withScheme(ServiceCorrelationScheme.INVALID)
+                    .withServiceName("rlazszrnw")))
+            .withServiceLoadMetrics(Arrays.asList(
+                new ServiceLoadMetricDescription().withName("ndfpwpj")
+                    .withWeight(ServiceLoadMetricWeight.MEDIUM)
+                    .withPrimaryDefaultLoad(1108840022)
+                    .withSecondaryDefaultLoad(85653434)
+                    .withDefaultLoad(775770123),
+                new ServiceLoadMetricDescription().withName("sj")
+                    .withWeight(ServiceLoadMetricWeight.LOW)
+                    .withPrimaryDefaultLoad(402907816)
+                    .withSecondaryDefaultLoad(554003670)
+                    .withDefaultLoad(1868624750),
+                new ServiceLoadMetricDescription().withName("bgofeljag")
+                    .withWeight(ServiceLoadMetricWeight.MEDIUM)
+                    .withPrimaryDefaultLoad(1903317968)
+                    .withSecondaryDefaultLoad(777528334)
+                    .withDefaultLoad(1378743202)))
+            .withServicePlacementPolicies(
+                Arrays.asList(new ServicePlacementPolicyDescription(), new ServicePlacementPolicyDescription()))
+            .withDefaultMoveCost(MoveCost.LOW);
         model = BinaryData.fromObject(model).toObject(ServiceResourceUpdateProperties.class);
-        Assertions.assertEquals("fpncurdo", model.placementConstraints());
-        Assertions.assertEquals(ServiceCorrelationScheme.AFFINITY, model.correlationScheme().get(0).scheme());
-        Assertions.assertEquals("thtywub", model.correlationScheme().get(0).serviceName());
-        Assertions.assertEquals("hrdgoihxumwcto", model.serviceLoadMetrics().get(0).name());
-        Assertions.assertEquals(ServiceLoadMetricWeight.ZERO, model.serviceLoadMetrics().get(0).weight());
-        Assertions.assertEquals(1559126498, model.serviceLoadMetrics().get(0).primaryDefaultLoad());
-        Assertions.assertEquals(2109639729, model.serviceLoadMetrics().get(0).secondaryDefaultLoad());
-        Assertions.assertEquals(1280322998, model.serviceLoadMetrics().get(0).defaultLoad());
-        Assertions.assertEquals(MoveCost.MEDIUM, model.defaultMoveCost());
+        Assertions.assertEquals("j", model.placementConstraints());
+        Assertions.assertEquals(ServiceCorrelationScheme.NON_ALIGNED_AFFINITY,
+            model.correlationScheme().get(0).scheme());
+        Assertions.assertEquals("fzxiavrmb", model.correlationScheme().get(0).serviceName());
+        Assertions.assertEquals("ndfpwpj", model.serviceLoadMetrics().get(0).name());
+        Assertions.assertEquals(ServiceLoadMetricWeight.MEDIUM, model.serviceLoadMetrics().get(0).weight());
+        Assertions.assertEquals(1108840022, model.serviceLoadMetrics().get(0).primaryDefaultLoad());
+        Assertions.assertEquals(85653434, model.serviceLoadMetrics().get(0).secondaryDefaultLoad());
+        Assertions.assertEquals(775770123, model.serviceLoadMetrics().get(0).defaultLoad());
+        Assertions.assertEquals(MoveCost.LOW, model.defaultMoveCost());
     }
 }

@@ -169,6 +169,8 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
     }
 
     /**
+     * Gets a Service Fabric application type version resource.
+     * 
      * Get a Service Fabric application type version resource created or in the process of being created in the Service
      * Fabric application type name resource.
      * 
@@ -179,9 +181,10 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Service Fabric application type version resource created or in the process of being created in the
-     * Service Fabric application type name resource along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return a Service Fabric application type version resource.
+     * 
+     * Get a Service Fabric application type version resource created or in the process of being created in the Service
+     * Fabric application type name resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationTypeVersionResourceInner>> getWithResponseAsync(String resourceGroupName,
@@ -195,6 +198,8 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
     }
 
     /**
+     * Gets a Service Fabric application type version resource.
+     * 
      * Get a Service Fabric application type version resource created or in the process of being created in the Service
      * Fabric application type name resource.
      * 
@@ -205,8 +210,10 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Service Fabric application type version resource created or in the process of being created in the
-     * Service Fabric application type name resource on successful completion of {@link Mono}.
+     * @return a Service Fabric application type version resource.
+     * 
+     * Get a Service Fabric application type version resource created or in the process of being created in the Service
+     * Fabric application type name resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApplicationTypeVersionResourceInner> getAsync(String resourceGroupName, String clusterName,
@@ -216,6 +223,8 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
     }
 
     /**
+     * Gets a Service Fabric application type version resource.
+     * 
      * Get a Service Fabric application type version resource created or in the process of being created in the Service
      * Fabric application type name resource.
      * 
@@ -227,8 +236,10 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Service Fabric application type version resource created or in the process of being created in the
-     * Service Fabric application type name resource along with {@link Response}.
+     * @return a Service Fabric application type version resource.
+     * 
+     * Get a Service Fabric application type version resource created or in the process of being created in the Service
+     * Fabric application type name resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplicationTypeVersionResourceInner> getWithResponse(String resourceGroupName, String clusterName,
@@ -239,6 +250,8 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
     }
 
     /**
+     * Gets a Service Fabric application type version resource.
+     * 
      * Get a Service Fabric application type version resource created or in the process of being created in the Service
      * Fabric application type name resource.
      * 
@@ -249,8 +262,10 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Service Fabric application type version resource created or in the process of being created in the
-     * Service Fabric application type name resource.
+     * @return a Service Fabric application type version resource.
+     * 
+     * Get a Service Fabric application type version resource created or in the process of being created in the Service
+     * Fabric application type name resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplicationTypeVersionResourceInner get(String resourceGroupName, String clusterName,
@@ -259,6 +274,8 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
     }
 
     /**
+     * Creates or updates a Service Fabric application type version resource.
+     * 
      * Create or update a Service Fabric application type version resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -286,6 +303,8 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
     }
 
     /**
+     * Creates or updates a Service Fabric application type version resource.
+     * 
      * Create or update a Service Fabric application type version resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -310,6 +329,8 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
     }
 
     /**
+     * Creates or updates a Service Fabric application type version resource.
+     * 
      * Create or update a Service Fabric application type version resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -335,6 +356,8 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
     }
 
     /**
+     * Creates or updates a Service Fabric application type version resource.
+     * 
      * Create or update a Service Fabric application type version resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -360,6 +383,8 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
     }
 
     /**
+     * Creates or updates a Service Fabric application type version resource.
+     * 
      * Create or update a Service Fabric application type version resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -385,6 +410,8 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
     }
 
     /**
+     * Creates or updates a Service Fabric application type version resource.
+     * 
      * Create or update a Service Fabric application type version resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -410,6 +437,8 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
     }
 
     /**
+     * Creates or updates a Service Fabric application type version resource.
+     * 
      * Create or update a Service Fabric application type version resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -431,6 +460,8 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
     }
 
     /**
+     * Creates or updates a Service Fabric application type version resource.
+     * 
      * Create or update a Service Fabric application type version resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -451,6 +482,8 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
     }
 
     /**
+     * Creates or updates a Service Fabric application type version resource.
+     * 
      * Create or update a Service Fabric application type version resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -472,6 +505,8 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
     }
 
     /**
+     * Deletes a Service Fabric application type version resource.
+     * 
      * Delete a Service Fabric application type version resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -493,6 +528,8 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
     }
 
     /**
+     * Deletes a Service Fabric application type version resource.
+     * 
      * Delete a Service Fabric application type version resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -513,6 +550,8 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
     }
 
     /**
+     * Deletes a Service Fabric application type version resource.
+     * 
      * Delete a Service Fabric application type version resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -533,6 +572,8 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
     }
 
     /**
+     * Deletes a Service Fabric application type version resource.
+     * 
      * Delete a Service Fabric application type version resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -554,6 +595,8 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
     }
 
     /**
+     * Deletes a Service Fabric application type version resource.
+     * 
      * Delete a Service Fabric application type version resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -574,6 +617,8 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
     }
 
     /**
+     * Deletes a Service Fabric application type version resource.
+     * 
      * Delete a Service Fabric application type version resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -595,6 +640,8 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
     }
 
     /**
+     * Deletes a Service Fabric application type version resource.
+     * 
      * Delete a Service Fabric application type version resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -614,6 +661,8 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
     }
 
     /**
+     * Deletes a Service Fabric application type version resource.
+     * 
      * Delete a Service Fabric application type version resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -630,6 +679,8 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
     }
 
     /**
+     * Deletes a Service Fabric application type version resource.
+     * 
      * Delete a Service Fabric application type version resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -648,6 +699,9 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
     }
 
     /**
+     * Gets the list of application type version resources created in the specified Service Fabric application type name
+     * resource.
+     * 
      * Gets all application type version resources created or in the process of being created in the Service Fabric
      * application type name resource.
      * 
@@ -657,7 +711,10 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all application type version resources created or in the process of being created in the Service Fabric
+     * @return the list of application type version resources created in the specified Service Fabric application type
+     * name resource.
+     * 
+     * Gets all application type version resources created or in the process of being created in the Service Fabric
      * application type name resource along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -673,6 +730,9 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
     }
 
     /**
+     * Gets the list of application type version resources created in the specified Service Fabric application type name
+     * resource.
+     * 
      * Gets all application type version resources created or in the process of being created in the Service Fabric
      * application type name resource.
      * 
@@ -682,7 +742,10 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all application type version resources created or in the process of being created in the Service Fabric
+     * @return the list of application type version resources created in the specified Service Fabric application type
+     * name resource.
+     * 
+     * Gets all application type version resources created or in the process of being created in the Service Fabric
      * application type name resource as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -693,6 +756,9 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
     }
 
     /**
+     * Gets the list of application type version resources created in the specified Service Fabric application type name
+     * resource.
+     * 
      * Gets all application type version resources created or in the process of being created in the Service Fabric
      * application type name resource.
      * 
@@ -702,7 +768,10 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all application type version resources created or in the process of being created in the Service Fabric
+     * @return the list of application type version resources created in the specified Service Fabric application type
+     * name resource.
+     * 
+     * Gets all application type version resources created or in the process of being created in the Service Fabric
      * application type name resource along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -717,6 +786,9 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
     }
 
     /**
+     * Gets the list of application type version resources created in the specified Service Fabric application type name
+     * resource.
+     * 
      * Gets all application type version resources created or in the process of being created in the Service Fabric
      * application type name resource.
      * 
@@ -727,7 +799,10 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all application type version resources created or in the process of being created in the Service Fabric
+     * @return the list of application type version resources created in the specified Service Fabric application type
+     * name resource.
+     * 
+     * Gets all application type version resources created or in the process of being created in the Service Fabric
      * application type name resource along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -742,6 +817,9 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
     }
 
     /**
+     * Gets the list of application type version resources created in the specified Service Fabric application type name
+     * resource.
+     * 
      * Gets all application type version resources created or in the process of being created in the Service Fabric
      * application type name resource.
      * 
@@ -751,7 +829,10 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all application type version resources created or in the process of being created in the Service Fabric
+     * @return the list of application type version resources created in the specified Service Fabric application type
+     * name resource.
+     * 
+     * Gets all application type version resources created or in the process of being created in the Service Fabric
      * application type name resource as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -762,6 +843,9 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
     }
 
     /**
+     * Gets the list of application type version resources created in the specified Service Fabric application type name
+     * resource.
+     * 
      * Gets all application type version resources created or in the process of being created in the Service Fabric
      * application type name resource.
      * 
@@ -772,7 +856,10 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all application type version resources created or in the process of being created in the Service Fabric
+     * @return the list of application type version resources created in the specified Service Fabric application type
+     * name resource.
+     * 
+     * Gets all application type version resources created or in the process of being created in the Service Fabric
      * application type name resource as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -783,13 +870,19 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
     }
 
     /**
+     * Gets the list of application type version resources created in the specified Service Fabric application type name
+     * resource.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all application type version resources created or in the process of being created in the Service Fabric
+     * @return the list of application type version resources created in the specified Service Fabric application type
+     * name resource.
+     * 
+     * Gets all application type version resources created or in the process of being created in the Service Fabric
      * application type name resource along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -802,13 +895,19 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
     }
 
     /**
+     * Gets the list of application type version resources created in the specified Service Fabric application type name
+     * resource.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all application type version resources created or in the process of being created in the Service Fabric
+     * @return the list of application type version resources created in the specified Service Fabric application type
+     * name resource.
+     * 
+     * Gets all application type version resources created or in the process of being created in the Service Fabric
      * application type name resource along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -821,6 +920,9 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
     }
 
     /**
+     * Gets the list of application type version resources created in the specified Service Fabric application type name
+     * resource.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -828,7 +930,10 @@ public final class ApplicationTypeVersionsClientImpl implements ApplicationTypeV
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all application type version resources created or in the process of being created in the Service Fabric
+     * @return the list of application type version resources created in the specified Service Fabric application type
+     * name resource.
+     * 
+     * Gets all application type version resources created or in the process of being created in the Service Fabric
      * application type name resource along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

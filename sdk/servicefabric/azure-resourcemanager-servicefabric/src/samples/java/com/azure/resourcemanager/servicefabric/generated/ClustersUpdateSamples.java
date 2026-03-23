@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.servicefabric.generated;
 
-import com.azure.resourcemanager.servicefabric.models.ClusterUpdateParameters;
+import com.azure.resourcemanager.servicefabric.models.Cluster;
 import com.azure.resourcemanager.servicefabric.models.ClusterUpgradeCadence;
 import com.azure.resourcemanager.servicefabric.models.DurabilityLevel;
 import com.azure.resourcemanager.servicefabric.models.EndpointRangeDescription;
@@ -29,11 +29,15 @@ public final class ClustersUpdateSamples {
      * @param manager Entry point to ServiceFabricManager.
      */
     public static void patchACluster(com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
-        manager.clusters()
-            .update("resRg", "myCluster",
-                new ClusterUpdateParameters().withTags(mapOf("a", "b"))
-                    .withEventStoreServiceEnabled(true)
-                    .withNodeTypes(Arrays.asList(
+        Cluster resource = manager.clusters()
+            .getByResourceGroupWithResponse("resRg", "myCluster", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withTags(mapOf("a", "b"))
+            .withEventStoreServiceEnabled(true)
+            .withNodeTypes(
+                Arrays
+                    .asList(
                         new NodeTypeDescription().withName("nt1vm")
                             .withClientConnectionEndpointPort(19000)
                             .withHttpGatewayEndpointPort(19007)
@@ -53,13 +57,13 @@ public final class ClustersUpdateSamples {
                             .withIsPrimary(false)
                             .withVmInstanceCount(3)
                             .withHttpGatewayTokenAuthEndpointPort(19081)))
-                    .withReliabilityLevel(ReliabilityLevel.BRONZE)
-                    .withUpgradeMode(UpgradeMode.AUTOMATIC)
-                    .withUpgradeWave(ClusterUpgradeCadence.fromString("Wave"))
-                    .withUpgradePauseStartTimestampUtc(OffsetDateTime.parse("2021-06-21T22:00:00Z"))
-                    .withUpgradePauseEndTimestampUtc(OffsetDateTime.parse("2021-06-25T22:00:00Z"))
-                    .withEnableHttpGatewayExclusiveAuthMode(true),
-                com.azure.core.util.Context.NONE);
+            .withReliabilityLevel(ReliabilityLevel.BRONZE)
+            .withUpgradeMode(UpgradeMode.AUTOMATIC)
+            .withUpgradeWave(ClusterUpgradeCadence.fromString("Wave"))
+            .withUpgradePauseStartTimestampUtc(OffsetDateTime.parse("2021-06-21T22:00:00Z"))
+            .withUpgradePauseEndTimestampUtc(OffsetDateTime.parse("2021-06-25T22:00:00Z"))
+            .withEnableHttpGatewayExclusiveAuthMode(true)
+            .apply();
     }
 
     // Use "Map.of" if available

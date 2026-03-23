@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -18,19 +19,29 @@ import java.util.Map;
  * The application resource for patch operations.
  */
 @Fluent
-public final class ApplicationResourceUpdate extends ProxyResourceApplicationResourceUpdateProperties {
-    /*
-     * Resource tags.
-     */
-    private Map<String, String> tags;
-
+public final class ApplicationResourceUpdate extends ProxyResource {
     /*
      * The application resource properties for patch operations.
      */
     private ApplicationResourceUpdateProperties innerProperties;
 
     /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * It will be deprecated in New API, resource location depends on the parent resource.
+     */
+    private String location;
+
+    /*
+     * Azure resource tags.
+     */
+    private Map<String, String> tags;
+
+    /*
+     * Azure resource etag.
+     */
+    private String etag;
+
+    /*
+     * Metadata pertaining to creation and last modification of the resource.
      */
     private SystemData systemData;
 
@@ -56,7 +67,36 @@ public final class ApplicationResourceUpdate extends ProxyResourceApplicationRes
     }
 
     /**
-     * Get the tags property: Resource tags.
+     * Get the innerProperties property: The application resource properties for patch operations.
+     * 
+     * @return the innerProperties value.
+     */
+    private ApplicationResourceUpdateProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
+     * Get the location property: It will be deprecated in New API, resource location depends on the parent resource.
+     * 
+     * @return the location value.
+     */
+    public String location() {
+        return this.location;
+    }
+
+    /**
+     * Set the location property: It will be deprecated in New API, resource location depends on the parent resource.
+     * 
+     * @param location the location value to set.
+     * @return the ApplicationResourceUpdate object itself.
+     */
+    public ApplicationResourceUpdate withLocation(String location) {
+        this.location = location;
+        return this;
+    }
+
+    /**
+     * Get the tags property: Azure resource tags.
      * 
      * @return the tags value.
      */
@@ -65,7 +105,7 @@ public final class ApplicationResourceUpdate extends ProxyResourceApplicationRes
     }
 
     /**
-     * Set the tags property: Resource tags.
+     * Set the tags property: Azure resource tags.
      * 
      * @param tags the tags value to set.
      * @return the ApplicationResourceUpdate object itself.
@@ -76,22 +116,32 @@ public final class ApplicationResourceUpdate extends ProxyResourceApplicationRes
     }
 
     /**
-     * Get the innerProperties property: The application resource properties for patch operations.
+     * Get the etag property: Azure resource etag.
      * 
-     * @return the innerProperties value.
+     * @return the etag value.
      */
-    private ApplicationResourceUpdateProperties innerProperties() {
-        return this.innerProperties;
+    public String etag() {
+        return this.etag;
     }
 
     /**
-     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
      * 
      * @return the systemData value.
      */
-    @Override
     public SystemData systemData() {
         return this.systemData;
+    }
+
+    /**
+     * Set the systemData property: Metadata pertaining to creation and last modification of the resource.
+     * 
+     * @param systemData the systemData value to set.
+     * @return the ApplicationResourceUpdate object itself.
+     */
+    public ApplicationResourceUpdate withSystemData(SystemData systemData) {
+        this.systemData = systemData;
+        return this;
     }
 
     /**
@@ -122,15 +172,6 @@ public final class ApplicationResourceUpdate extends ProxyResourceApplicationRes
     @Override
     public String id() {
         return this.id;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ApplicationResourceUpdate withProperties(ApplicationResourceUpdateProperties properties) {
-        super.withProperties(properties);
-        return this;
     }
 
     /**
@@ -337,8 +378,10 @@ public final class ApplicationResourceUpdate extends ProxyResourceApplicationRes
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("systemData", this.systemData);
         return jsonWriter.writeEndObject();
     }
 
@@ -364,14 +407,18 @@ public final class ApplicationResourceUpdate extends ProxyResourceApplicationRes
                     deserializedApplicationResourceUpdate.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedApplicationResourceUpdate.type = reader.getString();
-                } else if ("systemData".equals(fieldName)) {
-                    deserializedApplicationResourceUpdate.systemData = SystemData.fromJson(reader);
-                } else if ("tags".equals(fieldName)) {
-                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                    deserializedApplicationResourceUpdate.tags = tags;
                 } else if ("properties".equals(fieldName)) {
                     deserializedApplicationResourceUpdate.innerProperties
                         = ApplicationResourceUpdateProperties.fromJson(reader);
+                } else if ("location".equals(fieldName)) {
+                    deserializedApplicationResourceUpdate.location = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedApplicationResourceUpdate.tags = tags;
+                } else if ("etag".equals(fieldName)) {
+                    deserializedApplicationResourceUpdate.etag = reader.getString();
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedApplicationResourceUpdate.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

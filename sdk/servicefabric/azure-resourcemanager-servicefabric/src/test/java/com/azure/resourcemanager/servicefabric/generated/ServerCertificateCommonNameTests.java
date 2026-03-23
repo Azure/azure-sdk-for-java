@@ -12,18 +12,18 @@ public final class ServerCertificateCommonNameTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServerCertificateCommonName model = BinaryData
-            .fromString("{\"certificateCommonName\":\"fdatsc\",\"certificateIssuerThumbprint\":\"dvpjhulsuuvmk\"}")
+            .fromString("{\"certificateCommonName\":\"scmdvpjhulsuu\",\"certificateIssuerThumbprint\":\"mkjozkrwf\"}")
             .toObject(ServerCertificateCommonName.class);
-        Assertions.assertEquals("fdatsc", model.certificateCommonName());
-        Assertions.assertEquals("dvpjhulsuuvmk", model.certificateIssuerThumbprint());
+        Assertions.assertEquals("scmdvpjhulsuu", model.certificateCommonName());
+        Assertions.assertEquals("mkjozkrwf", model.certificateIssuerThumbprint());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServerCertificateCommonName model = new ServerCertificateCommonName().withCertificateCommonName("fdatsc")
-            .withCertificateIssuerThumbprint("dvpjhulsuuvmk");
+        ServerCertificateCommonName model = new ServerCertificateCommonName().withCertificateCommonName("scmdvpjhulsuu")
+            .withCertificateIssuerThumbprint("mkjozkrwf");
         model = BinaryData.fromObject(model).toObject(ServerCertificateCommonName.class);
-        Assertions.assertEquals("fdatsc", model.certificateCommonName());
-        Assertions.assertEquals("dvpjhulsuuvmk", model.certificateIssuerThumbprint());
+        Assertions.assertEquals("scmdvpjhulsuu", model.certificateCommonName());
+        Assertions.assertEquals("mkjozkrwf", model.certificateIssuerThumbprint());
     }
 }

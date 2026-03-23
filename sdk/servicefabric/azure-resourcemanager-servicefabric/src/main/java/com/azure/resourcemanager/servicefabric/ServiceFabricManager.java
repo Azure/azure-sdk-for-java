@@ -52,7 +52,7 @@ import java.util.stream.Collectors;
 
 /**
  * Entry point to ServiceFabricManager.
- * Service Fabric Management Client.
+ * Azure Service Fabric Resource Provider API Client.
  */
 public final class ServiceFabricManager {
     private Operations operations;

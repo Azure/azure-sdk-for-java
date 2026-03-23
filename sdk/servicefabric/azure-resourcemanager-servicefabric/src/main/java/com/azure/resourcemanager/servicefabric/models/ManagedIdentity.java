@@ -13,29 +13,30 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * Managed service identity (system assigned and/or user assigned identities).
+ * Describes the managed identities for an Azure resource.
  */
 @Fluent
 public final class ManagedIdentity implements JsonSerializable<ManagedIdentity> {
     /*
-     * The service principal ID of the system assigned identity. This property will only be provided for a system
-     * assigned identity.
+     * The principal id of the managed identity. This property will only be provided for a system assigned identity.
      */
     private String principalId;
 
     /*
-     * The tenant ID of the system assigned identity. This property will only be provided for a system assigned
-     * identity.
+     * The tenant id of the managed identity. This property will only be provided for a system assigned identity.
      */
     private String tenantId;
 
     /*
-     * The type of managed identity assigned to this resource.
+     * The type of managed identity for the resource.
      */
     private ManagedIdentityType type;
 
     /*
-     * The identities assigned to this resource by the user.
+     * The list of user identities associated with the resource. The user identity dictionary key references will be ARM
+     * resource ids in the form:
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/
+     * userAssignedIdentities/{identityName}'.
      */
     private Map<String, UserAssignedIdentity> userAssignedIdentities;
 
@@ -46,8 +47,8 @@ public final class ManagedIdentity implements JsonSerializable<ManagedIdentity> 
     }
 
     /**
-     * Get the principalId property: The service principal ID of the system assigned identity. This property will only
-     * be provided for a system assigned identity.
+     * Get the principalId property: The principal id of the managed identity. This property will only be provided for a
+     * system assigned identity.
      * 
      * @return the principalId value.
      */
@@ -56,8 +57,8 @@ public final class ManagedIdentity implements JsonSerializable<ManagedIdentity> 
     }
 
     /**
-     * Get the tenantId property: The tenant ID of the system assigned identity. This property will only be provided for
-     * a system assigned identity.
+     * Get the tenantId property: The tenant id of the managed identity. This property will only be provided for a
+     * system assigned identity.
      * 
      * @return the tenantId value.
      */
@@ -66,7 +67,7 @@ public final class ManagedIdentity implements JsonSerializable<ManagedIdentity> 
     }
 
     /**
-     * Get the type property: The type of managed identity assigned to this resource.
+     * Get the type property: The type of managed identity for the resource.
      * 
      * @return the type value.
      */
@@ -75,7 +76,7 @@ public final class ManagedIdentity implements JsonSerializable<ManagedIdentity> 
     }
 
     /**
-     * Set the type property: The type of managed identity assigned to this resource.
+     * Set the type property: The type of managed identity for the resource.
      * 
      * @param type the type value to set.
      * @return the ManagedIdentity object itself.
@@ -86,7 +87,9 @@ public final class ManagedIdentity implements JsonSerializable<ManagedIdentity> 
     }
 
     /**
-     * Get the userAssignedIdentities property: The identities assigned to this resource by the user.
+     * Get the userAssignedIdentities property: The list of user identities associated with the resource. The user
+     * identity dictionary key references will be ARM resource ids in the form:
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
      * 
      * @return the userAssignedIdentities value.
      */
@@ -95,7 +98,9 @@ public final class ManagedIdentity implements JsonSerializable<ManagedIdentity> 
     }
 
     /**
-     * Set the userAssignedIdentities property: The identities assigned to this resource by the user.
+     * Set the userAssignedIdentities property: The list of user identities associated with the resource. The user
+     * identity dictionary key references will be ARM resource ids in the form:
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
      * 
      * @param userAssignedIdentities the userAssignedIdentities value to set.
      * @return the ManagedIdentity object itself.
@@ -123,7 +128,6 @@ public final class ManagedIdentity implements JsonSerializable<ManagedIdentity> 
      * @param jsonReader The JsonReader being read.
      * @return An instance of ManagedIdentity if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ManagedIdentity.
      */
     public static ManagedIdentity fromJson(JsonReader jsonReader) throws IOException {
@@ -133,12 +137,12 @@ public final class ManagedIdentity implements JsonSerializable<ManagedIdentity> 
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("type".equals(fieldName)) {
-                    deserializedManagedIdentity.type = ManagedIdentityType.fromString(reader.getString());
-                } else if ("principalId".equals(fieldName)) {
+                if ("principalId".equals(fieldName)) {
                     deserializedManagedIdentity.principalId = reader.getString();
                 } else if ("tenantId".equals(fieldName)) {
                     deserializedManagedIdentity.tenantId = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedManagedIdentity.type = ManagedIdentityType.fromString(reader.getString());
                 } else if ("userAssignedIdentities".equals(fieldName)) {
                     Map<String, UserAssignedIdentity> userAssignedIdentities
                         = reader.readMap(reader1 -> UserAssignedIdentity.fromJson(reader1));

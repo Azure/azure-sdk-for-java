@@ -11,9 +11,10 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.servicefabric.ServiceFabricManager;
-import com.azure.resourcemanager.servicefabric.models.Operation;
+import com.azure.resourcemanager.servicefabric.models.OperationResult;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -21,7 +22,7 @@ public final class OperationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"name\":\"dbsdshm\",\"isDataAction\":true,\"display\":{\"provider\":\"hvbbxuripltfnh\",\"resource\":\"axkgx\",\"operation\":\"rc\",\"description\":\"yklyhpluodpvruud\"},\"origin\":\"system\",\"actionType\":\"Internal\"}]}";
+            = "{\"value\":[{\"name\":\"gy\",\"isDataAction\":true,\"display\":{\"provider\":\"sgaojfmwncot\",\"resource\":\"fhir\",\"operation\":\"ymoxoftpipiwyczu\",\"description\":\"a\"},\"origin\":\"qjlihhyuspska\",\"nextLink\":\"vlmfwdgzxulucv\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +31,15 @@ public final class OperationsListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<Operation> response = manager.operations().list(com.azure.core.util.Context.NONE);
+        PagedIterable<OperationResult> response = manager.operations().list(com.azure.core.util.Context.NONE);
 
+        Assertions.assertEquals("gy", response.iterator().next().name());
+        Assertions.assertTrue(response.iterator().next().isDataAction());
+        Assertions.assertEquals("sgaojfmwncot", response.iterator().next().display().provider());
+        Assertions.assertEquals("fhir", response.iterator().next().display().resource());
+        Assertions.assertEquals("ymoxoftpipiwyczu", response.iterator().next().display().operation());
+        Assertions.assertEquals("a", response.iterator().next().display().description());
+        Assertions.assertEquals("qjlihhyuspska", response.iterator().next().origin());
+        Assertions.assertEquals("vlmfwdgzxulucv", response.iterator().next().nextLink());
     }
 }

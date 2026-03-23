@@ -14,24 +14,24 @@ public final class SettingsSectionDescriptionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SettingsSectionDescription model = BinaryData.fromString(
-            "{\"name\":\"hbcryffdfdosyge\",\"parameters\":[{\"name\":\"aojakhmsbzjhcrz\",\"value\":\"vdphlxaolthqtr\"},{\"name\":\"qjbpfzfsin\",\"value\":\"gvfcj\"},{\"name\":\"wzo\",\"value\":\"xjtfelluwfzit\"},{\"name\":\"np\",\"value\":\"qfpjk\"}]}")
+            "{\"name\":\"fdosyg\",\"parameters\":[{\"name\":\"paojakhmsbzjh\",\"value\":\"rzevdphlxaol\"},{\"name\":\"hqtrgqjbpf\",\"value\":\"fsinzgvfcjrwzoxx\"},{\"name\":\"tfell\",\"value\":\"wfzitonpeqfpjk\"}]}")
             .toObject(SettingsSectionDescription.class);
-        Assertions.assertEquals("hbcryffdfdosyge", model.name());
-        Assertions.assertEquals("aojakhmsbzjhcrz", model.parameters().get(0).name());
-        Assertions.assertEquals("vdphlxaolthqtr", model.parameters().get(0).value());
+        Assertions.assertEquals("fdosyg", model.name());
+        Assertions.assertEquals("paojakhmsbzjh", model.parameters().get(0).name());
+        Assertions.assertEquals("rzevdphlxaol", model.parameters().get(0).value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SettingsSectionDescription model = new SettingsSectionDescription().withName("hbcryffdfdosyge")
-            .withParameters(Arrays.asList(
-                new SettingsParameterDescription().withName("aojakhmsbzjhcrz").withValue("vdphlxaolthqtr"),
-                new SettingsParameterDescription().withName("qjbpfzfsin").withValue("gvfcj"),
-                new SettingsParameterDescription().withName("wzo").withValue("xjtfelluwfzit"),
-                new SettingsParameterDescription().withName("np").withValue("qfpjk")));
+        SettingsSectionDescription model
+            = new SettingsSectionDescription().withName("fdosyg")
+                .withParameters(Arrays.asList(
+                    new SettingsParameterDescription().withName("paojakhmsbzjh").withValue("rzevdphlxaol"),
+                    new SettingsParameterDescription().withName("hqtrgqjbpf").withValue("fsinzgvfcjrwzoxx"),
+                    new SettingsParameterDescription().withName("tfell").withValue("wfzitonpeqfpjk")));
         model = BinaryData.fromObject(model).toObject(SettingsSectionDescription.class);
-        Assertions.assertEquals("hbcryffdfdosyge", model.name());
-        Assertions.assertEquals("aojakhmsbzjhcrz", model.parameters().get(0).name());
-        Assertions.assertEquals("vdphlxaolthqtr", model.parameters().get(0).value());
+        Assertions.assertEquals("fdosyg", model.name());
+        Assertions.assertEquals("paojakhmsbzjh", model.parameters().get(0).name());
+        Assertions.assertEquals("rzevdphlxaol", model.parameters().get(0).value());
     }
 }

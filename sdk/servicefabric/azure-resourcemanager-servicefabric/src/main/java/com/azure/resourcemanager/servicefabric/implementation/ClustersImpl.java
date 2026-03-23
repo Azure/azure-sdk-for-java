@@ -13,7 +13,6 @@ import com.azure.resourcemanager.servicefabric.fluent.ClustersClient;
 import com.azure.resourcemanager.servicefabric.fluent.models.ClusterInner;
 import com.azure.resourcemanager.servicefabric.fluent.models.UpgradableVersionPathResultInner;
 import com.azure.resourcemanager.servicefabric.models.Cluster;
-import com.azure.resourcemanager.servicefabric.models.ClusterUpdateParameters;
 import com.azure.resourcemanager.servicefabric.models.Clusters;
 import com.azure.resourcemanager.servicefabric.models.UpgradableVersionPathResult;
 import com.azure.resourcemanager.servicefabric.models.UpgradableVersionsDescription;
@@ -46,15 +45,6 @@ public final class ClustersImpl implements Clusters {
         } else {
             return null;
         }
-    }
-
-    public void update(String resourceGroupName, String clusterName, ClusterUpdateParameters parameters) {
-        this.serviceClient().update(resourceGroupName, clusterName, parameters);
-    }
-
-    public void update(String resourceGroupName, String clusterName, ClusterUpdateParameters parameters,
-        Context context) {
-        this.serviceClient().update(resourceGroupName, clusterName, parameters, context);
     }
 
     public Response<Void> deleteByResourceGroupWithResponse(String resourceGroupName, String clusterName,

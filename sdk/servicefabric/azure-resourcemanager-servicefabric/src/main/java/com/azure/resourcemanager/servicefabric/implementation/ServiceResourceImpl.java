@@ -10,6 +10,8 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.servicefabric.fluent.models.ServiceResourceInner;
 import com.azure.resourcemanager.servicefabric.models.ServiceResource;
 import com.azure.resourcemanager.servicefabric.models.ServiceResourceProperties;
+import com.azure.resourcemanager.servicefabric.models.ServiceResourceUpdate;
+import com.azure.resourcemanager.servicefabric.models.ServiceResourceUpdateProperties;
 import java.util.Collections;
 import java.util.Map;
 
@@ -34,6 +36,10 @@ public final class ServiceResourceImpl implements ServiceResource, ServiceResour
         return this.innerModel().properties();
     }
 
+    public String location() {
+        return this.innerModel().location();
+    }
+
     public Map<String, String> tags() {
         Map<String, String> inner = this.innerModel().tags();
         if (inner != null) {
@@ -41,10 +47,6 @@ public final class ServiceResourceImpl implements ServiceResource, ServiceResour
         } else {
             return Collections.emptyMap();
         }
-    }
-
-    public String location() {
-        return this.innerModel().location();
     }
 
     public String etag() {
@@ -83,6 +85,8 @@ public final class ServiceResourceImpl implements ServiceResource, ServiceResour
 
     private String serviceName;
 
+    private ServiceResourceUpdate updateParameters;
+
     public ServiceResourceImpl withExistingApplication(String resourceGroupName, String clusterName,
         String applicationName) {
         this.resourceGroupName = resourceGroupName;
@@ -113,21 +117,21 @@ public final class ServiceResourceImpl implements ServiceResource, ServiceResour
     }
 
     public ServiceResourceImpl update() {
+        this.updateParameters = new ServiceResourceUpdate();
         return this;
     }
 
     public ServiceResource apply() {
         this.innerObject = serviceManager.serviceClient()
             .getServices()
-            .createOrUpdate(resourceGroupName, clusterName, applicationName, serviceName, this.innerModel(),
-                Context.NONE);
+            .update(resourceGroupName, clusterName, applicationName, serviceName, updateParameters, Context.NONE);
         return this;
     }
 
     public ServiceResource apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getServices()
-            .createOrUpdate(resourceGroupName, clusterName, applicationName, serviceName, this.innerModel(), context);
+            .update(resourceGroupName, clusterName, applicationName, serviceName, updateParameters, context);
         return this;
     }
 
@@ -175,5 +179,24 @@ public final class ServiceResourceImpl implements ServiceResource, ServiceResour
     public ServiceResourceImpl withProperties(ServiceResourceProperties properties) {
         this.innerModel().withProperties(properties);
         return this;
+    }
+
+    public ServiceResourceImpl withSystemData(SystemData systemData) {
+        if (isInCreateMode()) {
+            this.innerModel().withSystemData(systemData);
+            return this;
+        } else {
+            this.updateParameters.withSystemData(systemData);
+            return this;
+        }
+    }
+
+    public ServiceResourceImpl withProperties(ServiceResourceUpdateProperties properties) {
+        this.updateParameters.withProperties(properties);
+        return this;
+    }
+
+    private boolean isInCreateMode() {
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

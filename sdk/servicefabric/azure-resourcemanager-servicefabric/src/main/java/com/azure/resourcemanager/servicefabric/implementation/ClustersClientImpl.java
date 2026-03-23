@@ -233,6 +233,8 @@ public final class ClustersClientImpl implements ClustersClient {
     }
 
     /**
+     * Gets a Service Fabric cluster resource.
+     * 
      * Get a Service Fabric cluster resource created or in the process of being created in the specified resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -240,8 +242,10 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Service Fabric cluster resource created or in the process of being created in the specified resource
-     * group along with {@link Response} on successful completion of {@link Mono}.
+     * @return a Service Fabric cluster resource.
+     * 
+     * Get a Service Fabric cluster resource created or in the process of being created in the specified resource group
+     * along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ClusterInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
@@ -254,6 +258,8 @@ public final class ClustersClientImpl implements ClustersClient {
     }
 
     /**
+     * Gets a Service Fabric cluster resource.
+     * 
      * Get a Service Fabric cluster resource created or in the process of being created in the specified resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -261,8 +267,10 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Service Fabric cluster resource created or in the process of being created in the specified resource
-     * group on successful completion of {@link Mono}.
+     * @return a Service Fabric cluster resource.
+     * 
+     * Get a Service Fabric cluster resource created or in the process of being created in the specified resource group
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ClusterInner> getByResourceGroupAsync(String resourceGroupName, String clusterName) {
@@ -271,6 +279,8 @@ public final class ClustersClientImpl implements ClustersClient {
     }
 
     /**
+     * Gets a Service Fabric cluster resource.
+     * 
      * Get a Service Fabric cluster resource created or in the process of being created in the specified resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -279,8 +289,10 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Service Fabric cluster resource created or in the process of being created in the specified resource
-     * group along with {@link Response}.
+     * @return a Service Fabric cluster resource.
+     * 
+     * Get a Service Fabric cluster resource created or in the process of being created in the specified resource group
+     * along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ClusterInner> getByResourceGroupWithResponse(String resourceGroupName, String clusterName,
@@ -291,6 +303,8 @@ public final class ClustersClientImpl implements ClustersClient {
     }
 
     /**
+     * Gets a Service Fabric cluster resource.
+     * 
      * Get a Service Fabric cluster resource created or in the process of being created in the specified resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -298,8 +312,9 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Service Fabric cluster resource created or in the process of being created in the specified resource
-     * group.
+     * @return a Service Fabric cluster resource.
+     * 
+     * Get a Service Fabric cluster resource created or in the process of being created in the specified resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterInner getByResourceGroup(String resourceGroupName, String clusterName) {
@@ -307,6 +322,8 @@ public final class ClustersClientImpl implements ClustersClient {
     }
 
     /**
+     * Creates or updates a Service Fabric cluster resource.
+     * 
      * Create or update a Service Fabric cluster resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -330,6 +347,8 @@ public final class ClustersClientImpl implements ClustersClient {
     }
 
     /**
+     * Creates or updates a Service Fabric cluster resource.
+     * 
      * Create or update a Service Fabric cluster resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -351,6 +370,8 @@ public final class ClustersClientImpl implements ClustersClient {
     }
 
     /**
+     * Creates or updates a Service Fabric cluster resource.
+     * 
      * Create or update a Service Fabric cluster resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -372,6 +393,8 @@ public final class ClustersClientImpl implements ClustersClient {
     }
 
     /**
+     * Creates or updates a Service Fabric cluster resource.
+     * 
      * Create or update a Service Fabric cluster resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -392,6 +415,8 @@ public final class ClustersClientImpl implements ClustersClient {
     }
 
     /**
+     * Creates or updates a Service Fabric cluster resource.
+     * 
      * Create or update a Service Fabric cluster resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -411,6 +436,8 @@ public final class ClustersClientImpl implements ClustersClient {
     }
 
     /**
+     * Creates or updates a Service Fabric cluster resource.
+     * 
      * Create or update a Service Fabric cluster resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -431,6 +458,8 @@ public final class ClustersClientImpl implements ClustersClient {
     }
 
     /**
+     * Creates or updates a Service Fabric cluster resource.
+     * 
      * Create or update a Service Fabric cluster resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -449,6 +478,8 @@ public final class ClustersClientImpl implements ClustersClient {
     }
 
     /**
+     * Creates or updates a Service Fabric cluster resource.
+     * 
      * Create or update a Service Fabric cluster resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -465,6 +496,8 @@ public final class ClustersClientImpl implements ClustersClient {
     }
 
     /**
+     * Creates or updates a Service Fabric cluster resource.
+     * 
      * Create or update a Service Fabric cluster resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -483,6 +516,8 @@ public final class ClustersClientImpl implements ClustersClient {
     }
 
     /**
+     * Updates the configuration of a Service Fabric cluster resource.
+     * 
      * Update the configuration of a Service Fabric cluster resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -505,6 +540,8 @@ public final class ClustersClientImpl implements ClustersClient {
     }
 
     /**
+     * Updates the configuration of a Service Fabric cluster resource.
+     * 
      * Update the configuration of a Service Fabric cluster resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -527,6 +564,8 @@ public final class ClustersClientImpl implements ClustersClient {
     }
 
     /**
+     * Updates the configuration of a Service Fabric cluster resource.
+     * 
      * Update the configuration of a Service Fabric cluster resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -549,6 +588,8 @@ public final class ClustersClientImpl implements ClustersClient {
     }
 
     /**
+     * Updates the configuration of a Service Fabric cluster resource.
+     * 
      * Update the configuration of a Service Fabric cluster resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -561,14 +602,16 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the {@link PollerFlux} for polling of the cluster resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginUpdateAsync(String resourceGroupName, String clusterName,
-        ClusterUpdateParameters parameters) {
+    private PollerFlux<PollResult<ClusterInner>, ClusterInner> beginUpdateAsync(String resourceGroupName,
+        String clusterName, ClusterUpdateParameters parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, clusterName, parameters);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            this.client.getContext());
+        return this.client.<ClusterInner, ClusterInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ClusterInner.class, ClusterInner.class, this.client.getContext());
     }
 
     /**
+     * Updates the configuration of a Service Fabric cluster resource.
+     * 
      * Update the configuration of a Service Fabric cluster resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -581,13 +624,16 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the {@link SyncPoller} for polling of the cluster resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginUpdate(String resourceGroupName, String clusterName,
+    public SyncPoller<PollResult<ClusterInner>, ClusterInner> beginUpdate(String resourceGroupName, String clusterName,
         ClusterUpdateParameters parameters) {
         Response<BinaryData> response = updateWithResponse(resourceGroupName, clusterName, parameters);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+        return this.client.<ClusterInner, ClusterInner>getLroResult(response, ClusterInner.class, ClusterInner.class,
+            Context.NONE);
     }
 
     /**
+     * Updates the configuration of a Service Fabric cluster resource.
+     * 
      * Update the configuration of a Service Fabric cluster resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -601,13 +647,16 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the {@link SyncPoller} for polling of the cluster resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginUpdate(String resourceGroupName, String clusterName,
+    public SyncPoller<PollResult<ClusterInner>, ClusterInner> beginUpdate(String resourceGroupName, String clusterName,
         ClusterUpdateParameters parameters, Context context) {
         Response<BinaryData> response = updateWithResponse(resourceGroupName, clusterName, parameters, context);
-        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
+        return this.client.<ClusterInner, ClusterInner>getLroResult(response, ClusterInner.class, ClusterInner.class,
+            context);
     }
 
     /**
+     * Updates the configuration of a Service Fabric cluster resource.
+     * 
      * Update the configuration of a Service Fabric cluster resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -620,12 +669,15 @@ public final class ClustersClientImpl implements ClustersClient {
      * @return the cluster resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> updateAsync(String resourceGroupName, String clusterName, ClusterUpdateParameters parameters) {
+    private Mono<ClusterInner> updateAsync(String resourceGroupName, String clusterName,
+        ClusterUpdateParameters parameters) {
         return beginUpdateAsync(resourceGroupName, clusterName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
+     * Updates the configuration of a Service Fabric cluster resource.
+     * 
      * Update the configuration of a Service Fabric cluster resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -635,13 +687,16 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the cluster resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void update(String resourceGroupName, String clusterName, ClusterUpdateParameters parameters) {
-        beginUpdate(resourceGroupName, clusterName, parameters).getFinalResult();
+    public ClusterInner update(String resourceGroupName, String clusterName, ClusterUpdateParameters parameters) {
+        return beginUpdate(resourceGroupName, clusterName, parameters).getFinalResult();
     }
 
     /**
+     * Updates the configuration of a Service Fabric cluster resource.
+     * 
      * Update the configuration of a Service Fabric cluster resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -652,14 +707,17 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the cluster resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void update(String resourceGroupName, String clusterName, ClusterUpdateParameters parameters,
+    public ClusterInner update(String resourceGroupName, String clusterName, ClusterUpdateParameters parameters,
         Context context) {
-        beginUpdate(resourceGroupName, clusterName, parameters, context).getFinalResult();
+        return beginUpdate(resourceGroupName, clusterName, parameters, context).getFinalResult();
     }
 
     /**
+     * Deletes a Service Fabric cluster resource.
+     * 
      * Delete a Service Fabric cluster resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -678,6 +736,8 @@ public final class ClustersClientImpl implements ClustersClient {
     }
 
     /**
+     * Deletes a Service Fabric cluster resource.
+     * 
      * Delete a Service Fabric cluster resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -693,6 +753,8 @@ public final class ClustersClientImpl implements ClustersClient {
     }
 
     /**
+     * Deletes a Service Fabric cluster resource.
+     * 
      * Delete a Service Fabric cluster resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -710,6 +772,8 @@ public final class ClustersClientImpl implements ClustersClient {
     }
 
     /**
+     * Deletes a Service Fabric cluster resource.
+     * 
      * Delete a Service Fabric cluster resource with the specified name.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -724,14 +788,18 @@ public final class ClustersClientImpl implements ClustersClient {
     }
 
     /**
+     * Gets the list of Service Fabric cluster resources created in the specified resource group.
+     * 
      * Gets all Service Fabric cluster resources created or in the process of being created in the resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Service Fabric cluster resources created or in the process of being created in the resource group
-     * along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the list of Service Fabric cluster resources created in the specified resource group.
+     * 
+     * Gets all Service Fabric cluster resources created or in the process of being created in the resource group along
+     * with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ClusterInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -745,13 +813,17 @@ public final class ClustersClientImpl implements ClustersClient {
     }
 
     /**
+     * Gets the list of Service Fabric cluster resources created in the specified resource group.
+     * 
      * Gets all Service Fabric cluster resources created or in the process of being created in the resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Service Fabric cluster resources created or in the process of being created in the resource group as
+     * @return the list of Service Fabric cluster resources created in the specified resource group.
+     * 
+     * Gets all Service Fabric cluster resources created or in the process of being created in the resource group as
      * paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -761,14 +833,18 @@ public final class ClustersClientImpl implements ClustersClient {
     }
 
     /**
+     * Gets the list of Service Fabric cluster resources created in the specified resource group.
+     * 
      * Gets all Service Fabric cluster resources created or in the process of being created in the resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Service Fabric cluster resources created or in the process of being created in the resource group
-     * along with {@link PagedResponse}.
+     * @return the list of Service Fabric cluster resources created in the specified resource group.
+     * 
+     * Gets all Service Fabric cluster resources created or in the process of being created in the resource group along
+     * with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ClusterInner> listByResourceGroupSinglePage(String resourceGroupName) {
@@ -780,6 +856,8 @@ public final class ClustersClientImpl implements ClustersClient {
     }
 
     /**
+     * Gets the list of Service Fabric cluster resources created in the specified resource group.
+     * 
      * Gets all Service Fabric cluster resources created or in the process of being created in the resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -787,8 +865,10 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Service Fabric cluster resources created or in the process of being created in the resource group
-     * along with {@link PagedResponse}.
+     * @return the list of Service Fabric cluster resources created in the specified resource group.
+     * 
+     * Gets all Service Fabric cluster resources created or in the process of being created in the resource group along
+     * with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ClusterInner> listByResourceGroupSinglePage(String resourceGroupName, Context context) {
@@ -800,13 +880,17 @@ public final class ClustersClientImpl implements ClustersClient {
     }
 
     /**
+     * Gets the list of Service Fabric cluster resources created in the specified resource group.
+     * 
      * Gets all Service Fabric cluster resources created or in the process of being created in the resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Service Fabric cluster resources created or in the process of being created in the resource group as
+     * @return the list of Service Fabric cluster resources created in the specified resource group.
+     * 
+     * Gets all Service Fabric cluster resources created or in the process of being created in the resource group as
      * paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -816,6 +900,8 @@ public final class ClustersClientImpl implements ClustersClient {
     }
 
     /**
+     * Gets the list of Service Fabric cluster resources created in the specified resource group.
+     * 
      * Gets all Service Fabric cluster resources created or in the process of being created in the resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -823,7 +909,9 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Service Fabric cluster resources created or in the process of being created in the resource group as
+     * @return the list of Service Fabric cluster resources created in the specified resource group.
+     * 
+     * Gets all Service Fabric cluster resources created or in the process of being created in the resource group as
      * paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -833,11 +921,15 @@ public final class ClustersClientImpl implements ClustersClient {
     }
 
     /**
+     * Gets the list of Service Fabric cluster resources created in the specified subscription.
+     * 
      * Gets all Service Fabric cluster resources created or in the process of being created in the subscription.
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Service Fabric cluster resources created or in the process of being created in the subscription along
+     * @return the list of Service Fabric cluster resources created in the specified subscription.
+     * 
+     * Gets all Service Fabric cluster resources created or in the process of being created in the subscription along
      * with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -852,11 +944,15 @@ public final class ClustersClientImpl implements ClustersClient {
     }
 
     /**
+     * Gets the list of Service Fabric cluster resources created in the specified subscription.
+     * 
      * Gets all Service Fabric cluster resources created or in the process of being created in the subscription.
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Service Fabric cluster resources created or in the process of being created in the subscription as
+     * @return the list of Service Fabric cluster resources created in the specified subscription.
+     * 
+     * Gets all Service Fabric cluster resources created or in the process of being created in the subscription as
      * paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -865,11 +961,15 @@ public final class ClustersClientImpl implements ClustersClient {
     }
 
     /**
+     * Gets the list of Service Fabric cluster resources created in the specified subscription.
+     * 
      * Gets all Service Fabric cluster resources created or in the process of being created in the subscription.
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Service Fabric cluster resources created or in the process of being created in the subscription along
+     * @return the list of Service Fabric cluster resources created in the specified subscription.
+     * 
+     * Gets all Service Fabric cluster resources created or in the process of being created in the subscription along
      * with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -882,13 +982,17 @@ public final class ClustersClientImpl implements ClustersClient {
     }
 
     /**
+     * Gets the list of Service Fabric cluster resources created in the specified subscription.
+     * 
      * Gets all Service Fabric cluster resources created or in the process of being created in the subscription.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Service Fabric cluster resources created or in the process of being created in the subscription along
+     * @return the list of Service Fabric cluster resources created in the specified subscription.
+     * 
+     * Gets all Service Fabric cluster resources created or in the process of being created in the subscription along
      * with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -901,11 +1005,15 @@ public final class ClustersClientImpl implements ClustersClient {
     }
 
     /**
+     * Gets the list of Service Fabric cluster resources created in the specified subscription.
+     * 
      * Gets all Service Fabric cluster resources created or in the process of being created in the subscription.
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Service Fabric cluster resources created or in the process of being created in the subscription as
+     * @return the list of Service Fabric cluster resources created in the specified subscription.
+     * 
+     * Gets all Service Fabric cluster resources created or in the process of being created in the subscription as
      * paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -914,13 +1022,17 @@ public final class ClustersClientImpl implements ClustersClient {
     }
 
     /**
+     * Gets the list of Service Fabric cluster resources created in the specified subscription.
+     * 
      * Gets all Service Fabric cluster resources created or in the process of being created in the subscription.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Service Fabric cluster resources created or in the process of being created in the subscription as
+     * @return the list of Service Fabric cluster resources created in the specified subscription.
+     * 
+     * Gets all Service Fabric cluster resources created or in the process of being created in the subscription as
      * paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -929,6 +1041,9 @@ public final class ClustersClientImpl implements ClustersClient {
     }
 
     /**
+     * Operation to get the minimum and maximum upgradable version from the current cluster version, or the required
+     * path to get to the an specific target version.
+     * 
      * If a target is not provided, it will get the minimum and maximum versions available from the current cluster
      * version. If a target is given, it will provide the required path to get from the current cluster version to the
      * target version.
@@ -954,6 +1069,9 @@ public final class ClustersClientImpl implements ClustersClient {
     }
 
     /**
+     * Operation to get the minimum and maximum upgradable version from the current cluster version, or the required
+     * path to get to the an specific target version.
+     * 
      * If a target is not provided, it will get the minimum and maximum versions available from the current cluster
      * version. If a target is given, it will provide the required path to get from the current cluster version to the
      * target version.
@@ -975,6 +1093,9 @@ public final class ClustersClientImpl implements ClustersClient {
     }
 
     /**
+     * Operation to get the minimum and maximum upgradable version from the current cluster version, or the required
+     * path to get to the an specific target version.
+     * 
      * If a target is not provided, it will get the minimum and maximum versions available from the current cluster
      * version. If a target is given, it will provide the required path to get from the current cluster version to the
      * target version.
@@ -998,6 +1119,9 @@ public final class ClustersClientImpl implements ClustersClient {
     }
 
     /**
+     * Operation to get the minimum and maximum upgradable version from the current cluster version, or the required
+     * path to get to the an specific target version.
+     * 
      * If a target is not provided, it will get the minimum and maximum versions available from the current cluster
      * version. If a target is given, it will provide the required path to get from the current cluster version to the
      * target version.
@@ -1018,14 +1142,18 @@ public final class ClustersClientImpl implements ClustersClient {
     }
 
     /**
+     * Gets the list of Service Fabric cluster resources created in the specified resource group.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Service Fabric cluster resources created or in the process of being created in the resource group
-     * along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the list of Service Fabric cluster resources created in the specified resource group.
+     * 
+     * Gets all Service Fabric cluster resources created or in the process of being created in the resource group along
+     * with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ClusterInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1039,14 +1167,18 @@ public final class ClustersClientImpl implements ClustersClient {
     }
 
     /**
+     * Gets the list of Service Fabric cluster resources created in the specified resource group.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Service Fabric cluster resources created or in the process of being created in the resource group
-     * along with {@link PagedResponse}.
+     * @return the list of Service Fabric cluster resources created in the specified resource group.
+     * 
+     * Gets all Service Fabric cluster resources created or in the process of being created in the resource group along
+     * with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ClusterInner> listByResourceGroupNextSinglePage(String nextLink) {
@@ -1058,6 +1190,8 @@ public final class ClustersClientImpl implements ClustersClient {
     }
 
     /**
+     * Gets the list of Service Fabric cluster resources created in the specified resource group.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1065,8 +1199,10 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Service Fabric cluster resources created or in the process of being created in the resource group
-     * along with {@link PagedResponse}.
+     * @return the list of Service Fabric cluster resources created in the specified resource group.
+     * 
+     * Gets all Service Fabric cluster resources created or in the process of being created in the resource group along
+     * with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<ClusterInner> listByResourceGroupNextSinglePage(String nextLink, Context context) {
@@ -1078,13 +1214,17 @@ public final class ClustersClientImpl implements ClustersClient {
     }
 
     /**
+     * Gets the list of Service Fabric cluster resources created in the specified subscription.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Service Fabric cluster resources created or in the process of being created in the subscription along
+     * @return the list of Service Fabric cluster resources created in the specified subscription.
+     * 
+     * Gets all Service Fabric cluster resources created or in the process of being created in the subscription along
      * with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1097,13 +1237,17 @@ public final class ClustersClientImpl implements ClustersClient {
     }
 
     /**
+     * Gets the list of Service Fabric cluster resources created in the specified subscription.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Service Fabric cluster resources created or in the process of being created in the subscription along
+     * @return the list of Service Fabric cluster resources created in the specified subscription.
+     * 
+     * Gets all Service Fabric cluster resources created or in the process of being created in the subscription along
      * with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1116,6 +1260,8 @@ public final class ClustersClientImpl implements ClustersClient {
     }
 
     /**
+     * Gets the list of Service Fabric cluster resources created in the specified subscription.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1123,7 +1269,9 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Service Fabric cluster resources created or in the process of being created in the subscription along
+     * @return the list of Service Fabric cluster resources created in the specified subscription.
+     * 
+     * Gets all Service Fabric cluster resources created or in the process of being created in the subscription along
      * with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

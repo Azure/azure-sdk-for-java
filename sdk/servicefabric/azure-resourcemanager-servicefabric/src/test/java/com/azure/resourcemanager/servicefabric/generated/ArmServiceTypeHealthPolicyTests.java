@@ -12,21 +12,21 @@ public final class ArmServiceTypeHealthPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ArmServiceTypeHealthPolicy model = BinaryData.fromString(
-            "{\"maxPercentUnhealthyServices\":2123049773,\"maxPercentUnhealthyPartitionsPerService\":904231635,\"maxPercentUnhealthyReplicasPerPartition\":85590242}")
+            "{\"maxPercentUnhealthyServices\":2133271340,\"maxPercentUnhealthyPartitionsPerService\":363667258,\"maxPercentUnhealthyReplicasPerPartition\":1624421051}")
             .toObject(ArmServiceTypeHealthPolicy.class);
-        Assertions.assertEquals(2123049773, model.maxPercentUnhealthyServices());
-        Assertions.assertEquals(904231635, model.maxPercentUnhealthyPartitionsPerService());
-        Assertions.assertEquals(85590242, model.maxPercentUnhealthyReplicasPerPartition());
+        Assertions.assertEquals(2133271340, model.maxPercentUnhealthyServices());
+        Assertions.assertEquals(363667258, model.maxPercentUnhealthyPartitionsPerService());
+        Assertions.assertEquals(1624421051, model.maxPercentUnhealthyReplicasPerPartition());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ArmServiceTypeHealthPolicy model = new ArmServiceTypeHealthPolicy().withMaxPercentUnhealthyServices(2123049773)
-            .withMaxPercentUnhealthyPartitionsPerService(904231635)
-            .withMaxPercentUnhealthyReplicasPerPartition(85590242);
+        ArmServiceTypeHealthPolicy model = new ArmServiceTypeHealthPolicy().withMaxPercentUnhealthyServices(2133271340)
+            .withMaxPercentUnhealthyPartitionsPerService(363667258)
+            .withMaxPercentUnhealthyReplicasPerPartition(1624421051);
         model = BinaryData.fromObject(model).toObject(ArmServiceTypeHealthPolicy.class);
-        Assertions.assertEquals(2123049773, model.maxPercentUnhealthyServices());
-        Assertions.assertEquals(904231635, model.maxPercentUnhealthyPartitionsPerService());
-        Assertions.assertEquals(85590242, model.maxPercentUnhealthyReplicasPerPartition());
+        Assertions.assertEquals(2133271340, model.maxPercentUnhealthyServices());
+        Assertions.assertEquals(363667258, model.maxPercentUnhealthyPartitionsPerService());
+        Assertions.assertEquals(1624421051, model.maxPercentUnhealthyReplicasPerPartition());
     }
 }

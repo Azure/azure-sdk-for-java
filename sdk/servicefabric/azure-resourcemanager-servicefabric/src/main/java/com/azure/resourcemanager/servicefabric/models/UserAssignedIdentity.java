@@ -12,17 +12,17 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * User assigned identity properties.
+ * Describes a user assigned identity.
  */
 @Immutable
 public final class UserAssignedIdentity implements JsonSerializable<UserAssignedIdentity> {
     /*
-     * The principal ID of the assigned identity.
+     * The principal id of user assigned identity.
      */
     private String principalId;
 
     /*
-     * The client ID of the assigned identity.
+     * The client id of user assigned identity.
      */
     private String clientId;
 
@@ -33,7 +33,7 @@ public final class UserAssignedIdentity implements JsonSerializable<UserAssigned
     }
 
     /**
-     * Get the principalId property: The principal ID of the assigned identity.
+     * Get the principalId property: The principal id of user assigned identity.
      * 
      * @return the principalId value.
      */
@@ -42,7 +42,7 @@ public final class UserAssignedIdentity implements JsonSerializable<UserAssigned
     }
 
     /**
-     * Get the clientId property: The client ID of the assigned identity.
+     * Get the clientId property: The client id of user assigned identity.
      * 
      * @return the clientId value.
      */

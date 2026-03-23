@@ -14,20 +14,20 @@ public final class ApplicationTypeResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApplicationTypeResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"bavo\"},\"tags\":{\"tbqvudw\":\"dmoh\",\"ujjugwdkcglh\":\"dndnvow\",\"ofqweykhmenevfye\":\"lazjdyggdtjixhbk\"},\"location\":\"whybcib\",\"etag\":\"vdcsitynn\",\"id\":\"mdectehfiqscjey\",\"name\":\"vhezrkgqhcj\",\"type\":\"efovgmk\"}")
+            "{\"properties\":{\"provisioningState\":\"vfyexfw\"},\"location\":\"bcibvyvdcsitynn\",\"tags\":{\"eypvhezrkg\":\"dectehfiqsc\",\"sle\":\"hcjrefovgmk\",\"cattpngjcrcczsq\":\"yvxyqjp\",\"mdajv\":\"jh\"},\"etag\":\"sounqecanoaeu\",\"id\":\"hy\",\"name\":\"ltrpmopj\",\"type\":\"cma\"}")
             .toObject(ApplicationTypeResourceInner.class);
-        Assertions.assertEquals("dmoh", model.tags().get("tbqvudw"));
-        Assertions.assertEquals("whybcib", model.location());
+        Assertions.assertEquals("bcibvyvdcsitynn", model.location());
+        Assertions.assertEquals("dectehfiqsc", model.tags().get("eypvhezrkg"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApplicationTypeResourceInner model = new ApplicationTypeResourceInner()
-            .withTags(mapOf("tbqvudw", "dmoh", "ujjugwdkcglh", "dndnvow", "ofqweykhmenevfye", "lazjdyggdtjixhbk"))
-            .withLocation("whybcib");
+        ApplicationTypeResourceInner model = new ApplicationTypeResourceInner().withLocation("bcibvyvdcsitynn")
+            .withTags(
+                mapOf("eypvhezrkg", "dectehfiqsc", "sle", "hcjrefovgmk", "cattpngjcrcczsq", "yvxyqjp", "mdajv", "jh"));
         model = BinaryData.fromObject(model).toObject(ApplicationTypeResourceInner.class);
-        Assertions.assertEquals("dmoh", model.tags().get("tbqvudw"));
-        Assertions.assertEquals("whybcib", model.location());
+        Assertions.assertEquals("bcibvyvdcsitynn", model.location());
+        Assertions.assertEquals("dectehfiqsc", model.tags().get("eypvhezrkg"));
     }
 
     // Use "Map.of" if available

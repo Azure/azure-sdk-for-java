@@ -23,7 +23,7 @@ public final class ServiceCorrelationDescription implements JsonSerializable<Ser
     private ServiceCorrelationScheme scheme;
 
     /*
-     * The name of the service that the correlation relationship is established with.
+     * The full name of the service with 'fabric:' URI scheme.
      */
     private String serviceName;
 
@@ -56,7 +56,7 @@ public final class ServiceCorrelationDescription implements JsonSerializable<Ser
     }
 
     /**
-     * Get the serviceName property: The name of the service that the correlation relationship is established with.
+     * Get the serviceName property: The full name of the service with 'fabric:' URI scheme.
      * 
      * @return the serviceName value.
      */
@@ -65,7 +65,7 @@ public final class ServiceCorrelationDescription implements JsonSerializable<Ser
     }
 
     /**
-     * Set the serviceName property: The name of the service that the correlation relationship is established with.
+     * Set the serviceName property: The full name of the service with 'fabric:' URI scheme.
      * 
      * @param serviceName the serviceName value to set.
      * @return the ServiceCorrelationDescription object itself.
