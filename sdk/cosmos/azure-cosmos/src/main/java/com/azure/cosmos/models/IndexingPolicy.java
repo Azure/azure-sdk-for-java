@@ -313,7 +313,7 @@ public final class IndexingPolicy {
     }
 
     /**
-     * Gets the full text search paths.
+     * Gets the full text indexes.
      *
      * @return the full text indexes.
      */
@@ -330,10 +330,10 @@ public final class IndexingPolicy {
     }
 
     /**
-     * Sets the full text search paths.
+     * Sets the full text indexes.
      *
      * @param cosmosFullTextIndexes the fullText indexes
-     * @return the excluded paths
+     * @return the IndexingPolicy.
      */
     public IndexingPolicy setCosmosFullTextIndexes(List<CosmosFullTextIndex> cosmosFullTextIndexes) {
         this.cosmosFullTextIndexes = cosmosFullTextIndexes;

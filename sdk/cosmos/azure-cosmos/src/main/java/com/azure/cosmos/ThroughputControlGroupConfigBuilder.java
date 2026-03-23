@@ -90,7 +90,7 @@ public class ThroughputControlGroupConfigBuilder {
      */
     @Deprecated
     public ThroughputControlGroupConfigBuilder setTargetThroughputThreshold(double targetThroughputThreshold) {
-        checkArgument(targetThroughputThreshold > 0 && targetThroughputThreshold <= 1, "Target throughput threshold should between (0, 1]");
+        checkArgument(targetThroughputThreshold > 0 && targetThroughputThreshold <= 1, "Target throughput threshold should be between (0, 1]");
 
         this.targetThroughputThreshold = targetThroughputThreshold;
         return this;
@@ -105,7 +105,7 @@ public class ThroughputControlGroupConfigBuilder {
      * @return The {@link ThroughputControlGroupConfigBuilder}.
      */
     public ThroughputControlGroupConfigBuilder targetThroughputThreshold(double targetThroughputThreshold) {
-        checkArgument(targetThroughputThreshold > 0 && targetThroughputThreshold <= 1, "Target throughput threshold should between (0, 1]");
+        checkArgument(targetThroughputThreshold > 0 && targetThroughputThreshold <= 1, "Target throughput threshold should be between (0, 1]");
 
         this.targetThroughputThreshold = targetThroughputThreshold;
         return this;
