@@ -1,17 +1,35 @@
 # Release History
 
-## 2.0.0-beta.3 (Unreleased)
+## 2.0.0-beta.4 (Unreleased)
 
 ### Features Added
+
+- Added `getDefaultConnection(ConnectionType, boolean)` to `ConnectionsClient` and `ConnectionsAsyncClient` for retrieving the default connection of a given type.
+- Added `connectionName` parameter overloads to `createDatasetWithFile` and `createDatasetWithFolder` in `DatasetsClient` and `DatasetsAsyncClient`, allowing users to specify which Azure Storage Account connection to use for uploads.
+
+### Breaking Changes
+
+### Bugs Fixed
+
+- Fixed `createDatasetWithFolder` producing an invalid `dataUri` that caused a 400 error when registering the dataset.
+- Fixed `createDatasetWithFile` using the dataset name as the blob name instead of the actual file name.
+
+### Other Changes
+
+## 2.0.0-beta.3 (2026-03-19)
+
+### Features Added
+
+- Added `generateInsight(Insight, FoundryFeaturesOptInKeys)` convenience method to `InsightsClient` and `InsightsAsyncClient`.
 
 ### Breaking Changes
 
 - `FoundryFeaturesOptInKeys` changed from an `ExpandableStringEnum`-based class to a standard Java `enum` type. The `values()` method now returns an array instead of a `Collection`, and the deprecated no-arg constructor is removed.
 - The `timeZone` property in `RecurrenceTrigger` changed from `String` to `java.util.TimeZone`.
-
-### Bugs Fixed
-
-### Other Changes
+- Removed `EvaluationsClient` and `EvaluationsAsyncClient`. Use `builder.buildOpenAIClient().evals()` (returns `EvalService`) and `builder.buildOpenAIAsyncClient().evals()` (returns `EvalServiceAsync`) from the Stainless OpenAI SDK directly. The corresponding `buildEvaluationsClient()` and `buildEvaluationsAsyncClient()` methods on `AIProjectClientBuilder` have also been removed.
+- `InsightsClient` and `InsightsAsyncClient` no longer auto-set the `Foundry-Features: Insights=V1Preview` header. The `FoundryFeaturesOptInKeys` parameter must now be passed explicitly to `generateInsight()`, `getInsight()`, and `listInsights()` overloads that require it.
+- `getInsight(String, Boolean)` overload removed; replaced by `getInsight(String)` and `getInsight(String, FoundryFeaturesOptInKeys, Boolean)`.
+- `listInsights(InsightType, String, String, String, Boolean)` signature changed to `listInsights(FoundryFeaturesOptInKeys, InsightType, String, String, String, Boolean)`.
 
 ## 2.0.0-beta.2 (2026-03-04)
 

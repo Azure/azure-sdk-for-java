@@ -5,9 +5,11 @@ package com.azure.ai.agents;
 
 import com.azure.ai.agents.models.AgentReference;
 import com.azure.ai.agents.models.AgentVersionDetails;
+import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.CodeInterpreterTool;
 import com.azure.ai.agents.models.FunctionTool;
 import com.azure.ai.agents.models.PromptAgentDefinition;
+import com.azure.ai.agents.models.StructuredInputDefinition;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.IterableStream;
@@ -59,7 +61,8 @@ public class StreamingTests extends ClientTestBase {
             ResponseAccumulator accumulator = ResponseAccumulator.create();
             List<String> textDeltas = new ArrayList<>();
 
-            IterableStream<ResponseStreamEvent> events = responsesClient.createStreamingWithAgent(agentReference,
+            IterableStream<ResponseStreamEvent> events = responsesClient.createStreamingAzureResponse(
+                new AzureCreateResponseOptions().setAgentReference(agentReference),
                 ResponseCreateParams.builder().input("Say hello."));
 
             for (ResponseStreamEvent event : events) {
@@ -107,7 +110,8 @@ public class StreamingTests extends ClientTestBase {
             ResponseAccumulator accumulator = ResponseAccumulator.create();
             List<String> functionArgDeltas = new ArrayList<>();
 
-            IterableStream<ResponseStreamEvent> events = responsesClient.createStreamingWithAgent(agentReference,
+            IterableStream<ResponseStreamEvent> events = responsesClient.createStreamingAzureResponse(
+                new AzureCreateResponseOptions().setAgentReference(agentReference),
                 ResponseCreateParams.builder().input("What's the weather like in Seattle?"));
 
             for (ResponseStreamEvent event : events) {
@@ -162,7 +166,8 @@ public class StreamingTests extends ClientTestBase {
             List<String> codeDeltas = new ArrayList<>();
             boolean[] codeInterpreterCompleted = { false };
 
-            IterableStream<ResponseStreamEvent> events = responsesClient.createStreamingWithAgent(agentReference,
+            IterableStream<ResponseStreamEvent> events = responsesClient.createStreamingAzureResponse(
+                new AzureCreateResponseOptions().setAgentReference(agentReference),
                 ResponseCreateParams.builder().input("What is 42 * 37? Use code to calculate."));
 
             for (ResponseStreamEvent event : events) {
@@ -179,6 +184,63 @@ public class StreamingTests extends ClientTestBase {
             // Code interpreter should have run and produced code
             assertFalse(codeDeltas.isEmpty(), "Should have received code interpreter code deltas");
             assertTrue(codeInterpreterCompleted[0], "Code interpreter should have completed");
+        } finally {
+            agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion());
+        }
+    }
+
+    // ========================================================================
+    // Structured input streaming
+    // ========================================================================
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.agents.TestUtils#getTestParameters")
+    public void structuredInputStreamingProducesTextDeltas(HttpClient httpClient, AgentsServiceVersion serviceVersion) {
+        AgentsClient agentsClient = getAgentsSyncClient(httpClient, serviceVersion);
+        ResponsesClient responsesClient = getResponsesSyncClient(httpClient, serviceVersion);
+
+        // Create an agent with structured input definitions
+        Map<String, StructuredInputDefinition> structuredInputDefinitions = new LinkedHashMap<>();
+        structuredInputDefinitions.put("userName",
+            new StructuredInputDefinition().setDescription("User's name").setRequired(true));
+        structuredInputDefinitions.put("userRole",
+            new StructuredInputDefinition().setDescription("User's role").setRequired(true));
+
+        AgentVersionDetails agent = agentsClient.createAgentVersion("structured-input-streaming-test-agent",
+            new PromptAgentDefinition(AGENT_MODEL).setInstructions(
+                "You are a helpful assistant. " + "The user's name is {{userName}} and their role is {{userRole}}. "
+                    + "Greet them and confirm their details.")
+                .setStructuredInputs(structuredInputDefinitions));
+
+        try {
+            AgentReference agentReference = new AgentReference(agent.getName()).setVersion(agent.getVersion());
+
+            Map<String, BinaryData> structuredInputValues = new LinkedHashMap<>();
+            structuredInputValues.put("userName", BinaryData.fromObject("Alice Smith"));
+            structuredInputValues.put("userRole", BinaryData.fromObject("Senior Developer"));
+
+            ResponseAccumulator accumulator = ResponseAccumulator.create();
+            List<String> textDeltas = new ArrayList<>();
+
+            IterableStream<ResponseStreamEvent> events = responsesClient.createStreamingAzureResponse(
+                new AzureCreateResponseOptions().setAgentReference(agentReference)
+                    .setStructuredInputs(structuredInputValues),
+                ResponseCreateParams.builder().input("Hello! Can you confirm my details?"));
+
+            for (ResponseStreamEvent event : events) {
+                accumulator.accumulate(event);
+                event.outputTextDelta().ifPresent(textEvent -> textDeltas.add(textEvent.delta()));
+            }
+
+            assertFalse(textDeltas.isEmpty(), "Should have received at least one text delta");
+
+            Response response = accumulator.response();
+            assertNotNull(response.id());
+            assertTrue(response.status().isPresent());
+            assertEquals(ResponseStatus.COMPLETED, response.status().get());
+
+            String streamedText = String.join("", textDeltas);
+            assertFalse(streamedText.isEmpty());
         } finally {
             agentsClient.deleteAgentVersion(agent.getName(), agent.getVersion());
         }

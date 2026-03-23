@@ -538,28 +538,6 @@ public final class AIProjectClientBuilder
     }
 
     /**
-     * Builds an instance of EvaluationsClient class with a default setup for OpenAI
-     *
-     * @return an instance of EvaluationsClient
-     */
-    public EvaluationsClient buildEvaluationsClient() {
-        return new EvaluationsClient(getOpenAIClientBuilder().build()
-            .withOptions(optionBuilder -> optionBuilder
-                .httpClient(HttpClientHelper.mapToOpenAIHttpClient(createHttpPipeline()))));
-    }
-
-    /**
-     * Builds an instance of EvaluationsClientAsync class with a default setup for OpenAI
-     *
-     * @return an instance of EvaluationsClientAsync
-     */
-    public EvaluationsAsyncClient buildEvaluationsAsyncClient() {
-        return new EvaluationsAsyncClient(getOpenAIAsyncClientBuilder().build()
-            .withOptions(optionBuilder -> optionBuilder
-                .httpClient(HttpClientHelper.mapToOpenAIHttpClient(createHttpPipeline()))));
-    }
-
-    /**
      * Builds an instance of OpenAIClient class with a default setup for OpenAI
      *
      * @return an instance of OpenAIClient

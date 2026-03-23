@@ -5,10 +5,10 @@ package com.azure.ai.agents.tools;
 
 import com.azure.ai.agents.AgentsAsyncClient;
 import com.azure.ai.agents.AgentsClientBuilder;
-import com.azure.ai.agents.ConversationsAsyncClient;
 import com.azure.ai.agents.MemoryStoresClient;
 import com.azure.ai.agents.ResponsesAsyncClient;
 import com.azure.ai.agents.models.AgentReference;
+import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.MemorySearchPreviewTool;
 import com.azure.ai.agents.models.MemoryStoreDefaultDefinition;
@@ -20,6 +20,7 @@ import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
+import com.openai.services.async.ConversationServiceAsync;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -33,7 +34,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * <p>Before running the sample, set these environment variables:</p>
  * <ul>
  *   <li>FOUNDRY_PROJECT_ENDPOINT - The Azure AI Project endpoint.</li>
- *   <li>FOUNDRY_MODEL_DEPLOYMENT_NAME - The model deployment name.</li>
+ *   <li>FOUNDRY_MODEL_NAME - The model deployment name.</li>
  *   <li>AZURE_AI_CHAT_MODEL_DEPLOYMENT_NAME - The chat model deployment name for memory.</li>
  *   <li>AZURE_AI_EMBEDDING_MODEL_DEPLOYMENT_NAME - The embedding model deployment name for memory.</li>
  * </ul>
@@ -43,7 +44,7 @@ public class MemorySearchAsync {
 
     public static void main(String[] args) throws Exception {
         String endpoint = Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT");
-        String model = Configuration.getGlobalConfiguration().get("FOUNDRY_MODEL_DEPLOYMENT_NAME");
+        String model = Configuration.getGlobalConfiguration().get("FOUNDRY_MODEL_NAME");
         String chatModel = Configuration.getGlobalConfiguration().get("AZURE_AI_CHAT_MODEL_DEPLOYMENT_NAME");
         String embeddingModel = Configuration.getGlobalConfiguration().get("AZURE_AI_EMBEDDING_MODEL_DEPLOYMENT_NAME");
 
@@ -53,7 +54,7 @@ public class MemorySearchAsync {
 
         AgentsAsyncClient agentsAsyncClient = builder.buildAgentsAsyncClient();
         ResponsesAsyncClient responsesAsyncClient = builder.buildResponsesAsyncClient();
-        ConversationsAsyncClient conversationsAsyncClient = builder.buildConversationsAsyncClient();
+        ConversationServiceAsync conversationServiceAsync = builder.buildOpenAIAsyncClient().conversations();
         // Memory store operations use sync client for setup/teardown
         MemoryStoresClient memoryStoresClient = builder.buildMemoryStoresClient();
 
@@ -93,12 +94,14 @@ public class MemorySearchAsync {
                     .setVersion(agent.getVersion());
 
                 // First conversation: teach a preference
-                return Mono.fromFuture(conversationsAsyncClient.getConversationServiceAsync().create())
+                return Mono.fromFuture(conversationServiceAsync.create())
                     .<Response>flatMap(conv -> {
                         firstConvRef.set(conv.id());
-                        return responsesAsyncClient.createWithAgentConversation(
-                            agentReference, conv.id(),
-                            ResponseCreateParams.builder().input("I prefer dark roast coffee"));
+                        return responsesAsyncClient.createAzureResponse(
+                            new AzureCreateResponseOptions().setAgentReference(agentReference),
+                            ResponseCreateParams.builder()
+                                .conversation(conv.id())
+                                .input("I prefer dark roast coffee"));
                     });
             })
             .doOnNext(response -> System.out.println("First response received"))
@@ -109,12 +112,14 @@ public class MemorySearchAsync {
                     .setVersion(agent.getVersion());
 
                 // Second conversation: test memory recall
-                return Mono.fromFuture(conversationsAsyncClient.getConversationServiceAsync().create())
+                return Mono.fromFuture(conversationServiceAsync.create())
                     .<Response>flatMap(conv -> {
                         secondConvRef.set(conv.id());
-                        return responsesAsyncClient.createWithAgentConversation(
-                            agentReference, conv.id(),
-                            ResponseCreateParams.builder().input("Please order my usual coffee"));
+                        return responsesAsyncClient.createAzureResponse(
+                            new AzureCreateResponseOptions().setAgentReference(agentReference),
+                            ResponseCreateParams.builder()
+                                .conversation(conv.id())
+                                .input("Please order my usual coffee"));
                     });
             })
             .doOnNext(response -> System.out.println("Response: " + response.output()))
@@ -123,11 +128,11 @@ public class MemorySearchAsync {
                 try {
                     String c1 = firstConvRef.get();
                     if (c1 != null) {
-                        conversationsAsyncClient.getConversationServiceAsync().delete(c1).join();
+                        conversationServiceAsync.delete(c1).join();
                     }
                     String c2 = secondConvRef.get();
                     if (c2 != null) {
-                        conversationsAsyncClient.getConversationServiceAsync().delete(c2).join();
+                        conversationServiceAsync.delete(c2).join();
                     }
                 } catch (Exception ignored) {
                     // best-effort
