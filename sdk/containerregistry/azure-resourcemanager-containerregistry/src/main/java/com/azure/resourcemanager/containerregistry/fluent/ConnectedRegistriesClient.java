@@ -592,4 +592,66 @@ public interface ConnectedRegistriesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void deactivate(String resourceGroupName, String registryName, String connectedRegistryName, Context context);
+
+    /**
+     * Resync the connected registry instance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the container registry.
+     * @param connectedRegistryName The name of the connected registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an object that represents a connected registry for a container registry along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<ConnectedRegistryInner>> resyncWithResponseAsync(String resourceGroupName, String registryName,
+        String connectedRegistryName);
+
+    /**
+     * Resync the connected registry instance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the container registry.
+     * @param connectedRegistryName The name of the connected registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an object that represents a connected registry for a container registry on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ConnectedRegistryInner> resyncAsync(String resourceGroupName, String registryName,
+        String connectedRegistryName);
+
+    /**
+     * Resync the connected registry instance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the container registry.
+     * @param connectedRegistryName The name of the connected registry.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an object that represents a connected registry for a container registry along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ConnectedRegistryInner> resyncWithResponse(String resourceGroupName, String registryName,
+        String connectedRegistryName, Context context);
+
+    /**
+     * Resync the connected registry instance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the container registry.
+     * @param connectedRegistryName The name of the connected registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an object that represents a connected registry for a container registry.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ConnectedRegistryInner resync(String resourceGroupName, String registryName, String connectedRegistryName);
 }
