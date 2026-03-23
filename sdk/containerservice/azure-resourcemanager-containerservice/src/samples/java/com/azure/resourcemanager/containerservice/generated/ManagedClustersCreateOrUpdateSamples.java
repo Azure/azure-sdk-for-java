@@ -115,7 +115,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
                 .withEnableRbac(true)
                 .withNetworkProfile(new ContainerServiceNetworkProfile().withOutboundType(OutboundType.LOAD_BALANCER)
                     .withLoadBalancerSku(LoadBalancerSku.STANDARD)
-                    .withLoadBalancerProfile(new ManagedClusterLoadBalancerProfile().withManagedOutboundIps(
+                    .withLoadBalancerProfile(new ManagedClusterLoadBalancerProfile().withManagedOutboundIPs(
                         new ManagedClusterLoadBalancerProfileManagedOutboundIPs().withCount(2))))
                 .withAutoScalerProfile(new ManagedClusterPropertiesAutoScalerProfile().withScanInterval("20s")
                     .withScaleDownDelayAfterAdd("15m"))
@@ -160,7 +160,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
                 .withEnableRbac(true)
                 .withNetworkProfile(new ContainerServiceNetworkProfile().withOutboundType(OutboundType.LOAD_BALANCER)
                     .withLoadBalancerSku(LoadBalancerSku.STANDARD)
-                    .withLoadBalancerProfile(new ManagedClusterLoadBalancerProfile().withManagedOutboundIps(
+                    .withLoadBalancerProfile(new ManagedClusterLoadBalancerProfile().withManagedOutboundIPs(
                         new ManagedClusterLoadBalancerProfileManagedOutboundIPs().withCount(2))))
                 .withAutoScalerProfile(new ManagedClusterPropertiesAutoScalerProfile().withScanInterval("20s")
                     .withScaleDownDelayAfterAdd("15m"))
@@ -214,7 +214,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
                 .withNetworkProfile(new ContainerServiceNetworkProfile().withOutboundType(OutboundType.LOAD_BALANCER)
                     .withLoadBalancerSku(LoadBalancerSku.STANDARD)
                     .withLoadBalancerProfile(new ManagedClusterLoadBalancerProfile()
-                        .withManagedOutboundIps(new ManagedClusterLoadBalancerProfileManagedOutboundIPs().withCount(2)))
+                        .withManagedOutboundIPs(new ManagedClusterLoadBalancerProfileManagedOutboundIPs().withCount(2)))
                     .withIpFamilies(Arrays.asList(IpFamily.IPV4, IpFamily.IPV6)))
                 .withAutoScalerProfile(
                     new ManagedClusterPropertiesAutoScalerProfile().withBalanceSimilarNodeGroups("true")
@@ -267,7 +267,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
                 .withEnableRbac(true)
                 .withNetworkProfile(new ContainerServiceNetworkProfile().withOutboundType(OutboundType.LOAD_BALANCER)
                     .withLoadBalancerSku(LoadBalancerSku.STANDARD)
-                    .withLoadBalancerProfile(new ManagedClusterLoadBalancerProfile().withManagedOutboundIps(
+                    .withLoadBalancerProfile(new ManagedClusterLoadBalancerProfile().withManagedOutboundIPs(
                         new ManagedClusterLoadBalancerProfileManagedOutboundIPs().withCount(2))))
                 .withAutoScalerProfile(new ManagedClusterPropertiesAutoScalerProfile().withScanInterval("20s")
                     .withScaleDownDelayAfterAdd("15m"))
@@ -362,7 +362,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
                 .withEnableRbac(true)
                 .withNetworkProfile(new ContainerServiceNetworkProfile().withOutboundType(OutboundType.LOAD_BALANCER)
                     .withLoadBalancerSku(LoadBalancerSku.STANDARD)
-                    .withLoadBalancerProfile(new ManagedClusterLoadBalancerProfile().withManagedOutboundIps(
+                    .withLoadBalancerProfile(new ManagedClusterLoadBalancerProfile().withManagedOutboundIPs(
                         new ManagedClusterLoadBalancerProfileManagedOutboundIPs().withCount(2))))
                 .withUpgradeSettings(new ClusterUpgradeSettings()
                     .withOverrideSettings(new UpgradeOverrideSettings().withForceUpgrade(false)
@@ -417,7 +417,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
                 .withEnableRbac(true)
                 .withNetworkProfile(new ContainerServiceNetworkProfile().withOutboundType(OutboundType.LOAD_BALANCER)
                     .withLoadBalancerSku(LoadBalancerSku.STANDARD)
-                    .withLoadBalancerProfile(new ManagedClusterLoadBalancerProfile().withManagedOutboundIps(
+                    .withLoadBalancerProfile(new ManagedClusterLoadBalancerProfile().withManagedOutboundIPs(
                         new ManagedClusterLoadBalancerProfileManagedOutboundIPs().withCount(2))))
                 .withAutoScalerProfile(new ManagedClusterPropertiesAutoScalerProfile().withScanInterval("20s")
                     .withScaleDownDelayAfterAdd("15m"))
@@ -511,7 +511,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
                 .withSupportPlan(KubernetesSupportPlan.AKSLONG_TERM_SUPPORT)
                 .withNetworkProfile(new ContainerServiceNetworkProfile().withOutboundType(OutboundType.LOAD_BALANCER)
                     .withLoadBalancerSku(LoadBalancerSku.STANDARD)
-                    .withLoadBalancerProfile(new ManagedClusterLoadBalancerProfile().withManagedOutboundIps(
+                    .withLoadBalancerProfile(new ManagedClusterLoadBalancerProfile().withManagedOutboundIPs(
                         new ManagedClusterLoadBalancerProfileManagedOutboundIPs().withCount(2))))
                 .withAutoScalerProfile(new ManagedClusterPropertiesAutoScalerProfile().withScanInterval("20s")
                     .withScaleDownDelayAfterAdd("15m"))
@@ -557,7 +557,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
                 .withEnableRbac(true)
                 .withNetworkProfile(new ContainerServiceNetworkProfile().withOutboundType(OutboundType.LOAD_BALANCER)
                     .withLoadBalancerSku(LoadBalancerSku.STANDARD)
-                    .withLoadBalancerProfile(new ManagedClusterLoadBalancerProfile().withManagedOutboundIps(
+                    .withLoadBalancerProfile(new ManagedClusterLoadBalancerProfile().withManagedOutboundIPs(
                         new ManagedClusterLoadBalancerProfileManagedOutboundIPs().withCount(2))))
                 .withAutoScalerProfile(new ManagedClusterPropertiesAutoScalerProfile().withScanInterval("20s")
                     .withScaleDownDelayAfterAdd("15m"))
@@ -603,7 +603,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
                 .withEnableRbac(true)
                 .withNetworkProfile(new ContainerServiceNetworkProfile().withOutboundType(OutboundType.LOAD_BALANCER)
                     .withLoadBalancerSku(LoadBalancerSku.STANDARD)
-                    .withLoadBalancerProfile(new ManagedClusterLoadBalancerProfile().withManagedOutboundIps(
+                    .withLoadBalancerProfile(new ManagedClusterLoadBalancerProfile().withManagedOutboundIPs(
                         new ManagedClusterLoadBalancerProfileManagedOutboundIPs().withCount(2))))
                 .withAutoScalerProfile(new ManagedClusterPropertiesAutoScalerProfile().withScanInterval("20s")
                     .withScaleDownDelayAfterAdd("15m"))
@@ -649,12 +649,12 @@ public final class ManagedClustersCreateOrUpdateSamples {
                 .withEnableRbac(true)
                 .withNetworkProfile(new ContainerServiceNetworkProfile().withOutboundType(OutboundType.LOAD_BALANCER)
                     .withLoadBalancerSku(LoadBalancerSku.STANDARD)
-                    .withLoadBalancerProfile(new ManagedClusterLoadBalancerProfile().withManagedOutboundIps(
+                    .withLoadBalancerProfile(new ManagedClusterLoadBalancerProfile().withManagedOutboundIPs(
                         new ManagedClusterLoadBalancerProfileManagedOutboundIPs().withCount(2))))
                 .withAutoScalerProfile(new ManagedClusterPropertiesAutoScalerProfile().withScanInterval("20s")
                     .withScaleDownDelayAfterAdd("15m"))
                 .withApiServerAccessProfile(new ManagedClusterApiServerAccessProfile().withEnablePrivateCluster(true)
-                    .withEnablePrivateClusterPublicFQDN(true)),
+                    .withEnablePrivateClusterPublicFqdn(true)),
                 null, null, com.azure.core.util.Context.NONE);
     }
 
@@ -694,7 +694,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
                 .withEnableRbac(true)
                 .withNetworkProfile(new ContainerServiceNetworkProfile().withOutboundType(OutboundType.LOAD_BALANCER)
                     .withLoadBalancerSku(LoadBalancerSku.STANDARD)
-                    .withLoadBalancerProfile(new ManagedClusterLoadBalancerProfile().withManagedOutboundIps(
+                    .withLoadBalancerProfile(new ManagedClusterLoadBalancerProfile().withManagedOutboundIPs(
                         new ManagedClusterLoadBalancerProfileManagedOutboundIPs().withCount(2))))
                 .withAutoScalerProfile(new ManagedClusterPropertiesAutoScalerProfile().withScanInterval("20s")
                     .withScaleDownDelayAfterAdd("15m"))
@@ -744,7 +744,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
                 .withEnableRbac(true)
                 .withNetworkProfile(new ContainerServiceNetworkProfile().withOutboundType(OutboundType.LOAD_BALANCER)
                     .withLoadBalancerSku(LoadBalancerSku.STANDARD)
-                    .withLoadBalancerProfile(new ManagedClusterLoadBalancerProfile().withManagedOutboundIps(
+                    .withLoadBalancerProfile(new ManagedClusterLoadBalancerProfile().withManagedOutboundIPs(
                         new ManagedClusterLoadBalancerProfileManagedOutboundIPs().withCount(2))))
                 .withAutoScalerProfile(new ManagedClusterPropertiesAutoScalerProfile().withScanInterval("20s")
                     .withScaleDownDelayAfterAdd("15m"))
@@ -790,7 +790,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
                 .withEnableRbac(true)
                 .withNetworkProfile(new ContainerServiceNetworkProfile().withOutboundType(OutboundType.LOAD_BALANCER)
                     .withLoadBalancerSku(LoadBalancerSku.STANDARD)
-                    .withLoadBalancerProfile(new ManagedClusterLoadBalancerProfile().withManagedOutboundIps(
+                    .withLoadBalancerProfile(new ManagedClusterLoadBalancerProfile().withManagedOutboundIPs(
                         new ManagedClusterLoadBalancerProfileManagedOutboundIPs().withCount(2))))
                 .withAutoScalerProfile(new ManagedClusterPropertiesAutoScalerProfile().withScanInterval("20s")
                     .withScaleDownDelayAfterAdd("15m"))
@@ -829,7 +829,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
                         Arrays.asList(new ContainerServiceSshPublicKey().withKeyData("fakeTokenPlaceholder")))))
                 .withNetworkProfile(new ContainerServiceNetworkProfile().withOutboundType(OutboundType.LOAD_BALANCER)
                     .withLoadBalancerSku(LoadBalancerSku.STANDARD)
-                    .withLoadBalancerProfile(new ManagedClusterLoadBalancerProfile().withManagedOutboundIps(
+                    .withLoadBalancerProfile(new ManagedClusterLoadBalancerProfile().withManagedOutboundIPs(
                         new ManagedClusterLoadBalancerProfileManagedOutboundIPs().withCount(2))))
                 .withSecurityProfile(new ManagedClusterSecurityProfile()
                     .withDefender(new ManagedClusterSecurityProfileDefender().withLogAnalyticsWorkspaceResourceId(
@@ -878,7 +878,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
                 .withEnableRbac(true)
                 .withNetworkProfile(new ContainerServiceNetworkProfile().withOutboundType(OutboundType.LOAD_BALANCER)
                     .withLoadBalancerSku(LoadBalancerSku.STANDARD)
-                    .withLoadBalancerProfile(new ManagedClusterLoadBalancerProfile().withManagedOutboundIps(
+                    .withLoadBalancerProfile(new ManagedClusterLoadBalancerProfile().withManagedOutboundIPs(
                         new ManagedClusterLoadBalancerProfileManagedOutboundIPs().withCount(2))))
                 .withAutoScalerProfile(new ManagedClusterPropertiesAutoScalerProfile().withScanInterval("20s")
                     .withScaleDownDelayAfterAdd("15m"))
@@ -917,7 +917,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
                         Arrays.asList(new ContainerServiceSshPublicKey().withKeyData("fakeTokenPlaceholder")))))
                 .withNetworkProfile(new ContainerServiceNetworkProfile().withOutboundType(OutboundType.LOAD_BALANCER)
                     .withLoadBalancerSku(LoadBalancerSku.STANDARD)
-                    .withLoadBalancerProfile(new ManagedClusterLoadBalancerProfile().withManagedOutboundIps(
+                    .withLoadBalancerProfile(new ManagedClusterLoadBalancerProfile().withManagedOutboundIPs(
                         new ManagedClusterLoadBalancerProfileManagedOutboundIPs().withCount(2))))
                 .withIngressProfile(new ManagedClusterIngressProfile()
                     .withWebAppRouting(new ManagedClusterIngressProfileWebAppRouting().withEnabled(true)
@@ -968,7 +968,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
                 .withEnableRbac(true)
                 .withNetworkProfile(new ContainerServiceNetworkProfile().withOutboundType(OutboundType.LOAD_BALANCER)
                     .withLoadBalancerSku(LoadBalancerSku.STANDARD)
-                    .withLoadBalancerProfile(new ManagedClusterLoadBalancerProfile().withManagedOutboundIps(
+                    .withLoadBalancerProfile(new ManagedClusterLoadBalancerProfile().withManagedOutboundIPs(
                         new ManagedClusterLoadBalancerProfileManagedOutboundIPs().withCount(2))))
                 .withAutoScalerProfile(new ManagedClusterPropertiesAutoScalerProfile().withScanInterval("20s")
                     .withScaleDownDelayAfterAdd("15m"))
@@ -1014,7 +1014,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
                 .withEnableRbac(true)
                 .withNetworkProfile(new ContainerServiceNetworkProfile().withOutboundType(OutboundType.LOAD_BALANCER)
                     .withLoadBalancerSku(LoadBalancerSku.STANDARD)
-                    .withLoadBalancerProfile(new ManagedClusterLoadBalancerProfile().withManagedOutboundIps(
+                    .withLoadBalancerProfile(new ManagedClusterLoadBalancerProfile().withManagedOutboundIPs(
                         new ManagedClusterLoadBalancerProfileManagedOutboundIPs().withCount(2))))
                 .withAutoScalerProfile(new ManagedClusterPropertiesAutoScalerProfile().withScanInterval("20s")
                     .withScaleDownDelayAfterAdd("15m"))
@@ -1064,7 +1064,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
                     .withNetworkProfile(
                         new ContainerServiceNetworkProfile().withOutboundType(OutboundType.LOAD_BALANCER)
                             .withLoadBalancerSku(LoadBalancerSku.STANDARD)
-                            .withLoadBalancerProfile(new ManagedClusterLoadBalancerProfile().withManagedOutboundIps(
+                            .withLoadBalancerProfile(new ManagedClusterLoadBalancerProfile().withManagedOutboundIPs(
                                 new ManagedClusterLoadBalancerProfileManagedOutboundIPs().withCount(2))))
                     .withAutoScalerProfile(new ManagedClusterPropertiesAutoScalerProfile()
                         .withScanInterval("20s")
@@ -1128,7 +1128,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
                 .withEnableRbac(true)
                 .withNetworkProfile(new ContainerServiceNetworkProfile().withOutboundType(OutboundType.LOAD_BALANCER)
                     .withLoadBalancerSku(LoadBalancerSku.STANDARD)
-                    .withLoadBalancerProfile(new ManagedClusterLoadBalancerProfile().withManagedOutboundIps(
+                    .withLoadBalancerProfile(new ManagedClusterLoadBalancerProfile().withManagedOutboundIPs(
                         new ManagedClusterLoadBalancerProfileManagedOutboundIPs().withCount(2))))
                 .withAutoScalerProfile(new ManagedClusterPropertiesAutoScalerProfile().withScanInterval("20s")
                     .withScaleDownDelayAfterAdd("15m"))
@@ -1179,7 +1179,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
                     .withNetworkProfile(
                         new ContainerServiceNetworkProfile().withOutboundType(OutboundType.LOAD_BALANCER)
                             .withLoadBalancerSku(LoadBalancerSku.STANDARD)
-                            .withLoadBalancerProfile(new ManagedClusterLoadBalancerProfile().withManagedOutboundIps(
+                            .withLoadBalancerProfile(new ManagedClusterLoadBalancerProfile().withManagedOutboundIPs(
                                 new ManagedClusterLoadBalancerProfileManagedOutboundIPs().withCount(2))))
                     .withAutoScalerProfile(new ManagedClusterPropertiesAutoScalerProfile()
                         .withScanInterval("20s")
@@ -1226,7 +1226,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
                 .withEnableRbac(true)
                 .withNetworkProfile(new ContainerServiceNetworkProfile().withOutboundType(OutboundType.LOAD_BALANCER)
                     .withLoadBalancerSku(LoadBalancerSku.STANDARD)
-                    .withLoadBalancerProfile(new ManagedClusterLoadBalancerProfile().withManagedOutboundIps(
+                    .withLoadBalancerProfile(new ManagedClusterLoadBalancerProfile().withManagedOutboundIPs(
                         new ManagedClusterLoadBalancerProfileManagedOutboundIPs().withCount(2))))
                 .withAutoScalerProfile(new ManagedClusterPropertiesAutoScalerProfile().withScanInterval("20s")
                     .withScaleDownDelayAfterAdd("15m"))
@@ -1283,7 +1283,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
                                     .withType(TransitEncryptionType.WIRE_GUARD))))
                         .withOutboundType(OutboundType.LOAD_BALANCER)
                         .withLoadBalancerSku(LoadBalancerSku.STANDARD)
-                        .withLoadBalancerProfile(new ManagedClusterLoadBalancerProfile().withManagedOutboundIps(
+                        .withLoadBalancerProfile(new ManagedClusterLoadBalancerProfile().withManagedOutboundIPs(
                             new ManagedClusterLoadBalancerProfileManagedOutboundIPs().withCount(2)))),
                 null, null, com.azure.core.util.Context.NONE);
     }
@@ -1325,7 +1325,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
                 .withEnableRbac(true)
                 .withNetworkProfile(new ContainerServiceNetworkProfile().withOutboundType(OutboundType.LOAD_BALANCER)
                     .withLoadBalancerSku(LoadBalancerSku.STANDARD)
-                    .withLoadBalancerProfile(new ManagedClusterLoadBalancerProfile().withManagedOutboundIps(
+                    .withLoadBalancerProfile(new ManagedClusterLoadBalancerProfile().withManagedOutboundIPs(
                         new ManagedClusterLoadBalancerProfileManagedOutboundIPs().withCount(2))))
                 .withAadProfile(new ManagedClusterAadProfile().withManaged(true).withEnableAzureRbac(true))
                 .withAutoScalerProfile(new ManagedClusterPropertiesAutoScalerProfile().withScanInterval("20s")
@@ -1372,7 +1372,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
                 .withEnableRbac(true)
                 .withNetworkProfile(new ContainerServiceNetworkProfile().withOutboundType(OutboundType.LOAD_BALANCER)
                     .withLoadBalancerSku(LoadBalancerSku.STANDARD)
-                    .withLoadBalancerProfile(new ManagedClusterLoadBalancerProfile().withManagedOutboundIps(
+                    .withLoadBalancerProfile(new ManagedClusterLoadBalancerProfile().withManagedOutboundIPs(
                         new ManagedClusterLoadBalancerProfileManagedOutboundIPs().withCount(2))))
                 .withAutoScalerProfile(new ManagedClusterPropertiesAutoScalerProfile().withScanInterval("20s")
                     .withScaleDownDelayAfterAdd("15m"))
@@ -1423,7 +1423,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
                 .withEnableRbac(true)
                 .withNetworkProfile(new ContainerServiceNetworkProfile().withOutboundType(OutboundType.LOAD_BALANCER)
                     .withLoadBalancerSku(LoadBalancerSku.STANDARD)
-                    .withLoadBalancerProfile(new ManagedClusterLoadBalancerProfile().withManagedOutboundIps(
+                    .withLoadBalancerProfile(new ManagedClusterLoadBalancerProfile().withManagedOutboundIPs(
                         new ManagedClusterLoadBalancerProfileManagedOutboundIPs().withCount(2))))
                 .withAutoScalerProfile(new ManagedClusterPropertiesAutoScalerProfile().withScanInterval("20s")
                     .withScaleDownDelayAfterAdd("15m"))
@@ -1469,7 +1469,7 @@ public final class ManagedClustersCreateOrUpdateSamples {
                 .withEnableRbac(true)
                 .withNetworkProfile(new ContainerServiceNetworkProfile().withOutboundType(OutboundType.LOAD_BALANCER)
                     .withLoadBalancerSku(LoadBalancerSku.STANDARD)
-                    .withLoadBalancerProfile(new ManagedClusterLoadBalancerProfile().withManagedOutboundIps(
+                    .withLoadBalancerProfile(new ManagedClusterLoadBalancerProfile().withManagedOutboundIPs(
                         new ManagedClusterLoadBalancerProfileManagedOutboundIPs().withCount(2))))
                 .withAutoScalerProfile(new ManagedClusterPropertiesAutoScalerProfile().withScanInterval("20s")
                     .withScaleDownDelayAfterAdd("15m"))
