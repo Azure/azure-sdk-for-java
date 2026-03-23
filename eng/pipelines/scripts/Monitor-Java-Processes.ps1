@@ -66,7 +66,6 @@ while ((Get-Date) -lt $endTime) {
     # Also try jps for comparison
     $javaHome = $env:JAVA_HOME
     $jpsPath = if ($javaHome) { "$javaHome/bin/jps" } else { "jps" }
-    $jstackPath = if ($javaHome) { "$javaHome/bin/jstack" } else { "jstack" }
 
     try {
         $jpsOutput = & $jpsPath -l 2>&1
@@ -77,18 +76,40 @@ while ((Get-Date) -lt $endTime) {
     }
 
     # Extract PIDs from ps output and take jstack dumps
+    # Detect the JDK used by the running Java process (may differ from JAVA_HOME)
+    # Note: $PID is a read-only automatic variable in PowerShell, so we use $javaPid instead
     if ($IsLinux -or $IsMacOS) {
         try {
-            $javaPids = bash -c "ps -eo pid,comm | grep '[j]ava' | awk '{print \$1}'" 2>&1
-            if ($javaPids) {
-                foreach ($pid in ($javaPids -split "`n" | Where-Object { $_.Trim() })) {
-                    $pid = $pid.Trim()
-                    Add-Content -Path $outputFile -Value "`n--- jstack for PID $pid ---"
-                    try {
-                        $stackTrace = & $jstackPath $pid 2>&1
-                        Add-Content -Path $outputFile -Value $stackTrace
-                    } catch {
-                        Add-Content -Path $outputFile -Value "Failed to get jstack for PID $pid : $_"
+            # Get PID and full command to extract the JDK path
+            $javaPidLines = bash -c "ps -eo pid,args | grep '[j]ava' | grep -v grep" 2>&1
+            if ($javaPidLines) {
+                foreach ($line in ($javaPidLines -split "`n" | Where-Object { $_.Trim() })) {
+                    $line = $line.Trim()
+                    # Extract PID (first field)
+                    if ($line -match '^\s*(\d+)\s+(.*)') {
+                        $javaPid = $Matches[1]
+                        $cmdLine = $Matches[2]
+                        
+                        # Try to find jstack from the same JDK as the running java process
+                        $jstackForPid = $null
+                        if ($cmdLine -match '(/[^\s]+)/bin/java\b') {
+                            $detectedJavaHome = $Matches[1]
+                            $candidateJstack = "$detectedJavaHome/bin/jstack"
+                            if (Test-Path $candidateJstack) {
+                                $jstackForPid = $candidateJstack
+                            }
+                        }
+                        if (-not $jstackForPid) {
+                            $jstackForPid = if ($javaHome) { "$javaHome/bin/jstack" } else { "jstack" }
+                        }
+
+                        Add-Content -Path $outputFile -Value "`n--- jstack for PID $javaPid (using $jstackForPid) ---"
+                        try {
+                            $stackTrace = & $jstackForPid $javaPid 2>&1
+                            Add-Content -Path $outputFile -Value $stackTrace
+                        } catch {
+                            Add-Content -Path $outputFile -Value "Failed to get jstack for PID $javaPid : $_"
+                        }
                     }
                 }
             }
