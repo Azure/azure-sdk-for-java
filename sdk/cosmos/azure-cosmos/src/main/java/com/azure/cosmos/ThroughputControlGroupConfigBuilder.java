@@ -29,6 +29,7 @@ public class ThroughputControlGroupConfigBuilder {
      * @return The {@link ThroughputControlGroupConfigBuilder}.
      */
     @Deprecated
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ThroughputControlGroupConfigBuilder setGroupName(String groupName) {
         checkArgument(StringUtils.isNotEmpty(groupName), "Group name cannot be null nor empty");
 
@@ -58,6 +59,7 @@ public class ThroughputControlGroupConfigBuilder {
      * @return The {@link ThroughputControlGroupConfigBuilder}.
      */
     @Deprecated
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ThroughputControlGroupConfigBuilder setTargetThroughput(int targetThroughput) {
         checkArgument(targetThroughput > 0, "Target throughput should be greater than 0");
 
@@ -89,6 +91,7 @@ public class ThroughputControlGroupConfigBuilder {
      * @return The {@link ThroughputControlGroupConfigBuilder}.
      */
     @Deprecated
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ThroughputControlGroupConfigBuilder setTargetThroughputThreshold(double targetThroughputThreshold) {
         checkArgument(targetThroughputThreshold > 0 && targetThroughputThreshold <= 1, "Target throughput threshold should be between (0, 1]");
 
@@ -137,6 +140,7 @@ public class ThroughputControlGroupConfigBuilder {
      * @return The {@link ThroughputControlGroupConfigBuilder}.
      */
     @Deprecated
+    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ThroughputControlGroupConfigBuilder setDefault(boolean aDefault) {
         this.isDefault = aDefault;
         return this;

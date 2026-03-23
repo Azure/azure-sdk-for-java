@@ -4,6 +4,7 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.guava25.base.Preconditions;
+import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -39,6 +40,7 @@ public final class EncryptionKeyWrapMetadata {
      * @param name Name of the metadata.
      * @param value Value of the metadata.
      */
+    @Beta(value = Beta.SinceVersion.V4_16_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     @Deprecated
     public EncryptionKeyWrapMetadata(String type, String name, String value) {
         Preconditions.checkNotNull(type, "type is null");
