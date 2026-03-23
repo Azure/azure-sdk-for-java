@@ -1,5 +1,34 @@
 # Release History
 
+## 2.0.0-beta.4 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+- Renamed `getObject()` to `getObjectType()` in `AgentDetails`, `AgentVersionDetails`, `DeleteMemoryStoreResult`, `MemoryStoreDeleteScopeResponse`, and `MemoryStoreDetails`. The underlying field was renamed from `object` to `objectType`.
+- Renamed `MCPToolConnectorId` enum to `McpToolConnectorId` for consistent casing. The `McpTool` methods `getConnectorType()` and `setConnectorType()` now use `McpToolConnectorId` instead of `MCPToolConnectorId`.
+- Renamed remaining `*Param` model classes to `*Parameter` for naming consistency:
+  - `AutoCodeInterpreterToolParam` → `AutoCodeInterpreterToolParameter`
+  - `ContainerAutoParam` → `ContainerAutoParameter`
+  - `ContainerNetworkPolicyParam` → `ContainerNetworkPolicyParameter`
+  - `ContainerNetworkPolicyAllowlistParam` → `ContainerNetworkPolicyAllowlistParameter`
+  - `ContainerNetworkPolicyDisabledParam` → `ContainerNetworkPolicyDisabledParameter`
+  - `ContainerNetworkPolicyDomainSecretParam` → `ContainerNetworkPolicyDomainSecretParameter`
+  - `CustomTextFormatParam` → `CustomTextFormatParameter`
+  - `FunctionShellToolParamEnvironmentContainerReferenceParam` → `FunctionShellToolParameterEnvironmentContainerReferenceParameter`
+  - `FunctionShellToolParamEnvironmentLocalEnvironmentParam` → `FunctionShellToolParameterEnvironmentLocalEnvironmentParameter`
+  - `InlineSkillParam` → `InlineSkillParameter`
+  - `InlineSkillSourceParam` → `InlineSkillSourceParameter`
+  - `LocalSkillParam` → `LocalSkillParameter`
+  - `SkillReferenceParam` → `SkillReferenceParameter`
+
+### Bugs Fixed
+
+### Other Changes
+
+- Regenerated client from updated TypeSpec specification.
+
 ## 2.0.0-beta.3 (2026-03-19)
 
 ### Features Added

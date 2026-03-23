@@ -79,11 +79,12 @@ public class FunctionShellToolParamEnvironment implements JsonSerializable<Funct
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("local".equals(discriminatorValue)) {
-                    return FunctionShellToolParamEnvironmentLocalEnvironmentParam.fromJson(readerToUse.reset());
+                    return FunctionShellToolParameterEnvironmentLocalEnvironmentParameter.fromJson(readerToUse.reset());
                 } else if ("container_reference".equals(discriminatorValue)) {
-                    return FunctionShellToolParamEnvironmentContainerReferenceParam.fromJson(readerToUse.reset());
+                    return FunctionShellToolParameterEnvironmentContainerReferenceParameter
+                        .fromJson(readerToUse.reset());
                 } else if ("container_auto".equals(discriminatorValue)) {
-                    return ContainerAutoParam.fromJson(readerToUse.reset());
+                    return ContainerAutoParameter.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }
