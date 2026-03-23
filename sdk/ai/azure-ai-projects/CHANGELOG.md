@@ -4,9 +4,15 @@
 
 ### Features Added
 
+- Added `getDefaultConnection(ConnectionType, boolean)` to `ConnectionsClient` and `ConnectionsAsyncClient` for retrieving the default connection of a given type.
+- Added `connectionName` parameter overloads to `createDatasetWithFile` and `createDatasetWithFolder` in `DatasetsClient` and `DatasetsAsyncClient`, allowing users to specify which Azure Storage Account connection to use for uploads.
+
 ### Breaking Changes
 
 ### Bugs Fixed
+
+- Fixed `createDatasetWithFolder` producing an invalid `dataUri` that caused a 400 error when registering the dataset.
+- Fixed `createDatasetWithFile` using the dataset name as the blob name instead of the actual file name.
 
 ### Other Changes
 
