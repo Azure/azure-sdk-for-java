@@ -28,7 +28,7 @@ public final class ConfigurationsAnalysisWithResponseMockTests {
     @Test
     public void testAnalysisWithResponse() throws Exception {
         String responseStr
-            = "{\"status\":\"v\",\"data\":{\"errors\":[{\"id\":\"uxxpshne\",\"directive\":\"kulfg\",\"description\":\"lqubkwdlen\",\"file\":\"d\",\"line\":36.32122955816697,\"message\":\"ujbazpjuohminyfl\",\"rule\":\"orwmduvwpklv\"},{\"id\":\"mygdxpgpqch\",\"directive\":\"sze\",\"description\":\"nnbj\",\"file\":\"rxgibbd\",\"line\":71.6384972247716,\"message\":\"onfo\",\"rule\":\"auorsukokw\"},{\"id\":\"plhlvnuuepzlrp\",\"directive\":\"wzsoldweyuqdunv\",\"description\":\"nnrwrbiork\",\"file\":\"alywjhhgdn\",\"line\":98.6005368375008,\"message\":\"sivfomilo\",\"rule\":\"ggdufiqndieu\"}],\"diagnostics\":[{\"id\":\"jchvcyy\",\"directive\":\"s\",\"description\":\"gdotcubiipuipwo\",\"file\":\"onmacjekniz\",\"line\":90.05728846369561,\"message\":\"vcimpev\",\"rule\":\"gmblrri\",\"level\":\"Warning\",\"category\":\"wdxsm\"},{\"id\":\"cwrwfs\",\"directive\":\"jfnynszqujizdvoq\",\"description\":\"tiby\",\"file\":\"wb\",\"line\":13.000655623165148,\"message\":\"yavutpthjoxois\",\"rule\":\"sks\",\"level\":\"Info\",\"category\":\"mlqoljx\"},{\"id\":\"gxxlxsffgcvizq\",\"directive\":\"dwl\",\"description\":\"w\",\"file\":\"youpfgfbkj\",\"line\":87.77173705974407,\"message\":\"yhgk\",\"rule\":\"minsgowzf\",\"level\":\"Warning\",\"category\":\"ttktlahbq\"}]}}";
+            = "{\"status\":\"kuvscxkdm\",\"data\":{\"errors\":[{\"id\":\"ibrxkp\",\"directive\":\"loazuruocbgoo\",\"description\":\"bteoybf\",\"file\":\"jxakv\",\"line\":79.44559709290274,\"message\":\"slordilmyww\",\"rule\":\"kgkxn\"},{\"id\":\"dabg\",\"directive\":\"vudtjuewbcihx\",\"description\":\"uwhcjyxccybv\",\"file\":\"ayakkudzpx\",\"line\":32.483633757365205,\"message\":\"plmag\",\"rule\":\"tcyohpfkyrk\"}],\"diagnostics\":[{\"id\":\"iogsjkmnwq\",\"directive\":\"nobaiyhddviacegf\",\"description\":\"m\",\"file\":\"tfpmvmemfnczdw\",\"line\":52.27458484023575,\"message\":\"alxlllchp\",\"rule\":\"db\",\"level\":\"Warning\",\"category\":\"wrd\"}]}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -38,35 +38,47 @@ public final class ConfigurationsAnalysisWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         AnalysisResult response = manager.configurations()
-            .analysisWithResponse("orfmluiqt", "zf", "vyvnqqyb",
-                new AnalysisCreate().withConfig(new AnalysisCreateConfig().withRootFile("yeua")
-                    .withFiles(
-                        Arrays.asList(new NginxConfigurationFile().withContent("abqgzslesjcbh").withVirtualPath("n")))
-                    .withProtectedFiles(Arrays.asList(new NginxConfigurationProtectedFileRequest().withContent("w")
-                        .withVirtualPath("cv")
-                        .withContentHash("uwrbehwagoh")))
-                    .withPackageProperty(new NginxConfigurationPackage().withData("fkmr")
-                        .withProtectedFiles(
-                            Arrays.asList("vvhmxtdrj", "utacoe", "jvewzcjznmwcp", "guaadraufactkahz")))),
+            .analysisWithResponse("wjhhgdnhxmsivf", "miloxggdufiqndie", "zaofjchvcyy",
+                new AnalysisCreate().withConfig(new AnalysisCreateConfig().withRootFile("fgdo")
+                    .withFiles(Arrays.asList(
+                        new NginxConfigurationFile().withContent("iipuipwoqonm").withVirtualPath("jeknizshq"),
+                        new NginxConfigurationFile().withContent("impevf").withVirtualPath("b"),
+                        new NginxConfigurationFile().withContent("rilbywdx").withVirtualPath("icc"),
+                        new NginxConfigurationFile().withContent("wfscjfn").withVirtualPath("szqujizdvoq")))
+                    .withProtectedFiles(Arrays.asList(
+                        new NginxConfigurationProtectedFileRequest().withContent("yo")
+                            .withVirtualPath("blgyavutpthj")
+                            .withContentHash("oismsksbpimlqol"),
+                        new NginxConfigurationProtectedFileRequest().withContent("kcgxxlxsffgcvi")
+                            .withVirtualPath("zdwlvwlyoupfgfb")
+                            .withContentHash("ubdyhgk"),
+                        new NginxConfigurationProtectedFileRequest().withContent("in")
+                            .withVirtualPath("owzfttsttkt")
+                            .withContentHash("hbq"),
+                        new NginxConfigurationProtectedFileRequest().withContent("tx")
+                            .withVirtualPath("zukxitmmqtgqq")
+                            .withContentHash("hrnxrxc")))
+                    .withPackageProperty(new NginxConfigurationPackage().withData("isavok")
+                        .withProtectedFiles(Arrays.asList("fvazivjlfrqttba", "lkatnwxyiopidkqq")))),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("v", response.status());
-        Assertions.assertEquals("uxxpshne", response.data().errors().get(0).id());
-        Assertions.assertEquals("kulfg", response.data().errors().get(0).directive());
-        Assertions.assertEquals("lqubkwdlen", response.data().errors().get(0).description());
-        Assertions.assertEquals("d", response.data().errors().get(0).file());
-        Assertions.assertEquals(36.32122955816697, response.data().errors().get(0).line());
-        Assertions.assertEquals("ujbazpjuohminyfl", response.data().errors().get(0).message());
-        Assertions.assertEquals("orwmduvwpklv", response.data().errors().get(0).rule());
-        Assertions.assertEquals("jchvcyy", response.data().diagnostics().get(0).id());
-        Assertions.assertEquals("s", response.data().diagnostics().get(0).directive());
-        Assertions.assertEquals("gdotcubiipuipwo", response.data().diagnostics().get(0).description());
-        Assertions.assertEquals("onmacjekniz", response.data().diagnostics().get(0).file());
-        Assertions.assertEquals(90.05728846369561, response.data().diagnostics().get(0).line());
-        Assertions.assertEquals("vcimpev", response.data().diagnostics().get(0).message());
-        Assertions.assertEquals("gmblrri", response.data().diagnostics().get(0).rule());
+        Assertions.assertEquals("kuvscxkdm", response.status());
+        Assertions.assertEquals("ibrxkp", response.data().errors().get(0).id());
+        Assertions.assertEquals("loazuruocbgoo", response.data().errors().get(0).directive());
+        Assertions.assertEquals("bteoybf", response.data().errors().get(0).description());
+        Assertions.assertEquals("jxakv", response.data().errors().get(0).file());
+        Assertions.assertEquals(79.44559709290274, response.data().errors().get(0).line());
+        Assertions.assertEquals("slordilmyww", response.data().errors().get(0).message());
+        Assertions.assertEquals("kgkxn", response.data().errors().get(0).rule());
+        Assertions.assertEquals("iogsjkmnwq", response.data().diagnostics().get(0).id());
+        Assertions.assertEquals("nobaiyhddviacegf", response.data().diagnostics().get(0).directive());
+        Assertions.assertEquals("m", response.data().diagnostics().get(0).description());
+        Assertions.assertEquals("tfpmvmemfnczdw", response.data().diagnostics().get(0).file());
+        Assertions.assertEquals(52.27458484023575, response.data().diagnostics().get(0).line());
+        Assertions.assertEquals("alxlllchp", response.data().diagnostics().get(0).message());
+        Assertions.assertEquals("db", response.data().diagnostics().get(0).rule());
         Assertions.assertEquals(Level.WARNING, response.data().diagnostics().get(0).level());
-        Assertions.assertEquals("wdxsm", response.data().diagnostics().get(0).category());
+        Assertions.assertEquals("wrd", response.data().diagnostics().get(0).category());
     }
 }

@@ -7,6 +7,7 @@ import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.ResponsesClient;
 import com.azure.ai.agents.models.AgentReference;
+import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.McpTool;
 import com.azure.ai.agents.models.PromptAgentDefinition;
@@ -70,7 +71,8 @@ public class McpSync {
             AgentReference agentReference = new AgentReference(agent.getName())
                 .setVersion(agent.getVersion());
 
-            Response response = responsesClient.createWithAgent(agentReference,
+            Response response = responsesClient.createAzureResponse(
+                new AzureCreateResponseOptions().setAgentReference(agentReference),
                 ResponseCreateParams.builder()
                     .input("Please summarize the Azure REST API specifications Readme"));
 
@@ -93,7 +95,8 @@ public class McpSync {
             // If approvals were needed, send them back and get the final response
             if (!approvals.isEmpty()) {
                 System.out.println("Sending " + approvals.size() + " approval(s)...");
-                response = responsesClient.createWithAgent(agentReference,
+                response = responsesClient.createAzureResponse(
+                    new AzureCreateResponseOptions().setAgentReference(agentReference),
                     ResponseCreateParams.builder()
                         .inputOfResponse(approvals)
                         .previousResponseId(response.id()));

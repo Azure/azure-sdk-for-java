@@ -10,6 +10,8 @@ import com.azure.ai.projects.models.DeploymentType;
 import com.azure.ai.projects.models.FileDatasetVersion;
 import com.azure.ai.projects.models.AIProjectIndex;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.CustomMatcher;
@@ -18,6 +20,8 @@ import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.openai.services.async.EvalServiceAsync;
+import com.openai.services.blocking.EvalService;
 import org.junit.jupiter.api.Assertions;
 
 import java.io.File;
@@ -58,6 +62,7 @@ public class ClientTestBase extends TestProxyTestBase {
                 .credential(new DefaultAzureCredentialBuilder().build());
         }
 
+        builder.httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
         String version = Configuration.getGlobalConfiguration().get("SERVICE_VERSION");
         AIProjectsServiceVersion serviceVersion
             = version != null ? AIProjectsServiceVersion.valueOf(version) : aiProjectsServiceVersion;
@@ -66,17 +71,14 @@ public class ClientTestBase extends TestProxyTestBase {
     }
 
     private void addTestRecordCustomSanitizers() {
-
         ArrayList<TestProxySanitizer> sanitizers = new ArrayList<>();
         sanitizers.add(new TestProxySanitizer("$..key", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
-        sanitizers.add(new TestProxySanitizer("$..endpoint", "https://.+?/api/projects/.+?/", "https://REDACTED/",
-            TestProxySanitizerType.URL));
+        sanitizers.add(new TestProxySanitizer("(?<=./)([^?]+)", "/REDACTED/", TestProxySanitizerType.URL));
         sanitizers.add(new TestProxySanitizer("Content-Type",
             "(^multipart\\/form-data; boundary=[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{2})",
             "multipart\\/form-data; boundary=BOUNDARY", TestProxySanitizerType.HEADER));
 
         interceptorManager.addSanitizers(sanitizers);
-
     }
 
     private void addCustomMatchers() {
@@ -125,14 +127,14 @@ public class ClientTestBase extends TestProxyTestBase {
         return getClientBuilder(httpClient, aiProjectsServiceVersion).buildDeploymentsAsyncClient();
     }
 
-    protected EvaluationsClient getEvaluationsClient(HttpClient httpClient,
+    protected EvalService getEvaluationsClient(HttpClient httpClient,
         AIProjectsServiceVersion aiProjectsServiceVersion) {
-        return getClientBuilder(httpClient, aiProjectsServiceVersion).buildEvaluationsClient();
+        return getClientBuilder(httpClient, aiProjectsServiceVersion).buildOpenAIClient().evals();
     }
 
-    protected EvaluationsAsyncClient getEvaluationsAsyncClient(HttpClient httpClient,
+    protected EvalServiceAsync getEvaluationsAsyncClient(HttpClient httpClient,
         AIProjectsServiceVersion aiProjectsServiceVersion) {
-        return getClientBuilder(httpClient, aiProjectsServiceVersion).buildEvaluationsAsyncClient();
+        return getClientBuilder(httpClient, aiProjectsServiceVersion).buildOpenAIAsyncClient().evals();
     }
 
     protected IndexesClient getIndexesClient(HttpClient httpClient, AIProjectsServiceVersion aiProjectsServiceVersion) {
@@ -144,13 +146,6 @@ public class ClientTestBase extends TestProxyTestBase {
         return getClientBuilder(httpClient, aiProjectsServiceVersion).buildIndexesAsyncClient();
     }
 
-    /**
-     * Helper method to verify a Connection has valid properties.
-     * @param connection The connection to validate
-     * @param expectedName The expected name of the connection, or null if no specific name is expected
-     * @param expectedType The expected connection type, or null if no specific type is expected
-     * @param shouldBeDefault Whether the connection should be a default connection, or null if not checking this property
-     */
     protected void assertValidConnection(Connection connection, String expectedName, ConnectionType expectedType,
         Boolean shouldBeDefault) {
         Assertions.assertNotNull(connection);
@@ -225,12 +220,6 @@ public class ClientTestBase extends TestProxyTestBase {
         }
     }
 
-    /**
-     * Helper method to verify an Index has valid properties.
-     * @param index The index to validate
-     * @param expectedName The expected name of the index, or null if no specific name is expected
-     * @param expectedVersion The expected version of the index, or null if no specific version is expected
-     */
     protected void assertValidIndex(AIProjectIndex index, String expectedName, String expectedVersion) {
         Assertions.assertNotNull(index);
         Assertions.assertNotNull(index.getName());

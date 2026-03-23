@@ -7,6 +7,7 @@ import com.azure.ai.agents.AgentsClient;
 import com.azure.ai.agents.AgentsClientBuilder;
 import com.azure.ai.agents.ResponsesClient;
 import com.azure.ai.agents.models.AgentReference;
+import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.BingCustomSearchConfiguration;
 import com.azure.ai.agents.models.BingCustomSearchPreviewTool;
@@ -73,8 +74,8 @@ public class BingCustomSearchSync {
             AgentReference agentReference = new AgentReference(agent.getName())
                 .setVersion(agent.getVersion());
 
-            Response response = responsesClient.createWithAgent(
-                agentReference,
+            Response response = responsesClient.createAzureResponse(
+                new AzureCreateResponseOptions().setAgentReference(agentReference),
                 ResponseCreateParams.builder()
                     .input("Search for the latest Azure AI documentation"));
 

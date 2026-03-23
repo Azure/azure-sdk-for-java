@@ -31,6 +31,7 @@ import com.azure.resourcemanager.nginx.fluent.CertificatesClient;
 import com.azure.resourcemanager.nginx.fluent.ConfigurationsClient;
 import com.azure.resourcemanager.nginx.fluent.DefaultWafPoliciesClient;
 import com.azure.resourcemanager.nginx.fluent.DeploymentsClient;
+import com.azure.resourcemanager.nginx.fluent.NginxDeploymentWafPoliciesClient;
 import com.azure.resourcemanager.nginx.fluent.NginxManagementClient;
 import com.azure.resourcemanager.nginx.fluent.OperationsClient;
 import com.azure.resourcemanager.nginx.fluent.WafPoliciesClient;
@@ -147,6 +148,20 @@ public final class NginxManagementClientImpl implements NginxManagementClient {
     }
 
     /**
+     * The NginxDeploymentWafPoliciesClient object to access its operations.
+     */
+    private final NginxDeploymentWafPoliciesClient nginxDeploymentWafPolicies;
+
+    /**
+     * Gets the NginxDeploymentWafPoliciesClient object to access its operations.
+     * 
+     * @return the NginxDeploymentWafPoliciesClient object.
+     */
+    public NginxDeploymentWafPoliciesClient getNginxDeploymentWafPolicies() {
+        return this.nginxDeploymentWafPolicies;
+    }
+
+    /**
      * The ApiKeysClient object to access its operations.
      */
     private final ApiKeysClient apiKeys;
@@ -247,8 +262,9 @@ public final class NginxManagementClientImpl implements NginxManagementClient {
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-03-01-preview";
+        this.apiVersion = "2025-11-01";
         this.operations = new OperationsClientImpl(this);
+        this.nginxDeploymentWafPolicies = new NginxDeploymentWafPoliciesClientImpl(this);
         this.apiKeys = new ApiKeysClientImpl(this);
         this.deployments = new DeploymentsClientImpl(this);
         this.wafPolicies = new WafPoliciesClientImpl(this);
