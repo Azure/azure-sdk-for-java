@@ -3,6 +3,7 @@
 ## 12.27.0-beta.2 (Unreleased)
 
 ### Features Added
+- Added `getTags`/`setTages` to path APIs (sync + async).
 
 ### Breaking Changes
 
