@@ -653,8 +653,8 @@ public final class DirectoriesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: �Archive� for file
-     * and �Directory� for directory. �None� can also be specified as default.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
+     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
@@ -702,8 +702,8 @@ public final class DirectoriesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: �Archive� for file
-     * and �Directory� for directory. �None� can also be specified as default.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
+     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
@@ -755,8 +755,8 @@ public final class DirectoriesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: �Archive� for file
-     * and �Directory� for directory. �None� can also be specified as default.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
+     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
@@ -803,8 +803,8 @@ public final class DirectoriesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: �Archive� for file
-     * and �Directory� for directory. �None� can also be specified as default.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
+     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
@@ -852,8 +852,8 @@ public final class DirectoriesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: �Archive� for file
-     * and �Directory� for directory. �None� can also be specified as default.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
+     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
@@ -901,8 +901,8 @@ public final class DirectoriesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: �Archive� for file
-     * and �Directory� for directory. �None� can also be specified as default.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
+     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
@@ -955,8 +955,8 @@ public final class DirectoriesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: �Archive� for file
-     * and �Directory� for directory. �None� can also be specified as default.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
+     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
@@ -1011,8 +1011,8 @@ public final class DirectoriesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: �Archive� for file
-     * and �Directory� for directory. �None� can also be specified as default.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
+     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
@@ -1056,8 +1056,8 @@ public final class DirectoriesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: �Archive� for file
-     * and �Directory� for directory. �None� can also be specified as default.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
+     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
@@ -1554,8 +1554,8 @@ public final class DirectoriesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: �Archive� for file
-     * and �Directory� for directory. �None� can also be specified as default.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
+     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
@@ -1598,8 +1598,8 @@ public final class DirectoriesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: �Archive� for file
-     * and �Directory� for directory. �None� can also be specified as default.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
+     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
@@ -1647,8 +1647,8 @@ public final class DirectoriesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: �Archive� for file
-     * and �Directory� for directory. �None� can also be specified as default.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
+     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
@@ -1690,8 +1690,8 @@ public final class DirectoriesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: �Archive� for file
-     * and �Directory� for directory. �None� can also be specified as default.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
+     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
@@ -1734,8 +1734,8 @@ public final class DirectoriesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: �Archive� for file
-     * and �Directory� for directory. �None� can also be specified as default.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
+     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
@@ -1778,8 +1778,8 @@ public final class DirectoriesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: �Archive� for file
-     * and �Directory� for directory. �None� can also be specified as default.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
+     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
@@ -1827,8 +1827,8 @@ public final class DirectoriesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: �Archive� for file
-     * and �Directory� for directory. �None� can also be specified as default.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
+     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
@@ -1878,8 +1878,8 @@ public final class DirectoriesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: �Archive� for file
-     * and �Directory� for directory. �None� can also be specified as default.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
+     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
@@ -1919,8 +1919,8 @@ public final class DirectoriesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: �Archive� for file
-     * and �Directory� for directory. �None� can also be specified as default.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
+     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
@@ -2865,7 +2865,7 @@ public final class DirectoriesImpl {
      *
      * @param shareName The name of the target share.
      * @param directory The path of the target directory.
-     * @param handleId Specifies handle ID opened on the file or directory to be closed. Asterisk (�*�) is a wildcard
+     * @param handleId Specifies handle ID opened on the file or directory to be closed. Asterisk (‘*’) is a wildcard
      * that specifies all handles.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
@@ -2898,7 +2898,7 @@ public final class DirectoriesImpl {
      *
      * @param shareName The name of the target share.
      * @param directory The path of the target directory.
-     * @param handleId Specifies handle ID opened on the file or directory to be closed. Asterisk (�*�) is a wildcard
+     * @param handleId Specifies handle ID opened on the file or directory to be closed. Asterisk (‘*’) is a wildcard
      * that specifies all handles.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
@@ -2935,7 +2935,7 @@ public final class DirectoriesImpl {
      *
      * @param shareName The name of the target share.
      * @param directory The path of the target directory.
-     * @param handleId Specifies handle ID opened on the file or directory to be closed. Asterisk (�*�) is a wildcard
+     * @param handleId Specifies handle ID opened on the file or directory to be closed. Asterisk (‘*’) is a wildcard
      * that specifies all handles.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
@@ -2966,7 +2966,7 @@ public final class DirectoriesImpl {
      *
      * @param shareName The name of the target share.
      * @param directory The path of the target directory.
-     * @param handleId Specifies handle ID opened on the file or directory to be closed. Asterisk (�*�) is a wildcard
+     * @param handleId Specifies handle ID opened on the file or directory to be closed. Asterisk (‘*’) is a wildcard
      * that specifies all handles.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
@@ -2998,7 +2998,7 @@ public final class DirectoriesImpl {
      *
      * @param shareName The name of the target share.
      * @param directory The path of the target directory.
-     * @param handleId Specifies handle ID opened on the file or directory to be closed. Asterisk (�*�) is a wildcard
+     * @param handleId Specifies handle ID opened on the file or directory to be closed. Asterisk (‘*’) is a wildcard
      * that specifies all handles.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
@@ -3030,7 +3030,7 @@ public final class DirectoriesImpl {
      *
      * @param shareName The name of the target share.
      * @param directory The path of the target directory.
-     * @param handleId Specifies handle ID opened on the file or directory to be closed. Asterisk (�*�) is a wildcard
+     * @param handleId Specifies handle ID opened on the file or directory to be closed. Asterisk (‘*’) is a wildcard
      * that specifies all handles.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
@@ -3066,7 +3066,7 @@ public final class DirectoriesImpl {
      *
      * @param shareName The name of the target share.
      * @param directory The path of the target directory.
-     * @param handleId Specifies handle ID opened on the file or directory to be closed. Asterisk (�*�) is a wildcard
+     * @param handleId Specifies handle ID opened on the file or directory to be closed. Asterisk (‘*’) is a wildcard
      * that specifies all handles.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
@@ -3105,7 +3105,7 @@ public final class DirectoriesImpl {
      *
      * @param shareName The name of the target share.
      * @param directory The path of the target directory.
-     * @param handleId Specifies handle ID opened on the file or directory to be closed. Asterisk (�*�) is a wildcard
+     * @param handleId Specifies handle ID opened on the file or directory to be closed. Asterisk (‘*’) is a wildcard
      * that specifies all handles.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
@@ -3134,7 +3134,7 @@ public final class DirectoriesImpl {
      *
      * @param shareName The name of the target share.
      * @param directory The path of the target directory.
-     * @param handleId Specifies handle ID opened on the file or directory to be closed. Asterisk (�*�) is a wildcard
+     * @param handleId Specifies handle ID opened on the file or directory to be closed. Asterisk (‘*’) is a wildcard
      * that specifies all handles.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
@@ -3179,7 +3179,7 @@ public final class DirectoriesImpl {
      * @param replaceIfExists Optional. A boolean value for if the destination file already exists, whether this request
      * will overwrite the file or not. If true, the rename will succeed and will overwrite the destination file. If not
      * provided or if false and the destination file does exist, the request will not overwrite the destination file. If
-     * provided and the destination file doesn�t exist, the rename will succeed. Note: This value does not override the
+     * provided and the destination file doesn’t exist, the rename will succeed. Note: This value does not override the
      * x-ms-file-copy-ignore-read-only header value.
      * @param ignoreReadOnly Optional. A boolean value that specifies whether the ReadOnly attribute on a preexisting
      * destination file should be respected. If true, the rename will succeed, otherwise, a previous file at the
@@ -3229,7 +3229,7 @@ public final class DirectoriesImpl {
      * @param replaceIfExists Optional. A boolean value for if the destination file already exists, whether this request
      * will overwrite the file or not. If true, the rename will succeed and will overwrite the destination file. If not
      * provided or if false and the destination file does exist, the request will not overwrite the destination file. If
-     * provided and the destination file doesn�t exist, the rename will succeed. Note: This value does not override the
+     * provided and the destination file doesn’t exist, the rename will succeed. Note: This value does not override the
      * x-ms-file-copy-ignore-read-only header value.
      * @param ignoreReadOnly Optional. A boolean value that specifies whether the ReadOnly attribute on a preexisting
      * destination file should be respected. If true, the rename will succeed, otherwise, a previous file at the
@@ -3316,7 +3316,7 @@ public final class DirectoriesImpl {
      * @param replaceIfExists Optional. A boolean value for if the destination file already exists, whether this request
      * will overwrite the file or not. If true, the rename will succeed and will overwrite the destination file. If not
      * provided or if false and the destination file does exist, the request will not overwrite the destination file. If
-     * provided and the destination file doesn�t exist, the rename will succeed. Note: This value does not override the
+     * provided and the destination file doesn’t exist, the rename will succeed. Note: This value does not override the
      * x-ms-file-copy-ignore-read-only header value.
      * @param ignoreReadOnly Optional. A boolean value that specifies whether the ReadOnly attribute on a preexisting
      * destination file should be respected. If true, the rename will succeed, otherwise, a previous file at the
@@ -3366,7 +3366,7 @@ public final class DirectoriesImpl {
      * @param replaceIfExists Optional. A boolean value for if the destination file already exists, whether this request
      * will overwrite the file or not. If true, the rename will succeed and will overwrite the destination file. If not
      * provided or if false and the destination file does exist, the request will not overwrite the destination file. If
-     * provided and the destination file doesn�t exist, the rename will succeed. Note: This value does not override the
+     * provided and the destination file doesn’t exist, the rename will succeed. Note: This value does not override the
      * x-ms-file-copy-ignore-read-only header value.
      * @param ignoreReadOnly Optional. A boolean value that specifies whether the ReadOnly attribute on a preexisting
      * destination file should be respected. If true, the rename will succeed, otherwise, a previous file at the
@@ -3418,7 +3418,7 @@ public final class DirectoriesImpl {
      * @param replaceIfExists Optional. A boolean value for if the destination file already exists, whether this request
      * will overwrite the file or not. If true, the rename will succeed and will overwrite the destination file. If not
      * provided or if false and the destination file does exist, the request will not overwrite the destination file. If
-     * provided and the destination file doesn�t exist, the rename will succeed. Note: This value does not override the
+     * provided and the destination file doesn’t exist, the rename will succeed. Note: This value does not override the
      * x-ms-file-copy-ignore-read-only header value.
      * @param ignoreReadOnly Optional. A boolean value that specifies whether the ReadOnly attribute on a preexisting
      * destination file should be respected. If true, the rename will succeed, otherwise, a previous file at the
@@ -3468,7 +3468,7 @@ public final class DirectoriesImpl {
      * @param replaceIfExists Optional. A boolean value for if the destination file already exists, whether this request
      * will overwrite the file or not. If true, the rename will succeed and will overwrite the destination file. If not
      * provided or if false and the destination file does exist, the request will not overwrite the destination file. If
-     * provided and the destination file doesn�t exist, the rename will succeed. Note: This value does not override the
+     * provided and the destination file doesn’t exist, the rename will succeed. Note: This value does not override the
      * x-ms-file-copy-ignore-read-only header value.
      * @param ignoreReadOnly Optional. A boolean value that specifies whether the ReadOnly attribute on a preexisting
      * destination file should be respected. If true, the rename will succeed, otherwise, a previous file at the
@@ -3555,7 +3555,7 @@ public final class DirectoriesImpl {
      * @param replaceIfExists Optional. A boolean value for if the destination file already exists, whether this request
      * will overwrite the file or not. If true, the rename will succeed and will overwrite the destination file. If not
      * provided or if false and the destination file does exist, the request will not overwrite the destination file. If
-     * provided and the destination file doesn�t exist, the rename will succeed. Note: This value does not override the
+     * provided and the destination file doesn’t exist, the rename will succeed. Note: This value does not override the
      * x-ms-file-copy-ignore-read-only header value.
      * @param ignoreReadOnly Optional. A boolean value that specifies whether the ReadOnly attribute on a preexisting
      * destination file should be respected. If true, the rename will succeed, otherwise, a previous file at the
@@ -3644,7 +3644,7 @@ public final class DirectoriesImpl {
      * @param replaceIfExists Optional. A boolean value for if the destination file already exists, whether this request
      * will overwrite the file or not. If true, the rename will succeed and will overwrite the destination file. If not
      * provided or if false and the destination file does exist, the request will not overwrite the destination file. If
-     * provided and the destination file doesn�t exist, the rename will succeed. Note: This value does not override the
+     * provided and the destination file doesn’t exist, the rename will succeed. Note: This value does not override the
      * x-ms-file-copy-ignore-read-only header value.
      * @param ignoreReadOnly Optional. A boolean value that specifies whether the ReadOnly attribute on a preexisting
      * destination file should be respected. If true, the rename will succeed, otherwise, a previous file at the
@@ -3691,7 +3691,7 @@ public final class DirectoriesImpl {
      * @param replaceIfExists Optional. A boolean value for if the destination file already exists, whether this request
      * will overwrite the file or not. If true, the rename will succeed and will overwrite the destination file. If not
      * provided or if false and the destination file does exist, the request will not overwrite the destination file. If
-     * provided and the destination file doesn�t exist, the rename will succeed. Note: This value does not override the
+     * provided and the destination file doesn’t exist, the rename will succeed. Note: This value does not override the
      * x-ms-file-copy-ignore-read-only header value.
      * @param ignoreReadOnly Optional. A boolean value that specifies whether the ReadOnly attribute on a preexisting
      * destination file should be respected. If true, the rename will succeed, otherwise, a previous file at the
