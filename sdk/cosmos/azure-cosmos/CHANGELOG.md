@@ -17,6 +17,7 @@
 * Fixed `ClassCastException` (`ArrayNode cannot be cast to ObjectNode`) when executing `SELECT VALUE ... GROUP BY` queries. See - [PR 48507](https://github.com/Azure/azure-sdk-for-java/pull/48507)
 
 #### Other Changes
+* Promoted the following `@Beta` APIs to GA: `CosmosContainerProperties.getFullTextPolicy()`/`setFullTextPolicy()`, `IndexingPolicy.getCosmosFullTextIndexes()`/`setCosmosFullTextIndexes()`. - See [PR 48538](https://github.com/Azure/azure-sdk-for-java/pull/48538)
 * Added `appendUserAgentSuffix` method to `AsyncDocumentClient` to allow downstream libraries to append to the user agent after client construction. - See [PR 48505](https://github.com/Azure/azure-sdk-for-java/pull/48505)
 * Added aggressive HTTP timeout policies for document operations routed to Gateway V2. - [PR 47879](https://github.com/Azure/azure-sdk-for-java/pull/47879)
 * Added a default connect timeout of 5s for Gateway V2 (thin client) data-plane endpoints. - See [PR 48174](https://github.com/Azure/azure-sdk-for-java/pull/48174)
