@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.network.generated;
 
 import com.azure.resourcemanager.network.fluent.models.ReachabilityAnalysisIntentInner;
-import com.azure.resourcemanager.network.models.IPTraffic;
+import com.azure.resourcemanager.network.models.IpTraffic;
 import com.azure.resourcemanager.network.models.NetworkProtocol;
 import com.azure.resourcemanager.network.models.ReachabilityAnalysisIntentProperties;
 import java.util.Arrays;
@@ -32,7 +32,7 @@ public final class ReachabilityAnalysisIntentsCreateSamples {
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/virtualMachines/testVmSrc")
                     .withDestinationResourceId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/virtualMachines/testVmDest")
-                    .withIpTraffic(new IPTraffic().withSourceIps(Arrays.asList("10.4.0.0"))
+                    .withIpTraffic(new IpTraffic().withSourceIps(Arrays.asList("10.4.0.0"))
                         .withDestinationIps(Arrays.asList("10.4.0.1"))
                         .withSourcePorts(Arrays.asList("0"))
                         .withDestinationPorts(Arrays.asList("0"))

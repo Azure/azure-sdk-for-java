@@ -8,7 +8,7 @@ package com.azure.resourcemanager.network.models;
  * Describes in which direction signature is being enforced: 0 - OutBound, 1 - InBound, 2 - Any, 3 - Internal, 4 -
  * InternalOutbound, 5 - InternalInbound.
  */
-public enum FirewallPolicyIDPSSignatureDirection {
+public enum FirewallPolicyIdpsSignatureDirection {
     /**
      * 0.
      */
@@ -40,23 +40,23 @@ public enum FirewallPolicyIDPSSignatureDirection {
     FIVE(5);
 
     /**
-     * The actual serialized value for a FirewallPolicyIDPSSignatureDirection instance.
+     * The actual serialized value for a FirewallPolicyIdpsSignatureDirection instance.
      */
     private final int value;
 
-    FirewallPolicyIDPSSignatureDirection(int value) {
+    FirewallPolicyIdpsSignatureDirection(int value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a FirewallPolicyIDPSSignatureDirection instance.
+     * Parses a serialized value to a FirewallPolicyIdpsSignatureDirection instance.
      * 
      * @param value the serialized value to parse.
-     * @return the parsed FirewallPolicyIDPSSignatureDirection object, or null if unable to parse.
+     * @return the parsed FirewallPolicyIdpsSignatureDirection object, or null if unable to parse.
      */
-    public static FirewallPolicyIDPSSignatureDirection fromInt(int value) {
-        FirewallPolicyIDPSSignatureDirection[] items = FirewallPolicyIDPSSignatureDirection.values();
-        for (FirewallPolicyIDPSSignatureDirection item : items) {
+    public static FirewallPolicyIdpsSignatureDirection fromInt(int value) {
+        FirewallPolicyIdpsSignatureDirection[] items = FirewallPolicyIdpsSignatureDirection.values();
+        for (FirewallPolicyIdpsSignatureDirection item : items) {
             if (item.toInt() == value) {
                 return item;
             }

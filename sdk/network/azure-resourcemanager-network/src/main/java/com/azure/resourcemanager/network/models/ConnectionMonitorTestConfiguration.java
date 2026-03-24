@@ -36,7 +36,7 @@ public final class ConnectionMonitorTestConfiguration implements JsonSerializabl
      * The preferred IP version to use in test evaluation. The connection monitor may choose to use a different version
      * depending on other parameters.
      */
-    private PreferredIPVersion preferredIPVersion;
+    private PreferredIpVersion preferredIPVersion;
 
     /*
      * The parameters used to perform test evaluation over HTTP.
@@ -130,7 +130,7 @@ public final class ConnectionMonitorTestConfiguration implements JsonSerializabl
      * 
      * @return the preferredIPVersion value.
      */
-    public PreferredIPVersion preferredIPVersion() {
+    public PreferredIpVersion preferredIPVersion() {
         return this.preferredIPVersion;
     }
 
@@ -141,7 +141,7 @@ public final class ConnectionMonitorTestConfiguration implements JsonSerializabl
      * @param preferredIPVersion the preferredIPVersion value to set.
      * @return the ConnectionMonitorTestConfiguration object itself.
      */
-    public ConnectionMonitorTestConfiguration withPreferredIPVersion(PreferredIPVersion preferredIPVersion) {
+    public ConnectionMonitorTestConfiguration withPreferredIPVersion(PreferredIpVersion preferredIPVersion) {
         this.preferredIPVersion = preferredIPVersion;
         return this;
     }
@@ -305,7 +305,7 @@ public final class ConnectionMonitorTestConfiguration implements JsonSerializabl
                         = reader.getNullable(JsonReader::getInt);
                 } else if ("preferredIPVersion".equals(fieldName)) {
                     deserializedConnectionMonitorTestConfiguration.preferredIPVersion
-                        = PreferredIPVersion.fromString(reader.getString());
+                        = PreferredIpVersion.fromString(reader.getString());
                 } else if ("httpConfiguration".equals(fieldName)) {
                     deserializedConnectionMonitorTestConfiguration.httpConfiguration
                         = ConnectionMonitorHttpConfiguration.fromJson(reader);

@@ -11,42 +11,42 @@ import java.util.Collection;
  * The preferred IP version to use in test evaluation. The connection monitor may choose to use a different version
  * depending on other parameters.
  */
-public final class PreferredIPVersion extends ExpandableStringEnum<PreferredIPVersion> {
+public final class PreferredIpVersion extends ExpandableStringEnum<PreferredIpVersion> {
     /**
      * IPv4.
      */
-    public static final PreferredIPVersion IPV4 = fromString("IPv4");
+    public static final PreferredIpVersion IPV4 = fromString("IPv4");
 
     /**
      * IPv6.
      */
-    public static final PreferredIPVersion IPV6 = fromString("IPv6");
+    public static final PreferredIpVersion IPV6 = fromString("IPv6");
 
     /**
-     * Creates a new instance of PreferredIPVersion value.
+     * Creates a new instance of PreferredIpVersion value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public PreferredIPVersion() {
+    public PreferredIpVersion() {
     }
 
     /**
-     * Creates or finds a PreferredIPVersion from its string representation.
+     * Creates or finds a PreferredIpVersion from its string representation.
      * 
      * @param name a name to look for.
-     * @return the corresponding PreferredIPVersion.
+     * @return the corresponding PreferredIpVersion.
      */
-    public static PreferredIPVersion fromString(String name) {
-        return fromString(name, PreferredIPVersion.class);
+    public static PreferredIpVersion fromString(String name) {
+        return fromString(name, PreferredIpVersion.class);
     }
 
     /**
-     * Gets known PreferredIPVersion values.
+     * Gets known PreferredIpVersion values.
      * 
-     * @return known PreferredIPVersion values.
+     * @return known PreferredIpVersion values.
      */
-    public static Collection<PreferredIPVersion> values() {
-        return values(PreferredIPVersion.class);
+    public static Collection<PreferredIpVersion> values() {
+        return values(PreferredIpVersion.class);
     }
 }

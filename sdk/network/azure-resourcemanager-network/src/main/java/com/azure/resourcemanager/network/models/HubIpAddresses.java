@@ -15,11 +15,11 @@ import java.io.IOException;
  * IP addresses associated with azure firewall.
  */
 @Fluent
-public final class HubIPAddresses implements JsonSerializable<HubIPAddresses> {
+public final class HubIpAddresses implements JsonSerializable<HubIpAddresses> {
     /*
      * Public IP addresses associated with azure firewall.
      */
-    private HubPublicIPAddresses publicIPs;
+    private HubPublicIpAddresses publicIPs;
 
     /*
      * Private IP Address associated with azure firewall.
@@ -27,9 +27,9 @@ public final class HubIPAddresses implements JsonSerializable<HubIPAddresses> {
     private String privateIpAddress;
 
     /**
-     * Creates an instance of HubIPAddresses class.
+     * Creates an instance of HubIpAddresses class.
      */
-    public HubIPAddresses() {
+    public HubIpAddresses() {
     }
 
     /**
@@ -37,7 +37,7 @@ public final class HubIPAddresses implements JsonSerializable<HubIPAddresses> {
      * 
      * @return the publicIPs value.
      */
-    public HubPublicIPAddresses publicIPs() {
+    public HubPublicIpAddresses publicIPs() {
         return this.publicIPs;
     }
 
@@ -45,9 +45,9 @@ public final class HubIPAddresses implements JsonSerializable<HubIPAddresses> {
      * Set the publicIPs property: Public IP addresses associated with azure firewall.
      * 
      * @param publicIPs the publicIPs value to set.
-     * @return the HubIPAddresses object itself.
+     * @return the HubIpAddresses object itself.
      */
-    public HubIPAddresses withPublicIPs(HubPublicIPAddresses publicIPs) {
+    public HubIpAddresses withPublicIPs(HubPublicIpAddresses publicIPs) {
         this.publicIPs = publicIPs;
         return this;
     }
@@ -65,9 +65,9 @@ public final class HubIPAddresses implements JsonSerializable<HubIPAddresses> {
      * Set the privateIpAddress property: Private IP Address associated with azure firewall.
      * 
      * @param privateIpAddress the privateIpAddress value to set.
-     * @return the HubIPAddresses object itself.
+     * @return the HubIpAddresses object itself.
      */
-    public HubIPAddresses withPrivateIpAddress(String privateIpAddress) {
+    public HubIpAddresses withPrivateIpAddress(String privateIpAddress) {
         this.privateIpAddress = privateIpAddress;
         return this;
     }
@@ -95,30 +95,30 @@ public final class HubIPAddresses implements JsonSerializable<HubIPAddresses> {
     }
 
     /**
-     * Reads an instance of HubIPAddresses from the JsonReader.
+     * Reads an instance of HubIpAddresses from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of HubIPAddresses if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of HubIpAddresses if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the HubIPAddresses.
+     * @throws IOException If an error occurs while reading the HubIpAddresses.
      */
-    public static HubIPAddresses fromJson(JsonReader jsonReader) throws IOException {
+    public static HubIpAddresses fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            HubIPAddresses deserializedHubIPAddresses = new HubIPAddresses();
+            HubIpAddresses deserializedHubIpAddresses = new HubIpAddresses();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("publicIPs".equals(fieldName)) {
-                    deserializedHubIPAddresses.publicIPs = HubPublicIPAddresses.fromJson(reader);
+                    deserializedHubIpAddresses.publicIPs = HubPublicIpAddresses.fromJson(reader);
                 } else if ("privateIPAddress".equals(fieldName)) {
-                    deserializedHubIPAddresses.privateIpAddress = reader.getString();
+                    deserializedHubIpAddresses.privateIpAddress = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedHubIPAddresses;
+            return deserializedHubIpAddresses;
         });
     }
 }

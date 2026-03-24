@@ -6,9 +6,9 @@ package com.azure.resourcemanager.network.generated;
 
 import com.azure.resourcemanager.network.fluent.models.PublicIpPrefixInner;
 import com.azure.resourcemanager.network.models.IpVersion;
-import com.azure.resourcemanager.network.models.PublicIPPrefixSkuName;
-import com.azure.resourcemanager.network.models.PublicIPPrefixSkuTier;
 import com.azure.resourcemanager.network.models.PublicIpPrefixSku;
+import com.azure.resourcemanager.network.models.PublicIpPrefixSkuName;
+import com.azure.resourcemanager.network.models.PublicIpPrefixSkuTier;
 
 /**
  * Samples for PublicIpPrefixes CreateOrUpdate.
@@ -28,7 +28,7 @@ public final class PublicIpPrefixesCreateOrUpdateSamples {
             .getPublicIpPrefixes()
             .createOrUpdate("rg1", "test-ipprefix",
                 new PublicIpPrefixInner().withLocation("westus")
-                    .withSku(new PublicIpPrefixSku().withName(PublicIPPrefixSkuName.STANDARD_V2))
+                    .withSku(new PublicIpPrefixSku().withName(PublicIpPrefixSkuName.STANDARD_V2))
                     .withPrefixLength(30),
                 com.azure.core.util.Context.NONE);
     }
@@ -46,7 +46,7 @@ public final class PublicIpPrefixesCreateOrUpdateSamples {
             .getPublicIpPrefixes()
             .createOrUpdate("rg1", "test-ipprefix",
                 new PublicIpPrefixInner().withLocation("westus")
-                    .withSku(new PublicIpPrefixSku().withName(PublicIPPrefixSkuName.STANDARD))
+                    .withSku(new PublicIpPrefixSku().withName(PublicIpPrefixSkuName.STANDARD))
                     .withPrefixLength(30),
                 com.azure.core.util.Context.NONE);
     }
@@ -64,8 +64,8 @@ public final class PublicIpPrefixesCreateOrUpdateSamples {
             .getPublicIpPrefixes()
             .createOrUpdate("rg1", "test-ipprefix",
                 new PublicIpPrefixInner().withLocation("westus")
-                    .withSku(new PublicIpPrefixSku().withName(PublicIPPrefixSkuName.STANDARD)
-                        .withTier(PublicIPPrefixSkuTier.REGIONAL))
+                    .withSku(new PublicIpPrefixSku().withName(PublicIpPrefixSkuName.STANDARD)
+                        .withTier(PublicIpPrefixSkuTier.REGIONAL))
                     .withPublicIpAddressVersion(IpVersion.IPV4)
                     .withPrefixLength(30),
                 com.azure.core.util.Context.NONE);

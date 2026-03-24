@@ -15,7 +15,7 @@ import com.azure.resourcemanager.network.models.ApplicationGatewayBackendAddress
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackendHttpSettings;
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackendSettings;
 import com.azure.resourcemanager.network.models.ApplicationGatewayCustomError;
-import com.azure.resourcemanager.network.models.ApplicationGatewayEntraJWTValidationConfig;
+import com.azure.resourcemanager.network.models.ApplicationGatewayEntraJwtValidationConfig;
 import com.azure.resourcemanager.network.models.ApplicationGatewayFrontendIpConfiguration;
 import com.azure.resourcemanager.network.models.ApplicationGatewayFrontendPort;
 import com.azure.resourcemanager.network.models.ApplicationGatewayGlobalConfiguration;
@@ -231,7 +231,7 @@ public final class ApplicationGatewayPropertiesFormat implements JsonSerializabl
      * Entra JWT validation configurations for the application gateway resource. For default limits, see [Application
      * Gateway limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits).
      */
-    private List<ApplicationGatewayEntraJWTValidationConfig> entraJWTValidationConfigs;
+    private List<ApplicationGatewayEntraJwtValidationConfig> entraJWTValidationConfigs;
 
     /*
      * Global Configuration.
@@ -970,7 +970,7 @@ public final class ApplicationGatewayPropertiesFormat implements JsonSerializabl
      * 
      * @return the entraJWTValidationConfigs value.
      */
-    public List<ApplicationGatewayEntraJWTValidationConfig> entraJWTValidationConfigs() {
+    public List<ApplicationGatewayEntraJwtValidationConfig> entraJWTValidationConfigs() {
         return this.entraJWTValidationConfigs;
     }
 
@@ -983,7 +983,7 @@ public final class ApplicationGatewayPropertiesFormat implements JsonSerializabl
      * @return the ApplicationGatewayPropertiesFormat object itself.
      */
     public ApplicationGatewayPropertiesFormat
-        withEntraJWTValidationConfigs(List<ApplicationGatewayEntraJWTValidationConfig> entraJWTValidationConfigs) {
+        withEntraJWTValidationConfigs(List<ApplicationGatewayEntraJwtValidationConfig> entraJWTValidationConfigs) {
         this.entraJWTValidationConfigs = entraJWTValidationConfigs;
         return this;
     }
@@ -1317,8 +1317,8 @@ public final class ApplicationGatewayPropertiesFormat implements JsonSerializabl
                         = reader.readArray(reader1 -> ApplicationGatewayLoadDistributionPolicy.fromJson(reader1));
                     deserializedApplicationGatewayPropertiesFormat.loadDistributionPolicies = loadDistributionPolicies;
                 } else if ("entraJWTValidationConfigs".equals(fieldName)) {
-                    List<ApplicationGatewayEntraJWTValidationConfig> entraJWTValidationConfigs
-                        = reader.readArray(reader1 -> ApplicationGatewayEntraJWTValidationConfig.fromJson(reader1));
+                    List<ApplicationGatewayEntraJwtValidationConfig> entraJWTValidationConfigs
+                        = reader.readArray(reader1 -> ApplicationGatewayEntraJwtValidationConfig.fromJson(reader1));
                     deserializedApplicationGatewayPropertiesFormat.entraJWTValidationConfigs
                         = entraJWTValidationConfigs;
                 } else if ("globalConfiguration".equals(fieldName)) {

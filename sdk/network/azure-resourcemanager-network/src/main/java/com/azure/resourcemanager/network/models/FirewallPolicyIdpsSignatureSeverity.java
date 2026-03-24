@@ -7,7 +7,7 @@ package com.azure.resourcemanager.network.models;
 /**
  * Describes the severity of signature: 1 - High, 2 - Medium, 3 - Low.
  */
-public enum FirewallPolicyIDPSSignatureSeverity {
+public enum FirewallPolicyIdpsSignatureSeverity {
     /**
      * 1.
      */
@@ -24,23 +24,23 @@ public enum FirewallPolicyIDPSSignatureSeverity {
     THREE(3);
 
     /**
-     * The actual serialized value for a FirewallPolicyIDPSSignatureSeverity instance.
+     * The actual serialized value for a FirewallPolicyIdpsSignatureSeverity instance.
      */
     private final int value;
 
-    FirewallPolicyIDPSSignatureSeverity(int value) {
+    FirewallPolicyIdpsSignatureSeverity(int value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a FirewallPolicyIDPSSignatureSeverity instance.
+     * Parses a serialized value to a FirewallPolicyIdpsSignatureSeverity instance.
      * 
      * @param value the serialized value to parse.
-     * @return the parsed FirewallPolicyIDPSSignatureSeverity object, or null if unable to parse.
+     * @return the parsed FirewallPolicyIdpsSignatureSeverity object, or null if unable to parse.
      */
-    public static FirewallPolicyIDPSSignatureSeverity fromInt(int value) {
-        FirewallPolicyIDPSSignatureSeverity[] items = FirewallPolicyIDPSSignatureSeverity.values();
-        for (FirewallPolicyIDPSSignatureSeverity item : items) {
+    public static FirewallPolicyIdpsSignatureSeverity fromInt(int value) {
+        FirewallPolicyIdpsSignatureSeverity[] items = FirewallPolicyIdpsSignatureSeverity.values();
+        for (FirewallPolicyIdpsSignatureSeverity item : items) {
             if (item.toInt() == value) {
                 return item;
             }

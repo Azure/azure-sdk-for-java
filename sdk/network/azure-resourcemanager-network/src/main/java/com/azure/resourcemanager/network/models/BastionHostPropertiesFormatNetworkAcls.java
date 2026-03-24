@@ -21,7 +21,7 @@ public final class BastionHostPropertiesFormatNetworkAcls
     /*
      * Sets the IP ACL rules for Developer Bastion Host.
      */
-    private List<IPRule> ipRules;
+    private List<IpRule> ipRules;
 
     /**
      * Creates an instance of BastionHostPropertiesFormatNetworkAcls class.
@@ -34,7 +34,7 @@ public final class BastionHostPropertiesFormatNetworkAcls
      * 
      * @return the ipRules value.
      */
-    public List<IPRule> ipRules() {
+    public List<IpRule> ipRules() {
         return this.ipRules;
     }
 
@@ -44,7 +44,7 @@ public final class BastionHostPropertiesFormatNetworkAcls
      * @param ipRules the ipRules value to set.
      * @return the BastionHostPropertiesFormatNetworkAcls object itself.
      */
-    public BastionHostPropertiesFormatNetworkAcls withIpRules(List<IPRule> ipRules) {
+    public BastionHostPropertiesFormatNetworkAcls withIpRules(List<IpRule> ipRules) {
         this.ipRules = ipRules;
         return this;
     }
@@ -87,7 +87,7 @@ public final class BastionHostPropertiesFormatNetworkAcls
                 reader.nextToken();
 
                 if ("ipRules".equals(fieldName)) {
-                    List<IPRule> ipRules = reader.readArray(reader1 -> IPRule.fromJson(reader1));
+                    List<IpRule> ipRules = reader.readArray(reader1 -> IpRule.fromJson(reader1));
                     deserializedBastionHostPropertiesFormatNetworkAcls.ipRules = ipRules;
                 } else {
                     reader.skipChildren();

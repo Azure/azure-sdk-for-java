@@ -15,8 +15,8 @@ import com.azure.resourcemanager.network.models.DnsSettings;
 import com.azure.resourcemanager.network.models.ExplicitProxy;
 import com.azure.resourcemanager.network.models.FirewallPolicyInsights;
 import com.azure.resourcemanager.network.models.FirewallPolicyIntrusionDetection;
-import com.azure.resourcemanager.network.models.FirewallPolicySNAT;
-import com.azure.resourcemanager.network.models.FirewallPolicySQL;
+import com.azure.resourcemanager.network.models.FirewallPolicySnat;
+import com.azure.resourcemanager.network.models.FirewallPolicySql;
 import com.azure.resourcemanager.network.models.FirewallPolicyThreatIntelWhitelist;
 import java.io.IOException;
 
@@ -48,12 +48,12 @@ public final class FirewallPolicyDraftProperties implements JsonSerializable<Fir
     /*
      * The private IP addresses/IP ranges to which traffic will not be SNAT.
      */
-    private FirewallPolicySNAT snat;
+    private FirewallPolicySnat snat;
 
     /*
      * SQL Settings definition.
      */
-    private FirewallPolicySQL sql;
+    private FirewallPolicySql sql;
 
     /*
      * DNS Proxy Settings definition.
@@ -162,7 +162,7 @@ public final class FirewallPolicyDraftProperties implements JsonSerializable<Fir
      * 
      * @return the snat value.
      */
-    public FirewallPolicySNAT snat() {
+    public FirewallPolicySnat snat() {
         return this.snat;
     }
 
@@ -172,7 +172,7 @@ public final class FirewallPolicyDraftProperties implements JsonSerializable<Fir
      * @param snat the snat value to set.
      * @return the FirewallPolicyDraftProperties object itself.
      */
-    public FirewallPolicyDraftProperties withSnat(FirewallPolicySNAT snat) {
+    public FirewallPolicyDraftProperties withSnat(FirewallPolicySnat snat) {
         this.snat = snat;
         return this;
     }
@@ -182,7 +182,7 @@ public final class FirewallPolicyDraftProperties implements JsonSerializable<Fir
      * 
      * @return the sql value.
      */
-    public FirewallPolicySQL sql() {
+    public FirewallPolicySql sql() {
         return this.sql;
     }
 
@@ -192,7 +192,7 @@ public final class FirewallPolicyDraftProperties implements JsonSerializable<Fir
      * @param sql the sql value to set.
      * @return the FirewallPolicyDraftProperties object itself.
      */
-    public FirewallPolicyDraftProperties withSql(FirewallPolicySQL sql) {
+    public FirewallPolicyDraftProperties withSql(FirewallPolicySql sql) {
         this.sql = sql;
         return this;
     }
@@ -332,9 +332,9 @@ public final class FirewallPolicyDraftProperties implements JsonSerializable<Fir
                 } else if ("insights".equals(fieldName)) {
                     deserializedFirewallPolicyDraftProperties.insights = FirewallPolicyInsights.fromJson(reader);
                 } else if ("snat".equals(fieldName)) {
-                    deserializedFirewallPolicyDraftProperties.snat = FirewallPolicySNAT.fromJson(reader);
+                    deserializedFirewallPolicyDraftProperties.snat = FirewallPolicySnat.fromJson(reader);
                 } else if ("sql".equals(fieldName)) {
-                    deserializedFirewallPolicyDraftProperties.sql = FirewallPolicySQL.fromJson(reader);
+                    deserializedFirewallPolicyDraftProperties.sql = FirewallPolicySql.fromJson(reader);
                 } else if ("dnsSettings".equals(fieldName)) {
                     deserializedFirewallPolicyDraftProperties.dnsSettings = DnsSettings.fromJson(reader);
                 } else if ("explicitProxy".equals(fieldName)) {

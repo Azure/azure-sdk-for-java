@@ -70,7 +70,7 @@ public final class BastionActiveSessionInner implements JsonSerializable<Bastion
     /*
      * Duration in mins the session has been active.
      */
-    private Double sessionDurationInMins;
+    private Float sessionDurationInMins;
 
     /**
      * Creates an instance of BastionActiveSessionInner class.
@@ -173,7 +173,7 @@ public final class BastionActiveSessionInner implements JsonSerializable<Bastion
      * 
      * @return the sessionDurationInMins value.
      */
-    public Double sessionDurationInMins() {
+    public Float sessionDurationInMins() {
         return this.sessionDurationInMins;
     }
 
@@ -232,7 +232,7 @@ public final class BastionActiveSessionInner implements JsonSerializable<Bastion
                     deserializedBastionActiveSessionInner.targetResourceId = reader.getString();
                 } else if ("sessionDurationInMins".equals(fieldName)) {
                     deserializedBastionActiveSessionInner.sessionDurationInMins
-                        = reader.getNullable(JsonReader::getDouble);
+                        = reader.getNullable(JsonReader::getFloat);
                 } else {
                     reader.skipChildren();
                 }

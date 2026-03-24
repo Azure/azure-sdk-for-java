@@ -7,8 +7,8 @@ package com.azure.resourcemanager.network.generated;
 import com.azure.resourcemanager.network.fluent.models.ApplicationSecurityGroupInner;
 import com.azure.resourcemanager.network.fluent.models.PrivateEndpointInner;
 import com.azure.resourcemanager.network.fluent.models.SubnetInner;
-import com.azure.resourcemanager.network.models.PrivateEndpointIPConfiguration;
-import com.azure.resourcemanager.network.models.PrivateEndpointIPVersionType;
+import com.azure.resourcemanager.network.models.PrivateEndpointIpConfiguration;
+import com.azure.resourcemanager.network.models.PrivateEndpointIpVersionType;
 import com.azure.resourcemanager.network.models.PrivateLinkServiceConnection;
 import java.util.Arrays;
 
@@ -55,13 +55,13 @@ public final class PrivateEndpointsCreateOrUpdateSamples {
             .createOrUpdate("rg1", "testPe", new PrivateEndpointInner().withLocation("eastus2euap")
                 .withSubnet(new SubnetInner().withId(
                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/mySubnet"))
-                .withIpVersionType(PrivateEndpointIPVersionType.IPV4)
+                .withIpVersionType(PrivateEndpointIpVersionType.IPV4)
                 .withPrivateLinkServiceConnections(Arrays.asList(new PrivateLinkServiceConnection()
                     .withPrivateLinkServiceId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/privateLinkServices/testPls")
                     .withGroupIds(Arrays.asList("groupIdFromResource"))
                     .withRequestMessage("Please approve my connection.")))
-                .withIpConfigurations(Arrays.asList(new PrivateEndpointIPConfiguration().withName("pestaticconfig")
+                .withIpConfigurations(Arrays.asList(new PrivateEndpointIpConfiguration().withName("pestaticconfig")
                     .withGroupId("file")
                     .withMemberName("file")
                     .withPrivateIpAddress("192.168.0.6")))
@@ -88,7 +88,7 @@ public final class PrivateEndpointsCreateOrUpdateSamples {
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/privateLinkServices/testPls")
                     .withGroupIds(Arrays.asList("groupIdFromResource"))
                     .withRequestMessage("Please manually approve my connection.")))
-                .withIpConfigurations(Arrays.asList(new PrivateEndpointIPConfiguration().withName("pestaticconfig")
+                .withIpConfigurations(Arrays.asList(new PrivateEndpointIpConfiguration().withName("pestaticconfig")
                     .withGroupId("file")
                     .withMemberName("file")
                     .withPrivateIpAddress("192.168.0.5")))

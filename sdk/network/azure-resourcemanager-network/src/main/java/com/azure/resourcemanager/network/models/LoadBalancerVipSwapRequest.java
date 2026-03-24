@@ -20,7 +20,7 @@ public final class LoadBalancerVipSwapRequest implements JsonSerializable<LoadBa
     /*
      * A list of frontend IP configuration resources that should swap VIPs.
      */
-    private List<LoadBalancerVipSwapRequestFrontendIPConfiguration> frontendIpConfigurations;
+    private List<LoadBalancerVipSwapRequestFrontendIpConfiguration> frontendIpConfigurations;
 
     /**
      * Creates an instance of LoadBalancerVipSwapRequest class.
@@ -33,7 +33,7 @@ public final class LoadBalancerVipSwapRequest implements JsonSerializable<LoadBa
      * 
      * @return the frontendIpConfigurations value.
      */
-    public List<LoadBalancerVipSwapRequestFrontendIPConfiguration> frontendIpConfigurations() {
+    public List<LoadBalancerVipSwapRequestFrontendIpConfiguration> frontendIpConfigurations() {
         return this.frontendIpConfigurations;
     }
 
@@ -44,7 +44,7 @@ public final class LoadBalancerVipSwapRequest implements JsonSerializable<LoadBa
      * @return the LoadBalancerVipSwapRequest object itself.
      */
     public LoadBalancerVipSwapRequest
-        withFrontendIpConfigurations(List<LoadBalancerVipSwapRequestFrontendIPConfiguration> frontendIpConfigurations) {
+        withFrontendIpConfigurations(List<LoadBalancerVipSwapRequestFrontendIpConfiguration> frontendIpConfigurations) {
         this.frontendIpConfigurations = frontendIpConfigurations;
         return this;
     }
@@ -87,8 +87,8 @@ public final class LoadBalancerVipSwapRequest implements JsonSerializable<LoadBa
                 reader.nextToken();
 
                 if ("frontendIPConfigurations".equals(fieldName)) {
-                    List<LoadBalancerVipSwapRequestFrontendIPConfiguration> frontendIpConfigurations = reader
-                        .readArray(reader1 -> LoadBalancerVipSwapRequestFrontendIPConfiguration.fromJson(reader1));
+                    List<LoadBalancerVipSwapRequestFrontendIpConfiguration> frontendIpConfigurations = reader
+                        .readArray(reader1 -> LoadBalancerVipSwapRequestFrontendIpConfiguration.fromJson(reader1));
                     deserializedLoadBalancerVipSwapRequest.frontendIpConfigurations = frontendIpConfigurations;
                 } else {
                     reader.skipChildren();

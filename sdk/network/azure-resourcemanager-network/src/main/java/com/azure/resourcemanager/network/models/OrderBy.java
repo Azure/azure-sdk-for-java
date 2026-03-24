@@ -24,7 +24,7 @@ public final class OrderBy implements JsonSerializable<OrderBy> {
     /*
      * Describes if results should be in ascending/descending order
      */
-    private FirewallPolicyIDPSQuerySortOrder order;
+    private FirewallPolicyIdpsQuerySortOrder order;
 
     /**
      * Creates an instance of OrderBy class.
@@ -57,7 +57,7 @@ public final class OrderBy implements JsonSerializable<OrderBy> {
      * 
      * @return the order value.
      */
-    public FirewallPolicyIDPSQuerySortOrder order() {
+    public FirewallPolicyIdpsQuerySortOrder order() {
         return this.order;
     }
 
@@ -67,7 +67,7 @@ public final class OrderBy implements JsonSerializable<OrderBy> {
      * @param order the order value to set.
      * @return the OrderBy object itself.
      */
-    public OrderBy withOrder(FirewallPolicyIDPSQuerySortOrder order) {
+    public OrderBy withOrder(FirewallPolicyIdpsQuerySortOrder order) {
         this.order = order;
         return this;
     }
@@ -109,7 +109,7 @@ public final class OrderBy implements JsonSerializable<OrderBy> {
                 if ("field".equals(fieldName)) {
                     deserializedOrderBy.field = reader.getString();
                 } else if ("order".equals(fieldName)) {
-                    deserializedOrderBy.order = FirewallPolicyIDPSQuerySortOrder.fromString(reader.getString());
+                    deserializedOrderBy.order = FirewallPolicyIdpsQuerySortOrder.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

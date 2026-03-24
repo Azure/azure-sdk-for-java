@@ -60,7 +60,7 @@ public final class ExpressRouteCircuitsCreateOrUpdateSamples {
                     .withFamily(ExpressRouteCircuitSkuFamily.METERED_DATA))
                 .withExpressRoutePort(new SubResource().withId(
                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/expressRoutePorts/portName"))
-                .withBandwidthInGbps(10.0D)
+                .withBandwidthInGbps(10.0F)
                 .withAuthorizationKey("fakeTokenPlaceholder")
                 .withEnableDirectPortRateLimit(false), com.azure.core.util.Context.NONE);
     }

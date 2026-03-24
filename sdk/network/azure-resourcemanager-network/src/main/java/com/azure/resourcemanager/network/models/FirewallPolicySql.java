@@ -15,7 +15,7 @@ import java.io.IOException;
  * SQL Settings in Firewall Policy.
  */
 @Fluent
-public final class FirewallPolicySQL implements JsonSerializable<FirewallPolicySQL> {
+public final class FirewallPolicySql implements JsonSerializable<FirewallPolicySql> {
     /*
      * A flag to indicate if SQL Redirect traffic filtering is enabled. Turning on the flag requires no rule using port
      * 11000-11999.
@@ -23,9 +23,9 @@ public final class FirewallPolicySQL implements JsonSerializable<FirewallPolicyS
     private Boolean allowSqlRedirect;
 
     /**
-     * Creates an instance of FirewallPolicySQL class.
+     * Creates an instance of FirewallPolicySql class.
      */
-    public FirewallPolicySQL() {
+    public FirewallPolicySql() {
     }
 
     /**
@@ -43,9 +43,9 @@ public final class FirewallPolicySQL implements JsonSerializable<FirewallPolicyS
      * the flag requires no rule using port 11000-11999.
      * 
      * @param allowSqlRedirect the allowSqlRedirect value to set.
-     * @return the FirewallPolicySQL object itself.
+     * @return the FirewallPolicySql object itself.
      */
-    public FirewallPolicySQL withAllowSqlRedirect(Boolean allowSqlRedirect) {
+    public FirewallPolicySql withAllowSqlRedirect(Boolean allowSqlRedirect) {
         this.allowSqlRedirect = allowSqlRedirect;
         return this;
     }
@@ -69,28 +69,28 @@ public final class FirewallPolicySQL implements JsonSerializable<FirewallPolicyS
     }
 
     /**
-     * Reads an instance of FirewallPolicySQL from the JsonReader.
+     * Reads an instance of FirewallPolicySql from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of FirewallPolicySQL if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of FirewallPolicySql if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the FirewallPolicySQL.
+     * @throws IOException If an error occurs while reading the FirewallPolicySql.
      */
-    public static FirewallPolicySQL fromJson(JsonReader jsonReader) throws IOException {
+    public static FirewallPolicySql fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            FirewallPolicySQL deserializedFirewallPolicySQL = new FirewallPolicySQL();
+            FirewallPolicySql deserializedFirewallPolicySql = new FirewallPolicySql();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("allowSqlRedirect".equals(fieldName)) {
-                    deserializedFirewallPolicySQL.allowSqlRedirect = reader.getNullable(JsonReader::getBoolean);
+                    deserializedFirewallPolicySql.allowSqlRedirect = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedFirewallPolicySQL;
+            return deserializedFirewallPolicySql;
         });
     }
 }

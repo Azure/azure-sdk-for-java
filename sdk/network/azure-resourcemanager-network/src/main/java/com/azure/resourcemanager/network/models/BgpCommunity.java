@@ -16,7 +16,7 @@ import java.util.List;
  * Contains bgp community information offered in Service Community resources.
  */
 @Immutable
-public final class BGPCommunity implements JsonSerializable<BGPCommunity> {
+public final class BgpCommunity implements JsonSerializable<BgpCommunity> {
     /*
      * The region which the service support. e.g. For O365, region is Global.
      */
@@ -49,9 +49,9 @@ public final class BGPCommunity implements JsonSerializable<BGPCommunity> {
     private String serviceGroup;
 
     /**
-     * Creates an instance of BGPCommunity class.
+     * Creates an instance of BgpCommunity class.
      */
-    private BGPCommunity() {
+    private BgpCommunity() {
     }
 
     /**
@@ -134,39 +134,39 @@ public final class BGPCommunity implements JsonSerializable<BGPCommunity> {
     }
 
     /**
-     * Reads an instance of BGPCommunity from the JsonReader.
+     * Reads an instance of BgpCommunity from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of BGPCommunity if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of BgpCommunity if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the BGPCommunity.
+     * @throws IOException If an error occurs while reading the BgpCommunity.
      */
-    public static BGPCommunity fromJson(JsonReader jsonReader) throws IOException {
+    public static BgpCommunity fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            BGPCommunity deserializedBGPCommunity = new BGPCommunity();
+            BgpCommunity deserializedBgpCommunity = new BgpCommunity();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("serviceSupportedRegion".equals(fieldName)) {
-                    deserializedBGPCommunity.serviceSupportedRegion = reader.getString();
+                    deserializedBgpCommunity.serviceSupportedRegion = reader.getString();
                 } else if ("communityName".equals(fieldName)) {
-                    deserializedBGPCommunity.communityName = reader.getString();
+                    deserializedBgpCommunity.communityName = reader.getString();
                 } else if ("communityValue".equals(fieldName)) {
-                    deserializedBGPCommunity.communityValue = reader.getString();
+                    deserializedBgpCommunity.communityValue = reader.getString();
                 } else if ("communityPrefixes".equals(fieldName)) {
                     List<String> communityPrefixes = reader.readArray(reader1 -> reader1.getString());
-                    deserializedBGPCommunity.communityPrefixes = communityPrefixes;
+                    deserializedBgpCommunity.communityPrefixes = communityPrefixes;
                 } else if ("isAuthorizedToUse".equals(fieldName)) {
-                    deserializedBGPCommunity.isAuthorizedToUse = reader.getNullable(JsonReader::getBoolean);
+                    deserializedBgpCommunity.isAuthorizedToUse = reader.getNullable(JsonReader::getBoolean);
                 } else if ("serviceGroup".equals(fieldName)) {
-                    deserializedBGPCommunity.serviceGroup = reader.getString();
+                    deserializedBgpCommunity.serviceGroup = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedBGPCommunity;
+            return deserializedBgpCommunity;
         });
     }
 }

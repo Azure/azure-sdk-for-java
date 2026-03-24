@@ -17,8 +17,8 @@ import com.azure.resourcemanager.network.models.NvaInterfaceConfigurationsProper
 import com.azure.resourcemanager.network.models.NvaNicType;
 import com.azure.resourcemanager.network.models.ResourceIdentityType;
 import com.azure.resourcemanager.network.models.VirtualApplianceAdditionalNicProperties;
-import com.azure.resourcemanager.network.models.VirtualApplianceIPConfiguration;
-import com.azure.resourcemanager.network.models.VirtualApplianceIPConfigurationProperties;
+import com.azure.resourcemanager.network.models.VirtualApplianceIpConfiguration;
+import com.azure.resourcemanager.network.models.VirtualApplianceIpConfigurationProperties;
 import com.azure.resourcemanager.network.models.VirtualApplianceNetworkInterfaceConfiguration;
 import com.azure.resourcemanager.network.models.VirtualApplianceNetworkInterfaceConfigurationProperties;
 import com.azure.resourcemanager.network.models.VirtualApplianceSkuProperties;
@@ -129,25 +129,25 @@ public final class NetworkVirtualAppliancesCreateOrUpdateSamples {
                                         .withProperties(
                                             new VirtualApplianceNetworkInterfaceConfigurationProperties()
                                                 .withIpConfigurations(Arrays.asList(
-                                                    new VirtualApplianceIPConfiguration()
+                                                    new VirtualApplianceIpConfiguration()
                                                         .withName("myPrimaryPublicIpConfig")
-                                                        .withProperties(new VirtualApplianceIPConfigurationProperties()
+                                                        .withProperties(new VirtualApplianceIpConfigurationProperties()
                                                             .withPrimary(true)),
-                                                    new VirtualApplianceIPConfiguration()
+                                                    new VirtualApplianceIpConfiguration()
                                                         .withName("myNonPrimaryPublicIpConfig")
-                                                        .withProperties(new VirtualApplianceIPConfigurationProperties()
+                                                        .withProperties(new VirtualApplianceIpConfigurationProperties()
                                                             .withPrimary(false))))),
                                     new VirtualApplianceNetworkInterfaceConfiguration()
                                         .withNicType(NicTypeInRequest.PRIVATE_NIC)
                                         .withProperties(new VirtualApplianceNetworkInterfaceConfigurationProperties()
                                             .withIpConfigurations(Arrays.asList(
-                                                new VirtualApplianceIPConfiguration()
+                                                new VirtualApplianceIpConfiguration()
                                                     .withName("myPrimaryPrivateIpConfig")
-                                                    .withProperties(new VirtualApplianceIPConfigurationProperties()
+                                                    .withProperties(new VirtualApplianceIpConfigurationProperties()
                                                         .withPrimary(true)),
-                                                new VirtualApplianceIPConfiguration()
+                                                new VirtualApplianceIpConfiguration()
                                                     .withName("myNonPrimaryPrivateIpConfig")
-                                                    .withProperties(new VirtualApplianceIPConfigurationProperties()
+                                                    .withProperties(new VirtualApplianceIpConfigurationProperties()
                                                         .withPrimary(false))))))))
                 .withNvaInterfaceConfigurations(Arrays.asList(new NvaInterfaceConfigurationsProperties()
                     .withSubnet(new NvaInVnetSubnetReferenceProperties().withId(
@@ -322,21 +322,21 @@ public final class NetworkVirtualAppliancesCreateOrUpdateSamples {
                                         .withNicType(NicTypeInRequest.PUBLIC_NIC)
                                         .withProperties(new VirtualApplianceNetworkInterfaceConfigurationProperties()
                                             .withIpConfigurations(Arrays.asList(
-                                                new VirtualApplianceIPConfiguration().withName("publicnicipconfig")
-                                                    .withProperties(new VirtualApplianceIPConfigurationProperties()
+                                                new VirtualApplianceIpConfiguration().withName("publicnicipconfig")
+                                                    .withProperties(new VirtualApplianceIpConfigurationProperties()
                                                         .withPrimary(true)),
-                                                new VirtualApplianceIPConfiguration().withName("publicnicipconfig-2")
-                                                    .withProperties(new VirtualApplianceIPConfigurationProperties()
+                                                new VirtualApplianceIpConfiguration().withName("publicnicipconfig-2")
+                                                    .withProperties(new VirtualApplianceIpConfigurationProperties()
                                                         .withPrimary(false))))),
                                     new VirtualApplianceNetworkInterfaceConfiguration()
                                         .withNicType(NicTypeInRequest.PRIVATE_NIC)
                                         .withProperties(new VirtualApplianceNetworkInterfaceConfigurationProperties()
                                             .withIpConfigurations(Arrays.asList(
-                                                new VirtualApplianceIPConfiguration().withName("privatenicipconfig")
-                                                    .withProperties(new VirtualApplianceIPConfigurationProperties()
+                                                new VirtualApplianceIpConfiguration().withName("privatenicipconfig")
+                                                    .withProperties(new VirtualApplianceIpConfigurationProperties()
                                                         .withPrimary(true)),
-                                                new VirtualApplianceIPConfiguration().withName("privatenicipconfig-2")
-                                                    .withProperties(new VirtualApplianceIPConfigurationProperties()
+                                                new VirtualApplianceIpConfiguration().withName("privatenicipconfig-2")
+                                                    .withProperties(new VirtualApplianceIpConfigurationProperties()
                                                         .withPrimary(false))))))))
                 .withAdditionalNics(Arrays
                     .asList(new VirtualApplianceAdditionalNicProperties().withName("exrsdwan").withHasPublicIp(true)))

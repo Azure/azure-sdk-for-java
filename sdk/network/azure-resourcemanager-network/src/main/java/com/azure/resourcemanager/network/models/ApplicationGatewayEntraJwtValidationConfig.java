@@ -17,7 +17,7 @@ import java.util.List;
  * Entra JWT Validation Configuration of an application gateway.
  */
 @Fluent
-public final class ApplicationGatewayEntraJWTValidationConfig extends SubResource {
+public final class ApplicationGatewayEntraJwtValidationConfig extends SubResource {
     /*
      * Properties of the application gateway entra jwt validation configuration.
      */
@@ -34,9 +34,9 @@ public final class ApplicationGatewayEntraJWTValidationConfig extends SubResourc
     private String etag;
 
     /**
-     * Creates an instance of ApplicationGatewayEntraJWTValidationConfig class.
+     * Creates an instance of ApplicationGatewayEntraJwtValidationConfig class.
      */
-    public ApplicationGatewayEntraJWTValidationConfig() {
+    public ApplicationGatewayEntraJwtValidationConfig() {
     }
 
     /**
@@ -63,9 +63,9 @@ public final class ApplicationGatewayEntraJWTValidationConfig extends SubResourc
      * gateway.
      * 
      * @param name the name value to set.
-     * @return the ApplicationGatewayEntraJWTValidationConfig object itself.
+     * @return the ApplicationGatewayEntraJwtValidationConfig object itself.
      */
-    public ApplicationGatewayEntraJWTValidationConfig withName(String name) {
+    public ApplicationGatewayEntraJwtValidationConfig withName(String name) {
         this.name = name;
         return this;
     }
@@ -83,7 +83,7 @@ public final class ApplicationGatewayEntraJWTValidationConfig extends SubResourc
      * {@inheritDoc}
      */
     @Override
-    public ApplicationGatewayEntraJWTValidationConfig withId(String id) {
+    public ApplicationGatewayEntraJwtValidationConfig withId(String id) {
         super.withId(id);
         return this;
     }
@@ -101,9 +101,9 @@ public final class ApplicationGatewayEntraJWTValidationConfig extends SubResourc
      * Set the unAuthorizedRequestAction property: Unauthorized request action.
      * 
      * @param unAuthorizedRequestAction the unAuthorizedRequestAction value to set.
-     * @return the ApplicationGatewayEntraJWTValidationConfig object itself.
+     * @return the ApplicationGatewayEntraJwtValidationConfig object itself.
      */
-    public ApplicationGatewayEntraJWTValidationConfig
+    public ApplicationGatewayEntraJwtValidationConfig
         withUnAuthorizedRequestAction(ApplicationGatewayUnAuthorizedRequestAction unAuthorizedRequestAction) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ApplicationGatewayEntraJWTValidationConfigPropertiesFormat();
@@ -125,9 +125,9 @@ public final class ApplicationGatewayEntraJWTValidationConfig extends SubResourc
      * Set the tenantId property: The Tenant ID of the Microsoft Entra ID application.
      * 
      * @param tenantId the tenantId value to set.
-     * @return the ApplicationGatewayEntraJWTValidationConfig object itself.
+     * @return the ApplicationGatewayEntraJwtValidationConfig object itself.
      */
-    public ApplicationGatewayEntraJWTValidationConfig withTenantId(String tenantId) {
+    public ApplicationGatewayEntraJwtValidationConfig withTenantId(String tenantId) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ApplicationGatewayEntraJWTValidationConfigPropertiesFormat();
         }
@@ -148,9 +148,9 @@ public final class ApplicationGatewayEntraJWTValidationConfig extends SubResourc
      * Set the clientId property: The Client ID of the Microsoft Entra ID application.
      * 
      * @param clientId the clientId value to set.
-     * @return the ApplicationGatewayEntraJWTValidationConfig object itself.
+     * @return the ApplicationGatewayEntraJwtValidationConfig object itself.
      */
-    public ApplicationGatewayEntraJWTValidationConfig withClientId(String clientId) {
+    public ApplicationGatewayEntraJwtValidationConfig withClientId(String clientId) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ApplicationGatewayEntraJWTValidationConfigPropertiesFormat();
         }
@@ -173,9 +173,9 @@ public final class ApplicationGatewayEntraJWTValidationConfig extends SubResourc
      * maximum of 5 audiences are permitted.
      * 
      * @param audiences the audiences value to set.
-     * @return the ApplicationGatewayEntraJWTValidationConfig object itself.
+     * @return the ApplicationGatewayEntraJwtValidationConfig object itself.
      */
-    public ApplicationGatewayEntraJWTValidationConfig withAudiences(List<String> audiences) {
+    public ApplicationGatewayEntraJwtValidationConfig withAudiences(List<String> audiences) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ApplicationGatewayEntraJWTValidationConfigPropertiesFormat();
         }
@@ -216,36 +216,36 @@ public final class ApplicationGatewayEntraJWTValidationConfig extends SubResourc
     }
 
     /**
-     * Reads an instance of ApplicationGatewayEntraJWTValidationConfig from the JsonReader.
+     * Reads an instance of ApplicationGatewayEntraJwtValidationConfig from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ApplicationGatewayEntraJWTValidationConfig if the JsonReader was pointing to an instance
+     * @return An instance of ApplicationGatewayEntraJwtValidationConfig if the JsonReader was pointing to an instance
      * of it, or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the ApplicationGatewayEntraJWTValidationConfig.
+     * @throws IOException If an error occurs while reading the ApplicationGatewayEntraJwtValidationConfig.
      */
-    public static ApplicationGatewayEntraJWTValidationConfig fromJson(JsonReader jsonReader) throws IOException {
+    public static ApplicationGatewayEntraJwtValidationConfig fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ApplicationGatewayEntraJWTValidationConfig deserializedApplicationGatewayEntraJWTValidationConfig
-                = new ApplicationGatewayEntraJWTValidationConfig();
+            ApplicationGatewayEntraJwtValidationConfig deserializedApplicationGatewayEntraJwtValidationConfig
+                = new ApplicationGatewayEntraJwtValidationConfig();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedApplicationGatewayEntraJWTValidationConfig.withId(reader.getString());
+                    deserializedApplicationGatewayEntraJwtValidationConfig.withId(reader.getString());
                 } else if ("properties".equals(fieldName)) {
-                    deserializedApplicationGatewayEntraJWTValidationConfig.innerProperties
+                    deserializedApplicationGatewayEntraJwtValidationConfig.innerProperties
                         = ApplicationGatewayEntraJWTValidationConfigPropertiesFormat.fromJson(reader);
                 } else if ("name".equals(fieldName)) {
-                    deserializedApplicationGatewayEntraJWTValidationConfig.name = reader.getString();
+                    deserializedApplicationGatewayEntraJwtValidationConfig.name = reader.getString();
                 } else if ("etag".equals(fieldName)) {
-                    deserializedApplicationGatewayEntraJWTValidationConfig.etag = reader.getString();
+                    deserializedApplicationGatewayEntraJwtValidationConfig.etag = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedApplicationGatewayEntraJWTValidationConfig;
+            return deserializedApplicationGatewayEntraJwtValidationConfig;
         });
     }
 }

@@ -12,13 +12,13 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.AzureFirewallApplicationRuleCollection;
 import com.azure.resourcemanager.network.models.AzureFirewallAutoscaleConfiguration;
-import com.azure.resourcemanager.network.models.AzureFirewallIPConfiguration;
+import com.azure.resourcemanager.network.models.AzureFirewallIpConfiguration;
 import com.azure.resourcemanager.network.models.AzureFirewallIpGroups;
 import com.azure.resourcemanager.network.models.AzureFirewallNatRuleCollection;
 import com.azure.resourcemanager.network.models.AzureFirewallNetworkRuleCollection;
 import com.azure.resourcemanager.network.models.AzureFirewallSku;
 import com.azure.resourcemanager.network.models.AzureFirewallThreatIntelMode;
-import com.azure.resourcemanager.network.models.HubIPAddresses;
+import com.azure.resourcemanager.network.models.HubIpAddresses;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 import java.util.List;
@@ -47,12 +47,12 @@ public final class AzureFirewallPropertiesFormat implements JsonSerializable<Azu
     /*
      * IP configuration of the Azure Firewall resource.
      */
-    private List<AzureFirewallIPConfiguration> ipConfigurations;
+    private List<AzureFirewallIpConfiguration> ipConfigurations;
 
     /*
      * IP configuration of the Azure Firewall used for management traffic.
      */
-    private AzureFirewallIPConfiguration managementIpConfiguration;
+    private AzureFirewallIpConfiguration managementIpConfiguration;
 
     /*
      * The provisioning state of the Azure firewall resource.
@@ -77,7 +77,7 @@ public final class AzureFirewallPropertiesFormat implements JsonSerializable<Azu
     /*
      * IP addresses associated with AzureFirewall.
      */
-    private HubIPAddresses hubIPAddresses;
+    private HubIpAddresses hubIPAddresses;
 
     /*
      * IpGroups associated with AzureFirewall.
@@ -173,7 +173,7 @@ public final class AzureFirewallPropertiesFormat implements JsonSerializable<Azu
      * 
      * @return the ipConfigurations value.
      */
-    public List<AzureFirewallIPConfiguration> ipConfigurations() {
+    public List<AzureFirewallIpConfiguration> ipConfigurations() {
         return this.ipConfigurations;
     }
 
@@ -183,7 +183,7 @@ public final class AzureFirewallPropertiesFormat implements JsonSerializable<Azu
      * @param ipConfigurations the ipConfigurations value to set.
      * @return the AzureFirewallPropertiesFormat object itself.
      */
-    public AzureFirewallPropertiesFormat withIpConfigurations(List<AzureFirewallIPConfiguration> ipConfigurations) {
+    public AzureFirewallPropertiesFormat withIpConfigurations(List<AzureFirewallIpConfiguration> ipConfigurations) {
         this.ipConfigurations = ipConfigurations;
         return this;
     }
@@ -193,7 +193,7 @@ public final class AzureFirewallPropertiesFormat implements JsonSerializable<Azu
      * 
      * @return the managementIpConfiguration value.
      */
-    public AzureFirewallIPConfiguration managementIpConfiguration() {
+    public AzureFirewallIpConfiguration managementIpConfiguration() {
         return this.managementIpConfiguration;
     }
 
@@ -204,7 +204,7 @@ public final class AzureFirewallPropertiesFormat implements JsonSerializable<Azu
      * @return the AzureFirewallPropertiesFormat object itself.
      */
     public AzureFirewallPropertiesFormat
-        withManagementIpConfiguration(AzureFirewallIPConfiguration managementIpConfiguration) {
+        withManagementIpConfiguration(AzureFirewallIpConfiguration managementIpConfiguration) {
         this.managementIpConfiguration = managementIpConfiguration;
         return this;
     }
@@ -283,7 +283,7 @@ public final class AzureFirewallPropertiesFormat implements JsonSerializable<Azu
      * 
      * @return the hubIPAddresses value.
      */
-    public HubIPAddresses hubIPAddresses() {
+    public HubIpAddresses hubIPAddresses() {
         return this.hubIPAddresses;
     }
 
@@ -293,7 +293,7 @@ public final class AzureFirewallPropertiesFormat implements JsonSerializable<Azu
      * @param hubIPAddresses the hubIPAddresses value to set.
      * @return the AzureFirewallPropertiesFormat object itself.
      */
-    public AzureFirewallPropertiesFormat withHubIPAddresses(HubIPAddresses hubIPAddresses) {
+    public AzureFirewallPropertiesFormat withHubIPAddresses(HubIpAddresses hubIPAddresses) {
         this.hubIPAddresses = hubIPAddresses;
         return this;
     }
@@ -461,12 +461,12 @@ public final class AzureFirewallPropertiesFormat implements JsonSerializable<Azu
                         = reader.readArray(reader1 -> AzureFirewallNetworkRuleCollection.fromJson(reader1));
                     deserializedAzureFirewallPropertiesFormat.networkRuleCollections = networkRuleCollections;
                 } else if ("ipConfigurations".equals(fieldName)) {
-                    List<AzureFirewallIPConfiguration> ipConfigurations
-                        = reader.readArray(reader1 -> AzureFirewallIPConfiguration.fromJson(reader1));
+                    List<AzureFirewallIpConfiguration> ipConfigurations
+                        = reader.readArray(reader1 -> AzureFirewallIpConfiguration.fromJson(reader1));
                     deserializedAzureFirewallPropertiesFormat.ipConfigurations = ipConfigurations;
                 } else if ("managementIpConfiguration".equals(fieldName)) {
                     deserializedAzureFirewallPropertiesFormat.managementIpConfiguration
-                        = AzureFirewallIPConfiguration.fromJson(reader);
+                        = AzureFirewallIpConfiguration.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedAzureFirewallPropertiesFormat.provisioningState
                         = ProvisioningState.fromString(reader.getString());
@@ -478,7 +478,7 @@ public final class AzureFirewallPropertiesFormat implements JsonSerializable<Azu
                 } else if ("firewallPolicy".equals(fieldName)) {
                     deserializedAzureFirewallPropertiesFormat.firewallPolicy = SubResource.fromJson(reader);
                 } else if ("hubIPAddresses".equals(fieldName)) {
-                    deserializedAzureFirewallPropertiesFormat.hubIPAddresses = HubIPAddresses.fromJson(reader);
+                    deserializedAzureFirewallPropertiesFormat.hubIPAddresses = HubIpAddresses.fromJson(reader);
                 } else if ("ipGroups".equals(fieldName)) {
                     List<AzureFirewallIpGroups> ipGroups
                         = reader.readArray(reader1 -> AzureFirewallIpGroups.fromJson(reader1));

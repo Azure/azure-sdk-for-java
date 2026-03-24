@@ -24,7 +24,7 @@ public final class PublicIpAddressSku implements JsonSerializable<PublicIpAddres
     /*
      * Tier of a public IP address SKU.
      */
-    private PublicIPAddressSkuTier tier;
+    private PublicIpAddressSkuTier tier;
 
     /**
      * Creates an instance of PublicIpAddressSku class.
@@ -57,7 +57,7 @@ public final class PublicIpAddressSku implements JsonSerializable<PublicIpAddres
      * 
      * @return the tier value.
      */
-    public PublicIPAddressSkuTier tier() {
+    public PublicIpAddressSkuTier tier() {
         return this.tier;
     }
 
@@ -67,7 +67,7 @@ public final class PublicIpAddressSku implements JsonSerializable<PublicIpAddres
      * @param tier the tier value to set.
      * @return the PublicIpAddressSku object itself.
      */
-    public PublicIpAddressSku withTier(PublicIPAddressSkuTier tier) {
+    public PublicIpAddressSku withTier(PublicIpAddressSkuTier tier) {
         this.tier = tier;
         return this;
     }
@@ -109,7 +109,7 @@ public final class PublicIpAddressSku implements JsonSerializable<PublicIpAddres
                 if ("name".equals(fieldName)) {
                     deserializedPublicIpAddressSku.name = PublicIpAddressSkuName.fromString(reader.getString());
                 } else if ("tier".equals(fieldName)) {
-                    deserializedPublicIpAddressSku.tier = PublicIPAddressSkuTier.fromString(reader.getString());
+                    deserializedPublicIpAddressSku.tier = PublicIpAddressSkuTier.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

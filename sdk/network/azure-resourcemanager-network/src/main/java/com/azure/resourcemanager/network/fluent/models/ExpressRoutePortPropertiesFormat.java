@@ -36,7 +36,7 @@ public final class ExpressRoutePortPropertiesFormat implements JsonSerializable<
     /*
      * Aggregate Gbps of associated circuit bandwidths.
      */
-    private Double provisionedBandwidthInGbps;
+    private Float provisionedBandwidthInGbps;
 
     /*
      * Maximum transmission unit of the physical port pair(s).
@@ -138,7 +138,7 @@ public final class ExpressRoutePortPropertiesFormat implements JsonSerializable<
      * 
      * @return the provisionedBandwidthInGbps value.
      */
-    public Double provisionedBandwidthInGbps() {
+    public Float provisionedBandwidthInGbps() {
         return this.provisionedBandwidthInGbps;
     }
 
@@ -309,7 +309,7 @@ public final class ExpressRoutePortPropertiesFormat implements JsonSerializable<
                         = reader.getNullable(JsonReader::getInt);
                 } else if ("provisionedBandwidthInGbps".equals(fieldName)) {
                     deserializedExpressRoutePortPropertiesFormat.provisionedBandwidthInGbps
-                        = reader.getNullable(JsonReader::getDouble);
+                        = reader.getNullable(JsonReader::getFloat);
                 } else if ("mtu".equals(fieldName)) {
                     deserializedExpressRoutePortPropertiesFormat.mtu = reader.getString();
                 } else if ("encapsulation".equals(fieldName)) {

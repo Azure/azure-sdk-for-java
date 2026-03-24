@@ -15,7 +15,7 @@ import com.azure.resourcemanager.network.models.ApplicationGatewayBackendAddress
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackendHttpSettings;
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackendSettings;
 import com.azure.resourcemanager.network.models.ApplicationGatewayCustomError;
-import com.azure.resourcemanager.network.models.ApplicationGatewayEntraJWTValidationConfig;
+import com.azure.resourcemanager.network.models.ApplicationGatewayEntraJwtValidationConfig;
 import com.azure.resourcemanager.network.models.ApplicationGatewayFrontendIpConfiguration;
 import com.azure.resourcemanager.network.models.ApplicationGatewayFrontendPort;
 import com.azure.resourcemanager.network.models.ApplicationGatewayGlobalConfiguration;
@@ -1008,7 +1008,7 @@ public final class ApplicationGatewayInner extends Resource {
      * 
      * @return the entraJWTValidationConfigs value.
      */
-    public List<ApplicationGatewayEntraJWTValidationConfig> entraJWTValidationConfigs() {
+    public List<ApplicationGatewayEntraJwtValidationConfig> entraJWTValidationConfigs() {
         return this.innerProperties() == null ? null : this.innerProperties().entraJWTValidationConfigs();
     }
 
@@ -1021,7 +1021,7 @@ public final class ApplicationGatewayInner extends Resource {
      * @return the ApplicationGatewayInner object itself.
      */
     public ApplicationGatewayInner
-        withEntraJWTValidationConfigs(List<ApplicationGatewayEntraJWTValidationConfig> entraJWTValidationConfigs) {
+        withEntraJWTValidationConfigs(List<ApplicationGatewayEntraJwtValidationConfig> entraJWTValidationConfigs) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ApplicationGatewayPropertiesFormat();
         }

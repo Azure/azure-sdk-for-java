@@ -7,11 +7,11 @@ package com.azure.resourcemanager.network.generated;
 import com.azure.resourcemanager.network.fluent.models.PublicIpAddressInner;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.IpVersion;
-import com.azure.resourcemanager.network.models.PublicIPAddressSkuTier;
 import com.azure.resourcemanager.network.models.PublicIpAddressDnsSettings;
 import com.azure.resourcemanager.network.models.PublicIpAddressDnsSettingsDomainNameLabelScope;
 import com.azure.resourcemanager.network.models.PublicIpAddressSku;
 import com.azure.resourcemanager.network.models.PublicIpAddressSkuName;
+import com.azure.resourcemanager.network.models.PublicIpAddressSkuTier;
 
 /**
  * Samples for PublicIpAddresses CreateOrUpdate.
@@ -48,7 +48,7 @@ public final class PublicIpAddressesCreateOrUpdateSamples {
             .createOrUpdate("rg1", "test-ip",
                 new PublicIpAddressInner().withLocation("eastus")
                     .withSku(new PublicIpAddressSku().withName(PublicIpAddressSkuName.STANDARD)
-                        .withTier(PublicIPAddressSkuTier.GLOBAL))
+                        .withTier(PublicIpAddressSkuTier.GLOBAL))
                     .withPublicIpAllocationMethod(IpAllocationMethod.STATIC)
                     .withPublicIpAddressVersion(IpVersion.IPV4)
                     .withIdleTimeoutInMinutes(10),

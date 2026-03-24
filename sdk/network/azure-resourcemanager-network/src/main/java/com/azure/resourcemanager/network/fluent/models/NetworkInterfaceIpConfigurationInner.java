@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackendAddressPool;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.IpVersion;
-import com.azure.resourcemanager.network.models.NetworkInterfaceIPConfigurationPrivateLinkConnectionProperties;
+import com.azure.resourcemanager.network.models.NetworkInterfaceIpConfigurationPrivateLinkConnectionProperties;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.SubResourceModel;
 import java.io.IOException;
@@ -417,7 +417,7 @@ public final class NetworkInterfaceIpConfigurationInner extends SubResourceModel
      * 
      * @return the privateLinkConnectionProperties value.
      */
-    public NetworkInterfaceIPConfigurationPrivateLinkConnectionProperties privateLinkConnectionProperties() {
+    public NetworkInterfaceIpConfigurationPrivateLinkConnectionProperties privateLinkConnectionProperties() {
         return this.innerProperties() == null ? null : this.innerProperties().privateLinkConnectionProperties();
     }
 

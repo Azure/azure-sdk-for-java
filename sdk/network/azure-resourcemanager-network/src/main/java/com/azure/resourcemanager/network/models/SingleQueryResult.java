@@ -25,18 +25,18 @@ public final class SingleQueryResult implements JsonSerializable<SingleQueryResu
     /*
      * The current mode enforced, 0 - Disabled, 1 - Alert, 2 -Deny
      */
-    private FirewallPolicyIDPSSignatureMode mode;
+    private FirewallPolicyIdpsSignatureMode mode;
 
     /*
      * Describes the severity of signature: 1 - High, 2 - Medium, 3 - Low
      */
-    private FirewallPolicyIDPSSignatureSeverity severity;
+    private FirewallPolicyIdpsSignatureSeverity severity;
 
     /*
      * Describes in which direction signature is being enforced: 0 - OutBound, 1 - InBound, 2 - Any, 3 - Internal, 4 -
      * InternalOutbound, 5 - InternalInbound
      */
-    private FirewallPolicyIDPSSignatureDirection direction;
+    private FirewallPolicyIdpsSignatureDirection direction;
 
     /*
      * Describes the groups the signature belongs to
@@ -93,7 +93,7 @@ public final class SingleQueryResult implements JsonSerializable<SingleQueryResu
      * 
      * @return the mode value.
      */
-    public FirewallPolicyIDPSSignatureMode mode() {
+    public FirewallPolicyIdpsSignatureMode mode() {
         return this.mode;
     }
 
@@ -102,7 +102,7 @@ public final class SingleQueryResult implements JsonSerializable<SingleQueryResu
      * 
      * @return the severity value.
      */
-    public FirewallPolicyIDPSSignatureSeverity severity() {
+    public FirewallPolicyIdpsSignatureSeverity severity() {
         return this.severity;
     }
 
@@ -112,7 +112,7 @@ public final class SingleQueryResult implements JsonSerializable<SingleQueryResu
      * 
      * @return the direction value.
      */
-    public FirewallPolicyIDPSSignatureDirection direction() {
+    public FirewallPolicyIdpsSignatureDirection direction() {
         return this.direction;
     }
 
@@ -226,13 +226,13 @@ public final class SingleQueryResult implements JsonSerializable<SingleQueryResu
                 if ("signatureId".equals(fieldName)) {
                     deserializedSingleQueryResult.signatureId = reader.getNullable(JsonReader::getInt);
                 } else if ("mode".equals(fieldName)) {
-                    deserializedSingleQueryResult.mode = FirewallPolicyIDPSSignatureMode.fromInt(reader.getInt());
+                    deserializedSingleQueryResult.mode = FirewallPolicyIdpsSignatureMode.fromInt(reader.getInt());
                 } else if ("severity".equals(fieldName)) {
                     deserializedSingleQueryResult.severity
-                        = FirewallPolicyIDPSSignatureSeverity.fromInt(reader.getInt());
+                        = FirewallPolicyIdpsSignatureSeverity.fromInt(reader.getInt());
                 } else if ("direction".equals(fieldName)) {
                     deserializedSingleQueryResult.direction
-                        = FirewallPolicyIDPSSignatureDirection.fromInt(reader.getInt());
+                        = FirewallPolicyIdpsSignatureDirection.fromInt(reader.getInt());
                 } else if ("group".equals(fieldName)) {
                     deserializedSingleQueryResult.group = reader.getString();
                 } else if ("description".equals(fieldName)) {

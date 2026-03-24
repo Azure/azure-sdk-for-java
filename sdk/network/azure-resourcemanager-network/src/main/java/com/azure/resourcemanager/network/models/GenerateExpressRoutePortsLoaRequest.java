@@ -16,17 +16,17 @@ import java.io.IOException;
  * The customer name to be printed on a letter of authorization.
  */
 @Fluent
-public final class GenerateExpressRoutePortsLOARequest
-    implements JsonSerializable<GenerateExpressRoutePortsLOARequest> {
+public final class GenerateExpressRoutePortsLoaRequest
+    implements JsonSerializable<GenerateExpressRoutePortsLoaRequest> {
     /*
      * The customer name.
      */
     private String customerName;
 
     /**
-     * Creates an instance of GenerateExpressRoutePortsLOARequest class.
+     * Creates an instance of GenerateExpressRoutePortsLoaRequest class.
      */
-    public GenerateExpressRoutePortsLOARequest() {
+    public GenerateExpressRoutePortsLoaRequest() {
     }
 
     /**
@@ -42,9 +42,9 @@ public final class GenerateExpressRoutePortsLOARequest
      * Set the customerName property: The customer name.
      * 
      * @param customerName the customerName value to set.
-     * @return the GenerateExpressRoutePortsLOARequest object itself.
+     * @return the GenerateExpressRoutePortsLoaRequest object itself.
      */
-    public GenerateExpressRoutePortsLOARequest withCustomerName(String customerName) {
+    public GenerateExpressRoutePortsLoaRequest withCustomerName(String customerName) {
         this.customerName = customerName;
         return this;
     }
@@ -58,11 +58,11 @@ public final class GenerateExpressRoutePortsLOARequest
         if (customerName() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
-                    "Missing required property customerName in model GenerateExpressRoutePortsLOARequest"));
+                    "Missing required property customerName in model GenerateExpressRoutePortsLoaRequest"));
         }
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(GenerateExpressRoutePortsLOARequest.class);
+    private static final ClientLogger LOGGER = new ClientLogger(GenerateExpressRoutePortsLoaRequest.class);
 
     /**
      * {@inheritDoc}
@@ -75,30 +75,30 @@ public final class GenerateExpressRoutePortsLOARequest
     }
 
     /**
-     * Reads an instance of GenerateExpressRoutePortsLOARequest from the JsonReader.
+     * Reads an instance of GenerateExpressRoutePortsLoaRequest from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of GenerateExpressRoutePortsLOARequest if the JsonReader was pointing to an instance of it,
+     * @return An instance of GenerateExpressRoutePortsLoaRequest if the JsonReader was pointing to an instance of it,
      * or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the GenerateExpressRoutePortsLOARequest.
+     * @throws IOException If an error occurs while reading the GenerateExpressRoutePortsLoaRequest.
      */
-    public static GenerateExpressRoutePortsLOARequest fromJson(JsonReader jsonReader) throws IOException {
+    public static GenerateExpressRoutePortsLoaRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            GenerateExpressRoutePortsLOARequest deserializedGenerateExpressRoutePortsLOARequest
-                = new GenerateExpressRoutePortsLOARequest();
+            GenerateExpressRoutePortsLoaRequest deserializedGenerateExpressRoutePortsLoaRequest
+                = new GenerateExpressRoutePortsLoaRequest();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("customerName".equals(fieldName)) {
-                    deserializedGenerateExpressRoutePortsLOARequest.customerName = reader.getString();
+                    deserializedGenerateExpressRoutePortsLoaRequest.customerName = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedGenerateExpressRoutePortsLOARequest;
+            return deserializedGenerateExpressRoutePortsLoaRequest;
         });
     }
 }

@@ -19,12 +19,12 @@ public final class PublicIpPrefixSku implements JsonSerializable<PublicIpPrefixS
     /*
      * Name of a public IP prefix SKU.
      */
-    private PublicIPPrefixSkuName name;
+    private PublicIpPrefixSkuName name;
 
     /*
      * Tier of a public IP prefix SKU.
      */
-    private PublicIPPrefixSkuTier tier;
+    private PublicIpPrefixSkuTier tier;
 
     /**
      * Creates an instance of PublicIpPrefixSku class.
@@ -37,7 +37,7 @@ public final class PublicIpPrefixSku implements JsonSerializable<PublicIpPrefixS
      * 
      * @return the name value.
      */
-    public PublicIPPrefixSkuName name() {
+    public PublicIpPrefixSkuName name() {
         return this.name;
     }
 
@@ -47,7 +47,7 @@ public final class PublicIpPrefixSku implements JsonSerializable<PublicIpPrefixS
      * @param name the name value to set.
      * @return the PublicIpPrefixSku object itself.
      */
-    public PublicIpPrefixSku withName(PublicIPPrefixSkuName name) {
+    public PublicIpPrefixSku withName(PublicIpPrefixSkuName name) {
         this.name = name;
         return this;
     }
@@ -57,7 +57,7 @@ public final class PublicIpPrefixSku implements JsonSerializable<PublicIpPrefixS
      * 
      * @return the tier value.
      */
-    public PublicIPPrefixSkuTier tier() {
+    public PublicIpPrefixSkuTier tier() {
         return this.tier;
     }
 
@@ -67,7 +67,7 @@ public final class PublicIpPrefixSku implements JsonSerializable<PublicIpPrefixS
      * @param tier the tier value to set.
      * @return the PublicIpPrefixSku object itself.
      */
-    public PublicIpPrefixSku withTier(PublicIPPrefixSkuTier tier) {
+    public PublicIpPrefixSku withTier(PublicIpPrefixSkuTier tier) {
         this.tier = tier;
         return this;
     }
@@ -107,9 +107,9 @@ public final class PublicIpPrefixSku implements JsonSerializable<PublicIpPrefixS
                 reader.nextToken();
 
                 if ("name".equals(fieldName)) {
-                    deserializedPublicIpPrefixSku.name = PublicIPPrefixSkuName.fromString(reader.getString());
+                    deserializedPublicIpPrefixSku.name = PublicIpPrefixSkuName.fromString(reader.getString());
                 } else if ("tier".equals(fieldName)) {
-                    deserializedPublicIpPrefixSku.tier = PublicIPPrefixSkuTier.fromString(reader.getString());
+                    deserializedPublicIpPrefixSku.tier = PublicIpPrefixSkuTier.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

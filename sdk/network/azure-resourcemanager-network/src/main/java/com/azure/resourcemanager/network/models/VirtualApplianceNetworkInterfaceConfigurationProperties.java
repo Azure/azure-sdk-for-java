@@ -21,7 +21,7 @@ public final class VirtualApplianceNetworkInterfaceConfigurationProperties
     /*
      * The ipConfigurations property.
      */
-    private List<VirtualApplianceIPConfiguration> ipConfigurations;
+    private List<VirtualApplianceIpConfiguration> ipConfigurations;
 
     /**
      * Creates an instance of VirtualApplianceNetworkInterfaceConfigurationProperties class.
@@ -34,7 +34,7 @@ public final class VirtualApplianceNetworkInterfaceConfigurationProperties
      * 
      * @return the ipConfigurations value.
      */
-    public List<VirtualApplianceIPConfiguration> ipConfigurations() {
+    public List<VirtualApplianceIpConfiguration> ipConfigurations() {
         return this.ipConfigurations;
     }
 
@@ -45,7 +45,7 @@ public final class VirtualApplianceNetworkInterfaceConfigurationProperties
      * @return the VirtualApplianceNetworkInterfaceConfigurationProperties object itself.
      */
     public VirtualApplianceNetworkInterfaceConfigurationProperties
-        withIpConfigurations(List<VirtualApplianceIPConfiguration> ipConfigurations) {
+        withIpConfigurations(List<VirtualApplianceIpConfiguration> ipConfigurations) {
         this.ipConfigurations = ipConfigurations;
         return this;
     }
@@ -90,8 +90,8 @@ public final class VirtualApplianceNetworkInterfaceConfigurationProperties
                 reader.nextToken();
 
                 if ("ipConfigurations".equals(fieldName)) {
-                    List<VirtualApplianceIPConfiguration> ipConfigurations
-                        = reader.readArray(reader1 -> VirtualApplianceIPConfiguration.fromJson(reader1));
+                    List<VirtualApplianceIpConfiguration> ipConfigurations
+                        = reader.readArray(reader1 -> VirtualApplianceIpConfiguration.fromJson(reader1));
                     deserializedVirtualApplianceNetworkInterfaceConfigurationProperties.ipConfigurations
                         = ipConfigurations;
                 } else {

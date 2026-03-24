@@ -14,7 +14,7 @@ import com.azure.resourcemanager.network.models.ApplicationGatewayBackendAddress
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackendHttpSettings;
 import com.azure.resourcemanager.network.models.ApplicationGatewayClientAuthConfiguration;
 import com.azure.resourcemanager.network.models.ApplicationGatewayCookieBasedAffinity;
-import com.azure.resourcemanager.network.models.ApplicationGatewayEntraJWTValidationConfig;
+import com.azure.resourcemanager.network.models.ApplicationGatewayEntraJwtValidationConfig;
 import com.azure.resourcemanager.network.models.ApplicationGatewayFrontendIpConfiguration;
 import com.azure.resourcemanager.network.models.ApplicationGatewayFrontendPort;
 import com.azure.resourcemanager.network.models.ApplicationGatewayGlobalConfiguration;
@@ -171,7 +171,7 @@ public final class ApplicationGatewaysCreateOrUpdateSamples {
                                     .withUrlConfiguration(
                                         new ApplicationGatewayUrlConfiguration().withModifiedPath("/abc")))))))
                 .withEntraJWTValidationConfigs(
-                    Arrays.asList(new ApplicationGatewayEntraJWTValidationConfig().withName("entraJWTValidationConfig1")
+                    Arrays.asList(new ApplicationGatewayEntraJwtValidationConfig().withName("entraJWTValidationConfig1")
                         .withUnAuthorizedRequestAction(ApplicationGatewayUnAuthorizedRequestAction.DENY)
                         .withTenantId("70a036f6-8e4d-4615-bad6-149c02e7720d")
                         .withClientId("37293f5a-97b3-451d-b786-f532d711c9ff")))

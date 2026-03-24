@@ -7,7 +7,7 @@ package com.azure.resourcemanager.network.models;
 /**
  * The current mode enforced, 0 - Disabled, 1 - Alert, 2 -Deny.
  */
-public enum FirewallPolicyIDPSSignatureMode {
+public enum FirewallPolicyIdpsSignatureMode {
     /**
      * 0.
      */
@@ -24,23 +24,23 @@ public enum FirewallPolicyIDPSSignatureMode {
     TWO(2);
 
     /**
-     * The actual serialized value for a FirewallPolicyIDPSSignatureMode instance.
+     * The actual serialized value for a FirewallPolicyIdpsSignatureMode instance.
      */
     private final int value;
 
-    FirewallPolicyIDPSSignatureMode(int value) {
+    FirewallPolicyIdpsSignatureMode(int value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a FirewallPolicyIDPSSignatureMode instance.
+     * Parses a serialized value to a FirewallPolicyIdpsSignatureMode instance.
      * 
      * @param value the serialized value to parse.
-     * @return the parsed FirewallPolicyIDPSSignatureMode object, or null if unable to parse.
+     * @return the parsed FirewallPolicyIdpsSignatureMode object, or null if unable to parse.
      */
-    public static FirewallPolicyIDPSSignatureMode fromInt(int value) {
-        FirewallPolicyIDPSSignatureMode[] items = FirewallPolicyIDPSSignatureMode.values();
-        for (FirewallPolicyIDPSSignatureMode item : items) {
+    public static FirewallPolicyIdpsSignatureMode fromInt(int value) {
+        FirewallPolicyIdpsSignatureMode[] items = FirewallPolicyIdpsSignatureMode.values();
+        for (FirewallPolicyIdpsSignatureMode item : items) {
             if (item.toInt() == value) {
                 return item;
             }

@@ -12,19 +12,19 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The IPRule model.
+ * The IpRule model.
  */
 @Fluent
-public final class IPRule implements JsonSerializable<IPRule> {
+public final class IpRule implements JsonSerializable<IpRule> {
     /*
      * Specifies the IP or IP range in CIDR format. Only IPV4 address is allowed.
      */
     private String addressPrefix;
 
     /**
-     * Creates an instance of IPRule class.
+     * Creates an instance of IpRule class.
      */
-    public IPRule() {
+    public IpRule() {
     }
 
     /**
@@ -40,9 +40,9 @@ public final class IPRule implements JsonSerializable<IPRule> {
      * Set the addressPrefix property: Specifies the IP or IP range in CIDR format. Only IPV4 address is allowed.
      * 
      * @param addressPrefix the addressPrefix value to set.
-     * @return the IPRule object itself.
+     * @return the IpRule object itself.
      */
-    public IPRule withAddressPrefix(String addressPrefix) {
+    public IpRule withAddressPrefix(String addressPrefix) {
         this.addressPrefix = addressPrefix;
         return this;
     }
@@ -66,28 +66,28 @@ public final class IPRule implements JsonSerializable<IPRule> {
     }
 
     /**
-     * Reads an instance of IPRule from the JsonReader.
+     * Reads an instance of IpRule from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of IPRule if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * @return An instance of IpRule if the JsonReader was pointing to an instance of it, or null if it was pointing to
      * JSON null.
-     * @throws IOException If an error occurs while reading the IPRule.
+     * @throws IOException If an error occurs while reading the IpRule.
      */
-    public static IPRule fromJson(JsonReader jsonReader) throws IOException {
+    public static IpRule fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            IPRule deserializedIPRule = new IPRule();
+            IpRule deserializedIpRule = new IpRule();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("addressPrefix".equals(fieldName)) {
-                    deserializedIPRule.addressPrefix = reader.getString();
+                    deserializedIpRule.addressPrefix = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedIPRule;
+            return deserializedIpRule;
         });
     }
 }

@@ -44,7 +44,7 @@ public final class VpnClientConnectionHealthDetail implements JsonSerializable<V
     /*
      * The user name of a connected vpn client.
      */
-    private String vpnUserName;
+    private String vpnUsername;
 
     /*
      * The max band width.
@@ -128,12 +128,12 @@ public final class VpnClientConnectionHealthDetail implements JsonSerializable<V
     }
 
     /**
-     * Get the vpnUserName property: The user name of a connected vpn client.
+     * Get the vpnUsername property: The user name of a connected vpn client.
      * 
-     * @return the vpnUserName value.
+     * @return the vpnUsername value.
      */
-    public String vpnUserName() {
-        return this.vpnUserName;
+    public String vpnUsername() {
+        return this.vpnUsername;
     }
 
     /**
@@ -235,7 +235,7 @@ public final class VpnClientConnectionHealthDetail implements JsonSerializable<V
                 } else if ("privateIpAddress".equals(fieldName)) {
                     deserializedVpnClientConnectionHealthDetail.privateIpAddress = reader.getString();
                 } else if ("vpnUserName".equals(fieldName)) {
-                    deserializedVpnClientConnectionHealthDetail.vpnUserName = reader.getString();
+                    deserializedVpnClientConnectionHealthDetail.vpnUsername = reader.getString();
                 } else if ("maxBandwidth".equals(fieldName)) {
                     deserializedVpnClientConnectionHealthDetail.maxBandwidth = reader.getNullable(JsonReader::getLong);
                 } else if ("egressPacketsTransferred".equals(fieldName)) {

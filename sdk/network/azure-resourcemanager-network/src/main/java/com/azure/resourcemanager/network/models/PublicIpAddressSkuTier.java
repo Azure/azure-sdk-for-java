@@ -10,42 +10,42 @@ import java.util.Collection;
 /**
  * Tier of a public IP address SKU.
  */
-public final class PublicIPAddressSkuTier extends ExpandableStringEnum<PublicIPAddressSkuTier> {
+public final class PublicIpAddressSkuTier extends ExpandableStringEnum<PublicIpAddressSkuTier> {
     /**
      * Regional.
      */
-    public static final PublicIPAddressSkuTier REGIONAL = fromString("Regional");
+    public static final PublicIpAddressSkuTier REGIONAL = fromString("Regional");
 
     /**
      * Global.
      */
-    public static final PublicIPAddressSkuTier GLOBAL = fromString("Global");
+    public static final PublicIpAddressSkuTier GLOBAL = fromString("Global");
 
     /**
-     * Creates a new instance of PublicIPAddressSkuTier value.
+     * Creates a new instance of PublicIpAddressSkuTier value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public PublicIPAddressSkuTier() {
+    public PublicIpAddressSkuTier() {
     }
 
     /**
-     * Creates or finds a PublicIPAddressSkuTier from its string representation.
+     * Creates or finds a PublicIpAddressSkuTier from its string representation.
      * 
      * @param name a name to look for.
-     * @return the corresponding PublicIPAddressSkuTier.
+     * @return the corresponding PublicIpAddressSkuTier.
      */
-    public static PublicIPAddressSkuTier fromString(String name) {
-        return fromString(name, PublicIPAddressSkuTier.class);
+    public static PublicIpAddressSkuTier fromString(String name) {
+        return fromString(name, PublicIpAddressSkuTier.class);
     }
 
     /**
-     * Gets known PublicIPAddressSkuTier values.
+     * Gets known PublicIpAddressSkuTier values.
      * 
-     * @return known PublicIPAddressSkuTier values.
+     * @return known PublicIpAddressSkuTier values.
      */
-    public static Collection<PublicIPAddressSkuTier> values() {
-        return values(PublicIPAddressSkuTier.class);
+    public static Collection<PublicIpAddressSkuTier> values() {
+        return values(PublicIpAddressSkuTier.class);
     }
 }

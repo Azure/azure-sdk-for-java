@@ -6,7 +6,7 @@ package com.azure.resourcemanager.network.generated;
 
 import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.network.models.LoadBalancerVipSwapRequest;
-import com.azure.resourcemanager.network.models.LoadBalancerVipSwapRequestFrontendIPConfiguration;
+import com.azure.resourcemanager.network.models.LoadBalancerVipSwapRequestFrontendIpConfiguration;
 import java.util.Arrays;
 
 /**
@@ -25,11 +25,11 @@ public final class LoadBalancersSwapPublicIpAddressesSamples {
         manager.serviceClient()
             .getLoadBalancers()
             .swapPublicIpAddresses("westus", new LoadBalancerVipSwapRequest().withFrontendIpConfigurations(
-                Arrays.asList(new LoadBalancerVipSwapRequestFrontendIPConfiguration().withId(
+                Arrays.asList(new LoadBalancerVipSwapRequestFrontendIpConfiguration().withId(
                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/loadBalancers/lb1/frontendIPConfigurations/lbfe1")
                     .withPublicIpAddress(new SubResource().withId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg2/providers/Microsoft.Network/publicIPAddresses/pip2")),
-                    new LoadBalancerVipSwapRequestFrontendIPConfiguration().withId(
+                    new LoadBalancerVipSwapRequestFrontendIpConfiguration().withId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg2/providers/Microsoft.Network/loadBalancers/lb2/frontendIPConfigurations/lbfe2")
                         .withPublicIpAddress(new SubResource().withId(
                             "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/pip1")))),

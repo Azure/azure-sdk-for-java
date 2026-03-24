@@ -10,57 +10,57 @@ import java.util.Collection;
 /**
  * Migration phase of Public IP Address.
  */
-public final class PublicIPAddressMigrationPhase extends ExpandableStringEnum<PublicIPAddressMigrationPhase> {
+public final class PublicIpAddressMigrationPhase extends ExpandableStringEnum<PublicIpAddressMigrationPhase> {
     /**
      * None.
      */
-    public static final PublicIPAddressMigrationPhase NONE = fromString("None");
+    public static final PublicIpAddressMigrationPhase NONE = fromString("None");
 
     /**
      * Prepare.
      */
-    public static final PublicIPAddressMigrationPhase PREPARE = fromString("Prepare");
+    public static final PublicIpAddressMigrationPhase PREPARE = fromString("Prepare");
 
     /**
      * Commit.
      */
-    public static final PublicIPAddressMigrationPhase COMMIT = fromString("Commit");
+    public static final PublicIpAddressMigrationPhase COMMIT = fromString("Commit");
 
     /**
      * Abort.
      */
-    public static final PublicIPAddressMigrationPhase ABORT = fromString("Abort");
+    public static final PublicIpAddressMigrationPhase ABORT = fromString("Abort");
 
     /**
      * Committed.
      */
-    public static final PublicIPAddressMigrationPhase COMMITTED = fromString("Committed");
+    public static final PublicIpAddressMigrationPhase COMMITTED = fromString("Committed");
 
     /**
-     * Creates a new instance of PublicIPAddressMigrationPhase value.
+     * Creates a new instance of PublicIpAddressMigrationPhase value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public PublicIPAddressMigrationPhase() {
+    public PublicIpAddressMigrationPhase() {
     }
 
     /**
-     * Creates or finds a PublicIPAddressMigrationPhase from its string representation.
+     * Creates or finds a PublicIpAddressMigrationPhase from its string representation.
      * 
      * @param name a name to look for.
-     * @return the corresponding PublicIPAddressMigrationPhase.
+     * @return the corresponding PublicIpAddressMigrationPhase.
      */
-    public static PublicIPAddressMigrationPhase fromString(String name) {
-        return fromString(name, PublicIPAddressMigrationPhase.class);
+    public static PublicIpAddressMigrationPhase fromString(String name) {
+        return fromString(name, PublicIpAddressMigrationPhase.class);
     }
 
     /**
-     * Gets known PublicIPAddressMigrationPhase values.
+     * Gets known PublicIpAddressMigrationPhase values.
      * 
-     * @return known PublicIPAddressMigrationPhase values.
+     * @return known PublicIpAddressMigrationPhase values.
      */
-    public static Collection<PublicIPAddressMigrationPhase> values() {
-        return values(PublicIPAddressMigrationPhase.class);
+    public static Collection<PublicIpAddressMigrationPhase> values() {
+        return values(PublicIpAddressMigrationPhase.class);
     }
 }

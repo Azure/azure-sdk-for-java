@@ -10,42 +10,42 @@ import java.util.Collection;
 /**
  * Tier of a public IP prefix SKU.
  */
-public final class PublicIPPrefixSkuTier extends ExpandableStringEnum<PublicIPPrefixSkuTier> {
+public final class PublicIpPrefixSkuTier extends ExpandableStringEnum<PublicIpPrefixSkuTier> {
     /**
      * Regional.
      */
-    public static final PublicIPPrefixSkuTier REGIONAL = fromString("Regional");
+    public static final PublicIpPrefixSkuTier REGIONAL = fromString("Regional");
 
     /**
      * Global.
      */
-    public static final PublicIPPrefixSkuTier GLOBAL = fromString("Global");
+    public static final PublicIpPrefixSkuTier GLOBAL = fromString("Global");
 
     /**
-     * Creates a new instance of PublicIPPrefixSkuTier value.
+     * Creates a new instance of PublicIpPrefixSkuTier value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public PublicIPPrefixSkuTier() {
+    public PublicIpPrefixSkuTier() {
     }
 
     /**
-     * Creates or finds a PublicIPPrefixSkuTier from its string representation.
+     * Creates or finds a PublicIpPrefixSkuTier from its string representation.
      * 
      * @param name a name to look for.
-     * @return the corresponding PublicIPPrefixSkuTier.
+     * @return the corresponding PublicIpPrefixSkuTier.
      */
-    public static PublicIPPrefixSkuTier fromString(String name) {
-        return fromString(name, PublicIPPrefixSkuTier.class);
+    public static PublicIpPrefixSkuTier fromString(String name) {
+        return fromString(name, PublicIpPrefixSkuTier.class);
     }
 
     /**
-     * Gets known PublicIPPrefixSkuTier values.
+     * Gets known PublicIpPrefixSkuTier values.
      * 
-     * @return known PublicIPPrefixSkuTier values.
+     * @return known PublicIpPrefixSkuTier values.
      */
-    public static Collection<PublicIPPrefixSkuTier> values() {
-        return values(PublicIPPrefixSkuTier.class);
+    public static Collection<PublicIpPrefixSkuTier> values() {
+        return values(PublicIpPrefixSkuTier.class);
     }
 }

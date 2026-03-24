@@ -26,7 +26,7 @@ public final class StaticCidrProperties implements JsonSerializable<StaticCidrPr
      * Number of IP addresses to allocate for a static CIDR resource. The IP addresses will be assigned based on
      * IpamPools available space.
      */
-    private String numberOfIPAddressesToAllocate;
+    private String numberOfIpAddressesToAllocate;
 
     /*
      * List of IP address prefixes of the resource.
@@ -36,7 +36,7 @@ public final class StaticCidrProperties implements JsonSerializable<StaticCidrPr
     /*
      * Total number of IP addresses allocated for the static CIDR resource.
      */
-    private String totalNumberOfIPAddresses;
+    private String totalNumberOfIpAddresses;
 
     /*
      * Provisioning states of a resource.
@@ -70,24 +70,24 @@ public final class StaticCidrProperties implements JsonSerializable<StaticCidrPr
     }
 
     /**
-     * Get the numberOfIPAddressesToAllocate property: Number of IP addresses to allocate for a static CIDR resource.
+     * Get the numberOfIpAddressesToAllocate property: Number of IP addresses to allocate for a static CIDR resource.
      * The IP addresses will be assigned based on IpamPools available space.
      * 
-     * @return the numberOfIPAddressesToAllocate value.
+     * @return the numberOfIpAddressesToAllocate value.
      */
-    public String numberOfIPAddressesToAllocate() {
-        return this.numberOfIPAddressesToAllocate;
+    public String numberOfIpAddressesToAllocate() {
+        return this.numberOfIpAddressesToAllocate;
     }
 
     /**
-     * Set the numberOfIPAddressesToAllocate property: Number of IP addresses to allocate for a static CIDR resource.
+     * Set the numberOfIpAddressesToAllocate property: Number of IP addresses to allocate for a static CIDR resource.
      * The IP addresses will be assigned based on IpamPools available space.
      * 
-     * @param numberOfIPAddressesToAllocate the numberOfIPAddressesToAllocate value to set.
+     * @param numberOfIpAddressesToAllocate the numberOfIpAddressesToAllocate value to set.
      * @return the StaticCidrProperties object itself.
      */
-    public StaticCidrProperties withNumberOfIPAddressesToAllocate(String numberOfIPAddressesToAllocate) {
-        this.numberOfIPAddressesToAllocate = numberOfIPAddressesToAllocate;
+    public StaticCidrProperties withNumberOfIpAddressesToAllocate(String numberOfIpAddressesToAllocate) {
+        this.numberOfIpAddressesToAllocate = numberOfIpAddressesToAllocate;
         return this;
     }
 
@@ -112,12 +112,12 @@ public final class StaticCidrProperties implements JsonSerializable<StaticCidrPr
     }
 
     /**
-     * Get the totalNumberOfIPAddresses property: Total number of IP addresses allocated for the static CIDR resource.
+     * Get the totalNumberOfIpAddresses property: Total number of IP addresses allocated for the static CIDR resource.
      * 
-     * @return the totalNumberOfIPAddresses value.
+     * @return the totalNumberOfIpAddresses value.
      */
-    public String totalNumberOfIPAddresses() {
-        return this.totalNumberOfIPAddresses;
+    public String totalNumberOfIpAddresses() {
+        return this.totalNumberOfIpAddresses;
     }
 
     /**
@@ -144,7 +144,7 @@ public final class StaticCidrProperties implements JsonSerializable<StaticCidrPr
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("description", this.description);
-        jsonWriter.writeStringField("numberOfIPAddressesToAllocate", this.numberOfIPAddressesToAllocate);
+        jsonWriter.writeStringField("numberOfIPAddressesToAllocate", this.numberOfIpAddressesToAllocate);
         jsonWriter.writeArrayField("addressPrefixes", this.addressPrefixes,
             (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
@@ -168,12 +168,12 @@ public final class StaticCidrProperties implements JsonSerializable<StaticCidrPr
                 if ("description".equals(fieldName)) {
                     deserializedStaticCidrProperties.description = reader.getString();
                 } else if ("numberOfIPAddressesToAllocate".equals(fieldName)) {
-                    deserializedStaticCidrProperties.numberOfIPAddressesToAllocate = reader.getString();
+                    deserializedStaticCidrProperties.numberOfIpAddressesToAllocate = reader.getString();
                 } else if ("addressPrefixes".equals(fieldName)) {
                     List<String> addressPrefixes = reader.readArray(reader1 -> reader1.getString());
                     deserializedStaticCidrProperties.addressPrefixes = addressPrefixes;
                 } else if ("totalNumberOfIPAddresses".equals(fieldName)) {
-                    deserializedStaticCidrProperties.totalNumberOfIPAddresses = reader.getString();
+                    deserializedStaticCidrProperties.totalNumberOfIpAddresses = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedStaticCidrProperties.provisioningState
                         = BaseProvisioningState.fromString(reader.getString());

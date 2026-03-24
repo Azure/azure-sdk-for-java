@@ -11,8 +11,8 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.CustomDnsConfigPropertiesFormat;
 import com.azure.resourcemanager.network.models.ExtendedLocation;
-import com.azure.resourcemanager.network.models.PrivateEndpointIPConfiguration;
-import com.azure.resourcemanager.network.models.PrivateEndpointIPVersionType;
+import com.azure.resourcemanager.network.models.PrivateEndpointIpConfiguration;
+import com.azure.resourcemanager.network.models.PrivateEndpointIpVersionType;
 import com.azure.resourcemanager.network.models.PrivateLinkServiceConnection;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
@@ -204,7 +204,7 @@ public final class PrivateEndpointInner extends Resource {
      * 
      * @return the ipVersionType value.
      */
-    public PrivateEndpointIPVersionType ipVersionType() {
+    public PrivateEndpointIpVersionType ipVersionType() {
         return this.innerProperties() == null ? null : this.innerProperties().ipVersionType();
     }
 
@@ -215,7 +215,7 @@ public final class PrivateEndpointInner extends Resource {
      * @param ipVersionType the ipVersionType value to set.
      * @return the PrivateEndpointInner object itself.
      */
-    public PrivateEndpointInner withIpVersionType(PrivateEndpointIPVersionType ipVersionType) {
+    public PrivateEndpointInner withIpVersionType(PrivateEndpointIpVersionType ipVersionType) {
         if (this.innerProperties() == null) {
             this.innerProperties = new PrivateEndpointPropertiesInner();
         }
@@ -330,7 +330,7 @@ public final class PrivateEndpointInner extends Resource {
      * 
      * @return the ipConfigurations value.
      */
-    public List<PrivateEndpointIPConfiguration> ipConfigurations() {
+    public List<PrivateEndpointIpConfiguration> ipConfigurations() {
         return this.innerProperties() == null ? null : this.innerProperties().ipConfigurations();
     }
 
@@ -341,7 +341,7 @@ public final class PrivateEndpointInner extends Resource {
      * @param ipConfigurations the ipConfigurations value to set.
      * @return the PrivateEndpointInner object itself.
      */
-    public PrivateEndpointInner withIpConfigurations(List<PrivateEndpointIPConfiguration> ipConfigurations) {
+    public PrivateEndpointInner withIpConfigurations(List<PrivateEndpointIpConfiguration> ipConfigurations) {
         if (this.innerProperties() == null) {
             this.innerProperties = new PrivateEndpointPropertiesInner();
         }

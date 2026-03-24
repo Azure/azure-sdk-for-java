@@ -210,7 +210,7 @@ public final class ExpressRoutePortInner extends Resource {
      * 
      * @return the provisionedBandwidthInGbps value.
      */
-    public Double provisionedBandwidthInGbps() {
+    public Float provisionedBandwidthInGbps() {
         return this.innerProperties() == null ? null : this.innerProperties().provisionedBandwidthInGbps();
     }
 

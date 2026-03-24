@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.network.generated;
 
 import com.azure.resourcemanager.network.models.FilterItems;
-import com.azure.resourcemanager.network.models.FirewallPolicyIDPSQuerySortOrder;
-import com.azure.resourcemanager.network.models.IDPSQueryObject;
+import com.azure.resourcemanager.network.models.FirewallPolicyIdpsQuerySortOrder;
+import com.azure.resourcemanager.network.models.IdpsQueryObject;
 import com.azure.resourcemanager.network.models.OrderBy;
 import java.util.Arrays;
 
@@ -25,10 +25,10 @@ public final class FirewallPolicyIdpsSignaturesListSamples {
     public static void querySignatureOverrides(com.azure.resourcemanager.network.NetworkManager manager) {
         manager.serviceClient()
             .getFirewallPolicyIdpsSignatures()
-            .listWithResponse("rg1", "firewallPolicy", new IDPSQueryObject()
+            .listWithResponse("rg1", "firewallPolicy", new IdpsQueryObject()
                 .withFilters(Arrays.asList(new FilterItems().withField("Mode").withValues(Arrays.asList("Deny"))))
                 .withSearch("")
-                .withOrderBy(new OrderBy().withField("severity").withOrder(FirewallPolicyIDPSQuerySortOrder.ASCENDING))
+                .withOrderBy(new OrderBy().withField("severity").withOrder(FirewallPolicyIdpsQuerySortOrder.ASCENDING))
                 .withResultsPerPage(20)
                 .withSkip(0), com.azure.core.util.Context.NONE);
     }

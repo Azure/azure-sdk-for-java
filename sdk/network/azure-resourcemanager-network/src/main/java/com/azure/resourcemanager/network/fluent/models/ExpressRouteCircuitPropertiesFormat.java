@@ -70,7 +70,7 @@ public final class ExpressRouteCircuitPropertiesFormat
     /*
      * The bandwidth of the circuit when the circuit is provisioned on an ExpressRoutePort resource.
      */
-    private Double bandwidthInGbps;
+    private Float bandwidthInGbps;
 
     /*
      * The identifier of the circuit traffic. Outer tag for QinQ encapsulation.
@@ -304,7 +304,7 @@ public final class ExpressRouteCircuitPropertiesFormat
      * 
      * @return the bandwidthInGbps value.
      */
-    public Double bandwidthInGbps() {
+    public Float bandwidthInGbps() {
         return this.bandwidthInGbps;
     }
 
@@ -315,7 +315,7 @@ public final class ExpressRouteCircuitPropertiesFormat
      * @param bandwidthInGbps the bandwidthInGbps value to set.
      * @return the ExpressRouteCircuitPropertiesFormat object itself.
      */
-    public ExpressRouteCircuitPropertiesFormat withBandwidthInGbps(Double bandwidthInGbps) {
+    public ExpressRouteCircuitPropertiesFormat withBandwidthInGbps(Float bandwidthInGbps) {
         this.bandwidthInGbps = bandwidthInGbps;
         return this;
     }
@@ -514,7 +514,7 @@ public final class ExpressRouteCircuitPropertiesFormat
                     deserializedExpressRouteCircuitPropertiesFormat.expressRoutePort = SubResource.fromJson(reader);
                 } else if ("bandwidthInGbps".equals(fieldName)) {
                     deserializedExpressRouteCircuitPropertiesFormat.bandwidthInGbps
-                        = reader.getNullable(JsonReader::getDouble);
+                        = reader.getNullable(JsonReader::getFloat);
                 } else if ("stag".equals(fieldName)) {
                     deserializedExpressRouteCircuitPropertiesFormat.stag = reader.getNullable(JsonReader::getInt);
                 } else if ("provisioningState".equals(fieldName)) {

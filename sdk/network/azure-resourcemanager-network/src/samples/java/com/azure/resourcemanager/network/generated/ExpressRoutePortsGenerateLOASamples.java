@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.resourcemanager.network.models.GenerateExpressRoutePortsLOARequest;
+import com.azure.resourcemanager.network.models.GenerateExpressRoutePortsLoaRequest;
 
 /**
  * Samples for ExpressRoutePorts GenerateLOA.
@@ -22,7 +22,7 @@ public final class ExpressRoutePortsGenerateLOASamples {
         manager.serviceClient()
             .getExpressRoutePorts()
             .generateLOAWithResponse("rg1", "portName",
-                new GenerateExpressRoutePortsLOARequest().withCustomerName("customerName"),
+                new GenerateExpressRoutePortsLoaRequest().withCustomerName("customerName"),
                 com.azure.core.util.Context.NONE);
     }
 }

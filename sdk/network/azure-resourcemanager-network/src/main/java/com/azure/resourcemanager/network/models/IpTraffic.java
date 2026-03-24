@@ -17,7 +17,7 @@ import java.util.List;
  * IP traffic information.
  */
 @Fluent
-public final class IPTraffic implements JsonSerializable<IPTraffic> {
+public final class IpTraffic implements JsonSerializable<IpTraffic> {
     /*
      * List of source IP addresses of the traffic..
      */
@@ -44,9 +44,9 @@ public final class IPTraffic implements JsonSerializable<IPTraffic> {
     private List<NetworkProtocol> protocols;
 
     /**
-     * Creates an instance of IPTraffic class.
+     * Creates an instance of IpTraffic class.
      */
-    public IPTraffic() {
+    public IpTraffic() {
     }
 
     /**
@@ -62,9 +62,9 @@ public final class IPTraffic implements JsonSerializable<IPTraffic> {
      * Set the sourceIps property: List of source IP addresses of the traffic..
      * 
      * @param sourceIps the sourceIps value to set.
-     * @return the IPTraffic object itself.
+     * @return the IpTraffic object itself.
      */
-    public IPTraffic withSourceIps(List<String> sourceIps) {
+    public IpTraffic withSourceIps(List<String> sourceIps) {
         this.sourceIps = sourceIps;
         return this;
     }
@@ -82,9 +82,9 @@ public final class IPTraffic implements JsonSerializable<IPTraffic> {
      * Set the destinationIps property: List of destination IP addresses of the traffic..
      * 
      * @param destinationIps the destinationIps value to set.
-     * @return the IPTraffic object itself.
+     * @return the IpTraffic object itself.
      */
-    public IPTraffic withDestinationIps(List<String> destinationIps) {
+    public IpTraffic withDestinationIps(List<String> destinationIps) {
         this.destinationIps = destinationIps;
         return this;
     }
@@ -102,9 +102,9 @@ public final class IPTraffic implements JsonSerializable<IPTraffic> {
      * Set the sourcePorts property: The source ports of the traffic.
      * 
      * @param sourcePorts the sourcePorts value to set.
-     * @return the IPTraffic object itself.
+     * @return the IpTraffic object itself.
      */
-    public IPTraffic withSourcePorts(List<String> sourcePorts) {
+    public IpTraffic withSourcePorts(List<String> sourcePorts) {
         this.sourcePorts = sourcePorts;
         return this;
     }
@@ -122,9 +122,9 @@ public final class IPTraffic implements JsonSerializable<IPTraffic> {
      * Set the destinationPorts property: The destination ports of the traffic.
      * 
      * @param destinationPorts the destinationPorts value to set.
-     * @return the IPTraffic object itself.
+     * @return the IpTraffic object itself.
      */
-    public IPTraffic withDestinationPorts(List<String> destinationPorts) {
+    public IpTraffic withDestinationPorts(List<String> destinationPorts) {
         this.destinationPorts = destinationPorts;
         return this;
     }
@@ -142,9 +142,9 @@ public final class IPTraffic implements JsonSerializable<IPTraffic> {
      * Set the protocols property: The protocols property.
      * 
      * @param protocols the protocols value to set.
-     * @return the IPTraffic object itself.
+     * @return the IpTraffic object itself.
      */
-    public IPTraffic withProtocols(List<NetworkProtocol> protocols) {
+    public IpTraffic withProtocols(List<NetworkProtocol> protocols) {
         this.protocols = protocols;
         return this;
     }
@@ -157,27 +157,27 @@ public final class IPTraffic implements JsonSerializable<IPTraffic> {
     public void validate() {
         if (sourceIps() == null) {
             throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property sourceIps in model IPTraffic"));
+                .log(new IllegalArgumentException("Missing required property sourceIps in model IpTraffic"));
         }
         if (destinationIps() == null) {
             throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property destinationIps in model IPTraffic"));
+                .log(new IllegalArgumentException("Missing required property destinationIps in model IpTraffic"));
         }
         if (sourcePorts() == null) {
             throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property sourcePorts in model IPTraffic"));
+                .log(new IllegalArgumentException("Missing required property sourcePorts in model IpTraffic"));
         }
         if (destinationPorts() == null) {
             throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property destinationPorts in model IPTraffic"));
+                .log(new IllegalArgumentException("Missing required property destinationPorts in model IpTraffic"));
         }
         if (protocols() == null) {
             throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property protocols in model IPTraffic"));
+                .log(new IllegalArgumentException("Missing required property protocols in model IpTraffic"));
         }
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(IPTraffic.class);
+    private static final ClientLogger LOGGER = new ClientLogger(IpTraffic.class);
 
     /**
      * {@inheritDoc}
@@ -197,43 +197,43 @@ public final class IPTraffic implements JsonSerializable<IPTraffic> {
     }
 
     /**
-     * Reads an instance of IPTraffic from the JsonReader.
+     * Reads an instance of IpTraffic from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of IPTraffic if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * @return An instance of IpTraffic if the JsonReader was pointing to an instance of it, or null if it was pointing
      * to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the IPTraffic.
+     * @throws IOException If an error occurs while reading the IpTraffic.
      */
-    public static IPTraffic fromJson(JsonReader jsonReader) throws IOException {
+    public static IpTraffic fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            IPTraffic deserializedIPTraffic = new IPTraffic();
+            IpTraffic deserializedIpTraffic = new IpTraffic();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("sourceIps".equals(fieldName)) {
                     List<String> sourceIps = reader.readArray(reader1 -> reader1.getString());
-                    deserializedIPTraffic.sourceIps = sourceIps;
+                    deserializedIpTraffic.sourceIps = sourceIps;
                 } else if ("destinationIps".equals(fieldName)) {
                     List<String> destinationIps = reader.readArray(reader1 -> reader1.getString());
-                    deserializedIPTraffic.destinationIps = destinationIps;
+                    deserializedIpTraffic.destinationIps = destinationIps;
                 } else if ("sourcePorts".equals(fieldName)) {
                     List<String> sourcePorts = reader.readArray(reader1 -> reader1.getString());
-                    deserializedIPTraffic.sourcePorts = sourcePorts;
+                    deserializedIpTraffic.sourcePorts = sourcePorts;
                 } else if ("destinationPorts".equals(fieldName)) {
                     List<String> destinationPorts = reader.readArray(reader1 -> reader1.getString());
-                    deserializedIPTraffic.destinationPorts = destinationPorts;
+                    deserializedIpTraffic.destinationPorts = destinationPorts;
                 } else if ("protocols".equals(fieldName)) {
                     List<NetworkProtocol> protocols
                         = reader.readArray(reader1 -> NetworkProtocol.fromString(reader1.getString()));
-                    deserializedIPTraffic.protocols = protocols;
+                    deserializedIpTraffic.protocols = protocols;
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedIPTraffic;
+            return deserializedIpTraffic;
         });
     }
 }

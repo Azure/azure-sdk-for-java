@@ -41,7 +41,7 @@ public final class ReachabilityAnalysisIntentProperties
     /*
      * IP traffic information.
      */
-    private IPTraffic ipTraffic;
+    private IpTraffic ipTraffic;
 
     /**
      * Creates an instance of ReachabilityAnalysisIntentProperties class.
@@ -123,7 +123,7 @@ public final class ReachabilityAnalysisIntentProperties
      * 
      * @return the ipTraffic value.
      */
-    public IPTraffic ipTraffic() {
+    public IpTraffic ipTraffic() {
         return this.ipTraffic;
     }
 
@@ -133,7 +133,7 @@ public final class ReachabilityAnalysisIntentProperties
      * @param ipTraffic the ipTraffic value to set.
      * @return the ReachabilityAnalysisIntentProperties object itself.
      */
-    public ReachabilityAnalysisIntentProperties withIpTraffic(IPTraffic ipTraffic) {
+    public ReachabilityAnalysisIntentProperties withIpTraffic(IpTraffic ipTraffic) {
         this.ipTraffic = ipTraffic;
         return this;
     }
@@ -200,7 +200,7 @@ public final class ReachabilityAnalysisIntentProperties
                 } else if ("destinationResourceId".equals(fieldName)) {
                     deserializedReachabilityAnalysisIntentProperties.destinationResourceId = reader.getString();
                 } else if ("ipTraffic".equals(fieldName)) {
-                    deserializedReachabilityAnalysisIntentProperties.ipTraffic = IPTraffic.fromJson(reader);
+                    deserializedReachabilityAnalysisIntentProperties.ipTraffic = IpTraffic.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedReachabilityAnalysisIntentProperties.provisioningState
                         = BaseProvisioningState.fromString(reader.getString());

@@ -15,7 +15,7 @@ import java.io.IOException;
  * Represents a single IP configuration.
  */
 @Fluent
-public final class VirtualApplianceIPConfiguration implements JsonSerializable<VirtualApplianceIPConfiguration> {
+public final class VirtualApplianceIpConfiguration implements JsonSerializable<VirtualApplianceIpConfiguration> {
     /*
      * For hub NVAs, primary IP configs must be named 'privatenicipconfig' and 'publicnicipconfig', with non-primary
      * configs using these prefixes; no naming restrictions apply for NVAs in VNets. Maximum 80 character are allowed.
@@ -25,12 +25,12 @@ public final class VirtualApplianceIPConfiguration implements JsonSerializable<V
     /*
      * Represents a single IP configuration properties.
      */
-    private VirtualApplianceIPConfigurationProperties properties;
+    private VirtualApplianceIpConfigurationProperties properties;
 
     /**
-     * Creates an instance of VirtualApplianceIPConfiguration class.
+     * Creates an instance of VirtualApplianceIpConfiguration class.
      */
-    public VirtualApplianceIPConfiguration() {
+    public VirtualApplianceIpConfiguration() {
     }
 
     /**
@@ -50,9 +50,9 @@ public final class VirtualApplianceIPConfiguration implements JsonSerializable<V
      * VNets. Maximum 80 character are allowed.
      * 
      * @param name the name value to set.
-     * @return the VirtualApplianceIPConfiguration object itself.
+     * @return the VirtualApplianceIpConfiguration object itself.
      */
-    public VirtualApplianceIPConfiguration withName(String name) {
+    public VirtualApplianceIpConfiguration withName(String name) {
         this.name = name;
         return this;
     }
@@ -62,7 +62,7 @@ public final class VirtualApplianceIPConfiguration implements JsonSerializable<V
      * 
      * @return the properties value.
      */
-    public VirtualApplianceIPConfigurationProperties properties() {
+    public VirtualApplianceIpConfigurationProperties properties() {
         return this.properties;
     }
 
@@ -70,9 +70,9 @@ public final class VirtualApplianceIPConfiguration implements JsonSerializable<V
      * Set the properties property: Represents a single IP configuration properties.
      * 
      * @param properties the properties value to set.
-     * @return the VirtualApplianceIPConfiguration object itself.
+     * @return the VirtualApplianceIpConfiguration object itself.
      */
-    public VirtualApplianceIPConfiguration withProperties(VirtualApplianceIPConfigurationProperties properties) {
+    public VirtualApplianceIpConfiguration withProperties(VirtualApplianceIpConfigurationProperties properties) {
         this.properties = properties;
         return this;
     }
@@ -100,32 +100,32 @@ public final class VirtualApplianceIPConfiguration implements JsonSerializable<V
     }
 
     /**
-     * Reads an instance of VirtualApplianceIPConfiguration from the JsonReader.
+     * Reads an instance of VirtualApplianceIpConfiguration from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of VirtualApplianceIPConfiguration if the JsonReader was pointing to an instance of it, or
+     * @return An instance of VirtualApplianceIpConfiguration if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the VirtualApplianceIPConfiguration.
+     * @throws IOException If an error occurs while reading the VirtualApplianceIpConfiguration.
      */
-    public static VirtualApplianceIPConfiguration fromJson(JsonReader jsonReader) throws IOException {
+    public static VirtualApplianceIpConfiguration fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            VirtualApplianceIPConfiguration deserializedVirtualApplianceIPConfiguration
-                = new VirtualApplianceIPConfiguration();
+            VirtualApplianceIpConfiguration deserializedVirtualApplianceIpConfiguration
+                = new VirtualApplianceIpConfiguration();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("name".equals(fieldName)) {
-                    deserializedVirtualApplianceIPConfiguration.name = reader.getString();
+                    deserializedVirtualApplianceIpConfiguration.name = reader.getString();
                 } else if ("properties".equals(fieldName)) {
-                    deserializedVirtualApplianceIPConfiguration.properties
-                        = VirtualApplianceIPConfigurationProperties.fromJson(reader);
+                    deserializedVirtualApplianceIpConfiguration.properties
+                        = VirtualApplianceIpConfigurationProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedVirtualApplianceIPConfiguration;
+            return deserializedVirtualApplianceIpConfiguration;
         });
     }
 }

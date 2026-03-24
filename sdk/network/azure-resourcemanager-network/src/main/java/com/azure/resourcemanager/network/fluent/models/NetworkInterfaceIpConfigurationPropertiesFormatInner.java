@@ -13,7 +13,7 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackendAddressPool;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.IpVersion;
-import com.azure.resourcemanager.network.models.NetworkInterfaceIPConfigurationPrivateLinkConnectionProperties;
+import com.azure.resourcemanager.network.models.NetworkInterfaceIpConfigurationPrivateLinkConnectionProperties;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 import java.util.List;
@@ -99,7 +99,7 @@ public final class NetworkInterfaceIPConfigurationPropertiesFormatInner
     /*
      * PrivateLinkConnection properties for the network interface.
      */
-    private NetworkInterfaceIPConfigurationPrivateLinkConnectionProperties privateLinkConnectionProperties;
+    private NetworkInterfaceIpConfigurationPrivateLinkConnectionProperties privateLinkConnectionProperties;
 
     /**
      * Creates an instance of NetworkInterfaceIPConfigurationPropertiesFormatInner class.
@@ -399,7 +399,7 @@ public final class NetworkInterfaceIPConfigurationPropertiesFormatInner
      * 
      * @return the privateLinkConnectionProperties value.
      */
-    public NetworkInterfaceIPConfigurationPrivateLinkConnectionProperties privateLinkConnectionProperties() {
+    public NetworkInterfaceIpConfigurationPrivateLinkConnectionProperties privateLinkConnectionProperties() {
         return this.privateLinkConnectionProperties;
     }
 
@@ -535,7 +535,7 @@ public final class NetworkInterfaceIPConfigurationPropertiesFormatInner
                         = ProvisioningState.fromString(reader.getString());
                 } else if ("privateLinkConnectionProperties".equals(fieldName)) {
                     deserializedNetworkInterfaceIPConfigurationPropertiesFormatInner.privateLinkConnectionProperties
-                        = NetworkInterfaceIPConfigurationPrivateLinkConnectionProperties.fromJson(reader);
+                        = NetworkInterfaceIpConfigurationPrivateLinkConnectionProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

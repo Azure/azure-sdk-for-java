@@ -10,7 +10,7 @@ import com.azure.resourcemanager.network.models.AzureFirewallApplicationRule;
 import com.azure.resourcemanager.network.models.AzureFirewallApplicationRuleCollection;
 import com.azure.resourcemanager.network.models.AzureFirewallApplicationRuleProtocol;
 import com.azure.resourcemanager.network.models.AzureFirewallApplicationRuleProtocolType;
-import com.azure.resourcemanager.network.models.AzureFirewallIPConfiguration;
+import com.azure.resourcemanager.network.models.AzureFirewallIpConfiguration;
 import com.azure.resourcemanager.network.models.AzureFirewallNatRCAction;
 import com.azure.resourcemanager.network.models.AzureFirewallNatRCActionType;
 import com.azure.resourcemanager.network.models.AzureFirewallNatRule;
@@ -24,8 +24,8 @@ import com.azure.resourcemanager.network.models.AzureFirewallSku;
 import com.azure.resourcemanager.network.models.AzureFirewallSkuName;
 import com.azure.resourcemanager.network.models.AzureFirewallSkuTier;
 import com.azure.resourcemanager.network.models.AzureFirewallThreatIntelMode;
-import com.azure.resourcemanager.network.models.HubIPAddresses;
-import com.azure.resourcemanager.network.models.HubPublicIPAddresses;
+import com.azure.resourcemanager.network.models.HubIpAddresses;
+import com.azure.resourcemanager.network.models.HubPublicIpAddresses;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -103,7 +103,7 @@ public final class AzureFirewallsCreateOrUpdateSamples {
                                     .withSourceAddresses(Arrays.asList("10.2.4.12-10.2.4.255"))
                                     .withDestinationPorts(Arrays.asList("443-444", "8443"))
                                     .withDestinationFqdns(Arrays.asList("www.amazon.com"))))))
-                .withIpConfigurations(Arrays.asList(new AzureFirewallIPConfiguration()
+                .withIpConfigurations(Arrays.asList(new AzureFirewallIpConfiguration()
                     .withName("azureFirewallIpConfiguration")
                     .withSubnet(new SubResource().withId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet2/subnets/AzureFirewallSubnet"))
@@ -184,7 +184,7 @@ public final class AzureFirewallsCreateOrUpdateSamples {
                                     .withSourceAddresses(Arrays.asList("10.2.4.12-10.2.4.255"))
                                     .withDestinationPorts(Arrays.asList("443-444", "8443"))
                                     .withDestinationFqdns(Arrays.asList("www.amazon.com"))))))
-                .withIpConfigurations(Arrays.asList(new AzureFirewallIPConfiguration()
+                .withIpConfigurations(Arrays.asList(new AzureFirewallIpConfiguration()
                     .withName("azureFirewallIpConfiguration")
                     .withSubnet(new SubResource().withId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet2/subnets/AzureFirewallSubnet"))
@@ -265,7 +265,7 @@ public final class AzureFirewallsCreateOrUpdateSamples {
                                     .withSourceAddresses(Arrays.asList("10.2.4.12-10.2.4.255"))
                                     .withDestinationPorts(Arrays.asList("443-444", "8443"))
                                     .withDestinationFqdns(Arrays.asList("www.amazon.com"))))))
-                .withIpConfigurations(Arrays.asList(new AzureFirewallIPConfiguration()
+                .withIpConfigurations(Arrays.asList(new AzureFirewallIpConfiguration()
                     .withName("azureFirewallIpConfiguration")
                     .withSubnet(new SubResource().withId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet2/subnets/AzureFirewallSubnet"))
@@ -347,7 +347,7 @@ public final class AzureFirewallsCreateOrUpdateSamples {
                                     .withSourceAddresses(Arrays.asList("10.2.4.12-10.2.4.255"))
                                     .withDestinationPorts(Arrays.asList("443-444", "8443"))
                                     .withDestinationFqdns(Arrays.asList("www.amazon.com"))))))
-                .withIpConfigurations(Arrays.asList(new AzureFirewallIPConfiguration()
+                .withIpConfigurations(Arrays.asList(new AzureFirewallIpConfiguration()
                     .withName("azureFirewallIpConfiguration")
                     .withSubnet(new SubResource().withId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet2/subnets/AzureFirewallSubnet"))
@@ -379,8 +379,8 @@ public final class AzureFirewallsCreateOrUpdateSamples {
                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/hub1"))
                 .withFirewallPolicy(new SubResource().withId(
                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/firewallPolicies/policy1"))
-                .withHubIPAddresses(new HubIPAddresses()
-                    .withPublicIPs(new HubPublicIPAddresses().withAddresses(Arrays.asList()).withCount(1)))
+                .withHubIPAddresses(new HubIpAddresses()
+                    .withPublicIPs(new HubPublicIpAddresses().withAddresses(Arrays.asList()).withCount(1)))
                 .withSku(new AzureFirewallSku().withName(AzureFirewallSkuName.AZFW_HUB)
                     .withTier(AzureFirewallSkuTier.STANDARD)),
                 com.azure.core.util.Context.NONE);
@@ -456,13 +456,13 @@ public final class AzureFirewallsCreateOrUpdateSamples {
                                     .withSourceAddresses(Arrays.asList("10.2.4.12-10.2.4.255"))
                                     .withDestinationPorts(Arrays.asList("443-444", "8443"))
                                     .withDestinationFqdns(Arrays.asList("www.amazon.com"))))))
-                .withIpConfigurations(Arrays.asList(new AzureFirewallIPConfiguration()
+                .withIpConfigurations(Arrays.asList(new AzureFirewallIpConfiguration()
                     .withName("azureFirewallIpConfiguration")
                     .withSubnet(new SubResource().withId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet2/subnets/AzureFirewallSubnet"))
                     .withPublicIpAddress(new SubResource().withId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/pipName"))))
-                .withManagementIpConfiguration(new AzureFirewallIPConfiguration()
+                .withManagementIpConfiguration(new AzureFirewallIpConfiguration()
                     .withName("azureFirewallMgmtIpConfiguration")
                     .withSubnet(new SubResource().withId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet2/subnets/AzureFirewallManagementSubnet"))

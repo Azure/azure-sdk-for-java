@@ -20,10 +20,10 @@ import com.azure.resourcemanager.network.models.FirewallPolicyIntrusionDetection
 import com.azure.resourcemanager.network.models.FirewallPolicyIntrusionDetectionStateType;
 import com.azure.resourcemanager.network.models.FirewallPolicyLogAnalyticsResources;
 import com.azure.resourcemanager.network.models.FirewallPolicyLogAnalyticsWorkspace;
-import com.azure.resourcemanager.network.models.FirewallPolicySNAT;
-import com.azure.resourcemanager.network.models.FirewallPolicySQL;
 import com.azure.resourcemanager.network.models.FirewallPolicySku;
 import com.azure.resourcemanager.network.models.FirewallPolicySkuTier;
+import com.azure.resourcemanager.network.models.FirewallPolicySnat;
+import com.azure.resourcemanager.network.models.FirewallPolicySql;
 import com.azure.resourcemanager.network.models.FirewallPolicyThreatIntelWhitelist;
 import com.azure.resourcemanager.network.models.FirewallPolicyTransportSecurity;
 import java.util.Arrays;
@@ -62,8 +62,8 @@ public final class FirewallPoliciesCreateOrUpdateSamples {
                                 "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/microsoft.operationalinsights/workspaces/workspace2"))))
                         .withDefaultWorkspaceId(new SubResource().withId(
                             "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/microsoft.operationalinsights/workspaces/defaultWorkspace"))))
-                .withSnat(new FirewallPolicySNAT().withPrivateRanges(Arrays.asList("IANAPrivateRanges")))
-                .withSql(new FirewallPolicySQL().withAllowSqlRedirect(true))
+                .withSnat(new FirewallPolicySnat().withPrivateRanges(Arrays.asList("IANAPrivateRanges")))
+                .withSql(new FirewallPolicySql().withAllowSqlRedirect(true))
                 .withDnsSettings(new DnsSettings().withServers(Arrays.asList("30.3.4.5"))
                     .withEnableProxy(true)
                     .withRequireProxyForNetworkRules(false))

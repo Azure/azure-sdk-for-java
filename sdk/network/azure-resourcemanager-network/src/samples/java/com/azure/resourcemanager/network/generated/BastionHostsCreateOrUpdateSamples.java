@@ -8,7 +8,7 @@ import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.network.fluent.models.BastionHostInner;
 import com.azure.resourcemanager.network.models.BastionHostIpConfiguration;
 import com.azure.resourcemanager.network.models.BastionHostPropertiesFormatNetworkAcls;
-import com.azure.resourcemanager.network.models.IPRule;
+import com.azure.resourcemanager.network.models.IpRule;
 import java.util.Arrays;
 
 /**
@@ -49,7 +49,7 @@ public final class BastionHostsCreateOrUpdateSamples {
                 .withVirtualNetwork(new SubResource().withId(
                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg2/providers/Microsoft.Network/virtualNetworks/vnet2"))
                 .withNetworkAcls(new BastionHostPropertiesFormatNetworkAcls()
-                    .withIpRules(Arrays.asList(new IPRule().withAddressPrefix("1.1.1.1/16")))),
+                    .withIpRules(Arrays.asList(new IpRule().withAddressPrefix("1.1.1.1/16")))),
                 com.azure.core.util.Context.NONE);
     }
 

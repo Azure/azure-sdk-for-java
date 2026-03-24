@@ -16,11 +16,11 @@ import java.util.List;
  * Public IP addresses associated with azure firewall.
  */
 @Fluent
-public final class HubPublicIPAddresses implements JsonSerializable<HubPublicIPAddresses> {
+public final class HubPublicIpAddresses implements JsonSerializable<HubPublicIpAddresses> {
     /*
      * The list of Public IP addresses associated with azure firewall or IP addresses to be retained.
      */
-    private List<AzureFirewallPublicIPAddress> addresses;
+    private List<AzureFirewallPublicIpAddress> addresses;
 
     /*
      * The number of Public IP addresses associated with azure firewall.
@@ -28,9 +28,9 @@ public final class HubPublicIPAddresses implements JsonSerializable<HubPublicIPA
     private Integer count;
 
     /**
-     * Creates an instance of HubPublicIPAddresses class.
+     * Creates an instance of HubPublicIpAddresses class.
      */
-    public HubPublicIPAddresses() {
+    public HubPublicIpAddresses() {
     }
 
     /**
@@ -39,7 +39,7 @@ public final class HubPublicIPAddresses implements JsonSerializable<HubPublicIPA
      * 
      * @return the addresses value.
      */
-    public List<AzureFirewallPublicIPAddress> addresses() {
+    public List<AzureFirewallPublicIpAddress> addresses() {
         return this.addresses;
     }
 
@@ -48,9 +48,9 @@ public final class HubPublicIPAddresses implements JsonSerializable<HubPublicIPA
      * retained.
      * 
      * @param addresses the addresses value to set.
-     * @return the HubPublicIPAddresses object itself.
+     * @return the HubPublicIpAddresses object itself.
      */
-    public HubPublicIPAddresses withAddresses(List<AzureFirewallPublicIPAddress> addresses) {
+    public HubPublicIpAddresses withAddresses(List<AzureFirewallPublicIpAddress> addresses) {
         this.addresses = addresses;
         return this;
     }
@@ -68,9 +68,9 @@ public final class HubPublicIPAddresses implements JsonSerializable<HubPublicIPA
      * Set the count property: The number of Public IP addresses associated with azure firewall.
      * 
      * @param count the count value to set.
-     * @return the HubPublicIPAddresses object itself.
+     * @return the HubPublicIpAddresses object itself.
      */
-    public HubPublicIPAddresses withCount(Integer count) {
+    public HubPublicIpAddresses withCount(Integer count) {
         this.count = count;
         return this;
     }
@@ -98,32 +98,32 @@ public final class HubPublicIPAddresses implements JsonSerializable<HubPublicIPA
     }
 
     /**
-     * Reads an instance of HubPublicIPAddresses from the JsonReader.
+     * Reads an instance of HubPublicIpAddresses from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of HubPublicIPAddresses if the JsonReader was pointing to an instance of it, or null if it
+     * @return An instance of HubPublicIpAddresses if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the HubPublicIPAddresses.
+     * @throws IOException If an error occurs while reading the HubPublicIpAddresses.
      */
-    public static HubPublicIPAddresses fromJson(JsonReader jsonReader) throws IOException {
+    public static HubPublicIpAddresses fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            HubPublicIPAddresses deserializedHubPublicIPAddresses = new HubPublicIPAddresses();
+            HubPublicIpAddresses deserializedHubPublicIpAddresses = new HubPublicIpAddresses();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("addresses".equals(fieldName)) {
-                    List<AzureFirewallPublicIPAddress> addresses
-                        = reader.readArray(reader1 -> AzureFirewallPublicIPAddress.fromJson(reader1));
-                    deserializedHubPublicIPAddresses.addresses = addresses;
+                    List<AzureFirewallPublicIpAddress> addresses
+                        = reader.readArray(reader1 -> AzureFirewallPublicIpAddress.fromJson(reader1));
+                    deserializedHubPublicIpAddresses.addresses = addresses;
                 } else if ("count".equals(fieldName)) {
-                    deserializedHubPublicIPAddresses.count = reader.getNullable(JsonReader::getInt);
+                    deserializedHubPublicIpAddresses.count = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedHubPublicIPAddresses;
+            return deserializedHubPublicIpAddresses;
         });
     }
 }

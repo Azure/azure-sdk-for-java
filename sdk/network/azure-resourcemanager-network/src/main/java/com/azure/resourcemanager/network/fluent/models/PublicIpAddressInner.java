@@ -17,8 +17,8 @@ import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.IpTag;
 import com.azure.resourcemanager.network.models.IpVersion;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.azure.resourcemanager.network.models.PublicIPAddressMigrationPhase;
 import com.azure.resourcemanager.network.models.PublicIpAddressDnsSettings;
+import com.azure.resourcemanager.network.models.PublicIpAddressMigrationPhase;
 import com.azure.resourcemanager.network.models.PublicIpAddressSku;
 import java.io.IOException;
 import java.util.List;
@@ -475,7 +475,7 @@ public final class PublicIpAddressInner extends Resource {
      * 
      * @return the migrationPhase value.
      */
-    public PublicIPAddressMigrationPhase migrationPhase() {
+    public PublicIpAddressMigrationPhase migrationPhase() {
         return this.innerProperties() == null ? null : this.innerProperties().migrationPhase();
     }
 
@@ -485,7 +485,7 @@ public final class PublicIpAddressInner extends Resource {
      * @param migrationPhase the migrationPhase value to set.
      * @return the PublicIpAddressInner object itself.
      */
-    public PublicIpAddressInner withMigrationPhase(PublicIPAddressMigrationPhase migrationPhase) {
+    public PublicIpAddressInner withMigrationPhase(PublicIpAddressMigrationPhase migrationPhase) {
         if (this.innerProperties() == null) {
             this.innerProperties = new PublicIPAddressPropertiesFormatInner();
         }

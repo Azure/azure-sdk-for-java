@@ -16,8 +16,8 @@ import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.IpTag;
 import com.azure.resourcemanager.network.models.IpVersion;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.azure.resourcemanager.network.models.PublicIPAddressMigrationPhase;
 import com.azure.resourcemanager.network.models.PublicIpAddressDnsSettings;
+import com.azure.resourcemanager.network.models.PublicIpAddressMigrationPhase;
 import java.io.IOException;
 import java.util.List;
 
@@ -95,7 +95,7 @@ public final class PublicIPAddressPropertiesFormatInner
     /*
      * Migration phase of Public IP Address.
      */
-    private PublicIPAddressMigrationPhase migrationPhase;
+    private PublicIpAddressMigrationPhase migrationPhase;
 
     /*
      * The linked public IP address of the public IP address resource.
@@ -347,7 +347,7 @@ public final class PublicIPAddressPropertiesFormatInner
      * 
      * @return the migrationPhase value.
      */
-    public PublicIPAddressMigrationPhase migrationPhase() {
+    public PublicIpAddressMigrationPhase migrationPhase() {
         return this.migrationPhase;
     }
 
@@ -357,7 +357,7 @@ public final class PublicIPAddressPropertiesFormatInner
      * @param migrationPhase the migrationPhase value to set.
      * @return the PublicIPAddressPropertiesFormatInner object itself.
      */
-    public PublicIPAddressPropertiesFormatInner withMigrationPhase(PublicIPAddressMigrationPhase migrationPhase) {
+    public PublicIPAddressPropertiesFormatInner withMigrationPhase(PublicIpAddressMigrationPhase migrationPhase) {
         this.migrationPhase = migrationPhase;
         return this;
     }
@@ -508,7 +508,7 @@ public final class PublicIPAddressPropertiesFormatInner
                     deserializedPublicIPAddressPropertiesFormatInner.natGateway = NatGatewayInner.fromJson(reader);
                 } else if ("migrationPhase".equals(fieldName)) {
                     deserializedPublicIPAddressPropertiesFormatInner.migrationPhase
-                        = PublicIPAddressMigrationPhase.fromString(reader.getString());
+                        = PublicIpAddressMigrationPhase.fromString(reader.getString());
                 } else if ("linkedPublicIPAddress".equals(fieldName)) {
                     deserializedPublicIPAddressPropertiesFormatInner.linkedPublicIpAddress
                         = PublicIpAddressInner.fromJson(reader);

@@ -59,7 +59,7 @@ public final class ApplicationRule extends FirewallPolicyRule {
     /*
      * Terminate TLS connections for this rule.
      */
-    private Boolean terminateTLS;
+    private Boolean terminateTls;
 
     /*
      * List of destination azure web categories.
@@ -228,22 +228,22 @@ public final class ApplicationRule extends FirewallPolicyRule {
     }
 
     /**
-     * Get the terminateTLS property: Terminate TLS connections for this rule.
+     * Get the terminateTls property: Terminate TLS connections for this rule.
      * 
-     * @return the terminateTLS value.
+     * @return the terminateTls value.
      */
-    public Boolean terminateTLS() {
-        return this.terminateTLS;
+    public Boolean terminateTls() {
+        return this.terminateTls;
     }
 
     /**
-     * Set the terminateTLS property: Terminate TLS connections for this rule.
+     * Set the terminateTls property: Terminate TLS connections for this rule.
      * 
-     * @param terminateTLS the terminateTLS value to set.
+     * @param terminateTls the terminateTls value to set.
      * @return the ApplicationRule object itself.
      */
-    public ApplicationRule withTerminateTLS(Boolean terminateTLS) {
-        this.terminateTLS = terminateTLS;
+    public ApplicationRule withTerminateTls(Boolean terminateTls) {
+        this.terminateTls = terminateTls;
         return this;
     }
 
@@ -339,7 +339,7 @@ public final class ApplicationRule extends FirewallPolicyRule {
         jsonWriter.writeArrayField("fqdnTags", this.fqdnTags, (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("sourceIpGroups", this.sourceIpGroups,
             (writer, element) -> writer.writeString(element));
-        jsonWriter.writeBooleanField("terminateTLS", this.terminateTLS);
+        jsonWriter.writeBooleanField("terminateTLS", this.terminateTls);
         jsonWriter.writeArrayField("webCategories", this.webCategories,
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("httpHeadersToInsert", this.httpHeadersToInsert,
@@ -391,7 +391,7 @@ public final class ApplicationRule extends FirewallPolicyRule {
                     List<String> sourceIpGroups = reader.readArray(reader1 -> reader1.getString());
                     deserializedApplicationRule.sourceIpGroups = sourceIpGroups;
                 } else if ("terminateTLS".equals(fieldName)) {
-                    deserializedApplicationRule.terminateTLS = reader.getNullable(JsonReader::getBoolean);
+                    deserializedApplicationRule.terminateTls = reader.getNullable(JsonReader::getBoolean);
                 } else if ("webCategories".equals(fieldName)) {
                     List<String> webCategories = reader.readArray(reader1 -> reader1.getString());
                     deserializedApplicationRule.webCategories = webCategories;

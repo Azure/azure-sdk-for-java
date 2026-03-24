@@ -10,7 +10,7 @@ import com.azure.resourcemanager.network.fluent.models.VpnGatewayInner;
 import com.azure.resourcemanager.network.fluent.models.VpnGatewayNatRuleInner;
 import com.azure.resourcemanager.network.fluent.models.VpnSiteLinkConnectionInner;
 import com.azure.resourcemanager.network.models.BgpSettings;
-import com.azure.resourcemanager.network.models.IPConfigurationBgpPeeringAddress;
+import com.azure.resourcemanager.network.models.IpConfigurationBgpPeeringAddress;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionProtocol;
 import com.azure.resourcemanager.network.models.VpnNatRuleMapping;
 import com.azure.resourcemanager.network.models.VpnNatRuleMode;
@@ -52,9 +52,9 @@ public final class VpnGatewaysCreateOrUpdateSamples {
                 .withBgpSettings(new BgpSettings().withAsn(65515L)
                     .withPeerWeight(0)
                     .withBgpPeeringAddresses(Arrays.asList(
-                        new IPConfigurationBgpPeeringAddress().withIpconfigurationId("Instance0")
+                        new IpConfigurationBgpPeeringAddress().withIpconfigurationId("Instance0")
                             .withCustomBgpIpAddresses(Arrays.asList("169.254.21.5")),
-                        new IPConfigurationBgpPeeringAddress().withIpconfigurationId("Instance1")
+                        new IpConfigurationBgpPeeringAddress().withIpconfigurationId("Instance1")
                             .withCustomBgpIpAddresses(Arrays.asList("169.254.21.10")))))
                 .withEnableBgpRouteTranslationForNat(false)
                 .withIsRoutingPreferenceInternet(false)

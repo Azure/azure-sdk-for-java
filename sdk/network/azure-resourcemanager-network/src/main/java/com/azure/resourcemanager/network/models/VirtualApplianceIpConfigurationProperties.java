@@ -15,17 +15,17 @@ import java.io.IOException;
  * Represents a single IP configuration properties.
  */
 @Fluent
-public final class VirtualApplianceIPConfigurationProperties
-    implements JsonSerializable<VirtualApplianceIPConfigurationProperties> {
+public final class VirtualApplianceIpConfigurationProperties
+    implements JsonSerializable<VirtualApplianceIpConfigurationProperties> {
     /*
      * Whether or not this is primary IP configuration of the NIC.
      */
     private Boolean primary;
 
     /**
-     * Creates an instance of VirtualApplianceIPConfigurationProperties class.
+     * Creates an instance of VirtualApplianceIpConfigurationProperties class.
      */
-    public VirtualApplianceIPConfigurationProperties() {
+    public VirtualApplianceIpConfigurationProperties() {
     }
 
     /**
@@ -41,9 +41,9 @@ public final class VirtualApplianceIPConfigurationProperties
      * Set the primary property: Whether or not this is primary IP configuration of the NIC.
      * 
      * @param primary the primary value to set.
-     * @return the VirtualApplianceIPConfigurationProperties object itself.
+     * @return the VirtualApplianceIpConfigurationProperties object itself.
      */
-    public VirtualApplianceIPConfigurationProperties withPrimary(Boolean primary) {
+    public VirtualApplianceIpConfigurationProperties withPrimary(Boolean primary) {
         this.primary = primary;
         return this;
     }
@@ -67,30 +67,30 @@ public final class VirtualApplianceIPConfigurationProperties
     }
 
     /**
-     * Reads an instance of VirtualApplianceIPConfigurationProperties from the JsonReader.
+     * Reads an instance of VirtualApplianceIpConfigurationProperties from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of VirtualApplianceIPConfigurationProperties if the JsonReader was pointing to an instance of
+     * @return An instance of VirtualApplianceIpConfigurationProperties if the JsonReader was pointing to an instance of
      * it, or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the VirtualApplianceIPConfigurationProperties.
+     * @throws IOException If an error occurs while reading the VirtualApplianceIpConfigurationProperties.
      */
-    public static VirtualApplianceIPConfigurationProperties fromJson(JsonReader jsonReader) throws IOException {
+    public static VirtualApplianceIpConfigurationProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            VirtualApplianceIPConfigurationProperties deserializedVirtualApplianceIPConfigurationProperties
-                = new VirtualApplianceIPConfigurationProperties();
+            VirtualApplianceIpConfigurationProperties deserializedVirtualApplianceIpConfigurationProperties
+                = new VirtualApplianceIpConfigurationProperties();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("primary".equals(fieldName)) {
-                    deserializedVirtualApplianceIPConfigurationProperties.primary
+                    deserializedVirtualApplianceIpConfigurationProperties.primary
                         = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedVirtualApplianceIPConfigurationProperties;
+            return deserializedVirtualApplianceIpConfigurationProperties;
         });
     }
 }

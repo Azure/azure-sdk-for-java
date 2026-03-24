@@ -35,7 +35,7 @@ public final class BgpSettings implements JsonSerializable<BgpSettings> {
     /*
      * BGP peering address with IP configuration ID for virtual network gateway.
      */
-    private List<IPConfigurationBgpPeeringAddress> bgpPeeringAddresses;
+    private List<IpConfigurationBgpPeeringAddress> bgpPeeringAddresses;
 
     /**
      * Creates an instance of BgpSettings class.
@@ -108,7 +108,7 @@ public final class BgpSettings implements JsonSerializable<BgpSettings> {
      * 
      * @return the bgpPeeringAddresses value.
      */
-    public List<IPConfigurationBgpPeeringAddress> bgpPeeringAddresses() {
+    public List<IpConfigurationBgpPeeringAddress> bgpPeeringAddresses() {
         return this.bgpPeeringAddresses;
     }
 
@@ -118,7 +118,7 @@ public final class BgpSettings implements JsonSerializable<BgpSettings> {
      * @param bgpPeeringAddresses the bgpPeeringAddresses value to set.
      * @return the BgpSettings object itself.
      */
-    public BgpSettings withBgpPeeringAddresses(List<IPConfigurationBgpPeeringAddress> bgpPeeringAddresses) {
+    public BgpSettings withBgpPeeringAddresses(List<IpConfigurationBgpPeeringAddress> bgpPeeringAddresses) {
         this.bgpPeeringAddresses = bgpPeeringAddresses;
         return this;
     }
@@ -170,8 +170,8 @@ public final class BgpSettings implements JsonSerializable<BgpSettings> {
                 } else if ("peerWeight".equals(fieldName)) {
                     deserializedBgpSettings.peerWeight = reader.getNullable(JsonReader::getInt);
                 } else if ("bgpPeeringAddresses".equals(fieldName)) {
-                    List<IPConfigurationBgpPeeringAddress> bgpPeeringAddresses
-                        = reader.readArray(reader1 -> IPConfigurationBgpPeeringAddress.fromJson(reader1));
+                    List<IpConfigurationBgpPeeringAddress> bgpPeeringAddresses
+                        = reader.readArray(reader1 -> IpConfigurationBgpPeeringAddress.fromJson(reader1));
                     deserializedBgpSettings.bgpPeeringAddresses = bgpPeeringAddresses;
                 } else {
                     reader.skipChildren();

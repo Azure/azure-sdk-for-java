@@ -16,8 +16,8 @@ import java.util.List;
  * PrivateLinkConnection properties for the network interface.
  */
 @Immutable
-public final class NetworkInterfaceIPConfigurationPrivateLinkConnectionProperties
-    implements JsonSerializable<NetworkInterfaceIPConfigurationPrivateLinkConnectionProperties> {
+public final class NetworkInterfaceIpConfigurationPrivateLinkConnectionProperties
+    implements JsonSerializable<NetworkInterfaceIpConfigurationPrivateLinkConnectionProperties> {
     /*
      * The group ID for current private link connection.
      */
@@ -34,9 +34,9 @@ public final class NetworkInterfaceIPConfigurationPrivateLinkConnectionPropertie
     private List<String> fqdns;
 
     /**
-     * Creates an instance of NetworkInterfaceIPConfigurationPrivateLinkConnectionProperties class.
+     * Creates an instance of NetworkInterfaceIpConfigurationPrivateLinkConnectionProperties class.
      */
-    private NetworkInterfaceIPConfigurationPrivateLinkConnectionProperties() {
+    private NetworkInterfaceIpConfigurationPrivateLinkConnectionProperties() {
     }
 
     /**
@@ -84,38 +84,38 @@ public final class NetworkInterfaceIPConfigurationPrivateLinkConnectionPropertie
     }
 
     /**
-     * Reads an instance of NetworkInterfaceIPConfigurationPrivateLinkConnectionProperties from the JsonReader.
+     * Reads an instance of NetworkInterfaceIpConfigurationPrivateLinkConnectionProperties from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of NetworkInterfaceIPConfigurationPrivateLinkConnectionProperties if the JsonReader was
+     * @return An instance of NetworkInterfaceIpConfigurationPrivateLinkConnectionProperties if the JsonReader was
      * pointing to an instance of it, or null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the
-     * NetworkInterfaceIPConfigurationPrivateLinkConnectionProperties.
+     * NetworkInterfaceIpConfigurationPrivateLinkConnectionProperties.
      */
-    public static NetworkInterfaceIPConfigurationPrivateLinkConnectionProperties fromJson(JsonReader jsonReader)
+    public static NetworkInterfaceIpConfigurationPrivateLinkConnectionProperties fromJson(JsonReader jsonReader)
         throws IOException {
         return jsonReader.readObject(reader -> {
-            NetworkInterfaceIPConfigurationPrivateLinkConnectionProperties deserializedNetworkInterfaceIPConfigurationPrivateLinkConnectionProperties
-                = new NetworkInterfaceIPConfigurationPrivateLinkConnectionProperties();
+            NetworkInterfaceIpConfigurationPrivateLinkConnectionProperties deserializedNetworkInterfaceIpConfigurationPrivateLinkConnectionProperties
+                = new NetworkInterfaceIpConfigurationPrivateLinkConnectionProperties();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("groupId".equals(fieldName)) {
-                    deserializedNetworkInterfaceIPConfigurationPrivateLinkConnectionProperties.groupId
+                    deserializedNetworkInterfaceIpConfigurationPrivateLinkConnectionProperties.groupId
                         = reader.getString();
                 } else if ("requiredMemberName".equals(fieldName)) {
-                    deserializedNetworkInterfaceIPConfigurationPrivateLinkConnectionProperties.requiredMemberName
+                    deserializedNetworkInterfaceIpConfigurationPrivateLinkConnectionProperties.requiredMemberName
                         = reader.getString();
                 } else if ("fqdns".equals(fieldName)) {
                     List<String> fqdns = reader.readArray(reader1 -> reader1.getString());
-                    deserializedNetworkInterfaceIPConfigurationPrivateLinkConnectionProperties.fqdns = fqdns;
+                    deserializedNetworkInterfaceIpConfigurationPrivateLinkConnectionProperties.fqdns = fqdns;
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedNetworkInterfaceIPConfigurationPrivateLinkConnectionProperties;
+            return deserializedNetworkInterfaceIpConfigurationPrivateLinkConnectionProperties;
         });
     }
 }

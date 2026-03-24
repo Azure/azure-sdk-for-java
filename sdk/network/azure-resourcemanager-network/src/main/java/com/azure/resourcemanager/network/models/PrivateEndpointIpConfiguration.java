@@ -16,7 +16,7 @@ import java.io.IOException;
  * An IP Configuration of the private endpoint.
  */
 @Fluent
-public final class PrivateEndpointIPConfiguration implements JsonSerializable<PrivateEndpointIPConfiguration> {
+public final class PrivateEndpointIpConfiguration implements JsonSerializable<PrivateEndpointIpConfiguration> {
     /*
      * Properties of private endpoint IP configurations.
      */
@@ -38,9 +38,9 @@ public final class PrivateEndpointIPConfiguration implements JsonSerializable<Pr
     private String etag;
 
     /**
-     * Creates an instance of PrivateEndpointIPConfiguration class.
+     * Creates an instance of PrivateEndpointIpConfiguration class.
      */
-    public PrivateEndpointIPConfiguration() {
+    public PrivateEndpointIpConfiguration() {
     }
 
     /**
@@ -65,9 +65,9 @@ public final class PrivateEndpointIPConfiguration implements JsonSerializable<Pr
      * Set the name property: The name of the resource that is unique within a resource group.
      * 
      * @param name the name value to set.
-     * @return the PrivateEndpointIPConfiguration object itself.
+     * @return the PrivateEndpointIpConfiguration object itself.
      */
-    public PrivateEndpointIPConfiguration withName(String name) {
+    public PrivateEndpointIpConfiguration withName(String name) {
         this.name = name;
         return this;
     }
@@ -105,9 +105,9 @@ public final class PrivateEndpointIPConfiguration implements JsonSerializable<Pr
      * connect to.
      * 
      * @param groupId the groupId value to set.
-     * @return the PrivateEndpointIPConfiguration object itself.
+     * @return the PrivateEndpointIpConfiguration object itself.
      */
-    public PrivateEndpointIPConfiguration withGroupId(String groupId) {
+    public PrivateEndpointIpConfiguration withGroupId(String groupId) {
         if (this.innerProperties() == null) {
             this.innerProperties = new PrivateEndpointIPConfigurationProperties();
         }
@@ -130,9 +130,9 @@ public final class PrivateEndpointIPConfiguration implements JsonSerializable<Pr
      * endpoint should connect to.
      * 
      * @param memberName the memberName value to set.
-     * @return the PrivateEndpointIPConfiguration object itself.
+     * @return the PrivateEndpointIpConfiguration object itself.
      */
-    public PrivateEndpointIPConfiguration withMemberName(String memberName) {
+    public PrivateEndpointIpConfiguration withMemberName(String memberName) {
         if (this.innerProperties() == null) {
             this.innerProperties = new PrivateEndpointIPConfigurationProperties();
         }
@@ -153,9 +153,9 @@ public final class PrivateEndpointIPConfiguration implements JsonSerializable<Pr
      * Set the privateIpAddress property: A private ip address obtained from the private endpoint's subnet.
      * 
      * @param privateIpAddress the privateIpAddress value to set.
-     * @return the PrivateEndpointIPConfiguration object itself.
+     * @return the PrivateEndpointIpConfiguration object itself.
      */
-    public PrivateEndpointIPConfiguration withPrivateIpAddress(String privateIpAddress) {
+    public PrivateEndpointIpConfiguration withPrivateIpAddress(String privateIpAddress) {
         if (this.innerProperties() == null) {
             this.innerProperties = new PrivateEndpointIPConfigurationProperties();
         }
@@ -186,36 +186,36 @@ public final class PrivateEndpointIPConfiguration implements JsonSerializable<Pr
     }
 
     /**
-     * Reads an instance of PrivateEndpointIPConfiguration from the JsonReader.
+     * Reads an instance of PrivateEndpointIpConfiguration from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of PrivateEndpointIPConfiguration if the JsonReader was pointing to an instance of it, or
+     * @return An instance of PrivateEndpointIpConfiguration if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the PrivateEndpointIPConfiguration.
+     * @throws IOException If an error occurs while reading the PrivateEndpointIpConfiguration.
      */
-    public static PrivateEndpointIPConfiguration fromJson(JsonReader jsonReader) throws IOException {
+    public static PrivateEndpointIpConfiguration fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            PrivateEndpointIPConfiguration deserializedPrivateEndpointIPConfiguration
-                = new PrivateEndpointIPConfiguration();
+            PrivateEndpointIpConfiguration deserializedPrivateEndpointIpConfiguration
+                = new PrivateEndpointIpConfiguration();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("properties".equals(fieldName)) {
-                    deserializedPrivateEndpointIPConfiguration.innerProperties
+                    deserializedPrivateEndpointIpConfiguration.innerProperties
                         = PrivateEndpointIPConfigurationProperties.fromJson(reader);
                 } else if ("name".equals(fieldName)) {
-                    deserializedPrivateEndpointIPConfiguration.name = reader.getString();
+                    deserializedPrivateEndpointIpConfiguration.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
-                    deserializedPrivateEndpointIPConfiguration.type = reader.getString();
+                    deserializedPrivateEndpointIpConfiguration.type = reader.getString();
                 } else if ("etag".equals(fieldName)) {
-                    deserializedPrivateEndpointIPConfiguration.etag = reader.getString();
+                    deserializedPrivateEndpointIpConfiguration.etag = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedPrivateEndpointIPConfiguration;
+            return deserializedPrivateEndpointIpConfiguration;
         });
     }
 }

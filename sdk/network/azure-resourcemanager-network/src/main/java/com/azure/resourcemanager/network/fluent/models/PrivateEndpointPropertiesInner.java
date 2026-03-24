@@ -10,8 +10,8 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.CustomDnsConfigPropertiesFormat;
-import com.azure.resourcemanager.network.models.PrivateEndpointIPConfiguration;
-import com.azure.resourcemanager.network.models.PrivateEndpointIPVersionType;
+import com.azure.resourcemanager.network.models.PrivateEndpointIpConfiguration;
+import com.azure.resourcemanager.network.models.PrivateEndpointIpVersionType;
 import com.azure.resourcemanager.network.models.PrivateLinkServiceConnection;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
@@ -40,7 +40,7 @@ public final class PrivateEndpointPropertiesInner implements JsonSerializable<Pr
     /*
      * Specifies the IP version type for the private IPs of the private endpoint. If not defined, this defaults to IPv4.
      */
-    private PrivateEndpointIPVersionType ipVersionType;
+    private PrivateEndpointIpVersionType ipVersionType;
 
     /*
      * A grouping of information about the connection to the remote resource.
@@ -67,7 +67,7 @@ public final class PrivateEndpointPropertiesInner implements JsonSerializable<Pr
      * A list of IP configurations of the private endpoint. This will be used to map to the First Party Service's
      * endpoints.
      */
-    private List<PrivateEndpointIPConfiguration> ipConfigurations;
+    private List<PrivateEndpointIpConfiguration> ipConfigurations;
 
     /*
      * The custom name of the network interface attached to the private endpoint.
@@ -125,7 +125,7 @@ public final class PrivateEndpointPropertiesInner implements JsonSerializable<Pr
      * 
      * @return the ipVersionType value.
      */
-    public PrivateEndpointIPVersionType ipVersionType() {
+    public PrivateEndpointIpVersionType ipVersionType() {
         return this.ipVersionType;
     }
 
@@ -136,7 +136,7 @@ public final class PrivateEndpointPropertiesInner implements JsonSerializable<Pr
      * @param ipVersionType the ipVersionType value to set.
      * @return the PrivateEndpointPropertiesInner object itself.
      */
-    public PrivateEndpointPropertiesInner withIpVersionType(PrivateEndpointIPVersionType ipVersionType) {
+    public PrivateEndpointPropertiesInner withIpVersionType(PrivateEndpointIpVersionType ipVersionType) {
         this.ipVersionType = ipVersionType;
         return this;
     }
@@ -236,7 +236,7 @@ public final class PrivateEndpointPropertiesInner implements JsonSerializable<Pr
      * 
      * @return the ipConfigurations value.
      */
-    public List<PrivateEndpointIPConfiguration> ipConfigurations() {
+    public List<PrivateEndpointIpConfiguration> ipConfigurations() {
         return this.ipConfigurations;
     }
 
@@ -247,7 +247,7 @@ public final class PrivateEndpointPropertiesInner implements JsonSerializable<Pr
      * @param ipConfigurations the ipConfigurations value to set.
      * @return the PrivateEndpointPropertiesInner object itself.
      */
-    public PrivateEndpointPropertiesInner withIpConfigurations(List<PrivateEndpointIPConfiguration> ipConfigurations) {
+    public PrivateEndpointPropertiesInner withIpConfigurations(List<PrivateEndpointIpConfiguration> ipConfigurations) {
         this.ipConfigurations = ipConfigurations;
         return this;
     }
@@ -352,7 +352,7 @@ public final class PrivateEndpointPropertiesInner implements JsonSerializable<Pr
                         = ProvisioningState.fromString(reader.getString());
                 } else if ("ipVersionType".equals(fieldName)) {
                     deserializedPrivateEndpointPropertiesInner.ipVersionType
-                        = PrivateEndpointIPVersionType.fromString(reader.getString());
+                        = PrivateEndpointIpVersionType.fromString(reader.getString());
                 } else if ("privateLinkServiceConnections".equals(fieldName)) {
                     List<PrivateLinkServiceConnection> privateLinkServiceConnections
                         = reader.readArray(reader1 -> PrivateLinkServiceConnection.fromJson(reader1));
@@ -372,8 +372,8 @@ public final class PrivateEndpointPropertiesInner implements JsonSerializable<Pr
                         = reader.readArray(reader1 -> ApplicationSecurityGroupInner.fromJson(reader1));
                     deserializedPrivateEndpointPropertiesInner.applicationSecurityGroups = applicationSecurityGroups;
                 } else if ("ipConfigurations".equals(fieldName)) {
-                    List<PrivateEndpointIPConfiguration> ipConfigurations
-                        = reader.readArray(reader1 -> PrivateEndpointIPConfiguration.fromJson(reader1));
+                    List<PrivateEndpointIpConfiguration> ipConfigurations
+                        = reader.readArray(reader1 -> PrivateEndpointIpConfiguration.fromJson(reader1));
                     deserializedPrivateEndpointPropertiesInner.ipConfigurations = ipConfigurations;
                 } else if ("customNetworkInterfaceName".equals(fieldName)) {
                     deserializedPrivateEndpointPropertiesInner.customNetworkInterfaceName = reader.getString();

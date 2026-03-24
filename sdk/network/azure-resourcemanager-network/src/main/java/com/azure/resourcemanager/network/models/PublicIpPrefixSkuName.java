@@ -10,42 +10,42 @@ import java.util.Collection;
 /**
  * Name of a public IP prefix SKU.
  */
-public final class PublicIPPrefixSkuName extends ExpandableStringEnum<PublicIPPrefixSkuName> {
+public final class PublicIpPrefixSkuName extends ExpandableStringEnum<PublicIpPrefixSkuName> {
     /**
      * Standard.
      */
-    public static final PublicIPPrefixSkuName STANDARD = fromString("Standard");
+    public static final PublicIpPrefixSkuName STANDARD = fromString("Standard");
 
     /**
      * StandardV2.
      */
-    public static final PublicIPPrefixSkuName STANDARD_V2 = fromString("StandardV2");
+    public static final PublicIpPrefixSkuName STANDARD_V2 = fromString("StandardV2");
 
     /**
-     * Creates a new instance of PublicIPPrefixSkuName value.
+     * Creates a new instance of PublicIpPrefixSkuName value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public PublicIPPrefixSkuName() {
+    public PublicIpPrefixSkuName() {
     }
 
     /**
-     * Creates or finds a PublicIPPrefixSkuName from its string representation.
+     * Creates or finds a PublicIpPrefixSkuName from its string representation.
      * 
      * @param name a name to look for.
-     * @return the corresponding PublicIPPrefixSkuName.
+     * @return the corresponding PublicIpPrefixSkuName.
      */
-    public static PublicIPPrefixSkuName fromString(String name) {
-        return fromString(name, PublicIPPrefixSkuName.class);
+    public static PublicIpPrefixSkuName fromString(String name) {
+        return fromString(name, PublicIpPrefixSkuName.class);
     }
 
     /**
-     * Gets known PublicIPPrefixSkuName values.
+     * Gets known PublicIpPrefixSkuName values.
      * 
-     * @return known PublicIPPrefixSkuName values.
+     * @return known PublicIpPrefixSkuName values.
      */
-    public static Collection<PublicIPPrefixSkuName> values() {
-        return values(PublicIPPrefixSkuName.class);
+    public static Collection<PublicIpPrefixSkuName> values() {
+        return values(PublicIpPrefixSkuName.class);
     }
 }

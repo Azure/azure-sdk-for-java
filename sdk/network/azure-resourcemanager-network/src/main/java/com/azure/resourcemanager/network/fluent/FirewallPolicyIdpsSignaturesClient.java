@@ -9,7 +9,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.QueryResultsInner;
-import com.azure.resourcemanager.network.models.IDPSQueryObject;
+import com.azure.resourcemanager.network.models.IdpsQueryObject;
 import reactor.core.publisher.Mono;
 
 /**
@@ -30,7 +30,7 @@ public interface FirewallPolicyIdpsSignaturesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<QueryResultsInner>> listWithResponseAsync(String resourceGroupName, String firewallPolicyName,
-        IDPSQueryObject parameters);
+        IdpsQueryObject parameters);
 
     /**
      * Retrieves the current status of IDPS signatures for the relevant policy. Maximal amount of returned signatures is
@@ -45,7 +45,7 @@ public interface FirewallPolicyIdpsSignaturesClient {
      * @return query result on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<QueryResultsInner> listAsync(String resourceGroupName, String firewallPolicyName, IDPSQueryObject parameters);
+    Mono<QueryResultsInner> listAsync(String resourceGroupName, String firewallPolicyName, IdpsQueryObject parameters);
 
     /**
      * Retrieves the current status of IDPS signatures for the relevant policy. Maximal amount of returned signatures is
@@ -62,7 +62,7 @@ public interface FirewallPolicyIdpsSignaturesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<QueryResultsInner> listWithResponse(String resourceGroupName, String firewallPolicyName,
-        IDPSQueryObject parameters, Context context);
+        IdpsQueryObject parameters, Context context);
 
     /**
      * Retrieves the current status of IDPS signatures for the relevant policy. Maximal amount of returned signatures is
@@ -77,5 +77,5 @@ public interface FirewallPolicyIdpsSignaturesClient {
      * @return query result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    QueryResultsInner list(String resourceGroupName, String firewallPolicyName, IDPSQueryObject parameters);
+    QueryResultsInner list(String resourceGroupName, String firewallPolicyName, IdpsQueryObject parameters);
 }

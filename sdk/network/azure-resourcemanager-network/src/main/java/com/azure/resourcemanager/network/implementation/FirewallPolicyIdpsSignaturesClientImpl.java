@@ -23,7 +23,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.network.fluent.FirewallPolicyIdpsSignaturesClient;
 import com.azure.resourcemanager.network.fluent.models.QueryResultsInner;
-import com.azure.resourcemanager.network.models.IDPSQueryObject;
+import com.azure.resourcemanager.network.models.IdpsQueryObject;
 import reactor.core.publisher.Mono;
 
 /**
@@ -65,7 +65,7 @@ public final class FirewallPolicyIdpsSignaturesClientImpl implements FirewallPol
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("firewallPolicyName") String firewallPolicyName, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") IDPSQueryObject parameters,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") IdpsQueryObject parameters,
             Context context);
     }
 
@@ -83,7 +83,7 @@ public final class FirewallPolicyIdpsSignaturesClientImpl implements FirewallPol
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<QueryResultsInner>> listWithResponseAsync(String resourceGroupName, String firewallPolicyName,
-        IDPSQueryObject parameters) {
+        IdpsQueryObject parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -129,7 +129,7 @@ public final class FirewallPolicyIdpsSignaturesClientImpl implements FirewallPol
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<QueryResultsInner>> listWithResponseAsync(String resourceGroupName, String firewallPolicyName,
-        IDPSQueryObject parameters, Context context) {
+        IdpsQueryObject parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -173,7 +173,7 @@ public final class FirewallPolicyIdpsSignaturesClientImpl implements FirewallPol
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<QueryResultsInner> listAsync(String resourceGroupName, String firewallPolicyName,
-        IDPSQueryObject parameters) {
+        IdpsQueryObject parameters) {
         return listWithResponseAsync(resourceGroupName, firewallPolicyName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -193,7 +193,7 @@ public final class FirewallPolicyIdpsSignaturesClientImpl implements FirewallPol
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueryResultsInner> listWithResponse(String resourceGroupName, String firewallPolicyName,
-        IDPSQueryObject parameters, Context context) {
+        IdpsQueryObject parameters, Context context) {
         return listWithResponseAsync(resourceGroupName, firewallPolicyName, parameters, context).block();
     }
 
@@ -210,7 +210,7 @@ public final class FirewallPolicyIdpsSignaturesClientImpl implements FirewallPol
      * @return query result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public QueryResultsInner list(String resourceGroupName, String firewallPolicyName, IDPSQueryObject parameters) {
+    public QueryResultsInner list(String resourceGroupName, String firewallPolicyName, IdpsQueryObject parameters) {
         return listWithResponse(resourceGroupName, firewallPolicyName, parameters, Context.NONE).getValue();
     }
 }

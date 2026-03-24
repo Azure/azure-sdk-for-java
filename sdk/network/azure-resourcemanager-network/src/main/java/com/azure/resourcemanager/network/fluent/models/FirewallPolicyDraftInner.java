@@ -15,8 +15,8 @@ import com.azure.resourcemanager.network.models.DnsSettings;
 import com.azure.resourcemanager.network.models.ExplicitProxy;
 import com.azure.resourcemanager.network.models.FirewallPolicyInsights;
 import com.azure.resourcemanager.network.models.FirewallPolicyIntrusionDetection;
-import com.azure.resourcemanager.network.models.FirewallPolicySNAT;
-import com.azure.resourcemanager.network.models.FirewallPolicySQL;
+import com.azure.resourcemanager.network.models.FirewallPolicySnat;
+import com.azure.resourcemanager.network.models.FirewallPolicySql;
 import com.azure.resourcemanager.network.models.FirewallPolicyThreatIntelWhitelist;
 import java.io.IOException;
 import java.util.Map;
@@ -216,7 +216,7 @@ public final class FirewallPolicyDraftInner extends Resource {
      * 
      * @return the snat value.
      */
-    public FirewallPolicySNAT snat() {
+    public FirewallPolicySnat snat() {
         return this.innerProperties() == null ? null : this.innerProperties().snat();
     }
 
@@ -226,7 +226,7 @@ public final class FirewallPolicyDraftInner extends Resource {
      * @param snat the snat value to set.
      * @return the FirewallPolicyDraftInner object itself.
      */
-    public FirewallPolicyDraftInner withSnat(FirewallPolicySNAT snat) {
+    public FirewallPolicyDraftInner withSnat(FirewallPolicySnat snat) {
         if (this.innerProperties() == null) {
             this.innerProperties = new FirewallPolicyDraftProperties();
         }
@@ -239,7 +239,7 @@ public final class FirewallPolicyDraftInner extends Resource {
      * 
      * @return the sql value.
      */
-    public FirewallPolicySQL sql() {
+    public FirewallPolicySql sql() {
         return this.innerProperties() == null ? null : this.innerProperties().sql();
     }
 
@@ -249,7 +249,7 @@ public final class FirewallPolicyDraftInner extends Resource {
      * @param sql the sql value to set.
      * @return the FirewallPolicyDraftInner object itself.
      */
-    public FirewallPolicyDraftInner withSql(FirewallPolicySQL sql) {
+    public FirewallPolicyDraftInner withSql(FirewallPolicySql sql) {
         if (this.innerProperties() == null) {
             this.innerProperties = new FirewallPolicyDraftProperties();
         }

@@ -15,16 +15,16 @@ import java.io.IOException;
  * Public IP Address associated with azure firewall.
  */
 @Fluent
-public final class AzureFirewallPublicIPAddress implements JsonSerializable<AzureFirewallPublicIPAddress> {
+public final class AzureFirewallPublicIpAddress implements JsonSerializable<AzureFirewallPublicIpAddress> {
     /*
      * Public IP Address value.
      */
     private String address;
 
     /**
-     * Creates an instance of AzureFirewallPublicIPAddress class.
+     * Creates an instance of AzureFirewallPublicIpAddress class.
      */
-    public AzureFirewallPublicIPAddress() {
+    public AzureFirewallPublicIpAddress() {
     }
 
     /**
@@ -40,9 +40,9 @@ public final class AzureFirewallPublicIPAddress implements JsonSerializable<Azur
      * Set the address property: Public IP Address value.
      * 
      * @param address the address value to set.
-     * @return the AzureFirewallPublicIPAddress object itself.
+     * @return the AzureFirewallPublicIpAddress object itself.
      */
-    public AzureFirewallPublicIPAddress withAddress(String address) {
+    public AzureFirewallPublicIpAddress withAddress(String address) {
         this.address = address;
         return this;
     }
@@ -66,28 +66,28 @@ public final class AzureFirewallPublicIPAddress implements JsonSerializable<Azur
     }
 
     /**
-     * Reads an instance of AzureFirewallPublicIPAddress from the JsonReader.
+     * Reads an instance of AzureFirewallPublicIpAddress from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of AzureFirewallPublicIPAddress if the JsonReader was pointing to an instance of it, or null
+     * @return An instance of AzureFirewallPublicIpAddress if the JsonReader was pointing to an instance of it, or null
      * if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the AzureFirewallPublicIPAddress.
+     * @throws IOException If an error occurs while reading the AzureFirewallPublicIpAddress.
      */
-    public static AzureFirewallPublicIPAddress fromJson(JsonReader jsonReader) throws IOException {
+    public static AzureFirewallPublicIpAddress fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AzureFirewallPublicIPAddress deserializedAzureFirewallPublicIPAddress = new AzureFirewallPublicIPAddress();
+            AzureFirewallPublicIpAddress deserializedAzureFirewallPublicIpAddress = new AzureFirewallPublicIpAddress();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("address".equals(fieldName)) {
-                    deserializedAzureFirewallPublicIPAddress.address = reader.getString();
+                    deserializedAzureFirewallPublicIpAddress.address = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedAzureFirewallPublicIPAddress;
+            return deserializedAzureFirewallPublicIpAddress;
         });
     }
 }

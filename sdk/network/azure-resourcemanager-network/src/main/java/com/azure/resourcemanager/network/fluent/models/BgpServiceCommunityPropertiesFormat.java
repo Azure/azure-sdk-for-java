@@ -9,7 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.network.models.BGPCommunity;
+import com.azure.resourcemanager.network.models.BgpCommunity;
 import java.io.IOException;
 import java.util.List;
 
@@ -27,7 +27,7 @@ public final class BgpServiceCommunityPropertiesFormat
     /*
      * A list of bgp communities.
      */
-    private List<BGPCommunity> bgpCommunities;
+    private List<BgpCommunity> bgpCommunities;
 
     /**
      * Creates an instance of BgpServiceCommunityPropertiesFormat class.
@@ -49,7 +49,7 @@ public final class BgpServiceCommunityPropertiesFormat
      * 
      * @return the bgpCommunities value.
      */
-    public List<BGPCommunity> bgpCommunities() {
+    public List<BgpCommunity> bgpCommunities() {
         return this.bgpCommunities;
     }
 
@@ -95,7 +95,7 @@ public final class BgpServiceCommunityPropertiesFormat
                 if ("serviceName".equals(fieldName)) {
                     deserializedBgpServiceCommunityPropertiesFormat.serviceName = reader.getString();
                 } else if ("bgpCommunities".equals(fieldName)) {
-                    List<BGPCommunity> bgpCommunities = reader.readArray(reader1 -> BGPCommunity.fromJson(reader1));
+                    List<BgpCommunity> bgpCommunities = reader.readArray(reader1 -> BgpCommunity.fromJson(reader1));
                     deserializedBgpServiceCommunityPropertiesFormat.bgpCommunities = bgpCommunities;
                 } else {
                     reader.skipChildren();

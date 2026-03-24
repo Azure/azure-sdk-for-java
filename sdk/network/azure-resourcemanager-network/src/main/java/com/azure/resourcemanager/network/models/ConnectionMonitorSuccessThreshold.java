@@ -24,7 +24,7 @@ public final class ConnectionMonitorSuccessThreshold implements JsonSerializable
     /*
      * The maximum round-trip time in milliseconds permitted for a test to evaluate as successful.
      */
-    private Double roundTripTimeMs;
+    private Float roundTripTimeMs;
 
     /**
      * Creates an instance of ConnectionMonitorSuccessThreshold class.
@@ -60,7 +60,7 @@ public final class ConnectionMonitorSuccessThreshold implements JsonSerializable
      * 
      * @return the roundTripTimeMs value.
      */
-    public Double roundTripTimeMs() {
+    public Float roundTripTimeMs() {
         return this.roundTripTimeMs;
     }
 
@@ -71,7 +71,7 @@ public final class ConnectionMonitorSuccessThreshold implements JsonSerializable
      * @param roundTripTimeMs the roundTripTimeMs value to set.
      * @return the ConnectionMonitorSuccessThreshold object itself.
      */
-    public ConnectionMonitorSuccessThreshold withRoundTripTimeMs(Double roundTripTimeMs) {
+    public ConnectionMonitorSuccessThreshold withRoundTripTimeMs(Float roundTripTimeMs) {
         this.roundTripTimeMs = roundTripTimeMs;
         return this;
     }
@@ -116,7 +116,7 @@ public final class ConnectionMonitorSuccessThreshold implements JsonSerializable
                         = reader.getNullable(JsonReader::getInt);
                 } else if ("roundTripTimeMs".equals(fieldName)) {
                     deserializedConnectionMonitorSuccessThreshold.roundTripTimeMs
-                        = reader.getNullable(JsonReader::getDouble);
+                        = reader.getNullable(JsonReader::getFloat);
                 } else {
                     reader.skipChildren();
                 }

@@ -372,7 +372,7 @@ public final class ExpressRouteCircuitInner extends Resource {
      * 
      * @return the bandwidthInGbps value.
      */
-    public Double bandwidthInGbps() {
+    public Float bandwidthInGbps() {
         return this.innerProperties() == null ? null : this.innerProperties().bandwidthInGbps();
     }
 
@@ -383,7 +383,7 @@ public final class ExpressRouteCircuitInner extends Resource {
      * @param bandwidthInGbps the bandwidthInGbps value to set.
      * @return the ExpressRouteCircuitInner object itself.
      */
-    public ExpressRouteCircuitInner withBandwidthInGbps(Double bandwidthInGbps) {
+    public ExpressRouteCircuitInner withBandwidthInGbps(Float bandwidthInGbps) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ExpressRouteCircuitPropertiesFormat();
         }

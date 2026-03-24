@@ -10,47 +10,47 @@ import java.util.Collection;
 /**
  * Specifies the IP version type for the private IPs of the private endpoint. If not defined, this defaults to IPv4.
  */
-public final class PrivateEndpointIPVersionType extends ExpandableStringEnum<PrivateEndpointIPVersionType> {
+public final class PrivateEndpointIpVersionType extends ExpandableStringEnum<PrivateEndpointIpVersionType> {
     /**
      * Indicates that the Private IPs of the private endpoint will be IPv4 only.
      */
-    public static final PrivateEndpointIPVersionType IPV4 = fromString("IPv4");
+    public static final PrivateEndpointIpVersionType IPV4 = fromString("IPv4");
 
     /**
      * Indicates that the Private IPs of the private endpoint will be IPv6 only.
      */
-    public static final PrivateEndpointIPVersionType IPV6 = fromString("IPv6");
+    public static final PrivateEndpointIpVersionType IPV6 = fromString("IPv6");
 
     /**
      * Indicates that the Private IPs of the private endpoint can be both IPv4 and IPv6.
      */
-    public static final PrivateEndpointIPVersionType DUAL_STACK = fromString("DualStack");
+    public static final PrivateEndpointIpVersionType DUAL_STACK = fromString("DualStack");
 
     /**
-     * Creates a new instance of PrivateEndpointIPVersionType value.
+     * Creates a new instance of PrivateEndpointIpVersionType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public PrivateEndpointIPVersionType() {
+    public PrivateEndpointIpVersionType() {
     }
 
     /**
-     * Creates or finds a PrivateEndpointIPVersionType from its string representation.
+     * Creates or finds a PrivateEndpointIpVersionType from its string representation.
      * 
      * @param name a name to look for.
-     * @return the corresponding PrivateEndpointIPVersionType.
+     * @return the corresponding PrivateEndpointIpVersionType.
      */
-    public static PrivateEndpointIPVersionType fromString(String name) {
-        return fromString(name, PrivateEndpointIPVersionType.class);
+    public static PrivateEndpointIpVersionType fromString(String name) {
+        return fromString(name, PrivateEndpointIpVersionType.class);
     }
 
     /**
-     * Gets known PrivateEndpointIPVersionType values.
+     * Gets known PrivateEndpointIpVersionType values.
      * 
-     * @return known PrivateEndpointIPVersionType values.
+     * @return known PrivateEndpointIpVersionType values.
      */
-    public static Collection<PrivateEndpointIPVersionType> values() {
-        return values(PrivateEndpointIPVersionType.class);
+    public static Collection<PrivateEndpointIpVersionType> values() {
+        return values(PrivateEndpointIpVersionType.class);
     }
 }

@@ -35,7 +35,7 @@ public final class IntentContent implements JsonSerializable<IntentContent> {
     /*
      * IP traffic information.
      */
-    private IPTraffic ipTraffic;
+    private IpTraffic ipTraffic;
 
     /**
      * Creates an instance of IntentContent class.
@@ -75,7 +75,7 @@ public final class IntentContent implements JsonSerializable<IntentContent> {
      * 
      * @return the ipTraffic value.
      */
-    public IPTraffic ipTraffic() {
+    public IpTraffic ipTraffic() {
         return this.ipTraffic;
     }
 
@@ -138,7 +138,7 @@ public final class IntentContent implements JsonSerializable<IntentContent> {
                 } else if ("destinationResourceId".equals(fieldName)) {
                     deserializedIntentContent.destinationResourceId = reader.getString();
                 } else if ("ipTraffic".equals(fieldName)) {
-                    deserializedIntentContent.ipTraffic = IPTraffic.fromJson(reader);
+                    deserializedIntentContent.ipTraffic = IpTraffic.fromJson(reader);
                 } else if ("description".equals(fieldName)) {
                     deserializedIntentContent.description = reader.getString();
                 } else {

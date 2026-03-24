@@ -17,8 +17,8 @@ import java.io.IOException;
  * VIP swap request's frontend IP configuration object.
  */
 @Fluent
-public final class LoadBalancerVipSwapRequestFrontendIPConfiguration
-    implements JsonSerializable<LoadBalancerVipSwapRequestFrontendIPConfiguration> {
+public final class LoadBalancerVipSwapRequestFrontendIpConfiguration
+    implements JsonSerializable<LoadBalancerVipSwapRequestFrontendIpConfiguration> {
     /*
      * The ID of frontend IP configuration resource.
      */
@@ -30,9 +30,9 @@ public final class LoadBalancerVipSwapRequestFrontendIPConfiguration
     private LoadBalancerVipSwapRequestFrontendIPConfigurationProperties innerProperties;
 
     /**
-     * Creates an instance of LoadBalancerVipSwapRequestFrontendIPConfiguration class.
+     * Creates an instance of LoadBalancerVipSwapRequestFrontendIpConfiguration class.
      */
-    public LoadBalancerVipSwapRequestFrontendIPConfiguration() {
+    public LoadBalancerVipSwapRequestFrontendIpConfiguration() {
     }
 
     /**
@@ -48,9 +48,9 @@ public final class LoadBalancerVipSwapRequestFrontendIPConfiguration
      * Set the id property: The ID of frontend IP configuration resource.
      * 
      * @param id the id value to set.
-     * @return the LoadBalancerVipSwapRequestFrontendIPConfiguration object itself.
+     * @return the LoadBalancerVipSwapRequestFrontendIpConfiguration object itself.
      */
-    public LoadBalancerVipSwapRequestFrontendIPConfiguration withId(String id) {
+    public LoadBalancerVipSwapRequestFrontendIpConfiguration withId(String id) {
         this.id = id;
         return this;
     }
@@ -77,9 +77,9 @@ public final class LoadBalancerVipSwapRequestFrontendIPConfiguration
      * Set the publicIpAddress property: A reference to public IP address resource.
      * 
      * @param publicIpAddress the publicIpAddress value to set.
-     * @return the LoadBalancerVipSwapRequestFrontendIPConfiguration object itself.
+     * @return the LoadBalancerVipSwapRequestFrontendIpConfiguration object itself.
      */
-    public LoadBalancerVipSwapRequestFrontendIPConfiguration withPublicIpAddress(SubResource publicIpAddress) {
+    public LoadBalancerVipSwapRequestFrontendIpConfiguration withPublicIpAddress(SubResource publicIpAddress) {
         if (this.innerProperties() == null) {
             this.innerProperties = new LoadBalancerVipSwapRequestFrontendIPConfigurationProperties();
         }
@@ -110,32 +110,32 @@ public final class LoadBalancerVipSwapRequestFrontendIPConfiguration
     }
 
     /**
-     * Reads an instance of LoadBalancerVipSwapRequestFrontendIPConfiguration from the JsonReader.
+     * Reads an instance of LoadBalancerVipSwapRequestFrontendIpConfiguration from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of LoadBalancerVipSwapRequestFrontendIPConfiguration if the JsonReader was pointing to an
+     * @return An instance of LoadBalancerVipSwapRequestFrontendIpConfiguration if the JsonReader was pointing to an
      * instance of it, or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the LoadBalancerVipSwapRequestFrontendIPConfiguration.
+     * @throws IOException If an error occurs while reading the LoadBalancerVipSwapRequestFrontendIpConfiguration.
      */
-    public static LoadBalancerVipSwapRequestFrontendIPConfiguration fromJson(JsonReader jsonReader) throws IOException {
+    public static LoadBalancerVipSwapRequestFrontendIpConfiguration fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            LoadBalancerVipSwapRequestFrontendIPConfiguration deserializedLoadBalancerVipSwapRequestFrontendIPConfiguration
-                = new LoadBalancerVipSwapRequestFrontendIPConfiguration();
+            LoadBalancerVipSwapRequestFrontendIpConfiguration deserializedLoadBalancerVipSwapRequestFrontendIpConfiguration
+                = new LoadBalancerVipSwapRequestFrontendIpConfiguration();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedLoadBalancerVipSwapRequestFrontendIPConfiguration.id = reader.getString();
+                    deserializedLoadBalancerVipSwapRequestFrontendIpConfiguration.id = reader.getString();
                 } else if ("properties".equals(fieldName)) {
-                    deserializedLoadBalancerVipSwapRequestFrontendIPConfiguration.innerProperties
+                    deserializedLoadBalancerVipSwapRequestFrontendIpConfiguration.innerProperties
                         = LoadBalancerVipSwapRequestFrontendIPConfigurationProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedLoadBalancerVipSwapRequestFrontendIPConfiguration;
+            return deserializedLoadBalancerVipSwapRequestFrontendIpConfiguration;
         });
     }
 }

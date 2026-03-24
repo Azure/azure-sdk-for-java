@@ -12,14 +12,14 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.AzureFirewallApplicationRuleCollection;
 import com.azure.resourcemanager.network.models.AzureFirewallAutoscaleConfiguration;
-import com.azure.resourcemanager.network.models.AzureFirewallIPConfiguration;
+import com.azure.resourcemanager.network.models.AzureFirewallIpConfiguration;
 import com.azure.resourcemanager.network.models.AzureFirewallIpGroups;
 import com.azure.resourcemanager.network.models.AzureFirewallNatRuleCollection;
 import com.azure.resourcemanager.network.models.AzureFirewallNetworkRuleCollection;
 import com.azure.resourcemanager.network.models.AzureFirewallSku;
 import com.azure.resourcemanager.network.models.AzureFirewallThreatIntelMode;
 import com.azure.resourcemanager.network.models.ExtendedLocation;
-import com.azure.resourcemanager.network.models.HubIPAddresses;
+import com.azure.resourcemanager.network.models.HubIpAddresses;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 import java.util.List;
@@ -263,7 +263,7 @@ public final class AzureFirewallInner extends Resource {
      * 
      * @return the ipConfigurations value.
      */
-    public List<AzureFirewallIPConfiguration> ipConfigurations() {
+    public List<AzureFirewallIpConfiguration> ipConfigurations() {
         return this.innerProperties() == null ? null : this.innerProperties().ipConfigurations();
     }
 
@@ -273,7 +273,7 @@ public final class AzureFirewallInner extends Resource {
      * @param ipConfigurations the ipConfigurations value to set.
      * @return the AzureFirewallInner object itself.
      */
-    public AzureFirewallInner withIpConfigurations(List<AzureFirewallIPConfiguration> ipConfigurations) {
+    public AzureFirewallInner withIpConfigurations(List<AzureFirewallIpConfiguration> ipConfigurations) {
         if (this.innerProperties() == null) {
             this.innerProperties = new AzureFirewallPropertiesFormat();
         }
@@ -286,7 +286,7 @@ public final class AzureFirewallInner extends Resource {
      * 
      * @return the managementIpConfiguration value.
      */
-    public AzureFirewallIPConfiguration managementIpConfiguration() {
+    public AzureFirewallIpConfiguration managementIpConfiguration() {
         return this.innerProperties() == null ? null : this.innerProperties().managementIpConfiguration();
     }
 
@@ -296,7 +296,7 @@ public final class AzureFirewallInner extends Resource {
      * @param managementIpConfiguration the managementIpConfiguration value to set.
      * @return the AzureFirewallInner object itself.
      */
-    public AzureFirewallInner withManagementIpConfiguration(AzureFirewallIPConfiguration managementIpConfiguration) {
+    public AzureFirewallInner withManagementIpConfiguration(AzureFirewallIpConfiguration managementIpConfiguration) {
         if (this.innerProperties() == null) {
             this.innerProperties = new AzureFirewallPropertiesFormat();
         }
@@ -387,7 +387,7 @@ public final class AzureFirewallInner extends Resource {
      * 
      * @return the hubIPAddresses value.
      */
-    public HubIPAddresses hubIPAddresses() {
+    public HubIpAddresses hubIPAddresses() {
         return this.innerProperties() == null ? null : this.innerProperties().hubIPAddresses();
     }
 
@@ -397,7 +397,7 @@ public final class AzureFirewallInner extends Resource {
      * @param hubIPAddresses the hubIPAddresses value to set.
      * @return the AzureFirewallInner object itself.
      */
-    public AzureFirewallInner withHubIPAddresses(HubIPAddresses hubIPAddresses) {
+    public AzureFirewallInner withHubIPAddresses(HubIpAddresses hubIPAddresses) {
         if (this.innerProperties() == null) {
             this.innerProperties = new AzureFirewallPropertiesFormat();
         }
