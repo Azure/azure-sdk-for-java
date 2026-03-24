@@ -74,7 +74,7 @@ public final class ResponsesAsyncClient {
      * @param params The parameters to create the response.
      * @return A {@link Flux} stream of {@link ResponseStreamEvent} items.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<ResponseStreamEvent> createStreamingAzureResponse(AzureCreateResponseOptions createResponse,
         ResponseCreateParams.Builder params) {
         Objects.requireNonNull(createResponse, "createResponse cannot be null");
