@@ -44,7 +44,7 @@ public class Sample02_AnalyzeUrlAsyncTest extends ContentUnderstandingClientTest
     @Test
     public void testAnalyzeUrlAsync() {
 
-        // BEGIN:ContentUnderstandingAnalyzeUrlAsyncAsync
+        // BEGIN:ContentUnderstandingAnalyzeUrlAsync
         // Using a publicly accessible sample file from Azure-Samples GitHub repository
         String uriSource
             = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-dotnet/main/ContentUnderstanding.Common/data/invoice.pdf";
@@ -65,9 +65,9 @@ public class Sample02_AnalyzeUrlAsyncTest extends ContentUnderstandingClientTest
                     new RuntimeException("Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
             }
         }).block(); // block() is used here for testing; in production, use subscribe()
-        // END:ContentUnderstandingAnalyzeUrlAsyncAsync
+        // END:ContentUnderstandingAnalyzeUrlAsync
 
-        // BEGIN:Assertion_ContentUnderstandingAnalyzeUrlAsyncAsync
+        // BEGIN:Assertion_ContentUnderstandingAnalyzeUrlAsync
         assertNotNull(uriSource, "URI source should not be null");
         assertNotNull(operation, "Analysis operation should not be null");
         assertNotNull(result, "Analysis result should not be null");
@@ -75,7 +75,7 @@ public class Sample02_AnalyzeUrlAsyncTest extends ContentUnderstandingClientTest
         System.out.println("Analysis operation properties verified");
         System.out.println("Analysis result contains "
             + (result.getContents() != null ? result.getContents().size() : 0) + " content(s)");
-        // END:Assertion_ContentUnderstandingAnalyzeUrlAsyncAsync
+        // END:Assertion_ContentUnderstandingAnalyzeUrlAsync
 
         // A PDF file has only one content element even if it contains multiple pages
         AnalysisContent content = null;
@@ -246,7 +246,7 @@ public class Sample02_AnalyzeUrlAsyncTest extends ContentUnderstandingClientTest
 
     @Test
     public void testAnalyzeVideoUrlAsync() {
-        // BEGIN:ContentUnderstandingAnalyzeVideoUrlAsyncAsync
+        // BEGIN:ContentUnderstandingAnalyzeVideoUrlAsync
         String uriSource
             = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/videos/sdk_samples/FlightSimulator.mp4";
 
@@ -292,9 +292,9 @@ public class Sample02_AnalyzeUrlAsyncTest extends ContentUnderstandingClientTest
             System.out.println("---------------------");
             segmentIndex++;
         }
-        // END:ContentUnderstandingAnalyzeVideoUrlAsyncAsync
+        // END:ContentUnderstandingAnalyzeVideoUrlAsync
 
-        // BEGIN:Assertion_ContentUnderstandingAnalyzeVideoUrlAsyncAsync
+        // BEGIN:Assertion_ContentUnderstandingAnalyzeVideoUrlAsync
         assertNotNull(operation, "Analysis operation should not be null");
         assertNotNull(result, "Analysis result should not be null");
         assertNotNull(result.getContents(), "Result contents should not be null");
@@ -311,12 +311,12 @@ public class Sample02_AnalyzeUrlAsyncTest extends ContentUnderstandingClientTest
             assertFalse(summaryStr.trim().isEmpty(), "Summary should not be empty");
         }
         System.out.println("Video analysis validation completed successfully");
-        // END:Assertion_ContentUnderstandingAnalyzeVideoUrlAsyncAsync
+        // END:Assertion_ContentUnderstandingAnalyzeVideoUrlAsync
     }
 
     @Test
     public void testAnalyzeAudioUrlAsync() {
-        // BEGIN:ContentUnderstandingAnalyzeAudioUrlAsyncAsync
+        // BEGIN:ContentUnderstandingAnalyzeAudioUrlAsync
         String uriSource
             = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/audio/callCenterRecording.mp3";
 
@@ -365,9 +365,9 @@ public class Sample02_AnalyzeUrlAsyncTest extends ContentUnderstandingClientTest
                 count++;
             }
         }
-        // END:ContentUnderstandingAnalyzeAudioUrlAsyncAsync
+        // END:ContentUnderstandingAnalyzeAudioUrlAsync
 
-        // BEGIN:Assertion_ContentUnderstandingAnalyzeAudioUrlAsyncAsync
+        // BEGIN:Assertion_ContentUnderstandingAnalyzeAudioUrlAsync
         assertNotNull(operation, "Analysis operation should not be null");
         assertNotNull(result, "Analysis result should not be null");
         assertNotNull(result.getContents(), "Result contents should not be null");
@@ -387,12 +387,12 @@ public class Sample02_AnalyzeUrlAsyncTest extends ContentUnderstandingClientTest
             assertFalse(summaryStr.trim().isEmpty(), "Summary should not be empty");
         }
         System.out.println("Audio analysis validation completed successfully");
-        // END:Assertion_ContentUnderstandingAnalyzeAudioUrlAsyncAsync
+        // END:Assertion_ContentUnderstandingAnalyzeAudioUrlAsync
     }
 
     @Test
     public void testAnalyzeImageUrlAsync() {
-        // BEGIN:ContentUnderstandingAnalyzeImageUrlAsyncAsync
+        // BEGIN:ContentUnderstandingAnalyzeImageUrlAsync
         String uriSource
             = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/image/pieChart.jpg";
 
@@ -423,9 +423,9 @@ public class Sample02_AnalyzeUrlAsyncTest extends ContentUnderstandingClientTest
                 : "")
             : "";
         System.out.println("Summary: " + summary);
-        // END:ContentUnderstandingAnalyzeImageUrlAsyncAsync
+        // END:ContentUnderstandingAnalyzeImageUrlAsync
 
-        // BEGIN:Assertion_ContentUnderstandingAnalyzeImageUrlAsyncAsync
+        // BEGIN:Assertion_ContentUnderstandingAnalyzeImageUrlAsync
         assertNotNull(operation, "Analysis operation should not be null");
         assertNotNull(result, "Analysis result should not be null");
         assertNotNull(result.getContents(), "Result contents should not be null");
@@ -440,12 +440,13 @@ public class Sample02_AnalyzeUrlAsyncTest extends ContentUnderstandingClientTest
             assertFalse(summaryStr.trim().isEmpty(), "Summary should not be empty");
         }
         System.out.println("Image analysis validation completed successfully");
-        // END:Assertion_ContentUnderstandingAnalyzeImageUrlAsyncAsync
+        // END:Assertion_ContentUnderstandingAnalyzeImageUrlAsync
     }
 
     @Test
     public void testAnalyzeUrlWithPageContentRangesAsync() {
 
+        // BEGIN:ContentUnderstandingAnalyzeUrlWithPageContentRangesAsync
         String uriSource
             = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/document/mixed_financial_invoices.pdf";
 
@@ -480,7 +481,9 @@ public class Sample02_AnalyzeUrlAsyncTest extends ContentUnderstandingClientTest
                     new RuntimeException("Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
             }
         }).block();
+        // END:ContentUnderstandingAnalyzeUrlWithPageContentRangesAsync
 
+        // BEGIN:Assertion_ContentUnderstandingAnalyzeUrlWithPageContentRangesAsync
         assertEquals(10, fullDoc.getPages().size(), "Full document should return all 10 pages");
         assertNotNull(rangeResult);
         assertNotNull(rangeResult.getContents());
@@ -490,15 +493,14 @@ public class Sample02_AnalyzeUrlAsyncTest extends ContentUnderstandingClientTest
         assertEquals(1, rangeDocContent.getEndPageNumber());
         assertTrue(fullDoc.getPages().size() > rangeDocContent.getPages().size());
         assertTrue(fullDoc.getMarkdown().length() > rangeDocContent.getMarkdown().length());
+        // END:Assertion_ContentUnderstandingAnalyzeUrlWithPageContentRangesAsync
 
         // Combined disjoint page ranges: pages 1-3, page 5, and pages 9 onward
         // Document has 10 pages, so pages 1-3, 5, 9-10 match (6 pages total)
         AnalysisInput combineInput = new AnalysisInput();
         combineInput.setUrl(uriSource);
-        combineInput.setContentRange(ContentRange.combine(
-            ContentRange.pageRange(1, 3),
-            ContentRange.page(5),
-            ContentRange.pagesFrom(9)));
+        combineInput.setContentRange(
+            ContentRange.combine(ContentRange.pages(1, 3), ContentRange.page(5), ContentRange.pagesFrom(9)));
 
         PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> combineOperation
             = contentUnderstandingAsyncClient.beginAnalyze("prebuilt-documentSearch", Arrays.asList(combineInput));
@@ -531,6 +533,7 @@ public class Sample02_AnalyzeUrlAsyncTest extends ContentUnderstandingClientTest
     @Test
     public void testAnalyzeVideoUrlWithTimeContentRangesAsync() {
 
+        // BEGIN:ContentUnderstandingAnalyzeVideoUrlWithTimeContentRangesAsync
         String uriSource
             = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/videos/sdk_samples/FlightSimulator.mp4";
 
@@ -549,10 +552,6 @@ public class Sample02_AnalyzeUrlAsyncTest extends ContentUnderstandingClientTest
             }
         }).block();
 
-        assertNotNull(fullResult);
-        assertNotNull(fullResult.getContents());
-        assertTrue(fullResult.getContents().size() > 0);
-
         // ---- TimeRange(0, 5s) — first 5 seconds ----
         AnalysisInput rangeInput = new AnalysisInput();
         rangeInput.setUrl(uriSource);
@@ -568,6 +567,12 @@ public class Sample02_AnalyzeUrlAsyncTest extends ContentUnderstandingClientTest
                     new RuntimeException("Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
             }
         }).block();
+        // END:ContentUnderstandingAnalyzeVideoUrlWithTimeContentRangesAsync
+
+        // BEGIN:Assertion_ContentUnderstandingAnalyzeVideoUrlWithTimeContentRangesAsync
+        assertNotNull(fullResult);
+        assertNotNull(fullResult.getContents());
+        assertTrue(fullResult.getContents().size() > 0);
 
         assertNotNull(rangeResult);
         assertNotNull(rangeResult.getContents());
@@ -581,6 +586,7 @@ public class Sample02_AnalyzeUrlAsyncTest extends ContentUnderstandingClientTest
             assertTrue(avContent.getEndTime().toMillis() <= 5000,
                 "Range(0-5s) segment EndTime (" + avContent.getEndTime().toMillis() + " ms) should be <= 5000 ms");
         }
+        // END:Assertion_ContentUnderstandingAnalyzeVideoUrlWithTimeContentRangesAsync
 
         // ---- TimeRangeFrom(10s) — from 10 seconds to end ----
         AnalysisInput rangeFromInput = new AnalysisInput();
@@ -677,6 +683,7 @@ public class Sample02_AnalyzeUrlAsyncTest extends ContentUnderstandingClientTest
     @Test
     public void testAnalyzeAudioUrlWithTimeContentRangesAsync() {
 
+        // BEGIN:ContentUnderstandingAnalyzeAudioUrlWithTimeContentRangesAsync
         String uriSource
             = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/audio/callCenterRecording.mp3";
 
@@ -712,7 +719,9 @@ public class Sample02_AnalyzeUrlAsyncTest extends ContentUnderstandingClientTest
                     new RuntimeException("Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
             }
         }).block();
+        // END:ContentUnderstandingAnalyzeAudioUrlWithTimeContentRangesAsync
 
+        // BEGIN:Assertion_ContentUnderstandingAnalyzeAudioUrlWithTimeContentRangesAsync
         assertNotNull(rangeResult);
         assertNotNull(rangeResult.getContents());
         assertTrue(rangeResult.getContents().size() > 0);
@@ -728,6 +737,7 @@ public class Sample02_AnalyzeUrlAsyncTest extends ContentUnderstandingClientTest
         assertTrue(fullDurationMs >= rangeDurationMs);
         assertTrue(rangeAudioContent.getStartTime().toMillis() >= 5000, "TimeRangeFrom(5s) audio StartTime ("
             + rangeAudioContent.getStartTime().toMillis() + " ms) should be >= 5000 ms");
+        // END:Assertion_ContentUnderstandingAnalyzeAudioUrlWithTimeContentRangesAsync
 
         // ---- TimeRange(2s, 8s) — specific time window ----
         AnalysisInput windowInput = new AnalysisInput();
@@ -786,8 +796,7 @@ public class Sample02_AnalyzeUrlAsyncTest extends ContentUnderstandingClientTest
         // ---- Combine multiple time ranges (0-3s, 30s-) ----
         AnalysisInput combineInput = new AnalysisInput();
         combineInput.setUrl(uriSource);
-        combineInput.setContentRange(ContentRange.combine(
-            ContentRange.timeRange(Duration.ZERO, Duration.ofSeconds(3)),
+        combineInput.setContentRange(ContentRange.combine(ContentRange.timeRange(Duration.ZERO, Duration.ofSeconds(3)),
             ContentRange.timeRangeFrom(Duration.ofSeconds(30))));
 
         PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> combineOperation

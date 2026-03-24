@@ -293,6 +293,7 @@ public class Sample01_AnalyzeBinaryAsyncTest extends ContentUnderstandingClientT
         DocumentContent fullDoc = (DocumentContent) fullResult.getContents().get(0);
         assertEquals(10, fullDoc.getPages().size(), "Full document should return all 10 pages");
 
+        // BEGIN:ContentUnderstandingAnalyzeBinaryWithSinglePageAsync
         // ---- Page(2) — single page ----
         PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> page2Operation
             = contentUnderstandingAsyncClient.beginAnalyzeBinary("prebuilt-documentSearch", binaryData,
@@ -306,12 +307,16 @@ public class Sample01_AnalyzeBinaryAsyncTest extends ContentUnderstandingClientT
             }
         }).block();
         DocumentContent page2Doc = (DocumentContent) page2Result.getContents().get(0);
+        // END:ContentUnderstandingAnalyzeBinaryWithSinglePageAsync
 
+        // BEGIN:Assertion_ContentUnderstandingAnalyzeBinaryWithSinglePageAsync
         assertEquals(1, page2Doc.getPages().size(), "Page(2) should return exactly 1 page");
         assertEquals(2, page2Doc.getStartPageNumber(), "Page(2) should start at page 2");
         assertEquals(2, page2Doc.getEndPageNumber(), "Page(2) should end at page 2");
         assertTrue(fullDoc.getMarkdown().length() > page2Doc.getMarkdown().length());
+        // END:Assertion_ContentUnderstandingAnalyzeBinaryWithSinglePageAsync
 
+        // BEGIN:ContentUnderstandingAnalyzeBinaryWithPagesAsync
         // ---- Pages(1, 3) — page range ----
         PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> pages13Operation
             = contentUnderstandingAsyncClient.beginAnalyzeBinary("prebuilt-documentSearch", binaryData,
@@ -325,12 +330,16 @@ public class Sample01_AnalyzeBinaryAsyncTest extends ContentUnderstandingClientT
             }
         }).block();
         DocumentContent pages13Doc = (DocumentContent) pages13Result.getContents().get(0);
+        // END:ContentUnderstandingAnalyzeBinaryWithPagesAsync
 
+        // BEGIN:Assertion_ContentUnderstandingAnalyzeBinaryWithPagesAsync
         assertEquals(3, pages13Doc.getPages().size(), "Pages(1,3) should return exactly 3 pages");
         assertEquals(1, pages13Doc.getStartPageNumber());
         assertEquals(3, pages13Doc.getEndPageNumber());
         assertTrue(fullDoc.getMarkdown().length() > pages13Doc.getMarkdown().length());
+        // END:Assertion_ContentUnderstandingAnalyzeBinaryWithPagesAsync
 
+        // BEGIN:ContentUnderstandingAnalyzeBinaryWithCombinedPageAndRangeAsync
         // ---- Combine(Page(1), Pages(3, 4)) — combined single page and page range ----
         PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> combineOperation
             = contentUnderstandingAsyncClient.beginAnalyzeBinary("prebuilt-documentSearch", binaryData,
@@ -344,8 +353,9 @@ public class Sample01_AnalyzeBinaryAsyncTest extends ContentUnderstandingClientT
             }
         }).block();
         DocumentContent combineDoc = (DocumentContent) combineResult.getContents().get(0);
+        // END:ContentUnderstandingAnalyzeBinaryWithCombinedPageAndRangeAsync
 
-        assertTrue(combineDoc.getPages().size() >= 2);
+        // BEGIN:Assertion_ContentUnderstandingAnalyzeBinaryWithCombinedPageAndRangeAsync
         assertEquals(3, combineDoc.getPages().size(), "Combine(Page(1), Pages(3,4)) should return exactly 3 pages");
         java.util.List<Integer> combinePageNumbers = combineDoc.getPages()
             .stream()
@@ -357,7 +367,9 @@ public class Sample01_AnalyzeBinaryAsyncTest extends ContentUnderstandingClientT
         assertEquals(1, combineDoc.getStartPageNumber());
         assertEquals(4, combineDoc.getEndPageNumber(), "Combine should end at page 4");
         assertTrue(fullDoc.getMarkdown().length() >= combineDoc.getMarkdown().length());
+        // END:Assertion_ContentUnderstandingAnalyzeBinaryWithCombinedPageAndRangeAsync
 
+        // BEGIN:ContentUnderstandingAnalyzeBinaryWithPagesFromAsync
         // ---- PagesFrom(3) — extract pages 3 to end ----
         PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> rangeOperation
             = contentUnderstandingAsyncClient.beginAnalyzeBinary("prebuilt-documentSearch", binaryData,
@@ -370,7 +382,9 @@ public class Sample01_AnalyzeBinaryAsyncTest extends ContentUnderstandingClientT
                     new RuntimeException("Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
             }
         }).block();
+        // END:ContentUnderstandingAnalyzeBinaryWithPagesFromAsync
 
+        // BEGIN:Assertion_ContentUnderstandingAnalyzeBinaryWithPagesFromAsync
         assertNotNull(rangeResult);
         assertNotNull(rangeResult.getContents());
         DocumentContent rangeDoc = (DocumentContent) rangeResult.getContents().get(0);
@@ -379,7 +393,9 @@ public class Sample01_AnalyzeBinaryAsyncTest extends ContentUnderstandingClientT
         assertEquals(10, rangeDoc.getEndPageNumber(), "pagesFrom(3) should end at page 10");
         assertTrue(fullDoc.getPages().size() > rangeDoc.getPages().size());
         assertTrue(fullDoc.getMarkdown().length() > rangeDoc.getMarkdown().length());
+        // END:Assertion_ContentUnderstandingAnalyzeBinaryWithPagesFromAsync
 
+        // BEGIN:ContentUnderstandingAnalyzeBinaryWithCombinedPagesAsync
         // ---- Combine(Pages(1,3), Page(5), PagesFrom(9)) — combined page ranges ----
         PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> bigCombineOperation
             = contentUnderstandingAsyncClient.beginAnalyzeBinary("prebuilt-documentSearch", binaryData,
@@ -394,7 +410,9 @@ public class Sample01_AnalyzeBinaryAsyncTest extends ContentUnderstandingClientT
             }
         }).block();
         DocumentContent bigCombineDoc = (DocumentContent) bigCombineResult.getContents().get(0);
+        // END:ContentUnderstandingAnalyzeBinaryWithCombinedPagesAsync
 
+        // BEGIN:Assertion_ContentUnderstandingAnalyzeBinaryWithCombinedPagesAsync
         assertNotNull(bigCombineResult);
         assertNotNull(bigCombineResult.getContents());
         assertEquals(6, bigCombineDoc.getPages().size(),
@@ -407,5 +425,6 @@ public class Sample01_AnalyzeBinaryAsyncTest extends ContentUnderstandingClientT
         assertEquals(java.util.Arrays.asList(1, 2, 3, 5, 9, 10), combineRangePageNumbers,
             "Combine(Pages(1,3), Page(5), PagesFrom(9)) should extract pages 1, 2, 3, 5, 9, 10");
         assertTrue(fullDoc.getMarkdown().length() >= bigCombineDoc.getMarkdown().length());
+        // END:Assertion_ContentUnderstandingAnalyzeBinaryWithCombinedPagesAsync
     }
 }

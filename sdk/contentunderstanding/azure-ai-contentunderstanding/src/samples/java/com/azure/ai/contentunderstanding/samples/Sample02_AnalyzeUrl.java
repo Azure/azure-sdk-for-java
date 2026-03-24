@@ -319,7 +319,7 @@ public class Sample02_AnalyzeUrl {
         AnalysisInput combineInput = new AnalysisInput();
         combineInput.setUrl(uriSource);
         combineInput.setContentRange(ContentRange.combine(
-            ContentRange.pageRange(1, 3),
+            ContentRange.pages(1, 3),
             ContentRange.page(5),
             ContentRange.pagesFrom(9)));
 

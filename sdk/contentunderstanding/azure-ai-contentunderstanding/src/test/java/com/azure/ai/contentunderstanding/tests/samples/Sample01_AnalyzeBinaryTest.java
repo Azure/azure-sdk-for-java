@@ -292,20 +292,20 @@ public class Sample01_AnalyzeBinaryTest extends ContentUnderstandingClientTestBa
         assertTrue(fullDoc.getMarkdown().length() > page2Doc.getMarkdown().length());
         // END:Assertion_ContentUnderstandingAnalyzeBinaryWithSinglePage
 
-        // BEGIN:ContentUnderstandingAnalyzeBinaryWithPageRange
+        // BEGIN:ContentUnderstandingAnalyzeBinaryWithPages
         // ---- Pages(1, 3) — page range ----
         SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> pages13Operation
             = contentUnderstandingClient.beginAnalyzeBinary("prebuilt-documentSearch", binaryData,
                 ContentRange.pages(1, 3), "application/octet-stream", null);
         DocumentContent pages13Doc = (DocumentContent) pages13Operation.getFinalResult().getContents().get(0);
-        // END:ContentUnderstandingAnalyzeBinaryWithPageRange
+        // END:ContentUnderstandingAnalyzeBinaryWithPages
 
-        // BEGIN:Assertion_ContentUnderstandingAnalyzeBinaryWithPageRange
+        // BEGIN:Assertion_ContentUnderstandingAnalyzeBinaryWithPages
         assertEquals(3, pages13Doc.getPages().size(), "Pages(1,3) should return exactly 3 pages");
         assertEquals(1, pages13Doc.getStartPageNumber());
         assertEquals(3, pages13Doc.getEndPageNumber());
         assertTrue(fullDoc.getMarkdown().length() > pages13Doc.getMarkdown().length());
-        // END:Assertion_ContentUnderstandingAnalyzeBinaryWithPageRange
+        // END:Assertion_ContentUnderstandingAnalyzeBinaryWithPages
 
         // BEGIN:ContentUnderstandingAnalyzeBinaryWithCombinedPageAndRange
         // ---- Combine(Page(1), Pages(3, 4)) — combined single page and page range ----

@@ -366,6 +366,52 @@ public class Sample02_AnalyzeUrlTest extends ContentUnderstandingClientTestBase 
         // END:Assertion_ContentUnderstandingAnalyzeAudioUrl
     }
 
+
+    @Test
+    public void testAnalyzeImageUrl() {
+        // BEGIN:ContentUnderstandingAnalyzeImageUrl
+        String uriSource
+            = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/image/pieChart.jpg";
+
+        AnalysisInput input = new AnalysisInput();
+        input.setUrl(uriSource);
+
+        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> operation
+            = contentUnderstandingClient.beginAnalyze("prebuilt-imageSearch", Arrays.asList(input));
+
+        AnalysisResult result = operation.getFinalResult();
+
+        AnalysisContent content = result.getContents().get(0);
+        System.out.println("Markdown:");
+        System.out.println(content.getMarkdown());
+
+        String summary = content.getFields() != null && content.getFields().containsKey("Summary")
+            ? (content.getFields().get("Summary").getValue() != null
+                ? content.getFields().get("Summary").getValue().toString()
+                : "")
+            : "";
+        System.out.println("Summary: " + summary);
+        // END:ContentUnderstandingAnalyzeImageUrl
+
+        // BEGIN:Assertion_ContentUnderstandingAnalyzeImageUrl
+        assertNotNull(operation, "Analysis operation should not be null");
+        assertTrue(operation.waitForCompletion().getStatus().isComplete(), "Operation should be completed");
+        assertNotNull(result, "Analysis result should not be null");
+        assertNotNull(result.getContents(), "Result contents should not be null");
+        assertTrue(result.getContents().size() > 0, "Result should have at least one content");
+
+        // Verify content has Summary field
+        for (AnalysisContent mediaContent : result.getContents()) {
+            assertNotNull(mediaContent.getFields(), "Content should have fields");
+            assertTrue(mediaContent.getFields().containsKey("Summary"), "Image content should have Summary field");
+            assertNotNull(mediaContent.getFields().get("Summary").getValue(), "Summary value should not be null");
+            String summaryStr = mediaContent.getFields().get("Summary").getValue().toString();
+            assertFalse(summaryStr.trim().isEmpty(), "Summary should not be empty");
+        }
+        System.out.println("Image analysis validation completed successfully");
+        // END:Assertion_ContentUnderstandingAnalyzeImageUrl
+    }
+
     @Test
     public void testAnalyzeUrlWithPageContentRanges() {
 
@@ -410,10 +456,8 @@ public class Sample02_AnalyzeUrlTest extends ContentUnderstandingClientTestBase 
         // Document has 10 pages, so pages 1-3, 5, 9-10 match (6 pages total)
         AnalysisInput combineInput = new AnalysisInput();
         combineInput.setUrl(uriSource);
-        combineInput.setContentRange(ContentRange.combine(
-            ContentRange.pageRange(1, 3),
-            ContentRange.page(5),
-            ContentRange.pagesFrom(9)));
+        combineInput.setContentRange(
+            ContentRange.combine(ContentRange.pages(1, 3), ContentRange.page(5), ContentRange.pagesFrom(9)));
 
         SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> combineOperation
             = contentUnderstandingClient.beginAnalyze("prebuilt-documentSearch", Arrays.asList(combineInput));
@@ -637,8 +681,7 @@ public class Sample02_AnalyzeUrlTest extends ContentUnderstandingClientTestBase 
         // ---- Combine multiple time ranges (0-3s, 30s-) ----
         AnalysisInput combineInput = new AnalysisInput();
         combineInput.setUrl(uriSource);
-        combineInput.setContentRange(ContentRange.combine(
-            ContentRange.timeRange(Duration.ZERO, Duration.ofSeconds(3)),
+        combineInput.setContentRange(ContentRange.combine(ContentRange.timeRange(Duration.ZERO, Duration.ofSeconds(3)),
             ContentRange.timeRangeFrom(Duration.ofSeconds(30))));
 
         SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> combineOperation
@@ -652,50 +695,5 @@ public class Sample02_AnalyzeUrlTest extends ContentUnderstandingClientTestBase 
         assertTrue(combineContent.getEndTime().toMillis() > combineContent.getStartTime().toMillis());
         assertNotNull(combineContent.getMarkdown());
         assertFalse(combineContent.getMarkdown().isEmpty());
-    }
-
-    @Test
-    public void testAnalyzeImageUrl() {
-        // BEGIN:ContentUnderstandingAnalyzeImageUrl
-        String uriSource
-            = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/image/pieChart.jpg";
-
-        AnalysisInput input = new AnalysisInput();
-        input.setUrl(uriSource);
-
-        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> operation
-            = contentUnderstandingClient.beginAnalyze("prebuilt-imageSearch", Arrays.asList(input));
-
-        AnalysisResult result = operation.getFinalResult();
-
-        AnalysisContent content = result.getContents().get(0);
-        System.out.println("Markdown:");
-        System.out.println(content.getMarkdown());
-
-        String summary = content.getFields() != null && content.getFields().containsKey("Summary")
-            ? (content.getFields().get("Summary").getValue() != null
-                ? content.getFields().get("Summary").getValue().toString()
-                : "")
-            : "";
-        System.out.println("Summary: " + summary);
-        // END:ContentUnderstandingAnalyzeImageUrl
-
-        // BEGIN:Assertion_ContentUnderstandingAnalyzeImageUrl
-        assertNotNull(operation, "Analysis operation should not be null");
-        assertTrue(operation.waitForCompletion().getStatus().isComplete(), "Operation should be completed");
-        assertNotNull(result, "Analysis result should not be null");
-        assertNotNull(result.getContents(), "Result contents should not be null");
-        assertTrue(result.getContents().size() > 0, "Result should have at least one content");
-
-        // Verify content has Summary field
-        for (AnalysisContent mediaContent : result.getContents()) {
-            assertNotNull(mediaContent.getFields(), "Content should have fields");
-            assertTrue(mediaContent.getFields().containsKey("Summary"), "Image content should have Summary field");
-            assertNotNull(mediaContent.getFields().get("Summary").getValue(), "Summary value should not be null");
-            String summaryStr = mediaContent.getFields().get("Summary").getValue().toString();
-            assertFalse(summaryStr.trim().isEmpty(), "Summary should not be empty");
-        }
-        System.out.println("Image analysis validation completed successfully");
-        // END:Assertion_ContentUnderstandingAnalyzeImageUrl
     }
 }
