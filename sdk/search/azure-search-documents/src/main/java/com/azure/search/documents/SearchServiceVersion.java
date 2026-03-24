@@ -55,7 +55,6 @@ public enum SearchServiceVersion implements ServiceVersion {
      * @return The latest {@link SearchServiceVersion}.
      */
     public static SearchServiceVersion getLatest() {
-        // TODO: Revert to V2026_04_01 once the 2026-04-01 API version is deployed.
-        return V2025_11_01_PREVIEW;
+        return V2026_04_01;
     }
 }

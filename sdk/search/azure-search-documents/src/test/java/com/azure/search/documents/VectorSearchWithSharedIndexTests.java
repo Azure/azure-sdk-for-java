@@ -292,6 +292,7 @@ public class VectorSearchWithSharedIndexTests extends SearchTestBase {
     }
 
     @Test
+    @Disabled("StrictPostFilter mode requires API version 2026-04-01 which is not yet available. TODO: Remove when 2026-04-01 becomes GA.")
     public void vectorSearchWithStrictPostFilterModeSync() {
         SearchClient searchClient = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient();
 
@@ -304,6 +305,7 @@ public class VectorSearchWithSharedIndexTests extends SearchTestBase {
     }
 
     @Test
+    @Disabled("StrictPostFilter mode requires API version 2026-04-01 which is not yet available. TODO: Remove when 2026-04-01 becomes GA.")
     public void vectorSearchWithStrictPostFilterModeAsync() {
         SearchAsyncClient searchClient = getSearchClientBuilder(HOTEL_INDEX_NAME, false).buildAsyncClient();
 

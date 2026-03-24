@@ -39,7 +39,6 @@ public class SearchCustomizations extends Customization {
 
         ClassCustomization serviceVersion = documents.getClass("SearchServiceVersion");
         includeOldApiVersions(serviceVersion);
-        overrideGetLatest(serviceVersion);
 
         ClassCustomization searchClient = documents.getClass("SearchClient");
         ClassCustomization searchAsyncClient = documents.getClass("SearchAsyncClient");
@@ -121,18 +120,6 @@ public class SearchCustomizations extends Customization {
             }
 
             enumDeclaration.setEntries(entries);
-        }));
-    }
-
-    // Temporarily overrides getLatest() to return V2025_11_01_PREVIEW instead of V2026_04_01, since the 2026-04-01
-    // API version is not yet deployed to production search services. Revert this once 2026-04-01 is available.
-    private static void overrideGetLatest(ClassCustomization customization) {
-        customization.customizeAst(ast -> ast.getEnumByName(customization.getClassName()).ifPresent(enumDeclaration -> {
-            enumDeclaration.getMethodsByName("getLatest").forEach(method -> {
-                method.setBody(StaticJavaParser.parseBlock(
-                    "{ // TODO: Revert to V2026_04_01 once the 2026-04-01 API version is deployed.\n"
-                    + "return V2025_11_01_PREVIEW; }"));
-            });
         }));
     }
 
