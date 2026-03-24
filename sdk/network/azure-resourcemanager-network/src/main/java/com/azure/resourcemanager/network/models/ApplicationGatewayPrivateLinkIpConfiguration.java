@@ -100,25 +100,25 @@ public final class ApplicationGatewayPrivateLinkIpConfiguration extends SubResou
     }
 
     /**
-     * Get the privateIPAddress property: The private IP address of the IP configuration.
+     * Get the privateIpAddress property: The private IP address of the IP configuration.
      * 
-     * @return the privateIPAddress value.
+     * @return the privateIpAddress value.
      */
-    public String privateIPAddress() {
-        return this.innerProperties() == null ? null : this.innerProperties().privateIPAddress();
+    public String privateIpAddress() {
+        return this.innerProperties() == null ? null : this.innerProperties().privateIpAddress();
     }
 
     /**
-     * Set the privateIPAddress property: The private IP address of the IP configuration.
+     * Set the privateIpAddress property: The private IP address of the IP configuration.
      * 
-     * @param privateIPAddress the privateIPAddress value to set.
+     * @param privateIpAddress the privateIpAddress value to set.
      * @return the ApplicationGatewayPrivateLinkIpConfiguration object itself.
      */
-    public ApplicationGatewayPrivateLinkIpConfiguration withPrivateIPAddress(String privateIPAddress) {
+    public ApplicationGatewayPrivateLinkIpConfiguration withPrivateIpAddress(String privateIpAddress) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ApplicationGatewayPrivateLinkIpConfigurationProperties();
         }
-        this.innerProperties().withPrivateIPAddress(privateIPAddress);
+        this.innerProperties().withPrivateIpAddress(privateIpAddress);
         return this;
     }
 

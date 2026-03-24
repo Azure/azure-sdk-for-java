@@ -463,27 +463,27 @@ public final class ApplicationGatewayBackendHttpSettings extends SubResource {
     }
 
     /**
-     * Get the validateSNI property: When enabled, verifies if the Common Name of the certificate provided by the
+     * Get the validateSni property: When enabled, verifies if the Common Name of the certificate provided by the
      * backend server matches the Server Name Indication (SNI) value. Default value is true.
      * 
-     * @return the validateSNI value.
+     * @return the validateSni value.
      */
-    public Boolean validateSNI() {
-        return this.innerProperties() == null ? null : this.innerProperties().validateSNI();
+    public Boolean validateSni() {
+        return this.innerProperties() == null ? null : this.innerProperties().validateSni();
     }
 
     /**
-     * Set the validateSNI property: When enabled, verifies if the Common Name of the certificate provided by the
+     * Set the validateSni property: When enabled, verifies if the Common Name of the certificate provided by the
      * backend server matches the Server Name Indication (SNI) value. Default value is true.
      * 
-     * @param validateSNI the validateSNI value to set.
+     * @param validateSni the validateSni value to set.
      * @return the ApplicationGatewayBackendHttpSettings object itself.
      */
-    public ApplicationGatewayBackendHttpSettings withValidateSNI(Boolean validateSNI) {
+    public ApplicationGatewayBackendHttpSettings withValidateSni(Boolean validateSni) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ApplicationGatewayBackendHttpSettingsPropertiesFormat();
         }
-        this.innerProperties().withValidateSNI(validateSNI);
+        this.innerProperties().withValidateSni(validateSni);
         return this;
     }
 

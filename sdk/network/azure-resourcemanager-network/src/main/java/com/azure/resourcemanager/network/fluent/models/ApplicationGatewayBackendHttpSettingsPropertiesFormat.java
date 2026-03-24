@@ -105,7 +105,7 @@ public final class ApplicationGatewayBackendHttpSettingsPropertiesFormat
      * When enabled, verifies if the Common Name of the certificate provided by the backend server matches the Server
      * Name Indication (SNI) value. Default value is true.
      */
-    private Boolean validateSNI;
+    private Boolean validateSni;
 
     /*
      * Specify an SNI value to match the common name of the certificate on the backend. By default, the application
@@ -444,24 +444,24 @@ public final class ApplicationGatewayBackendHttpSettingsPropertiesFormat
     }
 
     /**
-     * Get the validateSNI property: When enabled, verifies if the Common Name of the certificate provided by the
+     * Get the validateSni property: When enabled, verifies if the Common Name of the certificate provided by the
      * backend server matches the Server Name Indication (SNI) value. Default value is true.
      * 
-     * @return the validateSNI value.
+     * @return the validateSni value.
      */
-    public Boolean validateSNI() {
-        return this.validateSNI;
+    public Boolean validateSni() {
+        return this.validateSni;
     }
 
     /**
-     * Set the validateSNI property: When enabled, verifies if the Common Name of the certificate provided by the
+     * Set the validateSni property: When enabled, verifies if the Common Name of the certificate provided by the
      * backend server matches the Server Name Indication (SNI) value. Default value is true.
      * 
-     * @param validateSNI the validateSNI value to set.
+     * @param validateSni the validateSni value to set.
      * @return the ApplicationGatewayBackendHttpSettingsPropertiesFormat object itself.
      */
-    public ApplicationGatewayBackendHttpSettingsPropertiesFormat withValidateSNI(Boolean validateSNI) {
-        this.validateSNI = validateSNI;
+    public ApplicationGatewayBackendHttpSettingsPropertiesFormat withValidateSni(Boolean validateSni) {
+        this.validateSni = validateSni;
         return this;
     }
 
@@ -531,7 +531,7 @@ public final class ApplicationGatewayBackendHttpSettingsPropertiesFormat
         jsonWriter.writeStringField("path", this.path);
         jsonWriter.writeBooleanField("dedicatedBackendConnection", this.dedicatedBackendConnection);
         jsonWriter.writeBooleanField("validateCertChainAndExpiry", this.validateCertChainAndExpiry);
-        jsonWriter.writeBooleanField("validateSNI", this.validateSNI);
+        jsonWriter.writeBooleanField("validateSNI", this.validateSni);
         jsonWriter.writeStringField("sniName", this.sniName);
         return jsonWriter.writeEndObject();
     }
@@ -601,7 +601,7 @@ public final class ApplicationGatewayBackendHttpSettingsPropertiesFormat
                     deserializedApplicationGatewayBackendHttpSettingsPropertiesFormat.validateCertChainAndExpiry
                         = reader.getNullable(JsonReader::getBoolean);
                 } else if ("validateSNI".equals(fieldName)) {
-                    deserializedApplicationGatewayBackendHttpSettingsPropertiesFormat.validateSNI
+                    deserializedApplicationGatewayBackendHttpSettingsPropertiesFormat.validateSni
                         = reader.getNullable(JsonReader::getBoolean);
                 } else if ("sniName".equals(fieldName)) {
                     deserializedApplicationGatewayBackendHttpSettingsPropertiesFormat.sniName = reader.getString();

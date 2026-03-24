@@ -28,7 +28,7 @@ public final class NetworkWatchersCheckConnectivitySamples {
                 new ConnectivityParameters().withSource(new ConnectivitySource().withResourceId(
                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg2/providers/Microsoft.Compute/virtualMachines/vm1"))
                     .withDestination(new ConnectivityDestination().withAddress("192.168.100.4").withPort(3389))
-                    .withPreferredIPVersion(IpVersion.IPV4),
+                    .withPreferredIpVersion(IpVersion.IPV4),
                 com.azure.core.util.Context.NONE);
     }
 }

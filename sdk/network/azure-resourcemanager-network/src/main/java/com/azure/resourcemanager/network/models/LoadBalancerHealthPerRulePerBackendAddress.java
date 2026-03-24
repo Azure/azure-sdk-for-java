@@ -25,7 +25,7 @@ public final class LoadBalancerHealthPerRulePerBackendAddress
     /*
      * Resource ID of the Network Interface IP Configuration.
      */
-    private String networkInterfaceIPConfigurationId;
+    private String networkInterfaceIpConfigurationId;
 
     /*
      * The current health of the backend instances that is associated to the LB rule.
@@ -53,12 +53,12 @@ public final class LoadBalancerHealthPerRulePerBackendAddress
     }
 
     /**
-     * Get the networkInterfaceIPConfigurationId property: Resource ID of the Network Interface IP Configuration.
+     * Get the networkInterfaceIpConfigurationId property: Resource ID of the Network Interface IP Configuration.
      * 
-     * @return the networkInterfaceIPConfigurationId value.
+     * @return the networkInterfaceIpConfigurationId value.
      */
-    public String networkInterfaceIPConfigurationId() {
-        return this.networkInterfaceIPConfigurationId;
+    public String networkInterfaceIpConfigurationId() {
+        return this.networkInterfaceIpConfigurationId;
     }
 
     /**
@@ -94,7 +94,7 @@ public final class LoadBalancerHealthPerRulePerBackendAddress
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("ipAddress", this.ipAddress);
-        jsonWriter.writeStringField("networkInterfaceIPConfigurationId", this.networkInterfaceIPConfigurationId);
+        jsonWriter.writeStringField("networkInterfaceIPConfigurationId", this.networkInterfaceIpConfigurationId);
         jsonWriter.writeStringField("state", this.state);
         jsonWriter.writeStringField("reason", this.reason);
         return jsonWriter.writeEndObject();
@@ -119,7 +119,7 @@ public final class LoadBalancerHealthPerRulePerBackendAddress
                 if ("ipAddress".equals(fieldName)) {
                     deserializedLoadBalancerHealthPerRulePerBackendAddress.ipAddress = reader.getString();
                 } else if ("networkInterfaceIPConfigurationId".equals(fieldName)) {
-                    deserializedLoadBalancerHealthPerRulePerBackendAddress.networkInterfaceIPConfigurationId
+                    deserializedLoadBalancerHealthPerRulePerBackendAddress.networkInterfaceIpConfigurationId
                         = reader.getString();
                 } else if ("state".equals(fieldName)) {
                     deserializedLoadBalancerHealthPerRulePerBackendAddress.state = reader.getString();

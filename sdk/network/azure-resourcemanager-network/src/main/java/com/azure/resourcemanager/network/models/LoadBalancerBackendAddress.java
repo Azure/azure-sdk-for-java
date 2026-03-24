@@ -134,37 +134,37 @@ public final class LoadBalancerBackendAddress implements JsonSerializable<LoadBa
     }
 
     /**
-     * Get the networkInterfaceIPConfiguration property: Reference to IP address defined in network interfaces.
+     * Get the networkInterfaceIpConfiguration property: Reference to IP address defined in network interfaces.
      * 
-     * @return the networkInterfaceIPConfiguration value.
+     * @return the networkInterfaceIpConfiguration value.
      */
-    public SubResource networkInterfaceIPConfiguration() {
-        return this.innerProperties() == null ? null : this.innerProperties().networkInterfaceIPConfiguration();
+    public SubResource networkInterfaceIpConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().networkInterfaceIpConfiguration();
     }
 
     /**
-     * Get the loadBalancerFrontendIPConfiguration property: Reference to the frontend ip address configuration defined
+     * Get the loadBalancerFrontendIpConfiguration property: Reference to the frontend ip address configuration defined
      * in regional loadbalancer.
      * 
-     * @return the loadBalancerFrontendIPConfiguration value.
+     * @return the loadBalancerFrontendIpConfiguration value.
      */
-    public SubResource loadBalancerFrontendIPConfiguration() {
-        return this.innerProperties() == null ? null : this.innerProperties().loadBalancerFrontendIPConfiguration();
+    public SubResource loadBalancerFrontendIpConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().loadBalancerFrontendIpConfiguration();
     }
 
     /**
-     * Set the loadBalancerFrontendIPConfiguration property: Reference to the frontend ip address configuration defined
+     * Set the loadBalancerFrontendIpConfiguration property: Reference to the frontend ip address configuration defined
      * in regional loadbalancer.
      * 
-     * @param loadBalancerFrontendIPConfiguration the loadBalancerFrontendIPConfiguration value to set.
+     * @param loadBalancerFrontendIpConfiguration the loadBalancerFrontendIpConfiguration value to set.
      * @return the LoadBalancerBackendAddress object itself.
      */
     public LoadBalancerBackendAddress
-        withLoadBalancerFrontendIPConfiguration(SubResource loadBalancerFrontendIPConfiguration) {
+        withLoadBalancerFrontendIpConfiguration(SubResource loadBalancerFrontendIpConfiguration) {
         if (this.innerProperties() == null) {
             this.innerProperties = new LoadBalancerBackendAddressPropertiesFormat();
         }
-        this.innerProperties().withLoadBalancerFrontendIPConfiguration(loadBalancerFrontendIPConfiguration);
+        this.innerProperties().withLoadBalancerFrontendIpConfiguration(loadBalancerFrontendIpConfiguration);
         return this;
     }
 

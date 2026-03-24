@@ -402,7 +402,7 @@ public final class LoadBalancersCreateOrUpdateSamples {
                 .withBackendAddressPools(Arrays.asList(new BackendAddressPoolInner().withName("be-lb")
                     .withLoadBalancerBackendAddresses(Arrays.asList(new LoadBalancerBackendAddress()
                         .withName("regional-lb1-address")
-                        .withLoadBalancerFrontendIPConfiguration(new SubResource().withId(
+                        .withLoadBalancerFrontendIpConfiguration(new SubResource().withId(
                             "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/regional-lb-rg1/providers/Microsoft.Network/loadBalancers/regional-lb/frontendIPConfigurations/fe-rlb"))))))
                 .withLoadBalancingRules(Arrays.asList(new LoadBalancingRuleInner().withName("rulelb")
                     .withFrontendIpConfiguration(new SubResource().withId(

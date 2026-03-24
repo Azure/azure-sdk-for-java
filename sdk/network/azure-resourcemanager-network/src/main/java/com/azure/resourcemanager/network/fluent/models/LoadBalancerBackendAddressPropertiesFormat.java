@@ -39,12 +39,12 @@ public final class LoadBalancerBackendAddressPropertiesFormat
     /*
      * Reference to IP address defined in network interfaces.
      */
-    private SubResource networkInterfaceIPConfiguration;
+    private SubResource networkInterfaceIpConfiguration;
 
     /*
      * Reference to the frontend ip address configuration defined in regional loadbalancer.
      */
-    private SubResource loadBalancerFrontendIPConfiguration;
+    private SubResource loadBalancerFrontendIpConfiguration;
 
     /*
      * Collection of inbound NAT rule port mappings.
@@ -124,34 +124,34 @@ public final class LoadBalancerBackendAddressPropertiesFormat
     }
 
     /**
-     * Get the networkInterfaceIPConfiguration property: Reference to IP address defined in network interfaces.
+     * Get the networkInterfaceIpConfiguration property: Reference to IP address defined in network interfaces.
      * 
-     * @return the networkInterfaceIPConfiguration value.
+     * @return the networkInterfaceIpConfiguration value.
      */
-    public SubResource networkInterfaceIPConfiguration() {
-        return this.networkInterfaceIPConfiguration;
+    public SubResource networkInterfaceIpConfiguration() {
+        return this.networkInterfaceIpConfiguration;
     }
 
     /**
-     * Get the loadBalancerFrontendIPConfiguration property: Reference to the frontend ip address configuration defined
+     * Get the loadBalancerFrontendIpConfiguration property: Reference to the frontend ip address configuration defined
      * in regional loadbalancer.
      * 
-     * @return the loadBalancerFrontendIPConfiguration value.
+     * @return the loadBalancerFrontendIpConfiguration value.
      */
-    public SubResource loadBalancerFrontendIPConfiguration() {
-        return this.loadBalancerFrontendIPConfiguration;
+    public SubResource loadBalancerFrontendIpConfiguration() {
+        return this.loadBalancerFrontendIpConfiguration;
     }
 
     /**
-     * Set the loadBalancerFrontendIPConfiguration property: Reference to the frontend ip address configuration defined
+     * Set the loadBalancerFrontendIpConfiguration property: Reference to the frontend ip address configuration defined
      * in regional loadbalancer.
      * 
-     * @param loadBalancerFrontendIPConfiguration the loadBalancerFrontendIPConfiguration value to set.
+     * @param loadBalancerFrontendIpConfiguration the loadBalancerFrontendIpConfiguration value to set.
      * @return the LoadBalancerBackendAddressPropertiesFormat object itself.
      */
     public LoadBalancerBackendAddressPropertiesFormat
-        withLoadBalancerFrontendIPConfiguration(SubResource loadBalancerFrontendIPConfiguration) {
-        this.loadBalancerFrontendIPConfiguration = loadBalancerFrontendIPConfiguration;
+        withLoadBalancerFrontendIpConfiguration(SubResource loadBalancerFrontendIpConfiguration) {
+        this.loadBalancerFrontendIpConfiguration = loadBalancerFrontendIpConfiguration;
         return this;
     }
 
@@ -208,7 +208,7 @@ public final class LoadBalancerBackendAddressPropertiesFormat
         jsonWriter.writeJsonField("virtualNetwork", this.virtualNetwork);
         jsonWriter.writeJsonField("subnet", this.subnet);
         jsonWriter.writeStringField("ipAddress", this.ipAddress);
-        jsonWriter.writeJsonField("loadBalancerFrontendIPConfiguration", this.loadBalancerFrontendIPConfiguration);
+        jsonWriter.writeJsonField("loadBalancerFrontendIPConfiguration", this.loadBalancerFrontendIpConfiguration);
         jsonWriter.writeStringField("adminState", this.adminState == null ? null : this.adminState.toString());
         return jsonWriter.writeEndObject();
     }
@@ -237,10 +237,10 @@ public final class LoadBalancerBackendAddressPropertiesFormat
                 } else if ("ipAddress".equals(fieldName)) {
                     deserializedLoadBalancerBackendAddressPropertiesFormat.ipAddress = reader.getString();
                 } else if ("networkInterfaceIPConfiguration".equals(fieldName)) {
-                    deserializedLoadBalancerBackendAddressPropertiesFormat.networkInterfaceIPConfiguration
+                    deserializedLoadBalancerBackendAddressPropertiesFormat.networkInterfaceIpConfiguration
                         = SubResource.fromJson(reader);
                 } else if ("loadBalancerFrontendIPConfiguration".equals(fieldName)) {
-                    deserializedLoadBalancerBackendAddressPropertiesFormat.loadBalancerFrontendIPConfiguration
+                    deserializedLoadBalancerBackendAddressPropertiesFormat.loadBalancerFrontendIpConfiguration
                         = SubResource.fromJson(reader);
                 } else if ("inboundNatRulesPortMapping".equals(fieldName)) {
                     List<NatRulePortMapping> inboundNatRulesPortMapping

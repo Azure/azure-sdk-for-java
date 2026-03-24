@@ -23,7 +23,7 @@ public final class ApplicationGatewayPrivateLinkIpConfigurationProperties
     /*
      * The private IP address of the IP configuration.
      */
-    private String privateIPAddress;
+    private String privateIpAddress;
 
     /*
      * The private IP address allocation method.
@@ -52,22 +52,22 @@ public final class ApplicationGatewayPrivateLinkIpConfigurationProperties
     }
 
     /**
-     * Get the privateIPAddress property: The private IP address of the IP configuration.
+     * Get the privateIpAddress property: The private IP address of the IP configuration.
      * 
-     * @return the privateIPAddress value.
+     * @return the privateIpAddress value.
      */
-    public String privateIPAddress() {
-        return this.privateIPAddress;
+    public String privateIpAddress() {
+        return this.privateIpAddress;
     }
 
     /**
-     * Set the privateIPAddress property: The private IP address of the IP configuration.
+     * Set the privateIpAddress property: The private IP address of the IP configuration.
      * 
-     * @param privateIPAddress the privateIPAddress value to set.
+     * @param privateIpAddress the privateIpAddress value to set.
      * @return the ApplicationGatewayPrivateLinkIpConfigurationProperties object itself.
      */
-    public ApplicationGatewayPrivateLinkIpConfigurationProperties withPrivateIPAddress(String privateIPAddress) {
-        this.privateIPAddress = privateIPAddress;
+    public ApplicationGatewayPrivateLinkIpConfigurationProperties withPrivateIpAddress(String privateIpAddress) {
+        this.privateIpAddress = privateIpAddress;
         return this;
     }
 
@@ -156,7 +156,7 @@ public final class ApplicationGatewayPrivateLinkIpConfigurationProperties
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("privateIPAddress", this.privateIPAddress);
+        jsonWriter.writeStringField("privateIPAddress", this.privateIpAddress);
         jsonWriter.writeStringField("privateIPAllocationMethod",
             this.privateIpAllocationMethod == null ? null : this.privateIpAllocationMethod.toString());
         jsonWriter.writeJsonField("subnet", this.subnet);
@@ -182,7 +182,7 @@ public final class ApplicationGatewayPrivateLinkIpConfigurationProperties
                 reader.nextToken();
 
                 if ("privateIPAddress".equals(fieldName)) {
-                    deserializedApplicationGatewayPrivateLinkIpConfigurationProperties.privateIPAddress
+                    deserializedApplicationGatewayPrivateLinkIpConfigurationProperties.privateIpAddress
                         = reader.getString();
                 } else if ("privateIPAllocationMethod".equals(fieldName)) {
                     deserializedApplicationGatewayPrivateLinkIpConfigurationProperties.privateIpAllocationMethod

@@ -36,7 +36,7 @@ public final class ConnectionMonitorTestConfiguration implements JsonSerializabl
      * The preferred IP version to use in test evaluation. The connection monitor may choose to use a different version
      * depending on other parameters.
      */
-    private PreferredIpVersion preferredIPVersion;
+    private PreferredIpVersion preferredIpVersion;
 
     /*
      * The parameters used to perform test evaluation over HTTP.
@@ -125,24 +125,24 @@ public final class ConnectionMonitorTestConfiguration implements JsonSerializabl
     }
 
     /**
-     * Get the preferredIPVersion property: The preferred IP version to use in test evaluation. The connection monitor
+     * Get the preferredIpVersion property: The preferred IP version to use in test evaluation. The connection monitor
      * may choose to use a different version depending on other parameters.
      * 
-     * @return the preferredIPVersion value.
+     * @return the preferredIpVersion value.
      */
-    public PreferredIpVersion preferredIPVersion() {
-        return this.preferredIPVersion;
+    public PreferredIpVersion preferredIpVersion() {
+        return this.preferredIpVersion;
     }
 
     /**
-     * Set the preferredIPVersion property: The preferred IP version to use in test evaluation. The connection monitor
+     * Set the preferredIpVersion property: The preferred IP version to use in test evaluation. The connection monitor
      * may choose to use a different version depending on other parameters.
      * 
-     * @param preferredIPVersion the preferredIPVersion value to set.
+     * @param preferredIpVersion the preferredIpVersion value to set.
      * @return the ConnectionMonitorTestConfiguration object itself.
      */
-    public ConnectionMonitorTestConfiguration withPreferredIPVersion(PreferredIpVersion preferredIPVersion) {
-        this.preferredIPVersion = preferredIPVersion;
+    public ConnectionMonitorTestConfiguration withPreferredIpVersion(PreferredIpVersion preferredIpVersion) {
+        this.preferredIpVersion = preferredIpVersion;
         return this;
     }
 
@@ -270,7 +270,7 @@ public final class ConnectionMonitorTestConfiguration implements JsonSerializabl
         jsonWriter.writeStringField("protocol", this.protocol == null ? null : this.protocol.toString());
         jsonWriter.writeNumberField("testFrequencySec", this.testFrequencySec);
         jsonWriter.writeStringField("preferredIPVersion",
-            this.preferredIPVersion == null ? null : this.preferredIPVersion.toString());
+            this.preferredIpVersion == null ? null : this.preferredIpVersion.toString());
         jsonWriter.writeJsonField("httpConfiguration", this.httpConfiguration);
         jsonWriter.writeJsonField("tcpConfiguration", this.tcpConfiguration);
         jsonWriter.writeJsonField("icmpConfiguration", this.icmpConfiguration);
@@ -304,7 +304,7 @@ public final class ConnectionMonitorTestConfiguration implements JsonSerializabl
                     deserializedConnectionMonitorTestConfiguration.testFrequencySec
                         = reader.getNullable(JsonReader::getInt);
                 } else if ("preferredIPVersion".equals(fieldName)) {
-                    deserializedConnectionMonitorTestConfiguration.preferredIPVersion
+                    deserializedConnectionMonitorTestConfiguration.preferredIpVersion
                         = PreferredIpVersion.fromString(reader.getString());
                 } else if ("httpConfiguration".equals(fieldName)) {
                     deserializedConnectionMonitorTestConfiguration.httpConfiguration

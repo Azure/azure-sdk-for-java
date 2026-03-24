@@ -40,7 +40,7 @@ public final class ConnectivityParameters implements JsonSerializable<Connectivi
     /*
      * Preferred IP version of the connection.
      */
-    private IpVersion preferredIPVersion;
+    private IpVersion preferredIpVersion;
 
     /**
      * Creates an instance of ConnectivityParameters class.
@@ -129,22 +129,22 @@ public final class ConnectivityParameters implements JsonSerializable<Connectivi
     }
 
     /**
-     * Get the preferredIPVersion property: Preferred IP version of the connection.
+     * Get the preferredIpVersion property: Preferred IP version of the connection.
      * 
-     * @return the preferredIPVersion value.
+     * @return the preferredIpVersion value.
      */
-    public IpVersion preferredIPVersion() {
-        return this.preferredIPVersion;
+    public IpVersion preferredIpVersion() {
+        return this.preferredIpVersion;
     }
 
     /**
-     * Set the preferredIPVersion property: Preferred IP version of the connection.
+     * Set the preferredIpVersion property: Preferred IP version of the connection.
      * 
-     * @param preferredIPVersion the preferredIPVersion value to set.
+     * @param preferredIpVersion the preferredIpVersion value to set.
      * @return the ConnectivityParameters object itself.
      */
-    public ConnectivityParameters withPreferredIPVersion(IpVersion preferredIPVersion) {
-        this.preferredIPVersion = preferredIPVersion;
+    public ConnectivityParameters withPreferredIpVersion(IpVersion preferredIpVersion) {
+        this.preferredIpVersion = preferredIpVersion;
         return this;
     }
 
@@ -185,7 +185,7 @@ public final class ConnectivityParameters implements JsonSerializable<Connectivi
         jsonWriter.writeStringField("protocol", this.protocol == null ? null : this.protocol.toString());
         jsonWriter.writeJsonField("protocolConfiguration", this.protocolConfiguration);
         jsonWriter.writeStringField("preferredIPVersion",
-            this.preferredIPVersion == null ? null : this.preferredIPVersion.toString());
+            this.preferredIpVersion == null ? null : this.preferredIpVersion.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -214,7 +214,7 @@ public final class ConnectivityParameters implements JsonSerializable<Connectivi
                 } else if ("protocolConfiguration".equals(fieldName)) {
                     deserializedConnectivityParameters.protocolConfiguration = ProtocolConfiguration.fromJson(reader);
                 } else if ("preferredIPVersion".equals(fieldName)) {
-                    deserializedConnectivityParameters.preferredIPVersion = IpVersion.fromString(reader.getString());
+                    deserializedConnectivityParameters.preferredIpVersion = IpVersion.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
