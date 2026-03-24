@@ -73,8 +73,8 @@
 #### `models.AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem` was modified
 
 * `AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem()` was changed to private access
-* `withIsPreview(java.lang.Boolean)` was removed
 * `withDefaultProperty(java.lang.Boolean)` was removed
+* `withIsPreview(java.lang.Boolean)` was removed
 * `withKubernetesVersion(java.lang.String)` was removed
 
 #### `models.KubernetesVersionCapabilities` was modified
@@ -85,8 +85,8 @@
 #### `models.CompatibleVersions` was modified
 
 * `CompatibleVersions()` was changed to private access
-* `withVersions(java.util.List)` was removed
 * `withName(java.lang.String)` was removed
+* `withVersions(java.util.List)` was removed
 
 #### `models.ManagedClusterPodIdentityProvisioningInfo` was modified
 
@@ -95,31 +95,31 @@
 
 #### `models.MeshRevision` was modified
 
-* `models.MeshRevision withRevision(java.lang.String)` -> `models.MeshRevision withRevision(java.lang.String)`
-* `models.MeshRevision withUpgrades(java.util.List)` -> `models.MeshRevision withUpgrades(java.util.List)`
 * `models.MeshRevision withCompatibleWith(java.util.List)` -> `models.MeshRevision withCompatibleWith(java.util.List)`
+* `models.MeshRevision withUpgrades(java.util.List)` -> `models.MeshRevision withUpgrades(java.util.List)`
+* `models.MeshRevision withRevision(java.lang.String)` -> `models.MeshRevision withRevision(java.lang.String)`
 
 #### `models.KubernetesVersion` was modified
 
 * `KubernetesVersion()` was changed to private access
-* `withPatchVersions(java.util.Map)` was removed
-* `withIsPreview(java.lang.Boolean)` was removed
-* `withVersion(java.lang.String)` was removed
 * `withIsDefault(java.lang.Boolean)` was removed
+* `withPatchVersions(java.util.Map)` was removed
+* `withVersion(java.lang.String)` was removed
 * `withCapabilities(models.KubernetesVersionCapabilities)` was removed
+* `withIsPreview(java.lang.Boolean)` was removed
 
 #### `models.MeshUpgradeProfileProperties` was modified
 
 * `MeshUpgradeProfileProperties()` was changed to private access
-* `withCompatibleWith(java.util.List)` was removed
 * `withRevision(java.lang.String)` was removed
 * `withUpgrades(java.util.List)` was removed
+* `withCompatibleWith(java.util.List)` was removed
 
 #### `models.EndpointDependency` was modified
 
 * `EndpointDependency()` was changed to private access
-* `withEndpointDetails(java.util.List)` was removed
 * `withDomainName(java.lang.String)` was removed
+* `withEndpointDetails(java.util.List)` was removed
 
 #### `models.KubernetesPatchVersion` was modified
 
@@ -137,9 +137,9 @@
 #### `models.ManagedClusterAddonProfileIdentity` was modified
 
 * `ManagedClusterAddonProfileIdentity()` was changed to private access
-* `withClientId(java.lang.String)` was removed
 * `withObjectId(java.lang.String)` was removed
 * `withResourceId(java.lang.String)` was removed
+* `withClientId(java.lang.String)` was removed
 
 #### `models.TrustedAccessRoleRule` was modified
 
@@ -156,10 +156,10 @@
 #### `models.EndpointDetail` was modified
 
 * `EndpointDetail()` was changed to private access
+* `withProtocol(java.lang.String)` was removed
+* `withDescription(java.lang.String)` was removed
 * `withIpAddress(java.lang.String)` was removed
 * `withPort(java.lang.Integer)` was removed
-* `withDescription(java.lang.String)` was removed
-* `withProtocol(java.lang.String)` was removed
 
 ### Features Added
 
@@ -185,13 +185,13 @@
 
 #### `ContainerServiceManager` was modified
 
-* `orchestratorClient()` was added
 * `openShiftClient()` was added
+* `orchestratorClient()` was added
 
 #### `models.AdvancedNetworking` was modified
 
-* `withPerformance(models.AdvancedNetworkingPerformance)` was added
 * `performance()` was added
+* `withPerformance(models.AdvancedNetworkingPerformance)` was added
 
 #### `models.IstioComponents` was modified
 
@@ -200,9 +200,9 @@
 
 #### `models.MeshUpgradeProfileProperties` was modified
 
+* `revision()` was added
 * `compatibleWith()` was added
 * `upgrades()` was added
-* `revision()` was added
 
 ## 2.57.1 (2026-01-29)
 
