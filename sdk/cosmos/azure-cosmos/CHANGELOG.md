@@ -4,14 +4,22 @@
 
 #### Features Added
 * Added support for N-Region synchronous commit feature - See [PR 47757](https://github.com/Azure/azure-sdk-for-java/pull/47757)
+* Added support for Query Advisor feature - See [48160](https://github.com/Azure/azure-sdk-for-java/pull/48160) 
+* Added `CosmosFullTextScoreScope` enum and `setFullTextScoreScope()` on `CosmosQueryRequestOptions` for controlling BM25 statistics scope in hybrid search queries. Supports `LOCAL` (scoped to target partitions) and `GLOBAL` (default, all partitions) scopes. See [PR 48431](https://github.com/Azure/azure-sdk-for-java/pull/48431)
 
 #### Breaking Changes
 
 #### Bugs Fixed
 * Fixed Remote Code Execution (RCE) vulnerability (CWE-502) by replacing Java deserialization with JSON-based serialization in `CosmosClientMetadataCachesSnapshot`, `AsyncCache`, and `DocumentCollection`. The metadata cache snapshot now uses Jackson for serialization/deserialization, eliminating the entire class of Java deserialization attacks. - [PR 47971](https://github.com/Azure/azure-sdk-for-java/pull/47971)
+* Fixed `NullPointerException` in `DocumentQueryExecutionContextFactory.tryCacheQueryPlan` when executing hybrid search queries with a partition key filter. See [PR 48431](https://github.com/Azure/azure-sdk-for-java/pull/48431)
+* Fixed `ConcurrentModificationException` in hybrid search component query execution caused by concurrent access to shared mutable state. See [PR 48431](https://github.com/Azure/azure-sdk-for-java/pull/48431)
+* Fixed availability strategy for Gateway V2 (thin client) by ensuring `RegionalRoutingContext` identity is based only on the immutable gateway endpoint. - See [PR 48432](https://github.com/Azure/azure-sdk-for-java/pull/48432)
 
 #### Other Changes
 * Promoted the following `@Beta` APIs to GA: `CosmosContainerProperties.getFullTextPolicy()`/`setFullTextPolicy()`, `IndexingPolicy.getCosmosFullTextIndexes()`/`setCosmosFullTextIndexes()`. - See [PR 48538](https://github.com/Azure/azure-sdk-for-java/pull/48538)
+* Added `appendUserAgentSuffix` method to `AsyncDocumentClient` to allow downstream libraries to append to the user agent after client construction. - See [PR 48505](https://github.com/Azure/azure-sdk-for-java/pull/48505)
+* Added aggressive HTTP timeout policies for document operations routed to Gateway V2. - [PR 47879](https://github.com/Azure/azure-sdk-for-java/pull/47879)
+* Added a default connect timeout of 5s for Gateway V2 (thin client) data-plane endpoints. - See [PR 48174](https://github.com/Azure/azure-sdk-for-java/pull/48174)
 
 ### 4.78.0 (2026-02-10)
 

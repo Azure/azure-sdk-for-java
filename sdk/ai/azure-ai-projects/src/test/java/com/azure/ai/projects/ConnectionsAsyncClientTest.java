@@ -6,20 +6,14 @@ import com.azure.ai.projects.models.Connection;
 import com.azure.ai.projects.models.ConnectionType;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.util.Configuration;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
 
 import static com.azure.ai.projects.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 
-@Disabled("Disabled for lack of recordings. Needs to be enabled on the Public Preview release.")
 public class ConnectionsAsyncClientTest extends ClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -30,13 +24,6 @@ public class ConnectionsAsyncClientTest extends ClientTestBase {
         // Verify that listing connections returns results
         PagedFlux<Connection> connectionsFlux = connectionsAsyncClient.listConnections();
         Assertions.assertNotNull(connectionsFlux);
-
-        // Collect all connections and verify
-        List<Connection> connections = new ArrayList<>();
-        connectionsFlux.collectList().block(Duration.ofSeconds(30));
-
-        System.out.println("Connection list retrieved successfully"
-            + (connections.size() > 0 ? " with " + connections.size() + " connections" : " (empty list)"));
 
         // Verify the first connection if available
         StepVerifier.create(connectionsFlux.take(1))
@@ -77,23 +64,16 @@ public class ConnectionsAsyncClientTest extends ClientTestBase {
         AIProjectsServiceVersion serviceVersion) {
         ConnectionsAsyncClient connectionsAsyncClient = getConnectionsAsyncClient(httpClient, serviceVersion);
 
-        String connectionName = Configuration.getGlobalConfiguration().get("TEST_CONNECTION_NAME", "agentaisearch2aqa");
+        // Discover a real connection name from the list
+        String connectionName
+            = connectionsAsyncClient.listConnections().next().map(Connection::getName).block(Duration.ofSeconds(20));
+        Assertions.assertNotNull(connectionName, "Expected at least one connection");
 
-        Mono<Connection> connectionMono = connectionsAsyncClient.getConnection(connectionName);
-
-        try {
-            // Test retrieving a connection
-            StepVerifier.create(connectionMono).assertNext(connection -> {
-                assertValidConnection(connection, connectionName, null, null);
-                Assertions.assertNotNull(connection.getCredentials().getType());
-                System.out.println("Connection retrieved successfully: " + connection.getName());
-            }).verifyComplete();
-        } catch (Exception e) {
-            // If the connection doesn't exist, this will throw an exception
-            // We'll handle this case by printing a message and passing the test
-            System.out.println("Connection not found: " + connectionName);
-            Assertions.assertTrue(e.getMessage().contains("404") || e.getMessage().contains("Not Found"));
-        }
+        StepVerifier.create(connectionsAsyncClient.getConnection(connectionName)).assertNext(connection -> {
+            assertValidConnection(connection, connectionName, null, null);
+            Assertions.assertNotNull(connection.getCredentials().getType());
+            System.out.println("Connection retrieved successfully: " + connection.getName());
+        }).verifyComplete();
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -101,23 +81,42 @@ public class ConnectionsAsyncClientTest extends ClientTestBase {
     public void testGetConnectionWithCredentialsAsync(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
         ConnectionsAsyncClient connectionsAsyncClient = getConnectionsAsyncClient(httpClient, serviceVersion);
 
-        String connectionName = Configuration.getGlobalConfiguration().get("TEST_CONNECTION_NAME", "agentaisearch2aqa");
+        // Discover a real connection name from the list
+        String connectionName
+            = connectionsAsyncClient.listConnections().next().map(Connection::getName).block(Duration.ofSeconds(20));
+        Assertions.assertNotNull(connectionName, "Expected at least one connection");
 
-        Mono<Connection> connectionMono = connectionsAsyncClient.getConnectionWithCredentials(connectionName);
-
-        try {
-            // Test retrieving a connection with credentials
-            StepVerifier.create(connectionMono).assertNext(connection -> {
+        StepVerifier.create(connectionsAsyncClient.getConnectionWithCredentials(connectionName))
+            .assertNext(connection -> {
                 assertValidConnection(connection, connectionName, null, null);
                 Assertions.assertNotNull(connection.getCredentials().getType());
                 System.out.println("Connection with credentials retrieved successfully: " + connection.getName());
                 System.out.println("Credential type: " + connection.getCredentials().getType());
-            }).verifyComplete();
-        } catch (Exception e) {
-            // If the connection doesn't exist, this will throw an exception
-            // We'll handle this case by printing a message and passing the test
-            System.out.println("Connection not found: " + connectionName);
-            Assertions.assertTrue(e.getMessage().contains("404") || e.getMessage().contains("Not Found"));
-        }
+            })
+            .verifyComplete();
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
+    public void testGetDefaultConnectionAsync(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
+        ConnectionsAsyncClient connectionsAsyncClient = getConnectionsAsyncClient(httpClient, serviceVersion);
+
+        StepVerifier.create(connectionsAsyncClient.getDefaultConnection(ConnectionType.AZURE_OPEN_AI, false))
+            .assertNext(connection -> {
+                assertValidConnection(connection, null, ConnectionType.AZURE_OPEN_AI, null);
+                Assertions.assertNotNull(connection.getCredentials().getType());
+                System.out.println("Default connection retrieved: " + connection.getName());
+            })
+            .verifyComplete();
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
+    public void testGetDefaultConnectionNotFoundAsync(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
+        ConnectionsAsyncClient connectionsAsyncClient = getConnectionsAsyncClient(httpClient, serviceVersion);
+
+        StepVerifier.create(connectionsAsyncClient.getDefaultConnection(ConnectionType.COSMOS_DB, false))
+            .expectError(IllegalStateException.class)
+            .verify();
     }
 }

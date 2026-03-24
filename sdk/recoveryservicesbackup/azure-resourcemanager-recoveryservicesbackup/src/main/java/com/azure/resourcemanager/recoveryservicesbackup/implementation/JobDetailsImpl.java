@@ -30,12 +30,8 @@ public final class JobDetailsImpl implements JobDetails {
         Context context) {
         Response<JobResourceInner> inner
             = this.serviceClient().getWithResponse(vaultName, resourceGroupName, jobName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new JobResourceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new JobResourceImpl(inner.getValue(), this.manager()));
     }
 
     public JobResource get(String vaultName, String resourceGroupName, String jobName) {

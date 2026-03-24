@@ -13,18 +13,18 @@ public final class ScopeMapPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScopeMapProperties model = BinaryData.fromString(
-            "{\"description\":\"lmwlxkvugfhzo\",\"type\":\"wjvzunluthnn\",\"creationDate\":\"2021-03-11T05:06:45Z\",\"provisioningState\":\"Succeeded\",\"actions\":[\"eilpjzuaejxdu\",\"tskzbbtdzumveek\",\"pwo\",\"uh\"]}")
+            "{\"description\":\"duhavhqlkt\",\"type\":\"maqolbgycduie\",\"creationDate\":\"2021-01-07T02:54:59Z\",\"provisioningState\":\"Creating\",\"actions\":[\"mvaolps\"]}")
             .toObject(ScopeMapProperties.class);
-        Assertions.assertEquals("lmwlxkvugfhzo", model.description());
-        Assertions.assertEquals("eilpjzuaejxdu", model.actions().get(0));
+        Assertions.assertEquals("duhavhqlkt", model.description());
+        Assertions.assertEquals("mvaolps", model.actions().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScopeMapProperties model = new ScopeMapProperties().withDescription("lmwlxkvugfhzo")
-            .withActions(Arrays.asList("eilpjzuaejxdu", "tskzbbtdzumveek", "pwo", "uh"));
+        ScopeMapProperties model
+            = new ScopeMapProperties().withDescription("duhavhqlkt").withActions(Arrays.asList("mvaolps"));
         model = BinaryData.fromObject(model).toObject(ScopeMapProperties.class);
-        Assertions.assertEquals("lmwlxkvugfhzo", model.description());
-        Assertions.assertEquals("eilpjzuaejxdu", model.actions().get(0));
+        Assertions.assertEquals("duhavhqlkt", model.description());
+        Assertions.assertEquals("mvaolps", model.actions().get(0));
     }
 }

@@ -3,14 +3,12 @@
 package com.azure.ai.projects;
 
 import com.azure.ai.projects.models.AzureAISearchIndex;
-import com.azure.ai.projects.models.Index;
+import com.azure.ai.projects.models.AIProjectIndex;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.Configuration;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -18,140 +16,107 @@ import java.util.List;
 
 import static com.azure.ai.projects.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 
-@Disabled("Disabled for lack of recordings. Needs to be enabled on the Public Preview release.")
 public class IndexesAsyncClientTest extends ClientTestBase {
 
-    @Disabled
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
     public void testListIndexesAsync(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
         IndexesAsyncClient indexesAsyncClient = getIndexesAsyncClient(httpClient, serviceVersion);
 
         // Collect indexes into a list for verification
-        List<Index> indexList = new ArrayList<>();
+        List<AIProjectIndex> indexList = new ArrayList<>();
 
-        // Verify that listing indexes returns results
-        StepVerifier.create(indexesAsyncClient.listLatest().doOnNext(index -> {
-            indexList.add(index);
-            assertValidIndex(index, null, null);
-        })).expectComplete().verify(Duration.ofMinutes(1));
+        StepVerifier.create(indexesAsyncClient.listLatest().doOnNext(indexList::add))
+            .thenConsumeWhile(index -> true)
+            .expectComplete()
+            .verify(Duration.ofSeconds(20));
 
-        System.out.println("Index list retrieved successfully"
-            + (indexList.isEmpty() ? " (empty list)" : " with " + indexList.size() + " index(es)"));
+        // Verify we got results
+        Assertions.assertFalse(indexList.isEmpty(), "Expected at least one index");
+        System.out.println("Index list retrieved with " + indexList.size() + " index(es)");
     }
 
-    @Disabled
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
     public void testListIndexVersionsAsync(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
         IndexesAsyncClient indexesAsyncClient = getIndexesAsyncClient(httpClient, serviceVersion);
 
-        String indexName = Configuration.getGlobalConfiguration().get("TEST_INDEX_NAME", "test-index");
-        List<Index> versionList = new ArrayList<>();
+        // Use an index name that we know exists from the list
+        String indexName = indexesAsyncClient.listLatest()
+            .filter(index -> index.getName() != null)
+            .next()
+            .map(AIProjectIndex::getName)
+            .block(Duration.ofSeconds(20));
 
-        // Verify that listing index versions returns results or appropriate error
-        StepVerifier.create(indexesAsyncClient.listVersions(indexName).doOnNext(index -> {
-            versionList.add(index);
-            assertValidIndex(index, indexName, null);
-        }).onErrorResume(e -> {
-            // If the index doesn't exist, this will throw a ResourceNotFoundException
-            // We'll handle this case by printing a message
-            System.out.println("Index not found for version listing: " + indexName);
-            Assertions.assertTrue(e.getMessage().contains("404") || e.getMessage().contains("Not Found"));
-            return Mono.empty();
-        })).expectComplete().verify(Duration.ofMinutes(1));
+        if (indexName == null) {
+            System.out.println("No indexes available - skipping version listing test");
+            return;
+        }
 
-        System.out.println("Index versions for '" + indexName + "' retrieved successfully"
-            + (versionList.isEmpty() ? " (empty list)" : " with " + versionList.size() + " version(s)"));
+        List<AIProjectIndex> versionList = new ArrayList<>();
+
+        StepVerifier.create(indexesAsyncClient.listVersions(indexName).doOnNext(versionList::add))
+            .thenConsumeWhile(index -> true)
+            .expectComplete()
+            .verify(Duration.ofSeconds(20));
+
+        Assertions.assertFalse(versionList.isEmpty(), "Expected at least one version for index: " + indexName);
+        System.out
+            .println("Index versions for '" + indexName + "' retrieved with " + versionList.size() + " version(s)");
     }
 
-    @Disabled
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
     public void testGetIndexAsync(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
         IndexesAsyncClient indexesAsyncClient = getIndexesAsyncClient(httpClient, serviceVersion);
 
-        String indexName = Configuration.getGlobalConfiguration().get("TEST_INDEX_NAME", "test-index");
-        String indexVersion = Configuration.getGlobalConfiguration().get("TEST_INDEX_VERSION", "1.0");
+        // Use an index we know exists from the list
+        AIProjectIndex existingIndex = indexesAsyncClient.listLatest()
+            .filter(index -> index.getName() != null && index.getVersion() != null)
+            .next()
+            .block(Duration.ofSeconds(20));
 
-        StepVerifier.create(indexesAsyncClient.getVersion(indexName, indexVersion).doOnNext(index -> {
-            // Verify the index properties
+        if (existingIndex == null) {
+            System.out.println("No indexes available - skipping get test");
+            return;
+        }
+
+        String indexName = existingIndex.getName();
+        String indexVersion = existingIndex.getVersion();
+
+        StepVerifier.create(indexesAsyncClient.getVersion(indexName, indexVersion)).assertNext(index -> {
             assertValidIndex(index, indexName, indexVersion);
             System.out
                 .println("Index retrieved successfully: " + index.getName() + " (version " + index.getVersion() + ")");
-            System.out.println("Index type: " + index.getType());
-        }).onErrorResume(e -> {
-            // If the index doesn't exist, this will throw a ResourceNotFoundException
-            System.out.println("Index not found: " + indexName + " (version " + indexVersion + ")");
-            Assertions.assertTrue(e.getMessage().contains("404") || e.getMessage().contains("Not Found"));
-            return Mono.empty();
-        })).expectComplete().verify(Duration.ofMinutes(1));
+        }).expectComplete().verify(Duration.ofSeconds(20));
     }
 
-    @Disabled
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
     public void testCreateOrUpdateIndexAsync(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
         IndexesAsyncClient indexesAsyncClient = getIndexesAsyncClient(httpClient, serviceVersion);
 
-        // Configuration for creating/updating an index
-        String indexName = Configuration.getGlobalConfiguration().get("TEST_INDEX_NAME", "test-index");
-        String indexVersion = Configuration.getGlobalConfiguration().get("TEST_INDEX_VERSION", "1.0");
+        String indexName = "java-sdk-test-index-async";
+        String indexVersion = "1";
         String aiSearchConnectionName
             = Configuration.getGlobalConfiguration().get("TEST_AI_SEARCH_CONNECTION_NAME", "test-search-connection");
-        String aiSearchIndexName
-            = Configuration.getGlobalConfiguration().get("TEST_AI_SEARCH_INDEX_NAME", "test-search-index");
+        String aiSearchIndexName = "java-sdk-test-search-index";
 
-        // Create an AzureAISearchIndex
         AzureAISearchIndex searchIndex
             = new AzureAISearchIndex().setConnectionName(aiSearchConnectionName).setIndexName(aiSearchIndexName);
 
-        StepVerifier.create(
-            indexesAsyncClient.createOrUpdateVersion(indexName, indexVersion, searchIndex).doOnNext(createdIndex -> {
-                // Verify the created/updated index
+        StepVerifier.create(indexesAsyncClient.createOrUpdateVersion(indexName, indexVersion, searchIndex))
+            .assertNext(createdIndex -> {
                 assertValidIndex(createdIndex, indexName, indexVersion);
-
-                // Verify it's the correct type
-                Assertions.assertTrue(createdIndex instanceof AzureAISearchIndex);
+                Assertions.assertInstanceOf(AzureAISearchIndex.class, createdIndex);
                 AzureAISearchIndex createdSearchIndex = (AzureAISearchIndex) createdIndex;
-                Assertions.assertEquals(aiSearchConnectionName, createdSearchIndex.getConnectionName());
                 Assertions.assertEquals(aiSearchIndexName, createdSearchIndex.getIndexName());
-
-                System.out.println("Index created/updated successfully: " + createdIndex.getName() + " (version "
-                    + createdIndex.getVersion() + ")");
-            })).expectNextCount(1).expectComplete().verify(Duration.ofMinutes(1));
-    }
-
-    @Disabled
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
-    public void testDeleteIndexAsync(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
-        IndexesAsyncClient indexesAsyncClient = getIndexesAsyncClient(httpClient, serviceVersion);
-
-        String indexName = Configuration.getGlobalConfiguration().get("TEST_INDEX_NAME", "test-index");
-        String indexVersion = Configuration.getGlobalConfiguration().get("TEST_INDEX_VERSION", "1.0");
-
-        // First verify the index exists
-        indexesAsyncClient.getVersion(indexName, indexVersion)
-            .doOnNext(index -> assertValidIndex(index, indexName, indexVersion))
-            .flatMap(index -> indexesAsyncClient.deleteVersion(indexName, indexVersion))
-            .doOnSuccess(unused -> System.out.println("Index deletion request submitted"))
-            .then(Mono.delay(Duration.ofSeconds(2))) // Give some time for the deletion to complete
-            .then(indexesAsyncClient.getVersion(indexName, indexVersion))
-            .doOnNext(deletedIndex -> Assertions
-                .fail("Index should have been deleted but was found: " + deletedIndex.getName()))
-            .onErrorResume(e -> {
-                // Expected exception
-                Assertions.assertTrue(e.getMessage().contains("404") || e.getMessage().contains("Not Found"));
-                System.out.println("Index successfully deleted: " + indexName + " (version " + indexVersion + ")");
-                return Mono.empty();
+                System.out.println("Index created/updated successfully: " + createdIndex.getName());
             })
-            .onErrorResume(e -> {
-                // If the index doesn't exist already for the initial get, this is fine
-                System.out.println("Index not found for deletion: " + indexName + " (version " + indexVersion + ")");
-                Assertions.assertTrue(e.getMessage().contains("404") || e.getMessage().contains("Not Found"));
-                return Mono.empty();
-            })
-            .block(Duration.ofMinutes(1));
+            .expectComplete()
+            .verify(Duration.ofSeconds(20));
+
+        // Clean up
+        indexesAsyncClient.deleteVersion(indexName, indexVersion).block(Duration.ofSeconds(20));
     }
 }

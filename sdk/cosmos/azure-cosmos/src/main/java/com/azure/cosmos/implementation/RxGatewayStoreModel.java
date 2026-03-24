@@ -323,6 +323,10 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                 .getEffectiveHttpTransportSerializer(this)
                 .wrapInHttpRequest(request, requestUri);
 
+            // Capture the request record early so it's available on both success and error paths.
+            // Each retry creates a new HttpRequest with a new record, so this is per-attempt.
+            request.requestContext.reactorNettyRequestRecord = httpRequest.reactorNettyRequestRecord();
+
             Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest, request.getResponseTimeout());
 
             if (this.gatewayServerErrorInjector != null) {
@@ -474,7 +478,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
 
                             // there could be a race with the catch in the .map operator below
                             // so, use safeRelease
-                            ReferenceCountUtil.safeRelease(buf);
+                            safeSilentRelease(buf);
                         }
                     })
                     .publishOn(CosmosSchedulers.TRANSPORT_RESPONSE_BOUNDED_ELASTIC);
@@ -538,7 +542,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                                 buf.touch("RxGatewayStoreModel - doOnDiscard after map - refCnt: " + buf.refCnt());
                                 logger.debug("RxGatewayStoreModel - doOnDiscard after map - refCnt: {}", buf.refCnt());
                             }
-                            ReferenceCountUtil.safeRelease(buf);
+                            safeSilentRelease(buf);
                         }
                     })
                     .doFinally(signal -> {
@@ -551,7 +555,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                                 buf.touch("RxGatewayStoreModel - doFinally safety net - signal: " + signal + " - refCnt: " + buf.refCnt());
                                 logger.debug("RxGatewayStoreModel - doFinally safety net releasing ByteBuf - signal: {}, refCnt: {}", signal, buf.refCnt());
                             }
-                            ReferenceCountUtil.safeRelease(buf);
+                            safeSilentRelease(buf);
                         }
                     })
                     .single();
@@ -662,6 +666,13 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
 
                     request.requestContext.cancelledGatewayRequestTimelineContexts.add(gatewayRequestTimelineContext);
 
+                    // Always set the request URI so endpoint is captured in diagnostics on cancellation.
+                    // The endpoint is known at request-send time and should not be lost on cancellation.
+                    ImplementationBridgeHelpers
+                        .CosmosExceptionHelper
+                        .getCosmosExceptionAccessor()
+                        .setRequestUri(oce, Uri.create(httpRequest.uri().toString()));
+
                     if (request.requestContext.getCrossRegionAvailabilityContext() != null) {
 
                         CrossRegionAvailabilityContextForRxDocumentServiceRequest availabilityStrategyContextForReq =
@@ -710,7 +721,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                 ? retainedBodyAsByteBuf.toString(StandardCharsets.UTF_8)
                 : null;
 
-            ReferenceCountUtil.safeRelease(retainedBodyAsByteBuf);
+            safeSilentRelease(retainedBodyAsByteBuf);
 
             CosmosError cosmosError;
             cosmosError = (StringUtils.isNotEmpty(body)) ? new CosmosError(body) : new CosmosError();
@@ -1084,5 +1095,15 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
 
     private static boolean isStoredProcedureMasterOperation(ResourceType resourceType, OperationType operationType) {
         return resourceType == ResourceType.StoredProcedure && operationType != OperationType.ExecuteJavaScript;
+    }
+
+    static void safeSilentRelease(Object msg) {
+        try {
+            ReferenceCountUtil.release(msg);
+        } catch (Throwable t) {
+            // ReferenceCountUtil.safeRelease(msg); would always log teh warning below - which is unnecessary
+            // in this class - we only needs this for a race condition rarely double-releasing
+            // logger.warn("Failed to release a message: {}", msg, t);
+        }
     }
 }

@@ -20,7 +20,7 @@ public final class ImagesListDownloadUriWithResponseMockTests {
     @Test
     public void testListDownloadUriWithResponse() throws Exception {
         String responseStr
-            = "{\"provisioningState\":\"Succeeded\",\"releaseVersion\":\"llnwsubi\",\"releaseDisplayName\":\"njampm\",\"releaseNotes\":\"gnzscxaqwo\",\"releaseType\":\"Update\",\"compatibleVersions\":[\"bonqvpkvlrxnjeas\",\"ipheoflokeyyien\"],\"transactionId\":\"bdlwtgrhpdjpj\",\"downloadLink\":\"masxazjpqyegu\",\"linkExpiry\":\"2021-12-01T17:52:28Z\"}";
+            = "{\"provisioningState\":\"Canceled\",\"releaseVersion\":\"xepcyvahfn\",\"releaseDisplayName\":\"jky\",\"releaseNotes\":\"xjvuujqgidokg\",\"releaseType\":\"Update\",\"compatibleVersions\":[\"oxgvclt\",\"gsncghkjeszz\",\"bijhtxfvgxbf\",\"mxnehmp\"],\"updateProperties\":{\"systemReboot\":\"Required\",\"securityUpdates\":\"xgodebfqkkrbmp\",\"osVersion\":\"kgriwflzlfbx\",\"agentVersion\":\"puz\",\"featureUpdates\":\"cispnqzahmgkbr\"},\"transactionId\":\"yydhibnuqqk\",\"downloadLink\":\"ik\",\"linkExpiry\":\"2021-12-03T19:04:10Z\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class ImagesListDownloadUriWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ImageDownloadResult response = manager.images()
-            .listDownloadUriWithResponse("wnfnbacf", "onlebxetqgtzxdpn", "bqqwxrj", com.azure.core.util.Context.NONE)
+            .listDownloadUriWithResponse("nkymuctqhjfbebrj", "xerf", "wutttxfvjrbi", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

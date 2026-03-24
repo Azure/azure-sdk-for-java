@@ -3,14 +3,14 @@
 package com.azure.ai.projects;
 
 import com.azure.ai.projects.models.AzureAISearchIndex;
-import com.azure.ai.projects.models.Index;
+import com.azure.ai.projects.models.AIProjectIndex;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class IndexesSample {
 
     private static IndexesClient indexesClient
-        = new AIProjectClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("AZURE_AI_PROJECTS_ENDPOINT", "endpoint"))
+        = new AIProjectClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("FOUNDRY_PROJECT_ENDPOINT", "endpoint"))
         .credential(new DefaultAzureCredentialBuilder().build())
         .buildIndexesClient();
 
@@ -30,7 +30,7 @@ public class IndexesSample {
         String aiSearchConnectionName = Configuration.getGlobalConfiguration().get("AI_SEARCH_CONNECTION_NAME", "");
         String aiSearchIndexName = Configuration.getGlobalConfiguration().get("AI_SEARCH_INDEX_NAME", "");
 
-        Index index = indexesClient.createOrUpdateVersion(
+        AIProjectIndex index = indexesClient.createOrUpdateVersion(
             indexName,
             indexVersion,
             new AzureAISearchIndex()
@@ -73,7 +73,7 @@ public class IndexesSample {
         String indexName = Configuration.getGlobalConfiguration().get("INDEX_NAME", "my-index");
         String indexVersion = Configuration.getGlobalConfiguration().get("INDEX_VERSION", "1.0");
 
-        Index index = indexesClient.getVersion(indexName, indexVersion);
+        AIProjectIndex index = indexesClient.getVersion(indexName, indexVersion);
 
         System.out.println("Retrieved index:");
         System.out.println("Name: " + index.getName());

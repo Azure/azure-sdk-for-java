@@ -23,7 +23,7 @@ public final class DeploymentsGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Creating\",\"nginxVersion\":\"nsj\",\"networkProfile\":{\"frontEndIPConfiguration\":{\"publicIPAddresses\":[{},{},{},{}],\"privateIPAddresses\":[{},{}]},\"networkInterfaceConfiguration\":{\"subnetId\":\"dszue\"}},\"ipAddress\":\"sbzkf\",\"enableDiagnosticsSupport\":true,\"logging\":{\"storageAccount\":{\"accountName\":\"nqicvinvkjjxdxrb\",\"containerName\":\"kzclewyh\"}},\"scalingProperties\":{\"capacity\":969914681,\"autoScaleSettings\":{\"profiles\":[{\"name\":\"tzpofncckwyfzq\",\"capacity\":{\"min\":708392093,\"max\":1576078570}}]}},\"autoUpgradeProfile\":{\"upgradeChannel\":\"buy\"},\"userProfile\":{\"preferredEmail\":\"zfeqztppri\"},\"nginxAppProtect\":{\"webApplicationFirewallSettings\":{\"activationState\":\"Enabled\"},\"webApplicationFirewallStatus\":{\"wafRelease\":\"altol\",\"attackSignaturesPackage\":{\"version\":\"cwsobqwcs\",\"revisionDatetime\":\"2021-04-29T03:25:13Z\"},\"botSignaturesPackage\":{\"version\":\"wdcfhucqdpfuv\",\"revisionDatetime\":\"2021-07-29T06:16:34Z\"},\"threatCampaignsPackage\":{\"version\":\"bjj\",\"revisionDatetime\":\"2021-01-27T19:23:30Z\"},\"componentVersions\":{\"wafEngineVersion\":\"vxb\",\"wafNginxVersion\":\"t\"}}},\"dataplaneApiEndpoint\":\"dut\"},\"identity\":{\"principalId\":\"rmrlxqtvcof\",\"tenantId\":\"f\",\"type\":\"None\",\"userAssignedIdentities\":{\"sgsahmkycgr\":{\"principalId\":\"bgdknnqv\",\"clientId\":\"znqntoru\"}}},\"sku\":{\"name\":\"wjue\"},\"location\":\"eburu\",\"tags\":{\"l\":\"ovsm\",\"oefki\":\"wabm\",\"qujmqlgkf\":\"rvtp\",\"tujitcjedft\":\"tndoaongbjc\"},\"id\":\"waezkojvd\",\"name\":\"pzfoqoui\",\"type\":\"ybxarzgszu\"}";
+            = "{\"properties\":{\"provisioningState\":\"Updating\",\"nginxVersion\":\"feqztppriol\",\"networkProfile\":{\"frontEndIPConfiguration\":{\"publicIPAddresses\":[{},{}],\"privateIPAddresses\":[{},{},{}]},\"networkInterfaceConfiguration\":{\"subnetId\":\"mncwsobqwcsdb\"}},\"ipAddress\":\"dcfhucqdpf\",\"enableDiagnosticsSupport\":false,\"logging\":{\"storageAccount\":{\"accountName\":\"jjcanvxbvtv\",\"containerName\":\"utncorm\"}},\"scalingProperties\":{\"capacity\":1360670450,\"autoScaleSettings\":{\"profiles\":[{\"name\":\"cofudflvkgjub\",\"capacity\":{\"min\":295057712,\"max\":310195791}},{\"name\":\"nnqvsa\",\"capacity\":{\"min\":1586298558,\"max\":2039923498}}]}},\"autoUpgradeProfile\":{\"upgradeChannel\":\"tor\"},\"userProfile\":{\"preferredEmail\":\"gsahmkycgrauw\"},\"nginxAppProtect\":{\"webApplicationFirewallSettings\":{\"activationState\":\"Disabled\"},\"webApplicationFirewallStatus\":{\"wafRelease\":\"buruvd\",\"attackSignaturesPackage\":{\"version\":\"vsmzlxwab\",\"revisionDatetime\":\"2021-09-29T17:29:24Z\"},\"botSignaturesPackage\":{\"version\":\"efkifr\",\"revisionDatetime\":\"2021-11-12T13:25:33Z\"},\"threatCampaignsPackage\":{\"version\":\"u\",\"revisionDatetime\":\"2021-11-26T09:12:38Z\"},\"componentVersions\":{\"wafEngineVersion\":\"mqlgk\",\"wafNginxVersion\":\"btndo\"}}},\"dataplaneApiEndpoint\":\"n\"},\"identity\":{\"principalId\":\"cn\",\"tenantId\":\"jitcjedftwwaez\",\"type\":\"None\",\"userAssignedIdentities\":{\"opidoamciodh\":{\"principalId\":\"pzfoqoui\",\"clientId\":\"bxarzgszufoxci\"},\"hksz\":{\"principalId\":\"azxkhnzbonlwnto\",\"clientId\":\"okdwb\"}}},\"sku\":{\"name\":\"mrv\"},\"location\":\"ztvbtqgsfr\",\"tags\":{\"dsyuuximerqfob\":\"zkoowtlmnguxawqa\",\"utwpfhp\":\"yznkby\",\"tdlmkkzevd\":\"gmhrskdsnfdsdoak\"},\"id\":\"hewpusdsttwv\",\"name\":\"gvbbejdcng\",\"type\":\"qmoa\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,27 +33,27 @@ public final class DeploymentsGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         NginxDeployment response = manager.deployments()
-            .getByResourceGroupWithResponse("owpulpq", "lyls", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("pofncck", "yfzqwhxxbu", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("eburu", response.location());
-        Assertions.assertEquals("ovsm", response.tags().get("l"));
-        Assertions.assertEquals("dszue",
+        Assertions.assertEquals("ztvbtqgsfr", response.location());
+        Assertions.assertEquals("zkoowtlmnguxawqa", response.tags().get("dsyuuximerqfob"));
+        Assertions.assertEquals("mncwsobqwcsdb",
             response.properties().networkProfile().networkInterfaceConfiguration().subnetId());
-        Assertions.assertTrue(response.properties().enableDiagnosticsSupport());
-        Assertions.assertEquals("nqicvinvkjjxdxrb", response.properties().logging().storageAccount().accountName());
-        Assertions.assertEquals("kzclewyh", response.properties().logging().storageAccount().containerName());
-        Assertions.assertEquals(969914681, response.properties().scalingProperties().capacity());
-        Assertions.assertEquals("tzpofncckwyfzq", response.properties().scalingProperties().profiles().get(0).name());
-        Assertions.assertEquals(708392093,
+        Assertions.assertFalse(response.properties().enableDiagnosticsSupport());
+        Assertions.assertEquals("jjcanvxbvtv", response.properties().logging().storageAccount().accountName());
+        Assertions.assertEquals("utncorm", response.properties().logging().storageAccount().containerName());
+        Assertions.assertEquals(1360670450, response.properties().scalingProperties().capacity());
+        Assertions.assertEquals("cofudflvkgjub", response.properties().scalingProperties().profiles().get(0).name());
+        Assertions.assertEquals(295057712,
             response.properties().scalingProperties().profiles().get(0).capacity().min());
-        Assertions.assertEquals(1576078570,
+        Assertions.assertEquals(310195791,
             response.properties().scalingProperties().profiles().get(0).capacity().max());
-        Assertions.assertEquals("buy", response.properties().autoUpgradeProfile().upgradeChannel());
-        Assertions.assertEquals("zfeqztppri", response.properties().userProfile().preferredEmail());
-        Assertions.assertEquals(ActivationState.ENABLED,
+        Assertions.assertEquals("tor", response.properties().autoUpgradeProfile().upgradeChannel());
+        Assertions.assertEquals("gsahmkycgrauw", response.properties().userProfile().preferredEmail());
+        Assertions.assertEquals(ActivationState.DISABLED,
             response.properties().nginxAppProtect().webApplicationFirewallSettings().activationState());
         Assertions.assertEquals(IdentityType.NONE, response.identity().type());
-        Assertions.assertEquals("wjue", response.sku().name());
+        Assertions.assertEquals("mrv", response.sku().name());
     }
 }

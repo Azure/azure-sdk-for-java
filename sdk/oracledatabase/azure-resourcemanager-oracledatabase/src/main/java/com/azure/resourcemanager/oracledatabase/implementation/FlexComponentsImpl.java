@@ -30,12 +30,8 @@ public final class FlexComponentsImpl implements FlexComponents {
 
     public Response<FlexComponent> getWithResponse(String location, String flexComponentName, Context context) {
         Response<FlexComponentInner> inner = this.serviceClient().getWithResponse(location, flexComponentName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new FlexComponentImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new FlexComponentImpl(inner.getValue(), this.manager()));
     }
 
     public FlexComponent get(String location, String flexComponentName) {

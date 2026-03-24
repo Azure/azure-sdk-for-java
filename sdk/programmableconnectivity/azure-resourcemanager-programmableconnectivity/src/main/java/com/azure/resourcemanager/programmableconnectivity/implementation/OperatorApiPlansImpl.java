@@ -29,12 +29,8 @@ public final class OperatorApiPlansImpl implements OperatorApiPlans {
 
     public Response<OperatorApiPlan> getWithResponse(String operatorApiPlanName, Context context) {
         Response<OperatorApiPlanInner> inner = this.serviceClient().getWithResponse(operatorApiPlanName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new OperatorApiPlanImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new OperatorApiPlanImpl(inner.getValue(), this.manager()));
     }
 
     public OperatorApiPlan get(String operatorApiPlanName) {
