@@ -56,7 +56,6 @@ com.azure:azure-messaging-eventhubs-checkpointstore-blob # Tests owner: conniey
 com.azure:azure-messaging-servicebus # Tests owner: ki1729
 com.azure:azure-messaging-webpubsub # Tests owner: weidongxu-microsoft
 com.azure:azure-messaging-webpubsub-client # Tests owner: weidongxu-microsoft
-com.azure:azure-mixedreality-authentication # Tests owner: craigktreasure, RamonArguelles
 com.azure:azure-monitor-query-metrics # Tests owner: jairmyree, srnagar
 com.azure:azure-monitor-query-logs # Tests owner: jairmyree, srnagar
 com.azure:azure-monitor-ingestion # Tests owner: jairmyree, srnagar
