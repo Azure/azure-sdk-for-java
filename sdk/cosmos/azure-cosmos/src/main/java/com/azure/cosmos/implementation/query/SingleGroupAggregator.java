@@ -165,7 +165,7 @@ public abstract class SingleGroupAggregator {
         @Override
         public void addValues(Object values) {
             if (!(values instanceof Document)) {
-                throw new IllegalArgumentException(
+                throw new IllegalStateException(
                     "SelectListAggregateValues expects Document payload, got: "
                         + (values == null ? "null" : values.getClass().getSimpleName()));
             }
