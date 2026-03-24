@@ -1079,6 +1079,52 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
+    public void appendUserAgentSuffix(String suffix) {
+        if (StringUtils.isEmpty(suffix)) {
+            return;
+        }
+
+        String trimmedSuffix = suffix.trim();
+        if (trimmedSuffix.isEmpty()) {
+            return;
+        }
+
+        // Check for duplicate using token matching to prevent unbounded growth when
+        // multiple encryption clients wrap the same CosmosAsyncClient
+        String currentSuffix = this.userAgentContainer.getSuffix();
+        if (StringUtils.isNotEmpty(currentSuffix)) {
+            for (String token : currentSuffix.split("\\s+")) {
+                if (trimmedSuffix.equals(token)) {
+                    return;
+                }
+            }
+        }
+
+        // Preserve feature flags ("|F...") which are appended to userAgent directly
+        // by setFeatureEnabledFlagsAsSuffix and would be lost when setSuffix overwrites userAgent
+        String currentUserAgent = this.userAgentContainer.getUserAgent();
+        String featureFlagsSuffix = null;
+        int featureFlagsIndex = currentUserAgent.indexOf("|F");
+        if (featureFlagsIndex >= 0) {
+            featureFlagsSuffix = currentUserAgent.substring(featureFlagsIndex);
+        }
+
+        String newSuffix;
+        if (StringUtils.isNotEmpty(currentSuffix)) {
+            newSuffix = currentSuffix + " " + trimmedSuffix;
+        } else {
+            newSuffix = trimmedSuffix;
+        }
+
+        this.userAgentContainer.setSuffix(newSuffix);
+
+        // Re-apply feature flags since setSuffix overwrites the userAgent string
+        if (StringUtils.isNotEmpty(featureFlagsSuffix)) {
+            this.addUserAgentSuffix(this.userAgentContainer, EnumSet.allOf(UserAgentFeatureFlags.class));
+        }
+    }
+
+    @Override
     public CosmosDiagnostics getMostRecentlyCreatedDiagnostics() {
         return mostRecentlyCreatedDiagnostics.get();
     }

@@ -21,7 +21,7 @@ public final class ConfigurationsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Failed\",\"files\":[{\"content\":\"gjup\",\"virtualPath\":\"utpwoqhihejqgw\"},{\"content\":\"nfqn\",\"virtualPath\":\"ypsxjvfoim\"},{\"content\":\"slirciz\",\"virtualPath\":\"vydfceacvlhvygdy\"},{\"content\":\"umrtwnawjsl\",\"virtualPath\":\"wkojgcyztsfmzn\"}],\"protectedFiles\":[{\"virtualPath\":\"ph\",\"contentHash\":\"qnrnrpxehuwryk\"},{\"virtualPath\":\"aifmvikl\",\"contentHash\":\"dvk\"},{\"virtualPath\":\"ejd\",\"contentHash\":\"xcv\"}],\"package\":{\"data\":\"hnjivo\",\"protectedFiles\":[\"novqfzge\",\"jdftuljltd\",\"ceamtm\",\"zuo\"]},\"rootFile\":\"jw\"},\"id\":\"wqiok\",\"name\":\"ssxmojms\",\"type\":\"p\"}";
+            = "{\"properties\":{\"provisioningState\":\"Updating\",\"files\":[{\"content\":\"htba\",\"virtualPath\":\"gx\"},{\"content\":\"rc\",\"virtualPath\":\"yklyhpluodpvruud\"},{\"content\":\"zibt\",\"virtualPath\":\"stgktst\"}],\"protectedFiles\":[{\"virtualPath\":\"clzedqbcvh\",\"contentHash\":\"h\"},{\"virtualPath\":\"odqkdlwwqfb\",\"contentHash\":\"lkxt\"},{\"virtualPath\":\"jfsmlmbtxhwgfwsr\",\"contentHash\":\"wcoezbrhub\"},{\"virtualPath\":\"hud\",\"contentHash\":\"oookkqfq\"}],\"package\":{\"data\":\"leorfmluiqtqz\",\"protectedFiles\":[\"yvnqqybaryeuay\",\"kq\"]},\"rootFile\":\"qgzsles\"},\"id\":\"bhernntiew\",\"name\":\"jcvb\",\"type\":\"uwrbehwagoh\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,15 +31,15 @@ public final class ConfigurationsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         NginxConfigurationResponse response = manager.configurations()
-            .getWithResponse("xifqjzgxm", "hu", "lw", com.azure.core.util.Context.NONE)
+            .getWithResponse("heyd", "sdshmkxmaehvb", "xu", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("gjup", response.properties().files().get(0).content());
-        Assertions.assertEquals("utpwoqhihejqgw", response.properties().files().get(0).virtualPath());
-        Assertions.assertEquals("ph", response.properties().protectedFiles().get(0).virtualPath());
-        Assertions.assertEquals("qnrnrpxehuwryk", response.properties().protectedFiles().get(0).contentHash());
-        Assertions.assertEquals("hnjivo", response.properties().packageProperty().data());
-        Assertions.assertEquals("novqfzge", response.properties().packageProperty().protectedFiles().get(0));
-        Assertions.assertEquals("jw", response.properties().rootFile());
+        Assertions.assertEquals("htba", response.properties().files().get(0).content());
+        Assertions.assertEquals("gx", response.properties().files().get(0).virtualPath());
+        Assertions.assertEquals("clzedqbcvh", response.properties().protectedFiles().get(0).virtualPath());
+        Assertions.assertEquals("h", response.properties().protectedFiles().get(0).contentHash());
+        Assertions.assertEquals("leorfmluiqtqz", response.properties().packageProperty().data());
+        Assertions.assertEquals("yvnqqybaryeuay", response.properties().packageProperty().protectedFiles().get(0));
+        Assertions.assertEquals("qgzsles", response.properties().rootFile());
     }
 }

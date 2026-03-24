@@ -22,7 +22,7 @@ public final class FileSearchToolCallResultContentItem
      * The type of the content.
      */
     @Generated
-    private AssistantsApiResponseFormatType type;
+    private MessageTextContentType type;
 
     /*
      * The text content of the file.
@@ -43,7 +43,7 @@ public final class FileSearchToolCallResultContentItem
      * @return the type value.
      */
     @Generated
-    public AssistantsApiResponseFormatType getType() {
+    public MessageTextContentType getType() {
         return this.type;
     }
 
@@ -87,7 +87,7 @@ public final class FileSearchToolCallResultContentItem
                 reader.nextToken();
                 if ("type".equals(fieldName)) {
                     deserializedFileSearchToolCallResultContentItem.type
-                        = AssistantsApiResponseFormatType.fromString(reader.getString());
+                        = MessageTextContentType.fromString(reader.getString());
                 } else if ("text".equals(fieldName)) {
                     deserializedFileSearchToolCallResultContentItem.text = reader.getString();
                 } else {

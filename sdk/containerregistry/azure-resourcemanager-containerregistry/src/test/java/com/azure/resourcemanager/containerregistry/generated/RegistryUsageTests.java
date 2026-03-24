@@ -13,11 +13,11 @@ public final class RegistryUsageTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RegistryUsage model = BinaryData.fromString(
-            "{\"name\":\"alhbx\",\"limit\":65515238204620048,\"currentValue\":2136882508954141287,\"unit\":\"Bytes\"}")
+            "{\"name\":\"cglhslazjdyggdt\",\"limit\":8229970615227219703,\"currentValue\":3773741125972458525,\"unit\":\"Bytes\"}")
             .toObject(RegistryUsage.class);
-        Assertions.assertEquals("alhbx", model.name());
-        Assertions.assertEquals(65515238204620048L, model.limit());
-        Assertions.assertEquals(2136882508954141287L, model.currentValue());
+        Assertions.assertEquals("cglhslazjdyggdt", model.name());
+        Assertions.assertEquals(8229970615227219703L, model.limit());
+        Assertions.assertEquals(3773741125972458525L, model.currentValue());
         Assertions.assertEquals(RegistryUsageUnit.BYTES, model.unit());
     }
 }

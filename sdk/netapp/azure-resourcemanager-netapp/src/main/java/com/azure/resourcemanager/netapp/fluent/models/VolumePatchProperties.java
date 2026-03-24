@@ -31,8 +31,10 @@ public final class VolumePatchProperties implements JsonSerializable<VolumePatch
 
     /*
      * Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. For
-     * regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes, valid values are in the range
-     * 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values expressed in bytes as multiples
+     * regular volumes, valid values are in the range 50GiB to 100TiB.
+     * For large volumes, valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB
+     * to 2400TiB.
+     * For extra large volumes, valid values are in the range 2400GiB to 7200TiB. Values expressed in bytes as multiples
      * of 1 GiB.
      */
     private Long usageThreshold;
@@ -154,9 +156,11 @@ public final class VolumePatchProperties implements JsonSerializable<VolumePatch
 
     /**
      * Get the usageThreshold property: Maximum storage quota allowed for a file system in bytes. This is a soft quota
-     * used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes,
-     * valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values
-     * expressed in bytes as multiples of 1 GiB.
+     * used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB.
+     * For large volumes, valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB
+     * to 2400TiB.
+     * For extra large volumes, valid values are in the range 2400GiB to 7200TiB. Values expressed in bytes as multiples
+     * of 1 GiB.
      * 
      * @return the usageThreshold value.
      */
@@ -166,9 +170,11 @@ public final class VolumePatchProperties implements JsonSerializable<VolumePatch
 
     /**
      * Set the usageThreshold property: Maximum storage quota allowed for a file system in bytes. This is a soft quota
-     * used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes,
-     * valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values
-     * expressed in bytes as multiples of 1 GiB.
+     * used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB.
+     * For large volumes, valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB
+     * to 2400TiB.
+     * For extra large volumes, valid values are in the range 2400GiB to 7200TiB. Values expressed in bytes as multiples
+     * of 1 GiB.
      * 
      * @param usageThreshold the usageThreshold value to set.
      * @return the VolumePatchProperties object itself.

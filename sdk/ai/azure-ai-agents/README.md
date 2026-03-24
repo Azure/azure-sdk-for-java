@@ -180,13 +180,13 @@ This will return an `AgentVersionObject` which contains the information necessar
 First we need to create our `Conversation` object so we can attach items to it:
 
 ```java com.azure.ai.agents.create_conversation
-Conversation conversation = conversationsClient.getConversationService().create();
+Conversation conversation = conversationsClient.create();
 ```
 
 With `conversation.id()` contains the reference we will use to append messages to this `Conversation`. `Conversation` objects can be used by multiple agents and serve the purpose of being a centralized source of context. To add items:
 
 ```java com.azure.ai.agents.add_message_to_conversation
-conversationsClient.getConversationService().items().create(
+conversationsClient.items().create(
     ItemCreateParams.builder()
         .conversationId(conversation.id())
         .addItem(EasyInputMessage.builder()
@@ -207,7 +207,11 @@ And the final step that ties everything together, we pass the `AgentReference` a
 
 ```java com.azure.ai.agents.create_response
 AgentReference agentReference = new AgentReference(agent.getName()).setVersion(agent.getVersion());
-Response response = responsesClient.createWithAgentConversation(agentReference, conversation.id());
+Response response = responsesClient.createAzureResponse(
+    new AzureCreateResponseOptions().setAgentReference(agentReference),
+    ResponseCreateParams.builder().conversation(conversation.id()));
+// To extract Azure-specific response details:
+AzureCreateResponseDetails azureResults = ResponsesUtils.getAzureFields(response);
 ```
 
 ### Using Agent tools
@@ -301,7 +305,7 @@ Connect agents to external MCP servers:
 // Uses gitmcp.io to expose a GitHub repository as an MCP-compatible server
 McpTool tool = new McpTool("api-specs")
     .setServerUrl("https://gitmcp.io/Azure/azure-rest-api-specs")
-    .setRequireApproval(BinaryData.fromObject("always"));
+    .setRequireApproval("always");
 ```
 
 See the full sample in [McpSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/McpSync.java).
@@ -378,7 +382,7 @@ AzureFunctionTool azureFunctionTool = new AzureFunctionTool(
 );
 ```
 
-*After calling `responsesClient.createWithAgent()`, the agent enqueues function arguments to the input queue. Your Azure Function processes the request and returns results via the output queue.*
+*After calling `responsesClient.createAzureResponse()`, the agent enqueues function arguments to the input queue. Your Azure Function processes the request and returns results via the output queue.*
 
 See the full sample in [AzureFunctionSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/AzureFunctionSync.java).
 
@@ -536,7 +540,7 @@ MCP integration using project-specific connections for accessing connected MCP s
 McpTool mcpTool = new McpTool("api-specs")
     .setServerUrl("https://api.githubcopilot.com/mcp")
     .setProjectConnectionId(mcpConnectionId)
-    .setRequireApproval(BinaryData.fromObject("always"));
+    .setRequireApproval("always");
 ```
 
 See the full sample in [McpWithConnectionSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/tools/McpWithConnectionSync.java).
@@ -562,6 +566,119 @@ See the full sample in [OpenApiWithConnectionSync.java](https://github.com/Azure
 
 ---
 
+### Streaming responses
+
+The `ResponsesClient` and `ResponsesAsyncClient` support streaming, which allows you to process response events as they arrive rather than waiting for the full response. This is useful for displaying text to users in real time and observing tool execution progress.
+
+#### Synchronous streaming
+
+The synchronous streaming methods return `IterableStream<ResponseStreamEvent>`, which can be consumed with a standard for-each loop. Use the `ResponseAccumulator` from the OpenAI SDK to collect events into a final `Response`:
+
+```java com.azure.ai.agents.streaming.simple_sync
+// Use ResponseAccumulator to collect streamed events into a final Response
+ResponseAccumulator responseAccumulator = ResponseAccumulator.create();
+
+// Stream response - text is printed as it arrives
+IterableStream<ResponseStreamEvent> events =
+    responsesClient.createStreamingAzureResponse(
+        new AzureCreateResponseOptions().setAgentReference(agentReference),
+        ResponseCreateParams.builder()
+            .input("Tell me a short story about a brave explorer."));
+
+for (ResponseStreamEvent event : events) {
+    responseAccumulator.accumulate(event);
+    event.outputTextDelta()
+        .ifPresent(textEvent -> System.out.print(textEvent.delta()));
+}
+System.out.println(); // newline after streamed text
+
+// Access the complete accumulated response
+Response response = responseAccumulator.response();
+System.out.println("\nResponse ID: " + response.id());
+```
+
+See the full samples in [SimpleStreamingSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/streaming/SimpleStreamingSync.java), [FunctionCallStreamingSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/streaming/FunctionCallStreamingSync.java), and [CodeInterpreterStreamingSync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/streaming/CodeInterpreterStreamingSync.java).
+
+#### Asynchronous streaming
+
+The asynchronous streaming methods return `Flux<ResponseStreamEvent>`, integrating naturally with Reactor pipelines:
+
+```java com.azure.ai.agents.streaming.simple_async
+// Use ResponseAccumulator to collect streamed events into a final Response
+ResponseAccumulator responseAccumulator = ResponseAccumulator.create();
+
+// Stream response asynchronously - text is printed as each chunk arrives
+return responsesAsyncClient.createStreamingAzureResponse(
+        new AzureCreateResponseOptions().setAgentReference(agentReference),
+        ResponseCreateParams.builder()
+            .input("Tell me a short story about a brave explorer."))
+    .doOnNext(event -> {
+        responseAccumulator.accumulate(event);
+        event.outputTextDelta()
+            .ifPresent(textEvent -> System.out.print(textEvent.delta()));
+    })
+    .then(Mono.fromCallable(() -> {
+        System.out.println(); // newline after streamed text
+
+        // Access the complete accumulated response
+        Response response = responseAccumulator.response();
+        System.out.println("\nResponse ID: " + response.id());
+```
+
+See the full samples in [SimpleStreamingAsync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/streaming/SimpleStreamingAsync.java), [FunctionCallStreamingAsync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/streaming/FunctionCallStreamingAsync.java), and [CodeInterpreterStreamingAsync.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/streaming/CodeInterpreterStreamingAsync.java).
+
+---
+
+### Structured inputs
+
+Structured inputs allow you to define named parameters on an agent that get substituted into its prompt template at runtime. This is useful when you want the same agent definition to handle different users or contexts by simply changing the input values.
+
+#### Define structured inputs on an agent
+
+When creating the agent, declare each structured input with a description and whether it is required. Use `{{inputName}}` placeholders in the instructions to reference them:
+
+```java com.azure.ai.agents.define_structured_inputs
+// Create an agent with structured input definitions
+Map<String, StructuredInputDefinition> structuredInputDefinitions = new LinkedHashMap<>();
+structuredInputDefinitions.put("userName",
+    new StructuredInputDefinition().setDescription("User's name").setRequired(true));
+structuredInputDefinitions.put("userRole",
+    new StructuredInputDefinition().setDescription("User's role").setRequired(true));
+
+AgentVersionDetails agent = agentsClient.createAgentVersion("structured-input-agent",
+    new PromptAgentDefinition(model)
+        .setInstructions("You are a helpful assistant. "
+            + "The user's name is {{userName}} and their role is {{userRole}}. "
+            + "Greet them and confirm their details.")
+        .setStructuredInputs(structuredInputDefinitions));
+```
+
+#### Create a response with structured input values
+
+When creating a response, pass a `Map<String, BinaryData>` whose keys match the structured input names declared on the agent. The values are substituted into the prompt template before the model processes the request:
+
+```java com.azure.ai.agents.create_response_with_structured_input
+// Build the structured input values that match the agent's definitions
+Map<String, BinaryData> structuredInputValues = new LinkedHashMap<>();
+structuredInputValues.put("userName", BinaryData.fromObject("Alice Smith"));
+structuredInputValues.put("userRole", BinaryData.fromObject("Senior Developer"));
+
+// Create a response using AzureCreateResponse, which flattens agent_reference
+// and structured_inputs as top-level properties in the request body
+Response response = responsesClient.createAzureResponse(
+    new AzureCreateResponseOptions()
+        .setAgentReference(new AgentReference(agent.getName()).setVersion(agent.getVersion()))
+        .setStructuredInputs(structuredInputValues),
+    ResponseCreateParams.builder().input("Hello! Can you confirm my details?")
+);
+```
+
+Streaming is also supported via `createStreamingAzureResponse`, which returns an `IterableStream<ResponseStreamEvent>` (sync) or `Flux<ResponseStreamEvent>` (async).
+
+See the full sample in [CreateResponseWithStructuredInput.java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/ai/azure-ai-agents/src/samples/java/com/azure/ai/agents/CreateResponseWithStructuredInput.java).
+
+---
+
 ### Service API versions
 
 The client library targets the latest service API version by default.
@@ -578,6 +695,31 @@ If there are significant differences, API calls may fail due to incompatibility.
 Always ensure that the chosen API version is fully supported and operational for your specific use case and that it aligns with the service's versioning policy.
 
 ## Troubleshooting
+
+### Enable client logging
+
+You can set the `AZURE_LOG_LEVEL` environment variable to view logging statements made in the client library. For
+example, setting `AZURE_LOG_LEVEL=2` would show all informational, warning, and error log messages. The log levels can
+be found here: [log levels][logLevels].
+
+To log full HTTP request and response bodies (including headers), set:
+
+```bash
+export AZURE_LOG_LEVEL=verbose
+export AZURE_HTTP_LOG_DETAIL_LEVEL=body_and_headers
+```
+
+### Default HTTP Client
+
+All client libraries by default use the Netty HTTP client. Configuring or changing the HTTP client is detailed in the
+[HTTP clients wiki](https://learn.microsoft.com/azure/developer/java/sdk/http-client-pipeline#http-clients).
+
+### Default SSL library
+
+All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL
+operations. The Boring SSL library is an uber jar containing native libraries for Linux / macOS / Windows, and provides
+better performance compared to the default SSL implementation within the JDK. For more information, including how to
+reduce the dependency size, refer to the [performance tuning][performance_tuning] section of the wiki.
 
 ## Next steps
 
@@ -600,3 +742,5 @@ For details on contributing to this repository, see the [contributing guide](htt
 [openai_java_sdk]: https://github.com/openai/openai-java/
 [openai_responses_api_docs]: https://platform.openai.com/docs/api-reference/responses
 [openai_conversations_api_docs]: https://platform.openai.com/docs/api-reference/conversations
+[logLevels]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/util/logging/LogLevel.java
+[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning

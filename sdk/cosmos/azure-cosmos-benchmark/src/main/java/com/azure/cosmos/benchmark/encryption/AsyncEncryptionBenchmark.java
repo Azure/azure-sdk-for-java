@@ -12,6 +12,7 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
+import com.azure.cosmos.Http2ConnectionConfig;
 import com.azure.cosmos.benchmark.Benchmark;
 import com.azure.cosmos.benchmark.BenchmarkHelper;
 import com.azure.cosmos.benchmark.Operation;
@@ -27,9 +28,12 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.ClientEncryptionIncludedPath;
 import com.azure.cosmos.models.ClientEncryptionPolicy;
+import com.azure.cosmos.models.CosmosBulkExecutionOptions;
+import com.azure.cosmos.models.CosmosBulkOperationResponse;
+import com.azure.cosmos.models.CosmosBulkOperations;
 import com.azure.cosmos.models.CosmosClientEncryptionKeyProperties;
 import com.azure.cosmos.models.CosmosContainerProperties;
-import com.azure.cosmos.models.CosmosItemRequestOptions;
+import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.EncryptionKeyWrapMetadata;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
@@ -44,12 +48,12 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
-import reactor.util.retry.Retry;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 import java.util.UUID;
@@ -68,7 +72,7 @@ public abstract class AsyncEncryptionBenchmark<T> implements Benchmark {
     private CosmosAsyncDatabase cosmosAsyncDatabase;
     private Properties keyVaultProperties;
 
-    final Logger logger;
+    static final Logger logger = LoggerFactory.getLogger(AsyncEncryptionBenchmark.class);
     final CosmosAsyncClient cosmosClient;
 
     final String partitionKey;
@@ -108,79 +112,65 @@ public abstract class AsyncEncryptionBenchmark<T> implements Benchmark {
         } else {
             GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
             gatewayConnectionConfig.setMaxConnectionPoolSize(workloadCfg.getMaxConnectionPoolSize());
+            if (workloadCfg.isHttp2Enabled()) {
+                Http2ConnectionConfig http2Config = gatewayConnectionConfig.getHttp2ConnectionConfig();
+                http2Config.setEnabled(true);
+                if (workloadCfg.getHttp2MaxConcurrentStreams() != null) {
+                    http2Config.setMaxConcurrentStreams(workloadCfg.getHttp2MaxConcurrentStreams());
+                }
+            }
             cosmosClientBuilder = cosmosClientBuilder.gatewayMode(gatewayConnectionConfig);
         }
         cosmosClient = cosmosClientBuilder.buildAsyncClient();
         cosmosEncryptionAsyncClient = createEncryptionClientInstance(cosmosClient);
-        logger = LoggerFactory.getLogger(this.getClass());
         createEncryptionDatabaseAndContainer();
         partitionKey = cosmosAsyncContainer.read().block().getProperties().getPartitionKeyDefinition()
             .getPaths().iterator().next().split("/")[1];
-        ArrayList<Flux<PojoizedJson>> createDocumentObservables = new ArrayList<>();
-
-        if (workloadConfig.getOperationType() != Operation.WriteLatency
-            && workloadConfig.getOperationType() != Operation.WriteThroughput
+        if (workloadConfig.getOperationType() != Operation.WriteThroughput
             && workloadConfig.getOperationType() != Operation.ReadMyWrites) {
             logger.info("PRE-populating {} documents ....", workloadCfg.getNumberOfPreCreatedDocuments());
             String dataFieldValue = RandomStringUtils.randomAlphabetic(workloadCfg.getDocumentDataFieldSize());
-            for (int i = 0; i < workloadCfg.getNumberOfPreCreatedDocuments(); i++) {
-                String uuid = UUID.randomUUID().toString();
-                PojoizedJson newDoc = BenchmarkHelper.generateDocument(uuid,
-                    dataFieldValue,
-                    partitionKey,
-                    workloadConfig.getDocumentDataFieldCount());
-                for (int j = 1; j <= workloadCfg.getEncryptedStringFieldCount(); j++) {
-                    newDoc.setProperty(ENCRYPTED_STRING_FIELD + j, uuid);
-                }
-                for (int j = 1; j <= workloadCfg.getEncryptedLongFieldCount(); j++) {
-                    newDoc.setProperty(ENCRYPTED_LONG_FIELD + j, 1234l);
-                }
-                for (int j = 1; j <= workloadCfg.getEncryptedDoubleFieldCount(); j++) {
-                    newDoc.setProperty(ENCRYPTED_DOUBLE_FIELD + j, 1234.01d);
-                }
+            List<PojoizedJson> generatedDocs = new ArrayList<>();
 
-                Flux<PojoizedJson> obs = cosmosEncryptionAsyncContainer
-                    .createItem(newDoc, new PartitionKey(uuid), new CosmosItemRequestOptions())
-                    .retryWhen(Retry.max(5).filter((error) -> {
-                        if (!(error instanceof CosmosException)) {
-                            return false;
-                        }
-                        final CosmosException cosmosException = (CosmosException) error;
-                        if (cosmosException.getStatusCode() == 410 ||
-                            cosmosException.getStatusCode() == 408 ||
-                            cosmosException.getStatusCode() == 429 ||
-                            cosmosException.getStatusCode() == 503) {
-                            return true;
-                        }
+            Flux<CosmosItemOperation> bulkOperationFlux = Flux.range(0, workloadCfg.getNumberOfPreCreatedDocuments())
+                .map(i -> {
+                    String uuid = UUID.randomUUID().toString();
+                    PojoizedJson newDoc = BenchmarkHelper.generateDocument(uuid,
+                        dataFieldValue,
+                        partitionKey,
+                        workloadConfig.getDocumentDataFieldCount());
+                    for (int j = 1; j <= workloadCfg.getEncryptedStringFieldCount(); j++) {
+                        newDoc.setProperty(ENCRYPTED_STRING_FIELD + j, uuid);
+                    }
+                    for (int j = 1; j <= workloadCfg.getEncryptedLongFieldCount(); j++) {
+                        newDoc.setProperty(ENCRYPTED_LONG_FIELD + j, 1234L);
+                    }
+                    for (int j = 1; j <= workloadCfg.getEncryptedDoubleFieldCount(); j++) {
+                        newDoc.setProperty(ENCRYPTED_DOUBLE_FIELD + j, 1234.01d);
+                    }
+                    generatedDocs.add(newDoc);
+                    return CosmosBulkOperations.getCreateItemOperation(newDoc, new PartitionKey(uuid));
+                });
 
-                        return false;
-                    }))
-                    .onErrorResume(
-                        (error) -> {
-                            if (!(error instanceof CosmosException)) {
-                                return false;
-                            }
-                            final CosmosException cosmosException = (CosmosException) error;
-                            if (cosmosException.getStatusCode() == 409) {
-                                return true;
-                            }
+            CosmosBulkExecutionOptions bulkExecutionOptions = new CosmosBulkExecutionOptions();
+            List<CosmosBulkOperationResponse<Object>> failedResponses = Collections.synchronizedList(new ArrayList<>());
+            cosmosEncryptionAsyncContainer
+                .executeBulkOperations(bulkOperationFlux, bulkExecutionOptions)
+                .doOnNext(response -> {
+                    if (response.getResponse() == null || !response.getResponse().isSuccessStatusCode()) {
+                        failedResponses.add(response);
+                    }
+                })
+                .blockLast(Duration.ofMinutes(10));
 
-                            return false;
-                        },
-                        (conflictException) -> cosmosAsyncContainer.readItem(
-                            uuid, new PartitionKey(partitionKey), PojoizedJson.class)
-                    )
-                    .map(resp -> {
-                        PojoizedJson x =
-                            resp.getItem();
-                        return x;
-                    })
-                    .flux();
-                createDocumentObservables.add(obs);
-            }
+            BenchmarkHelper.retryFailedBulkOperations(failedResponses,
+                (item, pk) -> cosmosEncryptionAsyncContainer.createItem(item, pk, null).then(),
+                workloadConfig.getConcurrency());
+
+            docsToRead = generatedDocs;
+        } else {
+            docsToRead = new ArrayList<>();
         }
-
-        docsToRead = Flux.merge(Flux.fromIterable(createDocumentObservables), 100).collectList().block();
         logger.info("Finished pre-populating {} documents", workloadCfg.getNumberOfPreCreatedDocuments());
 
         init();

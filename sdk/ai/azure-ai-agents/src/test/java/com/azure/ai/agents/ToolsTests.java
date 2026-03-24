@@ -5,6 +5,7 @@ package com.azure.ai.agents;
 
 import com.azure.ai.agents.models.AgentReference;
 import com.azure.ai.agents.models.AgentVersionDetails;
+import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.ai.agents.models.CodeInterpreterTool;
 import com.azure.ai.agents.models.FileSearchTool;
 import com.azure.ai.agents.models.FunctionTool;
@@ -29,6 +30,7 @@ import com.openai.models.responses.ResponseOutputItem;
 import com.openai.models.responses.ResponseStatus;
 import com.openai.models.vectorstores.VectorStore;
 import com.openai.models.vectorstores.VectorStoreCreateParams;
+import com.openai.services.blocking.ConversationService;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -58,7 +60,7 @@ public class ToolsTests extends ClientTestBase {
     public void openApiToolEndToEnd(HttpClient httpClient, AgentsServiceVersion serviceVersion) throws IOException {
         AgentsClient agentsClient = getAgentsSyncClient(httpClient, serviceVersion);
         ResponsesClient responsesClient = getResponsesSyncClient(httpClient, serviceVersion);
-        ConversationsClient conversationsClient = getConversationsSyncClient(httpClient, serviceVersion);
+        ConversationService conversationService = getConversationsSyncClient(httpClient, serviceVersion);
 
         Map<String, BinaryData> spec
             = OpenApiFunctionDefinition.readSpecFromFile(TestUtils.getTestResourcePath("assets/httpbin_openapi.json"));
@@ -76,11 +78,10 @@ public class ToolsTests extends ClientTestBase {
         assertNotNull(agent.getId());
 
         try {
-            Conversation conversation = conversationsClient.getConversationService().create();
+            Conversation conversation = conversationService.create();
             assertNotNull(conversation);
 
-            conversationsClient.getConversationService()
-                .items()
+            conversationService.items()
                 .create(ItemCreateParams.builder()
                     .conversationId(conversation.id())
                     .addItem(EasyInputMessage.builder()
@@ -91,8 +92,9 @@ public class ToolsTests extends ClientTestBase {
 
             AgentReference agentReference = new AgentReference(agent.getName()).setVersion(agent.getVersion());
 
-            Response response = responsesClient.createWithAgentConversation(agentReference, conversation.id(),
-                ResponseCreateParams.builder().maxOutputTokens(300L));
+            Response response = responsesClient.createAzureResponse(
+                new AzureCreateResponseOptions().setAgentReference(agentReference),
+                ResponseCreateParams.builder().conversation(conversation.id()).maxOutputTokens(300L));
 
             assertNotNull(response);
             assertTrue(response.id().startsWith("resp"));
@@ -129,7 +131,8 @@ public class ToolsTests extends ClientTestBase {
         try {
             AgentReference agentReference = new AgentReference(agent.getName()).setVersion(agent.getVersion());
 
-            Response response = responsesClient.createWithAgent(agentReference,
+            Response response = responsesClient.createAzureResponse(
+                new AzureCreateResponseOptions().setAgentReference(agentReference),
                 ResponseCreateParams.builder().input("Calculate the first 10 prime numbers and show the Python code."));
 
             assertNotNull(response);
@@ -184,7 +187,8 @@ public class ToolsTests extends ClientTestBase {
         try {
             AgentReference agentReference = new AgentReference(agent.getName()).setVersion(agent.getVersion());
 
-            Response response = responsesClient.createWithAgent(agentReference,
+            Response response = responsesClient.createAzureResponse(
+                new AzureCreateResponseOptions().setAgentReference(agentReference),
                 ResponseCreateParams.builder().input("What's the weather like in Seattle?"));
 
             assertNotNull(response);
@@ -227,7 +231,8 @@ public class ToolsTests extends ClientTestBase {
         try {
             AgentReference agentReference = new AgentReference(agent.getName()).setVersion(agent.getVersion());
 
-            Response response = responsesClient.createWithAgent(agentReference,
+            Response response = responsesClient.createAzureResponse(
+                new AzureCreateResponseOptions().setAgentReference(agentReference),
                 ResponseCreateParams.builder().input("What are the latest trends in renewable energy?"));
 
             assertNotNull(response);
@@ -251,7 +256,7 @@ public class ToolsTests extends ClientTestBase {
         ResponsesClient responsesClient = getResponsesSyncClient(httpClient, serviceVersion);
 
         McpTool tool = new McpTool("api-specs").setServerUrl("https://gitmcp.io/Azure/azure-rest-api-specs")
-            .setRequireApproval(BinaryData.fromObject("always"));
+            .setRequireApproval("always");
 
         PromptAgentDefinition agentDefinition = new PromptAgentDefinition("gpt-4o")
             .setInstructions("You are a helpful agent that can use MCP tools to assist users.")
@@ -263,7 +268,8 @@ public class ToolsTests extends ClientTestBase {
         try {
             AgentReference agentReference = new AgentReference(agent.getName()).setVersion(agent.getVersion());
 
-            Response response = responsesClient.createWithAgent(agentReference,
+            Response response = responsesClient.createAzureResponse(
+                new AzureCreateResponseOptions().setAgentReference(agentReference),
                 ResponseCreateParams.builder().input("Please summarize the Azure REST API specifications Readme"));
 
             assertNotNull(response);
@@ -285,7 +291,8 @@ public class ToolsTests extends ClientTestBase {
             assertFalse(approvals.isEmpty(), "Expected at least one MCP approval request");
 
             // Send approvals and get the final response
-            Response finalResponse = responsesClient.createWithAgent(agentReference,
+            Response finalResponse = responsesClient.createAzureResponse(
+                new AzureCreateResponseOptions().setAgentReference(agentReference),
                 ResponseCreateParams.builder().inputOfResponse(approvals).previousResponseId(response.id()));
 
             assertNotNull(finalResponse);
@@ -307,7 +314,7 @@ public class ToolsTests extends ClientTestBase {
     public void fileSearchToolEndToEnd(HttpClient httpClient, AgentsServiceVersion serviceVersion) throws Exception {
         AgentsClient agentsClient = getAgentsSyncClient(httpClient, serviceVersion);
         ResponsesClient responsesClient = getResponsesSyncClient(httpClient, serviceVersion);
-        ConversationsClient conversationsClient = getConversationsSyncClient(httpClient, serviceVersion);
+        ConversationService conversationService = getConversationsSyncClient(httpClient, serviceVersion);
 
         AgentsClientBuilder openAIBuilder = getClientBuilder(httpClient, serviceVersion);
         com.openai.client.OpenAIClient openAIClient = openAIBuilder.buildOpenAIClient();
@@ -351,11 +358,14 @@ public class ToolsTests extends ClientTestBase {
 
             AgentReference agentReference = new AgentReference(agent.getName()).setVersion(agent.getVersion());
 
-            Conversation conversation = conversationsClient.getConversationService().create();
+            Conversation conversation = conversationService.create();
             assertNotNull(conversation);
 
-            Response response = responsesClient.createWithAgentConversation(agentReference, conversation.id(),
-                ResponseCreateParams.builder().input("What is the largest planet in the Solar System?"));
+            Response response = responsesClient.createAzureResponse(
+                new AzureCreateResponseOptions().setAgentReference(agentReference),
+                ResponseCreateParams.builder()
+                    .conversation(conversation.id())
+                    .input("What is the largest planet in the Solar System?"));
 
             assertNotNull(response);
             assertTrue(response.status().isPresent());

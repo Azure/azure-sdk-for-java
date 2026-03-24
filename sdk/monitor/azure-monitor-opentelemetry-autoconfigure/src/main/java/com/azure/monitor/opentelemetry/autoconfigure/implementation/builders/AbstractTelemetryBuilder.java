@@ -13,12 +13,22 @@ import reactor.util.annotation.Nullable;
 
 import java.time.OffsetDateTime;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
+
+import static java.util.Arrays.asList;
 
 public abstract class AbstractTelemetryBuilder {
 
     private static final int MAX_PROPERTY_KEY_LENGTH = 150;
     private static final int MAX_PROPERTY_VALUE_LENGTH = 8192;
+
+    // gen_ai properties can contain large payloads (e.g. full conversation messages,
+    // tool definitions) that should not be truncated
+    private static final Set<String> TRUNCATION_EXEMPT_PROPERTY_KEYS = new HashSet<>(asList("gen_ai.input.messages",
+        "gen_ai.output.messages", "gen_ai.system_instructions", "gen_ai.tool.definitions", "gen_ai.tool.call.arguments",
+        "gen_ai.tool.call.result", "gen_ai.evaluation.explanation"));
 
     protected static final int MAX_MEASUREMENT_KEY_LENGTH = 150;
 
@@ -79,7 +89,11 @@ public abstract class AbstractTelemetryBuilder {
             // TODO (trask) log
             return;
         }
-        getProperties().put(key, TelemetryTruncation.truncatePropertyValue(value, MAX_PROPERTY_VALUE_LENGTH, key));
+        if (TRUNCATION_EXEMPT_PROPERTY_KEYS.contains(key)) {
+            getProperties().put(key, value);
+        } else {
+            getProperties().put(key, TelemetryTruncation.truncatePropertyValue(value, MAX_PROPERTY_VALUE_LENGTH, key));
+        }
     }
 
     public TelemetryItem build() {

@@ -1,16 +1,10 @@
 # Release History
 
-## 4.8.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 4.7.6 (2026-03-23)
 
 ### Bugs Fixed
 
 - Fixed an issue where certain `HttpResponseException.getResponse()` calls could cause a `NullPointerException`. ([#47801](https://github.com/Azure/azure-sdk-for-java/issues/47801))
-
-### Other Changes
 
 ## 4.7.5 (2026-01-29)
 

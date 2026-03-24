@@ -17,22 +17,10 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class FilesAcquireLeaseHeaders {
     /*
-     * The x-ms-version property.
-     */
-    @Generated
-    private String xMsVersion;
-
-    /*
      * The ETag property.
      */
     @Generated
     private String eTag;
-
-    /*
-     * The x-ms-lease-id property.
-     */
-    @Generated
-    private String xMsLeaseId;
 
     /*
      * The Last-Modified property.
@@ -41,10 +29,10 @@ public final class FilesAcquireLeaseHeaders {
     private DateTimeRfc1123 lastModified;
 
     /*
-     * The x-ms-request-id property.
+     * The x-ms-lease-id property.
      */
     @Generated
-    private String xMsRequestId;
+    private String xMsLeaseId;
 
     /*
      * The x-ms-client-request-id property.
@@ -53,14 +41,26 @@ public final class FilesAcquireLeaseHeaders {
     private String xMsClientRequestId;
 
     /*
+     * The x-ms-request-id property.
+     */
+    @Generated
+    private String xMsRequestId;
+
+    /*
+     * The x-ms-version property.
+     */
+    @Generated
+    private String xMsVersion;
+
+    /*
      * The Date property.
      */
     @Generated
     private DateTimeRfc1123 date;
 
-    private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
-
     private static final HttpHeaderName X_MS_LEASE_ID = HttpHeaderName.fromString("x-ms-lease-id");
+
+    private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
 
     // HttpHeaders containing the raw property values.
     /**
@@ -69,45 +69,23 @@ public final class FilesAcquireLeaseHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public FilesAcquireLeaseHeaders(HttpHeaders rawHeaders) {
-        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
         this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
-        this.xMsLeaseId = rawHeaders.getValue(X_MS_LEASE_ID);
         String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
         if (lastModified != null) {
             this.lastModified = new DateTimeRfc1123(lastModified);
         } else {
             this.lastModified = null;
         }
-        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
+        this.xMsLeaseId = rawHeaders.getValue(X_MS_LEASE_ID);
         this.xMsClientRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
+        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
+        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
         } else {
             this.date = null;
         }
-    }
-
-    /**
-     * Get the xMsVersion property: The x-ms-version property.
-     * 
-     * @return the xMsVersion value.
-     */
-    @Generated
-    public String getXMsVersion() {
-        return this.xMsVersion;
-    }
-
-    /**
-     * Set the xMsVersion property: The x-ms-version property.
-     * 
-     * @param xMsVersion the xMsVersion value to set.
-     * @return the FilesAcquireLeaseHeaders object itself.
-     */
-    @Generated
-    public FilesAcquireLeaseHeaders setXMsVersion(String xMsVersion) {
-        this.xMsVersion = xMsVersion;
-        return this;
     }
 
     /**
@@ -129,28 +107,6 @@ public final class FilesAcquireLeaseHeaders {
     @Generated
     public FilesAcquireLeaseHeaders setETag(String eTag) {
         this.eTag = eTag;
-        return this;
-    }
-
-    /**
-     * Get the xMsLeaseId property: The x-ms-lease-id property.
-     * 
-     * @return the xMsLeaseId value.
-     */
-    @Generated
-    public String getXMsLeaseId() {
-        return this.xMsLeaseId;
-    }
-
-    /**
-     * Set the xMsLeaseId property: The x-ms-lease-id property.
-     * 
-     * @param xMsLeaseId the xMsLeaseId value to set.
-     * @return the FilesAcquireLeaseHeaders object itself.
-     */
-    @Generated
-    public FilesAcquireLeaseHeaders setXMsLeaseId(String xMsLeaseId) {
-        this.xMsLeaseId = xMsLeaseId;
         return this;
     }
 
@@ -184,24 +140,24 @@ public final class FilesAcquireLeaseHeaders {
     }
 
     /**
-     * Get the xMsRequestId property: The x-ms-request-id property.
+     * Get the xMsLeaseId property: The x-ms-lease-id property.
      * 
-     * @return the xMsRequestId value.
+     * @return the xMsLeaseId value.
      */
     @Generated
-    public String getXMsRequestId() {
-        return this.xMsRequestId;
+    public String getXMsLeaseId() {
+        return this.xMsLeaseId;
     }
 
     /**
-     * Set the xMsRequestId property: The x-ms-request-id property.
+     * Set the xMsLeaseId property: The x-ms-lease-id property.
      * 
-     * @param xMsRequestId the xMsRequestId value to set.
+     * @param xMsLeaseId the xMsLeaseId value to set.
      * @return the FilesAcquireLeaseHeaders object itself.
      */
     @Generated
-    public FilesAcquireLeaseHeaders setXMsRequestId(String xMsRequestId) {
-        this.xMsRequestId = xMsRequestId;
+    public FilesAcquireLeaseHeaders setXMsLeaseId(String xMsLeaseId) {
+        this.xMsLeaseId = xMsLeaseId;
         return this;
     }
 
@@ -224,6 +180,50 @@ public final class FilesAcquireLeaseHeaders {
     @Generated
     public FilesAcquireLeaseHeaders setXMsClientRequestId(String xMsClientRequestId) {
         this.xMsClientRequestId = xMsClientRequestId;
+        return this;
+    }
+
+    /**
+     * Get the xMsRequestId property: The x-ms-request-id property.
+     * 
+     * @return the xMsRequestId value.
+     */
+    @Generated
+    public String getXMsRequestId() {
+        return this.xMsRequestId;
+    }
+
+    /**
+     * Set the xMsRequestId property: The x-ms-request-id property.
+     * 
+     * @param xMsRequestId the xMsRequestId value to set.
+     * @return the FilesAcquireLeaseHeaders object itself.
+     */
+    @Generated
+    public FilesAcquireLeaseHeaders setXMsRequestId(String xMsRequestId) {
+        this.xMsRequestId = xMsRequestId;
+        return this;
+    }
+
+    /**
+     * Get the xMsVersion property: The x-ms-version property.
+     * 
+     * @return the xMsVersion value.
+     */
+    @Generated
+    public String getXMsVersion() {
+        return this.xMsVersion;
+    }
+
+    /**
+     * Set the xMsVersion property: The x-ms-version property.
+     * 
+     * @param xMsVersion the xMsVersion value to set.
+     * @return the FilesAcquireLeaseHeaders object itself.
+     */
+    @Generated
+    public FilesAcquireLeaseHeaders setXMsVersion(String xMsVersion) {
+        this.xMsVersion = xMsVersion;
         return this;
     }
 

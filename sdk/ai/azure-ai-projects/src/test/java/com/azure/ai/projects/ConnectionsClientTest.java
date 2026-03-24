@@ -5,15 +5,12 @@ package com.azure.ai.projects;
 import com.azure.ai.projects.models.Connection;
 import com.azure.ai.projects.models.ConnectionType;
 import com.azure.core.http.HttpClient;
-import com.azure.core.util.Configuration;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import static com.azure.ai.projects.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 
-@Disabled("Disabled for lack of recordings. Needs to be enabled on the Public Preview release.")
 public class ConnectionsClientTest extends ClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -33,8 +30,6 @@ public class ConnectionsClientTest extends ClientTestBase {
             break;
         }
 
-        // Note: This test will pass even if there are no connections,
-        // as we're only verifying the API works correctly
         System.out.println("Connection list retrieved successfully"
             + (hasAtLeastOneConnection ? " with at least one connection" : " (empty list)"));
     }
@@ -69,22 +64,21 @@ public class ConnectionsClientTest extends ClientTestBase {
     public void testGetConnectionWithoutCredentials(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
         ConnectionsClient connectionsClient = getConnectionsClient(httpClient, serviceVersion);
 
-        String connectionName = Configuration.getGlobalConfiguration().get("TEST_CONNECTION_NAME", "agentaisearch2aqa");
-
-        try {
-            Connection connection = connectionsClient.getConnection(connectionName);
-
-            // Verify the connection properties
-            assertValidConnection(connection, connectionName, null, null);
-            Assertions.assertNotNull(connection.getCredentials().getType());
-
-            System.out.println("Connection retrieved successfully: " + connection.getName());
-        } catch (Exception e) {
-            // If the connection doesn't exist, this will throw a ResourceNotFoundException
-            // We'll handle this case by printing a message and passing the test
-            System.out.println("Connection not found: " + connectionName);
-            Assertions.assertTrue(e.getMessage().contains("404") || e.getMessage().contains("Not Found"));
+        // Discover a real connection name from the list
+        String connectionName = null;
+        for (Connection c : connectionsClient.listConnections()) {
+            connectionName = c.getName();
+            break;
         }
+        Assertions.assertNotNull(connectionName, "Expected at least one connection to test getConnection");
+
+        Connection connection = connectionsClient.getConnection(connectionName);
+
+        // Verify the connection properties
+        assertValidConnection(connection, connectionName, null, null);
+        Assertions.assertNotNull(connection.getCredentials().getType());
+
+        System.out.println("Connection retrieved successfully: " + connection.getName());
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -92,22 +86,44 @@ public class ConnectionsClientTest extends ClientTestBase {
     public void testGetConnectionWithCredentials(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
         ConnectionsClient connectionsClient = getConnectionsClient(httpClient, serviceVersion);
 
-        String connectionName = Configuration.getGlobalConfiguration().get("TEST_CONNECTION_NAME", "agentaisearch2aqa");
-
-        try {
-            Connection connection = connectionsClient.getConnectionWithCredentials(connectionName);
-
-            // Verify the connection properties
-            assertValidConnection(connection, connectionName, null, null);
-            Assertions.assertNotNull(connection.getCredentials().getType());
-
-            System.out.println("Connection with credentials retrieved successfully: " + connection.getName());
-            System.out.println("Credential type: " + connection.getCredentials().getType());
-        } catch (Exception e) {
-            // If the connection doesn't exist, this will throw a ResourceNotFoundException
-            // We'll handle this case by printing a message and passing the test
-            System.out.println("Connection not found: " + connectionName);
-            Assertions.assertTrue(e.getMessage().contains("404") || e.getMessage().contains("Not Found"));
+        // Discover a real connection name from the list
+        String connectionName = null;
+        for (Connection c : connectionsClient.listConnections()) {
+            connectionName = c.getName();
+            break;
         }
+        Assertions.assertNotNull(connectionName,
+            "Expected at least one connection to test getConnectionWithCredentials");
+
+        Connection connection = connectionsClient.getConnectionWithCredentials(connectionName);
+
+        // Verify the connection properties
+        assertValidConnection(connection, connectionName, null, null);
+        Assertions.assertNotNull(connection.getCredentials().getType());
+
+        System.out.println("Connection with credentials retrieved successfully: " + connection.getName());
+        System.out.println("Credential type: " + connection.getCredentials().getType());
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
+    public void testGetDefaultConnection(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
+        ConnectionsClient connectionsClient = getConnectionsClient(httpClient, serviceVersion);
+
+        Connection connection = connectionsClient.getDefaultConnection(ConnectionType.AZURE_OPEN_AI, false);
+
+        assertValidConnection(connection, null, ConnectionType.AZURE_OPEN_AI, null);
+        Assertions.assertNotNull(connection.getCredentials().getType());
+
+        System.out.println("Default connection retrieved: " + connection.getName());
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
+    public void testGetDefaultConnectionNotFound(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
+        ConnectionsClient connectionsClient = getConnectionsClient(httpClient, serviceVersion);
+
+        Assertions.assertThrows(IllegalStateException.class,
+            () -> connectionsClient.getDefaultConnection(ConnectionType.COSMOS_DB, false));
     }
 }

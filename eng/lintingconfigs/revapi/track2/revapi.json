@@ -700,6 +700,96 @@
         {
           "ignore": true,
           "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method void com\\.azure\\.resourcemanager\\.containerservice\\.models\\..*\\:\\:\\<init\\>\\(\\)"
+          },
+          "justification": "Output-only immutable models' constructors are now private."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.containerservice\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are now package-private."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.containerservice\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are removed."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.containerservice\\.models\\..*(ListResult|List|Collection)"
+          },
+          "justification": "Pageable models moved to implementation package."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.containerservice\\.models\\..*\\:\\:.*\\(.*\\)"
+          },
+          "justification": "Read-only properties' getter removed in TypeSpec migration."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.returnTypeChanged",
+          "new" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.containerservice\\.models\\.UserAssignedIdentity\\:\\:with.*\\(.*\\) @ com\\.azure\\.resourcemanager\\.containerservice\\.models\\.ManagedClusterAddonProfileIdentity"
+          },
+          "justification": "ManagedClusterAddonProfileIdentity covariant overrides removed, inherited methods return parent type."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.containerservice\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are now package-private if it's being used by child class."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.containerservice\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are removed if no explicit usage."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.containerservice\\.models\\..*(ListResult|List|Collection)"
+          },
+          "justification": "Pageable models moved to implementation package. Unlikely used by user."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.containerservice\\.models\\..*\\:\\:.*\\(.*\\)"
+          },
+          "justification": "Read-only properties' getter/setter removed in TypeSpec migration."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.visibilityReduced",
           "old": "method void com.azure.resourcemanager.monitor.models.AlertSeverity::<init>()",
           "new": "method void com.azure.resourcemanager.monitor.models.AlertSeverity::<init>(java.lang.Long)",
           "oldVisibility": "public",
@@ -786,6 +876,21 @@
           "code": ".*",
           "old": ".*com.azure.resourcemanager.keyvault.models.Reason.*",
           "justification": "\"Reason\" enum has changed from sealed to expandable."
+        },
+        {
+          "code": "java.class.removed",
+          "old": "class com.azure.resourcemanager.keyvault.models.ManagedHsmResource",
+          "justification": "TypeSpec fix for base resource class."
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method java.lang.String com.azure.resourcemanager.keyvault.models.MhsmPrivateLinkResource::location()",
+          "justification": "Override was dropped because the method now comes from the com.azure.core.management.Resource base class; functionality is unchanged."
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method java.util.Map<java.lang.String, java.lang.String> com.azure.resourcemanager.keyvault.models.MhsmPrivateLinkResource::tags()",
+          "justification": "Override was dropped because the method now comes from the com.azure.core.management.Resource base class; functionality is unchanged."
         },
         {
           "code" : "java.field.addedStaticField",
@@ -1010,6 +1115,133 @@
           "code": "java.class.removed",
           "old": "class com.azure.resourcemanager.appservice.models.ExpressionTraces",
           "justification": "Model not used."
+        },
+        {
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method void com\\.azure\\.resourcemanager\\.cosmos\\.models\\..*\\:\\:\\<init\\>\\(\\)"
+          },
+          "justification": "Output-only immutable models' constructors are now private."
+        },
+        {
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.cosmos\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are now package-private if it's being used by child class."
+        },
+        {
+          "code": "java.method.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.cosmos\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are removed if no explicit usage."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.cosmos\\.models\\..*ListResult"
+          },
+          "justification": "Pageable models moved to implementation package. Unlikely used by user."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.cosmos\\.models\\.(ListClusters|ListDataCenters|PartitionUsagesResult|UsagesResult)"
+          },
+          "justification": "Pageable/List models moved to implementation package. Unlikely used by user."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.cosmos\\.models\\.(ExtendedResourceProperties|ManagedCassandraArmResourceProperties)"
+          },
+          "justification": "Models removed as part of TypeSpec migration. Base types consolidated."
+        },
+        {
+          "regex": true,
+          "code": "java\\.missing\\.(oldSuperType|newSuperType)",
+          "old" : "class com\\.azure\\.resourcemanager\\.cosmos\\.models\\..*",
+          "justification": "TypeSpec fix for base resource class."
+        },
+        {
+          "code": "java.method.returnTypeChanged",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.cosmos\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Setter return type changed from GetPropertiesResource to Resource in TypeSpec migration."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.search\\.models\\..*Result$"
+          },
+          "justification": "Pageable models moved to implementation package. Unlikely used by user."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method void com\\.azure\\.resourcemanager\\.search\\.models\\..*\\:\\:\\<init\\>\\(\\)"
+          },
+          "justification": "Output-only immutable models' constructors are now private."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.search\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are removed if no explicit usage."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.search\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are now package-private if it's being used by child class."
+        },
+        {
+          "regex": true,
+          "code": ".*",
+          "old": ".*com\\.azure\\.resourcemanager\\.search\\.models\\.(IdentityType|PublicNetworkAccess|SharedPrivateLinkResourceProvisioningState|SharedPrivateLinkResourceStatus|SkuName).*",
+          "justification": "Enum changed from sealed to expandable (ExpandableStringEnum) during TypeSpec migration."
+        },
+        {
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method void com\\.azure\\.resourcemanager\\.trafficmanager\\.models\\..*\\:\\:\\<init\\>\\(\\)"
+          },
+          "justification": "Output-only immutable models' constructors are now private."
+        },
+        {
+          "code": "java.method.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.trafficmanager\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are removed if no explicit usage."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.trafficmanager\\.models\\..*ListResult"
+          },
+          "justification": "Pageable models moved to implementation package. Unlikely used by user."
         }
       ]
     }
