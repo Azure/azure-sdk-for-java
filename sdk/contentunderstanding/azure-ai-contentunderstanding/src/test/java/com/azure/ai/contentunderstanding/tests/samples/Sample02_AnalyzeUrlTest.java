@@ -15,6 +15,7 @@ import com.azure.ai.contentunderstanding.models.DocumentTable;
 import com.azure.ai.contentunderstanding.models.DocumentTableCell;
 import com.azure.ai.contentunderstanding.models.AnalysisContent;
 import com.azure.ai.contentunderstanding.models.TranscriptPhrase;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.Test;
 
@@ -406,6 +407,7 @@ public class Sample02_AnalyzeUrlTest extends ContentUnderstandingClientTestBase 
         // END:Assertion_ContentUnderstandingAnalyzeUrlWithPageContentRanges
     }
 
+    @LiveOnly
     @Test
     public void testAnalyzeVideoUrlWithTimeContentRanges() {
         // BEGIN:ContentUnderstandingAnalyzeVideoUrlWithTimeContentRanges
@@ -544,6 +546,7 @@ public class Sample02_AnalyzeUrlTest extends ContentUnderstandingClientTestBase 
         System.out.println("Raw ContentRange('0-5000'): " + rawVideoResult.getContents().size() + " segment(s)");
     }
 
+    @LiveOnly
     @Test
     public void testAnalyzeAudioUrlWithTimeContentRanges() {
         // BEGIN:ContentUnderstandingAnalyzeAudioUrlWithTimeContentRanges

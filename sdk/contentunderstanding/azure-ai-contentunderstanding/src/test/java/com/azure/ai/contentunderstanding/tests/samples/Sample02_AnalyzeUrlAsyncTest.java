@@ -15,6 +15,7 @@ import com.azure.ai.contentunderstanding.models.DocumentTable;
 import com.azure.ai.contentunderstanding.models.DocumentTableCell;
 import com.azure.ai.contentunderstanding.models.AnalysisContent;
 import com.azure.ai.contentunderstanding.models.TranscriptPhrase;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.polling.PollerFlux;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
@@ -491,6 +492,7 @@ public class Sample02_AnalyzeUrlAsyncTest extends ContentUnderstandingClientTest
         assertTrue(fullDoc.getMarkdown().length() > rangeDocContent.getMarkdown().length());
     }
 
+    @LiveOnly
     @Test
     public void testAnalyzeVideoUrlWithTimeContentRangesAsync() {
 
@@ -667,6 +669,7 @@ public class Sample02_AnalyzeUrlAsyncTest extends ContentUnderstandingClientTest
         System.out.println("Raw ContentRange('0-5000'): " + rawVideoResult.getContents().size() + " segment(s)");
     }
 
+    @LiveOnly
     @Test
     public void testAnalyzeAudioUrlWithTimeContentRangesAsync() {
 
