@@ -158,8 +158,10 @@ public final class Constants {
 
         // Materialized View Definition
         public static final String MATERIALIZED_VIEW_DEFINITION = "materializedViewDefinition";
+        public static final String MATERIALIZED_VIEW_SOURCE_COLLECTION_ID = "sourceCollectionId";
         public static final String MATERIALIZED_VIEW_SOURCE_COLLECTION_RID = "sourceCollectionRid";
         public static final String MATERIALIZED_VIEW_QUERY_DEFINITION = "definition";
+        public static final String MATERIALIZED_VIEW_STATUS = "status";
         public static final String MATERIALIZED_VIEWS = "materializedViews";
 
         // Unique index.

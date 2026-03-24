@@ -4,7 +4,9 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.Utils;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 /**
  * Represents an entry in the read-only {@code materializedViews} list returned from the Azure Cosmos DB service
@@ -49,9 +51,10 @@ public final class CosmosMaterializedView {
 
     @Override
     public String toString() {
-        return "CosmosMaterializedViewResult{" +
-            "id='" + id + '\'' +
-            ", resourceId='" + resourceId + '\'' +
-            '}';
+        try {
+            return Utils.getSimpleObjectMapper().writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            throw new IllegalStateException("Unable to convert object to string", e);
+        }
     }
 }

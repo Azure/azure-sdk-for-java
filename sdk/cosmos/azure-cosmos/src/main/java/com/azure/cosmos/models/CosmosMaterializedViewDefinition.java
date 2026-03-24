@@ -5,6 +5,8 @@ package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.JsonSerializable;
+import com.azure.cosmos.implementation.Utils;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
@@ -13,15 +15,14 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
  * <p>
  * Example:
  * <pre>{@code
- * "materializedViewDefinition": {
- *     "sourceCollectionId": "gsi-src",
- *     "definition": "SELECT c.customerId, c.emailAddress FROM c"
- * }
+ * CosmosMaterializedViewDefinition definition = new CosmosMaterializedViewDefinition()
+ *     .setSourceCollectionId("gsi-src")
+ *     .setDefinition("SELECT c.customerId, c.emailAddress FROM c");
  * }</pre>
  */
 public final class CosmosMaterializedViewDefinition {
 
-    private JsonSerializable jsonSerializable;
+    private final JsonSerializable jsonSerializable;
 
     /**
      * Constructor
@@ -44,19 +45,45 @@ public final class CosmosMaterializedViewDefinition {
      *
      * @return the source collection id.
      */
+    public String getSourceCollectionId() {
+        return this.jsonSerializable.getString(Constants.Properties.MATERIALIZED_VIEW_SOURCE_COLLECTION_ID);
+    }
+
+    /**
+     * Sets the source collection id for the materialized view.
+     * The SDK will automatically resolve this collection id to its resource id (RID)
+     * during container creation.
+     *
+     * @param sourceCollectionId the source collection id.
+     * @return CosmosMaterializedViewDefinition
+     */
+    public CosmosMaterializedViewDefinition setSourceCollectionId(String sourceCollectionId) {
+        this.jsonSerializable.set(Constants.Properties.MATERIALIZED_VIEW_SOURCE_COLLECTION_ID, sourceCollectionId);
+        return this;
+    }
+
+    void setSourceCollectionRidInternal(String sourceCollectionRid) {
+        this.jsonSerializable.set(Constants.Properties.MATERIALIZED_VIEW_SOURCE_COLLECTION_RID, sourceCollectionRid);
+    }
+
+    /**
+     * Gets the source collection resource id (RID) for the materialized view as returned by the server.
+     * This is a read-only field populated from server responses.
+     *
+     * @return the source collection resource id.
+     */
     public String getSourceCollectionRid() {
         return this.jsonSerializable.getString(Constants.Properties.MATERIALIZED_VIEW_SOURCE_COLLECTION_RID);
     }
 
     /**
-     * Sets the source collection id for the materialized view.
+     * Gets the build status of the materialized view as returned by the server.
+     * This is a read-only field populated from server responses.
      *
-     * @param sourceCollectionRid the source collection id.
-     * @return CosmosMaterializedViewDefinition
+     * @return the materialized view build status.
      */
-    public CosmosMaterializedViewDefinition setSourceCollectionRid(String sourceCollectionRid) {
-        this.jsonSerializable.set(Constants.Properties.MATERIALIZED_VIEW_SOURCE_COLLECTION_RID, sourceCollectionRid);
-        return this;
+    public String getStatus() {
+        return this.jsonSerializable.getString(Constants.Properties.MATERIALIZED_VIEW_STATUS);
     }
 
     /**
@@ -85,5 +112,14 @@ public final class CosmosMaterializedViewDefinition {
 
     JsonSerializable getJsonSerializable() {
         return this.jsonSerializable;
+    }
+
+    @Override
+    public String toString() {
+        try {
+            return Utils.getSimpleObjectMapper().writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            throw new IllegalStateException("Unable to convert object to string", e);
+        }
     }
 }

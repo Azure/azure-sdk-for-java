@@ -136,6 +136,12 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static void setMaterializedViewDefinitionSourceCollectionRid(
+        CosmosMaterializedViewDefinition definition, String sourceCollectionRid) {
+        definition.setSourceCollectionRidInternal(sourceCollectionRid);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static List<CosmosContainerProperties> getCosmosContainerPropertiesFromV2Results(List<DocumentCollection> results) {
         return CosmosContainerProperties.getFromV2Results(results);
     }
