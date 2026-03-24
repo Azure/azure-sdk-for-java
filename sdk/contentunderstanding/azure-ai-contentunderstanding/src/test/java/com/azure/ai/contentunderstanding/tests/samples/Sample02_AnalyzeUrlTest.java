@@ -366,7 +366,6 @@ public class Sample02_AnalyzeUrlTest extends ContentUnderstandingClientTestBase 
         // END:Assertion_ContentUnderstandingAnalyzeAudioUrl
     }
 
-
     @Test
     public void testAnalyzeImageUrl() {
         // BEGIN:ContentUnderstandingAnalyzeImageUrl
