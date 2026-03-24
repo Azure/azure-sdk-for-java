@@ -6,7 +6,6 @@ package com.azure.spring.cloud.autoconfigure.implementation.eventhubs;
 import com.azure.core.credential.TokenCredential;
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.EventData;
-import com.azure.spring.cloud.autoconfigure.implementation.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsProperties;
 import com.azure.spring.cloud.core.implementation.credential.resolver.AzureTokenCredentialResolver;
 import com.azure.spring.cloud.core.provider.connectionstring.ServiceConnectionStringProvider;
@@ -53,7 +52,6 @@ import static com.azure.spring.cloud.core.implementation.util.AzurePropertiesUti
 @ConditionalOnClass(EventHubsTemplate.class)
 @AutoConfigureAfter(AzureEventHubsAutoConfiguration.class)
 @ConditionalOnProperty(value = "spring.cloud.azure.eventhubs.enabled", havingValue = "true", matchIfMissing = true)
-@ConditionalOnAnyProperty(prefix = "spring.cloud.azure.eventhubs", name = {"connection-string", "namespace"})
 @ConditionalOnBean(AzureEventHubsProperties.class)
 @Import({
     AzureEventHubsMessagingAutoConfiguration.EventHubsTemplateConfiguration.class,

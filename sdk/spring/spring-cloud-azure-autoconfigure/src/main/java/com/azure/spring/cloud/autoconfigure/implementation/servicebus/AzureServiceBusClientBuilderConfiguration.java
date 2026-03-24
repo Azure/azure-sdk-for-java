@@ -4,8 +4,9 @@
 package com.azure.spring.cloud.autoconfigure.implementation.servicebus;
 
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
-import com.azure.spring.cloud.autoconfigure.implementation.condition.ConditionalOnAnyProperty;
+import com.azure.spring.cloud.autoconfigure.implementation.servicebus.properties.AzureServiceBusConnectionDetails;
 import com.azure.spring.cloud.autoconfigure.implementation.servicebus.properties.AzureServiceBusProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.servicebus.properties.AzureServiceBusPropertiesConfiguration;
 import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
 import com.azure.spring.cloud.core.provider.connectionstring.ServiceConnectionStringProvider;
@@ -13,15 +14,18 @@ import com.azure.spring.cloud.core.provider.connectionstring.StaticConnectionStr
 import com.azure.spring.cloud.core.service.AzureServiceType;
 import com.azure.spring.cloud.service.implementation.servicebus.factory.ServiceBusClientBuilderFactory;
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
 @Configuration(proxyBeanMethods = false)
+@Import(AzureServiceBusPropertiesConfiguration.class)
 @ConditionalOnClass(ServiceBusClientBuilder.class)
-@ConditionalOnAnyProperty(prefix = "spring.cloud.azure.servicebus", name = { "connection-string", "namespace" })
+@ConditionalOnBean(AzureServiceBusProperties.class)
 class AzureServiceBusClientBuilderConfiguration {
 
     private final AzureServiceBusProperties serviceBusProperties;
@@ -57,6 +61,16 @@ class AzureServiceBusClientBuilderConfiguration {
 
         return new StaticConnectionStringProvider<>(AzureServiceType.SERVICE_BUS,
                                                     this.serviceBusProperties.getConnectionString());
+    }
+
+    @Bean
+    @ConditionalOnBean(AzureServiceBusConnectionDetails.class)
+    @ConditionalOnMissingBean(value = AzureServiceType.ServiceBus.class, parameterizedContainer = ServiceConnectionStringProvider.class)
+    StaticConnectionStringProvider<AzureServiceType.ServiceBus> staticServiceBusConnectionDetailsConnectionStringProvider(
+        AzureServiceBusConnectionDetails connectionDetails) {
+
+        return new StaticConnectionStringProvider<>(AzureServiceType.SERVICE_BUS,
+                                                    connectionDetails.getConnectionString());
     }
 
 }

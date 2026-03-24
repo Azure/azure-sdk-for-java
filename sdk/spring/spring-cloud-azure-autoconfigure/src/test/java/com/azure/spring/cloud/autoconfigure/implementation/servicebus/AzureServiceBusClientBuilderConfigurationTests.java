@@ -7,6 +7,7 @@ import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.spring.cloud.autoconfigure.implementation.TestBuilderCustomizer;
 import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.servicebus.properties.AzureServiceBusConnectionDetails;
 import com.azure.spring.cloud.autoconfigure.implementation.servicebus.properties.AzureServiceBusProperties;
 import com.azure.spring.cloud.core.provider.connectionstring.StaticConnectionStringProvider;
 import com.azure.spring.cloud.core.service.AzureServiceType;
@@ -22,7 +23,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 class AzureServiceBusClientBuilderConfigurationTests {
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-        .withConfiguration(AutoConfigurations.of(AzureServiceBusClientBuilderConfiguration.class));
+        .withConfiguration(AutoConfigurations.of(AzureServiceBusAutoConfiguration.class))
+        .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new);
 
     @Test
     void noConnectionInfoProvidedShouldNotConfigure() {
@@ -30,13 +32,12 @@ class AzureServiceBusClientBuilderConfigurationTests {
     }
 
     @Test
-    @SuppressWarnings("rawtypes")
+    @SuppressWarnings({"rawtypes", "unchecked"})
     void connectionStringProvidedShouldConfigure() {
         contextRunner
             .withPropertyValues(
                 "spring.cloud.azure.servicebus.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace")
             )
-            .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureServiceBusClientBuilderConfiguration.class);
                 assertThat(context).hasSingleBean(ServiceBusClientBuilderFactory.class);
@@ -55,7 +56,6 @@ class AzureServiceBusClientBuilderConfigurationTests {
             .withPropertyValues(
                 "spring.cloud.azure.servicebus.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace")
             )
-            .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
             .withBean("customizer1", ServiceBusBuilderCustomizer.class, () -> customizer)
             .withBean("customizer2", ServiceBusBuilderCustomizer.class, () -> customizer)
             .run(context -> assertThat(customizer.getCustomizedTimes()).isEqualTo(2));
@@ -69,7 +69,6 @@ class AzureServiceBusClientBuilderConfigurationTests {
             .withPropertyValues(
                 "spring.cloud.azure.servicebus.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace")
             )
-            .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
             .withBean("customizer1", ServiceBusBuilderCustomizer.class, () -> customizer)
             .withBean("customizer2", ServiceBusBuilderCustomizer.class, () -> customizer)
             .withBean("customizer3", OtherBuilderCustomizer.class, () -> otherBuilderCustomizer)
@@ -81,14 +80,27 @@ class AzureServiceBusClientBuilderConfigurationTests {
 
     @Test
     void configureWithNamespaceAndEmptyConnectionString() {
-        this.contextRunner.withConfiguration(AutoConfigurations.of(AzureServiceBusAutoConfiguration.class))
+        this.contextRunner
             .withPropertyValues(
                 "spring.cloud.azure.servicebus.connection-string=",
                 "spring.cloud.azure.servicebus.namespace=test-servicebus-namespace")
-            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureServiceBusProperties.class);
                 assertThat(context).doesNotHaveBean(StaticConnectionStringProvider.class);
+            });
+    }
+
+    @Test
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    void connectionDetailsRegistersStaticProvider() {
+        String connectionString = String.format(CONNECTION_STRING_FORMAT, "details-namespace");
+        this.contextRunner
+            .withBean(AzureServiceBusConnectionDetails.class, () -> new TestConnectionDetails(connectionString))
+            .run(context -> {
+                assertThat(context).hasSingleBean(StaticConnectionStringProvider.class);
+                StaticConnectionStringProvider provider = context.getBean(StaticConnectionStringProvider.class);
+                assertThat(provider.getConnectionString()).isEqualTo(connectionString);
+                assertThat(provider.getServiceType()).isEqualTo(AzureServiceType.SERVICE_BUS);
             });
     }
 
@@ -98,6 +110,19 @@ class AzureServiceBusClientBuilderConfigurationTests {
 
     private static class OtherBuilderCustomizer extends TestBuilderCustomizer<ConfigurationClientBuilder> {
 
+    }
+
+    private static final class TestConnectionDetails implements AzureServiceBusConnectionDetails {
+        private final String connectionString;
+
+        TestConnectionDetails(String connectionString) {
+            this.connectionString = connectionString;
+        }
+
+        @Override
+        public String getConnectionString() {
+            return this.connectionString;
+        }
     }
 
 }

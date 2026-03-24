@@ -38,6 +38,8 @@ class ConfigurationWithConnectionDetailsBean {
         AzureStorageBlobProperties properties = bindResult.isBound() ? bindResult.get()
             : propertiesLoadFromServiceCommonProperties;
         properties.setConnectionString(connectionDetails.getConnectionString());
+        properties.setAccountName(null);
+        properties.setEndpoint(null);
         return properties;
 
     }

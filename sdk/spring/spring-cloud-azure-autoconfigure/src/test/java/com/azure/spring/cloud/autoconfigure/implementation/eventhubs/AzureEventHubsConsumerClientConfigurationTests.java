@@ -34,6 +34,7 @@ class AzureEventHubsConsumerClientConfigurationTests {
                 "spring.cloud.azure.eventhubs.event-hub-name=test-eventhub",
                 "spring.cloud.azure.eventhubs.consumer.consumer-group=test-consumer-group"
             )
+            .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureEventHubsConsumerClientConfiguration.class);
                 assertThat(context).doesNotHaveBean(AzureEventHubsConsumerClientConfiguration.SharedConsumerConnectionConfiguration.class);
@@ -45,6 +46,7 @@ class AzureEventHubsConsumerClientConfigurationTests {
                 "spring.cloud.azure.eventhubs.consumer.event-hub-name=test-eventhub",
                 "spring.cloud.azure.eventhubs.consumer.consumer-group=test-consumer-group"
             )
+            .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureEventHubsConsumerClientConfiguration.class);
                 assertThat(context).doesNotHaveBean(AzureEventHubsConsumerClientConfiguration.SharedConsumerConnectionConfiguration.class);
