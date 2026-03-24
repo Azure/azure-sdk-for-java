@@ -18,14 +18,12 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Stream;
 
 import static com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants.CRC64_LENGTH;
 import static com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants.V1_DEFAULT_SEGMENT_CONTENT_LENGTH;
 import static com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants.V1_HEADER_LENGTH;
 import static com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants.V1_SEGMENT_HEADER_LENGTH;
-import static com.azure.core.util.FluxUtil.collectBytesInByteBufferStream;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -329,161 +327,4 @@ public class MessageEncoderTests {
             StructuredMessageFlags.STORAGE_CRC64).array();
         assertArrayEquals(expected, actual);
     }
-
-    /**
-     * Condition: run only when perf is explicitly enabled and JVM has enough heap for the test size.
-     */
-    @Disabled
-    @Test
-    public void documentMemoryUsageNoEncoding() {
-        long size = 1024L * 1024 * 1024;
-        long maxMemory = Runtime.getRuntime().maxMemory();
-        if (maxMemory < size * 2) {
-            System.out.println("[StructuredMessageEncoderPerf] Skipping no-encoding: -Xmx too small for " + size
-                + " bytes (need at least " + (size * 2) + ", have " + maxMemory + ").");
-            return;
-        }
-
-        forceGc();
-        long usedBefore = getHeapUsed();
-
-        // Baseline: hold 1GB (or configured size) in a single buffer
-        int sizeInt = (int) Math.min(size, Integer.MAX_VALUE);
-        ByteBuffer data = allocateData(sizeInt);
-        long usedWithData = getHeapUsed();
-        assertEquals(sizeInt, data.capacity(), "baseline buffer size");
-
-        long delta = usedWithData - usedBefore;
-        System.out.println("[StructuredMessageEncoderPerf] No encoding (baseline):");
-        System.out.println("  Data size: " + size + " bytes (" + (size / (1024 * 1024)) + " MB)");
-        System.out.println("  Heap before: " + (usedBefore / (1024 * 1024)) + " MB");
-        System.out.println("  Heap with 1GB buffer: " + (usedWithData / (1024 * 1024)) + " MB");
-        System.out.println("  Delta (attributable to data): " + (delta / (1024 * 1024)) + " MB");
-        System.out.println();
-    }
-
-    /**
-     * Condition: run only when perf is explicitly enabled and JVM has enough heap for the test size.
-     */
-    @Disabled
-    @Test
-    public void documentMemoryUsageStructuredMessageOnly() {
-        long size = 1024L * 1024 * 1024;
-        int segmentSize = (int) Math.min(4 * 1024 * 1024, size);
-        long maxMemory = Runtime.getRuntime().maxMemory();
-        if (maxMemory < size + segmentSize * 4) {
-            System.out.println("[StructuredMessageEncoderPerf] Skipping structured (NONE): -Xmx too small.");
-            return;
-        }
-
-        forceGc();
-        long usedBefore = getHeapUsed();
-
-        int contentLength = (int) Math.min(size, Integer.MAX_VALUE);
-        StructuredMessageEncoder encoder
-            = new StructuredMessageEncoder(contentLength, segmentSize, StructuredMessageFlags.NONE);
-
-        // Feed data in chunks and consume encoded stream without retaining (streaming behavior)
-        long totalEncoded = 0;
-        int offset = 0;
-        AtomicLong peakHeap = new AtomicLong(usedBefore);
-        while (offset < contentLength) {
-            int chunkLen = Math.min(segmentSize, contentLength - offset);
-            byte[] chunk = new byte[chunkLen];
-            ThreadLocalRandom.current().nextBytes(chunk);
-            ByteBuffer chunkBuffer = ByteBuffer.wrap(chunk);
-
-            Flux<ByteBuffer> encoded = encoder.encode(chunkBuffer);
-            totalEncoded += collectBytesInByteBufferStream(encoded).blockOptional().orElse(new byte[0]).length;
-            offset += chunkLen;
-
-            long used = getHeapUsed();
-            peakHeap.updateAndGet(prev -> Math.max(prev, used));
-        }
-
-        forceGc();
-        long usedAfter = getHeapUsed();
-
-        System.out.println("[StructuredMessageEncoderPerf] Structured message only (flags=NONE):");
-        System.out.println("  Data size: " + size + " bytes (" + (size / (1024 * 1024)) + " MB)");
-        System.out.println("  Segment size: " + segmentSize + " bytes");
-        System.out.println("  Encoded length: " + totalEncoded + " bytes");
-        System.out.println("  Heap before: " + (usedBefore / (1024 * 1024)) + " MB");
-        System.out.println("  Peak heap during encoding: " + (peakHeap.get() / (1024 * 1024)) + " MB");
-        System.out.println("  Heap after (post-GC): " + (usedAfter / (1024 * 1024)) + " MB");
-        System.out.println();
-    }
-
-    /**
-     * Condition: run only when perf is explicitly enabled and JVM has enough heap for the test size.
-     */
-    @Disabled
-    @Test
-    public void documentMemoryUsageStructuredMessageWithCrc64() {
-        long size = 1024L * 1024 * 1024;
-        int segmentSize = (int) Math.min(4 * 1024 * 1024, size);
-        long maxMemory = Runtime.getRuntime().maxMemory();
-        if (maxMemory < size + segmentSize * 4) {
-            System.out.println("[StructuredMessageEncoderPerf] Skipping structured+CRC64: -Xmx too small.");
-            return;
-        }
-
-        forceGc();
-        long usedBefore = getHeapUsed();
-
-        int contentLength = (int) Math.min(size, Integer.MAX_VALUE);
-        StructuredMessageEncoder encoder
-            = new StructuredMessageEncoder(contentLength, segmentSize, StructuredMessageFlags.STORAGE_CRC64);
-
-        long totalEncoded = 0;
-        int offset = 0;
-        AtomicLong peakHeap = new AtomicLong(usedBefore);
-        while (offset < contentLength) {
-            int chunkLen = Math.min(segmentSize, contentLength - offset);
-            byte[] chunk = new byte[chunkLen];
-            ThreadLocalRandom.current().nextBytes(chunk);
-            ByteBuffer chunkBuffer = ByteBuffer.wrap(chunk);
-
-            Flux<ByteBuffer> encoded = encoder.encode(chunkBuffer);
-            totalEncoded += collectBytesInByteBufferStream(encoded).blockOptional().orElse(new byte[0]).length;
-            offset += chunkLen;
-
-            long used = getHeapUsed();
-            peakHeap.updateAndGet(prev -> Math.max(prev, used));
-        }
-
-        forceGc();
-        long usedAfter = getHeapUsed();
-
-        System.out.println("[StructuredMessageEncoderPerf] Structured message + CRC64 (flags=STORAGE_CRC64):");
-        System.out.println("  Data size: " + size + " bytes (" + (size / (1024 * 1024)) + " MB)");
-        System.out.println("  Segment size: " + segmentSize + " bytes");
-        System.out.println("  Encoded length: " + totalEncoded + " bytes");
-        System.out.println("  Heap before: " + (usedBefore / (1024 * 1024)) + " MB");
-        System.out.println("  Peak heap during encoding: " + (peakHeap.get() / (1024 * 1024)) + " MB");
-        System.out.println("  Heap after (post-GC): " + (usedAfter / (1024 * 1024)) + " MB");
-        System.out.println();
-    }
-
-    private long getHeapUsed() {
-        Runtime rt = Runtime.getRuntime();
-        return rt.totalMemory() - rt.freeMemory();
-    }
-
-    private void forceGc() {
-        System.gc();
-        try {
-            Thread.sleep(200);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            throw new RuntimeException(e);
-        }
-    }
-
-    private static ByteBuffer allocateData(int size) {
-        byte[] array = new byte[size];
-        ThreadLocalRandom.current().nextBytes(array);
-        return ByteBuffer.wrap(array);
-    }
-
 }
