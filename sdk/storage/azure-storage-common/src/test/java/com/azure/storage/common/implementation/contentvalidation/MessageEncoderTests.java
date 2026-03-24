@@ -253,6 +253,66 @@ public class MessageEncoderTests {
             () -> new StructuredMessageEncoder(Integer.MAX_VALUE, 1, StructuredMessageFlags.NONE));
     }
 
+    // ===========================================================================================
+    // getEncodedMessageLength accuracy
+    // ===========================================================================================
+
+    private static Stream<Arguments> encodedLengthSupplier() {
+        return Stream.of(Arguments.of(1, 1, StructuredMessageFlags.NONE),
+            Arguments.of(1, 1, StructuredMessageFlags.STORAGE_CRC64),
+            Arguments.of(100, 100, StructuredMessageFlags.NONE),
+            Arguments.of(100, 100, StructuredMessageFlags.STORAGE_CRC64),
+            Arguments.of(1024, 512, StructuredMessageFlags.NONE),
+            Arguments.of(1024, 512, StructuredMessageFlags.STORAGE_CRC64),
+            Arguments.of(4 * 1024 * 1024, V1_DEFAULT_SEGMENT_CONTENT_LENGTH, StructuredMessageFlags.STORAGE_CRC64),
+            Arguments.of(10 * 1024 * 1024, V1_DEFAULT_SEGMENT_CONTENT_LENGTH, StructuredMessageFlags.STORAGE_CRC64),
+            Arguments.of(1234, 123, StructuredMessageFlags.STORAGE_CRC64));
+    }
+
+    @ParameterizedTest
+    @MethodSource("encodedLengthSupplier")
+    public void encodedLengthMatchesActualOutput(int size, int segmentSize, StructuredMessageFlags flags) {
+        byte[] data = getRandomData(size);
+        StructuredMessageEncoder encoder = new StructuredMessageEncoder(size, segmentSize, flags);
+        long predictedLength = encoder.getEncodedMessageLength();
+
+        byte[] actual = FluxUtil.collectBytesInByteBufferStream(encoder.encode(ByteBuffer.wrap(data))).block();
+        assertNotNull(actual);
+        assertEquals(predictedLength, actual.length, "getEncodedMessageLength() must match actual encoded output size");
+    }
+
+    // ===========================================================================================
+    // Direct (non-array-backed) ByteBuffer
+    // ===========================================================================================
+
+    @ParameterizedTest
+    @MethodSource("readAllSupplier")
+    public void readAllDirectByteBuffer(int size, int segmentSize, StructuredMessageFlags flags) throws IOException {
+        byte[] data = getRandomData(size);
+        ByteBuffer directBuffer = ByteBuffer.allocateDirect(size);
+        directBuffer.put(data);
+        directBuffer.flip();
+
+        ByteBuffer arrayBuffer = ByteBuffer.wrap(data);
+
+        StructuredMessageEncoder encoder = new StructuredMessageEncoder(size, segmentSize, flags);
+        byte[] actual = FluxUtil.collectBytesInByteBufferStream(encoder.encode(directBuffer)).block();
+        byte[] expected = buildStructuredMessage(arrayBuffer, segmentSize, flags).array();
+
+        assertArrayEquals(expected, actual, "Direct ByteBuffer encoding must match array-backed encoding");
+    }
+
+    // ===========================================================================================
+    // Null buffer
+    // ===========================================================================================
+
+    @Test
+    public void encodeNullBufferThrows() {
+        StructuredMessageEncoder encoder = new StructuredMessageEncoder(10, 5, StructuredMessageFlags.NONE);
+        assertThrows(NullPointerException.class,
+            () -> FluxUtil.collectBytesInByteBufferStream(encoder.encode(null)).block());
+    }
+
     @Test
     @Disabled("For local testing only")
     public void bigEncode() throws IOException {
