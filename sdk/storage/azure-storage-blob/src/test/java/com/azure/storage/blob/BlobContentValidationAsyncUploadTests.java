@@ -20,6 +20,7 @@ import com.azure.storage.blob.specialized.PageBlobAsyncClient;
 import com.azure.storage.blob.specialized.PageBlobClient;
 import com.azure.storage.common.StorageChecksumAlgorithm;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
@@ -109,6 +110,7 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
     /**
      * Multi-part (chunked) upload; content validation uses structured message on each stage block.
      */
+    @LiveOnly // Put Block URLs include random block IDs; not replayable with the test proxy.
     @ParameterizedTest
     @EnumSource(value = StorageChecksumAlgorithm.class, names = { "CRC64", "AUTO" })
     public void uploadChunkedWithStructuredMessage(StorageChecksumAlgorithm algorithm) {
@@ -546,6 +548,7 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         }).verifyComplete();
     }
 
+    @LiveOnly // Put Block URLs include random block IDs; not replayable with the test proxy.
     @ParameterizedTest
     @EnumSource(value = StorageChecksumAlgorithm.class, names = { "CRC64", "AUTO" })
     public void uploadFromFileChunkedWithStructuredMessage(StorageChecksumAlgorithm algorithm) throws IOException {
@@ -679,6 +682,7 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         }).verifyComplete();
     }
 
+    @LiveOnly // Put Block URLs include random block IDs; not replayable with the test proxy.
     @Test
     public void uploadChunkedProgressReportsEncodedBytes() {
         BlobAsyncClient client = createBlobAsyncClientWithRequestSniffer(new CopyOnWriteArrayList<>());
@@ -721,6 +725,7 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         }).verifyComplete();
     }
 
+    @LiveOnly // Put Block URLs include random block IDs; not replayable with the test proxy.
     @Test
     public void uploadFromFileChunkedProgressReportsEncodedBytes() throws IOException {
         BlobAsyncClient client = createBlobAsyncClientWithRequestSniffer(new CopyOnWriteArrayList<>());
@@ -786,6 +791,7 @@ public class BlobContentValidationAsyncUploadTests extends BlobTestBase {
         assertArrayEquals(randomData, downloaded, "Downloaded data must match uploaded data (structured message path)");
     }
 
+    @LiveOnly // Put Block URLs include random block IDs; not replayable with the test proxy.
     @Test
     public void uploadChunkedWithStructuredMessageRoundTripDataIntegrity() {
         BlobAsyncClient client = createBlobAsyncClientWithRequestSniffer(new CopyOnWriteArrayList<>());

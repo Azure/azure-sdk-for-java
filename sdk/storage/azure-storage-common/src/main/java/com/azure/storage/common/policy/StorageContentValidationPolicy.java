@@ -36,7 +36,6 @@ import static com.azure.storage.common.implementation.contentvalidation.Structur
 public class StorageContentValidationPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(StorageContentValidationPolicy.class);
 
-
     /**
      * Creates a new instance of {@link StorageContentValidationPolicy}.
      */
@@ -121,8 +120,9 @@ public class StorageContentValidationPolicy implements HttpPipelinePolicy {
     private Mono<Void> applyStructuredMessage(HttpPipelineCallContext context) {
         String contentLengthValue = context.getHttpRequest().getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH);
         if (contentLengthValue == null || contentLengthValue.isEmpty()) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Content-Length header is required to apply structured message "
-                + "and CRC64 encoding, but it was not present on the request."));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Content-Length header is required to apply structured message "
+                    + "and CRC64 encoding, but it was not present on the request."));
         }
 
         long parsedContentLength;

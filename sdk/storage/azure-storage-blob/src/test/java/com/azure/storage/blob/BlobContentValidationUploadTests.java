@@ -25,6 +25,7 @@ import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.specialized.PageBlobClient;
 import com.azure.storage.common.StorageChecksumAlgorithm;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
@@ -111,6 +112,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
     /**
      * Multi-part (chunked) upload; content validation uses structured message on each stage block.
      */
+    @LiveOnly // Put Block URLs include random block IDs; not replayable with the test proxy.
     @ParameterizedTest
     @EnumSource(value = StorageChecksumAlgorithm.class, names = { "CRC64", "AUTO" })
     public void uploadChunkedWithStructuredMessage(StorageChecksumAlgorithm algorithm) {
@@ -519,6 +521,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         assertTrue(hasOnlyStructuredMessageHeaders(recorded));
     }
 
+    @LiveOnly // Put Block URLs include random block IDs; not replayable with the test proxy.
     @ParameterizedTest
     @EnumSource(value = StorageChecksumAlgorithm.class, names = { "CRC64", "AUTO" })
     public void uploadFromFileChunkedWithStructuredMessage(StorageChecksumAlgorithm algorithm) throws IOException {
@@ -666,6 +669,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         assertTrue(hasOnlyStructuredMessageHeaders(recorded));
     }
 
+    @LiveOnly // Put Block URLs include random block IDs; not replayable with the test proxy.
     @ParameterizedTest
     @EnumSource(value = StorageChecksumAlgorithm.class, names = { "CRC64", "AUTO" })
     public void blockBlobOutputStreamChunkedWithStructuredMessage(StorageChecksumAlgorithm algorithm) throws Exception {
@@ -765,6 +769,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
     // BlockBlobClient.openSeekableByteChannelWrite tests
     // ===========================================================================================
 
+    @LiveOnly // Seekable channel staging uses Put Block with random block IDs; not replayable with the test proxy.
     @ParameterizedTest
     @EnumSource(value = StorageChecksumAlgorithm.class, names = { "CRC64", "AUTO" })
     public void seekableByteChannelWriteWithCrc64Header(StorageChecksumAlgorithm algorithm) throws Exception {
@@ -783,6 +788,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         assertTrue(hasOnlyCrc64Headers(recorded));
     }
 
+    @LiveOnly // Put Block URLs include random block IDs; not replayable with the test proxy.
     @ParameterizedTest
     @EnumSource(value = StorageChecksumAlgorithm.class, names = { "CRC64", "AUTO" })
     public void seekableByteChannelWriteWithStructuredMessage(StorageChecksumAlgorithm algorithm) throws Exception {
@@ -801,6 +807,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         assertTrue(hasOnlyStructuredMessageHeaders(recorded));
     }
 
+    @LiveOnly // Put Block URLs include random block IDs; not replayable with the test proxy.
     @Test
     public void seekableByteChannelWriteWithNoContentValidation() throws Exception {
         List<HttpHeaders> recorded = new CopyOnWriteArrayList<>();
@@ -908,6 +915,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
             "Progress should report encoded (structured message) byte count");
     }
 
+    @LiveOnly // Put Block URLs include random block IDs; not replayable with the test proxy.
     @Test
     public void uploadChunkedProgressReportsEncodedBytes() {
         BlobClient client = createBlobClientWithRequestSniffer(new CopyOnWriteArrayList<>());
@@ -946,6 +954,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
             "Progress should report encoded (structured message) byte count");
     }
 
+    @LiveOnly // Put Block URLs include random block IDs; not replayable with the test proxy.
     @Test
     public void uploadFromFileChunkedProgressReportsEncodedBytes() throws IOException {
         BlobClient client = createBlobClientWithRequestSniffer(new CopyOnWriteArrayList<>());
@@ -984,6 +993,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
             "Progress should report encoded (structured message) byte count");
     }
 
+    @LiveOnly // Put Block URLs include random block IDs; not replayable with the test proxy.
     @Test
     public void blockBlobOutputStreamChunkedProgressReportsEncodedBytes() throws Exception {
         BlobClient blobClient = createBlobClientWithRequestSniffer(new CopyOnWriteArrayList<>());
@@ -1049,6 +1059,7 @@ public class BlobContentValidationUploadTests extends BlobTestBase {
         assertArrayEquals(randomData, downloaded, "Downloaded data must match uploaded data (structured message path)");
     }
 
+    @LiveOnly // Put Block URLs include random block IDs; not replayable with the test proxy.
     @Test
     public void uploadChunkedWithStructuredMessageRoundTripDataIntegrity() {
         BlobClient client = createBlobClientWithRequestSniffer(new CopyOnWriteArrayList<>());
