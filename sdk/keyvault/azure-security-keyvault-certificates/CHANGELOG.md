@@ -16,6 +16,8 @@
 * `V2025_06_01_PREVIEW` was added
 * `V2025_07_01` was added
 
+## 4.8.6 (2026-03-23)
+
 ### Bugs Fixed
 
 - Fixed an issue where certain `HttpResponseException.getResponse()` calls could cause a `NullPointerException`. ([#47801](https://github.com/Azure/azure-sdk-for-java/issues/47801))
