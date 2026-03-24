@@ -46,7 +46,7 @@ Post-generation modifications are applied via `SearchCustomizations.java` (JavaP
 
 ```
 src/main/java/
-├── module-info.java                      # JPMS module descriptor
+├── module-info.java                      # Java module descriptor
 │
 └── com/azure/search/documents/
     ├── package-info.java
@@ -152,7 +152,7 @@ To regenerate, use:
 ```powershell
 # From the repo root
 tsp-client update --local-spec-repo <path-to-azure-rest-api-specs> --commit <SHA>
-# OR for standard regen from the pinned commit:
+# OR for standard regeneration from the pinned commit:
 tsp-client update
 ```
 
@@ -298,7 +298,7 @@ Configuration defaults (from `SearchClientBuilder`):
 | `pom.xml` | Maven project definition, dependencies, build config |
 | `customizations/src/main/java/SearchCustomizations.java` | All post-generation AST modifications |
 | `customizations/pom.xml` | Customization module build config |
-| `module-info.java` | JPMS module descriptor — exports and opens packages |
+| `module-info.java` | Java module descriptor — exports and opens packages |
 | `src/main/resources/azure-search-documents.properties` | SDK name/version properties loaded at runtime |
 | `assets.json` | Points to the Azure SDK test recordings repo for playback tests |
 | `CHANGELOG.md` | All version history; must be updated before each release |
@@ -318,7 +318,7 @@ Configuration defaults (from `SearchClientBuilder`):
 | `com.azure.search.documents.knowledgebases` | `KnowledgeBaseRetrievalClient`, `KnowledgeBaseRetrievalAsyncClient`, builder |
 | `com.azure.search.documents.knowledgebases.models` | Knowledge base models: `KnowledgeBaseRetrievalRequest/Response`, `KnowledgeBaseMessage`, activity records, etc. (~40 classes) |
 | `com.azure.search.documents.options` | Buffered sender callback options |
-| `com.azure.search.documents.implementation` | Internal: HTTP client impls, `SearchUtils`, `FieldBuilder` |
+| `com.azure.search.documents.implementation` | Internal: HTTP client implementations, `SearchUtils`, `FieldBuilder` |
 | `com.azure.search.documents.implementation.batching` | Internal: buffered indexing publisher/manager |
 | `com.azure.search.documents.implementation.models` | Internal: wire-only request/response models |
 
@@ -372,6 +372,6 @@ mvn clean compile -f sdk/search/azure-search-documents/pom.xml
 # Run all tests (playback mode)
 mvn test -f sdk/search/azure-search-documents/pom.xml
 
-# Run a specific test class
-mvn test -f sdk/search/azure-search-documents/pom.xml -Dtest=SearchTests
+# Run a specific test class <!-- cspell:disable-next-line -->
+mvn test -f sdk/search/azure-search-documents/pom.xml -pl :azure-search-documents -Dtest="SearchTests"
 ```
