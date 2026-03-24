@@ -1,16 +1,15 @@
 # Release History
 
-## 4.11.0-beta.1 (Unreleased)
+## 4.11.0-beta.1 (2026-03-19)
 
 ### Features Added
 
-### Breaking Changes
+- Added `previousVersion` property to `KeyVaultSecret` and related response models, which returns the version of the previous secret, if applicable. This field is only populated for secrets created after June 1, 2025.
+- Added `outContentType` query parameter support to `getSecret` operations, enabling PFX to PEM format conversion for certificate-backed secrets. Available in service version `2025-07-01` and later.
 
 ### Bugs Fixed
 
 - Fixed an issue where certain `HttpResponseException.getResponse()` calls could cause a `NullPointerException`. ([#47801](https://github.com/Azure/azure-sdk-for-java/issues/47801))
-
-### Other Changes
 
 ## 4.10.5 (2026-01-29)
 
