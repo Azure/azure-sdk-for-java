@@ -2577,6 +2577,21 @@ public class BlobAsyncApiTests extends BlobTestBase {
             .verifyComplete();
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
+    @Test
+    public void uploadStreamAccessTierSmart() {
+        bc = ccAsync.getBlobAsyncClient(generateBlobName());
+        BlobParallelUploadOptions options
+            = new BlobParallelUploadOptions(DATA.getDefaultFlux()).setTier(AccessTier.SMART);
+        Mono<Response<BlobProperties>> response
+            = bc.uploadWithResponse(options).then(bc.getPropertiesWithResponse(null));
+
+        StepVerifier.create(response).assertNext(r -> {
+            assertEquals(AccessTier.SMART, r.getValue().getAccessTier());
+            assertNotNull(r.getValue().getSmartAccessTier());
+        }).verifyComplete();
+    }
+
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-12-02")
     @Test
     public void setTierArchiveStatusRehydratePendingToCold() {

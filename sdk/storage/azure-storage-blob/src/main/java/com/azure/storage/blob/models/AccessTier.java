@@ -109,6 +109,12 @@ public final class AccessTier extends ExpandableStringEnum<AccessTier> {
     public static final AccessTier COLD = fromString("Cold");
 
     /**
+     * Static value Smart for AccessTier.
+     */
+    @Generated
+    public static final AccessTier SMART = fromString("Smart");
+
+    /**
      * Creates a new instance of AccessTier value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

@@ -50,10 +50,13 @@ import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
 
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
@@ -81,26 +84,7 @@ public class SasAsyncClientTests extends BlobTestBase {
     @Test
     public void blobSasAllPermissionsSuccess() {
         // FE will reject a permission string it doesn't recognize
-        BlobSasPermission allPermissions = new BlobSasPermission().setReadPermission(true)
-            .setWritePermission(true)
-            .setCreatePermission(true)
-            .setDeletePermission(true)
-            .setAddPermission(true)
-            .setListPermission(true);
-
-        if (Constants.SAS_SERVICE_VERSION.compareTo("2019-12-12") >= 0) {
-            allPermissions.setMovePermission(true)
-                .setExecutePermission(true)
-                .setDeleteVersionPermission(true)
-                .setTagsPermission(true);
-        }
-        if (Constants.SAS_SERVICE_VERSION.compareTo("2020-02-10") >= 0) {
-            allPermissions.setPermanentDeletePermission(true);
-        }
-
-        if (Constants.SAS_SERVICE_VERSION.compareTo("2020-06-12") >= 0) {
-            allPermissions.setImmutabilityPolicyPermission(true);
-        }
+        BlobSasPermission allPermissions = getAllBlobSasPermissions();
 
         BlobServiceSasSignatureValues sasValues = generateValues(allPermissions);
 
@@ -581,6 +565,130 @@ public class SasAsyncClientTests extends BlobTestBase {
         tags.put("foo", "bar");
 
         StepVerifier.create(client.setTags(tags)).verifyError(BlobStorageException.class);
+    }
+
+    @Test
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-04-06")
+    public void createPermissionUpload() {
+        liveTestScenarioWithRetry(() -> {
+            BlobServiceAsyncClient oauthService = getOAuthServiceAsyncClient();
+            BlobContainerAsyncClient oauthContainer
+                = oauthService.getBlobContainerAsyncClient(cc.getBlobContainerName());
+
+            String oauthBlobName = generateBlobName();
+            OffsetDateTime expiryTime = testResourceNamer.now().plusDays(1);
+
+            Mono<Void> response = oauthService.getUserDelegationKey(null, expiryTime).flatMap(key -> {
+                key.setSignedTenantId(testResourceNamer.recordValueFromConfig(key.getSignedTenantId()));
+                key.setSignedObjectId(testResourceNamer.recordValueFromConfig(key.getSignedObjectId()));
+                String saoid = testResourceNamer.randomUuid();
+
+                BlobSasPermission permissions = new BlobSasPermission().setCreatePermission(true);
+                BlobServiceSasSignatureValues sasValues
+                    = new BlobServiceSasSignatureValues(expiryTime, permissions).setPreauthorizedAgentObjectId(saoid);
+
+                String sasWithPermissions = oauthContainer.generateUserDelegationSas(sasValues, key);
+
+                BlockBlobAsyncClient blockClient
+                    = instrument(new SpecializedBlobClientBuilder().endpoint(oauthContainer.getBlobContainerUrl())
+                        .blobName(oauthBlobName)
+                        .sasToken(sasWithPermissions)).buildBlockBlobAsyncClient();
+
+                return blockClient.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()).then();
+            });
+
+            StepVerifier.create(response).verifyComplete();
+        });
+    }
+
+    @Test
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-04-06")
+    public void transferBlobWithCreatePermission() {
+        liveTestScenarioWithRetry(() -> {
+            BlobServiceAsyncClient oauthService = getOAuthServiceAsyncClient();
+            String containerName = ccAsync.getBlobContainerName();
+            BlobContainerAsyncClient oauthContainer = oauthService.getBlobContainerAsyncClient(containerName);
+
+            String sourceBlobName = generateBlobName();
+            String destinationBlobName = generateBlobName();
+            OffsetDateTime expiryTime = testResourceNamer.now().plusDays(1);
+
+            // Upload source blob via OAuth client
+            BlockBlobAsyncClient sourceBlob
+                = oauthContainer.getBlobAsyncClient(sourceBlobName).getBlockBlobAsyncClient();
+            sourceBlob.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()).block();
+
+            Mono<Void> response = oauthService.getUserDelegationKey(null, expiryTime).flatMap(key -> {
+
+                key.setSignedTenantId(testResourceNamer.recordValueFromConfig(key.getSignedTenantId()));
+                key.setSignedObjectId(testResourceNamer.recordValueFromConfig(key.getSignedObjectId()));
+                String saoid = testResourceNamer.randomUuid();
+
+                // Create-only permission for destination blob
+                BlobSasPermission destinationPermissions = new BlobSasPermission().setCreatePermission(true);
+                BlobServiceSasSignatureValues sasValues
+                    = new BlobServiceSasSignatureValues(expiryTime, destinationPermissions)
+                        .setPreauthorizedAgentObjectId(saoid);
+                String createPermissionsOnly = oauthContainer.generateUserDelegationSas(sasValues, key);
+                BlockBlobAsyncClient destinationClient
+                    = instrument(new SpecializedBlobClientBuilder().endpoint(oauthContainer.getBlobContainerUrl())
+                        .blobName(destinationBlobName)
+                        .sasToken(createPermissionsOnly)).buildBlockBlobAsyncClient();
+
+                // Read permission for source blob
+                BlobSasPermission readPermission = new BlobSasPermission().setReadPermission(true);
+                BlobServiceSasSignatureValues readValues = new BlobServiceSasSignatureValues(expiryTime, readPermission)
+                    .setPreauthorizedAgentObjectId(saoid);
+                String readSas = oauthContainer.generateUserDelegationSas(readValues, key);
+                String sourceUrl = sourceBlob.getBlobUrl() + "?" + readSas;
+
+                return destinationClient.copyFromUrl(sourceUrl).then();
+            });
+
+            StepVerifier.create(response).verifyComplete();
+        });
+    }
+
+    @Test
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-04-06")
+    public void commitBlockListWithCreatePermission() {
+        liveTestScenarioWithRetry(() -> {
+            BlobServiceAsyncClient oauthService = getOAuthServiceAsyncClient();
+            String containerName = ccAsync.getBlobContainerName();
+            BlobContainerAsyncClient oauthContainer = oauthService.getBlobContainerAsyncClient(containerName);
+            String blockId = Base64.getEncoder().encodeToString("blockid".getBytes(StandardCharsets.UTF_8));
+            List<String> blockIds = new ArrayList<>();
+            blockIds.add(blockId);
+
+            String destinationBlobName = generateBlobName();
+            OffsetDateTime expiryTime = testResourceNamer.now().plusDays(1);
+
+            Mono<Void> response = oauthService.getUserDelegationKey(null, expiryTime).flatMap(key -> {
+
+                key.setSignedTenantId(testResourceNamer.recordValueFromConfig(key.getSignedTenantId()));
+                key.setSignedObjectId(testResourceNamer.recordValueFromConfig(key.getSignedObjectId()));
+                String saoid = testResourceNamer.randomUuid();
+
+                // Create-only permission for destination blob
+                BlobSasPermission destinationPermissions = new BlobSasPermission().setCreatePermission(true);
+                BlobServiceSasSignatureValues sasValues
+                    = new BlobServiceSasSignatureValues(expiryTime, destinationPermissions)
+                        .setPreauthorizedAgentObjectId(saoid);
+                String createPermissionsOnly = oauthContainer.generateUserDelegationSas(sasValues, key);
+                BlockBlobAsyncClient destinationClient
+                    = instrument(new SpecializedBlobClientBuilder().endpoint(oauthContainer.getBlobContainerUrl())
+                        .blobName(destinationBlobName)
+                        .sasToken(createPermissionsOnly)).buildBlockBlobAsyncClient();
+
+                Flux<ByteBuffer> data = DATA.getDefaultFlux();
+
+                return destinationClient.stageBlock(blockId, data, DATA.getDefaultDataSize())
+                    .then(destinationClient.commitBlockList(blockIds, false))
+                    .then();
+            });
+
+            StepVerifier.create(response).verifyComplete();
+        });
     }
 
     // RBAC replication lag
@@ -1484,4 +1592,135 @@ public class SasAsyncClientTests extends BlobTestBase {
                     e -> assertExceptionStatusCodeAndMessage(e, 403, BlobErrorCode.AUTHENTICATION_FAILED));
         });
     }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-02-10")
+    @ParameterizedTest
+    @ValueSource(strings = { "foo", "foo/bar", "foo/bar/hello" })
+    public void directorySasAllPermissions(String blobName) {
+        BlobSasPermission allPermissions = getAllBlobSasPermissions();
+        BlobServiceSasSignatureValues sasValues = generateValues(allPermissions).setDirectory(true);
+
+        BlobAsyncClient blobAsyncClient = getBlobAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
+            ccAsync.getBlobContainerUrl(), blobName);
+        String sasToken = blobAsyncClient.generateSas(sasValues);
+
+        AppendBlobAsyncClient appendBlobClient1
+            = getBlobAsyncClient(sasToken, ccAsync.getBlobContainerUrl(), blobName, null).getAppendBlobAsyncClient();
+        AppendBlobAsyncClient appendBlobClient2
+            = getBlobAsyncClient(sasToken, ccAsync.getBlobContainerUrl(), blobName + "/test", null)
+                .getAppendBlobAsyncClient();
+
+        String blobUrl = appendBlobClient1.getBlobUrl();
+        assertTrue(BlobSasPermission
+            .parse(BlobUrlParts.parse(blobUrl + '?' + sasToken).getCommonSasQueryParameters().getPermissions())
+            .hasReadPermission());
+
+        Mono<Void> verifySasRead = appendBlobClient1.getProperties()
+            .doOnNext(p -> assertTrue(validateSasProperties(p)))
+            .then(appendBlobClient2.getProperties())
+            .doOnNext(p -> assertTrue(validateSasProperties(p)))
+            .then();
+
+        StepVerifier
+            .create(appendBlobClient1.create().flatMap(ignored -> appendBlobClient2.create()).then(verifySasRead))
+            .verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-02-10")
+    @Test
+    public void directorySasAllPermissionsFail() {
+        BlobSasPermission allPermissions = getAllBlobSasPermissions();
+        BlobServiceSasSignatureValues sasValues = generateValues(allPermissions).setDirectory(true);
+
+        String sasDirectoryName = "foo/bar/hello";
+        BlobAsyncClient blobAsyncClient = getBlobAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
+            ccAsync.getBlobContainerUrl(), sasDirectoryName);
+        String sasToken = blobAsyncClient.generateSas(sasValues);
+
+        AppendBlobAsyncClient appendBlobFailClient
+            = getBlobAsyncClient(sasToken, ccAsync.getBlobContainerUrl(), "foo/bar", null).getAppendBlobAsyncClient();
+
+        StepVerifier.create(appendBlobFailClient.create())
+            .verifyErrorSatisfies(
+                e -> assertExceptionStatusCodeAndMessage(e, 403, BlobErrorCode.AUTHENTICATION_FAILED));
+    }
+
+    // RBAC replication lag
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-02-10")
+    @ParameterizedTest
+    @ValueSource(strings = { "foo", "foo/bar", "foo/bar/hello" })
+    public void directoryIdentitySasAllPermissions(String blobName) {
+        liveTestScenarioWithRetry(() -> {
+            String identityContainerName = generateContainerName();
+            BlobContainerAsyncClient identityContainerClient
+                = getOAuthServiceAsyncClient().getBlobContainerAsyncClient(identityContainerName);
+
+            BlobSasPermission allPermissions = getAllBlobSasPermissions();
+            BlobServiceSasSignatureValues sasValues = generateValues(allPermissions).setDirectory(true);
+
+            Mono<Void> response
+                = identityContainerClient.createIfNotExists().then(getUserDelegationInfo().flatMap(key -> {
+                    BlobAsyncClient blobAsyncClient
+                        = getBlobAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
+                            identityContainerClient.getBlobContainerUrl(), blobName);
+                    String sasToken = blobAsyncClient.generateUserDelegationSas(sasValues, key);
+                    AppendBlobAsyncClient appendBlobClient1
+                        = getBlobAsyncClient(sasToken, identityContainerClient.getBlobContainerUrl(), blobName, null)
+                            .getAppendBlobAsyncClient();
+                    AppendBlobAsyncClient appendBlobClient2
+                        = getBlobAsyncClient(sasToken, identityContainerClient.getBlobContainerUrl(),
+                            blobName + "/test", null).getAppendBlobAsyncClient();
+
+                    String blobUrl = appendBlobClient1.getBlobUrl();
+                    assertTrue(BlobSasPermission
+                        .parse(
+                            BlobUrlParts.parse(blobUrl + '?' + sasToken).getCommonSasQueryParameters().getPermissions())
+                        .hasReadPermission());
+
+                    Mono<Void> verifySasRead = appendBlobClient1.getProperties()
+                        .doOnNext(p -> assertTrue(validateSasProperties(p)))
+                        .then(appendBlobClient2.getProperties())
+                        .doOnNext(p -> assertTrue(validateSasProperties(p)))
+                        .then();
+
+                    return appendBlobClient1.create()
+                        .flatMap(ignored -> appendBlobClient2.create())
+                        .then(verifySasRead);
+                }));
+
+            StepVerifier.create(response).verifyComplete();
+        });
+    }
+
+    // RBAC replication lag
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-02-10")
+    @Test
+    public void directoryIdentitySasAllPermissionsFail() {
+        liveTestScenarioWithRetry(() -> {
+            String identityContainerName = generateContainerName();
+            BlobContainerAsyncClient identityContainerClient
+                = getOAuthServiceAsyncClient().getBlobContainerAsyncClient(identityContainerName);
+
+            BlobSasPermission allPermissions = getAllBlobSasPermissions();
+            BlobServiceSasSignatureValues sasValues = generateValues(allPermissions).setDirectory(true);
+            String sasDirectoryName = "foo/bar/hello";
+
+            Mono<Void> response
+                = identityContainerClient.createIfNotExists().then(getUserDelegationInfo().flatMap(key -> {
+                    BlobAsyncClient blobAsyncClient
+                        = getBlobAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
+                            identityContainerClient.getBlobContainerUrl(), sasDirectoryName);
+                    String sasToken = blobAsyncClient.generateUserDelegationSas(sasValues, key);
+                    AppendBlobAsyncClient appendBlobFailClient
+                        = getBlobAsyncClient(sasToken, identityContainerClient.getBlobContainerUrl(), "foo/bar", null)
+                            .getAppendBlobAsyncClient();
+                    return appendBlobFailClient.create().then();
+                }));
+
+            StepVerifier.create(response)
+                .verifyErrorSatisfies(
+                    e -> assertExceptionStatusCodeAndMessage(e, 403, BlobErrorCode.AUTHENTICATION_FAILED));
+        });
+    }
+
 }

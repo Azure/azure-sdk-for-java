@@ -15,6 +15,7 @@ import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.query.aggregation.AggregateOperator;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -53,6 +54,7 @@ public final class GroupByDocumentQueryExecutionContext implements
     public static Flux<IDocumentQueryExecutionComponent<Document>> createAsync(
         BiFunction<String, PipelinedDocumentQueryParams<Document>, Flux<IDocumentQueryExecutionComponent<Document>>> createSourceComponentFunction,
         String continuationToken,
+        Collection<AggregateOperator> aggregates,
         Map<String, AggregateOperator> groupByAliasToAggregateType,
         List<String> orderedAliases,
         boolean hasSelectValue,
@@ -67,7 +69,7 @@ public final class GroupByDocumentQueryExecutionContext implements
         if (orderedAliases == null) {
             throw new IllegalArgumentException("orderedAliases should not be null");
         }
-        GroupingTable table = new GroupingTable(groupByAliasToAggregateType, orderedAliases, hasSelectValue);
+        GroupingTable table = new GroupingTable(aggregates, groupByAliasToAggregateType, orderedAliases, hasSelectValue);
         // Have to pass non-null continuation token once supported
         return createSourceComponentFunction.apply(null, documentQueryParams)
                    .map(component -> new GroupByDocumentQueryExecutionContext(component, table));
@@ -189,14 +191,27 @@ public final class GroupByDocumentQueryExecutionContext implements
         /**
          * Getter for property 'payload'.
          *
-         * @return Value for property 'payload'.
+         * @return the payload as a Document (for ObjectNode) or raw Object (for other types).
          */
-        public Document getPayload() {
+        public Object getPayload() {
             if (!this.has(PAYLOAD_PROPERTY_NAME)) {
                 throw new IllegalStateException("Underlying object does not have an 'payload' field.");
             }
 
-            return new Document((ObjectNode) this.get(PAYLOAD_PROPERTY_NAME));
+            JsonNode payloadNode = this.getPropertyBag().get(PAYLOAD_PROPERTY_NAME);
+
+            // SELECT VALUE payloads may be wrapped in a single-element array by the backend.
+            // Empty arrays (size == 0) are not expected — undefined fields produce no payload.
+            // Multi-element arrays (size > 1) are not produced by the backend for GROUP BY.
+            if (payloadNode != null && payloadNode.isArray() && payloadNode.size() == 1) {
+                payloadNode = payloadNode.get(0);
+            }
+
+            if (payloadNode instanceof ObjectNode) {
+                return new Document((ObjectNode) payloadNode);
+            }
+
+            return payloadNode;
         }
 
         @Override

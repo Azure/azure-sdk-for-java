@@ -3,6 +3,8 @@
 ## 12.34.0-beta.2 (Unreleased)
 
 ### Features Added
+- Added support for Blob Smart Tier.
+- Added support for virtual directory-scoped SAS. 
 
 ### Breaking Changes
 
