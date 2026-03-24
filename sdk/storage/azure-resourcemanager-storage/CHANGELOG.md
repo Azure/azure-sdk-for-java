@@ -52,12 +52,6 @@
 
 * `withEtag(java.lang.String)` was removed
 
-#### `models.TriggerType` was modified
-
-* `models.TriggerType[] values()` -> `java.util.Collection values()`
-* `valueOf(java.lang.String)` was removed
-* `toString()` was removed
-
 #### `models.BurstingConstants` was modified
 
 * `BurstingConstants()` was changed to private access
@@ -80,12 +74,6 @@
 
 * `FileServiceUsageProperties()` was changed to private access
 
-#### `models.IntervalUnit` was modified
-
-* `toString()` was removed
-* `models.IntervalUnit[] values()` -> `java.util.Collection values()`
-* `valueOf(java.lang.String)` was removed
-
 #### `models.BlobContainersGetImmutabilityPolicyHeaders` was modified
 
 * `withEtag(java.lang.String)` was removed
@@ -100,15 +88,15 @@
 #### `models.NetworkSecurityPerimeterConfigurationPropertiesResourceAssociation` was modified
 
 * `NetworkSecurityPerimeterConfigurationPropertiesResourceAssociation()` was changed to private access
-* `withAccessMode(models.ResourceAssociationAccessMode)` was removed
 * `withName(java.lang.String)` was removed
+* `withAccessMode(models.ResourceAssociationAccessMode)` was removed
 
 #### `models.ImmutabilityPolicyProperties` was modified
 
 * `ImmutabilityPolicyProperties()` was changed to private access
-* `withImmutabilityPeriodSinceCreationInDays(java.lang.Integer)` was removed
 * `withAllowProtectedAppendWrites(java.lang.Boolean)` was removed
 * `withAllowProtectedAppendWritesAll(java.lang.Boolean)` was removed
+* `withImmutabilityPeriodSinceCreationInDays(java.lang.Integer)` was removed
 
 #### `models.AccountUsageElements` was modified
 
@@ -145,9 +133,9 @@
 #### `models.NetworkSecurityPerimeter` was modified
 
 * `NetworkSecurityPerimeter()` was changed to private access
-* `withPerimeterGuid(java.lang.String)` was removed
 * `withId(java.lang.String)` was removed
 * `withLocation(java.lang.String)` was removed
+* `withPerimeterGuid(java.lang.String)` was removed
 
 #### `models.GeoReplicationStats` was modified
 
@@ -176,15 +164,15 @@
 #### `models.MetricSpecification` was modified
 
 * `MetricSpecification()` was changed to private access
-* `withCategory(java.lang.String)` was removed
-* `withResourceIdDimensionNameOverride(java.lang.String)` was removed
-* `withUnit(java.lang.String)` was removed
 * `withDimensions(java.util.List)` was removed
-* `withFillGapWithZero(java.lang.Boolean)` was removed
+* `withUnit(java.lang.String)` was removed
 * `withDisplayDescription(java.lang.String)` was removed
-* `withDisplayName(java.lang.String)` was removed
 * `withName(java.lang.String)` was removed
 * `withAggregationType(java.lang.String)` was removed
+* `withDisplayName(java.lang.String)` was removed
+* `withFillGapWithZero(java.lang.Boolean)` was removed
+* `withResourceIdDimensionNameOverride(java.lang.String)` was removed
+* `withCategory(java.lang.String)` was removed
 
 #### `models.NspAccessRule` was modified
 
@@ -203,9 +191,9 @@
 #### `models.NspAccessRuleProperties` was modified
 
 * `NspAccessRuleProperties()` was changed to private access
-* `withSubscriptions(java.util.List)` was removed
 * `withAddressPrefixes(java.util.List)` was removed
 * `withDirection(models.NspAccessRuleDirection)` was removed
+* `withSubscriptions(java.util.List)` was removed
 
 #### `models.FileShareLimits` was modified
 
@@ -214,10 +202,10 @@
 #### `models.OperationDisplay` was modified
 
 * `OperationDisplay()` was changed to private access
+* `withProvider(java.lang.String)` was removed
 * `withOperation(java.lang.String)` was removed
 * `withResource(java.lang.String)` was removed
 * `withDescription(java.lang.String)` was removed
-* `withProvider(java.lang.String)` was removed
 
 #### `models.StorageTaskAssignmentProperties` was modified
 
@@ -258,8 +246,8 @@
 #### `models.Dimension` was modified
 
 * `Dimension()` was changed to private access
-* `withName(java.lang.String)` was removed
 * `withDisplayName(java.lang.String)` was removed
+* `withName(java.lang.String)` was removed
 
 #### `models.ProvisioningState` was modified
 
@@ -281,15 +269,15 @@
 #### `models.UpdateHistoryProperty` was modified
 
 * `UpdateHistoryProperty()` was changed to private access
-* `withAllowProtectedAppendWritesAll(java.lang.Boolean)` was removed
 * `withAllowProtectedAppendWrites(java.lang.Boolean)` was removed
+* `withAllowProtectedAppendWritesAll(java.lang.Boolean)` was removed
 
 #### `models.ProvisioningIssueProperties` was modified
 
 * `ProvisioningIssueProperties()` was changed to private access
-* `withSeverity(models.Severity)` was removed
 * `withDescription(java.lang.String)` was removed
 * `withIssueType(models.IssueType)` was removed
+* `withSeverity(models.Severity)` was removed
 
 ### Features Added
 
@@ -347,19 +335,14 @@
 
 #### `models.TriggerType` was modified
 
-* `TriggerType()` was added
 * `MOCK_RUN` was added
-
-#### `models.IntervalUnit` was modified
-
-* `IntervalUnit()` was added
 
 #### `models.StorageAccountUpdateParameters` was modified
 
-* `withAllowSharedKeyAccessForServices(models.StorageAccountSharedKeyAccessProperties)` was added
-* `allowSharedKeyAccessForServices()` was added
-* `withDataCollaborationPolicyProperties(models.StorageDataCollaborationPolicyProperties)` was added
 * `dataCollaborationPolicyProperties()` was added
+* `withAllowSharedKeyAccessForServices(models.StorageAccountSharedKeyAccessProperties)` was added
+* `withDataCollaborationPolicyProperties(models.StorageDataCollaborationPolicyProperties)` was added
+* `allowSharedKeyAccessForServices()` was added
 
 #### `models.AllowedCopyScope` was modified
 
@@ -375,10 +358,10 @@
 
 #### `models.StorageAccountCreateParameters` was modified
 
-* `dataCollaborationPolicyProperties()` was added
 * `allowSharedKeyAccessForServices()` was added
-* `withDataCollaborationPolicyProperties(models.StorageDataCollaborationPolicyProperties)` was added
 * `withAllowSharedKeyAccessForServices(models.StorageAccountSharedKeyAccessProperties)` was added
+* `withDataCollaborationPolicyProperties(models.StorageDataCollaborationPolicyProperties)` was added
+* `dataCollaborationPolicyProperties()` was added
 
 ## 2.55.3 (2026-01-29)
 

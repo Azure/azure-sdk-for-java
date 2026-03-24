@@ -4,53 +4,58 @@
 
 package com.azure.resourcemanager.storage.models;
 
-import com.azure.core.util.ExpandableStringEnum;
-import java.util.Collection;
-
 /**
- * The trigger type of the storage task assignment execution.
+ * Defines values for TriggerType.
  */
-public final class TriggerType extends ExpandableStringEnum<TriggerType> {
+public enum TriggerType {
     /**
-     * Static value RunOnce for TriggerType.
+     * Enum value RunOnce.
      */
-    public static final TriggerType RUN_ONCE = fromString("RunOnce");
+    RUN_ONCE("RunOnce"),
 
     /**
-     * Static value OnSchedule for TriggerType.
+     * Enum value OnSchedule.
      */
-    public static final TriggerType ON_SCHEDULE = fromString("OnSchedule");
+    ON_SCHEDULE("OnSchedule"),
 
     /**
-     * Run the task as a mock for testing.
+     * Enum value MockRun.
      */
-    public static final TriggerType MOCK_RUN = fromString("MockRun");
+    MOCK_RUN("MockRun");
 
     /**
-     * Creates a new instance of TriggerType value.
-     * 
-     * @deprecated Use the {@link #fromString(String)} factory method.
+     * The actual serialized value for a TriggerType instance.
      */
-    @Deprecated
-    public TriggerType() {
+    private final String value;
+
+    TriggerType(String value) {
+        this.value = value;
     }
 
     /**
-     * Creates or finds a TriggerType from its string representation.
+     * Parses a serialized value to a TriggerType instance.
      * 
-     * @param name a name to look for.
-     * @return the corresponding TriggerType.
+     * @param value the serialized value to parse.
+     * @return the parsed TriggerType object, or null if unable to parse.
      */
-    public static TriggerType fromString(String name) {
-        return fromString(name, TriggerType.class);
+    public static TriggerType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
+        TriggerType[] items = TriggerType.values();
+        for (TriggerType item : items) {
+            if (item.toString().equalsIgnoreCase(value)) {
+                return item;
+            }
+        }
+        return null;
     }
 
     /**
-     * Gets known TriggerType values.
-     * 
-     * @return known TriggerType values.
+     * {@inheritDoc}
      */
-    public static Collection<TriggerType> values() {
-        return values(TriggerType.class);
+    @Override
+    public String toString() {
+        return this.value;
     }
 }
