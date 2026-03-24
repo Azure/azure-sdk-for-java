@@ -32,12 +32,8 @@ public final class OpenAIsImpl implements OpenAIs {
         String integrationName, Context context) {
         Response<OpenAIIntegrationRPModelInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, monitorName, integrationName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new OpenAIIntegrationRPModelImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new OpenAIIntegrationRPModelImpl(inner.getValue(), this.manager()));
     }
 
     public OpenAIIntegrationRPModel get(String resourceGroupName, String monitorName, String integrationName) {
@@ -73,12 +69,8 @@ public final class OpenAIsImpl implements OpenAIs {
         String integrationName, Context context) {
         Response<OpenAIIntegrationStatusResponseInner> inner
             = this.serviceClient().getStatusWithResponse(resourceGroupName, monitorName, integrationName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new OpenAIIntegrationStatusResponseImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new OpenAIIntegrationStatusResponseImpl(inner.getValue(), this.manager()));
     }
 
     public OpenAIIntegrationStatusResponse getStatus(String resourceGroupName, String monitorName,

@@ -8,13 +8,18 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Timeout policy for Gateway V2 (Thin Client) requests.
- * This policy has separate configurations for point read operations vs query/change feed operations.
+ * Timeout policy for Gateway V2 (Thin Client) data-plane requests.
+ * Applies to all thin client Document operations: point reads, queries, change feed,
+ * creates, replaces, deletes, patches, and batch operations.
+ *
+ * Currently uses a single timeout configuration. Point-read vs query/change-feed
+ * instances are kept separate so they can diverge in the future without breaking changes.
  */
 public class HttpTimeoutPolicyForGatewayV2 extends HttpTimeoutPolicy {
 
     public static final HttpTimeoutPolicy INSTANCE_FOR_POINT_READ = new HttpTimeoutPolicyForGatewayV2(true);
     public static final HttpTimeoutPolicy INSTANCE_FOR_QUERY_AND_CHANGE_FEED = new HttpTimeoutPolicyForGatewayV2(false);
+    public static final HttpTimeoutPolicy DEFAULT = new HttpTimeoutPolicyForGatewayV2(false);
 
     private final boolean isPointRead;
 

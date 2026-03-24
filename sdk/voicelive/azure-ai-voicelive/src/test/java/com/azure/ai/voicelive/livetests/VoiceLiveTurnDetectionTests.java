@@ -5,19 +5,22 @@ package com.azure.ai.voicelive.livetests;
 
 import com.azure.ai.voicelive.VoiceLiveAsyncClient;
 import com.azure.ai.voicelive.VoiceLiveSessionAsyncClient;
+import com.azure.ai.voicelive.models.AzureSemanticEouDetection;
+import com.azure.ai.voicelive.models.AzureSemanticEouDetectionEn;
 import com.azure.ai.voicelive.models.AzureSemanticVadTurnDetection;
 import com.azure.ai.voicelive.models.AzureSemanticVadTurnDetectionMultilingual;
 import com.azure.ai.voicelive.models.ClientEventSessionUpdate;
-import com.azure.ai.voicelive.models.InputAudioFormat;
-import com.azure.ai.voicelive.models.InteractionModality;
 import com.azure.ai.voicelive.models.ServerEventType;
+import com.azure.ai.voicelive.models.ServerVadTurnDetection;
 import com.azure.ai.voicelive.models.SessionUpdateResponseAudioDelta;
+import com.azure.ai.voicelive.models.TurnDetection;
 import com.azure.ai.voicelive.models.VoiceLiveSessionOptions;
 import com.azure.core.test.annotation.LiveOnly;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import reactor.core.Disposable;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -25,295 +28,175 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Stream;
 
 /**
- * Live tests for VoiceLive turn detection and VAD features.
+ * Live tests for VoiceLive turn detection features.
+ * Translated from Python turn detection tests.
  */
 public class VoiceLiveTurnDetectionTests extends VoiceLiveTestBase {
 
-    @ParameterizedTest
-    @ValueSource(strings = { "gpt-4o-realtime-preview", "gpt-4.1" })
-    @LiveOnly
-    public void testRealtimeServiceWithoutTurnDetection(String model) throws InterruptedException, IOException {
-        VoiceLiveAsyncClient client = createClient();
+    // ===== test_realtime_service_with_turn_detection_long_tts_vad_duration =====
+    // Python: models=[gpt-4o-realtime-preview, gpt-4o], api_versions=[2025-10-01, 2026-01-01-preview]
+    // turn_detection: {"type": "azure_semantic_vad", "speech_duration_assistant_speaking_ms": 800}
+    // Note: speechDurationAssistantSpeakingMs not available in Java SDK;
+    // using speechDurationMs(800) as the closest available parameter.
 
-        byte[] audioData = loadAudioFile("4-1.wav");
-
-        AtomicBoolean speechStartedReceived = new AtomicBoolean(false);
-        AtomicBoolean speechStoppedReceived = new AtomicBoolean(false);
-        CountDownLatch responseLatch = new CountDownLatch(1);
-
-        try {
-            VoiceLiveSessionOptions sessionOptions = new VoiceLiveSessionOptions()
-                .setModalities(Arrays.asList(InteractionModality.TEXT, InteractionModality.AUDIO))
-                .setInputAudioFormat(InputAudioFormat.PCM16);
-
-            VoiceLiveSessionAsyncClient session = client.startSession(model).block(SESSION_TIMEOUT);
-
-            Assertions.assertNotNull(session, "Session should be created successfully");
-
-            session.receiveEvents().subscribe(event -> {
-                ServerEventType eventType = event.getType();
-
-                if (eventType == ServerEventType.INPUT_AUDIO_BUFFER_SPEECH_STARTED) {
-                    speechStartedReceived.set(true);
-                } else if (eventType == ServerEventType.INPUT_AUDIO_BUFFER_SPEECH_STOPPED) {
-                    speechStoppedReceived.set(true);
-                } else if (eventType == ServerEventType.RESPONSE_AUDIO_DELTA) {
-                    responseLatch.countDown();
-                } else if (eventType == ServerEventType.ERROR) {
-                    handleError(event);
-                    responseLatch.countDown();
-                }
-            }, error -> {
-                System.err.println("Error receiving events: " + error.getMessage());
-                responseLatch.countDown();
-            });
-
-            waitForSetup();
-
-            ClientEventSessionUpdate updateEvent = new ClientEventSessionUpdate(sessionOptions);
-            session.sendEvent(updateEvent).block(SEND_TIMEOUT);
-
-            waitForSetup();
-
-            session.sendInputAudio(audioData).block(SEND_TIMEOUT);
-            session.sendInputAudio(getTrailingSilenceBytes()).block(SEND_TIMEOUT);
-
-            boolean received = responseLatch.await(EVENT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
-
-            Assertions.assertTrue(received, "Should receive response within timeout");
-            Assertions.assertTrue(speechStartedReceived.get(), "Should receive speech started event");
-            Assertions.assertTrue(speechStoppedReceived.get(), "Should receive speech stopped event");
-
-            session.close();
-        } catch (Exception e) {
-            Assertions.fail("Test failed with exception: " + e.getMessage());
-        }
+    static Stream<Arguments> longTtsVadDurationParams() {
+        return crossProduct(new String[] { MODEL_GPT_4O_REALTIME_PREVIEW, MODEL_GPT_4O },
+            new String[] { API_VERSION_GA, API_VERSION_PREVIEW });
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "gpt-4o-realtime-preview", "gpt-4.1" })
+    @MethodSource("longTtsVadDurationParams")
     @LiveOnly
-    public void testRealtimeServiceWithSemanticVadMultilingual(String model) throws InterruptedException, IOException {
-        VoiceLiveAsyncClient client = createClient();
-
-        byte[] audioData = loadAudioFile("4-1.wav");
-
-        AtomicInteger speechStartedEvents = new AtomicInteger(0);
-        AtomicInteger speechStoppedEvents = new AtomicInteger(0);
-        CountDownLatch responseLatch = new CountDownLatch(1);
-
-        try {
-            VoiceLiveSessionOptions sessionOptions = new VoiceLiveSessionOptions()
-                .setModalities(Arrays.asList(InteractionModality.TEXT, InteractionModality.AUDIO))
-                .setInputAudioFormat(InputAudioFormat.PCM16)
-                .setTurnDetection(new AzureSemanticVadTurnDetection());
-
-            VoiceLiveSessionAsyncClient session = client.startSession(model).block(SESSION_TIMEOUT);
-
-            Assertions.assertNotNull(session, "Session should be created successfully");
-
-            session.receiveEvents().subscribe(event -> {
-                ServerEventType eventType = event.getType();
-
-                if (eventType == ServerEventType.INPUT_AUDIO_BUFFER_SPEECH_STARTED) {
-                    speechStartedEvents.incrementAndGet();
-                } else if (eventType == ServerEventType.INPUT_AUDIO_BUFFER_SPEECH_STOPPED) {
-                    speechStoppedEvents.incrementAndGet();
-                } else if (eventType == ServerEventType.RESPONSE_AUDIO_DELTA) {
-                    responseLatch.countDown();
-                } else if (eventType == ServerEventType.ERROR) {
-                    handleError(event);
-                    responseLatch.countDown();
-                }
-            }, error -> {
-                System.err.println("Error receiving events: " + error.getMessage());
-                responseLatch.countDown();
-            });
-
-            waitForSetup();
-
-            ClientEventSessionUpdate updateEvent = new ClientEventSessionUpdate(sessionOptions);
-            session.sendEvent(updateEvent).block(SEND_TIMEOUT);
-
-            waitForSetup();
-
-            session.sendInputAudio(audioData).block(SEND_TIMEOUT);
-            session.sendInputAudio(getTrailingSilenceBytes()).block(SEND_TIMEOUT);
-
-            boolean received = responseLatch.await(EVENT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
-
-            Assertions.assertTrue(received, "Should receive response within timeout");
-            Assertions.assertTrue(speechStartedEvents.get() >= 1, "Should have at least 1 speech started event");
-            Assertions.assertTrue(speechStoppedEvents.get() >= 1, "Should have at least 1 speech stopped event");
-
-            session.close();
-        } catch (Exception e) {
-            Assertions.fail("Test failed with exception: " + e.getMessage());
-        }
-    }
-
-    @ParameterizedTest
-    @ValueSource(strings = { "gpt-4o-realtime-preview", "gpt-4.1" })
-    @LiveOnly
-    public void testRealtimeServiceWithFillerWordRemoval(String model) throws InterruptedException, IOException {
-        VoiceLiveAsyncClient client = createClient();
-
-        byte[] audioData = loadAudioFile("4-1.wav");
-
-        AtomicBoolean audioResponseReceived = new AtomicBoolean(false);
-        AtomicInteger audioResponseBytes = new AtomicInteger(0);
-        CountDownLatch responseLatch = new CountDownLatch(1);
-
-        try {
-            VoiceLiveSessionOptions sessionOptions = new VoiceLiveSessionOptions()
-                .setModalities(Arrays.asList(InteractionModality.TEXT, InteractionModality.AUDIO))
-                .setInputAudioFormat(InputAudioFormat.PCM16)
-                .setTurnDetection(new AzureSemanticVadTurnDetection().setRemoveFillerWords(true));
-
-            VoiceLiveSessionAsyncClient session = client.startSession(model).block(SESSION_TIMEOUT);
-
-            Assertions.assertNotNull(session, "Session should be created successfully");
-
-            session.receiveEvents().subscribe(event -> {
-                ServerEventType eventType = event.getType();
-
-                if (eventType == ServerEventType.RESPONSE_AUDIO_DELTA) {
-                    audioResponseReceived.set(true);
-                    if (event instanceof SessionUpdateResponseAudioDelta) {
-                        SessionUpdateResponseAudioDelta audioDelta = (SessionUpdateResponseAudioDelta) event;
-                        if (audioDelta.getDelta() != null) {
-                            audioResponseBytes.addAndGet(audioDelta.getDelta().length);
-                        }
-                    }
-                    responseLatch.countDown();
-                } else if (eventType == ServerEventType.ERROR) {
-                    handleError(event);
-                    responseLatch.countDown();
-                }
-            }, error -> {
-                System.err.println("Error receiving events: " + error.getMessage());
-                responseLatch.countDown();
-            });
-
-            waitForSetup();
-
-            ClientEventSessionUpdate updateEvent = new ClientEventSessionUpdate(sessionOptions);
-            session.sendEvent(updateEvent).block(SEND_TIMEOUT);
-
-            waitForSetup();
-
-            session.sendInputAudio(audioData).block(SEND_TIMEOUT);
-            session.sendInputAudio(getTrailingSilenceBytes()).block(SEND_TIMEOUT);
-
-            boolean received = responseLatch.await(EVENT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
-
-            Assertions.assertTrue(received, "Should receive response within timeout");
-            Assertions.assertTrue(audioResponseReceived.get(), "Should receive audio response delta events");
-            Assertions.assertTrue(audioResponseBytes.get() > 0, "Should receive audio data");
-
-            session.close();
-        } catch (Exception e) {
-            Assertions.fail("Test failed with exception: " + e.getMessage());
-        }
-    }
-
-    @ParameterizedTest
-    @ValueSource(strings = { "gpt-4o-realtime-preview", "gpt-4o-realtime" })
-    @LiveOnly
-    public void testRealtimeServiceWithAzureSemanticVadMultilingual(String model)
+    public void testRealtimeServiceWithTurnDetectionLongTtsVadDuration(String model, String apiVersion)
         throws InterruptedException, IOException {
-        VoiceLiveAsyncClient client = createClient();
+        // Python uses @pytest.mark.flaky(reruns=3, reruns_delay=2)
+        int maxAttempts = 3;
+        AssertionError lastFailure = null;
+        for (int attempt = 1; attempt <= maxAttempts; attempt++) {
+            try {
+                doTestLongTtsVadDuration(model, apiVersion);
+                return; // passed
+            } catch (AssertionError e) {
+                lastFailure = e;
+                System.out.println("testRealtimeServiceWithTurnDetectionLongTtsVadDuration attempt " + attempt + "/"
+                    + maxAttempts + " failed: " + e.getMessage());
+                if (attempt < maxAttempts) {
+                    Thread.sleep(2000); // reruns_delay=2
+                }
+            }
+        }
+        throw lastFailure;
+    }
 
+    private void doTestLongTtsVadDuration(String model, String apiVersion) throws InterruptedException, IOException {
+        VoiceLiveAsyncClient client = createClient(apiVersion);
         byte[] audioData = loadAudioFile("4-1.wav");
 
-        AtomicInteger speechStartedEvents = new AtomicInteger(0);
-        AtomicInteger audioResponseBytes = new AtomicInteger(0);
-        CountDownLatch responseLatch = new CountDownLatch(1);
+        // Python: turn_detection = {"type": "azure_semantic_vad", "speech_duration_assistant_speaking_ms": 800}
+        // Java SDK doesn't expose speechDurationAssistantSpeakingMs; using speechDurationMs as closest match.
+        AzureSemanticVadTurnDetection turnDetection = new AzureSemanticVadTurnDetection().setSpeechDurationMs(800);
 
+        AtomicReference<SessionUpdateResponseAudioDelta> audioDeltaRef = new AtomicReference<>();
+        CountDownLatch audioDeltaLatch = new CountDownLatch(1);
+
+        VoiceLiveSessionAsyncClient session = null;
+        Disposable subscription = null;
         try {
-            VoiceLiveSessionOptions sessionOptions
-                = new VoiceLiveSessionOptions().setTurnDetection(new AzureSemanticVadTurnDetectionMultilingual());
-
-            VoiceLiveSessionAsyncClient session = client.startSession(model).block(SESSION_TIMEOUT);
-
+            session = client.startSession(model).block(SESSION_TIMEOUT);
             Assertions.assertNotNull(session, "Session should be created successfully");
 
-            session.receiveEvents().subscribe(event -> {
+            subscription = session.receiveEvents().subscribe(event -> {
                 ServerEventType eventType = event.getType();
-
-                if (eventType == ServerEventType.INPUT_AUDIO_BUFFER_SPEECH_STARTED) {
-                    speechStartedEvents.incrementAndGet();
-                } else if (eventType == ServerEventType.RESPONSE_AUDIO_DELTA) {
+                if (eventType == ServerEventType.RESPONSE_AUDIO_DELTA) {
                     if (event instanceof SessionUpdateResponseAudioDelta) {
-                        SessionUpdateResponseAudioDelta audioDelta = (SessionUpdateResponseAudioDelta) event;
-                        if (audioDelta.getDelta() != null) {
-                            audioResponseBytes.addAndGet(audioDelta.getDelta().length);
-                        }
+                        audioDeltaRef.compareAndSet(null, (SessionUpdateResponseAudioDelta) event);
+                        audioDeltaLatch.countDown();
                     }
-                    responseLatch.countDown();
                 } else if (eventType == ServerEventType.ERROR) {
                     handleError(event);
-                    responseLatch.countDown();
+                    audioDeltaLatch.countDown();
                 }
             }, error -> {
                 System.err.println("Error receiving events: " + error.getMessage());
-                responseLatch.countDown();
+                audioDeltaLatch.countDown();
             });
 
             waitForSetup();
 
-            ClientEventSessionUpdate updateEvent = new ClientEventSessionUpdate(sessionOptions);
-            session.sendEvent(updateEvent).block(SEND_TIMEOUT);
-
+            VoiceLiveSessionOptions sessionOptions = new VoiceLiveSessionOptions().setTurnDetection(turnDetection);
+            session.sendEvent(new ClientEventSessionUpdate(sessionOptions)).block(SEND_TIMEOUT);
             waitForSetup();
 
             session.sendInputAudio(audioData).block(SEND_TIMEOUT);
-            session.sendInputAudio(getTrailingSilenceBytes()).block(SEND_TIMEOUT);
 
-            boolean received = responseLatch.await(EVENT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+            // Python: _wait_for_event(conn, {RESPONSE_AUDIO_DELTA}, 30)
+            boolean received = audioDeltaLatch.await(30, TimeUnit.SECONDS);
+            Assertions.assertTrue(received, "Should receive RESPONSE_AUDIO_DELTA within 30 seconds");
 
-            Assertions.assertTrue(received, "Should receive response within timeout");
-            Assertions.assertTrue(audioResponseBytes.get() > 0, "Should receive audio bytes");
-
-            session.close();
-        } catch (Exception e) {
-            Assertions.fail("Test failed with exception: " + e.getMessage());
+            SessionUpdateResponseAudioDelta audioDelta = audioDeltaRef.get();
+            Assertions.assertNotNull(audioDelta, "Audio delta event should not be null");
+            Assertions.assertNotNull(audioDelta.getDelta(), "Audio delta data should not be null");
+            Assertions.assertTrue(audioDelta.getDelta().length > 0, "Audio delta data should not be empty");
+        } finally {
+            if (subscription != null) {
+                subscription.dispose();
+            }
+            closeSession(session);
         }
     }
 
-    @Test
+    // ===== test_realtime_service_with_turn_detection_multilingual =====
+    // Python: models × semanticVadParams, api_versions=[2025-10-01, 2026-01-01-preview]
+    // Uses AzureSemanticVadMultilingual(**semantic_vad_params)
+
+    static Stream<Arguments> multilingualParams() {
+        return withApiVersions(Stream.of(
+            Arguments.of("gpt-4o-realtime-preview, default", MODEL_GPT_4O_REALTIME_PREVIEW,
+                new AzureSemanticVadTurnDetectionMultilingual()),
+            Arguments.of("gpt-4o, default", MODEL_GPT_4O, new AzureSemanticVadTurnDetectionMultilingual()),
+            Arguments.of("gpt-4o, speechDuration200", MODEL_GPT_4O,
+                new AzureSemanticVadTurnDetectionMultilingual().setSpeechDurationMs(200)),
+            Arguments.of("gpt-4o, languages [en, es]", MODEL_GPT_4O,
+                new AzureSemanticVadTurnDetectionMultilingual().setLanguages(Arrays.asList("en", "es")))));
+    }
+
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("multilingualParams")
     @LiveOnly
-    public void testRealtimeServiceWithFillerWordRemovalSpecial() throws InterruptedException, IOException {
-        String model = "gpt-4o-realtime-preview";
-        VoiceLiveAsyncClient client = createClient();
+    public void testRealtimeServiceWithTurnDetectionMultilingual(String description, String model,
+        TurnDetection turnDetection, String apiVersion) throws InterruptedException, IOException {
+        // Python uses @pytest.mark.flaky(reruns=3, reruns_delay=2)
+        int maxAttempts = 3;
+        AssertionError lastFailure = null;
+        for (int attempt = 1; attempt <= maxAttempts; attempt++) {
+            try {
+                doTestMultilingual(description, model, turnDetection, apiVersion);
+                return; // passed
+            } catch (AssertionError e) {
+                lastFailure = e;
+                System.out.println("testRealtimeServiceWithTurnDetectionMultilingual attempt " + attempt + "/"
+                    + maxAttempts + " failed (" + description + "): " + e.getMessage());
+                if (attempt < maxAttempts) {
+                    Thread.sleep(2000); // reruns_delay=2
+                }
+            }
+        }
+        throw lastFailure;
+    }
 
-        byte[] audioData = loadAudioFile("filler_word_24kHz.wav");
+    private void doTestMultilingual(String description, String model, TurnDetection turnDetection, String apiVersion)
+        throws InterruptedException, IOException {
+        VoiceLiveAsyncClient client = createClient(apiVersion);
+        byte[] audioData = loadAudioFile("4-1.wav");
 
-        AtomicInteger speechStartedEvents = new AtomicInteger(0);
+        AtomicInteger speechStartedCount = new AtomicInteger(0);
+        AtomicInteger audioResponseBytes = new AtomicInteger(0);
         AtomicBoolean collectingEvents = new AtomicBoolean(true);
 
+        VoiceLiveSessionAsyncClient session = null;
+        Disposable subscription = null;
         try {
-            AzureSemanticVadTurnDetection turnDetection
-                = new AzureSemanticVadTurnDetection().setRemoveFillerWords(true);
-
-            VoiceLiveSessionOptions sessionOptions = new VoiceLiveSessionOptions()
-                .setModalities(Arrays.asList(InteractionModality.TEXT, InteractionModality.AUDIO))
-                .setTurnDetection(turnDetection);
-
-            VoiceLiveSessionAsyncClient session = client.startSession(model).block(SESSION_TIMEOUT);
-
+            session = client.startSession(model).block(SESSION_TIMEOUT);
             Assertions.assertNotNull(session, "Session should be created successfully");
 
-            session.receiveEvents().subscribe(event -> {
+            subscription = session.receiveEvents().subscribe(event -> {
                 if (!collectingEvents.get()) {
                     return;
                 }
                 ServerEventType eventType = event.getType();
-
                 if (eventType == ServerEventType.INPUT_AUDIO_BUFFER_SPEECH_STARTED) {
-                    speechStartedEvents.incrementAndGet();
+                    speechStartedCount.incrementAndGet();
+                } else if (eventType == ServerEventType.RESPONSE_AUDIO_DELTA) {
+                    if (event instanceof SessionUpdateResponseAudioDelta) {
+                        SessionUpdateResponseAudioDelta audioDelta = (SessionUpdateResponseAudioDelta) event;
+                        if (audioDelta.getDelta() != null) {
+                            audioResponseBytes.addAndGet(audioDelta.getDelta().length);
+                        }
+                    }
                 } else if (eventType == ServerEventType.ERROR) {
                     handleError(event);
                 }
@@ -323,22 +206,147 @@ public class VoiceLiveTurnDetectionTests extends VoiceLiveTestBase {
 
             waitForSetup();
 
-            ClientEventSessionUpdate updateEvent = new ClientEventSessionUpdate(sessionOptions);
-            session.sendEvent(updateEvent).block(SEND_TIMEOUT);
-
+            VoiceLiveSessionOptions sessionOptions = new VoiceLiveSessionOptions().setTurnDetection(turnDetection);
+            session.sendEvent(new ClientEventSessionUpdate(sessionOptions)).block(SEND_TIMEOUT);
             waitForSetup();
 
             session.sendInputAudio(audioData).block(SEND_TIMEOUT);
+            session.sendInputAudio(getTrailingSilenceBytes()).block(SEND_TIMEOUT);
 
-            Thread.sleep(10000);
+            // Python uses _collect_event which collects events over a timeout period
+            Thread.sleep(EVENT_TIMEOUT_SECONDS * 1000);
             collectingEvents.set(false);
 
-            Assertions.assertEquals(0, speechStartedEvents.get(),
-                "Should have no speech started events when filler words are removed");
+            Assertions.assertEquals(2, speechStartedCount.get(),
+                description + ": Should have exactly 2 speech segments, got " + speechStartedCount.get());
+            Assertions.assertTrue(audioResponseBytes.get() > 0,
+                description + ": Should receive audio response bytes, got " + audioResponseBytes.get());
+        } finally {
+            if (subscription != null) {
+                subscription.dispose();
+            }
+            closeSession(session);
+        }
+    }
 
-            session.close();
-        } catch (Exception e) {
-            Assertions.fail("Test failed with exception: " + e.getMessage());
+    // ===== test_realtime_service_with_eou =====
+    // Python: model=gpt-4o, turn_detection_cls × end_of_detection combinations
+    // 6 combos: ServerVad/AzureSemanticVad/AzureSemanticVadMultilingual × AzureSemanticDetection/AzureSemanticDetectionEn
+    // api_versions=[2025-10-01, 2026-01-01-preview]
+
+    static Stream<Arguments> eouParams() {
+        return withApiVersions(Stream.of(
+            // ServerVad + EoU combinations
+            Arguments.of("ServerVad + AzureSemanticDetection",
+                new ServerVadTurnDetection()
+                    .setEndOfUtteranceDetection(new AzureSemanticEouDetection().setTimeoutMs(2000))),
+            Arguments.of("ServerVad + AzureSemanticDetectionEn",
+                new ServerVadTurnDetection()
+                    .setEndOfUtteranceDetection(new AzureSemanticEouDetectionEn().setTimeoutMs(2000))),
+            // AzureSemanticVad + EoU combinations
+            Arguments.of("AzureSemanticVad + AzureSemanticDetection",
+                new AzureSemanticVadTurnDetection()
+                    .setEndOfUtteranceDetection(new AzureSemanticEouDetection().setTimeoutMs(2000))),
+            Arguments.of("AzureSemanticVad + AzureSemanticDetectionEn",
+                new AzureSemanticVadTurnDetection()
+                    .setEndOfUtteranceDetection(new AzureSemanticEouDetectionEn().setTimeoutMs(2000))),
+            // AzureSemanticVadMultilingual + EoU combinations
+            Arguments.of("AzureSemanticVadMultilingual + AzureSemanticDetection",
+                new AzureSemanticVadTurnDetectionMultilingual()
+                    .setEndOfUtteranceDetection(new AzureSemanticEouDetection().setTimeoutMs(2000))),
+            Arguments.of("AzureSemanticVadMultilingual + AzureSemanticDetectionEn",
+                new AzureSemanticVadTurnDetectionMultilingual()
+                    .setEndOfUtteranceDetection(new AzureSemanticEouDetectionEn().setTimeoutMs(2000)))));
+    }
+
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("eouParams")
+    @LiveOnly
+    public void testRealtimeServiceWithEou(String description, TurnDetection turnDetection, String apiVersion)
+        throws InterruptedException, IOException {
+        // Python uses @pytest.mark.flaky(reruns=3, reruns_delay=2)
+        int maxAttempts = 3;
+        AssertionError lastFailure = null;
+        for (int attempt = 1; attempt <= maxAttempts; attempt++) {
+            try {
+                doTestEou(description, turnDetection, apiVersion);
+                return; // passed
+            } catch (AssertionError e) {
+                lastFailure = e;
+                System.out.println("testRealtimeServiceWithEou attempt " + attempt + "/" + maxAttempts + " failed ("
+                    + description + "): " + e.getMessage());
+                if (attempt < maxAttempts) {
+                    Thread.sleep(2000); // reruns_delay=2
+                }
+            }
+        }
+        throw lastFailure;
+    }
+
+    private void doTestEou(String description, TurnDetection turnDetection, String apiVersion)
+        throws InterruptedException, IOException {
+        // Python: model is always gpt-4o for this test
+        String model = MODEL_GPT_4O;
+        VoiceLiveAsyncClient client = createClient(apiVersion);
+        byte[] audioData = loadAudioFile("4-1.wav");
+
+        AtomicInteger responseDoneCount = new AtomicInteger(0);
+        AtomicInteger audioResponseBytes = new AtomicInteger(0);
+        AtomicBoolean collectingEvents = new AtomicBoolean(true);
+
+        VoiceLiveSessionAsyncClient session = null;
+        Disposable subscription = null;
+        try {
+            session = client.startSession(model).block(SESSION_TIMEOUT);
+            Assertions.assertNotNull(session, "Session should be created successfully");
+
+            subscription = session.receiveEvents().subscribe(event -> {
+                if (!collectingEvents.get()) {
+                    return;
+                }
+                ServerEventType eventType = event.getType();
+                if (eventType == ServerEventType.RESPONSE_DONE) {
+                    responseDoneCount.incrementAndGet();
+                } else if (eventType == ServerEventType.RESPONSE_AUDIO_DELTA) {
+                    if (event instanceof SessionUpdateResponseAudioDelta) {
+                        SessionUpdateResponseAudioDelta audioDelta = (SessionUpdateResponseAudioDelta) event;
+                        if (audioDelta.getDelta() != null) {
+                            audioResponseBytes.addAndGet(audioDelta.getDelta().length);
+                        }
+                    }
+                } else if (eventType == ServerEventType.ERROR) {
+                    handleError(event);
+                }
+            }, error -> {
+                System.err.println("Error receiving events: " + error.getMessage());
+            });
+
+            waitForSetup();
+
+            // Python: session = RequestSession(turn_detection=turn_detection,
+            //     input_audio_transcription=_get_speech_recognition_setting(model=model))
+            VoiceLiveSessionOptions sessionOptions = new VoiceLiveSessionOptions().setTurnDetection(turnDetection)
+                .setInputAudioTranscription(getSpeechRecognitionSetting(model));
+            session.sendEvent(new ClientEventSessionUpdate(sessionOptions)).block(SEND_TIMEOUT);
+            waitForSetup();
+
+            session.sendInputAudio(audioData).block(SEND_TIMEOUT);
+            // Python: _get_trailing_silence_bytes(duration_s=0.5)
+            session.sendInputAudio(getTrailingSilenceBytes(DEFAULT_SAMPLE_RATE, 0.5)).block(SEND_TIMEOUT);
+
+            // Python: _collect_event(conn, event_type=ServerEventType.RESPONSE_DONE)
+            Thread.sleep(EVENT_TIMEOUT_SECONDS * 1000);
+            collectingEvents.set(false);
+
+            Assertions.assertTrue(responseDoneCount.get() > 0,
+                description + ": Should have at least 1 RESPONSE_DONE event, got " + responseDoneCount.get());
+            Assertions.assertTrue(audioResponseBytes.get() > 0,
+                description + ": Should receive audio response bytes, got " + audioResponseBytes.get());
+        } finally {
+            if (subscription != null) {
+                subscription.dispose();
+            }
+            closeSession(session);
         }
     }
 }

@@ -35,12 +35,8 @@ public final class ApplyUpdatesImpl implements ApplyUpdates {
         Response<ApplyUpdateInner> inner = this.serviceClient()
             .getParentWithResponse(resourceGroupName, providerName, resourceParentType, resourceParentName,
                 resourceType, resourceName, applyUpdateName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ApplyUpdateImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ApplyUpdateImpl(inner.getValue(), this.manager()));
     }
 
     public ApplyUpdate getParent(String resourceGroupName, String providerName, String resourceParentType,
@@ -59,12 +55,8 @@ public final class ApplyUpdatesImpl implements ApplyUpdates {
         String resourceName, String applyUpdateName, Context context) {
         Response<ApplyUpdateInner> inner = this.serviceClient()
             .getWithResponse(resourceGroupName, providerName, resourceType, resourceName, applyUpdateName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ApplyUpdateImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ApplyUpdateImpl(inner.getValue(), this.manager()));
     }
 
     public ApplyUpdate get(String resourceGroupName, String providerName, String resourceType, String resourceName,
@@ -84,12 +76,8 @@ public final class ApplyUpdatesImpl implements ApplyUpdates {
         Response<ApplyUpdateInner> inner = this.serviceClient()
             .createOrUpdateOrCancelWithResponse(resourceGroupName, providerName, resourceType, resourceName,
                 applyUpdateName, applyUpdate, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ApplyUpdateImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ApplyUpdateImpl(inner.getValue(), this.manager()));
     }
 
     public ApplyUpdate createOrUpdateOrCancel(String resourceGroupName, String providerName, String resourceType,

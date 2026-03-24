@@ -13,10 +13,10 @@ public final class NginxDeploymentApiKeyListResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NginxDeploymentApiKeyListResponse model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"hint\":\"htnapczwlokjyem\",\"endDateTime\":\"2021-01-17T01:20:32Z\"},\"id\":\"ipjoxzjnchgejs\",\"name\":\"odmailzyd\",\"type\":\"h\"},{\"properties\":{\"hint\":\"yahux\",\"endDateTime\":\"2021-07-08T12:15:19Z\"},\"id\":\"qnjaqwix\",\"name\":\"sprozvcput\",\"type\":\"gjvw\"},{\"properties\":{\"hint\":\"atscmd\",\"endDateTime\":\"2021-07-15T17:27:17Z\"},\"id\":\"u\",\"name\":\"suuv\",\"type\":\"kjozkrwfnd\"},{\"properties\":{\"hint\":\"jpslwejd\",\"endDateTime\":\"2021-02-19T06:09:33Z\"},\"id\":\"yoqpsoaccta\",\"name\":\"akl\",\"type\":\"lahbcryff\"}],\"nextLink\":\"dosyg\"}")
+            "{\"value\":[{\"properties\":{\"hint\":\"vnipjox\",\"endDateTime\":\"2020-12-27T04:20:57Z\"},\"id\":\"hgejspodma\",\"name\":\"lzydehojwyahux\",\"type\":\"npmqnjaqwixjspro\"},{\"properties\":{\"hint\":\"putegjvwmfd\",\"endDateTime\":\"2021-10-01T05:00:03Z\"},\"id\":\"mdvpjhulsu\",\"name\":\"vmkjozkrwfndiodj\",\"type\":\"slwejdpvw\"}],\"nextLink\":\"oqpsoa\"}")
             .toObject(NginxDeploymentApiKeyListResponse.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-17T01:20:32Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2020-12-27T04:20:57Z"),
             model.value().get(0).properties().endDateTime());
-        Assertions.assertEquals("dosyg", model.nextLink());
+        Assertions.assertEquals("oqpsoa", model.nextLink());
     }
 }

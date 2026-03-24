@@ -1097,7 +1097,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
         return resourceType == ResourceType.StoredProcedure && operationType != OperationType.ExecuteJavaScript;
     }
 
-    private static void safeSilentRelease(Object msg) {
+    static void safeSilentRelease(Object msg) {
         try {
             ReferenceCountUtil.release(msg);
         } catch (Throwable t) {

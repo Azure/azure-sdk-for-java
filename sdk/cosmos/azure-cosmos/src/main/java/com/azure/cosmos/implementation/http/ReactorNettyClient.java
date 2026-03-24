@@ -186,9 +186,20 @@ public class ReactorNettyClient implements HttpClient {
 
         final AtomicReference<ReactorNettyHttpResponse> responseReference = new AtomicReference<>();
 
+        // Per-request CONNECT_TIMEOUT_MILLIS via reactor-netty's immutable HttpClient.
+        // .option() returns a new config snapshot — does NOT mutate the shared httpClient.
+        // Thin client requests (isThinClientRequest=true): connect timeout is configured via
+        // HttpClientConfig.getThinClientConnectTimeoutMs() (default 5s) to fail fast.
+        // Standard gateway requests: 45s (default).
+        // Note: CONNECT_TIMEOUT_MILLIS controls TCP SYN→SYN-ACK timeout for NEW connections.
+        // For H2, once a TCP connection exists, stream acquisition is near-instant (~sub-ms)
+        // so pendingAcquireTimeout (pool-level 45s) is effectively never hit.
+        int connectTimeoutMs = this.resolveConnectTimeoutMs(request);
+
         return this.httpClient
             .keepAlive(this.httpClientConfig.isConnectionKeepAlive())
             .port(request.port())
+            .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, connectTimeoutMs)
             .responseTimeout(responseTimeout)
             .request(HttpMethod.valueOf(request.httpMethod().toString()))
             .uri(request.uri().toASCIIString())
@@ -240,6 +251,27 @@ public class ReactorNettyClient implements HttpClient {
         if (this.connectionProvider != null) {
             this.connectionProvider.dispose();
         }
+    }
+
+    /**
+     * Resolves the TCP connect timeout (CONNECT_TIMEOUT_MILLIS) based on the request type.
+     *
+     * Thin client requests (identified by {@link HttpRequest#isThinClientRequest()}) use the thin
+     * client connection timeout configured via {@link Configs#getThinClientConnectionTimeoutInSeconds()}
+     * (default 5s) to fail fast when the thin client proxy is unreachable.
+     * Standard gateway requests use the configured connection acquire timeout (default 45s).
+     *
+     * The thin client timeout is eagerly cached in {@link HttpClientConfig} at construction time
+     * to avoid per-request System.getProperty/getenv overhead.
+     *
+     * @param request the HTTP request
+     * @return the connect timeout in milliseconds
+     */
+    private int resolveConnectTimeoutMs(HttpRequest request) {
+        if (request.isThinClientRequest()) {
+            return this.httpClientConfig.getThinClientConnectTimeoutMs();
+        }
+        return (int) this.httpClientConfig.getConnectionAcquireTimeout().toMillis();
     }
 
     private static ConnectionObserver getConnectionObserver() {

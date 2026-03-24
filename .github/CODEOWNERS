@@ -151,13 +151,13 @@
 /sdk/spring/azure-spring-data-cosmos/                              @Azure/azure-cosmos-java-sdk-connectors @moarychan @netyyyy @rujche @saragluna
 
 # PRLabel: %azure-spring
-/sdk/spring/spring-cloud-azure-appconfiguration-config*/           @avanigupta @Azure/azure-java-sdk @moarychan @mrm9084 @netyyyy @rossgrambo @rujche @saragluna
+/sdk/spring/spring-cloud-azure-appconfiguration-config*/           @avanigupta @Azure/azure-java-sdk @moarychan @mrm9084 @netyyyy @rossgrambo @rujche @saragluna @nroutray
 
 # PRLabel: %azure-spring
-/sdk/spring/spring-cloud-azure-feature-management*/                @avanigupta @Azure/azure-java-sdk @moarychan @mrm9084 @netyyyy @rossgrambo @rujche @saragluna
+/sdk/spring/spring-cloud-azure-feature-management*/                @avanigupta @Azure/azure-java-sdk @moarychan @mrm9084 @netyyyy @rossgrambo @rujche @saragluna @nroutray
 
 # PRLabel: %azure-spring
-/sdk/spring/spring-cloud-azure-starter-appconfiguration-config/    @avanigupta @Azure/azure-java-sdk @moarychan @mrm9084 @netyyyy @rossgrambo @rujche @saragluna
+/sdk/spring/spring-cloud-azure-starter-appconfiguration-config/    @avanigupta @Azure/azure-java-sdk @moarychan @mrm9084 @netyyyy @rossgrambo @rujche @saragluna @nroutray
 
 # AzureSdkOwners:                                                  @moarychan @netyyyy @rujche @saragluna
 # ServiceLabel: %azure-spring

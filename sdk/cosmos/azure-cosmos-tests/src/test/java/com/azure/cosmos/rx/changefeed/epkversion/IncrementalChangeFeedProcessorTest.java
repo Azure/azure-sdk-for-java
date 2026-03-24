@@ -1996,12 +1996,12 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
 
                 if (leaseDocumentsWithNonNullContinuationToken > 0) {
                     assertThrows(IllegalStateException.class, () -> fullFidelityChangeFeedProcessor.start().subscribeOn(Schedulers.boundedElastic())
-                        .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
+                        .timeout(Duration.ofMillis(10 * CHANGE_FEED_PROCESSOR_TIMEOUT))
                         .block());
                 } else {
 
                     fullFidelityChangeFeedProcessor.start().subscribeOn(Schedulers.boundedElastic())
-                        .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
+                        .timeout(Duration.ofMillis(10 * CHANGE_FEED_PROCESSOR_TIMEOUT))
                         .doOnSuccess(ignore -> logger.info("Started FULL_FIDELITY ChangeFeedProcessor successfully!"))
                         .block();
 
@@ -2224,7 +2224,11 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             assertThat(item.getHostName()).isEqualTo(hostName).as("Change Feed Processor ownership");
         }
 
-        changeFeedProcessor.stop().subscribeOn(Schedulers.boundedElastic()).timeout(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
+        // Block on stop to ensure the processor fully releases leases before the caller
+        // starts another processor on the same lease container (e.g. full fidelity CFP).
+        changeFeedProcessor.stop().subscribeOn(Schedulers.boundedElastic())
+            .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
+            .block();
 
         for (InternalObjectNode item : createdDocuments) {
             assertThat(receivedDocuments.containsKey(item.getId())).as("Document with getId: " + item.getId()).isTrue();

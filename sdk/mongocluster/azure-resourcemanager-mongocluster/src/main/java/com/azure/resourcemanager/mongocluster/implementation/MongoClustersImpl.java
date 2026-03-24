@@ -37,12 +37,8 @@ public final class MongoClustersImpl implements MongoClusters {
         Context context) {
         Response<MongoClusterInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, mongoClusterName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new MongoClusterImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new MongoClusterImpl(inner.getValue(), this.manager()));
     }
 
     public MongoCluster getByResourceGroup(String resourceGroupName, String mongoClusterName) {
@@ -86,12 +82,8 @@ public final class MongoClustersImpl implements MongoClusters {
         String mongoClusterName, Context context) {
         Response<ListConnectionStringsResultInner> inner
             = this.serviceClient().listConnectionStringsWithResponse(resourceGroupName, mongoClusterName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ListConnectionStringsResultImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ListConnectionStringsResultImpl(inner.getValue(), this.manager()));
     }
 
     public ListConnectionStringsResult listConnectionStrings(String resourceGroupName, String mongoClusterName) {
@@ -108,12 +100,8 @@ public final class MongoClustersImpl implements MongoClusters {
         CheckNameAvailabilityRequest body, Context context) {
         Response<CheckNameAvailabilityResponseInner> inner
             = this.serviceClient().checkNameAvailabilityWithResponse(location, body, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new CheckNameAvailabilityResponseImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new CheckNameAvailabilityResponseImpl(inner.getValue(), this.manager()));
     }
 
     public CheckNameAvailabilityResponse checkNameAvailability(String location, CheckNameAvailabilityRequest body) {

@@ -31,12 +31,8 @@ public final class ResourceTypeRegistrationsImpl implements ResourceTypeRegistra
         Context context) {
         Response<ResourceTypeRegistrationInner> inner
             = this.serviceClient().getWithResponse(providerNamespace, resourceType, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ResourceTypeRegistrationImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new ResourceTypeRegistrationImpl(inner.getValue(), this.manager()));
     }
 
     public ResourceTypeRegistration get(String providerNamespace, String resourceType) {

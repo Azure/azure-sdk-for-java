@@ -34,7 +34,7 @@ class AppServiceCertificateKeyVaultBindingImpl extends
     public Mono<AppServiceCertificateKeyVaultBinding> createChildResourceAsync() {
         final AppServiceCertificateKeyVaultBinding self = this;
         return parent.manager()
-            .serviceClient()
+            .certificateRegistrationClient()
             .getAppServiceCertificateOrders()
             .createOrUpdateCertificateAsync(parent.resourceGroupName(), parent.name(), name(), innerModel())
             .map(appServiceCertificateInner -> {
@@ -61,7 +61,7 @@ class AppServiceCertificateKeyVaultBindingImpl extends
     @Override
     protected Mono<AppServiceCertificateResourceInner> getInnerAsync() {
         return parent.manager()
-            .serviceClient()
+            .certificateRegistrationClient()
             .getAppServiceCertificateOrders()
             .getCertificateAsync(parent.resourceGroupName(), parent.name(), name());
     }

@@ -34,9 +34,13 @@ public class HttpClientConfig {
     private boolean serverCertValidationDisabled = false;
     private Http2ConnectionConfig http2ConnectionConfig;
 
+    // Eagerly resolved thin client connect timeout — avoids per-request System.getProperty/getenv calls.
+    private final int thinClientConnectTimeoutMs;
+
     public HttpClientConfig(Configs configs) {
         this.configs = configs;
         this.http2ConnectionConfig = new Http2ConnectionConfig();
+        this.thinClientConnectTimeoutMs = Configs.getThinClientConnectionTimeoutInSeconds() * 1000;
     }
 
     public HttpClientConfig withMaxHeaderSize(int maxHeaderSize) {
@@ -173,12 +177,27 @@ public class HttpClientConfig {
         return this.http2ConnectionConfig;
     }
 
+    /**
+     * Returns the eagerly resolved thin client connect timeout in milliseconds.
+     * This avoids per-request System.getProperty/getenv overhead.
+     *
+     * @return connect timeout in milliseconds for thin client data-plane requests
+     */
+    public int getThinClientConnectTimeoutMs() {
+        return this.thinClientConnectTimeoutMs;
+    }
+
     public String toDiagnosticsString() {
-        return String.format("(cps:%s, nrto:%s, icto:%s, cto:%s, p:%s, http2:%s)",
+        String gwV2Cto = Configs.isThinClientEnabled()
+            ? Duration.ofMillis(this.thinClientConnectTimeoutMs).toString()
+            : "n/a";
+
+        return String.format("(cps:%s, nrto:%s, icto:%s, cto:%s, gwV2Cto:%s, p:%s, http2:%s)",
             maxPoolSize,
             networkRequestTimeout,
             maxIdleConnectionTimeout,
             connectionAcquireTimeout,
+            gwV2Cto,
             proxy != null,
             http2ConnectionConfig == null ? null : httpCfgAccessor.toDiagnosticsString(http2ConnectionConfig));
     }
