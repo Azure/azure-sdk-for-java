@@ -23,7 +23,7 @@ public final class FleetUpdateStrategiesListByFleetMockTests {
     @Test
     public void testListByFleet() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"strategy\":{\"stages\":[{\"name\":\"wey\",\"groups\":[{\"name\":\"unvmnnr\"},{\"name\":\"rbior\"},{\"name\":\"talywjhhgdnhxms\"},{\"name\":\"v\"}],\"afterStageWaitInSeconds\":2010806413,\"beforeGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"}],\"afterGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"}]},{\"name\":\"iqndieuzaofj\",\"groups\":[{\"name\":\"cyyysfgdot\"}],\"afterStageWaitInSeconds\":1822085864,\"beforeGates\":[{\"type\":\"Approval\"}],\"afterGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"}]},{\"name\":\"onmacjekniz\",\"groups\":[{\"name\":\"vcimpev\"}],\"afterStageWaitInSeconds\":716188449,\"beforeGates\":[{\"type\":\"Approval\"}],\"afterGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"}]}]}},\"eTag\":\"dxsm\",\"id\":\"cwrwfs\",\"name\":\"jfnynszqujizdvoq\",\"type\":\"tiby\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"strategy\":{\"stages\":[{\"name\":\"kcgxxlxsffgcvi\",\"groups\":[{\"name\":\"dwl\"},{\"name\":\"w\"},{\"name\":\"youpfgfbkj\"},{\"name\":\"bdyhgkfminsgowz\"}],\"afterStageWaitInSeconds\":770655875,\"beforeGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"}],\"afterGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"}]},{\"name\":\"ctxtgzukxi\",\"groups\":[{\"name\":\"qtgqqqxhrnxr\"}],\"afterStageWaitInSeconds\":1043435905,\"beforeGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"}],\"afterGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"}]},{\"name\":\"qdzfvazivjlfrqtt\",\"groups\":[{\"name\":\"lkatnwxyiopidkqq\"},{\"name\":\"kuvscxkdm\"},{\"name\":\"igovi\"}],\"afterStageWaitInSeconds\":483872150,\"beforeGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"}],\"afterGates\":[{\"type\":\"Approval\"},{\"type\":\"Approval\"},{\"type\":\"Approval\"}]},{\"name\":\"ocbgoorbteoyb\",\"groups\":[{\"name\":\"xakvvjgslor\"},{\"name\":\"il\"}],\"afterStageWaitInSeconds\":1094227624,\"beforeGates\":[{\"type\":\"Approval\"}],\"afterGates\":[{\"type\":\"Approval\"}]}]}},\"eTag\":\"yedabgyvudtj\",\"id\":\"wbcihxuuwh\",\"name\":\"j\",\"type\":\"xccybvpa\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +32,12 @@ public final class FleetUpdateStrategiesListByFleetMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<FleetUpdateStrategy> response
-            = manager.fleetUpdateStrategies().listByFleet("kwbqplhlvnuu", "pzlrphw", com.azure.core.util.Context.NONE);
+        PagedIterable<FleetUpdateStrategy> response = manager.fleetUpdateStrategies()
+            .listByFleet("hjoxo", "smsks", 409506451, "iml", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("wey", response.iterator().next().strategy().stages().get(0).name());
-        Assertions.assertEquals("unvmnnr",
-            response.iterator().next().strategy().stages().get(0).groups().get(0).name());
-        Assertions.assertEquals(2010806413,
+        Assertions.assertEquals("kcgxxlxsffgcvi", response.iterator().next().strategy().stages().get(0).name());
+        Assertions.assertEquals("dwl", response.iterator().next().strategy().stages().get(0).groups().get(0).name());
+        Assertions.assertEquals(770655875,
             response.iterator().next().strategy().stages().get(0).afterStageWaitInSeconds());
         Assertions.assertEquals(GateType.APPROVAL,
             response.iterator().next().strategy().stages().get(0).beforeGates().get(0).type());

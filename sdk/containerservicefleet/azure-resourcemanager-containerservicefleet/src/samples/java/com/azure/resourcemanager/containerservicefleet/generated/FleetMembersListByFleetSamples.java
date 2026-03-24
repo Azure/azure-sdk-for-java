@@ -18,7 +18,7 @@ public final class FleetMembersListByFleetSamples {
      */
     public static void listsTheMembersOfAFleetGeneratedByMaximumSetRule(
         com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
-        manager.fleetMembers().listByFleet("rgfleets", "fleet1", com.azure.core.util.Context.NONE);
+        manager.fleetMembers().listByFleet("rgfleets", "fleet1", null, null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -31,6 +31,6 @@ public final class FleetMembersListByFleetSamples {
      */
     public static void
         listsTheMembersOfAFleet(com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
-        manager.fleetMembers().listByFleet("rg1", "fleet1", com.azure.core.util.Context.NONE);
+        manager.fleetMembers().listByFleet("rg1", "fleet1", null, null, null, com.azure.core.util.Context.NONE);
     }
 }

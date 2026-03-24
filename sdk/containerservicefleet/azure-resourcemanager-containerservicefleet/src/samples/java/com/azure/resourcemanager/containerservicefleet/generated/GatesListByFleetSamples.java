@@ -18,7 +18,7 @@ public final class GatesListByFleetSamples {
      */
     public static void
         listsTheGatesOfAFleet(com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
-        manager.gates().listByFleet("rg1", "fleet1", com.azure.core.util.Context.NONE);
+        manager.gates().listByFleet("rg1", "fleet1", null, null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -31,6 +31,6 @@ public final class GatesListByFleetSamples {
      */
     public static void gatesListByFleetMaximumSet(
         com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
-        manager.gates().listByFleet("rgfleets", "fleet-1", com.azure.core.util.Context.NONE);
+        manager.gates().listByFleet("rgfleets", "fleet-1", null, null, null, com.azure.core.util.Context.NONE);
     }
 }

@@ -18,7 +18,7 @@ public final class FleetsListSamples {
      */
     public static void listsTheFleetResourcesInASubscriptionGeneratedByMaximumSetRule(
         com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
-        manager.fleets().list(com.azure.core.util.Context.NONE);
+        manager.fleets().list(null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -31,6 +31,6 @@ public final class FleetsListSamples {
      */
     public static void listsTheFleetResourcesInASubscription(
         com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
-        manager.fleets().list(com.azure.core.util.Context.NONE);
+        manager.fleets().list(null, null, com.azure.core.util.Context.NONE);
     }
 }
