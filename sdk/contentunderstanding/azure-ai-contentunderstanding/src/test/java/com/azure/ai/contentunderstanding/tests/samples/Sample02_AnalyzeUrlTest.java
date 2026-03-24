@@ -393,7 +393,7 @@ public class Sample02_AnalyzeUrlTest extends ContentUnderstandingClientTestBase 
         // END:ContentUnderstandingAnalyzeUrlWithPageContentRanges
 
         // BEGIN:Assertion_ContentUnderstandingAnalyzeUrlWithPageContentRanges
-        assertEquals(4, fullDoc.getPages().size(), "Full document should return all 4 pages");
+        assertEquals(10, fullDoc.getPages().size(), "Full document should return all 10 pages");
         assertNotNull(rangeOperation);
         assertTrue(rangeOperation.waitForCompletion().getStatus().isComplete());
         assertNotNull(rangeResult);
@@ -407,7 +407,7 @@ public class Sample02_AnalyzeUrlTest extends ContentUnderstandingClientTestBase 
         // END:Assertion_ContentUnderstandingAnalyzeUrlWithPageContentRanges
 
         // Combined disjoint page ranges: pages 1-3, page 5, and pages 9 onward
-        // Document has 4 pages, so only pages 1-3 match (no page 5 or 9+)
+        // Document has 10 pages, so pages 1-3, 5, 9-10 match (6 pages total)
         AnalysisInput combineInput = new AnalysisInput();
         combineInput.setUrl(uriSource);
         combineInput.setContentRange(ContentRange.combine(
@@ -422,17 +422,17 @@ public class Sample02_AnalyzeUrlTest extends ContentUnderstandingClientTestBase 
         assertNotNull(combineResult);
         assertNotNull(combineResult.getContents());
         DocumentContent combineDoc = (DocumentContent) combineResult.getContents().get(0);
-        assertEquals(3, combineDoc.getPages().size(),
-            "Combine(1-3, 5, 9-) should return 3 pages (1-3), got " + combineDoc.getPages().size());
+        assertEquals(6, combineDoc.getPages().size(),
+            "Combine(1-3, 5, 9-) should return 6 pages (1-3, 5, 9-10), got " + combineDoc.getPages().size());
         assertEquals(1, combineDoc.getStartPageNumber());
-        assertEquals(3, combineDoc.getEndPageNumber());
+        assertEquals(10, combineDoc.getEndPageNumber());
         List<Integer> combinePageNumbers = new java.util.ArrayList<>();
         for (DocumentPage page : combineDoc.getPages()) {
             combinePageNumbers.add(page.getPageNumber());
         }
         java.util.Collections.sort(combinePageNumbers);
-        assertEquals(Arrays.asList(1, 2, 3), combinePageNumbers,
-            "Combine(1-3, 5, 9-) page numbers should be [1, 2, 3]");
+        assertEquals(Arrays.asList(1, 2, 3, 5, 9, 10), combinePageNumbers,
+            "Combine(1-3, 5, 9-) page numbers should be [1, 2, 3, 5, 9, 10]");
     }
 
     @LiveOnly
