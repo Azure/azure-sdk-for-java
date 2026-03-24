@@ -209,8 +209,7 @@ private static void hideWithResponseBinaryDataApis(ClassCustomization customizat
 All patterns below use `ClassCustomization.customizeAst()` which provides the JavaParser `CompilationUnit` (`ast`).
 Each example shows the before → customization → after.
 
-For full reference on all available customization APIs, see [azure-autorest-customization](https://github.com/Azure/azure-sdk-for-java/tree/main/eng/tools/azure-autorest-customization) (name is legacy — this tool is used with TypeSpec generation, not AutoRest).
-For TypeSpec-level customizations (preferred when possible), see [TypeSpec Client Customizations Reference](https://github.com/Azure/azure-sdk-for-java/blob/main/eng/common/knowledge/customizing-client-tsp.md).
+For full reference on all available customization APIs, see the [TypeSpec Client Customizations Reference](https://github.com/Azure/azure-sdk-for-java/blob/main/eng/common/knowledge/customizing-client-tsp.md).
 
 ### Pattern A: Change class modifier (make package-private)
 
