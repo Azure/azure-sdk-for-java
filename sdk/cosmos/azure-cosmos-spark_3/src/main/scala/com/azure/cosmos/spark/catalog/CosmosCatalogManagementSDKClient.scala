@@ -223,41 +223,50 @@ private[spark] case class CosmosCatalogManagementSDKClient(resourceGroupName: St
         props.asScala.toMap
     }
 
-    private def getPartitionKeyDefinition(containerProperties: Map[String, String]): ContainerPartitionKey = {
+    private[catalog] def getPartitionKeyDefinition(containerProperties: Map[String, String]): ContainerPartitionKey = {
         val containerPartitionKey = new ContainerPartitionKey()
 
         val partitionKeyPath = CosmosContainerProperties.getPartitionKeyPath(containerProperties)
         val pkVersion = CosmosContainerProperties.getPartitionKeyVersion(containerProperties)
 
-        val pathList = partitionKeyPath.split(",").toList
+        val pathList = partitionKeyPath.split(",").map(_.trim).filter(_.nonEmpty).toList
+        if (pathList.isEmpty) {
+            throw new IllegalArgumentException("Partition key path cannot be empty")
+        }
         if (pathList.size >= 2) {
             containerPartitionKey.withKind(CosmosContainerProperties.getPartitionKeyKind(containerProperties) match {
                 case Some(pkKind) =>
-                    if (pkKind == PartitionKind.HASH.toString) {
-                        throw new IllegalArgumentException("PartitionKind HASH is not supported for multi-hash partition key")
+                    val partitionKind = PartitionKind.fromString(pkKind)
+                    partitionKind match {
+                        case PartitionKind.MULTI_HASH => PartitionKind.MULTI_HASH
+                        case other =>
+                            throw new IllegalArgumentException(s"PartitionKind $other is not supported for multi-hash partition key")
                     }
-                    PartitionKind.MULTI_HASH
                 case None => PartitionKind.MULTI_HASH
             })
             containerPartitionKey.withVersion(pkVersion match {
                 case Some(version) =>
-                    if (version == PartitionKeyDefinitionVersion.V1.toString) {
-                        throw new IllegalArgumentException("PartitionKeyVersion V1 is not supported for multi-hash partition key")
+                    val partitionKeyDefinitionVersion = PartitionKeyDefinitionVersion.valueOf(version)
+                    partitionKeyDefinitionVersion match {
+                        case PartitionKeyDefinitionVersion.V2 => 2
+                        case other =>
+                            throw new IllegalArgumentException(s"PartitionKeyVersion $other is not supported for multi-hash partition key")
                     }
-                    2
                 case None => 2
             })
-            containerPartitionKey.withPaths(pathList.map(_.trim).asJava)
+            containerPartitionKey.withPaths(pathList.asJava)
         } else {
             containerPartitionKey.withKind(CosmosContainerProperties.getPartitionKeyKind(containerProperties) match {
                 case Some(pkKind) =>
-                    if (pkKind == PartitionKind.MULTI_HASH.toString) {
-                        throw new IllegalArgumentException("PartitionKind MULTI_HASH is not supported for single-hash partition key")
+                    val partitionKind = PartitionKind.fromString(pkKind)
+                    partitionKind match {
+                        case PartitionKind.HASH => PartitionKind.HASH
+                        case other =>
+                            throw new IllegalArgumentException(s"PartitionKind $other is not supported for single-hash partition key")
                     }
-                    PartitionKind.HASH
                 case None => PartitionKind.HASH
             })
-            containerPartitionKey.withPaths(util.Arrays.asList(partitionKeyPath))
+            containerPartitionKey.withPaths(util.Arrays.asList(pathList.head))
             if (pkVersion.isDefined) {
                 val partitionKeyDefinitionVersion = PartitionKeyDefinitionVersion.valueOf(pkVersion.get)
                 partitionKeyDefinitionVersion match {
