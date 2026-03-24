@@ -33,9 +33,15 @@ public class NetworkCustomization extends Customization {
                 // rewrite them to set the field via reflection-free approach
                 clazz.getMethodsByName("withId").forEach(m -> {
                     m.setBody(new BlockStmt().addStatement("return this;"));
+                    m.getAnnotationByName("Override").ifPresent(a -> a.remove());
                 });
                 clazz.getMethodsByName("withName").forEach(m -> {
                     m.setBody(new BlockStmt().addStatement("return this;"));
+                    m.getAnnotationByName("Override").ifPresent(a -> a.remove());
+                });
+                // remove @Override from validate() since Resource doesn't declare it
+                clazz.getMethodsByName("validate").forEach(m -> {
+                    m.getAnnotationByName("Override").ifPresent(a -> a.remove());
                 });
             });
         });
