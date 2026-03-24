@@ -8,6 +8,8 @@ import com.azure.ai.agents.implementation.OpenAIJsonHelper;
 import com.azure.ai.agents.implementation.StreamingUtils;
 import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.annotation.ReturnType;
 import com.azure.core.util.IterableStream;
 import com.openai.client.OpenAIClient;
 import com.openai.core.JsonValue;
@@ -52,6 +54,7 @@ public final class ResponsesClient {
      * @param params The parameters to create the response.
      * @return The created Response.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response createAzureResponse(AzureCreateResponseOptions createResponse,
         ResponseCreateParams.Builder params) {
         Objects.requireNonNull(createResponse, "createResponse cannot be null");
@@ -70,6 +73,7 @@ public final class ResponsesClient {
      * @param params The parameters to create the response.
      * @return An IterableStream of ResponseStreamEvent.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public IterableStream<ResponseStreamEvent> createStreamingAzureResponse(AzureCreateResponseOptions createResponse,
         ResponseCreateParams.Builder params) {
         Objects.requireNonNull(createResponse, "createResponse cannot be null");
