@@ -547,31 +547,6 @@ public class Sample02_AnalyzeUrlTest extends ContentUnderstandingClientTestBase 
             assertFalse(avContent.getMarkdown().isEmpty());
         }
 
-        // ---- Raw string "0-5000" — equivalent to TimeRange(0, 5s) ----
-        AnalysisInput rawVideoInput = new AnalysisInput();
-        rawVideoInput.setUrl(uriSource);
-        rawVideoInput.setContentRange(new ContentRange("0-5000"));
-
-        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> rawVideoOperation
-            = contentUnderstandingClient.beginAnalyze("prebuilt-videoSearch", Arrays.asList(rawVideoInput));
-        AnalysisResult rawVideoResult = rawVideoOperation.getFinalResult();
-
-        assertNotNull(rawVideoResult);
-        assertNotNull(rawVideoResult.getContents());
-        assertTrue(rawVideoResult.getContents().size() > 0, "Raw range video should return segments");
-        for (AnalysisContent content : rawVideoResult.getContents()) {
-            assertTrue(content instanceof AudioVisualContent);
-            AudioVisualContent avContent = (AudioVisualContent) content;
-            assertTrue(avContent.getEndTime().toMillis() > avContent.getStartTime().toMillis());
-            assertTrue(avContent.getStartTime().toMillis() >= 0, "Raw range(0-5000) segment StartTime ("
-                + avContent.getStartTime().toMillis() + " ms) should be >= 0 ms");
-            assertTrue(avContent.getEndTime().toMillis() <= 5000, "Raw range(0-5000) segment EndTime ("
-                + avContent.getEndTime().toMillis() + " ms) should be <= 5000 ms");
-        }
-        // The raw string "0-5000" should produce identical results to TimeRange(0, 5s)
-        assertEquals(rangeResult.getContents().size(), rawVideoResult.getContents().size(),
-            "Raw ContentRange('0-5000') should return same segment count as TimeRange equivalent");
-        System.out.println("Raw ContentRange('0-5000'): " + rawVideoResult.getContents().size() + " segment(s)");
     }
 
     @LiveOnly
@@ -659,25 +634,24 @@ public class Sample02_AnalyzeUrlTest extends ContentUnderstandingClientTestBase 
             = audioSubSecondContent.getEndTime().toMillis() - audioSubSecondContent.getStartTime().toMillis();
         assertTrue(fullDurationMs >= subSecondDurationMs);
 
-        // ---- Raw string "5000-" — equivalent to TimeRangeFrom(5s) ----
-        AnalysisInput rawAudioInput = new AnalysisInput();
-        rawAudioInput.setUrl(uriSource);
-        rawAudioInput.setContentRange(new ContentRange("5000-"));
+        // ---- Combine multiple time ranges (0-3s, 30s-) ----
+        AnalysisInput combineInput = new AnalysisInput();
+        combineInput.setUrl(uriSource);
+        combineInput.setContentRange(ContentRange.combine(
+            ContentRange.timeRange(Duration.ZERO, Duration.ofSeconds(3)),
+            ContentRange.timeRangeFrom(Duration.ofSeconds(30))));
 
-        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> rawAudioOperation
-            = contentUnderstandingClient.beginAnalyze("prebuilt-audioSearch", Arrays.asList(rawAudioInput));
-        AnalysisResult rawAudioResult = rawAudioOperation.getFinalResult();
+        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> combineOperation
+            = contentUnderstandingClient.beginAnalyze("prebuilt-audioSearch", Arrays.asList(combineInput));
+        AnalysisResult combineResult = combineOperation.getFinalResult();
 
-        assertNotNull(rawAudioResult);
-        assertNotNull(rawAudioResult.getContents());
-        assertTrue(rawAudioResult.getContents().size() > 0, "Raw range audio should return content");
-        AudioVisualContent rawAudioContent = (AudioVisualContent) rawAudioResult.getContents().get(0);
-        assertTrue(rawAudioContent.getStartTime().toMillis() >= 5000,
-            "Raw ContentRange('5000-') audio StartTime should be >= 5000 ms");
-        assertEquals(rangeAudioContent.getMarkdown().length(), rawAudioContent.getMarkdown().length(),
-            "Raw ContentRange('5000-') should return same markdown length as TimeRangeFrom equivalent");
-        System.out.println("Raw ContentRange('5000-'): " + rawAudioContent.getMarkdown().length() + " chars, starts at "
-            + rawAudioContent.getStartTime().toMillis() + " ms");
+        assertNotNull(combineResult);
+        assertNotNull(combineResult.getContents());
+        assertTrue(combineResult.getContents().size() > 0);
+        AudioVisualContent combineContent = (AudioVisualContent) combineResult.getContents().get(0);
+        assertTrue(combineContent.getEndTime().toMillis() > combineContent.getStartTime().toMillis());
+        assertNotNull(combineContent.getMarkdown());
+        assertFalse(combineContent.getMarkdown().isEmpty());
     }
 
     @Test

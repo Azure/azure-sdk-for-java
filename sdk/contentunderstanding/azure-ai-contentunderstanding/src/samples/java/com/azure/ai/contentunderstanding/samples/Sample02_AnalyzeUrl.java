@@ -406,24 +406,6 @@ public class Sample02_AnalyzeUrl {
                 + " ms, End=" + videoContent.getEndTime().toMillis() + " ms");
             segmentIndex++;
         }
-
-        // BEGIN:ContentUnderstandingAnalyzeVideoUrlWithRawContentRange
-        // Analyze the first 5 seconds using a raw range string (milliseconds).
-        // This is equivalent to: ContentRange.timeRange(Duration.ZERO, Duration.ofSeconds(5))
-        AnalysisInput rawRangeInput = new AnalysisInput();
-        rawRangeInput.setUrl(uriSource);
-        rawRangeInput.setContentRange(new ContentRange("0-5000"));
-
-        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> rawRangeOperation
-            = client.beginAnalyze("prebuilt-videoSearch", Arrays.asList(rawRangeInput));
-        AnalysisResult rawRangeResult = rawRangeOperation.getFinalResult();
-
-        for (AnalysisContent rawMedia : rawRangeResult.getContents()) {
-            AudioVisualContent rawVideoContent = (AudioVisualContent) rawMedia;
-            System.out.println("Raw ContentRange segment: " + rawVideoContent.getStartTime().toMillis()
-                + " ms - " + rawVideoContent.getEndTime().toMillis() + " ms");
-        }
-        // END:ContentUnderstandingAnalyzeVideoUrlWithRawContentRange
         // END:ContentUnderstandingAnalyzeVideoUrlWithContentRange
     }
 
@@ -475,21 +457,20 @@ public class Sample02_AnalyzeUrl {
         System.out.println("TimeRange(1200ms, 3651ms): Start=" + subSecondContent.getStartTime().toMillis()
             + " ms, End=" + subSecondContent.getEndTime().toMillis() + " ms");
 
-        // BEGIN:ContentUnderstandingAnalyzeAudioUrlWithRawContentRange
-        // Analyze audio from 5 seconds onward using a raw range string (milliseconds).
-        // This is equivalent to: ContentRange.timeRangeFrom(Duration.ofSeconds(5))
-        AnalysisInput rawRangeInput = new AnalysisInput();
-        rawRangeInput.setUrl(uriSource);
-        rawRangeInput.setContentRange(new ContentRange("5000-"));
+        // Combine multiple time ranges
+        AnalysisInput combineInput = new AnalysisInput();
+        combineInput.setUrl(uriSource);
+        combineInput.setContentRange(ContentRange.combine(
+            ContentRange.timeRange(Duration.ZERO, Duration.ofSeconds(3)),
+            ContentRange.timeRangeFrom(Duration.ofSeconds(30))));
 
-        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> rawRangeOperation
-            = client.beginAnalyze("prebuilt-audioSearch", Arrays.asList(rawRangeInput));
-        AnalysisResult rawRangeResult = rawRangeOperation.getFinalResult();
+        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> combineOperation
+            = client.beginAnalyze("prebuilt-audioSearch", Arrays.asList(combineInput));
+        AnalysisResult combineResult = combineOperation.getFinalResult();
 
-        AudioVisualContent rawAudioContent = (AudioVisualContent) rawRangeResult.getContents().get(0);
-        System.out.println("Raw ContentRange audio analysis: " + rawAudioContent.getStartTime().toMillis()
-            + " ms onward");
-        // END:ContentUnderstandingAnalyzeAudioUrlWithRawContentRange
+        AudioVisualContent combineContent = (AudioVisualContent) combineResult.getContents().get(0);
+        System.out.println("Combined time ranges: Start=" + combineContent.getStartTime().toMillis()
+            + " ms, End=" + combineContent.getEndTime().toMillis() + " ms");
         // END:ContentUnderstandingAnalyzeAudioUrlWithContentRange
     }
 }

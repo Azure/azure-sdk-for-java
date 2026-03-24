@@ -825,17 +825,20 @@ public class Sample02_AnalyzeUrlAsync {
             Thread.currentThread().interrupt();
             throw new RuntimeException("Interrupted while waiting for audio analysis", e);
         }
-        // Raw string "5000-" — equivalent to TimeRangeFrom(5s)
-        AnalysisInput rawInput = new AnalysisInput();
-        rawInput.setUrl(audioUrl);
-        rawInput.setContentRange(new ContentRange("5000-"));
 
-        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> rawOperation
-            = client.beginAnalyze("prebuilt-audioSearch", Arrays.asList(rawInput));
+        // Combine multiple time ranges
+        AnalysisInput combineInput = new AnalysisInput();
+        combineInput.setUrl(audioUrl);
+        combineInput.setContentRange(ContentRange.combine(
+            ContentRange.timeRange(Duration.ZERO, Duration.ofSeconds(3)),
+            ContentRange.timeRangeFrom(Duration.ofSeconds(30))));
+
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> combineOperation
+            = client.beginAnalyze("prebuilt-audioSearch", Arrays.asList(combineInput));
 
         CountDownLatch latch4 = new CountDownLatch(1);
 
-        rawOperation.last()
+        combineOperation.last()
             .flatMap(pollResponse -> {
                 if (pollResponse.getStatus().isComplete()) {
                     return pollResponse.getFinalResult();
@@ -845,14 +848,16 @@ public class Sample02_AnalyzeUrlAsync {
                 }
             })
             .doOnNext(result -> {
-                AudioVisualContent rawAudioContent = (AudioVisualContent) result.getContents().get(0);
-                System.out.println("Raw ContentRange audio analysis: "
-                    + rawAudioContent.getStartTime().toMillis() + " ms onward");
+                AudioVisualContent combineContent = (AudioVisualContent) result.getContents().get(0);
+                System.out.println("Combined time ranges: Start=" + combineContent.getStartTime().toMillis()
+                    + " ms, End=" + combineContent.getEndTime().toMillis() + " ms");
             })
             .doOnError(error -> System.err.println("Error occurred: " + error.getMessage()))
             .subscribe(result -> latch4.countDown(), error -> latch4.countDown());
 
-        try { latch4.await(); } catch (InterruptedException e) {
+        try {
+            latch4.await();
+        } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             throw new RuntimeException("Interrupted while waiting for audio analysis", e);
         }
