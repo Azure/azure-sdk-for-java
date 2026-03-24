@@ -32,6 +32,7 @@ import com.azure.security.keyvault.secrets.implementation.models.SecretSetParame
 import com.azure.security.keyvault.secrets.implementation.models.SecretUpdateParameters;
 import com.azure.security.keyvault.secrets.models.DeletedSecret;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
+import com.azure.security.keyvault.secrets.models.SecretContentType;
 import com.azure.security.keyvault.secrets.models.SecretProperties;
 
 import java.time.Duration;
@@ -395,6 +396,70 @@ public final class SecretClient {
         return callWithMappedException(() -> {
             Response<BinaryData> response
                 = implClient.getSecretWithResponse(name, version, new RequestOptions().setContext(context));
+
+            return new SimpleResponse<>(response,
+                createKeyVaultSecret(response.getValue().toObject(SecretBundle.class)));
+        }, SecretAsyncClient::mapGetSecretException);
+    }
+
+    /**
+     * Gets the latest version of the specified certificate-backed secret from the key vault, requesting
+     * on-demand format conversion. Use this method to retrieve a certificate stored as a secret and convert
+     * it from PFX to PEM format in a single service call.
+     * This operation requires the {@code secrets/get} permission.
+     *
+     * <p>Only available with service version {@link SecretServiceVersion#V2025_07_01} and later.
+     * Currently only PFX to PEM conversion is supported.</p>
+     *
+     * @param name The name of the certificate-backed secret.
+     * @param outContentType The desired output format. Use {@link SecretContentType#PEM} to request
+     *     PFX-to-PEM conversion.
+     * @return The requested {@link KeyVaultSecret} with its value in the specified format.
+     * @throws ResourceNotFoundException When a secret with the given {@code name} does not exist in the vault.
+     * @throws IllegalArgumentException If {@code name} is either {@code null} or empty.
+     * @throws HttpResponseException If {@code outContentType} specifies an unsupported format.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public KeyVaultSecret getSecret(String name, SecretContentType outContentType) {
+        return getSecretWithResponse(name, "", outContentType, Context.NONE).getValue();
+    }
+
+    /**
+     * Gets the specified version of a certificate-backed secret from the key vault, requesting on-demand
+     * format conversion. Use this method to retrieve a certificate stored as a secret and convert it from
+     * PFX to PEM format in a single service call.
+     * This operation requires the {@code secrets/get} permission.
+     *
+     * <p>Only available with service version {@link SecretServiceVersion#V2025_07_01} and later.
+     * Currently only PFX to PEM conversion is supported.</p>
+     *
+     * @param name The name of the certificate-backed secret, cannot be null.
+     * @param version The version of the secret to retrieve. If this is an empty string or null, the latest
+     *     version is retrieved.
+     * @param outContentType The desired output format. Use {@link SecretContentType#PEM} to request
+     *     PFX-to-PEM conversion.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the requested
+     *     {@link KeyVaultSecret} with its value in the specified format.
+     * @throws ResourceNotFoundException When a secret with the given {@code name} and {@code version} does
+     *     not exist in the vault.
+     * @throws IllegalArgumentException If {@code name} is either {@code null} or empty.
+     * @throws HttpResponseException If {@code outContentType} specifies an unsupported format.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<KeyVaultSecret> getSecretWithResponse(String name, String version, SecretContentType outContentType,
+        Context context) {
+        if (CoreUtils.isNullOrEmpty(name)) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+        }
+
+        return callWithMappedException(() -> {
+            RequestOptions requestOptions = new RequestOptions().setContext(context);
+            if (outContentType != null) {
+                requestOptions.addQueryParam("outContentType", outContentType.toString());
+            }
+            Response<BinaryData> response
+                = implClient.getSecretWithResponse(name, version != null ? version : "", requestOptions);
 
             return new SimpleResponse<>(response,
                 createKeyVaultSecret(response.getValue().toObject(SecretBundle.class)));

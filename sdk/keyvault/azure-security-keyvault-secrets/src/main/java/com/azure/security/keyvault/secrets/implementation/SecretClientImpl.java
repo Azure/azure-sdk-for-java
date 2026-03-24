@@ -61,7 +61,7 @@ public final class SecretClientImpl {
 
     /**
      * Gets.
-     * 
+     *
      * @return the vaultBaseUrl value.
      */
     public String getVaultBaseUrl() {
@@ -75,7 +75,7 @@ public final class SecretClientImpl {
 
     /**
      * Gets Service version.
-     * 
+     *
      * @return the serviceVersion value.
      */
     public SecretServiceVersion getServiceVersion() {
@@ -89,7 +89,7 @@ public final class SecretClientImpl {
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     * 
+     *
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
@@ -103,7 +103,7 @@ public final class SecretClientImpl {
 
     /**
      * Gets The serializer to serialize an object into a string.
-     * 
+     *
      * @return the serializerAdapter value.
      */
     public SerializerAdapter getSerializerAdapter() {
@@ -112,7 +112,7 @@ public final class SecretClientImpl {
 
     /**
      * Initializes an instance of SecretClient client.
-     * 
+     *
      * @param vaultBaseUrl
      * @param serviceVersion Service version.
      */
@@ -123,7 +123,7 @@ public final class SecretClientImpl {
 
     /**
      * Initializes an instance of SecretClient client.
-     * 
+     *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param vaultBaseUrl
      * @param serviceVersion Service version.
@@ -134,7 +134,7 @@ public final class SecretClientImpl {
 
     /**
      * Initializes an instance of SecretClient client.
-     * 
+     *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param vaultBaseUrl
@@ -331,7 +331,7 @@ public final class SecretClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> purgeDeletedSecret(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("secret-name") String secretName,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Delete("/deletedsecrets/{secret-name}")
         @ExpectedResponses({ 204 })
@@ -341,7 +341,7 @@ public final class SecretClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> purgeDeletedSecretSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("secret-name") String secretName,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+            RequestOptions requestOptions, Context context);
 
         @Post("/deletedsecrets/{secret-name}/recover")
         @ExpectedResponses({ 200 })
@@ -468,11 +468,11 @@ public final class SecretClientImpl {
 
     /**
      * Sets a secret in a specified key vault.
-     * 
+     *
      * The SET operation adds a secret to the Azure Key Vault. If the named secret already exists, Azure Key Vault
      * creates a new version of that secret. This operation requires the secrets/set permission.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -493,9 +493,9 @@ public final class SecretClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -519,7 +519,7 @@ public final class SecretClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param secretName The name of the secret. The value you provide may be copied globally for the purpose of running
      * the service. The value provided should not include personally identifiable or sensitive information.
      * @param parameters The parameters for setting the secret.
@@ -543,11 +543,11 @@ public final class SecretClientImpl {
 
     /**
      * Sets a secret in a specified key vault.
-     * 
+     *
      * The SET operation adds a secret to the Azure Key Vault. If the named secret already exists, Azure Key Vault
      * creates a new version of that secret. This operation requires the secrets/set permission.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -568,9 +568,9 @@ public final class SecretClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -594,7 +594,7 @@ public final class SecretClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param secretName The name of the secret. The value you provide may be copied globally for the purpose of running
      * the service. The value provided should not include personally identifiable or sensitive information.
      * @param parameters The parameters for setting the secret.
@@ -616,11 +616,11 @@ public final class SecretClientImpl {
 
     /**
      * Deletes a secret from a specified key vault.
-     * 
+     *
      * The DELETE operation applies to any secret stored in Azure Key Vault. DELETE cannot be applied to an individual
      * version of a secret. This operation requires the secrets/delete permission.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -647,7 +647,7 @@ public final class SecretClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param secretName The name of the secret.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -666,11 +666,11 @@ public final class SecretClientImpl {
 
     /**
      * Deletes a secret from a specified key vault.
-     * 
+     *
      * The DELETE operation applies to any secret stored in Azure Key Vault. DELETE cannot be applied to an individual
      * version of a secret. This operation requires the secrets/delete permission.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -697,7 +697,7 @@ public final class SecretClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param secretName The name of the secret.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -716,12 +716,12 @@ public final class SecretClientImpl {
 
     /**
      * Updates the attributes associated with a specified secret in a given key vault.
-     * 
+     *
      * The UPDATE operation changes specified attributes of an existing stored secret. Attributes that are not specified
      * in the request are left unchanged. The value of a secret itself cannot be changed. This operation requires the
      * secrets/set permission.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -741,9 +741,9 @@ public final class SecretClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -767,7 +767,7 @@ public final class SecretClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param secretName The name of the secret.
      * @param secretVersion The version of the secret.
      * @param parameters The parameters for update secret operation.
@@ -791,12 +791,12 @@ public final class SecretClientImpl {
 
     /**
      * Updates the attributes associated with a specified secret in a given key vault.
-     * 
+     *
      * The UPDATE operation changes specified attributes of an existing stored secret. Attributes that are not specified
      * in the request are left unchanged. The value of a secret itself cannot be changed. This operation requires the
      * secrets/set permission.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -816,9 +816,9 @@ public final class SecretClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -842,7 +842,7 @@ public final class SecretClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param secretName The name of the secret.
      * @param secretVersion The version of the secret.
      * @param parameters The parameters for update secret operation.
@@ -864,11 +864,22 @@ public final class SecretClientImpl {
 
     /**
      * Get a specified secret from a given key vault.
-     * 
+     *
      * The GET operation is applicable to any secret stored in Azure Key Vault. This operation requires the secrets/get
      * permission.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>outContentType</td><td>String(application/x-pkcs12/application/x-pem-file)</td><td>No</td><td>The
+     * media type (MIME type) of the certificate. If a supported format is specified, the certificate content is
+     * converted to the requested format. Currently, only PFX to PEM conversion is supported. If an unsupported format
+     * is specified, the request is rejected. If not specified, the certificate is returned in its original format
+     * without conversion. Available in service version 2025-07-01 and later.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -889,10 +900,11 @@ public final class SecretClientImpl {
      *     }
      *     kid: String (Optional)
      *     managed: Boolean (Optional)
+     *     previousVersion: String (Optional)
      * }
      * }
      * </pre>
-     * 
+     *
      * @param secretName The name of the secret.
      * @param secretVersion The version of the secret. This URI fragment is optional. If not specified, the latest
      * version of the secret is returned.
@@ -902,7 +914,7 @@ public final class SecretClientImpl {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a specified secret from a given key vault.
-     * 
+     *
      * The GET operation is applicable to any secret stored in Azure Key Vault along with {@link Response} on successful
      * completion of {@link Mono}.
      */
@@ -916,11 +928,22 @@ public final class SecretClientImpl {
 
     /**
      * Get a specified secret from a given key vault.
-     * 
+     *
      * The GET operation is applicable to any secret stored in Azure Key Vault. This operation requires the secrets/get
      * permission.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>outContentType</td><td>String(application/x-pkcs12/application/x-pem-file)</td><td>No</td><td>The
+     * media type (MIME type) of the certificate. If a supported format is specified, the certificate content is
+     * converted to the requested format. Currently, only PFX to PEM conversion is supported. If an unsupported format
+     * is specified, the request is rejected. If not specified, the certificate is returned in its original format
+     * without conversion. Available in service version 2025-07-01 and later.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -941,10 +964,11 @@ public final class SecretClientImpl {
      *     }
      *     kid: String (Optional)
      *     managed: Boolean (Optional)
+     *     previousVersion: String (Optional)
      * }
      * }
      * </pre>
-     * 
+     *
      * @param secretName The name of the secret.
      * @param secretVersion The version of the secret. This URI fragment is optional. If not specified, the latest
      * version of the secret is returned.
@@ -954,7 +978,7 @@ public final class SecretClientImpl {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a specified secret from a given key vault.
-     * 
+     *
      * The GET operation is applicable to any secret stored in Azure Key Vault along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -967,7 +991,7 @@ public final class SecretClientImpl {
 
     /**
      * List secrets in a specified key vault.
-     * 
+     *
      * The Get Secrets operation is applicable to the entire vault. However, only the base secret identifier and its
      * attributes are provided in the response. Individual secret versions are not listed in the response. This
      * operation requires the secrets/list permission.
@@ -980,7 +1004,7 @@ public final class SecretClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1002,7 +1026,7 @@ public final class SecretClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1022,7 +1046,7 @@ public final class SecretClientImpl {
 
     /**
      * List secrets in a specified key vault.
-     * 
+     *
      * The Get Secrets operation is applicable to the entire vault. However, only the base secret identifier and its
      * attributes are provided in the response. Individual secret versions are not listed in the response. This
      * operation requires the secrets/list permission.
@@ -1035,7 +1059,7 @@ public final class SecretClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1057,7 +1081,7 @@ public final class SecretClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1076,7 +1100,7 @@ public final class SecretClientImpl {
 
     /**
      * List secrets in a specified key vault.
-     * 
+     *
      * The Get Secrets operation is applicable to the entire vault. However, only the base secret identifier and its
      * attributes are provided in the response. Individual secret versions are not listed in the response. This
      * operation requires the secrets/list permission.
@@ -1089,7 +1113,7 @@ public final class SecretClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1111,7 +1135,7 @@ public final class SecretClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1130,7 +1154,7 @@ public final class SecretClientImpl {
 
     /**
      * List secrets in a specified key vault.
-     * 
+     *
      * The Get Secrets operation is applicable to the entire vault. However, only the base secret identifier and its
      * attributes are provided in the response. Individual secret versions are not listed in the response. This
      * operation requires the secrets/list permission.
@@ -1143,7 +1167,7 @@ public final class SecretClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1165,7 +1189,7 @@ public final class SecretClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1184,7 +1208,7 @@ public final class SecretClientImpl {
 
     /**
      * List all versions of the specified secret.
-     * 
+     *
      * The full secret identifier and attributes are provided in the response. No values are returned for the secrets.
      * This operations requires the secrets/list permission.
      * <p><strong>Query Parameters</strong></p>
@@ -1196,7 +1220,7 @@ public final class SecretClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1218,7 +1242,7 @@ public final class SecretClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param secretName The name of the secret.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1240,7 +1264,7 @@ public final class SecretClientImpl {
 
     /**
      * List all versions of the specified secret.
-     * 
+     *
      * The full secret identifier and attributes are provided in the response. No values are returned for the secrets.
      * This operations requires the secrets/list permission.
      * <p><strong>Query Parameters</strong></p>
@@ -1252,7 +1276,7 @@ public final class SecretClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1274,7 +1298,7 @@ public final class SecretClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param secretName The name of the secret.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1294,7 +1318,7 @@ public final class SecretClientImpl {
 
     /**
      * List all versions of the specified secret.
-     * 
+     *
      * The full secret identifier and attributes are provided in the response. No values are returned for the secrets.
      * This operations requires the secrets/list permission.
      * <p><strong>Query Parameters</strong></p>
@@ -1306,7 +1330,7 @@ public final class SecretClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1328,7 +1352,7 @@ public final class SecretClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param secretName The name of the secret.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1348,7 +1372,7 @@ public final class SecretClientImpl {
 
     /**
      * List all versions of the specified secret.
-     * 
+     *
      * The full secret identifier and attributes are provided in the response. No values are returned for the secrets.
      * This operations requires the secrets/list permission.
      * <p><strong>Query Parameters</strong></p>
@@ -1360,7 +1384,7 @@ public final class SecretClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1382,7 +1406,7 @@ public final class SecretClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param secretName The name of the secret.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1402,7 +1426,7 @@ public final class SecretClientImpl {
 
     /**
      * Lists deleted secrets for the specified vault.
-     * 
+     *
      * The Get Deleted Secrets operation returns the secrets that have been deleted for a vault enabled for soft-delete.
      * This operation requires the secrets/list permission.
      * <p><strong>Query Parameters</strong></p>
@@ -1414,7 +1438,7 @@ public final class SecretClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1439,7 +1463,7 @@ public final class SecretClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1459,7 +1483,7 @@ public final class SecretClientImpl {
 
     /**
      * Lists deleted secrets for the specified vault.
-     * 
+     *
      * The Get Deleted Secrets operation returns the secrets that have been deleted for a vault enabled for soft-delete.
      * This operation requires the secrets/list permission.
      * <p><strong>Query Parameters</strong></p>
@@ -1471,7 +1495,7 @@ public final class SecretClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1496,7 +1520,7 @@ public final class SecretClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1515,7 +1539,7 @@ public final class SecretClientImpl {
 
     /**
      * Lists deleted secrets for the specified vault.
-     * 
+     *
      * The Get Deleted Secrets operation returns the secrets that have been deleted for a vault enabled for soft-delete.
      * This operation requires the secrets/list permission.
      * <p><strong>Query Parameters</strong></p>
@@ -1527,7 +1551,7 @@ public final class SecretClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1552,7 +1576,7 @@ public final class SecretClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1571,7 +1595,7 @@ public final class SecretClientImpl {
 
     /**
      * Lists deleted secrets for the specified vault.
-     * 
+     *
      * The Get Deleted Secrets operation returns the secrets that have been deleted for a vault enabled for soft-delete.
      * This operation requires the secrets/list permission.
      * <p><strong>Query Parameters</strong></p>
@@ -1583,7 +1607,7 @@ public final class SecretClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1608,7 +1632,7 @@ public final class SecretClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1627,11 +1651,11 @@ public final class SecretClientImpl {
 
     /**
      * Gets the specified deleted secret.
-     * 
+     *
      * The Get Deleted Secret operation returns the specified deleted secret along with its attributes. This operation
      * requires the secrets/get permission.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1658,7 +1682,7 @@ public final class SecretClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param secretName The name of the secret.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1666,7 +1690,7 @@ public final class SecretClientImpl {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the specified deleted secret.
-     * 
+     *
      * The Get Deleted Secret operation returns the specified deleted secret along with its attributes along with
      * {@link Response} on successful completion of {@link Mono}.
      */
@@ -1680,11 +1704,11 @@ public final class SecretClientImpl {
 
     /**
      * Gets the specified deleted secret.
-     * 
+     *
      * The Get Deleted Secret operation returns the specified deleted secret along with its attributes. This operation
      * requires the secrets/get permission.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1711,7 +1735,7 @@ public final class SecretClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param secretName The name of the secret.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1719,7 +1743,7 @@ public final class SecretClientImpl {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the specified deleted secret.
-     * 
+     *
      * The Get Deleted Secret operation returns the specified deleted secret along with its attributes along with
      * {@link Response}.
      */
@@ -1732,11 +1756,11 @@ public final class SecretClientImpl {
 
     /**
      * Permanently deletes the specified secret.
-     * 
+     *
      * The purge deleted secret operation removes the secret permanently, without the possibility of recovery. This
      * operation can only be enabled on a soft-delete enabled vault. This operation requires the secrets/purge
      * permission.
-     * 
+     *
      * @param secretName The name of the secret.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1747,18 +1771,17 @@ public final class SecretClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> purgeDeletedSecretWithResponseAsync(String secretName, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.purgeDeletedSecret(this.getVaultBaseUrl(),
-            this.getServiceVersion().getVersion(), secretName, accept, requestOptions, context));
+            this.getServiceVersion().getVersion(), secretName, requestOptions, context));
     }
 
     /**
      * Permanently deletes the specified secret.
-     * 
+     *
      * The purge deleted secret operation removes the secret permanently, without the possibility of recovery. This
      * operation can only be enabled on a soft-delete enabled vault. This operation requires the secrets/purge
      * permission.
-     * 
+     *
      * @param secretName The name of the secret.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1769,18 +1792,17 @@ public final class SecretClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> purgeDeletedSecretWithResponse(String secretName, RequestOptions requestOptions) {
-        final String accept = "application/json";
         return service.purgeDeletedSecretSync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), secretName,
-            accept, requestOptions, Context.NONE);
+            requestOptions, Context.NONE);
     }
 
     /**
      * Recovers the deleted secret to the latest version.
-     * 
+     *
      * Recovers the deleted secret in the specified vault. This operation can only be performed on a soft-delete enabled
      * vault. This operation requires the secrets/recover permission.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1804,7 +1826,7 @@ public final class SecretClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param secretName The name of the deleted secret.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1824,11 +1846,11 @@ public final class SecretClientImpl {
 
     /**
      * Recovers the deleted secret to the latest version.
-     * 
+     *
      * Recovers the deleted secret in the specified vault. This operation can only be performed on a soft-delete enabled
      * vault. This operation requires the secrets/recover permission.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1852,7 +1874,7 @@ public final class SecretClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param secretName The name of the deleted secret.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1870,11 +1892,11 @@ public final class SecretClientImpl {
 
     /**
      * Backs up the specified secret.
-     * 
+     *
      * Requests that a backup of the specified secret be downloaded to the client. All versions of the secret will be
      * downloaded. This operation requires the secrets/backup permission.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1882,7 +1904,7 @@ public final class SecretClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param secretName The name of the secret.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1901,11 +1923,11 @@ public final class SecretClientImpl {
 
     /**
      * Backs up the specified secret.
-     * 
+     *
      * Requests that a backup of the specified secret be downloaded to the client. All versions of the secret will be
      * downloaded. This operation requires the secrets/backup permission.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1913,7 +1935,7 @@ public final class SecretClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param secretName The name of the secret.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1931,11 +1953,11 @@ public final class SecretClientImpl {
 
     /**
      * Restores a backed up secret to a vault.
-     * 
+     *
      * Restores a backed up secret, and all its versions, to a vault. This operation requires the secrets/restore
      * permission.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1943,9 +1965,9 @@ public final class SecretClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1969,7 +1991,7 @@ public final class SecretClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param parameters The parameters to restore the secret.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1990,11 +2012,11 @@ public final class SecretClientImpl {
 
     /**
      * Restores a backed up secret to a vault.
-     * 
+     *
      * Restores a backed up secret, and all its versions, to a vault. This operation requires the secrets/restore
      * permission.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2002,9 +2024,9 @@ public final class SecretClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2028,7 +2050,7 @@ public final class SecretClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param parameters The parameters to restore the secret.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2047,10 +2069,10 @@ public final class SecretClientImpl {
 
     /**
      * List secrets in a specified key vault.
-     * 
+     *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2072,7 +2094,7 @@ public final class SecretClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2094,10 +2116,10 @@ public final class SecretClientImpl {
 
     /**
      * List secrets in a specified key vault.
-     * 
+     *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2119,7 +2141,7 @@ public final class SecretClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2139,10 +2161,10 @@ public final class SecretClientImpl {
 
     /**
      * List all versions of the specified secret.
-     * 
+     *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2164,7 +2186,7 @@ public final class SecretClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2185,10 +2207,10 @@ public final class SecretClientImpl {
 
     /**
      * List all versions of the specified secret.
-     * 
+     *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2210,7 +2232,7 @@ public final class SecretClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2230,10 +2252,10 @@ public final class SecretClientImpl {
 
     /**
      * Lists deleted secrets for the specified vault.
-     * 
+     *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2258,7 +2280,7 @@ public final class SecretClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2279,10 +2301,10 @@ public final class SecretClientImpl {
 
     /**
      * Lists deleted secrets for the specified vault.
-     * 
+     *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2307,7 +2329,7 @@ public final class SecretClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.

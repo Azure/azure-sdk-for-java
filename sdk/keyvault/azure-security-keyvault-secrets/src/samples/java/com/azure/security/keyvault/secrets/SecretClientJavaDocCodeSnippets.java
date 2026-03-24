@@ -10,6 +10,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.secrets.models.DeletedSecret;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
+import com.azure.security.keyvault.secrets.models.SecretContentType;
 import com.azure.security.keyvault.secrets.models.SecretProperties;
 
 import java.time.OffsetDateTime;
@@ -379,5 +380,28 @@ public final class SecretClientJavaDocCodeSnippets {
                 });
             });
         // END: com.azure.security.keyvault.SecretClient.listSecretVersions#string-Context-iterableByPage
+    }
+
+    /**
+     * Method to insert code snippets for
+     * {@link SecretClient#getSecret(String, SecretContentType)} and
+     * {@link SecretClient#getSecretWithResponse(String, String, SecretContentType, Context)}.
+     */
+    public void getSecretWithOutContentTypeCodeSnippets() {
+        SecretClient secretClient = getSecretClient();
+
+        // BEGIN: com.azure.security.keyvault.SecretClient.getSecret#string-SecretContentType
+        KeyVaultSecret pemSecret = secretClient.getSecret("myCertificateSecret", SecretContentType.PEM);
+        System.out.printf("Retrieved secret in PEM format, value starts with: %s%n",
+            pemSecret.getValue().substring(0, 27));
+        // END: com.azure.security.keyvault.SecretClient.getSecret#string-SecretContentType
+
+        // BEGIN: com.azure.security.keyvault.SecretClient.getSecretWithResponse#string-string-SecretContentType-Context
+        String secretVersion = "6A385B124DEF4096AF1361A85B16C204";
+        Response<KeyVaultSecret> pemResponse = secretClient.getSecretWithResponse(
+            "myCertificateSecret", secretVersion, SecretContentType.PEM, Context.NONE);
+        System.out.printf("Retrieved secret in PEM format with status: %d%n",
+            pemResponse.getStatusCode());
+        // END: com.azure.security.keyvault.SecretClient.getSecretWithResponse#string-string-SecretContentType-Context
     }
 }

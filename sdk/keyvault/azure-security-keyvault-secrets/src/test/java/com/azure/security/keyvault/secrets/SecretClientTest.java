@@ -7,6 +7,7 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
+import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
@@ -14,8 +15,10 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.security.keyvault.secrets.implementation.KeyVaultCredentialPolicy;
 import com.azure.security.keyvault.secrets.models.DeletedSecret;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
+import com.azure.security.keyvault.secrets.models.SecretContentType;
 import com.azure.security.keyvault.secrets.models.SecretProperties;
 import io.netty.handler.codec.http.HttpResponseStatus;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -480,6 +483,78 @@ public class SecretClientTest extends SecretClientTestBase {
             assertEquals(secretsToSetAndList.size(), secretVersionsList.size());
         });
 
+    }
+
+    /**
+     * Tests retrieving a certificate-backed secret with PFX-to-PEM format conversion using the outContentType
+     * parameter. Only available in service version {@link SecretServiceVersion#V2025_07_01} and later.
+     *
+     * <p>This test requires a live Azure Key Vault. No recording is available yet.</p>
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    @DoNotRecord(skipInPlayback = true)
+    public void getSecretWithOutContentType(HttpClient httpClient, SecretServiceVersion serviceVersion) {
+        // This feature requires service version 2025-07-01 or later.
+        Assumptions.assumeTrue(serviceVersion.ordinal() >= SecretServiceVersion.V2025_07_01.ordinal(),
+            "getSecretWithOutContentType requires SecretServiceVersion.V2025_07_01 or later.");
+        // This test requires a live service because no recording exists yet.
+        Assumptions.assumeTrue(interceptorManager.isLiveMode(),
+            "getSecretWithOutContentType requires a live Azure Key Vault service (no recording available).");
+
+        createClient(httpClient, serviceVersion);
+
+        String secretName = testResourceNamer.randomName("testSecretOutContentType", 30);
+
+        // Set a certificate-backed secret with PFX content type.
+        // In a real scenario this value would be a valid base64-encoded PFX.
+        // The Azure Key Vault service will attempt to convert the PFX to PEM when outContentType is requested.
+        KeyVaultSecret pfxSecret = new KeyVaultSecret(secretName, "placeholder-pfx-value")
+            .setProperties(new SecretProperties().setContentType("application/x-pkcs12"));
+        secretClient.setSecret(pfxSecret);
+
+        // Retrieve the certificate secret requesting PEM format conversion.
+        KeyVaultSecret pemSecret = secretClient.getSecret(secretName, SecretContentType.PEM);
+
+        assertNotNull(pemSecret);
+        assertEquals(secretName, pemSecret.getName());
+        assertEquals("application/x-pem-file", pemSecret.getProperties().getContentType());
+        assertTrue(pemSecret.getValue() != null && !pemSecret.getValue().isEmpty());
+    }
+
+    /**
+     * Tests retrieving a certificate-backed secret with PFX-to-PEM format conversion using
+     * {@link SecretClient#getSecretWithResponse(String, String, SecretContentType,
+     * com.azure.core.util.Context)}.
+     * Only available in service version {@link SecretServiceVersion#V2025_07_01} and later.
+     *
+     * <p>This test requires a live Azure Key Vault. No recording is available yet.</p>
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    @DoNotRecord(skipInPlayback = true)
+    public void getSecretWithResponseOutContentType(HttpClient httpClient, SecretServiceVersion serviceVersion) {
+        Assumptions.assumeTrue(serviceVersion.ordinal() >= SecretServiceVersion.V2025_07_01.ordinal(),
+            "getSecretWithResponseOutContentType requires SecretServiceVersion.V2025_07_01 or later.");
+        Assumptions.assumeTrue(interceptorManager.isLiveMode(),
+            "getSecretWithResponseOutContentType requires a live Azure Key Vault service (no recording available).");
+
+        createClient(httpClient, serviceVersion);
+
+        String secretName = testResourceNamer.randomName("testSecretOutContentTypeResp", 30);
+        KeyVaultSecret pfxSecret = new KeyVaultSecret(secretName, "placeholder-pfx-value")
+            .setProperties(new SecretProperties().setContentType("application/x-pkcs12"));
+        secretClient.setSecret(pfxSecret);
+
+        com.azure.core.http.rest.Response<KeyVaultSecret> response = secretClient.getSecretWithResponse(secretName,
+            null, SecretContentType.PEM, com.azure.core.util.Context.NONE);
+
+        assertNotNull(response);
+        assertEquals(200, response.getStatusCode());
+        KeyVaultSecret pemSecret = response.getValue();
+        assertNotNull(pemSecret);
+        assertEquals(secretName, pemSecret.getName());
+        assertEquals("application/x-pem-file", pemSecret.getProperties().getContentType());
     }
 
     private void pollOnSecretPurge(String secretName) {
