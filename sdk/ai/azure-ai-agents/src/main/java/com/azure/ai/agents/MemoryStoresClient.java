@@ -6,15 +6,12 @@ package com.azure.ai.agents;
 import com.azure.ai.agents.implementation.MemoryStoresImpl;
 import com.azure.ai.agents.implementation.OpenAIJsonHelper;
 import com.azure.ai.agents.implementation.models.CreateMemoryStoreRequest;
-import com.azure.ai.agents.implementation.models.DeleteScopeRequest;
 import com.azure.ai.agents.implementation.models.InputItem;
 import com.azure.ai.agents.implementation.models.SearchMemoriesRequest;
 import com.azure.ai.agents.implementation.models.UpdateMemoriesRequest;
 import com.azure.ai.agents.implementation.models.UpdateMemoryStoreRequest;
-import com.azure.ai.agents.models.DeleteMemoryStoreResult;
 import com.azure.ai.agents.models.MemorySearchOptions;
 import com.azure.ai.agents.models.MemoryStoreDefinition;
-import com.azure.ai.agents.models.MemoryStoreDeleteScopeResponse;
 import com.azure.ai.agents.models.MemoryStoreDetails;
 import com.azure.ai.agents.models.MemoryStoreSearchResponse;
 import com.azure.ai.agents.models.MemoryStoreUpdateCompletedResult;
@@ -34,6 +31,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
 import com.openai.models.responses.ResponseInputItem;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -456,14 +454,30 @@ public final class MemoryStoresClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeleteMemoryStoreResult deleteMemoryStore(String name) {
-        // Generated convenience method for deleteMemoryStoreWithResponse
+    public void deleteMemoryStore(String name) {
         RequestOptions requestOptions = new RequestOptions();
-        return deleteMemoryStoreWithResponse(name, requestOptions).getValue().toObject(DeleteMemoryStoreResult.class);
+        deleteMemoryStoreWithResponse(name, requestOptions);
+    }
+
+    /**
+     * Delete all memories associated with a specific scope from a memory store.
+     *
+     * @param name The name of the memory store.
+     * @param scope The namespace that logically groups and isolates memories to delete, such as a user ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteScope(String name, String scope) {
+        RequestOptions requestOptions = new RequestOptions();
+        BinaryData deleteScopeRequest = BinaryData.fromObject(Collections.singletonMap("scope", scope));
+        deleteScopeWithResponse(name, deleteScopeRequest, requestOptions);
     }
 
     /**
@@ -576,30 +590,6 @@ public final class MemoryStoresClient {
         BinaryData updateMemoryStoreRequest = BinaryData.fromObject(updateMemoryStoreRequestObj);
         return updateMemoryStoreWithResponse(name, updateMemoryStoreRequest, requestOptions).getValue()
             .toObject(MemoryStoreDetails.class);
-    }
-
-    /**
-     * Delete all memories associated with a specific scope from a memory store.
-     *
-     * @param name The name of the memory store.
-     * @param scope The namespace that logically groups and isolates memories to delete, such as a user ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for deleting memories from a scope.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public MemoryStoreDeleteScopeResponse deleteScope(String name, String scope) {
-        // Generated convenience method for deleteScopeWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        DeleteScopeRequest deleteScopeRequestObj = new DeleteScopeRequest(scope);
-        BinaryData deleteScopeRequest = BinaryData.fromObject(deleteScopeRequestObj);
-        return deleteScopeWithResponse(name, deleteScopeRequest, requestOptions).getValue()
-            .toObject(MemoryStoreDeleteScopeResponse.class);
     }
 
     /**
