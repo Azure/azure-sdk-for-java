@@ -9,6 +9,7 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.implementation.contentvalidation.StorageCrc64Calculator;
 import com.azure.storage.common.implementation.contentvalidation.StructuredMessageEncoder;
 import com.azure.storage.common.implementation.contentvalidation.StructuredMessageFlags;
@@ -33,6 +34,8 @@ import static com.azure.storage.common.implementation.contentvalidation.Structur
  * StorageContentValidationPolicy is a policy that applies content validation to the request body.
  */
 public class StorageContentValidationPolicy implements HttpPipelinePolicy {
+    private static final ClientLogger LOGGER = new ClientLogger(StorageContentValidationPolicy.class);
+
 
     /**
      * Creates a new instance of {@link StorageContentValidationPolicy}.
@@ -118,18 +121,18 @@ public class StorageContentValidationPolicy implements HttpPipelinePolicy {
     private Mono<Void> applyStructuredMessage(HttpPipelineCallContext context) {
         String contentLengthValue = context.getHttpRequest().getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH);
         if (contentLengthValue == null || contentLengthValue.isEmpty()) {
-            throw new IllegalArgumentException("Content-Length header is required to apply structured message "
-                + "and CRC64 encoding, but it was not present on the request.");
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Content-Length header is required to apply structured message "
+                + "and CRC64 encoding, but it was not present on the request."));
         }
 
         long parsedContentLength;
         try {
             parsedContentLength = Long.parseLong(contentLengthValue);
         } catch (NumberFormatException ex) {
-            throw new IllegalArgumentException(
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "Content-Length header value '" + contentLengthValue
                     + "' is not a valid non-negative integer value required for structured message and CRC64 encoding.",
-                ex);
+                ex));
         }
 
         int unencodedContentLength = (int) parsedContentLength;

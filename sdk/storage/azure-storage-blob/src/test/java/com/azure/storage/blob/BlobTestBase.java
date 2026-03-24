@@ -61,8 +61,6 @@ import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.implementation.contentvalidation.StructuredMessageConstants;
-import com.azure.storage.common.implementation.contentvalidation.StructuredMessageEncoder;
-import com.azure.storage.common.implementation.contentvalidation.StructuredMessageFlags;
 import com.azure.storage.common.test.shared.StorageCommonTestUtils;
 import com.azure.storage.common.test.shared.TestAccount;
 import com.azure.storage.common.test.shared.TestDataFactory;

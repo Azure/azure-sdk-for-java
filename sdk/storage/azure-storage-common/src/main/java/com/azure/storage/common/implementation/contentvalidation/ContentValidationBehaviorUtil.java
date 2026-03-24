@@ -22,7 +22,7 @@ public final class ContentValidationBehaviorUtil {
     }
 
     public static final String CONFLICTING_TRANSACTIONAL_CONTENT_VALIDATION_MESSAGE
-        = "Both contentMd5 and requestChecksumAlgorithm are set. Only one form of transactional content validation may be used.";
+        = "Individual MD5 option and checksum algorithm option bag are both used. Only one form of transactional content validation may be used.";
 
     /**
      * Behavior for a single-part upload. Use CRC64 header when length is less than 4MB, otherwise structured
