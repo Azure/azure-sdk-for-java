@@ -42,7 +42,7 @@ public final class ManagedClusterApiServerAccessProfile
     /*
      * Whether to create additional public FQDN for private cluster or not.
      */
-    private Boolean enablePrivateClusterPublicFQDN;
+    private Boolean enablePrivateClusterPublicFqdn;
 
     /*
      * Whether to disable run command for the cluster or not.
@@ -142,25 +142,25 @@ public final class ManagedClusterApiServerAccessProfile
     }
 
     /**
-     * Get the enablePrivateClusterPublicFQDN property: Whether to create additional public FQDN for private cluster or
+     * Get the enablePrivateClusterPublicFqdn property: Whether to create additional public FQDN for private cluster or
      * not.
      * 
-     * @return the enablePrivateClusterPublicFQDN value.
+     * @return the enablePrivateClusterPublicFqdn value.
      */
-    public Boolean enablePrivateClusterPublicFQDN() {
-        return this.enablePrivateClusterPublicFQDN;
+    public Boolean enablePrivateClusterPublicFqdn() {
+        return this.enablePrivateClusterPublicFqdn;
     }
 
     /**
-     * Set the enablePrivateClusterPublicFQDN property: Whether to create additional public FQDN for private cluster or
+     * Set the enablePrivateClusterPublicFqdn property: Whether to create additional public FQDN for private cluster or
      * not.
      * 
-     * @param enablePrivateClusterPublicFQDN the enablePrivateClusterPublicFQDN value to set.
+     * @param enablePrivateClusterPublicFqdn the enablePrivateClusterPublicFqdn value to set.
      * @return the ManagedClusterApiServerAccessProfile object itself.
      */
     public ManagedClusterApiServerAccessProfile
-        withEnablePrivateClusterPublicFQDN(Boolean enablePrivateClusterPublicFQDN) {
-        this.enablePrivateClusterPublicFQDN = enablePrivateClusterPublicFQDN;
+        withEnablePrivateClusterPublicFqdn(Boolean enablePrivateClusterPublicFqdn) {
+        this.enablePrivateClusterPublicFqdn = enablePrivateClusterPublicFqdn;
         return this;
     }
 
@@ -246,7 +246,7 @@ public final class ManagedClusterApiServerAccessProfile
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeBooleanField("enablePrivateCluster", this.enablePrivateCluster);
         jsonWriter.writeStringField("privateDNSZone", this.privateDnsZone);
-        jsonWriter.writeBooleanField("enablePrivateClusterPublicFQDN", this.enablePrivateClusterPublicFQDN);
+        jsonWriter.writeBooleanField("enablePrivateClusterPublicFQDN", this.enablePrivateClusterPublicFqdn);
         jsonWriter.writeBooleanField("disableRunCommand", this.disableRunCommand);
         jsonWriter.writeBooleanField("enableVnetIntegration", this.enableVnetIntegration);
         jsonWriter.writeStringField("subnetId", this.subnetId);
@@ -278,7 +278,7 @@ public final class ManagedClusterApiServerAccessProfile
                 } else if ("privateDNSZone".equals(fieldName)) {
                     deserializedManagedClusterApiServerAccessProfile.privateDnsZone = reader.getString();
                 } else if ("enablePrivateClusterPublicFQDN".equals(fieldName)) {
-                    deserializedManagedClusterApiServerAccessProfile.enablePrivateClusterPublicFQDN
+                    deserializedManagedClusterApiServerAccessProfile.enablePrivateClusterPublicFqdn
                         = reader.getNullable(JsonReader::getBoolean);
                 } else if ("disableRunCommand".equals(fieldName)) {
                     deserializedManagedClusterApiServerAccessProfile.disableRunCommand
