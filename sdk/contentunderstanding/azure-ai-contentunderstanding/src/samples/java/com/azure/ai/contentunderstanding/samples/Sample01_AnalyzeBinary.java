@@ -147,29 +147,6 @@ public class Sample01_AnalyzeBinary {
             BinaryData multiPageData = BinaryData.fromBytes(multiPageBytes);
 
             // BEGIN:ContentUnderstandingAnalyzeBinaryWithContentRange
-            // Analyze only pages 3 to end using ContentRange.pagesFrom()
-            SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> rangeOperation
-                = client.beginAnalyzeBinary("prebuilt-documentSearch", multiPageData,
-                    ContentRange.pagesFrom(3), "application/octet-stream", null);
-            AnalysisResult rangeResult = rangeOperation.getFinalResult();
-
-            DocumentContent rangeDoc = (DocumentContent) rangeResult.getContents().get(0);
-            System.out.println("PagesFrom(3): returned " + rangeDoc.getPages().size() + " pages"
-                + " (pages " + rangeDoc.getStartPageNumber() + "-" + rangeDoc.getEndPageNumber() + ")");
-
-            // Combine multiple page ranges: pages 1-3, page 5, and pages 9 onward
-            SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> bigCombineOperation
-                = client.beginAnalyzeBinary("prebuilt-documentSearch", multiPageData,
-                    ContentRange.combine(
-                        ContentRange.pages(1, 3),
-                        ContentRange.page(5),
-                        ContentRange.pagesFrom(9)),
-                    "application/octet-stream", null);
-            DocumentContent bigCombineDoc
-                = (DocumentContent) bigCombineOperation.getFinalResult().getContents().get(0);
-            System.out.println(
-                "Combine(Pages(1,3), Page(5), PagesFrom(9)): returned " + bigCombineDoc.getPages().size() + " pages");
-
             // Analyze a single page using ContentRange.page()
             SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> pageOperation
                 = client.beginAnalyzeBinary("prebuilt-documentSearch", multiPageData,
@@ -197,53 +174,28 @@ public class Sample01_AnalyzeBinary {
             System.out.println("Combine(Page(1), Pages(3,4)): returned " + combineDoc.getPages().size() + " pages"
                 + " (pages " + combineDoc.getStartPageNumber() + "-" + combineDoc.getEndPageNumber() + ")");
 
-            // Raw string "3-" — pages from, equivalent to ContentRange.pagesFrom(3)
-            SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> rawPagesFrom3Operation
+            // Analyze only pages 3 to end using ContentRange.pagesFrom()
+            SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> rangeOperation
                 = client.beginAnalyzeBinary("prebuilt-documentSearch", multiPageData,
-                    new ContentRange("3-"), "application/octet-stream", null);
-            DocumentContent rawPagesFrom3Doc
-                = (DocumentContent) rawPagesFrom3Operation.getFinalResult().getContents().get(0);
-            System.out.println("Raw ContentRange('3-'): " + rawPagesFrom3Doc.getPages().size() + " pages, "
-                + rawPagesFrom3Doc.getMarkdown().length() + " chars");
+                    ContentRange.pagesFrom(3), "application/octet-stream", null);
+            AnalysisResult rangeResult = rangeOperation.getFinalResult();
 
-            // BEGIN:ContentUnderstandingAnalyzeBinaryWithRawContentRange
-            // Analyze pages 1-3, page 5, and pages 9 onward using a raw range string.
-            // This is equivalent to: ContentRange.combine(ContentRange.pages(1, 3), ContentRange.page(5), ContentRange.pagesFrom(9))
-            SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> rawRangeOperation
-                = client.beginAnalyzeBinary("prebuilt-documentSearch", multiPageData,
-                    new ContentRange("1-3,5,9-"), "application/octet-stream", null);
-            DocumentContent rawRangeDoc
-                = (DocumentContent) rawRangeOperation.getFinalResult().getContents().get(0);
-            System.out.println("Raw ContentRange('1-3,5,9-'): " + rawRangeDoc.getPages().size() + " pages, "
-                + rawRangeDoc.getMarkdown().length() + " chars");
-            // END:ContentUnderstandingAnalyzeBinaryWithRawContentRange
+            DocumentContent rangeDoc = (DocumentContent) rangeResult.getContents().get(0);
+            System.out.println("PagesFrom(3): returned " + rangeDoc.getPages().size() + " pages"
+                + " (pages " + rangeDoc.getStartPageNumber() + "-" + rangeDoc.getEndPageNumber() + ")");
 
-            // Raw string "2" — single page, equivalent to ContentRange.page(2)
-            SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> rawPage2Operation
+            // Combine multiple page ranges: pages 1-3, page 5, and pages 9 onward
+            SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> bigCombineOperation
                 = client.beginAnalyzeBinary("prebuilt-documentSearch", multiPageData,
-                    new ContentRange("2"), "application/octet-stream", null);
-            DocumentContent rawPage2Doc
-                = (DocumentContent) rawPage2Operation.getFinalResult().getContents().get(0);
-            System.out.println("Raw ContentRange('2'): " + rawPage2Doc.getPages().size() + " page, "
-                + rawPage2Doc.getMarkdown().length() + " chars");
-
-            // Raw string "1-3" — page range, equivalent to ContentRange.pages(1, 3)
-            SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> rawPages13Operation
-                = client.beginAnalyzeBinary("prebuilt-documentSearch", multiPageData,
-                    new ContentRange("1-3"), "application/octet-stream", null);
-            DocumentContent rawPages13Doc
-                = (DocumentContent) rawPages13Operation.getFinalResult().getContents().get(0);
-            System.out.println("Raw ContentRange('1-3'): " + rawPages13Doc.getPages().size() + " pages, "
-                + rawPages13Doc.getMarkdown().length() + " chars");
-
-            // Raw string "1,3-4" — combined page ranges, equivalent to ContentRange.combine(page(1), pages(3, 4))
-            SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> rawCombineOperation
-                = client.beginAnalyzeBinary("prebuilt-documentSearch", multiPageData,
-                    new ContentRange("1,3-4"), "application/octet-stream", null);
-            DocumentContent rawCombineDoc
-                = (DocumentContent) rawCombineOperation.getFinalResult().getContents().get(0);
-            System.out.println("Raw ContentRange('1,3-4'): " + rawCombineDoc.getPages().size() + " pages, "
-                + rawCombineDoc.getMarkdown().length() + " chars");
+                    ContentRange.combine(
+                        ContentRange.pages(1, 3),
+                        ContentRange.page(5),
+                        ContentRange.pagesFrom(9)),
+                    "application/octet-stream", null);
+            DocumentContent bigCombineDoc
+                = (DocumentContent) bigCombineOperation.getFinalResult().getContents().get(0);
+            System.out.println(
+                "Combine(Pages(1,3), Page(5), PagesFrom(9)): returned " + bigCombineDoc.getPages().size() + " pages");
             // END:ContentUnderstandingAnalyzeBinaryWithContentRange
 
             System.out.println("ContentRange binary analysis completed successfully");

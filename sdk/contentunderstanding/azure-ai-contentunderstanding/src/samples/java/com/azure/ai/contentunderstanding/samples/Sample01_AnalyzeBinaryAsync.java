@@ -185,48 +185,6 @@ public class Sample01_AnalyzeBinaryAsync {
         CountDownLatch rangeLatch = new CountDownLatch(1);
 
         // BEGIN:ContentUnderstandingAnalyzeBinaryWithContentRangeAsync
-        // Analyze only pages 3 to end using ContentRange.pagesFrom()
-        Mono<AnalysisResult> pagesFromMono = client
-            .beginAnalyzeBinary("prebuilt-documentSearch", multiPageData,
-                ContentRange.pagesFrom(3), "application/octet-stream", null)
-            .last()
-            .flatMap(pollResponse -> {
-                if (pollResponse.getStatus().isComplete()) {
-                    return pollResponse.getFinalResult();
-                } else {
-                    return Mono.error(new RuntimeException(
-                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
-                }
-            })
-            .doOnNext(result -> {
-                DocumentContent rangeDoc = (DocumentContent) result.getContents().get(0);
-                System.out.println("PagesFrom(3): returned " + rangeDoc.getPages().size() + " pages"
-                    + " (pages " + rangeDoc.getStartPageNumber() + "-" + rangeDoc.getEndPageNumber() + ")");
-            });
-
-        // Combine multiple page ranges: pages 1-3, page 5, and pages 9 onward
-        Mono<AnalysisResult> bigCombineMono = client
-            .beginAnalyzeBinary("prebuilt-documentSearch", multiPageData,
-                ContentRange.combine(
-                    ContentRange.pages(1, 3),
-                    ContentRange.page(5),
-                    ContentRange.pagesFrom(9)),
-                "application/octet-stream", null)
-            .last()
-            .flatMap(pollResponse -> {
-                if (pollResponse.getStatus().isComplete()) {
-                    return pollResponse.getFinalResult();
-                } else {
-                    return Mono.error(new RuntimeException(
-                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
-                }
-            })
-            .doOnNext(result -> {
-                DocumentContent bigCombineDoc = (DocumentContent) result.getContents().get(0);
-                System.out.println("Combine(Pages(1,3), Page(5), PagesFrom(9)): returned "
-                    + bigCombineDoc.getPages().size() + " pages");
-            });
-
         // Analyze a single page using ContentRange.page()
         Mono<AnalysisResult> pageMono = client
             .beginAnalyzeBinary("prebuilt-documentSearch", multiPageData,
@@ -287,112 +245,54 @@ public class Sample01_AnalyzeBinaryAsync {
                     + " (pages " + combineDoc.getStartPageNumber() + "-" + combineDoc.getEndPageNumber() + ")");
             });
 
+        // Analyze only pages 3 to end using ContentRange.pagesFrom()
+        Mono<AnalysisResult> pagesFromMono = client
+            .beginAnalyzeBinary("prebuilt-documentSearch", multiPageData,
+                ContentRange.pagesFrom(3), "application/octet-stream", null)
+            .last()
+            .flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
+                    return pollResponse.getFinalResult();
+                } else {
+                    return Mono.error(new RuntimeException(
+                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+                }
+            })
+            .doOnNext(result -> {
+                DocumentContent rangeDoc = (DocumentContent) result.getContents().get(0);
+                System.out.println("PagesFrom(3): returned " + rangeDoc.getPages().size() + " pages"
+                    + " (pages " + rangeDoc.getStartPageNumber() + "-" + rangeDoc.getEndPageNumber() + ")");
+            });
+
+        // Combine multiple page ranges: pages 1-3, page 5, and pages 9 onward
+        Mono<AnalysisResult> bigCombineMono = client
+            .beginAnalyzeBinary("prebuilt-documentSearch", multiPageData,
+                ContentRange.combine(
+                    ContentRange.pages(1, 3),
+                    ContentRange.page(5),
+                    ContentRange.pagesFrom(9)),
+                "application/octet-stream", null)
+            .last()
+            .flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
+                    return pollResponse.getFinalResult();
+                } else {
+                    return Mono.error(new RuntimeException(
+                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+                }
+            })
+            .doOnNext(result -> {
+                DocumentContent bigCombineDoc = (DocumentContent) result.getContents().get(0);
+                System.out.println("Combine(Pages(1,3), Page(5), PagesFrom(9)): returned "
+                    + bigCombineDoc.getPages().size() + " pages");
+            });
+
         // Chain all operations sequentially using then()
-        pagesFromMono
-            .then(bigCombineMono)
-            .then(pageMono)
+        pageMono
             .then(pagesMono)
             .then(combineMono)
-            .then(Mono.defer(() -> {
-                // Raw string "3-" — equivalent to ContentRange.pagesFrom(3)
-                return client
-                    .beginAnalyzeBinary("prebuilt-documentSearch", multiPageData,
-                        new ContentRange("3-"), "application/octet-stream", null)
-                    .last()
-                    .flatMap(pollResponse -> {
-                        if (pollResponse.getStatus().isComplete()) {
-                            return pollResponse.getFinalResult();
-                        } else {
-                            return Mono.error(new RuntimeException(
-                                "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
-                        }
-                    })
-                    .doOnNext(result -> {
-                        DocumentContent rawPagesFrom3Doc = (DocumentContent) result.getContents().get(0);
-                        System.out.println("Raw ContentRange('3-'): " + rawPagesFrom3Doc.getPages().size()
-                            + " pages, " + rawPagesFrom3Doc.getMarkdown().length() + " chars");
-                    });
-            }))
-            .then(Mono.defer(() -> {
-                // Raw string "1-3,5,9-" — equivalent to Combine(Pages(1,3), Page(5), PagesFrom(9))
-                return client
-                    .beginAnalyzeBinary("prebuilt-documentSearch", multiPageData,
-                        new ContentRange("1-3,5,9-"), "application/octet-stream", null)
-                    .last()
-                    .flatMap(pollResponse -> {
-                        if (pollResponse.getStatus().isComplete()) {
-                            return pollResponse.getFinalResult();
-                        } else {
-                            return Mono.error(new RuntimeException(
-                                "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
-                        }
-                    })
-                    .doOnNext(result -> {
-                        DocumentContent rawRangeDoc = (DocumentContent) result.getContents().get(0);
-                        System.out.println("Raw ContentRange('1-3,5,9-'): " + rawRangeDoc.getPages().size()
-                            + " pages, " + rawRangeDoc.getMarkdown().length() + " chars");
-                    });
-            }))
-            .then(Mono.defer(() -> {
-                // Raw string "2" — equivalent to ContentRange.page(2)
-                return client
-                    .beginAnalyzeBinary("prebuilt-documentSearch", multiPageData,
-                        new ContentRange("2"), "application/octet-stream", null)
-                    .last()
-                    .flatMap(pollResponse -> {
-                        if (pollResponse.getStatus().isComplete()) {
-                            return pollResponse.getFinalResult();
-                        } else {
-                            return Mono.error(new RuntimeException(
-                                "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
-                        }
-                    })
-                    .doOnNext(result -> {
-                        DocumentContent rawPage2Doc = (DocumentContent) result.getContents().get(0);
-                        System.out.println("Raw ContentRange('2'): " + rawPage2Doc.getPages().size()
-                            + " page, " + rawPage2Doc.getMarkdown().length() + " chars");
-                    });
-            }))
-            .then(Mono.defer(() -> {
-                // Raw string "1-3" — equivalent to ContentRange.pages(1, 3)
-                return client
-                    .beginAnalyzeBinary("prebuilt-documentSearch", multiPageData,
-                        new ContentRange("1-3"), "application/octet-stream", null)
-                    .last()
-                    .flatMap(pollResponse -> {
-                        if (pollResponse.getStatus().isComplete()) {
-                            return pollResponse.getFinalResult();
-                        } else {
-                            return Mono.error(new RuntimeException(
-                                "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
-                        }
-                    })
-                    .doOnNext(result -> {
-                        DocumentContent rawPages13Doc = (DocumentContent) result.getContents().get(0);
-                        System.out.println("Raw ContentRange('1-3'): " + rawPages13Doc.getPages().size()
-                            + " pages, " + rawPages13Doc.getMarkdown().length() + " chars");
-                    });
-            }))
-            .then(Mono.defer(() -> {
-                // Raw string "1,3-4" — equivalent to ContentRange.combine(page(1), pages(3, 4))
-                return client
-                    .beginAnalyzeBinary("prebuilt-documentSearch", multiPageData,
-                        new ContentRange("1,3-4"), "application/octet-stream", null)
-                    .last()
-                    .flatMap(pollResponse -> {
-                        if (pollResponse.getStatus().isComplete()) {
-                            return pollResponse.getFinalResult();
-                        } else {
-                            return Mono.error(new RuntimeException(
-                                "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
-                        }
-                    })
-                    .doOnNext(result -> {
-                        DocumentContent rawCombineDoc = (DocumentContent) result.getContents().get(0);
-                        System.out.println("Raw ContentRange('1,3-4'): " + rawCombineDoc.getPages().size()
-                            + " pages, " + rawCombineDoc.getMarkdown().length() + " chars");
-                    });
-            }))
+            .then(pagesFromMono)
+            .then(bigCombineMono)
             .doOnError(error -> System.err.println("Error: " + error.getMessage()))
             .subscribe(
                 result -> {
