@@ -418,7 +418,7 @@ public class Sample02_AnalyzeUrlTest extends ContentUnderstandingClientTestBase 
         String uriSource
             = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/document/mixed_financial_invoices.pdf";
 
-        // Full 4-page analysis for comparison
+        // Full document analysis for comparison
         AnalysisInput fullInput = new AnalysisInput();
         fullInput.setUrl(uriSource);
 
