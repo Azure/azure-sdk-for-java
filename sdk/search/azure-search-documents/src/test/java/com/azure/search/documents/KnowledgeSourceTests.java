@@ -17,8 +17,6 @@ import com.azure.search.documents.indexes.models.KnowledgeSource;
 import com.azure.search.documents.indexes.models.KnowledgeSourceIngestionPermissionOption;
 import com.azure.search.documents.indexes.models.KnowledgeSourceKind;
 import com.azure.search.documents.indexes.models.KnowledgeSourceSynchronizationStatus;
-import com.azure.search.documents.indexes.models.RemoteSharePointKnowledgeSource;
-import com.azure.search.documents.indexes.models.RemoteSharePointKnowledgeSourceParameters;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchIndexFieldReference;
 import com.azure.search.documents.indexes.models.SearchIndexKnowledgeSource;
@@ -33,6 +31,7 @@ import com.azure.search.documents.knowledgebases.models.KnowledgeSourceStatus;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
@@ -131,65 +130,27 @@ public class KnowledgeSourceTests extends SearchTestBase {
     }
 
     @Test
+    @Disabled("RemoteSharePointKnowledgeSource removed in 2026-04-01 API version")
     public void createKnowledgeSourceRemoteSharePointSync() {
-        // Test creating a knowledge source.
-        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
-        KnowledgeSource knowledgeSource = new RemoteSharePointKnowledgeSource(randomKnowledgeSourceName())
-            .setRemoteSharePointParameters(new RemoteSharePointKnowledgeSourceParameters());
-
-        KnowledgeSource created = searchIndexClient.createKnowledgeSource(knowledgeSource);
-
-        assertEquals(knowledgeSource.getName(), created.getName());
-
-        assertInstanceOf(RemoteSharePointKnowledgeSource.class, created);
+        // Disabled: RemoteSharePointKnowledgeSource was removed from the 2026-04-01 API version.
     }
 
     @Test
+    @Disabled("RemoteSharePointKnowledgeSource removed in 2026-04-01 API version")
     public void createKnowledgeSourceRemoteSharePointAsync() {
-        // Test creating a knowledge source.
-        SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
-        KnowledgeSource knowledgeSource = new RemoteSharePointKnowledgeSource(randomKnowledgeSourceName())
-            .setRemoteSharePointParameters(new RemoteSharePointKnowledgeSourceParameters());
-
-        StepVerifier.create(searchIndexClient.createKnowledgeSource(knowledgeSource)).assertNext(created -> {
-            assertEquals(knowledgeSource.getName(), created.getName());
-
-            assertInstanceOf(RemoteSharePointKnowledgeSource.class, created);
-        }).verifyComplete();
+        // Disabled: RemoteSharePointKnowledgeSource was removed from the 2026-04-01 API version.
     }
 
     @Test
+    @Disabled("RemoteSharePointKnowledgeSource removed in 2026-04-01 API version")
     public void createKnowledgeSourceRemoteSharePointCustomParametersSync() {
-        // Test creating a knowledge source.
-        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
-        RemoteSharePointKnowledgeSourceParameters params
-            = new RemoteSharePointKnowledgeSourceParameters().setFilterExpression("FileExtension:\"docx\"")
-                .setResourceMetadata("Author", "CreatedDate");
-        KnowledgeSource knowledgeSource
-            = new RemoteSharePointKnowledgeSource(randomKnowledgeSourceName()).setRemoteSharePointParameters(params);
-
-        KnowledgeSource created = searchIndexClient.createKnowledgeSource(knowledgeSource);
-
-        assertEquals(knowledgeSource.getName(), created.getName());
-
-        assertInstanceOf(RemoteSharePointKnowledgeSource.class, created);
+        // Disabled: RemoteSharePointKnowledgeSource was removed from the 2026-04-01 API version.
     }
 
     @Test
+    @Disabled("RemoteSharePointKnowledgeSource removed in 2026-04-01 API version")
     public void createKnowledgeSourceRemoteSharePointCustomParametersAsync() {
-        // Test creating a knowledge source.
-        SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
-        RemoteSharePointKnowledgeSourceParameters params
-            = new RemoteSharePointKnowledgeSourceParameters().setFilterExpression("FileExtension:\"docx\"")
-                .setResourceMetadata("Author", "CreatedDate");
-        KnowledgeSource knowledgeSource
-            = new RemoteSharePointKnowledgeSource(randomKnowledgeSourceName()).setRemoteSharePointParameters(params);
-
-        StepVerifier.create(searchIndexClient.createKnowledgeSource(knowledgeSource)).assertNext(created -> {
-            assertEquals(knowledgeSource.getName(), created.getName());
-
-            assertInstanceOf(RemoteSharePointKnowledgeSource.class, created);
-        }).verifyComplete();
+        // Disabled: RemoteSharePointKnowledgeSource was removed from the 2026-04-01 API version.
     }
 
     @Test
@@ -226,34 +187,15 @@ public class KnowledgeSourceTests extends SearchTestBase {
     }
 
     @Test
+    @Disabled("RemoteSharePointKnowledgeSource removed in 2026-04-01 API version")
     public void getKnowledgeSourceRemoteSharePointSync() {
-        // Test getting a knowledge source.
-        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
-        KnowledgeSource knowledgeSource = new RemoteSharePointKnowledgeSource(randomKnowledgeSourceName())
-            .setRemoteSharePointParameters(new RemoteSharePointKnowledgeSourceParameters());
-        searchIndexClient.createKnowledgeSource(knowledgeSource);
-
-        KnowledgeSource retrieved = searchIndexClient.getKnowledgeSource(knowledgeSource.getName());
-        assertEquals(knowledgeSource.getName(), retrieved.getName());
-
-        assertInstanceOf(RemoteSharePointKnowledgeSource.class, retrieved);
+        // Disabled: RemoteSharePointKnowledgeSource was removed from the 2026-04-01 API version.
     }
 
     @Test
+    @Disabled("RemoteSharePointKnowledgeSource removed in 2026-04-01 API version")
     public void getKnowledgeSourceRemoteSharePointAsync() {
-        // Test getting a knowledge source.
-        SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
-        KnowledgeSource knowledgeSource = new RemoteSharePointKnowledgeSource(randomKnowledgeSourceName())
-            .setRemoteSharePointParameters(new RemoteSharePointKnowledgeSourceParameters());
-
-        Mono<KnowledgeSource> createAndGetMono = searchIndexClient.createKnowledgeSource(knowledgeSource)
-            .flatMap(created -> searchIndexClient.getKnowledgeSource(created.getName()));
-
-        StepVerifier.create(createAndGetMono).assertNext(retrieved -> {
-            assertEquals(knowledgeSource.getName(), retrieved.getName());
-
-            assertInstanceOf(RemoteSharePointKnowledgeSource.class, retrieved);
-        }).verifyComplete();
+        // Disabled: RemoteSharePointKnowledgeSource was removed from the 2026-04-01 API version.
     }
 
     @Test
@@ -372,34 +314,15 @@ public class KnowledgeSourceTests extends SearchTestBase {
     }
 
     @Test
+    @Disabled("RemoteSharePointKnowledgeSource removed in 2026-04-01 API version")
     public void updateKnowledgeSourceRemoteSharePointSync() {
-        // Test updating a knowledge source.
-        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
-        KnowledgeSource knowledgeSource = new RemoteSharePointKnowledgeSource(randomKnowledgeSourceName())
-            .setRemoteSharePointParameters(new RemoteSharePointKnowledgeSourceParameters());
-        searchIndexClient.createKnowledgeSource(knowledgeSource);
-        String newDescription = "Updated description";
-        knowledgeSource.setDescription(newDescription);
-        searchIndexClient.createOrUpdateKnowledgeSource(knowledgeSource);
-        KnowledgeSource retrieved = searchIndexClient.getKnowledgeSource(knowledgeSource.getName());
-        assertEquals(newDescription, retrieved.getDescription());
+        // Disabled: RemoteSharePointKnowledgeSource was removed from the 2026-04-01 API version.
     }
 
     @Test
+    @Disabled("RemoteSharePointKnowledgeSource removed in 2026-04-01 API version")
     public void updateKnowledgeSourceRemoteSharePointAsync() {
-        // Test updating a knowledge source.
-        SearchIndexAsyncClient searchIndexClient = getSearchIndexClientBuilder(false).buildAsyncClient();
-        KnowledgeSource knowledgeSource = new RemoteSharePointKnowledgeSource(randomKnowledgeSourceName())
-            .setRemoteSharePointParameters(new RemoteSharePointKnowledgeSourceParameters());
-        String newDescription = "Updated description";
-
-        Mono<KnowledgeSource> createUpdateAndGetMono = searchIndexClient.createKnowledgeSource(knowledgeSource)
-            .flatMap(created -> searchIndexClient.createOrUpdateKnowledgeSource(created.setDescription(newDescription)))
-            .flatMap(updated -> searchIndexClient.getKnowledgeSource(updated.getName()));
-
-        StepVerifier.create(createUpdateAndGetMono)
-            .assertNext(retrieved -> assertEquals(newDescription, retrieved.getDescription()))
-            .verifyComplete();
+        // Disabled: RemoteSharePointKnowledgeSource was removed from the 2026-04-01 API version.
     }
 
     @Test

@@ -26,6 +26,7 @@ import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchPagedResponse;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
@@ -105,170 +106,45 @@ public class FacetAggregationTests extends SearchTestBase {
     }
 
     @Test
+    @Disabled("FacetResult.getMin/getMax/getAvg/getCardinality removed in 2026-04-01 API version")
     public void facetQueryWithMinAggregation() {
-        SearchOptions searchOptions = new SearchOptions().setSearchText("*").setFacets("Rating, metric : min");
-
-        Map<String, List<FacetResult>> facets = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient()
-            .search(searchOptions)
-            .streamByPage()
-            .findFirst()
-            .map(SearchPagedResponse::getFacets)
-            .orElseThrow(IllegalStateException::new);
-
-        assertNotNull(facets, "Facets should not be null");
-        assertTrue(facets.containsKey("Rating"), "Rating facet should be present");
-
-        List<FacetResult> ratingFacets = facets.get("Rating");
-        assertNotNull(ratingFacets, "Rating facet results should not be null");
-
-        boolean hasMinMetric = ratingFacets.stream().anyMatch(facet -> facet.getMin() != null);
-        assertTrue(hasMinMetric, "Min metric should be present in facets response");
+        // Disabled: FacetResult.getMin() was removed in the 2026-04-01 API version.
     }
 
     @Test
+    @Disabled("FacetResult.getMin/getMax/getAvg/getCardinality removed in 2026-04-01 API version")
     public void facetQueryWithMaxAggregation() {
-        SearchOptions searchOptions = new SearchOptions().setSearchText("*").setFacets("Rating, metric : max");
-
-        Map<String, List<FacetResult>> facets = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient()
-            .search(searchOptions)
-            .streamByPage()
-            .findFirst()
-            .map(SearchPagedResponse::getFacets)
-            .orElseThrow(IllegalStateException::new);
-
-        assertNotNull(facets, "Facets should not be null");
-        assertTrue(facets.containsKey("Rating"), "Rating facet should be present");
-
-        List<FacetResult> ratingFacets = facets.get("Rating");
-        assertNotNull(ratingFacets, "Rating facet results should not be null");
-
-        boolean hasMaxMetric = ratingFacets.stream().anyMatch(facet -> facet.getMax() != null);
-        assertTrue(hasMaxMetric, "Max metric should be present in facets response");
+        // Disabled: FacetResult.getMax() was removed in the 2026-04-01 API version.
     }
 
     @Test
+    @Disabled("FacetResult.getMin/getMax/getAvg/getCardinality removed in 2026-04-01 API version")
     public void facetQueryWithAvgAggregation() {
-        SearchOptions searchOptions = new SearchOptions().setSearchText("*").setFacets("Rating, metric : avg");
-
-        Map<String, List<FacetResult>> facets = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient()
-            .search(searchOptions)
-            .streamByPage()
-            .findFirst()
-            .map(SearchPagedResponse::getFacets)
-            .orElseThrow(IllegalStateException::new);
-
-        assertNotNull(facets, "Facets should not be null");
-        assertTrue(facets.containsKey("Rating"), "Rating facet should be present");
-
-        List<FacetResult> ratingFacets = facets.get("Rating");
-        assertNotNull(ratingFacets, "Rating facet results should not be null");
-
-        boolean hasAvgMetric = ratingFacets.stream().anyMatch(facet -> facet.getAvg() != null);
-        assertTrue(hasAvgMetric, "Avg metric should be present in facets response");
+        // Disabled: FacetResult.getAvg() was removed in the 2026-04-01 API version.
     }
 
     @Test
+    @Disabled("FacetResult.getMin/getMax/getAvg/getCardinality removed in 2026-04-01 API version")
     public void facetQueryWithCardinalityAggregation() {
-        SearchOptions searchOptions
-            = new SearchOptions().setSearchText("*").setFacets("Category, metric : cardinality");
-
-        Map<String, List<FacetResult>> facets = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient()
-            .search(searchOptions)
-            .streamByPage()
-            .findFirst()
-            .map(SearchPagedResponse::getFacets)
-            .orElseThrow(IllegalStateException::new);
-
-        assertNotNull(facets, "Facets should not be null");
-        assertTrue(facets.containsKey("Category"), "Category facet should be present");
-
-        List<FacetResult> categoryFacets = facets.get("Category");
-        assertNotNull(categoryFacets, "Category facet results should not be null");
-
-        boolean hasCardinalityMetric = categoryFacets.stream().anyMatch(facet -> facet.getCardinality() != null);
-        assertTrue(hasCardinalityMetric, "Cardinality metric should be present in facets response");
+        // Disabled: FacetResult.getCardinality() was removed in the 2026-04-01 API version.
     }
 
     @Test
+    @Disabled("FacetResult.getMin/getMax/getAvg/getCardinality removed in 2026-04-01 API version")
     public void facetQueryWithMultipleMetricsOnSameFieldResponseShape() {
-        SearchOptions searchOptions = new SearchOptions().setSearchText("*")
-            .setFacets("Rating, metric: min", "Rating, metric: max", "Rating, metric: avg");
-
-        Map<String, List<FacetResult>> facets = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient()
-            .search(searchOptions)
-            .streamByPage()
-            .findFirst()
-            .map(SearchPagedResponse::getFacets)
-            .orElseThrow(IllegalStateException::new);
-
-        assertNotNull(facets);
-        assertTrue(facets.containsKey("Rating"));
-
-        List<FacetResult> ratingFacets = facets.get("Rating");
-
-        boolean hasMin = ratingFacets.stream().anyMatch(f -> f.getMin() != null);
-        boolean hasMax = ratingFacets.stream().anyMatch(f -> f.getMax() != null);
-        boolean hasAvg = ratingFacets.stream().anyMatch(f -> f.getAvg() != null);
-
-        assertTrue(hasMin, "Min metric should be present");
-        assertTrue(hasMax, "Max metric should be present");
-        assertTrue(hasAvg, "Avg metric should be present");
+        // Disabled: FacetResult.getMin/getMax/getAvg() were removed in the 2026-04-01 API version.
     }
 
     @Test
+    @Disabled("FacetResult.getMin/getMax/getAvg/getCardinality removed in 2026-04-01 API version")
     public void facetQueryWithCardinalityPrecisionThreshold() {
-        SearchOptions defaultThreshold
-            = new SearchOptions().setSearchText("*").setFacets("Category, metric : cardinality");
-
-        SearchOptions maxThreshold = new SearchOptions().setSearchText("*")
-            .setFacets("Category, metric : cardinality, precisionThreshold: 40000");
-
-        SearchPagedResponse defaultResults = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient()
-            .search(defaultThreshold)
-            .streamByPage()
-            .findFirst()
-            .orElseThrow(IllegalStateException::new);
-        SearchPagedResponse maxResults = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient()
-            .search(maxThreshold)
-            .streamByPage()
-            .findFirst()
-            .orElseThrow(IllegalStateException::new);
-
-        assertNotNull(defaultResults.getFacets().get("Category"));
-        assertNotNull(maxResults.getFacets().get("Category"));
-
-        boolean defaultHasCardinality
-            = defaultResults.getFacets().get("Category").stream().anyMatch(f -> f.getCardinality() != null);
-        boolean maxHasCardinality
-            = maxResults.getFacets().get("Category").stream().anyMatch(f -> f.getCardinality() != null);
-
-        assertTrue(defaultHasCardinality, "Default threshold should return cardinality");
-        assertTrue(maxHasCardinality, "Max threshold should return cardinality");
+        // Disabled: FacetResult.getCardinality() was removed in the 2026-04-01 API version.
     }
 
     @Test
+    @Disabled("FacetResult.getMin/getMax/getAvg/getCardinality removed in 2026-04-01 API version")
     public void facetMetricsWithSemanticQuery() {
-        SearchOptions searchOptions = new SearchOptions().setSearchText("*")
-            .setFacets("Rating, metric: min", "Rating, metric: max", "Category, metric: cardinality")
-            .setQueryType(QueryType.SEMANTIC)
-            .setSemanticConfigurationName("semantic-config");
-        Map<String, List<FacetResult>> facets = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient()
-            .search(searchOptions)
-            .streamByPage()
-            .findFirst()
-            .map(SearchPagedResponse::getFacets)
-            .orElseThrow(IllegalStateException::new);
-
-        assertNotNull(facets, "Facets should not be null");
-        assertTrue(facets.containsKey("Rating"), "Rating facet should be present");
-        assertTrue(facets.containsKey("Category"), "Category facet should be present");
-
-        boolean hasRatingMetrics
-            = facets.get("Rating").stream().anyMatch(facet -> facet.getMin() != null || facet.getMax() != null);
-        boolean hasCategoryMetrics = facets.get("Category").stream().anyMatch(facet -> facet.getCardinality() != null);
-
-        assertTrue(hasRatingMetrics, "Rating metrics should work with semantic query");
-        assertTrue(hasCategoryMetrics, "Category metrics should work with semantic query");
+        // Disabled: FacetResult.getMin/getMax/getCardinality() were removed in the 2026-04-01 API version.
     }
 
     //    @Test

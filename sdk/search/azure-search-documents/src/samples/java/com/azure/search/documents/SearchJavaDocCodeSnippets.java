@@ -1696,40 +1696,14 @@ public class SearchJavaDocCodeSnippets {
      * Code snippet for {@link SearchIndexerClient#resetDocuments(String, Boolean, DocumentKeysOrIds)}
      */
     public void resetDocuments() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.resetDocuments#String-Boolean-DocumentKeyOrIds
-        // Reset the documents with keys 1234 and 4321.
-        SEARCH_INDEXER_CLIENT.resetDocuments("searchIndexer", false,
-            new DocumentKeysOrIds().setDocumentKeys("1234", "4321"));
-
-        // Clear the previous documents to be reset and replace them with documents 1235 and 5231.
-        SEARCH_INDEXER_CLIENT.resetDocuments("searchIndexer", true,
-            new DocumentKeysOrIds().setDocumentKeys("1235", "5321"));
-        // END: com.azure.search.documents.indexes.SearchIndexerClient.resetDocuments#String-Boolean-DocumentKeyOrIds
+        // resetDocuments removed in 2026-04-01 API version.
     }
 
     /**
      * Code snippet for {@link SearchIndexerClient#resetDocumentsWithResponse(String, RequestOptions)}
      */
     public void resetDocumentsWithResponse() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.resetDocumentsWithResponse#String-RequestOptions
-        SearchIndexer searchIndexer = SEARCH_INDEXER_CLIENT.getIndexer("searchIndexer");
-
-        // Reset the documents with keys 1234 and 4321.
-        Response<Void> resetDocsResult = SEARCH_INDEXER_CLIENT.resetDocumentsWithResponse(searchIndexer.getName(),
-            new RequestOptions().addQueryParam("overwrite", "false")
-                .setBody(BinaryData.fromObject(new DocumentKeysOrIds().setDocumentKeys("1234", "4321")))
-                .setContext(new Context(KEY_1, VALUE_1)));
-        System.out.printf("Requesting documents to be reset completed with status code %d.%n",
-            resetDocsResult.getStatusCode());
-
-        // Clear the previous documents to be reset and replace them with documents 1235 and 5231.
-        resetDocsResult = SEARCH_INDEXER_CLIENT.resetDocumentsWithResponse(searchIndexer.getName(),
-            new RequestOptions().addQueryParam("overwrite", "true")
-                .setBody(BinaryData.fromObject(new DocumentKeysOrIds().setDocumentKeys("1235", "5321")))
-                .setContext(new Context(KEY_1, VALUE_1)));
-        System.out.printf("Overwriting the documents to be reset completed with status code %d.%n",
-            resetDocsResult.getStatusCode());
-        // END: com.azure.search.documents.indexes.SearchIndexerClient.resetDocumentsWithResponse#String-RequestOptions
+        // resetDocumentsWithResponse removed in 2026-04-01 API version.
     }
 
     /**
@@ -2296,39 +2270,14 @@ public class SearchJavaDocCodeSnippets {
      * Code snippet for {@link SearchIndexerAsyncClient#resetDocuments(String, Boolean, DocumentKeysOrIds)}
      */
     public void resetDocumentsAsync() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetDocuments#String-Boolean-DocumentKeysOrIds
-        // Reset the documents with keys 1234 and 4321.
-        SEARCH_INDEXER_ASYNC_CLIENT.resetDocuments("searchIndexer", false,
-                new DocumentKeysOrIds().setDocumentKeys("1234", "4321"))
-            // Clear the previous documents to be reset and replace them with documents 1235 and 5231.
-            .then(SEARCH_INDEXER_ASYNC_CLIENT.resetDocuments("searchIndexer", true,
-                new DocumentKeysOrIds().setDocumentKeys("1235", "5321")))
-            .subscribe();
-        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetDocuments#String-Boolean-DocumentKeysOrIds
+        // resetDocuments removed in 2026-04-01 API version.
     }
 
     /**
      * Code snippet for {@link SearchIndexerAsyncClient#resetDocumentsWithResponse(String, RequestOptions)}
      */
     public void resetDocumentsWithResponseAsync() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetDocumentsWithResponse#String-RequestOptions
-        SEARCH_INDEXER_ASYNC_CLIENT.getIndexer("searchIndexer")
-            .flatMap(searchIndexer -> SEARCH_INDEXER_ASYNC_CLIENT.resetDocumentsWithResponse(searchIndexer.getName(),
-                    new RequestOptions().addQueryParam("overwrite", "false")
-                        .setBody(BinaryData.fromObject(new DocumentKeysOrIds().setDocumentKeys("1234", "4321"))))
-                .flatMap(resetDocsResult -> {
-                    System.out.printf("Requesting documents to be reset completed with status code %d.%n",
-                        resetDocsResult.getStatusCode());
-
-                    // Clear the previous documents to be reset and replace them with documents 1235 and 5231.
-                    return SEARCH_INDEXER_ASYNC_CLIENT.resetDocumentsWithResponse(searchIndexer.getName(),
-                        new RequestOptions().addQueryParam("overwrite", "true")
-                            .setBody(BinaryData.fromObject(new DocumentKeysOrIds().setDocumentKeys("1235", "5321"))));
-                }))
-            .subscribe(resetDocsResult ->
-                System.out.printf("Overwriting the documents to be reset completed with status code %d.%n",
-                    resetDocsResult.getStatusCode()));
-        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetDocumentsWithResponse#String-RequestOptions
+        // resetDocumentsWithResponse removed in 2026-04-01 API version.
     }
 
     /**
@@ -2623,51 +2572,28 @@ public class SearchJavaDocCodeSnippets {
      * Code snippet for {@link SearchIndexerClient#resetSkills(String, SkillNames)}
      */
     public void resetSkills() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.resetSkills#String-SkillNames
-        // Reset the "myOcr" and "myText" skills.
-        SEARCH_INDEXER_CLIENT.resetSkills("searchIndexerSkillset", new SkillNames().setSkillNames("myOcr", "myText"));
-        // END: com.azure.search.documents.indexes.SearchIndexerClient.resetSkills#String-SkillNames
+        // resetSkills removed in 2026-04-01 API version.
     }
 
     /**
      * Code snippet for {@link SearchIndexerClient#resetSkillsWithResponse(String, SkillNames, RequestOptions)}
      */
     public void resetSkillsWithResponse() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.resetSkillsWithResponse#String-SkillNames-RequestOptions
-        SearchIndexerSkillset searchIndexerSkillset = SEARCH_INDEXER_CLIENT.getSkillset("searchIndexerSkillset");
-
-        // Reset the "myOcr" and "myText" skills.
-        Response<Void> resetSkillsResponse = SEARCH_INDEXER_CLIENT.resetSkillsWithResponse(
-            searchIndexerSkillset.getName(), new SkillNames().setSkillNames("myOcr", "myText"),
-            new RequestOptions().setContext(new Context(KEY_1, VALUE_1)));
-        System.out.printf("Resetting skills completed with status code %d.%n", resetSkillsResponse.getStatusCode());
-        // END: com.azure.search.documents.indexes.SearchIndexerClient.resetSkillsWithResponse#String-SkillNames-RequestOptions
+        // resetSkillsWithResponse removed in 2026-04-01 API version.
     }
 
     /**
      * Code snippet for {@link SearchIndexerAsyncClient#resetSkills(String, SkillNames)}
      */
     public void resetSkillsAsync() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetSkills#String-SkillNames
-        // Reset the "myOcr" and "myText" skills.
-        SEARCH_INDEXER_ASYNC_CLIENT.resetSkills("searchIndexerSkillset",
-                new SkillNames().setSkillNames("myOcr", "myText"))
-            .subscribe();
-        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetSkills#String-SkillNames
+        // resetSkills removed in 2026-04-01 API version.
     }
 
     /**
      * Code snippet for {@link SearchIndexerAsyncClient#resetSkillsWithResponse(String, SkillNames, RequestOptions)}
      */
     public void resetSkillsWithResponseAsync() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetSkillsWithResponse#String-SkillNames-RequestOptions
-        SEARCH_INDEXER_ASYNC_CLIENT.getSkillset("searchIndexerSkillset")
-            .flatMap(searchIndexerSkillset -> SEARCH_INDEXER_ASYNC_CLIENT.resetSkillsWithResponse(
-                searchIndexerSkillset.getName(), new SkillNames().setSkillNames("myOcr", "myText"),
-                new RequestOptions()))
-            .subscribe(resetSkillsResponse -> System.out.printf("Resetting skills completed with status code %d.%n",
-                resetSkillsResponse.getStatusCode()));
-        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetSkillsWithResponse#String-SkillNames-RequestOptions
+        // resetSkillsWithResponse removed in 2026-04-01 API version.
     }
 
     /**
