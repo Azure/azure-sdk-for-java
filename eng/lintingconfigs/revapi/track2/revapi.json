@@ -336,39 +336,39 @@
           "justification": "Remove some meaningless jms properties"
         },
         {
-          "code": "java.class.removed",
-          "old": "interface com.azure.spring.cloud.autoconfigure.jms.ServiceBusJmsConnectionFactoryCustomizer",
-          "justification": "Remove deprecated method"
+          "code" : "java.class.removed",
+          "old" : "interface com.azure.spring.cloud.autoconfigure.jms.ServiceBusJmsConnectionFactoryCustomizer",
+          "justification" : "Remove deprecated method"
         },
         {
-          "code": "java.method.parameterTypeChanged",
-          "old": "parameter void com.azure.spring.data.cosmos.core.mapping.BasicCosmosPersistentEntity<T>::<init>(===org.springframework.data.util.TypeInformation<T>===)",
-          "new": "parameter void com.azure.spring.data.cosmos.core.mapping.BasicCosmosPersistentEntity<T>::<init>(===org.springframework.data.core.TypeInformation<T>===)",
-          "justification": "Replace deprecated parameterType"
+          "code" : "java.method.parameterTypeChanged",
+          "old" : "parameter void com.azure.spring.data.cosmos.core.mapping.BasicCosmosPersistentEntity<T>::<init>(===org.springframework.data.util.TypeInformation<T>===)",
+          "new" : "parameter void com.azure.spring.data.cosmos.core.mapping.BasicCosmosPersistentEntity<T>::<init>(===org.springframework.data.core.TypeInformation<T>===)",
+          "justification" : "Replace deprecated parameterType"
         },
         {
-          "code": "java.method.parameterTypeChanged",
-          "old": "parameter <T> com.azure.spring.data.cosmos.core.mapping.BasicCosmosPersistentEntity<T> com.azure.spring.data.cosmos.core.mapping.CosmosMappingContext::createPersistentEntity(===org.springframework.data.util.TypeInformation<T>===)",
-          "new": "parameter <T> com.azure.spring.data.cosmos.core.mapping.BasicCosmosPersistentEntity<T> com.azure.spring.data.cosmos.core.mapping.CosmosMappingContext::createPersistentEntity(===org.springframework.data.core.TypeInformation<T>===)",
-          "justification": "Replace deprecated parameterType"
+          "code" : "java.method.parameterTypeChanged",
+          "old" : "parameter <T> com.azure.spring.data.cosmos.core.mapping.BasicCosmosPersistentEntity<T> com.azure.spring.data.cosmos.core.mapping.CosmosMappingContext::createPersistentEntity(===org.springframework.data.util.TypeInformation<T>===)",
+          "new" : "parameter <T> com.azure.spring.data.cosmos.core.mapping.BasicCosmosPersistentEntity<T> com.azure.spring.data.cosmos.core.mapping.CosmosMappingContext::createPersistentEntity(===org.springframework.data.core.TypeInformation<T>===)",
+          "justification" : "Replace deprecated parameterType"
         },
         {
-          "code": "java.method.parameterTypeChanged",
-          "old": "parameter java.util.Optional<org.springframework.data.repository.query.QueryLookupStrategy> com.azure.spring.data.cosmos.repository.support.CosmosRepositoryFactory::getQueryLookupStrategy(org.springframework.data.repository.query.QueryLookupStrategy.Key, ===org.springframework.data.repository.query.QueryMethodEvaluationContextProvider===)",
-          "new": "parameter java.util.Optional<org.springframework.data.repository.query.QueryLookupStrategy> com.azure.spring.data.cosmos.repository.support.CosmosRepositoryFactory::getQueryLookupStrategy(org.springframework.data.repository.query.QueryLookupStrategy.Key, ===org.springframework.data.repository.query.ValueExpressionDelegate===)",
-          "justification": "Replace deprecated parameterType"
+          "code" : "java.method.parameterTypeChanged",
+          "old" : "parameter java.util.Optional<org.springframework.data.repository.query.QueryLookupStrategy> com.azure.spring.data.cosmos.repository.support.CosmosRepositoryFactory::getQueryLookupStrategy(org.springframework.data.repository.query.QueryLookupStrategy.Key, ===org.springframework.data.repository.query.QueryMethodEvaluationContextProvider===)",
+          "new" : "parameter java.util.Optional<org.springframework.data.repository.query.QueryLookupStrategy> com.azure.spring.data.cosmos.repository.support.CosmosRepositoryFactory::getQueryLookupStrategy(org.springframework.data.repository.query.QueryLookupStrategy.Key, ===org.springframework.data.repository.query.ValueExpressionDelegate===)",
+          "justification" : "Replace deprecated parameterType"
         },
         {
-          "code": "java.method.parameterTypeChanged",
-          "old": "parameter java.util.Optional<org.springframework.data.repository.query.QueryLookupStrategy> com.azure.spring.data.cosmos.repository.support.ReactiveCosmosRepositoryFactory::getQueryLookupStrategy(org.springframework.data.repository.query.QueryLookupStrategy.Key, ===org.springframework.data.repository.query.QueryMethodEvaluationContextProvider===)",
-          "new": "parameter java.util.Optional<org.springframework.data.repository.query.QueryLookupStrategy> com.azure.spring.data.cosmos.repository.support.ReactiveCosmosRepositoryFactory::getQueryLookupStrategy(org.springframework.data.repository.query.QueryLookupStrategy.Key, ===org.springframework.data.repository.query.ValueExpressionDelegate===)",
-          "justification": "Replace deprecated parameterType"
+          "code" : "java.method.parameterTypeChanged",
+          "old" : "parameter java.util.Optional<org.springframework.data.repository.query.QueryLookupStrategy> com.azure.spring.data.cosmos.repository.support.ReactiveCosmosRepositoryFactory::getQueryLookupStrategy(org.springframework.data.repository.query.QueryLookupStrategy.Key, ===org.springframework.data.repository.query.QueryMethodEvaluationContextProvider===)",
+          "new" : "parameter java.util.Optional<org.springframework.data.repository.query.QueryLookupStrategy> com.azure.spring.data.cosmos.repository.support.ReactiveCosmosRepositoryFactory::getQueryLookupStrategy(org.springframework.data.repository.query.QueryLookupStrategy.Key, ===org.springframework.data.repository.query.ValueExpressionDelegate===)",
+          "justification" : "Replace deprecated parameterType"
         },
         {
-          "code": "java.method.parameterTypeChanged",
-          "old": "parameter void com.azure.spring.integration.core.handler.DefaultMessageHandler::setSendCallback(===org.springframework.util.concurrent.ListenableFutureCallback<java.lang.Void>===)",
-          "new": "parameter void com.azure.spring.integration.core.handler.DefaultMessageHandler::setSendCallback(===java.util.function.BiConsumer<java.lang.Void, java.lang.Throwable>===)",
-          "justification": "Replace deprecated parameterType"
+          "code" : "java.method.parameterTypeChanged",
+          "old" : "parameter void com.azure.spring.integration.core.handler.DefaultMessageHandler::setSendCallback(===org.springframework.util.concurrent.ListenableFutureCallback<java.lang.Void>===)",
+          "new" : "parameter void com.azure.spring.integration.core.handler.DefaultMessageHandler::setSendCallback(===java.util.function.BiConsumer<java.lang.Void, java.lang.Throwable>===)",
+          "justification" : "Replace deprecated parameterType"
         },
         {
           "code": "java.method.numberOfParametersChanged",
@@ -694,13 +694,13 @@
         {
           "ignore": true,
           "code": "java.method.removed",
-          "old": "method java.lang.String com.azure.resourcemanager.containerservice.models.ManagedClusterAgentPoolProfile::nodeImageVersion()",
+          "old" : "method java.lang.String com.azure.resourcemanager.containerservice.models.ManagedClusterAgentPoolProfile::nodeImageVersion()",
           "justification": "Not a break, same method exists on its parent class."
         },
         {
           "ignore": true,
           "code": "java.method.visibilityReduced",
-          "old": {
+          "old" : {
             "matcher": "regex",
             "match": "method void com\\.azure\\.resourcemanager\\.containerservice\\.models\\..*\\:\\:\\<init\\>\\(\\)"
           },
@@ -709,7 +709,7 @@
         {
           "ignore": true,
           "code": "java.method.visibilityReduced",
-          "old": {
+          "old" : {
             "matcher": "regex",
             "match": "method .* com\\.azure\\.resourcemanager\\.containerservice\\.models\\..*\\:\\:with.*\\(.*\\).*"
           },
@@ -718,7 +718,7 @@
         {
           "ignore": true,
           "code": "java.method.removed",
-          "old": {
+          "old" : {
             "matcher": "regex",
             "match": "method .* com\\.azure\\.resourcemanager\\.containerservice\\.models\\..*\\:\\:with.*\\(.*\\).*"
           },
@@ -727,7 +727,7 @@
         {
           "ignore": true,
           "code": "java.class.removed",
-          "old": {
+          "old" : {
             "matcher": "regex",
             "match": "class com\\.azure\\.resourcemanager\\.containerservice\\.models\\..*(ListResult|List|Collection)"
           },
@@ -736,7 +736,7 @@
         {
           "ignore": true,
           "code": "java.method.removed",
-          "old": {
+          "old" : {
             "matcher": "regex",
             "match": "method .* com\\.azure\\.resourcemanager\\.containerservice\\.models\\..*\\:\\:.*\\(.*\\)"
           },
@@ -745,7 +745,7 @@
         {
           "ignore": true,
           "code": "java.method.returnTypeChanged",
-          "new": {
+          "new" : {
             "matcher": "regex",
             "match": "method .* com\\.azure\\.resourcemanager\\.containerservice\\.models\\.UserAssignedIdentity\\:\\:with.*\\(.*\\) @ com\\.azure\\.resourcemanager\\.containerservice\\.models\\.ManagedClusterAddonProfileIdentity"
           },
@@ -754,7 +754,7 @@
         {
           "ignore": true,
           "code": "java.method.visibilityReduced",
-          "old": {
+          "old" : {
             "matcher": "regex",
             "match": "method .* com\\.azure\\.resourcemanager\\.containerservice\\.models\\..*\\:\\:with.*\\(.*\\).*"
           },
@@ -763,7 +763,7 @@
         {
           "ignore": true,
           "code": "java.method.removed",
-          "old": {
+          "old" : {
             "matcher": "regex",
             "match": "method .* com\\.azure\\.resourcemanager\\.containerservice\\.models\\..*\\:\\:with.*\\(.*\\).*"
           },
@@ -772,7 +772,7 @@
         {
           "ignore": true,
           "code": "java.class.removed",
-          "old": {
+          "old" : {
             "matcher": "regex",
             "match": "class com\\.azure\\.resourcemanager\\.containerservice\\.models\\..*(ListResult|List|Collection)"
           },
@@ -781,7 +781,7 @@
         {
           "ignore": true,
           "code": "java.method.removed",
-          "old": {
+          "old" : {
             "matcher": "regex",
             "match": "method .* com\\.azure\\.resourcemanager\\.containerservice\\.models\\..*\\:\\:.*\\(.*\\)"
           },
@@ -818,7 +818,7 @@
         },
         {
           "ignore": true,
-          "code": "java.field.enumConstantOrderChanged",
+          "code" : "java.field.enumConstantOrderChanged",
           "old": {
             "matcher": "regex",
             "match": "field com\\.azure\\.resourcemanager\\.appservice\\.models\\.ManagedServiceIdentityType\\..*"
@@ -827,7 +827,7 @@
         },
         {
           "code": "java.class.removed",
-          "old": {
+          "old" : {
             "matcher": "regex",
             "match": "class com\\.azure\\.resourcemanager\\.keyvault\\.models\\..*ListResult"
           },
@@ -836,7 +836,7 @@
         {
           "ignore": true,
           "code": "java.method.visibilityReduced",
-          "old": {
+          "old" : {
             "matcher": "regex",
             "match": "method void com\\.azure\\.resourcemanager\\.keyvault\\.models\\..*\\:\\:\\<init\\>\\(\\)"
           },
@@ -845,7 +845,7 @@
         {
           "ignore": true,
           "code": "java.method.removed",
-          "old": {
+          "old" : {
             "matcher": "regex",
             "match": "method .* com\\.azure\\.resourcemanager\\.keyvault\\.models\\..*\\:\\:with.*\\(.*\\).*"
           },
@@ -854,7 +854,7 @@
         {
           "ignore": true,
           "code": "java.method.visibilityReduced",
-          "old": {
+          "old" : {
             "matcher": "regex",
             "match": "method .* com\\.azure\\.resourcemanager\\.keyvault\\.models\\..*\\:\\:with.*\\(.*\\).*"
           },
@@ -862,9 +862,25 @@
         },
         {
           "regex": true,
+          "code": "java\\.missing\\.(oldSuperType|newSuperType)",
+          "old" : "class com\\.azure\\.resourcemanager\\.keyvault\\.models\\..*Resource",
+          "justification": "TypeSpec fix for base resource class."
+        },
+        {
+          "code": "java.class.removed",
+          "old" : "class com.azure.resourcemanager.keyvault.models.ProxyResourceWithoutSystemData",
+          "justification": "TypeSpec fix for base resource class."
+        },
+        {
+          "regex": true,
           "code": ".*",
           "old": ".*com.azure.resourcemanager.keyvault.models.Reason.*",
           "justification": "\"Reason\" enum has changed from sealed to expandable."
+        },
+        {
+          "code": "java.class.removed",
+          "old": "class com.azure.resourcemanager.keyvault.models.ManagedHsmResource",
+          "justification": "TypeSpec fix for base resource class."
         },
         {
           "code": "java.method.removed",
@@ -877,9 +893,9 @@
           "justification": "Override was dropped because the method now comes from the com.azure.core.management.Resource base class; functionality is unchanged."
         },
         {
-          "code": "java.field.addedStaticField",
-          "new": "field com.azure.resourcemanager.network.models.PublicIPSkuType.STANDARD_V2",
-          "justification": "Not a break."
+          "code" : "java.field.addedStaticField",
+          "new" : "field com.azure.resourcemanager.network.models.PublicIPSkuType.STANDARD_V2",
+          "justification" : "Not a break."
         },
         {
           "code": "java.field.removed",
@@ -915,24 +931,24 @@
           "justification": "ExecutedValidation is output-only; fluent setter removed as part of immutable model cleanup."
         },
         {
-          "code": "java.class.removed",
-          "old": "class com.azure.resourcemanager.containerregistry.models.AutoGeneratedDomainNameLabelScope",
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.containerregistry.models.AutoGeneratedDomainNameLabelScope",
           "justification": "Fix by service: the feature only exists in preview api-version."
         },
         {
-          "code": "java.method.removed",
-          "old": "method com.azure.resourcemanager.containerregistry.models.AutoGeneratedDomainNameLabelScope com.azure.resourcemanager.containerregistry.models.RegistryNameCheckRequest::autoGeneratedDomainNameLabelScope()",
+          "code" : "java.method.removed",
+          "old" : "method com.azure.resourcemanager.containerregistry.models.AutoGeneratedDomainNameLabelScope com.azure.resourcemanager.containerregistry.models.RegistryNameCheckRequest::autoGeneratedDomainNameLabelScope()",
           "justification": "Fix by service: the feature only exists in preview api-version."
         },
         {
-          "code": "java.method.removed",
-          "old": "method java.lang.String com.azure.resourcemanager.containerregistry.models.RegistryNameCheckRequest::resourceGroupName()",
+          "code" : "java.method.removed",
+          "old" : "method java.lang.String com.azure.resourcemanager.containerregistry.models.RegistryNameCheckRequest::resourceGroupName()",
           "justification": "Fix by service: the feature only exists in preview api-version."
         },
         {
           "ignore": true,
           "code": "java.method.visibilityReduced",
-          "old": {
+          "old" : {
             "matcher": "regex",
             "match": "method void com\\.azure\\.resourcemanager\\.containerregistry\\.models\\..*\\:\\:\\<init\\>\\(\\)"
           },
@@ -941,7 +957,7 @@
         {
           "ignore": true,
           "code": "java.method.removed",
-          "old": {
+          "old" : {
             "matcher": "regex",
             "match": "method .* com\\.azure\\.resourcemanager\\.containerregistry\\.models\\..*\\:\\:with.*\\(.*\\).*"
           },
@@ -950,7 +966,7 @@
         {
           "ignore": true,
           "code": "java.method.visibilityReduced",
-          "old": {
+          "old" : {
             "matcher": "regex",
             "match": "method .* com\\.azure\\.resourcemanager\\.containerregistry\\.models\\..*\\:\\:with.*\\(.*\\).*"
           },
@@ -958,7 +974,7 @@
         },
         {
           "code": "java.class.removed",
-          "old": {
+          "old" : {
             "matcher": "regex",
             "match": "class com\\.azure\\.resourcemanager\\.containerregistry\\.models\\..*ListResult"
           },
@@ -966,7 +982,7 @@
         },
         {
           "code": "java.method.visibilityReduced",
-          "old": {
+          "old" : {
             "matcher": "regex",
             "match": "method void com\\.azure\\.resourcemanager\\.cdn\\.models\\..*\\:\\:\\<init\\>\\(\\)"
           },
@@ -974,7 +990,7 @@
         },
         {
           "code": "java.method.visibilityReduced",
-          "old": {
+          "old" : {
             "matcher": "regex",
             "match": "method .* com\\.azure\\.resourcemanager\\.cdn\\.models\\..*\\:\\:with.*\\(.*\\).*"
           },
@@ -982,7 +998,7 @@
         },
         {
           "code": "java.method.removed",
-          "old": {
+          "old" : {
             "matcher": "regex",
             "match": "method .* com\\.azure\\.resourcemanager\\.cdn\\.models\\..*\\:\\:with.*\\(.*\\).*"
           },
@@ -990,7 +1006,7 @@
         },
         {
           "code": "java.class.removed",
-          "old": {
+          "old" : {
             "matcher": "regex",
             "match": "class com\\.azure\\.resourcemanager\\.cdn\\.models\\..*ListResult"
           },
@@ -998,15 +1014,21 @@
         },
         {
           "code": "java.class.removed",
-          "old": {
+          "old" : {
             "matcher": "regex",
             "match": "class com\\.azure\\.resourcemanager\\.cdn\\.models\\..*(List|Result)$"
           },
           "justification": "Pageable models moved to implementation package. Unlikely used by user."
         },
         {
+          "regex": true,
+          "code": "java\\.missing\\.(oldSuperType|newSuperType)",
+          "old" : "class com\\.azure\\.resourcemanager\\.cdn\\.models\\..*",
+          "justification": "TypeSpec fix for base resource class."
+        },
+        {
           "code": "java.method.returnTypeChanged",
-          "old": {
+          "old" : {
             "matcher": "regex",
             "match": "method .* com\\.azure\\.resourcemanager\\.cdn\\.models\\..*\\:\\:typeName\\(\\)"
           },
@@ -1014,7 +1036,7 @@
         },
         {
           "code": "java.method.parameterTypeChanged",
-          "old": {
+          "old" : {
             "matcher": "regex",
             "match": "parameter .* com\\.azure\\.resourcemanager\\.cdn\\.models\\..*\\:\\:withTypeName\\(.*\\)"
           },
@@ -1022,12 +1044,12 @@
         },
         {
           "code": "java.method.removed",
-          "old": "method com.azure.resourcemanager.cdn.models.PolicySettingsDefaultCustomBlockResponseStatusCode com.azure.resourcemanager.cdn.models.PolicySettingsDefaultCustomBlockResponseStatusCode::fromInt(int)",
+          "old" : "method com.azure.resourcemanager.cdn.models.PolicySettingsDefaultCustomBlockResponseStatusCode com.azure.resourcemanager.cdn.models.PolicySettingsDefaultCustomBlockResponseStatusCode::fromInt(int)",
           "justification": "ExpandableStringEnum changed to ExpandableEnum<Integer>. Use fromValue(Integer) instead."
         },
         {
           "code": "java.method.visibilityReduced",
-          "old": {
+          "old" : {
             "matcher": "regex",
             "match": "method void com\\.azure\\.resourcemanager\\.appservice\\.models\\..*\\:\\:\\<init\\>\\(\\)"
           },
@@ -1035,7 +1057,7 @@
         },
         {
           "code": "java.method.visibilityReduced",
-          "old": {
+          "old" : {
             "matcher": "regex",
             "match": "method .* com\\.azure\\.resourcemanager\\.appservice\\.models\\..*\\:\\:with.*\\(.*\\).*"
           },
@@ -1043,7 +1065,7 @@
         },
         {
           "code": "java.method.removed",
-          "old": {
+          "old" : {
             "matcher": "regex",
             "match": "method .* com\\.azure\\.resourcemanager\\.appservice\\.models\\..*\\:\\:with.*\\(.*\\).*"
           },
@@ -1051,7 +1073,7 @@
         },
         {
           "code": "java.class.removed",
-          "old": {
+          "old" : {
             "matcher": "regex",
             "match": "class com\\.azure\\.resourcemanager\\.appservice\\.models\\..*Collection"
           },
@@ -1059,11 +1081,17 @@
         },
         {
           "code": "java.class.removed",
-          "old": {
+          "old" : {
             "matcher": "regex",
             "match": "class com\\.azure\\.resourcemanager\\.appservice\\.models\\..*ListResult"
           },
           "justification": "Pageable models moved to implementation package. Unlikely used by user."
+        },
+        {
+          "regex": true,
+          "code": "java\\.missing\\.(oldSuperType|newSuperType)",
+          "old" : "class com\\.azure\\.resourcemanager\\.appservice\\.models\\..*",
+          "justification": "TypeSpec fix for base resource class."
         },
         {
           "code": "java.method.removed",
@@ -1072,7 +1100,7 @@
         },
         {
           "code": "java.method.returnTypeChanged",
-          "old": {
+          "old" : {
             "matcher": "regex",
             "match": "method .* com\\.azure\\.resourcemanager\\.appservice\\.models\\.(WorkflowOutputParameter|RemotePrivateEndpointConnection|StaticSiteUserProvidedFunctionApp|VnetValidationTestFailure)::with.*"
           },
@@ -1090,7 +1118,7 @@
         },
         {
           "code": "java.method.visibilityReduced",
-          "old": {
+          "old" : {
             "matcher": "regex",
             "match": "method void com\\.azure\\.resourcemanager\\.cosmos\\.models\\..*\\:\\:\\<init\\>\\(\\)"
           },
@@ -1098,7 +1126,7 @@
         },
         {
           "code": "java.method.visibilityReduced",
-          "old": {
+          "old" : {
             "matcher": "regex",
             "match": "method .* com\\.azure\\.resourcemanager\\.cosmos\\.models\\..*\\:\\:with.*\\(.*\\).*"
           },
@@ -1106,7 +1134,7 @@
         },
         {
           "code": "java.method.removed",
-          "old": {
+          "old" : {
             "matcher": "regex",
             "match": "method .* com\\.azure\\.resourcemanager\\.cosmos\\.models\\..*\\:\\:with.*\\(.*\\).*"
           },
@@ -1114,7 +1142,7 @@
         },
         {
           "code": "java.class.removed",
-          "old": {
+          "old" : {
             "matcher": "regex",
             "match": "class com\\.azure\\.resourcemanager\\.cosmos\\.models\\..*ListResult"
           },
@@ -1122,7 +1150,7 @@
         },
         {
           "code": "java.class.removed",
-          "old": {
+          "old" : {
             "matcher": "regex",
             "match": "class com\\.azure\\.resourcemanager\\.cosmos\\.models\\.(ListClusters|ListDataCenters|PartitionUsagesResult|UsagesResult)"
           },
@@ -1130,15 +1158,21 @@
         },
         {
           "code": "java.class.removed",
-          "old": {
+          "old" : {
             "matcher": "regex",
             "match": "class com\\.azure\\.resourcemanager\\.cosmos\\.models\\.(ExtendedResourceProperties|ManagedCassandraArmResourceProperties)"
           },
           "justification": "Models removed as part of TypeSpec migration. Base types consolidated."
         },
         {
+          "regex": true,
+          "code": "java\\.missing\\.(oldSuperType|newSuperType)",
+          "old" : "class com\\.azure\\.resourcemanager\\.cosmos\\.models\\..*",
+          "justification": "TypeSpec fix for base resource class."
+        },
+        {
           "code": "java.method.returnTypeChanged",
-          "old": {
+          "old" : {
             "matcher": "regex",
             "match": "method .* com\\.azure\\.resourcemanager\\.cosmos\\.models\\..*\\:\\:with.*\\(.*\\).*"
           },
@@ -1146,7 +1180,7 @@
         },
         {
           "code": "java.class.removed",
-          "old": {
+          "old" : {
             "matcher": "regex",
             "match": "class com\\.azure\\.resourcemanager\\.search\\.models\\..*Result$"
           },
@@ -1155,7 +1189,7 @@
         {
           "ignore": true,
           "code": "java.method.visibilityReduced",
-          "old": {
+          "old" : {
             "matcher": "regex",
             "match": "method void com\\.azure\\.resourcemanager\\.search\\.models\\..*\\:\\:\\<init\\>\\(\\)"
           },
@@ -1164,7 +1198,7 @@
         {
           "ignore": true,
           "code": "java.method.removed",
-          "old": {
+          "old" : {
             "matcher": "regex",
             "match": "method .* com\\.azure\\.resourcemanager\\.search\\.models\\..*\\:\\:with.*\\(.*\\).*"
           },
@@ -1173,15 +1207,21 @@
         {
           "ignore": true,
           "code": "java.method.visibilityReduced",
-          "old": {
+          "old" : {
             "matcher": "regex",
             "match": "method .* com\\.azure\\.resourcemanager\\.search\\.models\\..*\\:\\:with.*\\(.*\\).*"
           },
           "justification": "Output-only immutable models' setters are now package-private if it's being used by child class."
         },
         {
+          "regex": true,
+          "code": ".*",
+          "old": ".*com\\.azure\\.resourcemanager\\.search\\.models\\.(IdentityType|PublicNetworkAccess|SharedPrivateLinkResourceProvisioningState|SharedPrivateLinkResourceStatus|SkuName).*",
+          "justification": "Enum changed from sealed to expandable (ExpandableStringEnum) during TypeSpec migration."
+        },
+        {
           "code": "java.method.visibilityReduced",
-          "old": {
+          "old" : {
             "matcher": "regex",
             "match": "method void com\\.azure\\.resourcemanager\\.trafficmanager\\.models\\..*\\:\\:\\<init\\>\\(\\)"
           },
@@ -1189,7 +1229,7 @@
         },
         {
           "code": "java.method.removed",
-          "old": {
+          "old" : {
             "matcher": "regex",
             "match": "method .* com\\.azure\\.resourcemanager\\.trafficmanager\\.models\\..*\\:\\:with.*\\(.*\\).*"
           },
@@ -1197,48 +1237,48 @@
         },
         {
           "code": "java.class.removed",
-          "old": {
+          "old" : {
             "matcher": "regex",
             "match": "class com\\.azure\\.resourcemanager\\.trafficmanager\\.models\\..*ListResult"
           },
           "justification": "Pageable models moved to implementation package. Unlikely used by user."
         },
         {
-          "justification": "Output-only immutable models' constructors are now private.",
           "code": "java.method.visibilityReduced",
-          "old": {
-            "match": "method void com\\.azure\\.resourcemanager\\.storage\\.models\\..*::\\<init\\>\\(\\)",
-            "matcher": "regex"
-          }
+          "old" : {
+            "matcher": "regex",
+            "match": "method void com\\.azure\\.resourcemanager\\.storage\\.models\\..*\\:\\:\\<init\\>\\(\\)"
+          },
+          "justification": "Output-only immutable models' constructors are now private."
         },
         {
-          "justification": "Output-only immutable models' setters are now package-private if it's being used by child class.",
-          "code": "java.method.visibilityReduced",
-          "old": {
-            "match": "method .* com\\.azure\\.resourcemanager\\.storage\\.models\\..*::with.*\\(.*\\).*",
-            "matcher": "regex"
-          }
-        },
-        {
-          "justification": "Output-only immutable models' setters are removed if no explicit usage.",
           "code": "java.method.removed",
-          "old": {
-            "match": "method .* com\\.azure\\.resourcemanager\\.storage\\.models\\..*::with.*\\(.*\\).*",
-            "matcher": "regex"
-          }
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.storage\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters are removed if no explicit usage."
         },
         {
-          "justification": "Pageable models moved to implementation package. Unlikely used by user.",
+          "code": "java.method.visibilityReduced",
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.storage\\.models\\..*\\:\\:with.*\\(.*\\).*"
+          },
+          "justification": "Output-only immutable models' setters visibility reduced."
+        },
+        {
           "code": "java.class.removed",
-          "old": {
-            "match": "class com\\.azure\\.resourcemanager\\.storage\\.models\\.(BlobServiceItems|DeletedAccountListResult|EncryptionScopeListResult|FileServiceUsages|FileShareItems|ListBlobInventoryPolicy|ListContainerItems|ListQueueResource|ListTableResource|LocalUsers|NetworkSecurityPerimeterConfigurationList|ObjectReplicationPolicies|OperationListResult|PrivateEndpointConnectionListResult|StorageAccountListResult|StorageSkuListResult|StorageTaskAssignmentsList|StorageTaskReportSummary|UsageListResult)",
-            "matcher": "regex"
-          }
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.storage\\.models\\.(BlobServiceItems|DeletedAccountListResult|EncryptionScopeListResult|FileServiceUsages|FileShareItems|ListBlobInventoryPolicy|ListContainerItems|ListQueueResource|ListTableResource|LocalUsers|NetworkSecurityPerimeterConfigurationList|ObjectReplicationPolicies|OperationListResult|PrivateEndpointConnectionListResult|StorageAccountListResult|StorageSkuListResult|StorageTaskAssignmentsList|StorageTaskReportSummary|UsageListResult)"
+          },
+          "justification": "Pageable models moved to implementation package. Unlikely used by user."
         },
         {
-          "old": {
-            "match": "method .* com\\.azure\\.resourcemanager\\.storage\\.models\\.(BlobContainers.*Headers|FileSharesLeaseHeaders)::with.*\\(.*\\)",
-            "matcher": "regex"
+          "old" : {
+            "matcher": "regex",
+            "match": "method .* com\\.azure\\.resourcemanager\\.storage\\.models\\.(BlobContainers.*Headers|FileSharesLeaseHeaders)\\:\\:with.*\\(.*\\)"
           },
           "justification": "Header model setters removed in TypeSpec migration.",
           "code": "java.method.removed"
