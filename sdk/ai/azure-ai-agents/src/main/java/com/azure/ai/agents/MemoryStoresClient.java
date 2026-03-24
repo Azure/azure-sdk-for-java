@@ -278,7 +278,7 @@ public final class MemoryStoresClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> deleteMemoryStoreWithResponse(String name, RequestOptions requestOptions) {
+    public Response<BinaryData> deleteMemoryStoreWithResponse(String name, RequestOptions requestOptions) {
         return this.serviceClient.deleteMemoryStoreWithResponse(name, requestOptions);
     }
 
@@ -538,7 +538,7 @@ public final class MemoryStoresClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> deleteScopeWithResponse(String name, BinaryData deleteScopeRequest,
+    public Response<BinaryData> deleteScopeWithResponse(String name, BinaryData deleteScopeRequest,
         RequestOptions requestOptions) {
         return this.serviceClient.deleteScopeWithResponse(name, deleteScopeRequest, requestOptions);
     }

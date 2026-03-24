@@ -287,7 +287,7 @@ public final class MemoryStoresAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> deleteMemoryStoreWithResponse(String name, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> deleteMemoryStoreWithResponse(String name, RequestOptions requestOptions) {
         return this.serviceClient.deleteMemoryStoreWithResponseAsync(name, requestOptions);
     }
 
@@ -542,7 +542,7 @@ public final class MemoryStoresAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> deleteScopeWithResponse(String name, BinaryData deleteScopeRequest,
+    public Mono<Response<BinaryData>> deleteScopeWithResponse(String name, BinaryData deleteScopeRequest,
         RequestOptions requestOptions) {
         return this.serviceClient.deleteScopeWithResponseAsync(name, deleteScopeRequest, requestOptions);
     }

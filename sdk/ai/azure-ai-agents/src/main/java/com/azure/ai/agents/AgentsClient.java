@@ -187,7 +187,7 @@ public final class AgentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> deleteAgentVersionWithResponse(String agentName, String agentVersion,
+    public Response<BinaryData> deleteAgentVersionWithResponse(String agentName, String agentVersion,
         RequestOptions requestOptions) {
         return this.serviceClient.deleteAgentVersionWithResponse(agentName, agentVersion, requestOptions);
     }
@@ -1479,7 +1479,7 @@ public final class AgentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> deleteAgentWithResponse(String agentName, RequestOptions requestOptions) {
+    public Response<BinaryData> deleteAgentWithResponse(String agentName, RequestOptions requestOptions) {
         return this.serviceClient.deleteAgentWithResponse(agentName, requestOptions);
     }
 }
