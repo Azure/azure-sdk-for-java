@@ -19,6 +19,6 @@ public final class ExpressRouteConnectionsListSamples {
     public static void expressRouteConnectionList(com.azure.resourcemanager.network.NetworkManager manager) {
         manager.serviceClient()
             .getExpressRouteConnections()
-            .list("resourceGroupName", "expressRouteGatewayName", com.azure.core.util.Context.NONE);
+            .listWithResponse("resourceGroupName", "expressRouteGatewayName", com.azure.core.util.Context.NONE);
     }
 }

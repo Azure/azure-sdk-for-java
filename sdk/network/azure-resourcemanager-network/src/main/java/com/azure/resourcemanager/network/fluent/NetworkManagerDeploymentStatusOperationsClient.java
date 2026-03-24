@@ -6,11 +6,11 @@ package com.azure.resourcemanager.network.fluent;
 
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.network.fluent.models.NetworkManagerDeploymentStatusInner;
+import com.azure.resourcemanager.network.fluent.models.NetworkManagerDeploymentStatusListResultInner;
 import com.azure.resourcemanager.network.models.NetworkManagerDeploymentStatusParameter;
+import reactor.core.publisher.Mono;
 
 /**
  * An instance of this class provides access to all the operations defined in
@@ -28,11 +28,12 @@ public interface NetworkManagerDeploymentStatusOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Network Manager Deployment Status as paginated response with {@link PagedFlux}.
+     * @return a list of Network Manager Deployment Status along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<NetworkManagerDeploymentStatusInner> listAsync(String resourceGroupName, String networkManagerName,
-        NetworkManagerDeploymentStatusParameter parameters, Integer top);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<NetworkManagerDeploymentStatusListResultInner>> listWithResponseAsync(String resourceGroupName,
+        String networkManagerName, NetworkManagerDeploymentStatusParameter parameters, Integer top);
 
     /**
      * Post to List of Network Manager Deployment Status.
@@ -43,25 +44,10 @@ public interface NetworkManagerDeploymentStatusOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Network Manager Deployment Status as paginated response with {@link PagedFlux}.
+     * @return a list of Network Manager Deployment Status on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<NetworkManagerDeploymentStatusInner> listAsync(String resourceGroupName, String networkManagerName,
-        NetworkManagerDeploymentStatusParameter parameters);
-
-    /**
-     * Post to List of Network Manager Deployment Status.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param parameters Parameters supplied to specify which Managed Network deployment status is.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Network Manager Deployment Status as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<NetworkManagerDeploymentStatusInner> list(String resourceGroupName, String networkManagerName,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<NetworkManagerDeploymentStatusListResultInner> listAsync(String resourceGroupName, String networkManagerName,
         NetworkManagerDeploymentStatusParameter parameters);
 
     /**
@@ -76,9 +62,24 @@ public interface NetworkManagerDeploymentStatusOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Network Manager Deployment Status as paginated response with {@link PagedIterable}.
+     * @return a list of Network Manager Deployment Status along with {@link Response}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<NetworkManagerDeploymentStatusInner> list(String resourceGroupName, String networkManagerName,
-        NetworkManagerDeploymentStatusParameter parameters, Integer top, Context context);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<NetworkManagerDeploymentStatusListResultInner> listWithResponse(String resourceGroupName,
+        String networkManagerName, NetworkManagerDeploymentStatusParameter parameters, Integer top, Context context);
+
+    /**
+     * Post to List of Network Manager Deployment Status.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkManagerName The name of the network manager.
+     * @param parameters Parameters supplied to specify which Managed Network deployment status is.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of Network Manager Deployment Status.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    NetworkManagerDeploymentStatusListResultInner list(String resourceGroupName, String networkManagerName,
+        NetworkManagerDeploymentStatusParameter parameters);
 }

@@ -9,7 +9,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.fluent.models.AdminPropertiesFormat;
-import com.azure.resourcemanager.network.fluent.models.EffectiveBaseSecurityAdminRuleInner;
 import java.io.IOException;
 import java.util.List;
 
@@ -17,7 +16,7 @@ import java.util.List;
  * Network admin rule.
  */
 @Immutable
-public final class EffectiveSecurityAdminRule extends EffectiveBaseSecurityAdminRuleInner {
+public final class EffectiveSecurityAdminRule extends EffectiveBaseSecurityAdminRule {
     /*
      * Whether the rule is custom or default.
      */
@@ -27,31 +26,6 @@ public final class EffectiveSecurityAdminRule extends EffectiveBaseSecurityAdmin
      * Indicates the properties of the security admin rule
      */
     private AdminPropertiesFormat innerProperties;
-
-    /*
-     * Effective configuration groups.
-     */
-    private List<ConfigurationGroup> ruleGroups;
-
-    /*
-     * Groups for rule collection
-     */
-    private List<NetworkManagerSecurityGroupItem> ruleCollectionAppliesToGroups;
-
-    /*
-     * A description of the rule collection.
-     */
-    private String ruleCollectionDescription;
-
-    /*
-     * A description of the security admin configuration.
-     */
-    private String configurationDescription;
-
-    /*
-     * Resource ID.
-     */
-    private String id;
 
     /**
      * Creates an instance of EffectiveSecurityAdminRule class.
@@ -74,58 +48,8 @@ public final class EffectiveSecurityAdminRule extends EffectiveBaseSecurityAdmin
      * 
      * @return the innerProperties value.
      */
-    private AdminPropertiesFormat innerProperties() {
+    AdminPropertiesFormat innerProperties() {
         return this.innerProperties;
-    }
-
-    /**
-     * Get the ruleGroups property: Effective configuration groups.
-     * 
-     * @return the ruleGroups value.
-     */
-    @Override
-    public List<ConfigurationGroup> ruleGroups() {
-        return this.ruleGroups;
-    }
-
-    /**
-     * Get the ruleCollectionAppliesToGroups property: Groups for rule collection.
-     * 
-     * @return the ruleCollectionAppliesToGroups value.
-     */
-    @Override
-    public List<NetworkManagerSecurityGroupItem> ruleCollectionAppliesToGroups() {
-        return this.ruleCollectionAppliesToGroups;
-    }
-
-    /**
-     * Get the ruleCollectionDescription property: A description of the rule collection.
-     * 
-     * @return the ruleCollectionDescription value.
-     */
-    @Override
-    public String ruleCollectionDescription() {
-        return this.ruleCollectionDescription;
-    }
-
-    /**
-     * Get the configurationDescription property: A description of the security admin configuration.
-     * 
-     * @return the configurationDescription value.
-     */
-    @Override
-    public String configurationDescription() {
-        return this.configurationDescription;
-    }
-
-    /**
-     * Get the id property: Resource ID.
-     * 
-     * @return the id value.
-     */
-    @Override
-    public String id() {
-        return this.id;
     }
 
     /**
@@ -280,20 +204,20 @@ public final class EffectiveSecurityAdminRule extends EffectiveBaseSecurityAdmin
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedEffectiveSecurityAdminRule.id = reader.getString();
+                    deserializedEffectiveSecurityAdminRule.withId(reader.getString());
                 } else if ("configurationDescription".equals(fieldName)) {
-                    deserializedEffectiveSecurityAdminRule.configurationDescription = reader.getString();
+                    deserializedEffectiveSecurityAdminRule.withConfigurationDescription(reader.getString());
                 } else if ("ruleCollectionDescription".equals(fieldName)) {
-                    deserializedEffectiveSecurityAdminRule.ruleCollectionDescription = reader.getString();
+                    deserializedEffectiveSecurityAdminRule.withRuleCollectionDescription(reader.getString());
                 } else if ("ruleCollectionAppliesToGroups".equals(fieldName)) {
                     List<NetworkManagerSecurityGroupItem> ruleCollectionAppliesToGroups
                         = reader.readArray(reader1 -> NetworkManagerSecurityGroupItem.fromJson(reader1));
-                    deserializedEffectiveSecurityAdminRule.ruleCollectionAppliesToGroups
-                        = ruleCollectionAppliesToGroups;
+                    deserializedEffectiveSecurityAdminRule
+                        .withRuleCollectionAppliesToGroups(ruleCollectionAppliesToGroups);
                 } else if ("ruleGroups".equals(fieldName)) {
                     List<ConfigurationGroup> ruleGroups
                         = reader.readArray(reader1 -> ConfigurationGroup.fromJson(reader1));
-                    deserializedEffectiveSecurityAdminRule.ruleGroups = ruleGroups;
+                    deserializedEffectiveSecurityAdminRule.withRuleGroups(ruleGroups);
                 } else if ("kind".equals(fieldName)) {
                     deserializedEffectiveSecurityAdminRule.kind = EffectiveAdminRuleKind.fromString(reader.getString());
                 } else if ("properties".equals(fieldName)) {

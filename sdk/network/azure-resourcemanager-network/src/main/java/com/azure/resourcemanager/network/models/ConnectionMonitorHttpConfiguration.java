@@ -25,7 +25,7 @@ public final class ConnectionMonitorHttpConfiguration implements JsonSerializabl
     /*
      * The HTTP method to use.
      */
-    private HTTPConfigurationMethod method;
+    private HttpConfigurationMethod method;
 
     /*
      * The path component of the URI. For instance, "/dir1/dir2".
@@ -35,7 +35,7 @@ public final class ConnectionMonitorHttpConfiguration implements JsonSerializabl
     /*
      * The HTTP headers to transmit with the request.
      */
-    private List<HTTPHeader> requestHeaders;
+    private List<HttpHeader> requestHeaders;
 
     /*
      * HTTP status codes to consider successful. For instance, "2xx,301-304,418".
@@ -45,7 +45,7 @@ public final class ConnectionMonitorHttpConfiguration implements JsonSerializabl
     /*
      * Value indicating whether HTTPS is preferred over HTTP in cases where the choice is not explicit.
      */
-    private Boolean preferHTTPS;
+    private Boolean preferHttps;
 
     /**
      * Creates an instance of ConnectionMonitorHttpConfiguration class.
@@ -78,7 +78,7 @@ public final class ConnectionMonitorHttpConfiguration implements JsonSerializabl
      * 
      * @return the method value.
      */
-    public HTTPConfigurationMethod method() {
+    public HttpConfigurationMethod method() {
         return this.method;
     }
 
@@ -88,7 +88,7 @@ public final class ConnectionMonitorHttpConfiguration implements JsonSerializabl
      * @param method the method value to set.
      * @return the ConnectionMonitorHttpConfiguration object itself.
      */
-    public ConnectionMonitorHttpConfiguration withMethod(HTTPConfigurationMethod method) {
+    public ConnectionMonitorHttpConfiguration withMethod(HttpConfigurationMethod method) {
         this.method = method;
         return this;
     }
@@ -118,7 +118,7 @@ public final class ConnectionMonitorHttpConfiguration implements JsonSerializabl
      * 
      * @return the requestHeaders value.
      */
-    public List<HTTPHeader> requestHeaders() {
+    public List<HttpHeader> requestHeaders() {
         return this.requestHeaders;
     }
 
@@ -128,7 +128,7 @@ public final class ConnectionMonitorHttpConfiguration implements JsonSerializabl
      * @param requestHeaders the requestHeaders value to set.
      * @return the ConnectionMonitorHttpConfiguration object itself.
      */
-    public ConnectionMonitorHttpConfiguration withRequestHeaders(List<HTTPHeader> requestHeaders) {
+    public ConnectionMonitorHttpConfiguration withRequestHeaders(List<HttpHeader> requestHeaders) {
         this.requestHeaders = requestHeaders;
         return this;
     }
@@ -156,24 +156,24 @@ public final class ConnectionMonitorHttpConfiguration implements JsonSerializabl
     }
 
     /**
-     * Get the preferHTTPS property: Value indicating whether HTTPS is preferred over HTTP in cases where the choice is
+     * Get the preferHttps property: Value indicating whether HTTPS is preferred over HTTP in cases where the choice is
      * not explicit.
      * 
-     * @return the preferHTTPS value.
+     * @return the preferHttps value.
      */
-    public Boolean preferHTTPS() {
-        return this.preferHTTPS;
+    public Boolean preferHttps() {
+        return this.preferHttps;
     }
 
     /**
-     * Set the preferHTTPS property: Value indicating whether HTTPS is preferred over HTTP in cases where the choice is
+     * Set the preferHttps property: Value indicating whether HTTPS is preferred over HTTP in cases where the choice is
      * not explicit.
      * 
-     * @param preferHTTPS the preferHTTPS value to set.
+     * @param preferHttps the preferHttps value to set.
      * @return the ConnectionMonitorHttpConfiguration object itself.
      */
-    public ConnectionMonitorHttpConfiguration withPreferHTTPS(Boolean preferHTTPS) {
-        this.preferHTTPS = preferHTTPS;
+    public ConnectionMonitorHttpConfiguration withPreferHttps(Boolean preferHttps) {
+        this.preferHttps = preferHttps;
         return this;
     }
 
@@ -201,7 +201,7 @@ public final class ConnectionMonitorHttpConfiguration implements JsonSerializabl
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("validStatusCodeRanges", this.validStatusCodeRanges,
             (writer, element) -> writer.writeString(element));
-        jsonWriter.writeBooleanField("preferHTTPS", this.preferHTTPS);
+        jsonWriter.writeBooleanField("preferHTTPS", this.preferHttps);
         return jsonWriter.writeEndObject();
     }
 
@@ -225,17 +225,17 @@ public final class ConnectionMonitorHttpConfiguration implements JsonSerializabl
                     deserializedConnectionMonitorHttpConfiguration.port = reader.getNullable(JsonReader::getInt);
                 } else if ("method".equals(fieldName)) {
                     deserializedConnectionMonitorHttpConfiguration.method
-                        = HTTPConfigurationMethod.fromString(reader.getString());
+                        = HttpConfigurationMethod.fromString(reader.getString());
                 } else if ("path".equals(fieldName)) {
                     deserializedConnectionMonitorHttpConfiguration.path = reader.getString();
                 } else if ("requestHeaders".equals(fieldName)) {
-                    List<HTTPHeader> requestHeaders = reader.readArray(reader1 -> HTTPHeader.fromJson(reader1));
+                    List<HttpHeader> requestHeaders = reader.readArray(reader1 -> HttpHeader.fromJson(reader1));
                     deserializedConnectionMonitorHttpConfiguration.requestHeaders = requestHeaders;
                 } else if ("validStatusCodeRanges".equals(fieldName)) {
                     List<String> validStatusCodeRanges = reader.readArray(reader1 -> reader1.getString());
                     deserializedConnectionMonitorHttpConfiguration.validStatusCodeRanges = validStatusCodeRanges;
                 } else if ("preferHTTPS".equals(fieldName)) {
-                    deserializedConnectionMonitorHttpConfiguration.preferHTTPS
+                    deserializedConnectionMonitorHttpConfiguration.preferHttps
                         = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();

@@ -20,10 +20,6 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
-import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
@@ -34,11 +30,10 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.ExpressRouteGatewaysClient;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteGatewayInner;
-import com.azure.resourcemanager.network.implementation.models.ExpressRouteGatewayList;
+import com.azure.resourcemanager.network.fluent.models.ExpressRouteGatewayListInner;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
-import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -46,8 +41,8 @@ import reactor.core.publisher.Mono;
 /**
  * An instance of this class provides access to all the operations defined in ExpressRouteGatewaysClient.
  */
-public final class ExpressRouteGatewaysClientImpl implements InnerSupportsGet<ExpressRouteGatewayInner>,
-    InnerSupportsListing<ExpressRouteGatewayInner>, InnerSupportsDelete<Void>, ExpressRouteGatewaysClient {
+public final class ExpressRouteGatewaysClientImpl
+    implements InnerSupportsGet<ExpressRouteGatewayInner>, InnerSupportsDelete<Void>, ExpressRouteGatewaysClient {
     /**
      * The proxy service used to perform REST calls.
      */
@@ -119,7 +114,7 @@ public final class ExpressRouteGatewaysClientImpl implements InnerSupportsGet<Ex
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteGateways")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ExpressRouteGatewayList>> listByResourceGroup(@HostParam("endpoint") String endpoint,
+        Mono<Response<ExpressRouteGatewayListInner>> listByResourceGroup(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("Accept") String accept,
             Context context);
@@ -128,7 +123,7 @@ public final class ExpressRouteGatewaysClientImpl implements InnerSupportsGet<Ex
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/expressRouteGateways")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ExpressRouteGatewayList>> list(@HostParam("endpoint") String endpoint,
+        Mono<Response<ExpressRouteGatewayListInner>> listBySubscription(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -979,10 +974,10 @@ public final class ExpressRouteGatewaysClientImpl implements InnerSupportsGet<Ex
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ExpressRoute gateways along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of ExpressRoute gateways along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ExpressRouteGatewayInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
+    public Mono<Response<ExpressRouteGatewayListInner>> listByResourceGroupWithResponseAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -1000,8 +995,6 @@ public final class ExpressRouteGatewaysClientImpl implements InnerSupportsGet<Ex
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, accept, context))
-            .<PagedResponse<ExpressRouteGatewayInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
-                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1013,10 +1006,10 @@ public final class ExpressRouteGatewaysClientImpl implements InnerSupportsGet<Ex
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ExpressRoute gateways along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of ExpressRoute gateways along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ExpressRouteGatewayInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+    private Mono<Response<ExpressRouteGatewayListInner>> listByResourceGroupWithResponseAsync(String resourceGroupName,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -1033,11 +1026,8 @@ public final class ExpressRouteGatewaysClientImpl implements InnerSupportsGet<Ex
         final String apiVersion = "2025-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroup(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-                resourceGroupName, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), null, null));
+        return service.listByResourceGroup(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, accept, context);
     }
 
     /**
@@ -1047,40 +1037,11 @@ public final class ExpressRouteGatewaysClientImpl implements InnerSupportsGet<Ex
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ExpressRoute gateways as paginated response with {@link PagedFlux}.
+     * @return list of ExpressRoute gateways on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ExpressRouteGatewayInner> listByResourceGroupAsync(String resourceGroupName) {
-        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName));
-    }
-
-    /**
-     * Lists ExpressRoute gateways in a given resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ExpressRoute gateways as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ExpressRouteGatewayInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
-        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context));
-    }
-
-    /**
-     * Lists ExpressRoute gateways in a given resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ExpressRoute gateways as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ExpressRouteGatewayInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ExpressRouteGatewayListInner> listByResourceGroupAsync(String resourceGroupName) {
+        return listByResourceGroupWithResponseAsync(resourceGroupName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1091,11 +1052,26 @@ public final class ExpressRouteGatewaysClientImpl implements InnerSupportsGet<Ex
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ExpressRoute gateways as paginated response with {@link PagedIterable}.
+     * @return list of ExpressRoute gateways along with {@link Response}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ExpressRouteGatewayInner> listByResourceGroup(String resourceGroupName, Context context) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ExpressRouteGatewayListInner> listByResourceGroupWithResponse(String resourceGroupName,
+        Context context) {
+        return listByResourceGroupWithResponseAsync(resourceGroupName, context).block();
+    }
+
+    /**
+     * Lists ExpressRoute gateways in a given resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of ExpressRoute gateways.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ExpressRouteGatewayListInner listByResourceGroup(String resourceGroupName) {
+        return listByResourceGroupWithResponse(resourceGroupName, Context.NONE).getValue();
     }
 
     /**
@@ -1103,10 +1079,10 @@ public final class ExpressRouteGatewaysClientImpl implements InnerSupportsGet<Ex
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ExpressRoute gateways along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of ExpressRoute gateways along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ExpressRouteGatewayInner>> listSinglePageAsync() {
+    public Mono<Response<ExpressRouteGatewayListInner>> listBySubscriptionWithResponseAsync() {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -1118,10 +1094,8 @@ public final class ExpressRouteGatewaysClientImpl implements InnerSupportsGet<Ex
         final String apiVersion = "2025-05-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-                accept, context))
-            .<PagedResponse<ExpressRouteGatewayInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
-                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.listBySubscription(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1132,10 +1106,10 @@ public final class ExpressRouteGatewaysClientImpl implements InnerSupportsGet<Ex
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ExpressRoute gateways along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of ExpressRoute gateways along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ExpressRouteGatewayInner>> listSinglePageAsync(Context context) {
+    private Mono<Response<ExpressRouteGatewayListInner>> listBySubscriptionWithResponseAsync(Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -1147,9 +1121,8 @@ public final class ExpressRouteGatewaysClientImpl implements InnerSupportsGet<Ex
         final String apiVersion = "2025-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), null, null));
+        return service.listBySubscription(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            accept, context);
     }
 
     /**
@@ -1157,37 +1130,11 @@ public final class ExpressRouteGatewaysClientImpl implements InnerSupportsGet<Ex
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ExpressRoute gateways as paginated response with {@link PagedFlux}.
+     * @return list of ExpressRoute gateways on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ExpressRouteGatewayInner> listAsync() {
-        return new PagedFlux<>(() -> listSinglePageAsync());
-    }
-
-    /**
-     * Lists ExpressRoute gateways under a given subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ExpressRoute gateways as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ExpressRouteGatewayInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context));
-    }
-
-    /**
-     * Lists ExpressRoute gateways under a given subscription.
-     * 
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ExpressRoute gateways as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ExpressRouteGatewayInner> list() {
-        return new PagedIterable<>(listAsync());
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ExpressRouteGatewayListInner> listBySubscriptionAsync() {
+        return listBySubscriptionWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1197,10 +1144,22 @@ public final class ExpressRouteGatewaysClientImpl implements InnerSupportsGet<Ex
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ExpressRoute gateways as paginated response with {@link PagedIterable}.
+     * @return list of ExpressRoute gateways along with {@link Response}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ExpressRouteGatewayInner> list(Context context) {
-        return new PagedIterable<>(listAsync(context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ExpressRouteGatewayListInner> listBySubscriptionWithResponse(Context context) {
+        return listBySubscriptionWithResponseAsync(context).block();
+    }
+
+    /**
+     * Lists ExpressRoute gateways under a given subscription.
+     * 
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of ExpressRoute gateways.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ExpressRouteGatewayListInner listBySubscription() {
+        return listBySubscriptionWithResponse(Context.NONE).getValue();
     }
 }

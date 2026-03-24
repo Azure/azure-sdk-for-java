@@ -5,9 +5,9 @@
 package com.azure.resourcemanager.network.generated;
 
 /**
- * Samples for ExpressRouteGateways List.
+ * Samples for ExpressRouteGateways ListBySubscription.
  */
-public final class ExpressRouteGatewaysListSamples {
+public final class ExpressRouteGatewaysListBySubscriptionSamples {
     /*
      * x-ms-original-file: 2025-05-01/ExpressRouteGatewayListBySubscription.json
      */
@@ -17,6 +17,8 @@ public final class ExpressRouteGatewaysListSamples {
      * @param manager Entry point to NetworkManager.
      */
     public static void expressRouteGatewayListBySubscription(com.azure.resourcemanager.network.NetworkManager manager) {
-        manager.serviceClient().getExpressRouteGateways().list(com.azure.core.util.Context.NONE);
+        manager.serviceClient()
+            .getExpressRouteGateways()
+            .listBySubscriptionWithResponse(com.azure.core.util.Context.NONE);
     }
 }

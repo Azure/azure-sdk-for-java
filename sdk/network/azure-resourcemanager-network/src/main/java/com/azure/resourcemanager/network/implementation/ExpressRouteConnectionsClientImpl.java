@@ -19,10 +19,6 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
-import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
@@ -33,7 +29,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.ExpressRouteConnectionsClient;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteConnectionInner;
-import com.azure.resourcemanager.network.implementation.models.ExpressRouteConnectionList;
+import com.azure.resourcemanager.network.fluent.models.ExpressRouteConnectionListInner;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -106,7 +102,7 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteGateways/{expressRouteGatewayName}/expressRouteConnections")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ExpressRouteConnectionList>> list(@HostParam("endpoint") String endpoint,
+        Mono<Response<ExpressRouteConnectionListInner>> list(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("expressRouteGatewayName") String expressRouteGatewayName, @HeaderParam("Accept") String accept,
@@ -759,10 +755,10 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteConnection list along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return expressRouteConnection list along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ExpressRouteConnectionInner>> listSinglePageAsync(String resourceGroupName,
+    public Mono<Response<ExpressRouteConnectionListInner>> listWithResponseAsync(String resourceGroupName,
         String expressRouteGatewayName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -785,8 +781,6 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
                 resourceGroupName, expressRouteGatewayName, accept, context))
-            .<PagedResponse<ExpressRouteConnectionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
-                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -799,10 +793,10 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteConnection list along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return expressRouteConnection list along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ExpressRouteConnectionInner>> listSinglePageAsync(String resourceGroupName,
+    private Mono<Response<ExpressRouteConnectionListInner>> listWithResponseAsync(String resourceGroupName,
         String expressRouteGatewayName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -823,11 +817,8 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
         final String apiVersion = "2025-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
-                expressRouteGatewayName, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), null, null));
+        return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            expressRouteGatewayName, accept, context);
     }
 
     /**
@@ -838,43 +829,12 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteConnection list as paginated response with {@link PagedFlux}.
+     * @return expressRouteConnection list on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ExpressRouteConnectionInner> listAsync(String resourceGroupName, String expressRouteGatewayName) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, expressRouteGatewayName));
-    }
-
-    /**
-     * Lists ExpressRouteConnections.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteConnection list as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ExpressRouteConnectionInner> listAsync(String resourceGroupName, String expressRouteGatewayName,
-        Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, expressRouteGatewayName, context));
-    }
-
-    /**
-     * Lists ExpressRouteConnections.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteConnection list as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ExpressRouteConnectionInner> list(String resourceGroupName, String expressRouteGatewayName) {
-        return new PagedIterable<>(listAsync(resourceGroupName, expressRouteGatewayName));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ExpressRouteConnectionListInner> listAsync(String resourceGroupName, String expressRouteGatewayName) {
+        return listWithResponseAsync(resourceGroupName, expressRouteGatewayName)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -886,11 +846,26 @@ public final class ExpressRouteConnectionsClientImpl implements ExpressRouteConn
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteConnection list as paginated response with {@link PagedIterable}.
+     * @return expressRouteConnection list along with {@link Response}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ExpressRouteConnectionInner> list(String resourceGroupName, String expressRouteGatewayName,
-        Context context) {
-        return new PagedIterable<>(listAsync(resourceGroupName, expressRouteGatewayName, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ExpressRouteConnectionListInner> listWithResponse(String resourceGroupName,
+        String expressRouteGatewayName, Context context) {
+        return listWithResponseAsync(resourceGroupName, expressRouteGatewayName, context).block();
+    }
+
+    /**
+     * Lists ExpressRouteConnections.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return expressRouteConnection list.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ExpressRouteConnectionListInner list(String resourceGroupName, String expressRouteGatewayName) {
+        return listWithResponse(resourceGroupName, expressRouteGatewayName, Context.NONE).getValue();
     }
 }

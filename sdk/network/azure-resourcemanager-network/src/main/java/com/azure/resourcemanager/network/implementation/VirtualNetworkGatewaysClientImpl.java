@@ -35,26 +35,23 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.resourcemanager.network.fluent.VirtualNetworkGatewaysClient;
-import com.azure.resourcemanager.network.fluent.models.BgpPeerStatusInner;
+import com.azure.resourcemanager.network.fluent.models.BgpPeerStatusListResultInner;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteFailoverSingleTestDetailsInner;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteFailoverTestDetailsInner;
 import com.azure.resourcemanager.network.fluent.models.GatewayResiliencyInformationInner;
-import com.azure.resourcemanager.network.fluent.models.GatewayRouteInner;
+import com.azure.resourcemanager.network.fluent.models.GatewayRouteListResultInner;
 import com.azure.resourcemanager.network.fluent.models.GatewayRouteSetsInformationInner;
 import com.azure.resourcemanager.network.fluent.models.RadiusAuthServerListResultInner;
 import com.azure.resourcemanager.network.fluent.models.VirtualNetworkGatewayConnectionListEntityInner;
 import com.azure.resourcemanager.network.fluent.models.VirtualNetworkGatewayInner;
-import com.azure.resourcemanager.network.fluent.models.VpnClientConnectionHealthDetailInner;
+import com.azure.resourcemanager.network.fluent.models.VpnClientConnectionHealthDetailListResultInner;
 import com.azure.resourcemanager.network.fluent.models.VpnClientIPsecParametersInner;
-import com.azure.resourcemanager.network.implementation.models.BgpPeerStatusListResult;
-import com.azure.resourcemanager.network.implementation.models.GatewayRouteListResult;
 import com.azure.resourcemanager.network.implementation.models.VirtualNetworkGatewayListConnectionsResult;
 import com.azure.resourcemanager.network.implementation.models.VirtualNetworkGatewayListResult;
-import com.azure.resourcemanager.network.implementation.models.VpnClientConnectionHealthDetailListResult;
+import com.azure.resourcemanager.network.models.ArmAcceptedLroResponse;
 import com.azure.resourcemanager.network.models.DisconnectVirtualNetworkGatewayVpnConnectionsFinalResult;
 import com.azure.resourcemanager.network.models.ErrorException;
 import com.azure.resourcemanager.network.models.ExpressRouteFailoverStopApiParameters;
-import com.azure.resourcemanager.network.models.GenerateVpnProfileFinalResult;
 import com.azure.resourcemanager.network.models.GeneratevpnclientpackageFinalResult;
 import com.azure.resourcemanager.network.models.GetVpnProfilePackageUrlFinalResult;
 import com.azure.resourcemanager.network.models.P2SVpnConnectionRequest;
@@ -2397,13 +2394,12 @@ public final class VirtualNetworkGatewaysClientImpl
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<GenerateVpnProfileFinalResult>, GenerateVpnProfileFinalResult>
-        beginGenerateVpnProfileAsync(String resourceGroupName, String virtualNetworkGatewayName,
-            VpnClientParameters parameters) {
+    public PollerFlux<PollResult<ArmAcceptedLroResponse>, ArmAcceptedLroResponse> beginGenerateVpnProfileAsync(
+        String resourceGroupName, String virtualNetworkGatewayName, VpnClientParameters parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = generateVpnProfileWithResponseAsync(resourceGroupName, virtualNetworkGatewayName, parameters);
-        return this.client.<GenerateVpnProfileFinalResult, GenerateVpnProfileFinalResult>getLroResult(mono,
-            this.client.getHttpPipeline(), GenerateVpnProfileFinalResult.class, GenerateVpnProfileFinalResult.class,
+        return this.client.<ArmAcceptedLroResponse, ArmAcceptedLroResponse>getLroResult(mono,
+            this.client.getHttpPipeline(), ArmAcceptedLroResponse.class, ArmAcceptedLroResponse.class,
             this.client.getContext());
     }
 
@@ -2421,15 +2417,13 @@ public final class VirtualNetworkGatewaysClientImpl
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<GenerateVpnProfileFinalResult>, GenerateVpnProfileFinalResult>
-        beginGenerateVpnProfileAsync(String resourceGroupName, String virtualNetworkGatewayName,
-            VpnClientParameters parameters, Context context) {
+    private PollerFlux<PollResult<ArmAcceptedLroResponse>, ArmAcceptedLroResponse> beginGenerateVpnProfileAsync(
+        String resourceGroupName, String virtualNetworkGatewayName, VpnClientParameters parameters, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
             = generateVpnProfileWithResponseAsync(resourceGroupName, virtualNetworkGatewayName, parameters, context);
-        return this.client.<GenerateVpnProfileFinalResult, GenerateVpnProfileFinalResult>getLroResult(mono,
-            this.client.getHttpPipeline(), GenerateVpnProfileFinalResult.class, GenerateVpnProfileFinalResult.class,
-            context);
+        return this.client.<ArmAcceptedLroResponse, ArmAcceptedLroResponse>getLroResult(mono,
+            this.client.getHttpPipeline(), ArmAcceptedLroResponse.class, ArmAcceptedLroResponse.class, context);
     }
 
     /**
@@ -2445,7 +2439,7 @@ public final class VirtualNetworkGatewaysClientImpl
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<GenerateVpnProfileFinalResult>, GenerateVpnProfileFinalResult> beginGenerateVpnProfile(
+    public SyncPoller<PollResult<ArmAcceptedLroResponse>, ArmAcceptedLroResponse> beginGenerateVpnProfile(
         String resourceGroupName, String virtualNetworkGatewayName, VpnClientParameters parameters) {
         return this.beginGenerateVpnProfileAsync(resourceGroupName, virtualNetworkGatewayName, parameters)
             .getSyncPoller();
@@ -2465,7 +2459,7 @@ public final class VirtualNetworkGatewaysClientImpl
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<GenerateVpnProfileFinalResult>, GenerateVpnProfileFinalResult> beginGenerateVpnProfile(
+    public SyncPoller<PollResult<ArmAcceptedLroResponse>, ArmAcceptedLroResponse> beginGenerateVpnProfile(
         String resourceGroupName, String virtualNetworkGatewayName, VpnClientParameters parameters, Context context) {
         return this.beginGenerateVpnProfileAsync(resourceGroupName, virtualNetworkGatewayName, parameters, context)
             .getSyncPoller();
@@ -2484,7 +2478,7 @@ public final class VirtualNetworkGatewaysClientImpl
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GenerateVpnProfileFinalResult> generateVpnProfileAsync(String resourceGroupName,
+    public Mono<ArmAcceptedLroResponse> generateVpnProfileAsync(String resourceGroupName,
         String virtualNetworkGatewayName, VpnClientParameters parameters) {
         return beginGenerateVpnProfileAsync(resourceGroupName, virtualNetworkGatewayName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -2504,7 +2498,7 @@ public final class VirtualNetworkGatewaysClientImpl
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<GenerateVpnProfileFinalResult> generateVpnProfileAsync(String resourceGroupName,
+    private Mono<ArmAcceptedLroResponse> generateVpnProfileAsync(String resourceGroupName,
         String virtualNetworkGatewayName, VpnClientParameters parameters, Context context) {
         return beginGenerateVpnProfileAsync(resourceGroupName, virtualNetworkGatewayName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -2523,7 +2517,7 @@ public final class VirtualNetworkGatewaysClientImpl
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public GenerateVpnProfileFinalResult generateVpnProfile(String resourceGroupName, String virtualNetworkGatewayName,
+    public ArmAcceptedLroResponse generateVpnProfile(String resourceGroupName, String virtualNetworkGatewayName,
         VpnClientParameters parameters) {
         return generateVpnProfileAsync(resourceGroupName, virtualNetworkGatewayName, parameters).block();
     }
@@ -2542,7 +2536,7 @@ public final class VirtualNetworkGatewaysClientImpl
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public GenerateVpnProfileFinalResult generateVpnProfile(String resourceGroupName, String virtualNetworkGatewayName,
+    public ArmAcceptedLroResponse generateVpnProfile(String resourceGroupName, String virtualNetworkGatewayName,
         VpnClientParameters parameters, Context context) {
         return generateVpnProfileAsync(resourceGroupName, virtualNetworkGatewayName, parameters, context).block();
     }
@@ -2792,10 +2786,10 @@ public final class VirtualNetworkGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BgpPeerStatusInner>> getBgpPeerStatusSinglePageAsync(String resourceGroupName,
+    public Mono<Response<Flux<ByteBuffer>>> getBgpPeerStatusWithResponseAsync(String resourceGroupName,
         String virtualNetworkGatewayName, String peer) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -2815,21 +2809,9 @@ public final class VirtualNetworkGatewaysClientImpl
         }
         final String apiVersion = "2025-05-01";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> {
-            Mono<Response<Flux<ByteBuffer>>> mono
-                = service
-                    .getBgpPeerStatus(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-                        resourceGroupName, virtualNetworkGatewayName, peer, accept, context)
-                    .cache();
-            return Mono.zip(mono,
-                this.client
-                    .<BgpPeerStatusListResult, BgpPeerStatusListResult>getLroResult(mono, this.client.getHttpPipeline(),
-                        BgpPeerStatusListResult.class, BgpPeerStatusListResult.class, this.client.getContext())
-                    .last()
-                    .flatMap(this.client::getLroFinalResultOrError));
-        })
-            .<PagedResponse<BgpPeerStatusInner>>map(res -> new PagedResponseBase<>(res.getT1().getRequest(),
-                res.getT1().getStatusCode(), res.getT1().getHeaders(), res.getT2().value(), null, null))
+        return FluxUtil
+            .withContext(context -> service.getBgpPeerStatus(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, virtualNetworkGatewayName, peer, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2843,10 +2825,10 @@ public final class VirtualNetworkGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BgpPeerStatusInner>> getBgpPeerStatusSinglePageAsync(String resourceGroupName,
+    private Mono<Response<Flux<ByteBuffer>>> getBgpPeerStatusWithResponseAsync(String resourceGroupName,
         String virtualNetworkGatewayName, String peer, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -2867,20 +2849,110 @@ public final class VirtualNetworkGatewaysClientImpl
         final String apiVersion = "2025-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
+        return service.getBgpPeerStatus(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, virtualNetworkGatewayName, peer, accept, context);
+    }
+
+    /**
+     * The GetBgpPeerStatus operation retrieves the status of all BGP peers.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param peer The IP address of the peer to retrieve the status of.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<BgpPeerStatusListResultInner>, BgpPeerStatusListResultInner>
+        beginGetBgpPeerStatusAsync(String resourceGroupName, String virtualNetworkGatewayName, String peer) {
         Mono<Response<Flux<ByteBuffer>>> mono
-            = service
-                .getBgpPeerStatus(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-                    resourceGroupName, virtualNetworkGatewayName, peer, accept, context)
-                .cache();
-        return Mono
-            .zip(mono,
-                this.client
-                    .<BgpPeerStatusListResult, BgpPeerStatusListResult>getLroResult(mono, this.client.getHttpPipeline(),
-                        BgpPeerStatusListResult.class, BgpPeerStatusListResult.class, context)
-                    .last()
-                    .flatMap(this.client::getLroFinalResultOrError))
-            .map(res -> new PagedResponseBase<>(res.getT1().getRequest(), res.getT1().getStatusCode(),
-                res.getT1().getHeaders(), res.getT2().value(), null, null));
+            = getBgpPeerStatusWithResponseAsync(resourceGroupName, virtualNetworkGatewayName, peer);
+        return this.client.<BgpPeerStatusListResultInner, BgpPeerStatusListResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), BgpPeerStatusListResultInner.class, BgpPeerStatusListResultInner.class,
+            this.client.getContext());
+    }
+
+    /**
+     * The GetBgpPeerStatus operation retrieves the status of all BGP peers.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<BgpPeerStatusListResultInner>, BgpPeerStatusListResultInner>
+        beginGetBgpPeerStatusAsync(String resourceGroupName, String virtualNetworkGatewayName) {
+        final String peer = null;
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = getBgpPeerStatusWithResponseAsync(resourceGroupName, virtualNetworkGatewayName, peer);
+        return this.client.<BgpPeerStatusListResultInner, BgpPeerStatusListResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), BgpPeerStatusListResultInner.class, BgpPeerStatusListResultInner.class,
+            this.client.getContext());
+    }
+
+    /**
+     * The GetBgpPeerStatus operation retrieves the status of all BGP peers.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param peer The IP address of the peer to retrieve the status of.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<BgpPeerStatusListResultInner>, BgpPeerStatusListResultInner>
+        beginGetBgpPeerStatusAsync(String resourceGroupName, String virtualNetworkGatewayName, String peer,
+            Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = getBgpPeerStatusWithResponseAsync(resourceGroupName, virtualNetworkGatewayName, peer, context);
+        return this.client.<BgpPeerStatusListResultInner, BgpPeerStatusListResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), BgpPeerStatusListResultInner.class, BgpPeerStatusListResultInner.class,
+            context);
+    }
+
+    /**
+     * The GetBgpPeerStatus operation retrieves the status of all BGP peers.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<BgpPeerStatusListResultInner>, BgpPeerStatusListResultInner>
+        beginGetBgpPeerStatus(String resourceGroupName, String virtualNetworkGatewayName) {
+        final String peer = null;
+        return this.beginGetBgpPeerStatusAsync(resourceGroupName, virtualNetworkGatewayName, peer).getSyncPoller();
+    }
+
+    /**
+     * The GetBgpPeerStatus operation retrieves the status of all BGP peers.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param peer The IP address of the peer to retrieve the status of.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<BgpPeerStatusListResultInner>, BgpPeerStatusListResultInner> beginGetBgpPeerStatus(
+        String resourceGroupName, String virtualNetworkGatewayName, String peer, Context context) {
+        return this.beginGetBgpPeerStatusAsync(resourceGroupName, virtualNetworkGatewayName, peer, context)
+            .getSyncPoller();
     }
 
     /**
@@ -2892,13 +2964,13 @@ public final class VirtualNetworkGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedFlux}.
+     * @return the response body on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BgpPeerStatusInner> getBgpPeerStatusAsync(String resourceGroupName,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BgpPeerStatusListResultInner> getBgpPeerStatusAsync(String resourceGroupName,
         String virtualNetworkGatewayName, String peer) {
-        return new PagedFlux<>(
-            () -> getBgpPeerStatusSinglePageAsync(resourceGroupName, virtualNetworkGatewayName, peer));
+        return beginGetBgpPeerStatusAsync(resourceGroupName, virtualNetworkGatewayName, peer).last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -2909,14 +2981,14 @@ public final class VirtualNetworkGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedFlux}.
+     * @return the response body on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BgpPeerStatusInner> getBgpPeerStatusAsync(String resourceGroupName,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BgpPeerStatusListResultInner> getBgpPeerStatusAsync(String resourceGroupName,
         String virtualNetworkGatewayName) {
         final String peer = null;
-        return new PagedFlux<>(
-            () -> getBgpPeerStatusSinglePageAsync(resourceGroupName, virtualNetworkGatewayName, peer));
+        return beginGetBgpPeerStatusAsync(resourceGroupName, virtualNetworkGatewayName, peer).last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -2929,13 +3001,13 @@ public final class VirtualNetworkGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedFlux}.
+     * @return the response body on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<BgpPeerStatusInner> getBgpPeerStatusAsync(String resourceGroupName,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<BgpPeerStatusListResultInner> getBgpPeerStatusAsync(String resourceGroupName,
         String virtualNetworkGatewayName, String peer, Context context) {
-        return new PagedFlux<>(
-            () -> getBgpPeerStatusSinglePageAsync(resourceGroupName, virtualNetworkGatewayName, peer, context));
+        return beginGetBgpPeerStatusAsync(resourceGroupName, virtualNetworkGatewayName, peer, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -2946,13 +3018,12 @@ public final class VirtualNetworkGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
+     * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BgpPeerStatusInner> getBgpPeerStatus(String resourceGroupName,
-        String virtualNetworkGatewayName) {
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BgpPeerStatusListResultInner getBgpPeerStatus(String resourceGroupName, String virtualNetworkGatewayName) {
         final String peer = null;
-        return new PagedIterable<>(getBgpPeerStatusAsync(resourceGroupName, virtualNetworkGatewayName, peer));
+        return getBgpPeerStatusAsync(resourceGroupName, virtualNetworkGatewayName, peer).block();
     }
 
     /**
@@ -2965,12 +3036,12 @@ public final class VirtualNetworkGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
+     * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BgpPeerStatusInner> getBgpPeerStatus(String resourceGroupName,
-        String virtualNetworkGatewayName, String peer, Context context) {
-        return new PagedIterable<>(getBgpPeerStatusAsync(resourceGroupName, virtualNetworkGatewayName, peer, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BgpPeerStatusListResultInner getBgpPeerStatus(String resourceGroupName, String virtualNetworkGatewayName,
+        String peer, Context context) {
+        return getBgpPeerStatusAsync(resourceGroupName, virtualNetworkGatewayName, peer, context).block();
     }
 
     /**
@@ -3232,10 +3303,10 @@ public final class VirtualNetworkGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<GatewayRouteInner>> getLearnedRoutesSinglePageAsync(String resourceGroupName,
+    public Mono<Response<Flux<ByteBuffer>>> getLearnedRoutesWithResponseAsync(String resourceGroupName,
         String virtualNetworkGatewayName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -3255,21 +3326,9 @@ public final class VirtualNetworkGatewaysClientImpl
         }
         final String apiVersion = "2025-05-01";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> {
-            Mono<Response<Flux<ByteBuffer>>> mono
-                = service
-                    .getLearnedRoutes(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-                        resourceGroupName, virtualNetworkGatewayName, accept, context)
-                    .cache();
-            return Mono.zip(mono,
-                this.client
-                    .<GatewayRouteListResult, GatewayRouteListResult>getLroResult(mono, this.client.getHttpPipeline(),
-                        GatewayRouteListResult.class, GatewayRouteListResult.class, this.client.getContext())
-                    .last()
-                    .flatMap(this.client::getLroFinalResultOrError));
-        })
-            .<PagedResponse<GatewayRouteInner>>map(res -> new PagedResponseBase<>(res.getT1().getRequest(),
-                res.getT1().getStatusCode(), res.getT1().getHeaders(), res.getT2().value(), null, null))
+        return FluxUtil
+            .withContext(context -> service.getLearnedRoutes(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, virtualNetworkGatewayName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -3283,10 +3342,10 @@ public final class VirtualNetworkGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<GatewayRouteInner>> getLearnedRoutesSinglePageAsync(String resourceGroupName,
+    private Mono<Response<Flux<ByteBuffer>>> getLearnedRoutesWithResponseAsync(String resourceGroupName,
         String virtualNetworkGatewayName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -3307,37 +3366,29 @@ public final class VirtualNetworkGatewaysClientImpl
         final String apiVersion = "2025-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
+        return service.getLearnedRoutes(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, virtualNetworkGatewayName, accept, context);
+    }
+
+    /**
+     * This operation retrieves a list of routes the virtual network gateway has learned, including routes learned from
+     * BGP peers.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<GatewayRouteListResultInner>, GatewayRouteListResultInner>
+        beginGetLearnedRoutesAsync(String resourceGroupName, String virtualNetworkGatewayName) {
         Mono<Response<Flux<ByteBuffer>>> mono
-            = service
-                .getLearnedRoutes(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-                    resourceGroupName, virtualNetworkGatewayName, accept, context)
-                .cache();
-        return Mono
-            .zip(mono,
-                this.client
-                    .<GatewayRouteListResult, GatewayRouteListResult>getLroResult(mono, this.client.getHttpPipeline(),
-                        GatewayRouteListResult.class, GatewayRouteListResult.class, context)
-                    .last()
-                    .flatMap(this.client::getLroFinalResultOrError))
-            .map(res -> new PagedResponseBase<>(res.getT1().getRequest(), res.getT1().getStatusCode(),
-                res.getT1().getHeaders(), res.getT2().value(), null, null));
-    }
-
-    /**
-     * This operation retrieves a list of routes the virtual network gateway has learned, including routes learned from
-     * BGP peers.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<GatewayRouteInner> getLearnedRoutesAsync(String resourceGroupName,
-        String virtualNetworkGatewayName) {
-        return new PagedFlux<>(() -> getLearnedRoutesSinglePageAsync(resourceGroupName, virtualNetworkGatewayName));
+            = getLearnedRoutesWithResponseAsync(resourceGroupName, virtualNetworkGatewayName);
+        return this.client.<GatewayRouteListResultInner, GatewayRouteListResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), GatewayRouteListResultInner.class, GatewayRouteListResultInner.class,
+            this.client.getContext());
     }
 
     /**
@@ -3350,13 +3401,89 @@ public final class VirtualNetworkGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedFlux}.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<GatewayRouteInner> getLearnedRoutesAsync(String resourceGroupName,
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<GatewayRouteListResultInner>, GatewayRouteListResultInner>
+        beginGetLearnedRoutesAsync(String resourceGroupName, String virtualNetworkGatewayName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = getLearnedRoutesWithResponseAsync(resourceGroupName, virtualNetworkGatewayName, context);
+        return this.client.<GatewayRouteListResultInner, GatewayRouteListResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), GatewayRouteListResultInner.class, GatewayRouteListResultInner.class,
+            context);
+    }
+
+    /**
+     * This operation retrieves a list of routes the virtual network gateway has learned, including routes learned from
+     * BGP peers.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<GatewayRouteListResultInner>, GatewayRouteListResultInner>
+        beginGetLearnedRoutes(String resourceGroupName, String virtualNetworkGatewayName) {
+        return this.beginGetLearnedRoutesAsync(resourceGroupName, virtualNetworkGatewayName).getSyncPoller();
+    }
+
+    /**
+     * This operation retrieves a list of routes the virtual network gateway has learned, including routes learned from
+     * BGP peers.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<GatewayRouteListResultInner>, GatewayRouteListResultInner>
+        beginGetLearnedRoutes(String resourceGroupName, String virtualNetworkGatewayName, Context context) {
+        return this.beginGetLearnedRoutesAsync(resourceGroupName, virtualNetworkGatewayName, context).getSyncPoller();
+    }
+
+    /**
+     * This operation retrieves a list of routes the virtual network gateway has learned, including routes learned from
+     * BGP peers.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<GatewayRouteListResultInner> getLearnedRoutesAsync(String resourceGroupName,
+        String virtualNetworkGatewayName) {
+        return beginGetLearnedRoutesAsync(resourceGroupName, virtualNetworkGatewayName).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * This operation retrieves a list of routes the virtual network gateway has learned, including routes learned from
+     * BGP peers.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<GatewayRouteListResultInner> getLearnedRoutesAsync(String resourceGroupName,
         String virtualNetworkGatewayName, Context context) {
-        return new PagedFlux<>(
-            () -> getLearnedRoutesSinglePageAsync(resourceGroupName, virtualNetworkGatewayName, context));
+        return beginGetLearnedRoutesAsync(resourceGroupName, virtualNetworkGatewayName, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -3368,12 +3495,11 @@ public final class VirtualNetworkGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
+     * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<GatewayRouteInner> getLearnedRoutes(String resourceGroupName,
-        String virtualNetworkGatewayName) {
-        return new PagedIterable<>(getLearnedRoutesAsync(resourceGroupName, virtualNetworkGatewayName));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GatewayRouteListResultInner getLearnedRoutes(String resourceGroupName, String virtualNetworkGatewayName) {
+        return getLearnedRoutesAsync(resourceGroupName, virtualNetworkGatewayName).block();
     }
 
     /**
@@ -3386,12 +3512,12 @@ public final class VirtualNetworkGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
+     * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<GatewayRouteInner> getLearnedRoutes(String resourceGroupName, String virtualNetworkGatewayName,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GatewayRouteListResultInner getLearnedRoutes(String resourceGroupName, String virtualNetworkGatewayName,
         Context context) {
-        return new PagedIterable<>(getLearnedRoutesAsync(resourceGroupName, virtualNetworkGatewayName, context));
+        return getLearnedRoutesAsync(resourceGroupName, virtualNetworkGatewayName, context).block();
     }
 
     /**
@@ -3403,10 +3529,10 @@ public final class VirtualNetworkGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<GatewayRouteInner>> getAdvertisedRoutesSinglePageAsync(String resourceGroupName,
+    public Mono<Response<Flux<ByteBuffer>>> getAdvertisedRoutesWithResponseAsync(String resourceGroupName,
         String virtualNetworkGatewayName, String peer) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -3429,21 +3555,9 @@ public final class VirtualNetworkGatewaysClientImpl
         }
         final String apiVersion = "2025-05-01";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> {
-            Mono<Response<Flux<ByteBuffer>>> mono
-                = service
-                    .getAdvertisedRoutes(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-                        resourceGroupName, virtualNetworkGatewayName, peer, accept, context)
-                    .cache();
-            return Mono.zip(mono,
-                this.client
-                    .<GatewayRouteListResult, GatewayRouteListResult>getLroResult(mono, this.client.getHttpPipeline(),
-                        GatewayRouteListResult.class, GatewayRouteListResult.class, this.client.getContext())
-                    .last()
-                    .flatMap(this.client::getLroFinalResultOrError));
-        })
-            .<PagedResponse<GatewayRouteInner>>map(res -> new PagedResponseBase<>(res.getT1().getRequest(),
-                res.getT1().getStatusCode(), res.getT1().getHeaders(), res.getT2().value(), null, null))
+        return FluxUtil
+            .withContext(context -> service.getAdvertisedRoutes(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, virtualNetworkGatewayName, peer, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -3457,10 +3571,10 @@ public final class VirtualNetworkGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<GatewayRouteInner>> getAdvertisedRoutesSinglePageAsync(String resourceGroupName,
+    private Mono<Response<Flux<ByteBuffer>>> getAdvertisedRoutesWithResponseAsync(String resourceGroupName,
         String virtualNetworkGatewayName, String peer, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -3484,38 +3598,29 @@ public final class VirtualNetworkGatewaysClientImpl
         final String apiVersion = "2025-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
+        return service.getAdvertisedRoutes(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, virtualNetworkGatewayName, peer, accept, context);
+    }
+
+    /**
+     * This operation retrieves a list of routes the virtual network gateway is advertising to the specified peer.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param peer The IP address of the peer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<GatewayRouteListResultInner>, GatewayRouteListResultInner>
+        beginGetAdvertisedRoutesAsync(String resourceGroupName, String virtualNetworkGatewayName, String peer) {
         Mono<Response<Flux<ByteBuffer>>> mono
-            = service
-                .getAdvertisedRoutes(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-                    resourceGroupName, virtualNetworkGatewayName, peer, accept, context)
-                .cache();
-        return Mono
-            .zip(mono,
-                this.client
-                    .<GatewayRouteListResult, GatewayRouteListResult>getLroResult(mono, this.client.getHttpPipeline(),
-                        GatewayRouteListResult.class, GatewayRouteListResult.class, context)
-                    .last()
-                    .flatMap(this.client::getLroFinalResultOrError))
-            .map(res -> new PagedResponseBase<>(res.getT1().getRequest(), res.getT1().getStatusCode(),
-                res.getT1().getHeaders(), res.getT2().value(), null, null));
-    }
-
-    /**
-     * This operation retrieves a list of routes the virtual network gateway is advertising to the specified peer.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkGatewayName The name of the virtual network gateway.
-     * @param peer The IP address of the peer.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<GatewayRouteInner> getAdvertisedRoutesAsync(String resourceGroupName,
-        String virtualNetworkGatewayName, String peer) {
-        return new PagedFlux<>(
-            () -> getAdvertisedRoutesSinglePageAsync(resourceGroupName, virtualNetworkGatewayName, peer));
+            = getAdvertisedRoutesWithResponseAsync(resourceGroupName, virtualNetworkGatewayName, peer);
+        return this.client.<GatewayRouteListResultInner, GatewayRouteListResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), GatewayRouteListResultInner.class, GatewayRouteListResultInner.class,
+            this.client.getContext());
     }
 
     /**
@@ -3528,13 +3633,18 @@ public final class VirtualNetworkGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedFlux}.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<GatewayRouteInner> getAdvertisedRoutesAsync(String resourceGroupName,
-        String virtualNetworkGatewayName, String peer, Context context) {
-        return new PagedFlux<>(
-            () -> getAdvertisedRoutesSinglePageAsync(resourceGroupName, virtualNetworkGatewayName, peer, context));
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<GatewayRouteListResultInner>, GatewayRouteListResultInner>
+        beginGetAdvertisedRoutesAsync(String resourceGroupName, String virtualNetworkGatewayName, String peer,
+            Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = getAdvertisedRoutesWithResponseAsync(resourceGroupName, virtualNetworkGatewayName, peer, context);
+        return this.client.<GatewayRouteListResultInner, GatewayRouteListResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), GatewayRouteListResultInner.class, GatewayRouteListResultInner.class,
+            context);
     }
 
     /**
@@ -3546,12 +3656,12 @@ public final class VirtualNetworkGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<GatewayRouteInner> getAdvertisedRoutes(String resourceGroupName,
-        String virtualNetworkGatewayName, String peer) {
-        return new PagedIterable<>(getAdvertisedRoutesAsync(resourceGroupName, virtualNetworkGatewayName, peer));
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<GatewayRouteListResultInner>, GatewayRouteListResultInner>
+        beginGetAdvertisedRoutes(String resourceGroupName, String virtualNetworkGatewayName, String peer) {
+        return this.beginGetAdvertisedRoutesAsync(resourceGroupName, virtualNetworkGatewayName, peer).getSyncPoller();
     }
 
     /**
@@ -3564,13 +3674,85 @@ public final class VirtualNetworkGatewaysClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<GatewayRouteInner> getAdvertisedRoutes(String resourceGroupName,
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<GatewayRouteListResultInner>, GatewayRouteListResultInner> beginGetAdvertisedRoutes(
+        String resourceGroupName, String virtualNetworkGatewayName, String peer, Context context) {
+        return this.beginGetAdvertisedRoutesAsync(resourceGroupName, virtualNetworkGatewayName, peer, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * This operation retrieves a list of routes the virtual network gateway is advertising to the specified peer.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param peer The IP address of the peer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<GatewayRouteListResultInner> getAdvertisedRoutesAsync(String resourceGroupName,
+        String virtualNetworkGatewayName, String peer) {
+        return beginGetAdvertisedRoutesAsync(resourceGroupName, virtualNetworkGatewayName, peer).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * This operation retrieves a list of routes the virtual network gateway is advertising to the specified peer.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param peer The IP address of the peer.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<GatewayRouteListResultInner> getAdvertisedRoutesAsync(String resourceGroupName,
         String virtualNetworkGatewayName, String peer, Context context) {
-        return new PagedIterable<>(
-            getAdvertisedRoutesAsync(resourceGroupName, virtualNetworkGatewayName, peer, context));
+        return beginGetAdvertisedRoutesAsync(resourceGroupName, virtualNetworkGatewayName, peer, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * This operation retrieves a list of routes the virtual network gateway is advertising to the specified peer.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param peer The IP address of the peer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GatewayRouteListResultInner getAdvertisedRoutes(String resourceGroupName, String virtualNetworkGatewayName,
+        String peer) {
+        return getAdvertisedRoutesAsync(resourceGroupName, virtualNetworkGatewayName, peer).block();
+    }
+
+    /**
+     * This operation retrieves a list of routes the virtual network gateway is advertising to the specified peer.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param peer The IP address of the peer.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GatewayRouteListResultInner getAdvertisedRoutes(String resourceGroupName, String virtualNetworkGatewayName,
+        String peer, Context context) {
+        return getAdvertisedRoutesAsync(resourceGroupName, virtualNetworkGatewayName, peer, context).block();
     }
 
     /**
@@ -6261,11 +6443,11 @@ public final class VirtualNetworkGatewaysClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vPN client connection health detail per P2S client connection of the virtual network gateway in the
-     * specified resource group along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * specified resource group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VpnClientConnectionHealthDetailInner>>
-        getVpnclientConnectionHealthSinglePageAsync(String resourceGroupName, String virtualNetworkGatewayName) {
+    public Mono<Response<Flux<ByteBuffer>>> getVpnclientConnectionHealthWithResponseAsync(String resourceGroupName,
+        String virtualNetworkGatewayName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -6284,22 +6466,9 @@ public final class VirtualNetworkGatewaysClientImpl
         }
         final String apiVersion = "2025-05-01";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> {
-            Mono<Response<Flux<ByteBuffer>>> mono = service
-                .getVpnclientConnectionHealth(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-                    resourceGroupName, virtualNetworkGatewayName, accept, context)
-                .cache();
-            return Mono.zip(mono,
-                this.client
-                    .<VpnClientConnectionHealthDetailListResult, VpnClientConnectionHealthDetailListResult>getLroResult(
-                        mono, this.client.getHttpPipeline(), VpnClientConnectionHealthDetailListResult.class,
-                        VpnClientConnectionHealthDetailListResult.class, this.client.getContext())
-                    .last()
-                    .flatMap(this.client::getLroFinalResultOrError));
-        })
-            .<PagedResponse<VpnClientConnectionHealthDetailInner>>map(
-                res -> new PagedResponseBase<>(res.getT1().getRequest(), res.getT1().getStatusCode(),
-                    res.getT1().getHeaders(), res.getT2().value(), null, null))
+        return FluxUtil
+            .withContext(context -> service.getVpnclientConnectionHealth(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, virtualNetworkGatewayName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -6314,11 +6483,11 @@ public final class VirtualNetworkGatewaysClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vPN client connection health detail per P2S client connection of the virtual network gateway in the
-     * specified resource group along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * specified resource group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VpnClientConnectionHealthDetailInner>> getVpnclientConnectionHealthSinglePageAsync(
-        String resourceGroupName, String virtualNetworkGatewayName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> getVpnclientConnectionHealthWithResponseAsync(String resourceGroupName,
+        String virtualNetworkGatewayName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -6338,20 +6507,100 @@ public final class VirtualNetworkGatewaysClientImpl
         final String apiVersion = "2025-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = service
-            .getVpnclientConnectionHealth(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-                resourceGroupName, virtualNetworkGatewayName, accept, context)
-            .cache();
-        return Mono
-            .zip(mono,
-                this.client
-                    .<VpnClientConnectionHealthDetailListResult, VpnClientConnectionHealthDetailListResult>getLroResult(
-                        mono, this.client.getHttpPipeline(), VpnClientConnectionHealthDetailListResult.class,
-                        VpnClientConnectionHealthDetailListResult.class, context)
-                    .last()
-                    .flatMap(this.client::getLroFinalResultOrError))
-            .map(res -> new PagedResponseBase<>(res.getT1().getRequest(), res.getT1().getStatusCode(),
-                res.getT1().getHeaders(), res.getT2().value(), null, null));
+        return service.getVpnclientConnectionHealth(this.client.getEndpoint(), apiVersion,
+            this.client.getSubscriptionId(), resourceGroupName, virtualNetworkGatewayName, accept, context);
+    }
+
+    /**
+     * Get VPN client connection health detail per P2S client connection of the virtual network gateway in the specified
+     * resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of vPN client connection health detail per P2S client connection of
+     * the virtual network gateway in the specified resource group.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        PollerFlux<PollResult<VpnClientConnectionHealthDetailListResultInner>, VpnClientConnectionHealthDetailListResultInner>
+        beginGetVpnclientConnectionHealthAsync(String resourceGroupName, String virtualNetworkGatewayName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = getVpnclientConnectionHealthWithResponseAsync(resourceGroupName, virtualNetworkGatewayName);
+        return this.client
+            .<VpnClientConnectionHealthDetailListResultInner, VpnClientConnectionHealthDetailListResultInner>getLroResult(
+                mono, this.client.getHttpPipeline(), VpnClientConnectionHealthDetailListResultInner.class,
+                VpnClientConnectionHealthDetailListResultInner.class, this.client.getContext());
+    }
+
+    /**
+     * Get VPN client connection health detail per P2S client connection of the virtual network gateway in the specified
+     * resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of vPN client connection health detail per P2S client connection of
+     * the virtual network gateway in the specified resource group.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private
+        PollerFlux<PollResult<VpnClientConnectionHealthDetailListResultInner>, VpnClientConnectionHealthDetailListResultInner>
+        beginGetVpnclientConnectionHealthAsync(String resourceGroupName, String virtualNetworkGatewayName,
+            Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = getVpnclientConnectionHealthWithResponseAsync(resourceGroupName, virtualNetworkGatewayName, context);
+        return this.client
+            .<VpnClientConnectionHealthDetailListResultInner, VpnClientConnectionHealthDetailListResultInner>getLroResult(
+                mono, this.client.getHttpPipeline(), VpnClientConnectionHealthDetailListResultInner.class,
+                VpnClientConnectionHealthDetailListResultInner.class, context);
+    }
+
+    /**
+     * Get VPN client connection health detail per P2S client connection of the virtual network gateway in the specified
+     * resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of vPN client connection health detail per P2S client connection of
+     * the virtual network gateway in the specified resource group.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        SyncPoller<PollResult<VpnClientConnectionHealthDetailListResultInner>, VpnClientConnectionHealthDetailListResultInner>
+        beginGetVpnclientConnectionHealth(String resourceGroupName, String virtualNetworkGatewayName) {
+        return this.beginGetVpnclientConnectionHealthAsync(resourceGroupName, virtualNetworkGatewayName)
+            .getSyncPoller();
+    }
+
+    /**
+     * Get VPN client connection health detail per P2S client connection of the virtual network gateway in the specified
+     * resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of vPN client connection health detail per P2S client connection of
+     * the virtual network gateway in the specified resource group.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        SyncPoller<PollResult<VpnClientConnectionHealthDetailListResultInner>, VpnClientConnectionHealthDetailListResultInner>
+        beginGetVpnclientConnectionHealth(String resourceGroupName, String virtualNetworkGatewayName, Context context) {
+        return this.beginGetVpnclientConnectionHealthAsync(resourceGroupName, virtualNetworkGatewayName, context)
+            .getSyncPoller();
     }
 
     /**
@@ -6364,13 +6613,13 @@ public final class VirtualNetworkGatewaysClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vPN client connection health detail per P2S client connection of the virtual network gateway in the
-     * specified resource group as paginated response with {@link PagedFlux}.
+     * specified resource group on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<VpnClientConnectionHealthDetailInner> getVpnclientConnectionHealthAsync(String resourceGroupName,
-        String virtualNetworkGatewayName) {
-        return new PagedFlux<>(
-            () -> getVpnclientConnectionHealthSinglePageAsync(resourceGroupName, virtualNetworkGatewayName));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<VpnClientConnectionHealthDetailListResultInner>
+        getVpnclientConnectionHealthAsync(String resourceGroupName, String virtualNetworkGatewayName) {
+        return beginGetVpnclientConnectionHealthAsync(resourceGroupName, virtualNetworkGatewayName).last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -6384,13 +6633,13 @@ public final class VirtualNetworkGatewaysClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vPN client connection health detail per P2S client connection of the virtual network gateway in the
-     * specified resource group as paginated response with {@link PagedFlux}.
+     * specified resource group on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<VpnClientConnectionHealthDetailInner> getVpnclientConnectionHealthAsync(String resourceGroupName,
-        String virtualNetworkGatewayName, Context context) {
-        return new PagedFlux<>(
-            () -> getVpnclientConnectionHealthSinglePageAsync(resourceGroupName, virtualNetworkGatewayName, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<VpnClientConnectionHealthDetailListResultInner>
+        getVpnclientConnectionHealthAsync(String resourceGroupName, String virtualNetworkGatewayName, Context context) {
+        return beginGetVpnclientConnectionHealthAsync(resourceGroupName, virtualNetworkGatewayName, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -6403,12 +6652,12 @@ public final class VirtualNetworkGatewaysClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vPN client connection health detail per P2S client connection of the virtual network gateway in the
-     * specified resource group as paginated response with {@link PagedIterable}.
+     * specified resource group.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<VpnClientConnectionHealthDetailInner> getVpnclientConnectionHealth(String resourceGroupName,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VpnClientConnectionHealthDetailListResultInner getVpnclientConnectionHealth(String resourceGroupName,
         String virtualNetworkGatewayName) {
-        return new PagedIterable<>(getVpnclientConnectionHealthAsync(resourceGroupName, virtualNetworkGatewayName));
+        return getVpnclientConnectionHealthAsync(resourceGroupName, virtualNetworkGatewayName).block();
     }
 
     /**
@@ -6422,13 +6671,12 @@ public final class VirtualNetworkGatewaysClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vPN client connection health detail per P2S client connection of the virtual network gateway in the
-     * specified resource group as paginated response with {@link PagedIterable}.
+     * specified resource group.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<VpnClientConnectionHealthDetailInner> getVpnclientConnectionHealth(String resourceGroupName,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VpnClientConnectionHealthDetailListResultInner getVpnclientConnectionHealth(String resourceGroupName,
         String virtualNetworkGatewayName, Context context) {
-        return new PagedIterable<>(
-            getVpnclientConnectionHealthAsync(resourceGroupName, virtualNetworkGatewayName, context));
+        return getVpnclientConnectionHealthAsync(resourceGroupName, virtualNetworkGatewayName, context).block();
     }
 
     /**

@@ -9,10 +9,8 @@ import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.network.fluent.models.ActiveBaseSecurityAdminRuleInner;
 import com.azure.resourcemanager.network.fluent.models.DefaultAdminPropertiesFormat;
 import java.io.IOException;
-import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -20,7 +18,7 @@ import java.util.List;
  * Network default admin rule.
  */
 @Immutable
-public final class ActiveDefaultSecurityAdminRule extends ActiveBaseSecurityAdminRuleInner {
+public final class ActiveDefaultSecurityAdminRule extends ActiveBaseSecurityAdminRule {
     /*
      * Whether the rule is custom or default.
      */
@@ -30,41 +28,6 @@ public final class ActiveDefaultSecurityAdminRule extends ActiveBaseSecurityAdmi
      * Indicates the properties of the default security admin rule
      */
     private DefaultAdminPropertiesFormat innerProperties;
-
-    /*
-     * Effective configuration groups.
-     */
-    private List<ConfigurationGroup> ruleGroups;
-
-    /*
-     * Groups for rule collection
-     */
-    private List<NetworkManagerSecurityGroupItem> ruleCollectionAppliesToGroups;
-
-    /*
-     * A description of the rule collection.
-     */
-    private String ruleCollectionDescription;
-
-    /*
-     * A description of the security admin configuration.
-     */
-    private String configurationDescription;
-
-    /*
-     * Deployment region.
-     */
-    private String region;
-
-    /*
-     * Deployment time string.
-     */
-    private OffsetDateTime commitTime;
-
-    /*
-     * Resource ID.
-     */
-    private String id;
 
     /**
      * Creates an instance of ActiveDefaultSecurityAdminRule class.
@@ -87,78 +50,8 @@ public final class ActiveDefaultSecurityAdminRule extends ActiveBaseSecurityAdmi
      * 
      * @return the innerProperties value.
      */
-    private DefaultAdminPropertiesFormat innerProperties() {
+    DefaultAdminPropertiesFormat innerProperties() {
         return this.innerProperties;
-    }
-
-    /**
-     * Get the ruleGroups property: Effective configuration groups.
-     * 
-     * @return the ruleGroups value.
-     */
-    @Override
-    public List<ConfigurationGroup> ruleGroups() {
-        return this.ruleGroups;
-    }
-
-    /**
-     * Get the ruleCollectionAppliesToGroups property: Groups for rule collection.
-     * 
-     * @return the ruleCollectionAppliesToGroups value.
-     */
-    @Override
-    public List<NetworkManagerSecurityGroupItem> ruleCollectionAppliesToGroups() {
-        return this.ruleCollectionAppliesToGroups;
-    }
-
-    /**
-     * Get the ruleCollectionDescription property: A description of the rule collection.
-     * 
-     * @return the ruleCollectionDescription value.
-     */
-    @Override
-    public String ruleCollectionDescription() {
-        return this.ruleCollectionDescription;
-    }
-
-    /**
-     * Get the configurationDescription property: A description of the security admin configuration.
-     * 
-     * @return the configurationDescription value.
-     */
-    @Override
-    public String configurationDescription() {
-        return this.configurationDescription;
-    }
-
-    /**
-     * Get the region property: Deployment region.
-     * 
-     * @return the region value.
-     */
-    @Override
-    public String region() {
-        return this.region;
-    }
-
-    /**
-     * Get the commitTime property: Deployment time string.
-     * 
-     * @return the commitTime value.
-     */
-    @Override
-    public OffsetDateTime commitTime() {
-        return this.commitTime;
-    }
-
-    /**
-     * Get the id property: Resource ID.
-     * 
-     * @return the id value.
-     */
-    @Override
-    public String id() {
-        return this.id;
     }
 
     /**
@@ -326,25 +219,25 @@ public final class ActiveDefaultSecurityAdminRule extends ActiveBaseSecurityAdmi
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedActiveDefaultSecurityAdminRule.id = reader.getString();
+                    deserializedActiveDefaultSecurityAdminRule.withId(reader.getString());
                 } else if ("commitTime".equals(fieldName)) {
-                    deserializedActiveDefaultSecurityAdminRule.commitTime = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                    deserializedActiveDefaultSecurityAdminRule.withCommitTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
                 } else if ("region".equals(fieldName)) {
-                    deserializedActiveDefaultSecurityAdminRule.region = reader.getString();
+                    deserializedActiveDefaultSecurityAdminRule.withRegion(reader.getString());
                 } else if ("configurationDescription".equals(fieldName)) {
-                    deserializedActiveDefaultSecurityAdminRule.configurationDescription = reader.getString();
+                    deserializedActiveDefaultSecurityAdminRule.withConfigurationDescription(reader.getString());
                 } else if ("ruleCollectionDescription".equals(fieldName)) {
-                    deserializedActiveDefaultSecurityAdminRule.ruleCollectionDescription = reader.getString();
+                    deserializedActiveDefaultSecurityAdminRule.withRuleCollectionDescription(reader.getString());
                 } else if ("ruleCollectionAppliesToGroups".equals(fieldName)) {
                     List<NetworkManagerSecurityGroupItem> ruleCollectionAppliesToGroups
                         = reader.readArray(reader1 -> NetworkManagerSecurityGroupItem.fromJson(reader1));
-                    deserializedActiveDefaultSecurityAdminRule.ruleCollectionAppliesToGroups
-                        = ruleCollectionAppliesToGroups;
+                    deserializedActiveDefaultSecurityAdminRule
+                        .withRuleCollectionAppliesToGroups(ruleCollectionAppliesToGroups);
                 } else if ("ruleGroups".equals(fieldName)) {
                     List<ConfigurationGroup> ruleGroups
                         = reader.readArray(reader1 -> ConfigurationGroup.fromJson(reader1));
-                    deserializedActiveDefaultSecurityAdminRule.ruleGroups = ruleGroups;
+                    deserializedActiveDefaultSecurityAdminRule.withRuleGroups(ruleGroups);
                 } else if ("kind".equals(fieldName)) {
                     deserializedActiveDefaultSecurityAdminRule.kind
                         = EffectiveAdminRuleKind.fromString(reader.getString());

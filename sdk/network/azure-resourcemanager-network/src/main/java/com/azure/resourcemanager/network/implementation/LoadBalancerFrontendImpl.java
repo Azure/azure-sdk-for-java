@@ -48,7 +48,7 @@ class LoadBalancerFrontendImpl extends ChildResourceImpl<FrontendIpConfiguration
 
     @Override
     public String networkId() {
-        SubResource subnetRef = this.innerModel().subnet();
+        SubnetInner subnetRef = this.innerModel().subnet();
         if (subnetRef != null) {
             return ResourceUtils.parentResourceIdFromResourceId(subnetRef.id());
         } else {
@@ -58,7 +58,7 @@ class LoadBalancerFrontendImpl extends ChildResourceImpl<FrontendIpConfiguration
 
     @Override
     public String subnetName() {
-        SubResource subnetRef = this.innerModel().subnet();
+        SubnetInner subnetRef = this.innerModel().subnet();
         if (subnetRef != null) {
             return ResourceUtils.nameFromResourceId(subnetRef.id());
         } else {
@@ -270,7 +270,11 @@ class LoadBalancerFrontendImpl extends ChildResourceImpl<FrontendIpConfiguration
 
     @Override
     public Subnet getSubnet() {
-        return Utils.getAssociatedSubnet(this.parent().manager(), this.innerModel().subnet());
+        SubnetInner subnetInner = this.innerModel().subnet();
+        if (subnetInner == null) {
+            return null;
+        }
+        return Utils.getAssociatedSubnet(this.parent().manager(), new SubResource().withId(subnetInner.id()));
     }
 
     @Override

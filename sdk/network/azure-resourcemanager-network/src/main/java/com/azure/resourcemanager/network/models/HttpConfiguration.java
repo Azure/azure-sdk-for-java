@@ -16,16 +16,16 @@ import java.util.List;
  * HTTP configuration of the connectivity check.
  */
 @Fluent
-public final class HTTPConfiguration implements JsonSerializable<HTTPConfiguration> {
+public final class HttpConfiguration implements JsonSerializable<HttpConfiguration> {
     /*
      * HTTP method.
      */
-    private HTTPMethod method;
+    private HttpMethod method;
 
     /*
      * List of HTTP headers.
      */
-    private List<HTTPHeader> headers;
+    private List<HttpHeader> headers;
 
     /*
      * Valid status codes.
@@ -33,9 +33,9 @@ public final class HTTPConfiguration implements JsonSerializable<HTTPConfigurati
     private List<Integer> validStatusCodes;
 
     /**
-     * Creates an instance of HTTPConfiguration class.
+     * Creates an instance of HttpConfiguration class.
      */
-    public HTTPConfiguration() {
+    public HttpConfiguration() {
     }
 
     /**
@@ -43,7 +43,7 @@ public final class HTTPConfiguration implements JsonSerializable<HTTPConfigurati
      * 
      * @return the method value.
      */
-    public HTTPMethod method() {
+    public HttpMethod method() {
         return this.method;
     }
 
@@ -51,9 +51,9 @@ public final class HTTPConfiguration implements JsonSerializable<HTTPConfigurati
      * Set the method property: HTTP method.
      * 
      * @param method the method value to set.
-     * @return the HTTPConfiguration object itself.
+     * @return the HttpConfiguration object itself.
      */
-    public HTTPConfiguration withMethod(HTTPMethod method) {
+    public HttpConfiguration withMethod(HttpMethod method) {
         this.method = method;
         return this;
     }
@@ -63,7 +63,7 @@ public final class HTTPConfiguration implements JsonSerializable<HTTPConfigurati
      * 
      * @return the headers value.
      */
-    public List<HTTPHeader> headers() {
+    public List<HttpHeader> headers() {
         return this.headers;
     }
 
@@ -71,9 +71,9 @@ public final class HTTPConfiguration implements JsonSerializable<HTTPConfigurati
      * Set the headers property: List of HTTP headers.
      * 
      * @param headers the headers value to set.
-     * @return the HTTPConfiguration object itself.
+     * @return the HttpConfiguration object itself.
      */
-    public HTTPConfiguration withHeaders(List<HTTPHeader> headers) {
+    public HttpConfiguration withHeaders(List<HttpHeader> headers) {
         this.headers = headers;
         return this;
     }
@@ -91,9 +91,9 @@ public final class HTTPConfiguration implements JsonSerializable<HTTPConfigurati
      * Set the validStatusCodes property: Valid status codes.
      * 
      * @param validStatusCodes the validStatusCodes value to set.
-     * @return the HTTPConfiguration object itself.
+     * @return the HttpConfiguration object itself.
      */
-    public HTTPConfiguration withValidStatusCodes(List<Integer> validStatusCodes) {
+    public HttpConfiguration withValidStatusCodes(List<Integer> validStatusCodes) {
         this.validStatusCodes = validStatusCodes;
         return this;
     }
@@ -123,34 +123,34 @@ public final class HTTPConfiguration implements JsonSerializable<HTTPConfigurati
     }
 
     /**
-     * Reads an instance of HTTPConfiguration from the JsonReader.
+     * Reads an instance of HttpConfiguration from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of HTTPConfiguration if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of HttpConfiguration if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the HTTPConfiguration.
+     * @throws IOException If an error occurs while reading the HttpConfiguration.
      */
-    public static HTTPConfiguration fromJson(JsonReader jsonReader) throws IOException {
+    public static HttpConfiguration fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            HTTPConfiguration deserializedHTTPConfiguration = new HTTPConfiguration();
+            HttpConfiguration deserializedHttpConfiguration = new HttpConfiguration();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("method".equals(fieldName)) {
-                    deserializedHTTPConfiguration.method = HTTPMethod.fromString(reader.getString());
+                    deserializedHttpConfiguration.method = HttpMethod.fromString(reader.getString());
                 } else if ("headers".equals(fieldName)) {
-                    List<HTTPHeader> headers = reader.readArray(reader1 -> HTTPHeader.fromJson(reader1));
-                    deserializedHTTPConfiguration.headers = headers;
+                    List<HttpHeader> headers = reader.readArray(reader1 -> HttpHeader.fromJson(reader1));
+                    deserializedHttpConfiguration.headers = headers;
                 } else if ("validStatusCodes".equals(fieldName)) {
                     List<Integer> validStatusCodes = reader.readArray(reader1 -> reader1.getInt());
-                    deserializedHTTPConfiguration.validStatusCodes = validStatusCodes;
+                    deserializedHttpConfiguration.validStatusCodes = validStatusCodes;
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedHTTPConfiguration;
+            return deserializedHttpConfiguration;
         });
     }
 }

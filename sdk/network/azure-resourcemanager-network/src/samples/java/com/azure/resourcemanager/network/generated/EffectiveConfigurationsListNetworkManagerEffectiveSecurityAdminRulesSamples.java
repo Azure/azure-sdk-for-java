@@ -21,7 +21,7 @@ public final class EffectiveConfigurationsListNetworkManagerEffectiveSecurityAdm
     public static void listEffectiveSecurityAdminRules(com.azure.resourcemanager.network.NetworkManager manager) {
         manager.serviceClient()
             .getEffectiveConfigurations()
-            .listNetworkManagerEffectiveSecurityAdminRules("myResourceGroup", "testVirtualNetwork",
+            .listNetworkManagerEffectiveSecurityAdminRulesWithResponse("myResourceGroup", "testVirtualNetwork",
                 new QueryRequestOptions().withSkipToken("fakeTokenPlaceholder"), null,
                 com.azure.core.util.Context.NONE);
     }

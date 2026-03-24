@@ -6,12 +6,12 @@ package com.azure.resourcemanager.network.fluent;
 
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.network.fluent.models.EffectiveBaseSecurityAdminRuleInner;
-import com.azure.resourcemanager.network.fluent.models.EffectiveConnectivityConfigurationInner;
+import com.azure.resourcemanager.network.fluent.models.NetworkManagerEffectiveConnectivityConfigurationListResultInner;
+import com.azure.resourcemanager.network.fluent.models.NetworkManagerEffectiveSecurityAdminRulesListResultInner;
 import com.azure.resourcemanager.network.models.QueryRequestOptions;
+import reactor.core.publisher.Mono;
 
 /**
  * An instance of this class provides access to all the operations defined in EffectiveConfigurationsClient.
@@ -28,12 +28,13 @@ public interface EffectiveConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list networkManagerEffectiveConnectivityConfiguration as paginated response with
-     * {@link PagedFlux}.
+     * @return result of the request to list networkManagerEffectiveConnectivityConfiguration along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<EffectiveConnectivityConfigurationInner> listNetworkManagerEffectiveConnectivityConfigurationsAsync(
-        String resourceGroupName, String virtualNetworkName, QueryRequestOptions parameters, Integer top);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<NetworkManagerEffectiveConnectivityConfigurationListResultInner>>
+        listNetworkManagerEffectiveConnectivityConfigurationsWithResponseAsync(String resourceGroupName,
+            String virtualNetworkName, QueryRequestOptions parameters, Integer top);
 
     /**
      * List all effective connectivity configurations applied on a virtual network.
@@ -44,28 +45,13 @@ public interface EffectiveConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list networkManagerEffectiveConnectivityConfiguration as paginated response with
-     * {@link PagedFlux}.
+     * @return result of the request to list networkManagerEffectiveConnectivityConfiguration on successful completion
+     * of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<EffectiveConnectivityConfigurationInner> listNetworkManagerEffectiveConnectivityConfigurationsAsync(
-        String resourceGroupName, String virtualNetworkName, QueryRequestOptions parameters);
-
-    /**
-     * List all effective connectivity configurations applied on a virtual network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param parameters Parameters supplied to list correct page.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list networkManagerEffectiveConnectivityConfiguration as paginated response with
-     * {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<EffectiveConnectivityConfigurationInner> listNetworkManagerEffectiveConnectivityConfigurations(
-        String resourceGroupName, String virtualNetworkName, QueryRequestOptions parameters);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<NetworkManagerEffectiveConnectivityConfigurationListResultInner>
+        listNetworkManagerEffectiveConnectivityConfigurationsAsync(String resourceGroupName, String virtualNetworkName,
+            QueryRequestOptions parameters);
 
     /**
      * List all effective connectivity configurations applied on a virtual network.
@@ -79,13 +65,29 @@ public interface EffectiveConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list networkManagerEffectiveConnectivityConfiguration as paginated response with
-     * {@link PagedIterable}.
+     * @return result of the request to list networkManagerEffectiveConnectivityConfiguration along with
+     * {@link Response}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<EffectiveConnectivityConfigurationInner> listNetworkManagerEffectiveConnectivityConfigurations(
-        String resourceGroupName, String virtualNetworkName, QueryRequestOptions parameters, Integer top,
-        Context context);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<NetworkManagerEffectiveConnectivityConfigurationListResultInner>
+        listNetworkManagerEffectiveConnectivityConfigurationsWithResponse(String resourceGroupName,
+            String virtualNetworkName, QueryRequestOptions parameters, Integer top, Context context);
+
+    /**
+     * List all effective connectivity configurations applied on a virtual network.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualNetworkName The name of the virtual network.
+     * @param parameters Parameters supplied to list correct page.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list networkManagerEffectiveConnectivityConfiguration.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    NetworkManagerEffectiveConnectivityConfigurationListResultInner
+        listNetworkManagerEffectiveConnectivityConfigurations(String resourceGroupName, String virtualNetworkName,
+            QueryRequestOptions parameters);
 
     /**
      * List all effective security admin rules applied on a virtual network.
@@ -98,12 +100,13 @@ public interface EffectiveConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list networkManagerEffectiveSecurityAdminRules as paginated response with
-     * {@link PagedFlux}.
+     * @return result of the request to list networkManagerEffectiveSecurityAdminRules along with {@link Response} on
+     * successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<EffectiveBaseSecurityAdminRuleInner> listNetworkManagerEffectiveSecurityAdminRulesAsync(
-        String resourceGroupName, String virtualNetworkName, QueryRequestOptions parameters, Integer top);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<NetworkManagerEffectiveSecurityAdminRulesListResultInner>>
+        listNetworkManagerEffectiveSecurityAdminRulesWithResponseAsync(String resourceGroupName,
+            String virtualNetworkName, QueryRequestOptions parameters, Integer top);
 
     /**
      * List all effective security admin rules applied on a virtual network.
@@ -114,27 +117,11 @@ public interface EffectiveConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list networkManagerEffectiveSecurityAdminRules as paginated response with
-     * {@link PagedFlux}.
+     * @return result of the request to list networkManagerEffectiveSecurityAdminRules on successful completion of
+     * {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<EffectiveBaseSecurityAdminRuleInner> listNetworkManagerEffectiveSecurityAdminRulesAsync(
-        String resourceGroupName, String virtualNetworkName, QueryRequestOptions parameters);
-
-    /**
-     * List all effective security admin rules applied on a virtual network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param parameters Parameters supplied to list correct page.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list networkManagerEffectiveSecurityAdminRules as paginated response with
-     * {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<EffectiveBaseSecurityAdminRuleInner> listNetworkManagerEffectiveSecurityAdminRules(
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<NetworkManagerEffectiveSecurityAdminRulesListResultInner> listNetworkManagerEffectiveSecurityAdminRulesAsync(
         String resourceGroupName, String virtualNetworkName, QueryRequestOptions parameters);
 
     /**
@@ -149,11 +136,25 @@ public interface EffectiveConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list networkManagerEffectiveSecurityAdminRules as paginated response with
-     * {@link PagedIterable}.
+     * @return result of the request to list networkManagerEffectiveSecurityAdminRules along with {@link Response}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<EffectiveBaseSecurityAdminRuleInner> listNetworkManagerEffectiveSecurityAdminRules(
-        String resourceGroupName, String virtualNetworkName, QueryRequestOptions parameters, Integer top,
-        Context context);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<NetworkManagerEffectiveSecurityAdminRulesListResultInner>
+        listNetworkManagerEffectiveSecurityAdminRulesWithResponse(String resourceGroupName, String virtualNetworkName,
+            QueryRequestOptions parameters, Integer top, Context context);
+
+    /**
+     * List all effective security admin rules applied on a virtual network.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualNetworkName The name of the virtual network.
+     * @param parameters Parameters supplied to list correct page.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list networkManagerEffectiveSecurityAdminRules.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    NetworkManagerEffectiveSecurityAdminRulesListResultInner listNetworkManagerEffectiveSecurityAdminRules(
+        String resourceGroupName, String virtualNetworkName, QueryRequestOptions parameters);
 }

@@ -22,7 +22,7 @@ public final class NetworkManagersListActiveSecurityAdminRulesSamples {
     public static void listActiveSecurityAdminRules(com.azure.resourcemanager.network.NetworkManager manager) {
         manager.serviceClient()
             .getNetworkManagers()
-            .listActiveSecurityAdminRules("myResourceGroup", "testNetworkManager",
+            .listActiveSecurityAdminRulesWithResponse("myResourceGroup", "testNetworkManager",
                 new ActiveConfigurationParameter().withRegions(Arrays.asList("westus"))
                     .withSkipToken("fakeTokenPlaceholder"),
                 null, com.azure.core.util.Context.NONE);

@@ -13,8 +13,8 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.fluent.models.ActiveBaseSecurityAdminRuleInner;
-import com.azure.resourcemanager.network.fluent.models.ActiveConnectivityConfigurationInner;
+import com.azure.resourcemanager.network.fluent.models.ActiveConnectivityConfigurationsListResultInner;
+import com.azure.resourcemanager.network.fluent.models.ActiveSecurityAdminRulesListResultInner;
 import com.azure.resourcemanager.network.fluent.models.NetworkManagerInner;
 import com.azure.resourcemanager.network.models.ActiveConfigurationParameter;
 import com.azure.resourcemanager.network.models.PatchObject;
@@ -459,12 +459,13 @@ public interface NetworkManagersClient extends InnerSupportsGet<NetworkManagerIn
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list active connectivity configurations as paginated response with
-     * {@link PagedFlux}.
+     * @return result of the request to list active connectivity configurations along with {@link Response} on
+     * successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<ActiveConnectivityConfigurationInner> listActiveConnectivityConfigurationsAsync(String resourceGroupName,
-        String networkManagerName, ActiveConfigurationParameter parameters, Integer top);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<ActiveConnectivityConfigurationsListResultInner>>
+        listActiveConnectivityConfigurationsWithResponseAsync(String resourceGroupName, String networkManagerName,
+            ActiveConfigurationParameter parameters, Integer top);
 
     /**
      * Lists active connectivity configurations in a network manager.
@@ -475,28 +476,12 @@ public interface NetworkManagersClient extends InnerSupportsGet<NetworkManagerIn
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list active connectivity configurations as paginated response with
-     * {@link PagedFlux}.
+     * @return result of the request to list active connectivity configurations on successful completion of
+     * {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<ActiveConnectivityConfigurationInner> listActiveConnectivityConfigurationsAsync(String resourceGroupName,
-        String networkManagerName, ActiveConfigurationParameter parameters);
-
-    /**
-     * Lists active connectivity configurations in a network manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param parameters Active Configuration Parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list active connectivity configurations as paginated response with
-     * {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ActiveConnectivityConfigurationInner> listActiveConnectivityConfigurations(String resourceGroupName,
-        String networkManagerName, ActiveConfigurationParameter parameters);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ActiveConnectivityConfigurationsListResultInner> listActiveConnectivityConfigurationsAsync(
+        String resourceGroupName, String networkManagerName, ActiveConfigurationParameter parameters);
 
     /**
      * Lists active connectivity configurations in a network manager.
@@ -510,12 +495,27 @@ public interface NetworkManagersClient extends InnerSupportsGet<NetworkManagerIn
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list active connectivity configurations as paginated response with
-     * {@link PagedIterable}.
+     * @return result of the request to list active connectivity configurations along with {@link Response}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ActiveConnectivityConfigurationInner> listActiveConnectivityConfigurations(String resourceGroupName,
-        String networkManagerName, ActiveConfigurationParameter parameters, Integer top, Context context);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ActiveConnectivityConfigurationsListResultInner> listActiveConnectivityConfigurationsWithResponse(
+        String resourceGroupName, String networkManagerName, ActiveConfigurationParameter parameters, Integer top,
+        Context context);
+
+    /**
+     * Lists active connectivity configurations in a network manager.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkManagerName The name of the network manager.
+     * @param parameters Active Configuration Parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list active connectivity configurations.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ActiveConnectivityConfigurationsListResultInner listActiveConnectivityConfigurations(String resourceGroupName,
+        String networkManagerName, ActiveConfigurationParameter parameters);
 
     /**
      * Lists active security admin rules in a network manager.
@@ -528,11 +528,12 @@ public interface NetworkManagersClient extends InnerSupportsGet<NetworkManagerIn
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list active security admin rules as paginated response with {@link PagedFlux}.
+     * @return result of the request to list active security admin rules along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<ActiveBaseSecurityAdminRuleInner> listActiveSecurityAdminRulesAsync(String resourceGroupName,
-        String networkManagerName, ActiveConfigurationParameter parameters, Integer top);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<ActiveSecurityAdminRulesListResultInner>> listActiveSecurityAdminRulesWithResponseAsync(
+        String resourceGroupName, String networkManagerName, ActiveConfigurationParameter parameters, Integer top);
 
     /**
      * Lists active security admin rules in a network manager.
@@ -543,26 +544,10 @@ public interface NetworkManagersClient extends InnerSupportsGet<NetworkManagerIn
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list active security admin rules as paginated response with {@link PagedFlux}.
+     * @return result of the request to list active security admin rules on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<ActiveBaseSecurityAdminRuleInner> listActiveSecurityAdminRulesAsync(String resourceGroupName,
-        String networkManagerName, ActiveConfigurationParameter parameters);
-
-    /**
-     * Lists active security admin rules in a network manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param parameters Active Configuration Parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list active security admin rules as paginated response with
-     * {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ActiveBaseSecurityAdminRuleInner> listActiveSecurityAdminRules(String resourceGroupName,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ActiveSecurityAdminRulesListResultInner> listActiveSecurityAdminRulesAsync(String resourceGroupName,
         String networkManagerName, ActiveConfigurationParameter parameters);
 
     /**
@@ -577,10 +562,24 @@ public interface NetworkManagersClient extends InnerSupportsGet<NetworkManagerIn
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list active security admin rules as paginated response with
-     * {@link PagedIterable}.
+     * @return result of the request to list active security admin rules along with {@link Response}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ActiveBaseSecurityAdminRuleInner> listActiveSecurityAdminRules(String resourceGroupName,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ActiveSecurityAdminRulesListResultInner> listActiveSecurityAdminRulesWithResponse(String resourceGroupName,
         String networkManagerName, ActiveConfigurationParameter parameters, Integer top, Context context);
+
+    /**
+     * Lists active security admin rules in a network manager.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkManagerName The name of the network manager.
+     * @param parameters Active Configuration Parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list active security admin rules.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ActiveSecurityAdminRulesListResultInner listActiveSecurityAdminRules(String resourceGroupName,
+        String networkManagerName, ActiveConfigurationParameter parameters);
 }

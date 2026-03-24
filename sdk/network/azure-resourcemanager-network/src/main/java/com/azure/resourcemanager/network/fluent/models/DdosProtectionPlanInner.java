@@ -178,7 +178,6 @@ public final class DdosProtectionPlanInner extends Resource {
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();

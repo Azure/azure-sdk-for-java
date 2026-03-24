@@ -10,37 +10,37 @@ import java.util.Collection;
 /**
  * HTTP method.
  */
-public final class HTTPMethod extends ExpandableStringEnum<HTTPMethod> {
+public final class HttpMethod extends ExpandableStringEnum<HttpMethod> {
     /**
      * Get.
      */
-    public static final HTTPMethod GET = fromString("Get");
+    public static final HttpMethod GET = fromString("Get");
 
     /**
-     * Creates a new instance of HTTPMethod value.
+     * Creates a new instance of HttpMethod value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public HTTPMethod() {
+    public HttpMethod() {
     }
 
     /**
-     * Creates or finds a HTTPMethod from its string representation.
+     * Creates or finds a HttpMethod from its string representation.
      * 
      * @param name a name to look for.
-     * @return the corresponding HTTPMethod.
+     * @return the corresponding HttpMethod.
      */
-    public static HTTPMethod fromString(String name) {
-        return fromString(name, HTTPMethod.class);
+    public static HttpMethod fromString(String name) {
+        return fromString(name, HttpMethod.class);
     }
 
     /**
-     * Gets known HTTPMethod values.
+     * Gets known HttpMethod values.
      * 
-     * @return known HTTPMethod values.
+     * @return known HttpMethod values.
      */
-    public static Collection<HTTPMethod> values() {
-        return values(HTTPMethod.class);
+    public static Collection<HttpMethod> values() {
+        return values(HttpMethod.class);
     }
 }

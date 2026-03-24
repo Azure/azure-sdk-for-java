@@ -6,18 +6,16 @@ package com.azure.resourcemanager.network.fluent;
 
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteGatewayInner;
+import com.azure.resourcemanager.network.fluent.models.ExpressRouteGatewayListInner;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
-import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -25,8 +23,8 @@ import reactor.core.publisher.Mono;
 /**
  * An instance of this class provides access to all the operations defined in ExpressRouteGatewaysClient.
  */
-public interface ExpressRouteGatewaysClient extends InnerSupportsGet<ExpressRouteGatewayInner>,
-    InnerSupportsListing<ExpressRouteGatewayInner>, InnerSupportsDelete<Void> {
+public interface ExpressRouteGatewaysClient
+    extends InnerSupportsGet<ExpressRouteGatewayInner>, InnerSupportsDelete<Void> {
     /**
      * Fetches the details of a ExpressRoute gateway in a resource group.
      * 
@@ -405,10 +403,10 @@ public interface ExpressRouteGatewaysClient extends InnerSupportsGet<ExpressRout
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ExpressRoute gateways as paginated response with {@link PagedFlux}.
+     * @return list of ExpressRoute gateways along with {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<ExpressRouteGatewayInner> listByResourceGroupAsync(String resourceGroupName);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<ExpressRouteGatewayListInner>> listByResourceGroupWithResponseAsync(String resourceGroupName);
 
     /**
      * Lists ExpressRoute gateways in a given resource group.
@@ -417,10 +415,10 @@ public interface ExpressRouteGatewaysClient extends InnerSupportsGet<ExpressRout
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ExpressRoute gateways as paginated response with {@link PagedIterable}.
+     * @return list of ExpressRoute gateways on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ExpressRouteGatewayInner> listByResourceGroup(String resourceGroupName);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ExpressRouteGatewayListInner> listByResourceGroupAsync(String resourceGroupName);
 
     /**
      * Lists ExpressRoute gateways in a given resource group.
@@ -430,30 +428,42 @@ public interface ExpressRouteGatewaysClient extends InnerSupportsGet<ExpressRout
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ExpressRoute gateways as paginated response with {@link PagedIterable}.
+     * @return list of ExpressRoute gateways along with {@link Response}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ExpressRouteGatewayInner> listByResourceGroup(String resourceGroupName, Context context);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ExpressRouteGatewayListInner> listByResourceGroupWithResponse(String resourceGroupName, Context context);
+
+    /**
+     * Lists ExpressRoute gateways in a given resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of ExpressRoute gateways.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ExpressRouteGatewayListInner listByResourceGroup(String resourceGroupName);
 
     /**
      * Lists ExpressRoute gateways under a given subscription.
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ExpressRoute gateways as paginated response with {@link PagedFlux}.
+     * @return list of ExpressRoute gateways along with {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<ExpressRouteGatewayInner> listAsync();
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<ExpressRouteGatewayListInner>> listBySubscriptionWithResponseAsync();
 
     /**
      * Lists ExpressRoute gateways under a given subscription.
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ExpressRoute gateways as paginated response with {@link PagedIterable}.
+     * @return list of ExpressRoute gateways on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ExpressRouteGatewayInner> list();
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ExpressRouteGatewayListInner> listBySubscriptionAsync();
 
     /**
      * Lists ExpressRoute gateways under a given subscription.
@@ -462,8 +472,18 @@ public interface ExpressRouteGatewaysClient extends InnerSupportsGet<ExpressRout
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ExpressRoute gateways as paginated response with {@link PagedIterable}.
+     * @return list of ExpressRoute gateways along with {@link Response}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ExpressRouteGatewayInner> list(Context context);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ExpressRouteGatewayListInner> listBySubscriptionWithResponse(Context context);
+
+    /**
+     * Lists ExpressRoute gateways under a given subscription.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of ExpressRoute gateways.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ExpressRouteGatewayListInner listBySubscription();
 }

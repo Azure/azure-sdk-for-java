@@ -19,7 +19,7 @@ public final class ProtocolConfiguration implements JsonSerializable<ProtocolCon
     /*
      * HTTP configuration of the connectivity check.
      */
-    private HTTPConfiguration hTTPConfiguration;
+    private HttpConfiguration httpConfiguration;
 
     /**
      * Creates an instance of ProtocolConfiguration class.
@@ -28,22 +28,22 @@ public final class ProtocolConfiguration implements JsonSerializable<ProtocolCon
     }
 
     /**
-     * Get the hTTPConfiguration property: HTTP configuration of the connectivity check.
+     * Get the httpConfiguration property: HTTP configuration of the connectivity check.
      * 
-     * @return the hTTPConfiguration value.
+     * @return the httpConfiguration value.
      */
-    public HTTPConfiguration hTTPConfiguration() {
-        return this.hTTPConfiguration;
+    public HttpConfiguration httpConfiguration() {
+        return this.httpConfiguration;
     }
 
     /**
-     * Set the hTTPConfiguration property: HTTP configuration of the connectivity check.
+     * Set the httpConfiguration property: HTTP configuration of the connectivity check.
      * 
-     * @param hTTPConfiguration the hTTPConfiguration value to set.
+     * @param httpConfiguration the httpConfiguration value to set.
      * @return the ProtocolConfiguration object itself.
      */
-    public ProtocolConfiguration withHTTPConfiguration(HTTPConfiguration hTTPConfiguration) {
-        this.hTTPConfiguration = hTTPConfiguration;
+    public ProtocolConfiguration withHttpConfiguration(HttpConfiguration httpConfiguration) {
+        this.httpConfiguration = httpConfiguration;
         return this;
     }
 
@@ -53,8 +53,8 @@ public final class ProtocolConfiguration implements JsonSerializable<ProtocolCon
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (hTTPConfiguration() != null) {
-            hTTPConfiguration().validate();
+        if (httpConfiguration() != null) {
+            httpConfiguration().validate();
         }
     }
 
@@ -64,7 +64,7 @@ public final class ProtocolConfiguration implements JsonSerializable<ProtocolCon
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("HTTPConfiguration", this.hTTPConfiguration);
+        jsonWriter.writeJsonField("HTTPConfiguration", this.httpConfiguration);
         return jsonWriter.writeEndObject();
     }
 
@@ -84,7 +84,7 @@ public final class ProtocolConfiguration implements JsonSerializable<ProtocolCon
                 reader.nextToken();
 
                 if ("HTTPConfiguration".equals(fieldName)) {
-                    deserializedProtocolConfiguration.hTTPConfiguration = HTTPConfiguration.fromJson(reader);
+                    deserializedProtocolConfiguration.httpConfiguration = HttpConfiguration.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

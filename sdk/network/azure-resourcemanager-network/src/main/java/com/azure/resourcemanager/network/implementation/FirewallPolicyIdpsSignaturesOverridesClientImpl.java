@@ -19,10 +19,6 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
-import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
@@ -30,7 +26,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.network.fluent.FirewallPolicyIdpsSignaturesOverridesClient;
 import com.azure.resourcemanager.network.fluent.models.SignaturesOverridesInner;
-import com.azure.resourcemanager.network.implementation.models.SignaturesOverridesList;
+import com.azure.resourcemanager.network.fluent.models.SignaturesOverridesListInner;
 import reactor.core.publisher.Mono;
 
 /**
@@ -101,7 +97,7 @@ public final class FirewallPolicyIdpsSignaturesOverridesClientImpl
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/firewallPolicies/{firewallPolicyName}/signatureOverrides")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SignaturesOverridesList>> list(@HostParam("endpoint") String endpoint,
+        Mono<Response<SignaturesOverridesListInner>> list(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("firewallPolicyName") String firewallPolicyName, @HeaderParam("Accept") String accept,
@@ -527,11 +523,11 @@ public final class FirewallPolicyIdpsSignaturesOverridesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an object containing an array with a single item along with {@link PagedResponse} on successful
+     * @return describes an object containing an array with a single item along with {@link Response} on successful
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SignaturesOverridesInner>> listSinglePageAsync(String resourceGroupName,
+    public Mono<Response<SignaturesOverridesListInner>> listWithResponseAsync(String resourceGroupName,
         String firewallPolicyName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -554,8 +550,6 @@ public final class FirewallPolicyIdpsSignaturesOverridesClientImpl
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
                 resourceGroupName, firewallPolicyName, accept, context))
-            .<PagedResponse<SignaturesOverridesInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
-                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -568,11 +562,11 @@ public final class FirewallPolicyIdpsSignaturesOverridesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an object containing an array with a single item along with {@link PagedResponse} on successful
+     * @return describes an object containing an array with a single item along with {@link Response} on successful
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SignaturesOverridesInner>> listSinglePageAsync(String resourceGroupName,
+    private Mono<Response<SignaturesOverridesListInner>> listWithResponseAsync(String resourceGroupName,
         String firewallPolicyName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -593,11 +587,8 @@ public final class FirewallPolicyIdpsSignaturesOverridesClientImpl
         final String apiVersion = "2025-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
-                firewallPolicyName, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), null, null));
+        return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            firewallPolicyName, accept, context);
     }
 
     /**
@@ -608,44 +599,12 @@ public final class FirewallPolicyIdpsSignaturesOverridesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an object containing an array with a single item as paginated response with {@link PagedFlux}.
+     * @return describes an object containing an array with a single item on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<SignaturesOverridesInner> listAsync(String resourceGroupName, String firewallPolicyName) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, firewallPolicyName));
-    }
-
-    /**
-     * Returns all signatures overrides objects for a specific policy as a list containing a single value.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallPolicyName The name of the Firewall Policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an object containing an array with a single item as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SignaturesOverridesInner> listAsync(String resourceGroupName, String firewallPolicyName,
-        Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, firewallPolicyName, context));
-    }
-
-    /**
-     * Returns all signatures overrides objects for a specific policy as a list containing a single value.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param firewallPolicyName The name of the Firewall Policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an object containing an array with a single item as paginated response with
-     * {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SignaturesOverridesInner> list(String resourceGroupName, String firewallPolicyName) {
-        return new PagedIterable<>(listAsync(resourceGroupName, firewallPolicyName));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SignaturesOverridesListInner> listAsync(String resourceGroupName, String firewallPolicyName) {
+        return listWithResponseAsync(resourceGroupName, firewallPolicyName)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -657,12 +616,26 @@ public final class FirewallPolicyIdpsSignaturesOverridesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an object containing an array with a single item as paginated response with
-     * {@link PagedIterable}.
+     * @return describes an object containing an array with a single item along with {@link Response}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SignaturesOverridesInner> list(String resourceGroupName, String firewallPolicyName,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SignaturesOverridesListInner> listWithResponse(String resourceGroupName, String firewallPolicyName,
         Context context) {
-        return new PagedIterable<>(listAsync(resourceGroupName, firewallPolicyName, context));
+        return listWithResponseAsync(resourceGroupName, firewallPolicyName, context).block();
+    }
+
+    /**
+     * Returns all signatures overrides objects for a specific policy as a list containing a single value.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param firewallPolicyName The name of the Firewall Policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes an object containing an array with a single item.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SignaturesOverridesListInner list(String resourceGroupName, String firewallPolicyName) {
+        return listWithResponse(resourceGroupName, firewallPolicyName, Context.NONE).getValue();
     }
 }

@@ -22,7 +22,7 @@ public final class NetworkManagersListActiveConnectivityConfigurationsSamples {
     public static void listActiveConnectivityConfigurations(com.azure.resourcemanager.network.NetworkManager manager) {
         manager.serviceClient()
             .getNetworkManagers()
-            .listActiveConnectivityConfigurations("myResourceGroup", "testNetworkManager",
+            .listActiveConnectivityConfigurationsWithResponse("myResourceGroup", "testNetworkManager",
                 new ActiveConfigurationParameter().withRegions(Arrays.asList("westus"))
                     .withSkipToken("fakeTokenPlaceholder"),
                 null, com.azure.core.util.Context.NONE);

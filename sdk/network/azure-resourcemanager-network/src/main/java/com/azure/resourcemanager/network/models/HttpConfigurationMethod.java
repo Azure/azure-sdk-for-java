@@ -10,42 +10,42 @@ import java.util.Collection;
 /**
  * The HTTP method to use.
  */
-public final class HTTPConfigurationMethod extends ExpandableStringEnum<HTTPConfigurationMethod> {
+public final class HttpConfigurationMethod extends ExpandableStringEnum<HttpConfigurationMethod> {
     /**
      * Get.
      */
-    public static final HTTPConfigurationMethod GET = fromString("Get");
+    public static final HttpConfigurationMethod GET = fromString("Get");
 
     /**
      * Post.
      */
-    public static final HTTPConfigurationMethod POST = fromString("Post");
+    public static final HttpConfigurationMethod POST = fromString("Post");
 
     /**
-     * Creates a new instance of HTTPConfigurationMethod value.
+     * Creates a new instance of HttpConfigurationMethod value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public HTTPConfigurationMethod() {
+    public HttpConfigurationMethod() {
     }
 
     /**
-     * Creates or finds a HTTPConfigurationMethod from its string representation.
+     * Creates or finds a HttpConfigurationMethod from its string representation.
      * 
      * @param name a name to look for.
-     * @return the corresponding HTTPConfigurationMethod.
+     * @return the corresponding HttpConfigurationMethod.
      */
-    public static HTTPConfigurationMethod fromString(String name) {
-        return fromString(name, HTTPConfigurationMethod.class);
+    public static HttpConfigurationMethod fromString(String name) {
+        return fromString(name, HttpConfigurationMethod.class);
     }
 
     /**
-     * Gets known HTTPConfigurationMethod values.
+     * Gets known HttpConfigurationMethod values.
      * 
-     * @return known HTTPConfigurationMethod values.
+     * @return known HttpConfigurationMethod values.
      */
-    public static Collection<HTTPConfigurationMethod> values() {
-        return values(HTTPConfigurationMethod.class);
+    public static Collection<HttpConfigurationMethod> values() {
+        return values(HttpConfigurationMethod.class);
     }
 }

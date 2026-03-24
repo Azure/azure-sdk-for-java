@@ -22,7 +22,7 @@ public final class EffectiveConfigurationsListNetworkManagerEffectiveConnectivit
         listEffectiveConnectivityConfiguration(com.azure.resourcemanager.network.NetworkManager manager) {
         manager.serviceClient()
             .getEffectiveConfigurations()
-            .listNetworkManagerEffectiveConnectivityConfigurations("myResourceGroup", "testVirtualNetwork",
+            .listNetworkManagerEffectiveConnectivityConfigurationsWithResponse("myResourceGroup", "testVirtualNetwork",
                 new QueryRequestOptions().withSkipToken("fakeTokenPlaceholder"), null,
                 com.azure.core.util.Context.NONE);
     }

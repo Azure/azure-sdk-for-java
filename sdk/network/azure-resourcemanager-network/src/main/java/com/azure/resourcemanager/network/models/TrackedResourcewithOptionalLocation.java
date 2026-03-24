@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.network.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -15,7 +15,7 @@ import java.util.Map;
 /**
  * Tracked resource with optional location.
  */
-@Immutable
+@Fluent
 public class TrackedResourcewithOptionalLocation implements JsonSerializable<TrackedResourcewithOptionalLocation> {
     /*
      * ID of the connection monitor.
@@ -50,7 +50,7 @@ public class TrackedResourcewithOptionalLocation implements JsonSerializable<Tra
     /**
      * Creates an instance of TrackedResourcewithOptionalLocation class.
      */
-    protected TrackedResourcewithOptionalLocation() {
+    public TrackedResourcewithOptionalLocation() {
     }
 
     /**
@@ -148,7 +148,7 @@ public class TrackedResourcewithOptionalLocation implements JsonSerializable<Tra
      * @param location the location value to set.
      * @return the TrackedResourcewithOptionalLocation object itself.
      */
-    TrackedResourcewithOptionalLocation withLocation(String location) {
+    public TrackedResourcewithOptionalLocation withLocation(String location) {
         this.location = location;
         return this;
     }
@@ -168,7 +168,7 @@ public class TrackedResourcewithOptionalLocation implements JsonSerializable<Tra
      * @param tags the tags value to set.
      * @return the TrackedResourcewithOptionalLocation object itself.
      */
-    TrackedResourcewithOptionalLocation withTags(Map<String, String> tags) {
+    public TrackedResourcewithOptionalLocation withTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
     }

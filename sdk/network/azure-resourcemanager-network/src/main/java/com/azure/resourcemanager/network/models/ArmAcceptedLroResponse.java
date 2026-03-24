@@ -12,14 +12,14 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The StopFinalResult1 model.
+ * Resource operation accepted.
  */
 @Immutable
-public final class StopFinalResult1 implements JsonSerializable<StopFinalResult1> {
+public final class ArmAcceptedLroResponse implements JsonSerializable<ArmAcceptedLroResponse> {
     /**
-     * Creates an instance of StopFinalResult1 class.
+     * Creates an instance of ArmAcceptedLroResponse class.
      */
-    private StopFinalResult1() {
+    private ArmAcceptedLroResponse() {
     }
 
     /**
@@ -40,16 +40,16 @@ public final class StopFinalResult1 implements JsonSerializable<StopFinalResult1
     }
 
     /**
-     * Reads an instance of StopFinalResult1 from the JsonReader.
+     * Reads an instance of ArmAcceptedLroResponse from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of StopFinalResult1 if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the StopFinalResult1.
+     * @return An instance of ArmAcceptedLroResponse if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ArmAcceptedLroResponse.
      */
-    public static StopFinalResult1 fromJson(JsonReader jsonReader) throws IOException {
+    public static ArmAcceptedLroResponse fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            StopFinalResult1 deserializedStopFinalResult1 = new StopFinalResult1();
+            ArmAcceptedLroResponse deserializedArmAcceptedLroResponse = new ArmAcceptedLroResponse();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -57,7 +57,7 @@ public final class StopFinalResult1 implements JsonSerializable<StopFinalResult1
                 reader.skipChildren();
             }
 
-            return deserializedStopFinalResult1;
+            return deserializedArmAcceptedLroResponse;
         });
     }
 }

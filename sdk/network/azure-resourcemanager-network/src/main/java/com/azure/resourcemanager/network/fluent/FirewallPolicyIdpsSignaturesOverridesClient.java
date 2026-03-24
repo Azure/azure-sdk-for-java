@@ -6,11 +6,10 @@ package com.azure.resourcemanager.network.fluent;
 
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.SignaturesOverridesInner;
+import com.azure.resourcemanager.network.fluent.models.SignaturesOverridesListInner;
 import reactor.core.publisher.Mono;
 
 /**
@@ -205,10 +204,12 @@ public interface FirewallPolicyIdpsSignaturesOverridesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an object containing an array with a single item as paginated response with {@link PagedFlux}.
+     * @return describes an object containing an array with a single item along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<SignaturesOverridesInner> listAsync(String resourceGroupName, String firewallPolicyName);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<SignaturesOverridesListInner>> listWithResponseAsync(String resourceGroupName,
+        String firewallPolicyName);
 
     /**
      * Returns all signatures overrides objects for a specific policy as a list containing a single value.
@@ -218,11 +219,10 @@ public interface FirewallPolicyIdpsSignaturesOverridesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an object containing an array with a single item as paginated response with
-     * {@link PagedIterable}.
+     * @return describes an object containing an array with a single item on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SignaturesOverridesInner> list(String resourceGroupName, String firewallPolicyName);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<SignaturesOverridesListInner> listAsync(String resourceGroupName, String firewallPolicyName);
 
     /**
      * Returns all signatures overrides objects for a specific policy as a list containing a single value.
@@ -233,9 +233,22 @@ public interface FirewallPolicyIdpsSignaturesOverridesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an object containing an array with a single item as paginated response with
-     * {@link PagedIterable}.
+     * @return describes an object containing an array with a single item along with {@link Response}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SignaturesOverridesInner> list(String resourceGroupName, String firewallPolicyName, Context context);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<SignaturesOverridesListInner> listWithResponse(String resourceGroupName, String firewallPolicyName,
+        Context context);
+
+    /**
+     * Returns all signatures overrides objects for a specific policy as a list containing a single value.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param firewallPolicyName The name of the Firewall Policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes an object containing an array with a single item.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SignaturesOverridesListInner list(String resourceGroupName, String firewallPolicyName);
 }

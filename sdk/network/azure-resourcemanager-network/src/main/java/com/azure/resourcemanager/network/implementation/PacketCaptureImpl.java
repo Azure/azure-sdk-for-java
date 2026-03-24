@@ -131,6 +131,7 @@ public class PacketCaptureImpl
     @Override
     public Mono<PacketCapture> createResourceAsync() {
         return this.client.createAsync(parent.resourceGroupName(), parent.name(), this.name(), createParameters)
+            .flatMap(ignored -> this.client.getAsync(parent.resourceGroupName(), parent.name(), this.name()))
             .map(innerToFluentMap(this));
     }
 

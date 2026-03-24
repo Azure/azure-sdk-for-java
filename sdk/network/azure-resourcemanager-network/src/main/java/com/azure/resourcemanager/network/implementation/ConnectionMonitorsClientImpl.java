@@ -37,7 +37,7 @@ import com.azure.resourcemanager.network.fluent.ConnectionMonitorsClient;
 import com.azure.resourcemanager.network.fluent.models.ConnectionMonitorInner;
 import com.azure.resourcemanager.network.fluent.models.ConnectionMonitorResultInner;
 import com.azure.resourcemanager.network.implementation.models.ConnectionMonitorListResult;
-import com.azure.resourcemanager.network.models.StopFinalResult1;
+import com.azure.resourcemanager.network.models.StopFinalResult;
 import com.azure.resourcemanager.network.models.TagsObject;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -1237,12 +1237,12 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<StopFinalResult1>, StopFinalResult1> beginStopAsync(String resourceGroupName,
+    public PollerFlux<PollResult<StopFinalResult>, StopFinalResult> beginStopAsync(String resourceGroupName,
         String networkWatcherName, String connectionMonitorName) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = stopWithResponseAsync(resourceGroupName, networkWatcherName, connectionMonitorName);
-        return this.client.<StopFinalResult1, StopFinalResult1>getLroResult(mono, this.client.getHttpPipeline(),
-            StopFinalResult1.class, StopFinalResult1.class, this.client.getContext());
+        return this.client.<StopFinalResult, StopFinalResult>getLroResult(mono, this.client.getHttpPipeline(),
+            StopFinalResult.class, StopFinalResult.class, this.client.getContext());
     }
 
     /**
@@ -1258,13 +1258,13 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<StopFinalResult1>, StopFinalResult1> beginStopAsync(String resourceGroupName,
+    private PollerFlux<PollResult<StopFinalResult>, StopFinalResult> beginStopAsync(String resourceGroupName,
         String networkWatcherName, String connectionMonitorName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
             = stopWithResponseAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context);
-        return this.client.<StopFinalResult1, StopFinalResult1>getLroResult(mono, this.client.getHttpPipeline(),
-            StopFinalResult1.class, StopFinalResult1.class, context);
+        return this.client.<StopFinalResult, StopFinalResult>getLroResult(mono, this.client.getHttpPipeline(),
+            StopFinalResult.class, StopFinalResult.class, context);
     }
 
     /**
@@ -1279,7 +1279,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<StopFinalResult1>, StopFinalResult1> beginStop(String resourceGroupName,
+    public SyncPoller<PollResult<StopFinalResult>, StopFinalResult> beginStop(String resourceGroupName,
         String networkWatcherName, String connectionMonitorName) {
         return this.beginStopAsync(resourceGroupName, networkWatcherName, connectionMonitorName).getSyncPoller();
     }
@@ -1297,7 +1297,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<StopFinalResult1>, StopFinalResult1> beginStop(String resourceGroupName,
+    public SyncPoller<PollResult<StopFinalResult>, StopFinalResult> beginStop(String resourceGroupName,
         String networkWatcherName, String connectionMonitorName, Context context) {
         return this.beginStopAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context)
             .getSyncPoller();
@@ -1315,7 +1315,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<StopFinalResult1> stopAsync(String resourceGroupName, String networkWatcherName,
+    public Mono<StopFinalResult> stopAsync(String resourceGroupName, String networkWatcherName,
         String connectionMonitorName) {
         return beginStopAsync(resourceGroupName, networkWatcherName, connectionMonitorName).last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1334,7 +1334,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<StopFinalResult1> stopAsync(String resourceGroupName, String networkWatcherName,
+    private Mono<StopFinalResult> stopAsync(String resourceGroupName, String networkWatcherName,
         String connectionMonitorName, Context context) {
         return beginStopAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1352,7 +1352,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public StopFinalResult1 stop(String resourceGroupName, String networkWatcherName, String connectionMonitorName) {
+    public StopFinalResult stop(String resourceGroupName, String networkWatcherName, String connectionMonitorName) {
         return stopAsync(resourceGroupName, networkWatcherName, connectionMonitorName).block();
     }
 
@@ -1369,7 +1369,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public StopFinalResult1 stop(String resourceGroupName, String networkWatcherName, String connectionMonitorName,
+    public StopFinalResult stop(String resourceGroupName, String networkWatcherName, String connectionMonitorName,
         Context context) {
         return stopAsync(resourceGroupName, networkWatcherName, connectionMonitorName, context).block();
     }

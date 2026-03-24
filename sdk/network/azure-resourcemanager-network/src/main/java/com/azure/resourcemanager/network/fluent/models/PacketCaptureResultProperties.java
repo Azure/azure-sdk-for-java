@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.network.fluent.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * The properties of a packet capture session.
  */
-@Immutable
+@Fluent
 public final class PacketCaptureResultProperties extends PacketCaptureParameters {
     /*
      * The provisioning state of the packet capture session.
@@ -31,7 +31,7 @@ public final class PacketCaptureResultProperties extends PacketCaptureParameters
     /**
      * Creates an instance of PacketCaptureResultProperties class.
      */
-    private PacketCaptureResultProperties() {
+    public PacketCaptureResultProperties() {
     }
 
     /**
@@ -41,6 +41,96 @@ public final class PacketCaptureResultProperties extends PacketCaptureParameters
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PacketCaptureResultProperties withTarget(String target) {
+        super.withTarget(target);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PacketCaptureResultProperties withScope(PacketCaptureMachineScope scope) {
+        super.withScope(scope);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PacketCaptureResultProperties withTargetType(PacketCaptureTargetType targetType) {
+        super.withTargetType(targetType);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PacketCaptureResultProperties withBytesToCapturePerPacket(Long bytesToCapturePerPacket) {
+        super.withBytesToCapturePerPacket(bytesToCapturePerPacket);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PacketCaptureResultProperties withTotalBytesPerSession(Long totalBytesPerSession) {
+        super.withTotalBytesPerSession(totalBytesPerSession);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PacketCaptureResultProperties withTimeLimitInSeconds(Integer timeLimitInSeconds) {
+        super.withTimeLimitInSeconds(timeLimitInSeconds);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PacketCaptureResultProperties withStorageLocation(PacketCaptureStorageLocation storageLocation) {
+        super.withStorageLocation(storageLocation);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PacketCaptureResultProperties withFilters(List<PacketCaptureFilter> filters) {
+        super.withFilters(filters);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PacketCaptureResultProperties withContinuousCapture(Boolean continuousCapture) {
+        super.withContinuousCapture(continuousCapture);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PacketCaptureResultProperties withCaptureSettings(PacketCaptureSettings captureSettings) {
+        super.withCaptureSettings(captureSettings);
+        return this;
     }
 
     /**

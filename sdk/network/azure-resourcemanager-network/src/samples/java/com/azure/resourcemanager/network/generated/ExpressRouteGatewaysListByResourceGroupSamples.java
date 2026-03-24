@@ -20,6 +20,6 @@ public final class ExpressRouteGatewaysListByResourceGroupSamples {
         expressRouteGatewayListByResourceGroup(com.azure.resourcemanager.network.NetworkManager manager) {
         manager.serviceClient()
             .getExpressRouteGateways()
-            .listByResourceGroup("resourceGroupName", com.azure.core.util.Context.NONE);
+            .listByResourceGroupWithResponse("resourceGroupName", com.azure.core.util.Context.NONE);
     }
 }

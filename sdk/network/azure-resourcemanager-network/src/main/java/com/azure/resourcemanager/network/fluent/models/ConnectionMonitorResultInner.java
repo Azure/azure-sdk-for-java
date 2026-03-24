@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.network.fluent.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -25,22 +25,12 @@ import java.util.Map;
 /**
  * Information about the connection monitor.
  */
-@Immutable
+@Fluent
 public final class ConnectionMonitorResultInner extends TrackedResourcewithOptionalLocation {
     /*
      * Properties of the connection monitor result.
      */
     private ConnectionMonitorResultProperties innerProperties;
-
-    /*
-     * Connection monitor tags.
-     */
-    private Map<String, String> tags;
-
-    /*
-     * Connection monitor location.
-     */
-    private String location;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
@@ -65,7 +55,7 @@ public final class ConnectionMonitorResultInner extends TrackedResourcewithOptio
     /**
      * Creates an instance of ConnectionMonitorResultInner class.
      */
-    private ConnectionMonitorResultInner() {
+    public ConnectionMonitorResultInner() {
     }
 
     /**
@@ -75,26 +65,6 @@ public final class ConnectionMonitorResultInner extends TrackedResourcewithOptio
      */
     private ConnectionMonitorResultProperties innerProperties() {
         return this.innerProperties;
-    }
-
-    /**
-     * Get the tags property: Connection monitor tags.
-     * 
-     * @return the tags value.
-     */
-    @Override
-    public Map<String, String> tags() {
-        return this.tags;
-    }
-
-    /**
-     * Get the location property: Connection monitor location.
-     * 
-     * @return the location value.
-     */
-    @Override
-    public String location() {
-        return this.location;
     }
 
     /**
@@ -135,6 +105,24 @@ public final class ConnectionMonitorResultInner extends TrackedResourcewithOptio
     @Override
     public String id() {
         return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ConnectionMonitorResultInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ConnectionMonitorResultInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
     }
 
     /**
@@ -183,12 +171,40 @@ public final class ConnectionMonitorResultInner extends TrackedResourcewithOptio
     }
 
     /**
+     * Set the source property: Describes the source of connection monitor.
+     * 
+     * @param source the source value to set.
+     * @return the ConnectionMonitorResultInner object itself.
+     */
+    public ConnectionMonitorResultInner withSource(ConnectionMonitorSource source) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConnectionMonitorResultProperties();
+        }
+        this.innerProperties().withSource(source);
+        return this;
+    }
+
+    /**
      * Get the destination property: Describes the destination of connection monitor.
      * 
      * @return the destination value.
      */
     public ConnectionMonitorDestination destination() {
         return this.innerProperties() == null ? null : this.innerProperties().destination();
+    }
+
+    /**
+     * Set the destination property: Describes the destination of connection monitor.
+     * 
+     * @param destination the destination value to set.
+     * @return the ConnectionMonitorResultInner object itself.
+     */
+    public ConnectionMonitorResultInner withDestination(ConnectionMonitorDestination destination) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConnectionMonitorResultProperties();
+        }
+        this.innerProperties().withDestination(destination);
+        return this;
     }
 
     /**
@@ -201,12 +217,40 @@ public final class ConnectionMonitorResultInner extends TrackedResourcewithOptio
     }
 
     /**
+     * Set the autoStart property: Determines if the connection monitor will start automatically once created.
+     * 
+     * @param autoStart the autoStart value to set.
+     * @return the ConnectionMonitorResultInner object itself.
+     */
+    public ConnectionMonitorResultInner withAutoStart(Boolean autoStart) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConnectionMonitorResultProperties();
+        }
+        this.innerProperties().withAutoStart(autoStart);
+        return this;
+    }
+
+    /**
      * Get the monitoringIntervalInSeconds property: Monitoring interval in seconds.
      * 
      * @return the monitoringIntervalInSeconds value.
      */
     public Integer monitoringIntervalInSeconds() {
         return this.innerProperties() == null ? null : this.innerProperties().monitoringIntervalInSeconds();
+    }
+
+    /**
+     * Set the monitoringIntervalInSeconds property: Monitoring interval in seconds.
+     * 
+     * @param monitoringIntervalInSeconds the monitoringIntervalInSeconds value to set.
+     * @return the ConnectionMonitorResultInner object itself.
+     */
+    public ConnectionMonitorResultInner withMonitoringIntervalInSeconds(Integer monitoringIntervalInSeconds) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConnectionMonitorResultProperties();
+        }
+        this.innerProperties().withMonitoringIntervalInSeconds(monitoringIntervalInSeconds);
+        return this;
     }
 
     /**
@@ -219,12 +263,41 @@ public final class ConnectionMonitorResultInner extends TrackedResourcewithOptio
     }
 
     /**
+     * Set the endpoints property: List of connection monitor endpoints.
+     * 
+     * @param endpoints the endpoints value to set.
+     * @return the ConnectionMonitorResultInner object itself.
+     */
+    public ConnectionMonitorResultInner withEndpoints(List<ConnectionMonitorEndpoint> endpoints) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConnectionMonitorResultProperties();
+        }
+        this.innerProperties().withEndpoints(endpoints);
+        return this;
+    }
+
+    /**
      * Get the testConfigurations property: List of connection monitor test configurations.
      * 
      * @return the testConfigurations value.
      */
     public List<ConnectionMonitorTestConfiguration> testConfigurations() {
         return this.innerProperties() == null ? null : this.innerProperties().testConfigurations();
+    }
+
+    /**
+     * Set the testConfigurations property: List of connection monitor test configurations.
+     * 
+     * @param testConfigurations the testConfigurations value to set.
+     * @return the ConnectionMonitorResultInner object itself.
+     */
+    public ConnectionMonitorResultInner
+        withTestConfigurations(List<ConnectionMonitorTestConfiguration> testConfigurations) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConnectionMonitorResultProperties();
+        }
+        this.innerProperties().withTestConfigurations(testConfigurations);
+        return this;
     }
 
     /**
@@ -237,6 +310,20 @@ public final class ConnectionMonitorResultInner extends TrackedResourcewithOptio
     }
 
     /**
+     * Set the testGroups property: List of connection monitor test groups.
+     * 
+     * @param testGroups the testGroups value to set.
+     * @return the ConnectionMonitorResultInner object itself.
+     */
+    public ConnectionMonitorResultInner withTestGroups(List<ConnectionMonitorTestGroup> testGroups) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConnectionMonitorResultProperties();
+        }
+        this.innerProperties().withTestGroups(testGroups);
+        return this;
+    }
+
+    /**
      * Get the outputs property: List of connection monitor outputs.
      * 
      * @return the outputs value.
@@ -246,12 +333,40 @@ public final class ConnectionMonitorResultInner extends TrackedResourcewithOptio
     }
 
     /**
+     * Set the outputs property: List of connection monitor outputs.
+     * 
+     * @param outputs the outputs value to set.
+     * @return the ConnectionMonitorResultInner object itself.
+     */
+    public ConnectionMonitorResultInner withOutputs(List<ConnectionMonitorOutput> outputs) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConnectionMonitorResultProperties();
+        }
+        this.innerProperties().withOutputs(outputs);
+        return this;
+    }
+
+    /**
      * Get the notes property: Optional notes to be associated with the connection monitor.
      * 
      * @return the notes value.
      */
     public String notes() {
         return this.innerProperties() == null ? null : this.innerProperties().notes();
+    }
+
+    /**
+     * Set the notes property: Optional notes to be associated with the connection monitor.
+     * 
+     * @param notes the notes value to set.
+     * @return the ConnectionMonitorResultInner object itself.
+     */
+    public ConnectionMonitorResultInner withNotes(String notes) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConnectionMonitorResultProperties();
+        }
+        this.innerProperties().withNotes(notes);
+        return this;
     }
 
     /**
@@ -302,10 +417,10 @@ public final class ConnectionMonitorResultInner extends TrackedResourcewithOptio
                 } else if ("etag".equals(fieldName)) {
                     deserializedConnectionMonitorResultInner.etag = reader.getString();
                 } else if ("location".equals(fieldName)) {
-                    deserializedConnectionMonitorResultInner.location = reader.getString();
+                    deserializedConnectionMonitorResultInner.withLocation(reader.getString());
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                    deserializedConnectionMonitorResultInner.tags = tags;
+                    deserializedConnectionMonitorResultInner.withTags(tags);
                 } else if ("properties".equals(fieldName)) {
                     deserializedConnectionMonitorResultInner.innerProperties
                         = ConnectionMonitorResultProperties.fromJson(reader);

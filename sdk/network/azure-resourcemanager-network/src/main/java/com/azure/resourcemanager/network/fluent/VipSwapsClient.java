@@ -6,14 +6,13 @@ package com.azure.resourcemanager.network.fluent;
 
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.models.SwapResourceInner;
+import com.azure.resourcemanager.network.fluent.models.SwapResourceListResultInner;
 import com.azure.resourcemanager.network.models.SingletonResource;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -217,11 +216,11 @@ public interface VipSwapsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of SwapResource which identifies the slot type for the specified cloud service as paginated
-     * response with {@link PagedFlux}.
+     * @return the list of SwapResource which identifies the slot type for the specified cloud service along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<SwapResourceInner> listAsync(String groupName, String resourceName);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<SwapResourceListResultInner>> listWithResponseAsync(String groupName, String resourceName);
 
     /**
      * Gets the list of SwapResource which identifies the slot type for the specified cloud service. The slot type on a
@@ -232,11 +231,11 @@ public interface VipSwapsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of SwapResource which identifies the slot type for the specified cloud service as paginated
-     * response with {@link PagedIterable}.
+     * @return the list of SwapResource which identifies the slot type for the specified cloud service on successful
+     * completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SwapResourceInner> list(String groupName, String resourceName);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<SwapResourceListResultInner> listAsync(String groupName, String resourceName);
 
     /**
      * Gets the list of SwapResource which identifies the slot type for the specified cloud service. The slot type on a
@@ -248,9 +247,23 @@ public interface VipSwapsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of SwapResource which identifies the slot type for the specified cloud service as paginated
-     * response with {@link PagedIterable}.
+     * @return the list of SwapResource which identifies the slot type for the specified cloud service along with
+     * {@link Response}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SwapResourceInner> list(String groupName, String resourceName, Context context);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<SwapResourceListResultInner> listWithResponse(String groupName, String resourceName, Context context);
+
+    /**
+     * Gets the list of SwapResource which identifies the slot type for the specified cloud service. The slot type on a
+     * cloud service can either be Staging or Production.
+     * 
+     * @param groupName The groupName parameter.
+     * @param resourceName The name of the cloud service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of SwapResource which identifies the slot type for the specified cloud service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SwapResourceListResultInner list(String groupName, String resourceName);
 }

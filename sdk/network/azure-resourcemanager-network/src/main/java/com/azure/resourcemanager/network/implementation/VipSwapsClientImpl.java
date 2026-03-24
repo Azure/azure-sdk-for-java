@@ -18,10 +18,6 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
-import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
@@ -32,7 +28,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.VipSwapsClient;
 import com.azure.resourcemanager.network.fluent.models.SwapResourceInner;
-import com.azure.resourcemanager.network.implementation.models.SwapResourceListResult;
+import com.azure.resourcemanager.network.fluent.models.SwapResourceListResultInner;
 import com.azure.resourcemanager.network.models.SingletonResource;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -94,7 +90,7 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/microsoft.Compute/cloudServices/{resourceName}/providers/Microsoft.Network/cloudServiceSlots")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SwapResourceListResult>> list(@HostParam("endpoint") String endpoint,
+        Mono<Response<SwapResourceListResultInner>> list(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("groupName") String groupName, @PathParam("resourceName") String resourceName,
             @HeaderParam("Accept") String accept, Context context);
@@ -509,10 +505,10 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of SwapResource which identifies the slot type for the specified cloud service along with
-     * {@link PagedResponse} on successful completion of {@link Mono}.
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SwapResourceInner>> listSinglePageAsync(String groupName, String resourceName) {
+    public Mono<Response<SwapResourceListResultInner>> listWithResponseAsync(String groupName, String resourceName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -532,8 +528,6 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
                 groupName, resourceName, accept, context))
-            .<PagedResponse<SwapResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
-                res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -548,10 +542,10 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of SwapResource which identifies the slot type for the specified cloud service along with
-     * {@link PagedResponse} on successful completion of {@link Mono}.
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SwapResourceInner>> listSinglePageAsync(String groupName, String resourceName,
+    private Mono<Response<SwapResourceListResultInner>> listWithResponseAsync(String groupName, String resourceName,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -570,11 +564,8 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
         final String apiVersion = "2025-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), groupName, resourceName,
-                accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), null, null));
+        return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), groupName,
+            resourceName, accept, context);
     }
 
     /**
@@ -586,47 +577,12 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of SwapResource which identifies the slot type for the specified cloud service as paginated
-     * response with {@link PagedFlux}.
+     * @return the list of SwapResource which identifies the slot type for the specified cloud service on successful
+     * completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<SwapResourceInner> listAsync(String groupName, String resourceName) {
-        return new PagedFlux<>(() -> listSinglePageAsync(groupName, resourceName));
-    }
-
-    /**
-     * Gets the list of SwapResource which identifies the slot type for the specified cloud service. The slot type on a
-     * cloud service can either be Staging or Production.
-     * 
-     * @param groupName The groupName parameter.
-     * @param resourceName The name of the cloud service.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of SwapResource which identifies the slot type for the specified cloud service as paginated
-     * response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SwapResourceInner> listAsync(String groupName, String resourceName, Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(groupName, resourceName, context));
-    }
-
-    /**
-     * Gets the list of SwapResource which identifies the slot type for the specified cloud service. The slot type on a
-     * cloud service can either be Staging or Production.
-     * 
-     * @param groupName The groupName parameter.
-     * @param resourceName The name of the cloud service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of SwapResource which identifies the slot type for the specified cloud service as paginated
-     * response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SwapResourceInner> list(String groupName, String resourceName) {
-        return new PagedIterable<>(listAsync(groupName, resourceName));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SwapResourceListResultInner> listAsync(String groupName, String resourceName) {
+        return listWithResponseAsync(groupName, resourceName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -639,11 +595,28 @@ public final class VipSwapsClientImpl implements VipSwapsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of SwapResource which identifies the slot type for the specified cloud service as paginated
-     * response with {@link PagedIterable}.
+     * @return the list of SwapResource which identifies the slot type for the specified cloud service along with
+     * {@link Response}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SwapResourceInner> list(String groupName, String resourceName, Context context) {
-        return new PagedIterable<>(listAsync(groupName, resourceName, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SwapResourceListResultInner> listWithResponse(String groupName, String resourceName,
+        Context context) {
+        return listWithResponseAsync(groupName, resourceName, context).block();
+    }
+
+    /**
+     * Gets the list of SwapResource which identifies the slot type for the specified cloud service. The slot type on a
+     * cloud service can either be Staging or Production.
+     * 
+     * @param groupName The groupName parameter.
+     * @param resourceName The name of the cloud service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of SwapResource which identifies the slot type for the specified cloud service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SwapResourceListResultInner list(String groupName, String resourceName) {
+        return listWithResponse(groupName, resourceName, Context.NONE).getValue();
     }
 }

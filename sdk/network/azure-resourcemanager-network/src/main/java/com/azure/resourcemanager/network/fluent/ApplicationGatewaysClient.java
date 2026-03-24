@@ -20,8 +20,6 @@ import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayBackend
 import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayInner;
 import com.azure.resourcemanager.network.fluent.models.ApplicationGatewaySslPredefinedPolicyInner;
 import com.azure.resourcemanager.network.models.ApplicationGatewayOnDemandProbe;
-import com.azure.resourcemanager.network.models.StartFinalResult;
-import com.azure.resourcemanager.network.models.StopFinalResult;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
@@ -443,8 +441,7 @@ public interface ApplicationGatewaysClient extends InnerSupportsGet<ApplicationG
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<StartFinalResult>, StartFinalResult> beginStartAsync(String resourceGroupName,
-        String applicationGatewayName);
+    PollerFlux<PollResult<Void>, Void> beginStartAsync(String resourceGroupName, String applicationGatewayName);
 
     /**
      * Starts the specified application gateway.
@@ -457,8 +454,7 @@ public interface ApplicationGatewaysClient extends InnerSupportsGet<ApplicationG
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<StartFinalResult>, StartFinalResult> beginStart(String resourceGroupName,
-        String applicationGatewayName);
+    SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String applicationGatewayName);
 
     /**
      * Starts the specified application gateway.
@@ -472,8 +468,8 @@ public interface ApplicationGatewaysClient extends InnerSupportsGet<ApplicationG
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<StartFinalResult>, StartFinalResult> beginStart(String resourceGroupName,
-        String applicationGatewayName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String applicationGatewayName,
+        Context context);
 
     /**
      * Starts the specified application gateway.
@@ -483,10 +479,10 @@ public interface ApplicationGatewaysClient extends InnerSupportsGet<ApplicationG
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<StartFinalResult> startAsync(String resourceGroupName, String applicationGatewayName);
+    Mono<Void> startAsync(String resourceGroupName, String applicationGatewayName);
 
     /**
      * Starts the specified application gateway.
@@ -496,10 +492,9 @@ public interface ApplicationGatewaysClient extends InnerSupportsGet<ApplicationG
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    StartFinalResult start(String resourceGroupName, String applicationGatewayName);
+    void start(String resourceGroupName, String applicationGatewayName);
 
     /**
      * Starts the specified application gateway.
@@ -510,10 +505,9 @@ public interface ApplicationGatewaysClient extends InnerSupportsGet<ApplicationG
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    StartFinalResult start(String resourceGroupName, String applicationGatewayName, Context context);
+    void start(String resourceGroupName, String applicationGatewayName, Context context);
 
     /**
      * Stops the specified application gateway in a resource group.
@@ -539,8 +533,7 @@ public interface ApplicationGatewaysClient extends InnerSupportsGet<ApplicationG
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<StopFinalResult>, StopFinalResult> beginStopAsync(String resourceGroupName,
-        String applicationGatewayName);
+    PollerFlux<PollResult<Void>, Void> beginStopAsync(String resourceGroupName, String applicationGatewayName);
 
     /**
      * Stops the specified application gateway in a resource group.
@@ -553,8 +546,7 @@ public interface ApplicationGatewaysClient extends InnerSupportsGet<ApplicationG
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<StopFinalResult>, StopFinalResult> beginStop(String resourceGroupName,
-        String applicationGatewayName);
+    SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String applicationGatewayName);
 
     /**
      * Stops the specified application gateway in a resource group.
@@ -568,8 +560,8 @@ public interface ApplicationGatewaysClient extends InnerSupportsGet<ApplicationG
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<StopFinalResult>, StopFinalResult> beginStop(String resourceGroupName,
-        String applicationGatewayName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String applicationGatewayName,
+        Context context);
 
     /**
      * Stops the specified application gateway in a resource group.
@@ -579,10 +571,10 @@ public interface ApplicationGatewaysClient extends InnerSupportsGet<ApplicationG
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<StopFinalResult> stopAsync(String resourceGroupName, String applicationGatewayName);
+    Mono<Void> stopAsync(String resourceGroupName, String applicationGatewayName);
 
     /**
      * Stops the specified application gateway in a resource group.
@@ -592,10 +584,9 @@ public interface ApplicationGatewaysClient extends InnerSupportsGet<ApplicationG
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    StopFinalResult stop(String resourceGroupName, String applicationGatewayName);
+    void stop(String resourceGroupName, String applicationGatewayName);
 
     /**
      * Stops the specified application gateway in a resource group.
@@ -606,10 +597,9 @@ public interface ApplicationGatewaysClient extends InnerSupportsGet<ApplicationG
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    StopFinalResult stop(String resourceGroupName, String applicationGatewayName, Context context);
+    void stop(String resourceGroupName, String applicationGatewayName, Context context);
 
     /**
      * Gets the backend health of the specified application gateway in a resource group.

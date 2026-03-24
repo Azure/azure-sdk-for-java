@@ -23,7 +23,7 @@ public final class NetworkManagerDeploymentStatusOperationListSamples {
     public static void networkManagerDeploymentStatusList(com.azure.resourcemanager.network.NetworkManager manager) {
         manager.serviceClient()
             .getNetworkManagerDeploymentStatusOperations()
-            .list("resoureGroupSample", "testNetworkManager",
+            .listWithResponse("resoureGroupSample", "testNetworkManager",
                 new NetworkManagerDeploymentStatusParameter().withRegions(Arrays.asList("eastus", "westus"))
                     .withDeploymentTypes(
                         Arrays.asList(ConfigurationType.CONNECTIVITY, ConfigurationType.fromString("AdminPolicy")))

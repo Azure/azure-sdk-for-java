@@ -13,8 +13,8 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.fluent.models.EffectiveRouteMapRouteInner;
-import com.azure.resourcemanager.network.fluent.models.VirtualHubEffectiveRouteInner;
+import com.azure.resourcemanager.network.fluent.models.EffectiveRouteMapRouteListInner;
+import com.azure.resourcemanager.network.fluent.models.VirtualHubEffectiveRouteListInner;
 import com.azure.resourcemanager.network.fluent.models.VirtualHubInner;
 import com.azure.resourcemanager.network.models.EffectiveRoutesParameters;
 import com.azure.resourcemanager.network.models.GetInboundRoutesParameters;
@@ -423,11 +423,11 @@ public interface VirtualHubsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the effective routes configured for the Virtual Hub resource or the specified resource as paginated
-     * response with {@link PagedFlux}.
+     * @return the effective routes configured for the Virtual Hub resource or the specified resource along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<VirtualHubEffectiveRouteInner> getEffectiveVirtualHubRoutesAsync(String resourceGroupName,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> getEffectiveVirtualHubRoutesWithResponseAsync(String resourceGroupName,
         String virtualHubName, EffectiveRoutesParameters effectiveRoutesParameters);
 
     /**
@@ -435,15 +435,17 @@ public interface VirtualHubsClient
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualHubName The name of the VirtualHub.
+     * @param effectiveRoutesParameters Parameters supplied to get the effective routes for a specific resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the effective routes configured for the Virtual Hub resource or the specified resource as paginated
-     * response with {@link PagedFlux}.
+     * @return the {@link PollerFlux} for polling of the effective routes configured for the Virtual Hub resource or the
+     * specified resource.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<VirtualHubEffectiveRouteInner> getEffectiveVirtualHubRoutesAsync(String resourceGroupName,
-        String virtualHubName);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<VirtualHubEffectiveRouteListInner>, VirtualHubEffectiveRouteListInner>
+        beginGetEffectiveVirtualHubRoutesAsync(String resourceGroupName, String virtualHubName,
+            EffectiveRoutesParameters effectiveRoutesParameters);
 
     /**
      * Gets the effective routes configured for the Virtual Hub resource or the specified resource .
@@ -453,12 +455,27 @@ public interface VirtualHubsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the effective routes configured for the Virtual Hub resource or the specified resource as paginated
-     * response with {@link PagedIterable}.
+     * @return the {@link PollerFlux} for polling of the effective routes configured for the Virtual Hub resource or the
+     * specified resource.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<VirtualHubEffectiveRouteInner> getEffectiveVirtualHubRoutes(String resourceGroupName,
-        String virtualHubName);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<VirtualHubEffectiveRouteListInner>, VirtualHubEffectiveRouteListInner>
+        beginGetEffectiveVirtualHubRoutesAsync(String resourceGroupName, String virtualHubName);
+
+    /**
+     * Gets the effective routes configured for the Virtual Hub resource or the specified resource .
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualHubName The name of the VirtualHub.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the effective routes configured for the Virtual Hub resource or the
+     * specified resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<VirtualHubEffectiveRouteListInner>, VirtualHubEffectiveRouteListInner>
+        beginGetEffectiveVirtualHubRoutes(String resourceGroupName, String virtualHubName);
 
     /**
      * Gets the effective routes configured for the Virtual Hub resource or the specified resource .
@@ -470,12 +487,73 @@ public interface VirtualHubsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the effective routes configured for the Virtual Hub resource or the specified resource as paginated
-     * response with {@link PagedIterable}.
+     * @return the {@link SyncPoller} for polling of the effective routes configured for the Virtual Hub resource or the
+     * specified resource.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<VirtualHubEffectiveRouteInner> getEffectiveVirtualHubRoutes(String resourceGroupName,
-        String virtualHubName, EffectiveRoutesParameters effectiveRoutesParameters, Context context);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<VirtualHubEffectiveRouteListInner>, VirtualHubEffectiveRouteListInner>
+        beginGetEffectiveVirtualHubRoutes(String resourceGroupName, String virtualHubName,
+            EffectiveRoutesParameters effectiveRoutesParameters, Context context);
+
+    /**
+     * Gets the effective routes configured for the Virtual Hub resource or the specified resource .
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param effectiveRoutesParameters Parameters supplied to get the effective routes for a specific resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the effective routes configured for the Virtual Hub resource or the specified resource on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<VirtualHubEffectiveRouteListInner> getEffectiveVirtualHubRoutesAsync(String resourceGroupName,
+        String virtualHubName, EffectiveRoutesParameters effectiveRoutesParameters);
+
+    /**
+     * Gets the effective routes configured for the Virtual Hub resource or the specified resource .
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualHubName The name of the VirtualHub.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the effective routes configured for the Virtual Hub resource or the specified resource on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<VirtualHubEffectiveRouteListInner> getEffectiveVirtualHubRoutesAsync(String resourceGroupName,
+        String virtualHubName);
+
+    /**
+     * Gets the effective routes configured for the Virtual Hub resource or the specified resource .
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualHubName The name of the VirtualHub.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the effective routes configured for the Virtual Hub resource or the specified resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    VirtualHubEffectiveRouteListInner getEffectiveVirtualHubRoutes(String resourceGroupName, String virtualHubName);
+
+    /**
+     * Gets the effective routes configured for the Virtual Hub resource or the specified resource .
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param effectiveRoutesParameters Parameters supplied to get the effective routes for a specific resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the effective routes configured for the Virtual Hub resource or the specified resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    VirtualHubEffectiveRouteListInner getEffectiveVirtualHubRoutes(String resourceGroupName, String virtualHubName,
+        EffectiveRoutesParameters effectiveRoutesParameters, Context context);
 
     /**
      * Gets the inbound routes configured for the Virtual Hub on a particular connection.
@@ -486,11 +564,11 @@ public interface VirtualHubsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the inbound routes configured for the Virtual Hub on a particular connection as paginated response with
-     * {@link PagedFlux}.
+     * @return the inbound routes configured for the Virtual Hub on a particular connection along with {@link Response}
+     * on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<EffectiveRouteMapRouteInner> getInboundRoutesAsync(String resourceGroupName, String virtualHubName,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> getInboundRoutesWithResponseAsync(String resourceGroupName, String virtualHubName,
         GetInboundRoutesParameters getInboundRoutesParameters);
 
     /**
@@ -502,11 +580,76 @@ public interface VirtualHubsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the inbound routes configured for the Virtual Hub on a particular connection as paginated response with
-     * {@link PagedIterable}.
+     * @return the {@link PollerFlux} for polling of the inbound routes configured for the Virtual Hub on a particular
+     * connection.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<EffectiveRouteMapRouteInner> getInboundRoutes(String resourceGroupName, String virtualHubName,
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<EffectiveRouteMapRouteListInner>, EffectiveRouteMapRouteListInner> beginGetInboundRoutesAsync(
+        String resourceGroupName, String virtualHubName, GetInboundRoutesParameters getInboundRoutesParameters);
+
+    /**
+     * Gets the inbound routes configured for the Virtual Hub on a particular connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param getInboundRoutesParameters Parameters supplied to get the inbound routes for a connection resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the inbound routes configured for the Virtual Hub on a particular
+     * connection.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<EffectiveRouteMapRouteListInner>, EffectiveRouteMapRouteListInner> beginGetInboundRoutes(
+        String resourceGroupName, String virtualHubName, GetInboundRoutesParameters getInboundRoutesParameters);
+
+    /**
+     * Gets the inbound routes configured for the Virtual Hub on a particular connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param getInboundRoutesParameters Parameters supplied to get the inbound routes for a connection resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the inbound routes configured for the Virtual Hub on a particular
+     * connection.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<EffectiveRouteMapRouteListInner>, EffectiveRouteMapRouteListInner> beginGetInboundRoutes(
+        String resourceGroupName, String virtualHubName, GetInboundRoutesParameters getInboundRoutesParameters,
+        Context context);
+
+    /**
+     * Gets the inbound routes configured for the Virtual Hub on a particular connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param getInboundRoutesParameters Parameters supplied to get the inbound routes for a connection resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the inbound routes configured for the Virtual Hub on a particular connection on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<EffectiveRouteMapRouteListInner> getInboundRoutesAsync(String resourceGroupName, String virtualHubName,
+        GetInboundRoutesParameters getInboundRoutesParameters);
+
+    /**
+     * Gets the inbound routes configured for the Virtual Hub on a particular connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param getInboundRoutesParameters Parameters supplied to get the inbound routes for a connection resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the inbound routes configured for the Virtual Hub on a particular connection.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    EffectiveRouteMapRouteListInner getInboundRoutes(String resourceGroupName, String virtualHubName,
         GetInboundRoutesParameters getInboundRoutesParameters);
 
     /**
@@ -519,11 +662,10 @@ public interface VirtualHubsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the inbound routes configured for the Virtual Hub on a particular connection as paginated response with
-     * {@link PagedIterable}.
+     * @return the inbound routes configured for the Virtual Hub on a particular connection.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<EffectiveRouteMapRouteInner> getInboundRoutes(String resourceGroupName, String virtualHubName,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    EffectiveRouteMapRouteListInner getInboundRoutes(String resourceGroupName, String virtualHubName,
         GetInboundRoutesParameters getInboundRoutesParameters, Context context);
 
     /**
@@ -535,11 +677,11 @@ public interface VirtualHubsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the outbound routes configured for the Virtual Hub on a particular connection as paginated response with
-     * {@link PagedFlux}.
+     * @return the outbound routes configured for the Virtual Hub on a particular connection along with {@link Response}
+     * on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<EffectiveRouteMapRouteInner> getOutboundRoutesAsync(String resourceGroupName, String virtualHubName,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> getOutboundRoutesWithResponseAsync(String resourceGroupName, String virtualHubName,
         GetOutboundRoutesParameters getOutboundRoutesParameters);
 
     /**
@@ -551,11 +693,77 @@ public interface VirtualHubsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the outbound routes configured for the Virtual Hub on a particular connection as paginated response with
-     * {@link PagedIterable}.
+     * @return the {@link PollerFlux} for polling of the outbound routes configured for the Virtual Hub on a particular
+     * connection.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<EffectiveRouteMapRouteInner> getOutboundRoutes(String resourceGroupName, String virtualHubName,
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<EffectiveRouteMapRouteListInner>, EffectiveRouteMapRouteListInner>
+        beginGetOutboundRoutesAsync(String resourceGroupName, String virtualHubName,
+            GetOutboundRoutesParameters getOutboundRoutesParameters);
+
+    /**
+     * Gets the outbound routes configured for the Virtual Hub on a particular connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param getOutboundRoutesParameters Parameters supplied to get the outbound routes for a connection resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the outbound routes configured for the Virtual Hub on a particular
+     * connection.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<EffectiveRouteMapRouteListInner>, EffectiveRouteMapRouteListInner> beginGetOutboundRoutes(
+        String resourceGroupName, String virtualHubName, GetOutboundRoutesParameters getOutboundRoutesParameters);
+
+    /**
+     * Gets the outbound routes configured for the Virtual Hub on a particular connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param getOutboundRoutesParameters Parameters supplied to get the outbound routes for a connection resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the outbound routes configured for the Virtual Hub on a particular
+     * connection.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<EffectiveRouteMapRouteListInner>, EffectiveRouteMapRouteListInner> beginGetOutboundRoutes(
+        String resourceGroupName, String virtualHubName, GetOutboundRoutesParameters getOutboundRoutesParameters,
+        Context context);
+
+    /**
+     * Gets the outbound routes configured for the Virtual Hub on a particular connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param getOutboundRoutesParameters Parameters supplied to get the outbound routes for a connection resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the outbound routes configured for the Virtual Hub on a particular connection on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<EffectiveRouteMapRouteListInner> getOutboundRoutesAsync(String resourceGroupName, String virtualHubName,
+        GetOutboundRoutesParameters getOutboundRoutesParameters);
+
+    /**
+     * Gets the outbound routes configured for the Virtual Hub on a particular connection.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualHubName The name of the VirtualHub.
+     * @param getOutboundRoutesParameters Parameters supplied to get the outbound routes for a connection resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the outbound routes configured for the Virtual Hub on a particular connection.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    EffectiveRouteMapRouteListInner getOutboundRoutes(String resourceGroupName, String virtualHubName,
         GetOutboundRoutesParameters getOutboundRoutesParameters);
 
     /**
@@ -568,10 +776,9 @@ public interface VirtualHubsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the outbound routes configured for the Virtual Hub on a particular connection as paginated response with
-     * {@link PagedIterable}.
+     * @return the outbound routes configured for the Virtual Hub on a particular connection.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<EffectiveRouteMapRouteInner> getOutboundRoutes(String resourceGroupName, String virtualHubName,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    EffectiveRouteMapRouteListInner getOutboundRoutes(String resourceGroupName, String virtualHubName,
         GetOutboundRoutesParameters getOutboundRoutesParameters, Context context);
 }

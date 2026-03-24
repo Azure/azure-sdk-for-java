@@ -15,7 +15,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.models.ConnectionMonitorInner;
 import com.azure.resourcemanager.network.fluent.models.ConnectionMonitorResultInner;
-import com.azure.resourcemanager.network.models.StopFinalResult1;
+import com.azure.resourcemanager.network.models.StopFinalResult;
 import com.azure.resourcemanager.network.models.TagsObject;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -477,7 +477,7 @@ public interface ConnectionMonitorsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<StopFinalResult1>, StopFinalResult1> beginStopAsync(String resourceGroupName,
+    PollerFlux<PollResult<StopFinalResult>, StopFinalResult> beginStopAsync(String resourceGroupName,
         String networkWatcherName, String connectionMonitorName);
 
     /**
@@ -492,7 +492,7 @@ public interface ConnectionMonitorsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<StopFinalResult1>, StopFinalResult1> beginStop(String resourceGroupName,
+    SyncPoller<PollResult<StopFinalResult>, StopFinalResult> beginStop(String resourceGroupName,
         String networkWatcherName, String connectionMonitorName);
 
     /**
@@ -508,7 +508,7 @@ public interface ConnectionMonitorsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<StopFinalResult1>, StopFinalResult1> beginStop(String resourceGroupName,
+    SyncPoller<PollResult<StopFinalResult>, StopFinalResult> beginStop(String resourceGroupName,
         String networkWatcherName, String connectionMonitorName, Context context);
 
     /**
@@ -523,7 +523,7 @@ public interface ConnectionMonitorsClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<StopFinalResult1> stopAsync(String resourceGroupName, String networkWatcherName, String connectionMonitorName);
+    Mono<StopFinalResult> stopAsync(String resourceGroupName, String networkWatcherName, String connectionMonitorName);
 
     /**
      * Stops the specified connection monitor.
@@ -537,7 +537,7 @@ public interface ConnectionMonitorsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    StopFinalResult1 stop(String resourceGroupName, String networkWatcherName, String connectionMonitorName);
+    StopFinalResult stop(String resourceGroupName, String networkWatcherName, String connectionMonitorName);
 
     /**
      * Stops the specified connection monitor.
@@ -552,6 +552,6 @@ public interface ConnectionMonitorsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    StopFinalResult1 stop(String resourceGroupName, String networkWatcherName, String connectionMonitorName,
+    StopFinalResult stop(String resourceGroupName, String networkWatcherName, String connectionMonitorName,
         Context context);
 }

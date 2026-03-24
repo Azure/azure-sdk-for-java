@@ -7,7 +7,6 @@ package com.azure.resourcemanager.network.implementation;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.HeaderParam;
-import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
@@ -17,18 +16,13 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
-import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.network.fluent.NetworkManagerDeploymentStatusOperationsClient;
-import com.azure.resourcemanager.network.fluent.models.NetworkManagerDeploymentStatusInner;
-import com.azure.resourcemanager.network.implementation.models.NetworkManagerDeploymentStatusListResult;
+import com.azure.resourcemanager.network.fluent.models.NetworkManagerDeploymentStatusListResultInner;
 import com.azure.resourcemanager.network.models.NetworkManagerDeploymentStatusParameter;
 import reactor.core.publisher.Mono;
 
@@ -66,15 +60,14 @@ public final class NetworkManagerDeploymentStatusOperationsClientImpl
     @Host("{endpoint}")
     @ServiceInterface(name = "NetworkManagementClientNetworkManagerDeploymentStatusOperations")
     public interface NetworkManagerDeploymentStatusOperationsService {
-        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/listDeploymentStatus")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkManagerDeploymentStatusListResult>> list(@HostParam("endpoint") String endpoint,
+        Mono<Response<NetworkManagerDeploymentStatusListResultInner>> list(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("networkManagerName") String networkManagerName, @QueryParam("$top") Integer top,
-            @HeaderParam("Accept") String accept,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") NetworkManagerDeploymentStatusParameter parameters, Context context);
     }
 
@@ -89,11 +82,11 @@ public final class NetworkManagerDeploymentStatusOperationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Network Manager Deployment Status along with {@link PagedResponse} on successful completion of
+     * @return a list of Network Manager Deployment Status along with {@link Response} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NetworkManagerDeploymentStatusInner>> listSinglePageAsync(String resourceGroupName,
+    public Mono<Response<NetworkManagerDeploymentStatusListResultInner>> listWithResponseAsync(String resourceGroupName,
         String networkManagerName, NetworkManagerDeploymentStatusParameter parameters, Integer top) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -117,12 +110,11 @@ public final class NetworkManagerDeploymentStatusOperationsClientImpl
             parameters.validate();
         }
         final String apiVersion = "2025-05-01";
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-                resourceGroupName, networkManagerName, top, accept, parameters, context))
-            .<PagedResponse<NetworkManagerDeploymentStatusInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
-                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+                resourceGroupName, networkManagerName, top, contentType, accept, parameters, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -138,12 +130,13 @@ public final class NetworkManagerDeploymentStatusOperationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Network Manager Deployment Status along with {@link PagedResponse} on successful completion of
+     * @return a list of Network Manager Deployment Status along with {@link Response} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NetworkManagerDeploymentStatusInner>> listSinglePageAsync(String resourceGroupName,
-        String networkManagerName, NetworkManagerDeploymentStatusParameter parameters, Integer top, Context context) {
+    private Mono<Response<NetworkManagerDeploymentStatusListResultInner>> listWithResponseAsync(
+        String resourceGroupName, String networkManagerName, NetworkManagerDeploymentStatusParameter parameters,
+        Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -166,32 +159,11 @@ public final class NetworkManagerDeploymentStatusOperationsClientImpl
             parameters.validate();
         }
         final String apiVersion = "2025-05-01";
+        final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
-                networkManagerName, top, accept, parameters, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), null, null));
-    }
-
-    /**
-     * Post to List of Network Manager Deployment Status.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param parameters Parameters supplied to specify which Managed Network deployment status is.
-     * @param top An optional query parameter which specifies the maximum number of records to be returned by the
-     * server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Network Manager Deployment Status as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<NetworkManagerDeploymentStatusInner> listAsync(String resourceGroupName, String networkManagerName,
-        NetworkManagerDeploymentStatusParameter parameters, Integer top) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, networkManagerName, parameters, top));
+        return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            networkManagerName, top, contentType, accept, parameters, context);
     }
 
     /**
@@ -203,13 +175,14 @@ public final class NetworkManagerDeploymentStatusOperationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Network Manager Deployment Status as paginated response with {@link PagedFlux}.
+     * @return a list of Network Manager Deployment Status on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<NetworkManagerDeploymentStatusInner> listAsync(String resourceGroupName, String networkManagerName,
-        NetworkManagerDeploymentStatusParameter parameters) {
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<NetworkManagerDeploymentStatusListResultInner> listAsync(String resourceGroupName,
+        String networkManagerName, NetworkManagerDeploymentStatusParameter parameters) {
         final Integer top = null;
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, networkManagerName, parameters, top));
+        return listWithResponseAsync(resourceGroupName, networkManagerName, parameters, top)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -224,13 +197,12 @@ public final class NetworkManagerDeploymentStatusOperationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Network Manager Deployment Status as paginated response with {@link PagedFlux}.
+     * @return a list of Network Manager Deployment Status along with {@link Response}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<NetworkManagerDeploymentStatusInner> listAsync(String resourceGroupName,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<NetworkManagerDeploymentStatusListResultInner> listWithResponse(String resourceGroupName,
         String networkManagerName, NetworkManagerDeploymentStatusParameter parameters, Integer top, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, networkManagerName, parameters, top, context));
+        return listWithResponseAsync(resourceGroupName, networkManagerName, parameters, top, context).block();
     }
 
     /**
@@ -242,32 +214,12 @@ public final class NetworkManagerDeploymentStatusOperationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Network Manager Deployment Status as paginated response with {@link PagedIterable}.
+     * @return a list of Network Manager Deployment Status.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<NetworkManagerDeploymentStatusInner> list(String resourceGroupName, String networkManagerName,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public NetworkManagerDeploymentStatusListResultInner list(String resourceGroupName, String networkManagerName,
         NetworkManagerDeploymentStatusParameter parameters) {
         final Integer top = null;
-        return new PagedIterable<>(listAsync(resourceGroupName, networkManagerName, parameters, top));
-    }
-
-    /**
-     * Post to List of Network Manager Deployment Status.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param parameters Parameters supplied to specify which Managed Network deployment status is.
-     * @param top An optional query parameter which specifies the maximum number of records to be returned by the
-     * server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Network Manager Deployment Status as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<NetworkManagerDeploymentStatusInner> list(String resourceGroupName, String networkManagerName,
-        NetworkManagerDeploymentStatusParameter parameters, Integer top, Context context) {
-        return new PagedIterable<>(listAsync(resourceGroupName, networkManagerName, parameters, top, context));
+        return listWithResponse(resourceGroupName, networkManagerName, parameters, top, Context.NONE).getValue();
     }
 }

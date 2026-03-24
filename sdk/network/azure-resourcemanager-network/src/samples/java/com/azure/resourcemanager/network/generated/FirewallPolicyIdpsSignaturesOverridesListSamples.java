@@ -19,6 +19,6 @@ public final class FirewallPolicyIdpsSignaturesOverridesListSamples {
     public static void getSignatureOverrides(com.azure.resourcemanager.network.NetworkManager manager) {
         manager.serviceClient()
             .getFirewallPolicyIdpsSignaturesOverrides()
-            .list("rg1", "firewallPolicy", com.azure.core.util.Context.NONE);
+            .listWithResponse("rg1", "firewallPolicy", com.azure.core.util.Context.NONE);
     }
 }

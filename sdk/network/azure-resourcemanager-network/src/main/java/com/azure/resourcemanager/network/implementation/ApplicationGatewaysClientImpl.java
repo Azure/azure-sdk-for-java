@@ -44,8 +44,6 @@ import com.azure.resourcemanager.network.implementation.models.ApplicationGatewa
 import com.azure.resourcemanager.network.implementation.models.ApplicationGatewayListResult;
 import com.azure.resourcemanager.network.models.ApplicationGatewayOnDemandProbe;
 import com.azure.resourcemanager.network.models.ErrorException;
-import com.azure.resourcemanager.network.models.StartFinalResult;
-import com.azure.resourcemanager.network.models.StopFinalResult;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
@@ -1297,11 +1295,10 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<StartFinalResult>, StartFinalResult> beginStartAsync(String resourceGroupName,
-        String applicationGatewayName) {
+    public PollerFlux<PollResult<Void>, Void> beginStartAsync(String resourceGroupName, String applicationGatewayName) {
         Mono<Response<Flux<ByteBuffer>>> mono = startWithResponseAsync(resourceGroupName, applicationGatewayName);
-        return this.client.<StartFinalResult, StartFinalResult>getLroResult(mono, this.client.getHttpPipeline(),
-            StartFinalResult.class, StartFinalResult.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -1316,13 +1313,13 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<StartFinalResult>, StartFinalResult> beginStartAsync(String resourceGroupName,
-        String applicationGatewayName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginStartAsync(String resourceGroupName, String applicationGatewayName,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
             = startWithResponseAsync(resourceGroupName, applicationGatewayName, context);
-        return this.client.<StartFinalResult, StartFinalResult>getLroResult(mono, this.client.getHttpPipeline(),
-            StartFinalResult.class, StartFinalResult.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -1336,8 +1333,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<StartFinalResult>, StartFinalResult> beginStart(String resourceGroupName,
-        String applicationGatewayName) {
+    public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String applicationGatewayName) {
         return this.beginStartAsync(resourceGroupName, applicationGatewayName).getSyncPoller();
     }
 
@@ -1353,8 +1349,8 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<StartFinalResult>, StartFinalResult> beginStart(String resourceGroupName,
-        String applicationGatewayName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String applicationGatewayName,
+        Context context) {
         return this.beginStartAsync(resourceGroupName, applicationGatewayName, context).getSyncPoller();
     }
 
@@ -1366,10 +1362,10 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<StartFinalResult> startAsync(String resourceGroupName, String applicationGatewayName) {
+    public Mono<Void> startAsync(String resourceGroupName, String applicationGatewayName) {
         return beginStartAsync(resourceGroupName, applicationGatewayName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1383,11 +1379,10 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<StartFinalResult> startAsync(String resourceGroupName, String applicationGatewayName,
-        Context context) {
+    private Mono<Void> startAsync(String resourceGroupName, String applicationGatewayName, Context context) {
         return beginStartAsync(resourceGroupName, applicationGatewayName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1400,11 +1395,10 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public StartFinalResult start(String resourceGroupName, String applicationGatewayName) {
-        return startAsync(resourceGroupName, applicationGatewayName).block();
+    public void start(String resourceGroupName, String applicationGatewayName) {
+        startAsync(resourceGroupName, applicationGatewayName).block();
     }
 
     /**
@@ -1416,11 +1410,10 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public StartFinalResult start(String resourceGroupName, String applicationGatewayName, Context context) {
-        return startAsync(resourceGroupName, applicationGatewayName, context).block();
+    public void start(String resourceGroupName, String applicationGatewayName, Context context) {
+        startAsync(resourceGroupName, applicationGatewayName, context).block();
     }
 
     /**
@@ -1506,11 +1499,10 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<StopFinalResult>, StopFinalResult> beginStopAsync(String resourceGroupName,
-        String applicationGatewayName) {
+    public PollerFlux<PollResult<Void>, Void> beginStopAsync(String resourceGroupName, String applicationGatewayName) {
         Mono<Response<Flux<ByteBuffer>>> mono = stopWithResponseAsync(resourceGroupName, applicationGatewayName);
-        return this.client.<StopFinalResult, StopFinalResult>getLroResult(mono, this.client.getHttpPipeline(),
-            StopFinalResult.class, StopFinalResult.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -1525,13 +1517,13 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<StopFinalResult>, StopFinalResult> beginStopAsync(String resourceGroupName,
-        String applicationGatewayName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginStopAsync(String resourceGroupName, String applicationGatewayName,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
             = stopWithResponseAsync(resourceGroupName, applicationGatewayName, context);
-        return this.client.<StopFinalResult, StopFinalResult>getLroResult(mono, this.client.getHttpPipeline(),
-            StopFinalResult.class, StopFinalResult.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -1545,8 +1537,7 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<StopFinalResult>, StopFinalResult> beginStop(String resourceGroupName,
-        String applicationGatewayName) {
+    public SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String applicationGatewayName) {
         return this.beginStopAsync(resourceGroupName, applicationGatewayName).getSyncPoller();
     }
 
@@ -1562,8 +1553,8 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<StopFinalResult>, StopFinalResult> beginStop(String resourceGroupName,
-        String applicationGatewayName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String applicationGatewayName,
+        Context context) {
         return this.beginStopAsync(resourceGroupName, applicationGatewayName, context).getSyncPoller();
     }
 
@@ -1575,10 +1566,10 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<StopFinalResult> stopAsync(String resourceGroupName, String applicationGatewayName) {
+    public Mono<Void> stopAsync(String resourceGroupName, String applicationGatewayName) {
         return beginStopAsync(resourceGroupName, applicationGatewayName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1592,10 +1583,10 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<StopFinalResult> stopAsync(String resourceGroupName, String applicationGatewayName, Context context) {
+    private Mono<Void> stopAsync(String resourceGroupName, String applicationGatewayName, Context context) {
         return beginStopAsync(resourceGroupName, applicationGatewayName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1608,11 +1599,10 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public StopFinalResult stop(String resourceGroupName, String applicationGatewayName) {
-        return stopAsync(resourceGroupName, applicationGatewayName).block();
+    public void stop(String resourceGroupName, String applicationGatewayName) {
+        stopAsync(resourceGroupName, applicationGatewayName).block();
     }
 
     /**
@@ -1624,11 +1614,10 @@ public final class ApplicationGatewaysClientImpl implements InnerSupportsGet<App
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public StopFinalResult stop(String resourceGroupName, String applicationGatewayName, Context context) {
-        return stopAsync(resourceGroupName, applicationGatewayName, context).block();
+    public void stop(String resourceGroupName, String applicationGatewayName, Context context) {
+        stopAsync(resourceGroupName, applicationGatewayName, context).block();
     }
 
     /**

@@ -17,6 +17,8 @@ public final class VipSwapListSamples {
      * @param manager Entry point to NetworkManager.
      */
     public static void getSwapResourceList(com.azure.resourcemanager.network.NetworkManager manager) {
-        manager.serviceClient().getVipSwaps().list("rg1", "testCloudService", com.azure.core.util.Context.NONE);
+        manager.serviceClient()
+            .getVipSwaps()
+            .listWithResponse("rg1", "testCloudService", com.azure.core.util.Context.NONE);
     }
 }

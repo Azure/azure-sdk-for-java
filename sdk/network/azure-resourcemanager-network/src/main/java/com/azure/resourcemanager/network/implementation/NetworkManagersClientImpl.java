@@ -34,11 +34,9 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.NetworkManagersClient;
-import com.azure.resourcemanager.network.fluent.models.ActiveBaseSecurityAdminRuleInner;
-import com.azure.resourcemanager.network.fluent.models.ActiveConnectivityConfigurationInner;
+import com.azure.resourcemanager.network.fluent.models.ActiveConnectivityConfigurationsListResultInner;
+import com.azure.resourcemanager.network.fluent.models.ActiveSecurityAdminRulesListResultInner;
 import com.azure.resourcemanager.network.fluent.models.NetworkManagerInner;
-import com.azure.resourcemanager.network.implementation.models.ActiveConnectivityConfigurationsListResult;
-import com.azure.resourcemanager.network.implementation.models.ActiveSecurityAdminRulesListResult;
 import com.azure.resourcemanager.network.implementation.models.NetworkManagerListResult;
 import com.azure.resourcemanager.network.models.ActiveConfigurationParameter;
 import com.azure.resourcemanager.network.models.PatchObject;
@@ -140,28 +138,26 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
             @QueryParam("$top") Integer top, @QueryParam("$skipToken") String skipToken,
             @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/listActiveConnectivityConfigurations")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ActiveConnectivityConfigurationsListResult>> listActiveConnectivityConfigurations(
+        Mono<Response<ActiveConnectivityConfigurationsListResultInner>> listActiveConnectivityConfigurations(
             @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("networkManagerName") String networkManagerName, @QueryParam("$top") Integer top,
-            @HeaderParam("Accept") String accept,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") ActiveConfigurationParameter parameters, Context context);
 
-        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/listActiveSecurityAdminRules")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ActiveSecurityAdminRulesListResult>> listActiveSecurityAdminRules(
+        Mono<Response<ActiveSecurityAdminRulesListResultInner>> listActiveSecurityAdminRules(
             @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("networkManagerName") String networkManagerName, @QueryParam("$top") Integer top,
-            @HeaderParam("Accept") String accept,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") ActiveConfigurationParameter parameters, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -1191,12 +1187,12 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list active connectivity configurations along with {@link PagedResponse} on
+     * @return result of the request to list active connectivity configurations along with {@link Response} on
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ActiveConnectivityConfigurationInner>>
-        listActiveConnectivityConfigurationsSinglePageAsync(String resourceGroupName, String networkManagerName,
+    public Mono<Response<ActiveConnectivityConfigurationsListResultInner>>
+        listActiveConnectivityConfigurationsWithResponseAsync(String resourceGroupName, String networkManagerName,
             ActiveConfigurationParameter parameters, Integer top) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -1220,13 +1216,12 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
             parameters.validate();
         }
         final String apiVersion = "2025-05-01";
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listActiveConnectivityConfigurations(this.client.getEndpoint(), apiVersion,
-                this.client.getSubscriptionId(), resourceGroupName, networkManagerName, top, accept, parameters,
-                context))
-            .<PagedResponse<ActiveConnectivityConfigurationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
-                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+                this.client.getSubscriptionId(), resourceGroupName, networkManagerName, top, contentType, accept,
+                parameters, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1242,12 +1237,12 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list active connectivity configurations along with {@link PagedResponse} on
+     * @return result of the request to list active connectivity configurations along with {@link Response} on
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ActiveConnectivityConfigurationInner>>
-        listActiveConnectivityConfigurationsSinglePageAsync(String resourceGroupName, String networkManagerName,
+    private Mono<Response<ActiveConnectivityConfigurationsListResultInner>>
+        listActiveConnectivityConfigurationsWithResponseAsync(String resourceGroupName, String networkManagerName,
             ActiveConfigurationParameter parameters, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -1271,33 +1266,12 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
             parameters.validate();
         }
         final String apiVersion = "2025-05-01";
+        final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listActiveConnectivityConfigurations(this.client.getEndpoint(), apiVersion,
-            this.client.getSubscriptionId(), resourceGroupName, networkManagerName, top, accept, parameters, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), null, null));
-    }
-
-    /**
-     * Lists active connectivity configurations in a network manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param parameters Active Configuration Parameter.
-     * @param top An optional query parameter which specifies the maximum number of records to be returned by the
-     * server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list active connectivity configurations as paginated response with
-     * {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ActiveConnectivityConfigurationInner> listActiveConnectivityConfigurationsAsync(
-        String resourceGroupName, String networkManagerName, ActiveConfigurationParameter parameters, Integer top) {
-        return new PagedFlux<>(() -> listActiveConnectivityConfigurationsSinglePageAsync(resourceGroupName,
-            networkManagerName, parameters, top));
+            this.client.getSubscriptionId(), resourceGroupName, networkManagerName, top, contentType, accept,
+            parameters, context);
     }
 
     /**
@@ -1309,15 +1283,15 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list active connectivity configurations as paginated response with
-     * {@link PagedFlux}.
+     * @return result of the request to list active connectivity configurations on successful completion of
+     * {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ActiveConnectivityConfigurationInner> listActiveConnectivityConfigurationsAsync(
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ActiveConnectivityConfigurationsListResultInner> listActiveConnectivityConfigurationsAsync(
         String resourceGroupName, String networkManagerName, ActiveConfigurationParameter parameters) {
         final Integer top = null;
-        return new PagedFlux<>(() -> listActiveConnectivityConfigurationsSinglePageAsync(resourceGroupName,
-            networkManagerName, parameters, top));
+        return listActiveConnectivityConfigurationsWithResponseAsync(resourceGroupName, networkManagerName, parameters,
+            top).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1332,15 +1306,14 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list active connectivity configurations as paginated response with
-     * {@link PagedFlux}.
+     * @return result of the request to list active connectivity configurations along with {@link Response}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ActiveConnectivityConfigurationInner> listActiveConnectivityConfigurationsAsync(
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ActiveConnectivityConfigurationsListResultInner> listActiveConnectivityConfigurationsWithResponse(
         String resourceGroupName, String networkManagerName, ActiveConfigurationParameter parameters, Integer top,
         Context context) {
-        return new PagedFlux<>(() -> listActiveConnectivityConfigurationsSinglePageAsync(resourceGroupName,
-            networkManagerName, parameters, top, context));
+        return listActiveConnectivityConfigurationsWithResponseAsync(resourceGroupName, networkManagerName, parameters,
+            top, context).block();
     }
 
     /**
@@ -1352,38 +1325,14 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list active connectivity configurations as paginated response with
-     * {@link PagedIterable}.
+     * @return result of the request to list active connectivity configurations.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ActiveConnectivityConfigurationInner> listActiveConnectivityConfigurations(
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ActiveConnectivityConfigurationsListResultInner listActiveConnectivityConfigurations(
         String resourceGroupName, String networkManagerName, ActiveConfigurationParameter parameters) {
         final Integer top = null;
-        return new PagedIterable<>(
-            listActiveConnectivityConfigurationsAsync(resourceGroupName, networkManagerName, parameters, top));
-    }
-
-    /**
-     * Lists active connectivity configurations in a network manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param parameters Active Configuration Parameter.
-     * @param top An optional query parameter which specifies the maximum number of records to be returned by the
-     * server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list active connectivity configurations as paginated response with
-     * {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ActiveConnectivityConfigurationInner> listActiveConnectivityConfigurations(
-        String resourceGroupName, String networkManagerName, ActiveConfigurationParameter parameters, Integer top,
-        Context context) {
-        return new PagedIterable<>(
-            listActiveConnectivityConfigurationsAsync(resourceGroupName, networkManagerName, parameters, top, context));
+        return listActiveConnectivityConfigurationsWithResponse(resourceGroupName, networkManagerName, parameters, top,
+            Context.NONE).getValue();
     }
 
     /**
@@ -1397,11 +1346,11 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list active security admin rules along with {@link PagedResponse} on successful
+     * @return result of the request to list active security admin rules along with {@link Response} on successful
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ActiveBaseSecurityAdminRuleInner>> listActiveSecurityAdminRulesSinglePageAsync(
+    public Mono<Response<ActiveSecurityAdminRulesListResultInner>> listActiveSecurityAdminRulesWithResponseAsync(
         String resourceGroupName, String networkManagerName, ActiveConfigurationParameter parameters, Integer top) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -1425,13 +1374,12 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
             parameters.validate();
         }
         final String apiVersion = "2025-05-01";
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listActiveSecurityAdminRules(this.client.getEndpoint(), apiVersion,
-                this.client.getSubscriptionId(), resourceGroupName, networkManagerName, top, accept, parameters,
-                context))
-            .<PagedResponse<ActiveBaseSecurityAdminRuleInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
-                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+                this.client.getSubscriptionId(), resourceGroupName, networkManagerName, top, contentType, accept,
+                parameters, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1447,11 +1395,11 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list active security admin rules along with {@link PagedResponse} on successful
+     * @return result of the request to list active security admin rules along with {@link Response} on successful
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ActiveBaseSecurityAdminRuleInner>> listActiveSecurityAdminRulesSinglePageAsync(
+    private Mono<Response<ActiveSecurityAdminRulesListResultInner>> listActiveSecurityAdminRulesWithResponseAsync(
         String resourceGroupName, String networkManagerName, ActiveConfigurationParameter parameters, Integer top,
         Context context) {
         if (this.client.getEndpoint() == null) {
@@ -1476,33 +1424,12 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
             parameters.validate();
         }
         final String apiVersion = "2025-05-01";
+        final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listActiveSecurityAdminRules(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-                resourceGroupName, networkManagerName, top, accept, parameters, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), null, null));
-    }
-
-    /**
-     * Lists active security admin rules in a network manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param parameters Active Configuration Parameter.
-     * @param top An optional query parameter which specifies the maximum number of records to be returned by the
-     * server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list active security admin rules as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ActiveBaseSecurityAdminRuleInner> listActiveSecurityAdminRulesAsync(String resourceGroupName,
-        String networkManagerName, ActiveConfigurationParameter parameters, Integer top) {
-        return new PagedFlux<>(
-            () -> listActiveSecurityAdminRulesSinglePageAsync(resourceGroupName, networkManagerName, parameters, top));
+        return service.listActiveSecurityAdminRules(this.client.getEndpoint(), apiVersion,
+            this.client.getSubscriptionId(), resourceGroupName, networkManagerName, top, contentType, accept,
+            parameters, context);
     }
 
     /**
@@ -1514,14 +1441,14 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list active security admin rules as paginated response with {@link PagedFlux}.
+     * @return result of the request to list active security admin rules on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ActiveBaseSecurityAdminRuleInner> listActiveSecurityAdminRulesAsync(String resourceGroupName,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ActiveSecurityAdminRulesListResultInner> listActiveSecurityAdminRulesAsync(String resourceGroupName,
         String networkManagerName, ActiveConfigurationParameter parameters) {
         final Integer top = null;
-        return new PagedFlux<>(
-            () -> listActiveSecurityAdminRulesSinglePageAsync(resourceGroupName, networkManagerName, parameters, top));
+        return listActiveSecurityAdminRulesWithResponseAsync(resourceGroupName, networkManagerName, parameters, top)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1536,13 +1463,14 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list active security admin rules as paginated response with {@link PagedFlux}.
+     * @return result of the request to list active security admin rules along with {@link Response}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ActiveBaseSecurityAdminRuleInner> listActiveSecurityAdminRulesAsync(String resourceGroupName,
-        String networkManagerName, ActiveConfigurationParameter parameters, Integer top, Context context) {
-        return new PagedFlux<>(() -> listActiveSecurityAdminRulesSinglePageAsync(resourceGroupName, networkManagerName,
-            parameters, top, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ActiveSecurityAdminRulesListResultInner> listActiveSecurityAdminRulesWithResponse(
+        String resourceGroupName, String networkManagerName, ActiveConfigurationParameter parameters, Integer top,
+        Context context) {
+        return listActiveSecurityAdminRulesWithResponseAsync(resourceGroupName, networkManagerName, parameters, top,
+            context).block();
     }
 
     /**
@@ -1554,37 +1482,14 @@ public final class NetworkManagersClientImpl implements InnerSupportsGet<Network
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list active security admin rules as paginated response with
-     * {@link PagedIterable}.
+     * @return result of the request to list active security admin rules.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ActiveBaseSecurityAdminRuleInner> listActiveSecurityAdminRules(String resourceGroupName,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ActiveSecurityAdminRulesListResultInner listActiveSecurityAdminRules(String resourceGroupName,
         String networkManagerName, ActiveConfigurationParameter parameters) {
         final Integer top = null;
-        return new PagedIterable<>(
-            listActiveSecurityAdminRulesAsync(resourceGroupName, networkManagerName, parameters, top));
-    }
-
-    /**
-     * Lists active security admin rules in a network manager.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkManagerName The name of the network manager.
-     * @param parameters Active Configuration Parameter.
-     * @param top An optional query parameter which specifies the maximum number of records to be returned by the
-     * server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list active security admin rules as paginated response with
-     * {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ActiveBaseSecurityAdminRuleInner> listActiveSecurityAdminRules(String resourceGroupName,
-        String networkManagerName, ActiveConfigurationParameter parameters, Integer top, Context context) {
-        return new PagedIterable<>(
-            listActiveSecurityAdminRulesAsync(resourceGroupName, networkManagerName, parameters, top, context));
+        return listActiveSecurityAdminRulesWithResponse(resourceGroupName, networkManagerName, parameters, top,
+            Context.NONE).getValue();
     }
 
     /**

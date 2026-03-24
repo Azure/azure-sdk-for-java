@@ -6,14 +6,13 @@ package com.azure.resourcemanager.network.fluent;
 
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteConnectionInner;
+import com.azure.resourcemanager.network.fluent.models.ExpressRouteConnectionListInner;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -311,10 +310,11 @@ public interface ExpressRouteConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteConnection list as paginated response with {@link PagedFlux}.
+     * @return expressRouteConnection list along with {@link Response} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<ExpressRouteConnectionInner> listAsync(String resourceGroupName, String expressRouteGatewayName);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<ExpressRouteConnectionListInner>> listWithResponseAsync(String resourceGroupName,
+        String expressRouteGatewayName);
 
     /**
      * Lists ExpressRouteConnections.
@@ -324,10 +324,10 @@ public interface ExpressRouteConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteConnection list as paginated response with {@link PagedIterable}.
+     * @return expressRouteConnection list on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ExpressRouteConnectionInner> list(String resourceGroupName, String expressRouteGatewayName);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ExpressRouteConnectionListInner> listAsync(String resourceGroupName, String expressRouteGatewayName);
 
     /**
      * Lists ExpressRouteConnections.
@@ -338,9 +338,22 @@ public interface ExpressRouteConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteConnection list as paginated response with {@link PagedIterable}.
+     * @return expressRouteConnection list along with {@link Response}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ExpressRouteConnectionInner> list(String resourceGroupName, String expressRouteGatewayName,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ExpressRouteConnectionListInner> listWithResponse(String resourceGroupName, String expressRouteGatewayName,
         Context context);
+
+    /**
+     * Lists ExpressRouteConnections.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expressRouteGatewayName The name of the ExpressRoute gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return expressRouteConnection list.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ExpressRouteConnectionListInner list(String resourceGroupName, String expressRouteGatewayName);
 }
