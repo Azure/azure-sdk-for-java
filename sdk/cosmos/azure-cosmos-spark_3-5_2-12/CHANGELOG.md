@@ -7,7 +7,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
-* Fixed an issue where creating containers with hierarchical partition keys (multi-hash) through the Spark catalog on the AAD path would fail. - See [PR](https://github.com/Azure/azure-sdk-for-java/pull/)
+* Fixed an issue where creating containers with hierarchical partition keys (multi-hash) through the Spark catalog on the AAD path would fail. - See [PR 48548](https://github.com/Azure/azure-sdk-for-java/pull/48548)
 
 #### Other Changes
 
