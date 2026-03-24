@@ -36,12 +36,18 @@ public class NetworkCustomization extends Customization {
                 clazz.getMethodsByName("withId").forEach(m -> {
                     m.setBody(new BlockStmt().addStatement("return this;"));
                     m.getAnnotationByName("Override").ifPresent(a -> a.remove());
-                    m.setJavadocComment(new Javadoc(JavadocDescription.parseText("Set the id property: Resource ID.")));
+                    Javadoc idDoc = new Javadoc(JavadocDescription.parseText("Set the id property: Resource ID."));
+                    idDoc.addBlockTag("param", "id", "the id value to set.");
+                    idDoc.addBlockTag("return", "the resource itself.");
+                    m.setJavadocComment(idDoc);
                 });
                 clazz.getMethodsByName("withName").forEach(m -> {
                     m.setBody(new BlockStmt().addStatement("return this;"));
                     m.getAnnotationByName("Override").ifPresent(a -> a.remove());
-                    m.setJavadocComment(new Javadoc(JavadocDescription.parseText("Set the name property: Resource name.")));
+                    Javadoc nameDoc = new Javadoc(JavadocDescription.parseText("Set the name property: Resource name."));
+                    nameDoc.addBlockTag("param", "name", "the name value to set.");
+                    nameDoc.addBlockTag("return", "the resource itself.");
+                    m.setJavadocComment(nameDoc);
                 });
                 // remove @Override from validate() since Resource doesn't declare it
                 clazz.getMethodsByName("validate").forEach(m -> {

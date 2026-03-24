@@ -85,7 +85,7 @@ public final class RouteFilterInner extends Resource {
     }
 
     /**
-     * {@inheritDoc}
+     * Set the id property: Resource ID.
      */
     public RouteFilterInner withId(String id) {
         return this;
