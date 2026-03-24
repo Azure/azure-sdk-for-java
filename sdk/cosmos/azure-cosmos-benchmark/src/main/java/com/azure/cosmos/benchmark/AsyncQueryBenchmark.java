@@ -41,6 +41,9 @@ class AsyncQueryBenchmark extends AsyncBenchmark<FeedResponse<PojoizedJson>> {
         Flux<FeedResponse<PojoizedJson>> obs;
         Random r = new Random();
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+        if (e2ePolicyConfig != null) {
+            options.setCosmosEndToEndOperationLatencyPolicyConfig(e2ePolicyConfig);
+        }
 
         if (workloadConfig.getOperationType() == Operation.QueryCross) {
 
