@@ -206,6 +206,12 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
     private ArchiveStatus archiveStatus;
 
     /*
+     * The SmartAccessTier property.
+     */
+    @Generated
+    private AccessTier smartAccessTier;
+
+    /*
      * The CustomerProvidedKeySha256 property.
      */
     @Generated
@@ -946,6 +952,28 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
     }
 
     /**
+     * Get the smartAccessTier property: The SmartAccessTier property.
+     * 
+     * @return the smartAccessTier value.
+     */
+    @Generated
+    public AccessTier getSmartAccessTier() {
+        return this.smartAccessTier;
+    }
+
+    /**
+     * Set the smartAccessTier property: The SmartAccessTier property.
+     * 
+     * @param smartAccessTier the smartAccessTier value to set.
+     * @return the BlobItemPropertiesInternal object itself.
+     */
+    @Generated
+    public BlobItemPropertiesInternal setSmartAccessTier(AccessTier smartAccessTier) {
+        this.smartAccessTier = smartAccessTier;
+        return this;
+    }
+
+    /**
      * Get the customerProvidedKeySha256 property: The CustomerProvidedKeySha256 property.
      * 
      * @return the customerProvidedKeySha256 value.
@@ -1259,6 +1287,8 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
         xmlWriter.writeBooleanElement("AccessTierInferred", this.accessTierInferred);
         xmlWriter.writeStringElement("ArchiveStatus",
             this.archiveStatus == null ? null : this.archiveStatus.toString());
+        xmlWriter.writeStringElement("SmartAccessTier",
+            this.smartAccessTier == null ? null : this.smartAccessTier.toString());
         xmlWriter.writeStringElement("CustomerProvidedKeySha256", this.customerProvidedKeySha256);
         xmlWriter.writeStringElement("EncryptionScope", this.encryptionScope);
         xmlWriter.writeStringElement("AccessTierChangeTime", Objects.toString(this.accessTierChangeTime, null));
@@ -1382,6 +1412,9 @@ public final class BlobItemPropertiesInternal implements XmlSerializable<BlobIte
                 } else if ("ArchiveStatus".equals(elementName.getLocalPart())) {
                     deserializedBlobItemPropertiesInternal.archiveStatus
                         = ArchiveStatus.fromString(reader.getStringElement());
+                } else if ("SmartAccessTier".equals(elementName.getLocalPart())) {
+                    deserializedBlobItemPropertiesInternal.smartAccessTier
+                        = AccessTier.fromString(reader.getStringElement());
                 } else if ("CustomerProvidedKeySha256".equals(elementName.getLocalPart())) {
                     deserializedBlobItemPropertiesInternal.customerProvidedKeySha256 = reader.getStringElement();
                 } else if ("EncryptionScope".equals(elementName.getLocalPart())) {

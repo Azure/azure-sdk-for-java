@@ -30,7 +30,7 @@ public final class BlobPropertiesConstructorProxy {
     }
 
     /**
-     * The method called from the static initializer of {@link BlobProperties} to set it's accessor.
+     * The method called from the static initializer of {@link BlobProperties} to set its accessor.
      *
      * @param accessor The {@link BlobProperties} accessor.
      */
@@ -50,10 +50,11 @@ public final class BlobPropertiesConstructorProxy {
         // application accesses BlobDownloadHeaders which triggers the accessor to be configured. So, if the accessor
         // is null this effectively pokes the class to set up the accessor.
         if (accessor == null) {
+            // The purpose of using this throwaway instance is to trigger the static initializer of BlobProperties
+            // which will set up the accessor
             new BlobProperties(null, null, null, 0, null, null, null, null, null, null, null, null, null, null, null,
                 null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
         }
-
         assert accessor != null;
         return accessor.create(internalProperties);
     }
