@@ -45,7 +45,7 @@ public final class StorageTaskAssignmentUpdateProperties
     /*
      * Represents the provisioning state of the storage task assignment.
      */
-    private StorageTaskAssignmentProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * Run status of storage task assignment
@@ -153,7 +153,7 @@ public final class StorageTaskAssignmentUpdateProperties
      * 
      * @return the provisioningState value.
      */
-    public StorageTaskAssignmentProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -239,7 +239,7 @@ public final class StorageTaskAssignmentUpdateProperties
                         = StorageTaskAssignmentUpdateReport.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedStorageTaskAssignmentUpdateProperties.provisioningState
-                        = StorageTaskAssignmentProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else if ("runStatus".equals(fieldName)) {
                     deserializedStorageTaskAssignmentUpdateProperties.runStatus
                         = StorageTaskReportProperties.fromJson(reader);

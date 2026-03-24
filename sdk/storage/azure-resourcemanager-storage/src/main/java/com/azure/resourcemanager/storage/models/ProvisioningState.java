@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.storage.models;
 
 /**
- * Gets the status of the storage account at the time the operation was called.
+ * Defines values for ProvisioningState.
  */
 public enum ProvisioningState {
     /**
@@ -21,7 +21,37 @@ public enum ProvisioningState {
     /**
      * Enum value Succeeded.
      */
-    SUCCEEDED("Succeeded");
+    SUCCEEDED("Succeeded"),
+
+    /**
+     * Enum value ValidateSubscriptionQuotaBegin.
+     */
+    VALIDATE_SUBSCRIPTION_QUOTA_BEGIN("ValidateSubscriptionQuotaBegin"),
+
+    /**
+     * Enum value ValidateSubscriptionQuotaEnd.
+     */
+    VALIDATE_SUBSCRIPTION_QUOTA_END("ValidateSubscriptionQuotaEnd"),
+
+    /**
+     * Enum value Accepted.
+     */
+    ACCEPTED("Accepted"),
+
+    /**
+     * Enum value Deleting.
+     */
+    DELETING("Deleting"),
+
+    /**
+     * Enum value Canceled.
+     */
+    CANCELED("Canceled"),
+
+    /**
+     * Enum value Failed.
+     */
+    FAILED("Failed");
 
     /**
      * The actual serialized value for a ProvisioningState instance.

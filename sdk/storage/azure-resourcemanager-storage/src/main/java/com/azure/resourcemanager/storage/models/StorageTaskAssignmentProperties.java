@@ -45,7 +45,7 @@ public final class StorageTaskAssignmentProperties implements JsonSerializable<S
     /*
      * Represents the provisioning state of the storage task assignment.
      */
-    private StorageTaskAssignmentProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * Run status of storage task assignment
@@ -164,7 +164,7 @@ public final class StorageTaskAssignmentProperties implements JsonSerializable<S
      * 
      * @return the provisioningState value.
      */
-    public StorageTaskAssignmentProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -270,7 +270,7 @@ public final class StorageTaskAssignmentProperties implements JsonSerializable<S
                     deserializedStorageTaskAssignmentProperties.report = StorageTaskAssignmentReport.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedStorageTaskAssignmentProperties.provisioningState
-                        = StorageTaskAssignmentProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else if ("runStatus".equals(fieldName)) {
                     deserializedStorageTaskAssignmentProperties.runStatus
                         = StorageTaskReportProperties.fromJson(reader);
