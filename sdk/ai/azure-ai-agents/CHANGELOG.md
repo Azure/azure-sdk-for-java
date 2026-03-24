@@ -25,9 +25,6 @@
 - `deleteMemoryStore(String)` on `MemoryStoresClient` now returns `void` instead of `DeleteMemoryStoreResult`. The corresponding async method on `MemoryStoresAsyncClient` now returns `Mono<Void>` instead of `Mono<DeleteMemoryStoreResult>`.
 - `deleteScope(String, String)` on `MemoryStoresClient` now returns `void` instead of `MemoryStoreDeleteScopeResponse`. The corresponding async method on `MemoryStoresAsyncClient` now returns `Mono<Void>` instead of `Mono<MemoryStoreDeleteScopeResponse>`.
 - `DeleteMemoryStoreResult` and `MemoryStoreDeleteScopeResponse` removed from `com.azure.ai.agents.models` and are no longer part of the public API.
-- The public protocol methods `deleteMemoryStoreWithResponse` and `deleteScopeWithResponse` have been removed from `MemoryStoresClient` and `MemoryStoresAsyncClient`; use the convenience methods instead.
-- The public protocol method `deleteAgentWithResponse` has been removed from `AgentsClient` and `AgentsAsyncClient`; use the `deleteAgent` convenience method instead.
-- The public protocol method `deleteAgentVersionWithResponse` has been removed from `AgentsClient` and `AgentsAsyncClient`; use the `deleteAgentVersion` convenience method instead.
 
 ### Bugs Fixed
 
