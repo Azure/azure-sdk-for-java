@@ -138,6 +138,11 @@
       <version>1.17.7</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy-agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.apache.arrow</groupId>
+      <artifactId>arrow-java-root</artifactId>
+      <version>19.0.0</version>
+    </dependency>
   </dependencies>
 
   <profiles>
