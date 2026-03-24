@@ -464,9 +464,10 @@ public class Sample02_AnalyzeUrlAsync {
             .doOnError(error -> {
                 System.err.println("Error occurred: " + error.getMessage());
             })
+            .doFinally(signalType -> latch.countDown())
             .subscribe(
                 result -> { },
-                error -> latch.countDown()
+                error -> { }
             );
 
         try {
