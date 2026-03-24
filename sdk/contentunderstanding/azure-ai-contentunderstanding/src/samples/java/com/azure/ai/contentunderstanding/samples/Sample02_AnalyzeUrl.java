@@ -299,7 +299,7 @@ public class Sample02_AnalyzeUrl {
     public static void analyzeDocumentUrlWithContentRange(ContentUnderstandingClient client) {
         // BEGIN:ContentUnderstandingAnalyzeUrlWithContentRange
         String uriSource
-            = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/document/mixed_financial_docs.pdf";
+            = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/document/mixed_financial_invoices.pdf";
 
         // Extract only page 1 using ContentRange
         AnalysisInput rangeInput = new AnalysisInput();
@@ -314,6 +314,23 @@ public class Sample02_AnalyzeUrl {
         System.out.println("Page(1): returned " + rangeDoc.getPages().size() + " page"
             + " (page " + rangeDoc.getStartPageNumber() + ")");
         System.out.println("Markdown length: " + rangeDoc.getMarkdown().length() + " characters");
+
+        // Combine multiple page ranges: pages 1-3, page 5, and pages 9 onward
+        AnalysisInput combineInput = new AnalysisInput();
+        combineInput.setUrl(uriSource);
+        combineInput.setContentRange(ContentRange.combine(
+            ContentRange.pageRange(1, 3),
+            ContentRange.page(5),
+            ContentRange.pagesFrom(9)));
+
+        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> combineOperation
+            = client.beginAnalyze("prebuilt-documentSearch", Arrays.asList(combineInput));
+        AnalysisResult combineResult = combineOperation.getFinalResult();
+
+        DocumentContent combineDoc = (DocumentContent) combineResult.getContents().get(0);
+        System.out.println("Combine(1-3, 5, 9-): returned " + combineDoc.getPages().size() + " pages"
+            + " (pages " + combineDoc.getStartPageNumber() + "-" + combineDoc.getEndPageNumber() + ")");
+        System.out.println("Markdown length: " + combineDoc.getMarkdown().length() + " characters");
         // END:ContentUnderstandingAnalyzeUrlWithContentRange
     }
 

@@ -371,7 +371,7 @@ public class Sample02_AnalyzeUrlTest extends ContentUnderstandingClientTestBase 
 
         // BEGIN:ContentUnderstandingAnalyzeUrlWithPageContentRanges
         String uriSource
-            = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/document/mixed_financial_docs.pdf";
+            = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/document/mixed_financial_invoices.pdf";
 
         // Full 4-page analysis for comparison
         AnalysisInput fullInput = new AnalysisInput();
@@ -405,6 +405,34 @@ public class Sample02_AnalyzeUrlTest extends ContentUnderstandingClientTestBase 
         assertTrue(fullDoc.getPages().size() > rangeDocContent.getPages().size());
         assertTrue(fullDoc.getMarkdown().length() > rangeDocContent.getMarkdown().length());
         // END:Assertion_ContentUnderstandingAnalyzeUrlWithPageContentRanges
+
+        // Combined disjoint page ranges: pages 1-3, page 5, and pages 9 onward
+        // Document has 4 pages, so only pages 1-3 match (no page 5 or 9+)
+        AnalysisInput combineInput = new AnalysisInput();
+        combineInput.setUrl(uriSource);
+        combineInput.setContentRange(ContentRange.combine(
+            ContentRange.pageRange(1, 3),
+            ContentRange.page(5),
+            ContentRange.pagesFrom(9)));
+
+        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> combineOperation
+            = contentUnderstandingClient.beginAnalyze("prebuilt-documentSearch", Arrays.asList(combineInput));
+        AnalysisResult combineResult = combineOperation.getFinalResult();
+
+        assertNotNull(combineResult);
+        assertNotNull(combineResult.getContents());
+        DocumentContent combineDoc = (DocumentContent) combineResult.getContents().get(0);
+        assertEquals(3, combineDoc.getPages().size(),
+            "Combine(1-3, 5, 9-) should return 3 pages (1-3), got " + combineDoc.getPages().size());
+        assertEquals(1, combineDoc.getStartPageNumber());
+        assertEquals(3, combineDoc.getEndPageNumber());
+        List<Integer> combinePageNumbers = new java.util.ArrayList<>();
+        for (DocumentPage page : combineDoc.getPages()) {
+            combinePageNumbers.add(page.getPageNumber());
+        }
+        java.util.Collections.sort(combinePageNumbers);
+        assertEquals(Arrays.asList(1, 2, 3), combinePageNumbers,
+            "Combine(1-3, 5, 9-) page numbers should be [1, 2, 3]");
     }
 
     @LiveOnly

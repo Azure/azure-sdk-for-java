@@ -434,7 +434,7 @@ public class Sample02_AnalyzeUrlAsync {
     public static void analyzeDocumentUrlWithContentRange(ContentUnderstandingAsyncClient client) {
         // BEGIN:ContentUnderstandingAnalyzeDocumentUrlWithContentRangeAsync
         String uriSource
-            = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/document/mixed_financial_docs.pdf";
+            = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/document/mixed_financial_invoices.pdf";
 
         // Analyze only page 1 using ContentRange
         AnalysisInput input = new AnalysisInput();
@@ -465,7 +465,7 @@ public class Sample02_AnalyzeUrlAsync {
                 System.err.println("Error occurred: " + error.getMessage());
             })
             .subscribe(
-                result -> latch.countDown(),
+                result -> { },
                 error -> latch.countDown()
             );
 
@@ -474,6 +474,49 @@ public class Sample02_AnalyzeUrlAsync {
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             throw new RuntimeException("Interrupted while waiting for document analysis", e);
+        }
+
+        // Combine multiple page ranges: pages 1-3, page 5, and pages 9 onward
+        AnalysisInput combineInput = new AnalysisInput();
+        combineInput.setUrl(uriSource);
+        combineInput.setContentRange(ContentRange.combine(
+            ContentRange.pageRange(1, 3),
+            ContentRange.page(5),
+            ContentRange.pagesFrom(9)));
+
+        CountDownLatch combineLatch = new CountDownLatch(1);
+
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> combineOperation
+            = client.beginAnalyze("prebuilt-documentSearch", Arrays.asList(combineInput));
+
+        combineOperation.last()
+            .flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
+                    return pollResponse.getFinalResult();
+                } else {
+                    return Mono.error(new RuntimeException(
+                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+                }
+            })
+            .doOnNext(result -> {
+                DocumentContent combineDoc = (DocumentContent) result.getContents().get(0);
+                System.out.println("Combine(1-3, 5, 9-): returned " + combineDoc.getPages().size() + " pages"
+                    + " (pages " + combineDoc.getStartPageNumber() + "-" + combineDoc.getEndPageNumber() + ")");
+                System.out.println("Markdown length: " + combineDoc.getMarkdown().length() + " characters");
+            })
+            .doOnError(error -> {
+                System.err.println("Error occurred: " + error.getMessage());
+            })
+            .subscribe(
+                result -> combineLatch.countDown(),
+                error -> combineLatch.countDown()
+            );
+
+        try {
+            combineLatch.await();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException("Interrupted while waiting for combined range analysis", e);
         }
         // END:ContentUnderstandingAnalyzeDocumentUrlWithContentRangeAsync
     }
