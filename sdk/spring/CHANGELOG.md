@@ -1,13 +1,8 @@
 # Release History
 
 ## 6.2.0 (2026-03-25)
-- This release is compatible with Spring Boot 3.5.8. (Note: 3.5.x (x>8) should be supported, but they aren't tested with this release.)
+- This release is compatible with Spring Boot 3.5.0-3.5.8. (Note: 3.5.x (x>8) should be supported, but they aren't tested with this release.)
 - This release is compatible with Spring Cloud 2025.0.0. (Note: 2025.0.x (x>0) should be supported, but they aren't tested with this release.)
-
-### Spring Cloud Azure Dependencies (BOM)
-
-#### Dependency Updates
-- Upgrade `azure-sdk-bom` to 1.3.3.
 
 ### Spring Cloud Azure Autoconfigure
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
@@ -40,7 +35,6 @@ The ConnectionFactory type is determined by the following configuration properti
   | false                                | false                      | ServiceBusJmsConnectionFactory | ServiceBusJmsConnectionFactory |
 
   **Note:** `CachingConnectionFactory` and `JmsPoolConnectionFactory` will be used only when they exist in classpath.
-
 
 ### Spring Cloud Azure Docker Compose
 This section includes changes in `spring-cloud-azure-docker-compose` module.
