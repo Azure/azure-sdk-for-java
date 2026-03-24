@@ -8,6 +8,8 @@ import com.azure.autorest.customization.PackageCustomization;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
+import com.github.javaparser.javadoc.Javadoc;
+import com.github.javaparser.javadoc.description.JavadocDescription;
 import org.slf4j.Logger;
 
 /**
@@ -34,10 +36,12 @@ public class NetworkCustomization extends Customization {
                 clazz.getMethodsByName("withId").forEach(m -> {
                     m.setBody(new BlockStmt().addStatement("return this;"));
                     m.getAnnotationByName("Override").ifPresent(a -> a.remove());
+                    m.setJavadocComment(new Javadoc(JavadocDescription.parseText("Set the id property: Resource ID.")));
                 });
                 clazz.getMethodsByName("withName").forEach(m -> {
                     m.setBody(new BlockStmt().addStatement("return this;"));
                     m.getAnnotationByName("Override").ifPresent(a -> a.remove());
+                    m.setJavadocComment(new Javadoc(JavadocDescription.parseText("Set the name property: Resource name.")));
                 });
                 // remove @Override from validate() since Resource doesn't declare it
                 clazz.getMethodsByName("validate").forEach(m -> {
