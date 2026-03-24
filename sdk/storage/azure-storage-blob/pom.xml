@@ -143,16 +143,25 @@
     <dependency>
       <groupId>org.apache.arrow</groupId>
       <artifactId>arrow-vector</artifactId>
-      <version>19.0.0</version>
     </dependency>
     <dependency>
       <groupId>org.apache.arrow</groupId>
       <artifactId>arrow-memory-unsafe</artifactId>
-      <version>19.0.0</version>
-      <scope>runtime</scope>
     </dependency>
 
   </dependencies>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.apache.arrow</groupId>
+        <artifactId>arrow-bom</artifactId>
+        <version>18.1.0</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
   <profiles>
     <profile>
