@@ -10,7 +10,7 @@ import com.azure.core.management.SubResource;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.network.models.BastionHostIPConfiguration;
+import com.azure.resourcemanager.network.models.BastionHostIpConfiguration;
 import com.azure.resourcemanager.network.models.BastionHostPropertiesFormatNetworkAcls;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.Sku;
@@ -185,7 +185,7 @@ public final class BastionHostInner extends Resource {
      * 
      * @return the ipConfigurations value.
      */
-    public List<BastionHostIPConfiguration> ipConfigurations() {
+    public List<BastionHostIpConfiguration> ipConfigurations() {
         return this.innerProperties() == null ? null : this.innerProperties().ipConfigurations();
     }
 
@@ -195,7 +195,7 @@ public final class BastionHostInner extends Resource {
      * @param ipConfigurations the ipConfigurations value to set.
      * @return the BastionHostInner object itself.
      */
-    public BastionHostInner withIpConfigurations(List<BastionHostIPConfiguration> ipConfigurations) {
+    public BastionHostInner withIpConfigurations(List<BastionHostIpConfiguration> ipConfigurations) {
         if (this.innerProperties() == null) {
             this.innerProperties = new BastionHostPropertiesFormat();
         }

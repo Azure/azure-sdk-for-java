@@ -10,7 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.network.models.BastionHostIPConfiguration;
+import com.azure.resourcemanager.network.models.BastionHostIpConfiguration;
 import com.azure.resourcemanager.network.models.BastionHostPropertiesFormatNetworkAcls;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
@@ -24,7 +24,7 @@ public final class BastionHostPropertiesFormat implements JsonSerializable<Basti
     /*
      * IP configuration of the Bastion Host resource.
      */
-    private List<BastionHostIPConfiguration> ipConfigurations;
+    private List<BastionHostIpConfiguration> ipConfigurations;
 
     /*
      * FQDN for the endpoint on which bastion host is accessible.
@@ -102,7 +102,7 @@ public final class BastionHostPropertiesFormat implements JsonSerializable<Basti
      * 
      * @return the ipConfigurations value.
      */
-    public List<BastionHostIPConfiguration> ipConfigurations() {
+    public List<BastionHostIpConfiguration> ipConfigurations() {
         return this.ipConfigurations;
     }
 
@@ -112,7 +112,7 @@ public final class BastionHostPropertiesFormat implements JsonSerializable<Basti
      * @param ipConfigurations the ipConfigurations value to set.
      * @return the BastionHostPropertiesFormat object itself.
      */
-    public BastionHostPropertiesFormat withIpConfigurations(List<BastionHostIPConfiguration> ipConfigurations) {
+    public BastionHostPropertiesFormat withIpConfigurations(List<BastionHostIpConfiguration> ipConfigurations) {
         this.ipConfigurations = ipConfigurations;
         return this;
     }
@@ -421,8 +421,8 @@ public final class BastionHostPropertiesFormat implements JsonSerializable<Basti
                 reader.nextToken();
 
                 if ("ipConfigurations".equals(fieldName)) {
-                    List<BastionHostIPConfiguration> ipConfigurations
-                        = reader.readArray(reader1 -> BastionHostIPConfiguration.fromJson(reader1));
+                    List<BastionHostIpConfiguration> ipConfigurations
+                        = reader.readArray(reader1 -> BastionHostIpConfiguration.fromJson(reader1));
                     deserializedBastionHostPropertiesFormat.ipConfigurations = ipConfigurations;
                 } else if ("dnsName".equals(fieldName)) {
                     deserializedBastionHostPropertiesFormat.dnsName = reader.getString();

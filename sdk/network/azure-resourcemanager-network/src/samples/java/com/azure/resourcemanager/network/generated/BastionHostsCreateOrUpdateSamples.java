@@ -6,7 +6,7 @@ package com.azure.resourcemanager.network.generated;
 
 import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.network.fluent.models.BastionHostInner;
-import com.azure.resourcemanager.network.models.BastionHostIPConfiguration;
+import com.azure.resourcemanager.network.models.BastionHostIpConfiguration;
 import com.azure.resourcemanager.network.models.BastionHostPropertiesFormatNetworkAcls;
 import com.azure.resourcemanager.network.models.IPRule;
 import java.util.Arrays;
@@ -27,7 +27,7 @@ public final class BastionHostsCreateOrUpdateSamples {
         manager.serviceClient()
             .getBastionHosts()
             .createOrUpdate("rg1", "bastionhosttenant", new BastionHostInner()
-                .withIpConfigurations(Arrays.asList(new BastionHostIPConfiguration()
+                .withIpConfigurations(Arrays.asList(new BastionHostIpConfiguration()
                     .withName("bastionHostIpConfiguration")
                     .withSubnet(new SubResource().withId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet2/subnets/BastionHostSubnet"))))
@@ -65,7 +65,7 @@ public final class BastionHostsCreateOrUpdateSamples {
         manager.serviceClient()
             .getBastionHosts()
             .createOrUpdate("rg1", "bastionhosttenant",
-                new BastionHostInner().withIpConfigurations(Arrays.asList(new BastionHostIPConfiguration()
+                new BastionHostInner().withIpConfigurations(Arrays.asList(new BastionHostIpConfiguration()
                     .withName("bastionHostIpConfiguration")
                     .withSubnet(new SubResource().withId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet2/subnets/BastionHostSubnet"))
@@ -86,7 +86,7 @@ public final class BastionHostsCreateOrUpdateSamples {
         manager.serviceClient()
             .getBastionHosts()
             .createOrUpdate("rg1", "bastionhosttenant",
-                new BastionHostInner().withIpConfigurations(Arrays.asList(new BastionHostIPConfiguration()
+                new BastionHostInner().withIpConfigurations(Arrays.asList(new BastionHostIpConfiguration()
                     .withName("bastionHostIpConfiguration")
                     .withSubnet(new SubResource().withId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet2/subnets/BastionHostSubnet"))

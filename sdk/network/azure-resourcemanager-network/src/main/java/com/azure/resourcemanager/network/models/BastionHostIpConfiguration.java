@@ -16,7 +16,7 @@ import java.io.IOException;
  * IP configuration of an Bastion Host.
  */
 @Fluent
-public final class BastionHostIPConfiguration extends SubResource {
+public final class BastionHostIpConfiguration extends SubResource {
     /*
      * Represents the ip configuration associated with the resource.
      */
@@ -38,9 +38,9 @@ public final class BastionHostIPConfiguration extends SubResource {
     private String type;
 
     /**
-     * Creates an instance of BastionHostIPConfiguration class.
+     * Creates an instance of BastionHostIpConfiguration class.
      */
-    public BastionHostIPConfiguration() {
+    public BastionHostIpConfiguration() {
     }
 
     /**
@@ -67,9 +67,9 @@ public final class BastionHostIPConfiguration extends SubResource {
      * access the resource.
      * 
      * @param name the name value to set.
-     * @return the BastionHostIPConfiguration object itself.
+     * @return the BastionHostIpConfiguration object itself.
      */
-    public BastionHostIPConfiguration withName(String name) {
+    public BastionHostIpConfiguration withName(String name) {
         this.name = name;
         return this;
     }
@@ -96,7 +96,7 @@ public final class BastionHostIPConfiguration extends SubResource {
      * {@inheritDoc}
      */
     @Override
-    public BastionHostIPConfiguration withId(String id) {
+    public BastionHostIpConfiguration withId(String id) {
         super.withId(id);
         return this;
     }
@@ -114,9 +114,9 @@ public final class BastionHostIPConfiguration extends SubResource {
      * Set the subnet property: Reference of the subnet resource.
      * 
      * @param subnet the subnet value to set.
-     * @return the BastionHostIPConfiguration object itself.
+     * @return the BastionHostIpConfiguration object itself.
      */
-    public BastionHostIPConfiguration withSubnet(SubResource subnet) {
+    public BastionHostIpConfiguration withSubnet(SubResource subnet) {
         if (this.innerProperties() == null) {
             this.innerProperties = new BastionHostIPConfigurationPropertiesFormat();
         }
@@ -137,9 +137,9 @@ public final class BastionHostIPConfiguration extends SubResource {
      * Set the publicIpAddress property: Reference of the PublicIP resource. Null for private only bastion.
      * 
      * @param publicIpAddress the publicIpAddress value to set.
-     * @return the BastionHostIPConfiguration object itself.
+     * @return the BastionHostIpConfiguration object itself.
      */
-    public BastionHostIPConfiguration withPublicIpAddress(SubResource publicIpAddress) {
+    public BastionHostIpConfiguration withPublicIpAddress(SubResource publicIpAddress) {
         if (this.innerProperties() == null) {
             this.innerProperties = new BastionHostIPConfigurationPropertiesFormat();
         }
@@ -169,9 +169,9 @@ public final class BastionHostIPConfiguration extends SubResource {
      * Set the privateIpAllocationMethod property: Private IP allocation method.
      * 
      * @param privateIpAllocationMethod the privateIpAllocationMethod value to set.
-     * @return the BastionHostIPConfiguration object itself.
+     * @return the BastionHostIpConfiguration object itself.
      */
-    public BastionHostIPConfiguration withPrivateIpAllocationMethod(IpAllocationMethod privateIpAllocationMethod) {
+    public BastionHostIpConfiguration withPrivateIpAllocationMethod(IpAllocationMethod privateIpAllocationMethod) {
         if (this.innerProperties() == null) {
             this.innerProperties = new BastionHostIPConfigurationPropertiesFormat();
         }
@@ -203,37 +203,37 @@ public final class BastionHostIPConfiguration extends SubResource {
     }
 
     /**
-     * Reads an instance of BastionHostIPConfiguration from the JsonReader.
+     * Reads an instance of BastionHostIpConfiguration from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of BastionHostIPConfiguration if the JsonReader was pointing to an instance of it, or null if
+     * @return An instance of BastionHostIpConfiguration if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the BastionHostIPConfiguration.
+     * @throws IOException If an error occurs while reading the BastionHostIpConfiguration.
      */
-    public static BastionHostIPConfiguration fromJson(JsonReader jsonReader) throws IOException {
+    public static BastionHostIpConfiguration fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            BastionHostIPConfiguration deserializedBastionHostIPConfiguration = new BastionHostIPConfiguration();
+            BastionHostIpConfiguration deserializedBastionHostIpConfiguration = new BastionHostIpConfiguration();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedBastionHostIPConfiguration.withId(reader.getString());
+                    deserializedBastionHostIpConfiguration.withId(reader.getString());
                 } else if ("properties".equals(fieldName)) {
-                    deserializedBastionHostIPConfiguration.innerProperties
+                    deserializedBastionHostIpConfiguration.innerProperties
                         = BastionHostIPConfigurationPropertiesFormat.fromJson(reader);
                 } else if ("name".equals(fieldName)) {
-                    deserializedBastionHostIPConfiguration.name = reader.getString();
+                    deserializedBastionHostIpConfiguration.name = reader.getString();
                 } else if ("etag".equals(fieldName)) {
-                    deserializedBastionHostIPConfiguration.etag = reader.getString();
+                    deserializedBastionHostIpConfiguration.etag = reader.getString();
                 } else if ("type".equals(fieldName)) {
-                    deserializedBastionHostIPConfiguration.type = reader.getString();
+                    deserializedBastionHostIpConfiguration.type = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedBastionHostIPConfiguration;
+            return deserializedBastionHostIpConfiguration;
         });
     }
 }
