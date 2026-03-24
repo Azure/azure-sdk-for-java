@@ -17,52 +17,22 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class PathsUpdateHeaders {
     /*
-     * The x-ms-version property.
-     */
-    @Generated
-    private String xMsVersion;
-
-    /*
-     * The Content-Range property.
-     */
-    @Generated
-    private String contentRange;
-
-    /*
-     * The Last-Modified property.
-     */
-    @Generated
-    private DateTimeRfc1123 lastModified;
-
-    /*
-     * The x-ms-properties property.
-     */
-    @Generated
-    private String xMsProperties;
-
-    /*
-     * The x-ms-structured-body property.
-     */
-    @Generated
-    private String xMsStructuredBody;
-
-    /*
-     * The x-ms-continuation property.
-     */
-    @Generated
-    private String xMsContinuation;
-
-    /*
      * The Date property.
      */
     @Generated
     private DateTimeRfc1123 date;
 
     /*
-     * The Content-MD5 property.
+     * The ETag property.
      */
     @Generated
-    private String contentMD5;
+    private String eTag;
+
+    /*
+     * The Last-Modified property.
+     */
+    @Generated
+    private DateTimeRfc1123 lastModified;
 
     /*
      * The Accept-Ranges property.
@@ -77,12 +47,6 @@ public final class PathsUpdateHeaders {
     private String cacheControl;
 
     /*
-     * The ETag property.
-     */
-    @Generated
-    private String eTag;
-
-    /*
      * The Content-Disposition property.
      */
     @Generated
@@ -95,10 +59,46 @@ public final class PathsUpdateHeaders {
     private String contentEncoding;
 
     /*
+     * The Content-Language property.
+     */
+    @Generated
+    private String contentLanguage;
+
+    /*
      * The Content-Length property.
      */
     @Generated
     private Long contentLength;
+
+    /*
+     * The Content-Range property.
+     */
+    @Generated
+    private String contentRange;
+
+    /*
+     * The Content-Type property.
+     */
+    @Generated
+    private String contentType;
+
+    /*
+     * The Content-MD5 property.
+     */
+    @Generated
+    private String contentMD5;
+
+    /*
+     * The x-ms-properties property.
+     */
+    @Generated
+    private String xMsProperties;
+
+    /*
+     * The x-ms-continuation property.
+     */
+    @Generated
+    private String xMsContinuation;
 
     /*
      * The x-ms-request-id property.
@@ -107,24 +107,24 @@ public final class PathsUpdateHeaders {
     private String xMsRequestId;
 
     /*
-     * The Content-Language property.
+     * The x-ms-version property.
      */
     @Generated
-    private String contentLanguage;
+    private String xMsVersion;
 
     /*
-     * The Content-Type property.
+     * The x-ms-structured-body property.
      */
     @Generated
-    private String contentType;
-
-    private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
+    private String xMsStructuredBody;
 
     private static final HttpHeaderName X_MS_PROPERTIES = HttpHeaderName.fromString("x-ms-properties");
 
-    private static final HttpHeaderName X_MS_STRUCTURED_BODY = HttpHeaderName.fromString("x-ms-structured-body");
-
     private static final HttpHeaderName X_MS_CONTINUATION = HttpHeaderName.fromString("x-ms-continuation");
+
+    private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
+
+    private static final HttpHeaderName X_MS_STRUCTURED_BODY = HttpHeaderName.fromString("x-ms-structured-body");
 
     // HttpHeaders containing the raw property values.
     /**
@@ -133,177 +133,38 @@ public final class PathsUpdateHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public PathsUpdateHeaders(HttpHeaders rawHeaders) {
-        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
-        this.contentRange = rawHeaders.getValue(HttpHeaderName.CONTENT_RANGE);
-        String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
-        if (lastModified != null) {
-            this.lastModified = new DateTimeRfc1123(lastModified);
-        } else {
-            this.lastModified = null;
-        }
-        this.xMsProperties = rawHeaders.getValue(X_MS_PROPERTIES);
-        this.xMsStructuredBody = rawHeaders.getValue(X_MS_STRUCTURED_BODY);
-        this.xMsContinuation = rawHeaders.getValue(X_MS_CONTINUATION);
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
         } else {
             this.date = null;
         }
-        this.contentMD5 = rawHeaders.getValue(HttpHeaderName.CONTENT_MD5);
+        this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
+        String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
+        if (lastModified != null) {
+            this.lastModified = new DateTimeRfc1123(lastModified);
+        } else {
+            this.lastModified = null;
+        }
         this.acceptRanges = rawHeaders.getValue(HttpHeaderName.ACCEPT_RANGES);
         this.cacheControl = rawHeaders.getValue(HttpHeaderName.CACHE_CONTROL);
-        this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
         this.contentDisposition = rawHeaders.getValue(HttpHeaderName.CONTENT_DISPOSITION);
         this.contentEncoding = rawHeaders.getValue(HttpHeaderName.CONTENT_ENCODING);
+        this.contentLanguage = rawHeaders.getValue(HttpHeaderName.CONTENT_LANGUAGE);
         String contentLength = rawHeaders.getValue(HttpHeaderName.CONTENT_LENGTH);
         if (contentLength != null) {
             this.contentLength = Long.parseLong(contentLength);
         } else {
             this.contentLength = null;
         }
-        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
-        this.contentLanguage = rawHeaders.getValue(HttpHeaderName.CONTENT_LANGUAGE);
+        this.contentRange = rawHeaders.getValue(HttpHeaderName.CONTENT_RANGE);
         this.contentType = rawHeaders.getValue(HttpHeaderName.CONTENT_TYPE);
-    }
-
-    /**
-     * Get the xMsVersion property: The x-ms-version property.
-     * 
-     * @return the xMsVersion value.
-     */
-    @Generated
-    public String getXMsVersion() {
-        return this.xMsVersion;
-    }
-
-    /**
-     * Set the xMsVersion property: The x-ms-version property.
-     * 
-     * @param xMsVersion the xMsVersion value to set.
-     * @return the PathsUpdateHeaders object itself.
-     */
-    @Generated
-    public PathsUpdateHeaders setXMsVersion(String xMsVersion) {
-        this.xMsVersion = xMsVersion;
-        return this;
-    }
-
-    /**
-     * Get the contentRange property: The Content-Range property.
-     * 
-     * @return the contentRange value.
-     */
-    @Generated
-    public String getContentRange() {
-        return this.contentRange;
-    }
-
-    /**
-     * Set the contentRange property: The Content-Range property.
-     * 
-     * @param contentRange the contentRange value to set.
-     * @return the PathsUpdateHeaders object itself.
-     */
-    @Generated
-    public PathsUpdateHeaders setContentRange(String contentRange) {
-        this.contentRange = contentRange;
-        return this;
-    }
-
-    /**
-     * Get the lastModified property: The Last-Modified property.
-     * 
-     * @return the lastModified value.
-     */
-    @Generated
-    public OffsetDateTime getLastModified() {
-        if (this.lastModified == null) {
-            return null;
-        }
-        return this.lastModified.getDateTime();
-    }
-
-    /**
-     * Set the lastModified property: The Last-Modified property.
-     * 
-     * @param lastModified the lastModified value to set.
-     * @return the PathsUpdateHeaders object itself.
-     */
-    @Generated
-    public PathsUpdateHeaders setLastModified(OffsetDateTime lastModified) {
-        if (lastModified == null) {
-            this.lastModified = null;
-        } else {
-            this.lastModified = new DateTimeRfc1123(lastModified);
-        }
-        return this;
-    }
-
-    /**
-     * Get the xMsProperties property: The x-ms-properties property.
-     * 
-     * @return the xMsProperties value.
-     */
-    @Generated
-    public String getXMsProperties() {
-        return this.xMsProperties;
-    }
-
-    /**
-     * Set the xMsProperties property: The x-ms-properties property.
-     * 
-     * @param xMsProperties the xMsProperties value to set.
-     * @return the PathsUpdateHeaders object itself.
-     */
-    @Generated
-    public PathsUpdateHeaders setXMsProperties(String xMsProperties) {
-        this.xMsProperties = xMsProperties;
-        return this;
-    }
-
-    /**
-     * Get the xMsStructuredBody property: The x-ms-structured-body property.
-     * 
-     * @return the xMsStructuredBody value.
-     */
-    @Generated
-    public String getXMsStructuredBody() {
-        return this.xMsStructuredBody;
-    }
-
-    /**
-     * Set the xMsStructuredBody property: The x-ms-structured-body property.
-     * 
-     * @param xMsStructuredBody the xMsStructuredBody value to set.
-     * @return the PathsUpdateHeaders object itself.
-     */
-    @Generated
-    public PathsUpdateHeaders setXMsStructuredBody(String xMsStructuredBody) {
-        this.xMsStructuredBody = xMsStructuredBody;
-        return this;
-    }
-
-    /**
-     * Get the xMsContinuation property: The x-ms-continuation property.
-     * 
-     * @return the xMsContinuation value.
-     */
-    @Generated
-    public String getXMsContinuation() {
-        return this.xMsContinuation;
-    }
-
-    /**
-     * Set the xMsContinuation property: The x-ms-continuation property.
-     * 
-     * @param xMsContinuation the xMsContinuation value to set.
-     * @return the PathsUpdateHeaders object itself.
-     */
-    @Generated
-    public PathsUpdateHeaders setXMsContinuation(String xMsContinuation) {
-        this.xMsContinuation = xMsContinuation;
-        return this;
+        this.contentMD5 = rawHeaders.getValue(HttpHeaderName.CONTENT_MD5);
+        this.xMsProperties = rawHeaders.getValue(X_MS_PROPERTIES);
+        this.xMsContinuation = rawHeaders.getValue(X_MS_CONTINUATION);
+        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
+        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
+        this.xMsStructuredBody = rawHeaders.getValue(X_MS_STRUCTURED_BODY);
     }
 
     /**
@@ -336,24 +197,53 @@ public final class PathsUpdateHeaders {
     }
 
     /**
-     * Get the contentMD5 property: The Content-MD5 property.
+     * Get the eTag property: The ETag property.
      * 
-     * @return the contentMD5 value.
+     * @return the eTag value.
      */
     @Generated
-    public String getContentMD5() {
-        return this.contentMD5;
+    public String getETag() {
+        return this.eTag;
     }
 
     /**
-     * Set the contentMD5 property: The Content-MD5 property.
+     * Set the eTag property: The ETag property.
      * 
-     * @param contentMD5 the contentMD5 value to set.
+     * @param eTag the eTag value to set.
      * @return the PathsUpdateHeaders object itself.
      */
     @Generated
-    public PathsUpdateHeaders setContentMD5(String contentMD5) {
-        this.contentMD5 = contentMD5;
+    public PathsUpdateHeaders setETag(String eTag) {
+        this.eTag = eTag;
+        return this;
+    }
+
+    /**
+     * Get the lastModified property: The Last-Modified property.
+     * 
+     * @return the lastModified value.
+     */
+    @Generated
+    public OffsetDateTime getLastModified() {
+        if (this.lastModified == null) {
+            return null;
+        }
+        return this.lastModified.getDateTime();
+    }
+
+    /**
+     * Set the lastModified property: The Last-Modified property.
+     * 
+     * @param lastModified the lastModified value to set.
+     * @return the PathsUpdateHeaders object itself.
+     */
+    @Generated
+    public PathsUpdateHeaders setLastModified(OffsetDateTime lastModified) {
+        if (lastModified == null) {
+            this.lastModified = null;
+        } else {
+            this.lastModified = new DateTimeRfc1123(lastModified);
+        }
         return this;
     }
 
@@ -402,28 +292,6 @@ public final class PathsUpdateHeaders {
     }
 
     /**
-     * Get the eTag property: The ETag property.
-     * 
-     * @return the eTag value.
-     */
-    @Generated
-    public String getETag() {
-        return this.eTag;
-    }
-
-    /**
-     * Set the eTag property: The ETag property.
-     * 
-     * @param eTag the eTag value to set.
-     * @return the PathsUpdateHeaders object itself.
-     */
-    @Generated
-    public PathsUpdateHeaders setETag(String eTag) {
-        this.eTag = eTag;
-        return this;
-    }
-
-    /**
      * Get the contentDisposition property: The Content-Disposition property.
      * 
      * @return the contentDisposition value.
@@ -468,6 +336,28 @@ public final class PathsUpdateHeaders {
     }
 
     /**
+     * Get the contentLanguage property: The Content-Language property.
+     * 
+     * @return the contentLanguage value.
+     */
+    @Generated
+    public String getContentLanguage() {
+        return this.contentLanguage;
+    }
+
+    /**
+     * Set the contentLanguage property: The Content-Language property.
+     * 
+     * @param contentLanguage the contentLanguage value to set.
+     * @return the PathsUpdateHeaders object itself.
+     */
+    @Generated
+    public PathsUpdateHeaders setContentLanguage(String contentLanguage) {
+        this.contentLanguage = contentLanguage;
+        return this;
+    }
+
+    /**
      * Get the contentLength property: The Content-Length property.
      * 
      * @return the contentLength value.
@@ -486,6 +376,116 @@ public final class PathsUpdateHeaders {
     @Generated
     public PathsUpdateHeaders setContentLength(Long contentLength) {
         this.contentLength = contentLength;
+        return this;
+    }
+
+    /**
+     * Get the contentRange property: The Content-Range property.
+     * 
+     * @return the contentRange value.
+     */
+    @Generated
+    public String getContentRange() {
+        return this.contentRange;
+    }
+
+    /**
+     * Set the contentRange property: The Content-Range property.
+     * 
+     * @param contentRange the contentRange value to set.
+     * @return the PathsUpdateHeaders object itself.
+     */
+    @Generated
+    public PathsUpdateHeaders setContentRange(String contentRange) {
+        this.contentRange = contentRange;
+        return this;
+    }
+
+    /**
+     * Get the contentType property: The Content-Type property.
+     * 
+     * @return the contentType value.
+     */
+    @Generated
+    public String getContentType() {
+        return this.contentType;
+    }
+
+    /**
+     * Set the contentType property: The Content-Type property.
+     * 
+     * @param contentType the contentType value to set.
+     * @return the PathsUpdateHeaders object itself.
+     */
+    @Generated
+    public PathsUpdateHeaders setContentType(String contentType) {
+        this.contentType = contentType;
+        return this;
+    }
+
+    /**
+     * Get the contentMD5 property: The Content-MD5 property.
+     * 
+     * @return the contentMD5 value.
+     */
+    @Generated
+    public String getContentMD5() {
+        return this.contentMD5;
+    }
+
+    /**
+     * Set the contentMD5 property: The Content-MD5 property.
+     * 
+     * @param contentMD5 the contentMD5 value to set.
+     * @return the PathsUpdateHeaders object itself.
+     */
+    @Generated
+    public PathsUpdateHeaders setContentMD5(String contentMD5) {
+        this.contentMD5 = contentMD5;
+        return this;
+    }
+
+    /**
+     * Get the xMsProperties property: The x-ms-properties property.
+     * 
+     * @return the xMsProperties value.
+     */
+    @Generated
+    public String getXMsProperties() {
+        return this.xMsProperties;
+    }
+
+    /**
+     * Set the xMsProperties property: The x-ms-properties property.
+     * 
+     * @param xMsProperties the xMsProperties value to set.
+     * @return the PathsUpdateHeaders object itself.
+     */
+    @Generated
+    public PathsUpdateHeaders setXMsProperties(String xMsProperties) {
+        this.xMsProperties = xMsProperties;
+        return this;
+    }
+
+    /**
+     * Get the xMsContinuation property: The x-ms-continuation property.
+     * 
+     * @return the xMsContinuation value.
+     */
+    @Generated
+    public String getXMsContinuation() {
+        return this.xMsContinuation;
+    }
+
+    /**
+     * Set the xMsContinuation property: The x-ms-continuation property.
+     * 
+     * @param xMsContinuation the xMsContinuation value to set.
+     * @return the PathsUpdateHeaders object itself.
+     */
+    @Generated
+    public PathsUpdateHeaders setXMsContinuation(String xMsContinuation) {
+        this.xMsContinuation = xMsContinuation;
         return this;
     }
 
@@ -512,46 +512,46 @@ public final class PathsUpdateHeaders {
     }
 
     /**
-     * Get the contentLanguage property: The Content-Language property.
+     * Get the xMsVersion property: The x-ms-version property.
      * 
-     * @return the contentLanguage value.
+     * @return the xMsVersion value.
      */
     @Generated
-    public String getContentLanguage() {
-        return this.contentLanguage;
+    public String getXMsVersion() {
+        return this.xMsVersion;
     }
 
     /**
-     * Set the contentLanguage property: The Content-Language property.
+     * Set the xMsVersion property: The x-ms-version property.
      * 
-     * @param contentLanguage the contentLanguage value to set.
+     * @param xMsVersion the xMsVersion value to set.
      * @return the PathsUpdateHeaders object itself.
      */
     @Generated
-    public PathsUpdateHeaders setContentLanguage(String contentLanguage) {
-        this.contentLanguage = contentLanguage;
+    public PathsUpdateHeaders setXMsVersion(String xMsVersion) {
+        this.xMsVersion = xMsVersion;
         return this;
     }
 
     /**
-     * Get the contentType property: The Content-Type property.
+     * Get the xMsStructuredBody property: The x-ms-structured-body property.
      * 
-     * @return the contentType value.
+     * @return the xMsStructuredBody value.
      */
     @Generated
-    public String getContentType() {
-        return this.contentType;
+    public String getXMsStructuredBody() {
+        return this.xMsStructuredBody;
     }
 
     /**
-     * Set the contentType property: The Content-Type property.
+     * Set the xMsStructuredBody property: The x-ms-structured-body property.
      * 
-     * @param contentType the contentType value to set.
+     * @param xMsStructuredBody the xMsStructuredBody value to set.
      * @return the PathsUpdateHeaders object itself.
      */
     @Generated
-    public PathsUpdateHeaders setContentType(String contentType) {
-        this.contentType = contentType;
+    public PathsUpdateHeaders setXMsStructuredBody(String xMsStructuredBody) {
+        this.xMsStructuredBody = xMsStructuredBody;
         return this;
     }
 }

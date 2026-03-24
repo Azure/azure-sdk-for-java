@@ -47,6 +47,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -282,6 +283,48 @@ public class BuildHelperTests {
             () -> new QueueServiceClientBuilder().endpoint(ENDPOINT + "?sig=foo")
                 .credential(new AzureSasCredential("foo"))
                 .buildClient());
+    }
+
+    @ParameterizedTest
+    @MethodSource("queueAccountNameSupplier")
+    void secondaryIpv6Dualstack(String urlString, String expectedAccountName) {
+        BuilderHelper.QueueUrlParts queueUrlParts = BuilderHelper.parseEndpoint(urlString, LOGGER);
+
+        assertEquals("https", queueUrlParts.getScheme());
+        assertEquals(expectedAccountName, queueUrlParts.getAccountName());
+        assertNull(queueUrlParts.getQueueName());
+        assertNull(queueUrlParts.getSasToken());
+
+        String newUri = queueUrlParts.getEndpoint() + "/";
+        assertEquals(urlString, newUri);
+    }
+
+    private static Stream<Arguments> queueAccountNameSupplier() {
+        return Stream.of(Arguments.of("https://myaccount.queue.core.windows.net/", "myaccount"),
+            Arguments.of("https://myaccount-secondary.queue.core.windows.net/", "myaccount"),
+            Arguments.of("https://myaccount-dualstack.queue.core.windows.net/", "myaccount"),
+            Arguments.of("https://myaccount-ipv6.queue.core.windows.net/", "myaccount"),
+            Arguments.of("https://myaccount-secondary-dualstack.queue.core.windows.net/", "myaccount"),
+            Arguments.of("https://myaccount-secondary-ipv6.queue.core.windows.net/", "myaccount"));
+    }
+
+    @ParameterizedTest
+    @MethodSource("queueManagedDiskAccountNameSupplier")
+    void ipv6InternalAccounts(String urlString, String expectedAccountName) {
+        BuilderHelper.QueueUrlParts queueUrlParts = BuilderHelper.parseEndpoint(urlString, LOGGER);
+
+        assertEquals("https", queueUrlParts.getScheme());
+        assertEquals(expectedAccountName, queueUrlParts.getAccountName());
+        assertNull(queueUrlParts.getQueueName());
+        assertNull(queueUrlParts.getSasToken());
+
+        String newUri = queueUrlParts.getEndpoint() + "/";
+        assertEquals(urlString, newUri);
+    }
+
+    private static Stream<Arguments> queueManagedDiskAccountNameSupplier() {
+        return Stream.of(Arguments.of("https://md-d3rqxhqbxbwq.queue.core.windows.net/", "md-d3rqxhqbxbwq"),
+            Arguments.of("https://md-ssd-bndub02px100c21.queue.core.windows.net/", "md-ssd-bndub02px100c21"));
     }
 
     @Test

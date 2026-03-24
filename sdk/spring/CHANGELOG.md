@@ -1,4 +1,6 @@
 # Release History
+# (Unreleased)
+Upgrade Spring Boot dependencies version to 4.0.4 and Spring Cloud dependencies version to 2025.1.1
 
 ## 7.1.0 (2026-03-11)
 - This release is compatible with Spring Boot 4.0.0-4.0.3. (Note: 4.0.x (x>3) should be supported, but they aren't tested with this release.)
