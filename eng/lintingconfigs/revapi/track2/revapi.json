@@ -1231,7 +1231,7 @@
           "justification": "Pageable models moved to implementation package. Unlikely used by user.",
           "code": "java.class.removed",
           "old": {
-            "match": "class com\\.azure\\.resourcemanager\\.storage\\.models\\.(BlobServiceItems|DeletedAccountListResult|EncryptionScopeListResult|FileShareItems|ListBlobInventoryPolicy|ListContainerItems|ListQueueResource|ListTableResource|NetworkSecurityPerimeterConfigurationList|OperationListResult|PrivateEndpointConnectionListResult|StorageAccountListResult|StorageSkuListResult|StorageTaskAssignmentsList|StorageTaskReportSummary|UsageListResult)",
+            "match": "class com\\.azure\\.resourcemanager\\.storage\\.models\\.(BlobServiceItems|DeletedAccountListResult|EncryptionScopeListResult|FileServiceUsages|FileShareItems|ListBlobInventoryPolicy|ListContainerItems|ListQueueResource|ListTableResource|LocalUsers|NetworkSecurityPerimeterConfigurationList|ObjectReplicationPolicies|OperationListResult|PrivateEndpointConnectionListResult|StorageAccountListResult|StorageSkuListResult|StorageTaskAssignmentsList|StorageTaskReportSummary|UsageListResult)",
             "matcher": "regex"
           }
         },
