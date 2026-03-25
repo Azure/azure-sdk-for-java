@@ -214,16 +214,17 @@ public class CosmosMetricsReporter {
 
         ObjectNode doc = createBaseDoc(timestamp, summary, "distribution", cpuPercent);
         doc.put("Count", summary.count());
-        doc.put("Mean", round(summary.mean()));
-        doc.put("Max", round(summary.max()));
+        doc.put("MeanMs", round(summary.mean()));
+        doc.put("MaxMs", round(summary.max()));
+        doc.put("Value", round(summary.totalAmount()));
 
         HistogramSnapshot snapshot = summary.takeSnapshot();
         for (ValueAtPercentile vp : snapshot.percentileValues()) {
             double p = vp.percentile();
-            if (p == 0.5) doc.put("P50", round(vp.value()));
-            else if (p == 0.9) doc.put("P90", round(vp.value()));
-            else if (p == 0.95) doc.put("P95", round(vp.value()));
-            else if (p == 0.99) doc.put("P99", round(vp.value()));
+            if (p == 0.5) doc.put("P50Ms", round(vp.value()));
+            else if (p == 0.9) doc.put("P90Ms", round(vp.value()));
+            else if (p == 0.95) doc.put("P95Ms", round(vp.value()));
+            else if (p == 0.99) doc.put("P99Ms", round(vp.value()));
         }
 
         uploadDoc(doc);
