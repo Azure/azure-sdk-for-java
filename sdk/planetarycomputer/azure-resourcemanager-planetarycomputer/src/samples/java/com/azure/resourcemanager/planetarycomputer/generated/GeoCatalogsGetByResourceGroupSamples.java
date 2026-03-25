@@ -9,7 +9,7 @@ package com.azure.resourcemanager.planetarycomputer.generated;
  */
 public final class GeoCatalogsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-02-11-preview/GeoCatalogs_Get.json
+     * x-ms-original-file: 2026-04-15/GeoCatalogs_Get.json
      */
     /**
      * Sample code: GeoCatalogs_Get.

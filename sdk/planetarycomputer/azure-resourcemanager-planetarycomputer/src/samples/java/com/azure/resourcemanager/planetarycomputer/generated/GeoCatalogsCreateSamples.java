@@ -18,7 +18,7 @@ import java.util.Map;
  */
 public final class GeoCatalogsCreateSamples {
     /*
-     * x-ms-original-file: 2025-02-11-preview/GeoCatalogs_Create.json
+     * x-ms-original-file: 2026-04-15/GeoCatalogs_Create.json
      */
     /**
      * Sample code: GeoCatalogs_Create.
