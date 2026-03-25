@@ -11,7 +11,7 @@ public final class TlsCertificatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TlsCertificateProperties model
-            = BinaryData.fromString("{\"type\":\"LocalDirectory\",\"location\":\"tvfcivfsn\"}")
+            = BinaryData.fromString("{\"type\":\"LocalDirectory\",\"location\":\"mclfplphoxuscr\"}")
                 .toObject(TlsCertificateProperties.class);
     }
 }

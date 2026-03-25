@@ -59,8 +59,10 @@ public final class UpdateRunsImpl implements UpdateRuns {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new UpdateRunImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<UpdateRun> listByFleet(String resourceGroupName, String fleetName, Context context) {
-        PagedIterable<UpdateRunInner> inner = this.serviceClient().listByFleet(resourceGroupName, fleetName, context);
+    public PagedIterable<UpdateRun> listByFleet(String resourceGroupName, String fleetName, Integer top,
+        String skipToken, Context context) {
+        PagedIterable<UpdateRunInner> inner
+            = this.serviceClient().listByFleet(resourceGroupName, fleetName, top, skipToken, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new UpdateRunImpl(inner1, this.manager()));
     }
 

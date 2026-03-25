@@ -6,6 +6,7 @@ package com.azure.resourcemanager.standbypool.generated;
 
 import com.azure.resourcemanager.standbypool.models.ContainerGroupProfile;
 import com.azure.resourcemanager.standbypool.models.ContainerGroupProperties;
+import com.azure.resourcemanager.standbypool.models.DynamicSizing;
 import com.azure.resourcemanager.standbypool.models.RefillPolicy;
 import com.azure.resourcemanager.standbypool.models.StandbyContainerGroupPoolElasticityProfile;
 import com.azure.resourcemanager.standbypool.models.StandbyContainerGroupPoolResourceProperties;
@@ -19,7 +20,7 @@ import java.util.Map;
  */
 public final class StandbyContainerGroupPoolsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-03-01/StandbyContainerGroupPools_CreateOrUpdate.json
+     * x-ms-original-file: 2025-10-01/StandbyContainerGroupPools_CreateOrUpdate.json
      */
     /**
      * Sample code: StandbyContainerGroupPools_CreateOrUpdate.
@@ -35,7 +36,8 @@ public final class StandbyContainerGroupPoolsCreateOrUpdateSamples {
             .withTags(mapOf())
             .withProperties(new StandbyContainerGroupPoolResourceProperties()
                 .withElasticityProfile(new StandbyContainerGroupPoolElasticityProfile().withMaxReadyCapacity(688L)
-                    .withRefillPolicy(RefillPolicy.ALWAYS))
+                    .withRefillPolicy(RefillPolicy.ALWAYS)
+                    .withDynamicSizing(new DynamicSizing().withEnabled(true)))
                 .withContainerGroupProperties(new ContainerGroupProperties()
                     .withContainerGroupProfile(new ContainerGroupProfile().withId(
                         "/subscriptions/00000000-0000-0000-0000-000000000009/resourceGroups/rgstandbypool/providers/Microsoft.ContainerInstance/containerGroupProfiles/cgProfile")

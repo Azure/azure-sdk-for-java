@@ -239,6 +239,7 @@
     <module>sdk/servicebus</module>
     <module>sdk/servicefabric</module>
     <module>sdk/servicefabricmanagedclusters</module>
+    <module>sdk/servicegroups</module>
     <module>sdk/servicelinker</module>
     <module>sdk/servicenetworking</module>
     <module>sdk/signalr</module>

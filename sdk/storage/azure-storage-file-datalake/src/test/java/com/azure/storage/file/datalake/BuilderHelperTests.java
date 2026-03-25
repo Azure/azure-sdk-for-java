@@ -17,10 +17,12 @@ import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RetryPolicyType;
 import com.azure.storage.file.datalake.implementation.util.BuilderHelper;
+import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -30,6 +32,8 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Map;
@@ -40,6 +44,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -230,6 +235,53 @@ public class BuilderHelperTests {
         StepVerifier.create(fileClient.getHttpPipeline().send(request(fileClient.getFileUrl())))
             .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("dfsAccountNameSupplier")
+    void secondaryIpv6Dualstack(String urlString, String expectedAccountName) throws MalformedURLException {
+        BlobUrlParts blobUrlParts = BlobUrlParts.parse(new URL(urlString));
+
+        assertEquals("https", blobUrlParts.getScheme());
+        assertEquals(expectedAccountName, blobUrlParts.getAccountName());
+        assertEquals("", blobUrlParts.getBlobContainerName());
+        assertNull(blobUrlParts.getSnapshot());
+        assertEquals("", blobUrlParts.getCommonSasQueryParameters().encode());
+        assertNull(blobUrlParts.getVersionId());
+
+        String newUri = DataLakeImplUtils.endpointToDesiredEndpoint(blobUrlParts.toUrl().toString(), "dfs", "blob");
+        assertEquals(urlString, newUri);
+    }
+
+    private static Stream<Arguments> dfsAccountNameSupplier() {
+        return Stream.of(Arguments.of("https://myaccount.dfs.core.windows.net/", "myaccount"),
+            Arguments.of("https://myaccount-secondary.dfs.core.windows.net/", "myaccount"),
+            Arguments.of("https://myaccount-dualstack.dfs.core.windows.net/", "myaccount"),
+            Arguments.of("https://myaccount-ipv6.dfs.core.windows.net/", "myaccount"),
+            Arguments.of("https://myaccount-secondary-dualstack.dfs.core.windows.net/", "myaccount"),
+            Arguments.of("https://myaccount-secondary-ipv6.dfs.core.windows.net/", "myaccount"));
+    }
+
+    @ParameterizedTest
+    @MethodSource("dfsManagedDiskAccountNameSupplier")
+    void ipv6InternalAccounts(String urlString, String expectedAccountName) throws MalformedURLException {
+        String blobUrlString = DataLakeImplUtils.endpointToDesiredEndpoint(urlString, "blob", "dfs");
+        BlobUrlParts blobUrlParts = BlobUrlParts.parse(new URL(blobUrlString));
+
+        assertEquals("https", blobUrlParts.getScheme());
+        assertEquals(expectedAccountName, blobUrlParts.getAccountName());
+        assertEquals("", blobUrlParts.getBlobContainerName());
+        assertNull(blobUrlParts.getSnapshot());
+        assertEquals("", blobUrlParts.getCommonSasQueryParameters().encode());
+        assertNull(blobUrlParts.getVersionId());
+
+        String newUri = DataLakeImplUtils.endpointToDesiredEndpoint(blobUrlParts.toUrl().toString(), "dfs", "blob");
+        assertEquals(urlString, newUri);
+    }
+
+    private static Stream<Arguments> dfsManagedDiskAccountNameSupplier() {
+        return Stream.of(Arguments.of("https://md-d3rqxhqbxbwq.dfs.core.windows.net/", "md-d3rqxhqbxbwq"),
+            Arguments.of("https://md-ssd-bndub02px100c21.dfs.core.windows.net/", "md-ssd-bndub02px100c21"));
     }
 
     @Test
