@@ -447,13 +447,13 @@ connect gpt-4o-realtime-preview        ← session lifetime span
 ```
 
 **Session-level attributes** (on the connect span):
-- `gen_ai.system` — `openai`
+- `gen_ai.system` — `az.ai.voicelive`
 - `gen_ai.request.model` — Model name (e.g., `gpt-4o-realtime-preview`)
 - `server.address` — Service endpoint
 - `gen_ai.voice.session_id` — Voice session ID
 - `gen_ai.voice.turn_count` — Completed response turns
 - `gen_ai.voice.interruption_count` — User interruptions
-- `gen_ai.voice.audio_bytes_sent` / `audio_bytes_received` — Audio payload bytes
+- `gen_ai.voice.audio_bytes_sent` / `gen_ai.voice.audio_bytes_received` — Audio payload bytes
 - `gen_ai.voice.first_token_latency_ms` — Time to first audio response
 
 #### Content recording
