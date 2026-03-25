@@ -139,7 +139,9 @@ public class Configs {
 
     //  Reactor Netty Constants
     private static final Duration MAX_IDLE_CONNECTION_TIMEOUT = Duration.ofSeconds(60);
-    private static final Duration CONNECTION_ACQUIRE_TIMEOUT = Duration.ofSeconds(45);
+    private static final int DEFAULT_CONNECTION_ACQUIRE_TIMEOUT_IN_SECONDS = 45;
+    private static final String CONNECTION_ACQUIRE_TIMEOUT_IN_SECONDS = "COSMOS.CONNECTION_ACQUIRE_TIMEOUT_IN_SECONDS";
+    private static final String CONNECTION_ACQUIRE_TIMEOUT_IN_SECONDS_VARIABLE = "COSMOS_CONNECTION_ACQUIRE_TIMEOUT_IN_SECONDS";
     private static final String REACTOR_NETTY_CONNECTION_POOL_NAME = "reactor-netty-connection-pool";
     private static final int DEFAULT_HTTP_RESPONSE_TIMEOUT_IN_SECONDS = 60;
     private static final int DEFAULT_QUERY_PLAN_RESPONSE_TIMEOUT_IN_SECONDS = 5;
@@ -594,7 +596,49 @@ public class Configs {
     }
 
     public static Duration getConnectionAcquireTimeout() {
-        return CONNECTION_ACQUIRE_TIMEOUT;
+        return Duration.ofSeconds(getConnectionAcquireTimeoutInSeconds());
+    }
+
+    public static int getConnectionAcquireTimeoutInSeconds() {
+        int value = DEFAULT_CONNECTION_ACQUIRE_TIMEOUT_IN_SECONDS;
+
+        String valueFromSystemProperty = System.getProperty(CONNECTION_ACQUIRE_TIMEOUT_IN_SECONDS);
+        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
+            try {
+                value = Integer.parseInt(valueFromSystemProperty);
+            } catch (NumberFormatException e) {
+                logger.warn(
+                    "Invalid non-numeric value '{}' for system property {}. Falling back to environment variable or default.",
+                    valueFromSystemProperty,
+                    CONNECTION_ACQUIRE_TIMEOUT_IN_SECONDS);
+                valueFromSystemProperty = null;
+            }
+        }
+
+        if (valueFromSystemProperty == null || valueFromSystemProperty.isEmpty()) {
+            String valueFromEnvVariable = System.getenv(CONNECTION_ACQUIRE_TIMEOUT_IN_SECONDS_VARIABLE);
+            if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
+                try {
+                    value = Integer.parseInt(valueFromEnvVariable);
+                } catch (NumberFormatException e) {
+                    logger.warn(
+                        "Invalid non-numeric value '{}' for environment variable {}. Falling back to default: {}s.",
+                        valueFromEnvVariable,
+                        CONNECTION_ACQUIRE_TIMEOUT_IN_SECONDS_VARIABLE,
+                        DEFAULT_CONNECTION_ACQUIRE_TIMEOUT_IN_SECONDS);
+                }
+            }
+        }
+
+        if (value <= 0) {
+            logger.warn(
+                "Invalid connection acquire timeout: {}s. Must be > 0. Falling back to default: {}s.",
+                value,
+                DEFAULT_CONNECTION_ACQUIRE_TIMEOUT_IN_SECONDS);
+            return DEFAULT_CONNECTION_ACQUIRE_TIMEOUT_IN_SECONDS;
+        }
+
+        return value;
     }
 
     /**

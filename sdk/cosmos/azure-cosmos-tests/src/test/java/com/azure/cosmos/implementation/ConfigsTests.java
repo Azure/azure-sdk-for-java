@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.directconnectivity.Protocol;
 import org.testng.annotations.Test;
 
 import java.net.URI;
+import java.time.Duration;
 import java.util.EnumSet;
 
 import static com.azure.cosmos.implementation.Configs.isThinClientEnabled;
@@ -257,6 +258,58 @@ public class ConfigsTests {
             assertThat(config.getThinclientEndpoint()).isEqualTo(URI.create("testThinClientEndpoint"));
         } finally {
             System.clearProperty("COSMOS.THINCLIENT_ENDPOINT");
+        }
+    }
+
+    @Test(groups = { "unit" })
+    public void connectionAcquireTimeoutDefaultTest() {
+        // Default connection acquire timeout should be 45 seconds
+        System.clearProperty("COSMOS.CONNECTION_ACQUIRE_TIMEOUT_IN_SECONDS");
+        try {
+            assertThat(Configs.getConnectionAcquireTimeout()).isEqualTo(Duration.ofSeconds(45));
+        } finally {
+            System.clearProperty("COSMOS.CONNECTION_ACQUIRE_TIMEOUT_IN_SECONDS");
+        }
+    }
+
+    @Test(groups = { "unit" })
+    public void connectionAcquireTimeoutOverrideTest() {
+        System.clearProperty("COSMOS.CONNECTION_ACQUIRE_TIMEOUT_IN_SECONDS");
+        System.setProperty("COSMOS.CONNECTION_ACQUIRE_TIMEOUT_IN_SECONDS", "30");
+        try {
+            assertThat(Configs.getConnectionAcquireTimeout()).isEqualTo(Duration.ofSeconds(30));
+        } finally {
+            System.clearProperty("COSMOS.CONNECTION_ACQUIRE_TIMEOUT_IN_SECONDS");
+        }
+    }
+
+    @Test(groups = { "unit" })
+    public void connectionAcquireTimeoutRejectsZeroAndNegative() {
+        // Zero should fall back to default (45s)
+        System.setProperty("COSMOS.CONNECTION_ACQUIRE_TIMEOUT_IN_SECONDS", "0");
+        try {
+            assertThat(Configs.getConnectionAcquireTimeout()).isEqualTo(Duration.ofSeconds(45));
+        } finally {
+            System.clearProperty("COSMOS.CONNECTION_ACQUIRE_TIMEOUT_IN_SECONDS");
+        }
+
+        // Negative should fall back to default (45s)
+        System.setProperty("COSMOS.CONNECTION_ACQUIRE_TIMEOUT_IN_SECONDS", "-1");
+        try {
+            assertThat(Configs.getConnectionAcquireTimeout()).isEqualTo(Duration.ofSeconds(45));
+        } finally {
+            System.clearProperty("COSMOS.CONNECTION_ACQUIRE_TIMEOUT_IN_SECONDS");
+        }
+    }
+
+    @Test(groups = { "unit" })
+    public void connectionAcquireTimeoutRejectsNonNumeric() {
+        System.setProperty("COSMOS.CONNECTION_ACQUIRE_TIMEOUT_IN_SECONDS", "abc");
+        try {
+            // Non-numeric should fall back to default (45s)
+            assertThat(Configs.getConnectionAcquireTimeout()).isEqualTo(Duration.ofSeconds(45));
+        } finally {
+            System.clearProperty("COSMOS.CONNECTION_ACQUIRE_TIMEOUT_IN_SECONDS");
         }
     }
 }
