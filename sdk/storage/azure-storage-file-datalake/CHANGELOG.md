@@ -1,15 +1,10 @@
 # Release History
 
-## 12.27.0-beta.2 (Unreleased)
+## 12.28.0-beta.1 (2026-03-25)
 
 ### Features Added
 - Added `getTags`/`setTages` to path APIs (sync + async).
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Added support for service version 2026-06-06.
 
 ## 12.27.0-beta.1 (2026-02-19)
 
