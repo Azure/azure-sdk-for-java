@@ -679,8 +679,12 @@ public class Sample02_AnalyzeUrlAsync {
                 int segmentIndex = 1;
                 for (AnalysisContent media : result.getContents()) {
                     AudioVisualContent videoContent = (AudioVisualContent) media;
-                    System.out.println("Combined segment " + segmentIndex + ": Start=" + videoContent.getStartTime().toMillis()
-                        + " ms, End=" + videoContent.getEndTime().toMillis() + " ms");
+                    System.out.println(
+                        "Combined segment " + segmentIndex + ": Start="
+                            + videoContent.getStartTime().toMillis()
+                            + " ms, End="
+                            + videoContent.getEndTime().toMillis()
+                            + " ms");
                     segmentIndex++;
                 }
             })
