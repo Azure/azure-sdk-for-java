@@ -39,6 +39,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketFrame;
+import io.opentelemetry.api.trace.Tracer;
 import reactor.core.Disposable;
 import reactor.core.publisher.BufferOverflowStrategy;
 import reactor.core.publisher.Flux;
@@ -95,6 +96,7 @@ public final class VoiceLiveSessionAsyncClient implements AsyncCloseable, AutoCl
     private final KeyCredential keyCredential;
     private final TokenCredential tokenCredential;
     private final SerializerAdapter serializer;
+    private final VoiceLiveTracer voiceLiveTracer;
 
     private final AtomicBoolean isConnected = new AtomicBoolean(false);
     private final AtomicBoolean isClosed = new AtomicBoolean(false);
@@ -122,10 +124,26 @@ public final class VoiceLiveSessionAsyncClient implements AsyncCloseable, AutoCl
      * @param keyCredential The API key credential.
      */
     VoiceLiveSessionAsyncClient(URI endpoint, KeyCredential keyCredential) {
+        this(endpoint, keyCredential, null, null, null);
+    }
+
+    /**
+     * Creates a new VoiceLiveSessionAsyncClient with API key authentication and tracing.
+     *
+     * @param endpoint The WebSocket endpoint.
+     * @param keyCredential The API key credential.
+     * @param tracer The OpenTelemetry Tracer (may be a no-op tracer).
+     * @param model The model name for span naming.
+     * @param enableContentRecording Override for content recording, or null to use env var.
+     */
+    VoiceLiveSessionAsyncClient(URI endpoint, KeyCredential keyCredential, Tracer tracer, String model,
+        Boolean enableContentRecording) {
         this.endpoint = Objects.requireNonNull(endpoint, "'endpoint' cannot be null");
         this.keyCredential = Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null");
         this.tokenCredential = null;
         this.serializer = JacksonAdapter.createDefaultSerializerAdapter();
+        this.voiceLiveTracer
+            = tracer != null ? new VoiceLiveTracer(tracer, endpoint, model, enableContentRecording) : null;
     }
 
     /**
@@ -135,10 +153,26 @@ public final class VoiceLiveSessionAsyncClient implements AsyncCloseable, AutoCl
      * @param tokenCredential The token credential.
      */
     VoiceLiveSessionAsyncClient(URI endpoint, TokenCredential tokenCredential) {
+        this(endpoint, tokenCredential, null, null, null);
+    }
+
+    /**
+     * Creates a new VoiceLiveSessionAsyncClient with token authentication and tracing.
+     *
+     * @param endpoint The WebSocket endpoint.
+     * @param tokenCredential The token credential.
+     * @param tracer The OpenTelemetry Tracer (may be a no-op tracer).
+     * @param model The model name for span naming.
+     * @param enableContentRecording Override for content recording, or null to use env var.
+     */
+    VoiceLiveSessionAsyncClient(URI endpoint, TokenCredential tokenCredential, Tracer tracer, String model,
+        Boolean enableContentRecording) {
         this.endpoint = Objects.requireNonNull(endpoint, "'endpoint' cannot be null");
         this.keyCredential = null;
         this.tokenCredential = Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null");
         this.serializer = JacksonAdapter.createDefaultSerializerAdapter();
+        this.voiceLiveTracer
+            = tracer != null ? new VoiceLiveTracer(tracer, endpoint, model, enableContentRecording) : null;
     }
 
     /**
@@ -158,6 +192,11 @@ public final class VoiceLiveSessionAsyncClient implements AsyncCloseable, AutoCl
 
         if (connectionCloseSignalRef.get() != null) {
             return Mono.error(new IllegalStateException("Session lifecycle already active"));
+        }
+
+        // Start the connect span (session lifetime)
+        if (voiceLiveTracer != null) {
+            voiceLiveTracer.startConnectSpan();
         }
 
         Sinks.One<Void> readySink = Sinks.one();
@@ -263,6 +302,11 @@ public final class VoiceLiveSessionAsyncClient implements AsyncCloseable, AutoCl
             readySink.tryEmitError(error);
             connectionCloseSignalRef.compareAndSet(closeSignal, null);
             disposeLifecycleSubscription();
+
+            // End the connect span on error
+            if (voiceLiveTracer != null) {
+                voiceLiveTracer.endConnectSpan(error);
+            }
         }, () -> {
             LOGGER.info("WebSocket handler completed");
             connectionCloseSignalRef.compareAndSet(closeSignal, null);
@@ -281,6 +325,13 @@ public final class VoiceLiveSessionAsyncClient implements AsyncCloseable, AutoCl
     public Mono<Void> closeAsync() {
         if (isClosed.compareAndSet(false, true)) {
             LOGGER.info("Closing VoiceLive session");
+
+            // Trace the close operation and end the connect span
+            if (voiceLiveTracer != null) {
+                voiceLiveTracer.traceClose();
+                voiceLiveTracer.endConnectSpan(null);
+            }
+
             sendSink.tryEmitComplete();
 
             Sinks.One<Void> closeSignal = connectionCloseSignalRef.getAndSet(null);
@@ -351,6 +402,12 @@ public final class VoiceLiveSessionAsyncClient implements AsyncCloseable, AutoCl
         return Mono.fromCallable(() -> {
             try {
                 String json = serializer.serialize(event, SerializerEncoding.JSON);
+
+                // Trace the send operation
+                if (voiceLiveTracer != null) {
+                    voiceLiveTracer.traceSend(event, json);
+                }
+
                 return BinaryData.fromString(json);
             } catch (IOException e) {
                 throw LOGGER.logExceptionAsError(new RuntimeException("Failed to serialize event", e));
@@ -401,7 +458,15 @@ public final class VoiceLiveSessionAsyncClient implements AsyncCloseable, AutoCl
             .onBackpressureBuffer(INBOUND_BUFFER_CAPACITY,
                 dropped -> LOGGER.error("Inbound buffer overflow; dropped {} bytes", dropped.toBytes().length),
                 BufferOverflowStrategy.ERROR)
-            .flatMap(this::parseToSessionUpdate)
+            .flatMap(data -> {
+                String rawPayload = data.toString();
+                return parseToSessionUpdate(data).doOnNext(update -> {
+                    // Trace the recv operation
+                    if (voiceLiveTracer != null) {
+                        voiceLiveTracer.traceRecv(update, rawPayload);
+                    }
+                });
+            })
             .doOnError(error -> LOGGER.error("Failed to parse session update", error))
             .onErrorResume(error -> {
                 LOGGER.warning("Skipping unrecognized server event: {}", error.getMessage());

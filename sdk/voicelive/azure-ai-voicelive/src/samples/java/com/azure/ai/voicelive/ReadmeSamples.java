@@ -38,6 +38,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.identity.AzureCliCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.opentelemetry.api.OpenTelemetry;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -400,6 +401,34 @@ public final class ReadmeSamples {
             })
             .block();
         // END: com.azure.ai.voicelive.functioncalling
+    }
+
+    /**
+     * Tracing: automatic via GlobalOpenTelemetry
+     */
+    public void tracingAutomatic() {
+        // BEGIN: com.azure.ai.voicelive.tracing.automatic
+        // No special configuration needed — tracing is picked up from GlobalOpenTelemetry
+        VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
+            .endpoint(endpoint)
+            .credential(new AzureKeyCredential(apiKey))
+            .buildAsyncClient();
+        // END: com.azure.ai.voicelive.tracing.automatic
+    }
+
+    /**
+     * Tracing: explicit OpenTelemetry instance
+     */
+    public void tracingExplicit() {
+        OpenTelemetry otel = OpenTelemetry.noop(); // Replace with your configured OpenTelemetry SDK instance
+
+        // BEGIN: com.azure.ai.voicelive.tracing.explicit
+        VoiceLiveAsyncClient client = new VoiceLiveClientBuilder()
+            .endpoint(endpoint)
+            .credential(new AzureKeyCredential(apiKey))
+            .openTelemetry(otel)
+            .buildAsyncClient();
+        // END: com.azure.ai.voicelive.tracing.explicit
     }
 
     // Helper methods
