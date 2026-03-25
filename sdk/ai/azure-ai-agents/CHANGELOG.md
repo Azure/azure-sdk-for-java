@@ -6,6 +6,7 @@
 
 ### Breaking Changes
 
+- `MemoryStoreUpdateStatus` changed from a standard Java `enum` to an `ExpandableStringEnum`-based class. The `values()` method now returns a `Collection` instead of an array, and instances should be compared using `.equals()` rather than `==`.
 - Renamed `getObject()` to `getObjectType()` in `AgentDetails`, `AgentVersionDetails`, and `MemoryStoreDetails`. The underlying field was renamed from `object` to `objectType`.
 - Renamed `MCPToolConnectorId` enum to `McpToolConnectorId` for consistent casing. The `McpTool` methods `getConnectorType()` and `setConnectorType()` now use `McpToolConnectorId` instead of `MCPToolConnectorId`.
 - Renamed remaining `*Param` model classes to `*Parameter` for naming consistency:
