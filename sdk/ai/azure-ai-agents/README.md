@@ -211,7 +211,7 @@ Response response = responsesClient.createAzureResponse(
     new AzureCreateResponseOptions().setAgentReference(agentReference),
     ResponseCreateParams.builder().conversation(conversation.id()));
 // To extract Azure-specific response details:
-AzureCreateResponseDetails azureResults = ResponsesUtils.getAzureFields(response);
+AzureCreateResponseDetails azureResults = ResponsesClient.getAzureFields(response);
 ```
 
 ### Using Agent tools
