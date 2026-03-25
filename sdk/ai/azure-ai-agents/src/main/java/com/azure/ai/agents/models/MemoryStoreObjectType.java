@@ -4,58 +4,60 @@
 
 package com.azure.ai.agents.models;
 
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * Defines values for MemoryStoreObjectType.
  */
-public enum MemoryStoreObjectType {
+public final class MemoryStoreObjectType extends ExpandableStringEnum<MemoryStoreObjectType> {
     /**
-     * Enum value memory_store.
+     * Static value memory_store for MemoryStoreObjectType.
      */
-    MEMORY_STORE("memory_store"),
+    @Generated
+    public static final MemoryStoreObjectType MEMORY_STORE = fromString("memory_store");
 
     /**
-     * Enum value memory_store.deleted.
+     * Static value memory_store.deleted for MemoryStoreObjectType.
      */
-    MEMORY_STORE_DELETED("memory_store.deleted"),
+    @Generated
+    public static final MemoryStoreObjectType MEMORY_STORE_DELETED = fromString("memory_store.deleted");
 
     /**
-     * Enum value memory_store.scope.deleted.
+     * Static value memory_store.scope.deleted for MemoryStoreObjectType.
      */
-    MEMORY_STORE_SCOPE_DELETED("memory_store.scope.deleted");
+    @Generated
+    public static final MemoryStoreObjectType MEMORY_STORE_SCOPE_DELETED = fromString("memory_store.scope.deleted");
 
     /**
-     * The actual serialized value for a MemoryStoreObjectType instance.
-     */
-    private final String value;
-
-    MemoryStoreObjectType(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a MemoryStoreObjectType instance.
+     * Creates a new instance of MemoryStoreObjectType value.
      * 
-     * @param value the serialized value to parse.
-     * @return the parsed MemoryStoreObjectType object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static MemoryStoreObjectType fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        MemoryStoreObjectType[] items = MemoryStoreObjectType.values();
-        for (MemoryStoreObjectType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Generated
+    @Deprecated
+    public MemoryStoreObjectType() {
     }
 
     /**
-     * {@inheritDoc}
+     * Creates or finds a MemoryStoreObjectType from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding MemoryStoreObjectType.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    @Generated
+    public static MemoryStoreObjectType fromString(String name) {
+        return fromString(name, MemoryStoreObjectType.class);
+    }
+
+    /**
+     * Gets known MemoryStoreObjectType values.
+     * 
+     * @return known MemoryStoreObjectType values.
+     */
+    @Generated
+    public static Collection<MemoryStoreObjectType> values() {
+        return values(MemoryStoreObjectType.class);
     }
 }

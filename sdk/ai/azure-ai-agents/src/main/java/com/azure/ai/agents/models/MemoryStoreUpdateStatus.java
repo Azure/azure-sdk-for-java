@@ -4,68 +4,72 @@
 
 package com.azure.ai.agents.models;
 
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * Status of a memory store update operation.
  */
-public enum MemoryStoreUpdateStatus {
+public final class MemoryStoreUpdateStatus extends ExpandableStringEnum<MemoryStoreUpdateStatus> {
     /**
-     * Enum value queued.
+     * Static value queued for MemoryStoreUpdateStatus.
      */
-    QUEUED("queued"),
+    @Generated
+    public static final MemoryStoreUpdateStatus QUEUED = fromString("queued");
 
     /**
-     * Enum value in_progress.
+     * Static value in_progress for MemoryStoreUpdateStatus.
      */
-    IN_PROGRESS("in_progress"),
+    @Generated
+    public static final MemoryStoreUpdateStatus IN_PROGRESS = fromString("in_progress");
 
     /**
-     * Enum value completed.
+     * Static value completed for MemoryStoreUpdateStatus.
      */
-    COMPLETED("completed"),
+    @Generated
+    public static final MemoryStoreUpdateStatus COMPLETED = fromString("completed");
 
     /**
-     * Enum value failed.
+     * Static value failed for MemoryStoreUpdateStatus.
      */
-    FAILED("failed"),
+    @Generated
+    public static final MemoryStoreUpdateStatus FAILED = fromString("failed");
 
     /**
-     * Enum value superseded.
+     * Static value superseded for MemoryStoreUpdateStatus.
      */
-    SUPERSEDED("superseded");
+    @Generated
+    public static final MemoryStoreUpdateStatus SUPERSEDED = fromString("superseded");
 
     /**
-     * The actual serialized value for a MemoryStoreUpdateStatus instance.
-     */
-    private final String value;
-
-    MemoryStoreUpdateStatus(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a MemoryStoreUpdateStatus instance.
+     * Creates a new instance of MemoryStoreUpdateStatus value.
      * 
-     * @param value the serialized value to parse.
-     * @return the parsed MemoryStoreUpdateStatus object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static MemoryStoreUpdateStatus fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        MemoryStoreUpdateStatus[] items = MemoryStoreUpdateStatus.values();
-        for (MemoryStoreUpdateStatus item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Generated
+    @Deprecated
+    public MemoryStoreUpdateStatus() {
     }
 
     /**
-     * {@inheritDoc}
+     * Creates or finds a MemoryStoreUpdateStatus from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding MemoryStoreUpdateStatus.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    @Generated
+    public static MemoryStoreUpdateStatus fromString(String name) {
+        return fromString(name, MemoryStoreUpdateStatus.class);
+    }
+
+    /**
+     * Gets known MemoryStoreUpdateStatus values.
+     * 
+     * @return known MemoryStoreUpdateStatus values.
+     */
+    @Generated
+    public static Collection<MemoryStoreUpdateStatus> values() {
+        return values(MemoryStoreUpdateStatus.class);
     }
 }
