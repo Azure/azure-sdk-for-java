@@ -192,4 +192,16 @@ public final class InputItemType extends ExpandableStringEnum<InputItemType> {
     public static Collection<InputItemType> values() {
         return values(InputItemType.class);
     }
+
+    /**
+     * Static value tool_search_call for InputItemType.
+     */
+    @Generated
+    public static final InputItemType TOOL_SEARCH_CALL = fromString("tool_search_call");
+
+    /**
+     * Static value tool_search_output for InputItemType.
+     */
+    @Generated
+    public static final InputItemType TOOL_SEARCH_OUTPUT = fromString("tool_search_output");
 }

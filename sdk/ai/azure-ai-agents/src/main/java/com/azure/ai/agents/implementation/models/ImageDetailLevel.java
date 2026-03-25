@@ -21,7 +21,12 @@ public enum ImageDetailLevel {
     /**
      * Enum value auto.
      */
-    AUTO("auto");
+    AUTO("auto"),
+
+    /**
+     * Enum value original.
+     */
+    ORIGINAL("original");
 
     /**
      * The actual serialized value for a ImageDetailLevel instance.

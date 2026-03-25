@@ -137,6 +137,7 @@ public final class InputItemCustomToolCall extends InputItem {
         jsonWriter.writeStringField("input", this.input);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("namespace", this.namespace);
         return jsonWriter.writeEndObject();
     }
 
@@ -157,6 +158,7 @@ public final class InputItemCustomToolCall extends InputItem {
             String input = null;
             InputItemType type = InputItemType.CUSTOM_TOOL_CALL;
             String id = null;
+            String namespace = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -170,6 +172,8 @@ public final class InputItemCustomToolCall extends InputItem {
                     type = InputItemType.fromString(reader.getString());
                 } else if ("id".equals(fieldName)) {
                     id = reader.getString();
+                } else if ("namespace".equals(fieldName)) {
+                    namespace = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
@@ -178,7 +182,36 @@ public final class InputItemCustomToolCall extends InputItem {
                 = new InputItemCustomToolCall(callId, name, input);
             deserializedInputItemCustomToolCall.type = type;
             deserializedInputItemCustomToolCall.id = id;
+            deserializedInputItemCustomToolCall.namespace = namespace;
             return deserializedInputItemCustomToolCall;
         });
+    }
+
+    /*
+     * The namespace of the custom tool being called.
+     */
+    @Generated
+    private String namespace;
+
+    /**
+     * Get the namespace property: The namespace of the custom tool being called.
+     *
+     * @return the namespace value.
+     */
+    @Generated
+    public String getNamespace() {
+        return this.namespace;
+    }
+
+    /**
+     * Set the namespace property: The namespace of the custom tool being called.
+     *
+     * @param namespace the namespace value to set.
+     * @return the InputItemCustomToolCall object itself.
+     */
+    @Generated
+    public InputItemCustomToolCall setNamespace(String namespace) {
+        this.namespace = namespace;
+        return this;
     }
 }

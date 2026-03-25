@@ -97,6 +97,10 @@ public class InputItem implements JsonSerializable<InputItem> {
                     return InputItemFunctionToolCall.fromJson(readerToUse.reset());
                 } else if ("function_call_output".equals(discriminatorValue)) {
                     return InputItemFunctionCallOutputItemParam.fromJson(readerToUse.reset());
+                } else if ("tool_search_call".equals(discriminatorValue)) {
+                    return InputItemToolSearchCallItemParam.fromJson(readerToUse.reset());
+                } else if ("tool_search_output".equals(discriminatorValue)) {
+                    return InputItemToolSearchOutputItemParam.fromJson(readerToUse.reset());
                 } else if ("reasoning".equals(discriminatorValue)) {
                     return InputItemReasoningItem.fromJson(readerToUse.reset());
                 } else if ("compaction".equals(discriminatorValue)) {

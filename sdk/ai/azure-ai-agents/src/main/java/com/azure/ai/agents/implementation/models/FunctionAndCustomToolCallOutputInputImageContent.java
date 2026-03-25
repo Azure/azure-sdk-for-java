@@ -37,7 +37,8 @@ public final class FunctionAndCustomToolCallOutputInputImageContent extends Func
     private String fileId;
 
     /*
-     * The detail level of the image to be sent to the model. One of `high`, `low`, or `auto`. Defaults to `auto`.
+     * The detail level of the image to be sent to the model. One of `high`, `low`, `auto`, or `original`. Defaults to
+     * `auto`.
      */
     @Generated
     private final ImageDetail detail;
@@ -108,8 +109,8 @@ public final class FunctionAndCustomToolCallOutputInputImageContent extends Func
     }
 
     /**
-     * Get the detail property: The detail level of the image to be sent to the model. One of `high`, `low`, or `auto`.
-     * Defaults to `auto`.
+     * Get the detail property: The detail level of the image to be sent to the model. One of `high`, `low`, `auto`, or
+     * `original`. Defaults to `auto`.
      *
      * @return the detail value.
      */

@@ -47,7 +47,7 @@ public final class InputItemMcpListTools extends InputItem {
      * The error property.
      */
     @Generated
-    private String error;
+    private RealtimeMCPError error;
 
     /**
      * Creates an instance of InputItemMcpListTools class.
@@ -110,20 +110,8 @@ public final class InputItemMcpListTools extends InputItem {
      * @return the error value.
      */
     @Generated
-    public String getError() {
+    public RealtimeMCPError getError() {
         return this.error;
-    }
-
-    /**
-     * Set the error property: The error property.
-     *
-     * @param error the error value to set.
-     * @return the InputItemMcpListTools object itself.
-     */
-    @Generated
-    public InputItemMcpListTools setError(String error) {
-        this.error = error;
-        return this;
     }
 
     /**
@@ -137,7 +125,7 @@ public final class InputItemMcpListTools extends InputItem {
         jsonWriter.writeStringField("server_label", this.serverLabel);
         jsonWriter.writeArrayField("tools", this.tools, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        jsonWriter.writeStringField("error", this.error);
+        jsonWriter.writeJsonField("error", this.error);
         return jsonWriter.writeEndObject();
     }
 
@@ -157,7 +145,7 @@ public final class InputItemMcpListTools extends InputItem {
             String serverLabel = null;
             List<McpListToolsTool> tools = null;
             InputItemType type = InputItemType.MCP_LIST_TOOLS;
-            String error = null;
+            RealtimeMCPError error = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -170,7 +158,7 @@ public final class InputItemMcpListTools extends InputItem {
                 } else if ("type".equals(fieldName)) {
                     type = InputItemType.fromString(reader.getString());
                 } else if ("error".equals(fieldName)) {
-                    error = reader.getString();
+                    error = RealtimeMCPError.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
@@ -180,5 +168,17 @@ public final class InputItemMcpListTools extends InputItem {
             deserializedInputItemMcpListTools.error = error;
             return deserializedInputItemMcpListTools;
         });
+    }
+
+    /**
+     * Set the error property: The error property.
+     *
+     * @param error the error value to set.
+     * @return the InputItemMcpListTools object itself.
+     */
+    @Generated
+    public InputItemMcpListTools setError(RealtimeMCPError error) {
+        this.error = error;
+        return this;
     }
 }

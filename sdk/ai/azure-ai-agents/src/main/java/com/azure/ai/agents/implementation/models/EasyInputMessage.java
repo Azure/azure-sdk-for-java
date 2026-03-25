@@ -130,6 +130,7 @@ public final class EasyInputMessage extends InputItem {
         jsonWriter.writeFieldName("content");
         this.content.writeTo(jsonWriter);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("phase", this.phase == null ? null : this.phase.toString());
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
         return jsonWriter.writeEndObject();
     }
@@ -149,6 +150,7 @@ public final class EasyInputMessage extends InputItem {
             EasyInputMessageRole role = null;
             BinaryData content = null;
             InputItemType type = InputItemType.MESSAGE;
+            MessagePhase phase = null;
             EasyInputMessageStatus status = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -159,6 +161,8 @@ public final class EasyInputMessage extends InputItem {
                     content = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
                 } else if ("type".equals(fieldName)) {
                     type = InputItemType.fromString(reader.getString());
+                } else if ("phase".equals(fieldName)) {
+                    phase = MessagePhase.fromString(reader.getString());
                 } else if ("status".equals(fieldName)) {
                     status = EasyInputMessageStatus.fromString(reader.getString());
                 } else {
@@ -167,8 +171,37 @@ public final class EasyInputMessage extends InputItem {
             }
             EasyInputMessage deserializedEasyInputMessage = new EasyInputMessage(role, content);
             deserializedEasyInputMessage.type = type;
+            deserializedEasyInputMessage.phase = phase;
             deserializedEasyInputMessage.status = status;
             return deserializedEasyInputMessage;
         });
+    }
+
+    /*
+     * The phase property.
+     */
+    @Generated
+    private MessagePhase phase;
+
+    /**
+     * Get the phase property: The phase property.
+     *
+     * @return the phase value.
+     */
+    @Generated
+    public MessagePhase getPhase() {
+        return this.phase;
+    }
+
+    /**
+     * Set the phase property: The phase property.
+     *
+     * @param phase the phase value to set.
+     * @return the EasyInputMessage object itself.
+     */
+    @Generated
+    public EasyInputMessage setPhase(MessagePhase phase) {
+        this.phase = phase;
+        return this;
     }
 }

@@ -180,4 +180,22 @@ public final class ToolType extends ExpandableStringEnum<ToolType> {
      */
     @Generated
     public static final ToolType MEMORY_SEARCH_PREVIEW = fromString("memory_search_preview");
+
+    /**
+     * Static value computer for ToolType.
+     */
+    @Generated
+    public static final ToolType COMPUTER = fromString("computer");
+
+    /**
+     * Static value namespace for ToolType.
+     */
+    @Generated
+    public static final ToolType NAMESPACE = fromString("namespace");
+
+    /**
+     * Static value tool_search for ToolType.
+     */
+    @Generated
+    public static final ToolType TOOL_SEARCH = fromString("tool_search");
 }

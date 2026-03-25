@@ -164,8 +164,8 @@ public final class InputContentInputFileContent extends InputContent {
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("file_id", this.fileId);
         jsonWriter.writeStringField("filename", this.filename);
-        jsonWriter.writeStringField("file_url", this.fileUrl);
         jsonWriter.writeStringField("file_data", this.fileData);
+        jsonWriter.writeStringField("file_url", this.fileUrl);
         return jsonWriter.writeEndObject();
     }
 
@@ -190,10 +190,10 @@ public final class InputContentInputFileContent extends InputContent {
                     deserializedInputContentInputFileContent.fileId = reader.getString();
                 } else if ("filename".equals(fieldName)) {
                     deserializedInputContentInputFileContent.filename = reader.getString();
-                } else if ("file_url".equals(fieldName)) {
-                    deserializedInputContentInputFileContent.fileUrl = reader.getString();
                 } else if ("file_data".equals(fieldName)) {
                     deserializedInputContentInputFileContent.fileData = reader.getString();
+                } else if ("file_url".equals(fieldName)) {
+                    deserializedInputContentInputFileContent.fileUrl = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

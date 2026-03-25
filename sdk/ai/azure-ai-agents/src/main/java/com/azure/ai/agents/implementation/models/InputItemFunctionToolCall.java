@@ -54,7 +54,7 @@ public final class InputItemFunctionToolCall extends InputItem {
      * `incomplete`. Populated when items are returned via API.
      */
     @Generated
-    private ItemResourceFunctionToolCallResourceStatus status;
+    private ItemResourceFunctionToolCallStatus status;
 
     /**
      * Creates an instance of InputItemFunctionToolCall class.
@@ -89,18 +89,6 @@ public final class InputItemFunctionToolCall extends InputItem {
     @Generated
     public String getId() {
         return this.id;
-    }
-
-    /**
-     * Set the id property: The unique ID of the function tool call.
-     *
-     * @param id the id value to set.
-     * @return the InputItemFunctionToolCall object itself.
-     */
-    @Generated
-    public InputItemFunctionToolCall setId(String id) {
-        this.id = id;
-        return this;
     }
 
     /**
@@ -140,7 +128,7 @@ public final class InputItemFunctionToolCall extends InputItem {
      * @return the status value.
      */
     @Generated
-    public ItemResourceFunctionToolCallResourceStatus getStatus() {
+    public ItemResourceFunctionToolCallStatus getStatus() {
         return this.status;
     }
 
@@ -155,7 +143,7 @@ public final class InputItemFunctionToolCall extends InputItem {
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("arguments", this.arguments);
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("namespace", this.namespace);
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
         return jsonWriter.writeEndObject();
     }
@@ -172,16 +160,19 @@ public final class InputItemFunctionToolCall extends InputItem {
     @Generated
     public static InputItemFunctionToolCall fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
+            String id = null;
             String callId = null;
             String name = null;
             String arguments = null;
             InputItemType type = InputItemType.FUNCTION_CALL;
-            String id = null;
-            ItemResourceFunctionToolCallResourceStatus status = null;
+            String namespace = null;
+            ItemResourceFunctionToolCallStatus status = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("call_id".equals(fieldName)) {
+                if ("id".equals(fieldName)) {
+                    id = reader.getString();
+                } else if ("call_id".equals(fieldName)) {
                     callId = reader.getString();
                 } else if ("name".equals(fieldName)) {
                     name = reader.getString();
@@ -189,21 +180,50 @@ public final class InputItemFunctionToolCall extends InputItem {
                     arguments = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     type = InputItemType.fromString(reader.getString());
-                } else if ("id".equals(fieldName)) {
-                    id = reader.getString();
+                } else if ("namespace".equals(fieldName)) {
+                    namespace = reader.getString();
                 } else if ("status".equals(fieldName)) {
-                    status = ItemResourceFunctionToolCallResourceStatus.fromString(reader.getString());
+                    status = ItemResourceFunctionToolCallStatus.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
             InputItemFunctionToolCall deserializedInputItemFunctionToolCall
                 = new InputItemFunctionToolCall(callId, name, arguments);
-            deserializedInputItemFunctionToolCall.type = type;
             deserializedInputItemFunctionToolCall.id = id;
+            deserializedInputItemFunctionToolCall.type = type;
+            deserializedInputItemFunctionToolCall.namespace = namespace;
             deserializedInputItemFunctionToolCall.status = status;
             return deserializedInputItemFunctionToolCall;
         });
+    }
+
+    /*
+     * The namespace of the function to run.
+     */
+    @Generated
+    private String namespace;
+
+    /**
+     * Get the namespace property: The namespace of the function to run.
+     *
+     * @return the namespace value.
+     */
+    @Generated
+    public String getNamespace() {
+        return this.namespace;
+    }
+
+    /**
+     * Set the namespace property: The namespace of the function to run.
+     *
+     * @param namespace the namespace value to set.
+     * @return the InputItemFunctionToolCall object itself.
+     */
+    @Generated
+    public InputItemFunctionToolCall setNamespace(String namespace) {
+        this.namespace = namespace;
+        return this;
     }
 
     /**
@@ -214,7 +234,7 @@ public final class InputItemFunctionToolCall extends InputItem {
      * @return the InputItemFunctionToolCall object itself.
      */
     @Generated
-    public InputItemFunctionToolCall setStatus(ItemResourceFunctionToolCallResourceStatus status) {
+    public InputItemFunctionToolCall setStatus(ItemResourceFunctionToolCallStatus status) {
         this.status = status;
         return this;
     }

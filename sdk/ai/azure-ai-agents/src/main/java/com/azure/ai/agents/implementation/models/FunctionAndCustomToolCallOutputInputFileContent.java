@@ -164,8 +164,8 @@ public final class FunctionAndCustomToolCallOutputInputFileContent extends Funct
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeStringField("file_id", this.fileId);
         jsonWriter.writeStringField("filename", this.filename);
-        jsonWriter.writeStringField("file_url", this.fileUrl);
         jsonWriter.writeStringField("file_data", this.fileData);
+        jsonWriter.writeStringField("file_url", this.fileUrl);
         return jsonWriter.writeEndObject();
     }
 
@@ -192,10 +192,10 @@ public final class FunctionAndCustomToolCallOutputInputFileContent extends Funct
                     deserializedFunctionAndCustomToolCallOutputInputFileContent.fileId = reader.getString();
                 } else if ("filename".equals(fieldName)) {
                     deserializedFunctionAndCustomToolCallOutputInputFileContent.filename = reader.getString();
-                } else if ("file_url".equals(fieldName)) {
-                    deserializedFunctionAndCustomToolCallOutputInputFileContent.fileUrl = reader.getString();
                 } else if ("file_data".equals(fieldName)) {
                     deserializedFunctionAndCustomToolCallOutputInputFileContent.fileData = reader.getString();
+                } else if ("file_url".equals(fieldName)) {
+                    deserializedFunctionAndCustomToolCallOutputInputFileContent.fileUrl = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

@@ -123,6 +123,12 @@ public class Tool implements JsonSerializable<Tool> {
                     return WebSearchPreviewTool.fromJson(readerToUse.reset());
                 } else if ("apply_patch".equals(discriminatorValue)) {
                     return ApplyPatchToolParameter.fromJson(readerToUse.reset());
+                } else if ("computer".equals(discriminatorValue)) {
+                    return ComputerTool.fromJson(readerToUse.reset());
+                } else if ("namespace".equals(discriminatorValue)) {
+                    return NamespaceToolParam.fromJson(readerToUse.reset());
+                } else if ("tool_search".equals(discriminatorValue)) {
+                    return ToolSearchToolParam.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }
