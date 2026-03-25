@@ -92,6 +92,7 @@ public final class ResponsesClient {
      * @return the Azure-specific create response result, or null if not present.
      */
     public static AzureCreateResponseDetails getAzureFields(Response response) {
+        Objects.requireNonNull(response, "response cannot be null");
         return OpenAIJsonHelper.fromAdditionalProperties(response._additionalProperties(),
             AzureCreateResponseDetails::fromJson);
     }
