@@ -1,5 +1,5 @@
 directory: specification/keyvault/Security.KeyVault.Certificates
-commit: 396ab529763b7195ab089f58e2eefb011e1b290d
+commit: 35275d315efee7fa79b6661c29cb3f1c05e86b76
 repo: Azure/azure-rest-api-specs
 cleanup: true
 additionalDirectories:

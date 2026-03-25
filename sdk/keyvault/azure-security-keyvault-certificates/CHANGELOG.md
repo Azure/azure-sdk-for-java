@@ -4,11 +4,17 @@
 
 ### Features Added
 
-### Breaking Changes
+#### `models.SubjectAlternativeNames` was modified
 
-### Bugs Fixed
+* `setUniformResourceIdentifiers(java.util.List)` was added
+* `setIpAddresses(java.util.List)` was added
+* `getUniformResourceIdentifiers()` was added
+* `getIpAddresses()` was added
 
-### Other Changes
+#### `CertificateServiceVersion` was modified
+
+* `V2025_06_01_PREVIEW` was added
+* `V2025_07_01` was added
 
 ## 4.8.6 (2026-03-23)
 
