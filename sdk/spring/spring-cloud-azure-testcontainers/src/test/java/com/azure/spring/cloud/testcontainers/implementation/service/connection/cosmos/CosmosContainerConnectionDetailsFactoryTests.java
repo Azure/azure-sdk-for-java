@@ -49,7 +49,7 @@ class CosmosContainerConnectionDetailsFactoryTests {
 
     @Container
     @ServiceConnection
-    private static final CosmosDBEmulatorContainer COSMOS_DB_EMULATOR_CONTAINER = new CosmosDBEmulatorContainer(DockerImageName.parse("mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:stable"))
+    private static final CosmosDBEmulatorContainer COSMOS_DB_EMULATOR_CONTAINER = new CosmosDBEmulatorContainer(DockerImageName.parse("mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:latest"))
         .waitingFor(new WaitAllStrategy()
             .withStrategy(Wait.forLogMessage("(?s).*Started.*", 1))
             .withStrategy(Wait.forHttps("/_explorer/emulator.pem").forStatusCode(200).allowInsecure()))
