@@ -22,7 +22,7 @@ public final class StandbyContainerGroupPoolsGetByResourceGroupWithResponseMockT
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"elasticityProfile\":{\"maxReadyCapacity\":8537222250971960818,\"refillPolicy\":\"always\"},\"containerGroupProperties\":{\"containerGroupProfile\":{\"id\":\"wbavxbniwdj\",\"revision\":2198924095068889531},\"subnetIds\":[{\"id\":\"bpg\"},{\"id\":\"xytxhpzxbz\"},{\"id\":\"fzab\"}]},\"zones\":[\"uhxwtctyqiklbbov\"],\"provisioningState\":\"Canceled\"},\"location\":\"bhvgy\",\"tags\":{\"ss\":\"osvmk\",\"gmgsxnkjzkde\":\"qukkfp\",\"yighxpk\":\"lpvlopw\",\"baumnyqupedeoj\":\"wzbaiue\"},\"id\":\"a\",\"name\":\"ckhsmtxpsieb\",\"type\":\"fhvpesaps\"}";
+            = "{\"properties\":{\"elasticityProfile\":{\"maxReadyCapacity\":99044633330974707,\"refillPolicy\":\"always\",\"dynamicSizing\":{\"enabled\":false}},\"containerGroupProperties\":{\"containerGroupProfile\":{\"id\":\"trcvpnazzmh\",\"revision\":8695892583896440264},\"subnetIds\":[{\"id\":\"xttd\"}]},\"zones\":[\"bnlankxmyskpb\",\"enbtkcxywny\",\"nrs\",\"nlqidybyxczf\"],\"provisioningState\":\"Canceled\"},\"location\":\"axdbabph\",\"tags\":{\"cocmnyyaztt\":\"qlfktsths\",\"edckzywbiexzfey\":\"twwrqp\",\"ujwb\":\"eaxib\",\"zjancuxr\":\"qwalmuzyoxaepd\"},\"id\":\"d\",\"name\":\"bavxbniwdjswzt\",\"type\":\"dbpgnxytxhp\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,18 +32,19 @@ public final class StandbyContainerGroupPoolsGetByResourceGroupWithResponseMockT
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         StandbyContainerGroupPoolResource response = manager.standbyContainerGroupPools()
-            .getByResourceGroupWithResponse("walm", "zyoxaepdkzjan", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("rgvtqag", "buynhijggm", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("bhvgy", response.location());
-        Assertions.assertEquals("osvmk", response.tags().get("ss"));
-        Assertions.assertEquals(8537222250971960818L, response.properties().elasticityProfile().maxReadyCapacity());
+        Assertions.assertEquals("axdbabph", response.location());
+        Assertions.assertEquals("qlfktsths", response.tags().get("cocmnyyaztt"));
+        Assertions.assertEquals(99044633330974707L, response.properties().elasticityProfile().maxReadyCapacity());
         Assertions.assertEquals(RefillPolicy.ALWAYS, response.properties().elasticityProfile().refillPolicy());
-        Assertions.assertEquals("wbavxbniwdj",
+        Assertions.assertFalse(response.properties().elasticityProfile().dynamicSizing().enabled());
+        Assertions.assertEquals("trcvpnazzmh",
             response.properties().containerGroupProperties().containerGroupProfile().id());
-        Assertions.assertEquals(2198924095068889531L,
+        Assertions.assertEquals(8695892583896440264L,
             response.properties().containerGroupProperties().containerGroupProfile().revision());
-        Assertions.assertEquals("bpg", response.properties().containerGroupProperties().subnetIds().get(0).id());
-        Assertions.assertEquals("uhxwtctyqiklbbov", response.properties().zones().get(0));
+        Assertions.assertEquals("xttd", response.properties().containerGroupProperties().subnetIds().get(0).id());
+        Assertions.assertEquals("bnlankxmyskpb", response.properties().zones().get(0));
     }
 }

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.containerregistry.generated;
  */
 public final class RegistriesDeleteSamples {
     /*
-     * x-ms-original-file: 2025-11-01/RegistryDelete.json
+     * x-ms-original-file: 2026-01-01-preview/RegistryDelete.json
      */
     /**
      * Sample code: RegistryDelete.

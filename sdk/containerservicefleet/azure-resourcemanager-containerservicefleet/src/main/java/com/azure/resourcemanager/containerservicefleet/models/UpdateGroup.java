@@ -24,6 +24,25 @@ public final class UpdateGroup implements JsonSerializable<UpdateGroup> {
     private String name;
 
     /*
+     * The max number of upgrades that can run concurrently in this specific group.
+     * Acts as a ceiling (and not a quota) for the number of concurrent upgrades within the group you want to tolerate
+     * at a time.
+     * Actual concurrency may be lower depending on stage-level concurrency limits or individual member conditions.
+     * Group maxConcurrency has a min value of "1". The max value is min(number of clusters in the group, the stage
+     * maxConcurrency).
+     * If no value is provided, defaults to 1.
+     * Accepts either:
+     * • A fixed count, e.g. "3"
+     * • A percentage, e.g. "25%" (range 1–100). Percentage is of the number of clusters in the group.
+     * Fractional results are rounded down. A minimum of 1 upgrade is enforced.
+     * Examples:
+     * • "3" --> up to 3 members from this group upgrade at once.
+     * • "100%" --> “all at once”, up to all members for this group upgrade at the same time.
+     * • "25%" --> up to 25% of the members in the group will be upgraded at the same time.
+     */
+    private String maxConcurrency;
+
+    /*
      * A list of Gates that will be created before this Group is executed.
      */
     private List<GateConfiguration> beforeGates;
@@ -58,6 +77,54 @@ public final class UpdateGroup implements JsonSerializable<UpdateGroup> {
      */
     public UpdateGroup withName(String name) {
         this.name = name;
+        return this;
+    }
+
+    /**
+     * Get the maxConcurrency property: The max number of upgrades that can run concurrently in this specific group.
+     * Acts as a ceiling (and not a quota) for the number of concurrent upgrades within the group you want to tolerate
+     * at a time.
+     * Actual concurrency may be lower depending on stage-level concurrency limits or individual member conditions.
+     * Group maxConcurrency has a min value of "1". The max value is min(number of clusters in the group, the stage
+     * maxConcurrency).
+     * If no value is provided, defaults to 1.
+     * Accepts either:
+     * • A fixed count, e.g. "3"
+     * • A percentage, e.g. "25%" (range 1–100). Percentage is of the number of clusters in the group.
+     * Fractional results are rounded down. A minimum of 1 upgrade is enforced.
+     * Examples:
+     * • "3" --&gt; up to 3 members from this group upgrade at once.
+     * • "100%" --&gt; “all at once”, up to all members for this group upgrade at the same time.
+     * • "25%" --&gt; up to 25% of the members in the group will be upgraded at the same time.
+     * 
+     * @return the maxConcurrency value.
+     */
+    public String maxConcurrency() {
+        return this.maxConcurrency;
+    }
+
+    /**
+     * Set the maxConcurrency property: The max number of upgrades that can run concurrently in this specific group.
+     * Acts as a ceiling (and not a quota) for the number of concurrent upgrades within the group you want to tolerate
+     * at a time.
+     * Actual concurrency may be lower depending on stage-level concurrency limits or individual member conditions.
+     * Group maxConcurrency has a min value of "1". The max value is min(number of clusters in the group, the stage
+     * maxConcurrency).
+     * If no value is provided, defaults to 1.
+     * Accepts either:
+     * • A fixed count, e.g. "3"
+     * • A percentage, e.g. "25%" (range 1–100). Percentage is of the number of clusters in the group.
+     * Fractional results are rounded down. A minimum of 1 upgrade is enforced.
+     * Examples:
+     * • "3" --&gt; up to 3 members from this group upgrade at once.
+     * • "100%" --&gt; “all at once”, up to all members for this group upgrade at the same time.
+     * • "25%" --&gt; up to 25% of the members in the group will be upgraded at the same time.
+     * 
+     * @param maxConcurrency the maxConcurrency value to set.
+     * @return the UpdateGroup object itself.
+     */
+    public UpdateGroup withMaxConcurrency(String maxConcurrency) {
+        this.maxConcurrency = maxConcurrency;
         return this;
     }
 
@@ -108,6 +175,7 @@ public final class UpdateGroup implements JsonSerializable<UpdateGroup> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("maxConcurrency", this.maxConcurrency);
         jsonWriter.writeArrayField("beforeGates", this.beforeGates, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("afterGates", this.afterGates, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
@@ -131,6 +199,8 @@ public final class UpdateGroup implements JsonSerializable<UpdateGroup> {
 
                 if ("name".equals(fieldName)) {
                     deserializedUpdateGroup.name = reader.getString();
+                } else if ("maxConcurrency".equals(fieldName)) {
+                    deserializedUpdateGroup.maxConcurrency = reader.getString();
                 } else if ("beforeGates".equals(fieldName)) {
                     List<GateConfiguration> beforeGates
                         = reader.readArray(reader1 -> GateConfiguration.fromJson(reader1));

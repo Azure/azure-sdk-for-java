@@ -6,8 +6,10 @@ package com.azure.ai.agents;
 
 import com.azure.ai.agents.implementation.OpenAIJsonHelper;
 import com.azure.ai.agents.implementation.StreamingUtils;
-import com.azure.ai.agents.models.AgentReference;
+import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.annotation.ReturnType;
 import com.azure.core.util.IterableStream;
 import com.openai.client.OpenAIClient;
 import com.openai.core.JsonValue;
@@ -16,7 +18,6 @@ import com.openai.models.responses.ResponseCreateParams;
 import com.openai.models.responses.ResponseStreamEvent;
 import com.openai.services.blocking.ResponseService;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -46,112 +47,41 @@ public final class ResponsesClient {
     }
 
     /**
-     * Creates a response with an agent conversation.
+     * Creates a response passing additional Azure-specific properties (such as an {@link com.azure.ai.agents.models.AgentReference})
+     * through the {@link AzureCreateResponseOptions}
      *
-     * @param agentReference The agent reference.
-     * @param conversationId The conversation ID.
-     * @return The created Response.
-     */
-    public Response createWithAgentConversation(AgentReference agentReference, String conversationId) {
-        return createWithAgentConversation(agentReference, conversationId, new ResponseCreateParams.Builder());
-    }
-
-    /**
-     * Creates a response with an agent conversation.
-     *
-     * @param agentReference The agent reference.
-     * @param conversationId The conversation ID.
+     * @param createResponse The Azure-specific create response properties.
      * @param params The parameters to create the response.
      * @return The created Response.
      */
-    public Response createWithAgentConversation(AgentReference agentReference, String conversationId,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response createAzureResponse(AzureCreateResponseOptions createResponse,
         ResponseCreateParams.Builder params) {
-        Objects.requireNonNull(agentReference, "agentReference cannot be null");
-        Objects.requireNonNull(conversationId, "conversationId cannot be null");
+        Objects.requireNonNull(createResponse, "createResponse cannot be null");
         Objects.requireNonNull(params, "params cannot be null");
 
-        JsonValue agentRefJsonValue = OpenAIJsonHelper.toJsonValue(agentReference);
-
-        Map<String, JsonValue> additionalBodyProperties = new HashMap<>();
-        params.conversation(conversationId);
-        additionalBodyProperties.put("agent_reference", agentRefJsonValue);
-
+        Map<String, JsonValue> additionalBodyProperties = OpenAIJsonHelper.toJsonValueMap(createResponse);
         params.additionalBodyProperties(additionalBodyProperties);
         return this.responseService.create(params.build());
     }
 
     /**
-     * Creates a response with an agent conversation.
+     * Creates a streaming response passing additional Azure-specific properties (such as an {@link com.azure.ai.agents.models.AgentReference})
+     * through the {@link AzureCreateResponseOptions}
      *
-     * @param agentReference The agent reference.
-     * @param params The parameters to create the response.
-     * @return The created Response.
-     */
-    public Response createWithAgent(AgentReference agentReference, ResponseCreateParams.Builder params) {
-        Objects.requireNonNull(agentReference, "agentReference cannot be null");
-        Objects.requireNonNull(params, "params cannot be null");
-
-        JsonValue agentRefJsonValue = OpenAIJsonHelper.toJsonValue(agentReference);
-
-        Map<String, JsonValue> additionalBodyProperties = new HashMap<>();
-        additionalBodyProperties.put("agent_reference", agentRefJsonValue);
-
-        params.additionalBodyProperties(additionalBodyProperties);
-        return this.responseService.create(params.build());
-    }
-
-    /**
-     * Creates a response with an agent conversation.
-     *
-     * @param agentReference The agent reference.
-     * @return The created Response.
-     */
-    public Response createWithAgent(AgentReference agentReference) {
-        return createWithAgent(agentReference, new ResponseCreateParams.Builder());
-    }
-
-    /**
-     * Creates a streaming response with an agent.
-     *
-     * @param agentReference The agent reference.
+     * @param createResponse The Azure-specific create response properties.
      * @param params The parameters to create the response.
      * @return An IterableStream of ResponseStreamEvent.
      */
-    public IterableStream<ResponseStreamEvent> createStreamingWithAgent(AgentReference agentReference,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public IterableStream<ResponseStreamEvent> createStreamingAzureResponse(AzureCreateResponseOptions createResponse,
         ResponseCreateParams.Builder params) {
-        Objects.requireNonNull(agentReference, "agentReference cannot be null");
+        Objects.requireNonNull(createResponse, "createResponse cannot be null");
         Objects.requireNonNull(params, "params cannot be null");
 
-        JsonValue agentRefJsonValue = OpenAIJsonHelper.toJsonValue(agentReference);
-
-        Map<String, JsonValue> additionalBodyProperties = new HashMap<>();
-        additionalBodyProperties.put("agent_reference", agentRefJsonValue);
-
+        Map<String, JsonValue> additionalBodyProperties = OpenAIJsonHelper.toJsonValueMap(createResponse);
         params.additionalBodyProperties(additionalBodyProperties);
         return StreamingUtils.toIterableStream(this.responseService.createStreaming(params.build()));
     }
 
-    /**
-     * Creates a streaming response with an agent conversation.
-     *
-     * @param agentReference The agent reference.
-     * @param conversationId The conversation ID.
-     * @param params The parameters to create the response.
-     * @return An IterableStream of ResponseStreamEvent.
-     */
-    public IterableStream<ResponseStreamEvent> createStreamingWithAgentConversation(AgentReference agentReference,
-        String conversationId, ResponseCreateParams.Builder params) {
-        Objects.requireNonNull(agentReference, "agentReference cannot be null");
-        Objects.requireNonNull(conversationId, "conversationId cannot be null");
-        Objects.requireNonNull(params, "params cannot be null");
-
-        JsonValue agentRefJsonValue = OpenAIJsonHelper.toJsonValue(agentReference);
-
-        Map<String, JsonValue> additionalBodyProperties = new HashMap<>();
-        params.conversation(conversationId);
-        additionalBodyProperties.put("agent_reference", agentRefJsonValue);
-
-        params.additionalBodyProperties(additionalBodyProperties);
-        return StreamingUtils.toIterableStream(this.responseService.createStreaming(params.build()));
-    }
 }

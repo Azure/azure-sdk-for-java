@@ -1,14 +1,78 @@
 # Release History
 
-## 1.3.0-beta.3 (Unreleased)
+## 1.3.0-beta.3 (2026-03-24)
 
-### Features Added
+- Azure Resource Manager Container Service Fleet client library for Java. This package contains Microsoft Azure SDK for Container Service Fleet Management SDK. Azure Kubernetes Fleet Manager api client. Package api-version 2026-02-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.FleetUpdateStrategies` was modified
 
-### Other Changes
+* `listByFleet(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.Fleets` was modified
+
+* `list(com.azure.core.util.Context)` was removed
+
+#### `models.FleetMembers` was modified
+
+* `listByFleet(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.Gates` was modified
+
+* `listByFleet(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.UpdateRuns` was modified
+
+* `listByFleet(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.AutoUpgradeProfiles` was modified
+
+* `listByFleet(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+### Features Added
+
+#### `models.FleetUpdateStrategies` was modified
+
+* `listByFleet(java.lang.String,java.lang.String,java.lang.Integer,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.UpdateStageStatus` was modified
+
+* `maxConcurrency()` was added
+
+#### `models.Fleets` was modified
+
+* `list(java.lang.Integer,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.UpdateGroupStatus` was modified
+
+* `maxConcurrency()` was added
+
+#### `models.FleetMembers` was modified
+
+* `listByFleet(java.lang.String,java.lang.String,java.lang.Integer,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.Gates` was modified
+
+* `listByFleet(java.lang.String,java.lang.String,java.lang.String,java.lang.Integer,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.UpdateGroup` was modified
+
+* `withMaxConcurrency(java.lang.String)` was added
+* `maxConcurrency()` was added
+
+#### `models.UpdateRuns` was modified
+
+* `listByFleet(java.lang.String,java.lang.String,java.lang.Integer,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.AutoUpgradeProfiles` was modified
+
+* `listByFleet(java.lang.String,java.lang.String,java.lang.Integer,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.UpdateStage` was modified
+
+* `maxConcurrency()` was added
+* `withMaxConcurrency(java.lang.String)` was added
 
 ## 1.3.0-beta.2 (2025-12-03)
 

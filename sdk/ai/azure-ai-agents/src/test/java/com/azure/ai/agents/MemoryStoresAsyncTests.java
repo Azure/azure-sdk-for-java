@@ -87,11 +87,7 @@ public class MemoryStoresAsyncTests extends ClientTestBase {
                                     }
                                     assertTrue(found, "Created memory store not found in list.");
                                 })
-                                .then(memoryStoreClient.deleteMemoryStore(updatedStore.getName())
-                                    .doOnNext(deleteResponse -> {
-                                        assertNotNull(deleteResponse);
-                                        assertTrue(deleteResponse.isDeleted());
-                                    }))
+                                .then(memoryStoreClient.deleteMemoryStore(updatedStore.getName()))
                                 .then(memoryStoreClient.getMemoryStore(updatedStore.getName())
                                     .flatMap(ignored -> Mono.<Void>error(new AssertionError(
                                         "Expected ResourceNotFoundException when retrieving deleted store.")))
@@ -155,12 +151,8 @@ public class MemoryStoresAsyncTests extends ClientTestBase {
                                     assertNotNull(memory.getMemoryItem().getContent());
                                 }
                             }))
-                        .then(memoryStoreClient.deleteScope(memoryStoreName, scope)
-                            .doOnNext(deleteScopeResponse -> assertNotNull(deleteScopeResponse)))
-                        .then(memoryStoreClient.deleteMemoryStore(memoryStoreName).doOnNext(deleteResponse -> {
-                            assertNotNull(deleteResponse);
-                            assertTrue(deleteResponse.isDeleted());
-                        }))
+                        .then(memoryStoreClient.deleteScope(memoryStoreName, scope))
+                        .then(memoryStoreClient.deleteMemoryStore(memoryStoreName))
                         .then();
             }));
 
@@ -257,12 +249,8 @@ public class MemoryStoresAsyncTests extends ClientTestBase {
                                             }
                                         });
                                 }))
-                            .then(memoryStoreClient.deleteScope(memoryStoreName, scope)
-                                .doOnNext(deleteScope -> assertNotNull(deleteScope)))
-                            .then(memoryStoreClient.deleteMemoryStore(memoryStoreName).doOnNext(deleteResponse -> {
-                                assertNotNull(deleteResponse);
-                                assertTrue(deleteResponse.isDeleted());
-                            }))
+                            .then(memoryStoreClient.deleteScope(memoryStoreName, scope))
+                            .then(memoryStoreClient.deleteMemoryStore(memoryStoreName))
                             .then());
             }));
 
