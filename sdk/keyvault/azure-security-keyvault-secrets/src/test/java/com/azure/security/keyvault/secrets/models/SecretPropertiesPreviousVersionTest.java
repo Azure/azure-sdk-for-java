@@ -5,7 +5,6 @@ package com.azure.security.keyvault.secrets.models;
 
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
-import com.azure.json.JsonWriter;
 import com.azure.security.keyvault.secrets.implementation.SecretPropertiesHelper;
 import com.azure.security.keyvault.secrets.implementation.DeletedSecretHelper;
 import com.azure.security.keyvault.secrets.implementation.models.SecretBundle;
@@ -13,7 +12,6 @@ import com.azure.security.keyvault.secrets.implementation.models.DeletedSecretBu
 import com.azure.security.keyvault.secrets.implementation.models.SecretsModelsUtils;
 import org.junit.jupiter.api.Test;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.StringReader;
 
