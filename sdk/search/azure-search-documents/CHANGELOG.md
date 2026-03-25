@@ -4,7 +4,39 @@
 
 ### Features Added
 
+- Added `SearchServiceVersion.V2026_04_01` for the `2026-04-01` GA service API version; `SearchServiceVersion.getLatest()` now returns `V2026_04_01`.
+- Re-added `EntityCategory`, `EntityRecognitionSkillLanguage`, and `SentimentSkillLanguage` enumerations for configuring entity-recognition and sentiment cognitive skills.
+- Added `SearchIndexResponse` model returned by list-indexes operations.
+
 ### Breaking Changes
+
+The following types were removed in the `2026-04-01` API version and are no longer present in the SDK:
+
+**Removed types (indexes/models package):**
+- `AIServicesVisionParameters`, `AIServicesVisionVectorizer`, `VisionVectorizeSkill` — AI Services Vision vectorization support removed.
+- `AzureMachineLearningSkill` — Azure Machine Learning skill removed.
+- `AzureOpenAITokenizerParameters` — OpenAI tokenizer parameters removed.
+- `IndexStatisticsSummary` — per-index statistics summary type removed.
+- `IndexedSharePointContainerName`, `IndexedSharePointKnowledgeSource`, `IndexedSharePointKnowledgeSourceParameters` — indexed SharePoint knowledge source support removed.
+- `RemoteSharePointKnowledgeSource`, `RemoteSharePointKnowledgeSourceParameters` — remote SharePoint knowledge source support removed.
+- `IndexerCurrentState`, `IndexerExecutionStatusDetail`, `IndexerPermissionOption`, `IndexerRuntime`, `IndexingMode` — advanced indexer state/permission types removed.
+- `PermissionFilter`, `SearchIndexPermissionFilterOption` — document-level permission filter support removed.
+- `SearchIndexerCache`, `SearchIndexerKnowledgeStoreParameters` — incremental enrichment cache and knowledge store parameters removed.
+- `ServiceIndexersRuntime`, `SplitSkillEncoderModelName`, `SplitSkillUnit` — service runtime and split-skill configuration types removed.
+
+**Removed types (knowledgebases/models package):**
+- `IndexedSharePointKnowledgeSourceParams`, `KnowledgeBaseIndexedSharePointReference` — indexed SharePoint knowledge base support removed.
+- `KnowledgeBaseModelAnswerSynthesisActivityRecord`, `KnowledgeBaseModelQueryPlanningActivityRecord` — model activity record types removed.
+- `KnowledgeBaseRemoteSharePointReference` — remote SharePoint knowledge base reference removed.
+- `KnowledgeRetrievalLowReasoningEffort` — low-reasoning-effort knowledge retrieval type removed.
+
+**Removed methods:**
+- `SearchClient.getDocument(String key, String querySourceAuthorization, Boolean enableElevatedRead, List<String> selectedFields)` — use `getDocument(String key, List<String> selectedFields)` instead.
+- `SearchAsyncClient.getDocument(String key, String querySourceAuthorization, Boolean enableElevatedRead, List<String> selectedFields)` — use `getDocument(String key, List<String> selectedFields)` instead.
+
+**Removed properties:**
+- `SearchOptions`: `queryLanguage`, `querySpeller`, `queryRewrites`, `semanticFields`, `hybridSearch`, `querySourceAuthorization`, and `enableElevatedRead` properties removed.
+- `ChatCompletionSkill`: `httpHeaders`, `httpMethod`, `timeout`, `batchSize`, `degreeOfParallelism`, and `authResourceId` properties removed.
 
 ### Bugs Fixed
 
