@@ -35,7 +35,6 @@ import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 import static com.azure.core.amqp.implementation.RetryUtil.withRetry;
 import static com.azure.core.util.FluxUtil.monoError;
@@ -580,8 +579,7 @@ public class EventHubProducerAsyncClient implements Closeable {
                 .log("Sending batch to be distributed round-robin in service.");
         }
 
-        final List<Message> messages
-            = batch.getEvents().stream().map(messageSerializer::serialize).collect(Collectors.toList());
+        final List<Message> messages = batch.getMessages();
 
         final Mono<Void> sendMessage = getSendLink(batch.getPartitionId())
             .flatMap(link -> messages.size() == 1 ? link.send(messages.get(0)) : link.send(messages));
@@ -592,6 +590,7 @@ public class EventHubProducerAsyncClient implements Closeable {
         // important to end spans after metrics are reported so metrics get relevant context for exemplars.
         return instrumentation.sendBatch(send, batch);
     }
+
 
     private Mono<Void> sendInternal(Flux<EventData> events, SendOptions options) {
         final String partitionKey = options.getPartitionKey();
