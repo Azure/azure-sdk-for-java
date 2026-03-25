@@ -596,17 +596,34 @@ public class Configs {
     }
 
     public static Duration getConnectionAcquireTimeout() {
-        int timeoutInSeconds;
-        try {
-            timeoutInSeconds = Integer.parseInt(System.getProperty(CONNECTION_ACQUIRE_TIMEOUT_IN_SECONDS,
-                firstNonNull(
-                    emptyToNull(System.getenv().get(CONNECTION_ACQUIRE_TIMEOUT_IN_SECONDS_VARIABLE)),
-                    String.valueOf(DEFAULT_CONNECTION_ACQUIRE_TIMEOUT_IN_SECONDS))));
-        } catch (NumberFormatException e) {
-            logger.warn(
-                "Invalid non-numeric value for connection acquire timeout. Falling back to default: {}s.",
-                DEFAULT_CONNECTION_ACQUIRE_TIMEOUT_IN_SECONDS);
-            timeoutInSeconds = DEFAULT_CONNECTION_ACQUIRE_TIMEOUT_IN_SECONDS;
+        int timeoutInSeconds = DEFAULT_CONNECTION_ACQUIRE_TIMEOUT_IN_SECONDS;
+
+        String valueFromSystemProperty = System.getProperty(CONNECTION_ACQUIRE_TIMEOUT_IN_SECONDS);
+        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
+            try {
+                timeoutInSeconds = Integer.parseInt(valueFromSystemProperty);
+            } catch (NumberFormatException e) {
+                logger.warn(
+                    "Invalid non-numeric value '{}' for system property {}. Falling back to environment variable or default.",
+                    valueFromSystemProperty,
+                    CONNECTION_ACQUIRE_TIMEOUT_IN_SECONDS);
+                valueFromSystemProperty = null;
+            }
+        }
+
+        if (valueFromSystemProperty == null || valueFromSystemProperty.isEmpty()) {
+            String valueFromEnvVariable = System.getenv(CONNECTION_ACQUIRE_TIMEOUT_IN_SECONDS_VARIABLE);
+            if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
+                try {
+                    timeoutInSeconds = Integer.parseInt(valueFromEnvVariable);
+                } catch (NumberFormatException e) {
+                    logger.warn(
+                        "Invalid non-numeric value '{}' for environment variable {}. Falling back to default: {}s.",
+                        valueFromEnvVariable,
+                        CONNECTION_ACQUIRE_TIMEOUT_IN_SECONDS_VARIABLE,
+                        DEFAULT_CONNECTION_ACQUIRE_TIMEOUT_IN_SECONDS);
+                }
+            }
         }
 
         if (timeoutInSeconds <= 0) {

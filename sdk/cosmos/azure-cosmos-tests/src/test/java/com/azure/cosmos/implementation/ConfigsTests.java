@@ -301,4 +301,15 @@ public class ConfigsTests {
             System.clearProperty("COSMOS.CONNECTION_ACQUIRE_TIMEOUT_IN_SECONDS");
         }
     }
+
+    @Test(groups = { "unit" })
+    public void connectionAcquireTimeoutRejectsNonNumericValue() {
+        // Non-numeric value should fall back to default (45s)
+        System.setProperty("COSMOS.CONNECTION_ACQUIRE_TIMEOUT_IN_SECONDS", "abc");
+        try {
+            assertThat(Configs.getConnectionAcquireTimeout()).isEqualTo(Duration.ofSeconds(45));
+        } finally {
+            System.clearProperty("COSMOS.CONNECTION_ACQUIRE_TIMEOUT_IN_SECONDS");
+        }
+    }
 }
