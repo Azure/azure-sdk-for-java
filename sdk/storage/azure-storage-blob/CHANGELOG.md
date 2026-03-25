@@ -1,16 +1,11 @@
 # Release History
 
-## 12.34.0-beta.2 (Unreleased)
+## 12.35.0-beta.1 (2026-03-25)
 
 ### Features Added
 - Added support for Blob Smart Tier.
 - Added support for virtual directory-scoped SAS. 
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Added support for service version 2026-06-06.
 
 ## 12.34.0-beta.1 (2026-02-19)
 
