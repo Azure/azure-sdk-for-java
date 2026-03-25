@@ -21,6 +21,8 @@ import io.opentelemetry.api.GlobalOpenTelemetry;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.trace.Tracer;
 
+import java.util.Map;
+
 /**
  * Builder for creating instances of {@link VoiceLiveAsyncClient}.
  */
@@ -28,6 +30,9 @@ import io.opentelemetry.api.trace.Tracer;
 public final class VoiceLiveClientBuilder implements TokenCredentialTrait<VoiceLiveClientBuilder>,
     KeyCredentialTrait<VoiceLiveClientBuilder>, EndpointTrait<VoiceLiveClientBuilder> {
     private static final ClientLogger LOGGER = new ClientLogger(VoiceLiveClientBuilder.class);
+    private static final Map<String, String> PROPERTIES = CoreUtils.getProperties("azure-ai-voicelive.properties");
+    private static final String SDK_NAME = "azure-ai-voicelive";
+    private static final String SDK_VERSION = PROPERTIES.getOrDefault("version", "unknown");
 
     private URI endpoint;
     private KeyCredential keyCredential;
@@ -166,7 +171,7 @@ public final class VoiceLiveClientBuilder implements TokenCredentialTrait<VoiceL
         HttpHeaders additionalHeaders = CoreUtils.createHttpHeadersFromClientOptions(clientOptions);
 
         OpenTelemetry otel = openTelemetry != null ? openTelemetry : GlobalOpenTelemetry.getOrNoop();
-        Tracer tracer = otel.getTracer("azure-ai-voicelive", "1.0.0-beta.6");
+        Tracer tracer = otel.getTracer(SDK_NAME, SDK_VERSION);
 
         if (keyCredential != null) {
             return new VoiceLiveAsyncClient(endpoint, keyCredential, version.getVersion(), additionalHeaders, tracer,
