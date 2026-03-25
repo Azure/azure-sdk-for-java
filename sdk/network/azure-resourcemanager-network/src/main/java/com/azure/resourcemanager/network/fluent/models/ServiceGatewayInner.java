@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.network.models.BaseProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.SecurityPerimeterSystemData;
 import com.azure.resourcemanager.network.models.SecurityPerimeterTrackedResource;
 import com.azure.resourcemanager.network.models.ServiceGatewaySku;
@@ -258,7 +258,7 @@ public final class ServiceGatewayInner extends SecurityPerimeterTrackedResource 
      * 
      * @return the provisioningState value.
      */
-    public BaseProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 

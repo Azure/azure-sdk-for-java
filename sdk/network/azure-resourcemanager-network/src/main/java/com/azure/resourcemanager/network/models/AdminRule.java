@@ -345,7 +345,7 @@ public final class AdminRule extends BaseAdminRuleInner {
      * 
      * @return the provisioningState value.
      */
-    public BaseProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 

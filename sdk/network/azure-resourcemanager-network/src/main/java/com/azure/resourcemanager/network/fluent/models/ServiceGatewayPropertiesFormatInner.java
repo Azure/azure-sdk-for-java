@@ -9,7 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.network.models.BaseProvisioningState;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 
 /**
@@ -41,7 +41,7 @@ public final class ServiceGatewayPropertiesFormatInner
     /*
      * The provisioning state of the service gateway resource.
      */
-    private BaseProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of ServiceGatewayPropertiesFormatInner class.
@@ -125,7 +125,7 @@ public final class ServiceGatewayPropertiesFormatInner
      * 
      * @return the provisioningState value.
      */
-    public BaseProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -187,7 +187,7 @@ public final class ServiceGatewayPropertiesFormatInner
                     deserializedServiceGatewayPropertiesFormatInner.resourceGuid = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedServiceGatewayPropertiesFormatInner.provisioningState
-                        = BaseProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

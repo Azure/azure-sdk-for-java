@@ -151,7 +151,7 @@ public final class ActiveDefaultSecurityAdminRule extends ActiveBaseSecurityAdmi
      * 
      * @return the provisioningState value.
      */
-    public BaseProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 

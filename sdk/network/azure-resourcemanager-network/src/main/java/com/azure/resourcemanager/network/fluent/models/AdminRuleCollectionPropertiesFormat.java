@@ -10,8 +10,8 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.network.models.BaseProvisioningState;
 import com.azure.resourcemanager.network.models.NetworkManagerSecurityGroupItem;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 import java.util.List;
 
@@ -34,7 +34,7 @@ public final class AdminRuleCollectionPropertiesFormat
     /*
      * The provisioning state of the resource.
      */
-    private BaseProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /*
      * Unique identifier for this resource.
@@ -93,7 +93,7 @@ public final class AdminRuleCollectionPropertiesFormat
      * 
      * @return the provisioningState value.
      */
-    public BaseProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -160,7 +160,7 @@ public final class AdminRuleCollectionPropertiesFormat
                     deserializedAdminRuleCollectionPropertiesFormat.description = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedAdminRuleCollectionPropertiesFormat.provisioningState
-                        = BaseProvisioningState.fromString(reader.getString());
+                        = ProvisioningState.fromString(reader.getString());
                 } else if ("resourceGuid".equals(fieldName)) {
                     deserializedAdminRuleCollectionPropertiesFormat.resourceGuid = reader.getString();
                 } else {

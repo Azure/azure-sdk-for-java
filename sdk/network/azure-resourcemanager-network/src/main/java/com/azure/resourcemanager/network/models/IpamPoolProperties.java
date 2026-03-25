@@ -46,7 +46,7 @@ public final class IpamPoolProperties implements JsonSerializable<IpamPoolProper
     /*
      * Provisioning states of a resource.
      */
-    private BaseProvisioningState provisioningState;
+    private ProvisioningState provisioningState;
 
     /**
      * Creates an instance of IpamPoolProperties class.
@@ -150,7 +150,7 @@ public final class IpamPoolProperties implements JsonSerializable<IpamPoolProper
      * 
      * @return the provisioningState value.
      */
-    public BaseProvisioningState provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -212,8 +212,7 @@ public final class IpamPoolProperties implements JsonSerializable<IpamPoolProper
                 } else if ("parentPoolName".equals(fieldName)) {
                     deserializedIpamPoolProperties.parentPoolName = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {
-                    deserializedIpamPoolProperties.provisioningState
-                        = BaseProvisioningState.fromString(reader.getString());
+                    deserializedIpamPoolProperties.provisioningState = ProvisioningState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
