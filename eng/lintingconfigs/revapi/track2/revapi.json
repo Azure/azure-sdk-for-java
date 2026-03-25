@@ -1314,6 +1314,11 @@
             "match": "class com\\.azure\\.resourcemanager\\.network\\.models\\.(AdminRule|ChildResource|CommonProxyResource|CommonResource|CommonTrackedResource|DefaultAdminRule|SecurityPerimeterProxyResource|SecurityPerimeterResource)"
           },
           "justification": "Base class ProxyResource not in old API archive. Revapi analysis artifact."
+        },
+        {
+          "code": "java.method.returnTypeChanged",
+          "old" : "method java.util.Map<java.lang.String, java.lang.String> com.azure.resourcemanager.network.models.EffectiveNetworkSecurityGroup::tagMap()",
+          "justification": "TypeSpec defines tagMap as Record<string[]>, changing return type from Map<String, String> to Map<String, List<String>>."
         }]
     }
   }
