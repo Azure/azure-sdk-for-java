@@ -1,0 +1,31 @@
+--- a/src/main/java/com/azure/messaging/eventhubs/implementation/AmqpReceiveLinkProcessor.java
++++ b/src/main/java/com/azure/messaging/eventhubs/implementation/AmqpReceiveLinkProcessor.java
+@@ -694,10 +694,24 @@ final class AmqpReceiveLinkProcessor extends Flux<Message> implements AmqpRecei
+     @Override
+     public void request(long request) {
+         if (request <= 0) {
+             return;
+         }
+-        
+-        final int credit = Long.valueOf(request).intValue();
++
++        final long currentMessageQueueSize = messageQueue.size();
++        // Prevent negative results and integer overflow
++        final long actualRequest = Math.max(0, request - currentMessageQueueSize);
++        
++        // Safe integer conversion with bounds checking
++        if (actualRequest > Integer.MAX_VALUE) {
++            LOGGER.atWarning()
++                .addKeyValue("requestedCredits", request)
++                .addKeyValue("queueSize", currentMessageQueueSize)
++                .log("Credit request exceeds Integer.MAX_VALUE, clamping to maximum safe value");
++        }
++        
++        final int credit = (int) Math.min(actualRequest, Integer.MAX_VALUE);
++        
++        if (credit <= 0) {
++            return;
++        }
+ 
+         receiver.flow(credit);
+     }

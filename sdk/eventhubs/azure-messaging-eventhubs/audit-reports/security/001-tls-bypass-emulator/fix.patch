@@ -1,0 +1,55 @@
+--- a/src/main/java/com/azure/messaging/eventhubs/EventHubClientBuilder.java
++++ b/src/main/java/com/azure/messaging/eventhubs/EventHubClientBuilder.java
+@@ -880,6 +880,7 @@ public class EventHubClientBuilder {
+     private String fullyQualifiedNamespace;
+     private String eventHubName;
+     private String connectionString;
++    private boolean isDevelopmentEmulator = false;
+     private TokenCredential credential;
+     private EventHubConnectionProcessor processor;
+     private Scheduler scheduler;
+@@ -1200,10 +1201,16 @@ public class EventHubClientBuilder {
+             throw new IllegalStateException("Cannot use both credential and shared access signature.");
+         }
+ 
+-        if (connectionStringProperties.isEmulatorConnection()) {
+-            connectionOptions.setTransportType(AmqpTransportType.AMQP);
+-            connectionOptions.setVerifyMode(SslDomain.VerifyMode.ANONYMOUS_PEER);
+-            connectionOptions.setSslEnabled(false);
++        if (connectionStringProperties.isEmulatorConnection() && !isDevelopmentEmulator) {
++            LOGGER.atError()
++                .addKeyValue("endpoint", connectionOptions.getHostname())
++                .log("Connection string contains 'useDevelopmentEmulator=true' but enableDevelopmentEmulator() was not called. " +
++                     "This prevents accidental production use of insecure emulator settings.");
++            throw new IllegalArgumentException(
++                "Emulator connection strings require explicit enableDevelopmentEmulator() call. " +
++                "This prevents accidental production use of insecure emulator settings.");
++        } else if (isDevelopmentEmulator) {
++            applyEmulatorSettings(connectionOptions);
+         }
+ 
+         final Flux<EventHubAmqpConnection> connectionFlux = Flux.usingWhen(
+@@ -1220,6 +1227,23 @@ public class EventHubClientBuilder {
+         return processor;
+     }
+ 
++    /**
++     * Explicitly enables development emulator mode with insecure TLS settings.
++     * Only use this for connecting to the Event Hubs emulator in development environments.
++     *
++     * @return The updated EventHubClientBuilder object.
++     */
++    public EventHubClientBuilder enableDevelopmentEmulator() {
++        this.isDevelopmentEmulator = true;
++        LOGGER.atWarning().log("Development emulator mode enabled. TLS certificate validation will be disabled.");
++        return this;
++    }
++
++    private void applyEmulatorSettings(ConnectionOptions connectionOptions) {
++        connectionOptions.setTransportType(AmqpTransportType.AMQP);
++        connectionOptions.setVerifyMode(SslDomain.VerifyMode.ANONYMOUS_PEER);
++        connectionOptions.setSslEnabled(false);
++    }
+ 
+     private static String getEntityPath(String connectionString, String eventHubName) {
+         if (!CoreUtils.isNullOrEmpty(eventHubName)) {

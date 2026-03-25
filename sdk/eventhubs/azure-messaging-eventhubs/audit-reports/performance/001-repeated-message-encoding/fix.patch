@@ -1,0 +1,108 @@
+--- a/src/main/java/com/azure/messaging/eventhubs/EventData.java
++++ b/src/main/java/com/azure/messaging/eventhubs/EventData.java
+@@ -10,6 +10,8 @@ import com.azure.core.util.logging.ClientLogger;
+ import com.azure.messaging.eventhubs.implementation.MessageSerializer;
+ 
+ import java.time.Instant;
++import java.util.concurrent.locks.ReentrantLock;
++import org.apache.qpid.proton.message.Message;
+ 
+ /**
+  * The data structure encapsulating the event being sent-to and received-from Event Hubs.
+@@ -20,6 +22,10 @@ public class EventData {
+     private static final ClientLogger LOGGER = new ClientLogger(EventData.class);
+ 
+     private final BinaryData body;
++    // Caching for performance optimization
++    private volatile Message cachedAmqpMessage;
++    private volatile Integer cachedEncodedSize; 
++    private final ReentrantLock cacheLock = new ReentrantLock();
+     private final Map<String, Object> properties;
+     private final SystemProperties systemProperties;
+ 
+@@ -150,6 +156,31 @@ public class EventData {
+         return new EventData(body, properties, systemProperties);
+     }
+ 
++    /**
++     * Package-private method for EventDataBatch to get cached AMQP message.
++     * Ensures each EventData is serialized only once.
++     */
++    Message getCachedAmqpMessage(MessageSerializer serializer) {
++        if (cachedAmqpMessage == null) {
++            cacheLock.lock();
++            try {
++                if (cachedAmqpMessage == null) {
++                    cachedAmqpMessage = serializer.serialize(this);
++                }
++            } finally {
++                cacheLock.unlock();
++            }
++        }
++        return cachedAmqpMessage;
++    }
++
++    /**
++     * Package-private method for EventDataBatch to get cached encoded size.
++     */
++    int getCachedEncodedSize(MessageSerializer serializer) {
++        // Implementation depends on getCachedAmqpMessage for thread safety
++        Message message = getCachedAmqpMessage(serializer);
++        if (cachedEncodedSize == null) {
++            cacheLock.lock();
++            try {
++                if (cachedEncodedSize == null) {
++                    DroppingWritableBuffer buffer = new DroppingWritableBuffer();
++                    cachedEncodedSize = message.encode(buffer, 0, buffer.capacity());
++                }
++            } finally {
++                cacheLock.unlock();
++            }
++        }
++        return cachedEncodedSize;
++    }
++
++    /**
++     * Clear encoding cache - called after message transmission to free memory.
++     */
++    void clearEncodingCache() {
++        cacheLock.lock();
++        try {
++            cachedAmqpMessage = null;
++            cachedEncodedSize = null;
++        } finally {
++            cacheLock.unlock();
++        }
++    }
+     /**
+      * Properties that are populated by Event Hubs service when receiving this event.
+      */
+--- a/src/main/java/com/azure/messaging/eventhubs/EventDataBatch.java
++++ b/src/main/java/com/azure/messaging/eventhubs/EventDataBatch.java
+@@ -137,11 +137,8 @@ public final class EventDataBatch {
+             return false;
+         }
+ 
+-        final Message amqpMessage = messageSerializer.serialize(eventData);
+-        final DroppingWritableBuffer buffer = new DroppingWritableBuffer();
+-        int encodedSize = amqpMessage.encode(buffer, 0, buffer.capacity());
++        // Use cached encoding to avoid double serialization
++        int encodedSize = eventData.getCachedEncodedSize(messageSerializer);
+ 
+         final int eventSize = encodedSize + BATCH_OVERHEAD;
+         if (sizeInBytes + eventSize > maxSizeInBytes) {
+@@ -154,6 +151,14 @@ public final class EventDataBatch {
+         return true;
+     }
+ 
++    /**
++     * Clear encoding caches after batch transmission to free memory.
++     */
++    void clearCaches() {
++        for (EventData event : events) {
++            event.clearEncodingCache();
++        }
++    }
+     /**
+      * Gets the number of {@link EventData events} in the batch.
+      *

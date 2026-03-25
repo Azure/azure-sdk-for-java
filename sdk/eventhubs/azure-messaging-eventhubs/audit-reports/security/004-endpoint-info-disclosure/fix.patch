@@ -1,0 +1,35 @@
+--- a/src/main/java/com/azure/messaging/eventhubs/EventHubClientBuilder.java
++++ b/src/main/java/com/azure/messaging/eventhubs/EventHubClientBuilder.java
+@@ -455,9 +455,11 @@ public class EventHubClientBuilder {
+         }
+ 
+         if (!CoreUtils.isNullOrEmpty(customEndpointAddress)) {
++            String sanitizedEndpoint = sanitizeUrlForLogging(customEndpointAddress);
+             throw new IllegalArgumentException("'customEndpointAddress' cannot be used along with 'connectionString'. "
+-                + "Specify either 'connectionString' or 'customEndpointAddress': " + customEndpointAddress);
++                + "Specify either 'connectionString' or 'customEndpointAddress'. "
++                + "Custom endpoint: " + sanitizedEndpoint);
+         }
+ 
+         final ConnectionStringProperties properties = new ConnectionStringProperties(connectionString);
+@@ -1245,6 +1247,19 @@ public class EventHubClientBuilder {
+         connectionOptions.setSslEnabled(false);
+     }
+ 
++    private String sanitizeUrlForLogging(String url) {
++        try {
++            URL parsed = new URL(url);
++            // Only include scheme, host, and port - remove path, query, fragment
++            StringBuilder sanitized = new StringBuilder();
++            sanitized.append(parsed.getProtocol()).append("://");
++            sanitized.append(parsed.getHost());
++            if (parsed.getPort() != -1) {
++                sanitized.append(":").append(parsed.getPort());
++            }
++            sanitized.append("/...");
++            return sanitized.toString();
++        } catch (MalformedURLException e) {
++            return "[invalid-url]";
++        }
++    }
+     private static String getEntityPath(String connectionString, String eventHubName) {
