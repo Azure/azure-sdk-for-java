@@ -6,6 +6,8 @@
 
 - Added `previousVersion` property to `SecretProperties` which returns the version of the previous secret, if
   applicable. Applies only to secrets created after June 1, 2025.
+- Added `outContentType` parameter overloads to `SecretClient` and `SecretAsyncClient` `getSecret` and
+  `getSecretWithResponse` methods, allowing PFX-to-PEM conversion when retrieving certificate-backed secrets.
 
 ### Bugs Fixed
 
