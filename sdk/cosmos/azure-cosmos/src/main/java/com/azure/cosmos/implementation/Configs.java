@@ -596,14 +596,28 @@ public class Configs {
     }
 
     public static Duration getConnectionAcquireTimeout() {
-        return Duration.ofSeconds(getConnectionAcquireTimeoutInSeconds());
-    }
+        int timeoutInSeconds;
+        try {
+            timeoutInSeconds = Integer.parseInt(System.getProperty(CONNECTION_ACQUIRE_TIMEOUT_IN_SECONDS,
+                firstNonNull(
+                    emptyToNull(System.getenv().get(CONNECTION_ACQUIRE_TIMEOUT_IN_SECONDS_VARIABLE)),
+                    String.valueOf(DEFAULT_CONNECTION_ACQUIRE_TIMEOUT_IN_SECONDS))));
+        } catch (NumberFormatException e) {
+            logger.warn(
+                "Invalid non-numeric value for connection acquire timeout. Falling back to default: {}s.",
+                DEFAULT_CONNECTION_ACQUIRE_TIMEOUT_IN_SECONDS);
+            timeoutInSeconds = DEFAULT_CONNECTION_ACQUIRE_TIMEOUT_IN_SECONDS;
+        }
 
-    public static int getConnectionAcquireTimeoutInSeconds() {
-        return Integer.parseInt(System.getProperty(CONNECTION_ACQUIRE_TIMEOUT_IN_SECONDS,
-            firstNonNull(
-                emptyToNull(System.getenv().get(CONNECTION_ACQUIRE_TIMEOUT_IN_SECONDS_VARIABLE)),
-                String.valueOf(DEFAULT_CONNECTION_ACQUIRE_TIMEOUT_IN_SECONDS))));
+        if (timeoutInSeconds <= 0) {
+            logger.warn(
+                "Invalid connection acquire timeout: {}s. Must be > 0. Falling back to default: {}s.",
+                timeoutInSeconds,
+                DEFAULT_CONNECTION_ACQUIRE_TIMEOUT_IN_SECONDS);
+            timeoutInSeconds = DEFAULT_CONNECTION_ACQUIRE_TIMEOUT_IN_SECONDS;
+        }
+
+        return Duration.ofSeconds(timeoutInSeconds);
     }
 
     /**
