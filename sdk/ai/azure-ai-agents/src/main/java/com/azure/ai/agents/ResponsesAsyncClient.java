@@ -7,7 +7,9 @@ package com.azure.ai.agents;
 import com.azure.ai.agents.implementation.OpenAIJsonHelper;
 import com.azure.ai.agents.implementation.StreamingUtils;
 import com.azure.ai.agents.models.AzureCreateResponseOptions;
+import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceMethod;
 import com.openai.client.OpenAIClientAsync;
 import com.openai.core.JsonValue;
 import com.openai.models.responses.Response;
@@ -53,6 +55,7 @@ public final class ResponsesAsyncClient {
      * @param params The parameters to create the response.
      * @return The created Response.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response> createAzureResponse(AzureCreateResponseOptions createResponse,
         ResponseCreateParams.Builder params) {
         Objects.requireNonNull(createResponse, "createResponse cannot be null");

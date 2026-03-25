@@ -13,9 +13,9 @@ public final class PoolVirtualMachineStateCountTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PoolVirtualMachineStateCount model
-            = BinaryData.fromString("{\"state\":\"Deallocating\",\"count\":3125900770889764845}")
+            = BinaryData.fromString("{\"state\":\"Deleting\",\"count\":6336474646026503507}")
                 .toObject(PoolVirtualMachineStateCount.class);
-        Assertions.assertEquals(PoolVirtualMachineState.DEALLOCATING, model.state());
-        Assertions.assertEquals(3125900770889764845L, model.count());
+        Assertions.assertEquals(PoolVirtualMachineState.DELETING, model.state());
+        Assertions.assertEquals(6336474646026503507L, model.count());
     }
 }
