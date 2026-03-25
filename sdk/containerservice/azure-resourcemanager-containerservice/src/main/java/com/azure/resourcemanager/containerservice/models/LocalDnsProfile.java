@@ -32,12 +32,12 @@ public final class LocalDnsProfile implements JsonSerializable<LocalDnsProfile> 
      * VnetDNS overrides apply to DNS traffic from pods with dnsPolicy:default or kubelet (referred to as VnetDNS
      * traffic).
      */
-    private Map<String, LocalDnsOverride> vnetDNSOverrides;
+    private Map<String, LocalDnsOverride> vnetDnsOverrides;
 
     /*
      * KubeDNS overrides apply to DNS traffic from pods with dnsPolicy:ClusterFirst (referred to as KubeDNS traffic).
      */
-    private Map<String, LocalDnsOverride> kubeDNSOverrides;
+    private Map<String, LocalDnsOverride> kubeDnsOverrides;
 
     /**
      * Creates an instance of LocalDnsProfile class.
@@ -75,46 +75,46 @@ public final class LocalDnsProfile implements JsonSerializable<LocalDnsProfile> 
     }
 
     /**
-     * Get the vnetDNSOverrides property: VnetDNS overrides apply to DNS traffic from pods with dnsPolicy:default or
+     * Get the vnetDnsOverrides property: VnetDNS overrides apply to DNS traffic from pods with dnsPolicy:default or
      * kubelet (referred to as VnetDNS traffic).
      * 
-     * @return the vnetDNSOverrides value.
+     * @return the vnetDnsOverrides value.
      */
-    public Map<String, LocalDnsOverride> vnetDNSOverrides() {
-        return this.vnetDNSOverrides;
+    public Map<String, LocalDnsOverride> vnetDnsOverrides() {
+        return this.vnetDnsOverrides;
     }
 
     /**
-     * Set the vnetDNSOverrides property: VnetDNS overrides apply to DNS traffic from pods with dnsPolicy:default or
+     * Set the vnetDnsOverrides property: VnetDNS overrides apply to DNS traffic from pods with dnsPolicy:default or
      * kubelet (referred to as VnetDNS traffic).
      * 
-     * @param vnetDNSOverrides the vnetDNSOverrides value to set.
+     * @param vnetDnsOverrides the vnetDnsOverrides value to set.
      * @return the LocalDnsProfile object itself.
      */
-    public LocalDnsProfile withVnetDNSOverrides(Map<String, LocalDnsOverride> vnetDNSOverrides) {
-        this.vnetDNSOverrides = vnetDNSOverrides;
+    public LocalDnsProfile withVnetDnsOverrides(Map<String, LocalDnsOverride> vnetDnsOverrides) {
+        this.vnetDnsOverrides = vnetDnsOverrides;
         return this;
     }
 
     /**
-     * Get the kubeDNSOverrides property: KubeDNS overrides apply to DNS traffic from pods with dnsPolicy:ClusterFirst
+     * Get the kubeDnsOverrides property: KubeDNS overrides apply to DNS traffic from pods with dnsPolicy:ClusterFirst
      * (referred to as KubeDNS traffic).
      * 
-     * @return the kubeDNSOverrides value.
+     * @return the kubeDnsOverrides value.
      */
-    public Map<String, LocalDnsOverride> kubeDNSOverrides() {
-        return this.kubeDNSOverrides;
+    public Map<String, LocalDnsOverride> kubeDnsOverrides() {
+        return this.kubeDnsOverrides;
     }
 
     /**
-     * Set the kubeDNSOverrides property: KubeDNS overrides apply to DNS traffic from pods with dnsPolicy:ClusterFirst
+     * Set the kubeDnsOverrides property: KubeDNS overrides apply to DNS traffic from pods with dnsPolicy:ClusterFirst
      * (referred to as KubeDNS traffic).
      * 
-     * @param kubeDNSOverrides the kubeDNSOverrides value to set.
+     * @param kubeDnsOverrides the kubeDnsOverrides value to set.
      * @return the LocalDnsProfile object itself.
      */
-    public LocalDnsProfile withKubeDNSOverrides(Map<String, LocalDnsOverride> kubeDNSOverrides) {
-        this.kubeDNSOverrides = kubeDNSOverrides;
+    public LocalDnsProfile withKubeDnsOverrides(Map<String, LocalDnsOverride> kubeDnsOverrides) {
+        this.kubeDnsOverrides = kubeDnsOverrides;
         return this;
     }
 
@@ -124,15 +124,15 @@ public final class LocalDnsProfile implements JsonSerializable<LocalDnsProfile> 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (vnetDNSOverrides() != null) {
-            vnetDNSOverrides().values().forEach(e -> {
+        if (vnetDnsOverrides() != null) {
+            vnetDnsOverrides().values().forEach(e -> {
                 if (e != null) {
                     e.validate();
                 }
             });
         }
-        if (kubeDNSOverrides() != null) {
-            kubeDNSOverrides().values().forEach(e -> {
+        if (kubeDnsOverrides() != null) {
+            kubeDnsOverrides().values().forEach(e -> {
                 if (e != null) {
                     e.validate();
                 }
@@ -147,9 +147,9 @@ public final class LocalDnsProfile implements JsonSerializable<LocalDnsProfile> 
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("mode", this.mode == null ? null : this.mode.toString());
-        jsonWriter.writeMapField("vnetDNSOverrides", this.vnetDNSOverrides,
+        jsonWriter.writeMapField("vnetDNSOverrides", this.vnetDnsOverrides,
             (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeMapField("kubeDNSOverrides", this.kubeDNSOverrides,
+        jsonWriter.writeMapField("kubeDNSOverrides", this.kubeDnsOverrides,
             (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
@@ -174,13 +174,13 @@ public final class LocalDnsProfile implements JsonSerializable<LocalDnsProfile> 
                 } else if ("state".equals(fieldName)) {
                     deserializedLocalDnsProfile.state = LocalDnsState.fromString(reader.getString());
                 } else if ("vnetDNSOverrides".equals(fieldName)) {
-                    Map<String, LocalDnsOverride> vnetDNSOverrides
+                    Map<String, LocalDnsOverride> vnetDnsOverrides
                         = reader.readMap(reader1 -> LocalDnsOverride.fromJson(reader1));
-                    deserializedLocalDnsProfile.vnetDNSOverrides = vnetDNSOverrides;
+                    deserializedLocalDnsProfile.vnetDnsOverrides = vnetDnsOverrides;
                 } else if ("kubeDNSOverrides".equals(fieldName)) {
-                    Map<String, LocalDnsOverride> kubeDNSOverrides
+                    Map<String, LocalDnsOverride> kubeDnsOverrides
                         = reader.readMap(reader1 -> LocalDnsOverride.fromJson(reader1));
-                    deserializedLocalDnsProfile.kubeDNSOverrides = kubeDNSOverrides;
+                    deserializedLocalDnsProfile.kubeDnsOverrides = kubeDnsOverrides;
                 } else {
                     reader.skipChildren();
                 }

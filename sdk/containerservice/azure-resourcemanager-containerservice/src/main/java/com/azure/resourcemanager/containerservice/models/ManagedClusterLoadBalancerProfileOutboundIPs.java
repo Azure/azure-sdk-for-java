@@ -21,7 +21,7 @@ public final class ManagedClusterLoadBalancerProfileOutboundIPs
     /*
      * A list of public IP resources.
      */
-    private List<ResourceReference> publicIps;
+    private List<ResourceReference> publicIPs;
 
     /**
      * Creates an instance of ManagedClusterLoadBalancerProfileOutboundIPs class.
@@ -30,22 +30,22 @@ public final class ManagedClusterLoadBalancerProfileOutboundIPs
     }
 
     /**
-     * Get the publicIps property: A list of public IP resources.
+     * Get the publicIPs property: A list of public IP resources.
      * 
-     * @return the publicIps value.
+     * @return the publicIPs value.
      */
-    public List<ResourceReference> publicIps() {
-        return this.publicIps;
+    public List<ResourceReference> publicIPs() {
+        return this.publicIPs;
     }
 
     /**
-     * Set the publicIps property: A list of public IP resources.
+     * Set the publicIPs property: A list of public IP resources.
      * 
-     * @param publicIps the publicIps value to set.
+     * @param publicIPs the publicIPs value to set.
      * @return the ManagedClusterLoadBalancerProfileOutboundIPs object itself.
      */
-    public ManagedClusterLoadBalancerProfileOutboundIPs withPublicIps(List<ResourceReference> publicIps) {
-        this.publicIps = publicIps;
+    public ManagedClusterLoadBalancerProfileOutboundIPs withPublicIPs(List<ResourceReference> publicIPs) {
+        this.publicIPs = publicIPs;
         return this;
     }
 
@@ -55,8 +55,8 @@ public final class ManagedClusterLoadBalancerProfileOutboundIPs
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (publicIps() != null) {
-            publicIps().forEach(e -> e.validate());
+        if (publicIPs() != null) {
+            publicIPs().forEach(e -> e.validate());
         }
     }
 
@@ -66,7 +66,7 @@ public final class ManagedClusterLoadBalancerProfileOutboundIPs
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("publicIPs", this.publicIps, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("publicIPs", this.publicIPs, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -87,9 +87,9 @@ public final class ManagedClusterLoadBalancerProfileOutboundIPs
                 reader.nextToken();
 
                 if ("publicIPs".equals(fieldName)) {
-                    List<ResourceReference> publicIps
+                    List<ResourceReference> publicIPs
                         = reader.readArray(reader1 -> ResourceReference.fromJson(reader1));
-                    deserializedManagedClusterLoadBalancerProfileOutboundIPs.publicIps = publicIps;
+                    deserializedManagedClusterLoadBalancerProfileOutboundIPs.publicIPs = publicIPs;
                 } else {
                     reader.skipChildren();
                 }

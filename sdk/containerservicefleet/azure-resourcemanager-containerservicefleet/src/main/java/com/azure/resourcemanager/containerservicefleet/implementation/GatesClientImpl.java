@@ -115,7 +115,8 @@ public final class GatesClientImpl implements GatesClient {
         Mono<Response<GateListResult>> listByFleet(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("fleetName") String fleetName,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("$filter") String filter, @QueryParam("$top") Integer top,
+            @QueryParam("$skipToken") String skipToken, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/gates")
@@ -124,7 +125,8 @@ public final class GatesClientImpl implements GatesClient {
         Response<GateListResult> listByFleetSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("fleetName") String fleetName,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("$filter") String filter, @QueryParam("$top") Integer top,
+            @QueryParam("$skipToken") String skipToken, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -492,6 +494,9 @@ public final class GatesClientImpl implements GatesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
+     * @param filter Filter the result list using the given expression.
+     * @param top The number of result items to return.
+     * @param skipToken The page-continuation token to use with a paged version of this API.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -499,14 +504,35 @@ public final class GatesClientImpl implements GatesClient {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<GateInner>> listByFleetSinglePageAsync(String resourceGroupName, String fleetName) {
+    private Mono<PagedResponse<GateInner>> listByFleetSinglePageAsync(String resourceGroupName, String fleetName,
+        String filter, Integer top, String skipToken) {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByFleet(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, fleetName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, fleetName, filter, top, skipToken, accept, context))
             .<PagedResponse<GateInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * List Gate resources by Fleet.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param fleetName The name of the Fleet resource.
+     * @param filter Filter the result list using the given expression.
+     * @param top The number of result items to return.
+     * @param skipToken The page-continuation token to use with a paged version of this API.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a Gate list operation as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<GateInner> listByFleetAsync(String resourceGroupName, String fleetName, String filter,
+        Integer top, String skipToken) {
+        return new PagedFlux<>(() -> listByFleetSinglePageAsync(resourceGroupName, fleetName, filter, top, skipToken),
+            nextLink -> listByFleetNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -521,7 +547,10 @@ public final class GatesClientImpl implements GatesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<GateInner> listByFleetAsync(String resourceGroupName, String fleetName) {
-        return new PagedFlux<>(() -> listByFleetSinglePageAsync(resourceGroupName, fleetName),
+        final String filter = null;
+        final Integer top = null;
+        final String skipToken = null;
+        return new PagedFlux<>(() -> listByFleetSinglePageAsync(resourceGroupName, fleetName, filter, top, skipToken),
             nextLink -> listByFleetNextSinglePageAsync(nextLink));
     }
 
@@ -530,16 +559,21 @@ public final class GatesClientImpl implements GatesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
+     * @param filter Filter the result list using the given expression.
+     * @param top The number of result items to return.
+     * @param skipToken The page-continuation token to use with a paged version of this API.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a Gate list operation along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<GateInner> listByFleetSinglePage(String resourceGroupName, String fleetName) {
+    private PagedResponse<GateInner> listByFleetSinglePage(String resourceGroupName, String fleetName, String filter,
+        Integer top, String skipToken) {
         final String accept = "application/json";
         Response<GateListResult> res = service.listByFleetSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, fleetName, accept, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, fleetName, filter, top, skipToken, accept,
+            Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -549,6 +583,9 @@ public final class GatesClientImpl implements GatesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
+     * @param filter Filter the result list using the given expression.
+     * @param top The number of result items to return.
+     * @param skipToken The page-continuation token to use with a paged version of this API.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -556,11 +593,11 @@ public final class GatesClientImpl implements GatesClient {
      * @return the response of a Gate list operation along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<GateInner> listByFleetSinglePage(String resourceGroupName, String fleetName,
-        Context context) {
+    private PagedResponse<GateInner> listByFleetSinglePage(String resourceGroupName, String fleetName, String filter,
+        Integer top, String skipToken, Context context) {
         final String accept = "application/json";
         Response<GateListResult> res = service.listByFleetSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, fleetName, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, fleetName, filter, top, skipToken, accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -577,7 +614,10 @@ public final class GatesClientImpl implements GatesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GateInner> listByFleet(String resourceGroupName, String fleetName) {
-        return new PagedIterable<>(() -> listByFleetSinglePage(resourceGroupName, fleetName),
+        final String filter = null;
+        final Integer top = null;
+        final String skipToken = null;
+        return new PagedIterable<>(() -> listByFleetSinglePage(resourceGroupName, fleetName, filter, top, skipToken),
             nextLink -> listByFleetNextSinglePage(nextLink));
     }
 
@@ -586,6 +626,9 @@ public final class GatesClientImpl implements GatesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
+     * @param filter Filter the result list using the given expression.
+     * @param top The number of result items to return.
+     * @param skipToken The page-continuation token to use with a paged version of this API.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -593,8 +636,10 @@ public final class GatesClientImpl implements GatesClient {
      * @return the response of a Gate list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<GateInner> listByFleet(String resourceGroupName, String fleetName, Context context) {
-        return new PagedIterable<>(() -> listByFleetSinglePage(resourceGroupName, fleetName, context),
+    public PagedIterable<GateInner> listByFleet(String resourceGroupName, String fleetName, String filter, Integer top,
+        String skipToken, Context context) {
+        return new PagedIterable<>(
+            () -> listByFleetSinglePage(resourceGroupName, fleetName, filter, top, skipToken, context),
             nextLink -> listByFleetNextSinglePage(nextLink, context));
     }
 

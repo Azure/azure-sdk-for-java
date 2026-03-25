@@ -10,6 +10,7 @@ import com.azure.ai.contentunderstanding.models.AnalysisInput;
 import com.azure.ai.contentunderstanding.models.AnalysisResult;
 import com.azure.ai.contentunderstanding.models.AudioVisualContent;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus;
+import com.azure.ai.contentunderstanding.models.ContentRange;
 import com.azure.ai.contentunderstanding.models.DocumentContent;
 import com.azure.ai.contentunderstanding.models.DocumentPage;
 import com.azure.ai.contentunderstanding.models.DocumentTable;
@@ -19,6 +20,7 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 
@@ -67,6 +69,15 @@ public class Sample02_AnalyzeUrl {
 
         System.out.println("\n--- Image Analysis Example ---");
         analyzeImageUrl(client);
+
+        System.out.println("\n--- Document ContentRange Example ---");
+        analyzeDocumentUrlWithContentRange(client);
+
+        System.out.println("\n--- Video ContentRange Example ---");
+        analyzeVideoUrlWithContentRange(client);
+
+        System.out.println("\n--- Audio ContentRange Example ---");
+        analyzeAudioUrlWithContentRange(client);
     }
 
     /**
@@ -280,5 +291,186 @@ public class Sample02_AnalyzeUrl {
             : "";
         System.out.println("Summary: " + summary);
         // END:ContentUnderstandingAnalyzeImageUrl
+    }
+
+    /**
+     * Sample demonstrating how to analyze a document URL with ContentRange to extract specific pages.
+     */
+    public static void analyzeDocumentUrlWithContentRange(ContentUnderstandingClient client) {
+        // BEGIN:ContentUnderstandingAnalyzeUrlWithContentRange
+        String uriSource
+            = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/document/mixed_financial_invoices.pdf";
+
+        // Extract only page 1 using ContentRange
+        AnalysisInput rangeInput = new AnalysisInput();
+        rangeInput.setUrl(uriSource);
+        rangeInput.setContentRange(ContentRange.page(1));
+
+        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> rangeOperation
+            = client.beginAnalyze("prebuilt-documentSearch", Arrays.asList(rangeInput));
+        AnalysisResult rangeResult = rangeOperation.getFinalResult();
+
+        DocumentContent rangeDoc = (DocumentContent) rangeResult.getContents().get(0);
+        System.out.println("Page(1): returned " + rangeDoc.getPages().size() + " page"
+            + " (page " + rangeDoc.getStartPageNumber() + ")");
+        System.out.println("Markdown length: " + rangeDoc.getMarkdown().length() + " characters");
+
+        // Combine multiple page ranges: pages 1-3, page 5, and pages 9 onward
+        AnalysisInput combineInput = new AnalysisInput();
+        combineInput.setUrl(uriSource);
+        combineInput.setContentRange(ContentRange.combine(
+            ContentRange.pages(1, 3),
+            ContentRange.page(5),
+            ContentRange.pagesFrom(9)));
+
+        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> combineOperation
+            = client.beginAnalyze("prebuilt-documentSearch", Arrays.asList(combineInput));
+        AnalysisResult combineResult = combineOperation.getFinalResult();
+
+        DocumentContent combineDoc = (DocumentContent) combineResult.getContents().get(0);
+        System.out.println("Combine(1-3, 5, 9-): returned " + combineDoc.getPages().size() + " pages"
+            + " (pages " + combineDoc.getStartPageNumber() + "-" + combineDoc.getEndPageNumber() + ")");
+        System.out.println("Markdown length: " + combineDoc.getMarkdown().length() + " characters");
+        // END:ContentUnderstandingAnalyzeUrlWithContentRange
+    }
+
+    /**
+     * Sample demonstrating how to analyze a video URL with ContentRange to extract specific time ranges.
+     */
+    public static void analyzeVideoUrlWithContentRange(ContentUnderstandingClient client) {
+        // BEGIN:ContentUnderstandingAnalyzeVideoUrlWithContentRange
+        String uriSource
+            = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/videos/sdk_samples/FlightSimulator.mp4";
+
+        // Analyze only the first 5 seconds using ContentRange.timeRange()
+        AnalysisInput rangeInput = new AnalysisInput();
+        rangeInput.setUrl(uriSource);
+        rangeInput.setContentRange(ContentRange.timeRange(Duration.ZERO, Duration.ofSeconds(5)));
+
+        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> rangeOperation
+            = client.beginAnalyze("prebuilt-videoSearch", Arrays.asList(rangeInput));
+        AnalysisResult rangeResult = rangeOperation.getFinalResult();
+
+        for (AnalysisContent media : rangeResult.getContents()) {
+            AudioVisualContent videoContent = (AudioVisualContent) media;
+            System.out.println("TimeRange(0, 5s): Start=" + videoContent.getStartTime().toMillis()
+                + " ms, End=" + videoContent.getEndTime().toMillis() + " ms");
+        }
+
+        // Analyze from 10 seconds onward using ContentRange.timeRangeFrom()
+        AnalysisInput rangeFromInput = new AnalysisInput();
+        rangeFromInput.setUrl(uriSource);
+        rangeFromInput.setContentRange(ContentRange.timeRangeFrom(Duration.ofSeconds(10)));
+
+        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> rangeFromOperation
+            = client.beginAnalyze("prebuilt-videoSearch", Arrays.asList(rangeFromInput));
+        AnalysisResult rangeFromResult = rangeFromOperation.getFinalResult();
+
+        for (AnalysisContent media : rangeFromResult.getContents()) {
+            AudioVisualContent videoContent = (AudioVisualContent) media;
+            System.out.println("TimeRangeFrom(10s): Start=" + videoContent.getStartTime().toMillis()
+                + " ms, End=" + videoContent.getEndTime().toMillis() + " ms");
+        }
+
+        // Analyze with sub-second precision using milliseconds
+        AnalysisInput subSecondInput = new AnalysisInput();
+        subSecondInput.setUrl(uriSource);
+        subSecondInput.setContentRange(
+            ContentRange.timeRange(Duration.ofMillis(1200), Duration.ofMillis(3651)));
+
+        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> subSecondOperation
+            = client.beginAnalyze("prebuilt-videoSearch", Arrays.asList(subSecondInput));
+        AnalysisResult subSecondResult = subSecondOperation.getFinalResult();
+
+        for (AnalysisContent media : subSecondResult.getContents()) {
+            AudioVisualContent videoContent = (AudioVisualContent) media;
+            System.out.println("TimeRange(1200ms, 3651ms): Start=" + videoContent.getStartTime().toMillis()
+                + " ms, End=" + videoContent.getEndTime().toMillis() + " ms");
+        }
+
+        // Combine multiple time ranges
+        AnalysisInput combineInput = new AnalysisInput();
+        combineInput.setUrl(uriSource);
+        combineInput.setContentRange(ContentRange.combine(
+            ContentRange.timeRange(Duration.ZERO, Duration.ofSeconds(3)),
+            ContentRange.timeRangeFrom(Duration.ofSeconds(30))));
+
+        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> combineOperation
+            = client.beginAnalyze("prebuilt-videoSearch", Arrays.asList(combineInput));
+        AnalysisResult combineResult = combineOperation.getFinalResult();
+
+        int segmentIndex = 1;
+        for (AnalysisContent media : combineResult.getContents()) {
+            AudioVisualContent videoContent = (AudioVisualContent) media;
+            System.out.println("Combined segment " + segmentIndex + ": Start=" + videoContent.getStartTime().toMillis()
+                + " ms, End=" + videoContent.getEndTime().toMillis() + " ms");
+            segmentIndex++;
+        }
+        // END:ContentUnderstandingAnalyzeVideoUrlWithContentRange
+    }
+
+    /**
+     * Sample demonstrating how to analyze an audio URL with ContentRange to extract specific time ranges.
+     */
+    public static void analyzeAudioUrlWithContentRange(ContentUnderstandingClient client) {
+        // BEGIN:ContentUnderstandingAnalyzeAudioUrlWithContentRange
+        String uriSource
+            = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/audio/callCenterRecording.mp3";
+
+        // Analyze from 5 seconds to end using ContentRange.timeRangeFrom()
+        AnalysisInput rangeInput = new AnalysisInput();
+        rangeInput.setUrl(uriSource);
+        rangeInput.setContentRange(ContentRange.timeRangeFrom(Duration.ofSeconds(5)));
+
+        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> rangeOperation
+            = client.beginAnalyze("prebuilt-audioSearch", Arrays.asList(rangeInput));
+        AnalysisResult rangeResult = rangeOperation.getFinalResult();
+
+        AudioVisualContent audioContent = (AudioVisualContent) rangeResult.getContents().get(0);
+        System.out.println("TimeRangeFrom(5s): Start=" + audioContent.getStartTime().toMillis()
+            + " ms, End=" + audioContent.getEndTime().toMillis() + " ms");
+
+        // Analyze a specific time window
+        AnalysisInput windowInput = new AnalysisInput();
+        windowInput.setUrl(uriSource);
+        windowInput.setContentRange(ContentRange.timeRange(Duration.ofSeconds(2), Duration.ofSeconds(8)));
+
+        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> windowOperation
+            = client.beginAnalyze("prebuilt-audioSearch", Arrays.asList(windowInput));
+        AnalysisResult windowResult = windowOperation.getFinalResult();
+
+        AudioVisualContent windowContent = (AudioVisualContent) windowResult.getContents().get(0);
+        System.out.println("TimeRange(2s, 8s): Start=" + windowContent.getStartTime().toMillis()
+            + " ms, End=" + windowContent.getEndTime().toMillis() + " ms");
+
+        // Analyze with sub-second precision using milliseconds
+        AnalysisInput subSecondInput = new AnalysisInput();
+        subSecondInput.setUrl(uriSource);
+        subSecondInput.setContentRange(
+            ContentRange.timeRange(Duration.ofMillis(1200), Duration.ofMillis(3651)));
+
+        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> subSecondOperation
+            = client.beginAnalyze("prebuilt-audioSearch", Arrays.asList(subSecondInput));
+        AnalysisResult subSecondResult = subSecondOperation.getFinalResult();
+
+        AudioVisualContent subSecondContent = (AudioVisualContent) subSecondResult.getContents().get(0);
+        System.out.println("TimeRange(1200ms, 3651ms): Start=" + subSecondContent.getStartTime().toMillis()
+            + " ms, End=" + subSecondContent.getEndTime().toMillis() + " ms");
+
+        // Combine multiple time ranges
+        AnalysisInput combineInput = new AnalysisInput();
+        combineInput.setUrl(uriSource);
+        combineInput.setContentRange(ContentRange.combine(
+            ContentRange.timeRange(Duration.ZERO, Duration.ofSeconds(3)),
+            ContentRange.timeRangeFrom(Duration.ofSeconds(30))));
+
+        SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> combineOperation
+            = client.beginAnalyze("prebuilt-audioSearch", Arrays.asList(combineInput));
+        AnalysisResult combineResult = combineOperation.getFinalResult();
+
+        AudioVisualContent combineContent = (AudioVisualContent) combineResult.getContents().get(0);
+        System.out.println("Combined time ranges: Start=" + combineContent.getStartTime().toMillis()
+            + " ms, End=" + combineContent.getEndTime().toMillis() + " ms");
+        // END:ContentUnderstandingAnalyzeAudioUrlWithContentRange
     }
 }
