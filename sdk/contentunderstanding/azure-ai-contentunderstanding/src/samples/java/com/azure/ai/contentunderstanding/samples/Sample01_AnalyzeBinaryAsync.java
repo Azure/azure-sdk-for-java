@@ -8,6 +8,7 @@ import com.azure.ai.contentunderstanding.ContentUnderstandingAsyncClient;
 import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
 import com.azure.ai.contentunderstanding.models.AnalysisResult;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus;
+import com.azure.ai.contentunderstanding.models.ContentRange;
 import com.azure.ai.contentunderstanding.models.DocumentContent;
 import com.azure.ai.contentunderstanding.models.DocumentPage;
 import com.azure.ai.contentunderstanding.models.DocumentTable;
@@ -32,6 +33,7 @@ import java.util.concurrent.TimeUnit;
  * 2. Analyzing the document
  * 3. Extracting markdown content
  * 4. Accessing document properties (pages, tables, etc.)
+ * 5. Using ContentRange to analyze specific pages
  */
 public class Sample01_AnalyzeBinaryAsync {
 
@@ -161,6 +163,148 @@ public class Sample01_AnalyzeBinaryAsync {
         // we use a CountDownLatch so the program does not end before the async operations complete.
         if (!latch.await(2, TimeUnit.MINUTES)) {
             System.err.println("Timed out waiting for async operations to complete.");
+        }
+
+        // Demonstrate ContentRange usage with a multi-page document
+        System.out.println("\n--- ContentRange Examples ---");
+        analyzeBinaryWithContentRange(client);
+    }
+
+    /**
+     * Sample demonstrating how to use ContentRange to analyze specific pages of a binary document asynchronously.
+     * ContentRange allows you to specify which pages to analyze instead of the entire document.
+     */
+    public static void analyzeBinaryWithContentRange(ContentUnderstandingAsyncClient client)
+        throws IOException, InterruptedException {
+        // Load a multi-page document (10 pages)
+        String multiPageFilePath = "src/samples/resources/mixed_financial_invoices.pdf";
+        Path multiPagePath = Paths.get(multiPageFilePath);
+        byte[] multiPageBytes = Files.readAllBytes(multiPagePath);
+        BinaryData multiPageData = BinaryData.fromBytes(multiPageBytes);
+
+        CountDownLatch rangeLatch = new CountDownLatch(1);
+
+        // BEGIN:ContentUnderstandingAnalyzeBinaryWithContentRangeAsync
+        // Analyze a single page using ContentRange.page()
+        Mono<AnalysisResult> pageMono = client
+            .beginAnalyzeBinary("prebuilt-documentSearch", multiPageData,
+                ContentRange.page(2), "application/octet-stream", null)
+            .last()
+            .flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
+                    return pollResponse.getFinalResult();
+                } else {
+                    return Mono.error(new RuntimeException(
+                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+                }
+            })
+            .doOnNext(result -> {
+                DocumentContent pageDoc = (DocumentContent) result.getContents().get(0);
+                System.out.println("Page(2): returned " + pageDoc.getPages().size() + " page"
+                    + " (page " + pageDoc.getStartPageNumber() + ")");
+            });
+
+        // Analyze a page range using ContentRange.pages()
+        Mono<AnalysisResult> pagesMono = client
+            .beginAnalyzeBinary("prebuilt-documentSearch", multiPageData,
+                ContentRange.pages(1, 3), "application/octet-stream", null)
+            .last()
+            .flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
+                    return pollResponse.getFinalResult();
+                } else {
+                    return Mono.error(new RuntimeException(
+                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+                }
+            })
+            .doOnNext(result -> {
+                DocumentContent pagesDoc = (DocumentContent) result.getContents().get(0);
+                System.out.println("Pages(1,3): returned " + pagesDoc.getPages().size() + " pages"
+                    + " (pages " + pagesDoc.getStartPageNumber() + "-" + pagesDoc.getEndPageNumber() + ")");
+            });
+
+        // Combine multiple ranges using ContentRange.combine()
+        Mono<AnalysisResult> combineMono = client
+            .beginAnalyzeBinary("prebuilt-documentSearch", multiPageData,
+                ContentRange.combine(
+                    ContentRange.page(1),
+                    ContentRange.pages(3, 4)),
+                "application/octet-stream", null)
+            .last()
+            .flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
+                    return pollResponse.getFinalResult();
+                } else {
+                    return Mono.error(new RuntimeException(
+                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+                }
+            })
+            .doOnNext(result -> {
+                DocumentContent combineDoc = (DocumentContent) result.getContents().get(0);
+                System.out.println("Combine(Page(1), Pages(3,4)): returned " + combineDoc.getPages().size() + " pages"
+                    + " (pages " + combineDoc.getStartPageNumber() + "-" + combineDoc.getEndPageNumber() + ")");
+            });
+
+        // Analyze only pages 3 to end using ContentRange.pagesFrom()
+        Mono<AnalysisResult> pagesFromMono = client
+            .beginAnalyzeBinary("prebuilt-documentSearch", multiPageData,
+                ContentRange.pagesFrom(3), "application/octet-stream", null)
+            .last()
+            .flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
+                    return pollResponse.getFinalResult();
+                } else {
+                    return Mono.error(new RuntimeException(
+                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+                }
+            })
+            .doOnNext(result -> {
+                DocumentContent rangeDoc = (DocumentContent) result.getContents().get(0);
+                System.out.println("PagesFrom(3): returned " + rangeDoc.getPages().size() + " pages"
+                    + " (pages " + rangeDoc.getStartPageNumber() + "-" + rangeDoc.getEndPageNumber() + ")");
+            });
+
+        // Combine multiple page ranges: pages 1-3, page 5, and pages 9 onward
+        Mono<AnalysisResult> bigCombineMono = client
+            .beginAnalyzeBinary("prebuilt-documentSearch", multiPageData,
+                ContentRange.combine(
+                    ContentRange.pages(1, 3),
+                    ContentRange.page(5),
+                    ContentRange.pagesFrom(9)),
+                "application/octet-stream", null)
+            .last()
+            .flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
+                    return pollResponse.getFinalResult();
+                } else {
+                    return Mono.error(new RuntimeException(
+                        "Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+                }
+            })
+            .doOnNext(result -> {
+                DocumentContent bigCombineDoc = (DocumentContent) result.getContents().get(0);
+                System.out.println("Combine(Pages(1,3), Page(5), PagesFrom(9)): returned "
+                    + bigCombineDoc.getPages().size() + " pages");
+            });
+
+        // Chain all operations sequentially using then()
+        pageMono
+            .then(pagesMono)
+            .then(combineMono)
+            .then(pagesFromMono)
+            .then(bigCombineMono)
+            .doOnError(error -> System.err.println("Error: " + error.getMessage()))
+            .subscribe(
+                result -> {
+                    System.out.println("ContentRange async analysis completed successfully");
+                    rangeLatch.countDown();
+                },
+                error -> rangeLatch.countDown()
+            );
+        // END:ContentUnderstandingAnalyzeBinaryWithContentRangeAsync
+
+        if (!rangeLatch.await(5, TimeUnit.MINUTES)) {
+            System.err.println("Timed out waiting for ContentRange async operations.");
         }
     }
 }

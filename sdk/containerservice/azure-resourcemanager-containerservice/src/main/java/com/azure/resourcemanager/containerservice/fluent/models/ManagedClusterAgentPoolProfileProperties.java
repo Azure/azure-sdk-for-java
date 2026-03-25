@@ -50,7 +50,7 @@ public class ManagedClusterAgentPoolProfileProperties
      * updated. Specify an if-match or if-none-match header with the eTag value for a subsequent request to enable
      * optimistic concurrency per the normal eTag convention.
      */
-    private String eTag;
+    private String etag;
 
     /*
      * Number of agents (VMs) to host docker containers. Allowed values must be in the range of 0 to 1000 (inclusive)
@@ -375,7 +375,7 @@ public class ManagedClusterAgentPoolProfileProperties
      * Configures the per-node local DNS, with VnetDNS and KubeDNS overrides. LocalDNS helps improve performance and
      * reliability of DNS resolution in an AKS cluster. For more details see aka.ms/aks/localdns.
      */
-    private LocalDnsProfile localDNSProfile;
+    private LocalDnsProfile localDnsProfile;
 
     /**
      * Creates an instance of ManagedClusterAgentPoolProfileProperties class.
@@ -384,26 +384,26 @@ public class ManagedClusterAgentPoolProfileProperties
     }
 
     /**
-     * Get the eTag property: Unique read-only string used to implement optimistic concurrency. The eTag value will
+     * Get the etag property: Unique read-only string used to implement optimistic concurrency. The eTag value will
      * change when the resource is updated. Specify an if-match or if-none-match header with the eTag value for a
      * subsequent request to enable optimistic concurrency per the normal eTag convention.
      * 
-     * @return the eTag value.
+     * @return the etag value.
      */
-    public String eTag() {
-        return this.eTag;
+    public String etag() {
+        return this.etag;
     }
 
     /**
-     * Set the eTag property: Unique read-only string used to implement optimistic concurrency. The eTag value will
+     * Set the etag property: Unique read-only string used to implement optimistic concurrency. The eTag value will
      * change when the resource is updated. Specify an if-match or if-none-match header with the eTag value for a
      * subsequent request to enable optimistic concurrency per the normal eTag convention.
      * 
-     * @param eTag the eTag value to set.
+     * @param etag the etag value to set.
      * @return the ManagedClusterAgentPoolProfileProperties object itself.
      */
-    ManagedClusterAgentPoolProfileProperties withETag(String eTag) {
-        this.eTag = eTag;
+    ManagedClusterAgentPoolProfileProperties withEtag(String etag) {
+        this.etag = etag;
         return this;
     }
 
@@ -1585,26 +1585,26 @@ public class ManagedClusterAgentPoolProfileProperties
     }
 
     /**
-     * Get the localDNSProfile property: Configures the per-node local DNS, with VnetDNS and KubeDNS overrides. LocalDNS
+     * Get the localDnsProfile property: Configures the per-node local DNS, with VnetDNS and KubeDNS overrides. LocalDNS
      * helps improve performance and reliability of DNS resolution in an AKS cluster. For more details see
      * aka.ms/aks/localdns.
      * 
-     * @return the localDNSProfile value.
+     * @return the localDnsProfile value.
      */
-    public LocalDnsProfile localDNSProfile() {
-        return this.localDNSProfile;
+    public LocalDnsProfile localDnsProfile() {
+        return this.localDnsProfile;
     }
 
     /**
-     * Set the localDNSProfile property: Configures the per-node local DNS, with VnetDNS and KubeDNS overrides. LocalDNS
+     * Set the localDnsProfile property: Configures the per-node local DNS, with VnetDNS and KubeDNS overrides. LocalDNS
      * helps improve performance and reliability of DNS resolution in an AKS cluster. For more details see
      * aka.ms/aks/localdns.
      * 
-     * @param localDNSProfile the localDNSProfile value to set.
+     * @param localDnsProfile the localDnsProfile value to set.
      * @return the ManagedClusterAgentPoolProfileProperties object itself.
      */
-    public ManagedClusterAgentPoolProfileProperties withLocalDNSProfile(LocalDnsProfile localDNSProfile) {
-        this.localDNSProfile = localDNSProfile;
+    public ManagedClusterAgentPoolProfileProperties withLocalDnsProfile(LocalDnsProfile localDnsProfile) {
+        this.localDnsProfile = localDnsProfile;
         return this;
     }
 
@@ -1653,8 +1653,8 @@ public class ManagedClusterAgentPoolProfileProperties
         if (status() != null) {
             status().validate();
         }
-        if (localDNSProfile() != null) {
-            localDNSProfile().validate();
+        if (localDnsProfile() != null) {
+            localDnsProfile().validate();
         }
     }
 
@@ -1721,7 +1721,7 @@ public class ManagedClusterAgentPoolProfileProperties
         jsonWriter.writeArrayField("virtualMachineNodesStatus", this.virtualMachineNodesStatus,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("status", this.status);
-        jsonWriter.writeJsonField("localDNSProfile", this.localDNSProfile);
+        jsonWriter.writeJsonField("localDNSProfile", this.localDnsProfile);
         return jsonWriter.writeEndObject();
     }
 
@@ -1742,7 +1742,7 @@ public class ManagedClusterAgentPoolProfileProperties
                 reader.nextToken();
 
                 if ("eTag".equals(fieldName)) {
-                    deserializedManagedClusterAgentPoolProfileProperties.eTag = reader.getString();
+                    deserializedManagedClusterAgentPoolProfileProperties.etag = reader.getString();
                 } else if ("count".equals(fieldName)) {
                     deserializedManagedClusterAgentPoolProfileProperties.count = reader.getNullable(JsonReader::getInt);
                 } else if ("vmSize".equals(fieldName)) {
@@ -1883,7 +1883,7 @@ public class ManagedClusterAgentPoolProfileProperties
                 } else if ("status".equals(fieldName)) {
                     deserializedManagedClusterAgentPoolProfileProperties.status = AgentPoolStatus.fromJson(reader);
                 } else if ("localDNSProfile".equals(fieldName)) {
-                    deserializedManagedClusterAgentPoolProfileProperties.localDNSProfile
+                    deserializedManagedClusterAgentPoolProfileProperties.localDnsProfile
                         = LocalDnsProfile.fromJson(reader);
                 } else {
                     reader.skipChildren();

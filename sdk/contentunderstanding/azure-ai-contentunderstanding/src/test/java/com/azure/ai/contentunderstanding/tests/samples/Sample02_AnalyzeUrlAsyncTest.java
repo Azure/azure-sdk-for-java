@@ -8,12 +8,14 @@ import com.azure.ai.contentunderstanding.models.AnalysisInput;
 import com.azure.ai.contentunderstanding.models.AnalysisResult;
 import com.azure.ai.contentunderstanding.models.AudioVisualContent;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus;
+import com.azure.ai.contentunderstanding.models.ContentRange;
 import com.azure.ai.contentunderstanding.models.DocumentContent;
 import com.azure.ai.contentunderstanding.models.DocumentPage;
 import com.azure.ai.contentunderstanding.models.DocumentTable;
 import com.azure.ai.contentunderstanding.models.DocumentTableCell;
 import com.azure.ai.contentunderstanding.models.AnalysisContent;
 import com.azure.ai.contentunderstanding.models.TranscriptPhrase;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.polling.PollerFlux;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
@@ -23,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -41,7 +44,7 @@ public class Sample02_AnalyzeUrlAsyncTest extends ContentUnderstandingClientTest
     @Test
     public void testAnalyzeUrlAsync() {
 
-        // BEGIN:ContentUnderstandingAnalyzeUrlAsyncAsync
+        // BEGIN:ContentUnderstandingAnalyzeUrlAsync
         // Using a publicly accessible sample file from Azure-Samples GitHub repository
         String uriSource
             = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-dotnet/main/ContentUnderstanding.Common/data/invoice.pdf";
@@ -62,9 +65,9 @@ public class Sample02_AnalyzeUrlAsyncTest extends ContentUnderstandingClientTest
                     new RuntimeException("Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
             }
         }).block(); // block() is used here for testing; in production, use subscribe()
-        // END:ContentUnderstandingAnalyzeUrlAsyncAsync
+        // END:ContentUnderstandingAnalyzeUrlAsync
 
-        // BEGIN:Assertion_ContentUnderstandingAnalyzeUrlAsyncAsync
+        // BEGIN:Assertion_ContentUnderstandingAnalyzeUrlAsync
         assertNotNull(uriSource, "URI source should not be null");
         assertNotNull(operation, "Analysis operation should not be null");
         assertNotNull(result, "Analysis result should not be null");
@@ -72,7 +75,7 @@ public class Sample02_AnalyzeUrlAsyncTest extends ContentUnderstandingClientTest
         System.out.println("Analysis operation properties verified");
         System.out.println("Analysis result contains "
             + (result.getContents() != null ? result.getContents().size() : 0) + " content(s)");
-        // END:Assertion_ContentUnderstandingAnalyzeUrlAsyncAsync
+        // END:Assertion_ContentUnderstandingAnalyzeUrlAsync
 
         // A PDF file has only one content element even if it contains multiple pages
         AnalysisContent content = null;
@@ -243,7 +246,7 @@ public class Sample02_AnalyzeUrlAsyncTest extends ContentUnderstandingClientTest
 
     @Test
     public void testAnalyzeVideoUrlAsync() {
-        // BEGIN:ContentUnderstandingAnalyzeVideoUrlAsyncAsync
+        // BEGIN:ContentUnderstandingAnalyzeVideoUrlAsync
         String uriSource
             = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/videos/sdk_samples/FlightSimulator.mp4";
 
@@ -289,9 +292,9 @@ public class Sample02_AnalyzeUrlAsyncTest extends ContentUnderstandingClientTest
             System.out.println("---------------------");
             segmentIndex++;
         }
-        // END:ContentUnderstandingAnalyzeVideoUrlAsyncAsync
+        // END:ContentUnderstandingAnalyzeVideoUrlAsync
 
-        // BEGIN:Assertion_ContentUnderstandingAnalyzeVideoUrlAsyncAsync
+        // BEGIN:Assertion_ContentUnderstandingAnalyzeVideoUrlAsync
         assertNotNull(operation, "Analysis operation should not be null");
         assertNotNull(result, "Analysis result should not be null");
         assertNotNull(result.getContents(), "Result contents should not be null");
@@ -308,12 +311,12 @@ public class Sample02_AnalyzeUrlAsyncTest extends ContentUnderstandingClientTest
             assertFalse(summaryStr.trim().isEmpty(), "Summary should not be empty");
         }
         System.out.println("Video analysis validation completed successfully");
-        // END:Assertion_ContentUnderstandingAnalyzeVideoUrlAsyncAsync
+        // END:Assertion_ContentUnderstandingAnalyzeVideoUrlAsync
     }
 
     @Test
     public void testAnalyzeAudioUrlAsync() {
-        // BEGIN:ContentUnderstandingAnalyzeAudioUrlAsyncAsync
+        // BEGIN:ContentUnderstandingAnalyzeAudioUrlAsync
         String uriSource
             = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/audio/callCenterRecording.mp3";
 
@@ -362,9 +365,9 @@ public class Sample02_AnalyzeUrlAsyncTest extends ContentUnderstandingClientTest
                 count++;
             }
         }
-        // END:ContentUnderstandingAnalyzeAudioUrlAsyncAsync
+        // END:ContentUnderstandingAnalyzeAudioUrlAsync
 
-        // BEGIN:Assertion_ContentUnderstandingAnalyzeAudioUrlAsyncAsync
+        // BEGIN:Assertion_ContentUnderstandingAnalyzeAudioUrlAsync
         assertNotNull(operation, "Analysis operation should not be null");
         assertNotNull(result, "Analysis result should not be null");
         assertNotNull(result.getContents(), "Result contents should not be null");
@@ -384,12 +387,12 @@ public class Sample02_AnalyzeUrlAsyncTest extends ContentUnderstandingClientTest
             assertFalse(summaryStr.trim().isEmpty(), "Summary should not be empty");
         }
         System.out.println("Audio analysis validation completed successfully");
-        // END:Assertion_ContentUnderstandingAnalyzeAudioUrlAsyncAsync
+        // END:Assertion_ContentUnderstandingAnalyzeAudioUrlAsync
     }
 
     @Test
     public void testAnalyzeImageUrlAsync() {
-        // BEGIN:ContentUnderstandingAnalyzeImageUrlAsyncAsync
+        // BEGIN:ContentUnderstandingAnalyzeImageUrlAsync
         String uriSource
             = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/image/pieChart.jpg";
 
@@ -420,9 +423,9 @@ public class Sample02_AnalyzeUrlAsyncTest extends ContentUnderstandingClientTest
                 : "")
             : "";
         System.out.println("Summary: " + summary);
-        // END:ContentUnderstandingAnalyzeImageUrlAsyncAsync
+        // END:ContentUnderstandingAnalyzeImageUrlAsync
 
-        // BEGIN:Assertion_ContentUnderstandingAnalyzeImageUrlAsyncAsync
+        // BEGIN:Assertion_ContentUnderstandingAnalyzeImageUrlAsync
         assertNotNull(operation, "Analysis operation should not be null");
         assertNotNull(result, "Analysis result should not be null");
         assertNotNull(result.getContents(), "Result contents should not be null");
@@ -437,6 +440,382 @@ public class Sample02_AnalyzeUrlAsyncTest extends ContentUnderstandingClientTest
             assertFalse(summaryStr.trim().isEmpty(), "Summary should not be empty");
         }
         System.out.println("Image analysis validation completed successfully");
-        // END:Assertion_ContentUnderstandingAnalyzeImageUrlAsyncAsync
+        // END:Assertion_ContentUnderstandingAnalyzeImageUrlAsync
+    }
+
+    @Test
+    public void testAnalyzeUrlWithPageContentRangesAsync() {
+
+        // BEGIN:ContentUnderstandingAnalyzeUrlWithPageContentRangesAsync
+        String uriSource
+            = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/document/mixed_financial_invoices.pdf";
+
+        // Full document analysis for comparison
+        AnalysisInput fullInput = new AnalysisInput();
+        fullInput.setUrl(uriSource);
+
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> fullOperation
+            = contentUnderstandingAsyncClient.beginAnalyze("prebuilt-documentSearch", Arrays.asList(fullInput));
+        AnalysisResult fullResult = fullOperation.last().flatMap(pollResponse -> {
+            if (pollResponse.getStatus().isComplete()) {
+                return pollResponse.getFinalResult();
+            } else {
+                return Mono.error(
+                    new RuntimeException("Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+            }
+        }).block();
+        DocumentContent fullDoc = (DocumentContent) fullResult.getContents().get(0);
+
+        // Extract only page 1 via AnalysisInput.setContentRange()
+        AnalysisInput rangeInput = new AnalysisInput();
+        rangeInput.setUrl(uriSource);
+        rangeInput.setContentRange(ContentRange.page(1));
+
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> rangeOperation
+            = contentUnderstandingAsyncClient.beginAnalyze("prebuilt-documentSearch", Arrays.asList(rangeInput));
+        AnalysisResult rangeResult = rangeOperation.last().flatMap(pollResponse -> {
+            if (pollResponse.getStatus().isComplete()) {
+                return pollResponse.getFinalResult();
+            } else {
+                return Mono.error(
+                    new RuntimeException("Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+            }
+        }).block();
+        // END:ContentUnderstandingAnalyzeUrlWithPageContentRangesAsync
+
+        // BEGIN:Assertion_ContentUnderstandingAnalyzeUrlWithPageContentRangesAsync
+        assertEquals(10, fullDoc.getPages().size(), "Full document should return all 10 pages");
+        assertNotNull(rangeResult);
+        assertNotNull(rangeResult.getContents());
+        DocumentContent rangeDocContent = (DocumentContent) rangeResult.getContents().get(0);
+        assertEquals(1, rangeDocContent.getPages().size(), "With ContentRange.page(1), should return only 1 page");
+        assertEquals(1, rangeDocContent.getStartPageNumber());
+        assertEquals(1, rangeDocContent.getEndPageNumber());
+        assertTrue(fullDoc.getPages().size() > rangeDocContent.getPages().size());
+        assertTrue(fullDoc.getMarkdown().length() > rangeDocContent.getMarkdown().length());
+        // END:Assertion_ContentUnderstandingAnalyzeUrlWithPageContentRangesAsync
+
+        // Combined disjoint page ranges: pages 1-3, page 5, and pages 9 onward
+        // Document has 10 pages, so pages 1-3, 5, 9-10 match (6 pages total)
+        AnalysisInput combineInput = new AnalysisInput();
+        combineInput.setUrl(uriSource);
+        combineInput.setContentRange(
+            ContentRange.combine(ContentRange.pages(1, 3), ContentRange.page(5), ContentRange.pagesFrom(9)));
+
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> combineOperation
+            = contentUnderstandingAsyncClient.beginAnalyze("prebuilt-documentSearch", Arrays.asList(combineInput));
+        AnalysisResult combineResult = combineOperation.last().flatMap(pollResponse -> {
+            if (pollResponse.getStatus().isComplete()) {
+                return pollResponse.getFinalResult();
+            } else {
+                return Mono.error(
+                    new RuntimeException("Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+            }
+        }).block();
+
+        assertNotNull(combineResult);
+        assertNotNull(combineResult.getContents());
+        DocumentContent combineDoc = (DocumentContent) combineResult.getContents().get(0);
+        assertEquals(6, combineDoc.getPages().size(),
+            "Combine(1-3, 5, 9-) should return 6 pages (1-3, 5, 9-10), got " + combineDoc.getPages().size());
+        assertEquals(1, combineDoc.getStartPageNumber());
+        assertEquals(10, combineDoc.getEndPageNumber());
+        List<Integer> combinePageNumbers = new java.util.ArrayList<>();
+        for (DocumentPage page : combineDoc.getPages()) {
+            combinePageNumbers.add(page.getPageNumber());
+        }
+        java.util.Collections.sort(combinePageNumbers);
+        assertEquals(Arrays.asList(1, 2, 3, 5, 9, 10), combinePageNumbers,
+            "Combine(1-3, 5, 9-) page numbers should be [1, 2, 3, 5, 9, 10]");
+    }
+
+    @LiveOnly
+    @Test
+    public void testAnalyzeVideoUrlWithTimeContentRangesAsync() {
+
+        // BEGIN:ContentUnderstandingAnalyzeVideoUrlWithTimeContentRangesAsync
+        String uriSource
+            = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/videos/sdk_samples/FlightSimulator.mp4";
+
+        // Full analysis for comparison
+        AnalysisInput fullInput = new AnalysisInput();
+        fullInput.setUrl(uriSource);
+
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> fullOperation
+            = contentUnderstandingAsyncClient.beginAnalyze("prebuilt-videoSearch", Arrays.asList(fullInput));
+        AnalysisResult fullResult = fullOperation.last().flatMap(pollResponse -> {
+            if (pollResponse.getStatus().isComplete()) {
+                return pollResponse.getFinalResult();
+            } else {
+                return Mono.error(
+                    new RuntimeException("Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+            }
+        }).block();
+
+        // ---- TimeRange(0, 5s) — first 5 seconds ----
+        AnalysisInput rangeInput = new AnalysisInput();
+        rangeInput.setUrl(uriSource);
+        rangeInput.setContentRange(ContentRange.timeRange(Duration.ZERO, Duration.ofSeconds(5)));
+
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> rangeOperation
+            = contentUnderstandingAsyncClient.beginAnalyze("prebuilt-videoSearch", Arrays.asList(rangeInput));
+        AnalysisResult rangeResult = rangeOperation.last().flatMap(pollResponse -> {
+            if (pollResponse.getStatus().isComplete()) {
+                return pollResponse.getFinalResult();
+            } else {
+                return Mono.error(
+                    new RuntimeException("Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+            }
+        }).block();
+        // END:ContentUnderstandingAnalyzeVideoUrlWithTimeContentRangesAsync
+
+        // BEGIN:Assertion_ContentUnderstandingAnalyzeVideoUrlWithTimeContentRangesAsync
+        assertNotNull(fullResult);
+        assertNotNull(fullResult.getContents());
+        assertTrue(fullResult.getContents().size() > 0);
+
+        assertNotNull(rangeResult);
+        assertNotNull(rangeResult.getContents());
+        assertTrue(rangeResult.getContents().size() > 0);
+        for (AnalysisContent content : rangeResult.getContents()) {
+            assertTrue(content instanceof AudioVisualContent, "Video analysis should return AudioVisualContent");
+            AudioVisualContent avContent = (AudioVisualContent) content;
+            assertTrue(avContent.getEndTime().toMillis() > avContent.getStartTime().toMillis());
+            assertTrue(avContent.getStartTime().toMillis() >= 0,
+                "Range(0-5s) segment StartTime (" + avContent.getStartTime().toMillis() + " ms) should be >= 0 ms");
+            assertTrue(avContent.getEndTime().toMillis() <= 5000,
+                "Range(0-5s) segment EndTime (" + avContent.getEndTime().toMillis() + " ms) should be <= 5000 ms");
+        }
+        // END:Assertion_ContentUnderstandingAnalyzeVideoUrlWithTimeContentRangesAsync
+
+        // ---- TimeRangeFrom(10s) — from 10 seconds to end ----
+        AnalysisInput rangeFromInput = new AnalysisInput();
+        rangeFromInput.setUrl(uriSource);
+        rangeFromInput.setContentRange(ContentRange.timeRangeFrom(Duration.ofSeconds(10)));
+
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> rangeFromOperation
+            = contentUnderstandingAsyncClient.beginAnalyze("prebuilt-videoSearch", Arrays.asList(rangeFromInput));
+        AnalysisResult rangeFromResult = rangeFromOperation.last().flatMap(pollResponse -> {
+            if (pollResponse.getStatus().isComplete()) {
+                return pollResponse.getFinalResult();
+            } else {
+                return Mono.error(
+                    new RuntimeException("Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+            }
+        }).block();
+
+        assertNotNull(rangeFromResult);
+        assertNotNull(rangeFromResult.getContents());
+        assertTrue(rangeFromResult.getContents().size() > 0);
+        for (AnalysisContent content : rangeFromResult.getContents()) {
+            assertTrue(content instanceof AudioVisualContent);
+            AudioVisualContent avContent = (AudioVisualContent) content;
+            assertTrue(avContent.getEndTime().toMillis() > avContent.getStartTime().toMillis());
+            assertTrue(avContent.getStartTime().toMillis() >= 10000, "TimeRangeFrom(10s) segment StartTime ("
+                + avContent.getStartTime().toMillis() + " ms) should be >= 10000 ms");
+            assertNotNull(avContent.getMarkdown());
+            assertFalse(avContent.getMarkdown().isEmpty());
+        }
+
+        // ---- TimeRange sub-second precision (1200ms-3651ms) ----
+        AnalysisInput subSecondInput = new AnalysisInput();
+        subSecondInput.setUrl(uriSource);
+        subSecondInput.setContentRange(ContentRange.timeRange(Duration.ofMillis(1200), Duration.ofMillis(3651)));
+
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> subSecondOperation
+            = contentUnderstandingAsyncClient.beginAnalyze("prebuilt-videoSearch", Arrays.asList(subSecondInput));
+        AnalysisResult subSecondResult = subSecondOperation.last().flatMap(pollResponse -> {
+            if (pollResponse.getStatus().isComplete()) {
+                return pollResponse.getFinalResult();
+            } else {
+                return Mono.error(
+                    new RuntimeException("Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+            }
+        }).block();
+
+        assertNotNull(subSecondResult);
+        assertNotNull(subSecondResult.getContents());
+        assertTrue(subSecondResult.getContents().size() > 0);
+        for (AnalysisContent content : subSecondResult.getContents()) {
+            assertTrue(content instanceof AudioVisualContent);
+            AudioVisualContent avContent = (AudioVisualContent) content;
+            assertTrue(avContent.getEndTime().toMillis() > avContent.getStartTime().toMillis());
+            assertTrue(avContent.getStartTime().toMillis() >= 1200, "Range(1200ms-3651ms) segment StartTime ("
+                + avContent.getStartTime().toMillis() + " ms) should be >= 1200 ms");
+            assertTrue(avContent.getEndTime().toMillis() <= 3651, "Range(1200ms-3651ms) segment EndTime ("
+                + avContent.getEndTime().toMillis() + " ms) should be <= 3651 ms");
+        }
+
+        // ---- Combine multiple time ranges (0-3s, 30s-) ----
+        AnalysisInput combineInput = new AnalysisInput();
+        combineInput.setUrl(uriSource);
+        combineInput.setContentRange(ContentRange.combine(ContentRange.timeRange(Duration.ZERO, Duration.ofSeconds(3)),
+            ContentRange.timeRangeFrom(Duration.ofSeconds(30))));
+
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> combineOperation
+            = contentUnderstandingAsyncClient.beginAnalyze("prebuilt-videoSearch", Arrays.asList(combineInput));
+        AnalysisResult combineResult = combineOperation.last().flatMap(pollResponse -> {
+            if (pollResponse.getStatus().isComplete()) {
+                return pollResponse.getFinalResult();
+            } else {
+                return Mono.error(
+                    new RuntimeException("Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+            }
+        }).block();
+
+        assertNotNull(combineResult);
+        assertNotNull(combineResult.getContents());
+        assertTrue(combineResult.getContents().size() > 0);
+        for (AnalysisContent content : combineResult.getContents()) {
+            assertTrue(content instanceof AudioVisualContent);
+            AudioVisualContent avContent = (AudioVisualContent) content;
+            assertTrue(avContent.getEndTime().toMillis() > avContent.getStartTime().toMillis());
+            assertTrue(avContent.getEndTime().toMillis() <= 3000 || avContent.getStartTime().toMillis() >= 30000,
+                "Combine(0-3s, 30s-) segment should be in [0,3s] or [30s,∞), but was "
+                    + avContent.getStartTime().toMillis() + "-" + avContent.getEndTime().toMillis() + " ms");
+            assertNotNull(avContent.getMarkdown());
+            assertFalse(avContent.getMarkdown().isEmpty());
+        }
+
+    }
+
+    @LiveOnly
+    @Test
+    public void testAnalyzeAudioUrlWithTimeContentRangesAsync() {
+
+        // BEGIN:ContentUnderstandingAnalyzeAudioUrlWithTimeContentRangesAsync
+        String uriSource
+            = "https://raw.githubusercontent.com/Azure-Samples/azure-ai-content-understanding-assets/main/audio/callCenterRecording.mp3";
+
+        // Full analysis for comparison
+        AnalysisInput fullInput = new AnalysisInput();
+        fullInput.setUrl(uriSource);
+
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> fullOperation
+            = contentUnderstandingAsyncClient.beginAnalyze("prebuilt-audioSearch", Arrays.asList(fullInput));
+        AnalysisResult fullResult = fullOperation.last().flatMap(pollResponse -> {
+            if (pollResponse.getStatus().isComplete()) {
+                return pollResponse.getFinalResult();
+            } else {
+                return Mono.error(
+                    new RuntimeException("Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+            }
+        }).block();
+        AudioVisualContent fullAudioContent = (AudioVisualContent) fullResult.getContents().get(0);
+        long fullDurationMs = fullAudioContent.getEndTime().toMillis() - fullAudioContent.getStartTime().toMillis();
+
+        // ---- TimeRangeFrom(5s) — from 5 seconds to end ----
+        AnalysisInput rangeInput = new AnalysisInput();
+        rangeInput.setUrl(uriSource);
+        rangeInput.setContentRange(ContentRange.timeRangeFrom(Duration.ofSeconds(5)));
+
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> rangeOperation
+            = contentUnderstandingAsyncClient.beginAnalyze("prebuilt-audioSearch", Arrays.asList(rangeInput));
+        AnalysisResult rangeResult = rangeOperation.last().flatMap(pollResponse -> {
+            if (pollResponse.getStatus().isComplete()) {
+                return pollResponse.getFinalResult();
+            } else {
+                return Mono.error(
+                    new RuntimeException("Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+            }
+        }).block();
+        // END:ContentUnderstandingAnalyzeAudioUrlWithTimeContentRangesAsync
+
+        // BEGIN:Assertion_ContentUnderstandingAnalyzeAudioUrlWithTimeContentRangesAsync
+        assertNotNull(rangeResult);
+        assertNotNull(rangeResult.getContents());
+        assertTrue(rangeResult.getContents().size() > 0);
+        AudioVisualContent rangeAudioContent = (AudioVisualContent) rangeResult.getContents().get(0);
+        assertTrue(rangeAudioContent instanceof AudioVisualContent);
+        assertTrue(fullAudioContent.getMarkdown().length() >= rangeAudioContent.getMarkdown().length());
+        int fullPhraseCount
+            = fullAudioContent.getTranscriptPhrases() != null ? fullAudioContent.getTranscriptPhrases().size() : 0;
+        int rangePhraseCount
+            = rangeAudioContent.getTranscriptPhrases() != null ? rangeAudioContent.getTranscriptPhrases().size() : 0;
+        assertTrue(fullPhraseCount >= rangePhraseCount);
+        long rangeDurationMs = rangeAudioContent.getEndTime().toMillis() - rangeAudioContent.getStartTime().toMillis();
+        assertTrue(fullDurationMs >= rangeDurationMs);
+        assertTrue(rangeAudioContent.getStartTime().toMillis() >= 5000, "TimeRangeFrom(5s) audio StartTime ("
+            + rangeAudioContent.getStartTime().toMillis() + " ms) should be >= 5000 ms");
+        // END:Assertion_ContentUnderstandingAnalyzeAudioUrlWithTimeContentRangesAsync
+
+        // ---- TimeRange(2s, 8s) — specific time window ----
+        AnalysisInput windowInput = new AnalysisInput();
+        windowInput.setUrl(uriSource);
+        windowInput.setContentRange(ContentRange.timeRange(Duration.ofSeconds(2), Duration.ofSeconds(8)));
+
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> windowOperation
+            = contentUnderstandingAsyncClient.beginAnalyze("prebuilt-audioSearch", Arrays.asList(windowInput));
+        AnalysisResult windowResult = windowOperation.last().flatMap(pollResponse -> {
+            if (pollResponse.getStatus().isComplete()) {
+                return pollResponse.getFinalResult();
+            } else {
+                return Mono.error(
+                    new RuntimeException("Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+            }
+        }).block();
+        AudioVisualContent audioWindowContent = (AudioVisualContent) windowResult.getContents().get(0);
+
+        assertTrue(audioWindowContent.getEndTime().toMillis() > audioWindowContent.getStartTime().toMillis());
+        assertTrue(audioWindowContent.getMarkdown().length() > 0);
+        assertTrue(audioWindowContent.getStartTime().toMillis() >= 2000, "Range(2s-8s) audio StartTime ("
+            + audioWindowContent.getStartTime().toMillis() + " ms) should be >= 2000 ms");
+        assertTrue(audioWindowContent.getEndTime().toMillis() <= 8000,
+            "Range(2s-8s) audio EndTime (" + audioWindowContent.getEndTime().toMillis() + " ms) should be <= 8000 ms");
+        long windowDurationMs
+            = audioWindowContent.getEndTime().toMillis() - audioWindowContent.getStartTime().toMillis();
+        assertTrue(fullDurationMs >= windowDurationMs);
+
+        // ---- TimeRange sub-second precision (1200ms-3651ms) ----
+        AnalysisInput subSecondInput = new AnalysisInput();
+        subSecondInput.setUrl(uriSource);
+        subSecondInput.setContentRange(ContentRange.timeRange(Duration.ofMillis(1200), Duration.ofMillis(3651)));
+
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> subSecondOperation
+            = contentUnderstandingAsyncClient.beginAnalyze("prebuilt-audioSearch", Arrays.asList(subSecondInput));
+        AnalysisResult subSecondResult = subSecondOperation.last().flatMap(pollResponse -> {
+            if (pollResponse.getStatus().isComplete()) {
+                return pollResponse.getFinalResult();
+            } else {
+                return Mono.error(
+                    new RuntimeException("Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+            }
+        }).block();
+        AudioVisualContent audioSubSecondContent = (AudioVisualContent) subSecondResult.getContents().get(0);
+
+        assertTrue(audioSubSecondContent.getEndTime().toMillis() > audioSubSecondContent.getStartTime().toMillis());
+        assertTrue(audioSubSecondContent.getMarkdown().length() > 0);
+        assertTrue(audioSubSecondContent.getStartTime().toMillis() >= 1200, "Range(1200ms-3651ms) audio StartTime ("
+            + audioSubSecondContent.getStartTime().toMillis() + " ms) should be >= 1200 ms");
+        assertTrue(audioSubSecondContent.getEndTime().toMillis() <= 3651, "Range(1200ms-3651ms) audio EndTime ("
+            + audioSubSecondContent.getEndTime().toMillis() + " ms) should be <= 3651 ms");
+        long subSecondDurationMs
+            = audioSubSecondContent.getEndTime().toMillis() - audioSubSecondContent.getStartTime().toMillis();
+        assertTrue(fullDurationMs >= subSecondDurationMs);
+
+        // ---- Combine multiple time ranges (0-3s, 30s-) ----
+        AnalysisInput combineInput = new AnalysisInput();
+        combineInput.setUrl(uriSource);
+        combineInput.setContentRange(ContentRange.combine(ContentRange.timeRange(Duration.ZERO, Duration.ofSeconds(3)),
+            ContentRange.timeRangeFrom(Duration.ofSeconds(30))));
+
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> combineOperation
+            = contentUnderstandingAsyncClient.beginAnalyze("prebuilt-audioSearch", Arrays.asList(combineInput));
+        AnalysisResult combineResult = combineOperation.last().flatMap(pollResponse -> {
+            if (pollResponse.getStatus().isComplete()) {
+                return pollResponse.getFinalResult();
+            } else {
+                return Mono.error(
+                    new RuntimeException("Polling completed unsuccessfully with status: " + pollResponse.getStatus()));
+            }
+        }).block();
+
+        assertNotNull(combineResult);
+        assertNotNull(combineResult.getContents());
+        assertTrue(combineResult.getContents().size() > 0);
+        AudioVisualContent combineContent = (AudioVisualContent) combineResult.getContents().get(0);
+        assertTrue(combineContent.getEndTime().toMillis() > combineContent.getStartTime().toMillis());
+        assertNotNull(combineContent.getMarkdown());
+        assertFalse(combineContent.getMarkdown().isEmpty());
     }
 }
