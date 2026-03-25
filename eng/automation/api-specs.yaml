@@ -93,6 +93,8 @@ loadtestservice:
   service: loadtesting
 machinelearningservices:
   service: machinelearning
+management/Microsoft.Management/ServiceGroups:
+  service: managementservicegroups
 migrate/Microsoft.Migrate/AssessmentProjects:
   service: migration
   suffix: assessment
