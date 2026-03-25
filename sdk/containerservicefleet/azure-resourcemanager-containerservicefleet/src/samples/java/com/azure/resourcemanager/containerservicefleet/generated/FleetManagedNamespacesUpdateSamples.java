@@ -11,7 +11,7 @@ import com.azure.resourcemanager.containerservicefleet.models.FleetManagedNamesp
  */
 public final class FleetManagedNamespacesUpdateSamples {
     /*
-     * x-ms-original-file: 2025-08-01-preview/FleetManagedNamespaces_Update.json
+     * x-ms-original-file: 2026-02-01-preview/FleetManagedNamespaces_Update.json
      */
     /**
      * Sample code: FleetManagedNamespaces_Update.
