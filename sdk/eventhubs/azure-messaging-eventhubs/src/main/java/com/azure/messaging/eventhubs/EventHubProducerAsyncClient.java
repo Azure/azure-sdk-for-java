@@ -591,6 +591,9 @@ public class EventHubProducerAsyncClient implements Closeable {
         return instrumentation.sendBatch(send, batch);
     }
 
+    Scheduler getScheduler() {
+        return scheduler;
+    }
 
     private Mono<Void> sendInternal(Flux<EventData> events, SendOptions options) {
         final String partitionKey = options.getPartitionKey();
