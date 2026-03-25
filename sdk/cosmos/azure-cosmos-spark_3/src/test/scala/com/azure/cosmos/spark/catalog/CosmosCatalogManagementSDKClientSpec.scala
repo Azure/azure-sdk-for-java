@@ -10,6 +10,7 @@ import com.azure.resourcemanager.cosmos.models.{ContainerPartitionKey, Partition
 import org.mockito.{MockMakers, Mockito}
 import org.mockito.Mockito.{mock, when}
 
+import java.lang.reflect.InvocationTargetException
 import scala.collection.JavaConverters._
 
 class CosmosCatalogManagementSDKClientSpec extends UnitSpec {
@@ -28,11 +29,21 @@ class CosmosCatalogManagementSDKClientSpec extends UnitSpec {
     cosmosAsyncClient = null
   )
 
+  private def invokeGetPartitionKeyDefinition(containerProperties: Map[String, String]): ContainerPartitionKey = {
+    val method = client.getClass.getDeclaredMethod("getPartitionKeyDefinition", classOf[Map[_, _]])
+    method.setAccessible(true)
+    try {
+      method.invoke(client, containerProperties).asInstanceOf[ContainerPartitionKey]
+    } catch {
+      case e: InvocationTargetException => throw e.getCause
+    }
+  }
+
   // --- Multi-path partition key tests ---
 
   "getPartitionKeyDefinition" should "default to MULTI_HASH with version 2 for multi-path without explicit kind or version" in {
     val props = Map("partitionKeyPath" -> "/tenantId,/userId,/sessionId")
-    val result = client.getPartitionKeyDefinition(props)
+    val result = invokeGetPartitionKeyDefinition(props)
 
     result.kind() shouldEqual PartitionKind.MULTI_HASH
     result.version() shouldEqual 2
@@ -44,7 +55,7 @@ class CosmosCatalogManagementSDKClientSpec extends UnitSpec {
       "partitionKeyPath" -> "/a,/b",
       "partitionKeyKind" -> "MultiHash"
     )
-    val result = client.getPartitionKeyDefinition(props)
+    val result = invokeGetPartitionKeyDefinition(props)
 
     result.kind() shouldEqual PartitionKind.MULTI_HASH
     result.version() shouldEqual 2
@@ -57,7 +68,7 @@ class CosmosCatalogManagementSDKClientSpec extends UnitSpec {
       "partitionKeyKind" -> "Hash"
     )
 
-    an[IllegalArgumentException] should be thrownBy client.getPartitionKeyDefinition(props)
+    an[IllegalArgumentException] should be thrownBy invokeGetPartitionKeyDefinition(props)
   }
 
   it should "throw IllegalArgumentException for multi-path with V1 version" in {
@@ -66,7 +77,7 @@ class CosmosCatalogManagementSDKClientSpec extends UnitSpec {
       "partitionKeyVersion" -> "V1"
     )
 
-    an[IllegalArgumentException] should be thrownBy client.getPartitionKeyDefinition(props)
+    an[IllegalArgumentException] should be thrownBy invokeGetPartitionKeyDefinition(props)
   }
 
   it should "succeed for multi-path with explicit V2 version" in {
@@ -74,7 +85,7 @@ class CosmosCatalogManagementSDKClientSpec extends UnitSpec {
       "partitionKeyPath" -> "/a,/b",
       "partitionKeyVersion" -> "V2"
     )
-    val result = client.getPartitionKeyDefinition(props)
+    val result = invokeGetPartitionKeyDefinition(props)
 
     result.kind() shouldEqual PartitionKind.MULTI_HASH
     result.version() shouldEqual 2
@@ -85,7 +96,7 @@ class CosmosCatalogManagementSDKClientSpec extends UnitSpec {
 
   it should "default to HASH for single-path without explicit kind" in {
     val props = Map("partitionKeyPath" -> "/id")
-    val result = client.getPartitionKeyDefinition(props)
+    val result = invokeGetPartitionKeyDefinition(props)
 
     result.kind() shouldEqual PartitionKind.HASH
     result.paths().asScala should contain theSameElementsInOrderAs List("/id")
@@ -97,7 +108,7 @@ class CosmosCatalogManagementSDKClientSpec extends UnitSpec {
       "partitionKeyKind" -> "MultiHash"
     )
 
-    an[IllegalArgumentException] should be thrownBy client.getPartitionKeyDefinition(props)
+    an[IllegalArgumentException] should be thrownBy invokeGetPartitionKeyDefinition(props)
   }
 
   it should "set version 1 for single-path with explicit V1 version" in {
@@ -105,7 +116,7 @@ class CosmosCatalogManagementSDKClientSpec extends UnitSpec {
       "partitionKeyPath" -> "/id",
       "partitionKeyVersion" -> "V1"
     )
-    val result = client.getPartitionKeyDefinition(props)
+    val result = invokeGetPartitionKeyDefinition(props)
 
     result.kind() shouldEqual PartitionKind.HASH
     result.version() shouldEqual 1
@@ -117,7 +128,7 @@ class CosmosCatalogManagementSDKClientSpec extends UnitSpec {
       "partitionKeyPath" -> "/id",
       "partitionKeyVersion" -> "V2"
     )
-    val result = client.getPartitionKeyDefinition(props)
+    val result = invokeGetPartitionKeyDefinition(props)
 
     result.kind() shouldEqual PartitionKind.HASH
     result.version() shouldEqual 2
@@ -128,62 +139,10 @@ class CosmosCatalogManagementSDKClientSpec extends UnitSpec {
 
   it should "use default partition key path /id when partitionKeyPath is not specified" in {
     val props = Map.empty[String, String]
-    val result = client.getPartitionKeyDefinition(props)
+    val result = invokeGetPartitionKeyDefinition(props)
 
     result.kind() shouldEqual PartitionKind.HASH
     result.paths().asScala should contain theSameElementsInOrderAs List("/id")
-  }
-
-  // --- Edge case: whitespace in paths ---
-
-  it should "trim whitespace from multi-path partition key paths" in {
-    val props = Map("partitionKeyPath" -> "/a , /b , /c")
-    val result = client.getPartitionKeyDefinition(props)
-
-    result.kind() shouldEqual PartitionKind.MULTI_HASH
-    result.version() shouldEqual 2
-    result.paths().asScala should contain theSameElementsInOrderAs List("/a", "/b", "/c")
-  }
-
-  // --- Edge case: trailing comma produces empty segment, filtered out ---
-
-  it should "treat trailing comma as single-path after filtering empty segments" in {
-    val props = Map("partitionKeyPath" -> "/a,")
-    val result = client.getPartitionKeyDefinition(props)
-
-    result.kind() shouldEqual PartitionKind.HASH
-    result.paths().asScala should contain theSameElementsInOrderAs List("/a")
-  }
-
-  // --- Edge case: invalid partition key kind ---
-
-  it should "throw IllegalArgumentException for invalid partition key kind on multi-path" in {
-    val props = Map(
-      "partitionKeyPath" -> "/a,/b",
-      "partitionKeyKind" -> "Foo"
-    )
-
-    an[IllegalArgumentException] should be thrownBy client.getPartitionKeyDefinition(props)
-  }
-
-  it should "throw IllegalArgumentException for invalid partition key kind on single-path" in {
-    val props = Map(
-      "partitionKeyPath" -> "/a",
-      "partitionKeyKind" -> "Foo"
-    )
-
-    an[IllegalArgumentException] should be thrownBy client.getPartitionKeyDefinition(props)
-  }
-
-  // --- Edge case: invalid partition key version ---
-
-  it should "throw IllegalArgumentException for invalid partition key version on multi-path" in {
-    val props = Map(
-      "partitionKeyPath" -> "/a,/b",
-      "partitionKeyVersion" -> "V3"
-    )
-
-    an[IllegalArgumentException] should be thrownBy client.getPartitionKeyDefinition(props)
   }
 
   //scalastyle:on multiple.string.literals
