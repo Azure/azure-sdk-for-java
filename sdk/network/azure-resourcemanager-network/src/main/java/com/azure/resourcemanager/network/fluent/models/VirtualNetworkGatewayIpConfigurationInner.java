@@ -21,7 +21,7 @@ public final class VirtualNetworkGatewayIpConfigurationInner extends SubResource
     /*
      * Properties of the virtual network gateway ip configuration.
      */
-    private VirtualNetworkGatewayIPConfigurationPropertiesFormat innerProperties;
+    private VirtualNetworkGatewayIpConfigurationPropertiesFormat innerProperties;
 
     /*
      * The name of the resource that is unique within a resource group. This name can be used to access the resource.
@@ -44,7 +44,7 @@ public final class VirtualNetworkGatewayIpConfigurationInner extends SubResource
      * 
      * @return the innerProperties value.
      */
-    private VirtualNetworkGatewayIPConfigurationPropertiesFormat innerProperties() {
+    private VirtualNetworkGatewayIpConfigurationPropertiesFormat innerProperties() {
         return this.innerProperties;
     }
 
@@ -106,7 +106,7 @@ public final class VirtualNetworkGatewayIpConfigurationInner extends SubResource
     public VirtualNetworkGatewayIpConfigurationInner
         withPrivateIpAllocationMethod(IpAllocationMethod privateIpAllocationMethod) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new VirtualNetworkGatewayIPConfigurationPropertiesFormat();
+            this.innerProperties = new VirtualNetworkGatewayIpConfigurationPropertiesFormat();
         }
         this.innerProperties().withPrivateIpAllocationMethod(privateIpAllocationMethod);
         return this;
@@ -129,7 +129,7 @@ public final class VirtualNetworkGatewayIpConfigurationInner extends SubResource
      */
     public VirtualNetworkGatewayIpConfigurationInner withSubnet(SubResource subnet) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new VirtualNetworkGatewayIPConfigurationPropertiesFormat();
+            this.innerProperties = new VirtualNetworkGatewayIpConfigurationPropertiesFormat();
         }
         this.innerProperties().withSubnet(subnet);
         return this;
@@ -152,7 +152,7 @@ public final class VirtualNetworkGatewayIpConfigurationInner extends SubResource
      */
     public VirtualNetworkGatewayIpConfigurationInner withPublicIpAddress(SubResource publicIpAddress) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new VirtualNetworkGatewayIPConfigurationPropertiesFormat();
+            this.innerProperties = new VirtualNetworkGatewayIpConfigurationPropertiesFormat();
         }
         this.innerProperties().withPublicIpAddress(publicIpAddress);
         return this;
@@ -220,7 +220,7 @@ public final class VirtualNetworkGatewayIpConfigurationInner extends SubResource
                     deserializedVirtualNetworkGatewayIpConfigurationInner.withId(reader.getString());
                 } else if ("properties".equals(fieldName)) {
                     deserializedVirtualNetworkGatewayIpConfigurationInner.innerProperties
-                        = VirtualNetworkGatewayIPConfigurationPropertiesFormat.fromJson(reader);
+                        = VirtualNetworkGatewayIpConfigurationPropertiesFormat.fromJson(reader);
                 } else if ("name".equals(fieldName)) {
                     deserializedVirtualNetworkGatewayIpConfigurationInner.name = reader.getString();
                 } else if ("etag".equals(fieldName)) {

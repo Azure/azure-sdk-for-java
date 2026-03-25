@@ -15,17 +15,17 @@ import java.io.IOException;
  * Response for GenerateExpressRoutePortsLOA API service call.
  */
 @Immutable
-public final class GenerateExpressRoutePortsLOAResultInner
-    implements JsonSerializable<GenerateExpressRoutePortsLOAResultInner> {
+public final class GenerateExpressRoutePortsLoaResultInner
+    implements JsonSerializable<GenerateExpressRoutePortsLoaResultInner> {
     /*
      * The content as a base64 encoded string.
      */
     private String encodedContent;
 
     /**
-     * Creates an instance of GenerateExpressRoutePortsLOAResultInner class.
+     * Creates an instance of GenerateExpressRoutePortsLoaResultInner class.
      */
-    private GenerateExpressRoutePortsLOAResultInner() {
+    private GenerateExpressRoutePortsLoaResultInner() {
     }
 
     /**
@@ -56,29 +56,29 @@ public final class GenerateExpressRoutePortsLOAResultInner
     }
 
     /**
-     * Reads an instance of GenerateExpressRoutePortsLOAResultInner from the JsonReader.
+     * Reads an instance of GenerateExpressRoutePortsLoaResultInner from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of GenerateExpressRoutePortsLOAResultInner if the JsonReader was pointing to an instance of
+     * @return An instance of GenerateExpressRoutePortsLoaResultInner if the JsonReader was pointing to an instance of
      * it, or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the GenerateExpressRoutePortsLOAResultInner.
+     * @throws IOException If an error occurs while reading the GenerateExpressRoutePortsLoaResultInner.
      */
-    public static GenerateExpressRoutePortsLOAResultInner fromJson(JsonReader jsonReader) throws IOException {
+    public static GenerateExpressRoutePortsLoaResultInner fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            GenerateExpressRoutePortsLOAResultInner deserializedGenerateExpressRoutePortsLOAResultInner
-                = new GenerateExpressRoutePortsLOAResultInner();
+            GenerateExpressRoutePortsLoaResultInner deserializedGenerateExpressRoutePortsLoaResultInner
+                = new GenerateExpressRoutePortsLoaResultInner();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("encodedContent".equals(fieldName)) {
-                    deserializedGenerateExpressRoutePortsLOAResultInner.encodedContent = reader.getString();
+                    deserializedGenerateExpressRoutePortsLoaResultInner.encodedContent = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedGenerateExpressRoutePortsLOAResultInner;
+            return deserializedGenerateExpressRoutePortsLoaResultInner;
         });
     }
 }

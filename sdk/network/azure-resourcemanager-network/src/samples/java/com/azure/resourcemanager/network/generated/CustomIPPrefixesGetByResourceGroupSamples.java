@@ -5,9 +5,9 @@
 package com.azure.resourcemanager.network.generated;
 
 /**
- * Samples for CustomIPPrefixes GetByResourceGroup.
+ * Samples for CustomIpPrefixes GetByResourceGroup.
  */
-public final class CustomIPPrefixesGetByResourceGroupSamples {
+public final class CustomIpPrefixesGetByResourceGroupSamples {
     /*
      * x-ms-original-file: 2025-05-01/CustomIpPrefixGet.json
      */
@@ -18,7 +18,7 @@ public final class CustomIPPrefixesGetByResourceGroupSamples {
      */
     public static void getCustomIPPrefix(com.azure.resourcemanager.network.NetworkManager manager) {
         manager.serviceClient()
-            .getCustomIPPrefixes()
+            .getCustomIpPrefixes()
             .getByResourceGroupWithResponse("rg1", "test-customipprefix", null, com.azure.core.util.Context.NONE);
     }
 }

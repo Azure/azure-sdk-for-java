@@ -5,9 +5,9 @@
 package com.azure.resourcemanager.network.generated;
 
 /**
- * Samples for CustomIPPrefixes List.
+ * Samples for CustomIpPrefixes List.
  */
-public final class CustomIPPrefixesListSamples {
+public final class CustomIpPrefixesListSamples {
     /*
      * x-ms-original-file: 2025-05-01/CustomIpPrefixListAll.json
      */
@@ -17,6 +17,6 @@ public final class CustomIPPrefixesListSamples {
      * @param manager Entry point to NetworkManager.
      */
     public static void listAllCustomIPPrefixes(com.azure.resourcemanager.network.NetworkManager manager) {
-        manager.serviceClient().getCustomIPPrefixes().list(com.azure.core.util.Context.NONE);
+        manager.serviceClient().getCustomIpPrefixes().list(com.azure.core.util.Context.NONE);
     }
 }

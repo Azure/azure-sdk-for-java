@@ -9,7 +9,7 @@ import com.azure.core.management.SubResource;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.network.fluent.models.AzureFirewallIPConfigurationPropertiesFormat;
+import com.azure.resourcemanager.network.fluent.models.AzureFirewallIpConfigurationPropertiesFormat;
 import java.io.IOException;
 
 /**
@@ -20,7 +20,7 @@ public final class AzureFirewallIpConfiguration extends SubResource {
     /*
      * Properties of the azure firewall IP configuration.
      */
-    private AzureFirewallIPConfigurationPropertiesFormat innerProperties;
+    private AzureFirewallIpConfigurationPropertiesFormat innerProperties;
 
     /*
      * Name of the resource that is unique within a resource group. This name can be used to access the resource.
@@ -48,7 +48,7 @@ public final class AzureFirewallIpConfiguration extends SubResource {
      * 
      * @return the innerProperties value.
      */
-    private AzureFirewallIPConfigurationPropertiesFormat innerProperties() {
+    private AzureFirewallIpConfigurationPropertiesFormat innerProperties() {
         return this.innerProperties;
     }
 
@@ -130,7 +130,7 @@ public final class AzureFirewallIpConfiguration extends SubResource {
      */
     public AzureFirewallIpConfiguration withSubnet(SubResource subnet) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new AzureFirewallIPConfigurationPropertiesFormat();
+            this.innerProperties = new AzureFirewallIpConfigurationPropertiesFormat();
         }
         this.innerProperties().withSubnet(subnet);
         return this;
@@ -155,7 +155,7 @@ public final class AzureFirewallIpConfiguration extends SubResource {
      */
     public AzureFirewallIpConfiguration withPublicIpAddress(SubResource publicIpAddress) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new AzureFirewallIPConfigurationPropertiesFormat();
+            this.innerProperties = new AzureFirewallIpConfigurationPropertiesFormat();
         }
         this.innerProperties().withPublicIpAddress(publicIpAddress);
         return this;
@@ -212,7 +212,7 @@ public final class AzureFirewallIpConfiguration extends SubResource {
                     deserializedAzureFirewallIpConfiguration.withId(reader.getString());
                 } else if ("properties".equals(fieldName)) {
                     deserializedAzureFirewallIpConfiguration.innerProperties
-                        = AzureFirewallIPConfigurationPropertiesFormat.fromJson(reader);
+                        = AzureFirewallIpConfigurationPropertiesFormat.fromJson(reader);
                 } else if ("name".equals(fieldName)) {
                     deserializedAzureFirewallIpConfiguration.name = reader.getString();
                 } else if ("etag".equals(fieldName)) {

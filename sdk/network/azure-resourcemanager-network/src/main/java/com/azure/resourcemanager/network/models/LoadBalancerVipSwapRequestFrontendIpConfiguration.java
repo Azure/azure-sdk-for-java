@@ -10,7 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.network.fluent.models.LoadBalancerVipSwapRequestFrontendIPConfigurationProperties;
+import com.azure.resourcemanager.network.fluent.models.LoadBalancerVipSwapRequestFrontendIpConfigurationProperties;
 import java.io.IOException;
 
 /**
@@ -27,7 +27,7 @@ public final class LoadBalancerVipSwapRequestFrontendIpConfiguration
     /*
      * The properties of VIP swap request's frontend IP configuration object.
      */
-    private LoadBalancerVipSwapRequestFrontendIPConfigurationProperties innerProperties;
+    private LoadBalancerVipSwapRequestFrontendIpConfigurationProperties innerProperties;
 
     /**
      * Creates an instance of LoadBalancerVipSwapRequestFrontendIpConfiguration class.
@@ -60,7 +60,7 @@ public final class LoadBalancerVipSwapRequestFrontendIpConfiguration
      * 
      * @return the innerProperties value.
      */
-    private LoadBalancerVipSwapRequestFrontendIPConfigurationProperties innerProperties() {
+    private LoadBalancerVipSwapRequestFrontendIpConfigurationProperties innerProperties() {
         return this.innerProperties;
     }
 
@@ -81,7 +81,7 @@ public final class LoadBalancerVipSwapRequestFrontendIpConfiguration
      */
     public LoadBalancerVipSwapRequestFrontendIpConfiguration withPublicIpAddress(SubResource publicIpAddress) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new LoadBalancerVipSwapRequestFrontendIPConfigurationProperties();
+            this.innerProperties = new LoadBalancerVipSwapRequestFrontendIpConfigurationProperties();
         }
         this.innerProperties().withPublicIpAddress(publicIpAddress);
         return this;
@@ -129,7 +129,7 @@ public final class LoadBalancerVipSwapRequestFrontendIpConfiguration
                     deserializedLoadBalancerVipSwapRequestFrontendIpConfiguration.id = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedLoadBalancerVipSwapRequestFrontendIpConfiguration.innerProperties
-                        = LoadBalancerVipSwapRequestFrontendIPConfigurationProperties.fromJson(reader);
+                        = LoadBalancerVipSwapRequestFrontendIpConfigurationProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

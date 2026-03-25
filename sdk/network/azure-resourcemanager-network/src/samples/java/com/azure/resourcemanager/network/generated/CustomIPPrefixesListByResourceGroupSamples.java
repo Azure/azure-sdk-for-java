@@ -5,9 +5,9 @@
 package com.azure.resourcemanager.network.generated;
 
 /**
- * Samples for CustomIPPrefixes ListByResourceGroup.
+ * Samples for CustomIpPrefixes ListByResourceGroup.
  */
-public final class CustomIPPrefixesListByResourceGroupSamples {
+public final class CustomIpPrefixesListByResourceGroupSamples {
     /*
      * x-ms-original-file: 2025-05-01/CustomIpPrefixList.json
      */
@@ -17,6 +17,6 @@ public final class CustomIPPrefixesListByResourceGroupSamples {
      * @param manager Entry point to NetworkManager.
      */
     public static void listResourceGroupCustomIPPrefixes(com.azure.resourcemanager.network.NetworkManager manager) {
-        manager.serviceClient().getCustomIPPrefixes().listByResourceGroup("rg1", com.azure.core.util.Context.NONE);
+        manager.serviceClient().getCustomIpPrefixes().listByResourceGroup("rg1", com.azure.core.util.Context.NONE);
     }
 }

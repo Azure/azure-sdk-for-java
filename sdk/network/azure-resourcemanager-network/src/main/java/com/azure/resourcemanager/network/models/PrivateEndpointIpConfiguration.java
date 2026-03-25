@@ -9,7 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.network.fluent.models.PrivateEndpointIPConfigurationProperties;
+import com.azure.resourcemanager.network.fluent.models.PrivateEndpointIpConfigurationProperties;
 import java.io.IOException;
 
 /**
@@ -20,7 +20,7 @@ public final class PrivateEndpointIpConfiguration implements JsonSerializable<Pr
     /*
      * Properties of private endpoint IP configurations.
      */
-    private PrivateEndpointIPConfigurationProperties innerProperties;
+    private PrivateEndpointIpConfigurationProperties innerProperties;
 
     /*
      * The name of the resource that is unique within a resource group.
@@ -48,7 +48,7 @@ public final class PrivateEndpointIpConfiguration implements JsonSerializable<Pr
      * 
      * @return the innerProperties value.
      */
-    private PrivateEndpointIPConfigurationProperties innerProperties() {
+    private PrivateEndpointIpConfigurationProperties innerProperties() {
         return this.innerProperties;
     }
 
@@ -109,7 +109,7 @@ public final class PrivateEndpointIpConfiguration implements JsonSerializable<Pr
      */
     public PrivateEndpointIpConfiguration withGroupId(String groupId) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new PrivateEndpointIPConfigurationProperties();
+            this.innerProperties = new PrivateEndpointIpConfigurationProperties();
         }
         this.innerProperties().withGroupId(groupId);
         return this;
@@ -134,7 +134,7 @@ public final class PrivateEndpointIpConfiguration implements JsonSerializable<Pr
      */
     public PrivateEndpointIpConfiguration withMemberName(String memberName) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new PrivateEndpointIPConfigurationProperties();
+            this.innerProperties = new PrivateEndpointIpConfigurationProperties();
         }
         this.innerProperties().withMemberName(memberName);
         return this;
@@ -157,7 +157,7 @@ public final class PrivateEndpointIpConfiguration implements JsonSerializable<Pr
      */
     public PrivateEndpointIpConfiguration withPrivateIpAddress(String privateIpAddress) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new PrivateEndpointIPConfigurationProperties();
+            this.innerProperties = new PrivateEndpointIpConfigurationProperties();
         }
         this.innerProperties().withPrivateIpAddress(privateIpAddress);
         return this;
@@ -203,7 +203,7 @@ public final class PrivateEndpointIpConfiguration implements JsonSerializable<Pr
 
                 if ("properties".equals(fieldName)) {
                     deserializedPrivateEndpointIpConfiguration.innerProperties
-                        = PrivateEndpointIPConfigurationProperties.fromJson(reader);
+                        = PrivateEndpointIpConfigurationProperties.fromJson(reader);
                 } else if ("name".equals(fieldName)) {
                     deserializedPrivateEndpointIpConfiguration.name = reader.getString();
                 } else if ("type".equals(fieldName)) {

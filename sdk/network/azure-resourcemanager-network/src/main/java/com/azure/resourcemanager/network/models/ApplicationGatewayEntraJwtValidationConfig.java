@@ -9,7 +9,7 @@ import com.azure.core.management.SubResource;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayEntraJWTValidationConfigPropertiesFormat;
+import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayEntraJwtValidationConfigPropertiesFormat;
 import java.io.IOException;
 import java.util.List;
 
@@ -21,7 +21,7 @@ public final class ApplicationGatewayEntraJwtValidationConfig extends SubResourc
     /*
      * Properties of the application gateway entra jwt validation configuration.
      */
-    private ApplicationGatewayEntraJWTValidationConfigPropertiesFormat innerProperties;
+    private ApplicationGatewayEntraJwtValidationConfigPropertiesFormat innerProperties;
 
     /*
      * Name of the entra jwt validation configuration that is unique within an application gateway.
@@ -44,7 +44,7 @@ public final class ApplicationGatewayEntraJwtValidationConfig extends SubResourc
      * 
      * @return the innerProperties value.
      */
-    private ApplicationGatewayEntraJWTValidationConfigPropertiesFormat innerProperties() {
+    private ApplicationGatewayEntraJwtValidationConfigPropertiesFormat innerProperties() {
         return this.innerProperties;
     }
 
@@ -106,7 +106,7 @@ public final class ApplicationGatewayEntraJwtValidationConfig extends SubResourc
     public ApplicationGatewayEntraJwtValidationConfig
         withUnAuthorizedRequestAction(ApplicationGatewayUnAuthorizedRequestAction unAuthorizedRequestAction) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new ApplicationGatewayEntraJWTValidationConfigPropertiesFormat();
+            this.innerProperties = new ApplicationGatewayEntraJwtValidationConfigPropertiesFormat();
         }
         this.innerProperties().withUnAuthorizedRequestAction(unAuthorizedRequestAction);
         return this;
@@ -129,7 +129,7 @@ public final class ApplicationGatewayEntraJwtValidationConfig extends SubResourc
      */
     public ApplicationGatewayEntraJwtValidationConfig withTenantId(String tenantId) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new ApplicationGatewayEntraJWTValidationConfigPropertiesFormat();
+            this.innerProperties = new ApplicationGatewayEntraJwtValidationConfigPropertiesFormat();
         }
         this.innerProperties().withTenantId(tenantId);
         return this;
@@ -152,7 +152,7 @@ public final class ApplicationGatewayEntraJwtValidationConfig extends SubResourc
      */
     public ApplicationGatewayEntraJwtValidationConfig withClientId(String clientId) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new ApplicationGatewayEntraJWTValidationConfigPropertiesFormat();
+            this.innerProperties = new ApplicationGatewayEntraJwtValidationConfigPropertiesFormat();
         }
         this.innerProperties().withClientId(clientId);
         return this;
@@ -177,7 +177,7 @@ public final class ApplicationGatewayEntraJwtValidationConfig extends SubResourc
      */
     public ApplicationGatewayEntraJwtValidationConfig withAudiences(List<String> audiences) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new ApplicationGatewayEntraJWTValidationConfigPropertiesFormat();
+            this.innerProperties = new ApplicationGatewayEntraJwtValidationConfigPropertiesFormat();
         }
         this.innerProperties().withAudiences(audiences);
         return this;
@@ -235,7 +235,7 @@ public final class ApplicationGatewayEntraJwtValidationConfig extends SubResourc
                     deserializedApplicationGatewayEntraJwtValidationConfig.withId(reader.getString());
                 } else if ("properties".equals(fieldName)) {
                     deserializedApplicationGatewayEntraJwtValidationConfig.innerProperties
-                        = ApplicationGatewayEntraJWTValidationConfigPropertiesFormat.fromJson(reader);
+                        = ApplicationGatewayEntraJwtValidationConfigPropertiesFormat.fromJson(reader);
                 } else if ("name".equals(fieldName)) {
                     deserializedApplicationGatewayEntraJwtValidationConfig.name = reader.getString();
                 } else if ("etag".equals(fieldName)) {

@@ -32,7 +32,7 @@ public final class PublicIpAddressInner extends Resource {
     /*
      * Public IP address properties.
      */
-    private PublicIPAddressPropertiesFormatInner innerProperties;
+    private PublicIpAddressPropertiesFormatInner innerProperties;
 
     /*
      * The extended location of the public ip address.
@@ -80,7 +80,7 @@ public final class PublicIpAddressInner extends Resource {
      * 
      * @return the innerProperties value.
      */
-    private PublicIPAddressPropertiesFormatInner innerProperties() {
+    private PublicIpAddressPropertiesFormatInner innerProperties() {
         return this.innerProperties;
     }
 
@@ -230,7 +230,7 @@ public final class PublicIpAddressInner extends Resource {
      */
     public PublicIpAddressInner withPublicIpAllocationMethod(IpAllocationMethod publicIpAllocationMethod) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new PublicIPAddressPropertiesFormatInner();
+            this.innerProperties = new PublicIpAddressPropertiesFormatInner();
         }
         this.innerProperties().withPublicIpAllocationMethod(publicIpAllocationMethod);
         return this;
@@ -253,7 +253,7 @@ public final class PublicIpAddressInner extends Resource {
      */
     public PublicIpAddressInner withPublicIpAddressVersion(IpVersion publicIpAddressVersion) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new PublicIPAddressPropertiesFormatInner();
+            this.innerProperties = new PublicIpAddressPropertiesFormatInner();
         }
         this.innerProperties().withPublicIpAddressVersion(publicIpAddressVersion);
         return this;
@@ -285,7 +285,7 @@ public final class PublicIpAddressInner extends Resource {
      */
     public PublicIpAddressInner withDnsSettings(PublicIpAddressDnsSettings dnsSettings) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new PublicIPAddressPropertiesFormatInner();
+            this.innerProperties = new PublicIpAddressPropertiesFormatInner();
         }
         this.innerProperties().withDnsSettings(dnsSettings);
         return this;
@@ -308,7 +308,7 @@ public final class PublicIpAddressInner extends Resource {
      */
     public PublicIpAddressInner withDdosSettings(DdosSettings ddosSettings) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new PublicIPAddressPropertiesFormatInner();
+            this.innerProperties = new PublicIpAddressPropertiesFormatInner();
         }
         this.innerProperties().withDdosSettings(ddosSettings);
         return this;
@@ -331,7 +331,7 @@ public final class PublicIpAddressInner extends Resource {
      */
     public PublicIpAddressInner withIpTags(List<IpTag> ipTags) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new PublicIPAddressPropertiesFormatInner();
+            this.innerProperties = new PublicIpAddressPropertiesFormatInner();
         }
         this.innerProperties().withIpTags(ipTags);
         return this;
@@ -354,7 +354,7 @@ public final class PublicIpAddressInner extends Resource {
      */
     public PublicIpAddressInner withIpAddress(String ipAddress) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new PublicIPAddressPropertiesFormatInner();
+            this.innerProperties = new PublicIpAddressPropertiesFormatInner();
         }
         this.innerProperties().withIpAddress(ipAddress);
         return this;
@@ -377,7 +377,7 @@ public final class PublicIpAddressInner extends Resource {
      */
     public PublicIpAddressInner withPublicIPPrefix(SubResource publicIPPrefix) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new PublicIPAddressPropertiesFormatInner();
+            this.innerProperties = new PublicIpAddressPropertiesFormatInner();
         }
         this.innerProperties().withPublicIPPrefix(publicIPPrefix);
         return this;
@@ -400,7 +400,7 @@ public final class PublicIpAddressInner extends Resource {
      */
     public PublicIpAddressInner withIdleTimeoutInMinutes(Integer idleTimeoutInMinutes) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new PublicIPAddressPropertiesFormatInner();
+            this.innerProperties = new PublicIpAddressPropertiesFormatInner();
         }
         this.innerProperties().withIdleTimeoutInMinutes(idleTimeoutInMinutes);
         return this;
@@ -441,7 +441,7 @@ public final class PublicIpAddressInner extends Resource {
      */
     public PublicIpAddressInner withServicePublicIpAddress(PublicIpAddressInner servicePublicIpAddress) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new PublicIPAddressPropertiesFormatInner();
+            this.innerProperties = new PublicIpAddressPropertiesFormatInner();
         }
         this.innerProperties().withServicePublicIpAddress(servicePublicIpAddress);
         return this;
@@ -464,7 +464,7 @@ public final class PublicIpAddressInner extends Resource {
      */
     public PublicIpAddressInner withNatGateway(NatGatewayInner natGateway) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new PublicIPAddressPropertiesFormatInner();
+            this.innerProperties = new PublicIpAddressPropertiesFormatInner();
         }
         this.innerProperties().withNatGateway(natGateway);
         return this;
@@ -487,7 +487,7 @@ public final class PublicIpAddressInner extends Resource {
      */
     public PublicIpAddressInner withMigrationPhase(PublicIpAddressMigrationPhase migrationPhase) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new PublicIPAddressPropertiesFormatInner();
+            this.innerProperties = new PublicIpAddressPropertiesFormatInner();
         }
         this.innerProperties().withMigrationPhase(migrationPhase);
         return this;
@@ -510,7 +510,7 @@ public final class PublicIpAddressInner extends Resource {
      */
     public PublicIpAddressInner withLinkedPublicIpAddress(PublicIpAddressInner linkedPublicIpAddress) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new PublicIPAddressPropertiesFormatInner();
+            this.innerProperties = new PublicIpAddressPropertiesFormatInner();
         }
         this.innerProperties().withLinkedPublicIpAddress(linkedPublicIpAddress);
         return this;
@@ -533,7 +533,7 @@ public final class PublicIpAddressInner extends Resource {
      */
     public PublicIpAddressInner withDeleteOption(DeleteOptions deleteOption) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new PublicIPAddressPropertiesFormatInner();
+            this.innerProperties = new PublicIpAddressPropertiesFormatInner();
         }
         this.innerProperties().withDeleteOption(deleteOption);
         return this;
@@ -599,7 +599,7 @@ public final class PublicIpAddressInner extends Resource {
                     deserializedPublicIpAddressInner.withTags(tags);
                 } else if ("properties".equals(fieldName)) {
                     deserializedPublicIpAddressInner.innerProperties
-                        = PublicIPAddressPropertiesFormatInner.fromJson(reader);
+                        = PublicIpAddressPropertiesFormatInner.fromJson(reader);
                 } else if ("extendedLocation".equals(fieldName)) {
                     deserializedPublicIpAddressInner.extendedLocation = ExtendedLocation.fromJson(reader);
                 } else if ("sku".equals(fieldName)) {

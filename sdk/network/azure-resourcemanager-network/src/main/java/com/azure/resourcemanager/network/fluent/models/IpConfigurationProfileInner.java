@@ -20,7 +20,7 @@ public final class IpConfigurationProfileInner extends SubResource {
     /*
      * Properties of the IP configuration profile.
      */
-    private IPConfigurationProfilePropertiesFormatInner innerProperties;
+    private IpConfigurationProfilePropertiesFormatInner innerProperties;
 
     /*
      * The name of the resource. This name can be used to access the resource.
@@ -48,7 +48,7 @@ public final class IpConfigurationProfileInner extends SubResource {
      * 
      * @return the innerProperties value.
      */
-    private IPConfigurationProfilePropertiesFormatInner innerProperties() {
+    private IpConfigurationProfilePropertiesFormatInner innerProperties() {
         return this.innerProperties;
     }
 
@@ -118,7 +118,7 @@ public final class IpConfigurationProfileInner extends SubResource {
      */
     public IpConfigurationProfileInner withSubnet(SubnetInner subnet) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new IPConfigurationProfilePropertiesFormatInner();
+            this.innerProperties = new IpConfigurationProfilePropertiesFormatInner();
         }
         this.innerProperties().withSubnet(subnet);
         return this;
@@ -175,7 +175,7 @@ public final class IpConfigurationProfileInner extends SubResource {
                     deserializedIpConfigurationProfileInner.withId(reader.getString());
                 } else if ("properties".equals(fieldName)) {
                     deserializedIpConfigurationProfileInner.innerProperties
-                        = IPConfigurationProfilePropertiesFormatInner.fromJson(reader);
+                        = IpConfigurationProfilePropertiesFormatInner.fromJson(reader);
                 } else if ("name".equals(fieldName)) {
                     deserializedIpConfigurationProfileInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {

@@ -5,9 +5,9 @@
 package com.azure.resourcemanager.network.generated;
 
 /**
- * Samples for CustomIPPrefixes Delete.
+ * Samples for CustomIpPrefixes Delete.
  */
-public final class CustomIPPrefixesDeleteSamples {
+public final class CustomIpPrefixesDeleteSamples {
     /*
      * x-ms-original-file: 2025-05-01/CustomIpPrefixDelete.json
      */
@@ -18,7 +18,7 @@ public final class CustomIPPrefixesDeleteSamples {
      */
     public static void deleteCustomIPPrefix(com.azure.resourcemanager.network.NetworkManager manager) {
         manager.serviceClient()
-            .getCustomIPPrefixes()
+            .getCustomIpPrefixes()
             .delete("rg1", "test-customipprefix", com.azure.core.util.Context.NONE);
     }
 }

@@ -35,7 +35,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.ExpressRoutePortsClient;
 import com.azure.resourcemanager.network.fluent.models.ExpressRoutePortInner;
-import com.azure.resourcemanager.network.fluent.models.GenerateExpressRoutePortsLOAResultInner;
+import com.azure.resourcemanager.network.fluent.models.GenerateExpressRoutePortsLoaResultInner;
 import com.azure.resourcemanager.network.implementation.models.ExpressRoutePortListResult;
 import com.azure.resourcemanager.network.models.GenerateExpressRoutePortsLoaRequest;
 import com.azure.resourcemanager.network.models.TagsObject;
@@ -138,7 +138,7 @@ public final class ExpressRoutePortsClientImpl implements InnerSupportsGet<Expre
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/ExpressRoutePorts/{expressRoutePortName}/generateLoa")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<GenerateExpressRoutePortsLOAResultInner>> generateLOA(@HostParam("endpoint") String endpoint,
+        Mono<Response<GenerateExpressRoutePortsLoaResultInner>> generateLOA(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("expressRoutePortName") String expressRoutePortName,
@@ -1118,7 +1118,7 @@ public final class ExpressRoutePortsClientImpl implements InnerSupportsGet<Expre
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<GenerateExpressRoutePortsLOAResultInner>> generateLOAWithResponseAsync(
+    public Mono<Response<GenerateExpressRoutePortsLoaResultInner>> generateLOAWithResponseAsync(
         String resourceGroupName, String expressRoutePortName, GenerateExpressRoutePortsLoaRequest request) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -1165,7 +1165,7 @@ public final class ExpressRoutePortsClientImpl implements InnerSupportsGet<Expre
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<GenerateExpressRoutePortsLOAResultInner>> generateLOAWithResponseAsync(
+    private Mono<Response<GenerateExpressRoutePortsLoaResultInner>> generateLOAWithResponseAsync(
         String resourceGroupName, String expressRoutePortName, GenerateExpressRoutePortsLoaRequest request,
         Context context) {
         if (this.client.getEndpoint() == null) {
@@ -1209,7 +1209,7 @@ public final class ExpressRoutePortsClientImpl implements InnerSupportsGet<Expre
      * @return response for GenerateExpressRoutePortsLOA API service call on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GenerateExpressRoutePortsLOAResultInner> generateLOAAsync(String resourceGroupName,
+    public Mono<GenerateExpressRoutePortsLoaResultInner> generateLOAAsync(String resourceGroupName,
         String expressRoutePortName, GenerateExpressRoutePortsLoaRequest request) {
         return generateLOAWithResponseAsync(resourceGroupName, expressRoutePortName, request)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -1228,7 +1228,7 @@ public final class ExpressRoutePortsClientImpl implements InnerSupportsGet<Expre
      * @return response for GenerateExpressRoutePortsLOA API service call along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<GenerateExpressRoutePortsLOAResultInner> generateLOAWithResponse(String resourceGroupName,
+    public Response<GenerateExpressRoutePortsLoaResultInner> generateLOAWithResponse(String resourceGroupName,
         String expressRoutePortName, GenerateExpressRoutePortsLoaRequest request, Context context) {
         return generateLOAWithResponseAsync(resourceGroupName, expressRoutePortName, request, context).block();
     }
@@ -1245,7 +1245,7 @@ public final class ExpressRoutePortsClientImpl implements InnerSupportsGet<Expre
      * @return response for GenerateExpressRoutePortsLOA API service call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public GenerateExpressRoutePortsLOAResultInner generateLOA(String resourceGroupName, String expressRoutePortName,
+    public GenerateExpressRoutePortsLoaResultInner generateLOA(String resourceGroupName, String expressRoutePortName,
         GenerateExpressRoutePortsLoaRequest request) {
         return generateLOAWithResponse(resourceGroupName, expressRoutePortName, request, Context.NONE).getValue();
     }

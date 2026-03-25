@@ -22,8 +22,8 @@ import java.util.List;
  * Properties of IP configuration.
  */
 @Fluent
-public final class NetworkInterfaceIPConfigurationPropertiesFormatInner
-    implements JsonSerializable<NetworkInterfaceIPConfigurationPropertiesFormatInner> {
+public final class NetworkInterfaceIpConfigurationPropertiesFormatInner
+    implements JsonSerializable<NetworkInterfaceIpConfigurationPropertiesFormatInner> {
     /*
      * The reference to gateway load balancer frontend IP.
      */
@@ -102,9 +102,9 @@ public final class NetworkInterfaceIPConfigurationPropertiesFormatInner
     private NetworkInterfaceIpConfigurationPrivateLinkConnectionProperties privateLinkConnectionProperties;
 
     /**
-     * Creates an instance of NetworkInterfaceIPConfigurationPropertiesFormatInner class.
+     * Creates an instance of NetworkInterfaceIpConfigurationPropertiesFormatInner class.
      */
-    public NetworkInterfaceIPConfigurationPropertiesFormatInner() {
+    public NetworkInterfaceIpConfigurationPropertiesFormatInner() {
     }
 
     /**
@@ -120,9 +120,9 @@ public final class NetworkInterfaceIPConfigurationPropertiesFormatInner
      * Set the gatewayLoadBalancer property: The reference to gateway load balancer frontend IP.
      * 
      * @param gatewayLoadBalancer the gatewayLoadBalancer value to set.
-     * @return the NetworkInterfaceIPConfigurationPropertiesFormatInner object itself.
+     * @return the NetworkInterfaceIpConfigurationPropertiesFormatInner object itself.
      */
-    public NetworkInterfaceIPConfigurationPropertiesFormatInner
+    public NetworkInterfaceIpConfigurationPropertiesFormatInner
         withGatewayLoadBalancer(SubResource gatewayLoadBalancer) {
         this.gatewayLoadBalancer = gatewayLoadBalancer;
         return this;
@@ -141,9 +141,9 @@ public final class NetworkInterfaceIPConfigurationPropertiesFormatInner
      * Set the virtualNetworkTaps property: The reference to Virtual Network Taps.
      * 
      * @param virtualNetworkTaps the virtualNetworkTaps value to set.
-     * @return the NetworkInterfaceIPConfigurationPropertiesFormatInner object itself.
+     * @return the NetworkInterfaceIpConfigurationPropertiesFormatInner object itself.
      */
-    public NetworkInterfaceIPConfigurationPropertiesFormatInner
+    public NetworkInterfaceIpConfigurationPropertiesFormatInner
         withVirtualNetworkTaps(List<VirtualNetworkTapInner> virtualNetworkTaps) {
         this.virtualNetworkTaps = virtualNetworkTaps;
         return this;
@@ -164,9 +164,9 @@ public final class NetworkInterfaceIPConfigurationPropertiesFormatInner
      * resource.
      * 
      * @param applicationGatewayBackendAddressPools the applicationGatewayBackendAddressPools value to set.
-     * @return the NetworkInterfaceIPConfigurationPropertiesFormatInner object itself.
+     * @return the NetworkInterfaceIpConfigurationPropertiesFormatInner object itself.
      */
-    public NetworkInterfaceIPConfigurationPropertiesFormatInner withApplicationGatewayBackendAddressPools(
+    public NetworkInterfaceIpConfigurationPropertiesFormatInner withApplicationGatewayBackendAddressPools(
         List<ApplicationGatewayBackendAddressPool> applicationGatewayBackendAddressPools) {
         this.applicationGatewayBackendAddressPools = applicationGatewayBackendAddressPools;
         return this;
@@ -185,9 +185,9 @@ public final class NetworkInterfaceIPConfigurationPropertiesFormatInner
      * Set the loadBalancerBackendAddressPools property: The reference to LoadBalancerBackendAddressPool resource.
      * 
      * @param loadBalancerBackendAddressPools the loadBalancerBackendAddressPools value to set.
-     * @return the NetworkInterfaceIPConfigurationPropertiesFormatInner object itself.
+     * @return the NetworkInterfaceIpConfigurationPropertiesFormatInner object itself.
      */
-    public NetworkInterfaceIPConfigurationPropertiesFormatInner
+    public NetworkInterfaceIpConfigurationPropertiesFormatInner
         withLoadBalancerBackendAddressPools(List<BackendAddressPoolInner> loadBalancerBackendAddressPools) {
         this.loadBalancerBackendAddressPools = loadBalancerBackendAddressPools;
         return this;
@@ -206,9 +206,9 @@ public final class NetworkInterfaceIPConfigurationPropertiesFormatInner
      * Set the loadBalancerInboundNatRules property: A list of references of LoadBalancerInboundNatRules.
      * 
      * @param loadBalancerInboundNatRules the loadBalancerInboundNatRules value to set.
-     * @return the NetworkInterfaceIPConfigurationPropertiesFormatInner object itself.
+     * @return the NetworkInterfaceIpConfigurationPropertiesFormatInner object itself.
      */
-    public NetworkInterfaceIPConfigurationPropertiesFormatInner
+    public NetworkInterfaceIpConfigurationPropertiesFormatInner
         withLoadBalancerInboundNatRules(List<InboundNatRuleInner> loadBalancerInboundNatRules) {
         this.loadBalancerInboundNatRules = loadBalancerInboundNatRules;
         return this;
@@ -229,9 +229,9 @@ public final class NetworkInterfaceIPConfigurationPropertiesFormatInner
      * CIDR block in the format &lt;address&gt;/&lt;prefix-length&gt;.
      * 
      * @param privateIpAddress the privateIpAddress value to set.
-     * @return the NetworkInterfaceIPConfigurationPropertiesFormatInner object itself.
+     * @return the NetworkInterfaceIpConfigurationPropertiesFormatInner object itself.
      */
-    public NetworkInterfaceIPConfigurationPropertiesFormatInner withPrivateIpAddress(String privateIpAddress) {
+    public NetworkInterfaceIpConfigurationPropertiesFormatInner withPrivateIpAddress(String privateIpAddress) {
         this.privateIpAddress = privateIpAddress;
         return this;
     }
@@ -251,9 +251,9 @@ public final class NetworkInterfaceIPConfigurationPropertiesFormatInner
      * allocation method is dynamic, the service will allocate a CIDR block instead of a single IP address.
      * 
      * @param privateIPAddressPrefixLength the privateIPAddressPrefixLength value to set.
-     * @return the NetworkInterfaceIPConfigurationPropertiesFormatInner object itself.
+     * @return the NetworkInterfaceIpConfigurationPropertiesFormatInner object itself.
      */
-    public NetworkInterfaceIPConfigurationPropertiesFormatInner
+    public NetworkInterfaceIpConfigurationPropertiesFormatInner
         withPrivateIPAddressPrefixLength(Integer privateIPAddressPrefixLength) {
         this.privateIPAddressPrefixLength = privateIPAddressPrefixLength;
         return this;
@@ -272,9 +272,9 @@ public final class NetworkInterfaceIPConfigurationPropertiesFormatInner
      * Set the privateIpAllocationMethod property: The private IP address allocation method.
      * 
      * @param privateIpAllocationMethod the privateIpAllocationMethod value to set.
-     * @return the NetworkInterfaceIPConfigurationPropertiesFormatInner object itself.
+     * @return the NetworkInterfaceIpConfigurationPropertiesFormatInner object itself.
      */
-    public NetworkInterfaceIPConfigurationPropertiesFormatInner
+    public NetworkInterfaceIpConfigurationPropertiesFormatInner
         withPrivateIpAllocationMethod(IpAllocationMethod privateIpAllocationMethod) {
         this.privateIpAllocationMethod = privateIpAllocationMethod;
         return this;
@@ -293,9 +293,9 @@ public final class NetworkInterfaceIPConfigurationPropertiesFormatInner
      * Set the privateIpAddressVersion property: Whether the specific IP configuration is IPv4 or IPv6. Default is IPv4.
      * 
      * @param privateIpAddressVersion the privateIpAddressVersion value to set.
-     * @return the NetworkInterfaceIPConfigurationPropertiesFormatInner object itself.
+     * @return the NetworkInterfaceIpConfigurationPropertiesFormatInner object itself.
      */
-    public NetworkInterfaceIPConfigurationPropertiesFormatInner
+    public NetworkInterfaceIpConfigurationPropertiesFormatInner
         withPrivateIpAddressVersion(IpVersion privateIpAddressVersion) {
         this.privateIpAddressVersion = privateIpAddressVersion;
         return this;
@@ -314,9 +314,9 @@ public final class NetworkInterfaceIPConfigurationPropertiesFormatInner
      * Set the subnet property: Subnet bound to the IP configuration.
      * 
      * @param subnet the subnet value to set.
-     * @return the NetworkInterfaceIPConfigurationPropertiesFormatInner object itself.
+     * @return the NetworkInterfaceIpConfigurationPropertiesFormatInner object itself.
      */
-    public NetworkInterfaceIPConfigurationPropertiesFormatInner withSubnet(SubnetInner subnet) {
+    public NetworkInterfaceIpConfigurationPropertiesFormatInner withSubnet(SubnetInner subnet) {
         this.subnet = subnet;
         return this;
     }
@@ -334,9 +334,9 @@ public final class NetworkInterfaceIPConfigurationPropertiesFormatInner
      * Set the primary property: Whether this is a primary customer address on the network interface.
      * 
      * @param primary the primary value to set.
-     * @return the NetworkInterfaceIPConfigurationPropertiesFormatInner object itself.
+     * @return the NetworkInterfaceIpConfigurationPropertiesFormatInner object itself.
      */
-    public NetworkInterfaceIPConfigurationPropertiesFormatInner withPrimary(Boolean primary) {
+    public NetworkInterfaceIpConfigurationPropertiesFormatInner withPrimary(Boolean primary) {
         this.primary = primary;
         return this;
     }
@@ -354,9 +354,9 @@ public final class NetworkInterfaceIPConfigurationPropertiesFormatInner
      * Set the publicIpAddress property: Public IP address bound to the IP configuration.
      * 
      * @param publicIpAddress the publicIpAddress value to set.
-     * @return the NetworkInterfaceIPConfigurationPropertiesFormatInner object itself.
+     * @return the NetworkInterfaceIpConfigurationPropertiesFormatInner object itself.
      */
-    public NetworkInterfaceIPConfigurationPropertiesFormatInner
+    public NetworkInterfaceIpConfigurationPropertiesFormatInner
         withPublicIpAddress(PublicIpAddressInner publicIpAddress) {
         this.publicIpAddress = publicIpAddress;
         return this;
@@ -377,9 +377,9 @@ public final class NetworkInterfaceIPConfigurationPropertiesFormatInner
      * included.
      * 
      * @param applicationSecurityGroups the applicationSecurityGroups value to set.
-     * @return the NetworkInterfaceIPConfigurationPropertiesFormatInner object itself.
+     * @return the NetworkInterfaceIpConfigurationPropertiesFormatInner object itself.
      */
-    public NetworkInterfaceIPConfigurationPropertiesFormatInner
+    public NetworkInterfaceIpConfigurationPropertiesFormatInner
         withApplicationSecurityGroups(List<ApplicationSecurityGroupInner> applicationSecurityGroups) {
         this.applicationSecurityGroups = applicationSecurityGroups;
         return this;
@@ -465,83 +465,83 @@ public final class NetworkInterfaceIPConfigurationPropertiesFormatInner
     }
 
     /**
-     * Reads an instance of NetworkInterfaceIPConfigurationPropertiesFormatInner from the JsonReader.
+     * Reads an instance of NetworkInterfaceIpConfigurationPropertiesFormatInner from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of NetworkInterfaceIPConfigurationPropertiesFormatInner if the JsonReader was pointing to an
+     * @return An instance of NetworkInterfaceIpConfigurationPropertiesFormatInner if the JsonReader was pointing to an
      * instance of it, or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the NetworkInterfaceIPConfigurationPropertiesFormatInner.
+     * @throws IOException If an error occurs while reading the NetworkInterfaceIpConfigurationPropertiesFormatInner.
      */
-    public static NetworkInterfaceIPConfigurationPropertiesFormatInner fromJson(JsonReader jsonReader)
+    public static NetworkInterfaceIpConfigurationPropertiesFormatInner fromJson(JsonReader jsonReader)
         throws IOException {
         return jsonReader.readObject(reader -> {
-            NetworkInterfaceIPConfigurationPropertiesFormatInner deserializedNetworkInterfaceIPConfigurationPropertiesFormatInner
-                = new NetworkInterfaceIPConfigurationPropertiesFormatInner();
+            NetworkInterfaceIpConfigurationPropertiesFormatInner deserializedNetworkInterfaceIpConfigurationPropertiesFormatInner
+                = new NetworkInterfaceIpConfigurationPropertiesFormatInner();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("gatewayLoadBalancer".equals(fieldName)) {
-                    deserializedNetworkInterfaceIPConfigurationPropertiesFormatInner.gatewayLoadBalancer
+                    deserializedNetworkInterfaceIpConfigurationPropertiesFormatInner.gatewayLoadBalancer
                         = SubResource.fromJson(reader);
                 } else if ("virtualNetworkTaps".equals(fieldName)) {
                     List<VirtualNetworkTapInner> virtualNetworkTaps
                         = reader.readArray(reader1 -> VirtualNetworkTapInner.fromJson(reader1));
-                    deserializedNetworkInterfaceIPConfigurationPropertiesFormatInner.virtualNetworkTaps
+                    deserializedNetworkInterfaceIpConfigurationPropertiesFormatInner.virtualNetworkTaps
                         = virtualNetworkTaps;
                 } else if ("applicationGatewayBackendAddressPools".equals(fieldName)) {
                     List<ApplicationGatewayBackendAddressPool> applicationGatewayBackendAddressPools
                         = reader.readArray(reader1 -> ApplicationGatewayBackendAddressPool.fromJson(reader1));
-                    deserializedNetworkInterfaceIPConfigurationPropertiesFormatInner.applicationGatewayBackendAddressPools
+                    deserializedNetworkInterfaceIpConfigurationPropertiesFormatInner.applicationGatewayBackendAddressPools
                         = applicationGatewayBackendAddressPools;
                 } else if ("loadBalancerBackendAddressPools".equals(fieldName)) {
                     List<BackendAddressPoolInner> loadBalancerBackendAddressPools
                         = reader.readArray(reader1 -> BackendAddressPoolInner.fromJson(reader1));
-                    deserializedNetworkInterfaceIPConfigurationPropertiesFormatInner.loadBalancerBackendAddressPools
+                    deserializedNetworkInterfaceIpConfigurationPropertiesFormatInner.loadBalancerBackendAddressPools
                         = loadBalancerBackendAddressPools;
                 } else if ("loadBalancerInboundNatRules".equals(fieldName)) {
                     List<InboundNatRuleInner> loadBalancerInboundNatRules
                         = reader.readArray(reader1 -> InboundNatRuleInner.fromJson(reader1));
-                    deserializedNetworkInterfaceIPConfigurationPropertiesFormatInner.loadBalancerInboundNatRules
+                    deserializedNetworkInterfaceIpConfigurationPropertiesFormatInner.loadBalancerInboundNatRules
                         = loadBalancerInboundNatRules;
                 } else if ("privateIPAddress".equals(fieldName)) {
-                    deserializedNetworkInterfaceIPConfigurationPropertiesFormatInner.privateIpAddress
+                    deserializedNetworkInterfaceIpConfigurationPropertiesFormatInner.privateIpAddress
                         = reader.getString();
                 } else if ("privateIPAddressPrefixLength".equals(fieldName)) {
-                    deserializedNetworkInterfaceIPConfigurationPropertiesFormatInner.privateIPAddressPrefixLength
+                    deserializedNetworkInterfaceIpConfigurationPropertiesFormatInner.privateIPAddressPrefixLength
                         = reader.getNullable(JsonReader::getInt);
                 } else if ("privateIPAllocationMethod".equals(fieldName)) {
-                    deserializedNetworkInterfaceIPConfigurationPropertiesFormatInner.privateIpAllocationMethod
+                    deserializedNetworkInterfaceIpConfigurationPropertiesFormatInner.privateIpAllocationMethod
                         = IpAllocationMethod.fromString(reader.getString());
                 } else if ("privateIPAddressVersion".equals(fieldName)) {
-                    deserializedNetworkInterfaceIPConfigurationPropertiesFormatInner.privateIpAddressVersion
+                    deserializedNetworkInterfaceIpConfigurationPropertiesFormatInner.privateIpAddressVersion
                         = IpVersion.fromString(reader.getString());
                 } else if ("subnet".equals(fieldName)) {
-                    deserializedNetworkInterfaceIPConfigurationPropertiesFormatInner.subnet
+                    deserializedNetworkInterfaceIpConfigurationPropertiesFormatInner.subnet
                         = SubnetInner.fromJson(reader);
                 } else if ("primary".equals(fieldName)) {
-                    deserializedNetworkInterfaceIPConfigurationPropertiesFormatInner.primary
+                    deserializedNetworkInterfaceIpConfigurationPropertiesFormatInner.primary
                         = reader.getNullable(JsonReader::getBoolean);
                 } else if ("publicIPAddress".equals(fieldName)) {
-                    deserializedNetworkInterfaceIPConfigurationPropertiesFormatInner.publicIpAddress
+                    deserializedNetworkInterfaceIpConfigurationPropertiesFormatInner.publicIpAddress
                         = PublicIpAddressInner.fromJson(reader);
                 } else if ("applicationSecurityGroups".equals(fieldName)) {
                     List<ApplicationSecurityGroupInner> applicationSecurityGroups
                         = reader.readArray(reader1 -> ApplicationSecurityGroupInner.fromJson(reader1));
-                    deserializedNetworkInterfaceIPConfigurationPropertiesFormatInner.applicationSecurityGroups
+                    deserializedNetworkInterfaceIpConfigurationPropertiesFormatInner.applicationSecurityGroups
                         = applicationSecurityGroups;
                 } else if ("provisioningState".equals(fieldName)) {
-                    deserializedNetworkInterfaceIPConfigurationPropertiesFormatInner.provisioningState
+                    deserializedNetworkInterfaceIpConfigurationPropertiesFormatInner.provisioningState
                         = ProvisioningState.fromString(reader.getString());
                 } else if ("privateLinkConnectionProperties".equals(fieldName)) {
-                    deserializedNetworkInterfaceIPConfigurationPropertiesFormatInner.privateLinkConnectionProperties
+                    deserializedNetworkInterfaceIpConfigurationPropertiesFormatInner.privateLinkConnectionProperties
                         = NetworkInterfaceIpConfigurationPrivateLinkConnectionProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedNetworkInterfaceIPConfigurationPropertiesFormatInner;
+            return deserializedNetworkInterfaceIpConfigurationPropertiesFormatInner;
         });
     }
 }

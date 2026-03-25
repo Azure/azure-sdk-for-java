@@ -21,8 +21,8 @@ import java.util.List;
  * Public IP prefix properties.
  */
 @Fluent
-public final class PublicIPPrefixPropertiesFormatInner
-    implements JsonSerializable<PublicIPPrefixPropertiesFormatInner> {
+public final class PublicIpPrefixPropertiesFormatInner
+    implements JsonSerializable<PublicIpPrefixPropertiesFormatInner> {
     /*
      * The public IP address version.
      */
@@ -74,9 +74,9 @@ public final class PublicIPPrefixPropertiesFormatInner
     private NatGatewayInner natGateway;
 
     /**
-     * Creates an instance of PublicIPPrefixPropertiesFormatInner class.
+     * Creates an instance of PublicIpPrefixPropertiesFormatInner class.
      */
-    public PublicIPPrefixPropertiesFormatInner() {
+    public PublicIpPrefixPropertiesFormatInner() {
     }
 
     /**
@@ -92,9 +92,9 @@ public final class PublicIPPrefixPropertiesFormatInner
      * Set the publicIpAddressVersion property: The public IP address version.
      * 
      * @param publicIpAddressVersion the publicIpAddressVersion value to set.
-     * @return the PublicIPPrefixPropertiesFormatInner object itself.
+     * @return the PublicIpPrefixPropertiesFormatInner object itself.
      */
-    public PublicIPPrefixPropertiesFormatInner withPublicIpAddressVersion(IpVersion publicIpAddressVersion) {
+    public PublicIpPrefixPropertiesFormatInner withPublicIpAddressVersion(IpVersion publicIpAddressVersion) {
         this.publicIpAddressVersion = publicIpAddressVersion;
         return this;
     }
@@ -112,9 +112,9 @@ public final class PublicIPPrefixPropertiesFormatInner
      * Set the ipTags property: The list of tags associated with the public IP prefix.
      * 
      * @param ipTags the ipTags value to set.
-     * @return the PublicIPPrefixPropertiesFormatInner object itself.
+     * @return the PublicIpPrefixPropertiesFormatInner object itself.
      */
-    public PublicIPPrefixPropertiesFormatInner withIpTags(List<IpTag> ipTags) {
+    public PublicIpPrefixPropertiesFormatInner withIpTags(List<IpTag> ipTags) {
         this.ipTags = ipTags;
         return this;
     }
@@ -132,9 +132,9 @@ public final class PublicIPPrefixPropertiesFormatInner
      * Set the prefixLength property: The Length of the Public IP Prefix.
      * 
      * @param prefixLength the prefixLength value to set.
-     * @return the PublicIPPrefixPropertiesFormatInner object itself.
+     * @return the PublicIpPrefixPropertiesFormatInner object itself.
      */
-    public PublicIPPrefixPropertiesFormatInner withPrefixLength(Integer prefixLength) {
+    public PublicIpPrefixPropertiesFormatInner withPrefixLength(Integer prefixLength) {
         this.prefixLength = prefixLength;
         return this;
     }
@@ -180,9 +180,9 @@ public final class PublicIPPrefixPropertiesFormatInner
      * Set the customIPPrefix property: The customIpPrefix that this prefix is associated with.
      * 
      * @param customIPPrefix the customIPPrefix value to set.
-     * @return the PublicIPPrefixPropertiesFormatInner object itself.
+     * @return the PublicIpPrefixPropertiesFormatInner object itself.
      */
-    public PublicIPPrefixPropertiesFormatInner withCustomIPPrefix(SubResource customIPPrefix) {
+    public PublicIpPrefixPropertiesFormatInner withCustomIPPrefix(SubResource customIPPrefix) {
         this.customIPPrefix = customIPPrefix;
         return this;
     }
@@ -218,9 +218,9 @@ public final class PublicIPPrefixPropertiesFormatInner
      * Set the natGateway property: NatGateway of Public IP Prefix.
      * 
      * @param natGateway the natGateway value to set.
-     * @return the PublicIPPrefixPropertiesFormatInner object itself.
+     * @return the PublicIpPrefixPropertiesFormatInner object itself.
      */
-    public PublicIPPrefixPropertiesFormatInner withNatGateway(NatGatewayInner natGateway) {
+    public PublicIpPrefixPropertiesFormatInner withNatGateway(NatGatewayInner natGateway) {
         this.natGateway = natGateway;
         return this;
     }
@@ -258,54 +258,54 @@ public final class PublicIPPrefixPropertiesFormatInner
     }
 
     /**
-     * Reads an instance of PublicIPPrefixPropertiesFormatInner from the JsonReader.
+     * Reads an instance of PublicIpPrefixPropertiesFormatInner from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of PublicIPPrefixPropertiesFormatInner if the JsonReader was pointing to an instance of it,
+     * @return An instance of PublicIpPrefixPropertiesFormatInner if the JsonReader was pointing to an instance of it,
      * or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the PublicIPPrefixPropertiesFormatInner.
+     * @throws IOException If an error occurs while reading the PublicIpPrefixPropertiesFormatInner.
      */
-    public static PublicIPPrefixPropertiesFormatInner fromJson(JsonReader jsonReader) throws IOException {
+    public static PublicIpPrefixPropertiesFormatInner fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            PublicIPPrefixPropertiesFormatInner deserializedPublicIPPrefixPropertiesFormatInner
-                = new PublicIPPrefixPropertiesFormatInner();
+            PublicIpPrefixPropertiesFormatInner deserializedPublicIpPrefixPropertiesFormatInner
+                = new PublicIpPrefixPropertiesFormatInner();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("publicIPAddressVersion".equals(fieldName)) {
-                    deserializedPublicIPPrefixPropertiesFormatInner.publicIpAddressVersion
+                    deserializedPublicIpPrefixPropertiesFormatInner.publicIpAddressVersion
                         = IpVersion.fromString(reader.getString());
                 } else if ("ipTags".equals(fieldName)) {
                     List<IpTag> ipTags = reader.readArray(reader1 -> IpTag.fromJson(reader1));
-                    deserializedPublicIPPrefixPropertiesFormatInner.ipTags = ipTags;
+                    deserializedPublicIpPrefixPropertiesFormatInner.ipTags = ipTags;
                 } else if ("prefixLength".equals(fieldName)) {
-                    deserializedPublicIPPrefixPropertiesFormatInner.prefixLength
+                    deserializedPublicIpPrefixPropertiesFormatInner.prefixLength
                         = reader.getNullable(JsonReader::getInt);
                 } else if ("ipPrefix".equals(fieldName)) {
-                    deserializedPublicIPPrefixPropertiesFormatInner.ipPrefix = reader.getString();
+                    deserializedPublicIpPrefixPropertiesFormatInner.ipPrefix = reader.getString();
                 } else if ("publicIPAddresses".equals(fieldName)) {
                     List<ReferencedPublicIpAddress> publicIpAddresses
                         = reader.readArray(reader1 -> ReferencedPublicIpAddress.fromJson(reader1));
-                    deserializedPublicIPPrefixPropertiesFormatInner.publicIpAddresses = publicIpAddresses;
+                    deserializedPublicIpPrefixPropertiesFormatInner.publicIpAddresses = publicIpAddresses;
                 } else if ("loadBalancerFrontendIpConfiguration".equals(fieldName)) {
-                    deserializedPublicIPPrefixPropertiesFormatInner.loadBalancerFrontendIpConfiguration
+                    deserializedPublicIpPrefixPropertiesFormatInner.loadBalancerFrontendIpConfiguration
                         = SubResource.fromJson(reader);
                 } else if ("customIPPrefix".equals(fieldName)) {
-                    deserializedPublicIPPrefixPropertiesFormatInner.customIPPrefix = SubResource.fromJson(reader);
+                    deserializedPublicIpPrefixPropertiesFormatInner.customIPPrefix = SubResource.fromJson(reader);
                 } else if ("resourceGuid".equals(fieldName)) {
-                    deserializedPublicIPPrefixPropertiesFormatInner.resourceGuid = reader.getString();
+                    deserializedPublicIpPrefixPropertiesFormatInner.resourceGuid = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {
-                    deserializedPublicIPPrefixPropertiesFormatInner.provisioningState
+                    deserializedPublicIpPrefixPropertiesFormatInner.provisioningState
                         = ProvisioningState.fromString(reader.getString());
                 } else if ("natGateway".equals(fieldName)) {
-                    deserializedPublicIPPrefixPropertiesFormatInner.natGateway = NatGatewayInner.fromJson(reader);
+                    deserializedPublicIpPrefixPropertiesFormatInner.natGateway = NatGatewayInner.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedPublicIPPrefixPropertiesFormatInner;
+            return deserializedPublicIpPrefixPropertiesFormatInner;
         });
     }
 }

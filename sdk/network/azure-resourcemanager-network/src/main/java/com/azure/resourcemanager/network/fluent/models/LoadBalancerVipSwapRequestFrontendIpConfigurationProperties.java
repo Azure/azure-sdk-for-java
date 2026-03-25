@@ -16,17 +16,17 @@ import java.io.IOException;
  * The properties of VIP swap request's frontend IP configuration object.
  */
 @Fluent
-public final class LoadBalancerVipSwapRequestFrontendIPConfigurationProperties
-    implements JsonSerializable<LoadBalancerVipSwapRequestFrontendIPConfigurationProperties> {
+public final class LoadBalancerVipSwapRequestFrontendIpConfigurationProperties
+    implements JsonSerializable<LoadBalancerVipSwapRequestFrontendIpConfigurationProperties> {
     /*
      * A reference to public IP address resource.
      */
     private SubResource publicIpAddress;
 
     /**
-     * Creates an instance of LoadBalancerVipSwapRequestFrontendIPConfigurationProperties class.
+     * Creates an instance of LoadBalancerVipSwapRequestFrontendIpConfigurationProperties class.
      */
-    public LoadBalancerVipSwapRequestFrontendIPConfigurationProperties() {
+    public LoadBalancerVipSwapRequestFrontendIpConfigurationProperties() {
     }
 
     /**
@@ -42,9 +42,9 @@ public final class LoadBalancerVipSwapRequestFrontendIPConfigurationProperties
      * Set the publicIpAddress property: A reference to public IP address resource.
      * 
      * @param publicIpAddress the publicIpAddress value to set.
-     * @return the LoadBalancerVipSwapRequestFrontendIPConfigurationProperties object itself.
+     * @return the LoadBalancerVipSwapRequestFrontendIpConfigurationProperties object itself.
      */
-    public LoadBalancerVipSwapRequestFrontendIPConfigurationProperties
+    public LoadBalancerVipSwapRequestFrontendIpConfigurationProperties
         withPublicIpAddress(SubResource publicIpAddress) {
         this.publicIpAddress = publicIpAddress;
         return this;
@@ -69,32 +69,32 @@ public final class LoadBalancerVipSwapRequestFrontendIPConfigurationProperties
     }
 
     /**
-     * Reads an instance of LoadBalancerVipSwapRequestFrontendIPConfigurationProperties from the JsonReader.
+     * Reads an instance of LoadBalancerVipSwapRequestFrontendIpConfigurationProperties from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of LoadBalancerVipSwapRequestFrontendIPConfigurationProperties if the JsonReader was pointing
+     * @return An instance of LoadBalancerVipSwapRequestFrontendIpConfigurationProperties if the JsonReader was pointing
      * to an instance of it, or null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the
-     * LoadBalancerVipSwapRequestFrontendIPConfigurationProperties.
+     * LoadBalancerVipSwapRequestFrontendIpConfigurationProperties.
      */
-    public static LoadBalancerVipSwapRequestFrontendIPConfigurationProperties fromJson(JsonReader jsonReader)
+    public static LoadBalancerVipSwapRequestFrontendIpConfigurationProperties fromJson(JsonReader jsonReader)
         throws IOException {
         return jsonReader.readObject(reader -> {
-            LoadBalancerVipSwapRequestFrontendIPConfigurationProperties deserializedLoadBalancerVipSwapRequestFrontendIPConfigurationProperties
-                = new LoadBalancerVipSwapRequestFrontendIPConfigurationProperties();
+            LoadBalancerVipSwapRequestFrontendIpConfigurationProperties deserializedLoadBalancerVipSwapRequestFrontendIpConfigurationProperties
+                = new LoadBalancerVipSwapRequestFrontendIpConfigurationProperties();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("publicIPAddress".equals(fieldName)) {
-                    deserializedLoadBalancerVipSwapRequestFrontendIPConfigurationProperties.publicIpAddress
+                    deserializedLoadBalancerVipSwapRequestFrontendIpConfigurationProperties.publicIpAddress
                         = SubResource.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedLoadBalancerVipSwapRequestFrontendIPConfigurationProperties;
+            return deserializedLoadBalancerVipSwapRequestFrontendIpConfigurationProperties;
         });
     }
 }

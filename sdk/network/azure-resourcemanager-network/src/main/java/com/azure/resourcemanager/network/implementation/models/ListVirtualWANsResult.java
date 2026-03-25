@@ -10,7 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.network.fluent.models.VirtualWANInner;
+import com.azure.resourcemanager.network.fluent.models.VirtualWanInner;
 import java.io.IOException;
 import java.util.List;
 
@@ -23,7 +23,7 @@ public final class ListVirtualWANsResult implements JsonSerializable<ListVirtual
     /*
      * The VirtualWAN items on this page
      */
-    private List<VirtualWANInner> value;
+    private List<VirtualWanInner> value;
 
     /*
      * The link to the next page of items
@@ -41,7 +41,7 @@ public final class ListVirtualWANsResult implements JsonSerializable<ListVirtual
      * 
      * @return the value value.
      */
-    public List<VirtualWANInner> value() {
+    public List<VirtualWanInner> value() {
         return this.value;
     }
 
@@ -98,7 +98,7 @@ public final class ListVirtualWANsResult implements JsonSerializable<ListVirtual
                 reader.nextToken();
 
                 if ("value".equals(fieldName)) {
-                    List<VirtualWANInner> value = reader.readArray(reader1 -> VirtualWANInner.fromJson(reader1));
+                    List<VirtualWanInner> value = reader.readArray(reader1 -> VirtualWanInner.fromJson(reader1));
                     deserializedListVirtualWANsResult.value = value;
                 } else if ("nextLink".equals(fieldName)) {
                     deserializedListVirtualWANsResult.nextLink = reader.getString();

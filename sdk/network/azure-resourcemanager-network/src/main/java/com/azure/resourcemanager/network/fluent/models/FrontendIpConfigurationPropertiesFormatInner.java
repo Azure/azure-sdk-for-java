@@ -20,8 +20,8 @@ import java.util.List;
  * Properties of Frontend IP Configuration of the load balancer.
  */
 @Fluent
-public final class FrontendIPConfigurationPropertiesFormatInner
-    implements JsonSerializable<FrontendIPConfigurationPropertiesFormatInner> {
+public final class FrontendIpConfigurationPropertiesFormatInner
+    implements JsonSerializable<FrontendIpConfigurationPropertiesFormatInner> {
     /*
      * An array of references to inbound rules that use this frontend IP.
      */
@@ -83,9 +83,9 @@ public final class FrontendIPConfigurationPropertiesFormatInner
     private ProvisioningState provisioningState;
 
     /**
-     * Creates an instance of FrontendIPConfigurationPropertiesFormatInner class.
+     * Creates an instance of FrontendIpConfigurationPropertiesFormatInner class.
      */
-    public FrontendIPConfigurationPropertiesFormatInner() {
+    public FrontendIpConfigurationPropertiesFormatInner() {
     }
 
     /**
@@ -137,9 +137,9 @@ public final class FrontendIPConfigurationPropertiesFormatInner
      * Set the privateIpAddress property: The private IP address of the IP configuration.
      * 
      * @param privateIpAddress the privateIpAddress value to set.
-     * @return the FrontendIPConfigurationPropertiesFormatInner object itself.
+     * @return the FrontendIpConfigurationPropertiesFormatInner object itself.
      */
-    public FrontendIPConfigurationPropertiesFormatInner withPrivateIpAddress(String privateIpAddress) {
+    public FrontendIpConfigurationPropertiesFormatInner withPrivateIpAddress(String privateIpAddress) {
         this.privateIpAddress = privateIpAddress;
         return this;
     }
@@ -157,9 +157,9 @@ public final class FrontendIPConfigurationPropertiesFormatInner
      * Set the privateIpAllocationMethod property: The Private IP allocation method.
      * 
      * @param privateIpAllocationMethod the privateIpAllocationMethod value to set.
-     * @return the FrontendIPConfigurationPropertiesFormatInner object itself.
+     * @return the FrontendIpConfigurationPropertiesFormatInner object itself.
      */
-    public FrontendIPConfigurationPropertiesFormatInner
+    public FrontendIpConfigurationPropertiesFormatInner
         withPrivateIpAllocationMethod(IpAllocationMethod privateIpAllocationMethod) {
         this.privateIpAllocationMethod = privateIpAllocationMethod;
         return this;
@@ -180,9 +180,9 @@ public final class FrontendIPConfigurationPropertiesFormatInner
      * as IPv4.
      * 
      * @param privateIpAddressVersion the privateIpAddressVersion value to set.
-     * @return the FrontendIPConfigurationPropertiesFormatInner object itself.
+     * @return the FrontendIpConfigurationPropertiesFormatInner object itself.
      */
-    public FrontendIPConfigurationPropertiesFormatInner withPrivateIpAddressVersion(IpVersion privateIpAddressVersion) {
+    public FrontendIpConfigurationPropertiesFormatInner withPrivateIpAddressVersion(IpVersion privateIpAddressVersion) {
         this.privateIpAddressVersion = privateIpAddressVersion;
         return this;
     }
@@ -200,9 +200,9 @@ public final class FrontendIPConfigurationPropertiesFormatInner
      * Set the subnet property: The reference to the subnet resource.
      * 
      * @param subnet the subnet value to set.
-     * @return the FrontendIPConfigurationPropertiesFormatInner object itself.
+     * @return the FrontendIpConfigurationPropertiesFormatInner object itself.
      */
-    public FrontendIPConfigurationPropertiesFormatInner withSubnet(SubnetInner subnet) {
+    public FrontendIpConfigurationPropertiesFormatInner withSubnet(SubnetInner subnet) {
         this.subnet = subnet;
         return this;
     }
@@ -220,9 +220,9 @@ public final class FrontendIPConfigurationPropertiesFormatInner
      * Set the publicIpAddress property: The reference to the Public IP resource.
      * 
      * @param publicIpAddress the publicIpAddress value to set.
-     * @return the FrontendIPConfigurationPropertiesFormatInner object itself.
+     * @return the FrontendIpConfigurationPropertiesFormatInner object itself.
      */
-    public FrontendIPConfigurationPropertiesFormatInner withPublicIpAddress(PublicIpAddressInner publicIpAddress) {
+    public FrontendIpConfigurationPropertiesFormatInner withPublicIpAddress(PublicIpAddressInner publicIpAddress) {
         this.publicIpAddress = publicIpAddress;
         return this;
     }
@@ -240,9 +240,9 @@ public final class FrontendIPConfigurationPropertiesFormatInner
      * Set the publicIPPrefix property: The reference to the Public IP Prefix resource.
      * 
      * @param publicIPPrefix the publicIPPrefix value to set.
-     * @return the FrontendIPConfigurationPropertiesFormatInner object itself.
+     * @return the FrontendIpConfigurationPropertiesFormatInner object itself.
      */
-    public FrontendIPConfigurationPropertiesFormatInner withPublicIPPrefix(SubResource publicIPPrefix) {
+    public FrontendIpConfigurationPropertiesFormatInner withPublicIPPrefix(SubResource publicIPPrefix) {
         this.publicIPPrefix = publicIPPrefix;
         return this;
     }
@@ -260,9 +260,9 @@ public final class FrontendIPConfigurationPropertiesFormatInner
      * Set the gatewayLoadBalancer property: The reference to gateway load balancer frontend IP.
      * 
      * @param gatewayLoadBalancer the gatewayLoadBalancer value to set.
-     * @return the FrontendIPConfigurationPropertiesFormatInner object itself.
+     * @return the FrontendIpConfigurationPropertiesFormatInner object itself.
      */
-    public FrontendIPConfigurationPropertiesFormatInner withGatewayLoadBalancer(SubResource gatewayLoadBalancer) {
+    public FrontendIpConfigurationPropertiesFormatInner withGatewayLoadBalancer(SubResource gatewayLoadBalancer) {
         this.gatewayLoadBalancer = gatewayLoadBalancer;
         return this;
     }
@@ -309,61 +309,61 @@ public final class FrontendIPConfigurationPropertiesFormatInner
     }
 
     /**
-     * Reads an instance of FrontendIPConfigurationPropertiesFormatInner from the JsonReader.
+     * Reads an instance of FrontendIpConfigurationPropertiesFormatInner from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of FrontendIPConfigurationPropertiesFormatInner if the JsonReader was pointing to an instance
+     * @return An instance of FrontendIpConfigurationPropertiesFormatInner if the JsonReader was pointing to an instance
      * of it, or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the FrontendIPConfigurationPropertiesFormatInner.
+     * @throws IOException If an error occurs while reading the FrontendIpConfigurationPropertiesFormatInner.
      */
-    public static FrontendIPConfigurationPropertiesFormatInner fromJson(JsonReader jsonReader) throws IOException {
+    public static FrontendIpConfigurationPropertiesFormatInner fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            FrontendIPConfigurationPropertiesFormatInner deserializedFrontendIPConfigurationPropertiesFormatInner
-                = new FrontendIPConfigurationPropertiesFormatInner();
+            FrontendIpConfigurationPropertiesFormatInner deserializedFrontendIpConfigurationPropertiesFormatInner
+                = new FrontendIpConfigurationPropertiesFormatInner();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("inboundNatRules".equals(fieldName)) {
                     List<SubResource> inboundNatRules = reader.readArray(reader1 -> SubResource.fromJson(reader1));
-                    deserializedFrontendIPConfigurationPropertiesFormatInner.inboundNatRules = inboundNatRules;
+                    deserializedFrontendIpConfigurationPropertiesFormatInner.inboundNatRules = inboundNatRules;
                 } else if ("inboundNatPools".equals(fieldName)) {
                     List<SubResource> inboundNatPools = reader.readArray(reader1 -> SubResource.fromJson(reader1));
-                    deserializedFrontendIPConfigurationPropertiesFormatInner.inboundNatPools = inboundNatPools;
+                    deserializedFrontendIpConfigurationPropertiesFormatInner.inboundNatPools = inboundNatPools;
                 } else if ("outboundRules".equals(fieldName)) {
                     List<SubResource> outboundRules = reader.readArray(reader1 -> SubResource.fromJson(reader1));
-                    deserializedFrontendIPConfigurationPropertiesFormatInner.outboundRules = outboundRules;
+                    deserializedFrontendIpConfigurationPropertiesFormatInner.outboundRules = outboundRules;
                 } else if ("loadBalancingRules".equals(fieldName)) {
                     List<SubResource> loadBalancingRules = reader.readArray(reader1 -> SubResource.fromJson(reader1));
-                    deserializedFrontendIPConfigurationPropertiesFormatInner.loadBalancingRules = loadBalancingRules;
+                    deserializedFrontendIpConfigurationPropertiesFormatInner.loadBalancingRules = loadBalancingRules;
                 } else if ("privateIPAddress".equals(fieldName)) {
-                    deserializedFrontendIPConfigurationPropertiesFormatInner.privateIpAddress = reader.getString();
+                    deserializedFrontendIpConfigurationPropertiesFormatInner.privateIpAddress = reader.getString();
                 } else if ("privateIPAllocationMethod".equals(fieldName)) {
-                    deserializedFrontendIPConfigurationPropertiesFormatInner.privateIpAllocationMethod
+                    deserializedFrontendIpConfigurationPropertiesFormatInner.privateIpAllocationMethod
                         = IpAllocationMethod.fromString(reader.getString());
                 } else if ("privateIPAddressVersion".equals(fieldName)) {
-                    deserializedFrontendIPConfigurationPropertiesFormatInner.privateIpAddressVersion
+                    deserializedFrontendIpConfigurationPropertiesFormatInner.privateIpAddressVersion
                         = IpVersion.fromString(reader.getString());
                 } else if ("subnet".equals(fieldName)) {
-                    deserializedFrontendIPConfigurationPropertiesFormatInner.subnet = SubnetInner.fromJson(reader);
+                    deserializedFrontendIpConfigurationPropertiesFormatInner.subnet = SubnetInner.fromJson(reader);
                 } else if ("publicIPAddress".equals(fieldName)) {
-                    deserializedFrontendIPConfigurationPropertiesFormatInner.publicIpAddress
+                    deserializedFrontendIpConfigurationPropertiesFormatInner.publicIpAddress
                         = PublicIpAddressInner.fromJson(reader);
                 } else if ("publicIPPrefix".equals(fieldName)) {
-                    deserializedFrontendIPConfigurationPropertiesFormatInner.publicIPPrefix
+                    deserializedFrontendIpConfigurationPropertiesFormatInner.publicIPPrefix
                         = SubResource.fromJson(reader);
                 } else if ("gatewayLoadBalancer".equals(fieldName)) {
-                    deserializedFrontendIPConfigurationPropertiesFormatInner.gatewayLoadBalancer
+                    deserializedFrontendIpConfigurationPropertiesFormatInner.gatewayLoadBalancer
                         = SubResource.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
-                    deserializedFrontendIPConfigurationPropertiesFormatInner.provisioningState
+                    deserializedFrontendIpConfigurationPropertiesFormatInner.provisioningState
                         = ProvisioningState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedFrontendIPConfigurationPropertiesFormatInner;
+            return deserializedFrontendIpConfigurationPropertiesFormatInner;
         });
     }
 }

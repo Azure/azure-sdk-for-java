@@ -18,8 +18,8 @@ import java.io.IOException;
  * Properties of Frontend IP configuration of an application gateway.
  */
 @Fluent
-public final class ApplicationGatewayFrontendIPConfigurationPropertiesFormat
-    implements JsonSerializable<ApplicationGatewayFrontendIPConfigurationPropertiesFormat> {
+public final class ApplicationGatewayFrontendIpConfigurationPropertiesFormat
+    implements JsonSerializable<ApplicationGatewayFrontendIpConfigurationPropertiesFormat> {
     /*
      * PrivateIPAddress of the network interface IP Configuration.
      */
@@ -51,9 +51,9 @@ public final class ApplicationGatewayFrontendIPConfigurationPropertiesFormat
     private ProvisioningState provisioningState;
 
     /**
-     * Creates an instance of ApplicationGatewayFrontendIPConfigurationPropertiesFormat class.
+     * Creates an instance of ApplicationGatewayFrontendIpConfigurationPropertiesFormat class.
      */
-    public ApplicationGatewayFrontendIPConfigurationPropertiesFormat() {
+    public ApplicationGatewayFrontendIpConfigurationPropertiesFormat() {
     }
 
     /**
@@ -69,9 +69,9 @@ public final class ApplicationGatewayFrontendIPConfigurationPropertiesFormat
      * Set the privateIpAddress property: PrivateIPAddress of the network interface IP Configuration.
      * 
      * @param privateIpAddress the privateIpAddress value to set.
-     * @return the ApplicationGatewayFrontendIPConfigurationPropertiesFormat object itself.
+     * @return the ApplicationGatewayFrontendIpConfigurationPropertiesFormat object itself.
      */
-    public ApplicationGatewayFrontendIPConfigurationPropertiesFormat withPrivateIpAddress(String privateIpAddress) {
+    public ApplicationGatewayFrontendIpConfigurationPropertiesFormat withPrivateIpAddress(String privateIpAddress) {
         this.privateIpAddress = privateIpAddress;
         return this;
     }
@@ -89,9 +89,9 @@ public final class ApplicationGatewayFrontendIPConfigurationPropertiesFormat
      * Set the privateIpAllocationMethod property: The private IP address allocation method.
      * 
      * @param privateIpAllocationMethod the privateIpAllocationMethod value to set.
-     * @return the ApplicationGatewayFrontendIPConfigurationPropertiesFormat object itself.
+     * @return the ApplicationGatewayFrontendIpConfigurationPropertiesFormat object itself.
      */
-    public ApplicationGatewayFrontendIPConfigurationPropertiesFormat
+    public ApplicationGatewayFrontendIpConfigurationPropertiesFormat
         withPrivateIpAllocationMethod(IpAllocationMethod privateIpAllocationMethod) {
         this.privateIpAllocationMethod = privateIpAllocationMethod;
         return this;
@@ -110,9 +110,9 @@ public final class ApplicationGatewayFrontendIPConfigurationPropertiesFormat
      * Set the subnet property: Reference to the subnet resource.
      * 
      * @param subnet the subnet value to set.
-     * @return the ApplicationGatewayFrontendIPConfigurationPropertiesFormat object itself.
+     * @return the ApplicationGatewayFrontendIpConfigurationPropertiesFormat object itself.
      */
-    public ApplicationGatewayFrontendIPConfigurationPropertiesFormat withSubnet(SubResource subnet) {
+    public ApplicationGatewayFrontendIpConfigurationPropertiesFormat withSubnet(SubResource subnet) {
         this.subnet = subnet;
         return this;
     }
@@ -130,9 +130,9 @@ public final class ApplicationGatewayFrontendIPConfigurationPropertiesFormat
      * Set the publicIpAddress property: Reference to the PublicIP resource.
      * 
      * @param publicIpAddress the publicIpAddress value to set.
-     * @return the ApplicationGatewayFrontendIPConfigurationPropertiesFormat object itself.
+     * @return the ApplicationGatewayFrontendIpConfigurationPropertiesFormat object itself.
      */
-    public ApplicationGatewayFrontendIPConfigurationPropertiesFormat withPublicIpAddress(SubResource publicIpAddress) {
+    public ApplicationGatewayFrontendIpConfigurationPropertiesFormat withPublicIpAddress(SubResource publicIpAddress) {
         this.publicIpAddress = publicIpAddress;
         return this;
     }
@@ -150,9 +150,9 @@ public final class ApplicationGatewayFrontendIPConfigurationPropertiesFormat
      * Set the privateLinkConfiguration property: Reference to the application gateway private link configuration.
      * 
      * @param privateLinkConfiguration the privateLinkConfiguration value to set.
-     * @return the ApplicationGatewayFrontendIPConfigurationPropertiesFormat object itself.
+     * @return the ApplicationGatewayFrontendIpConfigurationPropertiesFormat object itself.
      */
-    public ApplicationGatewayFrontendIPConfigurationPropertiesFormat
+    public ApplicationGatewayFrontendIpConfigurationPropertiesFormat
         withPrivateLinkConfiguration(SubResource privateLinkConfiguration) {
         this.privateLinkConfiguration = privateLinkConfiguration;
         return this;
@@ -191,47 +191,47 @@ public final class ApplicationGatewayFrontendIPConfigurationPropertiesFormat
     }
 
     /**
-     * Reads an instance of ApplicationGatewayFrontendIPConfigurationPropertiesFormat from the JsonReader.
+     * Reads an instance of ApplicationGatewayFrontendIpConfigurationPropertiesFormat from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ApplicationGatewayFrontendIPConfigurationPropertiesFormat if the JsonReader was pointing
+     * @return An instance of ApplicationGatewayFrontendIpConfigurationPropertiesFormat if the JsonReader was pointing
      * to an instance of it, or null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the
-     * ApplicationGatewayFrontendIPConfigurationPropertiesFormat.
+     * ApplicationGatewayFrontendIpConfigurationPropertiesFormat.
      */
-    public static ApplicationGatewayFrontendIPConfigurationPropertiesFormat fromJson(JsonReader jsonReader)
+    public static ApplicationGatewayFrontendIpConfigurationPropertiesFormat fromJson(JsonReader jsonReader)
         throws IOException {
         return jsonReader.readObject(reader -> {
-            ApplicationGatewayFrontendIPConfigurationPropertiesFormat deserializedApplicationGatewayFrontendIPConfigurationPropertiesFormat
-                = new ApplicationGatewayFrontendIPConfigurationPropertiesFormat();
+            ApplicationGatewayFrontendIpConfigurationPropertiesFormat deserializedApplicationGatewayFrontendIpConfigurationPropertiesFormat
+                = new ApplicationGatewayFrontendIpConfigurationPropertiesFormat();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("privateIPAddress".equals(fieldName)) {
-                    deserializedApplicationGatewayFrontendIPConfigurationPropertiesFormat.privateIpAddress
+                    deserializedApplicationGatewayFrontendIpConfigurationPropertiesFormat.privateIpAddress
                         = reader.getString();
                 } else if ("privateIPAllocationMethod".equals(fieldName)) {
-                    deserializedApplicationGatewayFrontendIPConfigurationPropertiesFormat.privateIpAllocationMethod
+                    deserializedApplicationGatewayFrontendIpConfigurationPropertiesFormat.privateIpAllocationMethod
                         = IpAllocationMethod.fromString(reader.getString());
                 } else if ("subnet".equals(fieldName)) {
-                    deserializedApplicationGatewayFrontendIPConfigurationPropertiesFormat.subnet
+                    deserializedApplicationGatewayFrontendIpConfigurationPropertiesFormat.subnet
                         = SubResource.fromJson(reader);
                 } else if ("publicIPAddress".equals(fieldName)) {
-                    deserializedApplicationGatewayFrontendIPConfigurationPropertiesFormat.publicIpAddress
+                    deserializedApplicationGatewayFrontendIpConfigurationPropertiesFormat.publicIpAddress
                         = SubResource.fromJson(reader);
                 } else if ("privateLinkConfiguration".equals(fieldName)) {
-                    deserializedApplicationGatewayFrontendIPConfigurationPropertiesFormat.privateLinkConfiguration
+                    deserializedApplicationGatewayFrontendIpConfigurationPropertiesFormat.privateLinkConfiguration
                         = SubResource.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
-                    deserializedApplicationGatewayFrontendIPConfigurationPropertiesFormat.provisioningState
+                    deserializedApplicationGatewayFrontendIpConfigurationPropertiesFormat.provisioningState
                         = ProvisioningState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedApplicationGatewayFrontendIPConfigurationPropertiesFormat;
+            return deserializedApplicationGatewayFrontendIpConfigurationPropertiesFormat;
         });
     }
 }

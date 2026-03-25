@@ -5,9 +5,9 @@
 package com.azure.resourcemanager.network.generated;
 
 /**
- * Samples for NetworkInterfaceIPConfigurations List.
+ * Samples for NetworkInterfaceIpConfigurations List.
  */
-public final class NetworkInterfaceIPConfigurationsListSamples {
+public final class NetworkInterfaceIpConfigurationsListSamples {
     /*
      * x-ms-original-file: 2025-05-01/NetworkInterfaceIPConfigurationList.json
      */
@@ -18,7 +18,7 @@ public final class NetworkInterfaceIPConfigurationsListSamples {
      */
     public static void networkInterfaceIPConfigurationList(com.azure.resourcemanager.network.NetworkManager manager) {
         manager.serviceClient()
-            .getNetworkInterfaceIPConfigurations()
+            .getNetworkInterfaceIpConfigurations()
             .list("testrg", "nic1", com.azure.core.util.Context.NONE);
     }
 }

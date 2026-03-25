@@ -25,8 +25,8 @@ import java.util.List;
  * Public IP address properties.
  */
 @Fluent
-public final class PublicIPAddressPropertiesFormatInner
-    implements JsonSerializable<PublicIPAddressPropertiesFormatInner> {
+public final class PublicIpAddressPropertiesFormatInner
+    implements JsonSerializable<PublicIpAddressPropertiesFormatInner> {
     /*
      * The public IP address allocation method.
      */
@@ -108,9 +108,9 @@ public final class PublicIPAddressPropertiesFormatInner
     private DeleteOptions deleteOption;
 
     /**
-     * Creates an instance of PublicIPAddressPropertiesFormatInner class.
+     * Creates an instance of PublicIpAddressPropertiesFormatInner class.
      */
-    public PublicIPAddressPropertiesFormatInner() {
+    public PublicIpAddressPropertiesFormatInner() {
     }
 
     /**
@@ -126,9 +126,9 @@ public final class PublicIPAddressPropertiesFormatInner
      * Set the publicIpAllocationMethod property: The public IP address allocation method.
      * 
      * @param publicIpAllocationMethod the publicIpAllocationMethod value to set.
-     * @return the PublicIPAddressPropertiesFormatInner object itself.
+     * @return the PublicIpAddressPropertiesFormatInner object itself.
      */
-    public PublicIPAddressPropertiesFormatInner
+    public PublicIpAddressPropertiesFormatInner
         withPublicIpAllocationMethod(IpAllocationMethod publicIpAllocationMethod) {
         this.publicIpAllocationMethod = publicIpAllocationMethod;
         return this;
@@ -147,9 +147,9 @@ public final class PublicIPAddressPropertiesFormatInner
      * Set the publicIpAddressVersion property: The public IP address version.
      * 
      * @param publicIpAddressVersion the publicIpAddressVersion value to set.
-     * @return the PublicIPAddressPropertiesFormatInner object itself.
+     * @return the PublicIpAddressPropertiesFormatInner object itself.
      */
-    public PublicIPAddressPropertiesFormatInner withPublicIpAddressVersion(IpVersion publicIpAddressVersion) {
+    public PublicIpAddressPropertiesFormatInner withPublicIpAddressVersion(IpVersion publicIpAddressVersion) {
         this.publicIpAddressVersion = publicIpAddressVersion;
         return this;
     }
@@ -176,9 +176,9 @@ public final class PublicIPAddressPropertiesFormatInner
      * Set the dnsSettings property: The FQDN of the DNS record associated with the public IP address.
      * 
      * @param dnsSettings the dnsSettings value to set.
-     * @return the PublicIPAddressPropertiesFormatInner object itself.
+     * @return the PublicIpAddressPropertiesFormatInner object itself.
      */
-    public PublicIPAddressPropertiesFormatInner withDnsSettings(PublicIpAddressDnsSettings dnsSettings) {
+    public PublicIpAddressPropertiesFormatInner withDnsSettings(PublicIpAddressDnsSettings dnsSettings) {
         this.dnsSettings = dnsSettings;
         return this;
     }
@@ -196,9 +196,9 @@ public final class PublicIPAddressPropertiesFormatInner
      * Set the ddosSettings property: The DDoS protection custom policy associated with the public IP address.
      * 
      * @param ddosSettings the ddosSettings value to set.
-     * @return the PublicIPAddressPropertiesFormatInner object itself.
+     * @return the PublicIpAddressPropertiesFormatInner object itself.
      */
-    public PublicIPAddressPropertiesFormatInner withDdosSettings(DdosSettings ddosSettings) {
+    public PublicIpAddressPropertiesFormatInner withDdosSettings(DdosSettings ddosSettings) {
         this.ddosSettings = ddosSettings;
         return this;
     }
@@ -216,9 +216,9 @@ public final class PublicIPAddressPropertiesFormatInner
      * Set the ipTags property: The list of tags associated with the public IP address.
      * 
      * @param ipTags the ipTags value to set.
-     * @return the PublicIPAddressPropertiesFormatInner object itself.
+     * @return the PublicIpAddressPropertiesFormatInner object itself.
      */
-    public PublicIPAddressPropertiesFormatInner withIpTags(List<IpTag> ipTags) {
+    public PublicIpAddressPropertiesFormatInner withIpTags(List<IpTag> ipTags) {
         this.ipTags = ipTags;
         return this;
     }
@@ -236,9 +236,9 @@ public final class PublicIPAddressPropertiesFormatInner
      * Set the ipAddress property: The IP address associated with the public IP address resource.
      * 
      * @param ipAddress the ipAddress value to set.
-     * @return the PublicIPAddressPropertiesFormatInner object itself.
+     * @return the PublicIpAddressPropertiesFormatInner object itself.
      */
-    public PublicIPAddressPropertiesFormatInner withIpAddress(String ipAddress) {
+    public PublicIpAddressPropertiesFormatInner withIpAddress(String ipAddress) {
         this.ipAddress = ipAddress;
         return this;
     }
@@ -256,9 +256,9 @@ public final class PublicIPAddressPropertiesFormatInner
      * Set the publicIPPrefix property: The Public IP Prefix this Public IP Address should be allocated from.
      * 
      * @param publicIPPrefix the publicIPPrefix value to set.
-     * @return the PublicIPAddressPropertiesFormatInner object itself.
+     * @return the PublicIpAddressPropertiesFormatInner object itself.
      */
-    public PublicIPAddressPropertiesFormatInner withPublicIPPrefix(SubResource publicIPPrefix) {
+    public PublicIpAddressPropertiesFormatInner withPublicIPPrefix(SubResource publicIPPrefix) {
         this.publicIPPrefix = publicIPPrefix;
         return this;
     }
@@ -276,9 +276,9 @@ public final class PublicIPAddressPropertiesFormatInner
      * Set the idleTimeoutInMinutes property: The idle timeout of the public IP address.
      * 
      * @param idleTimeoutInMinutes the idleTimeoutInMinutes value to set.
-     * @return the PublicIPAddressPropertiesFormatInner object itself.
+     * @return the PublicIpAddressPropertiesFormatInner object itself.
      */
-    public PublicIPAddressPropertiesFormatInner withIdleTimeoutInMinutes(Integer idleTimeoutInMinutes) {
+    public PublicIpAddressPropertiesFormatInner withIdleTimeoutInMinutes(Integer idleTimeoutInMinutes) {
         this.idleTimeoutInMinutes = idleTimeoutInMinutes;
         return this;
     }
@@ -314,9 +314,9 @@ public final class PublicIPAddressPropertiesFormatInner
      * Set the servicePublicIpAddress property: The service public IP address of the public IP address resource.
      * 
      * @param servicePublicIpAddress the servicePublicIpAddress value to set.
-     * @return the PublicIPAddressPropertiesFormatInner object itself.
+     * @return the PublicIpAddressPropertiesFormatInner object itself.
      */
-    public PublicIPAddressPropertiesFormatInner
+    public PublicIpAddressPropertiesFormatInner
         withServicePublicIpAddress(PublicIpAddressInner servicePublicIpAddress) {
         this.servicePublicIpAddress = servicePublicIpAddress;
         return this;
@@ -335,9 +335,9 @@ public final class PublicIPAddressPropertiesFormatInner
      * Set the natGateway property: The NatGateway for the Public IP address.
      * 
      * @param natGateway the natGateway value to set.
-     * @return the PublicIPAddressPropertiesFormatInner object itself.
+     * @return the PublicIpAddressPropertiesFormatInner object itself.
      */
-    public PublicIPAddressPropertiesFormatInner withNatGateway(NatGatewayInner natGateway) {
+    public PublicIpAddressPropertiesFormatInner withNatGateway(NatGatewayInner natGateway) {
         this.natGateway = natGateway;
         return this;
     }
@@ -355,9 +355,9 @@ public final class PublicIPAddressPropertiesFormatInner
      * Set the migrationPhase property: Migration phase of Public IP Address.
      * 
      * @param migrationPhase the migrationPhase value to set.
-     * @return the PublicIPAddressPropertiesFormatInner object itself.
+     * @return the PublicIpAddressPropertiesFormatInner object itself.
      */
-    public PublicIPAddressPropertiesFormatInner withMigrationPhase(PublicIpAddressMigrationPhase migrationPhase) {
+    public PublicIpAddressPropertiesFormatInner withMigrationPhase(PublicIpAddressMigrationPhase migrationPhase) {
         this.migrationPhase = migrationPhase;
         return this;
     }
@@ -375,9 +375,9 @@ public final class PublicIPAddressPropertiesFormatInner
      * Set the linkedPublicIpAddress property: The linked public IP address of the public IP address resource.
      * 
      * @param linkedPublicIpAddress the linkedPublicIpAddress value to set.
-     * @return the PublicIPAddressPropertiesFormatInner object itself.
+     * @return the PublicIpAddressPropertiesFormatInner object itself.
      */
-    public PublicIPAddressPropertiesFormatInner withLinkedPublicIpAddress(PublicIpAddressInner linkedPublicIpAddress) {
+    public PublicIpAddressPropertiesFormatInner withLinkedPublicIpAddress(PublicIpAddressInner linkedPublicIpAddress) {
         this.linkedPublicIpAddress = linkedPublicIpAddress;
         return this;
     }
@@ -395,9 +395,9 @@ public final class PublicIPAddressPropertiesFormatInner
      * Set the deleteOption property: Specify what happens to the public IP address when the VM using it is deleted.
      * 
      * @param deleteOption the deleteOption value to set.
-     * @return the PublicIPAddressPropertiesFormatInner object itself.
+     * @return the PublicIpAddressPropertiesFormatInner object itself.
      */
-    public PublicIPAddressPropertiesFormatInner withDeleteOption(DeleteOptions deleteOption) {
+    public PublicIpAddressPropertiesFormatInner withDeleteOption(DeleteOptions deleteOption) {
         this.deleteOption = deleteOption;
         return this;
     }
@@ -457,70 +457,70 @@ public final class PublicIPAddressPropertiesFormatInner
     }
 
     /**
-     * Reads an instance of PublicIPAddressPropertiesFormatInner from the JsonReader.
+     * Reads an instance of PublicIpAddressPropertiesFormatInner from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of PublicIPAddressPropertiesFormatInner if the JsonReader was pointing to an instance of it,
+     * @return An instance of PublicIpAddressPropertiesFormatInner if the JsonReader was pointing to an instance of it,
      * or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the PublicIPAddressPropertiesFormatInner.
+     * @throws IOException If an error occurs while reading the PublicIpAddressPropertiesFormatInner.
      */
-    public static PublicIPAddressPropertiesFormatInner fromJson(JsonReader jsonReader) throws IOException {
+    public static PublicIpAddressPropertiesFormatInner fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            PublicIPAddressPropertiesFormatInner deserializedPublicIPAddressPropertiesFormatInner
-                = new PublicIPAddressPropertiesFormatInner();
+            PublicIpAddressPropertiesFormatInner deserializedPublicIpAddressPropertiesFormatInner
+                = new PublicIpAddressPropertiesFormatInner();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("publicIPAllocationMethod".equals(fieldName)) {
-                    deserializedPublicIPAddressPropertiesFormatInner.publicIpAllocationMethod
+                    deserializedPublicIpAddressPropertiesFormatInner.publicIpAllocationMethod
                         = IpAllocationMethod.fromString(reader.getString());
                 } else if ("publicIPAddressVersion".equals(fieldName)) {
-                    deserializedPublicIPAddressPropertiesFormatInner.publicIpAddressVersion
+                    deserializedPublicIpAddressPropertiesFormatInner.publicIpAddressVersion
                         = IpVersion.fromString(reader.getString());
                 } else if ("ipConfiguration".equals(fieldName)) {
-                    deserializedPublicIPAddressPropertiesFormatInner.ipConfiguration
+                    deserializedPublicIpAddressPropertiesFormatInner.ipConfiguration
                         = IpConfigurationInner.fromJson(reader);
                 } else if ("dnsSettings".equals(fieldName)) {
-                    deserializedPublicIPAddressPropertiesFormatInner.dnsSettings
+                    deserializedPublicIpAddressPropertiesFormatInner.dnsSettings
                         = PublicIpAddressDnsSettings.fromJson(reader);
                 } else if ("ddosSettings".equals(fieldName)) {
-                    deserializedPublicIPAddressPropertiesFormatInner.ddosSettings = DdosSettings.fromJson(reader);
+                    deserializedPublicIpAddressPropertiesFormatInner.ddosSettings = DdosSettings.fromJson(reader);
                 } else if ("ipTags".equals(fieldName)) {
                     List<IpTag> ipTags = reader.readArray(reader1 -> IpTag.fromJson(reader1));
-                    deserializedPublicIPAddressPropertiesFormatInner.ipTags = ipTags;
+                    deserializedPublicIpAddressPropertiesFormatInner.ipTags = ipTags;
                 } else if ("ipAddress".equals(fieldName)) {
-                    deserializedPublicIPAddressPropertiesFormatInner.ipAddress = reader.getString();
+                    deserializedPublicIpAddressPropertiesFormatInner.ipAddress = reader.getString();
                 } else if ("publicIPPrefix".equals(fieldName)) {
-                    deserializedPublicIPAddressPropertiesFormatInner.publicIPPrefix = SubResource.fromJson(reader);
+                    deserializedPublicIpAddressPropertiesFormatInner.publicIPPrefix = SubResource.fromJson(reader);
                 } else if ("idleTimeoutInMinutes".equals(fieldName)) {
-                    deserializedPublicIPAddressPropertiesFormatInner.idleTimeoutInMinutes
+                    deserializedPublicIpAddressPropertiesFormatInner.idleTimeoutInMinutes
                         = reader.getNullable(JsonReader::getInt);
                 } else if ("resourceGuid".equals(fieldName)) {
-                    deserializedPublicIPAddressPropertiesFormatInner.resourceGuid = reader.getString();
+                    deserializedPublicIpAddressPropertiesFormatInner.resourceGuid = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {
-                    deserializedPublicIPAddressPropertiesFormatInner.provisioningState
+                    deserializedPublicIpAddressPropertiesFormatInner.provisioningState
                         = ProvisioningState.fromString(reader.getString());
                 } else if ("servicePublicIPAddress".equals(fieldName)) {
-                    deserializedPublicIPAddressPropertiesFormatInner.servicePublicIpAddress
+                    deserializedPublicIpAddressPropertiesFormatInner.servicePublicIpAddress
                         = PublicIpAddressInner.fromJson(reader);
                 } else if ("natGateway".equals(fieldName)) {
-                    deserializedPublicIPAddressPropertiesFormatInner.natGateway = NatGatewayInner.fromJson(reader);
+                    deserializedPublicIpAddressPropertiesFormatInner.natGateway = NatGatewayInner.fromJson(reader);
                 } else if ("migrationPhase".equals(fieldName)) {
-                    deserializedPublicIPAddressPropertiesFormatInner.migrationPhase
+                    deserializedPublicIpAddressPropertiesFormatInner.migrationPhase
                         = PublicIpAddressMigrationPhase.fromString(reader.getString());
                 } else if ("linkedPublicIPAddress".equals(fieldName)) {
-                    deserializedPublicIPAddressPropertiesFormatInner.linkedPublicIpAddress
+                    deserializedPublicIpAddressPropertiesFormatInner.linkedPublicIpAddress
                         = PublicIpAddressInner.fromJson(reader);
                 } else if ("deleteOption".equals(fieldName)) {
-                    deserializedPublicIPAddressPropertiesFormatInner.deleteOption
+                    deserializedPublicIpAddressPropertiesFormatInner.deleteOption
                         = DeleteOptions.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedPublicIPAddressPropertiesFormatInner;
+            return deserializedPublicIpAddressPropertiesFormatInner;
         });
     }
 }

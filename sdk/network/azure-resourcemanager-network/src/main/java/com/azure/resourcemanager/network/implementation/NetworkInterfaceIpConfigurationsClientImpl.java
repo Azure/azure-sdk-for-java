@@ -25,19 +25,19 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.resourcemanager.network.fluent.NetworkInterfaceIPConfigurationsClient;
+import com.azure.resourcemanager.network.fluent.NetworkInterfaceIpConfigurationsClient;
 import com.azure.resourcemanager.network.fluent.models.NetworkInterfaceIpConfigurationInner;
 import com.azure.resourcemanager.network.implementation.models.NetworkInterfaceIPConfigurationListResult;
 import reactor.core.publisher.Mono;
 
 /**
- * An instance of this class provides access to all the operations defined in NetworkInterfaceIPConfigurationsClient.
+ * An instance of this class provides access to all the operations defined in NetworkInterfaceIpConfigurationsClient.
  */
-public final class NetworkInterfaceIPConfigurationsClientImpl implements NetworkInterfaceIPConfigurationsClient {
+public final class NetworkInterfaceIpConfigurationsClientImpl implements NetworkInterfaceIpConfigurationsClient {
     /**
      * The proxy service used to perform REST calls.
      */
-    private final NetworkInterfaceIPConfigurationsService service;
+    private final NetworkInterfaceIpConfigurationsService service;
 
     /**
      * The service client containing this operation class.
@@ -45,23 +45,23 @@ public final class NetworkInterfaceIPConfigurationsClientImpl implements Network
     private final NetworkManagementClientImpl client;
 
     /**
-     * Initializes an instance of NetworkInterfaceIPConfigurationsClientImpl.
+     * Initializes an instance of NetworkInterfaceIpConfigurationsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    NetworkInterfaceIPConfigurationsClientImpl(NetworkManagementClientImpl client) {
-        this.service = RestProxy.create(NetworkInterfaceIPConfigurationsService.class, client.getHttpPipeline(),
+    NetworkInterfaceIpConfigurationsClientImpl(NetworkManagementClientImpl client) {
+        this.service = RestProxy.create(NetworkInterfaceIpConfigurationsService.class, client.getHttpPipeline(),
             client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for NetworkManagementClientNetworkInterfaceIPConfigurations to be used by
+     * The interface defining all the services for NetworkManagementClientNetworkInterfaceIpConfigurations to be used by
      * the proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "NetworkManagementClientNetworkInterfaceIPConfigurations")
-    public interface NetworkInterfaceIPConfigurationsService {
+    @ServiceInterface(name = "NetworkManagementClientNetworkInterfaceIpConfigurations")
+    public interface NetworkInterfaceIpConfigurationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkInterfaces/{networkInterfaceName}/ipConfigurations/{ipConfigurationName}")
         @ExpectedResponses({ 200 })

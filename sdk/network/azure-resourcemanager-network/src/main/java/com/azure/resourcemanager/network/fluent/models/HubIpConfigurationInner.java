@@ -21,7 +21,7 @@ public final class HubIpConfigurationInner extends SubResourceModel {
     /*
      * The properties of the Virtual Hub IPConfigurations.
      */
-    private HubIPConfigurationPropertiesFormatInner innerProperties;
+    private HubIpConfigurationPropertiesFormatInner innerProperties;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
@@ -44,7 +44,7 @@ public final class HubIpConfigurationInner extends SubResourceModel {
      * 
      * @return the innerProperties value.
      */
-    private HubIPConfigurationPropertiesFormatInner innerProperties() {
+    private HubIpConfigurationPropertiesFormatInner innerProperties() {
         return this.innerProperties;
     }
 
@@ -102,7 +102,7 @@ public final class HubIpConfigurationInner extends SubResourceModel {
      */
     public HubIpConfigurationInner withPrivateIpAddress(String privateIpAddress) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new HubIPConfigurationPropertiesFormatInner();
+            this.innerProperties = new HubIpConfigurationPropertiesFormatInner();
         }
         this.innerProperties().withPrivateIpAddress(privateIpAddress);
         return this;
@@ -125,7 +125,7 @@ public final class HubIpConfigurationInner extends SubResourceModel {
      */
     public HubIpConfigurationInner withPrivateIpAllocationMethod(IpAllocationMethod privateIpAllocationMethod) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new HubIPConfigurationPropertiesFormatInner();
+            this.innerProperties = new HubIpConfigurationPropertiesFormatInner();
         }
         this.innerProperties().withPrivateIpAllocationMethod(privateIpAllocationMethod);
         return this;
@@ -148,7 +148,7 @@ public final class HubIpConfigurationInner extends SubResourceModel {
      */
     public HubIpConfigurationInner withSubnet(SubnetInner subnet) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new HubIPConfigurationPropertiesFormatInner();
+            this.innerProperties = new HubIpConfigurationPropertiesFormatInner();
         }
         this.innerProperties().withSubnet(subnet);
         return this;
@@ -171,7 +171,7 @@ public final class HubIpConfigurationInner extends SubResourceModel {
      */
     public HubIpConfigurationInner withPublicIpAddress(PublicIpAddressInner publicIpAddress) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new HubIPConfigurationPropertiesFormatInner();
+            this.innerProperties = new HubIpConfigurationPropertiesFormatInner();
         }
         this.innerProperties().withPublicIpAddress(publicIpAddress);
         return this;
@@ -233,7 +233,7 @@ public final class HubIpConfigurationInner extends SubResourceModel {
                     deserializedHubIpConfigurationInner.type = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedHubIpConfigurationInner.innerProperties
-                        = HubIPConfigurationPropertiesFormatInner.fromJson(reader);
+                        = HubIpConfigurationPropertiesFormatInner.fromJson(reader);
                 } else if ("etag".equals(fieldName)) {
                     deserializedHubIpConfigurationInner.etag = reader.getString();
                 } else {

@@ -18,8 +18,8 @@ import java.io.IOException;
  * Properties of VirtualNetworkGatewayIPConfiguration.
  */
 @Fluent
-public final class VirtualNetworkGatewayIPConfigurationPropertiesFormat
-    implements JsonSerializable<VirtualNetworkGatewayIPConfigurationPropertiesFormat> {
+public final class VirtualNetworkGatewayIpConfigurationPropertiesFormat
+    implements JsonSerializable<VirtualNetworkGatewayIpConfigurationPropertiesFormat> {
     /*
      * The private IP address allocation method.
      */
@@ -46,9 +46,9 @@ public final class VirtualNetworkGatewayIPConfigurationPropertiesFormat
     private ProvisioningState provisioningState;
 
     /**
-     * Creates an instance of VirtualNetworkGatewayIPConfigurationPropertiesFormat class.
+     * Creates an instance of VirtualNetworkGatewayIpConfigurationPropertiesFormat class.
      */
-    public VirtualNetworkGatewayIPConfigurationPropertiesFormat() {
+    public VirtualNetworkGatewayIpConfigurationPropertiesFormat() {
     }
 
     /**
@@ -64,9 +64,9 @@ public final class VirtualNetworkGatewayIPConfigurationPropertiesFormat
      * Set the privateIpAllocationMethod property: The private IP address allocation method.
      * 
      * @param privateIpAllocationMethod the privateIpAllocationMethod value to set.
-     * @return the VirtualNetworkGatewayIPConfigurationPropertiesFormat object itself.
+     * @return the VirtualNetworkGatewayIpConfigurationPropertiesFormat object itself.
      */
-    public VirtualNetworkGatewayIPConfigurationPropertiesFormat
+    public VirtualNetworkGatewayIpConfigurationPropertiesFormat
         withPrivateIpAllocationMethod(IpAllocationMethod privateIpAllocationMethod) {
         this.privateIpAllocationMethod = privateIpAllocationMethod;
         return this;
@@ -85,9 +85,9 @@ public final class VirtualNetworkGatewayIPConfigurationPropertiesFormat
      * Set the subnet property: The reference to the subnet resource.
      * 
      * @param subnet the subnet value to set.
-     * @return the VirtualNetworkGatewayIPConfigurationPropertiesFormat object itself.
+     * @return the VirtualNetworkGatewayIpConfigurationPropertiesFormat object itself.
      */
-    public VirtualNetworkGatewayIPConfigurationPropertiesFormat withSubnet(SubResource subnet) {
+    public VirtualNetworkGatewayIpConfigurationPropertiesFormat withSubnet(SubResource subnet) {
         this.subnet = subnet;
         return this;
     }
@@ -105,9 +105,9 @@ public final class VirtualNetworkGatewayIPConfigurationPropertiesFormat
      * Set the publicIpAddress property: The reference to the public IP resource.
      * 
      * @param publicIpAddress the publicIpAddress value to set.
-     * @return the VirtualNetworkGatewayIPConfigurationPropertiesFormat object itself.
+     * @return the VirtualNetworkGatewayIpConfigurationPropertiesFormat object itself.
      */
-    public VirtualNetworkGatewayIPConfigurationPropertiesFormat withPublicIpAddress(SubResource publicIpAddress) {
+    public VirtualNetworkGatewayIpConfigurationPropertiesFormat withPublicIpAddress(SubResource publicIpAddress) {
         this.publicIpAddress = publicIpAddress;
         return this;
     }
@@ -153,43 +153,43 @@ public final class VirtualNetworkGatewayIPConfigurationPropertiesFormat
     }
 
     /**
-     * Reads an instance of VirtualNetworkGatewayIPConfigurationPropertiesFormat from the JsonReader.
+     * Reads an instance of VirtualNetworkGatewayIpConfigurationPropertiesFormat from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of VirtualNetworkGatewayIPConfigurationPropertiesFormat if the JsonReader was pointing to an
+     * @return An instance of VirtualNetworkGatewayIpConfigurationPropertiesFormat if the JsonReader was pointing to an
      * instance of it, or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the VirtualNetworkGatewayIPConfigurationPropertiesFormat.
+     * @throws IOException If an error occurs while reading the VirtualNetworkGatewayIpConfigurationPropertiesFormat.
      */
-    public static VirtualNetworkGatewayIPConfigurationPropertiesFormat fromJson(JsonReader jsonReader)
+    public static VirtualNetworkGatewayIpConfigurationPropertiesFormat fromJson(JsonReader jsonReader)
         throws IOException {
         return jsonReader.readObject(reader -> {
-            VirtualNetworkGatewayIPConfigurationPropertiesFormat deserializedVirtualNetworkGatewayIPConfigurationPropertiesFormat
-                = new VirtualNetworkGatewayIPConfigurationPropertiesFormat();
+            VirtualNetworkGatewayIpConfigurationPropertiesFormat deserializedVirtualNetworkGatewayIpConfigurationPropertiesFormat
+                = new VirtualNetworkGatewayIpConfigurationPropertiesFormat();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("privateIPAllocationMethod".equals(fieldName)) {
-                    deserializedVirtualNetworkGatewayIPConfigurationPropertiesFormat.privateIpAllocationMethod
+                    deserializedVirtualNetworkGatewayIpConfigurationPropertiesFormat.privateIpAllocationMethod
                         = IpAllocationMethod.fromString(reader.getString());
                 } else if ("subnet".equals(fieldName)) {
-                    deserializedVirtualNetworkGatewayIPConfigurationPropertiesFormat.subnet
+                    deserializedVirtualNetworkGatewayIpConfigurationPropertiesFormat.subnet
                         = SubResource.fromJson(reader);
                 } else if ("publicIPAddress".equals(fieldName)) {
-                    deserializedVirtualNetworkGatewayIPConfigurationPropertiesFormat.publicIpAddress
+                    deserializedVirtualNetworkGatewayIpConfigurationPropertiesFormat.publicIpAddress
                         = SubResource.fromJson(reader);
                 } else if ("privateIPAddress".equals(fieldName)) {
-                    deserializedVirtualNetworkGatewayIPConfigurationPropertiesFormat.privateIpAddress
+                    deserializedVirtualNetworkGatewayIpConfigurationPropertiesFormat.privateIpAddress
                         = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {
-                    deserializedVirtualNetworkGatewayIPConfigurationPropertiesFormat.provisioningState
+                    deserializedVirtualNetworkGatewayIpConfigurationPropertiesFormat.provisioningState
                         = ProvisioningState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedVirtualNetworkGatewayIPConfigurationPropertiesFormat;
+            return deserializedVirtualNetworkGatewayIpConfigurationPropertiesFormat;
         });
     }
 }

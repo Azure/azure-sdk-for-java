@@ -28,7 +28,7 @@ public final class PublicIpPrefixInner extends Resource {
     /*
      * Public IP prefix properties.
      */
-    private PublicIPPrefixPropertiesFormatInner innerProperties;
+    private PublicIpPrefixPropertiesFormatInner innerProperties;
 
     /*
      * The extended location of the public ip address.
@@ -76,7 +76,7 @@ public final class PublicIpPrefixInner extends Resource {
      * 
      * @return the innerProperties value.
      */
-    private PublicIPPrefixPropertiesFormatInner innerProperties() {
+    private PublicIpPrefixPropertiesFormatInner innerProperties() {
         return this.innerProperties;
     }
 
@@ -226,7 +226,7 @@ public final class PublicIpPrefixInner extends Resource {
      */
     public PublicIpPrefixInner withPublicIpAddressVersion(IpVersion publicIpAddressVersion) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new PublicIPPrefixPropertiesFormatInner();
+            this.innerProperties = new PublicIpPrefixPropertiesFormatInner();
         }
         this.innerProperties().withPublicIpAddressVersion(publicIpAddressVersion);
         return this;
@@ -249,7 +249,7 @@ public final class PublicIpPrefixInner extends Resource {
      */
     public PublicIpPrefixInner withIpTags(List<IpTag> ipTags) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new PublicIPPrefixPropertiesFormatInner();
+            this.innerProperties = new PublicIpPrefixPropertiesFormatInner();
         }
         this.innerProperties().withIpTags(ipTags);
         return this;
@@ -272,7 +272,7 @@ public final class PublicIpPrefixInner extends Resource {
      */
     public PublicIpPrefixInner withPrefixLength(Integer prefixLength) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new PublicIPPrefixPropertiesFormatInner();
+            this.innerProperties = new PublicIpPrefixPropertiesFormatInner();
         }
         this.innerProperties().withPrefixLength(prefixLength);
         return this;
@@ -323,7 +323,7 @@ public final class PublicIpPrefixInner extends Resource {
      */
     public PublicIpPrefixInner withCustomIPPrefix(SubResource customIPPrefix) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new PublicIPPrefixPropertiesFormatInner();
+            this.innerProperties = new PublicIpPrefixPropertiesFormatInner();
         }
         this.innerProperties().withCustomIPPrefix(customIPPrefix);
         return this;
@@ -364,7 +364,7 @@ public final class PublicIpPrefixInner extends Resource {
      */
     public PublicIpPrefixInner withNatGateway(NatGatewayInner natGateway) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new PublicIPPrefixPropertiesFormatInner();
+            this.innerProperties = new PublicIpPrefixPropertiesFormatInner();
         }
         this.innerProperties().withNatGateway(natGateway);
         return this;
@@ -430,7 +430,7 @@ public final class PublicIpPrefixInner extends Resource {
                     deserializedPublicIpPrefixInner.withTags(tags);
                 } else if ("properties".equals(fieldName)) {
                     deserializedPublicIpPrefixInner.innerProperties
-                        = PublicIPPrefixPropertiesFormatInner.fromJson(reader);
+                        = PublicIpPrefixPropertiesFormatInner.fromJson(reader);
                 } else if ("extendedLocation".equals(fieldName)) {
                     deserializedPublicIpPrefixInner.extendedLocation = ExtendedLocation.fromJson(reader);
                 } else if ("sku".equals(fieldName)) {

@@ -5,13 +5,13 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.network.models.CommonProxyResource;
 import com.azure.resourcemanager.network.models.NspLinkProvisioningState;
 import com.azure.resourcemanager.network.models.NspLinkStatus;
+import com.azure.resourcemanager.network.models.SecurityPerimeterProxyResource;
+import com.azure.resourcemanager.network.models.SecurityPerimeterSystemData;
 import java.io.IOException;
 import java.util.List;
 
@@ -19,7 +19,7 @@ import java.util.List;
  * The network security perimeter linkReference resource.
  */
 @Immutable
-public final class NspLinkReferenceInner extends CommonProxyResource {
+public final class NspLinkReferenceInner extends SecurityPerimeterProxyResource {
     /*
      * Properties of the network security perimeter linkReference resource.
      */
@@ -28,7 +28,7 @@ public final class NspLinkReferenceInner extends CommonProxyResource {
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    private SystemData systemData;
+    private SecurityPerimeterSystemData systemData;
 
     /*
      * The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -67,7 +67,7 @@ public final class NspLinkReferenceInner extends CommonProxyResource {
      * @return the systemData value.
      */
     @Override
-    public SystemData systemData() {
+    public SecurityPerimeterSystemData systemData() {
         return this.systemData;
     }
 
@@ -212,6 +212,9 @@ public final class NspLinkReferenceInner extends CommonProxyResource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+        if (systemData() != null) {
+            systemData().validate();
+        }
     }
 
     /**
@@ -246,7 +249,7 @@ public final class NspLinkReferenceInner extends CommonProxyResource {
                 } else if ("type".equals(fieldName)) {
                     deserializedNspLinkReferenceInner.type = reader.getString();
                 } else if ("systemData".equals(fieldName)) {
-                    deserializedNspLinkReferenceInner.systemData = SystemData.fromJson(reader);
+                    deserializedNspLinkReferenceInner.systemData = SecurityPerimeterSystemData.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {
                     deserializedNspLinkReferenceInner.innerProperties = NspLinkReferenceProperties.fromJson(reader);
                 } else {

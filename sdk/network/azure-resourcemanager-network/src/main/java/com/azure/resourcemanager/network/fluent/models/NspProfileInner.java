@@ -5,18 +5,18 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.network.models.CommonProxyResource;
+import com.azure.resourcemanager.network.models.SecurityPerimeterProxyResource;
+import com.azure.resourcemanager.network.models.SecurityPerimeterSystemData;
 import java.io.IOException;
 
 /**
  * The network security perimeter profile resource.
  */
 @Immutable
-public final class NspProfileInner extends CommonProxyResource {
+public final class NspProfileInner extends SecurityPerimeterProxyResource {
     /*
      * Properties of the network security perimeter profile
      */
@@ -25,7 +25,7 @@ public final class NspProfileInner extends CommonProxyResource {
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    private SystemData systemData;
+    private SecurityPerimeterSystemData systemData;
 
     /*
      * The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -64,7 +64,7 @@ public final class NspProfileInner extends CommonProxyResource {
      * @return the systemData value.
      */
     @Override
-    public SystemData systemData() {
+    public SecurityPerimeterSystemData systemData() {
         return this.systemData;
     }
 
@@ -130,6 +130,9 @@ public final class NspProfileInner extends CommonProxyResource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+        if (systemData() != null) {
+            systemData().validate();
+        }
     }
 
     /**
@@ -164,7 +167,7 @@ public final class NspProfileInner extends CommonProxyResource {
                 } else if ("type".equals(fieldName)) {
                     deserializedNspProfileInner.type = reader.getString();
                 } else if ("systemData".equals(fieldName)) {
-                    deserializedNspProfileInner.systemData = SystemData.fromJson(reader);
+                    deserializedNspProfileInner.systemData = SecurityPerimeterSystemData.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {
                     deserializedNspProfileInner.innerProperties = NspProfileProperties.fromJson(reader);
                 } else {

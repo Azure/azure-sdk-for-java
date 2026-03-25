@@ -21,7 +21,7 @@ public final class IpConfigurationInner extends SubResource {
     /*
      * Properties of the IP configuration.
      */
-    private IPConfigurationPropertiesFormatInner innerProperties;
+    private IpConfigurationPropertiesFormatInner innerProperties;
 
     /*
      * The name of the resource that is unique within a resource group. This name can be used to access the resource.
@@ -44,7 +44,7 @@ public final class IpConfigurationInner extends SubResource {
      * 
      * @return the innerProperties value.
      */
-    private IPConfigurationPropertiesFormatInner innerProperties() {
+    private IpConfigurationPropertiesFormatInner innerProperties() {
         return this.innerProperties;
     }
 
@@ -154,7 +154,7 @@ public final class IpConfigurationInner extends SubResource {
                     deserializedIpConfigurationInner.withId(reader.getString());
                 } else if ("properties".equals(fieldName)) {
                     deserializedIpConfigurationInner.innerProperties
-                        = IPConfigurationPropertiesFormatInner.fromJson(reader);
+                        = IpConfigurationPropertiesFormatInner.fromJson(reader);
                 } else if ("name".equals(fieldName)) {
                     deserializedIpConfigurationInner.name = reader.getString();
                 } else if ("etag".equals(fieldName)) {

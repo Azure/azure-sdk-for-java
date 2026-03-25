@@ -17,8 +17,8 @@ import java.io.IOException;
  * Properties of IP configuration.
  */
 @Fluent
-public final class HubIPConfigurationPropertiesFormatInner
-    implements JsonSerializable<HubIPConfigurationPropertiesFormatInner> {
+public final class HubIpConfigurationPropertiesFormatInner
+    implements JsonSerializable<HubIpConfigurationPropertiesFormatInner> {
     /*
      * The private IP address of the IP configuration.
      */
@@ -45,9 +45,9 @@ public final class HubIPConfigurationPropertiesFormatInner
     private ProvisioningState provisioningState;
 
     /**
-     * Creates an instance of HubIPConfigurationPropertiesFormatInner class.
+     * Creates an instance of HubIpConfigurationPropertiesFormatInner class.
      */
-    public HubIPConfigurationPropertiesFormatInner() {
+    public HubIpConfigurationPropertiesFormatInner() {
     }
 
     /**
@@ -63,9 +63,9 @@ public final class HubIPConfigurationPropertiesFormatInner
      * Set the privateIpAddress property: The private IP address of the IP configuration.
      * 
      * @param privateIpAddress the privateIpAddress value to set.
-     * @return the HubIPConfigurationPropertiesFormatInner object itself.
+     * @return the HubIpConfigurationPropertiesFormatInner object itself.
      */
-    public HubIPConfigurationPropertiesFormatInner withPrivateIpAddress(String privateIpAddress) {
+    public HubIpConfigurationPropertiesFormatInner withPrivateIpAddress(String privateIpAddress) {
         this.privateIpAddress = privateIpAddress;
         return this;
     }
@@ -83,9 +83,9 @@ public final class HubIPConfigurationPropertiesFormatInner
      * Set the privateIpAllocationMethod property: The private IP address allocation method.
      * 
      * @param privateIpAllocationMethod the privateIpAllocationMethod value to set.
-     * @return the HubIPConfigurationPropertiesFormatInner object itself.
+     * @return the HubIpConfigurationPropertiesFormatInner object itself.
      */
-    public HubIPConfigurationPropertiesFormatInner
+    public HubIpConfigurationPropertiesFormatInner
         withPrivateIpAllocationMethod(IpAllocationMethod privateIpAllocationMethod) {
         this.privateIpAllocationMethod = privateIpAllocationMethod;
         return this;
@@ -104,9 +104,9 @@ public final class HubIPConfigurationPropertiesFormatInner
      * Set the subnet property: The reference to the subnet resource.
      * 
      * @param subnet the subnet value to set.
-     * @return the HubIPConfigurationPropertiesFormatInner object itself.
+     * @return the HubIpConfigurationPropertiesFormatInner object itself.
      */
-    public HubIPConfigurationPropertiesFormatInner withSubnet(SubnetInner subnet) {
+    public HubIpConfigurationPropertiesFormatInner withSubnet(SubnetInner subnet) {
         this.subnet = subnet;
         return this;
     }
@@ -124,9 +124,9 @@ public final class HubIPConfigurationPropertiesFormatInner
      * Set the publicIpAddress property: The reference to the public IP resource.
      * 
      * @param publicIpAddress the publicIpAddress value to set.
-     * @return the HubIPConfigurationPropertiesFormatInner object itself.
+     * @return the HubIpConfigurationPropertiesFormatInner object itself.
      */
-    public HubIPConfigurationPropertiesFormatInner withPublicIpAddress(PublicIpAddressInner publicIpAddress) {
+    public HubIpConfigurationPropertiesFormatInner withPublicIpAddress(PublicIpAddressInner publicIpAddress) {
         this.publicIpAddress = publicIpAddress;
         return this;
     }
@@ -169,40 +169,40 @@ public final class HubIPConfigurationPropertiesFormatInner
     }
 
     /**
-     * Reads an instance of HubIPConfigurationPropertiesFormatInner from the JsonReader.
+     * Reads an instance of HubIpConfigurationPropertiesFormatInner from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of HubIPConfigurationPropertiesFormatInner if the JsonReader was pointing to an instance of
+     * @return An instance of HubIpConfigurationPropertiesFormatInner if the JsonReader was pointing to an instance of
      * it, or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the HubIPConfigurationPropertiesFormatInner.
+     * @throws IOException If an error occurs while reading the HubIpConfigurationPropertiesFormatInner.
      */
-    public static HubIPConfigurationPropertiesFormatInner fromJson(JsonReader jsonReader) throws IOException {
+    public static HubIpConfigurationPropertiesFormatInner fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            HubIPConfigurationPropertiesFormatInner deserializedHubIPConfigurationPropertiesFormatInner
-                = new HubIPConfigurationPropertiesFormatInner();
+            HubIpConfigurationPropertiesFormatInner deserializedHubIpConfigurationPropertiesFormatInner
+                = new HubIpConfigurationPropertiesFormatInner();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("privateIPAddress".equals(fieldName)) {
-                    deserializedHubIPConfigurationPropertiesFormatInner.privateIpAddress = reader.getString();
+                    deserializedHubIpConfigurationPropertiesFormatInner.privateIpAddress = reader.getString();
                 } else if ("privateIPAllocationMethod".equals(fieldName)) {
-                    deserializedHubIPConfigurationPropertiesFormatInner.privateIpAllocationMethod
+                    deserializedHubIpConfigurationPropertiesFormatInner.privateIpAllocationMethod
                         = IpAllocationMethod.fromString(reader.getString());
                 } else if ("subnet".equals(fieldName)) {
-                    deserializedHubIPConfigurationPropertiesFormatInner.subnet = SubnetInner.fromJson(reader);
+                    deserializedHubIpConfigurationPropertiesFormatInner.subnet = SubnetInner.fromJson(reader);
                 } else if ("publicIPAddress".equals(fieldName)) {
-                    deserializedHubIPConfigurationPropertiesFormatInner.publicIpAddress
+                    deserializedHubIpConfigurationPropertiesFormatInner.publicIpAddress
                         = PublicIpAddressInner.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
-                    deserializedHubIPConfigurationPropertiesFormatInner.provisioningState
+                    deserializedHubIpConfigurationPropertiesFormatInner.provisioningState
                         = ProvisioningState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedHubIPConfigurationPropertiesFormatInner;
+            return deserializedHubIpConfigurationPropertiesFormatInner;
         });
     }
 }

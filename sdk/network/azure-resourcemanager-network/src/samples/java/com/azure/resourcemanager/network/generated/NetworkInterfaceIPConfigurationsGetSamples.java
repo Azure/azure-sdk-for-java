@@ -5,9 +5,9 @@
 package com.azure.resourcemanager.network.generated;
 
 /**
- * Samples for NetworkInterfaceIPConfigurations Get.
+ * Samples for NetworkInterfaceIpConfigurations Get.
  */
-public final class NetworkInterfaceIPConfigurationsGetSamples {
+public final class NetworkInterfaceIpConfigurationsGetSamples {
     /*
      * x-ms-original-file: 2025-05-01/NetworkInterfaceIPConfigurationGet.json
      */
@@ -18,7 +18,7 @@ public final class NetworkInterfaceIPConfigurationsGetSamples {
      */
     public static void networkInterfaceIPConfigurationGet(com.azure.resourcemanager.network.NetworkManager manager) {
         manager.serviceClient()
-            .getNetworkInterfaceIPConfigurations()
+            .getNetworkInterfaceIpConfigurations()
             .getWithResponse("testrg", "mynic", "ipconfig1", com.azure.core.util.Context.NONE);
     }
 }

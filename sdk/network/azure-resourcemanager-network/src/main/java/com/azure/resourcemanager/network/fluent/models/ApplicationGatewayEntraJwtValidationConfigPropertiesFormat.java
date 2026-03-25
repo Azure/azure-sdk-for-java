@@ -18,8 +18,8 @@ import java.util.List;
  * Properties of entra jwt validation configuration of the application gateway.
  */
 @Fluent
-public final class ApplicationGatewayEntraJWTValidationConfigPropertiesFormat
-    implements JsonSerializable<ApplicationGatewayEntraJWTValidationConfigPropertiesFormat> {
+public final class ApplicationGatewayEntraJwtValidationConfigPropertiesFormat
+    implements JsonSerializable<ApplicationGatewayEntraJwtValidationConfigPropertiesFormat> {
     /*
      * Unauthorized request action.
      */
@@ -47,9 +47,9 @@ public final class ApplicationGatewayEntraJWTValidationConfigPropertiesFormat
     private ProvisioningState provisioningState;
 
     /**
-     * Creates an instance of ApplicationGatewayEntraJWTValidationConfigPropertiesFormat class.
+     * Creates an instance of ApplicationGatewayEntraJwtValidationConfigPropertiesFormat class.
      */
-    public ApplicationGatewayEntraJWTValidationConfigPropertiesFormat() {
+    public ApplicationGatewayEntraJwtValidationConfigPropertiesFormat() {
     }
 
     /**
@@ -65,9 +65,9 @@ public final class ApplicationGatewayEntraJWTValidationConfigPropertiesFormat
      * Set the unAuthorizedRequestAction property: Unauthorized request action.
      * 
      * @param unAuthorizedRequestAction the unAuthorizedRequestAction value to set.
-     * @return the ApplicationGatewayEntraJWTValidationConfigPropertiesFormat object itself.
+     * @return the ApplicationGatewayEntraJwtValidationConfigPropertiesFormat object itself.
      */
-    public ApplicationGatewayEntraJWTValidationConfigPropertiesFormat
+    public ApplicationGatewayEntraJwtValidationConfigPropertiesFormat
         withUnAuthorizedRequestAction(ApplicationGatewayUnAuthorizedRequestAction unAuthorizedRequestAction) {
         this.unAuthorizedRequestAction = unAuthorizedRequestAction;
         return this;
@@ -86,9 +86,9 @@ public final class ApplicationGatewayEntraJWTValidationConfigPropertiesFormat
      * Set the tenantId property: The Tenant ID of the Microsoft Entra ID application.
      * 
      * @param tenantId the tenantId value to set.
-     * @return the ApplicationGatewayEntraJWTValidationConfigPropertiesFormat object itself.
+     * @return the ApplicationGatewayEntraJwtValidationConfigPropertiesFormat object itself.
      */
-    public ApplicationGatewayEntraJWTValidationConfigPropertiesFormat withTenantId(String tenantId) {
+    public ApplicationGatewayEntraJwtValidationConfigPropertiesFormat withTenantId(String tenantId) {
         this.tenantId = tenantId;
         return this;
     }
@@ -106,9 +106,9 @@ public final class ApplicationGatewayEntraJWTValidationConfigPropertiesFormat
      * Set the clientId property: The Client ID of the Microsoft Entra ID application.
      * 
      * @param clientId the clientId value to set.
-     * @return the ApplicationGatewayEntraJWTValidationConfigPropertiesFormat object itself.
+     * @return the ApplicationGatewayEntraJwtValidationConfigPropertiesFormat object itself.
      */
-    public ApplicationGatewayEntraJWTValidationConfigPropertiesFormat withClientId(String clientId) {
+    public ApplicationGatewayEntraJwtValidationConfigPropertiesFormat withClientId(String clientId) {
         this.clientId = clientId;
         return this;
     }
@@ -128,9 +128,9 @@ public final class ApplicationGatewayEntraJWTValidationConfigPropertiesFormat
      * maximum of 5 audiences are permitted.
      * 
      * @param audiences the audiences value to set.
-     * @return the ApplicationGatewayEntraJWTValidationConfigPropertiesFormat object itself.
+     * @return the ApplicationGatewayEntraJwtValidationConfigPropertiesFormat object itself.
      */
-    public ApplicationGatewayEntraJWTValidationConfigPropertiesFormat withAudiences(List<String> audiences) {
+    public ApplicationGatewayEntraJwtValidationConfigPropertiesFormat withAudiences(List<String> audiences) {
         this.audiences = audiences;
         return this;
     }
@@ -167,44 +167,44 @@ public final class ApplicationGatewayEntraJWTValidationConfigPropertiesFormat
     }
 
     /**
-     * Reads an instance of ApplicationGatewayEntraJWTValidationConfigPropertiesFormat from the JsonReader.
+     * Reads an instance of ApplicationGatewayEntraJwtValidationConfigPropertiesFormat from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ApplicationGatewayEntraJWTValidationConfigPropertiesFormat if the JsonReader was pointing
+     * @return An instance of ApplicationGatewayEntraJwtValidationConfigPropertiesFormat if the JsonReader was pointing
      * to an instance of it, or null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the
-     * ApplicationGatewayEntraJWTValidationConfigPropertiesFormat.
+     * ApplicationGatewayEntraJwtValidationConfigPropertiesFormat.
      */
-    public static ApplicationGatewayEntraJWTValidationConfigPropertiesFormat fromJson(JsonReader jsonReader)
+    public static ApplicationGatewayEntraJwtValidationConfigPropertiesFormat fromJson(JsonReader jsonReader)
         throws IOException {
         return jsonReader.readObject(reader -> {
-            ApplicationGatewayEntraJWTValidationConfigPropertiesFormat deserializedApplicationGatewayEntraJWTValidationConfigPropertiesFormat
-                = new ApplicationGatewayEntraJWTValidationConfigPropertiesFormat();
+            ApplicationGatewayEntraJwtValidationConfigPropertiesFormat deserializedApplicationGatewayEntraJwtValidationConfigPropertiesFormat
+                = new ApplicationGatewayEntraJwtValidationConfigPropertiesFormat();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("unAuthorizedRequestAction".equals(fieldName)) {
-                    deserializedApplicationGatewayEntraJWTValidationConfigPropertiesFormat.unAuthorizedRequestAction
+                    deserializedApplicationGatewayEntraJwtValidationConfigPropertiesFormat.unAuthorizedRequestAction
                         = ApplicationGatewayUnAuthorizedRequestAction.fromString(reader.getString());
                 } else if ("tenantId".equals(fieldName)) {
-                    deserializedApplicationGatewayEntraJWTValidationConfigPropertiesFormat.tenantId
+                    deserializedApplicationGatewayEntraJwtValidationConfigPropertiesFormat.tenantId
                         = reader.getString();
                 } else if ("clientId".equals(fieldName)) {
-                    deserializedApplicationGatewayEntraJWTValidationConfigPropertiesFormat.clientId
+                    deserializedApplicationGatewayEntraJwtValidationConfigPropertiesFormat.clientId
                         = reader.getString();
                 } else if ("audiences".equals(fieldName)) {
                     List<String> audiences = reader.readArray(reader1 -> reader1.getString());
-                    deserializedApplicationGatewayEntraJWTValidationConfigPropertiesFormat.audiences = audiences;
+                    deserializedApplicationGatewayEntraJwtValidationConfigPropertiesFormat.audiences = audiences;
                 } else if ("provisioningState".equals(fieldName)) {
-                    deserializedApplicationGatewayEntraJWTValidationConfigPropertiesFormat.provisioningState
+                    deserializedApplicationGatewayEntraJwtValidationConfigPropertiesFormat.provisioningState
                         = ProvisioningState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedApplicationGatewayEntraJWTValidationConfigPropertiesFormat;
+            return deserializedApplicationGatewayEntraJwtValidationConfigPropertiesFormat;
         });
     }
 }

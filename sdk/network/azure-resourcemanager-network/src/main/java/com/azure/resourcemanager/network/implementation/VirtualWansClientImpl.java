@@ -34,7 +34,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.VirtualWansClient;
-import com.azure.resourcemanager.network.fluent.models.VirtualWANInner;
+import com.azure.resourcemanager.network.fluent.models.VirtualWanInner;
 import com.azure.resourcemanager.network.fluent.models.VirtualWanSecurityProvidersInner;
 import com.azure.resourcemanager.network.fluent.models.VpnProfileResponseInner;
 import com.azure.resourcemanager.network.implementation.models.ListVirtualWANsResult;
@@ -50,8 +50,8 @@ import reactor.core.publisher.Mono;
 /**
  * An instance of this class provides access to all the operations defined in VirtualWansClient.
  */
-public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWANInner>,
-    InnerSupportsListing<VirtualWANInner>, InnerSupportsDelete<Void>, VirtualWansClient {
+public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWanInner>,
+    InnerSupportsListing<VirtualWanInner>, InnerSupportsDelete<Void>, VirtualWansClient {
     /**
      * The proxy service used to perform REST calls.
      */
@@ -84,7 +84,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWANI
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualWans/{VirtualWANName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VirtualWANInner>> getByResourceGroup(@HostParam("endpoint") String endpoint,
+        Mono<Response<VirtualWanInner>> getByResourceGroup(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("VirtualWANName") String virtualWANName, @HeaderParam("Accept") String accept, Context context);
@@ -96,13 +96,13 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWANI
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("VirtualWANName") String virtualWANName, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") VirtualWANInner wANParameters,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") VirtualWanInner wANParameters,
             Context context);
 
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualWans/{VirtualWANName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VirtualWANInner>> updateTags(@HostParam("endpoint") String endpoint,
+        Mono<Response<VirtualWanInner>> updateTags(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("VirtualWANName") String virtualWANName, @HeaderParam("Content-Type") String contentType,
@@ -183,7 +183,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWANI
      * @return virtualWAN Resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<VirtualWANInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+    public Mono<Response<VirtualWanInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String virtualWANName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -220,7 +220,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWANI
      * @return virtualWAN Resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VirtualWANInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+    private Mono<Response<VirtualWanInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String virtualWANName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -255,7 +255,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWANI
      * @return virtualWAN Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VirtualWANInner> getByResourceGroupAsync(String resourceGroupName, String virtualWANName) {
+    public Mono<VirtualWanInner> getByResourceGroupAsync(String resourceGroupName, String virtualWANName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, virtualWANName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -272,7 +272,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWANI
      * @return virtualWAN Resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<VirtualWANInner> getByResourceGroupWithResponse(String resourceGroupName, String virtualWANName,
+    public Response<VirtualWanInner> getByResourceGroupWithResponse(String resourceGroupName, String virtualWANName,
         Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, virtualWANName, context).block();
     }
@@ -288,7 +288,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWANI
      * @return virtualWAN Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualWANInner getByResourceGroup(String resourceGroupName, String virtualWANName) {
+    public VirtualWanInner getByResourceGroup(String resourceGroupName, String virtualWANName) {
         return getByResourceGroupWithResponse(resourceGroupName, virtualWANName, Context.NONE).getValue();
     }
 
@@ -305,7 +305,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWANI
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String virtualWANName, VirtualWANInner wANParameters) {
+        String virtualWANName, VirtualWanInner wANParameters) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -350,7 +350,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWANI
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String virtualWANName, VirtualWANInner wANParameters, Context context) {
+        String virtualWANName, VirtualWanInner wANParameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -391,12 +391,12 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWANI
      * @return the {@link PollerFlux} for polling of virtualWAN Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<VirtualWANInner>, VirtualWANInner> beginCreateOrUpdateAsync(String resourceGroupName,
-        String virtualWANName, VirtualWANInner wANParameters) {
+    public PollerFlux<PollResult<VirtualWanInner>, VirtualWanInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String virtualWANName, VirtualWanInner wANParameters) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = createOrUpdateWithResponseAsync(resourceGroupName, virtualWANName, wANParameters);
-        return this.client.<VirtualWANInner, VirtualWANInner>getLroResult(mono, this.client.getHttpPipeline(),
-            VirtualWANInner.class, VirtualWANInner.class, this.client.getContext());
+        return this.client.<VirtualWanInner, VirtualWanInner>getLroResult(mono, this.client.getHttpPipeline(),
+            VirtualWanInner.class, VirtualWanInner.class, this.client.getContext());
     }
 
     /**
@@ -412,13 +412,13 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWANI
      * @return the {@link PollerFlux} for polling of virtualWAN Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<VirtualWANInner>, VirtualWANInner> beginCreateOrUpdateAsync(String resourceGroupName,
-        String virtualWANName, VirtualWANInner wANParameters, Context context) {
+    private PollerFlux<PollResult<VirtualWanInner>, VirtualWanInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String virtualWANName, VirtualWanInner wANParameters, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
             = createOrUpdateWithResponseAsync(resourceGroupName, virtualWANName, wANParameters, context);
-        return this.client.<VirtualWANInner, VirtualWANInner>getLroResult(mono, this.client.getHttpPipeline(),
-            VirtualWANInner.class, VirtualWANInner.class, context);
+        return this.client.<VirtualWanInner, VirtualWanInner>getLroResult(mono, this.client.getHttpPipeline(),
+            VirtualWanInner.class, VirtualWanInner.class, context);
     }
 
     /**
@@ -433,8 +433,8 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWANI
      * @return the {@link SyncPoller} for polling of virtualWAN Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<VirtualWANInner>, VirtualWANInner> beginCreateOrUpdate(String resourceGroupName,
-        String virtualWANName, VirtualWANInner wANParameters) {
+    public SyncPoller<PollResult<VirtualWanInner>, VirtualWanInner> beginCreateOrUpdate(String resourceGroupName,
+        String virtualWANName, VirtualWanInner wANParameters) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, virtualWANName, wANParameters).getSyncPoller();
     }
 
@@ -451,8 +451,8 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWANI
      * @return the {@link SyncPoller} for polling of virtualWAN Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<VirtualWANInner>, VirtualWANInner> beginCreateOrUpdate(String resourceGroupName,
-        String virtualWANName, VirtualWANInner wANParameters, Context context) {
+    public SyncPoller<PollResult<VirtualWanInner>, VirtualWanInner> beginCreateOrUpdate(String resourceGroupName,
+        String virtualWANName, VirtualWanInner wANParameters, Context context) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, virtualWANName, wANParameters, context).getSyncPoller();
     }
 
@@ -468,8 +468,8 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWANI
      * @return virtualWAN Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VirtualWANInner> createOrUpdateAsync(String resourceGroupName, String virtualWANName,
-        VirtualWANInner wANParameters) {
+    public Mono<VirtualWanInner> createOrUpdateAsync(String resourceGroupName, String virtualWANName,
+        VirtualWanInner wANParameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, virtualWANName, wANParameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -487,8 +487,8 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWANI
      * @return virtualWAN Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VirtualWANInner> createOrUpdateAsync(String resourceGroupName, String virtualWANName,
-        VirtualWANInner wANParameters, Context context) {
+    private Mono<VirtualWanInner> createOrUpdateAsync(String resourceGroupName, String virtualWANName,
+        VirtualWanInner wANParameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, virtualWANName, wANParameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -505,8 +505,8 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWANI
      * @return virtualWAN Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualWANInner createOrUpdate(String resourceGroupName, String virtualWANName,
-        VirtualWANInner wANParameters) {
+    public VirtualWanInner createOrUpdate(String resourceGroupName, String virtualWANName,
+        VirtualWanInner wANParameters) {
         return createOrUpdateAsync(resourceGroupName, virtualWANName, wANParameters).block();
     }
 
@@ -523,8 +523,8 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWANI
      * @return virtualWAN Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualWANInner createOrUpdate(String resourceGroupName, String virtualWANName,
-        VirtualWANInner wANParameters, Context context) {
+    public VirtualWanInner createOrUpdate(String resourceGroupName, String virtualWANName,
+        VirtualWanInner wANParameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, virtualWANName, wANParameters, context).block();
     }
 
@@ -540,7 +540,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWANI
      * @return virtualWAN Resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<VirtualWANInner>> updateTagsWithResponseAsync(String resourceGroupName, String virtualWANName,
+    public Mono<Response<VirtualWanInner>> updateTagsWithResponseAsync(String resourceGroupName, String virtualWANName,
         TagsObject wANParameters) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -585,7 +585,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWANI
      * @return virtualWAN Resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VirtualWANInner>> updateTagsWithResponseAsync(String resourceGroupName, String virtualWANName,
+    private Mono<Response<VirtualWanInner>> updateTagsWithResponseAsync(String resourceGroupName, String virtualWANName,
         TagsObject wANParameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -627,7 +627,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWANI
      * @return virtualWAN Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VirtualWANInner> updateTagsAsync(String resourceGroupName, String virtualWANName,
+    public Mono<VirtualWanInner> updateTagsAsync(String resourceGroupName, String virtualWANName,
         TagsObject wANParameters) {
         return updateTagsWithResponseAsync(resourceGroupName, virtualWANName, wANParameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -646,7 +646,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWANI
      * @return virtualWAN Resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<VirtualWANInner> updateTagsWithResponse(String resourceGroupName, String virtualWANName,
+    public Response<VirtualWanInner> updateTagsWithResponse(String resourceGroupName, String virtualWANName,
         TagsObject wANParameters, Context context) {
         return updateTagsWithResponseAsync(resourceGroupName, virtualWANName, wANParameters, context).block();
     }
@@ -663,7 +663,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWANI
      * @return virtualWAN Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualWANInner updateTags(String resourceGroupName, String virtualWANName, TagsObject wANParameters) {
+    public VirtualWanInner updateTags(String resourceGroupName, String virtualWANName, TagsObject wANParameters) {
         return updateTagsWithResponse(resourceGroupName, virtualWANName, wANParameters, Context.NONE).getValue();
     }
 
@@ -878,7 +878,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWANI
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VirtualWANInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
+    private Mono<PagedResponse<VirtualWanInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -896,7 +896,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWANI
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, accept, context))
-            .<PagedResponse<VirtualWANInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+            .<PagedResponse<VirtualWanInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -913,7 +913,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWANI
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VirtualWANInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+    private Mono<PagedResponse<VirtualWanInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -947,7 +947,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWANI
      * @return result of the request to list VirtualWANs as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<VirtualWANInner> listByResourceGroupAsync(String resourceGroupName) {
+    public PagedFlux<VirtualWanInner> listByResourceGroupAsync(String resourceGroupName) {
         return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
@@ -963,7 +963,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWANI
      * @return result of the request to list VirtualWANs as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<VirtualWANInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
+    private PagedFlux<VirtualWanInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
         return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
@@ -978,7 +978,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWANI
      * @return result of the request to list VirtualWANs as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<VirtualWANInner> listByResourceGroup(String resourceGroupName) {
+    public PagedIterable<VirtualWanInner> listByResourceGroup(String resourceGroupName) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
     }
 
@@ -993,7 +993,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWANI
      * @return result of the request to list VirtualWANs as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<VirtualWANInner> listByResourceGroup(String resourceGroupName, Context context) {
+    public PagedIterable<VirtualWanInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
     }
 
@@ -1006,7 +1006,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWANI
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VirtualWANInner>> listSinglePageAsync() {
+    private Mono<PagedResponse<VirtualWanInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -1020,7 +1020,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWANI
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
                 accept, context))
-            .<PagedResponse<VirtualWANInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+            .<PagedResponse<VirtualWanInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -1036,7 +1036,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWANI
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VirtualWANInner>> listSinglePageAsync(Context context) {
+    private Mono<PagedResponse<VirtualWanInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -1061,7 +1061,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWANI
      * @return result of the request to list VirtualWANs as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<VirtualWANInner> listAsync() {
+    public PagedFlux<VirtualWanInner> listAsync() {
         return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
@@ -1075,7 +1075,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWANI
      * @return result of the request to list VirtualWANs as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<VirtualWANInner> listAsync(Context context) {
+    private PagedFlux<VirtualWanInner> listAsync(Context context) {
         return new PagedFlux<>(() -> listSinglePageAsync(context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
@@ -1088,7 +1088,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWANI
      * @return result of the request to list VirtualWANs as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<VirtualWANInner> list() {
+    public PagedIterable<VirtualWanInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
@@ -1102,7 +1102,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWANI
      * @return result of the request to list VirtualWANs as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<VirtualWANInner> list(Context context) {
+    public PagedIterable<VirtualWanInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));
     }
 
@@ -1503,7 +1503,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWANI
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VirtualWANInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<VirtualWanInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -1515,7 +1515,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWANI
         return FluxUtil
             .withContext(
                 context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<VirtualWANInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+            .<PagedResponse<VirtualWanInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -1532,7 +1532,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWANI
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VirtualWANInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
+    private Mono<PagedResponse<VirtualWanInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
         Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
@@ -1559,7 +1559,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWANI
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VirtualWANInner>> listNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<VirtualWanInner>> listNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -1569,7 +1569,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWANI
         }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<VirtualWANInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+            .<PagedResponse<VirtualWanInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -1586,7 +1586,7 @@ public final class VirtualWansClientImpl implements InnerSupportsGet<VirtualWANI
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VirtualWANInner>> listNextSinglePageAsync(String nextLink, Context context) {
+    private Mono<PagedResponse<VirtualWanInner>> listNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }

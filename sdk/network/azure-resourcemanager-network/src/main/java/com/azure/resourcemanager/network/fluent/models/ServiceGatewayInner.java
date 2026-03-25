@@ -5,23 +5,21 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.BaseProvisioningState;
-import com.azure.resourcemanager.network.models.CommonTrackedResource;
+import com.azure.resourcemanager.network.models.SecurityPerimeterSystemData;
+import com.azure.resourcemanager.network.models.SecurityPerimeterTrackedResource;
 import com.azure.resourcemanager.network.models.ServiceGatewaySku;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 /**
  * ServiceGateway resource.
  */
 @Fluent
-public final class ServiceGatewayInner extends CommonTrackedResource {
+public final class ServiceGatewayInner extends SecurityPerimeterTrackedResource {
     /*
      * Properties of service gateway.
      */
@@ -47,7 +45,7 @@ public final class ServiceGatewayInner extends CommonTrackedResource {
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    private SystemData systemData;
+    private SecurityPerimeterSystemData systemData;
 
     /*
      * The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -141,7 +139,7 @@ public final class ServiceGatewayInner extends CommonTrackedResource {
      * @return the systemData value.
      */
     @Override
-    public SystemData systemData() {
+    public SecurityPerimeterSystemData systemData() {
         return this.systemData;
     }
 
@@ -175,24 +173,6 @@ public final class ServiceGatewayInner extends CommonTrackedResource {
     @Override
     public String id() {
         return this.id;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ServiceGatewayInner withTags(Map<String, String> tags) {
-        super.withTags(tags);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ServiceGatewayInner withLocation(String location) {
-        super.withLocation(location);
-        return this;
     }
 
     /**
@@ -295,13 +275,10 @@ public final class ServiceGatewayInner extends CommonTrackedResource {
         if (sku() != null) {
             sku().validate();
         }
-        if (location() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property location in model ServiceGatewayInner"));
+        if (systemData() != null) {
+            systemData().validate();
         }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ServiceGatewayInner.class);
 
     /**
      * {@inheritDoc}
@@ -309,8 +286,6 @@ public final class ServiceGatewayInner extends CommonTrackedResource {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("location", location());
-        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("properties", this.innerProperties);
         jsonWriter.writeJsonField("sku", this.sku);
         jsonWriter.writeArrayField("zones", this.zones, (writer, element) -> writer.writeString(element));
@@ -323,7 +298,6 @@ public final class ServiceGatewayInner extends CommonTrackedResource {
      * @param jsonReader The JsonReader being read.
      * @return An instance of ServiceGatewayInner if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ServiceGatewayInner.
      */
     public static ServiceGatewayInner fromJson(JsonReader jsonReader) throws IOException {
@@ -333,19 +307,14 @@ public final class ServiceGatewayInner extends CommonTrackedResource {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("location".equals(fieldName)) {
-                    deserializedServiceGatewayInner.withLocation(reader.getString());
-                } else if ("id".equals(fieldName)) {
+                if ("id".equals(fieldName)) {
                     deserializedServiceGatewayInner.id = reader.getString();
                 } else if ("name".equals(fieldName)) {
                     deserializedServiceGatewayInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedServiceGatewayInner.type = reader.getString();
                 } else if ("systemData".equals(fieldName)) {
-                    deserializedServiceGatewayInner.systemData = SystemData.fromJson(reader);
-                } else if ("tags".equals(fieldName)) {
-                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                    deserializedServiceGatewayInner.withTags(tags);
+                    deserializedServiceGatewayInner.systemData = SecurityPerimeterSystemData.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {
                     deserializedServiceGatewayInner.innerProperties
                         = ServiceGatewayPropertiesFormatInner.fromJson(reader);

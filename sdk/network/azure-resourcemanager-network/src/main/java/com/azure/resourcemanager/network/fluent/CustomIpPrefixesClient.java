@@ -23,9 +23,9 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * An instance of this class provides access to all the operations defined in CustomIPPrefixesClient.
+ * An instance of this class provides access to all the operations defined in CustomIpPrefixesClient.
  */
-public interface CustomIPPrefixesClient extends InnerSupportsGet<CustomIpPrefixInner>,
+public interface CustomIpPrefixesClient extends InnerSupportsGet<CustomIpPrefixInner>,
     InnerSupportsListing<CustomIpPrefixInner>, InnerSupportsDelete<Void> {
     /**
      * Gets the specified custom IP prefix in a specified resource group.

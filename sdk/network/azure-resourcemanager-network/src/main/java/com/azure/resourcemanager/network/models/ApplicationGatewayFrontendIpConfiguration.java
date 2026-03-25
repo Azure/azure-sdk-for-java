@@ -9,7 +9,7 @@ import com.azure.core.management.SubResource;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayFrontendIPConfigurationPropertiesFormat;
+import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayFrontendIpConfigurationPropertiesFormat;
 import java.io.IOException;
 
 /**
@@ -20,7 +20,7 @@ public final class ApplicationGatewayFrontendIpConfiguration extends SubResource
     /*
      * Properties of the application gateway frontend IP configuration.
      */
-    private ApplicationGatewayFrontendIPConfigurationPropertiesFormat innerProperties;
+    private ApplicationGatewayFrontendIpConfigurationPropertiesFormat innerProperties;
 
     /*
      * Name of the frontend IP configuration that is unique within an Application Gateway.
@@ -48,7 +48,7 @@ public final class ApplicationGatewayFrontendIpConfiguration extends SubResource
      * 
      * @return the innerProperties value.
      */
-    private ApplicationGatewayFrontendIPConfigurationPropertiesFormat innerProperties() {
+    private ApplicationGatewayFrontendIpConfigurationPropertiesFormat innerProperties() {
         return this.innerProperties;
     }
 
@@ -116,7 +116,7 @@ public final class ApplicationGatewayFrontendIpConfiguration extends SubResource
      */
     public ApplicationGatewayFrontendIpConfiguration withPrivateIpAddress(String privateIpAddress) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new ApplicationGatewayFrontendIPConfigurationPropertiesFormat();
+            this.innerProperties = new ApplicationGatewayFrontendIpConfigurationPropertiesFormat();
         }
         this.innerProperties().withPrivateIpAddress(privateIpAddress);
         return this;
@@ -140,7 +140,7 @@ public final class ApplicationGatewayFrontendIpConfiguration extends SubResource
     public ApplicationGatewayFrontendIpConfiguration
         withPrivateIpAllocationMethod(IpAllocationMethod privateIpAllocationMethod) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new ApplicationGatewayFrontendIPConfigurationPropertiesFormat();
+            this.innerProperties = new ApplicationGatewayFrontendIpConfigurationPropertiesFormat();
         }
         this.innerProperties().withPrivateIpAllocationMethod(privateIpAllocationMethod);
         return this;
@@ -163,7 +163,7 @@ public final class ApplicationGatewayFrontendIpConfiguration extends SubResource
      */
     public ApplicationGatewayFrontendIpConfiguration withSubnet(SubResource subnet) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new ApplicationGatewayFrontendIPConfigurationPropertiesFormat();
+            this.innerProperties = new ApplicationGatewayFrontendIpConfigurationPropertiesFormat();
         }
         this.innerProperties().withSubnet(subnet);
         return this;
@@ -186,7 +186,7 @@ public final class ApplicationGatewayFrontendIpConfiguration extends SubResource
      */
     public ApplicationGatewayFrontendIpConfiguration withPublicIpAddress(SubResource publicIpAddress) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new ApplicationGatewayFrontendIPConfigurationPropertiesFormat();
+            this.innerProperties = new ApplicationGatewayFrontendIpConfigurationPropertiesFormat();
         }
         this.innerProperties().withPublicIpAddress(publicIpAddress);
         return this;
@@ -210,7 +210,7 @@ public final class ApplicationGatewayFrontendIpConfiguration extends SubResource
     public ApplicationGatewayFrontendIpConfiguration
         withPrivateLinkConfiguration(SubResource privateLinkConfiguration) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new ApplicationGatewayFrontendIPConfigurationPropertiesFormat();
+            this.innerProperties = new ApplicationGatewayFrontendIpConfigurationPropertiesFormat();
         }
         this.innerProperties().withPrivateLinkConfiguration(privateLinkConfiguration);
         return this;
@@ -268,7 +268,7 @@ public final class ApplicationGatewayFrontendIpConfiguration extends SubResource
                     deserializedApplicationGatewayFrontendIpConfiguration.withId(reader.getString());
                 } else if ("properties".equals(fieldName)) {
                     deserializedApplicationGatewayFrontendIpConfiguration.innerProperties
-                        = ApplicationGatewayFrontendIPConfigurationPropertiesFormat.fromJson(reader);
+                        = ApplicationGatewayFrontendIpConfigurationPropertiesFormat.fromJson(reader);
                 } else if ("name".equals(fieldName)) {
                     deserializedApplicationGatewayFrontendIpConfiguration.name = reader.getString();
                 } else if ("etag".equals(fieldName)) {

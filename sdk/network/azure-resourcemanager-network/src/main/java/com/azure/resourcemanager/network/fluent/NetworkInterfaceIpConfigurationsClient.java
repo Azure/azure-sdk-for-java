@@ -14,9 +14,9 @@ import com.azure.resourcemanager.network.fluent.models.NetworkInterfaceIpConfigu
 import reactor.core.publisher.Mono;
 
 /**
- * An instance of this class provides access to all the operations defined in NetworkInterfaceIPConfigurationsClient.
+ * An instance of this class provides access to all the operations defined in NetworkInterfaceIpConfigurationsClient.
  */
-public interface NetworkInterfaceIPConfigurationsClient {
+public interface NetworkInterfaceIpConfigurationsClient {
     /**
      * Gets the specified network interface ip configuration.
      * 

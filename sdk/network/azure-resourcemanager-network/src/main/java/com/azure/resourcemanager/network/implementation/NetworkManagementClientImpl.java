@@ -29,7 +29,7 @@ import com.azure.resourcemanager.network.fluent.CheckDnsNameAvailabilitiesClient
 import com.azure.resourcemanager.network.fluent.ConfigurationPolicyGroupsClient;
 import com.azure.resourcemanager.network.fluent.ConnectionMonitorsClient;
 import com.azure.resourcemanager.network.fluent.ConnectivityConfigurationsClient;
-import com.azure.resourcemanager.network.fluent.CustomIPPrefixesClient;
+import com.azure.resourcemanager.network.fluent.CustomIpPrefixesClient;
 import com.azure.resourcemanager.network.fluent.DdosCustomPoliciesClient;
 import com.azure.resourcemanager.network.fluent.DdosProtectionPlansClient;
 import com.azure.resourcemanager.network.fluent.DefaultSecurityRulesClient;
@@ -78,10 +78,11 @@ import com.azure.resourcemanager.network.fluent.ManagementGroupNetworkManagerCon
 import com.azure.resourcemanager.network.fluent.NatGatewaysClient;
 import com.azure.resourcemanager.network.fluent.NatRulesClient;
 import com.azure.resourcemanager.network.fluent.NetworkGroupsClient;
-import com.azure.resourcemanager.network.fluent.NetworkInterfaceIPConfigurationsClient;
+import com.azure.resourcemanager.network.fluent.NetworkInterfaceIpConfigurationsClient;
 import com.azure.resourcemanager.network.fluent.NetworkInterfaceLoadBalancersClient;
 import com.azure.resourcemanager.network.fluent.NetworkInterfaceTapConfigurationsClient;
 import com.azure.resourcemanager.network.fluent.NetworkInterfacesClient;
+import com.azure.resourcemanager.network.fluent.NetworkInterfacesOperationsClient;
 import com.azure.resourcemanager.network.fluent.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.NetworkManagerCommitsClient;
 import com.azure.resourcemanager.network.fluent.NetworkManagerDeploymentStatusOperationsClient;
@@ -373,6 +374,20 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      */
     public PublicIpAddressesClient getPublicIpAddresses() {
         return this.publicIpAddresses;
+    }
+
+    /**
+     * The CustomIpPrefixesClient object to access its operations.
+     */
+    private final CustomIpPrefixesClient customIpPrefixes;
+
+    /**
+     * Gets the CustomIpPrefixesClient object to access its operations.
+     * 
+     * @return the CustomIpPrefixesClient object.
+     */
+    public CustomIpPrefixesClient getCustomIpPrefixes() {
+        return this.customIpPrefixes;
     }
 
     /**
@@ -712,17 +727,17 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
     }
 
     /**
-     * The NetworkInterfaceIPConfigurationsClient object to access its operations.
+     * The NetworkInterfaceIpConfigurationsClient object to access its operations.
      */
-    private final NetworkInterfaceIPConfigurationsClient networkInterfaceIPConfigurations;
+    private final NetworkInterfaceIpConfigurationsClient networkInterfaceIpConfigurations;
 
     /**
-     * Gets the NetworkInterfaceIPConfigurationsClient object to access its operations.
+     * Gets the NetworkInterfaceIpConfigurationsClient object to access its operations.
      * 
-     * @return the NetworkInterfaceIPConfigurationsClient object.
+     * @return the NetworkInterfaceIpConfigurationsClient object.
      */
-    public NetworkInterfaceIPConfigurationsClient getNetworkInterfaceIPConfigurations() {
-        return this.networkInterfaceIPConfigurations;
+    public NetworkInterfaceIpConfigurationsClient getNetworkInterfaceIpConfigurations() {
+        return this.networkInterfaceIpConfigurations;
     }
 
     /**
@@ -1706,20 +1721,6 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
     }
 
     /**
-     * The CustomIPPrefixesClient object to access its operations.
-     */
-    private final CustomIPPrefixesClient customIPPrefixes;
-
-    /**
-     * Gets the CustomIPPrefixesClient object to access its operations.
-     * 
-     * @return the CustomIPPrefixesClient object.
-     */
-    public CustomIPPrefixesClient getCustomIPPrefixes() {
-        return this.customIPPrefixes;
-    }
-
-    /**
      * The DscpConfigurationsClient object to access its operations.
      */
     private final DscpConfigurationsClient dscpConfigurations;
@@ -2519,6 +2520,20 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
     }
 
     /**
+     * The NetworkInterfacesOperationsClient object to access its operations.
+     */
+    private final NetworkInterfacesOperationsClient networkInterfacesOperations;
+
+    /**
+     * Gets the NetworkInterfacesOperationsClient object to access its operations.
+     * 
+     * @return the NetworkInterfacesOperationsClient object.
+     */
+    public NetworkInterfacesOperationsClient getNetworkInterfacesOperations() {
+        return this.networkInterfacesOperations;
+    }
+
+    /**
      * Initializes an instance of NetworkManagementClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
@@ -2546,6 +2561,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         this.expressRouteProviderPorts = new ExpressRouteProviderPortsClientImpl(this);
         this.networkInterfaces = new NetworkInterfacesClientImpl(this);
         this.publicIpAddresses = new PublicIpAddressesClientImpl(this);
+        this.customIpPrefixes = new CustomIpPrefixesClientImpl(this);
         this.ddosCustomPolicies = new DdosCustomPoliciesClientImpl(this);
         this.ddosProtectionPlans = new DdosProtectionPlansClientImpl(this);
         this.expressRouteCircuitAuthorizations = new ExpressRouteCircuitAuthorizationsClientImpl(this);
@@ -2570,7 +2586,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         this.loadBalancers = new LoadBalancersClientImpl(this);
         this.inboundNatRules = new InboundNatRulesClientImpl(this);
         this.natGateways = new NatGatewaysClientImpl(this);
-        this.networkInterfaceIPConfigurations = new NetworkInterfaceIPConfigurationsClientImpl(this);
+        this.networkInterfaceIpConfigurations = new NetworkInterfaceIpConfigurationsClientImpl(this);
         this.networkInterfaceTapConfigurations = new NetworkInterfaceTapConfigurationsClientImpl(this);
         this.managementGroupNetworkManagerConnections = new ManagementGroupNetworkManagerConnectionsClientImpl(this);
         this.connectivityConfigurations = new ConnectivityConfigurationsClientImpl(this);
@@ -2642,7 +2658,6 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         this.expressRouteProviderPortsLocations = new ExpressRouteProviderPortsLocationsClientImpl(this);
         this.networkInterfaceLoadBalancers = new NetworkInterfaceLoadBalancersClientImpl(this);
         this.vipSwaps = new VipSwapsClientImpl(this);
-        this.customIPPrefixes = new CustomIPPrefixesClientImpl(this);
         this.dscpConfigurations = new DscpConfigurationsClientImpl(this);
         this.expressRouteCrossConnectionPeerings = new ExpressRouteCrossConnectionPeeringsClientImpl(this);
         this.expressRouteLinks = new ExpressRouteLinksClientImpl(this);
@@ -2703,5 +2718,6 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         this.serviceTags = new ServiceTagsClientImpl(this);
         this.serviceTagInformations = new ServiceTagInformationsClientImpl(this);
         this.usages = new UsagesClientImpl(this);
+        this.networkInterfacesOperations = new NetworkInterfacesOperationsClientImpl(this);
     }
 }

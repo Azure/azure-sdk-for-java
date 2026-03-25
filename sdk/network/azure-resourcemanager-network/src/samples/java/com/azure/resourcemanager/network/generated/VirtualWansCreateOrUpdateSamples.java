@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.resourcemanager.network.fluent.models.VirtualWANInner;
+import com.azure.resourcemanager.network.fluent.models.VirtualWanInner;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,7 +24,7 @@ public final class VirtualWansCreateOrUpdateSamples {
         manager.serviceClient()
             .getVirtualWans()
             .createOrUpdate("rg1", "wan1",
-                new VirtualWANInner().withLocation("West US")
+                new VirtualWanInner().withLocation("West US")
                     .withTags(mapOf("key1", "fakeTokenPlaceholder"))
                     .withDisableVpnEncryption(false)
                     .withTypePropertiesType("Basic"),

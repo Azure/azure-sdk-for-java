@@ -19,8 +19,8 @@ import java.io.IOException;
  * Properties of IP configuration of an Bastion Host.
  */
 @Fluent
-public final class BastionHostIPConfigurationPropertiesFormat
-    implements JsonSerializable<BastionHostIPConfigurationPropertiesFormat> {
+public final class BastionHostIpConfigurationPropertiesFormat
+    implements JsonSerializable<BastionHostIpConfigurationPropertiesFormat> {
     /*
      * Reference of the subnet resource.
      */
@@ -42,9 +42,9 @@ public final class BastionHostIPConfigurationPropertiesFormat
     private IpAllocationMethod privateIpAllocationMethod;
 
     /**
-     * Creates an instance of BastionHostIPConfigurationPropertiesFormat class.
+     * Creates an instance of BastionHostIpConfigurationPropertiesFormat class.
      */
-    public BastionHostIPConfigurationPropertiesFormat() {
+    public BastionHostIpConfigurationPropertiesFormat() {
     }
 
     /**
@@ -60,9 +60,9 @@ public final class BastionHostIPConfigurationPropertiesFormat
      * Set the subnet property: Reference of the subnet resource.
      * 
      * @param subnet the subnet value to set.
-     * @return the BastionHostIPConfigurationPropertiesFormat object itself.
+     * @return the BastionHostIpConfigurationPropertiesFormat object itself.
      */
-    public BastionHostIPConfigurationPropertiesFormat withSubnet(SubResource subnet) {
+    public BastionHostIpConfigurationPropertiesFormat withSubnet(SubResource subnet) {
         this.subnet = subnet;
         return this;
     }
@@ -80,9 +80,9 @@ public final class BastionHostIPConfigurationPropertiesFormat
      * Set the publicIpAddress property: Reference of the PublicIP resource. Null for private only bastion.
      * 
      * @param publicIpAddress the publicIpAddress value to set.
-     * @return the BastionHostIPConfigurationPropertiesFormat object itself.
+     * @return the BastionHostIpConfigurationPropertiesFormat object itself.
      */
-    public BastionHostIPConfigurationPropertiesFormat withPublicIpAddress(SubResource publicIpAddress) {
+    public BastionHostIpConfigurationPropertiesFormat withPublicIpAddress(SubResource publicIpAddress) {
         this.publicIpAddress = publicIpAddress;
         return this;
     }
@@ -109,9 +109,9 @@ public final class BastionHostIPConfigurationPropertiesFormat
      * Set the privateIpAllocationMethod property: Private IP allocation method.
      * 
      * @param privateIpAllocationMethod the privateIpAllocationMethod value to set.
-     * @return the BastionHostIPConfigurationPropertiesFormat object itself.
+     * @return the BastionHostIpConfigurationPropertiesFormat object itself.
      */
-    public BastionHostIPConfigurationPropertiesFormat
+    public BastionHostIpConfigurationPropertiesFormat
         withPrivateIpAllocationMethod(IpAllocationMethod privateIpAllocationMethod) {
         this.privateIpAllocationMethod = privateIpAllocationMethod;
         return this;
@@ -126,11 +126,11 @@ public final class BastionHostIPConfigurationPropertiesFormat
         if (subnet() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
-                    "Missing required property subnet in model BastionHostIPConfigurationPropertiesFormat"));
+                    "Missing required property subnet in model BastionHostIpConfigurationPropertiesFormat"));
         }
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(BastionHostIPConfigurationPropertiesFormat.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BastionHostIpConfigurationPropertiesFormat.class);
 
     /**
      * {@inheritDoc}
@@ -146,39 +146,39 @@ public final class BastionHostIPConfigurationPropertiesFormat
     }
 
     /**
-     * Reads an instance of BastionHostIPConfigurationPropertiesFormat from the JsonReader.
+     * Reads an instance of BastionHostIpConfigurationPropertiesFormat from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of BastionHostIPConfigurationPropertiesFormat if the JsonReader was pointing to an instance
+     * @return An instance of BastionHostIpConfigurationPropertiesFormat if the JsonReader was pointing to an instance
      * of it, or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the BastionHostIPConfigurationPropertiesFormat.
+     * @throws IOException If an error occurs while reading the BastionHostIpConfigurationPropertiesFormat.
      */
-    public static BastionHostIPConfigurationPropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+    public static BastionHostIpConfigurationPropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            BastionHostIPConfigurationPropertiesFormat deserializedBastionHostIPConfigurationPropertiesFormat
-                = new BastionHostIPConfigurationPropertiesFormat();
+            BastionHostIpConfigurationPropertiesFormat deserializedBastionHostIpConfigurationPropertiesFormat
+                = new BastionHostIpConfigurationPropertiesFormat();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("subnet".equals(fieldName)) {
-                    deserializedBastionHostIPConfigurationPropertiesFormat.subnet = SubResource.fromJson(reader);
+                    deserializedBastionHostIpConfigurationPropertiesFormat.subnet = SubResource.fromJson(reader);
                 } else if ("publicIPAddress".equals(fieldName)) {
-                    deserializedBastionHostIPConfigurationPropertiesFormat.publicIpAddress
+                    deserializedBastionHostIpConfigurationPropertiesFormat.publicIpAddress
                         = SubResource.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
-                    deserializedBastionHostIPConfigurationPropertiesFormat.provisioningState
+                    deserializedBastionHostIpConfigurationPropertiesFormat.provisioningState
                         = ProvisioningState.fromString(reader.getString());
                 } else if ("privateIPAllocationMethod".equals(fieldName)) {
-                    deserializedBastionHostIPConfigurationPropertiesFormat.privateIpAllocationMethod
+                    deserializedBastionHostIpConfigurationPropertiesFormat.privateIpAllocationMethod
                         = IpAllocationMethod.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedBastionHostIPConfigurationPropertiesFormat;
+            return deserializedBastionHostIpConfigurationPropertiesFormat;
         });
     }
 }

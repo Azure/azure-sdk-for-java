@@ -5,14 +5,14 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.AccessRuleDirection;
-import com.azure.resourcemanager.network.models.CommonProxyResource;
 import com.azure.resourcemanager.network.models.NspProvisioningState;
 import com.azure.resourcemanager.network.models.PerimeterBasedAccessRule;
+import com.azure.resourcemanager.network.models.SecurityPerimeterProxyResource;
+import com.azure.resourcemanager.network.models.SecurityPerimeterSystemData;
 import com.azure.resourcemanager.network.models.SubscriptionId;
 import java.io.IOException;
 import java.util.List;
@@ -21,7 +21,7 @@ import java.util.List;
  * The NSP access rule resource.
  */
 @Fluent
-public final class NspAccessRuleInner extends CommonProxyResource {
+public final class NspAccessRuleInner extends SecurityPerimeterProxyResource {
     /*
      * Properties of the NSP access rule.
      */
@@ -30,7 +30,7 @@ public final class NspAccessRuleInner extends CommonProxyResource {
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    private SystemData systemData;
+    private SecurityPerimeterSystemData systemData;
 
     /*
      * The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -69,7 +69,7 @@ public final class NspAccessRuleInner extends CommonProxyResource {
      * @return the systemData value.
      */
     @Override
-    public SystemData systemData() {
+    public SecurityPerimeterSystemData systemData() {
         return this.systemData;
     }
 
@@ -300,6 +300,9 @@ public final class NspAccessRuleInner extends CommonProxyResource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+        if (systemData() != null) {
+            systemData().validate();
+        }
     }
 
     /**
@@ -334,7 +337,7 @@ public final class NspAccessRuleInner extends CommonProxyResource {
                 } else if ("type".equals(fieldName)) {
                     deserializedNspAccessRuleInner.type = reader.getString();
                 } else if ("systemData".equals(fieldName)) {
-                    deserializedNspAccessRuleInner.systemData = SystemData.fromJson(reader);
+                    deserializedNspAccessRuleInner.systemData = SecurityPerimeterSystemData.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {
                     deserializedNspAccessRuleInner.innerProperties = NspAccessRuleProperties.fromJson(reader);
                 } else {

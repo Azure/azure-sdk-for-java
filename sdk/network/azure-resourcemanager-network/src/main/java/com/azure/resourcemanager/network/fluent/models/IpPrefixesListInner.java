@@ -16,16 +16,16 @@ import java.util.List;
  * List of SNAT IP Prefixes learnt by firewall to not SNAT.
  */
 @Immutable
-public final class IPPrefixesListInner implements JsonSerializable<IPPrefixesListInner> {
+public final class IpPrefixesListInner implements JsonSerializable<IpPrefixesListInner> {
     /*
      * IP Prefix value.
      */
     private List<String> ipPrefixes;
 
     /**
-     * Creates an instance of IPPrefixesListInner class.
+     * Creates an instance of IpPrefixesListInner class.
      */
-    private IPPrefixesListInner() {
+    private IpPrefixesListInner() {
     }
 
     /**
@@ -56,29 +56,29 @@ public final class IPPrefixesListInner implements JsonSerializable<IPPrefixesLis
     }
 
     /**
-     * Reads an instance of IPPrefixesListInner from the JsonReader.
+     * Reads an instance of IpPrefixesListInner from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of IPPrefixesListInner if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of IpPrefixesListInner if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the IPPrefixesListInner.
+     * @throws IOException If an error occurs while reading the IpPrefixesListInner.
      */
-    public static IPPrefixesListInner fromJson(JsonReader jsonReader) throws IOException {
+    public static IpPrefixesListInner fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            IPPrefixesListInner deserializedIPPrefixesListInner = new IPPrefixesListInner();
+            IpPrefixesListInner deserializedIpPrefixesListInner = new IpPrefixesListInner();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("ipPrefixes".equals(fieldName)) {
                     List<String> ipPrefixes = reader.readArray(reader1 -> reader1.getString());
-                    deserializedIPPrefixesListInner.ipPrefixes = ipPrefixes;
+                    deserializedIpPrefixesListInner.ipPrefixes = ipPrefixes;
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedIPPrefixesListInner;
+            return deserializedIpPrefixesListInner;
         });
     }
 }

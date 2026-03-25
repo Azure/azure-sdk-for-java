@@ -103,6 +103,13 @@ public interface NetworkManagementClient {
     PublicIpAddressesClient getPublicIpAddresses();
 
     /**
+     * Gets the CustomIpPrefixesClient object to access its operations.
+     * 
+     * @return the CustomIpPrefixesClient object.
+     */
+    CustomIpPrefixesClient getCustomIpPrefixes();
+
+    /**
      * Gets the DdosCustomPoliciesClient object to access its operations.
      * 
      * @return the DdosCustomPoliciesClient object.
@@ -271,11 +278,11 @@ public interface NetworkManagementClient {
     NatGatewaysClient getNatGateways();
 
     /**
-     * Gets the NetworkInterfaceIPConfigurationsClient object to access its operations.
+     * Gets the NetworkInterfaceIpConfigurationsClient object to access its operations.
      * 
-     * @return the NetworkInterfaceIPConfigurationsClient object.
+     * @return the NetworkInterfaceIpConfigurationsClient object.
      */
-    NetworkInterfaceIPConfigurationsClient getNetworkInterfaceIPConfigurations();
+    NetworkInterfaceIpConfigurationsClient getNetworkInterfaceIpConfigurations();
 
     /**
      * Gets the NetworkInterfaceTapConfigurationsClient object to access its operations.
@@ -768,13 +775,6 @@ public interface NetworkManagementClient {
     VipSwapsClient getVipSwaps();
 
     /**
-     * Gets the CustomIPPrefixesClient object to access its operations.
-     * 
-     * @return the CustomIPPrefixesClient object.
-     */
-    CustomIPPrefixesClient getCustomIPPrefixes();
-
-    /**
      * Gets the DscpConfigurationsClient object to access its operations.
      * 
      * @return the DscpConfigurationsClient object.
@@ -1172,4 +1172,11 @@ public interface NetworkManagementClient {
      * @return the UsagesClient object.
      */
     UsagesClient getUsages();
+
+    /**
+     * Gets the NetworkInterfacesOperationsClient object to access its operations.
+     * 
+     * @return the NetworkInterfacesOperationsClient object.
+     */
+    NetworkInterfacesOperationsClient getNetworkInterfacesOperations();
 }

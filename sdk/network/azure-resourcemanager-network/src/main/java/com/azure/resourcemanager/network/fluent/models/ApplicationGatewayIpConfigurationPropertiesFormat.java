@@ -17,8 +17,8 @@ import java.io.IOException;
  * Properties of IP configuration of an application gateway.
  */
 @Fluent
-public final class ApplicationGatewayIPConfigurationPropertiesFormat
-    implements JsonSerializable<ApplicationGatewayIPConfigurationPropertiesFormat> {
+public final class ApplicationGatewayIpConfigurationPropertiesFormat
+    implements JsonSerializable<ApplicationGatewayIpConfigurationPropertiesFormat> {
     /*
      * Reference to the subnet resource. A subnet from where application gateway gets its private address.
      */
@@ -30,9 +30,9 @@ public final class ApplicationGatewayIPConfigurationPropertiesFormat
     private ProvisioningState provisioningState;
 
     /**
-     * Creates an instance of ApplicationGatewayIPConfigurationPropertiesFormat class.
+     * Creates an instance of ApplicationGatewayIpConfigurationPropertiesFormat class.
      */
-    public ApplicationGatewayIPConfigurationPropertiesFormat() {
+    public ApplicationGatewayIpConfigurationPropertiesFormat() {
     }
 
     /**
@@ -50,9 +50,9 @@ public final class ApplicationGatewayIPConfigurationPropertiesFormat
      * private address.
      * 
      * @param subnet the subnet value to set.
-     * @return the ApplicationGatewayIPConfigurationPropertiesFormat object itself.
+     * @return the ApplicationGatewayIpConfigurationPropertiesFormat object itself.
      */
-    public ApplicationGatewayIPConfigurationPropertiesFormat withSubnet(SubResource subnet) {
+    public ApplicationGatewayIpConfigurationPropertiesFormat withSubnet(SubResource subnet) {
         this.subnet = subnet;
         return this;
     }
@@ -85,32 +85,32 @@ public final class ApplicationGatewayIPConfigurationPropertiesFormat
     }
 
     /**
-     * Reads an instance of ApplicationGatewayIPConfigurationPropertiesFormat from the JsonReader.
+     * Reads an instance of ApplicationGatewayIpConfigurationPropertiesFormat from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ApplicationGatewayIPConfigurationPropertiesFormat if the JsonReader was pointing to an
+     * @return An instance of ApplicationGatewayIpConfigurationPropertiesFormat if the JsonReader was pointing to an
      * instance of it, or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the ApplicationGatewayIPConfigurationPropertiesFormat.
+     * @throws IOException If an error occurs while reading the ApplicationGatewayIpConfigurationPropertiesFormat.
      */
-    public static ApplicationGatewayIPConfigurationPropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+    public static ApplicationGatewayIpConfigurationPropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ApplicationGatewayIPConfigurationPropertiesFormat deserializedApplicationGatewayIPConfigurationPropertiesFormat
-                = new ApplicationGatewayIPConfigurationPropertiesFormat();
+            ApplicationGatewayIpConfigurationPropertiesFormat deserializedApplicationGatewayIpConfigurationPropertiesFormat
+                = new ApplicationGatewayIpConfigurationPropertiesFormat();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("subnet".equals(fieldName)) {
-                    deserializedApplicationGatewayIPConfigurationPropertiesFormat.subnet = SubResource.fromJson(reader);
+                    deserializedApplicationGatewayIpConfigurationPropertiesFormat.subnet = SubResource.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
-                    deserializedApplicationGatewayIPConfigurationPropertiesFormat.provisioningState
+                    deserializedApplicationGatewayIpConfigurationPropertiesFormat.provisioningState
                         = ProvisioningState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedApplicationGatewayIPConfigurationPropertiesFormat;
+            return deserializedApplicationGatewayIpConfigurationPropertiesFormat;
         });
     }
 }

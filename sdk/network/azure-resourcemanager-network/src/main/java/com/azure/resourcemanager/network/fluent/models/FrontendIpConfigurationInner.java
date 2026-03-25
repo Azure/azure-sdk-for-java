@@ -24,7 +24,7 @@ public final class FrontendIpConfigurationInner extends SubResourceModel {
     /*
      * Properties of the load balancer probe.
      */
-    private FrontendIPConfigurationPropertiesFormatInner innerProperties;
+    private FrontendIpConfigurationPropertiesFormatInner innerProperties;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
@@ -52,7 +52,7 @@ public final class FrontendIpConfigurationInner extends SubResourceModel {
      * 
      * @return the innerProperties value.
      */
-    private FrontendIPConfigurationPropertiesFormatInner innerProperties() {
+    private FrontendIpConfigurationPropertiesFormatInner innerProperties() {
         return this.innerProperties;
     }
 
@@ -168,7 +168,7 @@ public final class FrontendIpConfigurationInner extends SubResourceModel {
      */
     public FrontendIpConfigurationInner withPrivateIpAddress(String privateIpAddress) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new FrontendIPConfigurationPropertiesFormatInner();
+            this.innerProperties = new FrontendIpConfigurationPropertiesFormatInner();
         }
         this.innerProperties().withPrivateIpAddress(privateIpAddress);
         return this;
@@ -191,7 +191,7 @@ public final class FrontendIpConfigurationInner extends SubResourceModel {
      */
     public FrontendIpConfigurationInner withPrivateIpAllocationMethod(IpAllocationMethod privateIpAllocationMethod) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new FrontendIPConfigurationPropertiesFormatInner();
+            this.innerProperties = new FrontendIpConfigurationPropertiesFormatInner();
         }
         this.innerProperties().withPrivateIpAllocationMethod(privateIpAllocationMethod);
         return this;
@@ -216,7 +216,7 @@ public final class FrontendIpConfigurationInner extends SubResourceModel {
      */
     public FrontendIpConfigurationInner withPrivateIpAddressVersion(IpVersion privateIpAddressVersion) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new FrontendIPConfigurationPropertiesFormatInner();
+            this.innerProperties = new FrontendIpConfigurationPropertiesFormatInner();
         }
         this.innerProperties().withPrivateIpAddressVersion(privateIpAddressVersion);
         return this;
@@ -239,7 +239,7 @@ public final class FrontendIpConfigurationInner extends SubResourceModel {
      */
     public FrontendIpConfigurationInner withSubnet(SubnetInner subnet) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new FrontendIPConfigurationPropertiesFormatInner();
+            this.innerProperties = new FrontendIpConfigurationPropertiesFormatInner();
         }
         this.innerProperties().withSubnet(subnet);
         return this;
@@ -262,7 +262,7 @@ public final class FrontendIpConfigurationInner extends SubResourceModel {
      */
     public FrontendIpConfigurationInner withPublicIpAddress(PublicIpAddressInner publicIpAddress) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new FrontendIPConfigurationPropertiesFormatInner();
+            this.innerProperties = new FrontendIpConfigurationPropertiesFormatInner();
         }
         this.innerProperties().withPublicIpAddress(publicIpAddress);
         return this;
@@ -285,7 +285,7 @@ public final class FrontendIpConfigurationInner extends SubResourceModel {
      */
     public FrontendIpConfigurationInner withPublicIPPrefix(SubResource publicIPPrefix) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new FrontendIPConfigurationPropertiesFormatInner();
+            this.innerProperties = new FrontendIpConfigurationPropertiesFormatInner();
         }
         this.innerProperties().withPublicIPPrefix(publicIPPrefix);
         return this;
@@ -308,7 +308,7 @@ public final class FrontendIpConfigurationInner extends SubResourceModel {
      */
     public FrontendIpConfigurationInner withGatewayLoadBalancer(SubResource gatewayLoadBalancer) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new FrontendIPConfigurationPropertiesFormatInner();
+            this.innerProperties = new FrontendIpConfigurationPropertiesFormatInner();
         }
         this.innerProperties().withGatewayLoadBalancer(gatewayLoadBalancer);
         return this;
@@ -371,7 +371,7 @@ public final class FrontendIpConfigurationInner extends SubResourceModel {
                     deserializedFrontendIpConfigurationInner.type = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedFrontendIpConfigurationInner.innerProperties
-                        = FrontendIPConfigurationPropertiesFormatInner.fromJson(reader);
+                        = FrontendIpConfigurationPropertiesFormatInner.fromJson(reader);
                 } else if ("etag".equals(fieldName)) {
                     deserializedFrontendIpConfigurationInner.etag = reader.getString();
                 } else if ("zones".equals(fieldName)) {

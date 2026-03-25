@@ -6,20 +6,20 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.AssociationAccessMode;
-import com.azure.resourcemanager.network.models.CommonProxyResource;
 import com.azure.resourcemanager.network.models.NspProvisioningState;
+import com.azure.resourcemanager.network.models.SecurityPerimeterProxyResource;
+import com.azure.resourcemanager.network.models.SecurityPerimeterSystemData;
 import java.io.IOException;
 
 /**
  * The NSP resource association resource.
  */
 @Fluent
-public final class NspAssociationInner extends CommonProxyResource {
+public final class NspAssociationInner extends SecurityPerimeterProxyResource {
     /*
      * Properties of the NSP resource association.
      */
@@ -28,7 +28,7 @@ public final class NspAssociationInner extends CommonProxyResource {
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    private SystemData systemData;
+    private SecurityPerimeterSystemData systemData;
 
     /*
      * The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -67,7 +67,7 @@ public final class NspAssociationInner extends CommonProxyResource {
      * @return the systemData value.
      */
     @Override
-    public SystemData systemData() {
+    public SecurityPerimeterSystemData systemData() {
         return this.systemData;
     }
 
@@ -200,6 +200,9 @@ public final class NspAssociationInner extends CommonProxyResource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+        if (systemData() != null) {
+            systemData().validate();
+        }
     }
 
     /**
@@ -234,7 +237,7 @@ public final class NspAssociationInner extends CommonProxyResource {
                 } else if ("type".equals(fieldName)) {
                     deserializedNspAssociationInner.type = reader.getString();
                 } else if ("systemData".equals(fieldName)) {
-                    deserializedNspAssociationInner.systemData = SystemData.fromJson(reader);
+                    deserializedNspAssociationInner.systemData = SecurityPerimeterSystemData.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {
                     deserializedNspAssociationInner.innerProperties = NspAssociationProperties.fromJson(reader);
                 } else {

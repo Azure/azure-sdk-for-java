@@ -32,7 +32,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.fluent.CustomIPPrefixesClient;
+import com.azure.resourcemanager.network.fluent.CustomIpPrefixesClient;
 import com.azure.resourcemanager.network.fluent.models.CustomIpPrefixInner;
 import com.azure.resourcemanager.network.implementation.models.CustomIpPrefixListResult;
 import com.azure.resourcemanager.network.models.TagsObject;
@@ -44,14 +44,14 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * An instance of this class provides access to all the operations defined in CustomIPPrefixesClient.
+ * An instance of this class provides access to all the operations defined in CustomIpPrefixesClient.
  */
-public final class CustomIPPrefixesClientImpl implements InnerSupportsGet<CustomIpPrefixInner>,
-    InnerSupportsListing<CustomIpPrefixInner>, InnerSupportsDelete<Void>, CustomIPPrefixesClient {
+public final class CustomIpPrefixesClientImpl implements InnerSupportsGet<CustomIpPrefixInner>,
+    InnerSupportsListing<CustomIpPrefixInner>, InnerSupportsDelete<Void>, CustomIpPrefixesClient {
     /**
      * The proxy service used to perform REST calls.
      */
-    private final CustomIPPrefixesService service;
+    private final CustomIpPrefixesService service;
 
     /**
      * The service client containing this operation class.
@@ -59,23 +59,23 @@ public final class CustomIPPrefixesClientImpl implements InnerSupportsGet<Custom
     private final NetworkManagementClientImpl client;
 
     /**
-     * Initializes an instance of CustomIPPrefixesClientImpl.
+     * Initializes an instance of CustomIpPrefixesClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    CustomIPPrefixesClientImpl(NetworkManagementClientImpl client) {
+    CustomIpPrefixesClientImpl(NetworkManagementClientImpl client) {
         this.service
-            = RestProxy.create(CustomIPPrefixesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+            = RestProxy.create(CustomIpPrefixesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for NetworkManagementClientCustomIPPrefixes to be used by the proxy
+     * The interface defining all the services for NetworkManagementClientCustomIpPrefixes to be used by the proxy
      * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "NetworkManagementClientCustomIPPrefixes")
-    public interface CustomIPPrefixesService {
+    @ServiceInterface(name = "NetworkManagementClientCustomIpPrefixes")
+    public interface CustomIpPrefixesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/customIpPrefixes/{customIpPrefixName}")
         @ExpectedResponses({ 200 })

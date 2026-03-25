@@ -21,7 +21,7 @@ import java.util.Map;
  * VirtualWAN Resource.
  */
 @Fluent
-public final class VirtualWANInner extends ResourceWithRequiredLocation {
+public final class VirtualWanInner extends ResourceWithRequiredLocation {
     /*
      * Properties of the virtual WAN.
      */
@@ -43,9 +43,9 @@ public final class VirtualWANInner extends ResourceWithRequiredLocation {
     private String name;
 
     /**
-     * Creates an instance of VirtualWANInner class.
+     * Creates an instance of VirtualWanInner class.
      */
-    public VirtualWANInner() {
+    public VirtualWanInner() {
     }
 
     /**
@@ -90,7 +90,7 @@ public final class VirtualWANInner extends ResourceWithRequiredLocation {
      * {@inheritDoc}
      */
     @Override
-    public VirtualWANInner withId(String id) {
+    public VirtualWanInner withId(String id) {
         super.withId(id);
         return this;
     }
@@ -99,7 +99,7 @@ public final class VirtualWANInner extends ResourceWithRequiredLocation {
      * {@inheritDoc}
      */
     @Override
-    public VirtualWANInner withLocation(String location) {
+    public VirtualWanInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
@@ -108,7 +108,7 @@ public final class VirtualWANInner extends ResourceWithRequiredLocation {
      * {@inheritDoc}
      */
     @Override
-    public VirtualWANInner withTags(Map<String, String> tags) {
+    public VirtualWanInner withTags(Map<String, String> tags) {
         super.withTags(tags);
         return this;
     }
@@ -126,9 +126,9 @@ public final class VirtualWANInner extends ResourceWithRequiredLocation {
      * Set the disableVpnEncryption property: Vpn encryption to be disabled or not.
      * 
      * @param disableVpnEncryption the disableVpnEncryption value to set.
-     * @return the VirtualWANInner object itself.
+     * @return the VirtualWanInner object itself.
      */
-    public VirtualWANInner withDisableVpnEncryption(Boolean disableVpnEncryption) {
+    public VirtualWanInner withDisableVpnEncryption(Boolean disableVpnEncryption) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VirtualWanProperties();
         }
@@ -167,9 +167,9 @@ public final class VirtualWANInner extends ResourceWithRequiredLocation {
      * Set the allowBranchToBranchTraffic property: True if branch to branch traffic is allowed.
      * 
      * @param allowBranchToBranchTraffic the allowBranchToBranchTraffic value to set.
-     * @return the VirtualWANInner object itself.
+     * @return the VirtualWanInner object itself.
      */
-    public VirtualWANInner withAllowBranchToBranchTraffic(Boolean allowBranchToBranchTraffic) {
+    public VirtualWanInner withAllowBranchToBranchTraffic(Boolean allowBranchToBranchTraffic) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VirtualWanProperties();
         }
@@ -190,9 +190,9 @@ public final class VirtualWANInner extends ResourceWithRequiredLocation {
      * Set the allowVnetToVnetTraffic property: True if Vnet to Vnet traffic is allowed.
      * 
      * @param allowVnetToVnetTraffic the allowVnetToVnetTraffic value to set.
-     * @return the VirtualWANInner object itself.
+     * @return the VirtualWanInner object itself.
      */
-    public VirtualWANInner withAllowVnetToVnetTraffic(Boolean allowVnetToVnetTraffic) {
+    public VirtualWanInner withAllowVnetToVnetTraffic(Boolean allowVnetToVnetTraffic) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VirtualWanProperties();
         }
@@ -231,9 +231,9 @@ public final class VirtualWANInner extends ResourceWithRequiredLocation {
      * Set the type property: The type of the VirtualWAN.
      * 
      * @param type the type value to set.
-     * @return the VirtualWANInner object itself.
+     * @return the VirtualWanInner object itself.
      */
-    public VirtualWANInner withTypePropertiesType(String type) {
+    public VirtualWanInner withTypePropertiesType(String type) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VirtualWanProperties();
         }
@@ -253,11 +253,11 @@ public final class VirtualWANInner extends ResourceWithRequiredLocation {
         }
         if (location() == null) {
             throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property location in model VirtualWANInner"));
+                .log(new IllegalArgumentException("Missing required property location in model VirtualWanInner"));
         }
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(VirtualWANInner.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualWanInner.class);
 
     /**
      * {@inheritDoc}
@@ -273,42 +273,42 @@ public final class VirtualWANInner extends ResourceWithRequiredLocation {
     }
 
     /**
-     * Reads an instance of VirtualWANInner from the JsonReader.
+     * Reads an instance of VirtualWanInner from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of VirtualWANInner if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of VirtualWanInner if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the VirtualWANInner.
+     * @throws IOException If an error occurs while reading the VirtualWanInner.
      */
-    public static VirtualWANInner fromJson(JsonReader jsonReader) throws IOException {
+    public static VirtualWanInner fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            VirtualWANInner deserializedVirtualWANInner = new VirtualWANInner();
+            VirtualWanInner deserializedVirtualWanInner = new VirtualWanInner();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("location".equals(fieldName)) {
-                    deserializedVirtualWANInner.withLocation(reader.getString());
+                    deserializedVirtualWanInner.withLocation(reader.getString());
                 } else if ("id".equals(fieldName)) {
-                    deserializedVirtualWANInner.withId(reader.getString());
+                    deserializedVirtualWanInner.withId(reader.getString());
                 } else if ("name".equals(fieldName)) {
-                    deserializedVirtualWANInner.name = reader.getString();
+                    deserializedVirtualWanInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
-                    deserializedVirtualWANInner.type = reader.getString();
+                    deserializedVirtualWanInner.type = reader.getString();
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                    deserializedVirtualWANInner.withTags(tags);
+                    deserializedVirtualWanInner.withTags(tags);
                 } else if ("properties".equals(fieldName)) {
-                    deserializedVirtualWANInner.innerProperties = VirtualWanProperties.fromJson(reader);
+                    deserializedVirtualWanInner.innerProperties = VirtualWanProperties.fromJson(reader);
                 } else if ("etag".equals(fieldName)) {
-                    deserializedVirtualWANInner.etag = reader.getString();
+                    deserializedVirtualWanInner.etag = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedVirtualWANInner;
+            return deserializedVirtualWanInner;
         });
     }
 }

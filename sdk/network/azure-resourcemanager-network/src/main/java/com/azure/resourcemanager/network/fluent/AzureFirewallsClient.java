@@ -15,7 +15,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.models.AzureFirewallInner;
 import com.azure.resourcemanager.network.fluent.models.AzureFirewallPacketCaptureResponseInner;
-import com.azure.resourcemanager.network.fluent.models.IPPrefixesListInner;
+import com.azure.resourcemanager.network.fluent.models.IpPrefixesListInner;
 import com.azure.resourcemanager.network.models.FirewallPacketCaptureParameters;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
@@ -482,7 +482,7 @@ public interface AzureFirewallsClient
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<IPPrefixesListInner>, IPPrefixesListInner>
+    PollerFlux<PollResult<IpPrefixesListInner>, IpPrefixesListInner>
         beginListLearnedPrefixesAsync(String resourceGroupName, String azureFirewallName);
 
     /**
@@ -496,7 +496,7 @@ public interface AzureFirewallsClient
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<IPPrefixesListInner>, IPPrefixesListInner> beginListLearnedPrefixes(String resourceGroupName,
+    SyncPoller<PollResult<IpPrefixesListInner>, IpPrefixesListInner> beginListLearnedPrefixes(String resourceGroupName,
         String azureFirewallName);
 
     /**
@@ -511,7 +511,7 @@ public interface AzureFirewallsClient
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<IPPrefixesListInner>, IPPrefixesListInner> beginListLearnedPrefixes(String resourceGroupName,
+    SyncPoller<PollResult<IpPrefixesListInner>, IpPrefixesListInner> beginListLearnedPrefixes(String resourceGroupName,
         String azureFirewallName, Context context);
 
     /**
@@ -525,7 +525,7 @@ public interface AzureFirewallsClient
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<IPPrefixesListInner> listLearnedPrefixesAsync(String resourceGroupName, String azureFirewallName);
+    Mono<IpPrefixesListInner> listLearnedPrefixesAsync(String resourceGroupName, String azureFirewallName);
 
     /**
      * Retrieves a list of all IP prefixes that azure firewall has learned to not SNAT.
@@ -538,7 +538,7 @@ public interface AzureFirewallsClient
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IPPrefixesListInner listLearnedPrefixes(String resourceGroupName, String azureFirewallName);
+    IpPrefixesListInner listLearnedPrefixes(String resourceGroupName, String azureFirewallName);
 
     /**
      * Retrieves a list of all IP prefixes that azure firewall has learned to not SNAT.
@@ -552,7 +552,7 @@ public interface AzureFirewallsClient
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IPPrefixesListInner listLearnedPrefixes(String resourceGroupName, String azureFirewallName, Context context);
+    IpPrefixesListInner listLearnedPrefixes(String resourceGroupName, String azureFirewallName, Context context);
 
     /**
      * Runs a packet capture on AzureFirewall.

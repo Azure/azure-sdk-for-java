@@ -36,7 +36,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.AzureFirewallsClient;
 import com.azure.resourcemanager.network.fluent.models.AzureFirewallInner;
 import com.azure.resourcemanager.network.fluent.models.AzureFirewallPacketCaptureResponseInner;
-import com.azure.resourcemanager.network.fluent.models.IPPrefixesListInner;
+import com.azure.resourcemanager.network.fluent.models.IpPrefixesListInner;
 import com.azure.resourcemanager.network.implementation.models.AzureFirewallListResult;
 import com.azure.resourcemanager.network.models.FirewallPacketCaptureParameters;
 import com.azure.resourcemanager.network.models.TagsObject;
@@ -1306,12 +1306,12 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<IPPrefixesListInner>, IPPrefixesListInner>
+    public PollerFlux<PollResult<IpPrefixesListInner>, IpPrefixesListInner>
         beginListLearnedPrefixesAsync(String resourceGroupName, String azureFirewallName) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = listLearnedPrefixesWithResponseAsync(resourceGroupName, azureFirewallName);
-        return this.client.<IPPrefixesListInner, IPPrefixesListInner>getLroResult(mono, this.client.getHttpPipeline(),
-            IPPrefixesListInner.class, IPPrefixesListInner.class, this.client.getContext());
+        return this.client.<IpPrefixesListInner, IpPrefixesListInner>getLroResult(mono, this.client.getHttpPipeline(),
+            IpPrefixesListInner.class, IpPrefixesListInner.class, this.client.getContext());
     }
 
     /**
@@ -1326,13 +1326,13 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<IPPrefixesListInner>, IPPrefixesListInner>
+    private PollerFlux<PollResult<IpPrefixesListInner>, IpPrefixesListInner>
         beginListLearnedPrefixesAsync(String resourceGroupName, String azureFirewallName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
             = listLearnedPrefixesWithResponseAsync(resourceGroupName, azureFirewallName, context);
-        return this.client.<IPPrefixesListInner, IPPrefixesListInner>getLroResult(mono, this.client.getHttpPipeline(),
-            IPPrefixesListInner.class, IPPrefixesListInner.class, context);
+        return this.client.<IpPrefixesListInner, IpPrefixesListInner>getLroResult(mono, this.client.getHttpPipeline(),
+            IpPrefixesListInner.class, IpPrefixesListInner.class, context);
     }
 
     /**
@@ -1346,7 +1346,7 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<IPPrefixesListInner>, IPPrefixesListInner>
+    public SyncPoller<PollResult<IpPrefixesListInner>, IpPrefixesListInner>
         beginListLearnedPrefixes(String resourceGroupName, String azureFirewallName) {
         return this.beginListLearnedPrefixesAsync(resourceGroupName, azureFirewallName).getSyncPoller();
     }
@@ -1363,7 +1363,7 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<IPPrefixesListInner>, IPPrefixesListInner>
+    public SyncPoller<PollResult<IpPrefixesListInner>, IpPrefixesListInner>
         beginListLearnedPrefixes(String resourceGroupName, String azureFirewallName, Context context) {
         return this.beginListLearnedPrefixesAsync(resourceGroupName, azureFirewallName, context).getSyncPoller();
     }
@@ -1379,7 +1379,7 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<IPPrefixesListInner> listLearnedPrefixesAsync(String resourceGroupName, String azureFirewallName) {
+    public Mono<IpPrefixesListInner> listLearnedPrefixesAsync(String resourceGroupName, String azureFirewallName) {
         return beginListLearnedPrefixesAsync(resourceGroupName, azureFirewallName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1396,7 +1396,7 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<IPPrefixesListInner> listLearnedPrefixesAsync(String resourceGroupName, String azureFirewallName,
+    private Mono<IpPrefixesListInner> listLearnedPrefixesAsync(String resourceGroupName, String azureFirewallName,
         Context context) {
         return beginListLearnedPrefixesAsync(resourceGroupName, azureFirewallName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1413,7 +1413,7 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public IPPrefixesListInner listLearnedPrefixes(String resourceGroupName, String azureFirewallName) {
+    public IpPrefixesListInner listLearnedPrefixes(String resourceGroupName, String azureFirewallName) {
         return listLearnedPrefixesAsync(resourceGroupName, azureFirewallName).block();
     }
 
@@ -1429,7 +1429,7 @@ public final class AzureFirewallsClientImpl implements InnerSupportsGet<AzureFir
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public IPPrefixesListInner listLearnedPrefixes(String resourceGroupName, String azureFirewallName,
+    public IpPrefixesListInner listLearnedPrefixes(String resourceGroupName, String azureFirewallName,
         Context context) {
         return listLearnedPrefixesAsync(resourceGroupName, azureFirewallName, context).block();
     }

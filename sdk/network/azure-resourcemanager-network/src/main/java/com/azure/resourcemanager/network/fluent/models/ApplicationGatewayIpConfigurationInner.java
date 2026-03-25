@@ -20,7 +20,7 @@ public final class ApplicationGatewayIpConfigurationInner extends SubResource {
     /*
      * Properties of the application gateway IP configuration.
      */
-    private ApplicationGatewayIPConfigurationPropertiesFormat innerProperties;
+    private ApplicationGatewayIpConfigurationPropertiesFormat innerProperties;
 
     /*
      * Name of the IP configuration that is unique within an Application Gateway.
@@ -48,7 +48,7 @@ public final class ApplicationGatewayIpConfigurationInner extends SubResource {
      * 
      * @return the innerProperties value.
      */
-    private ApplicationGatewayIPConfigurationPropertiesFormat innerProperties() {
+    private ApplicationGatewayIpConfigurationPropertiesFormat innerProperties() {
         return this.innerProperties;
     }
 
@@ -118,7 +118,7 @@ public final class ApplicationGatewayIpConfigurationInner extends SubResource {
      */
     public ApplicationGatewayIpConfigurationInner withSubnet(SubResource subnet) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new ApplicationGatewayIPConfigurationPropertiesFormat();
+            this.innerProperties = new ApplicationGatewayIpConfigurationPropertiesFormat();
         }
         this.innerProperties().withSubnet(subnet);
         return this;
@@ -176,7 +176,7 @@ public final class ApplicationGatewayIpConfigurationInner extends SubResource {
                     deserializedApplicationGatewayIpConfigurationInner.withId(reader.getString());
                 } else if ("properties".equals(fieldName)) {
                     deserializedApplicationGatewayIpConfigurationInner.innerProperties
-                        = ApplicationGatewayIPConfigurationPropertiesFormat.fromJson(reader);
+                        = ApplicationGatewayIpConfigurationPropertiesFormat.fromJson(reader);
                 } else if ("name".equals(fieldName)) {
                     deserializedApplicationGatewayIpConfigurationInner.name = reader.getString();
                 } else if ("etag".equals(fieldName)) {

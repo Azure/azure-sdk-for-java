@@ -9,9 +9,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Samples for CustomIPPrefixes UpdateTags.
+ * Samples for CustomIpPrefixes UpdateTags.
  */
-public final class CustomIPPrefixesUpdateTagsSamples {
+public final class CustomIpPrefixesUpdateTagsSamples {
     /*
      * x-ms-original-file: 2025-05-01/CustomIpPrefixUpdateTags.json
      */
@@ -22,7 +22,7 @@ public final class CustomIPPrefixesUpdateTagsSamples {
      */
     public static void updatePublicIPAddressTags(com.azure.resourcemanager.network.NetworkManager manager) {
         manager.serviceClient()
-            .getCustomIPPrefixes()
+            .getCustomIpPrefixes()
             .updateTagsWithResponse("rg1", "test-customipprefix",
                 new TagsObject().withTags(mapOf("tag1", "value1", "tag2", "value2")), com.azure.core.util.Context.NONE);
     }

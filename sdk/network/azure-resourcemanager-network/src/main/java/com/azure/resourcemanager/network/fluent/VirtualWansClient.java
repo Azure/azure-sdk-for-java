@@ -13,7 +13,7 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.fluent.models.VirtualWANInner;
+import com.azure.resourcemanager.network.fluent.models.VirtualWanInner;
 import com.azure.resourcemanager.network.fluent.models.VirtualWanSecurityProvidersInner;
 import com.azure.resourcemanager.network.fluent.models.VpnProfileResponseInner;
 import com.azure.resourcemanager.network.models.TagsObject;
@@ -29,7 +29,7 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in VirtualWansClient.
  */
 public interface VirtualWansClient
-    extends InnerSupportsGet<VirtualWANInner>, InnerSupportsListing<VirtualWANInner>, InnerSupportsDelete<Void> {
+    extends InnerSupportsGet<VirtualWanInner>, InnerSupportsListing<VirtualWanInner>, InnerSupportsDelete<Void> {
     /**
      * Retrieves the details of a VirtualWAN.
      * 
@@ -41,7 +41,7 @@ public interface VirtualWansClient
      * @return virtualWAN Resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<VirtualWANInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+    Mono<Response<VirtualWanInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
         String virtualWANName);
 
     /**
@@ -55,7 +55,7 @@ public interface VirtualWansClient
      * @return virtualWAN Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VirtualWANInner> getByResourceGroupAsync(String resourceGroupName, String virtualWANName);
+    Mono<VirtualWanInner> getByResourceGroupAsync(String resourceGroupName, String virtualWANName);
 
     /**
      * Retrieves the details of a VirtualWAN.
@@ -69,7 +69,7 @@ public interface VirtualWansClient
      * @return virtualWAN Resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VirtualWANInner> getByResourceGroupWithResponse(String resourceGroupName, String virtualWANName,
+    Response<VirtualWanInner> getByResourceGroupWithResponse(String resourceGroupName, String virtualWANName,
         Context context);
 
     /**
@@ -83,7 +83,7 @@ public interface VirtualWansClient
      * @return virtualWAN Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualWANInner getByResourceGroup(String resourceGroupName, String virtualWANName);
+    VirtualWanInner getByResourceGroup(String resourceGroupName, String virtualWANName);
 
     /**
      * Creates a VirtualWAN resource if it doesn't exist else updates the existing VirtualWAN.
@@ -98,7 +98,7 @@ public interface VirtualWansClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String virtualWANName,
-        VirtualWANInner wANParameters);
+        VirtualWanInner wANParameters);
 
     /**
      * Creates a VirtualWAN resource if it doesn't exist else updates the existing VirtualWAN.
@@ -112,8 +112,8 @@ public interface VirtualWansClient
      * @return the {@link PollerFlux} for polling of virtualWAN Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<VirtualWANInner>, VirtualWANInner> beginCreateOrUpdateAsync(String resourceGroupName,
-        String virtualWANName, VirtualWANInner wANParameters);
+    PollerFlux<PollResult<VirtualWanInner>, VirtualWanInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String virtualWANName, VirtualWanInner wANParameters);
 
     /**
      * Creates a VirtualWAN resource if it doesn't exist else updates the existing VirtualWAN.
@@ -127,8 +127,8 @@ public interface VirtualWansClient
      * @return the {@link SyncPoller} for polling of virtualWAN Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<VirtualWANInner>, VirtualWANInner> beginCreateOrUpdate(String resourceGroupName,
-        String virtualWANName, VirtualWANInner wANParameters);
+    SyncPoller<PollResult<VirtualWanInner>, VirtualWanInner> beginCreateOrUpdate(String resourceGroupName,
+        String virtualWANName, VirtualWanInner wANParameters);
 
     /**
      * Creates a VirtualWAN resource if it doesn't exist else updates the existing VirtualWAN.
@@ -143,8 +143,8 @@ public interface VirtualWansClient
      * @return the {@link SyncPoller} for polling of virtualWAN Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<VirtualWANInner>, VirtualWANInner> beginCreateOrUpdate(String resourceGroupName,
-        String virtualWANName, VirtualWANInner wANParameters, Context context);
+    SyncPoller<PollResult<VirtualWanInner>, VirtualWanInner> beginCreateOrUpdate(String resourceGroupName,
+        String virtualWANName, VirtualWanInner wANParameters, Context context);
 
     /**
      * Creates a VirtualWAN resource if it doesn't exist else updates the existing VirtualWAN.
@@ -158,8 +158,8 @@ public interface VirtualWansClient
      * @return virtualWAN Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VirtualWANInner> createOrUpdateAsync(String resourceGroupName, String virtualWANName,
-        VirtualWANInner wANParameters);
+    Mono<VirtualWanInner> createOrUpdateAsync(String resourceGroupName, String virtualWANName,
+        VirtualWanInner wANParameters);
 
     /**
      * Creates a VirtualWAN resource if it doesn't exist else updates the existing VirtualWAN.
@@ -173,7 +173,7 @@ public interface VirtualWansClient
      * @return virtualWAN Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualWANInner createOrUpdate(String resourceGroupName, String virtualWANName, VirtualWANInner wANParameters);
+    VirtualWanInner createOrUpdate(String resourceGroupName, String virtualWANName, VirtualWanInner wANParameters);
 
     /**
      * Creates a VirtualWAN resource if it doesn't exist else updates the existing VirtualWAN.
@@ -188,7 +188,7 @@ public interface VirtualWansClient
      * @return virtualWAN Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualWANInner createOrUpdate(String resourceGroupName, String virtualWANName, VirtualWANInner wANParameters,
+    VirtualWanInner createOrUpdate(String resourceGroupName, String virtualWANName, VirtualWanInner wANParameters,
         Context context);
 
     /**
@@ -203,7 +203,7 @@ public interface VirtualWansClient
      * @return virtualWAN Resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<VirtualWANInner>> updateTagsWithResponseAsync(String resourceGroupName, String virtualWANName,
+    Mono<Response<VirtualWanInner>> updateTagsWithResponseAsync(String resourceGroupName, String virtualWANName,
         TagsObject wANParameters);
 
     /**
@@ -218,7 +218,7 @@ public interface VirtualWansClient
      * @return virtualWAN Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VirtualWANInner> updateTagsAsync(String resourceGroupName, String virtualWANName, TagsObject wANParameters);
+    Mono<VirtualWanInner> updateTagsAsync(String resourceGroupName, String virtualWANName, TagsObject wANParameters);
 
     /**
      * Updates a VirtualWAN tags.
@@ -233,7 +233,7 @@ public interface VirtualWansClient
      * @return virtualWAN Resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VirtualWANInner> updateTagsWithResponse(String resourceGroupName, String virtualWANName,
+    Response<VirtualWanInner> updateTagsWithResponse(String resourceGroupName, String virtualWANName,
         TagsObject wANParameters, Context context);
 
     /**
@@ -248,7 +248,7 @@ public interface VirtualWansClient
      * @return virtualWAN Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualWANInner updateTags(String resourceGroupName, String virtualWANName, TagsObject wANParameters);
+    VirtualWanInner updateTags(String resourceGroupName, String virtualWANName, TagsObject wANParameters);
 
     /**
      * Deletes a VirtualWAN.
@@ -351,7 +351,7 @@ public interface VirtualWansClient
      * @return result of the request to list VirtualWANs as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<VirtualWANInner> listByResourceGroupAsync(String resourceGroupName);
+    PagedFlux<VirtualWanInner> listByResourceGroupAsync(String resourceGroupName);
 
     /**
      * Lists all the VirtualWANs in a resource group.
@@ -363,7 +363,7 @@ public interface VirtualWansClient
      * @return result of the request to list VirtualWANs as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<VirtualWANInner> listByResourceGroup(String resourceGroupName);
+    PagedIterable<VirtualWanInner> listByResourceGroup(String resourceGroupName);
 
     /**
      * Lists all the VirtualWANs in a resource group.
@@ -376,7 +376,7 @@ public interface VirtualWansClient
      * @return result of the request to list VirtualWANs as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<VirtualWANInner> listByResourceGroup(String resourceGroupName, Context context);
+    PagedIterable<VirtualWanInner> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
      * Lists all the VirtualWANs in a subscription.
@@ -386,7 +386,7 @@ public interface VirtualWansClient
      * @return result of the request to list VirtualWANs as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<VirtualWANInner> listAsync();
+    PagedFlux<VirtualWanInner> listAsync();
 
     /**
      * Lists all the VirtualWANs in a subscription.
@@ -396,7 +396,7 @@ public interface VirtualWansClient
      * @return result of the request to list VirtualWANs as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<VirtualWANInner> list();
+    PagedIterable<VirtualWanInner> list();
 
     /**
      * Lists all the VirtualWANs in a subscription.
@@ -408,7 +408,7 @@ public interface VirtualWansClient
      * @return result of the request to list VirtualWANs as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<VirtualWANInner> list(Context context);
+    PagedIterable<VirtualWanInner> list(Context context);
 
     /**
      * Gives the supported security providers for the virtual wan.

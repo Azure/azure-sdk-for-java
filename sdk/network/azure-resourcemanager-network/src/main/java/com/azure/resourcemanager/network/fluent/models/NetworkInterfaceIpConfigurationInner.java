@@ -26,7 +26,7 @@ public final class NetworkInterfaceIpConfigurationInner extends SubResourceModel
     /*
      * Network interface IP configuration properties.
      */
-    private NetworkInterfaceIPConfigurationPropertiesFormatInner innerProperties;
+    private NetworkInterfaceIpConfigurationPropertiesFormatInner innerProperties;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
@@ -49,7 +49,7 @@ public final class NetworkInterfaceIpConfigurationInner extends SubResourceModel
      * 
      * @return the innerProperties value.
      */
-    private NetworkInterfaceIPConfigurationPropertiesFormatInner innerProperties() {
+    private NetworkInterfaceIpConfigurationPropertiesFormatInner innerProperties() {
         return this.innerProperties;
     }
 
@@ -107,7 +107,7 @@ public final class NetworkInterfaceIpConfigurationInner extends SubResourceModel
      */
     public NetworkInterfaceIpConfigurationInner withGatewayLoadBalancer(SubResource gatewayLoadBalancer) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new NetworkInterfaceIPConfigurationPropertiesFormatInner();
+            this.innerProperties = new NetworkInterfaceIpConfigurationPropertiesFormatInner();
         }
         this.innerProperties().withGatewayLoadBalancer(gatewayLoadBalancer);
         return this;
@@ -131,7 +131,7 @@ public final class NetworkInterfaceIpConfigurationInner extends SubResourceModel
     public NetworkInterfaceIpConfigurationInner
         withVirtualNetworkTaps(List<VirtualNetworkTapInner> virtualNetworkTaps) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new NetworkInterfaceIPConfigurationPropertiesFormatInner();
+            this.innerProperties = new NetworkInterfaceIpConfigurationPropertiesFormatInner();
         }
         this.innerProperties().withVirtualNetworkTaps(virtualNetworkTaps);
         return this;
@@ -157,7 +157,7 @@ public final class NetworkInterfaceIpConfigurationInner extends SubResourceModel
     public NetworkInterfaceIpConfigurationInner withApplicationGatewayBackendAddressPools(
         List<ApplicationGatewayBackendAddressPool> applicationGatewayBackendAddressPools) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new NetworkInterfaceIPConfigurationPropertiesFormatInner();
+            this.innerProperties = new NetworkInterfaceIpConfigurationPropertiesFormatInner();
         }
         this.innerProperties().withApplicationGatewayBackendAddressPools(applicationGatewayBackendAddressPools);
         return this;
@@ -181,7 +181,7 @@ public final class NetworkInterfaceIpConfigurationInner extends SubResourceModel
     public NetworkInterfaceIpConfigurationInner
         withLoadBalancerBackendAddressPools(List<BackendAddressPoolInner> loadBalancerBackendAddressPools) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new NetworkInterfaceIPConfigurationPropertiesFormatInner();
+            this.innerProperties = new NetworkInterfaceIpConfigurationPropertiesFormatInner();
         }
         this.innerProperties().withLoadBalancerBackendAddressPools(loadBalancerBackendAddressPools);
         return this;
@@ -205,7 +205,7 @@ public final class NetworkInterfaceIpConfigurationInner extends SubResourceModel
     public NetworkInterfaceIpConfigurationInner
         withLoadBalancerInboundNatRules(List<InboundNatRuleInner> loadBalancerInboundNatRules) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new NetworkInterfaceIPConfigurationPropertiesFormatInner();
+            this.innerProperties = new NetworkInterfaceIpConfigurationPropertiesFormatInner();
         }
         this.innerProperties().withLoadBalancerInboundNatRules(loadBalancerInboundNatRules);
         return this;
@@ -230,7 +230,7 @@ public final class NetworkInterfaceIpConfigurationInner extends SubResourceModel
      */
     public NetworkInterfaceIpConfigurationInner withPrivateIpAddress(String privateIpAddress) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new NetworkInterfaceIPConfigurationPropertiesFormatInner();
+            this.innerProperties = new NetworkInterfaceIpConfigurationPropertiesFormatInner();
         }
         this.innerProperties().withPrivateIpAddress(privateIpAddress);
         return this;
@@ -255,7 +255,7 @@ public final class NetworkInterfaceIpConfigurationInner extends SubResourceModel
      */
     public NetworkInterfaceIpConfigurationInner withPrivateIPAddressPrefixLength(Integer privateIPAddressPrefixLength) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new NetworkInterfaceIPConfigurationPropertiesFormatInner();
+            this.innerProperties = new NetworkInterfaceIpConfigurationPropertiesFormatInner();
         }
         this.innerProperties().withPrivateIPAddressPrefixLength(privateIPAddressPrefixLength);
         return this;
@@ -279,7 +279,7 @@ public final class NetworkInterfaceIpConfigurationInner extends SubResourceModel
     public NetworkInterfaceIpConfigurationInner
         withPrivateIpAllocationMethod(IpAllocationMethod privateIpAllocationMethod) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new NetworkInterfaceIPConfigurationPropertiesFormatInner();
+            this.innerProperties = new NetworkInterfaceIpConfigurationPropertiesFormatInner();
         }
         this.innerProperties().withPrivateIpAllocationMethod(privateIpAllocationMethod);
         return this;
@@ -302,7 +302,7 @@ public final class NetworkInterfaceIpConfigurationInner extends SubResourceModel
      */
     public NetworkInterfaceIpConfigurationInner withPrivateIpAddressVersion(IpVersion privateIpAddressVersion) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new NetworkInterfaceIPConfigurationPropertiesFormatInner();
+            this.innerProperties = new NetworkInterfaceIpConfigurationPropertiesFormatInner();
         }
         this.innerProperties().withPrivateIpAddressVersion(privateIpAddressVersion);
         return this;
@@ -325,7 +325,7 @@ public final class NetworkInterfaceIpConfigurationInner extends SubResourceModel
      */
     public NetworkInterfaceIpConfigurationInner withSubnet(SubnetInner subnet) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new NetworkInterfaceIPConfigurationPropertiesFormatInner();
+            this.innerProperties = new NetworkInterfaceIpConfigurationPropertiesFormatInner();
         }
         this.innerProperties().withSubnet(subnet);
         return this;
@@ -348,7 +348,7 @@ public final class NetworkInterfaceIpConfigurationInner extends SubResourceModel
      */
     public NetworkInterfaceIpConfigurationInner withPrimary(Boolean primary) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new NetworkInterfaceIPConfigurationPropertiesFormatInner();
+            this.innerProperties = new NetworkInterfaceIpConfigurationPropertiesFormatInner();
         }
         this.innerProperties().withPrimary(primary);
         return this;
@@ -371,7 +371,7 @@ public final class NetworkInterfaceIpConfigurationInner extends SubResourceModel
      */
     public NetworkInterfaceIpConfigurationInner withPublicIpAddress(PublicIpAddressInner publicIpAddress) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new NetworkInterfaceIPConfigurationPropertiesFormatInner();
+            this.innerProperties = new NetworkInterfaceIpConfigurationPropertiesFormatInner();
         }
         this.innerProperties().withPublicIpAddress(publicIpAddress);
         return this;
@@ -397,7 +397,7 @@ public final class NetworkInterfaceIpConfigurationInner extends SubResourceModel
     public NetworkInterfaceIpConfigurationInner
         withApplicationSecurityGroups(List<ApplicationSecurityGroupInner> applicationSecurityGroups) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new NetworkInterfaceIPConfigurationPropertiesFormatInner();
+            this.innerProperties = new NetworkInterfaceIpConfigurationPropertiesFormatInner();
         }
         this.innerProperties().withApplicationSecurityGroups(applicationSecurityGroups);
         return this;
@@ -469,7 +469,7 @@ public final class NetworkInterfaceIpConfigurationInner extends SubResourceModel
                     deserializedNetworkInterfaceIpConfigurationInner.type = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedNetworkInterfaceIpConfigurationInner.innerProperties
-                        = NetworkInterfaceIPConfigurationPropertiesFormatInner.fromJson(reader);
+                        = NetworkInterfaceIpConfigurationPropertiesFormatInner.fromJson(reader);
                 } else if ("etag".equals(fieldName)) {
                     deserializedNetworkInterfaceIpConfigurationInner.etag = reader.getString();
                 } else {

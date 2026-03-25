@@ -15,8 +15,8 @@ import java.io.IOException;
  * Properties of an IP Configuration of the private endpoint.
  */
 @Fluent
-public final class PrivateEndpointIPConfigurationProperties
-    implements JsonSerializable<PrivateEndpointIPConfigurationProperties> {
+public final class PrivateEndpointIpConfigurationProperties
+    implements JsonSerializable<PrivateEndpointIpConfigurationProperties> {
     /*
      * The ID of a group obtained from the remote resource that this private endpoint should connect to.
      */
@@ -33,9 +33,9 @@ public final class PrivateEndpointIPConfigurationProperties
     private String privateIpAddress;
 
     /**
-     * Creates an instance of PrivateEndpointIPConfigurationProperties class.
+     * Creates an instance of PrivateEndpointIpConfigurationProperties class.
      */
-    public PrivateEndpointIPConfigurationProperties() {
+    public PrivateEndpointIpConfigurationProperties() {
     }
 
     /**
@@ -53,9 +53,9 @@ public final class PrivateEndpointIPConfigurationProperties
      * connect to.
      * 
      * @param groupId the groupId value to set.
-     * @return the PrivateEndpointIPConfigurationProperties object itself.
+     * @return the PrivateEndpointIpConfigurationProperties object itself.
      */
-    public PrivateEndpointIPConfigurationProperties withGroupId(String groupId) {
+    public PrivateEndpointIpConfigurationProperties withGroupId(String groupId) {
         this.groupId = groupId;
         return this;
     }
@@ -75,9 +75,9 @@ public final class PrivateEndpointIPConfigurationProperties
      * endpoint should connect to.
      * 
      * @param memberName the memberName value to set.
-     * @return the PrivateEndpointIPConfigurationProperties object itself.
+     * @return the PrivateEndpointIpConfigurationProperties object itself.
      */
-    public PrivateEndpointIPConfigurationProperties withMemberName(String memberName) {
+    public PrivateEndpointIpConfigurationProperties withMemberName(String memberName) {
         this.memberName = memberName;
         return this;
     }
@@ -95,9 +95,9 @@ public final class PrivateEndpointIPConfigurationProperties
      * Set the privateIpAddress property: A private ip address obtained from the private endpoint's subnet.
      * 
      * @param privateIpAddress the privateIpAddress value to set.
-     * @return the PrivateEndpointIPConfigurationProperties object itself.
+     * @return the PrivateEndpointIpConfigurationProperties object itself.
      */
-    public PrivateEndpointIPConfigurationProperties withPrivateIpAddress(String privateIpAddress) {
+    public PrivateEndpointIpConfigurationProperties withPrivateIpAddress(String privateIpAddress) {
         this.privateIpAddress = privateIpAddress;
         return this;
     }
@@ -123,33 +123,33 @@ public final class PrivateEndpointIPConfigurationProperties
     }
 
     /**
-     * Reads an instance of PrivateEndpointIPConfigurationProperties from the JsonReader.
+     * Reads an instance of PrivateEndpointIpConfigurationProperties from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of PrivateEndpointIPConfigurationProperties if the JsonReader was pointing to an instance of
+     * @return An instance of PrivateEndpointIpConfigurationProperties if the JsonReader was pointing to an instance of
      * it, or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the PrivateEndpointIPConfigurationProperties.
+     * @throws IOException If an error occurs while reading the PrivateEndpointIpConfigurationProperties.
      */
-    public static PrivateEndpointIPConfigurationProperties fromJson(JsonReader jsonReader) throws IOException {
+    public static PrivateEndpointIpConfigurationProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            PrivateEndpointIPConfigurationProperties deserializedPrivateEndpointIPConfigurationProperties
-                = new PrivateEndpointIPConfigurationProperties();
+            PrivateEndpointIpConfigurationProperties deserializedPrivateEndpointIpConfigurationProperties
+                = new PrivateEndpointIpConfigurationProperties();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("groupId".equals(fieldName)) {
-                    deserializedPrivateEndpointIPConfigurationProperties.groupId = reader.getString();
+                    deserializedPrivateEndpointIpConfigurationProperties.groupId = reader.getString();
                 } else if ("memberName".equals(fieldName)) {
-                    deserializedPrivateEndpointIPConfigurationProperties.memberName = reader.getString();
+                    deserializedPrivateEndpointIpConfigurationProperties.memberName = reader.getString();
                 } else if ("privateIPAddress".equals(fieldName)) {
-                    deserializedPrivateEndpointIPConfigurationProperties.privateIpAddress = reader.getString();
+                    deserializedPrivateEndpointIpConfigurationProperties.privateIpAddress = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedPrivateEndpointIPConfigurationProperties;
+            return deserializedPrivateEndpointIpConfigurationProperties;
         });
     }
 }

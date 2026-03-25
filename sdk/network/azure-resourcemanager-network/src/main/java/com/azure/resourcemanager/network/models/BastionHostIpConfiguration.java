@@ -9,7 +9,7 @@ import com.azure.core.management.SubResource;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.network.fluent.models.BastionHostIPConfigurationPropertiesFormat;
+import com.azure.resourcemanager.network.fluent.models.BastionHostIpConfigurationPropertiesFormat;
 import java.io.IOException;
 
 /**
@@ -20,7 +20,7 @@ public final class BastionHostIpConfiguration extends SubResource {
     /*
      * Represents the ip configuration associated with the resource.
      */
-    private BastionHostIPConfigurationPropertiesFormat innerProperties;
+    private BastionHostIpConfigurationPropertiesFormat innerProperties;
 
     /*
      * Name of the resource that is unique within a resource group. This name can be used to access the resource.
@@ -48,7 +48,7 @@ public final class BastionHostIpConfiguration extends SubResource {
      * 
      * @return the innerProperties value.
      */
-    private BastionHostIPConfigurationPropertiesFormat innerProperties() {
+    private BastionHostIpConfigurationPropertiesFormat innerProperties() {
         return this.innerProperties;
     }
 
@@ -118,7 +118,7 @@ public final class BastionHostIpConfiguration extends SubResource {
      */
     public BastionHostIpConfiguration withSubnet(SubResource subnet) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new BastionHostIPConfigurationPropertiesFormat();
+            this.innerProperties = new BastionHostIpConfigurationPropertiesFormat();
         }
         this.innerProperties().withSubnet(subnet);
         return this;
@@ -141,7 +141,7 @@ public final class BastionHostIpConfiguration extends SubResource {
      */
     public BastionHostIpConfiguration withPublicIpAddress(SubResource publicIpAddress) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new BastionHostIPConfigurationPropertiesFormat();
+            this.innerProperties = new BastionHostIpConfigurationPropertiesFormat();
         }
         this.innerProperties().withPublicIpAddress(publicIpAddress);
         return this;
@@ -173,7 +173,7 @@ public final class BastionHostIpConfiguration extends SubResource {
      */
     public BastionHostIpConfiguration withPrivateIpAllocationMethod(IpAllocationMethod privateIpAllocationMethod) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new BastionHostIPConfigurationPropertiesFormat();
+            this.innerProperties = new BastionHostIpConfigurationPropertiesFormat();
         }
         this.innerProperties().withPrivateIpAllocationMethod(privateIpAllocationMethod);
         return this;
@@ -221,7 +221,7 @@ public final class BastionHostIpConfiguration extends SubResource {
                     deserializedBastionHostIpConfiguration.withId(reader.getString());
                 } else if ("properties".equals(fieldName)) {
                     deserializedBastionHostIpConfiguration.innerProperties
-                        = BastionHostIPConfigurationPropertiesFormat.fromJson(reader);
+                        = BastionHostIpConfigurationPropertiesFormat.fromJson(reader);
                 } else if ("name".equals(fieldName)) {
                     deserializedBastionHostIpConfiguration.name = reader.getString();
                 } else if ("etag".equals(fieldName)) {
