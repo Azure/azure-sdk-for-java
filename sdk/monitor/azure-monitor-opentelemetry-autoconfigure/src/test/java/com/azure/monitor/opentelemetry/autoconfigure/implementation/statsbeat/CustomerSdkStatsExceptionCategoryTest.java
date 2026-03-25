@@ -19,21 +19,23 @@ public class CustomerSdkStatsExceptionCategoryTest {
     public void testSocketTimeoutException() {
         assertThat(CustomerSdkStatsExceptionCategory.categorize(new SocketTimeoutException("Read timed out")))
             .isEqualTo("Timeout exception");
-        assertThat(CustomerSdkStatsExceptionCategory.isTimeout(new SocketTimeoutException("Read timed out"))).isTrue();
+        assertThat(CustomerSdkStatsExceptionCategory.containsTimeout(new SocketTimeoutException("Read timed out")))
+            .isTrue();
     }
 
     @Test
     public void testTimeoutException() {
         assertThat(CustomerSdkStatsExceptionCategory.categorize(new TimeoutException("timeout")))
             .isEqualTo("Timeout exception");
-        assertThat(CustomerSdkStatsExceptionCategory.isTimeout(new TimeoutException("timeout"))).isTrue();
+        assertThat(CustomerSdkStatsExceptionCategory.containsTimeout(new TimeoutException("timeout"))).isTrue();
     }
 
     @Test
     public void testUnknownHostException() {
         assertThat(CustomerSdkStatsExceptionCategory.categorize(new UnknownHostException("host.example.com")))
             .isEqualTo("Network exception");
-        assertThat(CustomerSdkStatsExceptionCategory.isTimeout(new UnknownHostException("host.example.com"))).isFalse();
+        assertThat(CustomerSdkStatsExceptionCategory.containsTimeout(new UnknownHostException("host.example.com")))
+            .isFalse();
     }
 
     @Test
@@ -52,13 +54,14 @@ public class CustomerSdkStatsExceptionCategoryTest {
     public void testGenericRuntimeException() {
         assertThat(CustomerSdkStatsExceptionCategory.categorize(new RuntimeException("Something went wrong")))
             .isEqualTo("Client exception");
-        assertThat(CustomerSdkStatsExceptionCategory.isTimeout(new RuntimeException("Something went wrong"))).isFalse();
+        assertThat(CustomerSdkStatsExceptionCategory.containsTimeout(new RuntimeException("Something went wrong")))
+            .isFalse();
     }
 
     @Test
     public void testNullThrowable() {
         assertThat(CustomerSdkStatsExceptionCategory.categorize(null)).isEqualTo("Client exception");
-        assertThat(CustomerSdkStatsExceptionCategory.isTimeout(null)).isFalse();
+        assertThat(CustomerSdkStatsExceptionCategory.containsTimeout(null)).isFalse();
     }
 
     @Test
@@ -66,7 +69,7 @@ public class CustomerSdkStatsExceptionCategoryTest {
         // A SocketTimeoutException wrapped in a RuntimeException should still be detected via cause
         RuntimeException wrapper = new RuntimeException("wrapper", new SocketTimeoutException("Read timed out"));
         assertThat(CustomerSdkStatsExceptionCategory.categorize(wrapper)).isEqualTo("Timeout exception");
-        assertThat(CustomerSdkStatsExceptionCategory.isTimeout(wrapper)).isTrue();
+        assertThat(CustomerSdkStatsExceptionCategory.containsTimeout(wrapper)).isTrue();
     }
 
     @Test

@@ -64,20 +64,17 @@ public final class TelemetryBatchMetadata {
             // Track success/failure for Request and Dependency types
             if ("REQUEST".equals(telemetryType) || "DEPENDENCY".equals(telemetryType)) {
                 MonitorDomain baseData = item.getData() != null ? item.getData().getBaseData() : null;
+                Boolean success = null;
                 if (baseData instanceof RequestData) {
-                    if (((RequestData) baseData).isSuccess()) {
-                        successItemCountsByType.merge(telemetryType, 1L, Long::sum);
-                    } else {
-                        failureItemCountsByType.merge(telemetryType, 1L, Long::sum);
-                    }
+                    success = ((RequestData) baseData).isSuccess();
                 } else if (baseData instanceof RemoteDependencyData) {
-                    Boolean success = ((RemoteDependencyData) baseData).isSuccess();
-                    if (success != null && success) {
-                        successItemCountsByType.merge(telemetryType, 1L, Long::sum);
-                    } else if (success != null) {
-                        // Only count explicit false as failure; null is treated as unknown
-                        failureItemCountsByType.merge(telemetryType, 1L, Long::sum);
-                    }
+                    success = ((RemoteDependencyData) baseData).isSuccess();
+                }
+                if (success != null && success) {
+                    successItemCountsByType.merge(telemetryType, 1L, Long::sum);
+                } else if (success != null) {
+                    // Only count explicit false as failure; null is treated as unknown
+                    failureItemCountsByType.merge(telemetryType, 1L, Long::sum);
                 }
             }
         }

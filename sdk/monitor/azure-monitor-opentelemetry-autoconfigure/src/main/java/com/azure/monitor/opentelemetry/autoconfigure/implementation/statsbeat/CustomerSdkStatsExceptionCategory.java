@@ -20,6 +20,8 @@ final class CustomerSdkStatsExceptionCategory {
     static final String STORAGE_EXCEPTION = "Storage exception";
     static final String CLIENT_EXCEPTION = "Client exception";
 
+    private static final int MAX_CAUSE_CHAIN_DEPTH = 10;
+
     /**
      * Returns a low-cardinality exception category string.
      */
@@ -34,11 +36,11 @@ final class CustomerSdkStatsExceptionCategory {
      * Returns true if any exception in the cause chain represents a timeout scenario
      * (use CLIENT_TIMEOUT retry code), false otherwise (use CLIENT_EXCEPTION retry code).
      */
-    static boolean isTimeout(Throwable throwable) {
+    static boolean containsTimeout(Throwable throwable) {
         Throwable current = throwable;
         int depth = 0;
-        while (current != null && depth < 10) {
-            if (isSingleTimeoutType(current)) {
+        while (current != null && depth < MAX_CAUSE_CHAIN_DEPTH) {
+            if (isTimeoutType(current)) {
                 return true;
             }
             current = current.getCause();
@@ -54,8 +56,8 @@ final class CustomerSdkStatsExceptionCategory {
         // consistently at each level of the chain.
         Throwable current = throwable;
         int depth = 0;
-        while (current != null && depth < 10) {
-            if (isSingleTimeoutType(current)) {
+        while (current != null && depth < MAX_CAUSE_CHAIN_DEPTH) {
+            if (isTimeoutType(current)) {
                 return TIMEOUT_EXCEPTION;
             }
             if (isNetworkType(current)) {
@@ -73,7 +75,7 @@ final class CustomerSdkStatsExceptionCategory {
     /**
      * Checks whether a single throwable (not its cause chain) is a timeout type.
      */
-    private static boolean isSingleTimeoutType(Throwable throwable) {
+    private static boolean isTimeoutType(Throwable throwable) {
         if (throwable instanceof SocketTimeoutException || throwable instanceof TimeoutException) {
             return true;
         }

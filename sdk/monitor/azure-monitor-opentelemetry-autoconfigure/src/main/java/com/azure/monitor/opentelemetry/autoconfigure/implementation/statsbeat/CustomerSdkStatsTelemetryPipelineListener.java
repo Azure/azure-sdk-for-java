@@ -76,7 +76,7 @@ public class CustomerSdkStatsTelemetryPipelineListener implements TelemetryPipel
         }
 
         // Exceptions result in retry via local storage persistence
-        boolean isTimeout = CustomerSdkStatsExceptionCategory.isTimeout(throwable);
+        boolean isTimeout = CustomerSdkStatsExceptionCategory.containsTimeout(throwable);
         String retryCode
             = isTimeout ? CustomerSdkStats.RETRY_CODE_CLIENT_TIMEOUT : CustomerSdkStats.RETRY_CODE_CLIENT_EXCEPTION;
         String retryReason = CustomerSdkStatsExceptionCategory.categorize(throwable);
