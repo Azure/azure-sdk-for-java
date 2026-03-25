@@ -6,6 +6,7 @@ package com.azure.ai.agents;
 
 import com.azure.ai.agents.implementation.OpenAIJsonHelper;
 import com.azure.ai.agents.implementation.StreamingUtils;
+import com.azure.ai.agents.models.AzureCreateResponseDetails;
 import com.azure.ai.agents.models.AzureCreateResponseOptions;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -82,6 +83,17 @@ public final class ResponsesClient {
         Map<String, JsonValue> additionalBodyProperties = OpenAIJsonHelper.toJsonValueMap(createResponse);
         params.additionalBodyProperties(additionalBodyProperties);
         return StreamingUtils.toIterableStream(this.responseService.createStreaming(params.build()));
+    }
+
+    /**
+     * Extracts Azure-specific fields from a Response's additional properties.
+     *
+     * @param response the OpenAI response.
+     * @return the Azure-specific create response result, or null if not present.
+     */
+    public static AzureCreateResponseDetails getAzureFields(Response response) {
+        return OpenAIJsonHelper.fromAdditionalProperties(response._additionalProperties(),
+            AzureCreateResponseDetails::fromJson);
     }
 
 }
