@@ -63,7 +63,7 @@ public final class ReadmeSamples {
             new AzureCreateResponseOptions().setAgentReference(agentReference),
             ResponseCreateParams.builder().conversation(conversation.id()));
         // To extract Azure-specific response details:
-        AzureCreateResponseDetails azureResults = ResponsesUtils.getAzureFields(response);
+        AzureCreateResponseDetails azureResults = ResponsesClient.getAzureFields(response);
         // END: com.azure.ai.agents.create_response
 
         // BEGIN: com.azure.ai.agents.openai_official_library
