@@ -42,6 +42,7 @@ public final class EventDataBatch {
     private final String partitionKey;
     private final ErrorContextProvider contextProvider;
     private final List<EventData> events;
+    private final List<Message> amqpMessages;
     private final String partitionId;
     private int sizeInBytes;
     private final EventHubsTracer tracer;
@@ -53,6 +54,7 @@ public final class EventDataBatch {
         this.partitionId = partitionId;
         this.contextProvider = contextProvider;
         this.events = new LinkedList<>();
+        this.amqpMessages = new LinkedList<>();
         this.sizeInBytes = (maxMessageSize / 65536) * 1024; // reserve 1KB for every 64KB
         this.tracer = instrumentation.getTracer();
     }
@@ -106,7 +108,8 @@ public final class EventDataBatch {
 
         tracer.reportMessageSpan(eventData, eventData.getContext());
 
-        final int size = getSize(eventData, events.isEmpty());
+        final Message amqpMessage = createAmqpMessage(eventData, partitionKey);
+        final int size = getSize(eventData, amqpMessage, events.isEmpty());
         if (this.sizeInBytes + size > this.maxMessageSize) {
             return false;
         }
@@ -119,11 +122,16 @@ public final class EventDataBatch {
         }
 
         this.events.add(eventData);
+        this.amqpMessages.add(amqpMessage);
         return true;
     }
 
     List<EventData> getEvents() {
         return events;
+    }
+
+    List<Message> getMessages() {
+        return amqpMessages;
     }
 
     String getPartitionKey() {
@@ -134,20 +142,20 @@ public final class EventDataBatch {
         return partitionId;
     }
 
-    private int getSize(final EventData eventData, final boolean isFirst) {
+    private int getSize(final EventData eventData, final Message amqpMessage, final boolean isFirst) {
         Objects.requireNonNull(eventData, "'eventData' cannot be null.");
 
-        final Message amqpMessage = createAmqpMessage(eventData, partitionKey);
         int eventSize = encodedSize(amqpMessage); // actual encoded bytes size
         eventSize += 16; // data section overhead
 
         if (isFirst) {
-            amqpMessage.setBody(null);
-            amqpMessage.setApplicationProperties(null);
-            amqpMessage.setProperties(null);
-            amqpMessage.setDeliveryAnnotations(null);
+            final Message batchEnvelopeMessage = createAmqpMessage(eventData, partitionKey);
+            batchEnvelopeMessage.setBody(null);
+            batchEnvelopeMessage.setApplicationProperties(null);
+            batchEnvelopeMessage.setProperties(null);
+            batchEnvelopeMessage.setDeliveryAnnotations(null);
 
-            eventSize += encodedSize(amqpMessage);
+            eventSize += encodedSize(batchEnvelopeMessage);
         }
 
         return eventSize;
