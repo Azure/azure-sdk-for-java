@@ -45,7 +45,7 @@ public final class ManagedClusterWindowsProfile implements JsonSerializable<Mana
      * Whether to enable CSI proxy. For more details on CSI proxy, see the [CSI proxy GitHub
      * repo](https://github.com/kubernetes-csi/csi-proxy).
      */
-    private Boolean enableCSIProxy;
+    private Boolean enableCsiProxy;
 
     /*
      * The Windows gMSA Profile in the Managed Cluster.
@@ -141,24 +141,24 @@ public final class ManagedClusterWindowsProfile implements JsonSerializable<Mana
     }
 
     /**
-     * Get the enableCSIProxy property: Whether to enable CSI proxy. For more details on CSI proxy, see the [CSI proxy
+     * Get the enableCsiProxy property: Whether to enable CSI proxy. For more details on CSI proxy, see the [CSI proxy
      * GitHub repo](https://github.com/kubernetes-csi/csi-proxy).
      * 
-     * @return the enableCSIProxy value.
+     * @return the enableCsiProxy value.
      */
-    public Boolean enableCSIProxy() {
-        return this.enableCSIProxy;
+    public Boolean enableCsiProxy() {
+        return this.enableCsiProxy;
     }
 
     /**
-     * Set the enableCSIProxy property: Whether to enable CSI proxy. For more details on CSI proxy, see the [CSI proxy
+     * Set the enableCsiProxy property: Whether to enable CSI proxy. For more details on CSI proxy, see the [CSI proxy
      * GitHub repo](https://github.com/kubernetes-csi/csi-proxy).
      * 
-     * @param enableCSIProxy the enableCSIProxy value to set.
+     * @param enableCsiProxy the enableCsiProxy value to set.
      * @return the ManagedClusterWindowsProfile object itself.
      */
-    public ManagedClusterWindowsProfile withEnableCSIProxy(Boolean enableCSIProxy) {
-        this.enableCSIProxy = enableCSIProxy;
+    public ManagedClusterWindowsProfile withEnableCsiProxy(Boolean enableCsiProxy) {
+        this.enableCsiProxy = enableCsiProxy;
         return this;
     }
 
@@ -209,7 +209,7 @@ public final class ManagedClusterWindowsProfile implements JsonSerializable<Mana
         jsonWriter.writeStringField("adminUsername", this.adminUsername);
         jsonWriter.writeStringField("adminPassword", this.adminPassword);
         jsonWriter.writeStringField("licenseType", this.licenseType == null ? null : this.licenseType.toString());
-        jsonWriter.writeBooleanField("enableCSIProxy", this.enableCSIProxy);
+        jsonWriter.writeBooleanField("enableCSIProxy", this.enableCsiProxy);
         jsonWriter.writeJsonField("gmsaProfile", this.gmsaProfile);
         return jsonWriter.writeEndObject();
     }
@@ -237,7 +237,7 @@ public final class ManagedClusterWindowsProfile implements JsonSerializable<Mana
                 } else if ("licenseType".equals(fieldName)) {
                     deserializedManagedClusterWindowsProfile.licenseType = LicenseType.fromString(reader.getString());
                 } else if ("enableCSIProxy".equals(fieldName)) {
-                    deserializedManagedClusterWindowsProfile.enableCSIProxy
+                    deserializedManagedClusterWindowsProfile.enableCsiProxy
                         = reader.getNullable(JsonReader::getBoolean);
                 } else if ("gmsaProfile".equals(fieldName)) {
                     deserializedManagedClusterWindowsProfile.gmsaProfile = WindowsGmsaProfile.fromJson(reader);

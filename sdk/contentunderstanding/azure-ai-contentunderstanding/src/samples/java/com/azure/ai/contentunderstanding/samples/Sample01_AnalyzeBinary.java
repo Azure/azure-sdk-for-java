@@ -8,6 +8,7 @@ import com.azure.ai.contentunderstanding.ContentUnderstandingClient;
 import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
 import com.azure.ai.contentunderstanding.models.AnalysisResult;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzerAnalyzeOperationStatus;
+import com.azure.ai.contentunderstanding.models.ContentRange;
 import com.azure.ai.contentunderstanding.models.DocumentContent;
 import com.azure.ai.contentunderstanding.models.DocumentPage;
 import com.azure.ai.contentunderstanding.models.DocumentTable;
@@ -29,6 +30,7 @@ import java.nio.file.Paths;
  * 2. Analyzing the document
  * 3. Extracting markdown content
  * 4. Accessing document properties (pages, tables, etc.)
+ * 5. Using ContentRange to analyze specific pages
  */
 public class Sample01_AnalyzeBinary {
 
@@ -126,5 +128,79 @@ public class Sample01_AnalyzeBinary {
         // END:ContentUnderstandingAccessDocumentProperties
 
         System.out.println("\nBinary document analysis completed successfully");
+
+        // Demonstrate ContentRange usage with a multi-page document
+        System.out.println("\n--- ContentRange Examples ---");
+        analyzeBinaryWithContentRange(client);
+    }
+
+    /**
+     * Sample demonstrating how to use ContentRange to analyze specific pages of a binary document.
+     * ContentRange allows you to specify which pages to analyze instead of the entire document.
+     */
+    public static void analyzeBinaryWithContentRange(ContentUnderstandingClient client) {
+        try {
+            // Load a multi-page document (10 pages)
+            String multiPageFilePath = "src/samples/resources/mixed_financial_invoices.pdf";
+            Path multiPagePath = Paths.get(multiPageFilePath);
+            byte[] multiPageBytes = Files.readAllBytes(multiPagePath);
+            BinaryData multiPageData = BinaryData.fromBytes(multiPageBytes);
+
+            // BEGIN:ContentUnderstandingAnalyzeBinaryWithContentRange
+            // Analyze a single page using ContentRange.page()
+            SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> pageOperation
+                = client.beginAnalyzeBinary("prebuilt-documentSearch", multiPageData,
+                    ContentRange.page(2), "application/octet-stream", null);
+            DocumentContent pageDoc = (DocumentContent) pageOperation.getFinalResult().getContents().get(0);
+            System.out.println("Page(2): returned " + pageDoc.getPages().size() + " page"
+                + " (page " + pageDoc.getStartPageNumber() + ")");
+
+            // Analyze a page range using ContentRange.pages()
+            SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> pagesOperation
+                = client.beginAnalyzeBinary("prebuilt-documentSearch", multiPageData,
+                    ContentRange.pages(1, 3), "application/octet-stream", null);
+            DocumentContent pagesDoc = (DocumentContent) pagesOperation.getFinalResult().getContents().get(0);
+            System.out.println("Pages(1,3): returned " + pagesDoc.getPages().size() + " pages"
+                + " (pages " + pagesDoc.getStartPageNumber() + "-" + pagesDoc.getEndPageNumber() + ")");
+
+            // Combine multiple ranges using ContentRange.combine()
+            SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> combineOperation
+                = client.beginAnalyzeBinary("prebuilt-documentSearch", multiPageData,
+                    ContentRange.combine(
+                        ContentRange.page(1),
+                        ContentRange.pages(3, 4)),
+                    "application/octet-stream", null);
+            DocumentContent combineDoc = (DocumentContent) combineOperation.getFinalResult().getContents().get(0);
+            System.out.println("Combine(Page(1), Pages(3,4)): returned " + combineDoc.getPages().size() + " pages"
+                + " (pages " + combineDoc.getStartPageNumber() + "-" + combineDoc.getEndPageNumber() + ")");
+
+            // Analyze only pages 3 to end using ContentRange.pagesFrom()
+            SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> rangeOperation
+                = client.beginAnalyzeBinary("prebuilt-documentSearch", multiPageData,
+                    ContentRange.pagesFrom(3), "application/octet-stream", null);
+            AnalysisResult rangeResult = rangeOperation.getFinalResult();
+
+            DocumentContent rangeDoc = (DocumentContent) rangeResult.getContents().get(0);
+            System.out.println("PagesFrom(3): returned " + rangeDoc.getPages().size() + " pages"
+                + " (pages " + rangeDoc.getStartPageNumber() + "-" + rangeDoc.getEndPageNumber() + ")");
+
+            // Combine multiple page ranges: pages 1-3, page 5, and pages 9 onward
+            SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalysisResult> bigCombineOperation
+                = client.beginAnalyzeBinary("prebuilt-documentSearch", multiPageData,
+                    ContentRange.combine(
+                        ContentRange.pages(1, 3),
+                        ContentRange.page(5),
+                        ContentRange.pagesFrom(9)),
+                    "application/octet-stream", null);
+            DocumentContent bigCombineDoc
+                = (DocumentContent) bigCombineOperation.getFinalResult().getContents().get(0);
+            System.out.println(
+                "Combine(Pages(1,3), Page(5), PagesFrom(9)): returned " + bigCombineDoc.getPages().size() + " pages");
+            // END:ContentUnderstandingAnalyzeBinaryWithContentRange
+
+            System.out.println("ContentRange binary analysis completed successfully");
+        } catch (IOException e) {
+            System.err.println("Error reading multi-page file: " + e.getMessage());
+        }
     }
 }
