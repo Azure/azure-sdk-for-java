@@ -235,10 +235,10 @@ Describe "Get-ServiceAndModuleFromPath" {
         $result.Module | Should -Be "azure-resourcemanager-network"
     }
 
-    It "Should extract service and module from forward-slash path" {
+    It "Should extract service and module from forward-slash path with different repo name" {
         $result = Get-ServiceAndModuleFromPath `
-            -PackagePath "C:/repos/azure-sdk-for-java/sdk/storage/azure-storage-blob" `
-            -SdkRepoPath "C:/repos/azure-sdk-for-java"
+            -PackagePath "C:/repos/my-java-sdk/sdk/storage/azure-storage-blob" `
+            -SdkRepoPath "C:/repos/my-java-sdk"
 
         $result.Service | Should -Be "storage"
         $result.Module | Should -Be "azure-storage-blob"

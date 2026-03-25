@@ -76,7 +76,7 @@ try {
         Update-CiYml -SdkRepoPath $SdkRepoPath -Service $service -Module $module -GroupId $groupId
     }
     else {
-        LogInfo "[CI][Skip] No pom.xml found at package path, skipping ci.yml update"
+        LogError "No pom.xml found at '$packagePomPath'. Cannot determine groupId for ci.yml update."
     }
     LogInfo ""
 
