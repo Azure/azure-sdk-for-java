@@ -14,21 +14,21 @@ public final class SecretAttributesTests {
     public void testDeserialize() throws Exception {
         SecretAttributes model = BinaryData
             .fromString(
-                "{\"enabled\":false,\"nbf\":1601872964,\"exp\":1320056895,\"created\":574519404,\"updated\":175295404}")
+                "{\"enabled\":true,\"nbf\":1187892327,\"exp\":1636536893,\"created\":372795901,\"updated\":733421396}")
             .toObject(SecretAttributes.class);
-        Assertions.assertFalse(model.enabled());
-        Assertions.assertEquals(OffsetDateTime.parse("2020-10-05T04:42:44Z"), model.notBefore());
-        Assertions.assertEquals(OffsetDateTime.parse("2011-10-31T10:28:15Z"), model.expires());
+        Assertions.assertTrue(model.enabled());
+        Assertions.assertEquals(OffsetDateTime.parse("2007-08-23T18:05:27Z"), model.notBefore());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-10T09:34:53Z"), model.expires());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SecretAttributes model = new SecretAttributes().withEnabled(false)
-            .withNotBefore(OffsetDateTime.parse("2020-10-05T04:42:44Z"))
-            .withExpires(OffsetDateTime.parse("2011-10-31T10:28:15Z"));
+        SecretAttributes model = new SecretAttributes().withEnabled(true)
+            .withNotBefore(OffsetDateTime.parse("2007-08-23T18:05:27Z"))
+            .withExpires(OffsetDateTime.parse("2021-11-10T09:34:53Z"));
         model = BinaryData.fromObject(model).toObject(SecretAttributes.class);
-        Assertions.assertFalse(model.enabled());
-        Assertions.assertEquals(OffsetDateTime.parse("2020-10-05T04:42:44Z"), model.notBefore());
-        Assertions.assertEquals(OffsetDateTime.parse("2011-10-31T10:28:15Z"), model.expires());
+        Assertions.assertTrue(model.enabled());
+        Assertions.assertEquals(OffsetDateTime.parse("2007-08-23T18:05:27Z"), model.notBefore());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-10T09:34:53Z"), model.expires());
     }
 }

@@ -12,7 +12,7 @@ import com.azure.resourcemanager.netapp.models.ActiveDirectoryConfigUpdateProper
  */
 public final class ActiveDirectoryConfigsUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/ActiveDirectoryConfigs_Update.json
+     * x-ms-original-file: 2025-12-15-preview/ActiveDirectoryConfigs_Update.json
      */
     /**
      * Sample code: ActiveDirectoryConfigs_Update.

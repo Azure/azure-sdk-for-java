@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.azure.cosmos.rx;
 
 import com.azure.core.credential.AzureKeyCredential;
@@ -15,6 +16,9 @@ import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDatabase;
 import com.azure.cosmos.CosmosDatabaseForTest;
+import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosDiagnosticsContext;
+import com.azure.cosmos.CosmosDiagnosticsRequestInfo;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfigBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.CosmosNettyLeakDetectorFactory;
@@ -27,7 +31,6 @@ import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.Database;
-import com.azure.cosmos.implementation.DatabaseForTest;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.FailureValidator;
@@ -35,7 +38,6 @@ import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalObjectNode;
-import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyHelper;
 import com.azure.cosmos.implementation.Permission;
 import com.azure.cosmos.implementation.QueryFeedOperationState;
@@ -43,7 +45,6 @@ import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.ResourceResponseValidator;
-import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.TestUtils;
 import com.azure.cosmos.implementation.User;
@@ -96,11 +97,13 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
+import reactor.util.retry.Retry;
 
 import java.io.ByteArrayOutputStream;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -117,6 +120,7 @@ import static org.mockito.Mockito.spy;
 
 public abstract class TestSuiteBase extends CosmosAsyncClientTest {
 
+    protected static final String THIN_CLIENT_ENDPOINT_INDICATOR = ":10250/";
     private static final int DEFAULT_BULK_INSERT_CONCURRENCY_LEVEL = 5;
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private static final CosmosItemRequestOptions DEFAULT_DELETE_ITEM_OPTIONS = new CosmosItemRequestOptions()
@@ -133,6 +137,42 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
     protected static final int SUITE_SHUTDOWN_TIMEOUT = 60000;
 
     protected static final int WAIT_REPLICA_CATCH_UP_IN_MILLIS = 4000;
+
+    private static boolean isTransientCreateFailure(Throwable t) {
+        if (t instanceof CosmosException) {
+            int statusCode = ((CosmosException) t).getStatusCode();
+            return statusCode == 408 || statusCode == 429;
+        }
+        return false;
+    }
+
+    private static boolean isConflictException(Throwable t) {
+        return t instanceof CosmosException && ((CosmosException) t).getStatusCode() == 409;
+    }
+
+    /**
+     * Executes an action with retry logic for transient failures in @BeforeClass setup methods.
+     * Retries up to maxRetries times with increasing backoff (1s, 2s, 3s...).
+     *
+     * @param action   the action to execute
+     * @param maxRetries maximum number of retries
+     * @param context  description for logging (e.g., test class name)
+     */
+    protected static void executeWithRetry(Runnable action, int maxRetries, String context) {
+        for (int i = 0; i < maxRetries; i++) {
+            try {
+                action.run();
+                return;
+            } catch (Exception e) {
+                if (i < maxRetries - 1) {
+                    logger.warn("Retrying {} after failure (attempt {}): {}", context, i + 1, e.getMessage());
+                    try { Thread.sleep(1000L * (i + 1)); } catch (InterruptedException ie) { Thread.currentThread().interrupt(); }
+                } else {
+                    throw e;
+                }
+            }
+        }
+    }
 
     protected final static ConsistencyLevel accountConsistency;
     protected static final ImmutableList<String> preferredLocations;
@@ -285,6 +325,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
             SHARED_DATABASE_INTERNAL.setId(databaseId);
             SHARED_DATABASE_INTERNAL.setResourceId(databaseResourceId);
             SHARED_DATABASE_INTERNAL.setSelfLink(String.format("dbs/%s", databaseId));
+            SHARED_DATABASE_INTERNAL.setAltLink(String.format("dbs/%s", databaseId));
 
             SHARED_MULTI_PARTITION_COLLECTION_INTERNAL = getInternalDocumentCollection(SHARED_MULTI_PARTITION_COLLECTION, databaseId);
             SHARED_SINGLE_PARTITION_COLLECTION_INTERNAL = getInternalDocumentCollection(SHARED_SINGLE_PARTITION_COLLECTION, databaseId);
@@ -506,7 +547,14 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
 
     public static CosmosAsyncContainer createCollection(CosmosAsyncDatabase database, CosmosContainerProperties cosmosContainerProperties,
                                                         CosmosContainerRequestOptions options, int throughput) {
-        database.createContainer(cosmosContainerProperties, ThroughputProperties.createManualThroughput(throughput), options).block();
+        database.createContainer(cosmosContainerProperties, ThroughputProperties.createManualThroughput(throughput), options)
+            .retryWhen(Retry.fixedDelay(3, Duration.ofSeconds(5))
+                .filter(TestSuiteBase::isTransientCreateFailure))
+            .onErrorResume(e -> isConflictException(e), e -> {
+                logger.warn("Container {} already exists (409 Conflict), treating as success", cosmosContainerProperties.getId());
+                return Mono.empty();
+            })
+            .block();
 
         // Creating a container is async - especially on multi-partition or multi-region accounts
         CosmosAsyncClient client = ImplementationBridgeHelpers
@@ -530,7 +578,14 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
 
     public static CosmosAsyncContainer createCollection(CosmosAsyncDatabase database, CosmosContainerProperties cosmosContainerProperties,
                                                         CosmosContainerRequestOptions options) {
-        database.createContainer(cosmosContainerProperties, options).block();
+        database.createContainer(cosmosContainerProperties, options)
+            .retryWhen(Retry.fixedDelay(3, Duration.ofSeconds(5))
+                .filter(TestSuiteBase::isTransientCreateFailure))
+            .onErrorResume(e -> isConflictException(e), e -> {
+                logger.warn("Container {} already exists (409 Conflict), treating as success", cosmosContainerProperties.getId());
+                return Mono.empty();
+            })
+            .block();
         return database.getContainer(cosmosContainerProperties.getId());
     }
 
@@ -649,7 +704,14 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
 
     public static CosmosAsyncContainer createCollection(CosmosAsyncClient client, String dbId, CosmosContainerProperties collectionDefinition) {
         CosmosAsyncDatabase database = client.getDatabase(dbId);
-        database.createContainer(collectionDefinition).block();
+        database.createContainer(collectionDefinition)
+            .retryWhen(Retry.fixedDelay(3, Duration.ofSeconds(5))
+                .filter(TestSuiteBase::isTransientCreateFailure))
+            .onErrorResume(e -> isConflictException(e), e -> {
+                logger.warn("Container {} already exists (409 Conflict), treating as success", collectionDefinition.getId());
+                return Mono.empty();
+            })
+            .block();
         return database.getContainer(collectionDefinition.getId());
     }
 
@@ -717,7 +779,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
                 return Mono.just(response);
             });
     }
-    
+
     private <T> Flux<CosmosItemResponse<T>> insertUsingPointOperations(CosmosAsyncContainer cosmosContainer,
                                                                        List<T> documentDefinitionList) {
         CosmosItemRequestOptions options = new CosmosItemRequestOptions()
@@ -950,13 +1012,21 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
 
     static private CosmosAsyncDatabase safeCreateDatabase(CosmosAsyncClient client, CosmosDatabaseProperties databaseSettings) {
         safeDeleteDatabase(client.getDatabase(databaseSettings.getId()));
-        client.createDatabase(databaseSettings).block();
+        client.createDatabase(databaseSettings)
+            .retryWhen(Retry.fixedDelay(3, Duration.ofSeconds(5))
+                .filter(TestSuiteBase::isTransientCreateFailure))
+            .onErrorResume(e -> isConflictException(e) ? Mono.empty() : Mono.error(e))
+            .block();
         return client.getDatabase(databaseSettings.getId());
     }
 
     static protected CosmosAsyncDatabase createDatabase(CosmosAsyncClient client, String databaseId) {
         CosmosDatabaseProperties databaseSettings = new CosmosDatabaseProperties(databaseId);
-        client.createDatabase(databaseSettings).block();
+        client.createDatabase(databaseSettings)
+            .retryWhen(Retry.fixedDelay(3, Duration.ofSeconds(5))
+                .filter(TestSuiteBase::isTransientCreateFailure))
+            .onErrorResume(e -> isConflictException(e) ? Mono.empty() : Mono.error(e))
+            .block();
         return client.getDatabase(databaseSettings.getId());
     }
 
@@ -981,7 +1051,10 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
             return database;
         } else {
             CosmosDatabaseProperties databaseSettings = new CosmosDatabaseProperties(databaseId);
-            client.createDatabase(databaseSettings).block();
+            client.createDatabase(databaseSettings)
+                .retryWhen(Retry.fixedDelay(3, Duration.ofSeconds(5))
+                    .filter(TestSuiteBase::isTransientCreateFailure))
+                .block();
             return client.getDatabase(databaseSettings.getId());
         }
     }
@@ -1009,12 +1082,16 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
 
     static protected void safeDeleteAllCollections(CosmosAsyncDatabase database) {
         if (database != null) {
-            List<CosmosContainerProperties> collections = database.readAllContainers()
-                .collectList()
-                .block();
+            try {
+                List<CosmosContainerProperties> collections = database.readAllContainers()
+                    .collectList()
+                    .block();
 
-            for(CosmosContainerProperties collection: collections) {
-                database.getContainer(collection.getId()).delete().block();
+                for (CosmosContainerProperties collection : collections) {
+                    safeDeleteCollection(database.getContainer(collection.getId()));
+                }
+            } catch (Exception e) {
+                logger.error("failed to delete all collections", e);
             }
         }
     }
@@ -1932,6 +2009,34 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         }
     }
 
+    protected static void assertThinClientEndpointUsed(CosmosDiagnostics diagnostics) {
+        assertThat(diagnostics).isNotNull();
+
+        CosmosDiagnosticsContext ctx = diagnostics.getDiagnosticsContext();
+        assertThat(ctx).isNotNull();
+
+        assertThinClientEndpointUsed(ctx);
+    }
+
+    protected static void assertThinClientEndpointUsed(CosmosDiagnosticsContext ctx) {
+        assertThat(ctx).isNotNull();
+
+        Collection<CosmosDiagnosticsRequestInfo> requests = ctx.getRequestInfo();
+        assertThat(requests).isNotNull();
+        assertThat(requests.size()).isPositive();
+
+        for (CosmosDiagnosticsRequestInfo requestInfo : requests) {
+            if (requestInfo.getEndpoint() != null
+                && requestInfo.getEndpoint().contains(THIN_CLIENT_ENDPOINT_INDICATOR)) {
+                return;
+            }
+        }
+
+        assertThat(false)
+            .as("No request targeting thin client proxy endpoint (" + THIN_CLIENT_ENDPOINT_INDICATOR + ")")
+            .isTrue();
+    }
+
     protected static void safeClose(AsyncDocumentClient client) {
         if (client != null) {
             try {
@@ -1987,6 +2092,12 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     protected static void truncateCollection(DocumentCollection collection) {
+        if (collection == null) {
+            logger.warn("truncateCollection called with null collection - skipping. "
+                + "This likely indicates @BeforeSuite initialization failed.");
+            return;
+        }
+
         logger.info("Truncating DocumentCollection {} ...", collection.getId());
 
         try (CosmosAsyncClient cosmosClient = new CosmosClientBuilder()
@@ -2002,6 +2113,11 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
             logger.info("Truncating DocumentCollection {} documents ...", collection.getId());
 
             String altLink = collection.getAltLink();
+            if (altLink == null) {
+                logger.warn("DocumentCollection {} has null altLink - skipping truncation. "
+                    + "This likely indicates the collection was not properly initialized.", collection.getId());
+                return;
+            }
             // Normalize altLink so both "dbs/.../colls/..." and "/dbs/.../colls/..." are handled consistently.
             String normalizedAltLink = StringUtils.strip(altLink, "/");
             String[] altLinkSegments = normalizedAltLink.split("/");

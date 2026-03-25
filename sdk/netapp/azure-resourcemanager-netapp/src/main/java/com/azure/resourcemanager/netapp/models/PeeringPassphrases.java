@@ -32,6 +32,14 @@ public interface PeeringPassphrases {
     String vserverPeeringCommand();
 
     /**
+     * Gets the criticalWarning property: Warnings that are critical for the cluster peering and vserver peering
+     * processes.
+     * 
+     * @return the criticalWarning value.
+     */
+    String criticalWarning();
+
+    /**
      * Gets the inner com.azure.resourcemanager.netapp.fluent.models.PeeringPassphrasesInner object.
      * 
      * @return the inner object.

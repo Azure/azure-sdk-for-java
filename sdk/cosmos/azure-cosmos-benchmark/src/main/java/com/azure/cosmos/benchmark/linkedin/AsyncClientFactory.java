@@ -10,8 +10,11 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.ThrottlingRetryOptions;
-import com.azure.cosmos.benchmark.Configuration;
+import com.azure.cosmos.benchmark.TenantWorkloadConfig;
+import com.azure.cosmos.models.CosmosClientTelemetryConfig;
+import com.azure.cosmos.models.CosmosMicrometerMetricsOptions;
 import com.google.common.base.Preconditions;
+import io.micrometer.core.instrument.MeterRegistry;
 import java.time.Duration;
 
 
@@ -38,10 +41,10 @@ public class AsyncClientFactory {
     /**
      * Builds a Cosmos async client using the configuration options defined
      *
-     * @param cfg Configuration encapsulating options for configuring the AsyncClient
-     * @return CosmosAsyncClient initialized using the parameters in the Configuration
+     * @param cfg TenantWorkloadConfig encapsulating options for configuring the AsyncClient
+     * @return CosmosAsyncClient initialized using the parameters in the TenantWorkloadConfig
      */
-    public static CosmosAsyncClient buildAsyncClient(final Configuration cfg) {
+    public static CosmosAsyncClient buildAsyncClient(final TenantWorkloadConfig cfg) {
         Preconditions.checkNotNull(cfg, "The Workload configuration defining the parameters can not be null");
         final CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
             .endpoint(cfg.getServiceEndpoint())
@@ -57,6 +60,16 @@ public class AsyncClientFactory {
             cosmosClientBuilder.gatewayMode(GATEWAY_CONNECTION_CONFIG);
         }
 
+        // Inject shared micrometer registry for SDK telemetry if available
+        MeterRegistry registry = cfg.getCosmosMicrometerRegistry();
+        if (registry != null) {
+            CosmosClientTelemetryConfig telemetryConfig = new CosmosClientTelemetryConfig()
+                .metricsOptions(new CosmosMicrometerMetricsOptions()
+                    .meterRegistry(registry)
+                    .setEnabled(true));
+            cosmosClientBuilder.clientTelemetryConfig(telemetryConfig);
+        }
+
         return cosmosClientBuilder
             .endpointDiscoveryEnabled(false)
             .multipleWriteRegionsEnabled(false)
@@ -67,10 +80,10 @@ public class AsyncClientFactory {
      * Builds a Cosmos async client used for bulk loading the data in the collection. The throttling
      * and the direct connection configs will be set differently for this.
      *
-     * @param cfg Configuration encapsulating options for configuring the Bulkload AsyncClient
+     * @param cfg TenantWorkloadConfig encapsulating options for configuring the Bulkload AsyncClient
      * @return CosmosAsyncClient for Bulk loading the data into the collection
      */
-    public static CosmosAsyncClient buildBulkLoadAsyncClient(final Configuration cfg) {
+    public static CosmosAsyncClient buildBulkLoadAsyncClient(final TenantWorkloadConfig cfg) {
         Preconditions.checkNotNull(cfg, "The Workload configuration defining the parameters can not be null");
 
         final CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()

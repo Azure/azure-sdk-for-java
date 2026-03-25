@@ -31,12 +31,8 @@ public final class NamespaceAssetsImpl implements NamespaceAssets {
         Context context) {
         Response<NamespaceAssetInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, namespaceName, assetName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new NamespaceAssetImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new NamespaceAssetImpl(inner.getValue(), this.manager()));
     }
 
     public NamespaceAsset get(String resourceGroupName, String namespaceName, String assetName) {

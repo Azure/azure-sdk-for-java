@@ -42,12 +42,8 @@ public final class IscsiPathsImpl implements IscsiPaths {
     public Response<IscsiPath> getWithResponse(String resourceGroupName, String privateCloudName, Context context) {
         Response<IscsiPathInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, privateCloudName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new IscsiPathImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new IscsiPathImpl(inner.getValue(), this.manager()));
     }
 
     public IscsiPath get(String resourceGroupName, String privateCloudName) {

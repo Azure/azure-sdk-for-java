@@ -47,6 +47,33 @@ public interface CdnProfile
     Map<String, CdnEndpoint> endpoints();
 
     /**
+     * Gets latest Azure Front Door endpoints by sending http request.
+     *
+     * @return AFD endpoints in the CDN manager profile, indexed by name
+     */
+    default Map<String, AfdEndpoint> afdEndpoints() {
+        throw new UnsupportedOperationException("[afdEndpoints] is not supported in " + getClass());
+    }
+
+    /**
+     * Gets latest Azure Front Door origin groups by sending http request.
+     *
+     * @return AFD origin groups in the CDN manager profile, indexed by name
+     */
+    default Map<String, OriginGroup> originGroups() {
+        throw new UnsupportedOperationException("[originGroups] is not supported in " + getClass());
+    }
+
+    /**
+     * Gets latest Azure Front Door rule sets by sending http request.
+     *
+     * @return rule sets in the CDN manager profile, indexed by name
+     */
+    default Map<String, RuleSet> ruleSets() {
+        throw new UnsupportedOperationException("[ruleSets] is not supported in " + getClass());
+    }
+
+    /**
      * Generates a dynamic SSO URI used to sign in to the CDN supplemental portal used for advanced management tasks.
      *
      * @return URI used to login to the third party web portal
@@ -193,6 +220,14 @@ public interface CdnProfile
          * The first stage of a CDN profile definition.
          */
         interface Blank extends DefinitionWithRegion<WithGroup> {
+            /**
+             * Specifies that the resource is global/non-regional.
+             *
+             * @return the next stage of the definition.
+             */
+            default WithGroup withGlobal() {
+                throw new UnsupportedOperationException("[withGlobal] is not supported in " + getClass());
+            }
         }
 
         /**
@@ -214,8 +249,7 @@ public interface CdnProfile
              *             Azure CDN Standard from Akamai profiles still active on 31 October 2023 will be migrated
              *             by Azure CDN product engineering to another Azure CDN profile with feature and pricing parity
              *             beginning 1 November 2023.
-             *             Use {@link WithSku#withStandardVerizonSku()} , {@link WithSku#withSku(SkuName)} or
-             *             {@link WithSku#withStandardMicrosoftSku()} instead.
+             *             Use {@link WithSku#withSku(SkuName)} with {@link SkuName#STANDARD_AZURE_FRONT_DOOR} or {@link SkuName#PREMIUM_AZURE_FRONT_DOOR}.Use {@link WithSku#withSku(SkuName)} with {@link SkuName#STANDARD_AZURE_FRONT_DOOR} or {@link SkuName#PREMIUM_AZURE_FRONT_DOOR}.
              */
             @Deprecated
             WithStandardCreate withStandardAkamaiSku();
@@ -224,21 +258,29 @@ public interface CdnProfile
              * Selects the Standard Verizon SKU.
              *
              * @return the next stage of the definition.
+             * @deprecated Use {@link WithSku#withSku(SkuName)} with {@link SkuName#STANDARD_AZURE_FRONT_DOOR} or {@link SkuName#PREMIUM_AZURE_FRONT_DOOR}.
              */
+            @Deprecated
             WithStandardCreate withStandardVerizonSku();
 
             /**
              * Selects the Premium Verizon SKU.
              *
              * @return the next stage of the definition.
+             * @deprecated Use {@link WithSku#withSku(SkuName)} with {@link SkuName#STANDARD_AZURE_FRONT_DOOR} or {@link SkuName#PREMIUM_AZURE_FRONT_DOOR}.
              */
+            @Deprecated
             WithPremiumVerizonCreate withPremiumVerizonSku();
 
             /**
              * Selects the Standard Microsoft SKU.
              *
              * @return the next stage of the definition
+             * @deprecated On September 30th, 2027, Azure CDN Standard from Microsoft (classic) will be retired. To avoid service disruptions, you’ll need to migrate to Azure Front Door Standard or Premium by that date.  
+             *             As a result of this retirement, you’ll no longer be able to create new Azure CDN Standard from Microsoft (classic) resources via the Azure portal, Terraform, or command line tools starting October 1st, 2025. After that date, all new resources will need to be created using Azure Front Door Standard or Premium. 
+             *             Use {@link WithSku#withSku(SkuName)} with {@link SkuName#STANDARD_AZURE_FRONT_DOOR} or {@link SkuName#PREMIUM_AZURE_FRONT_DOOR}.
              */
+            @Deprecated
             WithStandardCreate withStandardMicrosoftSku();
 
             /**
@@ -289,6 +331,36 @@ public interface CdnProfile
             // Why is define() taking more than just the name?
             CdnEndpoint.DefinitionStages.WithStandardAttach<WithStandardCreate> defineNewEndpoint(String name,
                 String endpointOriginHostname);
+
+            /**
+             * Starts the definition of a new Azure Front Door endpoint to be attached to the CDN profile.
+             *
+             * @param name a new endpoint name
+             * @return the first stage of a new AFD endpoint definition
+             */
+            default AfdEndpoint.DefinitionStages.Blank<WithStandardCreate> defineAfdEndpoint(String name) {
+                throw new UnsupportedOperationException("[defineAfdEndpoint] is not supported in " + getClass());
+            }
+
+            /**
+             * Starts the definition of a new Azure Front Door origin group to be attached to the CDN profile.
+             *
+             * @param name a new origin group name
+             * @return the first stage of a new AFD origin group definition
+             */
+            default OriginGroup.DefinitionStages.Blank<WithStandardCreate> defineOriginGroup(String name) {
+                throw new UnsupportedOperationException("[defineOriginGroup] is not supported in " + getClass());
+            }
+
+            /**
+             * Starts the definition of a new Azure Front Door rule set to be attached to the CDN profile.
+             *
+             * @param name a new rule set name
+             * @return the first stage of a new rule set definition
+             */
+            default RuleSet.DefinitionStages.Blank<WithStandardCreate> defineRuleSet(String name) {
+                throw new UnsupportedOperationException("[defineRuleSet] is not supported in " + getClass());
+            }
         }
 
         /**
@@ -385,6 +457,36 @@ public interface CdnProfile
                 String endpointOriginHostname);
 
             /**
+             * Starts the definition of a new Azure Front Door endpoint to be attached to the CDN profile.
+             *
+             * @param name the name for the endpoint
+             * @return the first stage of an endpoint definition
+             */
+            default AfdEndpoint.UpdateDefinitionStages.Blank<Update> defineAfdEndpoint(String name) {
+                throw new UnsupportedOperationException("[defineAfdEndpoint] is not supported in " + getClass());
+            }
+
+            /**
+             * Starts the definition of a new Azure Front Door origin group to be attached to the CDN profile.
+             *
+             * @param name the name for the origin group
+             * @return the first stage of an origin group definition
+             */
+            default OriginGroup.UpdateDefinitionStages.Blank<Update> defineOriginGroup(String name) {
+                throw new UnsupportedOperationException("[defineOriginGroup] is not supported in " + getClass());
+            }
+
+            /**
+             * Starts the definition of a new Azure Front Door rule set to be attached to the CDN profile.
+             *
+             * @param name the name for the rule set
+             * @return the first stage of a rule set definition
+             */
+            default RuleSet.UpdateDefinitionStages.Blank<Update> defineRuleSet(String name) {
+                throw new UnsupportedOperationException("[defineRuleSet] is not supported in " + getClass());
+            }
+
+            /**
              * Adds new endpoint to current Premium Verizon CDN profile.
              *
              * @param endpointOriginHostname the endpoint origin hostname
@@ -428,6 +530,36 @@ public interface CdnProfile
             CdnEndpoint.UpdateStandardEndpoint updateEndpoint(String name);
 
             /**
+             * Begins the description of an update of an existing Azure Front Door endpoint in current profile.
+             *
+             * @param name the name of an existing endpoint
+             * @return the first stage of the update of the endpoint
+             */
+            default AfdEndpoint.Update updateAfdEndpoint(String name) {
+                throw new UnsupportedOperationException("[updateAfdEndpoint] is not supported in " + getClass());
+            }
+
+            /**
+             * Begins the description of an update of an existing Azure Front Door origin group in current profile.
+             *
+             * @param name the name of an existing origin group
+             * @return the first stage of the update of the origin group
+             */
+            default OriginGroup.Update updateOriginGroup(String name) {
+                throw new UnsupportedOperationException("[updateOriginGroup] is not supported in " + getClass());
+            }
+
+            /**
+             * Begins the description of an update of an existing Azure Front Door rule set in current profile.
+             *
+             * @param name the name of an existing rule set
+             * @return the first stage of the update of the rule set
+             */
+            default RuleSet.Update updateRuleSet(String name) {
+                throw new UnsupportedOperationException("[updateRuleSet] is not supported in " + getClass());
+            }
+
+            /**
              * Begins the description of an update of an existing endpoint in current Premium Verizon profile.
              *
              * @param name the name of the endpoint
@@ -442,6 +574,36 @@ public interface CdnProfile
              * @return the next stage of the CDN profile update
              */
             Update withoutEndpoint(String name);
+
+            /**
+             * Removes an Azure Front Door endpoint from the profile.
+             *
+             * @param name the name of an existing endpoint
+             * @return the next stage of the CDN profile update
+             */
+            default Update withoutAfdEndpoint(String name) {
+                throw new UnsupportedOperationException("[withoutAfdEndpoint] is not supported in " + getClass());
+            }
+
+            /**
+             * Removes an Azure Front Door origin group from the profile.
+             *
+             * @param name the name of an existing origin group
+             * @return the next stage of the CDN profile update
+             */
+            default Update withoutOriginGroup(String name) {
+                throw new UnsupportedOperationException("[withoutOriginGroup] is not supported in " + getClass());
+            }
+
+            /**
+             * Removes an Azure Front Door rule set from the profile.
+             *
+             * @param name the name of an existing rule set
+             * @return the next stage of the CDN profile update
+             */
+            default Update withoutRuleSet(String name) {
+                throw new UnsupportedOperationException("[withoutRuleSet] is not supported in " + getClass());
+            }
         }
     }
 

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.netapp.generated;
  */
 public final class ElasticBackupVaultsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/ElasticBackupVaults_Create.json
+     * x-ms-original-file: 2025-12-15-preview/ElasticBackupVaults_Create.json
      */
     /**
      * Sample code: ElasticBackupVaults_CreateOrUpdate.

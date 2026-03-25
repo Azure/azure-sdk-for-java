@@ -24,17 +24,17 @@ public final class MhsmPrivateEndpointConnectionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MhsmPrivateEndpointConnectionInner model = BinaryData.fromString(
-            "{\"properties\":{\"privateEndpoint\":{\"id\":\"jhwuaanozjos\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"l\",\"actionsRequired\":\"None\"},\"provisioningState\":\"Deleting\"},\"tags\":{\"vimjwos\":\"l\",\"tcs\":\"tx\",\"zikhl\":\"fcktqumiekke\",\"gge\":\"fjhdg\"},\"location\":\"unygaeqid\",\"sku\":{\"family\":\"C\",\"name\":\"Custom_B6\"},\"identity\":{\"principalId\":\"4f7d1cb7-39de-4686-85c7-6acf30937a5f\",\"tenantId\":\"9e659eb2-2c7a-4649-a65d-2d3d73e04c70\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"yjmoadsu\":{\"principalId\":\"600f9a1a-1422-4579-a4e4-38d931778864\",\"clientId\":\"78752c6f-f2ab-4ce1-be75-73fd70c17573\"},\"m\":{\"principalId\":\"eea62dd9-dc6f-46b1-8e25-282a9cc3cb3d\",\"clientId\":\"59617818-7974-46b0-954e-9add7b437c01\"},\"mjsjqb\":{\"principalId\":\"363daf75-3d2e-4a06-a8db-806f98e8b2b2\",\"clientId\":\"e8fdf562-373a-4021-89ca-e41f0c8db30e\"}}},\"etag\":\"hyxxrwlycoduhpk\",\"id\":\"gymare\",\"name\":\"n\",\"type\":\"jxqugjhky\"}")
+            "{\"properties\":{\"privateEndpoint\":{\"id\":\"wneaiv\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"lpcirelsf\",\"actionsRequired\":\"None\"},\"provisioningState\":\"Disconnected\"},\"sku\":{\"family\":\"C\",\"name\":\"Custom_C10\"},\"identity\":{\"principalId\":\"c4487c5b-e6e1-4121-8e3a-f12179e3a1a0\",\"tenantId\":\"5e19a59a-83bb-4e2a-aea6-2a41523d4226\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"jhwuaanozjos\":{\"principalId\":\"3d630a68-2a59-4acd-96bd-b642d8a4aa50\",\"clientId\":\"cad70c9c-d9f9-4eb8-8aac-2f4b6f289d45\"},\"oulpjrv\":{\"principalId\":\"2457f700-39d1-4fad-8f05-de3552601a47\",\"clientId\":\"986836d9-cd47-4111-913e-dd9fa8728156\"},\"l\":{\"principalId\":\"e6adc8a2-9733-4012-8e67-9188e1fdebf4\",\"clientId\":\"79989969-d9c3-4978-a606-f41e030f57b6\"},\"mjwosytx\":{\"principalId\":\"594d0d92-d8ac-4921-8d7c-9222a382d5ff\",\"clientId\":\"42c8a2f7-f6ba-428b-941a-0d98cb584813\"}}},\"etag\":\"cskfcktqumiekk\",\"location\":\"zikhl\",\"tags\":{\"unygaeqid\":\"hdgqggeb\",\"a\":\"qfatpxllrxcyjm\",\"arm\":\"su\",\"rw\":\"wdmjsjqbjhhyx\"},\"id\":\"co\",\"name\":\"uhpkxkgymar\",\"type\":\"qnajxqugj\"}")
             .toObject(MhsmPrivateEndpointConnectionInner.class);
-        Assertions.assertEquals("l", model.tags().get("vimjwos"));
-        Assertions.assertEquals("unygaeqid", model.location());
         Assertions.assertEquals(ManagedHsmSkuFamily.C, model.sku().family());
-        Assertions.assertEquals(ManagedHsmSkuName.CUSTOM_B6, model.sku().name());
+        Assertions.assertEquals(ManagedHsmSkuName.CUSTOM_C10, model.sku().name());
         Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("hyxxrwlycoduhpk", model.etag());
-        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED,
+        Assertions.assertEquals("cskfcktqumiekk", model.etag());
+        Assertions.assertEquals("zikhl", model.location());
+        Assertions.assertEquals("hdgqggeb", model.tags().get("unygaeqid"));
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.PENDING,
             model.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("l", model.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("lpcirelsf", model.privateLinkServiceConnectionState().description());
         Assertions.assertEquals(ActionsRequired.NONE, model.privateLinkServiceConnectionState().actionsRequired());
     }
 
@@ -42,28 +42,29 @@ public final class MhsmPrivateEndpointConnectionInnerTests {
     public void testSerialize() throws Exception {
         MhsmPrivateEndpointConnectionInner model
             = new MhsmPrivateEndpointConnectionInner()
-                .withTags(mapOf("vimjwos", "l", "tcs", "tx", "zikhl", "fcktqumiekke", "gge", "fjhdg"))
-                .withLocation("unygaeqid")
-                .withSku(new ManagedHsmSku().withFamily(ManagedHsmSkuFamily.C).withName(ManagedHsmSkuName.CUSTOM_B6))
+                .withSku(new ManagedHsmSku().withFamily(ManagedHsmSkuFamily.C).withName(ManagedHsmSkuName.CUSTOM_C10))
                 .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                    .withUserAssignedIdentities(mapOf("yjmoadsu", new UserAssignedIdentity(), "m",
-                        new UserAssignedIdentity(), "mjsjqb", new UserAssignedIdentity())))
-                .withEtag("hyxxrwlycoduhpk")
+                    .withUserAssignedIdentities(
+                        mapOf("jhwuaanozjos", new UserAssignedIdentity(), "oulpjrv", new UserAssignedIdentity(), "l",
+                            new UserAssignedIdentity(), "mjwosytx", new UserAssignedIdentity())))
+                .withEtag("cskfcktqumiekk")
+                .withLocation("zikhl")
+                .withTags(mapOf("unygaeqid", "hdgqggeb", "a", "qfatpxllrxcyjm", "arm", "su", "rw", "wdmjsjqbjhhyx"))
                 .withPrivateEndpoint(new MhsmPrivateEndpoint())
                 .withPrivateLinkServiceConnectionState(new MhsmPrivateLinkServiceConnectionState()
-                    .withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
-                    .withDescription("l")
+                    .withStatus(PrivateEndpointServiceConnectionStatus.PENDING)
+                    .withDescription("lpcirelsf")
                     .withActionsRequired(ActionsRequired.NONE));
         model = BinaryData.fromObject(model).toObject(MhsmPrivateEndpointConnectionInner.class);
-        Assertions.assertEquals("l", model.tags().get("vimjwos"));
-        Assertions.assertEquals("unygaeqid", model.location());
         Assertions.assertEquals(ManagedHsmSkuFamily.C, model.sku().family());
-        Assertions.assertEquals(ManagedHsmSkuName.CUSTOM_B6, model.sku().name());
+        Assertions.assertEquals(ManagedHsmSkuName.CUSTOM_C10, model.sku().name());
         Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("hyxxrwlycoduhpk", model.etag());
-        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED,
+        Assertions.assertEquals("cskfcktqumiekk", model.etag());
+        Assertions.assertEquals("zikhl", model.location());
+        Assertions.assertEquals("hdgqggeb", model.tags().get("unygaeqid"));
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.PENDING,
             model.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("l", model.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("lpcirelsf", model.privateLinkServiceConnectionState().description());
         Assertions.assertEquals(ActionsRequired.NONE, model.privateLinkServiceConnectionState().actionsRequired());
     }
 

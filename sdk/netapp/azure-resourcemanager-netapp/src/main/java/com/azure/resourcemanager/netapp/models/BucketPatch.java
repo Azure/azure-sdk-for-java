@@ -98,29 +98,6 @@ public final class BucketPatch extends ProxyResource {
     }
 
     /**
-     * Get the path property: The volume path mounted inside the bucket.
-     * 
-     * @return the path value.
-     */
-    public String path() {
-        return this.innerProperties() == null ? null : this.innerProperties().path();
-    }
-
-    /**
-     * Set the path property: The volume path mounted inside the bucket.
-     * 
-     * @param path the path value to set.
-     * @return the BucketPatch object itself.
-     */
-    public BucketPatch withPath(String path) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new BucketPatchProperties();
-        }
-        this.innerProperties().withPath(path);
-        return this;
-    }
-
-    /**
      * Get the fileSystemUser property: File System user having access to volume data. For Unix, this is the user's uid
      * and gid. For Windows, this is the user's username. Note that the Unix and Windows user details are mutually
      * exclusive, meaning one or other must be supplied, but not both.
@@ -199,6 +176,49 @@ public final class BucketPatch extends ProxyResource {
             this.innerProperties = new BucketPatchProperties();
         }
         this.innerProperties().withPermissions(permissions);
+        return this;
+    }
+
+    /**
+     * Get the akvDetails property: Specifies the Azure Key Vault settings. These are used when
+     * a) retrieving the bucket server certificate, and
+     * b) storing the bucket credentials
+     * 
+     * Notes:
+     * 
+     * 1. If a bucket certificate was previously provided directly using the certificateObject property, it is possible
+     * to subsequently use the Azure Key Vault for certificate management by using these 'akvDetails' properties.
+     * However, once Azure Key Vault is configured, it is no longer possible to provide the certificate directly via the
+     * certificateObject property.
+     * 2. These properties are mutually exclusive with the server.certificateObject property.
+     * 
+     * @return the akvDetails value.
+     */
+    public AzureKeyVaultDetails akvDetails() {
+        return this.innerProperties() == null ? null : this.innerProperties().akvDetails();
+    }
+
+    /**
+     * Set the akvDetails property: Specifies the Azure Key Vault settings. These are used when
+     * a) retrieving the bucket server certificate, and
+     * b) storing the bucket credentials
+     * 
+     * Notes:
+     * 
+     * 1. If a bucket certificate was previously provided directly using the certificateObject property, it is possible
+     * to subsequently use the Azure Key Vault for certificate management by using these 'akvDetails' properties.
+     * However, once Azure Key Vault is configured, it is no longer possible to provide the certificate directly via the
+     * certificateObject property.
+     * 2. These properties are mutually exclusive with the server.certificateObject property.
+     * 
+     * @param akvDetails the akvDetails value to set.
+     * @return the BucketPatch object itself.
+     */
+    public BucketPatch withAkvDetails(AzureKeyVaultDetails akvDetails) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BucketPatchProperties();
+        }
+        this.innerProperties().withAkvDetails(akvDetails);
         return this;
     }
 

@@ -4,17 +4,21 @@
 
 package com.azure.resourcemanager.netapp.generated;
 
+import com.azure.resourcemanager.netapp.models.AzureKeyVaultDetails;
 import com.azure.resourcemanager.netapp.models.BucketPermissions;
 import com.azure.resourcemanager.netapp.models.BucketServerProperties;
+import com.azure.resourcemanager.netapp.models.CertificateAkvDetails;
+import com.azure.resourcemanager.netapp.models.CredentialsAkvDetails;
 import com.azure.resourcemanager.netapp.models.FileSystemUser;
 import com.azure.resourcemanager.netapp.models.NfsUser;
+import com.azure.resourcemanager.netapp.models.OnCertificateConflictAction;
 
 /**
  * Samples for Buckets CreateOrUpdate.
  */
 public final class BucketsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-09-01-preview/Buckets_CreateOrUpdate.json
+     * x-ms-original-file: 2025-12-15-preview/Buckets_CreateOrUpdate.json
      */
     /**
      * Sample code: Buckets_CreateOrUpdate.
@@ -28,8 +32,36 @@ public final class BucketsCreateOrUpdateSamples {
             .withPath("/path")
             .withFileSystemUser(new FileSystemUser().withNfsUser(new NfsUser().withUserId(1001L).withGroupId(1000L)))
             .withServer(new BucketServerProperties().withFqdn("fullyqualified.domainname.com")
-                .withCertificateObject("<REDACTED>"))
+                .withCertificateObject("<REDACTED>")
+                .withOnCertificateConflictAction(OnCertificateConflictAction.UPDATE))
             .withPermissions(BucketPermissions.READ_ONLY)
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2025-12-15-preview/Buckets_CreateOrUpdateWithAkv.json
+     */
+    /**
+     * Sample code: Buckets_CreateOrUpdateWithAkv.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void bucketsCreateOrUpdateWithAkv(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.buckets()
+            .define("bucket1")
+            .withExistingVolume("myRG", "account1", "pool1", "volume1")
+            .withPath("/path")
+            .withFileSystemUser(new FileSystemUser().withNfsUser(new NfsUser().withUserId(1001L).withGroupId(1000L)))
+            .withServer(new BucketServerProperties().withFqdn("fullyqualified.domainname.com")
+                .withOnCertificateConflictAction(OnCertificateConflictAction.FAIL))
+            .withPermissions(BucketPermissions.READ_ONLY)
+            .withAkvDetails(new AzureKeyVaultDetails()
+                .withCertificateAkvDetails(
+                    new CertificateAkvDetails().withCertificateKeyVaultUri("fakeTokenPlaceholder")
+                        .withCertificateName("my-certificate"))
+                .withCredentialsAkvDetails(
+                    new CredentialsAkvDetails().withCredentialsKeyVaultUri("fakeTokenPlaceholder")
+                        .withSecretName("fakeTokenPlaceholder")))
             .create();
     }
 }

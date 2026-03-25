@@ -1,0 +1,39 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "httpbin",
+    "version": "1.0.0",
+    "description": "A simple HTTP request/response service"
+  },
+  "servers": [
+    {
+      "url": "https://httpbin.org"
+    }
+  ],
+  "paths": {
+    "/get": {
+      "get": {
+        "operationId": "httpbin_get",
+        "summary": "Returns the GET request data including headers, origin IP, and URL",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "args": { "type": "object" },
+                    "headers": { "type": "object" },
+                    "origin": { "type": "string" },
+                    "url": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -29,6 +29,7 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.disconnectedoperations.fluent.ArtifactsClient;
 import com.azure.resourcemanager.disconnectedoperations.fluent.DisconnectedOperationsClient;
 import com.azure.resourcemanager.disconnectedoperations.fluent.DisconnectedOperationsManagementClient;
+import com.azure.resourcemanager.disconnectedoperations.fluent.HardwareSettingsClient;
 import com.azure.resourcemanager.disconnectedoperations.fluent.ImagesClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -171,6 +172,20 @@ public final class DisconnectedOperationsManagementClientImpl implements Disconn
     }
 
     /**
+     * The HardwareSettingsClient object to access its operations.
+     */
+    private final HardwareSettingsClient hardwareSettings;
+
+    /**
+     * Gets the HardwareSettingsClient object to access its operations.
+     * 
+     * @return the HardwareSettingsClient object.
+     */
+    public HardwareSettingsClient getHardwareSettings() {
+        return this.hardwareSettings;
+    }
+
+    /**
      * Initializes an instance of DisconnectedOperationsManagementClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
@@ -187,10 +202,11 @@ public final class DisconnectedOperationsManagementClientImpl implements Disconn
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-06-01-preview";
+        this.apiVersion = "2026-03-15";
         this.disconnectedOperations = new DisconnectedOperationsClientImpl(this);
         this.images = new ImagesClientImpl(this);
         this.artifacts = new ArtifactsClientImpl(this);
+        this.hardwareSettings = new HardwareSettingsClientImpl(this);
     }
 
     /**

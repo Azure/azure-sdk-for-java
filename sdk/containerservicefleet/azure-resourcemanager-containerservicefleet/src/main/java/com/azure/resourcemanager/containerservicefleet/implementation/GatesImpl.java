@@ -32,12 +32,8 @@ public final class GatesImpl implements Gates {
         Context context) {
         Response<GateInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, fleetName, gateName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new GateImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new GateImpl(inner.getValue(), this.manager()));
     }
 
     public Gate get(String resourceGroupName, String fleetName, String gateName) {
@@ -74,8 +70,10 @@ public final class GatesImpl implements Gates {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new GateImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Gate> listByFleet(String resourceGroupName, String fleetName, Context context) {
-        PagedIterable<GateInner> inner = this.serviceClient().listByFleet(resourceGroupName, fleetName, context);
+    public PagedIterable<Gate> listByFleet(String resourceGroupName, String fleetName, String filter, Integer top,
+        String skipToken, Context context) {
+        PagedIterable<GateInner> inner
+            = this.serviceClient().listByFleet(resourceGroupName, fleetName, filter, top, skipToken, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new GateImpl(inner1, this.manager()));
     }
 

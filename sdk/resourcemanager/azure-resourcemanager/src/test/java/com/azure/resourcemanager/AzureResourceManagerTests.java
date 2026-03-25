@@ -1086,6 +1086,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestProxyTestBase 
         new TestRedis().runTest(azureResourceManager.redisCaches(), azureResourceManager.resourceGroups());
     }
 
+    @Disabled("CDN deprecated all Microsoft based Sku. Now it uses Azure Front Door in Sku")
     @Test
     public void testCdnManager() throws Exception {
         new TestCdn().runTest(azureResourceManager.cdnProfiles(), azureResourceManager.resourceGroups());

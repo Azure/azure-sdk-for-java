@@ -39,9 +39,12 @@ public class TransactionalBatchTest extends BatchTestBase {
     @BeforeClass(groups = {"fast"}, timeOut = SETUP_TIMEOUT)
     public void before_TransactionalBatchTest() {
         assertThat(this.batchClient).isNull();
-        this.batchClient = getClientBuilder().buildClient();
-        CosmosAsyncContainer batchAsyncContainer = getSharedMultiPartitionCosmosContainer(this.batchClient.asyncClient());
-        batchContainer = batchClient.getDatabase(batchAsyncContainer.getDatabase().getId()).getContainer(batchAsyncContainer.getId());
+        executeWithRetry(() -> {
+            safeCloseSyncClient(this.batchClient);
+            this.batchClient = getClientBuilder().buildClient();
+            CosmosAsyncContainer batchAsyncContainer = getSharedMultiPartitionCosmosContainer(this.batchClient.asyncClient());
+            batchContainer = batchClient.getDatabase(batchAsyncContainer.getDatabase().getId()).getContainer(batchAsyncContainer.getId());
+        }, 3, "TransactionalBatchTest setup");
     }
 
     @AfterClass(groups = {"fast"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)

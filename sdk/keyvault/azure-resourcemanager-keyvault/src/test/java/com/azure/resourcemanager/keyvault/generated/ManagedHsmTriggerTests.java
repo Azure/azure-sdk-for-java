@@ -11,17 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class ManagedHsmTriggerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagedHsmTrigger model = BinaryData.fromString("{\"timeAfterCreate\":\"euyowqkd\",\"timeBeforeExpiry\":\"t\"}")
-            .toObject(ManagedHsmTrigger.class);
-        Assertions.assertEquals("euyowqkd", model.timeAfterCreate());
-        Assertions.assertEquals("t", model.timeBeforeExpiry());
+        ManagedHsmTrigger model
+            = BinaryData.fromString("{\"timeAfterCreate\":\"sjq\",\"timeBeforeExpiry\":\"krribdeibqi\"}")
+                .toObject(ManagedHsmTrigger.class);
+        Assertions.assertEquals("sjq", model.timeAfterCreate());
+        Assertions.assertEquals("krribdeibqi", model.timeBeforeExpiry());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedHsmTrigger model = new ManagedHsmTrigger().withTimeAfterCreate("euyowqkd").withTimeBeforeExpiry("t");
+        ManagedHsmTrigger model
+            = new ManagedHsmTrigger().withTimeAfterCreate("sjq").withTimeBeforeExpiry("krribdeibqi");
         model = BinaryData.fromObject(model).toObject(ManagedHsmTrigger.class);
-        Assertions.assertEquals("euyowqkd", model.timeAfterCreate());
-        Assertions.assertEquals("t", model.timeBeforeExpiry());
+        Assertions.assertEquals("sjq", model.timeAfterCreate());
+        Assertions.assertEquals("krribdeibqi", model.timeBeforeExpiry());
     }
 }

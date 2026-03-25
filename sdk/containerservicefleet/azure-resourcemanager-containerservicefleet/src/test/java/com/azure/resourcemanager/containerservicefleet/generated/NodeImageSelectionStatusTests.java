@@ -11,7 +11,7 @@ public final class NodeImageSelectionStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NodeImageSelectionStatus model = BinaryData.fromString(
-            "{\"selectedNodeImageVersions\":[{\"version\":\"xzb\"},{\"version\":\"blylpstdbh\"},{\"version\":\"srzdzucerscdn\"},{\"version\":\"evfiwjmygt\"}]}")
+            "{\"selectedNodeImageVersions\":[{\"version\":\"xpbtgiwbwo\"},{\"version\":\"washr\"},{\"version\":\"tkcnqxwb\"}]}")
             .toObject(NodeImageSelectionStatus.class);
     }
 }

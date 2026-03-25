@@ -622,7 +622,7 @@ public final class NetAppManagementClientImpl implements NetAppManagementClient 
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-09-01-preview";
+        this.apiVersion = "2025-12-15-preview";
         this.operations = new OperationsClientImpl(this);
         this.netAppResourceQuotaLimitsAccounts = new NetAppResourceQuotaLimitsAccountsClientImpl(this);
         this.volumeGroups = new VolumeGroupsClientImpl(this);

@@ -3,6 +3,7 @@
 ## 12.30.0-beta.2 (Unreleased)
 
 ### Features Added
+- Added support for uploading up to 4 MiB of data with create file APIs.
 
 ### Breaking Changes
 

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.servicefabricmanagedclusters.generated;
  */
 public final class ApplicationsStartRollbackSamples {
     /*
-     * x-ms-original-file: 2025-10-01-preview/ApplicationActionStartRollback_example.json
+     * x-ms-original-file: 2026-02-01/ApplicationActionStartRollback_example.json
      */
     /**
      * Sample code: Start an application upgrade rollback.

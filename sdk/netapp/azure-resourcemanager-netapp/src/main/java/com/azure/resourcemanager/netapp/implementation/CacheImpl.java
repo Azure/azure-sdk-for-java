@@ -188,6 +188,14 @@ public final class CacheImpl implements Cache, Cache.Definition, Cache.Update {
         serviceManager.caches().poolChange(resourceGroupName, accountName, poolName, cacheName, body, context);
     }
 
+    public void resetSmbPassword() {
+        serviceManager.caches().resetSmbPassword(resourceGroupName, accountName, poolName, cacheName);
+    }
+
+    public void resetSmbPassword(Context context) {
+        serviceManager.caches().resetSmbPassword(resourceGroupName, accountName, poolName, cacheName, context);
+    }
+
     public CacheImpl withRegion(Region location) {
         this.innerModel().withLocation(location.toString());
         return this;

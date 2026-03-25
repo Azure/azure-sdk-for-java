@@ -9,7 +9,7 @@ package com.azure.resourcemanager.servicefabricmanagedclusters.generated;
  */
 public final class NodeTypesGetSamples {
     /*
-     * x-ms-original-file: 2025-10-01-preview/NodeTypeGetOperation_example.json
+     * x-ms-original-file: 2026-02-01/NodeTypeGetOperation_example.json
      */
     /**
      * Sample code: Get a node type.

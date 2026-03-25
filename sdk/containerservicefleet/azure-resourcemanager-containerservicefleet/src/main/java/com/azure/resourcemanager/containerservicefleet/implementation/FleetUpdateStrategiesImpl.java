@@ -31,12 +31,8 @@ public final class FleetUpdateStrategiesImpl implements FleetUpdateStrategies {
         String updateStrategyName, Context context) {
         Response<FleetUpdateStrategyInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, fleetName, updateStrategyName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new FleetUpdateStrategyImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new FleetUpdateStrategyImpl(inner.getValue(), this.manager()));
     }
 
     public FleetUpdateStrategy get(String resourceGroupName, String fleetName, String updateStrategyName) {
@@ -62,9 +58,10 @@ public final class FleetUpdateStrategiesImpl implements FleetUpdateStrategies {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new FleetUpdateStrategyImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<FleetUpdateStrategy> listByFleet(String resourceGroupName, String fleetName, Context context) {
+    public PagedIterable<FleetUpdateStrategy> listByFleet(String resourceGroupName, String fleetName, Integer top,
+        String skipToken, Context context) {
         PagedIterable<FleetUpdateStrategyInner> inner
-            = this.serviceClient().listByFleet(resourceGroupName, fleetName, context);
+            = this.serviceClient().listByFleet(resourceGroupName, fleetName, top, skipToken, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new FleetUpdateStrategyImpl(inner1, this.manager()));
     }
 

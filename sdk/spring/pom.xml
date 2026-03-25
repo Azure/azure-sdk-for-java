@@ -139,6 +139,7 @@
     <profile>
       <id>monitor</id>
       <modules>
+        <module>../tools/linting-extensions</module>
         <module>spring-cloud-azure-starter-monitor</module>
         <module>spring-cloud-azure-starter-monitor-test</module>
       </modules>

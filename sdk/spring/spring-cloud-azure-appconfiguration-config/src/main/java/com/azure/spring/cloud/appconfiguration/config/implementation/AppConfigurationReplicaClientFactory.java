@@ -108,16 +108,6 @@ public class AppConfigurationReplicaClientFactory {
     }
 
     /**
-     * Sets the current active replica for a configuration store.
-     * 
-     * @param originEndpoint the origin configuration store endpoint
-     * @param replicaEndpoint the replica endpoint that was successfully connected to
-     */
-    void setCurrentConfigStoreClient(String originEndpoint, String replicaEndpoint) {
-        CONNECTIONS.get(originEndpoint).setCurrentClient(replicaEndpoint);
-    }
-
-    /**
      * Updates the sync token for a specific replica endpoint.
      * 
      * @param originEndpoint the origin configuration store endpoint

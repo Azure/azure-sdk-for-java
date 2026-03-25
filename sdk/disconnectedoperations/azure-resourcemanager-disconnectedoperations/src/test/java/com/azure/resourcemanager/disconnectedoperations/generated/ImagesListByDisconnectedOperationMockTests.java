@@ -21,7 +21,7 @@ public final class ImagesListByDisconnectedOperationMockTests {
     @Test
     public void testListByDisconnectedOperation() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"releaseVersion\":\"npzaoq\",\"releaseDisplayName\":\"uhrhcffcyddgl\",\"releaseNotes\":\"jthjqkwpyei\",\"releaseType\":\"Install\",\"compatibleVersions\":[\"ciwqvhk\",\"ixuigdtopbobj\",\"ghmewuam\",\"uhrzayvvt\"]},\"id\":\"vdfgiotk\",\"name\":\"tutqxlngxlefgug\",\"type\":\"xkrxdqmi\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"releaseVersion\":\"shxmzsbbzoggigrx\",\"releaseDisplayName\":\"burvjxxjnspy\",\"releaseNotes\":\"ptkoenkoukn\",\"releaseType\":\"Update\",\"compatibleVersions\":[\"tiukbldngkpoci\",\"azyxoegukg\",\"npiucgygevqznty\"],\"updateProperties\":{\"systemReboot\":\"Required\",\"securityUpdates\":\"bpizcdrqjsdpydn\",\"osVersion\":\"yhxdeoejzicwi\",\"agentVersion\":\"sjttgzfbish\",\"featureUpdates\":\"bkh\"}},\"id\":\"deyeamdphagalpbu\",\"name\":\"wgipwhono\",\"type\":\"kgshwa\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class ImagesListByDisconnectedOperationMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Image> response = manager.images()
-            .listByDisconnectedOperation("ocjjxhvpmouexh", "zxibqeoj", "xqbzvddntwnd", 484528081, 1078998953,
+            .listByDisconnectedOperation("vleggzfbuhfmvfax", "ffeii", "hl", 63986979, 504857780,
                 com.azure.core.util.Context.NONE);
 
     }

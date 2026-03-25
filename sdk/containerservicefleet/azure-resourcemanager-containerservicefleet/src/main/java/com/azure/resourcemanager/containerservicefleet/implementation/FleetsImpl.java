@@ -32,12 +32,8 @@ public final class FleetsImpl implements Fleets {
     public Response<Fleet> getByResourceGroupWithResponse(String resourceGroupName, String fleetName, Context context) {
         Response<FleetInner> inner
             = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, fleetName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new FleetImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new FleetImpl(inner.getValue(), this.manager()));
     }
 
     public Fleet getByResourceGroup(String resourceGroupName, String fleetName) {
@@ -72,8 +68,8 @@ public final class FleetsImpl implements Fleets {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new FleetImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Fleet> list(Context context) {
-        PagedIterable<FleetInner> inner = this.serviceClient().list(context);
+    public PagedIterable<Fleet> list(Integer top, String skipToken, Context context) {
+        PagedIterable<FleetInner> inner = this.serviceClient().list(top, skipToken, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new FleetImpl(inner1, this.manager()));
     }
 
@@ -81,12 +77,8 @@ public final class FleetsImpl implements Fleets {
         Context context) {
         Response<FleetCredentialResultsInner> inner
             = this.serviceClient().listCredentialsWithResponse(resourceGroupName, fleetName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new FleetCredentialResultsImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+        return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+            new FleetCredentialResultsImpl(inner.getValue(), this.manager()));
     }
 
     public FleetCredentialResults listCredentials(String resourceGroupName, String fleetName) {

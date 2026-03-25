@@ -54,4 +54,10 @@ public final class ImageGenToolModel extends ExpandableStringEnum<ImageGenToolMo
     public static Collection<ImageGenToolModel> values() {
         return values(ImageGenToolModel.class);
     }
+
+    /**
+     * Static value gpt-image-1.5 for ImageGenToolModel.
+     */
+    @Generated
+    public static final ImageGenToolModel GPT_IMAGE_1_5 = fromString("gpt-image-1.5");
 }

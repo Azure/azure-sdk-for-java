@@ -29,6 +29,7 @@ import com.azure.cosmos.implementation.batch.BatchResponseParser;
 import com.azure.cosmos.implementation.batch.PartitionKeyRangeServerBatchRequest;
 import com.azure.cosmos.implementation.batch.ServerBatchRequest;
 import com.azure.cosmos.implementation.batch.SinglePartitionKeyServerBatchRequest;
+import com.azure.cosmos.implementation.caches.AsyncCache;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
@@ -829,14 +830,25 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.resetSessionContainerIfNeeded(databaseAccountSnapshot);
 
             if (metadataCachesSnapshot != null) {
-                this.collectionCache = new RxClientCollectionCache(this,
-                    this.sessionContainer,
-                    this.gatewayProxy,
-                    this,
-                    this.retryPolicy,
-                    metadataCachesSnapshot.getCollectionInfoByNameCache(),
-                    metadataCachesSnapshot.getCollectionInfoByIdCache()
-                );
+                AsyncCache<String, DocumentCollection> nameCache = metadataCachesSnapshot.getCollectionInfoByNameCache();
+                AsyncCache<String, DocumentCollection> idCache = metadataCachesSnapshot.getCollectionInfoByIdCache();
+                if (nameCache != null && idCache != null) {
+                    this.collectionCache = new RxClientCollectionCache(this,
+                        this.sessionContainer,
+                        this.gatewayProxy,
+                        this,
+                        this.retryPolicy,
+                        nameCache,
+                        idCache
+                    );
+                } else {
+                    // Cache data could not be deserialized (e.g., old format); fall back to fresh fetch
+                    this.collectionCache = new RxClientCollectionCache(this,
+                        this.sessionContainer,
+                        this.gatewayProxy,
+                        this,
+                        this.retryPolicy);
+                }
             } else {
                 this.collectionCache = new RxClientCollectionCache(this,
                     this.sessionContainer,
@@ -1064,6 +1076,52 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public String getUserAgent() {
         return this.userAgentContainer.getUserAgent();
+    }
+
+    @Override
+    public void appendUserAgentSuffix(String suffix) {
+        if (StringUtils.isEmpty(suffix)) {
+            return;
+        }
+
+        String trimmedSuffix = suffix.trim();
+        if (trimmedSuffix.isEmpty()) {
+            return;
+        }
+
+        // Check for duplicate using token matching to prevent unbounded growth when
+        // multiple encryption clients wrap the same CosmosAsyncClient
+        String currentSuffix = this.userAgentContainer.getSuffix();
+        if (StringUtils.isNotEmpty(currentSuffix)) {
+            for (String token : currentSuffix.split("\\s+")) {
+                if (trimmedSuffix.equals(token)) {
+                    return;
+                }
+            }
+        }
+
+        // Preserve feature flags ("|F...") which are appended to userAgent directly
+        // by setFeatureEnabledFlagsAsSuffix and would be lost when setSuffix overwrites userAgent
+        String currentUserAgent = this.userAgentContainer.getUserAgent();
+        String featureFlagsSuffix = null;
+        int featureFlagsIndex = currentUserAgent.indexOf("|F");
+        if (featureFlagsIndex >= 0) {
+            featureFlagsSuffix = currentUserAgent.substring(featureFlagsIndex);
+        }
+
+        String newSuffix;
+        if (StringUtils.isNotEmpty(currentSuffix)) {
+            newSuffix = currentSuffix + " " + trimmedSuffix;
+        } else {
+            newSuffix = trimmedSuffix;
+        }
+
+        this.userAgentContainer.setSuffix(newSuffix);
+
+        // Re-apply feature flags since setSuffix overwrites the userAgent string
+        if (StringUtils.isNotEmpty(featureFlagsSuffix)) {
+            this.addUserAgentSuffix(this.userAgentContainer, EnumSet.allOf(UserAgentFeatureFlags.class));
+        }
     }
 
     @Override
@@ -6508,6 +6566,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         if (useThinClientStoreModel(request)) {
+            request.useThinClientMode = true;
             return this.thinProxy;
         }
 
@@ -6593,6 +6652,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             if (this.throughputControlEnabled.get()) {
                 logger.info("Closing ThroughputControlStore ...");
                 this.throughputControlStore.close();
+            }
+
+            if (this.clientTelemetry != null) {
+                logger.info("Closing ClientTelemetry ...");
+                this.clientTelemetry.close();
             }
 
             this.perPartitionFailoverConfigModifier = null;
