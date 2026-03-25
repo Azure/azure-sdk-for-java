@@ -10,6 +10,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.standbypool.StandbyPoolManager;
+import com.azure.resourcemanager.standbypool.models.DynamicSizing;
 import com.azure.resourcemanager.standbypool.models.StandbyVirtualMachinePoolElasticityProfile;
 import com.azure.resourcemanager.standbypool.models.StandbyVirtualMachinePoolResource;
 import com.azure.resourcemanager.standbypool.models.StandbyVirtualMachinePoolResourceProperties;
@@ -26,7 +27,7 @@ public final class StandbyVirtualMachinePoolsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"elasticityProfile\":{\"maxReadyCapacity\":961124014694533513,\"minReadyCapacity\":4986041102570951835},\"virtualMachineState\":\"Deallocated\",\"attachedVirtualMachineScaleSetId\":\"v\",\"provisioningState\":\"Succeeded\"},\"location\":\"gbiqylihkaet\",\"tags\":{\"qhjfbebr\":\"vfcivfsnkymuc\",\"wutttxfvjrbi\":\"cxerf\",\"ljkyqxjvuuj\":\"phxepcyvahf\"},\"id\":\"gidokgjljyoxgvcl\",\"name\":\"bgsncghkjeszzhb\",\"type\":\"jhtxfvgxbfsmxne\"}";
+            = "{\"properties\":{\"elasticityProfile\":{\"maxReadyCapacity\":8202970145033342191,\"minReadyCapacity\":4359997497139397410,\"postProvisioningDelay\":\"ishc\",\"dynamicSizing\":{\"enabled\":true}},\"virtualMachineState\":\"Hibernated\",\"attachedVirtualMachineScaleSetId\":\"eyeam\",\"provisioningState\":\"Succeeded\"},\"location\":\"g\",\"tags\":{\"honowkgshwank\":\"buxwgip\",\"rywn\":\"xzbinjeputt\",\"lwh\":\"zoqftiyqzrnkcqvy\"},\"id\":\"lsicohoqqnwv\",\"name\":\"ryavwhheunmmqh\",\"type\":\"yxzk\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,24 +37,28 @@ public final class StandbyVirtualMachinePoolsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         StandbyVirtualMachinePoolResource response = manager.standbyVirtualMachinePools()
-            .define("alpbuxwgipwhon")
-            .withRegion("qftiy")
-            .withExistingResourceGroup("hajdeyeamdpha")
-            .withTags(mapOf("cqvyxlwhzlsico", "n", "hheunmmqhgyx", "oqqnwvlryav", "oklyaxuconuq", "konocu"))
+            .define("rxwburv")
+            .withRegion("z")
+            .withExistingResourceGroup("ggi")
+            .withTags(mapOf("gevqznty", "egukgjnpiucg"))
             .withProperties(new StandbyVirtualMachinePoolResourceProperties()
                 .withElasticityProfile(
-                    new StandbyVirtualMachinePoolElasticityProfile().withMaxReadyCapacity(1519436992113151985L)
-                        .withMinReadyCapacity(297817339455421273L))
-                .withVirtualMachineState(VirtualMachineState.HIBERNATED)
-                .withAttachedVirtualMachineScaleSetId("ixzbinjeputtmryw"))
+                    new StandbyVirtualMachinePoolElasticityProfile().withMaxReadyCapacity(6986564467823724051L)
+                        .withMinReadyCapacity(8053172756954455875L)
+                        .withPostProvisioningDelay("ptkoenkoukn")
+                        .withDynamicSizing(new DynamicSizing().withEnabled(true)))
+                .withVirtualMachineState(VirtualMachineState.RUNNING)
+                .withAttachedVirtualMachineScaleSetId("ukbldngkpo"))
             .create();
 
-        Assertions.assertEquals("gbiqylihkaet", response.location());
-        Assertions.assertEquals("vfcivfsnkymuc", response.tags().get("qhjfbebr"));
-        Assertions.assertEquals(961124014694533513L, response.properties().elasticityProfile().maxReadyCapacity());
-        Assertions.assertEquals(4986041102570951835L, response.properties().elasticityProfile().minReadyCapacity());
-        Assertions.assertEquals(VirtualMachineState.DEALLOCATED, response.properties().virtualMachineState());
-        Assertions.assertEquals("v", response.properties().attachedVirtualMachineScaleSetId());
+        Assertions.assertEquals("g", response.location());
+        Assertions.assertEquals("buxwgip", response.tags().get("honowkgshwank"));
+        Assertions.assertEquals(8202970145033342191L, response.properties().elasticityProfile().maxReadyCapacity());
+        Assertions.assertEquals(4359997497139397410L, response.properties().elasticityProfile().minReadyCapacity());
+        Assertions.assertEquals("ishc", response.properties().elasticityProfile().postProvisioningDelay());
+        Assertions.assertTrue(response.properties().elasticityProfile().dynamicSizing().enabled());
+        Assertions.assertEquals(VirtualMachineState.HIBERNATED, response.properties().virtualMachineState());
+        Assertions.assertEquals("eyeam", response.properties().attachedVirtualMachineScaleSetId());
     }
 
     // Use "Map.of" if available
