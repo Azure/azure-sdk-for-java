@@ -6,7 +6,7 @@
 
 ### Breaking Changes
 
-- Renamed `getObject()` to `getObjectType()` in `AgentDetails`, `AgentVersionDetails`, `DeleteMemoryStoreResult`, `MemoryStoreDeleteScopeResponse`, and `MemoryStoreDetails`. The underlying field was renamed from `object` to `objectType`.
+- Renamed `getObject()` to `getObjectType()` in `AgentDetails`, `AgentVersionDetails`, and `MemoryStoreDetails`. The underlying field was renamed from `object` to `objectType`.
 - Renamed `MCPToolConnectorId` enum to `McpToolConnectorId` for consistent casing. The `McpTool` methods `getConnectorType()` and `setConnectorType()` now use `McpToolConnectorId` instead of `MCPToolConnectorId`.
 - Renamed remaining `*Param` model classes to `*Parameter` for naming consistency:
   - `AutoCodeInterpreterToolParam` → `AutoCodeInterpreterToolParameter`
@@ -22,6 +22,9 @@
   - `InlineSkillSourceParam` → `InlineSkillSourceParameter`
   - `LocalSkillParam` → `LocalSkillParameter`
   - `SkillReferenceParam` → `SkillReferenceParameter`
+- `deleteMemoryStore(String)` on `MemoryStoresClient` now returns `void` instead of `DeleteMemoryStoreResult`. The corresponding async method on `MemoryStoresAsyncClient` now returns `Mono<Void>` instead of `Mono<DeleteMemoryStoreResult>`.
+- `deleteScope(String, String)` on `MemoryStoresClient` now returns `void` instead of `MemoryStoreDeleteScopeResponse`. The corresponding async method on `MemoryStoresAsyncClient` now returns `Mono<Void>` instead of `Mono<MemoryStoreDeleteScopeResponse>`.
+- `DeleteMemoryStoreResult` and `MemoryStoreDeleteScopeResponse` removed from `com.azure.ai.agents.models` and are no longer part of the public API.
 
 ### Bugs Fixed
 

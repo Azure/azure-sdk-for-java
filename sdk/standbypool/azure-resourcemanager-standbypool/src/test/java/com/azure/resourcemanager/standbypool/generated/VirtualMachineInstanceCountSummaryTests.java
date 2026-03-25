@@ -13,10 +13,10 @@ public final class VirtualMachineInstanceCountSummaryTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VirtualMachineInstanceCountSummary model = BinaryData.fromString(
-            "{\"zone\":6655543031987188756,\"instanceCountsByState\":[{\"state\":\"Deallocated\",\"count\":5217327379206362670},{\"state\":\"Creating\",\"count\":9057037144424682502}]}")
+            "{\"zone\":7994896515635152034,\"instanceCountsByState\":[{\"state\":\"Deleting\",\"count\":5365450808227113003},{\"state\":\"Creating\",\"count\":8979659875393704693},{\"state\":\"Hibernating\",\"count\":4478530133938121671}]}")
             .toObject(VirtualMachineInstanceCountSummary.class);
-        Assertions.assertEquals(6655543031987188756L, model.zone());
-        Assertions.assertEquals(PoolVirtualMachineState.DEALLOCATED, model.instanceCountsByState().get(0).state());
-        Assertions.assertEquals(5217327379206362670L, model.instanceCountsByState().get(0).count());
+        Assertions.assertEquals(7994896515635152034L, model.zone());
+        Assertions.assertEquals(PoolVirtualMachineState.DELETING, model.instanceCountsByState().get(0).state());
+        Assertions.assertEquals(5365450808227113003L, model.instanceCountsByState().get(0).count());
     }
 }
