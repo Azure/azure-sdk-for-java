@@ -25,6 +25,7 @@ import org.apache.qpid.proton.message.Message;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneOffset;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
@@ -106,37 +107,21 @@ public final class MessageUtils {
         }
 
         if (properties.getTo() != null) {
-            if (protonJMessage.getProperties() == null) {
-                protonJMessage.setProperties(new Properties());
-            }
-
-            protonJMessage.getProperties().setTo(properties.getTo().toString());
+            getOrCreateProperties(protonJMessage).setTo(properties.getTo().toString());
         }
 
         // The default is byte[0] when getting a user id that has not been set.
         if (properties.getUserId() != null && properties.getUserId().length > 0) {
-            if (protonJMessage.getProperties() == null) {
-                protonJMessage.setProperties(new Properties());
-            }
-
-            protonJMessage.getProperties().setUserId(new Binary(properties.getUserId()));
+            getOrCreateProperties(protonJMessage).setUserId(new Binary(properties.getUserId()));
         }
 
         if (properties.getAbsoluteExpiryTime() != null) {
-            if (protonJMessage.getProperties() == null) {
-                protonJMessage.setProperties(new Properties());
-            }
-
-            protonJMessage.getProperties()
+            getOrCreateProperties(protonJMessage)
                 .setAbsoluteExpiryTime(Date.from(properties.getAbsoluteExpiryTime().toInstant()));
         }
 
         if (properties.getCreationTime() != null) {
-            if (protonJMessage.getProperties() == null) {
-                protonJMessage.setProperties(new Properties());
-            }
-
-            protonJMessage.getProperties().setCreationTime(Date.from(properties.getCreationTime().toInstant()));
+            getOrCreateProperties(protonJMessage).setCreationTime(Date.from(properties.getCreationTime().toInstant()));
         }
 
         // Set header
@@ -338,16 +323,21 @@ public final class MessageUtils {
     public static Map<Symbol, Object> convert(Map<String, Object> sourceMap) {
         if (sourceMap == null) {
             return null;
+        } else if (sourceMap.isEmpty()) {
+            return Collections.emptyMap();
         }
 
-        return sourceMap.entrySet().stream().collect(HashMap::new, (existing, entry) -> {
+        final Map<Symbol, Object> converted = new HashMap<>(calculateInitialCapacity(sourceMap.size()));
+        for (Map.Entry<String, Object> entry : sourceMap.entrySet()) {
             if (entry.getValue() instanceof Instant) {
                 final long epochMilli = ((Instant) entry.getValue()).toEpochMilli();
-                existing.put(Symbol.valueOf(entry.getKey()), new Date(epochMilli));
+                converted.put(Symbol.valueOf(entry.getKey()), new Date(epochMilli));
             } else {
-                existing.put(Symbol.valueOf(entry.getKey()), entry.getValue());
+                converted.put(Symbol.valueOf(entry.getKey()), entry.getValue());
             }
-        }, (HashMap::putAll));
+        }
+
+        return converted;
     }
 
     /**
@@ -379,6 +369,18 @@ public final class MessageUtils {
         for (Map.Entry<Symbol, Object> entry : sourceMap.entrySet()) {
             targetMap.put(entry.getKey().toString(), entry.getValue());
         }
+    }
+
+    private static int calculateInitialCapacity(int expectedSize) {
+        return Math.max(16, (int) (expectedSize / 0.75f) + 1);
+    }
+
+    private static Properties getOrCreateProperties(Message protonJMessage) {
+        if (protonJMessage.getProperties() == null) {
+            protonJMessage.setProperties(new Properties());
+        }
+
+        return protonJMessage.getProperties();
     }
 
     /**
