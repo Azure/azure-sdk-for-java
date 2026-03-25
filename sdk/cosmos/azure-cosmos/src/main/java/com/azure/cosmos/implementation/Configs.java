@@ -600,45 +600,10 @@ public class Configs {
     }
 
     public static int getConnectionAcquireTimeoutInSeconds() {
-        int value = DEFAULT_CONNECTION_ACQUIRE_TIMEOUT_IN_SECONDS;
-
-        String valueFromSystemProperty = System.getProperty(CONNECTION_ACQUIRE_TIMEOUT_IN_SECONDS);
-        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
-            try {
-                value = Integer.parseInt(valueFromSystemProperty);
-            } catch (NumberFormatException e) {
-                logger.warn(
-                    "Invalid non-numeric value '{}' for system property {}. Falling back to environment variable or default.",
-                    valueFromSystemProperty,
-                    CONNECTION_ACQUIRE_TIMEOUT_IN_SECONDS);
-                valueFromSystemProperty = null;
-            }
-        }
-
-        if (valueFromSystemProperty == null || valueFromSystemProperty.isEmpty()) {
-            String valueFromEnvVariable = System.getenv(CONNECTION_ACQUIRE_TIMEOUT_IN_SECONDS_VARIABLE);
-            if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
-                try {
-                    value = Integer.parseInt(valueFromEnvVariable);
-                } catch (NumberFormatException e) {
-                    logger.warn(
-                        "Invalid non-numeric value '{}' for environment variable {}. Falling back to default: {}s.",
-                        valueFromEnvVariable,
-                        CONNECTION_ACQUIRE_TIMEOUT_IN_SECONDS_VARIABLE,
-                        DEFAULT_CONNECTION_ACQUIRE_TIMEOUT_IN_SECONDS);
-                }
-            }
-        }
-
-        if (value <= 0) {
-            logger.warn(
-                "Invalid connection acquire timeout: {}s. Must be > 0. Falling back to default: {}s.",
-                value,
-                DEFAULT_CONNECTION_ACQUIRE_TIMEOUT_IN_SECONDS);
-            return DEFAULT_CONNECTION_ACQUIRE_TIMEOUT_IN_SECONDS;
-        }
-
-        return value;
+        return Integer.parseInt(System.getProperty(CONNECTION_ACQUIRE_TIMEOUT_IN_SECONDS,
+            firstNonNull(
+                emptyToNull(System.getenv().get(CONNECTION_ACQUIRE_TIMEOUT_IN_SECONDS_VARIABLE)),
+                String.valueOf(DEFAULT_CONNECTION_ACQUIRE_TIMEOUT_IN_SECONDS))));
     }
 
     /**
