@@ -23,7 +23,7 @@ public final class VirtualNetworkApplianceIpConfigurationProperties
     /*
      * The private IP address of the IP configuration.
      */
-    private String privateIPAddress;
+    private String privateIpAddress;
 
     /*
      * The private IP address allocation method.
@@ -52,12 +52,12 @@ public final class VirtualNetworkApplianceIpConfigurationProperties
     }
 
     /**
-     * Get the privateIPAddress property: The private IP address of the IP configuration.
+     * Get the privateIpAddress property: The private IP address of the IP configuration.
      * 
-     * @return the privateIPAddress value.
+     * @return the privateIpAddress value.
      */
-    public String privateIPAddress() {
-        return this.privateIPAddress;
+    public String privateIpAddress() {
+        return this.privateIpAddress;
     }
 
     /**
@@ -110,7 +110,7 @@ public final class VirtualNetworkApplianceIpConfigurationProperties
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("privateIPAddress", this.privateIPAddress);
+        jsonWriter.writeStringField("privateIPAddress", this.privateIpAddress);
         jsonWriter.writeStringField("privateIPAllocationMethod",
             this.privateIpAllocationMethod == null ? null : this.privateIpAllocationMethod.toString());
         jsonWriter.writeBooleanField("primary", this.primary);
@@ -136,7 +136,7 @@ public final class VirtualNetworkApplianceIpConfigurationProperties
                 reader.nextToken();
 
                 if ("privateIPAddress".equals(fieldName)) {
-                    deserializedVirtualNetworkApplianceIpConfigurationProperties.privateIPAddress = reader.getString();
+                    deserializedVirtualNetworkApplianceIpConfigurationProperties.privateIpAddress = reader.getString();
                 } else if ("privateIPAllocationMethod".equals(fieldName)) {
                     deserializedVirtualNetworkApplianceIpConfigurationProperties.privateIpAllocationMethod
                         = IpAllocationMethod.fromString(reader.getString());

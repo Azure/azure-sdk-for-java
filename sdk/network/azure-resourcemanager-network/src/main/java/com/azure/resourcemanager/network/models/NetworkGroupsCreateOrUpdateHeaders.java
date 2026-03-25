@@ -16,7 +16,7 @@ public final class NetworkGroupsCreateOrUpdateHeaders {
     /*
      * The ETag property.
      */
-    private final String eTag;
+    private final String etag;
 
     /*
      * The Retry-After property.
@@ -30,7 +30,7 @@ public final class NetworkGroupsCreateOrUpdateHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public NetworkGroupsCreateOrUpdateHeaders(HttpHeaders rawHeaders) {
-        this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
+        this.etag = rawHeaders.getValue(HttpHeaderName.ETAG);
         String retryAfter = rawHeaders.getValue(HttpHeaderName.RETRY_AFTER);
         if (retryAfter != null) {
             this.retryAfter = Integer.parseInt(retryAfter);
@@ -40,12 +40,12 @@ public final class NetworkGroupsCreateOrUpdateHeaders {
     }
 
     /**
-     * Get the eTag property: The ETag property.
+     * Get the etag property: The ETag property.
      * 
-     * @return the eTag value.
+     * @return the etag value.
      */
-    public String eTag() {
-        return this.eTag;
+    public String etag() {
+        return this.etag;
     }
 
     /**

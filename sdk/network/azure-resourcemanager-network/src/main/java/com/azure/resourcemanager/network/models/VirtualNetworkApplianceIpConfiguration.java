@@ -80,12 +80,12 @@ public final class VirtualNetworkApplianceIpConfiguration extends SubResource {
     }
 
     /**
-     * Get the privateIPAddress property: The private IP address of the IP configuration.
+     * Get the privateIpAddress property: The private IP address of the IP configuration.
      * 
-     * @return the privateIPAddress value.
+     * @return the privateIpAddress value.
      */
-    public String privateIPAddress() {
-        return this.innerProperties() == null ? null : this.innerProperties().privateIPAddress();
+    public String privateIpAddress() {
+        return this.innerProperties() == null ? null : this.innerProperties().privateIpAddress();
     }
 
     /**

@@ -1306,6 +1306,14 @@
             "match": "class com\\.azure\\.resourcemanager\\.network\\.models\\.(CreatedByType|ErrorAdditionalInfo|ErrorDetail|TrackedResource|SecurityPerimeterProxyResource|SecurityPerimeterResource|SecurityPerimeterSystemData)"
           },
           "justification": "Common types now sourced from azure-core or ARM common types."
+        },
+        {
+          "code": "java.missing.oldSuperType",
+          "old" : {
+            "matcher": "regex",
+            "match": "class com\\.azure\\.resourcemanager\\.network\\.models\\.(AdminRule|ChildResource|CommonProxyResource|CommonResource|CommonTrackedResource|DefaultAdminRule|SecurityPerimeterProxyResource|SecurityPerimeterResource)"
+          },
+          "justification": "Base class ProxyResource not in old API archive. Revapi analysis artifact."
         }]
     }
   }
