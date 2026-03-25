@@ -15,6 +15,7 @@ import reactor.core.CoreSubscriber;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxOperator;
+import reactor.core.publisher.Mono;
 import reactor.core.publisher.Operators;
 import reactor.core.publisher.Sinks;
 
@@ -127,10 +128,8 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
             this.currentBatch = batchSupplier.get();
 
             this.eventSink = Sinks.many().unicast().onBackpressureError();
-            this.disposable = Flux
-                .switchOnNext(eventSink.asFlux()
-                    .map(e -> Flux.interval(options.getMaxWaitTime()).takeUntil(index -> isCompleted.get())))
-                .subscribe(index -> {
+            this.disposable
+                = eventSink.asFlux().switchMap(ignored -> Mono.delay(options.getMaxWaitTime())).subscribe(index -> {
                     logger.atVerbose()
                         .addKeyValue(PARTITION_ID_KEY, partitionId)
                         .log("Time elapsed. Attempt to publish downstream.");
