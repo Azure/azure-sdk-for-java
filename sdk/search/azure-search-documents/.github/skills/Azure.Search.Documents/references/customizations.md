@@ -32,9 +32,8 @@ For TypeSpec-level customizations (preferred when possible), see [TypeSpec Clien
 
 ### How Java customizations work
 
-Java does **not** have partial classes. The .NET SDK uses `partial class` + attributes (`[CodeGenType]`, `[CodeGenMember]`, `[CodeGenSuppress]`) to extend generated code. **None of these concepts exist in Java.**
 
-Instead, Java uses **`SearchCustomizations.java`** in `customizations/src/main/java/`. This file:
+Java uses **`SearchCustomizations.java`** in `customizations/src/main/java/`. This file:
 1. Extends `com.azure.autorest.customization.Customization` (package name is a legacy artifact — the tool works with **TypeSpec**, not AutoRest)
 2. Overrides `customize(LibraryCustomization, Logger)`
 3. Uses the `LibraryCustomization` → `PackageCustomization` → `ClassCustomization` API

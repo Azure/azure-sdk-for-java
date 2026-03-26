@@ -46,12 +46,12 @@ public final class SearchClientImpl {
     private final SearchClientService service;
 
     /**
-     * The endpoint URL of the search service.
+     * Service host.
      */
     private final String endpoint;
 
     /**
-     * Gets The endpoint URL of the search service.
+     * Gets Service host.
      * 
      * @return the endpoint value.
      */
@@ -118,7 +118,7 @@ public final class SearchClientImpl {
     /**
      * Initializes an instance of SearchClient client.
      * 
-     * @param endpoint The endpoint URL of the search service.
+     * @param endpoint Service host.
      * @param indexName The name of the index.
      * @param serviceVersion Service version.
      */
@@ -131,7 +131,7 @@ public final class SearchClientImpl {
      * Initializes an instance of SearchClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
-     * @param endpoint The endpoint URL of the search service.
+     * @param endpoint Service host.
      * @param indexName The name of the index.
      * @param serviceVersion Service version.
      */
@@ -145,7 +145,7 @@ public final class SearchClientImpl {
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
-     * @param endpoint The endpoint URL of the search service.
+     * @param endpoint Service host.
      * @param indexName The name of the index.
      * @param serviceVersion Service version.
      */
@@ -541,6 +541,16 @@ public final class SearchClientImpl {
      *         String (Required): [
      *              (Required){
      *                 count: Long (Optional)
+     *                 avg: Double (Optional)
+     *                 min: Double (Optional)
+     *                 max: Double (Optional)
+     *                 sum: Double (Optional)
+     *                 cardinality: Long (Optional)
+     *                 &#64;search.facets (Optional): {
+     *                     String (Required): [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                 }
      *                  (Optional): {
      *                     String: Object (Required)
      *                 }
@@ -558,6 +568,8 @@ public final class SearchClientImpl {
      *             }
      *         }
      *     ]
+     *     &#64;search.debug (Optional): {
+     *     }
      *     &#64;search.nextPageParameters (Optional): {
      *         count: Boolean (Optional)
      *         facets (Optional): [
@@ -605,6 +617,11 @@ public final class SearchClientImpl {
      *                 exhaustive: Boolean (Optional)
      *                 oversampling: Double (Optional)
      *                 weight: Float (Optional)
+     *                 threshold (Optional): {
+     *                     kind: String(vectorSimilarity/searchScore) (Required)
+     *                 }
+     *                 filterOverride: String (Optional)
+     *                 perDocumentVectorLimit: Integer (Optional)
      *             }
      *         ]
      *         vectorFilterMode: String(postFilter/preFilter/strictPostFilter) (Optional)
@@ -644,6 +661,18 @@ public final class SearchClientImpl {
      *                         ]
      *                         documentBoost: Double (Optional)
      *                     }
+     *                 }
+     *                 innerHits (Optional): {
+     *                     String (Required): [
+     *                          (Required){
+     *                             ordinal: Long (Optional)
+     *                             vectors (Optional): [
+     *                                  (Optional){
+     *                                     String (Required): (recursive schema, see String above)
+     *                                 }
+     *                             ]
+     *                         }
+     *                     ]
      *                 }
      *             }
      *              (Optional): {
@@ -787,6 +816,16 @@ public final class SearchClientImpl {
      *         String (Required): [
      *              (Required){
      *                 count: Long (Optional)
+     *                 avg: Double (Optional)
+     *                 min: Double (Optional)
+     *                 max: Double (Optional)
+     *                 sum: Double (Optional)
+     *                 cardinality: Long (Optional)
+     *                 &#64;search.facets (Optional): {
+     *                     String (Required): [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                 }
      *                  (Optional): {
      *                     String: Object (Required)
      *                 }
@@ -804,6 +843,8 @@ public final class SearchClientImpl {
      *             }
      *         }
      *     ]
+     *     &#64;search.debug (Optional): {
+     *     }
      *     &#64;search.nextPageParameters (Optional): {
      *         count: Boolean (Optional)
      *         facets (Optional): [
@@ -851,6 +892,11 @@ public final class SearchClientImpl {
      *                 exhaustive: Boolean (Optional)
      *                 oversampling: Double (Optional)
      *                 weight: Float (Optional)
+     *                 threshold (Optional): {
+     *                     kind: String(vectorSimilarity/searchScore) (Required)
+     *                 }
+     *                 filterOverride: String (Optional)
+     *                 perDocumentVectorLimit: Integer (Optional)
      *             }
      *         ]
      *         vectorFilterMode: String(postFilter/preFilter/strictPostFilter) (Optional)
@@ -890,6 +936,18 @@ public final class SearchClientImpl {
      *                         ]
      *                         documentBoost: Double (Optional)
      *                     }
+     *                 }
+     *                 innerHits (Optional): {
+     *                     String (Required): [
+     *                          (Required){
+     *                             ordinal: Long (Optional)
+     *                             vectors (Optional): [
+     *                                  (Optional){
+     *                                     String (Required): (recursive schema, see String above)
+     *                                 }
+     *                             ]
+     *                         }
+     *                     ]
      *                 }
      *             }
      *              (Optional): {
@@ -978,6 +1036,11 @@ public final class SearchClientImpl {
      *             exhaustive: Boolean (Optional)
      *             oversampling: Double (Optional)
      *             weight: Float (Optional)
+     *             threshold (Optional): {
+     *                 kind: String(vectorSimilarity/searchScore) (Required)
+     *             }
+     *             filterOverride: String (Optional)
+     *             perDocumentVectorLimit: Integer (Optional)
      *         }
      *     ]
      *     vectorFilterMode: String(postFilter/preFilter/strictPostFilter) (Optional)
@@ -996,6 +1059,16 @@ public final class SearchClientImpl {
      *         String (Required): [
      *              (Required){
      *                 count: Long (Optional)
+     *                 avg: Double (Optional)
+     *                 min: Double (Optional)
+     *                 max: Double (Optional)
+     *                 sum: Double (Optional)
+     *                 cardinality: Long (Optional)
+     *                 &#64;search.facets (Optional): {
+     *                     String (Required): [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                 }
      *                  (Optional): {
      *                     String: Object (Required)
      *                 }
@@ -1013,6 +1086,8 @@ public final class SearchClientImpl {
      *             }
      *         }
      *     ]
+     *     &#64;search.debug (Optional): {
+     *     }
      *     &#64;search.nextPageParameters (Optional): {
      *         count: Boolean (Optional)
      *         facets (Optional): [
@@ -1060,6 +1135,11 @@ public final class SearchClientImpl {
      *                 exhaustive: Boolean (Optional)
      *                 oversampling: Double (Optional)
      *                 weight: Float (Optional)
+     *                 threshold (Optional): {
+     *                     kind: String(vectorSimilarity/searchScore) (Required)
+     *                 }
+     *                 filterOverride: String (Optional)
+     *                 perDocumentVectorLimit: Integer (Optional)
      *             }
      *         ]
      *         vectorFilterMode: String(postFilter/preFilter/strictPostFilter) (Optional)
@@ -1099,6 +1179,18 @@ public final class SearchClientImpl {
      *                         ]
      *                         documentBoost: Double (Optional)
      *                     }
+     *                 }
+     *                 innerHits (Optional): {
+     *                     String (Required): [
+     *                          (Required){
+     *                             ordinal: Long (Optional)
+     *                             vectors (Optional): [
+     *                                  (Optional){
+     *                                     String (Required): (recursive schema, see String above)
+     *                                 }
+     *                             ]
+     *                         }
+     *                     ]
      *                 }
      *             }
      *              (Optional): {
@@ -1191,6 +1283,11 @@ public final class SearchClientImpl {
      *             exhaustive: Boolean (Optional)
      *             oversampling: Double (Optional)
      *             weight: Float (Optional)
+     *             threshold (Optional): {
+     *                 kind: String(vectorSimilarity/searchScore) (Required)
+     *             }
+     *             filterOverride: String (Optional)
+     *             perDocumentVectorLimit: Integer (Optional)
      *         }
      *     ]
      *     vectorFilterMode: String(postFilter/preFilter/strictPostFilter) (Optional)
@@ -1209,6 +1306,16 @@ public final class SearchClientImpl {
      *         String (Required): [
      *              (Required){
      *                 count: Long (Optional)
+     *                 avg: Double (Optional)
+     *                 min: Double (Optional)
+     *                 max: Double (Optional)
+     *                 sum: Double (Optional)
+     *                 cardinality: Long (Optional)
+     *                 &#64;search.facets (Optional): {
+     *                     String (Required): [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                 }
      *                  (Optional): {
      *                     String: Object (Required)
      *                 }
@@ -1226,6 +1333,8 @@ public final class SearchClientImpl {
      *             }
      *         }
      *     ]
+     *     &#64;search.debug (Optional): {
+     *     }
      *     &#64;search.nextPageParameters (Optional): {
      *         count: Boolean (Optional)
      *         facets (Optional): [
@@ -1273,6 +1382,11 @@ public final class SearchClientImpl {
      *                 exhaustive: Boolean (Optional)
      *                 oversampling: Double (Optional)
      *                 weight: Float (Optional)
+     *                 threshold (Optional): {
+     *                     kind: String(vectorSimilarity/searchScore) (Required)
+     *                 }
+     *                 filterOverride: String (Optional)
+     *                 perDocumentVectorLimit: Integer (Optional)
      *             }
      *         ]
      *         vectorFilterMode: String(postFilter/preFilter/strictPostFilter) (Optional)
@@ -1312,6 +1426,18 @@ public final class SearchClientImpl {
      *                         ]
      *                         documentBoost: Double (Optional)
      *                     }
+     *                 }
+     *                 innerHits (Optional): {
+     *                     String (Required): [
+     *                          (Required){
+     *                             ordinal: Long (Optional)
+     *                             vectors (Optional): [
+     *                                  (Optional){
+     *                                     String (Required): (recursive schema, see String above)
+     *                                 }
+     *                             ]
+     *                         }
+     *                     ]
      *                 }
      *             }
      *              (Optional): {

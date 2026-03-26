@@ -10,6 +10,8 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Contains debugging information that can be used to further explore your search results.
@@ -67,11 +69,32 @@ public final class DocumentDebugInfo implements JsonSerializable<DocumentDebugIn
                 reader.nextToken();
                 if ("vectors".equals(fieldName)) {
                     deserializedDocumentDebugInfo.vectors = VectorsDebugInfo.fromJson(reader);
+                } else if ("innerHits".equals(fieldName)) {
+                    Map<String, List<QueryResultDocumentInnerHit>> innerHits = reader.readMap(
+                        reader1 -> reader1.readArray(reader2 -> QueryResultDocumentInnerHit.fromJson(reader2)));
+                    deserializedDocumentDebugInfo.innerHits = innerHits;
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedDocumentDebugInfo;
         });
+    }
+
+    /*
+     * Contains debugging information specific to vectors matched within a collection of complex types.
+     */
+    @Generated
+    private Map<String, List<QueryResultDocumentInnerHit>> innerHits;
+
+    /**
+     * Get the innerHits property: Contains debugging information specific to vectors matched within a collection of
+     * complex types.
+     *
+     * @return the innerHits value.
+     */
+    @Generated
+    public Map<String, List<QueryResultDocumentInnerHit>> getInnerHits() {
+        return this.innerHits;
     }
 }

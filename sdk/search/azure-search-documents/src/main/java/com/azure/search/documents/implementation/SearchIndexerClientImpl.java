@@ -48,12 +48,12 @@ public final class SearchIndexerClientImpl {
     private final SearchIndexerClientService service;
 
     /**
-     * The endpoint URL of the search service.
+     * Service host.
      */
     private final String endpoint;
 
     /**
-     * Gets The endpoint URL of the search service.
+     * Gets Service host.
      * 
      * @return the endpoint value.
      */
@@ -106,7 +106,7 @@ public final class SearchIndexerClientImpl {
     /**
      * Initializes an instance of SearchIndexerClient client.
      * 
-     * @param endpoint The endpoint URL of the search service.
+     * @param endpoint Service host.
      * @param serviceVersion Service version.
      */
     public SearchIndexerClientImpl(String endpoint, SearchServiceVersion serviceVersion) {
@@ -118,7 +118,7 @@ public final class SearchIndexerClientImpl {
      * Initializes an instance of SearchIndexerClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
-     * @param endpoint The endpoint URL of the search service.
+     * @param endpoint Service host.
      * @param serviceVersion Service version.
      */
     public SearchIndexerClientImpl(HttpPipeline httpPipeline, String endpoint, SearchServiceVersion serviceVersion) {
@@ -130,7 +130,7 @@ public final class SearchIndexerClientImpl {
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
-     * @param endpoint The endpoint URL of the search service.
+     * @param endpoint Service host.
      * @param serviceVersion Service version.
      */
     public SearchIndexerClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint,
@@ -2587,6 +2587,8 @@ public final class SearchIndexerClientImpl {
      *     status: String(unknown/error/running) (Required)
      *     lastResult (Optional): {
      *         status: String(transientFailure/success/inProgress/reset) (Required)
+     *         statusDetail: String(resetDocs/resync) (Optional)
+     *         mode: String(indexingAllDocs/indexingResetDocs/indexingResync) (Optional)
      *         errorMessage: String (Optional)
      *         startTime: OffsetDateTime (Optional)
      *         endTime: OffsetDateTime (Optional)
@@ -2621,6 +2623,21 @@ public final class SearchIndexerClientImpl {
      *         maxRunTime: Duration (Optional)
      *         maxDocumentExtractionSize: Long (Optional)
      *         maxDocumentContentCharactersToExtract: Long (Optional)
+     *     }
+     *     currentState (Optional): {
+     *         mode: String(indexingAllDocs/indexingResetDocs/indexingResync) (Optional)
+     *         allDocsInitialTrackingState: String (Optional)
+     *         allDocsFinalTrackingState: String (Optional)
+     *         resetDocsInitialTrackingState: String (Optional)
+     *         resetDocsFinalTrackingState: String (Optional)
+     *         resyncInitialTrackingState: String (Optional)
+     *         resyncFinalTrackingState: String (Optional)
+     *         resetDocumentKeys (Optional): [
+     *             String (Optional)
+     *         ]
+     *         resetDatasourceDocumentIds (Optional): [
+     *             String (Optional)
+     *         ]
      *     }
      * }
      * }
@@ -2660,6 +2677,8 @@ public final class SearchIndexerClientImpl {
      *     status: String(unknown/error/running) (Required)
      *     lastResult (Optional): {
      *         status: String(transientFailure/success/inProgress/reset) (Required)
+     *         statusDetail: String(resetDocs/resync) (Optional)
+     *         mode: String(indexingAllDocs/indexingResetDocs/indexingResync) (Optional)
      *         errorMessage: String (Optional)
      *         startTime: OffsetDateTime (Optional)
      *         endTime: OffsetDateTime (Optional)
@@ -2694,6 +2713,21 @@ public final class SearchIndexerClientImpl {
      *         maxRunTime: Duration (Optional)
      *         maxDocumentExtractionSize: Long (Optional)
      *         maxDocumentContentCharactersToExtract: Long (Optional)
+     *     }
+     *     currentState (Optional): {
+     *         mode: String(indexingAllDocs/indexingResetDocs/indexingResync) (Optional)
+     *         allDocsInitialTrackingState: String (Optional)
+     *         allDocsFinalTrackingState: String (Optional)
+     *         resetDocsInitialTrackingState: String (Optional)
+     *         resetDocsFinalTrackingState: String (Optional)
+     *         resyncInitialTrackingState: String (Optional)
+     *         resyncFinalTrackingState: String (Optional)
+     *         resetDocumentKeys (Optional): [
+     *             String (Optional)
+     *         ]
+     *         resetDatasourceDocumentIds (Optional): [
+     *             String (Optional)
+     *         ]
      *     }
      * }
      * }
