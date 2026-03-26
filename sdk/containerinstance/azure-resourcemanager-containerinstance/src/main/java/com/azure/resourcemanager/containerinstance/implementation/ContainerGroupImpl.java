@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.containerinstance.implementation;
 
+import com.azure.core.management.Resource;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -33,7 +34,6 @@ import com.azure.resourcemanager.containerinstance.models.LogAnalyticsLogType;
 import com.azure.resourcemanager.containerinstance.models.OperatingSystemTypes;
 import com.azure.resourcemanager.containerinstance.models.Port;
 import com.azure.resourcemanager.containerinstance.models.ResourceIdentityType;
-import com.azure.resourcemanager.containerinstance.models.ResourcePatch;
 import com.azure.resourcemanager.containerinstance.models.Volume;
 import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.network.models.Network;
@@ -103,7 +103,7 @@ public class ContainerGroupImpl extends
         final ContainerGroupImpl self = this;
 
         if (!isInCreateMode()) {
-            ResourcePatch resource = new ResourcePatch();
+            Resource resource = new Resource();
             resource.withLocation(self.regionName());
             resource.withTags(self.tags());
             return beforeCreation().then(manager().serviceClient()
