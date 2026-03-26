@@ -57,7 +57,7 @@ public final class MemoryStoresClient {
     /**
      * Create a memory store.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -72,9 +72,9 @@ public final class MemoryStoresClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -112,7 +112,7 @@ public final class MemoryStoresClient {
     /**
      * Update a memory store.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -123,9 +123,9 @@ public final class MemoryStoresClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -164,7 +164,7 @@ public final class MemoryStoresClient {
     /**
      * Retrieve a memory store.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -221,7 +221,7 @@ public final class MemoryStoresClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -257,7 +257,7 @@ public final class MemoryStoresClient {
     /**
      * Delete a memory store.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -285,7 +285,7 @@ public final class MemoryStoresClient {
     /**
      * Get memory store update result.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -505,7 +505,7 @@ public final class MemoryStoresClient {
     /**
      * Delete all memories associated with a specific scope from a memory store.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -513,9 +513,9 @@ public final class MemoryStoresClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -638,7 +638,7 @@ public final class MemoryStoresClient {
     /**
      * Search for relevant memories from a memory store based on conversation context.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -655,9 +655,9 @@ public final class MemoryStoresClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -708,7 +708,7 @@ public final class MemoryStoresClient {
     /**
      * Update memory store with conversation memories.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -723,9 +723,9 @@ public final class MemoryStoresClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -938,7 +938,7 @@ public final class MemoryStoresClient {
      * @param items Conversation items from which to extract memories (OpenAI SDK type).
      * @param previousUpdateId The unique ID of the previous update request, enabling incremental memory updates from
      * where the last operation left off.
-     * @param updateDelay Timeout period before processing the memory update in seconds.
+     * @param updateDelayInSeconds Timeout period before processing the memory update in seconds.
      * If a new update request is received during this period, it will cancel the current request and reset the timeout.
      * Set to 0 to immediately trigger the update without delay.
      * Defaults to 300 (5 minutes).
