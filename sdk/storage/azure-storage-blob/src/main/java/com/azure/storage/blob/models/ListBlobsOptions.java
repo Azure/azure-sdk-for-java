@@ -19,7 +19,7 @@ public final class ListBlobsOptions {
     private String prefix;
     private String startFrom;
     private Integer maxResultsPerPage;
-    private Boolean useArrow = false;
+    private Boolean useArrow;
     private String endBefore;
 
     /**
