@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0 (2026-03-10)
+## 1.2.0 (2026-03-26)
 
 - Azure Resource Manager Standby Pool client library for Java. This package contains Microsoft Azure SDK for Standby Pool Management SDK.  Package api-version 2025-10-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
@@ -108,15 +108,15 @@
 
 #### `models.StandbyVirtualMachinePoolElasticityProfile` was modified
 
-* `postProvisioningDelay()` was added
 * `dynamicSizing()` was added
+* `postProvisioningDelay()` was added
 * `withDynamicSizing(models.DynamicSizing)` was added
 * `withPostProvisioningDelay(java.lang.String)` was added
 
 #### `models.StandbyContainerGroupPoolElasticityProfile` was modified
 
-* `withDynamicSizing(models.DynamicSizing)` was added
 * `dynamicSizing()` was added
+* `withDynamicSizing(models.DynamicSizing)` was added
 
 ## 1.1.0 (2025-04-21)
 
