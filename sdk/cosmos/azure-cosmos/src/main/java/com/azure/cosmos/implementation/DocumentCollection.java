@@ -9,8 +9,8 @@ import com.azure.cosmos.models.ChangeFeedPolicy;
 import com.azure.cosmos.models.ClientEncryptionPolicy;
 import com.azure.cosmos.models.ComputedProperty;
 import com.azure.cosmos.models.ConflictResolutionPolicy;
-import com.azure.cosmos.models.CosmosMaterializedViewDefinition;
-import com.azure.cosmos.models.CosmosMaterializedView;
+import com.azure.cosmos.models.CosmosGlobalSecondaryIndexDefinition;
+import com.azure.cosmos.models.CosmosGlobalSecondaryIndexView;
 import com.azure.cosmos.models.CosmosFullTextPolicy;
 import com.azure.cosmos.models.CosmosVectorEmbeddingPolicy;
 import com.azure.cosmos.models.IndexingPolicy;
@@ -48,7 +48,7 @@ public final class DocumentCollection extends Resource {
     private ClientEncryptionPolicy clientEncryptionPolicyInternal;
     private CosmosVectorEmbeddingPolicy cosmosVectorEmbeddingPolicy;
     private CosmosFullTextPolicy cosmosFullTextPolicy;
-    private CosmosMaterializedViewDefinition cosmosMaterializedViewDefinition;
+    private CosmosGlobalSecondaryIndexDefinition cosmosGlobalSecondaryIndexDefinition;
 
     /**
      * Constructor.
@@ -478,15 +478,15 @@ public final class DocumentCollection extends Resource {
      *
      * @return the CosmosMaterializedViewDefinition
      */
-    public CosmosMaterializedViewDefinition getMaterializedViewDefinition() {
-        if (this.cosmosMaterializedViewDefinition == null) {
+    public CosmosGlobalSecondaryIndexDefinition getGlobalSecondaryIndexDefinition() {
+        if (this.cosmosGlobalSecondaryIndexDefinition == null) {
             if (super.has(Constants.Properties.MATERIALIZED_VIEW_DEFINITION)) {
-                this.cosmosMaterializedViewDefinition = super.getObject(
+                this.cosmosGlobalSecondaryIndexDefinition = super.getObject(
                     Constants.Properties.MATERIALIZED_VIEW_DEFINITION,
-                    CosmosMaterializedViewDefinition.class);
+                    CosmosGlobalSecondaryIndexDefinition.class);
             }
         }
-        return this.cosmosMaterializedViewDefinition;
+        return this.cosmosGlobalSecondaryIndexDefinition;
     }
 
     /**
@@ -494,9 +494,9 @@ public final class DocumentCollection extends Resource {
      *
      * @param value the CosmosMaterializedViewDefinition
      */
-    public void setMaterializedViewDefinition(CosmosMaterializedViewDefinition value) {
+    public void setGlobalSecondaryIndexDefinition(CosmosGlobalSecondaryIndexDefinition value) {
         checkNotNull(value, "cosmosMaterializedViewDefinition cannot be null");
-        this.cosmosMaterializedViewDefinition = value;
+        this.cosmosGlobalSecondaryIndexDefinition = value;
         this.set(Constants.Properties.MATERIALIZED_VIEW_DEFINITION, value);
     }
 
@@ -504,11 +504,11 @@ public final class DocumentCollection extends Resource {
      * Gets the read-only list of materialized views derived from this container.
      * This property is populated only when reading a container response from the Azure Cosmos DB service.
      *
-     * @return the list of {@link CosmosMaterializedView}, or an empty list if none are present.
+     * @return the list of {@link CosmosGlobalSecondaryIndexView}, or an empty list if none are present.
      */
-    public List<CosmosMaterializedView> getMaterializedViews() {
-        List<CosmosMaterializedView> results =
-            super.getList(Constants.Properties.MATERIALIZED_VIEWS, CosmosMaterializedView.class);
+    public List<CosmosGlobalSecondaryIndexView> getGlobalSecondaryIndexViews() {
+        List<CosmosGlobalSecondaryIndexView> results =
+            super.getList(Constants.Properties.MATERIALIZED_VIEWS, CosmosGlobalSecondaryIndexView.class);
         if (results == null) {
             return Collections.emptyList();
         }

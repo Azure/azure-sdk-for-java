@@ -17,7 +17,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
  * "materializedViews": [{ "id": "gsi_testcontainer1", "_rid": "TughAMEOdUI=" }]
  * }</pre>
  */
-public final class CosmosMaterializedView {
+public final class CosmosGlobalSecondaryIndexView {
 
     @JsonProperty(Constants.Properties.ID)
     private String id;
@@ -28,7 +28,7 @@ public final class CosmosMaterializedView {
     /**
      * Constructor
      */
-    public CosmosMaterializedView() {
+    public CosmosGlobalSecondaryIndexView() {
     }
 
     /**

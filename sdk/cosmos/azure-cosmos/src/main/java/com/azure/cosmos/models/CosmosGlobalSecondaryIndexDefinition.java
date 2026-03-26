@@ -15,19 +15,19 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
  * <p>
  * Example:
  * <pre>{@code
- * CosmosMaterializedViewDefinition definition = new CosmosMaterializedViewDefinition()
- *     .setSourceCollectionId("gsi-src")
+ * CosmosGlobalSecondaryIndexDefinition definition = new CosmosGlobalSecondaryIndexDefinition()
+ *     .setSourceContainer("gsi-src")
  *     .setDefinition("SELECT c.customerId, c.emailAddress FROM c");
  * }</pre>
  */
-public final class CosmosMaterializedViewDefinition {
+public final class CosmosGlobalSecondaryIndexDefinition {
 
     private final JsonSerializable jsonSerializable;
 
     /**
      * Constructor
      */
-    public CosmosMaterializedViewDefinition() {
+    public CosmosGlobalSecondaryIndexDefinition() {
         this.jsonSerializable = new JsonSerializable();
     }
 
@@ -36,58 +36,58 @@ public final class CosmosMaterializedViewDefinition {
      *
      * @param objectNode the {@link ObjectNode} that represents the materialized view definition.
      */
-    CosmosMaterializedViewDefinition(ObjectNode objectNode) {
+    CosmosGlobalSecondaryIndexDefinition(ObjectNode objectNode) {
         this.jsonSerializable = new JsonSerializable(objectNode);
     }
 
     /**
-     * Gets the source collection id for the materialized view.
+     * Gets the source container id for the materialized view.
      *
-     * @return the source collection id.
+     * @return the source container id.
      */
-    public String getSourceCollectionId() {
+    public String getSourceContainerId() {
         return this.jsonSerializable.getString(Constants.Properties.MATERIALIZED_VIEW_SOURCE_COLLECTION_ID);
     }
 
     /**
-     * Sets the source collection id for the materialized view.
-     * The SDK will automatically resolve this collection id to its resource id (RID)
+     * Sets the source container id for the materialized view.
+     * The SDK will automatically resolve this container id to its resource id (RID)
      * during container creation.
      *
-     * @param sourceCollectionId the source collection id.
-     * @return CosmosMaterializedViewDefinition
+     * @param sourceContainerId the source container id.
+     * @return CosmosGlobalSecondaryIndexDefinition
      */
-    public CosmosMaterializedViewDefinition setSourceCollectionId(String sourceCollectionId) {
-        this.jsonSerializable.set(Constants.Properties.MATERIALIZED_VIEW_SOURCE_COLLECTION_ID, sourceCollectionId);
+    public CosmosGlobalSecondaryIndexDefinition setSourceContainerId(String sourceContainerId) {
+        this.jsonSerializable.set(Constants.Properties.MATERIALIZED_VIEW_SOURCE_COLLECTION_ID, sourceContainerId);
         return this;
     }
 
-    void setSourceCollectionRidInternal(String sourceCollectionRid) {
+    void setSourceContainerRidInternal(String sourceCollectionRid) {
         this.jsonSerializable.set(Constants.Properties.MATERIALIZED_VIEW_SOURCE_COLLECTION_RID, sourceCollectionRid);
     }
 
     /**
-     * Gets the source collection resource id (RID) for the materialized view as returned by the server.
+     * Gets the source container resource id (RID) for the global secondary index as returned by the server.
      * This is a read-only field populated from server responses.
      *
-     * @return the source collection resource id.
+     * @return the source container resource id.
      */
-    public String getSourceCollectionRid() {
+    public String getSourceContainerRid() {
         return this.jsonSerializable.getString(Constants.Properties.MATERIALIZED_VIEW_SOURCE_COLLECTION_RID);
     }
 
     /**
-     * Gets the build status of the materialized view as returned by the server.
+     * Gets the build status of the GlobalSecondaryIndex view as returned by the server.
      * This is a read-only field populated from server responses.
      *
-     * @return the materialized view build status.
+     * @return the GlobalSecondaryIndex view build status.
      */
     public String getStatus() {
         return this.jsonSerializable.getString(Constants.Properties.MATERIALIZED_VIEW_STATUS);
     }
 
     /**
-     * Gets the query definition for the materialized view.
+     * Gets the query definition for the GlobalSecondaryIndex view.
      *
      * @return the query definition.
      */
@@ -99,9 +99,9 @@ public final class CosmosMaterializedViewDefinition {
      * Sets the query definition for the materialized view.
      *
      * @param definition the query definition (e.g. {@code "SELECT c.customerId, c.emailAddress FROM c"}).
-     * @return CosmosMaterializedViewDefinition
+     * @return CosmosGlobalSecondaryIndexDefinition
      */
-    public CosmosMaterializedViewDefinition setDefinition(String definition) {
+    public CosmosGlobalSecondaryIndexDefinition setDefinition(String definition) {
         this.jsonSerializable.set(Constants.Properties.MATERIALIZED_VIEW_QUERY_DEFINITION, definition);
         return this;
     }

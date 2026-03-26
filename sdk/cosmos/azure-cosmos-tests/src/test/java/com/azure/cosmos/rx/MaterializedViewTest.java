@@ -6,8 +6,8 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.models.CosmosMaterializedView;
-import com.azure.cosmos.models.CosmosMaterializedViewDefinition;
+import com.azure.cosmos.models.CosmosGlobalSecondaryIndexView;
+import com.azure.cosmos.models.CosmosGlobalSecondaryIndexDefinition;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -46,15 +46,15 @@ public class MaterializedViewTest {
         CosmosContainerProperties containerProperties =
             new CosmosContainerProperties("testContainer", "/pk");
 
-        CosmosMaterializedViewDefinition definition = new CosmosMaterializedViewDefinition()
-            .setSourceCollectionId("gsi-src")
+        CosmosGlobalSecondaryIndexDefinition definition = new CosmosGlobalSecondaryIndexDefinition()
+            .setSourceContainerId("gsi-src")
             .setDefinition("SELECT c.customerId, c.emailAddress FROM c");
 
         containerProperties.setMaterializedViewDefinition(definition);
 
-        CosmosMaterializedViewDefinition retrieved = containerProperties.getMaterializedViewDefinition();
+        CosmosGlobalSecondaryIndexDefinition retrieved = containerProperties.getGlobalSecondaryIndexDefinition();
         assertThat(retrieved).isNotNull();
-        assertThat(retrieved.getSourceCollectionId()).isEqualTo("gsi-src");
+        assertThat(retrieved.getSourceContainerId()).isEqualTo("gsi-src");
         assertThat(retrieved.getDefinition()).isEqualTo("SELECT c.customerId, c.emailAddress FROM c");
     }
 
@@ -73,8 +73,8 @@ public class MaterializedViewTest {
         CosmosContainerProperties containerProperties =
             new CosmosContainerProperties("testContainer", "/pk");
 
-        CosmosMaterializedViewDefinition definition = new CosmosMaterializedViewDefinition()
-            .setSourceCollectionId("gsi-src");
+        CosmosGlobalSecondaryIndexDefinition definition = new CosmosGlobalSecondaryIndexDefinition()
+            .setSourceContainerId("gsi-src");
 
         assertThat(containerProperties.setMaterializedViewDefinition(definition))
             .isSameAs(containerProperties);
@@ -89,8 +89,8 @@ public class MaterializedViewTest {
         CosmosContainerProperties containerProperties =
             new CosmosContainerProperties("testContainer", "/pk");
 
-        CosmosMaterializedViewDefinition definition = new CosmosMaterializedViewDefinition()
-            .setSourceCollectionId("gsi-src")
+        CosmosGlobalSecondaryIndexDefinition definition = new CosmosGlobalSecondaryIndexDefinition()
+            .setSourceContainerId("gsi-src")
             .setDefinition("SELECT c.customerId, c.emailAddress FROM c");
 
         // Simulate the RID resolution that CosmosAsyncDatabase performs during createContainer
@@ -124,11 +124,11 @@ public class MaterializedViewTest {
 
         CosmosContainerProperties containerProperties = fromJson(json);
 
-        CosmosMaterializedViewDefinition definition = containerProperties.getMaterializedViewDefinition();
+        CosmosGlobalSecondaryIndexDefinition definition = containerProperties.getGlobalSecondaryIndexDefinition();
         assertThat(definition).isNotNull();
-        assertThat(definition.getSourceCollectionId()).isEqualTo("gsi-src");
+        assertThat(definition.getSourceContainerId()).isEqualTo("gsi-src");
         assertThat(definition.getDefinition()).isEqualTo("SELECT c.customerId, c.emailAddress FROM c");
-        assertThat(definition.getSourceCollectionRid()).isEqualTo("TughAMEOdUI=");
+        assertThat(definition.getSourceContainerRid()).isEqualTo("TughAMEOdUI=");
         assertThat(definition.getStatus()).isNull();
     }
 
@@ -146,9 +146,9 @@ public class MaterializedViewTest {
 
         CosmosContainerProperties containerProperties = fromJson(json);
 
-        CosmosMaterializedViewDefinition definition = containerProperties.getMaterializedViewDefinition();
+        CosmosGlobalSecondaryIndexDefinition definition = containerProperties.getGlobalSecondaryIndexDefinition();
         assertThat(definition).isNotNull();
-        assertThat(definition.getSourceCollectionRid()).isEqualTo("TughAMEOdUI=");
+        assertThat(definition.getSourceContainerRid()).isEqualTo("TughAMEOdUI=");
         assertThat(definition.getStatus()).isEqualTo("Initialized");
     }
 
@@ -156,8 +156,8 @@ public class MaterializedViewTest {
     public void materializedViewDefinition_fullRoundTrip() throws Exception {
         // Set on container properties using the new public API
         CosmosContainerProperties original = new CosmosContainerProperties("testContainer", "/pk");
-        CosmosMaterializedViewDefinition definition = new CosmosMaterializedViewDefinition()
-            .setSourceCollectionId("gsi-src")
+        CosmosGlobalSecondaryIndexDefinition definition = new CosmosGlobalSecondaryIndexDefinition()
+            .setSourceContainerId("gsi-src")
             .setDefinition("SELECT c.customerId, c.emailAddress FROM c");
 
         // Simulate the RID resolution that CosmosAsyncDatabase performs during createContainer
@@ -171,9 +171,9 @@ public class MaterializedViewTest {
         // Deserialize back using the same path as server responses
         CosmosContainerProperties deserialized = fromJson(json);
 
-        CosmosMaterializedViewDefinition deserializedDef = deserialized.getMaterializedViewDefinition();
+        CosmosGlobalSecondaryIndexDefinition deserializedDef = deserialized.getGlobalSecondaryIndexDefinition();
         assertThat(deserializedDef).isNotNull();
-        assertThat(deserializedDef.getSourceCollectionId()).isEqualTo("gsi-src");
+        assertThat(deserializedDef.getSourceContainerId()).isEqualTo("gsi-src");
         assertThat(deserializedDef.getDefinition()).isEqualTo("SELECT c.customerId, c.emailAddress FROM c");
 
         // Verify the RID round-tripped correctly through the wire format
@@ -192,7 +192,7 @@ public class MaterializedViewTest {
         CosmosContainerProperties containerProperties =
             new CosmosContainerProperties("testContainer", "/pk");
 
-        List<CosmosMaterializedView> views = containerProperties.getMaterializedViews();
+        List<CosmosGlobalSecondaryIndexView> views = containerProperties.getGlobalSecondaryIndexViews();
         assertThat(views).isNotNull();
         assertThat(views).isEmpty();
     }
@@ -210,7 +210,7 @@ public class MaterializedViewTest {
 
         CosmosContainerProperties containerProperties = fromJson(json);
 
-        List<CosmosMaterializedView> views = containerProperties.getMaterializedViews();
+        List<CosmosGlobalSecondaryIndexView> views = containerProperties.getGlobalSecondaryIndexViews();
         assertThat(views).isNotNull();
         assertThat(views).hasSize(2);
 

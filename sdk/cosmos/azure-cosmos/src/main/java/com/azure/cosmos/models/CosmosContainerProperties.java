@@ -397,10 +397,10 @@ public final class CosmosContainerProperties {
      * Gets the materialized view definition for this container in the Azure Cosmos DB service.
      * A materialized view is derived from a source container and is defined by a SQL-like query.
      *
-     * @return the CosmosMaterializedViewDefinition
+     * @return the CosmosGlobalSecondaryIndexDefinition
      */
-    public CosmosMaterializedViewDefinition getMaterializedViewDefinition() {
-        return this.documentCollection.getMaterializedViewDefinition();
+    public CosmosGlobalSecondaryIndexDefinition getGlobalSecondaryIndexDefinition() {
+        return this.documentCollection.getGlobalSecondaryIndexDefinition();
     }
 
     /**
@@ -409,17 +409,17 @@ public final class CosmosContainerProperties {
      * <p>
      * Example:
      * <pre>{@code
-     * CosmosMaterializedViewDefinition mvDef = new CosmosMaterializedViewDefinition()
+     * CosmosGlobalSecondaryIndexDefinition mvDef = new CosmosGlobalSecondaryIndexDefinition()
      *     .setSourceCollectionId("gsi-src")
      *     .setDefinition("SELECT c.customerId, c.emailAddress FROM c");
      * containerProperties.setMaterializedViewDefinition(mvDef);
      * }</pre>
      *
-     * @param value the CosmosMaterializedViewDefinition to be used.
+     * @param value the CosmosGlobalSecondaryIndexDefinition to be used.
      * @return the CosmosContainerProperties.
      */
-    public CosmosContainerProperties setMaterializedViewDefinition(CosmosMaterializedViewDefinition value) {
-        this.documentCollection.setMaterializedViewDefinition(value);
+    public CosmosContainerProperties setMaterializedViewDefinition(CosmosGlobalSecondaryIndexDefinition value) {
+        this.documentCollection.setGlobalSecondaryIndexDefinition(value);
         return this;
     }
 
@@ -429,13 +429,13 @@ public final class CosmosContainerProperties {
      * <p>
      * Example JSON representation in the response:
      * <pre>{@code
-     * "materializedViews": [{ "id": "gsi_testcontainer1", "_rid": "TughAMEOdUI=" }]
+     * "globalSecondaryIndexViews": [{ "id": "gsi_testcontainer1", "_rid": "TughAMEOdUI=" }]
      * }</pre>
      *
-     * @return the list of {@link CosmosMaterializedView}, or an empty list if none are present.
+     * @return the list of {@link CosmosGlobalSecondaryIndexView}, or an empty list if none are present.
      */
-    public List<CosmosMaterializedView> getMaterializedViews() {
-        return this.documentCollection.getMaterializedViews();
+    public List<CosmosGlobalSecondaryIndexView> getGlobalSecondaryIndexViews() {
+        return this.documentCollection.getGlobalSecondaryIndexViews();
     }
 
     Resource getResource() {

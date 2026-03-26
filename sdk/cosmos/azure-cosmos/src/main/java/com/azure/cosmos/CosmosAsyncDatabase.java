@@ -22,7 +22,7 @@ import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
-import com.azure.cosmos.models.CosmosMaterializedViewDefinition;
+import com.azure.cosmos.models.CosmosGlobalSecondaryIndexDefinition;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.CosmosUserProperties;
 import com.azure.cosmos.models.CosmosUserResponse;
@@ -1397,14 +1397,14 @@ public class CosmosAsyncDatabase {
         RequestOptions nonNullRequestOptions =
             options != null ? ModelBridgeInternal.toRequestOptions(options) : new RequestOptions();
 
-        CosmosMaterializedViewDefinition mvDefinition = containerProperties.getMaterializedViewDefinition();
+        CosmosGlobalSecondaryIndexDefinition gsiDefinition = containerProperties.getGlobalSecondaryIndexDefinition();
         Mono<Void> ridResolution;
-        if (mvDefinition != null && mvDefinition.getSourceCollectionId() != null) {
-            ridResolution = this.getContainer(mvDefinition.getSourceCollectionId())
+        if (gsiDefinition != null && gsiDefinition.getSourceContainerId() != null) {
+            ridResolution = this.getContainer(gsiDefinition.getSourceContainerId())
                 .read()
                 .flatMap(sourceContainerResponse -> {
                     String rid = sourceContainerResponse.getProperties().getResourceId();
-                    ModelBridgeInternal.setMaterializedViewDefinitionSourceCollectionRid(mvDefinition, rid);
+                    ModelBridgeInternal.setMaterializedViewDefinitionSourceCollectionRid(gsiDefinition, rid);
                     return Mono.empty();
                 });
         } else {
