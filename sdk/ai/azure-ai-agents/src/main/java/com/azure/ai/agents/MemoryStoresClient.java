@@ -57,7 +57,7 @@ public final class MemoryStoresClient {
     /**
      * Create a memory store.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -72,9 +72,9 @@ public final class MemoryStoresClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -112,7 +112,7 @@ public final class MemoryStoresClient {
     /**
      * Update a memory store.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -123,9 +123,9 @@ public final class MemoryStoresClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -164,7 +164,7 @@ public final class MemoryStoresClient {
     /**
      * Retrieve a memory store.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -221,7 +221,7 @@ public final class MemoryStoresClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -276,16 +276,15 @@ public final class MemoryStoresClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the response body along with {@link Response}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> deleteMemoryStoreWithResponse(String name, RequestOptions requestOptions) {
-        return this.serviceClient.deleteMemoryStoreWithResponse(name, requestOptions);
+        return internalDeleteMemoryStoreWithResponse(name, requestOptions);
     }
 
     /**
      * Get memory store update result.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -536,11 +535,10 @@ public final class MemoryStoresClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return response for deleting memories from a scope along with {@link Response}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> deleteScopeWithResponse(String name, BinaryData deleteScopeRequest,
         RequestOptions requestOptions) {
-        return this.serviceClient.deleteScopeWithResponse(name, deleteScopeRequest, requestOptions);
+        return internalDeleteScopeWithResponse(name, deleteScopeRequest, requestOptions);
     }
 
     /**
@@ -638,7 +636,7 @@ public final class MemoryStoresClient {
     /**
      * Search for relevant memories from a memory store based on conversation context.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -655,9 +653,9 @@ public final class MemoryStoresClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -708,7 +706,7 @@ public final class MemoryStoresClient {
     /**
      * Update memory store with conversation memories.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -723,9 +721,9 @@ public final class MemoryStoresClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -975,5 +973,74 @@ public final class MemoryStoresClient {
     public SyncPoller<MemoryStoreUpdateResponse, MemoryStoreUpdateCompletedResult> beginUpdateMemories(String name,
         String scope) {
         return beginInternalUpdateMemories(name, scope);
+    }
+
+    /**
+     * Delete a memory store.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted) (Required)
+     *     name: String (Required)
+     *     deleted: boolean (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The name of the memory store to delete.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<BinaryData> internalDeleteMemoryStoreWithResponse(String name, RequestOptions requestOptions) {
+        return this.serviceClient.internalDeleteMemoryStoreWithResponse(name, requestOptions);
+    }
+
+    /**
+     * Delete all memories associated with a specific scope from a memory store.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     scope: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     object: String(memory_store/memory_store.deleted/memory_store.scope.deleted) (Required)
+     *     name: String (Required)
+     *     scope: String (Required)
+     *     deleted: boolean (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The name of the memory store.
+     * @param deleteScopeRequest The deleteScopeRequest parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response for deleting memories from a scope along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<BinaryData> internalDeleteScopeWithResponse(String name, BinaryData deleteScopeRequest,
+        RequestOptions requestOptions) {
+        return this.serviceClient.internalDeleteScopeWithResponse(name, deleteScopeRequest, requestOptions);
     }
 }
