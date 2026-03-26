@@ -78,7 +78,7 @@ public abstract class SecretClientTestBase extends TestProxyTestBase {
             credential = new MockTokenCredential();
             List<TestProxyRequestMatcher> customMatchers = new ArrayList<>();
             customMatchers.add(new BodilessMatcher());
-            customMatchers.add(new CustomMatcher().setExcludedHeaders(Arrays.asList("Authorization", "Accept")));
+            customMatchers.add(new CustomMatcher().setExcludedHeaders(Collections.singletonList("Authorization")));
             interceptorManager.addMatchers(customMatchers);
         }
 
