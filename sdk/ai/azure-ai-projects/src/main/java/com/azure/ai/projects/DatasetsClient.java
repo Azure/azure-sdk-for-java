@@ -30,6 +30,7 @@ import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.stream.Stream;
@@ -226,11 +227,10 @@ public final class DatasetsClient {
      * @param folderPath The path to the folder containing files to upload.
      * @return A FolderDatasetVersion representing the created dataset.
      * @throws IllegalArgumentException If the provided path is not a directory.
-     * @throws IOException if an I/ O error is thrown when accessing the starting file
+     * @throws UncheckedIOException if an I/ O error is thrown when accessing the starting file
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public FolderDatasetVersion createDatasetWithFolder(String name, String version, Path folderPath)
-        throws IOException {
+    public FolderDatasetVersion createDatasetWithFolder(String name, String version, Path folderPath) {
         return createDatasetWithFolder(name, version, folderPath, null);
     }
 
@@ -244,11 +244,11 @@ public final class DatasetsClient {
      * If null, the default Azure Storage Account connection will be used.
      * @return A FolderDatasetVersion representing the created dataset.
      * @throws IllegalArgumentException If the provided path is not a directory.
-     * @throws IOException if an I/O error is thrown when accessing the starting file
+     * @throws UncheckedIOException if an I/O error is thrown when accessing the starting file
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FolderDatasetVersion createDatasetWithFolder(String name, String version, Path folderPath,
-        String connectionName) throws IOException {
+        String connectionName) {
         if (!Files.isDirectory(folderPath)) {
             throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("The provided path is not a folder: " + folderPath));
@@ -268,6 +268,8 @@ public final class DatasetsClient {
                 String relativePath = folderPath.relativize(filePath).toString().replace('\\', '/');
                 containerClient.getBlobClient(relativePath).upload(BinaryData.fromFile(filePath), true);
             });
+        } catch (IOException e) {
+            throw LOGGER.logExceptionAsError(new UncheckedIOException("Failed to walk folder path: " + folderPath, e));
         }
         RequestOptions requestOptions = new RequestOptions();
         FolderDatasetVersion datasetVersion = this
