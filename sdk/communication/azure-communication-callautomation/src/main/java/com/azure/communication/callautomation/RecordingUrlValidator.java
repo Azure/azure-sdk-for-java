@@ -23,7 +23,7 @@ final class RecordingUrlValidator {
      * These are the only domains permitted for recording URLs to prevent credential exfiltration.
      */
     private static final List<String> ALLOWED_HOST_SUFFIXES
-        = Arrays.asList(".asm.skype.com", ".asyncgw.teams.microsoft.com", ".blob.core.windows.net");
+        = Arrays.asList(".asm.skype.com", ".asyncgw.teams.microsoft.com");
 
     private RecordingUrlValidator() {
         // Private constructor to prevent instantiation
@@ -73,14 +73,10 @@ final class RecordingUrlValidator {
         boolean isValidEndpoint = ALLOWED_HOST_SUFFIXES.stream().anyMatch(hostLowerCase::endsWith);
 
         if (!isValidEndpoint) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format(
-                            "%s host '%s' is not a valid Azure Communication Services recording endpoint. "
-                                + "Only URLs pointing to *.asm.skype.com, *.asyncgw.teams.microsoft.com, "
-                                + "or Azure Blob Storage (*.blob.core.windows.net) are allowed.",
-                            parameterName, host)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
+                "%s host '%s' is not a valid Azure Communication Services recording endpoint. "
+                    + "Only URLs pointing to *.asm.skype.com, *.asyncgw.teams.microsoft.com are allowed.",
+                parameterName, host)));
         }
 
         // Log successful validation
