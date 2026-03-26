@@ -14,6 +14,7 @@
 * Fixed `NullPointerException` in `DocumentQueryExecutionContextFactory.tryCacheQueryPlan` when executing hybrid search queries with a partition key filter. See [PR 48431](https://github.com/Azure/azure-sdk-for-java/pull/48431)
 * Fixed `ConcurrentModificationException` in hybrid search component query execution caused by concurrent access to shared mutable state. See [PR 48431](https://github.com/Azure/azure-sdk-for-java/pull/48431)
 * Fixed availability strategy for Gateway V2 (thin client) by ensuring `RegionalRoutingContext` identity is based only on the immutable gateway endpoint. - See [PR 48432](https://github.com/Azure/azure-sdk-for-java/pull/48432)
+* Fixed an issue where `replaceItem` bypassed the `customItemSerializer`, serialising POJOs with the SDK's internal `ObjectMapper` instead of the user-configured one. - See [PR 48529](https://github.com/Azure/azure-sdk-for-java/pull/48529)
 * Fixed `ClassCastException` (`ArrayNode cannot be cast to ObjectNode`) when executing `SELECT VALUE ... GROUP BY` queries. See - [PR 48507](https://github.com/Azure/azure-sdk-for-java/pull/48507)
 
 #### Other Changes

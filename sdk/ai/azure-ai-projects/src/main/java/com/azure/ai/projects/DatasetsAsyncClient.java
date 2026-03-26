@@ -30,6 +30,8 @@ import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
@@ -217,8 +219,10 @@ public final class DatasetsAsyncClient {
                     String relativePath = folderPath.relativize(filePath).toString().replace('\\', '/');
                     return containerClient.getBlobAsyncClient(relativePath).upload(BinaryData.fromFile(filePath), true);
                 }).then(Mono.just(containerUrl));
-            } catch (Exception e) {
-                return Mono.error(new RuntimeException("Error walking through folder path", e));
+            } catch (IOException e) {
+                return Mono.error(new UncheckedIOException("Failed to walk folder path: " + folderPath, e));
+            } catch (RuntimeException e) {
+                return Mono.error(e);
             }
         }).flatMap(containerUrl -> {
             RequestOptions requestOptions = new RequestOptions();
