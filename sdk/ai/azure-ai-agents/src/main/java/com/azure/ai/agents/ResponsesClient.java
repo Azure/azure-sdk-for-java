@@ -74,7 +74,7 @@ public final class ResponsesClient {
      * @param params The parameters to create the response.
      * @return An IterableStream of ResponseStreamEvent.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public IterableStream<ResponseStreamEvent> createStreamingAzureResponse(AzureCreateResponseOptions createResponse,
         ResponseCreateParams.Builder params) {
         Objects.requireNonNull(createResponse, "createResponse cannot be null");
