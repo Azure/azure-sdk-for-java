@@ -3,15 +3,15 @@
 
 package com.azure.resourcemanager.containerinstance.implementation;
 
-import com.azure.resourcemanager.containerinstance.fluent.models.ContainerAttachResponseInner;
+import com.azure.resourcemanager.containerinstance.fluent.models.ContainerAttachResultInner;
 import com.azure.resourcemanager.containerinstance.models.ContainerAttachResult;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 
-class ContainerAttachResultImpl implements ContainerAttachResult, HasInnerModel<ContainerAttachResponseInner> {
+class ContainerAttachResultImpl implements ContainerAttachResult, HasInnerModel<ContainerAttachResultInner> {
 
-    private final ContainerAttachResponseInner innerModel;
+    private final ContainerAttachResultInner innerModel;
 
-    ContainerAttachResultImpl(ContainerAttachResponseInner innerModel) {
+    ContainerAttachResultImpl(ContainerAttachResultInner innerModel) {
         this.innerModel = innerModel;
     }
 
@@ -26,7 +26,7 @@ class ContainerAttachResultImpl implements ContainerAttachResult, HasInnerModel<
     }
 
     @Override
-    public ContainerAttachResponseInner innerModel() {
+    public ContainerAttachResultInner innerModel() {
         return this.innerModel;
     }
 }
