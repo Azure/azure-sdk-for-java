@@ -34,6 +34,7 @@ import com.azure.security.keyvault.certificates.models.CertificatePolicyAction;
 import com.azure.security.keyvault.certificates.models.ImportCertificateOptions;
 import com.azure.security.keyvault.certificates.models.KeyVaultCertificate;
 import com.azure.security.keyvault.certificates.models.LifetimeAction;
+import com.azure.security.keyvault.certificates.models.SubjectAlternativeNames;
 import com.azure.security.keyvault.certificates.models.WellKnownIssuerNames;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.provider.Arguments;
@@ -450,6 +451,23 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
                 .setTags(tags);
 
         testRunner.accept(importCertificateOptions);
+    }
+
+    @Test
+    public abstract void createCertificateWithSanIpAndUri(HttpClient httpClient,
+        CertificateServiceVersion serviceVersion);
+
+    void createCertificateWithSanIpAndUriRunner(Consumer<CertificatePolicy> testRunner) {
+        SubjectAlternativeNames san = new SubjectAlternativeNames().setDnsNames(Arrays.asList("san-test.example.com"))
+            .setIpAddresses(Arrays.asList("10.0.0.1", "192.168.1.100"))
+            .setUniformResourceIdentifiers(
+                Arrays.asList("https://example.com/api", "spiffe://cluster.local/ns/default/sa/myapp"));
+
+        CertificatePolicy policy = new CertificatePolicy(WellKnownIssuerNames.SELF, "CN=SanIpUriTest", san)
+            .setKeyType(CertificateKeyType.RSA)
+            .setKeySize(2048);
+
+        testRunner.accept(policy);
     }
 
     @Test

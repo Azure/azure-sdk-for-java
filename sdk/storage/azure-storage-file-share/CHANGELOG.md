@@ -1,15 +1,10 @@
 # Release History
 
-## 12.30.0-beta.2 (Unreleased)
+## 12.31.0-beta.1 (2026-03-25)
 
 ### Features Added
 - Added support for uploading up to 4 MiB of data with create file APIs.
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Added support for service version 2026-06-06.
 
 ## 12.30.0-beta.1 (2026-02-19)
 
