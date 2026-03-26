@@ -386,12 +386,12 @@ public class CosmosAsyncContainer {
 
     private <T> Mono<CosmosItemResponse<T>> replaceItemWithTrackingId(Class<T> itemType,
                                                                       String itemId,
-                                                                      Document doc,
+                                                                      Object item,
                                                                       RequestOptions requestOptions,
                                                                       String trackingId) {
 
         checkNotNull(trackingId, "Argument 'trackingId' must not be null.");
-        return replaceItemInternalCore(itemType, itemId, doc, requestOptions, trackingId)
+        return replaceItemInternalCore(itemType, itemId, item, requestOptions, trackingId)
             .onErrorResume(throwable -> {
                 Throwable error = throwable instanceof CompletionException ? throwable.getCause() : throwable;
 
@@ -1737,7 +1737,6 @@ public class CosmosAsyncContainer {
     public <T> Mono<CosmosItemResponse<T>> replaceItem(
         T item, String itemId, PartitionKey partitionKey,
         CosmosItemRequestOptions options) {
-        Document doc = InternalObjectNode.fromObject(item);
         if (options == null) {
             options = new CosmosItemRequestOptions();
         }
@@ -1745,7 +1744,7 @@ public class CosmosAsyncContainer {
         @SuppressWarnings("unchecked")
         Class<T> itemType = (Class<T>) item.getClass();
         final CosmosItemRequestOptions requestOptions = options;
-        return withContext(context -> replaceItemInternal(itemType, itemId, doc, requestOptions, context));
+        return withContext(context -> replaceItemInternal(itemType, itemId, item, requestOptions, context));
     }
 
     /**
@@ -2228,7 +2227,7 @@ public class CosmosAsyncContainer {
     private <T> Mono<CosmosItemResponse<T>> replaceItemInternalCore(
         Class<T> itemType,
         String itemId,
-        Document doc,
+        Object item,
         RequestOptions requestOptions,
         String trackingId) {
 
@@ -2236,7 +2235,7 @@ public class CosmosAsyncContainer {
 
         return this.getDatabase()
                    .getDocClientWrapper()
-                   .replaceDocument(getItemLink(itemId), doc, requestOptions)
+                   .replaceDocument(getItemLink(itemId), item, requestOptions)
                    .map(response -> itemResponseAccessor.createCosmosItemResponse(response, itemType, requestOptions.getEffectiveItemSerializer()))
                    .single();
     }
@@ -2261,7 +2260,7 @@ public class CosmosAsyncContainer {
     private <T> Mono<CosmosItemResponse<T>> replaceItemInternal(
         Class<T> itemType,
         String itemId,
-        Document doc,
+        Object item,
         CosmosItemRequestOptions options,
         Context context) {
 
@@ -2280,9 +2279,9 @@ public class CosmosAsyncContainer {
         String trackingId = null;
         if (nonIdempotentWriteRetryPolicy.isEnabled() && nonIdempotentWriteRetryPolicy.useTrackingIdProperty()) {
             trackingId = UUIDs.nonBlockingRandomUUID().toString();
-            responseMono = this.replaceItemWithTrackingId(itemType, itemId, doc, requestOptions, trackingId);
+            responseMono = this.replaceItemWithTrackingId(itemType, itemId, item, requestOptions, trackingId);
         } else {
-            responseMono = this.replaceItemInternalCore(itemType, itemId, doc, requestOptions, null);
+            responseMono = this.replaceItemInternalCore(itemType, itemId, item, requestOptions, null);
         }
 
         CosmosAsyncClient client = database
