@@ -1,14 +1,183 @@
 # Release History
 
-## 2.54.0-beta.1 (Unreleased)
-
-### Features Added
+## 2.54.0-beta.1 (2026-03-26)
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.CachedImagesListResult` was removed
 
-### Other Changes
+#### `models.UsageListResult` was removed
+
+#### `models.ContainerGroupListResult` was removed
+
+#### `models.CapabilitiesListResult` was removed
+
+#### `models.OperationListResult` was removed
+
+#### `models.ContainerState` was modified
+
+* `ContainerState()` was changed to private access
+
+#### `models.ContainerPropertiesInstanceView` was modified
+
+* `ContainerPropertiesInstanceView()` was changed to private access
+
+#### `models.InitContainerPropertiesDefinitionInstanceView` was modified
+
+* `InitContainerPropertiesDefinitionInstanceView()` was changed to private access
+
+#### `models.Capabilities` was modified
+
+* `Capabilities()` was changed to private access
+
+#### `models.Event` was modified
+
+* `Event()` was changed to private access
+
+#### `models.CapabilitiesCapabilities` was modified
+
+* `CapabilitiesCapabilities()` was changed to private access
+
+#### `models.OperationDisplay` was modified
+
+* `OperationDisplay()` was changed to private access
+* `withResource(java.lang.String)` was removed
+* `withOperation(java.lang.String)` was removed
+* `withDescription(java.lang.String)` was removed
+* `withProvider(java.lang.String)` was removed
+
+#### `models.ContainerGroupPropertiesInstanceView` was modified
+
+* `ContainerGroupPropertiesInstanceView()` was changed to private access
+
+#### `models.CachedImages` was modified
+
+* `CachedImages()` was changed to private access
+* `withImage(java.lang.String)` was removed
+* `withOsType(java.lang.String)` was removed
+
+#### `models.UsageName` was modified
+
+* `UsageName()` was changed to private access
+
+#### `models.Operation` was modified
+
+* `Operation()` was changed to private access
+* `withDisplay(models.OperationDisplay)` was removed
+* `withProperties(java.lang.Object)` was removed
+* `withName(java.lang.String)` was removed
+* `withOrigin(models.ContainerInstanceOperationsOrigin)` was removed
+
+### Features Added
+
+* `models.NGroupPatch` was added
+
+* `models.StandbyPoolProfileDefinition` was added
+
+* `models.LoadBalancerBackendAddressPool` was added
+
+* `models.CGProfilesUpdateHeaders` was added
+
+* `models.AzureFileShareAccessTier` was added
+
+* `models.ApplicationGateway` was added
+
+* `models.IdentityAccessControl` was added
+
+* `models.ElasticProfile` was added
+
+* `models.ElasticProfileContainerGroupNamingPolicyGuidNamingPolicy` was added
+
+* `models.LoadBalancer` was added
+
+* `models.NGroupCGPropertyContainerProperties` was added
+
+* `models.ElasticProfileContainerGroupNamingPolicy` was added
+
+* `models.FileShareProperties` was added
+
+* `models.CGProfilesUpdateResponse` was added
+
+* `models.ContainerGroupProfilePatch` was added
+
+* `models.UpdateProfile` was added
+
+* `models.NGroupUpdateMode` was added
+
+* `models.NGroupIdentity` was added
+
+* `models.NGroupProvisioningState` was added
+
+* `models.NGroupContainerGroupProperties` was added
+
+* `models.UpdateProfileRollingUpdateProfile` was added
+
+* `models.ApiEntityReference` was added
+
+* `models.ContainerGroupProvisioningState` was added
+
+* `models.NGroupCGPropertyContainer` was added
+
+* `models.ContainerGroupProfileReferenceDefinition` was added
+
+* `models.SecretReference` was added
+
+* `models.StorageProfile` was added
+
+* `models.NGroupCGPropertyVolume` was added
+
+* `models.ApplicationGatewayBackendAddressPool` was added
+
+* `models.CGProfilesCreateOrUpdateHeaders` was added
+
+* `models.IdentityAccessLevel` was added
+
+* `models.AzureFileShareAccessType` was added
+
+* `models.NetworkProfile` was added
+
+* `models.CGProfilesCreateOrUpdateResponse` was added
+
+* `models.ResourcePatch` was added
+
+* `models.IdentityAcls` was added
+
+* `models.ConfigMap` was added
+
+* `models.PlacementProfile` was added
+
+* `models.FileShare` was added
+
+* `models.ContainerGroupProfileStub` was added
+
+#### `models.Container` was modified
+
+* `configMap()` was added
+* `withConfigMap(models.ConfigMap)` was added
+
+#### `models.ImageRegistryCredential` was modified
+
+* `passwordReference()` was added
+* `withPasswordReference(java.lang.String)` was added
+
+#### `models.ContainerGroupSku` was modified
+
+* `NOT_SPECIFIED` was added
+
+#### `models.Volume` was modified
+
+* `secretReference()` was added
+* `withSecretReference(java.util.Map)` was added
+
+#### `models.EnvironmentVariable` was modified
+
+* `withSecureValueReference(java.lang.String)` was added
+* `secureValueReference()` was added
+
+#### `models.AzureFileVolume` was modified
+
+* `storageAccountKeyReference()` was added
+* `withStorageAccountKeyReference(java.lang.String)` was added
 
 ## 2.53.8 (2026-02-26)
 
