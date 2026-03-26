@@ -48,7 +48,7 @@ public final class ArrowBlobListDeserializer {
     /**
      * Result of deserializing an Arrow ListBlobs response.
      */
-    static final class ArrowListBlobsResult {
+    public static final class ArrowListBlobsResult {
         private final List<BlobItemInternal> blobItems;
         private final String nextMarker;
 
