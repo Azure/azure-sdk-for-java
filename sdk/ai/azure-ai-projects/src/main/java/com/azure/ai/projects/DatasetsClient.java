@@ -154,8 +154,8 @@ public final class DatasetsClient {
         blobClient.upload(BinaryData.fromFile(filePath), true);
         RequestOptions requestOptions = new RequestOptions();
         FileDatasetVersion datasetVersion = this
-            .createOrUpdateVersionWithResponse(name, version,
-                BinaryData.fromObject(new FileDatasetVersion().setDataUri(blobClient.getBlobUrl())), requestOptions)
+            .createOrUpdateDatasetVersionWithResponse(name, version,
+                BinaryData.fromObject(new FileDatasetVersion().setDataUrl(blobClient.getBlobUrl())), requestOptions)
             .getValue()
             .toObject(FileDatasetVersion.class);
         return datasetVersion;
@@ -214,8 +214,8 @@ public final class DatasetsClient {
         }
         RequestOptions requestOptions = new RequestOptions();
         FolderDatasetVersion datasetVersion = this
-            .createOrUpdateVersionWithResponse(name, version,
-                BinaryData.fromObject(new FolderDatasetVersion().setDataUri(containerUrl)), requestOptions)
+            .createOrUpdateDatasetVersionWithResponse(name, version,
+                BinaryData.fromObject(new FolderDatasetVersion().setDataUrl(containerUrl)), requestOptions)
             .getValue()
             .toObject(FolderDatasetVersion.class);
         return datasetVersion;

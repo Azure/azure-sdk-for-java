@@ -159,9 +159,10 @@ public final class DatasetsAsyncClient {
             return blobClient.upload(BinaryData.fromFile(filePath), true).thenReturn(blobClient.getBlobUrl());
         }).flatMap(blobUrl -> {
             RequestOptions requestOptions = new RequestOptions();
-            FileDatasetVersion fileDataset = new FileDatasetVersion().setDataUri(blobUrl);
+            FileDatasetVersion fileDataset = new FileDatasetVersion().setDataUrl(blobUrl);
             return this
-                .createOrUpdateVersionWithResponse(name, version, BinaryData.fromObject(fileDataset), requestOptions)
+                .createOrUpdateDatasetVersionWithResponse(name, version, BinaryData.fromObject(fileDataset),
+                    requestOptions)
                 .flatMap(FluxUtil::toMono)
                 .map(data -> data.toObject(FileDatasetVersion.class));
         });
@@ -221,9 +222,10 @@ public final class DatasetsAsyncClient {
             }
         }).flatMap(containerUrl -> {
             RequestOptions requestOptions = new RequestOptions();
-            FolderDatasetVersion folderDataset = new FolderDatasetVersion().setDataUri(containerUrl);
+            FolderDatasetVersion folderDataset = new FolderDatasetVersion().setDataUrl(containerUrl);
             return this
-                .createOrUpdateVersionWithResponse(name, version, BinaryData.fromObject(folderDataset), requestOptions)
+                .createOrUpdateDatasetVersionWithResponse(name, version, BinaryData.fromObject(folderDataset),
+                    requestOptions)
                 .flatMap(FluxUtil::toMono)
                 .map(data -> data.toObject(FolderDatasetVersion.class));
         });

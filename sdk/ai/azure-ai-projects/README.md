@@ -119,7 +119,7 @@ for (Connection connection : connections) {
 The code below shows some Indexes operations to list and create indexes. For more samples see the [package samples][package_samples].
 
 ```java com.azure.ai.projects.IndexesListSample.listIndexes
-indexesClient.listLatest().forEach(index -> {
+indexesClient.listLatestIndexVersions().forEach(index -> {
     System.out.println("Index name: " + index.getName());
     System.out.println("Index version: " + index.getVersion());
     System.out.println("Index description: " + index.getDescription());
@@ -133,7 +133,7 @@ String indexVersion = Configuration.getGlobalConfiguration().get("INDEX_VERSION"
 String aiSearchConnectionName = Configuration.getGlobalConfiguration().get("AI_SEARCH_CONNECTION_NAME", "");
 String aiSearchIndexName = Configuration.getGlobalConfiguration().get("AI_SEARCH_INDEX_NAME", "");
 
-AIProjectIndex index = indexesClient.createOrUpdateVersion(
+AIProjectIndex index = indexesClient.createOrUpdateIndexVersion(
     indexName,
     indexVersion,
     new AzureAISearchIndex()
