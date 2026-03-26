@@ -50,6 +50,10 @@ import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.common.test.shared.policy.InvalidServiceVersionPipelinePolicy;
+import org.apache.arrow.memory.BufferAllocator;
+import org.apache.arrow.memory.RootAllocator;
+import org.apache.arrow.vector.ipc.ArrowStreamReader;
+import org.apache.arrow.vector.VectorSchemaRoot;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -58,7 +62,16 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import com.azure.core.http.HttpPipeline;
+import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
+import com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder;
+import com.azure.storage.blob.implementation.models.ContainersListBlobFlatSegmentApacheArrowHeaders;
+import com.azure.storage.blob.models.ListBlobsIncludeItem;
+import com.azure.core.http.rest.ResponseBase;
+
 import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.net.URL;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -2128,4 +2141,76 @@ public class ContainerApiTests extends BlobTestBase {
     //        then:
     //        assertThrows(BlobStorageException.class, () ->
     //    }
+
+    @LiveOnly
+    @Test
+    public void listBlobsArrowSchemaDiscovery() throws Exception {
+        // Upload a test blob with metadata
+        String blobName = generateBlobName();
+        Map<String, String> metadata = new HashMap<>();
+        metadata.put("testkey", "testvalue");
+        cc.getBlobClient(blobName)
+            .getBlockBlobClient()
+            .uploadWithResponse(DATA.getDefaultInputStream(), 7, null, metadata, null, null, null, null, null);
+
+        // Construct AzureBlobStorageImpl directly to call generated Arrow methods
+        HttpPipeline pipeline = cc.getHttpPipeline();
+        AzureBlobStorageImpl impl = new AzureBlobStorageImplBuilder().pipeline(pipeline)
+            .url(cc.getAccountUrl())
+            .version(BlobServiceVersion.V2026_06_06.getVersion())
+            .buildClient();
+
+        // Call the Arrow endpoint directly
+        ArrayList<ListBlobsIncludeItem> include = new ArrayList<>();
+        include.add(ListBlobsIncludeItem.METADATA);
+
+        ResponseBase<ContainersListBlobFlatSegmentApacheArrowHeaders, InputStream> response = impl.getContainers()
+            .listBlobFlatSegmentApacheArrowWithResponse(containerName, null, null, null, null, include, null, null,
+                null, null, com.azure.core.util.Context.NONE);
+
+        // Verify Content-Type header
+        String contentType = response.getDeserializedHeaders().getContentType();
+        System.out.println("Content-Type: " + contentType);
+        // On Photon-enabled accounts this should be arrow; on non-Photon it will be XML
+        assertNotNull(contentType);
+
+        // Read the Arrow IPC stream
+        try (InputStream inputStream = response.getValue();
+            BufferAllocator allocator = new RootAllocator();
+            ArrowStreamReader reader = new ArrowStreamReader(inputStream, allocator)) {
+
+            VectorSchemaRoot root = reader.getVectorSchemaRoot();
+
+            // Print schema fields
+            System.out.println("=== Arrow Schema Fields ===");
+            root.getSchema()
+                .getFields()
+                .forEach(field -> System.out.println("  " + field.getName() + " : " + field.getType()));
+
+            // Print custom metadata
+            System.out.println("=== Schema Custom Metadata ===");
+            Map<String, String> schemaMetadata = root.getSchema().getCustomMetadata();
+            if (schemaMetadata != null) {
+                schemaMetadata.forEach((k, v) -> System.out.println("  " + k + " = " + v));
+            }
+
+            // Read first batch and print row values
+            assertTrue(reader.loadNextBatch(), "Expected at least one batch");
+            int rowCount = root.getRowCount();
+            System.out.println("=== Row Count: " + rowCount + " ===");
+            assertTrue(rowCount >= 1, "Expected at least one row");
+
+            // Print all field values for the first row
+            System.out.println("=== First Row Values ===");
+            for (int fieldIdx = 0; fieldIdx < root.getSchema().getFields().size(); fieldIdx++) {
+                org.apache.arrow.vector.FieldVector vec = root.getVector(fieldIdx);
+                Object value = vec.isNull(0) ? null : vec.getObject(0);
+                System.out.println("  " + vec.getName() + " = " + value);
+            }
+
+            // Basic assertions on the blob we uploaded
+            org.apache.arrow.vector.FieldVector nameVec = root.getVector("Name");
+            assertNotNull(nameVec, "Expected 'Name' column in Arrow schema");
+        }
+    }
 }
