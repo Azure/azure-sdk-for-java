@@ -1048,11 +1048,11 @@ public final class BlobContainerClient {
 
             if (finalOptions.getUseArrow()) {
                 // Potential implementation for returning Apache Arrow format.
-//                Callable<ResponseBase<ContainersListBlobFlatSegmentApacheArrowHeaders, InputStream>> operation
-//                    = () -> this.azureBlobStorage.getContainers()
-//                        .listBlobFlatSegmentApacheArrowWithResponse(containerName, null, finalOptions.getPrefix(),
-//                            nextMarker, finalOptions.getMaxResultsPerPage(), include, null, finalOptions.getStartFrom(),
-//                            finalOptions.getEndBefore(), null, Context.NONE);
+                //                Callable<ResponseBase<ContainersListBlobFlatSegmentApacheArrowHeaders, InputStream>> operation
+                //                    = () -> this.azureBlobStorage.getContainers()
+                //                        .listBlobFlatSegmentApacheArrowWithResponse(containerName, null, finalOptions.getPrefix(),
+                //                            nextMarker, finalOptions.getMaxResultsPerPage(), include, null, finalOptions.getStartFrom(),
+                //                            finalOptions.getEndBefore(), null, Context.NONE);
                 return null;
             } else {
                 Callable<ResponseBase<ContainersListBlobFlatSegmentHeaders, ListBlobsFlatSegmentResponse>> operation
