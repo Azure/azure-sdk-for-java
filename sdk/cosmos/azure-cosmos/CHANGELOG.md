@@ -1,13 +1,11 @@
 ## Release History
 
-### 4.79.0-beta.1 (Unreleased)
+### 4.79.0 (2026-04-07)
 
 #### Features Added
 * Added support for N-Region synchronous commit feature - See [PR 47757](https://github.com/Azure/azure-sdk-for-java/pull/47757)
 * Added support for Query Advisor feature - See [48160](https://github.com/Azure/azure-sdk-for-java/pull/48160) 
 * Added `CosmosFullTextScoreScope` enum and `setFullTextScoreScope()` on `CosmosQueryRequestOptions` for controlling BM25 statistics scope in hybrid search queries. Supports `LOCAL` (scoped to target partitions) and `GLOBAL` (default, all partitions) scopes. See [PR 48431](https://github.com/Azure/azure-sdk-for-java/pull/48431)
-
-#### Breaking Changes
 
 #### Bugs Fixed
 * Fixed Remote Code Execution (RCE) vulnerability (CWE-502) by replacing Java deserialization with JSON-based serialization in `CosmosClientMetadataCachesSnapshot`, `AsyncCache`, and `DocumentCollection`. The metadata cache snapshot now uses Jackson for serialization/deserialization, eliminating the entire class of Java deserialization attacks. - [PR 47971](https://github.com/Azure/azure-sdk-for-java/pull/47971)
