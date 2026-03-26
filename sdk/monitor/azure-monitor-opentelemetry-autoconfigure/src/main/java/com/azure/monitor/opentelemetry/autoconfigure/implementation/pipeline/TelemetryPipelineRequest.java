@@ -6,6 +6,7 @@ package com.azure.monitor.opentelemetry.autoconfigure.implementation.pipeline;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.TelemetryBatchMetadata;
 import reactor.core.publisher.Flux;
 
 import java.net.URL;
@@ -20,13 +21,22 @@ public class TelemetryPipelineRequest {
     private final List<ByteBuffer> byteBuffers;
     private final int contentLength;
 
+    // Customer-facing SDKStats metadata
+    private final TelemetryBatchMetadata batchMetadata;
+
     TelemetryPipelineRequest(URL url, String connectionString, String instrumentationKey,
         List<ByteBuffer> byteBuffers) {
+        this(url, connectionString, instrumentationKey, byteBuffers, TelemetryBatchMetadata.empty());
+    }
+
+    public TelemetryPipelineRequest(URL url, String connectionString, String instrumentationKey,
+        List<ByteBuffer> byteBuffers, TelemetryBatchMetadata batchMetadata) {
         this.url = url;
         this.connectionString = connectionString;
         this.instrumentationKey = instrumentationKey;
         this.byteBuffers = byteBuffers;
         contentLength = byteBuffers.stream().mapToInt(ByteBuffer::limit).sum();
+        this.batchMetadata = batchMetadata != null ? batchMetadata : TelemetryBatchMetadata.empty();
     }
 
     public URL getUrl() {
@@ -48,6 +58,15 @@ public class TelemetryPipelineRequest {
     // used by statsbeat
     public String getInstrumentationKey() {
         return instrumentationKey;
+    }
+
+    /**
+     * Returns metadata about the telemetry batch, including item counts by type
+     * and success/failure breakdowns. Returns empty metadata for batches where
+     * item counting is not applicable (e.g. statsbeat, disk retries).
+     */
+    public TelemetryBatchMetadata getTelemetryBatchMetadata() {
+        return batchMetadata;
     }
 
     HttpRequest createHttpRequest() {
