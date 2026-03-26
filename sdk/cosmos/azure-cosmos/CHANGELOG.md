@@ -21,7 +21,8 @@
 * Added `appendUserAgentSuffix` method to `AsyncDocumentClient` to allow downstream libraries to append to the user agent after client construction. - See [PR 48505](https://github.com/Azure/azure-sdk-for-java/pull/48505)
 * Added aggressive HTTP timeout policies for document operations routed to Gateway V2. - [PR 47879](https://github.com/Azure/azure-sdk-for-java/pull/47879)
 * Added a default connect timeout of 5s for Gateway V2 (thin client) data-plane endpoints. - See [PR 48174](https://github.com/Azure/azure-sdk-for-java/pull/48174)
-* Added system property `COSMOS.CONNECTION_ACQUIRE_TIMEOUT_IN_SECONDS` and environment variable `COSMOS_CONNECTION_ACQUIRE_TIMEOUT_IN_SECONDS` to allow overriding the gateway connection acquire timeout (default 45s). - See [PR 48580](https://github.com/Azure/azure-sdk-for-java/pull/48580)
+* Added system property `COSMOS.CONNECTION_ACQUIRE_TIMEOUT_IN_MS` and environment variable `COSMOS_CONNECTION_ACQUIRE_TIMEOUT_IN_MS` to allow overriding the gateway connection acquire timeout in milliseconds (default 45000ms). Minimum accepted value is 500ms. Replaces the previous `_IN_SECONDS` variants. - See [PR 48580](https://github.com/Azure/azure-sdk-for-java/pull/48580)
+* Changed system property for thin client connection timeout from `COSMOS.THINCLIENT_CONNECTION_TIMEOUT_IN_SECONDS` to `COSMOS.THINCLIENT_CONNECTION_TIMEOUT_IN_MS` (default 5000ms, minimum 500ms). - See [PR 48580](https://github.com/Azure/azure-sdk-for-java/pull/48580)
 
 ### 4.78.0 (2026-02-10)
 
