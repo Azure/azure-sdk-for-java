@@ -149,8 +149,8 @@ public final class SecretBundle implements JsonSerializable<SecretBundle> {
     }
 
     /**
-     * Get the previousVersion property: The version of the previous secret, if applicable. Applies only to
-     * secrets created after June 1, 2025. Secrets created before this date are not retroactively updated.
+     * Get the previousVersion property: The version of the previous certificate, if applicable. Applies only to
+     * certificates created after June 1, 2025. Certificates created before this date are not retroactively updated.
      * 
      * @return the previousVersion value.
      */
