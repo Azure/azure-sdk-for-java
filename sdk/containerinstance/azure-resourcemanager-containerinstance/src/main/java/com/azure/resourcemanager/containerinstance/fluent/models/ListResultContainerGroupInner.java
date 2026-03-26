@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.containerinstance.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -27,7 +28,6 @@ import com.azure.resourcemanager.containerinstance.models.ImageRegistryCredentia
 import com.azure.resourcemanager.containerinstance.models.InitContainerDefinition;
 import com.azure.resourcemanager.containerinstance.models.IpAddress;
 import com.azure.resourcemanager.containerinstance.models.OperatingSystemTypes;
-import com.azure.resourcemanager.containerinstance.models.ResourcePatch;
 import com.azure.resourcemanager.containerinstance.models.SecretReference;
 import com.azure.resourcemanager.containerinstance.models.StandbyPoolProfileDefinition;
 import com.azure.resourcemanager.containerinstance.models.Volume;
@@ -39,7 +39,7 @@ import java.util.Map;
  * A container group part of the list result.
  */
 @Immutable
-public final class ListResultContainerGroupInner extends ResourcePatch {
+public final class ListResultContainerGroupInner extends Resource {
     /*
      * The identity of the container group, if configured.
      */
@@ -51,17 +51,22 @@ public final class ListResultContainerGroupInner extends ResourcePatch {
     private ListResultContainerGroupPropertiesProperties innerProperties;
 
     /*
-     * The resource type.
+     * The zones for the container group.
+     */
+    private List<String> zones;
+
+    /*
+     * The type of the resource.
      */
     private String type;
 
     /*
-     * The resource name.
+     * The name of the resource.
      */
     private String name;
 
     /*
-     * The resource id.
+     * Fully qualified resource Id for the resource.
      */
     private String id;
 
@@ -90,7 +95,16 @@ public final class ListResultContainerGroupInner extends ResourcePatch {
     }
 
     /**
-     * Get the type property: The resource type.
+     * Get the zones property: The zones for the container group.
+     * 
+     * @return the zones value.
+     */
+    public List<String> zones() {
+        return this.zones;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
      * 
      * @return the type value.
      */
@@ -100,7 +114,7 @@ public final class ListResultContainerGroupInner extends ResourcePatch {
     }
 
     /**
-     * Get the name property: The resource name.
+     * Get the name property: The name of the resource.
      * 
      * @return the name value.
      */
@@ -110,7 +124,7 @@ public final class ListResultContainerGroupInner extends ResourcePatch {
     }
 
     /**
-     * Get the id property: The resource id.
+     * Get the id property: Fully qualified resource Id for the resource.
      * 
      * @return the id value.
      */
@@ -319,7 +333,6 @@ public final class ListResultContainerGroupInner extends ResourcePatch {
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
         if (identity() != null) {
             identity().validate();
@@ -343,9 +356,9 @@ public final class ListResultContainerGroupInner extends ResourcePatch {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("location", location());
         jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
-        jsonWriter.writeArrayField("zones", zones(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("properties", this.innerProperties);
         jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeArrayField("zones", this.zones, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -377,14 +390,14 @@ public final class ListResultContainerGroupInner extends ResourcePatch {
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedListResultContainerGroupInner.withTags(tags);
-                } else if ("zones".equals(fieldName)) {
-                    List<String> zones = reader.readArray(reader1 -> reader1.getString());
-                    deserializedListResultContainerGroupInner.withZones(zones);
                 } else if ("properties".equals(fieldName)) {
                     deserializedListResultContainerGroupInner.innerProperties
                         = ListResultContainerGroupPropertiesProperties.fromJson(reader);
                 } else if ("identity".equals(fieldName)) {
                     deserializedListResultContainerGroupInner.identity = ContainerGroupIdentity.fromJson(reader);
+                } else if ("zones".equals(fieldName)) {
+                    List<String> zones = reader.readArray(reader1 -> reader1.getString());
+                    deserializedListResultContainerGroupInner.zones = zones;
                 } else {
                     reader.skipChildren();
                 }

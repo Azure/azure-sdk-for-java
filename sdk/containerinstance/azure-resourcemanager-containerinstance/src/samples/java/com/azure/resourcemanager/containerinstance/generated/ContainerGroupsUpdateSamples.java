@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.containerinstance.generated;
 
-import com.azure.resourcemanager.containerinstance.models.ResourcePatch;
+import com.azure.core.management.Resource;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,8 +25,7 @@ public final class ContainerGroupsUpdateSamples {
         manager.serviceClient()
             .getContainerGroups()
             .updateWithResponse("demoResource", "demo1",
-                new ResourcePatch()
-                    .withTags(mapOf("tag1key", "fakeTokenPlaceholder", "tag2key", "fakeTokenPlaceholder")),
+                new Resource().withTags(mapOf("tag1key", "fakeTokenPlaceholder", "tag2key", "fakeTokenPlaceholder")),
                 com.azure.core.util.Context.NONE);
     }
 

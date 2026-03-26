@@ -9,13 +9,13 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
+import com.azure.core.management.Resource;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.containerinstance.fluent.models.ContainerGroupInner;
 import com.azure.resourcemanager.containerinstance.fluent.models.ListResultContainerGroupInner;
-import com.azure.resourcemanager.containerinstance.models.ResourcePatch;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
@@ -247,7 +247,7 @@ public interface ContainerGroupsClient extends InnerSupportsGet<ContainerGroupIn
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ContainerGroupInner>> updateWithResponseAsync(String resourceGroupName, String containerGroupName,
-        ResourcePatch resource);
+        Resource resource);
 
     /**
      * Update container groups.
@@ -263,7 +263,7 @@ public interface ContainerGroupsClient extends InnerSupportsGet<ContainerGroupIn
      * @return a container group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ContainerGroupInner> updateAsync(String resourceGroupName, String containerGroupName, ResourcePatch resource);
+    Mono<ContainerGroupInner> updateAsync(String resourceGroupName, String containerGroupName, Resource resource);
 
     /**
      * Update container groups.
@@ -281,7 +281,7 @@ public interface ContainerGroupsClient extends InnerSupportsGet<ContainerGroupIn
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ContainerGroupInner> updateWithResponse(String resourceGroupName, String containerGroupName,
-        ResourcePatch resource, Context context);
+        Resource resource, Context context);
 
     /**
      * Update container groups.
@@ -297,7 +297,7 @@ public interface ContainerGroupsClient extends InnerSupportsGet<ContainerGroupIn
      * @return a container group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ContainerGroupInner update(String resourceGroupName, String containerGroupName, ResourcePatch resource);
+    ContainerGroupInner update(String resourceGroupName, String containerGroupName, Resource resource);
 
     /**
      * Delete the specified container group.

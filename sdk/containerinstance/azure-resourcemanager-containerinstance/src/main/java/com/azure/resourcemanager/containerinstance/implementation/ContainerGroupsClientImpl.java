@@ -27,6 +27,7 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
+import com.azure.core.management.Resource;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
@@ -37,7 +38,6 @@ import com.azure.resourcemanager.containerinstance.fluent.ContainerGroupsClient;
 import com.azure.resourcemanager.containerinstance.fluent.models.ContainerGroupInner;
 import com.azure.resourcemanager.containerinstance.fluent.models.ListResultContainerGroupInner;
 import com.azure.resourcemanager.containerinstance.implementation.models.ContainerGroupListResult;
-import com.azure.resourcemanager.containerinstance.models.ResourcePatch;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
@@ -106,8 +106,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("containerGroupName") String containerGroupName, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") ResourcePatch resource,
-            Context context);
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") Resource resource, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}")
@@ -617,7 +616,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ContainerGroupInner>> updateWithResponseAsync(String resourceGroupName,
-        String containerGroupName, ResourcePatch resource) {
+        String containerGroupName, Resource resource) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -636,8 +635,6 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
         }
         if (resource == null) {
             return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
         }
         final String contentType = "application/json";
         final String accept = "application/json";
@@ -664,7 +661,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ContainerGroupInner>> updateWithResponseAsync(String resourceGroupName,
-        String containerGroupName, ResourcePatch resource, Context context) {
+        String containerGroupName, Resource resource, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -683,8 +680,6 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
         }
         if (resource == null) {
             return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
         }
         final String contentType = "application/json";
         final String accept = "application/json";
@@ -708,7 +703,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ContainerGroupInner> updateAsync(String resourceGroupName, String containerGroupName,
-        ResourcePatch resource) {
+        Resource resource) {
         return updateWithResponseAsync(resourceGroupName, containerGroupName, resource)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -729,7 +724,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ContainerGroupInner> updateWithResponse(String resourceGroupName, String containerGroupName,
-        ResourcePatch resource, Context context) {
+        Resource resource, Context context) {
         return updateWithResponseAsync(resourceGroupName, containerGroupName, resource, context).block();
     }
 
@@ -747,7 +742,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * @return a container group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ContainerGroupInner update(String resourceGroupName, String containerGroupName, ResourcePatch resource) {
+    public ContainerGroupInner update(String resourceGroupName, String containerGroupName, Resource resource) {
         return updateWithResponse(resourceGroupName, containerGroupName, resource, Context.NONE).getValue();
     }
 
