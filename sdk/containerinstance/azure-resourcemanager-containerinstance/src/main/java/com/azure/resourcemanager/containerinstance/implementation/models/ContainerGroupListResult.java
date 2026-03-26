@@ -10,7 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.containerinstance.fluent.models.ListResultContainerGroupInner;
+import com.azure.resourcemanager.containerinstance.fluent.models.ContainerGroupInner;
 import java.io.IOException;
 import java.util.List;
 
@@ -22,7 +22,7 @@ public final class ContainerGroupListResult implements JsonSerializable<Containe
     /*
      * The ListResultContainerGroup items on this page
      */
-    private List<ListResultContainerGroupInner> value;
+    private List<ContainerGroupInner> value;
 
     /*
      * The link to the next page of items
@@ -40,7 +40,7 @@ public final class ContainerGroupListResult implements JsonSerializable<Containe
      * 
      * @return the value value.
      */
-    public List<ListResultContainerGroupInner> value() {
+    public List<ContainerGroupInner> value() {
         return this.value;
     }
 
@@ -97,8 +97,8 @@ public final class ContainerGroupListResult implements JsonSerializable<Containe
                 reader.nextToken();
 
                 if ("value".equals(fieldName)) {
-                    List<ListResultContainerGroupInner> value
-                        = reader.readArray(reader1 -> ListResultContainerGroupInner.fromJson(reader1));
+                    List<ContainerGroupInner> value
+                        = reader.readArray(reader1 -> ContainerGroupInner.fromJson(reader1));
                     deserializedContainerGroupListResult.value = value;
                 } else if ("nextLink".equals(fieldName)) {
                     deserializedContainerGroupListResult.nextLink = reader.getString();

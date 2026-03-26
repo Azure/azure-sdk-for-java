@@ -24,7 +24,7 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.containerinstance.fluent.ContainersClient;
-import com.azure.resourcemanager.containerinstance.fluent.models.ContainerAttachResultInner;
+import com.azure.resourcemanager.containerinstance.fluent.models.ContainerAttachResponseInner;
 import com.azure.resourcemanager.containerinstance.fluent.models.ContainerExecResponseInner;
 import com.azure.resourcemanager.containerinstance.fluent.models.LogsInner;
 import com.azure.resourcemanager.containerinstance.models.ContainerExecRequest;
@@ -88,7 +88,7 @@ public final class ContainersClientImpl implements ContainersClient {
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}/containers/{containerName}/attach")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ContainerAttachResultInner>> attach(@HostParam("endpoint") String endpoint,
+        Mono<Response<ContainerAttachResponseInner>> attach(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("containerGroupName") String containerGroupName,
@@ -452,7 +452,7 @@ public final class ContainersClientImpl implements ContainersClient {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ContainerAttachResultInner>> attachWithResponseAsync(String resourceGroupName,
+    public Mono<Response<ContainerAttachResponseInner>> attachWithResponseAsync(String resourceGroupName,
         String containerGroupName, String containerName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -496,7 +496,7 @@ public final class ContainersClientImpl implements ContainersClient {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ContainerAttachResultInner>> attachWithResponseAsync(String resourceGroupName,
+    private Mono<Response<ContainerAttachResponseInner>> attachWithResponseAsync(String resourceGroupName,
         String containerGroupName, String containerName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -537,7 +537,7 @@ public final class ContainersClientImpl implements ContainersClient {
      * @return the information for the output stream from container attach on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ContainerAttachResultInner> attachAsync(String resourceGroupName, String containerGroupName,
+    public Mono<ContainerAttachResponseInner> attachAsync(String resourceGroupName, String containerGroupName,
         String containerName) {
         return attachWithResponseAsync(resourceGroupName, containerGroupName, containerName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -558,8 +558,8 @@ public final class ContainersClientImpl implements ContainersClient {
      * @return the information for the output stream from container attach along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ContainerAttachResultInner> attachWithResponse(String resourceGroupName, String containerGroupName,
-        String containerName, Context context) {
+    public Response<ContainerAttachResponseInner> attachWithResponse(String resourceGroupName,
+        String containerGroupName, String containerName, Context context) {
         return attachWithResponseAsync(resourceGroupName, containerGroupName, containerName, context).block();
     }
 
@@ -577,7 +577,7 @@ public final class ContainersClientImpl implements ContainersClient {
      * @return the information for the output stream from container attach.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ContainerAttachResultInner attach(String resourceGroupName, String containerGroupName,
+    public ContainerAttachResponseInner attach(String resourceGroupName, String containerGroupName,
         String containerName) {
         return attachWithResponse(resourceGroupName, containerGroupName, containerName, Context.NONE).getValue();
     }

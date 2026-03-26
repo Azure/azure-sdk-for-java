@@ -36,7 +36,6 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.containerinstance.fluent.ContainerGroupsClient;
 import com.azure.resourcemanager.containerinstance.fluent.models.ContainerGroupInner;
-import com.azure.resourcemanager.containerinstance.fluent.models.ListResultContainerGroupInner;
 import com.azure.resourcemanager.containerinstance.implementation.models.ContainerGroupListResult;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
@@ -50,7 +49,7 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in ContainerGroupsClient.
  */
 public final class ContainerGroupsClientImpl implements InnerSupportsGet<ContainerGroupInner>,
-    InnerSupportsListing<ListResultContainerGroupInner>, InnerSupportsDelete<Void>, ContainerGroupsClient {
+    InnerSupportsListing<ContainerGroupInner>, InnerSupportsDelete<Void>, ContainerGroupsClient {
     /**
      * The proxy service used to perform REST calls.
      */
@@ -1725,7 +1724,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ListResultContainerGroupInner>> listSinglePageAsync() {
+    private Mono<PagedResponse<ContainerGroupInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -1738,7 +1737,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), accept, context))
-            .<PagedResponse<ListResultContainerGroupInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+            .<PagedResponse<ContainerGroupInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -1760,7 +1759,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ListResultContainerGroupInner>> listSinglePageAsync(Context context) {
+    private Mono<PagedResponse<ContainerGroupInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -1792,7 +1791,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * Get a list of container groups in the specified subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ListResultContainerGroupInner> listAsync() {
+    public PagedFlux<ContainerGroupInner> listAsync() {
         return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
@@ -1812,7 +1811,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * Get a list of container groups in the specified subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ListResultContainerGroupInner> listAsync(Context context) {
+    private PagedFlux<ContainerGroupInner> listAsync(Context context) {
         return new PagedFlux<>(() -> listSinglePageAsync(context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
@@ -1831,7 +1830,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * Get a list of container groups in the specified subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ListResultContainerGroupInner> list() {
+    public PagedIterable<ContainerGroupInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
@@ -1851,7 +1850,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * Get a list of container groups in the specified subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ListResultContainerGroupInner> list(Context context) {
+    public PagedIterable<ContainerGroupInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));
     }
 
@@ -1872,8 +1871,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ListResultContainerGroupInner>>
-        listByResourceGroupSinglePageAsync(String resourceGroupName) {
+    private Mono<PagedResponse<ContainerGroupInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -1890,7 +1888,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, accept, context))
-            .<PagedResponse<ListResultContainerGroupInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+            .<PagedResponse<ContainerGroupInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -1913,8 +1911,8 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ListResultContainerGroupInner>>
-        listByResourceGroupSinglePageAsync(String resourceGroupName, Context context) {
+    private Mono<PagedResponse<ContainerGroupInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -1953,7 +1951,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ListResultContainerGroupInner> listByResourceGroupAsync(String resourceGroupName) {
+    public PagedFlux<ContainerGroupInner> listByResourceGroupAsync(String resourceGroupName) {
         return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
@@ -1976,8 +1974,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ListResultContainerGroupInner> listByResourceGroupAsync(String resourceGroupName,
-        Context context) {
+    private PagedFlux<ContainerGroupInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
         return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
@@ -1999,7 +1996,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ListResultContainerGroupInner> listByResourceGroup(String resourceGroupName) {
+    public PagedIterable<ContainerGroupInner> listByResourceGroup(String resourceGroupName) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
     }
 
@@ -2021,7 +2018,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ListResultContainerGroupInner> listByResourceGroup(String resourceGroupName, Context context) {
+    public PagedIterable<ContainerGroupInner> listByResourceGroup(String resourceGroupName, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
     }
 
@@ -2040,7 +2037,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ListResultContainerGroupInner>> listNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<ContainerGroupInner>> listNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -2050,7 +2047,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
         }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ListResultContainerGroupInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+            .<PagedResponse<ContainerGroupInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -2071,8 +2068,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ListResultContainerGroupInner>> listNextSinglePageAsync(String nextLink,
-        Context context) {
+    private Mono<PagedResponse<ContainerGroupInner>> listNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -2102,7 +2098,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ListResultContainerGroupInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<ContainerGroupInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -2114,7 +2110,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
         return FluxUtil
             .withContext(
                 context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ListResultContainerGroupInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+            .<PagedResponse<ContainerGroupInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -2135,7 +2131,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ListResultContainerGroupInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
+    private Mono<PagedResponse<ContainerGroupInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
         Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));

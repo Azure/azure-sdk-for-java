@@ -1,6 +1,6 @@
 # Release History
 
-## 2.54.0-beta.1 (2026-03-26)
+## 1.7.0 (2026-03-26)
 
 ### Breaking Changes
 
@@ -41,10 +41,10 @@
 #### `models.OperationDisplay` was modified
 
 * `OperationDisplay()` was changed to private access
-* `withResource(java.lang.String)` was removed
-* `withOperation(java.lang.String)` was removed
 * `withDescription(java.lang.String)` was removed
+* `withOperation(java.lang.String)` was removed
 * `withProvider(java.lang.String)` was removed
+* `withResource(java.lang.String)` was removed
 
 #### `models.ContainerGroupPropertiesInstanceView` was modified
 
@@ -53,8 +53,8 @@
 #### `models.CachedImages` was modified
 
 * `CachedImages()` was changed to private access
-* `withImage(java.lang.String)` was removed
 * `withOsType(java.lang.String)` was removed
+* `withImage(java.lang.String)` was removed
 
 #### `models.UsageName` was modified
 
@@ -63,10 +63,10 @@
 #### `models.Operation` was modified
 
 * `Operation()` was changed to private access
-* `withDisplay(models.OperationDisplay)` was removed
 * `withProperties(java.lang.Object)` was removed
-* `withName(java.lang.String)` was removed
+* `withDisplay(models.OperationDisplay)` was removed
 * `withOrigin(models.ContainerInstanceOperationsOrigin)` was removed
+* `withName(java.lang.String)` was removed
 
 ### Features Added
 
@@ -114,8 +114,6 @@
 
 * `models.ApiEntityReference` was added
 
-* `models.ContainerGroupProvisioningState` was added
-
 * `models.NGroupCGPropertyContainer` was added
 
 * `models.ContainerGroupProfileReferenceDefinition` was added
@@ -138,8 +136,6 @@
 
 * `models.CGProfilesCreateOrUpdateResponse` was added
 
-* `models.ResourcePatch` was added
-
 * `models.IdentityAcls` was added
 
 * `models.ConfigMap` was added
@@ -152,13 +148,13 @@
 
 #### `models.Container` was modified
 
-* `configMap()` was added
 * `withConfigMap(models.ConfigMap)` was added
+* `configMap()` was added
 
 #### `models.ImageRegistryCredential` was modified
 
-* `passwordReference()` was added
 * `withPasswordReference(java.lang.String)` was added
+* `passwordReference()` was added
 
 #### `models.ContainerGroupSku` was modified
 
@@ -166,8 +162,8 @@
 
 #### `models.Volume` was modified
 
-* `secretReference()` was added
 * `withSecretReference(java.util.Map)` was added
+* `secretReference()` was added
 
 #### `models.EnvironmentVariable` was modified
 
@@ -176,8 +172,8 @@
 
 #### `models.AzureFileVolume` was modified
 
-* `storageAccountKeyReference()` was added
 * `withStorageAccountKeyReference(java.lang.String)` was added
+* `storageAccountKeyReference()` was added
 
 ## 2.53.8 (2026-02-26)
 

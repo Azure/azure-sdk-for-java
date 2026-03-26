@@ -15,7 +15,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.containerinstance.fluent.models.ContainerGroupInner;
-import com.azure.resourcemanager.containerinstance.fluent.models.ListResultContainerGroupInner;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
@@ -28,7 +27,7 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in ContainerGroupsClient.
  */
 public interface ContainerGroupsClient extends InnerSupportsGet<ContainerGroupInner>,
-    InnerSupportsListing<ListResultContainerGroupInner>, InnerSupportsDelete<Void> {
+    InnerSupportsListing<ContainerGroupInner>, InnerSupportsDelete<Void> {
     /**
      * Get the properties of the specified container group.
      * 
@@ -784,7 +783,7 @@ public interface ContainerGroupsClient extends InnerSupportsGet<ContainerGroupIn
      * Get a list of container groups in the specified subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<ListResultContainerGroupInner> listAsync();
+    PagedFlux<ContainerGroupInner> listAsync();
 
     /**
      * Get a list of container groups in the specified subscription.
@@ -800,7 +799,7 @@ public interface ContainerGroupsClient extends InnerSupportsGet<ContainerGroupIn
      * Get a list of container groups in the specified subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ListResultContainerGroupInner> list();
+    PagedIterable<ContainerGroupInner> list();
 
     /**
      * Get a list of container groups in the specified subscription.
@@ -818,7 +817,7 @@ public interface ContainerGroupsClient extends InnerSupportsGet<ContainerGroupIn
      * Get a list of container groups in the specified subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ListResultContainerGroupInner> list(Context context);
+    PagedIterable<ContainerGroupInner> list(Context context);
 
     /**
      * Get a list of container groups in the specified subscription and resource group.
@@ -837,7 +836,7 @@ public interface ContainerGroupsClient extends InnerSupportsGet<ContainerGroupIn
      * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<ListResultContainerGroupInner> listByResourceGroupAsync(String resourceGroupName);
+    PagedFlux<ContainerGroupInner> listByResourceGroupAsync(String resourceGroupName);
 
     /**
      * Get a list of container groups in the specified subscription and resource group.
@@ -856,7 +855,7 @@ public interface ContainerGroupsClient extends InnerSupportsGet<ContainerGroupIn
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ListResultContainerGroupInner> listByResourceGroup(String resourceGroupName);
+    PagedIterable<ContainerGroupInner> listByResourceGroup(String resourceGroupName);
 
     /**
      * Get a list of container groups in the specified subscription and resource group.
@@ -876,5 +875,5 @@ public interface ContainerGroupsClient extends InnerSupportsGet<ContainerGroupIn
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ListResultContainerGroupInner> listByResourceGroup(String resourceGroupName, Context context);
+    PagedIterable<ContainerGroupInner> listByResourceGroup(String resourceGroupName, Context context);
 }

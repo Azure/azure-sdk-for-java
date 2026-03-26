@@ -8,7 +8,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.containerinstance.fluent.models.ContainerAttachResultInner;
+import com.azure.resourcemanager.containerinstance.fluent.models.ContainerAttachResponseInner;
 import com.azure.resourcemanager.containerinstance.fluent.models.ContainerExecResponseInner;
 import com.azure.resourcemanager.containerinstance.fluent.models.LogsInner;
 import com.azure.resourcemanager.containerinstance.models.ContainerExecRequest;
@@ -193,7 +193,7 @@ public interface ContainersClient {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ContainerAttachResultInner>> attachWithResponseAsync(String resourceGroupName,
+    Mono<Response<ContainerAttachResponseInner>> attachWithResponseAsync(String resourceGroupName,
         String containerGroupName, String containerName);
 
     /**
@@ -210,7 +210,7 @@ public interface ContainersClient {
      * @return the information for the output stream from container attach on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ContainerAttachResultInner> attachAsync(String resourceGroupName, String containerGroupName,
+    Mono<ContainerAttachResponseInner> attachAsync(String resourceGroupName, String containerGroupName,
         String containerName);
 
     /**
@@ -228,7 +228,7 @@ public interface ContainersClient {
      * @return the information for the output stream from container attach along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ContainerAttachResultInner> attachWithResponse(String resourceGroupName, String containerGroupName,
+    Response<ContainerAttachResponseInner> attachWithResponse(String resourceGroupName, String containerGroupName,
         String containerName, Context context);
 
     /**
@@ -245,5 +245,5 @@ public interface ContainersClient {
      * @return the information for the output stream from container attach.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ContainerAttachResultInner attach(String resourceGroupName, String containerGroupName, String containerName);
+    ContainerAttachResponseInner attach(String resourceGroupName, String containerGroupName, String containerName);
 }
