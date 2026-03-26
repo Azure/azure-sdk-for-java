@@ -66,6 +66,8 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder;
 import com.azure.storage.blob.implementation.models.ContainersListBlobFlatSegmentApacheArrowHeaders;
+import com.azure.storage.blob.implementation.util.ArrowBlobListDeserializer;
+import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.ListBlobsIncludeItem;
 import com.azure.core.http.rest.ResponseBase;
 
@@ -2212,5 +2214,76 @@ public class ContainerApiTests extends BlobTestBase {
             org.apache.arrow.vector.FieldVector nameVec = root.getVector("Name");
             assertNotNull(nameVec, "Expected 'Name' column in Arrow schema");
         }
+    }
+
+    @LiveOnly
+    @Test
+    public void listBlobsArrowDeserializer() throws Exception {
+        // Upload a test blob with metadata
+        String blobName = generateBlobName();
+        Map<String, String> metadata = new HashMap<>();
+        metadata.put("testkey", "testvalue");
+        cc.getBlobClient(blobName)
+            .getBlockBlobClient()
+            .uploadWithResponse(DATA.getDefaultInputStream(), 7, null, metadata, null, null, null, null, null);
+
+        // Construct AzureBlobStorageImpl directly
+        AzureBlobStorageImpl impl = new AzureBlobStorageImplBuilder().pipeline(cc.getHttpPipeline())
+            .url(cc.getAccountUrl())
+            .version(BlobServiceVersion.V2026_06_06.getVersion())
+            .buildClient();
+
+        // Call the Arrow endpoint
+        ArrayList<ListBlobsIncludeItem> include = new ArrayList<>();
+        include.add(ListBlobsIncludeItem.METADATA);
+
+        ResponseBase<ContainersListBlobFlatSegmentApacheArrowHeaders, InputStream> response = impl.getContainers()
+            .listBlobFlatSegmentApacheArrowWithResponse(containerName, null, null, null, null, include, null, null,
+                null, null, com.azure.core.util.Context.NONE);
+
+        // Verify Content-Type is Arrow
+        String contentType = response.getDeserializedHeaders().getContentType();
+        assertTrue(contentType.contains("application/vnd.apache.arrow.stream"),
+            "Expected Arrow content type but got: " + contentType);
+
+        // Deserialize using ArrowBlobListDeserializer
+        ArrowBlobListDeserializer.ArrowListBlobsResult result
+            = ArrowBlobListDeserializer.deserialize(response.getValue());
+
+        // Verify pagination — single blob, no next page
+        assertNull(result.getNextMarker());
+
+        // Verify we got exactly one blob
+        assertEquals(1, result.getBlobItems().size());
+
+        com.azure.storage.blob.implementation.models.BlobItemInternal item = result.getBlobItems().get(0);
+
+        // Name
+        assertNotNull(item.getName());
+        assertEquals(blobName, item.getName().getContent());
+
+        // Properties
+        assertNotNull(item.getProperties());
+        assertEquals(7L, (long) item.getProperties().getContentLength());
+        assertEquals("application/octet-stream", item.getProperties().getContentType());
+        assertNotNull(item.getProperties().getETag());
+        assertNotNull(item.getProperties().getLastModified());
+        assertNotNull(item.getProperties().getCreationTime());
+        assertEquals(BlobType.BLOCK_BLOB, item.getProperties().getBlobType());
+        assertEquals(AccessTier.HOT, item.getProperties().getAccessTier());
+        assertTrue(item.getProperties().isAccessTierInferred());
+        assertTrue(item.getProperties().isServerEncrypted());
+        assertEquals(LeaseStateType.AVAILABLE, item.getProperties().getLeaseState());
+        assertEquals(LeaseStatusType.UNLOCKED, item.getProperties().getLeaseStatus());
+        assertNotNull(item.getProperties().getContentMd5());
+
+        // Metadata
+        assertNotNull(item.getMetadata());
+        assertEquals("testvalue", item.getMetadata().get("testkey"));
+
+        // Verify ModelHelper can convert to public BlobItem
+        BlobItem publicItem = ModelHelper.populateBlobItem(item);
+        assertEquals(blobName, publicItem.getName());
+        assertEquals(7L, (long) publicItem.getProperties().getContentLength());
     }
 }
