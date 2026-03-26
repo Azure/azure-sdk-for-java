@@ -7,7 +7,6 @@ package com.azure.resourcemanager.containerinstance.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerinstance.models.ConfidentialComputeProperties;
@@ -28,6 +27,7 @@ import com.azure.resourcemanager.containerinstance.models.ImageRegistryCredentia
 import com.azure.resourcemanager.containerinstance.models.InitContainerDefinition;
 import com.azure.resourcemanager.containerinstance.models.IpAddress;
 import com.azure.resourcemanager.containerinstance.models.OperatingSystemTypes;
+import com.azure.resourcemanager.containerinstance.models.ResourcePatch;
 import com.azure.resourcemanager.containerinstance.models.SecretReference;
 import com.azure.resourcemanager.containerinstance.models.StandbyPoolProfileDefinition;
 import com.azure.resourcemanager.containerinstance.models.Volume;
@@ -39,37 +39,7 @@ import java.util.Map;
  * A container group part of the list result.
  */
 @Immutable
-public final class ListResultContainerGroupInner implements JsonSerializable<ListResultContainerGroupInner> {
-    /*
-     * The resource id.
-     */
-    private String id;
-
-    /*
-     * The resource name.
-     */
-    private String name;
-
-    /*
-     * The resource type.
-     */
-    private String type;
-
-    /*
-     * The resource location.
-     */
-    private String location;
-
-    /*
-     * The resource tags.
-     */
-    private Map<String, String> tags;
-
-    /*
-     * The zones for the container group.
-     */
-    private List<String> zones;
-
+public final class ListResultContainerGroupInner extends ResourcePatch {
     /*
      * The identity of the container group, if configured.
      */
@@ -80,64 +50,25 @@ public final class ListResultContainerGroupInner implements JsonSerializable<Lis
      */
     private ListResultContainerGroupPropertiesProperties innerProperties;
 
+    /*
+     * The resource type.
+     */
+    private String type;
+
+    /*
+     * The resource name.
+     */
+    private String name;
+
+    /*
+     * The resource id.
+     */
+    private String id;
+
     /**
      * Creates an instance of ListResultContainerGroupInner class.
      */
     private ListResultContainerGroupInner() {
-    }
-
-    /**
-     * Get the id property: The resource id.
-     * 
-     * @return the id value.
-     */
-    public String id() {
-        return this.id;
-    }
-
-    /**
-     * Get the name property: The resource name.
-     * 
-     * @return the name value.
-     */
-    public String name() {
-        return this.name;
-    }
-
-    /**
-     * Get the type property: The resource type.
-     * 
-     * @return the type value.
-     */
-    public String type() {
-        return this.type;
-    }
-
-    /**
-     * Get the location property: The resource location.
-     * 
-     * @return the location value.
-     */
-    public String location() {
-        return this.location;
-    }
-
-    /**
-     * Get the tags property: The resource tags.
-     * 
-     * @return the tags value.
-     */
-    public Map<String, String> tags() {
-        return this.tags;
-    }
-
-    /**
-     * Get the zones property: The zones for the container group.
-     * 
-     * @return the zones value.
-     */
-    public List<String> zones() {
-        return this.zones;
     }
 
     /**
@@ -156,6 +87,36 @@ public final class ListResultContainerGroupInner implements JsonSerializable<Lis
      */
     private ListResultContainerGroupPropertiesProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the type property: The resource type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The resource name.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: The resource id.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -358,6 +319,7 @@ public final class ListResultContainerGroupInner implements JsonSerializable<Lis
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
         if (identity() != null) {
             identity().validate();
@@ -379,10 +341,10 @@ public final class ListResultContainerGroupInner implements JsonSerializable<Lis
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("zones", zones(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("properties", this.innerProperties);
-        jsonWriter.writeStringField("location", this.location);
-        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeArrayField("zones", this.zones, (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("identity", this.identity);
         return jsonWriter.writeEndObject();
     }
@@ -404,23 +366,23 @@ public final class ListResultContainerGroupInner implements JsonSerializable<Lis
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("properties".equals(fieldName)) {
-                    deserializedListResultContainerGroupInner.innerProperties
-                        = ListResultContainerGroupPropertiesProperties.fromJson(reader);
-                } else if ("id".equals(fieldName)) {
+                if ("id".equals(fieldName)) {
                     deserializedListResultContainerGroupInner.id = reader.getString();
                 } else if ("name".equals(fieldName)) {
                     deserializedListResultContainerGroupInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedListResultContainerGroupInner.type = reader.getString();
                 } else if ("location".equals(fieldName)) {
-                    deserializedListResultContainerGroupInner.location = reader.getString();
+                    deserializedListResultContainerGroupInner.withLocation(reader.getString());
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                    deserializedListResultContainerGroupInner.tags = tags;
+                    deserializedListResultContainerGroupInner.withTags(tags);
                 } else if ("zones".equals(fieldName)) {
                     List<String> zones = reader.readArray(reader1 -> reader1.getString());
-                    deserializedListResultContainerGroupInner.zones = zones;
+                    deserializedListResultContainerGroupInner.withZones(zones);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedListResultContainerGroupInner.innerProperties
+                        = ListResultContainerGroupPropertiesProperties.fromJson(reader);
                 } else if ("identity".equals(fieldName)) {
                     deserializedListResultContainerGroupInner.identity = ContainerGroupIdentity.fromJson(reader);
                 } else {

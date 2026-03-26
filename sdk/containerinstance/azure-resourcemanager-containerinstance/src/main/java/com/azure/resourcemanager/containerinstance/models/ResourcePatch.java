@@ -17,7 +17,7 @@ import java.util.Map;
  * The Resource model definition.
  */
 @Fluent
-public final class ResourcePatch implements JsonSerializable<ResourcePatch> {
+public class ResourcePatch implements JsonSerializable<ResourcePatch> {
     /*
      * The resource id.
      */
@@ -64,6 +64,17 @@ public final class ResourcePatch implements JsonSerializable<ResourcePatch> {
     }
 
     /**
+     * Set the id property: The resource id.
+     * 
+     * @param id the id value to set.
+     * @return the ResourcePatch object itself.
+     */
+    ResourcePatch withId(String id) {
+        this.id = id;
+        return this;
+    }
+
+    /**
      * Get the name property: The resource name.
      * 
      * @return the name value.
@@ -73,12 +84,34 @@ public final class ResourcePatch implements JsonSerializable<ResourcePatch> {
     }
 
     /**
+     * Set the name property: The resource name.
+     * 
+     * @param name the name value to set.
+     * @return the ResourcePatch object itself.
+     */
+    ResourcePatch withName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    /**
      * Get the type property: The resource type.
      * 
      * @return the type value.
      */
     public String type() {
         return this.type;
+    }
+
+    /**
+     * Set the type property: The resource type.
+     * 
+     * @param type the type value to set.
+     * @return the ResourcePatch object itself.
+     */
+    ResourcePatch withType(String type) {
+        this.type = type;
+        return this;
     }
 
     /**
