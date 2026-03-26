@@ -2144,6 +2144,123 @@ public class ContainerApiTests extends BlobTestBase {
     //        assertThrows(BlobStorageException.class, () ->
     //    }
 
+    @Test
+    public void listBlobsArrowBasic() {
+        // Upload a test blob
+        String blobName = generateBlobName();
+        cc.getBlobClient(blobName).getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+
+        ListBlobsOptions options = new ListBlobsOptions().setUseArrow(true);
+        List<BlobItem> blobs = cc.listBlobs(options, null).stream().collect(Collectors.toList());
+
+        assertEquals(1, blobs.size());
+        assertEquals(blobName, blobs.get(0).getName());
+        assertNotNull(blobs.get(0).getProperties());
+        assertEquals(DATA.getDefaultDataSize(), blobs.get(0).getProperties().getContentLength());
+        assertEquals(BlobType.BLOCK_BLOB, blobs.get(0).getProperties().getBlobType());
+        assertNotNull(blobs.get(0).getProperties().getLastModified());
+        assertNotNull(blobs.get(0).getProperties().getETag());
+    }
+
+    @Test
+    public void listBlobsArrowWithMetadata() {
+        String blobName = generateBlobName();
+        Map<String, String> metadata = new HashMap<>();
+        metadata.put("testkey", "testvalue");
+        cc.getBlobClient(blobName)
+            .getBlockBlobClient()
+            .uploadWithResponse(DATA.getDefaultInputStream(), DATA.getDefaultDataSize(), null, metadata, null, null,
+                null, null, null);
+
+        ListBlobsOptions options
+            = new ListBlobsOptions().setUseArrow(true).setDetails(new BlobListDetails().setRetrieveMetadata(true));
+        List<BlobItem> blobs = cc.listBlobs(options, null).stream().collect(Collectors.toList());
+
+        assertEquals(1, blobs.size());
+        assertNotNull(blobs.get(0).getMetadata());
+        assertEquals("testvalue", blobs.get(0).getMetadata().get("testkey"));
+    }
+
+    @Test
+    public void listBlobsArrowPagination() {
+        // Upload 3 blobs
+        for (int i = 0; i < 3; i++) {
+            cc.getBlobClient("blob" + i)
+                .getBlockBlobClient()
+                .upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+        }
+
+        ListBlobsOptions options = new ListBlobsOptions().setUseArrow(true).setMaxResultsPerPage(1);
+        List<BlobItem> allBlobs = new ArrayList<>();
+        for (PagedResponse<BlobItem> page : cc.listBlobs(options, null).iterableByPage()) {
+            assertTrue(page.getValue().size() <= 1);
+            allBlobs.addAll(page.getValue());
+        }
+
+        assertEquals(3, allBlobs.size());
+    }
+
+    @Test
+    public void listBlobsArrowNullUseArrowUsesXml() {
+        // Default useArrow is null — should use XML path without error
+        String blobName = generateBlobName();
+        cc.getBlobClient(blobName).getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+
+        ListBlobsOptions options = new ListBlobsOptions();
+        assertNull(options.getUseArrow());
+
+        List<BlobItem> blobs = cc.listBlobs(options, null).stream().collect(Collectors.toList());
+        assertEquals(1, blobs.size());
+        assertEquals(blobName, blobs.get(0).getName());
+    }
+
+    // TODO: listBlobsArrowXmlFallback — needs a non-Photon account without the preprod endpoint hack.
+    // Currently all test accounts use preprod.blob.core.windows.net which only resolves for the Photon account.
+    // @LiveOnly
+    // @Test
+    // public void listBlobsArrowXmlFallback() {
+    //     // Use a non-Photon account — service should return XML even though Arrow was requested
+    //     String altContainerName = generateContainerName();
+    //     BlobContainerClient altCc = premiumBlobServiceClient.getBlobContainerClient(altContainerName);
+    //     altCc.create();
+    //
+    //     try {
+    //         String blobName = generateBlobName();
+    //         altCc.getBlobClient(blobName)
+    //             .getBlockBlobClient()
+    //             .upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+    //
+    //         ListBlobsOptions options = new ListBlobsOptions().setUseArrow(true);
+    //         List<BlobItem> blobs = altCc.listBlobs(options, null).stream().collect(Collectors.toList());
+    //
+    //         // Should still work via XML fallback
+    //         assertEquals(1, blobs.size());
+    //         assertEquals(blobName, blobs.get(0).getName());
+    //     } finally {
+    //         altCc.delete();
+    //     }
+    // }
+
+    @LiveOnly
+    @Test
+    public void listBlobsArrowEncryptedBlob() {
+        // Upload a blob with CPK (customer-provided key)
+        String blobName = generateBlobName();
+        CustomerProvidedKey cpk = new CustomerProvidedKey(Base64.getEncoder().encodeToString(getRandomKey()));
+        BlobClient cpkClient = cc.getBlobClient(blobName).getCustomerProvidedKeyClient(cpk);
+        cpkClient.getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+
+        ListBlobsOptions options = new ListBlobsOptions().setUseArrow(true);
+        List<BlobItem> blobs = cc.listBlobs(options, null).stream().collect(Collectors.toList());
+
+        assertEquals(1, blobs.size());
+        assertEquals(blobName, blobs.get(0).getName());
+        // CPK blob should have server-encrypted = true
+        assertTrue(blobs.get(0).getProperties().isServerEncrypted());
+        // Metadata should be null (no metadata was set)
+        assertNull(blobs.get(0).getMetadata());
+    }
+
     @LiveOnly
     @Test
     public void listBlobsArrowSchemaDiscovery() throws Exception {
