@@ -257,7 +257,7 @@ public class ReactorNettyClient implements HttpClient {
      * Resolves the TCP connect timeout (CONNECT_TIMEOUT_MILLIS) based on the request type.
      *
      * Thin client requests (identified by {@link HttpRequest#isThinClientRequest()}) use the thin
-     * client connection timeout configured via {@link Configs#getThinClientConnectionTimeoutInSeconds()}
+     * client connection timeout configured via {@link Configs#getThinClientConnectionTimeoutInMs()}
      * (default 5s) to fail fast when the thin client proxy is unreachable.
      * Standard gateway requests use the configured connection acquire timeout (default 45s).
      *
