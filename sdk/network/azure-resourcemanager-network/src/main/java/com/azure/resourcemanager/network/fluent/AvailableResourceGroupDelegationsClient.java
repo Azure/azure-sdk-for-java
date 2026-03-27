@@ -18,8 +18,8 @@ public interface AvailableResourceGroupDelegationsClient {
     /**
      * Gets all of the available subnet delegations for this resource group in this region.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The location name.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -27,13 +27,13 @@ public interface AvailableResourceGroupDelegationsClient {
      * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<AvailableDelegationInner> listAsync(String resourceGroupName, String location);
+    PagedFlux<AvailableDelegationInner> listAsync(String location, String resourceGroupName);
 
     /**
      * Gets all of the available subnet delegations for this resource group in this region.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The location name.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -41,13 +41,13 @@ public interface AvailableResourceGroupDelegationsClient {
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<AvailableDelegationInner> list(String resourceGroupName, String location);
+    PagedIterable<AvailableDelegationInner> list(String location, String resourceGroupName);
 
     /**
      * Gets all of the available subnet delegations for this resource group in this region.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The location name.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -56,5 +56,5 @@ public interface AvailableResourceGroupDelegationsClient {
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<AvailableDelegationInner> list(String resourceGroupName, String location, Context context);
+    PagedIterable<AvailableDelegationInner> list(String location, String resourceGroupName, Context context);
 }

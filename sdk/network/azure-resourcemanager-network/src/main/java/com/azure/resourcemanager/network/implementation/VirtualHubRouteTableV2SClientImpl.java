@@ -31,7 +31,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.fluent.VirtualHubRouteTableV2sClient;
+import com.azure.resourcemanager.network.fluent.VirtualHubRouteTableV2SClient;
 import com.azure.resourcemanager.network.fluent.models.VirtualHubRouteTableV2Inner;
 import com.azure.resourcemanager.network.implementation.models.ListVirtualHubRouteTableV2sResult;
 import com.azure.resourcemanager.network.models.ErrorException;
@@ -40,13 +40,13 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * An instance of this class provides access to all the operations defined in VirtualHubRouteTableV2sClient.
+ * An instance of this class provides access to all the operations defined in VirtualHubRouteTableV2SClient.
  */
-public final class VirtualHubRouteTableV2sClientImpl implements VirtualHubRouteTableV2sClient {
+public final class VirtualHubRouteTableV2SClientImpl implements VirtualHubRouteTableV2SClient {
     /**
      * The proxy service used to perform REST calls.
      */
-    private final VirtualHubRouteTableV2sService service;
+    private final VirtualHubRouteTableV2SService service;
 
     /**
      * The service client containing this operation class.
@@ -54,23 +54,23 @@ public final class VirtualHubRouteTableV2sClientImpl implements VirtualHubRouteT
     private final NetworkManagementClientImpl client;
 
     /**
-     * Initializes an instance of VirtualHubRouteTableV2sClientImpl.
+     * Initializes an instance of VirtualHubRouteTableV2SClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    VirtualHubRouteTableV2sClientImpl(NetworkManagementClientImpl client) {
-        this.service = RestProxy.create(VirtualHubRouteTableV2sService.class, client.getHttpPipeline(),
+    VirtualHubRouteTableV2SClientImpl(NetworkManagementClientImpl client) {
+        this.service = RestProxy.create(VirtualHubRouteTableV2SService.class, client.getHttpPipeline(),
             client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for NetworkManagementClientVirtualHubRouteTableV2s to be used by the
+     * The interface defining all the services for NetworkManagementClientVirtualHubRouteTableV2S to be used by the
      * proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "NetworkManagementClientVirtualHubRouteTableV2s")
-    public interface VirtualHubRouteTableV2sService {
+    @ServiceInterface(name = "NetworkManagementClientVirtualHubRouteTableV2S")
+    public interface VirtualHubRouteTableV2SService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/routeTables/{routeTableName}")
         @ExpectedResponses({ 200 })

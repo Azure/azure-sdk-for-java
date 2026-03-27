@@ -5,9 +5,9 @@
 package com.azure.resourcemanager.network.generated;
 
 /**
- * Samples for PublicIpAddresses ListCloudServicePublicIPAddresses.
+ * Samples for PublicIpAddresses ListCloudServicePublicIpAddresses.
  */
-public final class PublicIpAddressesListCloudServicePublicIPAddressesSamples {
+public final class PublicIpAddressesListCloudServicePublicIpAddressesSamples {
     /*
      * x-ms-original-file: 2025-05-01/CloudServicePublicIpListAll.json
      */
@@ -19,6 +19,6 @@ public final class PublicIpAddressesListCloudServicePublicIPAddressesSamples {
     public static void listVMSSPublicIP(com.azure.resourcemanager.network.NetworkManager manager) {
         manager.serviceClient()
             .getPublicIpAddresses()
-            .listCloudServicePublicIPAddresses("cs-tester", "cs1", com.azure.core.util.Context.NONE);
+            .listCloudServicePublicIpAddresses("cs-tester", "cs1", com.azure.core.util.Context.NONE);
     }
 }

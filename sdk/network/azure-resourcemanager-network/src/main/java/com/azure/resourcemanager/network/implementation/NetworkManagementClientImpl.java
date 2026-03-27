@@ -90,7 +90,7 @@ import com.azure.resourcemanager.network.fluent.IpAllocationsClient;
 import com.azure.resourcemanager.network.fluent.IpGroupsClient;
 import com.azure.resourcemanager.network.fluent.IpamPoolsClient;
 import com.azure.resourcemanager.network.fluent.LoadBalancerBackendAddressPoolsClient;
-import com.azure.resourcemanager.network.fluent.LoadBalancerFrontendIPConfigurationsClient;
+import com.azure.resourcemanager.network.fluent.LoadBalancerFrontendIpConfigurationsClient;
 import com.azure.resourcemanager.network.fluent.LoadBalancerLoadBalancingRulesClient;
 import com.azure.resourcemanager.network.fluent.LoadBalancerNetworkInterfacesClient;
 import com.azure.resourcemanager.network.fluent.LoadBalancerOutboundRulesClient;
@@ -169,7 +169,7 @@ import com.azure.resourcemanager.network.fluent.VirtualApplianceSitesClient;
 import com.azure.resourcemanager.network.fluent.VirtualApplianceSkusClient;
 import com.azure.resourcemanager.network.fluent.VirtualHubBgpConnectionsClient;
 import com.azure.resourcemanager.network.fluent.VirtualHubIpConfigurationsClient;
-import com.azure.resourcemanager.network.fluent.VirtualHubRouteTableV2sClient;
+import com.azure.resourcemanager.network.fluent.VirtualHubRouteTableV2SClient;
 import com.azure.resourcemanager.network.fluent.VirtualHubsClient;
 import com.azure.resourcemanager.network.fluent.VirtualNetworkAppliancesClient;
 import com.azure.resourcemanager.network.fluent.VirtualNetworkGatewayConnectionsClient;
@@ -1853,17 +1853,17 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
     }
 
     /**
-     * The LoadBalancerFrontendIPConfigurationsClient object to access its operations.
+     * The LoadBalancerFrontendIpConfigurationsClient object to access its operations.
      */
-    private final LoadBalancerFrontendIPConfigurationsClient loadBalancerFrontendIPConfigurations;
+    private final LoadBalancerFrontendIpConfigurationsClient loadBalancerFrontendIpConfigurations;
 
     /**
-     * Gets the LoadBalancerFrontendIPConfigurationsClient object to access its operations.
+     * Gets the LoadBalancerFrontendIpConfigurationsClient object to access its operations.
      * 
-     * @return the LoadBalancerFrontendIPConfigurationsClient object.
+     * @return the LoadBalancerFrontendIpConfigurationsClient object.
      */
-    public LoadBalancerFrontendIPConfigurationsClient getLoadBalancerFrontendIPConfigurations() {
-        return this.loadBalancerFrontendIPConfigurations;
+    public LoadBalancerFrontendIpConfigurationsClient getLoadBalancerFrontendIpConfigurations() {
+        return this.loadBalancerFrontendIpConfigurations;
     }
 
     /**
@@ -2190,17 +2190,17 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
     }
 
     /**
-     * The VirtualHubRouteTableV2sClient object to access its operations.
+     * The VirtualHubRouteTableV2SClient object to access its operations.
      */
-    private final VirtualHubRouteTableV2sClient virtualHubRouteTableV2s;
+    private final VirtualHubRouteTableV2SClient virtualHubRouteTableV2S;
 
     /**
-     * Gets the VirtualHubRouteTableV2sClient object to access its operations.
+     * Gets the VirtualHubRouteTableV2SClient object to access its operations.
      * 
-     * @return the VirtualHubRouteTableV2sClient object.
+     * @return the VirtualHubRouteTableV2SClient object.
      */
-    public VirtualHubRouteTableV2sClient getVirtualHubRouteTableV2s() {
-        return this.virtualHubRouteTableV2s;
+    public VirtualHubRouteTableV2SClient getVirtualHubRouteTableV2S() {
+        return this.virtualHubRouteTableV2S;
     }
 
     /**
@@ -2628,7 +2628,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         this.networkManagerDeploymentStatusOperations = new NetworkManagerDeploymentStatusOperationsClientImpl(this);
         this.loadBalancerNetworkInterfaces = new LoadBalancerNetworkInterfacesClientImpl(this);
         this.loadBalancerBackendAddressPools = new LoadBalancerBackendAddressPoolsClientImpl(this);
-        this.loadBalancerFrontendIPConfigurations = new LoadBalancerFrontendIPConfigurationsClientImpl(this);
+        this.loadBalancerFrontendIpConfigurations = new LoadBalancerFrontendIpConfigurationsClientImpl(this);
         this.loadBalancerLoadBalancingRules = new LoadBalancerLoadBalancingRulesClientImpl(this);
         this.loadBalancerOutboundRules = new LoadBalancerOutboundRulesClientImpl(this);
         this.loadBalancerProbes = new LoadBalancerProbesClientImpl(this);
@@ -2654,7 +2654,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             = new VpnServerConfigurationsAssociatedWithVirtualWansClientImpl(this);
         this.configurationPolicyGroups = new ConfigurationPolicyGroupsClientImpl(this);
         this.hubVirtualNetworkConnections = new HubVirtualNetworkConnectionsClientImpl(this);
-        this.virtualHubRouteTableV2s = new VirtualHubRouteTableV2sClientImpl(this);
+        this.virtualHubRouteTableV2S = new VirtualHubRouteTableV2SClientImpl(this);
         this.vpnConnections = new VpnConnectionsClientImpl(this);
         this.vpnLinkConnections = new VpnLinkConnectionsClientImpl(this);
         this.natRules = new NatRulesClientImpl(this);

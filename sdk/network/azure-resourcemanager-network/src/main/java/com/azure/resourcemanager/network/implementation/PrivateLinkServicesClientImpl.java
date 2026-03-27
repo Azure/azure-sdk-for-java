@@ -1979,8 +1979,8 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
     /**
      * Checks whether the subscription is visible to private link service in the specified resource group.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The location name.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param parameters The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1989,21 +1989,13 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> checkPrivateLinkServiceVisibilityByResourceGroupWithResponseAsync(
-        String resourceGroupName, String location, CheckPrivateLinkServiceVisibilityRequest parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        String location, String resourceGroupName, CheckPrivateLinkServiceVisibilityRequest parameters) {
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -2023,8 +2015,8 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
     /**
      * Checks whether the subscription is visible to private link service in the specified resource group.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The location name.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param parameters The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2034,22 +2026,14 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> checkPrivateLinkServiceVisibilityByResourceGroupWithResponseAsync(
-        String resourceGroupName, String location, CheckPrivateLinkServiceVisibilityRequest parameters,
+        String location, String resourceGroupName, CheckPrivateLinkServiceVisibilityRequest parameters,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -2067,8 +2051,8 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
     /**
      * Checks whether the subscription is visible to private link service in the specified resource group.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The location name.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param parameters The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2077,10 +2061,10 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<PrivateLinkServiceVisibilityInner>, PrivateLinkServiceVisibilityInner>
-        beginCheckPrivateLinkServiceVisibilityByResourceGroupAsync(String resourceGroupName, String location,
+        beginCheckPrivateLinkServiceVisibilityByResourceGroupAsync(String location, String resourceGroupName,
             CheckPrivateLinkServiceVisibilityRequest parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = checkPrivateLinkServiceVisibilityByResourceGroupWithResponseAsync(
-            resourceGroupName, location, parameters);
+            location, resourceGroupName, parameters);
         return this.client.<PrivateLinkServiceVisibilityInner, PrivateLinkServiceVisibilityInner>getLroResult(mono,
             this.client.getHttpPipeline(), PrivateLinkServiceVisibilityInner.class,
             PrivateLinkServiceVisibilityInner.class, this.client.getContext());
@@ -2089,8 +2073,8 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
     /**
      * Checks whether the subscription is visible to private link service in the specified resource group.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The location name.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param parameters The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2100,11 +2084,11 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PrivateLinkServiceVisibilityInner>, PrivateLinkServiceVisibilityInner>
-        beginCheckPrivateLinkServiceVisibilityByResourceGroupAsync(String resourceGroupName, String location,
+        beginCheckPrivateLinkServiceVisibilityByResourceGroupAsync(String location, String resourceGroupName,
             CheckPrivateLinkServiceVisibilityRequest parameters, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = checkPrivateLinkServiceVisibilityByResourceGroupWithResponseAsync(
-            resourceGroupName, location, parameters, context);
+            location, resourceGroupName, parameters, context);
         return this.client.<PrivateLinkServiceVisibilityInner, PrivateLinkServiceVisibilityInner>getLroResult(mono,
             this.client.getHttpPipeline(), PrivateLinkServiceVisibilityInner.class,
             PrivateLinkServiceVisibilityInner.class, context);
@@ -2113,8 +2097,8 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
     /**
      * Checks whether the subscription is visible to private link service in the specified resource group.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The location name.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param parameters The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2123,17 +2107,17 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateLinkServiceVisibilityInner>, PrivateLinkServiceVisibilityInner>
-        beginCheckPrivateLinkServiceVisibilityByResourceGroup(String resourceGroupName, String location,
+        beginCheckPrivateLinkServiceVisibilityByResourceGroup(String location, String resourceGroupName,
             CheckPrivateLinkServiceVisibilityRequest parameters) {
-        return this.beginCheckPrivateLinkServiceVisibilityByResourceGroupAsync(resourceGroupName, location, parameters)
+        return this.beginCheckPrivateLinkServiceVisibilityByResourceGroupAsync(location, resourceGroupName, parameters)
             .getSyncPoller();
     }
 
     /**
      * Checks whether the subscription is visible to private link service in the specified resource group.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The location name.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param parameters The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2143,10 +2127,10 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateLinkServiceVisibilityInner>, PrivateLinkServiceVisibilityInner>
-        beginCheckPrivateLinkServiceVisibilityByResourceGroup(String resourceGroupName, String location,
+        beginCheckPrivateLinkServiceVisibilityByResourceGroup(String location, String resourceGroupName,
             CheckPrivateLinkServiceVisibilityRequest parameters, Context context) {
         return this
-            .beginCheckPrivateLinkServiceVisibilityByResourceGroupAsync(resourceGroupName, location, parameters,
+            .beginCheckPrivateLinkServiceVisibilityByResourceGroupAsync(location, resourceGroupName, parameters,
                 context)
             .getSyncPoller();
     }
@@ -2154,8 +2138,8 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
     /**
      * Checks whether the subscription is visible to private link service in the specified resource group.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The location name.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param parameters The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2164,8 +2148,8 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PrivateLinkServiceVisibilityInner> checkPrivateLinkServiceVisibilityByResourceGroupAsync(
-        String resourceGroupName, String location, CheckPrivateLinkServiceVisibilityRequest parameters) {
-        return beginCheckPrivateLinkServiceVisibilityByResourceGroupAsync(resourceGroupName, location, parameters)
+        String location, String resourceGroupName, CheckPrivateLinkServiceVisibilityRequest parameters) {
+        return beginCheckPrivateLinkServiceVisibilityByResourceGroupAsync(location, resourceGroupName, parameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -2173,8 +2157,8 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
     /**
      * Checks whether the subscription is visible to private link service in the specified resource group.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The location name.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param parameters The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2184,17 +2168,17 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PrivateLinkServiceVisibilityInner> checkPrivateLinkServiceVisibilityByResourceGroupAsync(
-        String resourceGroupName, String location, CheckPrivateLinkServiceVisibilityRequest parameters,
+        String location, String resourceGroupName, CheckPrivateLinkServiceVisibilityRequest parameters,
         Context context) {
-        return beginCheckPrivateLinkServiceVisibilityByResourceGroupAsync(resourceGroupName, location, parameters,
+        return beginCheckPrivateLinkServiceVisibilityByResourceGroupAsync(location, resourceGroupName, parameters,
             context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Checks whether the subscription is visible to private link service in the specified resource group.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The location name.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param parameters The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2202,16 +2186,16 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateLinkServiceVisibilityInner checkPrivateLinkServiceVisibilityByResourceGroup(String resourceGroupName,
-        String location, CheckPrivateLinkServiceVisibilityRequest parameters) {
-        return checkPrivateLinkServiceVisibilityByResourceGroupAsync(resourceGroupName, location, parameters).block();
+    public PrivateLinkServiceVisibilityInner checkPrivateLinkServiceVisibilityByResourceGroup(String location,
+        String resourceGroupName, CheckPrivateLinkServiceVisibilityRequest parameters) {
+        return checkPrivateLinkServiceVisibilityByResourceGroupAsync(location, resourceGroupName, parameters).block();
     }
 
     /**
      * Checks whether the subscription is visible to private link service in the specified resource group.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The location name.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param parameters The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2220,9 +2204,9 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateLinkServiceVisibilityInner checkPrivateLinkServiceVisibilityByResourceGroup(String resourceGroupName,
-        String location, CheckPrivateLinkServiceVisibilityRequest parameters, Context context) {
-        return checkPrivateLinkServiceVisibilityByResourceGroupAsync(resourceGroupName, location, parameters, context)
+    public PrivateLinkServiceVisibilityInner checkPrivateLinkServiceVisibilityByResourceGroup(String location,
+        String resourceGroupName, CheckPrivateLinkServiceVisibilityRequest parameters, Context context) {
+        return checkPrivateLinkServiceVisibilityByResourceGroupAsync(location, resourceGroupName, parameters, context)
             .block();
     }
 
@@ -2371,8 +2355,8 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
      * Returns all of the private link service ids that can be linked to a Private Endpoint with auto approved in this
      * subscription in this region.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The location name.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2381,21 +2365,13 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AutoApprovedPrivateLinkServiceInner>>
-        listAutoApprovedPrivateLinkServicesByResourceGroupSinglePageAsync(String resourceGroupName, String location) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        listAutoApprovedPrivateLinkServicesByResourceGroupSinglePageAsync(String location, String resourceGroupName) {
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
         final String apiVersion = "2025-05-01";
         final String accept = "application/json";
@@ -2412,8 +2388,8 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
      * Returns all of the private link service ids that can be linked to a Private Endpoint with auto approved in this
      * subscription in this region.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The location name.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2423,22 +2399,14 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AutoApprovedPrivateLinkServiceInner>>
-        listAutoApprovedPrivateLinkServicesByResourceGroupSinglePageAsync(String resourceGroupName, String location,
+        listAutoApprovedPrivateLinkServicesByResourceGroupSinglePageAsync(String location, String resourceGroupName,
             Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
         final String apiVersion = "2025-05-01";
         final String accept = "application/json";
@@ -2454,8 +2422,8 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
      * Returns all of the private link service ids that can be linked to a Private Endpoint with auto approved in this
      * subscription in this region.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The location name.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2464,9 +2432,9 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AutoApprovedPrivateLinkServiceInner>
-        listAutoApprovedPrivateLinkServicesByResourceGroupAsync(String resourceGroupName, String location) {
+        listAutoApprovedPrivateLinkServicesByResourceGroupAsync(String location, String resourceGroupName) {
         return new PagedFlux<>(
-            () -> listAutoApprovedPrivateLinkServicesByResourceGroupSinglePageAsync(resourceGroupName, location),
+            () -> listAutoApprovedPrivateLinkServicesByResourceGroupSinglePageAsync(location, resourceGroupName),
             nextLink -> listAutoApprovedPrivateLinkServicesByResourceGroupNextSinglePageAsync(nextLink));
     }
 
@@ -2474,8 +2442,8 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
      * Returns all of the private link service ids that can be linked to a Private Endpoint with auto approved in this
      * subscription in this region.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The location name.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2485,9 +2453,9 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AutoApprovedPrivateLinkServiceInner> listAutoApprovedPrivateLinkServicesByResourceGroupAsync(
-        String resourceGroupName, String location, Context context) {
+        String location, String resourceGroupName, Context context) {
         return new PagedFlux<>(
-            () -> listAutoApprovedPrivateLinkServicesByResourceGroupSinglePageAsync(resourceGroupName, location,
+            () -> listAutoApprovedPrivateLinkServicesByResourceGroupSinglePageAsync(location, resourceGroupName,
                 context),
             nextLink -> listAutoApprovedPrivateLinkServicesByResourceGroupNextSinglePageAsync(nextLink, context));
     }
@@ -2496,8 +2464,8 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
      * Returns all of the private link service ids that can be linked to a Private Endpoint with auto approved in this
      * subscription in this region.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The location name.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2506,17 +2474,17 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AutoApprovedPrivateLinkServiceInner>
-        listAutoApprovedPrivateLinkServicesByResourceGroup(String resourceGroupName, String location) {
+        listAutoApprovedPrivateLinkServicesByResourceGroup(String location, String resourceGroupName) {
         return new PagedIterable<>(
-            listAutoApprovedPrivateLinkServicesByResourceGroupAsync(resourceGroupName, location));
+            listAutoApprovedPrivateLinkServicesByResourceGroupAsync(location, resourceGroupName));
     }
 
     /**
      * Returns all of the private link service ids that can be linked to a Private Endpoint with auto approved in this
      * subscription in this region.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The location name.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2526,9 +2494,9 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AutoApprovedPrivateLinkServiceInner>
-        listAutoApprovedPrivateLinkServicesByResourceGroup(String resourceGroupName, String location, Context context) {
+        listAutoApprovedPrivateLinkServicesByResourceGroup(String location, String resourceGroupName, Context context) {
         return new PagedIterable<>(
-            listAutoApprovedPrivateLinkServicesByResourceGroupAsync(resourceGroupName, location, context));
+            listAutoApprovedPrivateLinkServicesByResourceGroupAsync(location, resourceGroupName, context));
     }
 
     /**
@@ -2769,10 +2737,6 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listAutoApprovedPrivateLinkServicesByResourceGroupNext(nextLink,
@@ -2798,10 +2762,6 @@ public final class PrivateLinkServicesClientImpl implements InnerSupportsGet<Pri
         listAutoApprovedPrivateLinkServicesByResourceGroupNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);

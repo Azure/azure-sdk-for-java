@@ -83,8 +83,8 @@ public final class AvailableResourceGroupDelegationsClientImpl implements Availa
     /**
      * Gets all of the available subnet delegations for this resource group in this region.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The location name.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -92,22 +92,14 @@ public final class AvailableResourceGroupDelegationsClientImpl implements Availa
      * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AvailableDelegationInner>> listSinglePageAsync(String resourceGroupName,
-        String location) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+    private Mono<PagedResponse<AvailableDelegationInner>> listSinglePageAsync(String location,
+        String resourceGroupName) {
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
         final String apiVersion = "2025-05-01";
         final String accept = "application/json";
@@ -122,8 +114,8 @@ public final class AvailableResourceGroupDelegationsClientImpl implements Availa
     /**
      * Gets all of the available subnet delegations for this resource group in this region.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The location name.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -132,22 +124,14 @@ public final class AvailableResourceGroupDelegationsClientImpl implements Availa
      * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AvailableDelegationInner>> listSinglePageAsync(String resourceGroupName, String location,
+    private Mono<PagedResponse<AvailableDelegationInner>> listSinglePageAsync(String location, String resourceGroupName,
         Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
         final String apiVersion = "2025-05-01";
         final String accept = "application/json";
@@ -162,8 +146,8 @@ public final class AvailableResourceGroupDelegationsClientImpl implements Availa
     /**
      * Gets all of the available subnet delegations for this resource group in this region.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The location name.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -171,16 +155,16 @@ public final class AvailableResourceGroupDelegationsClientImpl implements Availa
      * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<AvailableDelegationInner> listAsync(String resourceGroupName, String location) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, location),
+    public PagedFlux<AvailableDelegationInner> listAsync(String location, String resourceGroupName) {
+        return new PagedFlux<>(() -> listSinglePageAsync(location, resourceGroupName),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets all of the available subnet delegations for this resource group in this region.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The location name.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -189,16 +173,16 @@ public final class AvailableResourceGroupDelegationsClientImpl implements Availa
      * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AvailableDelegationInner> listAsync(String resourceGroupName, String location, Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, location, context),
+    private PagedFlux<AvailableDelegationInner> listAsync(String location, String resourceGroupName, Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(location, resourceGroupName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets all of the available subnet delegations for this resource group in this region.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The location name.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -206,15 +190,15 @@ public final class AvailableResourceGroupDelegationsClientImpl implements Availa
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AvailableDelegationInner> list(String resourceGroupName, String location) {
-        return new PagedIterable<>(listAsync(resourceGroupName, location));
+    public PagedIterable<AvailableDelegationInner> list(String location, String resourceGroupName) {
+        return new PagedIterable<>(listAsync(location, resourceGroupName));
     }
 
     /**
      * Gets all of the available subnet delegations for this resource group in this region.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The location name.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -223,8 +207,8 @@ public final class AvailableResourceGroupDelegationsClientImpl implements Availa
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AvailableDelegationInner> list(String resourceGroupName, String location, Context context) {
-        return new PagedIterable<>(listAsync(resourceGroupName, location, context));
+    public PagedIterable<AvailableDelegationInner> list(String location, String resourceGroupName, Context context) {
+        return new PagedIterable<>(listAsync(location, resourceGroupName, context));
     }
 
     /**
@@ -241,10 +225,6 @@ public final class AvailableResourceGroupDelegationsClientImpl implements Availa
     private Mono<PagedResponse<AvailableDelegationInner>> listNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
@@ -268,10 +248,6 @@ public final class AvailableResourceGroupDelegationsClientImpl implements Availa
     private Mono<PagedResponse<AvailableDelegationInner>> listNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);

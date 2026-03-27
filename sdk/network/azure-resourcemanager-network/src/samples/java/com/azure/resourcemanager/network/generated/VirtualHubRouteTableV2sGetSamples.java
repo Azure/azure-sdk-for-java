@@ -5,9 +5,9 @@
 package com.azure.resourcemanager.network.generated;
 
 /**
- * Samples for VirtualHubRouteTableV2s Get.
+ * Samples for VirtualHubRouteTableV2S Get.
  */
-public final class VirtualHubRouteTableV2sGetSamples {
+public final class VirtualHubRouteTableV2SGetSamples {
     /*
      * x-ms-original-file: 2025-05-01/VirtualHubRouteTableV2Get.json
      */
@@ -18,7 +18,7 @@ public final class VirtualHubRouteTableV2sGetSamples {
      */
     public static void virtualHubVirtualHubRouteTableV2Get(com.azure.resourcemanager.network.NetworkManager manager) {
         manager.serviceClient()
-            .getVirtualHubRouteTableV2s()
+            .getVirtualHubRouteTableV2S()
             .getWithResponse("rg1", "virtualHub1", "virtualHubRouteTable1a", com.azure.core.util.Context.NONE);
     }
 }

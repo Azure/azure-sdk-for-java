@@ -5,9 +5,9 @@
 package com.azure.resourcemanager.network.generated;
 
 /**
- * Samples for PublicIpAddresses GetCloudServicePublicIPAddress.
+ * Samples for PublicIpAddresses GetCloudServicePublicIpAddress.
  */
-public final class PublicIpAddressesGetCloudServicePublicIPAddressSamples {
+public final class PublicIpAddressesGetCloudServicePublicIpAddressSamples {
     /*
      * x-ms-original-file: 2025-05-01/CloudServicePublicIpGet.json
      */
@@ -19,7 +19,7 @@ public final class PublicIpAddressesGetCloudServicePublicIPAddressSamples {
     public static void getVMSSPublicIP(com.azure.resourcemanager.network.NetworkManager manager) {
         manager.serviceClient()
             .getPublicIpAddresses()
-            .getCloudServicePublicIPAddressWithResponse("cs-tester", "cs1", "Test_VM_0", "nic1", "ip1", "pub1", null,
+            .getCloudServicePublicIpAddressWithResponse("cs-tester", "cs1", "Test_VM_0", "nic1", "ip1", "pub1", null,
                 com.azure.core.util.Context.NONE);
     }
 }

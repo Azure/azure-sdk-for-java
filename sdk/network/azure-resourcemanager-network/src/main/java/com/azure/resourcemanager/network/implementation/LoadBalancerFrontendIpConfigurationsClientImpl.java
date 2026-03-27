@@ -25,21 +25,21 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.resourcemanager.network.fluent.LoadBalancerFrontendIPConfigurationsClient;
+import com.azure.resourcemanager.network.fluent.LoadBalancerFrontendIpConfigurationsClient;
 import com.azure.resourcemanager.network.fluent.models.FrontendIpConfigurationInner;
 import com.azure.resourcemanager.network.implementation.models.LoadBalancerFrontendIPConfigurationListResult;
 import reactor.core.publisher.Mono;
 
 /**
  * An instance of this class provides access to all the operations defined in
- * LoadBalancerFrontendIPConfigurationsClient.
+ * LoadBalancerFrontendIpConfigurationsClient.
  */
-public final class LoadBalancerFrontendIPConfigurationsClientImpl
-    implements LoadBalancerFrontendIPConfigurationsClient {
+public final class LoadBalancerFrontendIpConfigurationsClientImpl
+    implements LoadBalancerFrontendIpConfigurationsClient {
     /**
      * The proxy service used to perform REST calls.
      */
-    private final LoadBalancerFrontendIPConfigurationsService service;
+    private final LoadBalancerFrontendIpConfigurationsService service;
 
     /**
      * The service client containing this operation class.
@@ -47,23 +47,23 @@ public final class LoadBalancerFrontendIPConfigurationsClientImpl
     private final NetworkManagementClientImpl client;
 
     /**
-     * Initializes an instance of LoadBalancerFrontendIPConfigurationsClientImpl.
+     * Initializes an instance of LoadBalancerFrontendIpConfigurationsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    LoadBalancerFrontendIPConfigurationsClientImpl(NetworkManagementClientImpl client) {
-        this.service = RestProxy.create(LoadBalancerFrontendIPConfigurationsService.class, client.getHttpPipeline(),
+    LoadBalancerFrontendIpConfigurationsClientImpl(NetworkManagementClientImpl client) {
+        this.service = RestProxy.create(LoadBalancerFrontendIpConfigurationsService.class, client.getHttpPipeline(),
             client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for NetworkManagementClientLoadBalancerFrontendIPConfigurations to be
+     * The interface defining all the services for NetworkManagementClientLoadBalancerFrontendIpConfigurations to be
      * used by the proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "NetworkManagementClientLoadBalancerFrontendIPConfigurations")
-    public interface LoadBalancerFrontendIPConfigurationsService {
+    @ServiceInterface(name = "NetworkManagementClientLoadBalancerFrontendIpConfigurations")
+    public interface LoadBalancerFrontendIpConfigurationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/frontendIPConfigurations/{frontendIPConfigurationName}")
         @ExpectedResponses({ 200 })

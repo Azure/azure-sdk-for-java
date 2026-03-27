@@ -846,11 +846,11 @@ public interface NetworkManagementClient {
     LoadBalancerBackendAddressPoolsClient getLoadBalancerBackendAddressPools();
 
     /**
-     * Gets the LoadBalancerFrontendIPConfigurationsClient object to access its operations.
+     * Gets the LoadBalancerFrontendIpConfigurationsClient object to access its operations.
      * 
-     * @return the LoadBalancerFrontendIPConfigurationsClient object.
+     * @return the LoadBalancerFrontendIpConfigurationsClient object.
      */
-    LoadBalancerFrontendIPConfigurationsClient getLoadBalancerFrontendIPConfigurations();
+    LoadBalancerFrontendIpConfigurationsClient getLoadBalancerFrontendIpConfigurations();
 
     /**
      * Gets the LoadBalancerLoadBalancingRulesClient object to access its operations.
@@ -1014,11 +1014,11 @@ public interface NetworkManagementClient {
     HubVirtualNetworkConnectionsClient getHubVirtualNetworkConnections();
 
     /**
-     * Gets the VirtualHubRouteTableV2sClient object to access its operations.
+     * Gets the VirtualHubRouteTableV2SClient object to access its operations.
      * 
-     * @return the VirtualHubRouteTableV2sClient object.
+     * @return the VirtualHubRouteTableV2SClient object.
      */
-    VirtualHubRouteTableV2sClient getVirtualHubRouteTableV2s();
+    VirtualHubRouteTableV2SClient getVirtualHubRouteTableV2S();
 
     /**
      * Gets the VpnConnectionsClient object to access its operations.

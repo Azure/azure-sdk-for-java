@@ -5,9 +5,9 @@
 package com.azure.resourcemanager.network.generated;
 
 /**
- * Samples for LoadBalancerFrontendIPConfigurations List.
+ * Samples for LoadBalancerFrontendIpConfigurations List.
  */
-public final class LoadBalancerFrontendIPConfigurationsListSamples {
+public final class LoadBalancerFrontendIpConfigurationsListSamples {
     /*
      * x-ms-original-file: 2025-05-01/LoadBalancerFrontendIPConfigurationList.json
      */
@@ -19,7 +19,7 @@ public final class LoadBalancerFrontendIPConfigurationsListSamples {
     public static void
         loadBalancerFrontendIPConfigurationList(com.azure.resourcemanager.network.NetworkManager manager) {
         manager.serviceClient()
-            .getLoadBalancerFrontendIPConfigurations()
+            .getLoadBalancerFrontendIpConfigurations()
             .list("testrg", "lb", com.azure.core.util.Context.NONE);
     }
 }

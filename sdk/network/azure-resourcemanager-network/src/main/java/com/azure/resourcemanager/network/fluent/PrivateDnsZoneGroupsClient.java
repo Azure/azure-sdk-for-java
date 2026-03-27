@@ -306,34 +306,34 @@ public interface PrivateDnsZoneGroupsClient {
     /**
      * Gets all private dns zone groups in a private endpoint.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateEndpointName The name of the private endpoint.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all private dns zone groups in a private endpoint as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<PrivateDnsZoneGroupInner> listAsync(String resourceGroupName, String privateEndpointName);
+    PagedFlux<PrivateDnsZoneGroupInner> listAsync(String privateEndpointName, String resourceGroupName);
 
     /**
      * Gets all private dns zone groups in a private endpoint.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateEndpointName The name of the private endpoint.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all private dns zone groups in a private endpoint as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PrivateDnsZoneGroupInner> list(String resourceGroupName, String privateEndpointName);
+    PagedIterable<PrivateDnsZoneGroupInner> list(String privateEndpointName, String resourceGroupName);
 
     /**
      * Gets all private dns zone groups in a private endpoint.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateEndpointName The name of the private endpoint.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -341,5 +341,5 @@ public interface PrivateDnsZoneGroupsClient {
      * @return all private dns zone groups in a private endpoint as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PrivateDnsZoneGroupInner> list(String resourceGroupName, String privateEndpointName, Context context);
+    PagedIterable<PrivateDnsZoneGroupInner> list(String privateEndpointName, String resourceGroupName, Context context);
 }

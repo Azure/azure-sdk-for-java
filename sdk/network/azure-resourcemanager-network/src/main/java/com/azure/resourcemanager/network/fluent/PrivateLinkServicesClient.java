@@ -757,8 +757,8 @@ public interface PrivateLinkServicesClient extends InnerSupportsGet<PrivateLinkS
     /**
      * Checks whether the subscription is visible to private link service in the specified resource group.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The location name.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param parameters The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -766,14 +766,14 @@ public interface PrivateLinkServicesClient extends InnerSupportsGet<PrivateLinkS
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> checkPrivateLinkServiceVisibilityByResourceGroupWithResponseAsync(
-        String resourceGroupName, String location, CheckPrivateLinkServiceVisibilityRequest parameters);
+    Mono<Response<Flux<ByteBuffer>>> checkPrivateLinkServiceVisibilityByResourceGroupWithResponseAsync(String location,
+        String resourceGroupName, CheckPrivateLinkServiceVisibilityRequest parameters);
 
     /**
      * Checks whether the subscription is visible to private link service in the specified resource group.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The location name.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param parameters The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -782,14 +782,14 @@ public interface PrivateLinkServicesClient extends InnerSupportsGet<PrivateLinkS
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<PrivateLinkServiceVisibilityInner>, PrivateLinkServiceVisibilityInner>
-        beginCheckPrivateLinkServiceVisibilityByResourceGroupAsync(String resourceGroupName, String location,
+        beginCheckPrivateLinkServiceVisibilityByResourceGroupAsync(String location, String resourceGroupName,
             CheckPrivateLinkServiceVisibilityRequest parameters);
 
     /**
      * Checks whether the subscription is visible to private link service in the specified resource group.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The location name.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param parameters The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -798,14 +798,14 @@ public interface PrivateLinkServicesClient extends InnerSupportsGet<PrivateLinkS
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PrivateLinkServiceVisibilityInner>, PrivateLinkServiceVisibilityInner>
-        beginCheckPrivateLinkServiceVisibilityByResourceGroup(String resourceGroupName, String location,
+        beginCheckPrivateLinkServiceVisibilityByResourceGroup(String location, String resourceGroupName,
             CheckPrivateLinkServiceVisibilityRequest parameters);
 
     /**
      * Checks whether the subscription is visible to private link service in the specified resource group.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The location name.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param parameters The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -815,14 +815,14 @@ public interface PrivateLinkServicesClient extends InnerSupportsGet<PrivateLinkS
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PrivateLinkServiceVisibilityInner>, PrivateLinkServiceVisibilityInner>
-        beginCheckPrivateLinkServiceVisibilityByResourceGroup(String resourceGroupName, String location,
+        beginCheckPrivateLinkServiceVisibilityByResourceGroup(String location, String resourceGroupName,
             CheckPrivateLinkServiceVisibilityRequest parameters, Context context);
 
     /**
      * Checks whether the subscription is visible to private link service in the specified resource group.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The location name.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param parameters The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -830,14 +830,14 @@ public interface PrivateLinkServicesClient extends InnerSupportsGet<PrivateLinkS
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<PrivateLinkServiceVisibilityInner> checkPrivateLinkServiceVisibilityByResourceGroupAsync(
-        String resourceGroupName, String location, CheckPrivateLinkServiceVisibilityRequest parameters);
+    Mono<PrivateLinkServiceVisibilityInner> checkPrivateLinkServiceVisibilityByResourceGroupAsync(String location,
+        String resourceGroupName, CheckPrivateLinkServiceVisibilityRequest parameters);
 
     /**
      * Checks whether the subscription is visible to private link service in the specified resource group.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The location name.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param parameters The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -845,14 +845,14 @@ public interface PrivateLinkServicesClient extends InnerSupportsGet<PrivateLinkS
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateLinkServiceVisibilityInner checkPrivateLinkServiceVisibilityByResourceGroup(String resourceGroupName,
-        String location, CheckPrivateLinkServiceVisibilityRequest parameters);
+    PrivateLinkServiceVisibilityInner checkPrivateLinkServiceVisibilityByResourceGroup(String location,
+        String resourceGroupName, CheckPrivateLinkServiceVisibilityRequest parameters);
 
     /**
      * Checks whether the subscription is visible to private link service in the specified resource group.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The location name.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param parameters The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -861,8 +861,8 @@ public interface PrivateLinkServicesClient extends InnerSupportsGet<PrivateLinkS
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateLinkServiceVisibilityInner checkPrivateLinkServiceVisibilityByResourceGroup(String resourceGroupName,
-        String location, CheckPrivateLinkServiceVisibilityRequest parameters, Context context);
+    PrivateLinkServiceVisibilityInner checkPrivateLinkServiceVisibilityByResourceGroup(String location,
+        String resourceGroupName, CheckPrivateLinkServiceVisibilityRequest parameters, Context context);
 
     /**
      * Returns all of the private link service ids that can be linked to a Private Endpoint with auto approved in this
@@ -912,8 +912,8 @@ public interface PrivateLinkServicesClient extends InnerSupportsGet<PrivateLinkS
      * Returns all of the private link service ids that can be linked to a Private Endpoint with auto approved in this
      * subscription in this region.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The location name.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -922,14 +922,14 @@ public interface PrivateLinkServicesClient extends InnerSupportsGet<PrivateLinkS
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<AutoApprovedPrivateLinkServiceInner>
-        listAutoApprovedPrivateLinkServicesByResourceGroupAsync(String resourceGroupName, String location);
+        listAutoApprovedPrivateLinkServicesByResourceGroupAsync(String location, String resourceGroupName);
 
     /**
      * Returns all of the private link service ids that can be linked to a Private Endpoint with auto approved in this
      * subscription in this region.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The location name.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -938,14 +938,14 @@ public interface PrivateLinkServicesClient extends InnerSupportsGet<PrivateLinkS
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AutoApprovedPrivateLinkServiceInner>
-        listAutoApprovedPrivateLinkServicesByResourceGroup(String resourceGroupName, String location);
+        listAutoApprovedPrivateLinkServicesByResourceGroup(String location, String resourceGroupName);
 
     /**
      * Returns all of the private link service ids that can be linked to a Private Endpoint with auto approved in this
      * subscription in this region.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The location name.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -955,5 +955,5 @@ public interface PrivateLinkServicesClient extends InnerSupportsGet<PrivateLinkS
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AutoApprovedPrivateLinkServiceInner>
-        listAutoApprovedPrivateLinkServicesByResourceGroup(String resourceGroupName, String location, Context context);
+        listAutoApprovedPrivateLinkServicesByResourceGroup(String location, String resourceGroupName, Context context);
 }

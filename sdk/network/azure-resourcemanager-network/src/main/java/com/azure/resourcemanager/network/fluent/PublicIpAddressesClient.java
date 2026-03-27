@@ -47,7 +47,7 @@ public interface PublicIpAddressesClient extends InnerSupportsGet<PublicIpAddres
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<PublicIpAddressInner>> getCloudServicePublicIPAddressWithResponseAsync(String resourceGroupName,
+    Mono<Response<PublicIpAddressInner>> getCloudServicePublicIpAddressWithResponseAsync(String resourceGroupName,
         String cloudServiceName, String roleInstanceName, String networkInterfaceName, String ipConfigurationName,
         String publicIpAddressName, String expand);
 
@@ -66,7 +66,7 @@ public interface PublicIpAddressesClient extends InnerSupportsGet<PublicIpAddres
      * @return the specified public IP address in a cloud service on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<PublicIpAddressInner> getCloudServicePublicIPAddressAsync(String resourceGroupName, String cloudServiceName,
+    Mono<PublicIpAddressInner> getCloudServicePublicIpAddressAsync(String resourceGroupName, String cloudServiceName,
         String roleInstanceName, String networkInterfaceName, String ipConfigurationName, String publicIpAddressName);
 
     /**
@@ -86,7 +86,7 @@ public interface PublicIpAddressesClient extends InnerSupportsGet<PublicIpAddres
      * @return the specified public IP address in a cloud service along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PublicIpAddressInner> getCloudServicePublicIPAddressWithResponse(String resourceGroupName,
+    Response<PublicIpAddressInner> getCloudServicePublicIpAddressWithResponse(String resourceGroupName,
         String cloudServiceName, String roleInstanceName, String networkInterfaceName, String ipConfigurationName,
         String publicIpAddressName, String expand, Context context);
 
@@ -105,7 +105,7 @@ public interface PublicIpAddressesClient extends InnerSupportsGet<PublicIpAddres
      * @return the specified public IP address in a cloud service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PublicIpAddressInner getCloudServicePublicIPAddress(String resourceGroupName, String cloudServiceName,
+    PublicIpAddressInner getCloudServicePublicIpAddress(String resourceGroupName, String cloudServiceName,
         String roleInstanceName, String networkInterfaceName, String ipConfigurationName, String publicIpAddressName);
 
     /**
@@ -123,7 +123,7 @@ public interface PublicIpAddressesClient extends InnerSupportsGet<PublicIpAddres
      * paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<PublicIpAddressInner> listCloudServiceRoleInstancePublicIPAddressesAsync(String resourceGroupName,
+    PagedFlux<PublicIpAddressInner> listCloudServiceRoleInstancePublicIpAddressesAsync(String resourceGroupName,
         String cloudServiceName, String roleInstanceName, String networkInterfaceName, String ipConfigurationName);
 
     /**
@@ -141,7 +141,7 @@ public interface PublicIpAddressesClient extends InnerSupportsGet<PublicIpAddres
      * paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PublicIpAddressInner> listCloudServiceRoleInstancePublicIPAddresses(String resourceGroupName,
+    PagedIterable<PublicIpAddressInner> listCloudServiceRoleInstancePublicIpAddresses(String resourceGroupName,
         String cloudServiceName, String roleInstanceName, String networkInterfaceName, String ipConfigurationName);
 
     /**
@@ -160,7 +160,7 @@ public interface PublicIpAddressesClient extends InnerSupportsGet<PublicIpAddres
      * paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PublicIpAddressInner> listCloudServiceRoleInstancePublicIPAddresses(String resourceGroupName,
+    PagedIterable<PublicIpAddressInner> listCloudServiceRoleInstancePublicIpAddresses(String resourceGroupName,
         String cloudServiceName, String roleInstanceName, String networkInterfaceName, String ipConfigurationName,
         Context context);
 
@@ -907,7 +907,7 @@ public interface PublicIpAddressesClient extends InnerSupportsGet<PublicIpAddres
      * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<PublicIpAddressInner> listCloudServicePublicIPAddressesAsync(String resourceGroupName,
+    PagedFlux<PublicIpAddressInner> listCloudServicePublicIpAddressesAsync(String resourceGroupName,
         String cloudServiceName);
 
     /**
@@ -922,7 +922,7 @@ public interface PublicIpAddressesClient extends InnerSupportsGet<PublicIpAddres
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PublicIpAddressInner> listCloudServicePublicIPAddresses(String resourceGroupName,
+    PagedIterable<PublicIpAddressInner> listCloudServicePublicIpAddresses(String resourceGroupName,
         String cloudServiceName);
 
     /**
@@ -938,7 +938,7 @@ public interface PublicIpAddressesClient extends InnerSupportsGet<PublicIpAddres
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PublicIpAddressInner> listCloudServicePublicIPAddresses(String resourceGroupName,
+    PagedIterable<PublicIpAddressInner> listCloudServicePublicIpAddresses(String resourceGroupName,
         String cloudServiceName, Context context);
 
     /**
@@ -953,7 +953,7 @@ public interface PublicIpAddressesClient extends InnerSupportsGet<PublicIpAddres
      * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<PublicIpAddressInner> listVirtualMachineScaleSetPublicIPAddressesAsync(String resourceGroupName,
+    PagedFlux<PublicIpAddressInner> listVirtualMachineScaleSetPublicIpAddressesAsync(String resourceGroupName,
         String virtualMachineScaleSetName);
 
     /**
@@ -968,7 +968,7 @@ public interface PublicIpAddressesClient extends InnerSupportsGet<PublicIpAddres
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PublicIpAddressInner> listVirtualMachineScaleSetPublicIPAddresses(String resourceGroupName,
+    PagedIterable<PublicIpAddressInner> listVirtualMachineScaleSetPublicIpAddresses(String resourceGroupName,
         String virtualMachineScaleSetName);
 
     /**
@@ -984,7 +984,7 @@ public interface PublicIpAddressesClient extends InnerSupportsGet<PublicIpAddres
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PublicIpAddressInner> listVirtualMachineScaleSetPublicIPAddresses(String resourceGroupName,
+    PagedIterable<PublicIpAddressInner> listVirtualMachineScaleSetPublicIpAddresses(String resourceGroupName,
         String virtualMachineScaleSetName, Context context);
 
     /**
@@ -1004,7 +1004,7 @@ public interface PublicIpAddressesClient extends InnerSupportsGet<PublicIpAddres
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<PublicIpAddressInner>> getVirtualMachineScaleSetPublicIPAddressWithResponseAsync(
+    Mono<Response<PublicIpAddressInner>> getVirtualMachineScaleSetPublicIpAddressWithResponseAsync(
         String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex,
         String networkInterfaceName, String ipConfigurationName, String publicIpAddressName, String expand);
 
@@ -1023,7 +1023,7 @@ public interface PublicIpAddressesClient extends InnerSupportsGet<PublicIpAddres
      * @return the specified public IP address in a virtual machine scale set on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<PublicIpAddressInner> getVirtualMachineScaleSetPublicIPAddressAsync(String resourceGroupName,
+    Mono<PublicIpAddressInner> getVirtualMachineScaleSetPublicIpAddressAsync(String resourceGroupName,
         String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName,
         String ipConfigurationName, String publicIpAddressName);
 
@@ -1044,7 +1044,7 @@ public interface PublicIpAddressesClient extends InnerSupportsGet<PublicIpAddres
      * @return the specified public IP address in a virtual machine scale set along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PublicIpAddressInner> getVirtualMachineScaleSetPublicIPAddressWithResponse(String resourceGroupName,
+    Response<PublicIpAddressInner> getVirtualMachineScaleSetPublicIpAddressWithResponse(String resourceGroupName,
         String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName,
         String ipConfigurationName, String publicIpAddressName, String expand, Context context);
 
@@ -1063,7 +1063,7 @@ public interface PublicIpAddressesClient extends InnerSupportsGet<PublicIpAddres
      * @return the specified public IP address in a virtual machine scale set.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PublicIpAddressInner getVirtualMachineScaleSetPublicIPAddress(String resourceGroupName,
+    PublicIpAddressInner getVirtualMachineScaleSetPublicIpAddress(String resourceGroupName,
         String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName,
         String ipConfigurationName, String publicIpAddressName);
 
@@ -1083,7 +1083,7 @@ public interface PublicIpAddressesClient extends InnerSupportsGet<PublicIpAddres
      * scale set as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<PublicIpAddressInner> listVirtualMachineScaleSetVMPublicIPAddressesAsync(String resourceGroupName,
+    PagedFlux<PublicIpAddressInner> listVirtualMachineScaleSetVMPublicIpAddressesAsync(String resourceGroupName,
         String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName,
         String ipConfigurationName);
 
@@ -1103,7 +1103,7 @@ public interface PublicIpAddressesClient extends InnerSupportsGet<PublicIpAddres
      * scale set as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PublicIpAddressInner> listVirtualMachineScaleSetVMPublicIPAddresses(String resourceGroupName,
+    PagedIterable<PublicIpAddressInner> listVirtualMachineScaleSetVMPublicIpAddresses(String resourceGroupName,
         String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName,
         String ipConfigurationName);
 
@@ -1124,7 +1124,7 @@ public interface PublicIpAddressesClient extends InnerSupportsGet<PublicIpAddres
      * scale set as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PublicIpAddressInner> listVirtualMachineScaleSetVMPublicIPAddresses(String resourceGroupName,
+    PagedIterable<PublicIpAddressInner> listVirtualMachineScaleSetVMPublicIpAddresses(String resourceGroupName,
         String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName,
         String ipConfigurationName, Context context);
 }

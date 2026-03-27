@@ -764,8 +764,8 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
     /**
      * Gets all private dns zone groups in a private endpoint.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateEndpointName The name of the private endpoint.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -773,23 +773,15 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PrivateDnsZoneGroupInner>> listSinglePageAsync(String resourceGroupName,
-        String privateEndpointName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+    private Mono<PagedResponse<PrivateDnsZoneGroupInner>> listSinglePageAsync(String privateEndpointName,
+        String resourceGroupName) {
+        if (privateEndpointName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter privateEndpointName is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateEndpointName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateEndpointName is required and cannot be null."));
         }
         final String apiVersion = "2025-05-01";
         final String accept = "application/json";
@@ -804,8 +796,8 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
     /**
      * Gets all private dns zone groups in a private endpoint.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateEndpointName The name of the private endpoint.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -814,23 +806,15 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PrivateDnsZoneGroupInner>> listSinglePageAsync(String resourceGroupName,
-        String privateEndpointName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+    private Mono<PagedResponse<PrivateDnsZoneGroupInner>> listSinglePageAsync(String privateEndpointName,
+        String resourceGroupName, Context context) {
+        if (privateEndpointName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter privateEndpointName is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (privateEndpointName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter privateEndpointName is required and cannot be null."));
         }
         final String apiVersion = "2025-05-01";
         final String accept = "application/json";
@@ -845,24 +829,24 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
     /**
      * Gets all private dns zone groups in a private endpoint.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateEndpointName The name of the private endpoint.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all private dns zone groups in a private endpoint as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<PrivateDnsZoneGroupInner> listAsync(String resourceGroupName, String privateEndpointName) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, privateEndpointName),
+    public PagedFlux<PrivateDnsZoneGroupInner> listAsync(String privateEndpointName, String resourceGroupName) {
+        return new PagedFlux<>(() -> listSinglePageAsync(privateEndpointName, resourceGroupName),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets all private dns zone groups in a private endpoint.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateEndpointName The name of the private endpoint.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -870,32 +854,32 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
      * @return all private dns zone groups in a private endpoint as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PrivateDnsZoneGroupInner> listAsync(String resourceGroupName, String privateEndpointName,
+    private PagedFlux<PrivateDnsZoneGroupInner> listAsync(String privateEndpointName, String resourceGroupName,
         Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, privateEndpointName, context),
+        return new PagedFlux<>(() -> listSinglePageAsync(privateEndpointName, resourceGroupName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets all private dns zone groups in a private endpoint.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateEndpointName The name of the private endpoint.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all private dns zone groups in a private endpoint as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PrivateDnsZoneGroupInner> list(String resourceGroupName, String privateEndpointName) {
-        return new PagedIterable<>(listAsync(resourceGroupName, privateEndpointName));
+    public PagedIterable<PrivateDnsZoneGroupInner> list(String privateEndpointName, String resourceGroupName) {
+        return new PagedIterable<>(listAsync(privateEndpointName, resourceGroupName));
     }
 
     /**
      * Gets all private dns zone groups in a private endpoint.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateEndpointName The name of the private endpoint.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -903,9 +887,9 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
      * @return all private dns zone groups in a private endpoint as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PrivateDnsZoneGroupInner> list(String resourceGroupName, String privateEndpointName,
+    public PagedIterable<PrivateDnsZoneGroupInner> list(String privateEndpointName, String resourceGroupName,
         Context context) {
-        return new PagedIterable<>(listAsync(resourceGroupName, privateEndpointName, context));
+        return new PagedIterable<>(listAsync(privateEndpointName, resourceGroupName, context));
     }
 
     /**
@@ -922,10 +906,6 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
     private Mono<PagedResponse<PrivateDnsZoneGroupInner>> listNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
@@ -949,10 +929,6 @@ public final class PrivateDnsZoneGroupsClientImpl implements PrivateDnsZoneGroup
     private Mono<PagedResponse<PrivateDnsZoneGroupInner>> listNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);

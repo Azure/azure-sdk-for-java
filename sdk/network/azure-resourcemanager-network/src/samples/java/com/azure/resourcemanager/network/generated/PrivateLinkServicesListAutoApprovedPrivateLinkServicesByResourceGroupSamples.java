@@ -20,6 +20,6 @@ public final class PrivateLinkServicesListAutoApprovedPrivateLinkServicesByResou
         com.azure.resourcemanager.network.NetworkManager manager) {
         manager.serviceClient()
             .getPrivateLinkServices()
-            .listAutoApprovedPrivateLinkServicesByResourceGroup("rg1", "regionName", com.azure.core.util.Context.NONE);
+            .listAutoApprovedPrivateLinkServicesByResourceGroup("regionName", "rg1", com.azure.core.util.Context.NONE);
     }
 }

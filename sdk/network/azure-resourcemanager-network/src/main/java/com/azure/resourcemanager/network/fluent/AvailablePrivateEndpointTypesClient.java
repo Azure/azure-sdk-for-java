@@ -55,34 +55,34 @@ public interface AvailablePrivateEndpointTypesClient {
     /**
      * Returns all of the resource types that can be linked to a Private Endpoint in this subscription in this region.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The location name.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an array of available PrivateEndpoint types as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<AvailablePrivateEndpointTypeInner> listByResourceGroupAsync(String resourceGroupName, String location);
+    PagedFlux<AvailablePrivateEndpointTypeInner> listByResourceGroupAsync(String location, String resourceGroupName);
 
     /**
      * Returns all of the resource types that can be linked to a Private Endpoint in this subscription in this region.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The location name.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an array of available PrivateEndpoint types as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<AvailablePrivateEndpointTypeInner> listByResourceGroup(String resourceGroupName, String location);
+    PagedIterable<AvailablePrivateEndpointTypeInner> listByResourceGroup(String location, String resourceGroupName);
 
     /**
      * Returns all of the resource types that can be linked to a Private Endpoint in this subscription in this region.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The location name.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -90,6 +90,6 @@ public interface AvailablePrivateEndpointTypesClient {
      * @return an array of available PrivateEndpoint types as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<AvailablePrivateEndpointTypeInner> listByResourceGroup(String resourceGroupName, String location,
+    PagedIterable<AvailablePrivateEndpointTypeInner> listByResourceGroup(String location, String resourceGroupName,
         Context context);
 }

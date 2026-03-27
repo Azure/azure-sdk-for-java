@@ -20,6 +20,6 @@ public final class AvailableResourceGroupDelegationsListSamples {
         getAvailableDelegationsInTheResourceGroup(com.azure.resourcemanager.network.NetworkManager manager) {
         manager.serviceClient()
             .getAvailableResourceGroupDelegations()
-            .list("rg1", "westcentralus", com.azure.core.util.Context.NONE);
+            .list("westcentralus", "rg1", com.azure.core.util.Context.NONE);
     }
 }

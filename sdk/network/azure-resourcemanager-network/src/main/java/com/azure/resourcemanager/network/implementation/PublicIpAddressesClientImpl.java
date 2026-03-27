@@ -84,7 +84,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.Compute/cloudServices/{cloudServiceName}/roleInstances/{roleInstanceName}/networkInterfaces/{networkInterfaceName}/ipconfigurations/{ipConfigurationName}/publicipaddresses/{publicIpAddressName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PublicIpAddressInner>> getCloudServicePublicIPAddress(@HostParam("endpoint") String endpoint,
+        Mono<Response<PublicIpAddressInner>> getCloudServicePublicIpAddress(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("cloudServiceName") String cloudServiceName,
@@ -98,7 +98,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.Compute/cloudServices/{cloudServiceName}/roleInstances/{roleInstanceName}/networkInterfaces/{networkInterfaceName}/ipconfigurations/{ipConfigurationName}/publicipaddresses")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PublicIPAddressListResult>> listCloudServiceRoleInstancePublicIPAddresses(
+        Mono<Response<PublicIPAddressListResult>> listCloudServiceRoleInstancePublicIpAddresses(
             @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -199,7 +199,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.Compute/cloudServices/{cloudServiceName}/publicipaddresses")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PublicIPAddressListResult>> listCloudServicePublicIPAddresses(
+        Mono<Response<PublicIPAddressListResult>> listCloudServicePublicIpAddresses(
             @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -210,7 +210,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{virtualMachineScaleSetName}/publicipaddresses")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PublicIPAddressListResult>> listVirtualMachineScaleSetPublicIPAddresses(
+        Mono<Response<PublicIPAddressListResult>> listVirtualMachineScaleSetPublicIpAddresses(
             @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -221,7 +221,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{virtualMachineScaleSetName}/virtualMachines/{virtualmachineIndex}/networkInterfaces/{networkInterfaceName}/ipconfigurations/{ipConfigurationName}/publicipaddresses/{publicIpAddressName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PublicIpAddressInner>> getVirtualMachineScaleSetPublicIPAddress(
+        Mono<Response<PublicIpAddressInner>> getVirtualMachineScaleSetPublicIpAddress(
             @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -236,7 +236,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{virtualMachineScaleSetName}/virtualMachines/{virtualmachineIndex}/networkInterfaces/{networkInterfaceName}/ipconfigurations/{ipConfigurationName}/publicipaddresses")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PublicIPAddressListResult>> listVirtualMachineScaleSetVMPublicIPAddresses(
+        Mono<Response<PublicIPAddressListResult>> listVirtualMachineScaleSetVMPublicIpAddresses(
             @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -250,7 +250,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PublicIPAddressListResult>> listCloudServiceRoleInstancePublicIPAddressesNext(
+        Mono<Response<PublicIPAddressListResult>> listCloudServiceRoleInstancePublicIpAddressesNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -274,7 +274,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PublicIPAddressListResult>> listCloudServicePublicIPAddressesNext(
+        Mono<Response<PublicIPAddressListResult>> listCloudServicePublicIpAddressesNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -282,7 +282,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PublicIPAddressListResult>> listVirtualMachineScaleSetPublicIPAddressesNext(
+        Mono<Response<PublicIPAddressListResult>> listVirtualMachineScaleSetPublicIpAddressesNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -290,7 +290,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PublicIPAddressListResult>> listVirtualMachineScaleSetVMPublicIPAddressesNext(
+        Mono<Response<PublicIPAddressListResult>> listVirtualMachineScaleSetVMPublicIpAddressesNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -312,7 +312,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PublicIpAddressInner>> getCloudServicePublicIPAddressWithResponseAsync(
+    public Mono<Response<PublicIpAddressInner>> getCloudServicePublicIpAddressWithResponseAsync(
         String resourceGroupName, String cloudServiceName, String roleInstanceName, String networkInterfaceName,
         String ipConfigurationName, String publicIpAddressName, String expand) {
         if (this.client.getEndpoint() == null) {
@@ -350,7 +350,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
         final String apiVersion = "2025-05-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getCloudServicePublicIPAddress(this.client.getEndpoint(), apiVersion,
+            .withContext(context -> service.getCloudServicePublicIpAddress(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, cloudServiceName, roleInstanceName,
                 networkInterfaceName, ipConfigurationName, publicIpAddressName, expand, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -374,7 +374,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PublicIpAddressInner>> getCloudServicePublicIPAddressWithResponseAsync(
+    private Mono<Response<PublicIpAddressInner>> getCloudServicePublicIpAddressWithResponseAsync(
         String resourceGroupName, String cloudServiceName, String roleInstanceName, String networkInterfaceName,
         String ipConfigurationName, String publicIpAddressName, String expand, Context context) {
         if (this.client.getEndpoint() == null) {
@@ -412,7 +412,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
         final String apiVersion = "2025-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getCloudServicePublicIPAddress(this.client.getEndpoint(), apiVersion,
+        return service.getCloudServicePublicIpAddress(this.client.getEndpoint(), apiVersion,
             this.client.getSubscriptionId(), resourceGroupName, cloudServiceName, roleInstanceName,
             networkInterfaceName, ipConfigurationName, publicIpAddressName, expand, accept, context);
     }
@@ -432,11 +432,11 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
      * @return the specified public IP address in a cloud service on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PublicIpAddressInner> getCloudServicePublicIPAddressAsync(String resourceGroupName,
+    public Mono<PublicIpAddressInner> getCloudServicePublicIpAddressAsync(String resourceGroupName,
         String cloudServiceName, String roleInstanceName, String networkInterfaceName, String ipConfigurationName,
         String publicIpAddressName) {
         final String expand = null;
-        return getCloudServicePublicIPAddressWithResponseAsync(resourceGroupName, cloudServiceName, roleInstanceName,
+        return getCloudServicePublicIpAddressWithResponseAsync(resourceGroupName, cloudServiceName, roleInstanceName,
             networkInterfaceName, ipConfigurationName, publicIpAddressName, expand)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -458,10 +458,10 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
      * @return the specified public IP address in a cloud service along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PublicIpAddressInner> getCloudServicePublicIPAddressWithResponse(String resourceGroupName,
+    public Response<PublicIpAddressInner> getCloudServicePublicIpAddressWithResponse(String resourceGroupName,
         String cloudServiceName, String roleInstanceName, String networkInterfaceName, String ipConfigurationName,
         String publicIpAddressName, String expand, Context context) {
-        return getCloudServicePublicIPAddressWithResponseAsync(resourceGroupName, cloudServiceName, roleInstanceName,
+        return getCloudServicePublicIpAddressWithResponseAsync(resourceGroupName, cloudServiceName, roleInstanceName,
             networkInterfaceName, ipConfigurationName, publicIpAddressName, expand, context).block();
     }
 
@@ -480,10 +480,10 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
      * @return the specified public IP address in a cloud service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PublicIpAddressInner getCloudServicePublicIPAddress(String resourceGroupName, String cloudServiceName,
+    public PublicIpAddressInner getCloudServicePublicIpAddress(String resourceGroupName, String cloudServiceName,
         String roleInstanceName, String networkInterfaceName, String ipConfigurationName, String publicIpAddressName) {
         final String expand = null;
-        return getCloudServicePublicIPAddressWithResponse(resourceGroupName, cloudServiceName, roleInstanceName,
+        return getCloudServicePublicIpAddressWithResponse(resourceGroupName, cloudServiceName, roleInstanceName,
             networkInterfaceName, ipConfigurationName, publicIpAddressName, expand, Context.NONE).getValue();
     }
 
@@ -502,7 +502,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
      * with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PublicIpAddressInner>> listCloudServiceRoleInstancePublicIPAddressesSinglePageAsync(
+    private Mono<PagedResponse<PublicIpAddressInner>> listCloudServiceRoleInstancePublicIpAddressesSinglePageAsync(
         String resourceGroupName, String cloudServiceName, String roleInstanceName, String networkInterfaceName,
         String ipConfigurationName) {
         if (this.client.getEndpoint() == null) {
@@ -536,7 +536,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
         final String apiVersion = "2025-05-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listCloudServiceRoleInstancePublicIPAddresses(this.client.getEndpoint(),
+            .withContext(context -> service.listCloudServiceRoleInstancePublicIpAddresses(this.client.getEndpoint(),
                 apiVersion, this.client.getSubscriptionId(), resourceGroupName, cloudServiceName, roleInstanceName,
                 networkInterfaceName, ipConfigurationName, accept, context))
             .<PagedResponse<PublicIpAddressInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
@@ -560,7 +560,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
      * with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PublicIpAddressInner>> listCloudServiceRoleInstancePublicIPAddressesSinglePageAsync(
+    private Mono<PagedResponse<PublicIpAddressInner>> listCloudServiceRoleInstancePublicIpAddressesSinglePageAsync(
         String resourceGroupName, String cloudServiceName, String roleInstanceName, String networkInterfaceName,
         String ipConfigurationName, Context context) {
         if (this.client.getEndpoint() == null) {
@@ -595,7 +595,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listCloudServiceRoleInstancePublicIPAddresses(this.client.getEndpoint(), apiVersion,
+            .listCloudServiceRoleInstancePublicIpAddresses(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, cloudServiceName, roleInstanceName,
                 networkInterfaceName, ipConfigurationName, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
@@ -617,12 +617,12 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
      * paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<PublicIpAddressInner> listCloudServiceRoleInstancePublicIPAddressesAsync(String resourceGroupName,
+    public PagedFlux<PublicIpAddressInner> listCloudServiceRoleInstancePublicIpAddressesAsync(String resourceGroupName,
         String cloudServiceName, String roleInstanceName, String networkInterfaceName, String ipConfigurationName) {
         return new PagedFlux<>(
-            () -> listCloudServiceRoleInstancePublicIPAddressesSinglePageAsync(resourceGroupName, cloudServiceName,
+            () -> listCloudServiceRoleInstancePublicIpAddressesSinglePageAsync(resourceGroupName, cloudServiceName,
                 roleInstanceName, networkInterfaceName, ipConfigurationName),
-            nextLink -> listCloudServiceRoleInstancePublicIPAddressesNextSinglePageAsync(nextLink));
+            nextLink -> listCloudServiceRoleInstancePublicIpAddressesNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -641,13 +641,13 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
      * paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PublicIpAddressInner> listCloudServiceRoleInstancePublicIPAddressesAsync(String resourceGroupName,
+    private PagedFlux<PublicIpAddressInner> listCloudServiceRoleInstancePublicIpAddressesAsync(String resourceGroupName,
         String cloudServiceName, String roleInstanceName, String networkInterfaceName, String ipConfigurationName,
         Context context) {
         return new PagedFlux<>(
-            () -> listCloudServiceRoleInstancePublicIPAddressesSinglePageAsync(resourceGroupName, cloudServiceName,
+            () -> listCloudServiceRoleInstancePublicIpAddressesSinglePageAsync(resourceGroupName, cloudServiceName,
                 roleInstanceName, networkInterfaceName, ipConfigurationName, context),
-            nextLink -> listCloudServiceRoleInstancePublicIPAddressesNextSinglePageAsync(nextLink, context));
+            nextLink -> listCloudServiceRoleInstancePublicIpAddressesNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -665,9 +665,9 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
      * paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PublicIpAddressInner> listCloudServiceRoleInstancePublicIPAddresses(String resourceGroupName,
+    public PagedIterable<PublicIpAddressInner> listCloudServiceRoleInstancePublicIpAddresses(String resourceGroupName,
         String cloudServiceName, String roleInstanceName, String networkInterfaceName, String ipConfigurationName) {
-        return new PagedIterable<>(listCloudServiceRoleInstancePublicIPAddressesAsync(resourceGroupName,
+        return new PagedIterable<>(listCloudServiceRoleInstancePublicIpAddressesAsync(resourceGroupName,
             cloudServiceName, roleInstanceName, networkInterfaceName, ipConfigurationName));
     }
 
@@ -687,10 +687,10 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
      * paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PublicIpAddressInner> listCloudServiceRoleInstancePublicIPAddresses(String resourceGroupName,
+    public PagedIterable<PublicIpAddressInner> listCloudServiceRoleInstancePublicIpAddresses(String resourceGroupName,
         String cloudServiceName, String roleInstanceName, String networkInterfaceName, String ipConfigurationName,
         Context context) {
-        return new PagedIterable<>(listCloudServiceRoleInstancePublicIPAddressesAsync(resourceGroupName,
+        return new PagedIterable<>(listCloudServiceRoleInstancePublicIpAddressesAsync(resourceGroupName,
             cloudServiceName, roleInstanceName, networkInterfaceName, ipConfigurationName, context));
     }
 
@@ -2421,7 +2421,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PublicIpAddressInner>>
-        listCloudServicePublicIPAddressesSinglePageAsync(String resourceGroupName, String cloudServiceName) {
+        listCloudServicePublicIpAddressesSinglePageAsync(String resourceGroupName, String cloudServiceName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -2441,7 +2441,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
         final String apiVersion = "2025-05-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listCloudServicePublicIPAddresses(this.client.getEndpoint(), apiVersion,
+            .withContext(context -> service.listCloudServicePublicIpAddresses(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, cloudServiceName, accept, context))
             .<PagedResponse<PublicIpAddressInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
@@ -2461,7 +2461,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PublicIpAddressInner>> listCloudServicePublicIPAddressesSinglePageAsync(
+    private Mono<PagedResponse<PublicIpAddressInner>> listCloudServicePublicIpAddressesSinglePageAsync(
         String resourceGroupName, String cloudServiceName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -2483,7 +2483,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listCloudServicePublicIPAddresses(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            .listCloudServicePublicIpAddresses(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
                 resourceGroupName, cloudServiceName, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
@@ -2501,11 +2501,11 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
      * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<PublicIpAddressInner> listCloudServicePublicIPAddressesAsync(String resourceGroupName,
+    public PagedFlux<PublicIpAddressInner> listCloudServicePublicIpAddressesAsync(String resourceGroupName,
         String cloudServiceName) {
         return new PagedFlux<>(
-            () -> listCloudServicePublicIPAddressesSinglePageAsync(resourceGroupName, cloudServiceName),
-            nextLink -> listCloudServicePublicIPAddressesNextSinglePageAsync(nextLink));
+            () -> listCloudServicePublicIpAddressesSinglePageAsync(resourceGroupName, cloudServiceName),
+            nextLink -> listCloudServicePublicIpAddressesNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -2521,11 +2521,11 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
      * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PublicIpAddressInner> listCloudServicePublicIPAddressesAsync(String resourceGroupName,
+    private PagedFlux<PublicIpAddressInner> listCloudServicePublicIpAddressesAsync(String resourceGroupName,
         String cloudServiceName, Context context) {
         return new PagedFlux<>(
-            () -> listCloudServicePublicIPAddressesSinglePageAsync(resourceGroupName, cloudServiceName, context),
-            nextLink -> listCloudServicePublicIPAddressesNextSinglePageAsync(nextLink, context));
+            () -> listCloudServicePublicIpAddressesSinglePageAsync(resourceGroupName, cloudServiceName, context),
+            nextLink -> listCloudServicePublicIpAddressesNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -2540,9 +2540,9 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PublicIpAddressInner> listCloudServicePublicIPAddresses(String resourceGroupName,
+    public PagedIterable<PublicIpAddressInner> listCloudServicePublicIpAddresses(String resourceGroupName,
         String cloudServiceName) {
-        return new PagedIterable<>(listCloudServicePublicIPAddressesAsync(resourceGroupName, cloudServiceName));
+        return new PagedIterable<>(listCloudServicePublicIpAddressesAsync(resourceGroupName, cloudServiceName));
     }
 
     /**
@@ -2558,10 +2558,10 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PublicIpAddressInner> listCloudServicePublicIPAddresses(String resourceGroupName,
+    public PagedIterable<PublicIpAddressInner> listCloudServicePublicIpAddresses(String resourceGroupName,
         String cloudServiceName, Context context) {
         return new PagedIterable<>(
-            listCloudServicePublicIPAddressesAsync(resourceGroupName, cloudServiceName, context));
+            listCloudServicePublicIpAddressesAsync(resourceGroupName, cloudServiceName, context));
     }
 
     /**
@@ -2576,7 +2576,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
      * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PublicIpAddressInner>> listVirtualMachineScaleSetPublicIPAddressesSinglePageAsync(
+    private Mono<PagedResponse<PublicIpAddressInner>> listVirtualMachineScaleSetPublicIpAddressesSinglePageAsync(
         String resourceGroupName, String virtualMachineScaleSetName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -2598,7 +2598,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context -> service.listVirtualMachineScaleSetPublicIPAddresses(this.client.getEndpoint(), apiVersion,
+                context -> service.listVirtualMachineScaleSetPublicIpAddresses(this.client.getEndpoint(), apiVersion,
                     this.client.getSubscriptionId(), resourceGroupName, virtualMachineScaleSetName, accept, context))
             .<PagedResponse<PublicIpAddressInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
@@ -2618,7 +2618,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
      * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PublicIpAddressInner>> listVirtualMachineScaleSetPublicIPAddressesSinglePageAsync(
+    private Mono<PagedResponse<PublicIpAddressInner>> listVirtualMachineScaleSetPublicIpAddressesSinglePageAsync(
         String resourceGroupName, String virtualMachineScaleSetName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -2640,7 +2640,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listVirtualMachineScaleSetPublicIPAddresses(this.client.getEndpoint(), apiVersion,
+            .listVirtualMachineScaleSetPublicIpAddresses(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, virtualMachineScaleSetName, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
@@ -2658,12 +2658,12 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
      * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<PublicIpAddressInner> listVirtualMachineScaleSetPublicIPAddressesAsync(String resourceGroupName,
+    public PagedFlux<PublicIpAddressInner> listVirtualMachineScaleSetPublicIpAddressesAsync(String resourceGroupName,
         String virtualMachineScaleSetName) {
         return new PagedFlux<>(
-            () -> listVirtualMachineScaleSetPublicIPAddressesSinglePageAsync(resourceGroupName,
+            () -> listVirtualMachineScaleSetPublicIpAddressesSinglePageAsync(resourceGroupName,
                 virtualMachineScaleSetName),
-            nextLink -> listVirtualMachineScaleSetPublicIPAddressesNextSinglePageAsync(nextLink));
+            nextLink -> listVirtualMachineScaleSetPublicIpAddressesNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -2679,12 +2679,12 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
      * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PublicIpAddressInner> listVirtualMachineScaleSetPublicIPAddressesAsync(String resourceGroupName,
+    private PagedFlux<PublicIpAddressInner> listVirtualMachineScaleSetPublicIpAddressesAsync(String resourceGroupName,
         String virtualMachineScaleSetName, Context context) {
         return new PagedFlux<>(
-            () -> listVirtualMachineScaleSetPublicIPAddressesSinglePageAsync(resourceGroupName,
+            () -> listVirtualMachineScaleSetPublicIpAddressesSinglePageAsync(resourceGroupName,
                 virtualMachineScaleSetName, context),
-            nextLink -> listVirtualMachineScaleSetPublicIPAddressesNextSinglePageAsync(nextLink, context));
+            nextLink -> listVirtualMachineScaleSetPublicIpAddressesNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -2699,10 +2699,10 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PublicIpAddressInner> listVirtualMachineScaleSetPublicIPAddresses(String resourceGroupName,
+    public PagedIterable<PublicIpAddressInner> listVirtualMachineScaleSetPublicIpAddresses(String resourceGroupName,
         String virtualMachineScaleSetName) {
         return new PagedIterable<>(
-            listVirtualMachineScaleSetPublicIPAddressesAsync(resourceGroupName, virtualMachineScaleSetName));
+            listVirtualMachineScaleSetPublicIpAddressesAsync(resourceGroupName, virtualMachineScaleSetName));
     }
 
     /**
@@ -2718,10 +2718,10 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PublicIpAddressInner> listVirtualMachineScaleSetPublicIPAddresses(String resourceGroupName,
+    public PagedIterable<PublicIpAddressInner> listVirtualMachineScaleSetPublicIpAddresses(String resourceGroupName,
         String virtualMachineScaleSetName, Context context) {
         return new PagedIterable<>(
-            listVirtualMachineScaleSetPublicIPAddressesAsync(resourceGroupName, virtualMachineScaleSetName, context));
+            listVirtualMachineScaleSetPublicIpAddressesAsync(resourceGroupName, virtualMachineScaleSetName, context));
     }
 
     /**
@@ -2741,7 +2741,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PublicIpAddressInner>> getVirtualMachineScaleSetPublicIPAddressWithResponseAsync(
+    public Mono<Response<PublicIpAddressInner>> getVirtualMachineScaleSetPublicIpAddressWithResponseAsync(
         String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex,
         String networkInterfaceName, String ipConfigurationName, String publicIpAddressName, String expand) {
         if (this.client.getEndpoint() == null) {
@@ -2780,7 +2780,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context -> service.getVirtualMachineScaleSetPublicIPAddress(this.client.getEndpoint(), apiVersion,
+                context -> service.getVirtualMachineScaleSetPublicIpAddress(this.client.getEndpoint(), apiVersion,
                     this.client.getSubscriptionId(), resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex,
                     networkInterfaceName, ipConfigurationName, publicIpAddressName, expand, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -2804,7 +2804,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PublicIpAddressInner>> getVirtualMachineScaleSetPublicIPAddressWithResponseAsync(
+    private Mono<Response<PublicIpAddressInner>> getVirtualMachineScaleSetPublicIpAddressWithResponseAsync(
         String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex,
         String networkInterfaceName, String ipConfigurationName, String publicIpAddressName, String expand,
         Context context) {
@@ -2843,7 +2843,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
         final String apiVersion = "2025-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getVirtualMachineScaleSetPublicIPAddress(this.client.getEndpoint(), apiVersion,
+        return service.getVirtualMachineScaleSetPublicIpAddress(this.client.getEndpoint(), apiVersion,
             this.client.getSubscriptionId(), resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex,
             networkInterfaceName, ipConfigurationName, publicIpAddressName, expand, accept, context);
     }
@@ -2863,11 +2863,11 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
      * @return the specified public IP address in a virtual machine scale set on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PublicIpAddressInner> getVirtualMachineScaleSetPublicIPAddressAsync(String resourceGroupName,
+    public Mono<PublicIpAddressInner> getVirtualMachineScaleSetPublicIpAddressAsync(String resourceGroupName,
         String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName,
         String ipConfigurationName, String publicIpAddressName) {
         final String expand = null;
-        return getVirtualMachineScaleSetPublicIPAddressWithResponseAsync(resourceGroupName, virtualMachineScaleSetName,
+        return getVirtualMachineScaleSetPublicIpAddressWithResponseAsync(resourceGroupName, virtualMachineScaleSetName,
             virtualmachineIndex, networkInterfaceName, ipConfigurationName, publicIpAddressName, expand)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -2889,10 +2889,10 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
      * @return the specified public IP address in a virtual machine scale set along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PublicIpAddressInner> getVirtualMachineScaleSetPublicIPAddressWithResponse(String resourceGroupName,
+    public Response<PublicIpAddressInner> getVirtualMachineScaleSetPublicIpAddressWithResponse(String resourceGroupName,
         String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName,
         String ipConfigurationName, String publicIpAddressName, String expand, Context context) {
-        return getVirtualMachineScaleSetPublicIPAddressWithResponseAsync(resourceGroupName, virtualMachineScaleSetName,
+        return getVirtualMachineScaleSetPublicIpAddressWithResponseAsync(resourceGroupName, virtualMachineScaleSetName,
             virtualmachineIndex, networkInterfaceName, ipConfigurationName, publicIpAddressName, expand, context)
                 .block();
     }
@@ -2912,11 +2912,11 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
      * @return the specified public IP address in a virtual machine scale set.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PublicIpAddressInner getVirtualMachineScaleSetPublicIPAddress(String resourceGroupName,
+    public PublicIpAddressInner getVirtualMachineScaleSetPublicIpAddress(String resourceGroupName,
         String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName,
         String ipConfigurationName, String publicIpAddressName) {
         final String expand = null;
-        return getVirtualMachineScaleSetPublicIPAddressWithResponse(resourceGroupName, virtualMachineScaleSetName,
+        return getVirtualMachineScaleSetPublicIpAddressWithResponse(resourceGroupName, virtualMachineScaleSetName,
             virtualmachineIndex, networkInterfaceName, ipConfigurationName, publicIpAddressName, expand, Context.NONE)
                 .getValue();
     }
@@ -2937,7 +2937,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
      * scale set along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PublicIpAddressInner>> listVirtualMachineScaleSetVMPublicIPAddressesSinglePageAsync(
+    private Mono<PagedResponse<PublicIpAddressInner>> listVirtualMachineScaleSetVMPublicIpAddressesSinglePageAsync(
         String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex,
         String networkInterfaceName, String ipConfigurationName) {
         if (this.client.getEndpoint() == null) {
@@ -2971,7 +2971,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
         final String apiVersion = "2025-05-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listVirtualMachineScaleSetVMPublicIPAddresses(this.client.getEndpoint(),
+            .withContext(context -> service.listVirtualMachineScaleSetVMPublicIpAddresses(this.client.getEndpoint(),
                 apiVersion, this.client.getSubscriptionId(), resourceGroupName, virtualMachineScaleSetName,
                 virtualmachineIndex, networkInterfaceName, ipConfigurationName, accept, context))
             .<PagedResponse<PublicIpAddressInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
@@ -2996,7 +2996,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
      * scale set along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PublicIpAddressInner>> listVirtualMachineScaleSetVMPublicIPAddressesSinglePageAsync(
+    private Mono<PagedResponse<PublicIpAddressInner>> listVirtualMachineScaleSetVMPublicIpAddressesSinglePageAsync(
         String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex,
         String networkInterfaceName, String ipConfigurationName, Context context) {
         if (this.client.getEndpoint() == null) {
@@ -3031,7 +3031,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listVirtualMachineScaleSetVMPublicIPAddresses(this.client.getEndpoint(), apiVersion,
+            .listVirtualMachineScaleSetVMPublicIpAddresses(this.client.getEndpoint(), apiVersion,
                 this.client.getSubscriptionId(), resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex,
                 networkInterfaceName, ipConfigurationName, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
@@ -3054,13 +3054,13 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
      * scale set as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<PublicIpAddressInner> listVirtualMachineScaleSetVMPublicIPAddressesAsync(String resourceGroupName,
+    public PagedFlux<PublicIpAddressInner> listVirtualMachineScaleSetVMPublicIpAddressesAsync(String resourceGroupName,
         String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName,
         String ipConfigurationName) {
         return new PagedFlux<>(
-            () -> listVirtualMachineScaleSetVMPublicIPAddressesSinglePageAsync(resourceGroupName,
+            () -> listVirtualMachineScaleSetVMPublicIpAddressesSinglePageAsync(resourceGroupName,
                 virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, ipConfigurationName),
-            nextLink -> listVirtualMachineScaleSetVMPublicIPAddressesNextSinglePageAsync(nextLink));
+            nextLink -> listVirtualMachineScaleSetVMPublicIpAddressesNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -3080,13 +3080,13 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
      * scale set as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PublicIpAddressInner> listVirtualMachineScaleSetVMPublicIPAddressesAsync(String resourceGroupName,
+    private PagedFlux<PublicIpAddressInner> listVirtualMachineScaleSetVMPublicIpAddressesAsync(String resourceGroupName,
         String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName,
         String ipConfigurationName, Context context) {
         return new PagedFlux<>(
-            () -> listVirtualMachineScaleSetVMPublicIPAddressesSinglePageAsync(resourceGroupName,
+            () -> listVirtualMachineScaleSetVMPublicIpAddressesSinglePageAsync(resourceGroupName,
                 virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, ipConfigurationName, context),
-            nextLink -> listVirtualMachineScaleSetVMPublicIPAddressesNextSinglePageAsync(nextLink, context));
+            nextLink -> listVirtualMachineScaleSetVMPublicIpAddressesNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -3105,10 +3105,10 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
      * scale set as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PublicIpAddressInner> listVirtualMachineScaleSetVMPublicIPAddresses(String resourceGroupName,
+    public PagedIterable<PublicIpAddressInner> listVirtualMachineScaleSetVMPublicIpAddresses(String resourceGroupName,
         String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName,
         String ipConfigurationName) {
-        return new PagedIterable<>(listVirtualMachineScaleSetVMPublicIPAddressesAsync(resourceGroupName,
+        return new PagedIterable<>(listVirtualMachineScaleSetVMPublicIpAddressesAsync(resourceGroupName,
             virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, ipConfigurationName));
     }
 
@@ -3129,10 +3129,10 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
      * scale set as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PublicIpAddressInner> listVirtualMachineScaleSetVMPublicIPAddresses(String resourceGroupName,
+    public PagedIterable<PublicIpAddressInner> listVirtualMachineScaleSetVMPublicIpAddresses(String resourceGroupName,
         String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName,
         String ipConfigurationName, Context context) {
-        return new PagedIterable<>(listVirtualMachineScaleSetVMPublicIPAddressesAsync(resourceGroupName,
+        return new PagedIterable<>(listVirtualMachineScaleSetVMPublicIpAddressesAsync(resourceGroupName,
             virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, ipConfigurationName, context));
     }
 
@@ -3148,7 +3148,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PublicIpAddressInner>>
-        listCloudServiceRoleInstancePublicIPAddressesNextSinglePageAsync(String nextLink) {
+        listCloudServiceRoleInstancePublicIpAddressesNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -3158,7 +3158,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listCloudServiceRoleInstancePublicIPAddressesNext(nextLink,
+            .withContext(context -> service.listCloudServiceRoleInstancePublicIpAddressesNext(nextLink,
                 this.client.getEndpoint(), accept, context))
             .<PagedResponse<PublicIpAddressInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
@@ -3178,7 +3178,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PublicIpAddressInner>>
-        listCloudServiceRoleInstancePublicIPAddressesNextSinglePageAsync(String nextLink, Context context) {
+        listCloudServiceRoleInstancePublicIpAddressesNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -3189,7 +3189,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listCloudServiceRoleInstancePublicIPAddressesNext(nextLink, this.client.getEndpoint(), accept, context)
+            .listCloudServiceRoleInstancePublicIpAddressesNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -3313,7 +3313,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PublicIpAddressInner>>
-        listCloudServicePublicIPAddressesNextSinglePageAsync(String nextLink) {
+        listCloudServicePublicIpAddressesNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -3323,7 +3323,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listCloudServicePublicIPAddressesNext(nextLink, this.client.getEndpoint(),
+            .withContext(context -> service.listCloudServicePublicIpAddressesNext(nextLink, this.client.getEndpoint(),
                 accept, context))
             .<PagedResponse<PublicIpAddressInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
@@ -3343,7 +3343,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PublicIpAddressInner>>
-        listCloudServicePublicIPAddressesNextSinglePageAsync(String nextLink, Context context) {
+        listCloudServicePublicIpAddressesNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -3353,7 +3353,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listCloudServicePublicIPAddressesNext(nextLink, this.client.getEndpoint(), accept, context)
+        return service.listCloudServicePublicIpAddressesNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -3370,7 +3370,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PublicIpAddressInner>>
-        listVirtualMachineScaleSetPublicIPAddressesNextSinglePageAsync(String nextLink) {
+        listVirtualMachineScaleSetPublicIpAddressesNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -3380,7 +3380,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listVirtualMachineScaleSetPublicIPAddressesNext(nextLink,
+            .withContext(context -> service.listVirtualMachineScaleSetPublicIpAddressesNext(nextLink,
                 this.client.getEndpoint(), accept, context))
             .<PagedResponse<PublicIpAddressInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
@@ -3400,7 +3400,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PublicIpAddressInner>>
-        listVirtualMachineScaleSetPublicIPAddressesNextSinglePageAsync(String nextLink, Context context) {
+        listVirtualMachineScaleSetPublicIpAddressesNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -3411,7 +3411,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listVirtualMachineScaleSetPublicIPAddressesNext(nextLink, this.client.getEndpoint(), accept, context)
+            .listVirtualMachineScaleSetPublicIpAddressesNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -3428,7 +3428,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PublicIpAddressInner>>
-        listVirtualMachineScaleSetVMPublicIPAddressesNextSinglePageAsync(String nextLink) {
+        listVirtualMachineScaleSetVMPublicIpAddressesNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -3438,7 +3438,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listVirtualMachineScaleSetVMPublicIPAddressesNext(nextLink,
+            .withContext(context -> service.listVirtualMachineScaleSetVMPublicIpAddressesNext(nextLink,
                 this.client.getEndpoint(), accept, context))
             .<PagedResponse<PublicIpAddressInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
@@ -3458,7 +3458,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PublicIpAddressInner>>
-        listVirtualMachineScaleSetVMPublicIPAddressesNextSinglePageAsync(String nextLink, Context context) {
+        listVirtualMachineScaleSetVMPublicIpAddressesNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -3469,7 +3469,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listVirtualMachineScaleSetVMPublicIPAddressesNext(nextLink, this.client.getEndpoint(), accept, context)
+            .listVirtualMachineScaleSetVMPublicIpAddressesNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }

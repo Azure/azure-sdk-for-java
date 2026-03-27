@@ -15,9 +15,9 @@ import reactor.core.publisher.Mono;
 
 /**
  * An instance of this class provides access to all the operations defined in
- * LoadBalancerFrontendIPConfigurationsClient.
+ * LoadBalancerFrontendIpConfigurationsClient.
  */
-public interface LoadBalancerFrontendIPConfigurationsClient {
+public interface LoadBalancerFrontendIpConfigurationsClient {
     /**
      * Gets load balancer frontend IP configuration.
      * 

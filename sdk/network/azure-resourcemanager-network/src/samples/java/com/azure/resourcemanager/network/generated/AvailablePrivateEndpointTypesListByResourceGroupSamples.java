@@ -20,6 +20,6 @@ public final class AvailablePrivateEndpointTypesListByResourceGroupSamples {
         getAvailablePrivateEndpointTypesInTheResourceGroup(com.azure.resourcemanager.network.NetworkManager manager) {
         manager.serviceClient()
             .getAvailablePrivateEndpointTypes()
-            .listByResourceGroup("rg1", "regionName", com.azure.core.util.Context.NONE);
+            .listByResourceGroup("regionName", "rg1", com.azure.core.util.Context.NONE);
     }
 }

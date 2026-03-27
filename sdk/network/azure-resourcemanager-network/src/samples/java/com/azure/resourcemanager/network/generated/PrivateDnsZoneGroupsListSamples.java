@@ -17,6 +17,6 @@ public final class PrivateDnsZoneGroupsListSamples {
      * @param manager Entry point to NetworkManager.
      */
     public static void listPrivateEndpointsInResourceGroup(com.azure.resourcemanager.network.NetworkManager manager) {
-        manager.serviceClient().getPrivateDnsZoneGroups().list("rg1", "testPe", com.azure.core.util.Context.NONE);
+        manager.serviceClient().getPrivateDnsZoneGroups().list("testPe", "rg1", com.azure.core.util.Context.NONE);
     }
 }

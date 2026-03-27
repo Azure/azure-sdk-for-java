@@ -9,9 +9,9 @@ import com.azure.resourcemanager.network.models.VirtualHubRouteV2;
 import java.util.Arrays;
 
 /**
- * Samples for VirtualHubRouteTableV2s CreateOrUpdate.
+ * Samples for VirtualHubRouteTableV2S CreateOrUpdate.
  */
-public final class VirtualHubRouteTableV2sCreateOrUpdateSamples {
+public final class VirtualHubRouteTableV2SCreateOrUpdateSamples {
     /*
      * x-ms-original-file: 2025-05-01/VirtualHubRouteTableV2Put.json
      */
@@ -22,7 +22,7 @@ public final class VirtualHubRouteTableV2sCreateOrUpdateSamples {
      */
     public static void virtualHubRouteTableV2Put(com.azure.resourcemanager.network.NetworkManager manager) {
         manager.serviceClient()
-            .getVirtualHubRouteTableV2s()
+            .getVirtualHubRouteTableV2S()
             .createOrUpdate("rg1", "virtualHub1", "virtualHubRouteTable1a",
                 new VirtualHubRouteTableV2Inner()
                     .withRoutes(Arrays.asList(

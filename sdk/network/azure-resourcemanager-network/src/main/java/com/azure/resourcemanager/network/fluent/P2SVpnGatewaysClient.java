@@ -675,7 +675,7 @@ public interface P2SVpnGatewaysClient
      * along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> getP2sVpnConnectionHealthWithResponseAsync(String resourceGroupName,
+    Mono<Response<Flux<ByteBuffer>>> getP2SVpnConnectionHealthWithResponseAsync(String resourceGroupName,
         String gatewayName);
 
     /**
@@ -691,7 +691,7 @@ public interface P2SVpnGatewaysClient
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner>
-        beginGetP2sVpnConnectionHealthAsync(String resourceGroupName, String gatewayName);
+        beginGetP2SVpnConnectionHealthAsync(String resourceGroupName, String gatewayName);
 
     /**
      * Gets the connection health of P2S clients of the virtual wan P2SVpnGateway in the specified resource group.
@@ -706,7 +706,7 @@ public interface P2SVpnGatewaysClient
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner>
-        beginGetP2sVpnConnectionHealth(String resourceGroupName, String gatewayName);
+        beginGetP2SVpnConnectionHealth(String resourceGroupName, String gatewayName);
 
     /**
      * Gets the connection health of P2S clients of the virtual wan P2SVpnGateway in the specified resource group.
@@ -722,7 +722,7 @@ public interface P2SVpnGatewaysClient
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner>
-        beginGetP2sVpnConnectionHealth(String resourceGroupName, String gatewayName, Context context);
+        beginGetP2SVpnConnectionHealth(String resourceGroupName, String gatewayName, Context context);
 
     /**
      * Gets the connection health of P2S clients of the virtual wan P2SVpnGateway in the specified resource group.
@@ -736,7 +736,7 @@ public interface P2SVpnGatewaysClient
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<P2SVpnGatewayInner> getP2sVpnConnectionHealthAsync(String resourceGroupName, String gatewayName);
+    Mono<P2SVpnGatewayInner> getP2SVpnConnectionHealthAsync(String resourceGroupName, String gatewayName);
 
     /**
      * Gets the connection health of P2S clients of the virtual wan P2SVpnGateway in the specified resource group.
@@ -749,7 +749,7 @@ public interface P2SVpnGatewaysClient
      * @return the connection health of P2S clients of the virtual wan P2SVpnGateway in the specified resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    P2SVpnGatewayInner getP2sVpnConnectionHealth(String resourceGroupName, String gatewayName);
+    P2SVpnGatewayInner getP2SVpnConnectionHealth(String resourceGroupName, String gatewayName);
 
     /**
      * Gets the connection health of P2S clients of the virtual wan P2SVpnGateway in the specified resource group.
@@ -763,7 +763,7 @@ public interface P2SVpnGatewaysClient
      * @return the connection health of P2S clients of the virtual wan P2SVpnGateway in the specified resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    P2SVpnGatewayInner getP2sVpnConnectionHealth(String resourceGroupName, String gatewayName, Context context);
+    P2SVpnGatewayInner getP2SVpnConnectionHealth(String resourceGroupName, String gatewayName, Context context);
 
     /**
      * Gets the sas url to get the connection health detail of P2S clients of the virtual wan P2SVpnGateway in the
@@ -779,7 +779,7 @@ public interface P2SVpnGatewaysClient
      * specified resource group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> getP2sVpnConnectionHealthDetailedWithResponseAsync(String resourceGroupName,
+    Mono<Response<Flux<ByteBuffer>>> getP2SVpnConnectionHealthDetailedWithResponseAsync(String resourceGroupName,
         String gatewayName, P2SVpnConnectionHealthRequest request);
 
     /**
@@ -797,7 +797,7 @@ public interface P2SVpnGatewaysClient
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<P2SVpnConnectionHealthInner>, P2SVpnConnectionHealthInner>
-        beginGetP2sVpnConnectionHealthDetailedAsync(String resourceGroupName, String gatewayName,
+        beginGetP2SVpnConnectionHealthDetailedAsync(String resourceGroupName, String gatewayName,
             P2SVpnConnectionHealthRequest request);
 
     /**
@@ -815,7 +815,7 @@ public interface P2SVpnGatewaysClient
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<P2SVpnConnectionHealthInner>, P2SVpnConnectionHealthInner>
-        beginGetP2sVpnConnectionHealthDetailed(String resourceGroupName, String gatewayName,
+        beginGetP2SVpnConnectionHealthDetailed(String resourceGroupName, String gatewayName,
             P2SVpnConnectionHealthRequest request);
 
     /**
@@ -834,7 +834,7 @@ public interface P2SVpnGatewaysClient
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<P2SVpnConnectionHealthInner>, P2SVpnConnectionHealthInner>
-        beginGetP2sVpnConnectionHealthDetailed(String resourceGroupName, String gatewayName,
+        beginGetP2SVpnConnectionHealthDetailed(String resourceGroupName, String gatewayName,
             P2SVpnConnectionHealthRequest request, Context context);
 
     /**
@@ -851,7 +851,7 @@ public interface P2SVpnGatewaysClient
      * specified resource group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<P2SVpnConnectionHealthInner> getP2sVpnConnectionHealthDetailedAsync(String resourceGroupName,
+    Mono<P2SVpnConnectionHealthInner> getP2SVpnConnectionHealthDetailedAsync(String resourceGroupName,
         String gatewayName, P2SVpnConnectionHealthRequest request);
 
     /**
@@ -868,7 +868,7 @@ public interface P2SVpnGatewaysClient
      * specified resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    P2SVpnConnectionHealthInner getP2sVpnConnectionHealthDetailed(String resourceGroupName, String gatewayName,
+    P2SVpnConnectionHealthInner getP2SVpnConnectionHealthDetailed(String resourceGroupName, String gatewayName,
         P2SVpnConnectionHealthRequest request);
 
     /**
@@ -886,7 +886,7 @@ public interface P2SVpnGatewaysClient
      * specified resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    P2SVpnConnectionHealthInner getP2sVpnConnectionHealthDetailed(String resourceGroupName, String gatewayName,
+    P2SVpnConnectionHealthInner getP2SVpnConnectionHealthDetailed(String resourceGroupName, String gatewayName,
         P2SVpnConnectionHealthRequest request, Context context);
 
     /**
@@ -901,7 +901,7 @@ public interface P2SVpnGatewaysClient
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> disconnectP2sVpnConnectionsWithResponseAsync(String resourceGroupName,
+    Mono<Response<Flux<ByteBuffer>>> disconnectP2SVpnConnectionsWithResponseAsync(String resourceGroupName,
         String p2sVpnGatewayName, P2SVpnConnectionRequest request);
 
     /**
@@ -916,7 +916,7 @@ public interface P2SVpnGatewaysClient
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDisconnectP2sVpnConnectionsAsync(String resourceGroupName,
+    PollerFlux<PollResult<Void>, Void> beginDisconnectP2SVpnConnectionsAsync(String resourceGroupName,
         String p2sVpnGatewayName, P2SVpnConnectionRequest request);
 
     /**
@@ -931,7 +931,7 @@ public interface P2SVpnGatewaysClient
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDisconnectP2sVpnConnections(String resourceGroupName,
+    SyncPoller<PollResult<Void>, Void> beginDisconnectP2SVpnConnections(String resourceGroupName,
         String p2sVpnGatewayName, P2SVpnConnectionRequest request);
 
     /**
@@ -947,7 +947,7 @@ public interface P2SVpnGatewaysClient
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDisconnectP2sVpnConnections(String resourceGroupName,
+    SyncPoller<PollResult<Void>, Void> beginDisconnectP2SVpnConnections(String resourceGroupName,
         String p2sVpnGatewayName, P2SVpnConnectionRequest request, Context context);
 
     /**
@@ -962,7 +962,7 @@ public interface P2SVpnGatewaysClient
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> disconnectP2sVpnConnectionsAsync(String resourceGroupName, String p2sVpnGatewayName,
+    Mono<Void> disconnectP2SVpnConnectionsAsync(String resourceGroupName, String p2sVpnGatewayName,
         P2SVpnConnectionRequest request);
 
     /**
@@ -976,7 +976,7 @@ public interface P2SVpnGatewaysClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void disconnectP2sVpnConnections(String resourceGroupName, String p2sVpnGatewayName,
+    void disconnectP2SVpnConnections(String resourceGroupName, String p2sVpnGatewayName,
         P2SVpnConnectionRequest request);
 
     /**
@@ -991,6 +991,6 @@ public interface P2SVpnGatewaysClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void disconnectP2sVpnConnections(String resourceGroupName, String p2sVpnGatewayName,
+    void disconnectP2SVpnConnections(String resourceGroupName, String p2sVpnGatewayName,
         P2SVpnConnectionRequest request, Context context);
 }

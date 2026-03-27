@@ -425,7 +425,7 @@ public interface ExpressRoutePortsClient extends InnerSupportsGet<ExpressRoutePo
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<GenerateExpressRoutePortsLoaResultInner>> generateLOAWithResponseAsync(String resourceGroupName,
+    Mono<Response<GenerateExpressRoutePortsLoaResultInner>> generateLoaWithResponseAsync(String resourceGroupName,
         String expressRoutePortName, GenerateExpressRoutePortsLoaRequest request);
 
     /**
@@ -440,7 +440,7 @@ public interface ExpressRoutePortsClient extends InnerSupportsGet<ExpressRoutePo
      * @return response for GenerateExpressRoutePortsLOA API service call on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<GenerateExpressRoutePortsLoaResultInner> generateLOAAsync(String resourceGroupName,
+    Mono<GenerateExpressRoutePortsLoaResultInner> generateLoaAsync(String resourceGroupName,
         String expressRoutePortName, GenerateExpressRoutePortsLoaRequest request);
 
     /**
@@ -456,7 +456,7 @@ public interface ExpressRoutePortsClient extends InnerSupportsGet<ExpressRoutePo
      * @return response for GenerateExpressRoutePortsLOA API service call along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<GenerateExpressRoutePortsLoaResultInner> generateLOAWithResponse(String resourceGroupName,
+    Response<GenerateExpressRoutePortsLoaResultInner> generateLoaWithResponse(String resourceGroupName,
         String expressRoutePortName, GenerateExpressRoutePortsLoaRequest request, Context context);
 
     /**
@@ -471,6 +471,6 @@ public interface ExpressRoutePortsClient extends InnerSupportsGet<ExpressRoutePo
      * @return response for GenerateExpressRoutePortsLOA API service call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GenerateExpressRoutePortsLoaResultInner generateLOA(String resourceGroupName, String expressRoutePortName,
+    GenerateExpressRoutePortsLoaResultInner generateLoa(String resourceGroupName, String expressRoutePortName,
         GenerateExpressRoutePortsLoaRequest request);
 }

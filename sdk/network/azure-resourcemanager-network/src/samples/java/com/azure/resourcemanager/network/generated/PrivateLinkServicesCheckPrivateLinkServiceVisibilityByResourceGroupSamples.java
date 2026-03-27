@@ -21,7 +21,7 @@ public final class PrivateLinkServicesCheckPrivateLinkServiceVisibilityByResourc
     public static void checkPrivateLinkServiceVisibility(com.azure.resourcemanager.network.NetworkManager manager) {
         manager.serviceClient()
             .getPrivateLinkServices()
-            .checkPrivateLinkServiceVisibilityByResourceGroup("rg1", "westus",
+            .checkPrivateLinkServiceVisibilityByResourceGroup("westus", "rg1",
                 new CheckPrivateLinkServiceVisibilityRequest()
                     .withPrivateLinkServiceAlias("mypls.00000000-0000-0000-0000-000000000000.azure.privatelinkservice"),
                 com.azure.core.util.Context.NONE);

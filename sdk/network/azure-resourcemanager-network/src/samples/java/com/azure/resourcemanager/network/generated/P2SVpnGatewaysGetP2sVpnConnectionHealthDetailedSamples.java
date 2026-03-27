@@ -8,9 +8,9 @@ import com.azure.resourcemanager.network.models.P2SVpnConnectionHealthRequest;
 import java.util.Arrays;
 
 /**
- * Samples for P2SVpnGateways GetP2sVpnConnectionHealthDetailed.
+ * Samples for P2SVpnGateways GetP2SVpnConnectionHealthDetailed.
  */
-public final class P2SVpnGatewaysGetP2sVpnConnectionHealthDetailedSamples {
+public final class P2SVpnGatewaysGetP2SVpnConnectionHealthDetailedSamples {
     /*
      * x-ms-original-file: 2025-05-01/P2SVpnGatewayGetConnectionHealthDetailed.json
      */
@@ -23,7 +23,7 @@ public final class P2SVpnGatewaysGetP2sVpnConnectionHealthDetailedSamples {
         p2SVpnGatewayGetConnectionHealthDetailed(com.azure.resourcemanager.network.NetworkManager manager) {
         manager.serviceClient()
             .getP2SVpnGateways()
-            .getP2sVpnConnectionHealthDetailed("p2s-vpn-gateway-test", "p2svpngateway",
+            .getP2SVpnConnectionHealthDetailed("p2s-vpn-gateway-test", "p2svpngateway",
                 new P2SVpnConnectionHealthRequest().withVpnUserNamesFilter(Arrays.asList("vpnUser1", "vpnUser2"))
                     .withOutputBlobSasUrl(
                         "https://blobcortextesturl.blob.core.windows.net/folderforconfig/p2sconnectionhealths?sp=rw&se=2018-01-10T03%3A42%3A04Z&sv=2017-04-17&sig=WvXrT5bDmDFfgHs%2Brz%2BjAu123eRCNE9BO0eQYcPDT7pY%3D&sr=b"),

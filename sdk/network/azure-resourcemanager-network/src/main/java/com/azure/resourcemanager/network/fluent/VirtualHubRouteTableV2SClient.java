@@ -19,9 +19,9 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * An instance of this class provides access to all the operations defined in VirtualHubRouteTableV2sClient.
+ * An instance of this class provides access to all the operations defined in VirtualHubRouteTableV2SClient.
  */
-public interface VirtualHubRouteTableV2sClient {
+public interface VirtualHubRouteTableV2SClient {
     /**
      * Retrieves the details of a VirtualHubRouteTableV2.
      * 
