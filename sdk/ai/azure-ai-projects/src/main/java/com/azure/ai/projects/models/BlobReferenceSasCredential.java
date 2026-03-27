@@ -21,7 +21,7 @@ public final class BlobReferenceSasCredential implements JsonSerializable<BlobRe
      * Type of credential
      */
     @Generated
-    private final String type = "SAS";
+    private CredentialType type;
 
     /**
      * Creates an instance of BlobReferenceSasCredential class.
@@ -36,7 +36,7 @@ public final class BlobReferenceSasCredential implements JsonSerializable<BlobRe
      * @return the type value.
      */
     @Generated
-    public String getType() {
+    public CredentialType getType() {
         return this.type;
     }
 
@@ -68,6 +68,8 @@ public final class BlobReferenceSasCredential implements JsonSerializable<BlobRe
                 reader.nextToken();
                 if ("sasUri".equals(fieldName)) {
                     deserializedBlobReferenceSasCredential.sasUrl = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedBlobReferenceSasCredential.type = CredentialType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

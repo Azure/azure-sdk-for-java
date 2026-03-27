@@ -4,83 +4,90 @@
 
 package com.azure.ai.agents.models;
 
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * Defines values for McpToolConnectorId.
  */
-public enum McpToolConnectorId {
+public final class McpToolConnectorId extends ExpandableStringEnum<McpToolConnectorId> {
     /**
-     * Enum value connector_dropbox.
+     * Static value connector_dropbox for McpToolConnectorId.
      */
-    CONNECTOR_DROPBOX("connector_dropbox"),
+    @Generated
+    public static final McpToolConnectorId CONNECTOR_DROPBOX = fromString("connector_dropbox");
 
     /**
-     * Enum value connector_gmail.
+     * Static value connector_gmail for McpToolConnectorId.
      */
-    CONNECTOR_GMAIL("connector_gmail"),
+    @Generated
+    public static final McpToolConnectorId CONNECTOR_GMAIL = fromString("connector_gmail");
 
     /**
-     * Enum value connector_googlecalendar.
+     * Static value connector_googlecalendar for McpToolConnectorId.
      */
-    CONNECTOR_GOOGLECALENDAR("connector_googlecalendar"),
+    @Generated
+    public static final McpToolConnectorId CONNECTOR_GOOGLECALENDAR = fromString("connector_googlecalendar");
 
     /**
-     * Enum value connector_googledrive.
+     * Static value connector_googledrive for McpToolConnectorId.
      */
-    CONNECTOR_GOOGLEDRIVE("connector_googledrive"),
+    @Generated
+    public static final McpToolConnectorId CONNECTOR_GOOGLEDRIVE = fromString("connector_googledrive");
 
     /**
-     * Enum value connector_microsoftteams.
+     * Static value connector_microsoftteams for McpToolConnectorId.
      */
-    CONNECTOR_MICROSOFTTEAMS("connector_microsoftteams"),
+    @Generated
+    public static final McpToolConnectorId CONNECTOR_MICROSOFTTEAMS = fromString("connector_microsoftteams");
 
     /**
-     * Enum value connector_outlookcalendar.
+     * Static value connector_outlookcalendar for McpToolConnectorId.
      */
-    CONNECTOR_OUTLOOKCALENDAR("connector_outlookcalendar"),
+    @Generated
+    public static final McpToolConnectorId CONNECTOR_OUTLOOKCALENDAR = fromString("connector_outlookcalendar");
 
     /**
-     * Enum value connector_outlookemail.
+     * Static value connector_outlookemail for McpToolConnectorId.
      */
-    CONNECTOR_OUTLOOKEMAIL("connector_outlookemail"),
+    @Generated
+    public static final McpToolConnectorId CONNECTOR_OUTLOOKEMAIL = fromString("connector_outlookemail");
 
     /**
-     * Enum value connector_sharepoint.
+     * Static value connector_sharepoint for McpToolConnectorId.
      */
-    CONNECTOR_SHAREPOINT("connector_sharepoint");
+    @Generated
+    public static final McpToolConnectorId CONNECTOR_SHAREPOINT = fromString("connector_sharepoint");
 
     /**
-     * The actual serialized value for a McpToolConnectorId instance.
-     */
-    private final String value;
-
-    McpToolConnectorId(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a McpToolConnectorId instance.
+     * Creates a new instance of McpToolConnectorId value.
      * 
-     * @param value the serialized value to parse.
-     * @return the parsed McpToolConnectorId object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static McpToolConnectorId fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        McpToolConnectorId[] items = McpToolConnectorId.values();
-        for (McpToolConnectorId item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Generated
+    @Deprecated
+    public McpToolConnectorId() {
     }
 
     /**
-     * {@inheritDoc}
+     * Creates or finds a McpToolConnectorId from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding McpToolConnectorId.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    @Generated
+    public static McpToolConnectorId fromString(String name) {
+        return fromString(name, McpToolConnectorId.class);
+    }
+
+    /**
+     * Gets known McpToolConnectorId values.
+     * 
+     * @return known McpToolConnectorId values.
+     */
+    @Generated
+    public static Collection<McpToolConnectorId> values() {
+        return values(McpToolConnectorId.class);
     }
 }

@@ -4,58 +4,60 @@
 
 package com.azure.ai.agents.models;
 
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * Defines values for ImageGenToolOutputFormat.
  */
-public enum ImageGenToolOutputFormat {
+public final class ImageGenToolOutputFormat extends ExpandableStringEnum<ImageGenToolOutputFormat> {
     /**
-     * Enum value png.
+     * Static value png for ImageGenToolOutputFormat.
      */
-    PNG("png"),
+    @Generated
+    public static final ImageGenToolOutputFormat PNG = fromString("png");
 
     /**
-     * Enum value webp.
+     * Static value webp for ImageGenToolOutputFormat.
      */
-    WEBP("webp"),
+    @Generated
+    public static final ImageGenToolOutputFormat WEBP = fromString("webp");
 
     /**
-     * Enum value jpeg.
+     * Static value jpeg for ImageGenToolOutputFormat.
      */
-    JPEG("jpeg");
+    @Generated
+    public static final ImageGenToolOutputFormat JPEG = fromString("jpeg");
 
     /**
-     * The actual serialized value for a ImageGenToolOutputFormat instance.
-     */
-    private final String value;
-
-    ImageGenToolOutputFormat(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a ImageGenToolOutputFormat instance.
+     * Creates a new instance of ImageGenToolOutputFormat value.
      * 
-     * @param value the serialized value to parse.
-     * @return the parsed ImageGenToolOutputFormat object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static ImageGenToolOutputFormat fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        ImageGenToolOutputFormat[] items = ImageGenToolOutputFormat.values();
-        for (ImageGenToolOutputFormat item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Generated
+    @Deprecated
+    public ImageGenToolOutputFormat() {
     }
 
     /**
-     * {@inheritDoc}
+     * Creates or finds a ImageGenToolOutputFormat from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding ImageGenToolOutputFormat.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    @Generated
+    public static ImageGenToolOutputFormat fromString(String name) {
+        return fromString(name, ImageGenToolOutputFormat.class);
+    }
+
+    /**
+     * Gets known ImageGenToolOutputFormat values.
+     * 
+     * @return known ImageGenToolOutputFormat values.
+     */
+    @Generated
+    public static Collection<ImageGenToolOutputFormat> values() {
+        return values(ImageGenToolOutputFormat.class);
     }
 }

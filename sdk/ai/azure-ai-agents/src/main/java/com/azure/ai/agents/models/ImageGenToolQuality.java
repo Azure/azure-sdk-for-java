@@ -4,63 +4,66 @@
 
 package com.azure.ai.agents.models;
 
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * Defines values for ImageGenToolQuality.
  */
-public enum ImageGenToolQuality {
+public final class ImageGenToolQuality extends ExpandableStringEnum<ImageGenToolQuality> {
     /**
-     * Enum value low.
+     * Static value low for ImageGenToolQuality.
      */
-    LOW("low"),
+    @Generated
+    public static final ImageGenToolQuality LOW = fromString("low");
 
     /**
-     * Enum value medium.
+     * Static value medium for ImageGenToolQuality.
      */
-    MEDIUM("medium"),
+    @Generated
+    public static final ImageGenToolQuality MEDIUM = fromString("medium");
 
     /**
-     * Enum value high.
+     * Static value high for ImageGenToolQuality.
      */
-    HIGH("high"),
+    @Generated
+    public static final ImageGenToolQuality HIGH = fromString("high");
 
     /**
-     * Enum value auto.
+     * Static value auto for ImageGenToolQuality.
      */
-    AUTO("auto");
+    @Generated
+    public static final ImageGenToolQuality AUTO = fromString("auto");
 
     /**
-     * The actual serialized value for a ImageGenToolQuality instance.
-     */
-    private final String value;
-
-    ImageGenToolQuality(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a ImageGenToolQuality instance.
+     * Creates a new instance of ImageGenToolQuality value.
      * 
-     * @param value the serialized value to parse.
-     * @return the parsed ImageGenToolQuality object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static ImageGenToolQuality fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        ImageGenToolQuality[] items = ImageGenToolQuality.values();
-        for (ImageGenToolQuality item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Generated
+    @Deprecated
+    public ImageGenToolQuality() {
     }
 
     /**
-     * {@inheritDoc}
+     * Creates or finds a ImageGenToolQuality from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding ImageGenToolQuality.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    @Generated
+    public static ImageGenToolQuality fromString(String name) {
+        return fromString(name, ImageGenToolQuality.class);
+    }
+
+    /**
+     * Gets known ImageGenToolQuality values.
+     * 
+     * @return known ImageGenToolQuality values.
+     */
+    @Generated
+    public static Collection<ImageGenToolQuality> values() {
+        return values(ImageGenToolQuality.class);
     }
 }

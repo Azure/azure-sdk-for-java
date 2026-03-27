@@ -4,68 +4,72 @@
 
 package com.azure.ai.agents.models;
 
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * Defines values for ComputerEnvironment.
  */
-public enum ComputerEnvironment {
+public final class ComputerEnvironment extends ExpandableStringEnum<ComputerEnvironment> {
     /**
-     * Enum value windows.
+     * Static value windows for ComputerEnvironment.
      */
-    WINDOWS("windows"),
+    @Generated
+    public static final ComputerEnvironment WINDOWS = fromString("windows");
 
     /**
-     * Enum value mac.
+     * Static value mac for ComputerEnvironment.
      */
-    MAC("mac"),
+    @Generated
+    public static final ComputerEnvironment MAC = fromString("mac");
 
     /**
-     * Enum value linux.
+     * Static value linux for ComputerEnvironment.
      */
-    LINUX("linux"),
+    @Generated
+    public static final ComputerEnvironment LINUX = fromString("linux");
 
     /**
-     * Enum value ubuntu.
+     * Static value ubuntu for ComputerEnvironment.
      */
-    UBUNTU("ubuntu"),
+    @Generated
+    public static final ComputerEnvironment UBUNTU = fromString("ubuntu");
 
     /**
-     * Enum value browser.
+     * Static value browser for ComputerEnvironment.
      */
-    BROWSER("browser");
+    @Generated
+    public static final ComputerEnvironment BROWSER = fromString("browser");
 
     /**
-     * The actual serialized value for a ComputerEnvironment instance.
-     */
-    private final String value;
-
-    ComputerEnvironment(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a ComputerEnvironment instance.
+     * Creates a new instance of ComputerEnvironment value.
      * 
-     * @param value the serialized value to parse.
-     * @return the parsed ComputerEnvironment object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static ComputerEnvironment fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        ComputerEnvironment[] items = ComputerEnvironment.values();
-        for (ComputerEnvironment item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Generated
+    @Deprecated
+    public ComputerEnvironment() {
     }
 
     /**
-     * {@inheritDoc}
+     * Creates or finds a ComputerEnvironment from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding ComputerEnvironment.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    @Generated
+    public static ComputerEnvironment fromString(String name) {
+        return fromString(name, ComputerEnvironment.class);
+    }
+
+    /**
+     * Gets known ComputerEnvironment values.
+     * 
+     * @return known ComputerEnvironment values.
+     */
+    @Generated
+    public static Collection<ComputerEnvironment> values() {
+        return values(ComputerEnvironment.class);
     }
 }

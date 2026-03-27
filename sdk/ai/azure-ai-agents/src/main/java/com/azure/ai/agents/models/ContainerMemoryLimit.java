@@ -4,63 +4,66 @@
 
 package com.azure.ai.agents.models;
 
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * Defines values for ContainerMemoryLimit.
  */
-public enum ContainerMemoryLimit {
+public final class ContainerMemoryLimit extends ExpandableStringEnum<ContainerMemoryLimit> {
     /**
-     * Enum value 1g.
+     * Static value 1g for ContainerMemoryLimit.
      */
-    MEMORY_1GB("1g"),
+    @Generated
+    public static final ContainerMemoryLimit MEMORY_1GB = fromString("1g");
 
     /**
-     * Enum value 4g.
+     * Static value 4g for ContainerMemoryLimit.
      */
-    MEMORY_4GB("4g"),
+    @Generated
+    public static final ContainerMemoryLimit MEMORY_4GB = fromString("4g");
 
     /**
-     * Enum value 16g.
+     * Static value 16g for ContainerMemoryLimit.
      */
-    MEMORY_16GB("16g"),
+    @Generated
+    public static final ContainerMemoryLimit MEMORY_16GB = fromString("16g");
 
     /**
-     * Enum value 64g.
+     * Static value 64g for ContainerMemoryLimit.
      */
-    MEMORY_64GB("64g");
+    @Generated
+    public static final ContainerMemoryLimit MEMORY_64GB = fromString("64g");
 
     /**
-     * The actual serialized value for a ContainerMemoryLimit instance.
-     */
-    private final String value;
-
-    ContainerMemoryLimit(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a ContainerMemoryLimit instance.
+     * Creates a new instance of ContainerMemoryLimit value.
      * 
-     * @param value the serialized value to parse.
-     * @return the parsed ContainerMemoryLimit object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static ContainerMemoryLimit fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        ContainerMemoryLimit[] items = ContainerMemoryLimit.values();
-        for (ContainerMemoryLimit item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Generated
+    @Deprecated
+    public ContainerMemoryLimit() {
     }
 
     /**
-     * {@inheritDoc}
+     * Creates or finds a ContainerMemoryLimit from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding ContainerMemoryLimit.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    @Generated
+    public static ContainerMemoryLimit fromString(String name) {
+        return fromString(name, ContainerMemoryLimit.class);
+    }
+
+    /**
+     * Gets known ContainerMemoryLimit values.
+     * 
+     * @return known ContainerMemoryLimit values.
+     */
+    @Generated
+    public static Collection<ContainerMemoryLimit> values() {
+        return values(ContainerMemoryLimit.class);
     }
 }

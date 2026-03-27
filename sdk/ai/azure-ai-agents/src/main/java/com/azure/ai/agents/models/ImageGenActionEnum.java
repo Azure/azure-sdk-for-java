@@ -4,58 +4,60 @@
 
 package com.azure.ai.agents.models;
 
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * Defines values for ImageGenActionEnum.
  */
-public enum ImageGenActionEnum {
+public final class ImageGenActionEnum extends ExpandableStringEnum<ImageGenActionEnum> {
     /**
-     * Enum value generate.
+     * Static value generate for ImageGenActionEnum.
      */
-    GENERATE("generate"),
+    @Generated
+    public static final ImageGenActionEnum GENERATE = fromString("generate");
 
     /**
-     * Enum value edit.
+     * Static value edit for ImageGenActionEnum.
      */
-    EDIT("edit"),
+    @Generated
+    public static final ImageGenActionEnum EDIT = fromString("edit");
 
     /**
-     * Enum value auto.
+     * Static value auto for ImageGenActionEnum.
      */
-    AUTO("auto");
+    @Generated
+    public static final ImageGenActionEnum AUTO = fromString("auto");
 
     /**
-     * The actual serialized value for a ImageGenActionEnum instance.
-     */
-    private final String value;
-
-    ImageGenActionEnum(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a ImageGenActionEnum instance.
+     * Creates a new instance of ImageGenActionEnum value.
      * 
-     * @param value the serialized value to parse.
-     * @return the parsed ImageGenActionEnum object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static ImageGenActionEnum fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        ImageGenActionEnum[] items = ImageGenActionEnum.values();
-        for (ImageGenActionEnum item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Generated
+    @Deprecated
+    public ImageGenActionEnum() {
     }
 
     /**
-     * {@inheritDoc}
+     * Creates or finds a ImageGenActionEnum from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding ImageGenActionEnum.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    @Generated
+    public static ImageGenActionEnum fromString(String name) {
+        return fromString(name, ImageGenActionEnum.class);
+    }
+
+    /**
+     * Gets known ImageGenActionEnum values.
+     * 
+     * @return known ImageGenActionEnum values.
+     */
+    @Generated
+    public static Collection<ImageGenActionEnum> values() {
+        return values(ImageGenActionEnum.class);
     }
 }

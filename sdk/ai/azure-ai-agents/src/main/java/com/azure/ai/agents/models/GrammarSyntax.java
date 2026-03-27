@@ -4,53 +4,54 @@
 
 package com.azure.ai.agents.models;
 
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * Defines values for GrammarSyntax.
  */
-public enum GrammarSyntax {
+public final class GrammarSyntax extends ExpandableStringEnum<GrammarSyntax> {
     /**
-     * Enum value lark.
+     * Static value lark for GrammarSyntax.
      */
-    LARK("lark"),
+    @Generated
+    public static final GrammarSyntax LARK = fromString("lark");
 
     /**
-     * Enum value regex.
+     * Static value regex for GrammarSyntax.
      */
-    REGEX("regex");
+    @Generated
+    public static final GrammarSyntax REGEX = fromString("regex");
 
     /**
-     * The actual serialized value for a GrammarSyntax instance.
-     */
-    private final String value;
-
-    GrammarSyntax(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a GrammarSyntax instance.
+     * Creates a new instance of GrammarSyntax value.
      * 
-     * @param value the serialized value to parse.
-     * @return the parsed GrammarSyntax object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static GrammarSyntax fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        GrammarSyntax[] items = GrammarSyntax.values();
-        for (GrammarSyntax item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Generated
+    @Deprecated
+    public GrammarSyntax() {
     }
 
     /**
-     * {@inheritDoc}
+     * Creates or finds a GrammarSyntax from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding GrammarSyntax.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    @Generated
+    public static GrammarSyntax fromString(String name) {
+        return fromString(name, GrammarSyntax.class);
+    }
+
+    /**
+     * Gets known GrammarSyntax values.
+     * 
+     * @return known GrammarSyntax values.
+     */
+    @Generated
+    public static Collection<GrammarSyntax> values() {
+        return values(GrammarSyntax.class);
     }
 }

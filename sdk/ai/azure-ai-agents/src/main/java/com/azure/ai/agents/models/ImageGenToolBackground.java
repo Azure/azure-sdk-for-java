@@ -4,58 +4,60 @@
 
 package com.azure.ai.agents.models;
 
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * Defines values for ImageGenToolBackground.
  */
-public enum ImageGenToolBackground {
+public final class ImageGenToolBackground extends ExpandableStringEnum<ImageGenToolBackground> {
     /**
-     * Enum value transparent.
+     * Static value transparent for ImageGenToolBackground.
      */
-    TRANSPARENT("transparent"),
+    @Generated
+    public static final ImageGenToolBackground TRANSPARENT = fromString("transparent");
 
     /**
-     * Enum value opaque.
+     * Static value opaque for ImageGenToolBackground.
      */
-    OPAQUE("opaque"),
+    @Generated
+    public static final ImageGenToolBackground OPAQUE = fromString("opaque");
 
     /**
-     * Enum value auto.
+     * Static value auto for ImageGenToolBackground.
      */
-    AUTO("auto");
+    @Generated
+    public static final ImageGenToolBackground AUTO = fromString("auto");
 
     /**
-     * The actual serialized value for a ImageGenToolBackground instance.
-     */
-    private final String value;
-
-    ImageGenToolBackground(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a ImageGenToolBackground instance.
+     * Creates a new instance of ImageGenToolBackground value.
      * 
-     * @param value the serialized value to parse.
-     * @return the parsed ImageGenToolBackground object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static ImageGenToolBackground fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        ImageGenToolBackground[] items = ImageGenToolBackground.values();
-        for (ImageGenToolBackground item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Generated
+    @Deprecated
+    public ImageGenToolBackground() {
     }
 
     /**
-     * {@inheritDoc}
+     * Creates or finds a ImageGenToolBackground from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding ImageGenToolBackground.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    @Generated
+    public static ImageGenToolBackground fromString(String name) {
+        return fromString(name, ImageGenToolBackground.class);
+    }
+
+    /**
+     * Gets known ImageGenToolBackground values.
+     * 
+     * @return known ImageGenToolBackground values.
+     */
+    @Generated
+    public static Collection<ImageGenToolBackground> values() {
+        return values(ImageGenToolBackground.class);
     }
 }

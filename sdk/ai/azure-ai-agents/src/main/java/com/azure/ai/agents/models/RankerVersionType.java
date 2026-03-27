@@ -4,53 +4,54 @@
 
 package com.azure.ai.agents.models;
 
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * Defines values for RankerVersionType.
  */
-public enum RankerVersionType {
+public final class RankerVersionType extends ExpandableStringEnum<RankerVersionType> {
     /**
-     * Enum value auto.
+     * Static value auto for RankerVersionType.
      */
-    AUTO("auto"),
+    @Generated
+    public static final RankerVersionType AUTO = fromString("auto");
 
     /**
-     * Enum value default-2024-11-15.
+     * Static value default-2024-11-15 for RankerVersionType.
      */
-    DEFAULT_2024_11_15("default-2024-11-15");
+    @Generated
+    public static final RankerVersionType DEFAULT_2024_11_15 = fromString("default-2024-11-15");
 
     /**
-     * The actual serialized value for a RankerVersionType instance.
-     */
-    private final String value;
-
-    RankerVersionType(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a RankerVersionType instance.
+     * Creates a new instance of RankerVersionType value.
      * 
-     * @param value the serialized value to parse.
-     * @return the parsed RankerVersionType object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static RankerVersionType fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        RankerVersionType[] items = RankerVersionType.values();
-        for (RankerVersionType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Generated
+    @Deprecated
+    public RankerVersionType() {
     }
 
     /**
-     * {@inheritDoc}
+     * Creates or finds a RankerVersionType from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding RankerVersionType.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    @Generated
+    public static RankerVersionType fromString(String name) {
+        return fromString(name, RankerVersionType.class);
+    }
+
+    /**
+     * Gets known RankerVersionType values.
+     * 
+     * @return known RankerVersionType values.
+     */
+    @Generated
+    public static Collection<RankerVersionType> values() {
+        return values(RankerVersionType.class);
     }
 }

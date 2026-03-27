@@ -4,53 +4,54 @@
 
 package com.azure.ai.agents.models;
 
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * Defines values for ImageGenToolModeration.
  */
-public enum ImageGenToolModeration {
+public final class ImageGenToolModeration extends ExpandableStringEnum<ImageGenToolModeration> {
     /**
-     * Enum value auto.
+     * Static value auto for ImageGenToolModeration.
      */
-    AUTO("auto"),
+    @Generated
+    public static final ImageGenToolModeration AUTO = fromString("auto");
 
     /**
-     * Enum value low.
+     * Static value low for ImageGenToolModeration.
      */
-    LOW("low");
+    @Generated
+    public static final ImageGenToolModeration LOW = fromString("low");
 
     /**
-     * The actual serialized value for a ImageGenToolModeration instance.
-     */
-    private final String value;
-
-    ImageGenToolModeration(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a ImageGenToolModeration instance.
+     * Creates a new instance of ImageGenToolModeration value.
      * 
-     * @param value the serialized value to parse.
-     * @return the parsed ImageGenToolModeration object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static ImageGenToolModeration fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        ImageGenToolModeration[] items = ImageGenToolModeration.values();
-        for (ImageGenToolModeration item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Generated
+    @Deprecated
+    public ImageGenToolModeration() {
     }
 
     /**
-     * {@inheritDoc}
+     * Creates or finds a ImageGenToolModeration from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding ImageGenToolModeration.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    @Generated
+    public static ImageGenToolModeration fromString(String name) {
+        return fromString(name, ImageGenToolModeration.class);
+    }
+
+    /**
+     * Gets known ImageGenToolModeration values.
+     * 
+     * @return known ImageGenToolModeration values.
+     */
+    @Generated
+    public static Collection<ImageGenToolModeration> values() {
+        return values(ImageGenToolModeration.class);
     }
 }

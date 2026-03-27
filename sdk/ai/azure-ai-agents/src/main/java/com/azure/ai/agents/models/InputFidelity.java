@@ -4,55 +4,54 @@
 
 package com.azure.ai.agents.models;
 
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
- * Control how much effort the model will exert to match the style and features, especially facial features, of input
- * images. This parameter is only supported for `gpt-image-1` and `gpt-image-1.5` and later models, unsupported for
- * `gpt-image-1-mini`. Supports `high` and `low`. Defaults to `low`.
+ * Defines values for InputFidelity.
  */
-public enum InputFidelity {
+public final class InputFidelity extends ExpandableStringEnum<InputFidelity> {
     /**
-     * Enum value high.
+     * Static value high for InputFidelity.
      */
-    HIGH("high"),
+    @Generated
+    public static final InputFidelity HIGH = fromString("high");
 
     /**
-     * Enum value low.
+     * Static value low for InputFidelity.
      */
-    LOW("low");
+    @Generated
+    public static final InputFidelity LOW = fromString("low");
 
     /**
-     * The actual serialized value for a InputFidelity instance.
-     */
-    private final String value;
-
-    InputFidelity(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a InputFidelity instance.
+     * Creates a new instance of InputFidelity value.
      * 
-     * @param value the serialized value to parse.
-     * @return the parsed InputFidelity object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static InputFidelity fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        InputFidelity[] items = InputFidelity.values();
-        for (InputFidelity item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Generated
+    @Deprecated
+    public InputFidelity() {
     }
 
     /**
-     * {@inheritDoc}
+     * Creates or finds a InputFidelity from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding InputFidelity.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    @Generated
+    public static InputFidelity fromString(String name) {
+        return fromString(name, InputFidelity.class);
+    }
+
+    /**
+     * Gets known InputFidelity values.
+     * 
+     * @return known InputFidelity values.
+     */
+    @Generated
+    public static Collection<InputFidelity> values() {
+        return values(InputFidelity.class);
     }
 }
